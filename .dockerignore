@@ -1,0 +1,14 @@
+# exclude all by default
+
+*
+
+# exceptions from `exclude all` rule
+
+!package.json
+!yarn.lock
+
+!tsconfig.json
+!webpack/**
+!src/main/**
+!config/**
+!webpack.config.js

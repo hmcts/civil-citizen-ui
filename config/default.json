@@ -1,0 +1,9 @@
+{
+  "useCSRFProtection": true,
+  "security": {
+    "referrerPolicy": "origin"
+  },
+  "appInsights": {
+    "instrumentationKey": false
+  }
+}

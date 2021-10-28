@@ -1,0 +1,6 @@
+{
+  "watch": ["src/main"],
+  "ext": "ts,js",
+  "ignore": ["src/**/*.spec.ts"],
+  "exec": "ts-node ./src/main/server.ts"
+}
