@@ -4,7 +4,7 @@ nodejs:
   image: hmctspublic.azurecr.io/cmc/citizen-ui:latest
 #  Uncomment once the vault containing the app insights key has been set up
 #  keyVaults:
-#    rpe:
+#    civil:
 #      secrets:
 #        - AppInsightsInstrumentationKey
   environment:
