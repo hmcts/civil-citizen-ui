@@ -17,7 +17,7 @@
     "test:a11y": "jest -c jest.a11y.config.js --maxWorkers 15",
     "sonar-scan": "sonar-scanner",
     "test:smoke": "jest -c jest.smoketest.config.js",
-    "test:functional": "echo 'TODO add functional tests' && exit 1",
+    "test:functional": "jest -c jest.functionaltest.config.js",
     "cichecks": "yarn && yarn build && yarn lint  && yarn test && yarn test:routes &&  yarn test:a11y"
   },
   "dependencies": {
