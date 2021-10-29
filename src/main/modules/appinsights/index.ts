@@ -10,7 +10,7 @@ export class AppInsights {
         .setSendLiveMetrics(true)
         .start();
 
-      appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = 'rpe-expressjs-template';
+      appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = 'civil-citizen-ui';
       appInsights.defaultClient.trackTrace({message: 'App insights activated'});
     }
   }
