@@ -10,8 +10,8 @@ describe('Dummy Smoke test - Home page', () => {
       await request(app)
         .get('/')
         .expect((res) => {
-            expect(res.status).to.equal(200);
-            expect(res.text).to.contain("Default page template");
+          expect(res.status).to.equal(200);
+          expect(res.text).to.contain('Default page template');
         });
     });
   });
