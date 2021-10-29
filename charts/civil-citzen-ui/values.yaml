@@ -1,6 +1,5 @@
 nodejs:
   applicationPort: 3100
-  aadIdentityName: civil
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
   image: hmctspublic.azurecr.io/cmc/citizen-ui:latest
 #  Uncomment once the vault containing the app insights key has been set up
