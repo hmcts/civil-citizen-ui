@@ -11,7 +11,7 @@
 
 read -p "Port number for new app: " port
 read -p "Product name for new app (to replace civil product references): " product
-read -p "Component name for new app (to replace civil component references) : " component
+read -p "Component name for new app (to replace citizen-ui component references) : " component
 
 declare -a files_with_port=(Dockerfile README.md src/main/server.ts docker-compose.yml charts/civil-citizen-ui/values.yaml)
 declare -a files_with_product=(package.json Jenkinsfile_CNP.disabled Jenkinsfile_nightly docker-compose.yml src/main/modules/properties-volume/index.ts src/main/modules/appinsights/index.ts charts/civil-citizen-ui/Chart.yaml charts/civil-citizen-ui/values.yaml Dockerfile README.md sonar-project.properties)
