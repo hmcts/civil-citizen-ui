@@ -22,3 +22,5 @@ npm-debug.log.*
 .settings/
 dist/
 public/
+smoke-output/
+functional-output/
