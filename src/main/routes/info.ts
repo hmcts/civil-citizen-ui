@@ -9,7 +9,7 @@ export default function(app: Router): void {
     infoRequestHandler({
       extraBuildInfo: {
         host: os.hostname(),
-        name: 'expressjs-template',
+        name: 'citizen-ui',
         uptime: process.uptime(),
       },
       info: {
