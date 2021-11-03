@@ -1,8 +1,7 @@
 version: '2'
 
 services:
-  # TODO: change this name to match the name of your app
-  expressjs-template:
+  citizen-ui:
     build:
       context: .
       args:
