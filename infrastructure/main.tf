@@ -20,7 +20,7 @@ source              = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
   env                 = var.env
   object_id           = var.jenkins_AAD_objectId
   resource_group_name = azurerm_resource_group.rg.name
-  product_group_name  = "DTS Civil" # e.g. MI Data Platform, or dcd_cmc
+  product_group_name  = "DTS Civil"
   common_tags         = var.common_tags
 }
 
@@ -74,7 +74,7 @@ data "azurerm_key_vault_secret" "civil_webchat_id" {
   key_vault_id = "${data.azurerm_key_vault.civil_key_vault.id}"
 }
 
-data "azurerm_key_vault_secret" "cmc_webchat_tenant" {
+data "azurerm_key_vault_secret" "civil_webchat_tenant" {
   name = "civil-webchat-tenant"
   key_vault_id = "${data.azurerm_key_vault.civil_key_vault.id}"
 }
