@@ -15,7 +15,7 @@ resource "azurerm_resource_group" "rg" {
 # this key vault is created in every environment, but preview, being short-lived,
 # will use the aat one instead
 module "key-vault" {
-source              = "git@github.com:hmcts/cnp-module-key-vault?ref=master"
+source              = "git@github.com:hmcts/cnp-module-webapp?ref=master"
   product             = var.product
   env                 = var.env
   object_id           = var.jenkins_AAD_objectId
