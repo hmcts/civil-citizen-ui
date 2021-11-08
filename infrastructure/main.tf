@@ -19,9 +19,6 @@ module "key-vault" {
   tenant_id           = var.tenant_id
   object_id           = var.jenkins_AAD_objectId
   resource_group_name = azurerm_resource_group.rg.name
-
-  # dcd_cc-dev group object ID
   product_group_name          = "DTS Civil"
   common_tags                 = var.common_tags
-  managed_identity_object_ids = ["${data.azurerm_user_assigned_identity.rpe-shared-identity.principal_id}"]
 }
