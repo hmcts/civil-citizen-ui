@@ -1,6 +1,8 @@
 // Infrastructural variables
 variable "product" {}
 
+variable "component" {}
+
 variable "microservice" {
   default = "citizen-frontend-ui"
 }
