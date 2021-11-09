@@ -3,6 +3,10 @@ variable "product" {}
 
 variable "component" {}
 
+variable "raw_product" {
+  default = "cmc"
+}
+
 variable "microservice" {
   default = "citizen-frontend-ui"
 }
