@@ -23,8 +23,8 @@ module "key-vault" {
   common_tags                 = var.common_tags
 }
 
-resource "azurerm_key_vault_secret" "POSTGRES-USER" {
-  name         = "${var.component}-POSTGRES-USER"
+resource "azurerm_key_vault_secret" "POSTGRES-USER-CIVIL" {
+  name         = "${var.component}-POSTGRES-USERCIVIL"
   value        = "test"
   key_vault_id = module.key-vault.key_vault_id
 }
