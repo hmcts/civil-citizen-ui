@@ -4,7 +4,7 @@ variable "product" {}
 variable "component" {}
 
 variable "raw_product" {
-  default = "cmc"
+  default = "civil"
 }
 
 variable "microservice" {
