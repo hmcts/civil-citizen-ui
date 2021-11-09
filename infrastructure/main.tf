@@ -7,6 +7,6 @@ locals {
 }
 
 data "azurerm_key_vault" "civil_key_vault" {
-  name                = local.vaultName
-  resource_group_name = local.vaultName
+  name                = "${local.vaultName}"
+  resource_group_name = "${local.vaultName}"
 }
