@@ -3,9 +3,6 @@ variable "product" {}
 
 variable "component" {}
 
-variable "raw_product" {
-  default = "civil"
-}
 
 variable "microservice" {
   default = "citizen-ui"
