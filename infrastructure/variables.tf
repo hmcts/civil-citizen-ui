@@ -14,9 +14,6 @@ variable "location" {
 
 variable "env" {}
 
-variable "ilbIp" {}
-
-
 variable "subscription" {}
 
 variable "jenkins_AAD_objectId" {
