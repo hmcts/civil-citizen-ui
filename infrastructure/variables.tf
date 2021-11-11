@@ -4,10 +4,6 @@ variable "product" {}
 variable "component" {}
 
 
-variable "microservice" {
-  default = "citizen-ui"
-}
-
 variable "location" {
   default = "UK South"
 }
