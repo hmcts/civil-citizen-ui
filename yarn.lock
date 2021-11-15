@@ -1018,10 +1018,10 @@
     on-finished "^2.3.0"
     winston "^2.4.5"
 
-"@hmcts/properties-volume@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@hmcts/properties-volume/-/properties-volume-0.0.12.tgz#368d63a775867e0b827fe620cd9a3f51c6af0f01"
-  integrity sha512-vx22aBT4hKSUy0YAiy1rpRHhnLAi97W4DcrjffA1k6LCsLozDMP3TDCrl3SY6rIsUrixyxXH29fLoCoAtyTxFg==
+"@hmcts/properties-volume@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@hmcts/properties-volume/-/properties-volume-0.0.13.tgz#d1baeab407d519505aeb2614fb91632a1a328366"
+  integrity sha512-WTz5KTQG3IXQnNZCb63fR44muNn++GxGWZad0k12iIYsNfgws+dMOw7QwhbuKOMhQ2sSWxNK882ZxchVihZN9w==
   dependencies:
     "@hmcts/nodejs-logging" "^3.0.0"
     lodash "^4.17.11"
