@@ -1,0 +1,34 @@
+{% extends "layout.njk" %}
+{% from "support.njk" import supportWidget %}
+{% from "internalLink.njk" import internalLink %}
+
+{% set headingVisible = false %}
+{% set heading = 'Confirmation' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <div class="govuk-box-highlight">
+        <h1 class="bold-large">{{ t('You’ve signed the agreement') }}</h1>
+      </div>
+
+      <h2 class="heading-medium">{{ t('What happens next') }}</h2>
+      <p>
+        {{
+          t('{{ name }} will also be asked to sign. The agreement replaces the claim once you’ve both signed.', {
+            name: claim.claimData.defendant.name
+          })
+        }}
+      </p>
+
+      {% include "includes/service-survey-link-claimant.njk" %}
+
+      <p>
+        {{ internalLink(t('Finished'), DashboardPaths.dashboardPage.uri, 'button') }}
+      </p>
+
+      {{ supportWidget() }}
+    </div>
+  </div>
+{% endblock %}
+{% block contactForHelp %}{% endblock %}

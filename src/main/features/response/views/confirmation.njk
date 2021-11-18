@@ -1,0 +1,64 @@
+{% extends "layout.njk" %}
+{% from "support.njk" import supportWidget %}
+{% from "externalLink.njk" import externalLink %}
+{% from "internalLink.njk" import internalLink %}
+
+{% set headingVisible = false %}
+{% set heading = 'Confirmation' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <div class="govuk-box-highlight">
+        <h1 class="bold-large">{{ t('You’ve submitted your response') }}</h1>
+        <p class="reference-number">
+          <span>{{ t('Claim number:') }}</span>
+          <span class="block bold-large">{{ claim.claimNumber }}</span>
+        </p>
+        <p>
+          <span class="bold">{{ claim.respondedAt | date }}</span>
+        </p>
+        {% if claim.response.directionsQuestionnaire %}
+          <p class="receipt-download-container">
+            {{ internalLink(t('Download your response and hearing requirements (PDF)'), ResponsePaths.receiptReceiver.evaluateUri({ externalId: claim.externalId })) }}
+          </p>
+        {% else %}
+          <p class="receipt-download-container">
+            {{ internalLink(t('Download your response (PDF)'), ResponsePaths.receiptReceiver.evaluateUri({ externalId: claim.externalId })) }}
+          </p>
+        {% endif %}
+      </div>
+
+
+      {% if claim.response.responseType === domain.ResponseType.FULL_ADMISSION %}
+        {% include "./confirmation/full-admission.njk" %}
+      {% endif %}
+      {% if claim.response.responseType === domain.ResponseType.FULL_DEFENCE %}
+        {% include "./confirmation/full-defence.njk" %}
+      {% endif %}
+      {% if claim.response.responseType === domain.ResponseType.PART_ADMISSION %}
+        {% include "./confirmation/part-admission.njk" %}
+      {% endif %}
+
+      <h2 class="heading-medium">{{ t('What happens next') }}</h2>
+
+      {% if claim.response.responseType === domain.ResponseType.FULL_ADMISSION %}
+        {% include "./confirmation/full-admission-steps.njk" %}
+      {% endif %}
+      {% if claim.response.responseType === domain.ResponseType.FULL_DEFENCE %}
+        {% include "./confirmation/full-defence-steps.njk" %}
+      {% endif %}
+
+      {% if claim.response.responseType === domain.ResponseType.PART_ADMISSION %}
+        {% include "./confirmation/part-admission-steps.njk" %}
+      {% endif %}
+
+      {% include "includes/service-survey-link-defendant.njk" %}
+
+      <p>{{ internalLink(t('Go to your account'), DashboardPaths.dashboardPage.uri, 'button') }}</p>
+
+      {{ supportWidget() }}
+    </div>
+  </div>
+{% endblock %}
+{% block contactForHelp %}{% endblock %}

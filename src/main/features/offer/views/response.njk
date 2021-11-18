@@ -1,0 +1,51 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, submitButton, errorSummary, radioGroupWithHintPanel %}
+{% from "date.njk" import dateInput %}
+{% from "./macro/offerTable.njk" import offerTable %}
+
+{% set headingVisible = false %}
+{% set heading = 'Offer' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <h1 class="heading-large">
+        <span class="heading-secondary">{{ t('Defendant’s response') }}</span>
+        {{ t('{{ defendantName }}’s offer', { defendantName: claim.claimData.defendant.name } ) }}
+      </h1>
+      <form novalidate method="post">
+        {{ csrfProtection(csrf) }}
+
+        {{ offerTable(offer.content, offer.completionDate) }}
+
+        <h2 class="heading-medium"> {{ t('Do you accept the offer?') }} </h2>
+
+        {{
+        radioGroupWithHintPanel(
+          label = 'Do you accept the offer?',
+          form = form,
+          labelForScreenReadersOnly = true,
+          name = 'option',
+          options = [
+            {
+              bold: false,
+              label: 'Yes',
+              value: StatementType.ACCEPTATION.value,
+              checked: (form.valueFor('option').value === StatementType.ACCEPTATION),
+              hint: 'You can make a legal agreement between you and ' + claim.claimData.defendant.name + '.'
+            },
+            {
+              bold: false,
+              label: 'No',
+              value: StatementType.REJECTION.value,
+              checked: (form.valueFor('option').value === StatementType.REJECTION),
+              hint: 'If you reject the offer you can’t mention it in court.'
+            }
+          ]
+        )
+      }}
+      {{ submitButton() }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

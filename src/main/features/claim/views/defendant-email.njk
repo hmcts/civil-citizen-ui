@@ -1,0 +1,22 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, emailInput, saveAndContinueButton, errorSummary %}
+
+{% set heading = 'Their email address (optional)' %}
+
+{% block content %}
+  <div class="grid-row">
+      <div class="column-two-thirds">
+
+        <p>{{ t('We’ll use this to tell them you’ve made a claim, as well as notifying them by post.') }}</p>
+        {% if individual %}
+          <p>{{ t('This must be their personal email address.') }}</p>
+        {% endif %}
+        <form novalidate method="post">
+          {{ csrfProtection(csrf) }}
+
+          {{ emailInput('Their email address (optional)', 'address', form, labelClass='visually-hidden') }}
+          {{ saveAndContinueButton() }}
+        </form>
+      </div>
+  </div>
+{% endblock %}

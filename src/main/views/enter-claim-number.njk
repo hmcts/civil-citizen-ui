@@ -1,0 +1,25 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, submitButton, errorSummary %}
+{% from "internalLink.njk" import internalLink %}
+{% from "claimReference.njk" import claimReferenceInput %}
+
+{% set heading = 'Enter your claim number' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      <form method="post">
+        {{ csrfProtection(csrf) }}
+
+        {{ claimReferenceInput('Claim number', 'reference', form) }}
+        {{ submitButton() }}
+
+        <p>
+          {{ internalLink(t('Don’t have a claim number?'), AppPaths.noClaimNumberPage.uri) }}
+        </p>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

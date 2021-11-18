@@ -1,0 +1,41 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import radioGroup, saveAndContinueButton, errorSummary %}
+{% from "support.njk" import supportWidget %}
+{% from "feesTable.njk" import feesTable %}
+
+{% set heading = 'How to complete and send your response' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <div class="panel-indent">
+        <div class="panel panel-border-wide">
+          <p>{{ t('Complete and email the defence and counterclaim form by <span class="bold-small">{{ responseDeadline }}</span>', { responseDeadline: claim.responseDeadline | date  }) | safe }} </p>
+        </div>
+      </div>
+
+      <p>{{ t('You’ll need to pay a court fee if you make a counterclaim.') }}</p>
+
+      {{ feesTable('View claim fees', rows ) }}
+
+      <ul class="list list-number">
+        <li>
+          {{ t('Complete <a href="{{ link }}" download="download" rel="noreferrer noopener" target="_blank">defence and counterclaim form N9B</a> entering these details:',
+          { link : [asset_paths["pdf"] + '/OCON9B.pdf']}) | safe }}
+          <ul class="list list-bullet">
+            <li>{{ t('Claim number') }} {{ claim.claimNumber }}</li>
+            <li>{{ t('Claimant') }} {{ claim.claimData.claimant.name }}</li>
+            <li>{{ t('Defendant') }} {{ response.defendantDetails.partyDetails.name }}</li>
+          </ul>
+        </li>
+        <li>{{ t('Save the completed form to your device.') }}</li>
+        <li>{{ t('Email the form to <a href="mailto:{{ supportEmailAddress }}?Subject={{ claimNumber }}">{{ supportEmailAddress }}</a>',
+                  { supportEmailAddress: supportEmailAddress, claimNumber: claim.claimNumber }) | safe }} </li>
+      </ul>
+
+      {{ supportWidget() }}
+
+    </div>
+  </div>
+{% endblock %}
+{% block contactForHelp %}{% endblock %}

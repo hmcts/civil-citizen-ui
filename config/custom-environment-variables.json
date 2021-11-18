@@ -1,0 +1,127 @@
+{
+  "security": {
+    "referrerPolicy": "SECURITY_REFERRER_POLICY",
+    "hpkp": {
+      "maxAge": "SECURITY_HPKP_MAX_AGE",
+      "pins": "SECURITY_HPKP_PINS"
+    }
+  },
+  "idam": {
+    "authentication-web": {
+      "url": "IDAM_AUTHENTICATION_WEB_URL"
+    },
+    "api": {
+      "url": "IDAM_API_URL"
+    },
+    "service-2-service-auth": {
+      "url": "IDAM_S2S_AUTH"
+    }
+  },
+  "claim-store": {
+    "url": "CLAIM_STORE_URL"
+  },
+  "feature-toggles-api": {
+    "url": "FEATURE_TOGGLES_API_URL"
+  },
+  "draft-store": {
+    "url": "DRAFT_STORE_URL",
+    "apiVersion": "DRAFT_STORE_API_VERSION"
+  },
+  "analytics": {
+    "gaTrackingId": "GA_TRACKING_ID"
+  },
+  "session": {
+    "cookieName": "JWT_COOKIE_NAME"
+  },
+  "fees": {
+    "url": "FEES_URL",
+    "issueFee": {
+      "code": "ISSUE_FEE_CODE"
+    },
+    "hearingFee": {
+      "code": "HEARING_FEE_CODE"
+    }
+  },
+  "pay": {
+    "url": "PAY_URL",
+    "return-url": "PAY_RETURN_URL"
+  },
+  "eligibility": {
+    "cookie": {
+      "timeToLiveInMinutes": "ELIGIBILITY_COOKIE_TIME_TO_LIVE_IN_MINUTES"
+    }
+  },
+  "feedback": {
+    "serviceSurvey": {
+      "url": "SERVICE_SURVEY_URL"
+    },
+    "feedbackSurvey": {
+      "url": "FEEDBACK_SURVEY_URL"
+    },
+    "reportProblemSurvey": {
+      "url": "REPORT_PROBLEM_SURVEY_URL"
+    }
+  },
+  "http": {
+    "timeout": "HTTP_TIMEOUT"
+  },
+  "requestRetry": {
+    "maxAttempts": "REQUEST_RETRY_MAX_ATTEMPTS"
+  },
+
+  "featureToggles": {
+    "clusterMode": "FEATURE_CLUSTER_MODE",
+    "testingSupport": "FEATURE_TESTING_SUPPORT",
+    "newFeaturesConsent": "FEATURE_NEW_FEATURES_CONSENT",
+    "returnErrorToUser": "FEATURE_RETURN_ERROR_TO_USER",
+    "mockPay": "FEATURE_MOCK_PAY",
+    "directionsQuestionnaire": "FEATURE_DIRECTIONS_QUESTIONNAIRE",
+    "newDashboardStatus": "FEATURE_NEW_DASHBOARD_STATUS",
+    "antennaWebChat": "FEATURE_ANTENNA_WEB_CHAT",
+    "webChat": "FEATURE_WEB_CHAT",
+    "inversionOfControl": "FEATURE_INVERSION_OF_CONTROL",
+    "warningBanner": "FEATURE_WARNING_BANNER",
+    "helpWithFees": "FEATURE_HELP_WITH_FEES",
+    "pcq": "FEATURE_PCQ",
+    "signPostingCTSC": "FEATURE_SIGN_POSTING_CTSC",
+    "oconEnhancements": "FEATURE_OCON_ENHANCEMENTS",
+    "dashboard_pagination_enabled": "dashboard_pagination_enabled",
+    "breathingSpace": "FEATURE_BREATHING_SPACE",
+    "newClaimFees": "FEATURE_NEW_CLAIM_FEES"
+  },
+
+  "oauth": {
+    "clientId": "OAUTH_CLIENT_ID"
+  },
+
+  "appInsights": {
+    "roleName": "APPINSIGHTS_ROLE_NAME"
+  },
+
+  "secrets":{
+    "cmc":{
+      "cmc-s2s-secret": "IDAM_S2S_TOTP_SECRET",
+      "citizen-draft-store-primary": "DRAFT_STORE_SECRET_PRIMARY",
+      "citizen-draft-store-secondary": "DRAFT_STORE_SECRET_SECONDARY",
+      "staff-email": "CONTACT_EMAIL",
+      "citizen-oauth-client-secret": "OAUTH_CLIENT_SECRET",
+      "os-postcode-lookup-api-key": "POSTCODE_LOOKUP_API_KEY",
+      "encryptionKey": "COOKIE_ENCRYPTION_KEY",
+      "AppInsightsInstrumentationKey":"app_insights_instrumental_key",
+      "launchDarkly-sdk-key": "LAUNCH_DARKLY_SDK_KEY",
+      "cmc-webchat-id": "WEBCHAT_CHAT_ID",
+      "cmc-webchat-tenant": "WEBCHAT_TENANT",
+      "cmc-webchat-button-no-agents": "WEBCHAT_BUTTON_NO_AGENTS",
+      "cmc-webchat-button-agents-busy": "WEBCHAT_BUTTON_AGENTS_BUSY",
+      "cmc-webchat-button-service-closed": "WEBCHAT_BUTTON_SERVICE_CLOSED",
+      "pcq-token-key": "FEATURE_PCQ"
+    }
+  },
+  "launchDarkly": {
+    "offline": "LAUNCH_DARKLY_OFFLINE_MODE"
+  },
+  "pcq":
+  {
+    "url":"PCQ_URL"
+  }
+}

@@ -1,0 +1,20 @@
+{% macro interestSnippet(label = 'Interest', rate, numberOfDays, interestDate, interestToDate, specificDailyAmount) %}
+  {% if rate or specificDailyAmount > 0 %}
+    <details role="group">
+      <summary role="button" aria-controls="details-content-0" aria-expanded="false">
+        {{ t(label) }}
+      </summary>
+      <div class="panel text-small" id="details-content-0" aria-hidden>
+        {% if rate %}
+          {{ t('Interest calculated at {{ rate }}% for {{ numberOfDays }} days', { rate: rate, numberOfDays: numberOfDays}) }}
+        {% elseif specificDailyAmount > 0 %}
+          {{ t('Interest calculated with daily interest amount of {{ specificDailyAmount }} for {{ numberOfDays}} days', {
+            specificDailyAmount: specificDailyAmount | numeral, numberOfDays: numberOfDays }) }}
+        {% endif %}
+        <div class="font-xsmall">{{ t('({{ interestDate }} to {{ interestToDate }})', { interestDate: interestDate | date, interestToDate: interestToDate | date }) }}</div>
+      </div>
+    </details>
+  {% else %}
+    {{ t(label) }}
+  {% endif %}
+{% endmacro %}

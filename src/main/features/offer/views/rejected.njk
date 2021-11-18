@@ -1,0 +1,31 @@
+{% extends "layout.njk" %}
+{% from "support.njk" import supportWidget %}
+{% from "internalLink.njk" import internalLink %}
+
+{% set headingVisible = false %}
+{% set heading = 'Confirmation' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <div class="govuk-box-highlight">
+        <h1 class="bold-large">{{ t('You’ve rejected an offer to settle out of court') }}</h1>
+      </div>
+
+      <h2 class="heading-medium">{{ t('What happens next') }}</h2>
+      <p>
+        {{ t('We’ll send your response to the defendant.') }}
+      </p>
+
+      {% include "includes/service-survey-link-claimant.njk" %}
+
+      <p>
+        {{ internalLink(t('Finished'), DashboardPaths.dashboardPage.uri, 'button') }}
+      </p>
+
+      {{ supportWidget() }}
+
+    </div>
+  </div>
+{% endblock %}
+{% block contactForHelp %}{% endblock %}

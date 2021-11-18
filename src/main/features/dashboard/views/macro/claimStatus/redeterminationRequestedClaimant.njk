@@ -1,0 +1,20 @@
+{% macro redeterminationClaimantDashboard() %}
+  {{ t('Awaiting judge’s review.') }}
+{% endmacro %}
+
+{% macro redeterminationClaimantClaimDetails(claim) %}
+  <div class="status-block">
+    {% if claim.reDetermination.partyType === MadeBy.CLAIMANT
+    or claim.isInterlocutoryJudgmentRequestedOnAdmissions() %}
+      <h2 class="heading-medium">{{ t('Wait for a judge to review the case') }}</h2>
+      <p>{{ t('You’ve rejected the defendant’s repayment plan and haven’t been able to agree to an alternative plan.') }}</p>
+      <p>{{ t('A judge will review the case. We’ll contact you by post to tell you what to do next.') }}</p>
+      <p>{{ t('Your online account won’t be updated - any further updates will be by post.') }}</p>
+    {% elif claim.reDetermination.partyType === MadeBy.DEFENDANT %}
+      <h2 class="heading-medium">{{ t('The defendant rejected the repayment plan') }}</h2>
+      <p>{{ t('They said they can’t afford to pay based on the terms of the County Court Judgment.') }}</p>
+      <p>{{ t('A judge will review the case. We’ll contact you by post to tell you what to do next.') }}</p>
+      <p>{{ t('Your online account won’t be updated - any further updates will be by post.') }}</p>
+    {% endif %}
+  </div>
+{% endmacro %}

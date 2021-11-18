@@ -1,0 +1,64 @@
+{% macro businessQueueClaimDetails() %}
+  <div class="status-block">
+    <h2 class="heading-medium"> {{ t('We’ve received a response that was not submitted through the online civil money claims service') }} </h2>
+    <p>{{  t('For this reason, the claim cannot continue online. We’ve sent this claim and all related documents to the County Court Business Centre (CCBC). CCBC will contact you by email or post about next steps.') }}</p>
+     <div class="govuk-inset-text">
+        <p>{{  t('If you need to send any forms, letters or documents about the claim, email:') }}</p>
+        <a href="mailto:OCMCNton@justice.gov.uk">OCMCNton@justice.gov.uk</a>
+     </div>
+    <p>{{  t('Or, you can send them by post to:') }}
+    <p>
+      {{ 'Online Civil Money Claims'  }}<br/>
+      {{ 'County Court Business Centre'  }}<br/>
+      {{ 'St. Katherine House' }} <br/>
+      {{ '21-27 St. Katherine Street' }} <br/>
+      {{ 'Northampton' }} <br/>
+      {{ 'NN1 2LH' }} <br/>
+    </p>
+  </div>
+{% endmacro %}
+
+{% macro businessQueueViaPaperResponseClaimDetails() %}
+  <div class="status-block">
+    <h2 class="heading-medium">We have received forms relating to your claim</h2>
+    <p>Your claim will now continue offline. </p>
+    <p>You can view the response in your account but your account will not be updated.</p>
+    <p>The progression of your claim will not be affected by any deadlines previously set.
+      County Court Business Centre will contact you by post within 10 days to tell you what happens next.</p>
+    <p>Contact the County Court Business Centre if you have any questions about the claim.</p>
+    <p>Phone: 0300 123 1056<br />
+      Monday to Friday, 9am to 5pm. <br />
+      <a href="https://www.gov.uk/call-charges" rel="noreferrer noopener" target="_blank">Find out about call charges</a>
+      <span class="font-xsmall">(opens in a new window)</span>
+    </p>
+    <p>Email: CCBCAQ@justice.gov.uk</p>
+  </div>
+{% endmacro %}
+
+{% macro businessQueueDefendantClaimDetails(claim) %}
+  {% if claim.proceedViaPaperResponse %}
+    {{ businessQueueViaPaperResponseClaimDetails() }}
+  {% else %}
+    {{ businessQueueClaimDetails() }}
+  {% endif %}
+{% endmacro %}
+
+{% macro businessQueueClaimantClaimDetails(claim) %}
+  {% if claim.proceedViaPaperResponse %}
+    {{ businessQueueViaPaperResponseClaimDetails() }}
+  {% else %}
+    {{ businessQueueClaimDetails() }}
+  {% endif %}
+{% endmacro %}
+
+{% macro businessQueueClaimStatus() %}
+      {{ t('Case passed to County Court Business Centre') }}
+{% endmacro %}
+
+{% macro businessQueueDefendantClaimStatus() %}
+  {{ businessQueueClaimStatus() }}
+{% endmacro %}
+
+{% macro businessQueueClaimantClaimStatus() %}
+  {{ businessQueueClaimStatus() }}
+{% endmacro %}

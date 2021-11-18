@@ -1,0 +1,37 @@
+{% from "internalLink.njk" import internalLink %}
+
+{% macro offerSubmittedForClaimantDashboard(claim) %}
+  <p>
+    {{ t('The defendant has made an offer to settle out of court.') }}
+  </p>
+  {{ t('{{ defendantName }} has rejected your claim.',
+    { defendantName:  claim.claimData.defendant.name }) }}
+{% endmacro %}
+
+{% macro offerSubmittedForClaimantClaimDetails(claim) %}
+  <div class="status-block">
+    <h2 class="heading-medium">{{ t('Settle out of court') }}</h2>
+    <p>{{ t('{{ defendantName }} has made an offer to settle out of court.',
+        { defendantName: claim.claimData.defendant.name }) }}</p>
+    <p>{{ _viewAndRespondToOfferLink(claim) }}</p>
+  </div>
+
+{% endmacro %}
+
+{% macro offerSubmittedForDefendantDashboard() %}
+  <p>{{ t('We’ve sent your offer to the claimant.') }}</p>
+  {{ t('You have rejected the claim.') }}
+{% endmacro %}
+
+{% macro offerSubmittedForDefendantClaimDetails(claim) %}
+  <div class="status-block">
+    <h2 class="heading-medium">{{ t('Settle out of court') }}</h2>
+    <p>{{ t('You made an offer to settle the claim out of court. {{ claimantName }} can accept or reject your offer.',
+        { claimantName: claim.claimData.claimant.name }) }}</p>
+    <p>{{ t('We’ll email you when they respond.') }}</p>
+  </div>
+{% endmacro %}
+
+{% macro _viewAndRespondToOfferLink(claim) %}
+  {{ internalLink(t('View and respond to the offer'), OfferPaths.responsePage.evaluateUri({ externalId: claim.externalId })) }}
+{% endmacro %}

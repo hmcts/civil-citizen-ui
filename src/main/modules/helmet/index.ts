@@ -1,48 +1,38 @@
-import * as express from 'express';
-import helmet = require('helmet');
+import * as express from 'express'
+import * as helmet from 'helmet'
+import * as nocache from 'nocache'
 
-export interface HelmetConfig {
-  referrerPolicy: string;
+import { ContentSecurityPolicy } from './modules/contentSecurityPolicy'
+import { ReferrerPolicy } from './modules/referredPolicy'
+import { HttpPublicKeyPinning, Config as HPKP } from './modules/httpPublicKeyPinning'
+
+export interface Config {
+  referrerPolicy: string
+  hpkp: HPKP
 }
 
-const googleAnalyticsDomain = '*.google-analytics.com';
-const self = "'self'";
-
 /**
- * Module that enables helmet in the application
+ * Module that enables helmet for Express.js applications
  */
 export class Helmet {
-  constructor(public config: HelmetConfig) {}
 
-  public enableFor(app: express.Express): void {
-    // include default helmet functions
-    app.use(helmet());
+  constructor (public config: Config, public developmentMode: boolean) {}
 
-    this.setContentSecurityPolicy(app);
-    this.setReferrerPolicy(app, this.config.referrerPolicy);
-  }
+  enableFor (app: express.Express) {
+    app.use(helmet())
+    app.use(helmet.hidePoweredBy())
+    app.disable('x-powered-by')
+    app.disabled('Server')
+    app.use(/^\/(?!js|img|pdf|stylesheets).*$/, nocache())
 
-  private setContentSecurityPolicy(app: express.Express): void {
-    app.use(
-      helmet.contentSecurityPolicy({
-        directives: {
-          connectSrc: [self],
-          defaultSrc: ["'none'"],
-          fontSrc: [self, 'data:'],
-          imgSrc: [self, googleAnalyticsDomain],
-          objectSrc: [self],
-          scriptSrc: [self, googleAnalyticsDomain, "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='"],
-          styleSrc: [self],
-        },
-      }),
-    );
-  }
+    new ContentSecurityPolicy(this.developmentMode).enableFor(app)
 
-  private setReferrerPolicy(app: express.Express, policy: string): void {
-    if (!policy) {
-      throw new Error('Referrer policy configuration is required');
+    if (this.config.referrerPolicy) {
+      new ReferrerPolicy(this.config.referrerPolicy).enableFor(app)
     }
 
-    app.use(helmet.referrerPolicy({ policy }));
+    if (this.config.hpkp) {
+      new HttpPublicKeyPinning(this.config.hpkp).enableFor(app)
+    }
   }
 }

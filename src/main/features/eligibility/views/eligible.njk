@@ -1,0 +1,18 @@
+{% extends "layout.njk" %}
+{% from "internalLink.njk" import internalLink %}
+
+{% set heading = 'You can use this service' %}
+
+{% block content %}
+
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <p>
+        {{ t('Based on your answers you can make a money claim using this new service.') }}
+      </p>
+
+      {{ internalLink(t('Continue'), nextPage, 'button analytics-click-event-trigger', dataEventLabel='Eligibility: You can use this service') }}
+    </div>
+  </div>
+
+{% endblock %}

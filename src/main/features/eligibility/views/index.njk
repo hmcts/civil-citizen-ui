@@ -1,0 +1,33 @@
+{% extends "layout.njk" %}
+{% from "internalLink.njk" import internalLink %}
+
+{% if registeredUser %}
+  {% set heading = 'Find out if you can make a claim using this service' %}
+{% else %}
+  {% set heading = 'Try the new online service' %}
+{% endif %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      {% if registeredUser %}
+        <p>
+          {{ t('We’ll ask you some questions to check you can use this service. We can’t say if your claim will be successful or not.') }}
+        </p>
+
+      {% else %}
+
+        <p>{{ t('We’re building a new service which is currently in beta. This means we’re testing different designs '
+          + 'and making changes based on feedback from users.') }}</p>
+
+        <p>{{ t('We’ll ask you some questions to check you can use the new service.') }}</p>
+
+        <p>{{ t('You can still {{ useMCOL }} if you prefer while we’re testing the new service.',
+            { useMCOL: internalLink('use Money Claim Online (MCOL)', EligibilityPaths.mcolEligibilityPage.uri) }) | safe }}</p>
+
+      {% endif %}
+
+      {{ internalLink(t('Continue'), EligibilityPaths.claimValuePage.uri, 'button') }}
+    </div>
+  </div>
+{% endblock %}

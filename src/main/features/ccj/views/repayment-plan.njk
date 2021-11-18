@@ -1,0 +1,65 @@
+{% extends "layout.njk" %}
+{% set heading = 'Suggest instalments for the defendant' %}
+{% from "form.njk" import saveAndContinueButton, errorSummary, csrfProtection, radioGroup, poundInput %}
+{% from "date.njk" import dateInput %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <p>{{ t('Total claim amount is {{ remainingAmount }}',
+          { remainingAmount : remainingAmount | numeral })
+        }}
+      </p>
+
+      <form method="post" novalidate>
+        {{ csrfProtection(csrf) }}
+
+        <input type="hidden" name="remainingAmount" value="{{ remainingAmount }}"/>
+
+        <div class="form-group">
+          <fieldset>
+            <legend class="visually-hidden">{{ t('Amount for each instalment') }}</legend>
+            {{ poundInput('Amount for each instalment', 'instalmentAmount', form, 'For example, £10', bold = true) }}
+          </fieldset>
+        </div>
+
+        <div class="form-group">
+          <fieldset>
+            <legend class="visually-hidden">{{ t('Date for first payment') }}</legend>
+            {{ dateInput('firstPaymentDate', form,
+            hint = t('For example, {{ nextMonth }}', { nextMonth: 'now' | monthIncrement | inputDate }),
+            label = 'Date for first payment', visuallyHiddenLabelValue = 'first payment date') }}
+          </fieldset>
+        </div>
+
+        <div class="form-group">
+          {{ radioGroup(
+          'How often do you want them to pay instalments?',
+          'paymentSchedule',
+          [
+          {
+            label: 'Each week',
+            value: 'EACH_WEEK',
+            checked: form.valueFor('paymentSchedule').value === 'EACH_WEEK'
+          },
+          {
+            label: 'Every 2 weeks',
+            value: 'EVERY_TWO_WEEKS',
+            checked: form.valueFor('paymentSchedule').value === 'EVERY_TWO_WEEKS'
+          },
+          {
+            label: 'Every month',
+            value: 'EVERY_MONTH',
+            checked: form.valueFor('paymentSchedule').value === 'EVERY_MONTH'
+          }
+          ],
+          form
+          ) }}
+
+        </div>
+
+        {{ saveAndContinueButton() }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

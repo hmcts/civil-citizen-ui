@@ -1,0 +1,54 @@
+{% from "interestSnippet.njk" import interestSnippet %}
+
+{% macro amountBreakdownTable(label, claim, interestData) %}
+  <details>
+    <summary>{{ t(label) }}</summary>
+      <div class="panel panel-border-narrow">
+        <table class="table-form">
+          <caption class="visuallyhidden" aira-hidden="true">{{ label }}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{{ t('Amount breakdown') }}</th>
+              <th class="numeric last" scope="col">{{ t('Amount') }}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+          {% for row in claim.claimData.amount.rows %}
+            {% if row.reason %}
+              <tr>
+                <td>{{ row.reason }}</td>
+                <td class="numeric last">{{ row.amount | numeral }}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+          {% if claim.claimData.interest.type !== InterestType.NO_INTEREST %}
+            <tr>
+              <td>
+                {{ interestSnippet(label = 'Interest', interestData.rate, interestData.numberOfDays,
+                  interestData.interestFromDate, interestData.interestToDate, interestData.specificDailyAmount) }}
+              </td>
+              <td class="numeric last">
+                {{ interestData.interest | numeral }}
+              </td>
+            </tr>
+          {% endif %}
+          <tr>
+            <td>{{ t('Claim fee') }}</td>
+              {% if claim.claimData.feeAmountInPennies !== 0 %}
+                <td class="numeric last">{{ claim.claimData.feeAmountInPennies | pennies2pounds | numeral }}</td>
+            {% else %}
+                <td class="numeric last">£0</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <td class="bold-small">{{ t('Claim Total') }}</td>
+            <td class="bold-small numeric last">{{ claim.totalAmountTillToday | numeral }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+  </details>
+{% endmacro %}
+
+

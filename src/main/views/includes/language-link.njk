@@ -1,0 +1,7 @@
+{% from "internalLink.njk" import internalLink %}
+
+{% if language === 'en' %}
+  {{ internalLink('Cymraeg', '?lang=cy') }}
+{% else %}
+  {{ internalLink('English', '?lang=en') }}
+{% endif %}

@@ -1,0 +1,33 @@
+{% extends "layout.njk" %}
+
+{% set heading = 'Payment options' %}
+
+{% from "form.njk" import saveAndContinueButton, csrfProtection, radioGroup, errorSummary %}
+
+{% block content %}
+  <div class="column-two-thirds">
+
+    <h2 class="bold-small form-group">{{ t('I would like the defendant to pay:') }}</h2>
+
+    <form method="post" class="analytics-submit-event-trigger" data-event-action="CCJ: Select payment option" data-event-label-from="option" novalidate>
+      {{ csrfProtection(csrf) }}
+
+      {{
+      radioGroup(
+        'I would like the defendant to pay:',
+        'option',
+        [
+          {'label': 'Immediately', value: PaymentType.IMMEDIATELY.value, checked: (form.valueFor('option').value === PaymentType.IMMEDIATELY.value)},
+          {'label': 'By a set date', value: PaymentType.BY_SPECIFIED_DATE.value, checked: (form.valueFor('option').value === PaymentType.BY_SPECIFIED_DATE.value)},
+          {'label': 'By instalments', value: PaymentType.INSTALMENTS.value, checked: (form.valueFor('option').value === PaymentType.INSTALMENTS.value)}
+        ],
+        form = form,
+        legendHidden = true
+      )
+      }}
+
+      {{ saveAndContinueButton() }}
+    </form>
+
+  </div>
+{% endblock %}

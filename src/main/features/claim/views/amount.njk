@@ -1,0 +1,113 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, textInputInline, saveAndContinueButton, linkButton, errorSummary %}
+
+{% set heading = 'Claim amount' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      <form novalidate method="post">
+        {{ csrfProtection(csrf) }}
+
+        <p>{{ t('Your claim could be for a single amount or made up of multiple items.') }}</p>
+
+          <p>{{ t('Don’t include:') }}</p>
+          <ul class="list-bullet form-group">
+            <li>{{ t('interest - we’ll ask you about this next') }}</li>
+            <li>{{ t('your claim fee - we’ll add this for you') }}</li>
+          </ul>
+
+        <div class="claim-amounts">
+          <div id="claim-amount">
+            <div>
+              <div id="claim-amount-heading-1" class="claim-amount-column-1 mobile-hide">
+                <span id="claim-reason-label" class="form-label-bold">{{ t('What you’re claiming for') }}</span>
+                <span id="claim-reason-hint" class="form-hint">
+                  {{ t('Briefly explain each item - for example, "broken tiles", "roof damage"') }}
+                </span>
+              </div>
+              <div id="claim-amount-heading-2" class="claim-amount-column-2 mobile-hide">
+                <span id="claim-amount-label" class="form-label-bold">{{ t('Amount') }}</span>
+              </div>
+            </div>
+            {% set totalError = form.errorFor('rows').length > 0 %}
+            <div class="claim-amount-rows">
+              {% for row in form.model.rows %}
+                {% set reasonJoinKey = 'rows['+loop.index0+'][reason]' %}
+                {% set amountJoinKey = 'rows['+loop.index0+'][amount]' %}
+                {% set possition = loop.index0 + 1 %}
+                {% set error1 = form.errorFor('rows['+loop.index0+'][reason]').length > 0 %}
+                {% set error2 = form.errorFor('rows['+loop.index0+'][amount]').length > 0 %}
+                {% set displayTotalError = totalError and loop.index0 == 0 %}
+                <div class="claim-amount-row {% if error1 or error2 or displayTotalError %}form-group-error{% endif %}">
+                  {% if displayTotalError %}
+                    <span class="error-message" id="rows[label]">{{ form.errorFor('rows') }}</span>
+                  {% endif %}
+                  {% if error1 %}
+                    <span class="error-message" id="{{ 'rows['+loop.index0+'][reason][label]' }}">
+                      {{ form.errorFor('rows['+loop.index0+'][reason]') }}
+                    </span>
+                  {% endif %}
+                  {% if error2 %}
+                    <span class="error-message" id="{{ 'rows['+loop.index0+'][amount][label]' }}">
+                      {{ form.errorFor('rows['+loop.index0+'][amount]') }}
+                    </span>
+                  {% endif %}
+
+                  <span class="form-label-bold claim-amount-numbered mobile-show">
+                    {{ t('What you’re claiming for') }}
+                  </span>
+
+                  {% if loop.index0 == 0 %}
+                    <span class="form-hint mobile-show">
+                      {{ t('Briefly explain why you’re claiming for this - for example, "unpaid debt" or "house deposit not returned"') }}
+                    </span>
+                  {% endif %}
+                  {{
+                    textInputInline(
+                      reasonJoinKey, form, 'claim-amount-column-1' + (' form-control-error' if displayTotalError else ''),
+                      arialabelledby = "claim-reason-label",
+                      ariaDescribedBy = "claim-reason-hint",
+                      visuallyHiddenLabelValue = possition + '. What you’re claiming for'
+                    )
+                  }}
+                  <span class="form-label-bold mobile-show">{{ t('Amount') }}</span>
+                  {{
+                    textInputInline(
+                      amountJoinKey, form, 'claim-amount-column-2' + (' form-control-error' if displayTotalError else ''), ' input-symbol-pound',
+                      visuallyHiddenLabelValue = possition + '. Amount'
+                    )
+                  }}
+                </div>
+              {% endfor %}
+            </div>
+            <div class="claim-amount-foot">
+              {% if canAddMoreRows %}
+                {{ linkButton('Add another row', 'action[addRow]', 'button button-secondary') }}
+              {% endif %}
+              <noscript>
+                {{ linkButton('Calculate total', 'action[calculate]', 'link-button calculate') }}
+              </noscript>
+
+            </div>
+            <div class="bold-medium total">
+              <span class="claim-amount-column-1"></span>
+              <span>
+                  <span class="claim-amount-column-2" id="totalSum">{{ totalAmount | numeral }}</span>
+                </span>
+            </div>
+          </div>
+        </div>
+        {{ saveAndContinueButton() }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block additional_scripts %}
+  <script src="{{ asset_paths['js_vendor'] }}/numeral/numeral.min.js"></script>
+  <script src="{{ asset_paths['js_vendor'] }}/numeral/locales.min.js"></script>
+  <script src="{{ asset_paths['js'] }}/calculate-amount-total.js"></script>
+  <script src="{{ asset_paths['js'] }}/append-row.js"></script>
+{% endblock %}

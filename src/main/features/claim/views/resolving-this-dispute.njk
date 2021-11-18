@@ -1,0 +1,53 @@
+{% extends "layout.njk" %}
+
+{% set heading = 'Try to resolve the dispute' %}
+
+{% from "form.njk" import csrfProtection, submitButton, errorSummary %}
+{% from "externalLink.njk" import externalLink %}
+
+{% block content %}
+
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <p>{{ t('Before you claim you should:') }}</p>
+
+      <ul class="list-bullet form-group">
+        <li>{{ t('talk to the person or organisation you want to claim against') }}</li>
+        <li>{{ t('consider mediation') }}</li>
+      </ul>
+
+      <h2 class="heading-medium">{{ t('Talk to the person or organisation') }}</h2>
+
+      <p>{{ t('Try to resolve the dispute by:') }}</p>
+
+      <ul class="list list-bullet">
+        <li>{{ t('telling them why you intend to claim against them') }}</li>
+        <li>{{ t('suggesting a timetable with actions you want them to take') }}</li>
+        <li>{{ t('explaining you’ll make a claim against them if they don’t follow your timetable') }}</li>
+      </ul>
+
+      <h2 class="heading-medium">{{ t('Consider mediation') }}</h2>
+
+      <p>{{ t('Mediation is when an impartial person helps both sides to agree - it can be quicker and cheaper than '
+        + 'making a claim.') }}</p>
+      <p>{{ t('It can often be done on the phone. If you don’t want to speak to the person you’re claiming against, '
+        + 'a mediator can speak to you both separately.') }}</p>
+
+      <h2 class="heading-small">{{ t('Before making a claim') }}</h2>
+      <p>{{ t('If you intend to claim against an organisation, it may have a mediation service or complaints process '
+        + 'you can use.') }}</p>
+
+      <h2 class="heading-small">{{ t('After making a claim') }}</h2>
+
+      <p>{{ t('If the person or organisation disputes your claim you may be able to use the free Small Claims '
+        + 'Mediation Service.') }}</p>
+
+      <form novalidate method="post">
+        {{ csrfProtection(csrf) }}
+
+        {{ submitButton('I confirm I’ve read this', '', 'I confirm I’ve read this information about resolving disputes') }}
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

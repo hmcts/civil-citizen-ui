@@ -1,0 +1,34 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import submitButton, errorSummary %}
+{% from "support.njk" import supportWidget %}
+{% from "internalLink.njk" import internalLink %}
+
+{% set headingVisible = false %}
+{% set heading = 'Confirmation' %}
+
+{% block content %}
+
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      <div class="govuk-box-highlight">
+        <h1 class="bold-large">{{ t('County Court Judgment requested') }}</h1>
+      </div>
+
+      <p>{{ t('We’ll process your request and post a copy of the judgment to you and to {{ defendantName }}. We aim to do this within 10 working days.', { defendantName: defendantName }) }}</p>
+      <p>{{ t('Your online account will not be updated with the progress of this claim - any further updates will be by post.') }}</p>
+      <p>{{ t('{{ defendantName }} can no longer respond to your claim online.', { defendantName: defendantName }) }}</p>
+      <p class="govuk-details govuk-dashboard-details__text">{{ t('If a postal response is received before the judgment is issued your request will be rejected.') }}</p>
+
+      <p><a target="_blank" rel="noreferrer noopener" href="https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment">{{  t('Find out about actions you can take after a CCJ is issued (opens in new tab).') }}</a></p>
+
+      <p><a target="_blank" rel="noreferrer noopener" href="https://www.smartsurvey.co.uk/s/CMCMVPT1/">{{  t('What did you think of this service? (opens in new tab).') }}</a></p>
+
+      <p>{{ internalLink('Go to your account', DashboardPaths.dashboardPage.uri, 'button') | safe }}</p>
+
+      {{ supportWidget() }}
+    </div>
+  </div>
+
+{% endblock %}
+{% block contactForHelp %}{% endblock %}

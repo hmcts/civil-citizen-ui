@@ -1,0 +1,41 @@
+{% extends "layout.njk" %}
+
+{% from "form.njk" import csrfProtection, saveAndContinueButton, errorSummary %}
+{% from "party/details.njk" import partyDetailsFragment %}
+
+{% set heading = 'Enter your details' %}
+
+{% block additional_scripts %}
+  {% include "postcode-lookup-client-scripts.njk" %}
+{% endblock %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <form method="post" novalidate>
+        {{ csrfProtection(csrf) }}
+
+        <p>{{ t('These details are shared with the person, business or organisation you are claiming from (the defendant).') }}</p>
+
+        {{
+          partyDetailsFragment(
+            form,
+            fields = [
+              { label: 'Full name (include title)', name: 'name' },
+              { label: 'Trading as (optional)', name: 'businessName' }
+            ],
+            addressSection = {
+              heading: 'Your address',
+              hint: 'This must be the address where you live or trade.',
+              name: 'address',
+              postcodeLookup: true
+            },
+            showCorrespondenceAddressSection = true
+          )
+        }}
+
+        {{ saveAndContinueButton() }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

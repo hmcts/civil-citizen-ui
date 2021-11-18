@@ -1,0 +1,74 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, poundInput, radioOption, linkButton, saveAndContinueButton, errorSummary, textInput %}
+
+{% set heading = 'Are you paying money as a result of any court orders?' %}
+
+{% macro courtOrdersRow(index, form) %}
+
+  {% set prefix = 'rows[' + index + ']' %}
+  {% set amountKey = prefix + '[amount]' %}
+  {% set instalmentAmountKey = prefix + '[instalmentAmount]' %}
+  {% set claimNumberKey = prefix + '[claimNumber]' %}
+
+  <div class="form-group {% if form.errorFor(amountKey) or form.errorFor(instalmentAmountKey) or form.errorFor(claimNumberKey) %} form-group-error {% endif %}">
+
+    {{ textInput('Claim number', name = claimNumberKey, form = form) }}
+    {{ poundInput(label = 'Amount you owe', name = amountKey, form = form) }}
+    {{ poundInput(label = 'Monthly instalment amount', name = instalmentAmountKey, form = form) }}
+
+
+  </div>
+
+{% endmacro %}
+
+{% block content %}
+<div class="grid-row">
+  <div class="column-two-thirds">
+
+    <form method="post" novalidate
+          class="analytics-submit-event-trigger"
+          data-event-action="SoM: Are you paying money as a result of any court orders?"
+          data-event-label-from="declared">
+
+      {{ csrfProtection(csrf) }}
+
+      {% set errorHasAnyCourtOrders = form.errorFor('declared') %}
+      <div class="statement-of-means-container">
+        <fieldset id="declared[label]" class="form-group {% if errorHasAnyCourtOrders %} form-group-error {% endif %}">
+          <legend class="visually-hidden">{{ t('Are you paying money as a result of any court orders?') }}</legend>
+          {% if errorHasAnyCourtOrders %}<span class="error-message">{{ t(errorHasAnyCourtOrders) }}</span>{% endif %}
+
+          {{
+            radioOption(form = form, label = 'Yes', name = 'declared', value = 'true', checked = form.valueFor('declared') === true)
+          }}
+
+          {% set noRowsError = form.errorFor('rows') %}
+          <div class="form-group panel panel-border-narrow js-hidden {% if noRowsError %} form-group-error {% endif %}"
+               id="declared-true" aria-hidden="false">
+
+            {% if noRowsError %}<span class="error-message" id="rows[label]">{{ t(noRowsError) }}</span>{% endif %}
+
+            {% for row in form.model.rows %}
+              {{ courtOrdersRow(loop.index0, form) }}
+            {% endfor %}
+
+            {% if form.model and form.model.canAddMoreRows() %}
+            <div id="add-event-container" class="form-group">
+              {{ linkButton('Add another court order', 'action[addRow]', 'button button-secondary') }}
+            </div>
+            {% endif %}
+
+          </div>
+
+          {{
+            radioOption(form = form, label = 'No', name = 'declared', value = 'false', checked = form.valueFor('declared') === false)
+          }}
+        </fieldset>
+      </div>
+
+      {{ saveAndContinueButton() }}
+
+    </form>
+  </div>
+</div>
+{% endblock %}

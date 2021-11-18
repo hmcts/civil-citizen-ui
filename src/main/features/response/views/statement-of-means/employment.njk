@@ -1,0 +1,54 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, radioOption, checkboxOption, saveAndContinueButton, errorSummary %}
+
+{% set heading = 'Do you have a job?' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <form method="post" novalidate
+        class="analytics-submit-event-trigger"
+        data-event-action="SoM: Do you have a job?"
+        data-event-label-from="declared">
+
+        {{ csrfProtection(csrf) }}
+
+        {% set error = form.errorFor('declared') %}
+        <fieldset id="declared[label]" class="form-group {% if error %} form-group-error {% endif %}">
+          <legend class="visually-hidden">{{ t('Do you have a job?') }}</legend>
+
+          {% if error %}<span class="error-message">{{ t(error) }}</span>{% endif %}
+
+          {{
+            radioOption(form = form, label = 'Yes', name = 'declared', value = 'true', checked = form.valueFor('declared') === true)
+          }}
+
+          {% set errorCheckbox = form.errorFor('employed') %}
+
+          <div class="form-group panel panel-border-narrow js-hidden {% if errorCheckbox %} form-group-error {% endif %}" id="declared-true" aria-hidden="false">
+            <p>{{ t('What’s your employment status?') }}</p>
+            <p class="form-hint">{{ t('You can select both') }}</p>
+
+            {% if errorCheckbox %}<span class="error-message" id="employed[label]">{{ t(errorCheckbox) }}</span>{% endif %}
+            {{
+              checkboxOption(form = form, label = 'Employed', name = 'employed', value = 'true', checked = form.valueFor('employed') === true)
+            }}
+
+            {% if errorCheckbox %}<span class="error-message">{{ t(errorCheckbox) }}</span>{% endif %}
+            {{
+              checkboxOption(form = form, label = 'Self-employed', name = 'selfEmployed', value = 'true', checked = form.valueFor('selfEmployed') === true)
+            }}
+          </div>
+
+          {{
+            radioOption(form = form, label = 'No', name = 'declared', value = 'false', checked = form.valueFor('declared') === false)
+          }}
+
+        </fieldset>
+
+        {{ saveAndContinueButton() }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

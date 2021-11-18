@@ -1,31 +1,146 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es6",
-    "noImplicitAny": true,
-    "moduleResolution": "node",
+    "alwaysStrict": true,
     "noUnusedLocals": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "lib": [
       "es6",
+      "es2016.array.include",
       "es2017.object",
       "dom"
     ],
-    "baseUrl": "src/main",
+    "target": "es2017",
+    "module": "commonjs",
+    "baseUrl": "src" ,
     "paths": {
-      "router/*": [
-        "router/*"
+      "mock-clients/*": [
+        "main/app/mocks/*"
+      ],
+      "payment-hub-client/*": [
+        "main/app/pay/*"
+      ],
+      "court-finder-client/*": [
+        "main/app/court-finder/*"
+      ],
+      "client/*": [
+        "main/app/client/*"
+      ],
+      "postcode-lookup/*": [
+        "main/app/postcode-lookup/*"
+      ],
+      "drafts/*": [
+        "main/app/drafts/*"
+      ],
+      "claims/*": [
+        "main/app/claims/*"
+      ],
+      "common/*": [
+        "main/app/common/*"
+      ],
+      "documents/*": [
+        "main/app/documents/*"
+      ],
+      "fees/*": [
+        "main/app/fees/*"
+      ],
+      "forms/*": [
+        "main/app/forms/*"
+      ],
+      "guards/*": [
+        "main/app/guards/*"
+      ],
+      "health/*": [
+        "main/app/health/*"
+      ],
+      "idam/*": [
+        "main/app/idam/*"
+      ],
+      "logging/*": [
+        "main/app/logging/*"
+      ],
+      "models/*": [
+        "main/app/models/*"
+      ],
+      "pdf/*": [
+        "main/app/pdf/*"
+      ],
+      "utils/*": [
+        "main/app/utils/*"
+      ],
+      "paths": [
+        "main/app/paths"
+      ],
+      "errors" :[
+        "main/errors"
+      ],
+      "modules/*": [
+        "main/modules/*"
       ],
       "routes/*": [
-        "routes/*"
+        "main/routes/*"
+      ],
+      "shared/*": [
+        "main/common/*"
+      ],
+      "features/*": [
+        "main/features/*"
+      ],
+      "claim/*": [
+        "main/features/claim/*"
+      ],
+      "first-contact/*": [
+        "main/features/first-contact/*"
+      ],
+      "response/*": [
+        "main/features/response/*"
+      ],
+      "claimant-response/*": [
+        "main/features/claimant-response/*"
+      ],
+      "paid-in-full/*": [
+        "main/features/paid-in-full/*"
+      ],
+      "offer/*": [
+        "main/features/offer/*"
+      ],
+      "statement-of-means/*": [
+        "main/features/statement-of-means/*"
+      ],
+      "dashboard/*": [
+        "main/features/dashboard/*"
+      ],
+      "ccj/*": [
+        "main/features/ccj/*"
+      ],
+      "testing-support/*": [
+        "main/features/testing-support/*"
+      ],
+      "eligibility/*": [
+        "main/features/eligibility/*"
+      ],
+      "settlement-agreement/*": [
+        "main/features/settlement-agreement/*"
+      ],
+      "services/*": [
+        "main/services/*"
+      ],
+      "mediation/*": [
+        "main/features/mediation/*"
+      ],
+      "directions-questionnaire/*": [
+        "main/features/directions-questionnaire/*"
+      ],
+      "orders/*": [
+        "main/features/orders/*"
+      ],
+      "breathing-space/*": [
+        "main/features/breathing-space/*"
       ]
     },
     "typeRoots": [
-      "./node_modules/@types"
+      "./node_modules/@types",
+      "./types"
     ]
   }
 }

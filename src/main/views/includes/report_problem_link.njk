@@ -1,0 +1,4 @@
+{% from "externalLink.njk" import externalLink %}
+<div class="report-error">
+  {{ externalLink(t('Report a problem with this page'), reportProblemSurveyUrl + '?pageurl=' + pagePath) }}
+</div>

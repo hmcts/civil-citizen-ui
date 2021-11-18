@@ -1,0 +1,18 @@
+{
+  "featureToggles": {
+    "testingSupport": true,
+    "newFeaturesConsent": true,
+    "returnErrorToUser": true,
+    "directionsQuestionnaire": true,
+    "newDashboardStatus": false,
+    "warningBanner": false,
+    "inversionOfControl": true,
+    "helpWithFees": false,
+    "dashboard_pagination_enabled": false,
+    "breathingSpace": true,
+    "newClaimFees": true
+  },
+  "appInsights": {
+    "instrumentationKey": "dummy-app-insights-instrumentation-key"
+  }
+}

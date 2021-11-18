@@ -1,0 +1,70 @@
+{% extends "layout.njk" %}
+{% from "task-list.njk" import taskList, taskStatus %}
+{% from "timeRemaining.njk" import timeRemaining %}
+{% from "internalLink.njk" import internalLink %}
+{% block additional_head %}
+  <link rel="stylesheet" href="{{ asset_paths['style'] }}/govuk-frontend/task-list.css"/>
+{% endblock %}
+
+{% set heading = 'Respond to a money claim' %}
+{% set headingSize = 'xlarge' %}
+{% set taskNumber = 0 %}
+
+{% block content %}
+
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      {{ taskStatus(status) }}
+
+      {% set taskNumber = taskNumber + 1 %}
+      {{ taskList(beforeYouStartSection, taskNumber) }}
+
+      {% set taskNumber = taskNumber + 1 %}
+      {{ taskList(respondToClaimSection, taskNumber) }}
+
+      {% if resolvingClaimSection %}
+        {% set taskNumber = taskNumber + 1 %}
+        {{ taskList(resolvingClaimSection, taskNumber) }}
+      {% endif %}
+
+      {% if directionsQuestionnaireSection %}
+        {% set taskNumber = taskNumber + 1 %}
+        {{ taskList(directionsQuestionnaireSection, taskNumber) }}
+      {% endif %}
+
+      {% if submitSection %}
+        {% set taskNumber = taskNumber + 1 %}
+        {{ taskList(submitSection, taskNumber) }}
+      {% endif %}
+
+    </div>
+
+    <div class="column-one-third">
+      <div class="meta-data">
+        <ul class="font-xsmall list">
+          <li>
+            <strong class="bold">{{ t('Response deadline:') }}</strong>
+            <div>
+              {{ t('{{ responseDeadline }} at 4pm', { responseDeadline: claim.responseDeadline | date }) }}
+            </div>
+            <div>{{ timeRemaining(claim.remainingDays, isAfter4pm()) }}</div>
+          </li>
+          <li>
+            <strong class="bold">{{ t('Claim number:') }}</strong>
+            <span class="block">{{ claim.claimNumber }}</span>
+          </li>
+          <li>
+            <strong class="bold">{{ t('Total claim amount:') }}</strong>
+            <div>{{ claim.totalAmountTillToday | numeral }}</div>
+          </li>
+          <li>
+            <strong class="bold">{{ t('Claim details:') }}</strong>
+            {{ internalLink(t('View claim'), ResponsePaths.claimDetailsPage.evaluateUri({ externalId: claim.externalId })) }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+{% block contactForHelp %}{% endblock %}

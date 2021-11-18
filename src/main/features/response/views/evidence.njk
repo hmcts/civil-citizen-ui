@@ -1,0 +1,65 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, saveAndContinueButton, errorSummary %}
+{% from "evidenceFragment.njk" import evidenceFragment %}
+
+{% set heading = 'List your evidence' %}
+
+{% block additional_scripts %}
+  <script src="{{ asset_paths['js'] }}/evidence-select-handler.js"></script>
+  <script src="{{ asset_paths['js'] }}/append-row.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="grid-row">
+  <div class="column-two-thirds">
+    {% if evidence and evidence.rows and evidence.rows.length > 0 %}
+      <div class="description-block">
+        <h2 class="heading-small">Their evidence</h2>
+        <div class="form-fields">
+          <table>
+            <caption class="hidden" aira-hidden="true">Their evidence</caption>
+            <thead>
+              <tr>
+                <th scope="col">{{ t('Type') }}</th>
+                <th scope="col">{{ t('Description') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for item in evidence.rows %}
+              <tr>
+                <td>{{ item.type.displayValue }}</td>
+                <td>{{ item.description | default('')}}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
+
+    <form method="post" novalidate>
+      {{ csrfProtection(csrf) }}
+      <h2 class="heading-small">{{ t('List your evidence (optional)') }}</h2>
+      <p>
+        {{
+          t('Tell us about any evidence you wish to provide. You do not need to send us any evidence now. If your case goes to a court hearing, and is not settled, you will need to provide evidence.')
+        }}
+      </p>
+
+      {{ evidenceFragment(form) }}
+
+      <div class="form-group">
+        <label class="form-label-bold" for="comment">
+          <h2 class="heading-small">{{ t('List any parts of their evidence you disagree with (optional)') }}</h2>
+        </label>
+        <textarea id="comment" name="comment"
+          class="form-control form-control-3-4 form-control-medium"
+          rows="4" cols="20">{{ form.valueFor('comment') | default('') }}</textarea>
+      </div>
+
+      {{ saveAndContinueButton() }}
+
+    </form>
+  </div>
+</div>
+{% endblock %}

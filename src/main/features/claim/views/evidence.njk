@@ -1,0 +1,28 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, saveAndContinueButton, errorSummary %}
+{% from "evidenceFragment.njk" import evidenceFragment %}
+
+{% set heading = 'List any evidence (optional)' %}
+
+{% block additional_scripts %}
+  <script src="{{ asset_paths['js'] }}/evidence-select-handler.js"></script>
+  <script src="{{ asset_paths['js'] }}/append-row.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="grid-row">
+  <div class="column-two-thirds">
+
+    <form method="post" novalidate>
+      {{ csrfProtection(csrf) }}
+      <p>{{ t('Tell us about any evidence you wish to provide. You do not need to send us any evidence now. If your case goes to a court hearing, and is not settled, you will need to provide evidence.') }}</p>
+
+      <h2 class="heading-small">{{ t('List your evidence') }}</h2>
+
+      {{ evidenceFragment(form) }}
+      {{ saveAndContinueButton() }}
+
+    </form>
+  </div>
+</div>
+{% endblock %}

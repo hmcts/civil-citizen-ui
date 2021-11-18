@@ -1,0 +1,54 @@
+{
+  "idam": {
+    "authentication-web": {
+      "url": "http://localhost:19002"
+    },
+    "api": {
+      "url": "http://localhost:15000"
+    },
+    "service-2-service-auth": {
+      "url": "http://localhost:14552"
+    }
+  },
+  "claim-store": {
+    "url": "http://localhost:14400"
+  },
+  "feature-toggles-api": {
+    "url": "http://localhost:18580"
+  },
+  "draft-store": {
+    "url": "http://localhost:18800"
+  },
+  "fees": {
+    "url": "http://localhost:18182"
+  },
+  "pay": {
+    "url": "http://localhost:14421",
+    "return-url": "https://localhost:3000"
+  },
+  "featureToggles": {
+    "testingSupport": true,
+    "newFeaturesConsent": true,
+    "returnErrorToUser": true,
+    "directionsQuestionnaire": true,
+    "newDashboardStatus": false,
+    "inversionOfControl": true,
+    "warningBanner": false,
+    "antennawebChat": true,
+    "helpWithFees": true,
+    "pcq": true,
+    "oconEnhancements" : false,
+    "dashboard_pagination_enabled": true,
+    "breathingSpace": true,
+    "newClaimFees": true
+  },
+  "appInsights": {
+    "instrumentationKey": "dummy-app-insights-instrumentation-key"
+  },
+  "requestRetry": {
+    "maxAttempts": 1
+  },
+  "launchDarkly": {
+    "offline": true
+  }
+}

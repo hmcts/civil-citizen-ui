@@ -1,0 +1,13 @@
+{% extends "layout.njk" %}
+
+{% set heading = 'Cookies' %}
+
+{% set headingVisible = false %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="govuk-!-margin-left-4">
+      {% include "../common/components/imported/cookie-manager/cookie-preferences.njk" %}
+    </div>
+  </div>
+{% endblock %}

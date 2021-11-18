@@ -1,0 +1,57 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import nameInput, csrfProtection, errorSummary, radioGroup, saveAndContinueButton %}
+{% set heading = 'Who are you making the claim against?' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+     <p class="bold-medium"></p>
+     
+
+      <form method="POST" novalidate>
+        {{ csrfProtection(csrf) }}
+
+        {{
+          radioGroup(
+            form = form,
+            label = 'I’m claiming against',
+            labelForScreenReadersOnly = true,
+            name = 'type',
+            options = [
+              {
+                bold: true,
+                label: 'An individual',
+                hint: 'For example someone you lent money to',
+                value: 'individual',
+                checked: (form.valueFor('type').value === 'individual')
+              },
+              {
+                bold: true,
+                label: 'A sole trader or self-employed person',
+                hint: 'For example a tradesperson who did work for you',
+                value: 'soleTrader',
+                checked: (form.valueFor('type').value === 'soleTrader')
+              },
+              {
+                bold: true,
+                label: 'A limited company',
+                hint: 'For example a company that sold you goods or services',
+                value: 'company',
+                checked: (form.valueFor('type').value === 'company')
+              },
+              {
+                bold: true,
+                label: 'Another type of organisation',
+                hint: 'For example a partnership, trust, charity, club or association',
+                value: 'organisation',
+                checked: (form.valueFor('type').value === 'organisation')
+              }
+            ]
+          )
+        }}
+
+        {{ saveAndContinueButton() }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

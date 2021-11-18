@@ -1,15 +1,31 @@
-import { expect } from 'chai';
-import request from 'supertest';
+import { expect } from 'chai'
+import * as request from 'supertest'
+import * as config from 'config'
+import * as mock from 'nock'
 
-import { app } from '../../main/app';
+import 'test/routes/expectations'
 
-// TODO: replace this sample test with proper route tests for your application
+import { Paths as AppPaths } from 'paths'
+
+import { app } from 'main/app'
+
+import * as idamServiceMock from 'test/http-mocks/idam'
+
+const cookieName: string = config.get<string>('session.cookieName')
+
 describe('Home page', () => {
+  beforeEach(() => {
+    mock.cleanAll()
+  })
+
   describe('on GET', () => {
-    test('should return sample home page', async () => {
+    it('should redirect to start claim page', async () => {
+      idamServiceMock.resolveRetrieveUserFor('1', 'citizen')
+
       await request(app)
-        .get('/')
-        .expect((res) => expect(res.status).to.equal(200));
-    });
-  });
-});
+        .get(AppPaths.homePage.uri)
+        .set('Cookie', `${cookieName}=ABC`)
+        .expect(res => expect(res).to.be.redirect.toLocation(AppPaths.receiver.uri))
+    })
+  })
+})

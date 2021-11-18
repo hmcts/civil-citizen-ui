@@ -1,0 +1,51 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, textInput, radioGroup, saveAndContinueButton, errorSummary %}
+{% from "date.njk" import dateInput %}
+
+{% set heading = 'When are you claiming interest from?' %}
+
+{% block content %}
+
+<div class="grid-row">
+    <div class="column-two-thirds">
+
+      <form novalidate method="post">
+        {{ csrfProtection(csrf) }}
+
+        <div class="form-group {% if error %} form-group-error {% endif %}">
+
+          {% set name = 'type' %}
+
+          {{
+          radioGroup(
+            'When are you claiming interest from?',
+            name,
+            [
+              {
+                label: 'The date you submit the claim',
+                value: InterestDateType.SUBMISSION,
+                checked: (form.valueFor(name) === InterestDateType.SUBMISSION),
+                bold: true,
+                hint: 'If you submit after 4pm it will be the next working day.'
+              },
+              {
+                label: 'A particular date',
+                value: InterestDateType.CUSTOM,
+                checked: (form.valueFor(name) === InterestDateType.CUSTOM),
+                bold: true,
+                hint: 'For example the date an invoice was overdue or that you told someone they owed you the money.'
+              }
+            ],
+            form = form,
+            labelForScreenReadersOnly = true
+          )
+          }}
+        </div>
+
+        <div class="form-group">
+          {{ saveAndContinueButton() }}
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

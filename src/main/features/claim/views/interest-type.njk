@@ -1,0 +1,35 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, radioGroup, saveAndContinueButton, errorSummary %}
+
+{% set heading = 'How do you want to claim interest?' %}
+
+{% block content %}
+
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      {% set name = 'option' %}
+
+      <form novalidate method="post">
+        {{ csrfProtection(csrf) }}
+
+        {{
+        radioGroup(
+          label ='How do you want to claim interest?',
+          name = name,
+          options = [
+          {'label': 'Same rate for the whole period', value: InterestTypeOption.SAME_RATE, checked: (form.valueFor(name) === InterestTypeOption.SAME_RATE)},
+          {'label': 'Break down interest for different time periods or items', value: InterestTypeOption.BREAKDOWN, checked: (form.valueFor(name) === InterestTypeOption.BREAKDOWN)}
+        ],
+          form = form,
+          labelForScreenReadersOnly = true
+        )
+        }}
+
+        <div class="form-group">
+          {{ saveAndContinueButton() }}
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

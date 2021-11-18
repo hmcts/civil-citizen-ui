@@ -1,0 +1,88 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, saveAndContinueButton, errorSummary %}
+{% from "externalLink.njk" import externalLink %}
+{% from "interestCalculation.njk" import interestCalculationInfoBreakdownTable %}
+
+{% set heading = 'Total amount you’re claiming' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <form novalidate method="post">
+        {{ csrfProtection(csrf) }}
+          <table class="table-form form-group">
+            <caption class="visuallyhidden" aira-hidden="true">{{ heading }}</caption>
+            <tbody>
+            <tr>
+              <th scope="row">{{ t('Claim amount') }}</th>
+              <td class="numeric last">
+                <span class="font-small">{{ interestTotal.claimAmount | numeral }}</span>
+              </td>
+            </tr>
+            {% if (interestClaimed) %}
+              <tr>
+                <th scope="row">{{ t('Interest to date') }}</th>
+                <td class="numeric last">
+                  <span class="font-small">{{ interestTotal.interestAmount | numeral }}</span>
+                </td>
+              </tr>
+            {% endif %}
+            <tr>
+              <th scope="row">{{ t('Claim fee') }}</th>
+              <td class="numeric last">
+                <span class="font-small">{{ interestTotal.feeAmount | numeral }}</span>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th scope="col"><span class="bold-small">{{ t('Total claim amount') }}</span></th>
+              <td class="numeric last">
+                <span class="bold-medium">{{ interestTotal.totalAmountTillToday | numeral }}</span>
+              </td>
+            </tr>
+          </tfoot>
+          </table>
+
+          {% if helpWithFeesFeature %}
+            <p class="bold">{{ t('We’ll review your Help With Fees application after you submit the claim') }}</p>
+            <ol class="list list-number">
+              <li>{{ t('If it’s successful, you may not have to pay any or all of the claim fee.') }}</li>
+              <li>{{ t('That would mean the total claim amount would be lower than the amount shown on this page.') }}</li>
+              <li>{{ t('If it’s unsuccessful, we’ll ask you to pay the claim fee shown on this page in full.') }}</li>
+            </ol>
+          {% endif %}
+          
+          {% if (interestClaimed) %}
+            {{ interestCalculationInfoBreakdownTable('How interest to date is calculated') }}
+          {% endif %}
+
+          <p class="bold">{{ t('If you settle out of court') }}</p>
+          <p>{{ t('We won’t refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.') }}</p>
+
+          <table class="table-form form-group">
+            <caption class="visuallyhidden" aira-hidden="true">Other fees</caption>
+            <thead>
+              <tr>
+                <th scope="col">{{ t('Other fees') }}</th>
+                <th class="numeric last" scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <th scope="row">{{ t('Hearing fee') }}</th>
+              <td class="numeric last">
+                <span class="font-small">{{ hearingFee | numeral }}</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+          <p>{{ t('You don’t have to pay a hearing fee unless the claim goes to a hearing.') }}</p>
+          <p>{{ t('There may be additional fees as your case progresses. ' + externalLink('Find out more about court fees (opens in a new tab)', 'https://www.gov.uk/government/publications/fees-in-the-civil-and-family-courts-main-fees-ex50', '', false )) | safe }}</p>
+
+        {{ saveAndContinueButton() }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

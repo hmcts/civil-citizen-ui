@@ -1,0 +1,45 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, radioGroup, saveAndContinueButton, errorSummary %}
+{% from "table.njk" import tableStart, tableEnd, row, rowWithMultipleValue %}
+
+{% set heading = 'Do you want more time to respond?' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <form method="post" class="analytics-submit-event-trigger"
+            data-event-action="Response: More time request"
+            data-event-label-from="option"
+            novalidate>
+        {{ csrfProtection(csrf) }}
+
+        {{
+          radioGroup(
+            label = "Do you want more time to respond?",
+            name = "option",
+            options = [
+              {
+                label: "Yes, I need an extra 14 days",
+                value: "yes",
+                hint: moreTimeDeadline,
+                bold: true
+              },
+              {
+                label: 'No, I don’t need more time',
+                value: "no",
+                hint: responseDeadline,
+                bold: true
+              }
+            ],
+            form = form,
+            legendHidden = true
+          )
+        }}
+        <div class="form-group">
+          {{ saveAndContinueButton() }}
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+

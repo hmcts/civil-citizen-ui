@@ -1,0 +1,88 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, errorSummary, radioOption, saveAndContinueButton %}
+
+{% set heading = 'How do you respond to the claim?' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      <details class="form-group analytics-click-event-trigger" data-event-label="Response: Find out what each response means">
+        <summary>{{ t('Find out what each response means') }}</summary>
+
+        <div class="panel">
+          <h2 class="heading-medium">{{ t('Admit all of the claim') }}</h2>
+
+          <p>{{ t('You have until 4pm on {{ deadline }} to admit the claim.', deadline = responseDeadline | date) }}</p>
+
+          <h3 class="heading-small form-group-related">{{ t('Pay immediately') }}</h3>
+          <p>{{ t('If you admit all the claim and want to pay it in full, including interest and claim fee, contact the claimant to arrange payment.') }}</p>
+          <p>{{ t('If you pay at the same time as admitting the claim, you won’t get a County Court Judgment (CCJ).') }}</p>
+          <p>{{ t('You should ask the claimant to give you a receipt.') }}</p>
+
+          <h3 class="heading-small form-group-related">{{ t('If you can’t pay immediately') }}</h3>
+          <p>{{ t('If you admit all the claim but can’t pay immediately, you can offer to pay the claimant in instalments.') }}</p>
+          <p>{{ t('If the claimant accepts your offer, they can ask the court to enter a CCJ against you and you’ll be sent an order to pay.') }}</p>
+          <p>{{ t('If the claimant rejects your offer, they can ask the court to enter a CCJ against you. The court will then decide the instalment plan.') }}</p>
+
+          <h2 class="heading-medium">{{ t('Admit part of the claim') }}</h2>
+          <p>{{ t('You have until 4pm on {{ deadline }} to admit part of the claim.', deadline = responseDeadline | date) }}</p>
+          <h3 class="heading-small form-group-related">{{ t('Pay immediately') }}</h3>
+          <p>{{ t('To admit part of the claim, contact the claimant and pay the amount you believe you owe then send the court your part admission.') }}</p>
+          <p>{{ t('They can accept the amount you’ve paid and settle the claim, or ask the court to transfer the claim to a County Court hearing centre.') }}</p>
+
+          <h3 class="heading-small form-group-related">{{ t('If you can’t pay immediately') }}</h3>
+          <p>{{ t('If the claimant accepts your part-admission and you can’t pay immediately, you can offer to pay in instalments.') }}</p>
+          <p>{{ t('If the claimant agrees, they can ask the court to enter a CCJ against you and you’ll be sent an order to pay.') }}</p>
+          <p>{{ t('If they reject your offer, the court will decide an instalment plan.') }}</p>
+
+          <h2 class="heading-medium">{{ t('Reject all of the claim') }}</h2>
+          <p>{{ t('You have until 4pm on {{ deadline }} to reject the claim.', deadline = responseDeadline | date) }}</p>
+
+          <p>{{ t('If you reject all of the claim, the claim may be transferred to a County Court hearing centre.') }}</p>
+          <p>{{ t('If you reject because you believe you’ve paid the money, the claimant has 28 days to tell you and the court whether they’re ' +
+                  'proceeding with the claim. If they proceed, the claim may be transferred to a County Court hearing centre.') }}</p>
+
+          <h2 class="heading-medium">{{ t('Hearing centre location') }}</h2>
+          <p>{{ t('If the claim is against you as an individual, the hearing centre will be the nearest one to your home or business.') }}</p>
+          <p>{{ t('If the claimant is an individual and the claim is against you as an organisation, the hearing centre will be the nearest one to their home or business.') }}</p>
+        </div>
+      </details>
+
+      </div>
+
+      </details>
+
+        <form method="POST" class="analytics-submit-event-trigger" data-event-action="Response: Select defendant response option" data-event-label-from="type[value]" novalidate>
+
+        {{ csrfProtection(csrf) }}
+
+        {% set error = form.errorFor('type') %}
+        <div class="form-group {% if error %} form-group-error {% endif %}">
+          <fieldset id="type[label]">
+            <legend class="visually-hidden">{{ t('Do you owe the money claimed?') }}</legend>
+            {% if error %}<span class="error-message">{{ t(error) }}</span>{% endif %}
+
+            {{ radioOption(form = form, name = 'type[value]', value = ResponseType.FULL_ADMISSION.value,
+                label = 'I admit all of the claim', bold = true,
+              hint = 'You agree you owe the full amount claimed'
+            )}}
+
+            {{ radioOption(form = form, name = 'type[value]', value = ResponseType.PART_ADMISSION.value,
+              label = 'I admit part of the claim', bold = true,
+              hint = 'You agree you owe some money but not the full amount claimed'
+            )}}
+
+            {{ radioOption(form = form, name = 'type[value]', value = ResponseType.DEFENCE.value,
+              label = 'I reject all of the claim', bold = true,
+              hint = 'You’ve either paid what you believe you owe or you reject the claim'
+            )}}
+
+          </fieldset>
+        </div>
+
+        {{ saveAndContinueButton() }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

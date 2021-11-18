@@ -1,0 +1,21 @@
+{% extends "layout.njk" %}
+
+{% from "internalLink.njk" import internalLink %}
+
+{% set heading = 'Testing support' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <div>
+        {{ internalLink(t('Update response deadline'), paths.updateResponseDeadlinePage.uri) }}
+      </div>
+      <div>
+        {{ internalLink(t('Create Claim Draft'), paths.createClaimDraftPage.uri) }}
+      </div>
+      <div>
+        {{ internalLink(t('Delete Drafts'), paths.deleteDraftsPage.uri) }}
+      </div>
+    </div>
+  </div>
+{% endblock %}

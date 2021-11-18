@@ -1,0 +1,23 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, submitButton, errorSummary %}
+{% from "claimReference.njk" import claimReferenceInput %}
+
+{% set heading = 'Enter your claim number' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      <p>{{ t('Enter the claim number from the email or letter we sent you.') }}</p>
+
+      <form method="post">
+        {{ csrfProtection(csrf) }}
+
+        {{ claimReferenceInput('Claim number', 'reference', form) }}
+        {{ submitButton() }}
+      </form>
+    </div>
+  </div>
+
+{% endblock %}
+

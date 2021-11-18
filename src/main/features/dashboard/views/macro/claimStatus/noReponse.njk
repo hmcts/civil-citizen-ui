@@ -1,0 +1,34 @@
+{% from "timeRemaining.njk" import timeRemaining %}
+{% from "internalLink.njk" import internalLink %}
+
+{% macro noResponseForClaimantDashboard() %}
+  {{ t('Wait for the defendant to respond') }}
+{% endmacro %}
+
+{% macro noResponseForClaimantClaimDetails(claim) %}
+  <div class="status-block">
+    <h2 class="heading-medium">{{ t('Wait for the defendant to respond') }}</h2>
+    <p>{{ t('{{ defendantName }} has until {{ responseDeadline }} to respond. They can request an extra 14 days if they need it.',
+        { defendantName: claim.claimData.defendant.name, responseDeadline: claim.responseDeadline | date }) }}</p>
+  </div>
+{% endmacro %}
+
+{% macro noResponseForDefendantDashboard(claim) %}
+  {{ t('Respond to claim.') }}
+  <div class="mobile-inline font-xsmall">
+    {{ timeRemaining(claim.remainingDays, isAfter4pm()) }}
+  </div>
+{% endmacro %}
+
+{% macro noResponseForDefendantClaimDetails(claim) %}
+  <div class="status-block">
+    <h2 class="heading-medium">{{ t('You haven’t responded to this claim') }}</h2>
+    <p>{{ t('You need to respond before 4pm on {{ responseDeadline }} {{ remainingTime }}.',
+        { responseDeadline: claim.responseDeadline | date, remainingTime: timeRemaining(claim.remainingDays, isAfter4pm()) | trim }) | safe }}</p>
+    <p>{{ _respondToClaimLink(claim) }}</p>
+  </div>
+{% endmacro %}
+
+{% macro _respondToClaimLink(claim) %}
+  {{ internalLink(t('Respond to claim'), ResponsePaths.taskListPage.evaluateUri({ externalId: claim.externalId })) }}
+{% endmacro %}

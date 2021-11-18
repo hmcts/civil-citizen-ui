@@ -1,0 +1,42 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, radioGroup, saveAndContinueButton, errorSummary %}
+{% from "table.njk" import tableStart, tableEnd, row, rowWithMultipleValue %}
+
+{% set heading = t('Why do you believe you don’t owe {{ claimantName }} any money?', { claimantName: claimantName }) %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      <form method="post" class="analytics-submit-event-trigger" data-event-action="Response: Select full admission option" data-event-label-from="option" novalidate>
+        {{ csrfProtection(csrf) }}
+
+        {{
+          radioGroup(
+          label = 'Why do you reject all the claim?',
+          legendHidden = true,
+          name = 'option',
+          options = [
+            {
+              label: 'I’ve paid what I believe I owe',
+              value: 'alreadyPaid'
+            },
+            {
+              label: 'I dispute all of the claim',
+              value: 'dispute'
+            },
+            {
+              label: 'I dispute the claim and want to make a counterclaim',
+              value: 'counterClaim'
+            }
+          ],
+          form = form
+          )
+        }}
+
+        {{ saveAndContinueButton() }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
+

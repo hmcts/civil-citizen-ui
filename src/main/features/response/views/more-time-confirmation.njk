@@ -1,0 +1,28 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, submitButton %}
+
+{% set heading = 'You have an extra 14 days to respond' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      <p>
+        {{ t('You must respond before 4pm on {{ deadline }}.', { deadline: newDeadline | date }) }}
+      </p>
+
+      <p>
+        {{ t('We’ll email both you and {{ claimant }} confirming the additional response time.', { claimant: claimantFullName}) }}
+      </p>
+
+      <form method="post" novalidate>
+        {{ csrfProtection(csrf) }}
+
+        <div class="form-group">
+          {{ submitButton() }}
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,30 @@
+{% extends "layout.njk" %}
+{% from "support.njk" import supportWidget %}
+{% from "internalLink.njk" import internalLink %}
+
+{% set headingVisible = false %}
+{% set heading = 'Confirmation' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+        <div class="govuk-box-highlight">
+          <h1 class="bold-large">{{ t('We’ve sent your offer to {{ claimantName }}', { claimantName: claim.claimData.claimant.name }) }}</h1>
+        </div>
+        <h2 class="heading-medium">{{ t('What happens next') }}</h2>
+        <p>
+        {{ t('{{ claimantName }} can accept or reject. We’ll email you when they respond.', { claimantName: claim.claimData.claimant.name }) }}
+      </p>
+
+      {% include "includes/service-survey-link-defendant.njk" %}
+
+      <p>
+        {{ internalLink(t('Finished'), DashboardPaths.dashboardPage.uri, 'button') }}
+      </p>
+
+      {{ supportWidget() }}
+
+    </div>
+  </div>
+{% endblock %}
+{% block contactForHelp %}{% endblock %}

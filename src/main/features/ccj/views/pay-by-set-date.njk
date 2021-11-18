@@ -1,0 +1,21 @@
+{% extends "layout.njk" %}
+{% from "form.njk" import csrfProtection, textInput, saveAndContinueButton, errorSummary %}
+{% from "date.njk" import dateInput %}
+
+{% set heading = 'When do you want the defendant to pay?' %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <form method="post" novalidate>
+        <input type="hidden" name="known" value="true" />
+        {{ csrfProtection(csrf) }}
+
+        {{ dateInput(name = 'date', form = form, hint = t('For example, {{ futureDate }}', { futureDate: futureDate | inputDate }),
+            visuallyHiddenLabelValue = 'pay by set date') }}
+
+        {{ saveAndContinueButton() }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

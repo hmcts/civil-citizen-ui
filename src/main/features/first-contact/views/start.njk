@@ -1,0 +1,50 @@
+{% extends "layout.njk" %}
+
+{% set heading = 'Respond to a money claim' %}
+
+{% from "form.njk" import csrfProtection, linkButton %}
+{% from "support.njk" import supportWidget %}
+{% from "internalLink.njk" import internalLink %}
+{% from "externalLink.njk" import externalLink %}
+
+{% block content %}
+
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <p>{{ t('You have 19 days to respond to the claim from the date the court issued it.') }}</p>
+      <p>{{ t('Find the exact deadline date in the letter or email you received explaining the claim.') }}</p>
+      <p>{{ t('We’ll send your response to the claimant (the person or organisation who says you owe them money).') }}</p>
+
+      <h2 class="heading-medium">{{ t('If you don’t respond') }}</h2>
+
+      <p>{{ t('The claimant can apply for a {{ ccj }} against you if you don’t respond before the deadline.',
+          { ccj: externalLink('County Court Judgment (CCJ)', 'https://www.gov.uk/county-court-judgments-ccj-for-debt') }) | safe }}</p>
+
+      <p>{{ t('They can use a CCJ to get the money from you, for example by applying to the court to send bailiffs to your home or business.') }}</p>
+
+      <p>{{ t('A CCJ may make it harder to get credit, such as a mobile phone contract, credit card or mortgage.') }}</p>
+
+      <form method="POST">
+        {{ csrfProtection(csrf) }}
+
+        {{ linkButton('Start now', 'start-button', class='button button-start') }}
+      </form>
+
+      {{ supportWidget('Help to use this service') }}
+
+    </div>
+    <div class="column-third">
+      <aside class="govuk-related-items" role="complementary">
+        <h2 class="heading-medium" id="subsection-title">{{ t('Support') }}</h2>
+        <nav role="navigation" aria-labelledby="subsection-title">
+          <ul class="font-xsmall">
+            <li>{{ externalLink(t('Money claim fees'), 'https://www.gov.uk/make-court-claim-for-money/court-fees') }}</li>
+            <li>{{ externalLink(t('Contact us'), 'https://courttribunalfinder.service.gov.uk/courts/county-court-business-centre-ccbc') }}</li>
+          </ul>
+        </nav>
+      </aside>
+    </div>
+  </div>
+
+{% endblock %}
+{% block contactForHelp %}{% endblock %}

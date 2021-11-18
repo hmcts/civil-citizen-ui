@@ -1,0 +1,115 @@
+{% extends "layout.njk" %}
+{% from "../../claim/views/macro/about-claim-widget.njk" import aboutClaimWidget %}
+
+{% from "table.njk" import tableStart,tableEnd, row, rowWithMultipleValue %}
+
+{% set headingVisible = false %}
+
+{% if user.id === claim.claimantId %}
+  {% set party = 'claimant' %}
+  {% set otherParty = 'defendant' %}
+  {% set otherPartyName = claim.claimData.defendant.name %}
+  {% set phone = claim.claimData.defendant.phone %}
+  {% set email = claim.claimData.defendant.email %}
+  {% set contactPerson = claim.response.defendant.name %}
+  {% set address = claim.claimData.defendant.address %}
+  {% set correspondenceAddress = claim.claimData.defendant.correspondenceAddress %}
+  {% set contactPerson = claim.response.defendant.contactPerson %}
+
+{% elif user.id === claim.defendantId %}
+  {% set party = 'defendant' %}
+  {% set otherParty = 'claimant' %}
+  {% set otherPartyName = claim.claimData.claimant.name %}
+  {% set phone = claim.claimData.claimant.phone %}
+  {% set email = claim.claimantEmail %}
+  {% set address = claim.claimData.claimant.address %}
+  {% set correspondenceAddress = claim.claimData.claimant.correspondenceAddress %}
+  {% set contactPerson = claim.claimData.claimant.contactPerson %}
+
+{% endif %}
+
+{% set heading = 'Contact ' + t(otherParty) %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <h1 class="heading-large">
+        <span class="heading-secondary">{{ t(otherParty) | capitalize }}</span>
+        {{ otherPartyName }}
+      </h1>
+      <div class="notice">
+        {% if address %}
+          <h2 class="heading-medium">{{ t('Address') }}</h2>
+
+          {% if address.line1 %}
+            <span class="block">{{ address.line1 }}</span>
+          {% endif %}
+
+          {% if address.line2 %}
+            <span class="block">{{ address.line2 }}</span>
+          {% endif %}
+
+          {% if address.line3 %}
+            <span class="block">{{ address.line3 }}</span>
+          {% endif %}
+
+          {% if address.city %}
+            <span class="block">{{ address.city }}</span>
+          {% endif %}
+
+          {% if address.postcode %}
+            <span class="block">{{ address.postcode }}</span>
+          {% endif %}
+
+        {% endif %}
+      </div>
+
+      {% if correspondenceAddress %}
+        <div class="notice">
+          <h2 class="heading-medium">{{ t('Correspondence address') }}</h2>
+
+          {% if correspondenceAddress.line1 %}
+            <span class="block">{{ correspondenceAddress.line1 }}</span>
+          {% endif %}
+
+          {% if correspondenceAddress.line2 %}
+            <span class="block">{{ correspondenceAddress.line2 }}</span>
+          {% endif %}
+
+          {% if correspondenceAddress.line3 %}
+            <span class="block">{{ correspondenceAddress.line3 }}</span>
+          {% endif %}
+
+          {% if correspondenceAddress.city %}
+            <span class="block">{{ correspondenceAddress.city }}</span>
+          {% endif %}
+
+          {% if correspondenceAddress.postcode %}
+            <span class="block">{{ correspondenceAddress.postcode }}</span>
+          {% endif %}
+
+        </div>
+      {% endif %}
+
+      <div>
+        {% if phone %}
+          <span class="block">{{ t('Phone: ' ) + phone }}</span>
+        {% endif %}
+
+        {% if email %}
+          <span class="block">{{ t('Email: <a href="mailto:{{ email }}">{{ email }}</a>', { email: email }) | safe }}</span>
+        {% endif %}
+
+        {% if contactPerson %}
+          <span class="block">{{ t('Contact person: ' + contactPerson) }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if claim %}
+      <div class="column-one-third">
+        {{ aboutClaimWidget(otherParty, claim) }}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
