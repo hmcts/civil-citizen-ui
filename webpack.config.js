@@ -11,8 +11,9 @@ const filename = `[name]${fileNameSuffix}.js`;
 
 module.exports = {
   plugins: [...govukFrontend.plugins, ...scss.plugins, ...HtmlWebpack.plugins ],
-  entry: path.resolve(sourcePath, 'index.js') ,
+  entry: path.resolve(sourcePath, 'server.ts') ,
   mode: devMode ? 'development': 'production',
+  // target: 'node',
   module: {
     rules: [...scss.rules],
   },
@@ -20,5 +21,12 @@ module.exports = {
     path: path.resolve(__dirname, 'src/main/public/'),
     publicPath: '',
     filename,
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx'],
+    fallback: { "os": false },
+    modules: [
+      path.join(__dirname, 'node_modules')
+    ],
   },
 };

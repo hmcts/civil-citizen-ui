@@ -11,7 +11,7 @@ node_modules/
 .DS_Store
 
 src/main/public/img/lib/*
-src/main/public/js/lib/**/*.js
+src/**/*.js
 src/main/public/stylesheets/lib/*
 src/main/resources/localhost-ssl
 
