@@ -2190,10 +2190,9 @@ cls-hooked@^4.2.2:
     emitter-listener "^1.0.1"
     semver "^5.4.1"
 
-cmc-cookies-manager@^1.0.6:
+"cmc-cookies-manager@github:hmcts/cmc-cookies-manager#3.0.2":
   version "1.0.6"
-  resolved "https://registry.yarnpkg.com/cmc-cookies-manager/-/cmc-cookies-manager-1.0.6.tgz#618c40b7dcfcec346bfd8c55a29c6d0f04b89f75"
-  integrity sha512-jkk1vb/rQvWnZrYNQTL6QYmIdJqLuTK7UxhR/DIT61NC/GVJt/mg5KqIH06d2/ukPArdilatT6fs/muX+az3Eg==
+  resolved "https://codeload.github.com/hmcts/cmc-cookies-manager/tar.gz/b41d9321c8c0b12ed36a550a0859b75c7c75467b"
   dependencies:
     govuk-frontend "^3.11.0"
 
