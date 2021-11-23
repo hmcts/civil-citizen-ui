@@ -10,10 +10,10 @@ node_modules/
 *log
 .DS_Store
 
-src/main/public/img/lib/*
-src/main/public/js/lib/**/*.js
-src/main/public/stylesheets/lib/*
-src/main/resources/localhost-ssl
+#src/main/public/img/lib/*
+#src/main/public/js/lib/**/*.js
+#src/main/public/stylesheets/lib/*
+#src/main/resources/localhost-ssl
 
 node-rpm-packaging/
 mochawesome-report/
