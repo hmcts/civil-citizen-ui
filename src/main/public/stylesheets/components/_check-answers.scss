@@ -1,0 +1,35 @@
+.bottom-border {
+  border-bottom: 1px solid $grey-2;
+  margin: 0;
+  overflow: hidden;
+  padding: 15px 0;
+}
+
+.no-bottom-border {
+  border-bottom: 0;
+  margin: 0;
+  overflow: hidden;
+  padding: 15px 0;
+}
+
+.top-border {
+  border-top: 1px solid $grey-2;
+  margin: 0;
+  overflow: hidden;
+  padding: 15px 0;
+}
+
+.no-top-border {
+  border-top: 0;
+  margin: 0;
+  overflow: hidden;
+  padding: 15px 0;
+}
+
+.block {
+  display: block;
+}
+
+.change-link-column {
+  text-align: right;
+}

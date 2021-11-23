@@ -1,0 +1,65 @@
+.claim-dashboard {
+  td {
+    &:nth-child(1) {
+      width: 20%;
+    }
+
+    &:nth-child(2) {
+      width: 25%;
+    }
+
+    &:nth-child(3) {
+      width: 20%;
+    }
+
+    &:nth-child(4) {
+      width: 35%;
+    }
+  }
+}
+
+.newclaim {
+  display: inline-block;
+  font-weight: 700;
+  padding: 16px 0 0;
+  text-align: right;
+}
+
+.status-block {
+  &:not(:last-of-type) {
+    border-bottom: 1px solid $grey-2;
+  }
+
+  .latest-update-section &:first-of-type {
+    h2 {
+      margin-top: 0;
+    }
+  }
+}
+
+.about-claim-widget {
+  padding-top: 8rem;
+}
+
+.no-bottom-margin {
+  margin-bottom: 0;
+}
+
+.no-top-margin {
+  margin-top: 0;
+}
+
+.tab-section {
+  ul > li {
+    a {
+      font-size: 19px;
+    }
+  }
+}
+
+.govuk-dashboard-details__text {
+  border-left: 10px solid $grey-2;
+  margin-top: 30px;
+  padding: 15px;
+  padding-left: 20px;
+}
