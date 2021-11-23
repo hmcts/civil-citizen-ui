@@ -25,3 +25,4 @@ dist/
 #public/
 smoke-output/
 functional-output/
+ *.njk
