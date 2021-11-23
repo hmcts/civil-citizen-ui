@@ -8,6 +8,9 @@
   "scripts": {
     "setup": "gulp sass copy-files sass-govuk-frontend",
     "start": "node server.js",
+    "start:dev": "nodemon --config nodemon.json",
+    "build": "yarn webpack --config webpack.config.js",
+    "build:prod": "NODE_ENV=production yarn webpack --mode production --config webpack.config.js",
     "lint": "tsc --noEmit && tslint --project tsconfig.json && sass-lint -v -q",
     "test": "echo 'unit tests are ran through GitHub actions as a mandatory step in order to save time on the main pipeline'",
     "tests": "TS_NODE_TRANSPILE_ONLY=true NODE_ENV=mocha LOG_LEVEL=OFF mocha --opts mocha.opts $(find src/test \\( -name '*.ts' \\) ! -path '*a11y*' ! -path '*/routes/*') --reporter-options reportFilename=unit,inlineAssets=true,reportTitle=citizen-frontend-unit",
@@ -154,7 +157,6 @@
     "tslint-config-standard": "^9.0.0",
     "urlencode": "^1.1.0",
     "webdriverio": "^7.16.8"
-
   },
   "nyc": {
     "extension": [
