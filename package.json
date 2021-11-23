@@ -162,7 +162,8 @@
     "webdriverio": "^7.16.8",
     "webpack": "^5.64.2",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^v4.5.0"
+    "webpack-dev-server": "^4.5.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "nyc": {
     "extension": [
