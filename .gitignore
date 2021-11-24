@@ -22,7 +22,7 @@ npm-debug.log.*
 .project
 .settings/
 dist/
-#public/
+public/
 smoke-output/
 functional-output/
 *.crt
