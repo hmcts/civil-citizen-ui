@@ -13,7 +13,7 @@ withPipeline(type, product, component) {
   disableLegacyDeployment()
 
   after('build') {
-    yarnBuilder.yarn('build')
+    yarnBuilder.yarn('setup')
   }
 
   after('smoketest:preview') {
@@ -31,5 +31,5 @@ withPipeline(type, product, component) {
   after('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
   }
-  
+
 }
