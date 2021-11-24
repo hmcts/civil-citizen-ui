@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// import './ts-paths-bootstrap';
+import './ts-paths-bootstrap';
 import { Logger } from '@hmcts/nodejs-logging';
 
 const logger = Logger.getLogger('server.ts');
