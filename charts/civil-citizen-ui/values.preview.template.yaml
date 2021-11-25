@@ -1,6 +1,6 @@
-    nodejs:
-      # Don't modify below here
-      image: ${IMAGE_NAME}
-      ingressHost: ${SERVICE_FQDN}
-      environment:
-        - TEST_PROPERTY: test-value
+nodejs:
+  # Don't modify below here
+  image: ${IMAGE_NAME}
+  ingressHost: ${SERVICE_FQDN}
+  environment:
+    - TEST_PROPERTY: test-value
