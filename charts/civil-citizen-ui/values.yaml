@@ -8,4 +8,4 @@ nodejs:
 #      secrets:
 #        - AppInsightsInstrumentationKey
   environment:
-    - TEST_PROPERTY: test-value-from-values-yaml
+    TEST_PROPERTY: test-value-from-values-yaml
