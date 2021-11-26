@@ -3,4 +3,4 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    - TEST_PROPERTY: test-value
+    TEST_PROPERTY: test-value
