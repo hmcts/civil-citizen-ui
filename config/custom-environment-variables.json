@@ -1,0 +1,17 @@
+{
+  "useCSRFProtection": true,
+  "security": {
+    "referrerPolicy": "origin"
+  },
+  "appInsights": {
+    "instrumentationKey": false
+  },
+  "testProperty": "TEST_PROPERTY"
+}
+{
+  "useCSRFProtection": true,
+  "security": {
+    "referrerPolicy": "SECURITY_REFERRER_POLICY"
+  },
+  "testProperty": "TEST_PROPERTY"
+}

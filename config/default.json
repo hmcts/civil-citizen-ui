@@ -6,5 +6,5 @@
   "appInsights": {
     "instrumentationKey": false
   },
-  "testProperty": "TEST_PROPERTY"
+  "testProperty": false
 }
