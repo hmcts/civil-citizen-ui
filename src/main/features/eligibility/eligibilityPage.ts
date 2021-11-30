@@ -63,7 +63,7 @@ export abstract class EligibilityPage<T> {
     }
   }
 
-  protected abstract async nextPagePath (): Promise<RoutablePath>
+  protected abstract nextPagePath (): Promise<RoutablePath>
 
   protected abstract checkEligibility (value: T): Promise<EligibilityCheck>
 }

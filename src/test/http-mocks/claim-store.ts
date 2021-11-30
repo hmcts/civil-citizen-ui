@@ -287,7 +287,7 @@ export const sampleClaimIssueObj = {
   externalId: '400f4c57-9684-49c0-adb4-4cf46579d6dc',
   defendantId: '123',
   referenceNumber: '000MC050',
-  createdAt: MomentFactory.currentDateTime(),
+  createdAt : MomentFactory.currentDateTime(),
   issuedOn: '2017-07-25',
   totalAmountTillToday: 200,
   totalAmountTillDateOfIssue: 200,
@@ -701,13 +701,13 @@ export const partySettlementWithSetDateAndAcceptation = {
 
 export const settlementAndSettlementReachedAt: object = {
   settlementReachedAt: '2017-07-25T22:45:51.785',
-  ...this.settlementWithInstalmentsAndAcceptation
+  ...settlementWithInstalmentsAndAcceptation
 
 }
 
 export const settlementBySetDateAndSettlementReachedAt: object = {
   settlementReachedAt: '2017-07-25T22:45:51.785',
-  ...this.settlementWithSetDateAndAcceptation
+  ...settlementWithSetDateAndAcceptation
 
 }
 
@@ -832,7 +832,7 @@ export const samplePaginationInfoObj = {
 }
 
 export const sampleDefendantResponseAlreadyPaidWithMediationObj = {
-  ...this.sampleClaimIssueObj,
+  ...sampleClaimIssueObj,
   respondedAt: '2017-07-25T22:45:51.785',
   response: {
     responseType: 'FULL_DEFENCE',
@@ -858,7 +858,7 @@ export const sampleDefendantResponseAlreadyPaidWithMediationObj = {
 }
 
 export const sampleDefendantResponseAlreadyPaidWithNoMediationObj = {
-  ...this.sampleClaimIssueObj,
+  ...sampleClaimIssueObj,
   respondedAt: '2017-07-25T22:45:51.785',
   response: {
     responseType: 'FULL_DEFENCE',
@@ -884,7 +884,7 @@ export const sampleDefendantResponseAlreadyPaidWithNoMediationObj = {
 }
 
 export const samplePartialAdmissionWithPaymentBySetDateResponseObj = {
-  ...this.sampleClaimIssueObj,
+  ...sampleClaimIssueObj,
   respondedAt: '2017-07-25T22:45:51.785',
   claimantRespondedAt: '2017-07-25T22:45:51.785',
   response: partialAdmissionWithSoMPaymentBySetDateData
@@ -898,7 +898,7 @@ export const samplePartialAdmissionWithPaymentBySetDateCompanyData = {
 
 export function samplePartialAdmissionWithPayImmediatelyData () {
   return {
-    ...this.sampleClaimIssueObj,
+    ...sampleClaimIssueObj,
     respondedAt: '2017-07-25T22:45:51.785',
     claimantRespondedAt: '2017-07-25T22:45:51.785',
     response: partialAdmissionWithImmediatePaymentData()
@@ -907,7 +907,7 @@ export function samplePartialAdmissionWithPayImmediatelyData () {
 
 export function samplePartialAdmissionWithPayImmediatelyDataV2 () {
   return {
-    ...this.sampleClaimIssueObj,
+    ...sampleClaimIssueObj,
     respondedAt: '2017-07-25T22:45:51.785',
     claimantRespondedAt: '2017-07-25T22:45:51.785',
     response: partialAdmissionWithImmediatePaymentDataV2()
@@ -955,7 +955,7 @@ export const sampleFullAdmissionWithPaymentByInstalmentsResponseObjWithUnReasona
 }
 
 export const sampleFullDefenceRejectEntirely = {
-  ...this.sampleClaimIssueObj,
+  ...sampleClaimIssueObj,
   respondedAt: '2017-07-25T22:45:51.785',
   response: defenceWithDisputeData
 }
@@ -1246,7 +1246,7 @@ export function resolveCreateClaimCitizen (claimOverride?: object): mock.Scope {
 
 export function resolveSaveOrder () {
   const expectedData = {
-    ...this.sampleClaimIssueObj,
+    ...sampleClaimIssueObj,
     reviewOrder: {
       reason: 'some reason',
       requestedBy: MadeBy.CLAIMANT,
