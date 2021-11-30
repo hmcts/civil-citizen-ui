@@ -41,6 +41,9 @@ app.use((req, res, next) => {
   next();
 });
 
+const testProperty = `${config.get<string>('testProperty')}`;
+logger.info(`Test Property value is: ${testProperty}`);
+
 glob.sync(__dirname + '/routes/**/*.+(ts|js)')
   .map(filename => require(filename))
   .forEach(route => route.default(app));
