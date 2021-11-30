@@ -173,6 +173,30 @@
     "report-dir": "coverage-report",
     "all": true
   },
+  "resolutions": {
+    "**/download": "^8.0.0",
+    "sass-lint/eslint": "^5.0.0",
+    "bootstrap-datepicker/jquery": "^3.5.0",
+    "minimist": "^1.2.5",
+    "lodash": "^4.17.21",
+    "yargs-parser": "^20.2.7",
+    "ini": "^1.3.6",
+    "kind-of": "^6.0.3",
+    "axios": "^0.21.1",
+    "bl": "^1.2.3",
+    "node-fetch": "^2.6.1",
+    "y18n": "^5.0.5",
+    "ws": "^7.4.6",
+    "websocket-extensions": "^0.1.4",
+    "redis":  "^3.1.1",
+    "merge": "^2.1.1",
+    "ua-parser-js": "^0.7.24",
+    "hosted-git-info": "^3.0.8",
+    "sass-lint/merge": "^2.1.1",
+    "glob-parent": "^5.1.2",
+    "trim-newlines": "^4.0.1",
+    "normalize-url": "^6.0.1"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "yarn lint",
