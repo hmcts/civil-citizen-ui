@@ -8,7 +8,7 @@ export type EntryPoint = () => void
 
 export class ApplicationCluster {
   static execute (applicationEntryPoint: EntryPoint): void {
-    if (cluster.isMaster) {
+    if (cluster.isPrimary) {
       logger.info(`Master process running on ${process.pid}`)
       const numberOfCores = cpus().length
       this.forkListenerProcesses(numberOfCores)
