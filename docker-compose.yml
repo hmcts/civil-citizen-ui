@@ -8,6 +8,7 @@ services:
         - http_proxy
         - https_proxy
         - no_proxy
+    image: hmctspublic.azurecr.io/civil/citizen-ui
     ports:
       # TODO: change this mapping to map the port your application listens on
       - 3100:3100
