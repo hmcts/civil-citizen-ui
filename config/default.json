@@ -107,7 +107,7 @@
     "url": "https://www.moneyclaim.gov.uk/web/mcol/welcome"
   },
   "appInsights": {
-    "roleName": "citizen-frontend"
+    "roleName": "civil-citizen-ui"
   },
   "reconsiderationDeadLine": {
     "onlineNumberOfDays": 7,
