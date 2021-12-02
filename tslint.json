@@ -53,7 +53,13 @@
     "no-default-export": true,
     "no-floating-promises": false,
     "no-console": true,
-    "mocha-avoid-only": true,
-    "semicolon": false
+    "mocha-avoid-only": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   }
 }
