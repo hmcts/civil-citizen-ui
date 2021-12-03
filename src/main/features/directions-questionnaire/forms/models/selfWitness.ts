@@ -1,35 +1,35 @@
-import { IsDefined, IsIn } from '@hmcts/class-validator'
-import { YesNoOption } from 'models/yesNoOption'
+import { IsDefined, IsIn } from '@hmcts/class-validator';
+import { YesNoOption } from 'models/yesNoOption';
 
-import { ValidationErrors } from 'forms/validation/validationErrors'
-import { CompletableTask } from 'models/task'
+import { ValidationErrors } from 'forms/validation/validationErrors';
+import { CompletableTask } from 'models/task';
 
 export class SelfWitness implements CompletableTask {
   @IsDefined({ message: ValidationErrors.YES_NO_REQUIRED })
   @IsIn(YesNoOption.all(), { message: ValidationErrors.YES_NO_REQUIRED })
-  option?: YesNoOption
+  option?: YesNoOption;
 
-  constructor (option?: YesNoOption) {
-    this.option = option
+  constructor(option?: YesNoOption) {
+    this.option = option;
   }
 
-  public static fromObject (input?: any): SelfWitness {
+  public static fromObject(input?: any): SelfWitness {
     if (!input) {
-      return input
+      return input;
     }
 
-    return new SelfWitness(YesNoOption.fromObject(input.option))
+    return new SelfWitness(YesNoOption.fromObject(input.option));
   }
 
-  deserialize (input?: any): SelfWitness {
+  deserialize(input?: any): SelfWitness {
     if (input && input.option) {
-      this.option = YesNoOption.fromObject(input.option)
+      this.option = YesNoOption.fromObject(input.option);
     }
 
-    return this
+    return this;
   }
 
-  isCompleted (): boolean {
-    return this.option !== undefined
+  isCompleted(): boolean {
+    return this.option !== undefined;
   }
 }

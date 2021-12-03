@@ -1,63 +1,63 @@
-import * as config from 'config'
-import * as mock from 'nock'
-import * as HttpStatus from 'http-status-codes'
+import * as config from 'config';
+import * as mock from 'nock';
+import * as HttpStatus from 'http-status-codes';
 
-import { ResponseType } from 'response/form/models/responseType'
-import { FreeMediationOption } from 'forms/models/freeMediation'
-import { MoreTimeNeededOption } from 'response/form/models/moreTimeNeeded'
-import { InterestRateOption } from 'features/claim/form/models/interestRateOption'
-import { Defendant } from 'drafts/models/defendant'
-import { Claimant } from 'drafts/models/claimant'
-import { DraftClaim } from 'drafts/models/draftClaim'
-import { IndividualDetails } from 'forms/models/individualDetails'
-import { Phone } from 'forms/models/phone'
-import { Payment } from 'payment-hub-client/payment'
-import { Address } from 'forms/models/address'
-import { DateOfBirth } from 'forms/models/dateOfBirth'
-import { LocalDate } from 'forms/models/localDate'
-import { ClaimAmountBreakdown } from 'claim/form/models/claimAmountBreakdown'
-import { ClaimAmountRow } from 'claim/form/models/claimAmountRow'
-import { InterestRate } from 'claim/form/models/interestRate'
-import { InterestDate } from 'claim/form/models/interestDate'
-import { Reason } from 'claim/form/models/reason'
-import { ResponseDraft } from 'response/draft/responseDraft'
-import { Email } from 'forms/models/email'
-import { PaidAmountOption } from 'ccj/form/models/yesNoOption'
-import { RejectAllOfClaimOption } from 'response/form/models/rejectAllOfClaim'
-import { ResidenceType } from 'response/form/models/statement-of-means/residenceType'
-import { UnemploymentType } from 'response/form/models/statement-of-means/unemploymentType'
-import { ClaimantTimeline } from 'claim/form/models/claimantTimeline'
-import { Interest } from 'claim/form/models/interest'
-import { InterestDateType } from 'common/interestDateType'
-import { InterestType, InterestTypeOption } from 'claim/form/models/interestType'
-import { InterestStartDate } from 'claim/form/models/interestStartDate'
-import { InterestEndDate, InterestEndDateOption } from 'claim/form/models/interestEndDate'
-import { ClaimValue } from 'eligibility/model/claimValue'
-import { YesNoOption } from 'models/yesNoOption'
-import { Evidence } from 'forms/models/evidence'
-import { EvidenceType } from 'forms/models/evidenceType'
-import { Eligibility } from 'eligibility/model/eligibility'
-import { ClaimType } from 'eligibility/model/claimType'
-import { DefendantAgeOption } from 'eligibility/model/defendantAgeOption'
-import { AlreadyPaid } from 'response/form/models/alreadyPaid'
-import { HowMuchHaveYouPaid } from 'response/form/models/howMuchHaveYouPaid'
-import { MomentFactory } from 'shared/momentFactory'
-import * as moment from 'moment'
-import { CompanyDetails } from 'forms/models/companyDetails'
+import { ResponseType } from 'response/form/models/responseType';
+import { FreeMediationOption } from 'forms/models/freeMediation';
+import { MoreTimeNeededOption } from 'response/form/models/moreTimeNeeded';
+import { InterestRateOption } from 'features/claim/form/models/interestRateOption';
+import { Defendant } from 'drafts/models/defendant';
+import { Claimant } from 'drafts/models/claimant';
+import { DraftClaim } from 'drafts/models/draftClaim';
+import { IndividualDetails } from 'forms/models/individualDetails';
+import { Phone } from 'forms/models/phone';
+import { Payment } from 'payment-hub-client/payment';
+import { Address } from 'forms/models/address';
+import { DateOfBirth } from 'forms/models/dateOfBirth';
+import { LocalDate } from 'forms/models/localDate';
+import { ClaimAmountBreakdown } from 'claim/form/models/claimAmountBreakdown';
+import { ClaimAmountRow } from 'claim/form/models/claimAmountRow';
+import { InterestRate } from 'claim/form/models/interestRate';
+import { InterestDate } from 'claim/form/models/interestDate';
+import { Reason } from 'claim/form/models/reason';
+import { ResponseDraft } from 'response/draft/responseDraft';
+import { Email } from 'forms/models/email';
+import { PaidAmountOption } from 'ccj/form/models/yesNoOption';
+import { RejectAllOfClaimOption } from 'response/form/models/rejectAllOfClaim';
+import { ResidenceType } from 'response/form/models/statement-of-means/residenceType';
+import { UnemploymentType } from 'response/form/models/statement-of-means/unemploymentType';
+import { ClaimantTimeline } from 'claim/form/models/claimantTimeline';
+import { Interest } from 'claim/form/models/interest';
+import { InterestDateType } from 'common/interestDateType';
+import { InterestType, InterestTypeOption } from 'claim/form/models/interestType';
+import { InterestStartDate } from 'claim/form/models/interestStartDate';
+import { InterestEndDate, InterestEndDateOption } from 'claim/form/models/interestEndDate';
+import { ClaimValue } from 'eligibility/model/claimValue';
+import { YesNoOption } from 'models/yesNoOption';
+import { Evidence } from 'forms/models/evidence';
+import { EvidenceType } from 'forms/models/evidenceType';
+import { Eligibility } from 'eligibility/model/eligibility';
+import { ClaimType } from 'eligibility/model/claimType';
+import { DefendantAgeOption } from 'eligibility/model/defendantAgeOption';
+import { AlreadyPaid } from 'response/form/models/alreadyPaid';
+import { HowMuchHaveYouPaid } from 'response/form/models/howMuchHaveYouPaid';
+import { MomentFactory } from 'shared/momentFactory';
+import * as moment from 'moment';
+import { CompanyDetails } from 'forms/models/companyDetails';
 
-const serviceBaseURL: string = `${config.get('draft-store.url')}`
+const serviceBaseURL: string = `${config.get('draft-store.url')}`;
 
 export const samplePaidInFullDraftObj = {
-  datePaid: moment()
-}
+  datePaid: moment(),
+};
 
 export const sampleOrganisationDetails = {
   type: 'organisation',
   name: 'John Smith',
   address: { line1: 'Apartment 99', line2: '', line3: '', city: 'London', postcode: 'SE28 0JE' } as Address,
   hasCorrespondenceAddress: false,
-  contactPerson: 'Mary Richards'
-}
+  contactPerson: 'Mary Richards',
+};
 
 const commonClaimObject = {
   externalId: 'fe6e9413-e804-48d5-bbfd-645917fc46e5',
@@ -72,7 +72,7 @@ const commonClaimObject = {
     singleDefendant: YesNoOption.NO,
     governmentDepartment: YesNoOption.NO,
     claimIsForTenancyDeposit: YesNoOption.NO,
-    infoAboutHwFeligibility: YesNoOption.YES
+    infoAboutHwFeligibility: YesNoOption.YES,
   } as Eligibility,
   readResolveDispute: true,
   readCompletingClaim: true,
@@ -80,50 +80,50 @@ const commonClaimObject = {
     rows: [
       {
         reason: 'Valid reason',
-        amount: 1
-      } as ClaimAmountRow
-    ]
+        amount: 1,
+      } as ClaimAmountRow,
+    ],
   } as ClaimAmountBreakdown,
   interest: {
-    option: YesNoOption.YES
+    option: YesNoOption.YES,
   } as Interest,
   interestType: {
-    option: InterestTypeOption.SAME_RATE
+    option: InterestTypeOption.SAME_RATE,
   } as InterestType,
   interestRate: {
     type: InterestRateOption.DIFFERENT,
     rate: 10,
-    reason: 'Special case'
+    reason: 'Special case',
   } as InterestRate,
   interestDate: {
-    type: InterestDateType.SUBMISSION
+    type: InterestDateType.SUBMISSION,
   } as InterestDate,
   interestStartDate: {
     date: {
       day: 10,
       month: 12,
-      year: 2016
+      year: 2016,
     },
-    reason: 'reason'
+    reason: 'reason',
   } as InterestStartDate,
   interestEndDate: {
-    option: InterestEndDateOption.SETTLED_OR_JUDGMENT
+    option: InterestEndDateOption.SETTLED_OR_JUDGMENT,
   } as InterestEndDate,
   helpWithFees: {
     declared: {
-      option: 'no'
-    }
+      option: 'no',
+    },
   },
   reason: {
-    reason: 'Valid reason'
+    reason: 'Valid reason',
   } as Reason,
   timeline: {
-    rows: [{ date: 'aaa', description: 'bb' }]
+    rows: [{ date: 'aaa', description: 'bb' }],
   } as ClaimantTimeline,
   evidence: {
-    rows: [{ type: EvidenceType.OTHER, description: 'bb' }]
-  } as Evidence
-}
+    rows: [{ type: EvidenceType.OTHER, description: 'bb' }],
+  } as Evidence,
+};
 
 const commonIndividualClaimant = {
   claimant: {
@@ -137,7 +137,7 @@ const commonIndividualClaimant = {
         line2: '',
         line3: '',
         city: 'London',
-        postcode: 'bb127nq'
+        postcode: 'bb127nq',
       } as Address,
       hasCorrespondenceAddress: false,
       dateOfBirth: {
@@ -145,12 +145,12 @@ const commonIndividualClaimant = {
         date: {
           day: 31,
           month: 12,
-          year: 1980
-        } as LocalDate
-      } as DateOfBirth
+          year: 1980,
+        } as LocalDate,
+      } as DateOfBirth,
     } as IndividualDetails,
     phone: {
-      number: '07000000000'
+      number: '07000000000',
     } as Phone,
     payment: {
       reference: '123',
@@ -160,12 +160,12 @@ const commonIndividualClaimant = {
       _links: {
         next_url: {
           href: 'any href',
-          method: 'POST'
-        }
-      }
-    } as Payment
-  } as Claimant
-}
+          method: 'POST',
+        },
+      },
+    } as Payment,
+  } as Claimant,
+};
 
 const commonIndividualClaimantIOC = {
   claimant: {
@@ -177,7 +177,7 @@ const commonIndividualClaimantIOC = {
         line2: '',
         line3: '',
         city: 'London',
-        postcode: 'bb127nq'
+        postcode: 'bb127nq',
       } as Address,
       hasCorrespondenceAddress: false,
       dateOfBirth: {
@@ -185,15 +185,15 @@ const commonIndividualClaimantIOC = {
         date: {
           day: 31,
           month: 12,
-          year: 1980
-        } as LocalDate
-      } as DateOfBirth
+          year: 1980,
+        } as LocalDate,
+      } as DateOfBirth,
     } as IndividualDetails,
     phone: {
-      number: '07000000000'
-    } as Phone
-  } as Claimant
-}
+      number: '07000000000',
+    } as Phone,
+  } as Claimant,
+};
 
 const commonCompanyClaimant = {
   claimant: {
@@ -206,12 +206,12 @@ const commonCompanyClaimant = {
         line2: '',
         line3: '',
         city: 'London',
-        postcode: 'SE28 0JE'
+        postcode: 'SE28 0JE',
       } as Address,
-      hasCorrespondenceAddress: false
+      hasCorrespondenceAddress: false,
     } as CompanyDetails,
     phone: {
-      number: '07000000000'
+      number: '07000000000',
     } as Phone,
     payment: {
       reference: '123',
@@ -221,12 +221,12 @@ const commonCompanyClaimant = {
       _links: {
         next_url: {
           href: 'any href',
-          method: 'POST'
-        }
-      }
-    } as Payment
-  }
-}
+          method: 'POST',
+        },
+      },
+    } as Payment,
+  },
+};
 
 const commonCompanyDefendant = {
   defendant: {
@@ -239,50 +239,50 @@ const commonCompanyDefendant = {
         line2: '',
         line3: '',
         city: 'London',
-        postcode: 'SE28 0JE'
+        postcode: 'SE28 0JE',
       } as Address,
-      hasCorrespondenceAddress: false
+      hasCorrespondenceAddress: false,
     } as CompanyDetails,
     email: { address: 'example@example.com' },
-    phone: { number: '07799889988' }
-  } as Defendant
-}
+    phone: { number: '07799889988' },
+  } as Defendant,
+};
 
 export const aboveAllowedAmountWithInterest = {
   amount: {
     rows: [
       {
         reason: 'Valid reason',
-        amount: 9800
-      } as ClaimAmountRow
-    ]
+        amount: 9800,
+      } as ClaimAmountRow,
+    ],
   } as ClaimAmountBreakdown,
   interest: {
-    option: YesNoOption.YES
+    option: YesNoOption.YES,
   } as Interest,
   interestType: {
-    option: InterestTypeOption.SAME_RATE
+    option: InterestTypeOption.SAME_RATE,
   } as InterestType,
   interestRate: {
     type: InterestRateOption.DIFFERENT,
     rate: 10,
-    reason: 'Special case'
+    reason: 'Special case',
   } as InterestRate,
   interestDate: {
-    type: InterestDateType.CUSTOM
+    type: InterestDateType.CUSTOM,
   } as InterestDate,
   interestStartDate: {
     date: {
       day: 10,
       month: 12,
-      year: 2016
+      year: 2016,
     },
-    reason: 'reason'
+    reason: 'reason',
   } as InterestStartDate,
   interestEndDate: {
-    option: InterestEndDateOption.SETTLED_OR_JUDGMENT
-  } as InterestEndDate
-}
+    option: InterestEndDateOption.SETTLED_OR_JUDGMENT,
+  } as InterestEndDate,
+};
 
 const commonIndividualDefendant = {
   defendant: {
@@ -295,38 +295,38 @@ const commonIndividualDefendant = {
         line2: '',
         line3: '',
         city: 'London',
-        postcode: 'bb127nq'
+        postcode: 'bb127nq',
       },
-      hasCorrespondenceAddress: false
+      hasCorrespondenceAddress: false,
     } as IndividualDetails,
     email: { address: 'example@example.com' },
-    phone: { number: '07799889988' }
-  } as Defendant
-}
+    phone: { number: '07799889988' },
+  } as Defendant,
+};
 
 export const sampleClaimDraftObj = {
   ...commonClaimObject,
   ...commonIndividualClaimant,
-  ...commonIndividualDefendant
-} as DraftClaim
+  ...commonIndividualDefendant,
+} as DraftClaim;
 
 export const sampleClaimDraftObjIOC = {
   ...commonClaimObject,
   ...commonIndividualClaimantIOC,
-  ...commonIndividualDefendant
-} as DraftClaim
+  ...commonIndividualDefendant,
+} as DraftClaim;
 
 export const sampleCompanyClaimDraftObj = {
   ...commonClaimObject,
   ...commonCompanyClaimant,
-  ...commonIndividualDefendant
-} as DraftClaim
+  ...commonIndividualDefendant,
+} as DraftClaim;
 
 export const sampleCompanyAsDefendantClaimDraftObj = {
   ...commonClaimObject,
   ...commonCompanyClaimant,
-  ...commonCompanyDefendant
-} as DraftClaim
+  ...commonCompanyDefendant,
+} as DraftClaim;
 
 const commonIndividualResponsePartial = {
   defendantDetails: {
@@ -343,15 +343,15 @@ const commonIndividualResponsePartial = {
         date: {
           day: 31,
           month: 12,
-          year: 1980
-        } as LocalDate
-      } as DateOfBirth
-    } as IndividualDetails
+          year: 1980,
+        } as LocalDate,
+      } as DateOfBirth,
+    } as IndividualDetails,
   } as Defendant,
   moreTimeNeeded: {
-    option: MoreTimeNeededOption.YES
-  }
-}
+    option: MoreTimeNeededOption.YES,
+  },
+};
 
 const commonCompanyResponsePartial = {
   defendantDetails: {
@@ -366,56 +366,56 @@ const commonCompanyResponsePartial = {
         line2: '',
         line3: '',
         city: 'London',
-        postcode: 'SE28 0JE'
+        postcode: 'SE28 0JE',
       } as Address,
-      hasCorrespondenceAddress: false
-    } as CompanyDetails
+      hasCorrespondenceAddress: false,
+    } as CompanyDetails,
   } as Defendant,
   moreTimeNeeded: {
-    option: MoreTimeNeededOption.YES
-  }
-}
+    option: MoreTimeNeededOption.YES,
+  },
+};
 
 const commonDefenceResponse = {
   response: {
-    type: ResponseType.DEFENCE
+    type: ResponseType.DEFENCE,
   },
   rejectAllOfClaim: {
-    option: RejectAllOfClaimOption.DISPUTE
+    option: RejectAllOfClaimOption.DISPUTE,
   },
   defence: {
-    text: 'Some valid defence'
+    text: 'Some valid defence',
   },
   timeline: {
     rows: [],
-    comment: ''
+    comment: '',
   },
   freeMediation: {
-    option: FreeMediationOption.NO
-  }
-}
+    option: FreeMediationOption.NO,
+  },
+};
 
 export const sampleResponseDraftObj = {
   ...commonIndividualResponsePartial,
-  ...commonDefenceResponse
-} as ResponseDraft
+  ...commonDefenceResponse,
+} as ResponseDraft;
 
 export const sampleCompanyResponseDraftObj = {
   ...commonCompanyResponsePartial,
-  ...commonDefenceResponse
-} as ResponseDraft
+  ...commonDefenceResponse,
+} as ResponseDraft;
 
 export const sampleFullAdmissionResponseDraftObj = {
   ...commonIndividualResponsePartial,
   response: {
-    type: ResponseType.FULL_ADMISSION
+    type: ResponseType.FULL_ADMISSION,
   },
   fullAdmission: {
     paymentIntention: {
       paymentOption: {
         option: {
-          value: 'INSTALMENTS'
-        }
+          value: 'INSTALMENTS',
+        },
       },
       paymentPlan: {
         totalAmount: 3685,
@@ -423,18 +423,18 @@ export const sampleFullAdmissionResponseDraftObj = {
         firstPaymentDate: {
           year: 2019,
           month: 1,
-          day: 1
+          day: 1,
         },
         paymentSchedule: {
           value: 'EVERY_MONTH',
-          displayValue: 'every month'
-        }
-      }
-    }
+          displayValue: 'every month',
+        },
+      },
+    },
   },
   statementOfMeans: {
     residence: {
-      type: ResidenceType.OWN_HOME
+      type: ResidenceType.OWN_HOME,
     },
     employment: { declared: false },
     employers: undefined,
@@ -455,7 +455,7 @@ export const sampleFullAdmissionResponseDraftObj = {
       childTaxCredit: 1,
       childBenefit: 1,
       councilTaxSupport: 1,
-      pension: 1
+      pension: 1,
     },
     monthlyExpenses: {
       mortgage: 1,
@@ -470,17 +470,17 @@ export const sampleFullAdmissionResponseDraftObj = {
       tvAndBroadband: 1,
       phone: 1,
       maintenance: 1,
-      rows: [{ amount: 10, description: 'bla bla bla' }]
+      rows: [{ amount: 10, description: 'bla bla bla' }],
     },
     courtOrders: { declared: false },
-    explanation: { text: 'aaa' }
-  }
-}
+    explanation: { text: 'aaa' },
+  },
+};
 
 export const sampleFullRejectionDraftObj = {
   ...commonIndividualResponsePartial,
   response: {
-    type: ResponseType.DEFENCE
+    type: ResponseType.DEFENCE,
   },
   rejectAllOfClaim: {
     option: RejectAllOfClaimOption.ALREADY_PAID,
@@ -489,20 +489,20 @@ export const sampleFullRejectionDraftObj = {
       date: {
         year: 2018,
         month: 7,
-        day: 27
+        day: 27,
       },
-      text: 'by pigeon'
+      text: 'by pigeon',
     },
     whyDoYouDisagree: {
-      text: 'bla bla bla'
-    }
-  }
-}
+      text: 'bla bla bla',
+    },
+  },
+};
 
 export const samplePartialAdmissionResponseDraftObj = {
   ...commonIndividualResponsePartial,
   response: {
-    type: ResponseType.PART_ADMISSION
+    type: ResponseType.PART_ADMISSION,
   },
   partialAdmission: {
     alreadyPaid: new AlreadyPaid().deserialize({ alreadyPaid: new AlreadyPaid(YesNoOption.YES) }),
@@ -510,8 +510,8 @@ export const samplePartialAdmissionResponseDraftObj = {
     paymentIntention: {
       paymentOption: {
         option: {
-          value: 'INSTALMENTS'
-        }
+          value: 'INSTALMENTS',
+        },
       },
       paymentPlan: {
         totalAmount: 3685,
@@ -519,16 +519,16 @@ export const samplePartialAdmissionResponseDraftObj = {
         firstPaymentDate: {
           year: 2019,
           month: 1,
-          day: 1
+          day: 1,
         },
         paymentSchedule: {
           value: 'EVERY_MONTH',
-          displayValue: 'every month'
-        }
-      }
-    }
-  }
-}
+          displayValue: 'every month',
+        },
+      },
+    },
+  },
+};
 
 const sampleCCJDraftObj = {
   defendant: {
@@ -541,23 +541,23 @@ const sampleCCJDraftObj = {
         line2: '',
         line3: '',
         city: 'London',
-        postcode: 'SE28 0JE'
+        postcode: 'SE28 0JE',
       },
       dateOfBirth: {
         known: true,
         date: {
           day: 31,
           month: 12,
-          year: 1980
-        }
-      }
-    }
+          year: 1980,
+        },
+      },
+    },
   },
   paymentOption: {
     option: {
       value: 'INSTALMENTS',
-      displayValue: 'By instalments'
-    }
+      displayValue: 'By instalments',
+    },
   },
   paidAmount: { option: PaidAmountOption.NO },
   repaymentPlan: {
@@ -566,33 +566,33 @@ const sampleCCJDraftObj = {
     firstPaymentDate: {
       year: 2019,
       month: 1,
-      day: 1
+      day: 1,
     },
     paymentSchedule: {
       value: 'EVERY_MONTH',
-      displayValue: 'every month'
-    }
-  }
-}
+      displayValue: 'every month',
+    },
+  },
+};
 
 export const sampleClaimantResponseDraftObj = {
   defendantResponseViewed: true,
   settleAdmitted: {
     admitted: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   acceptPaymentMethod: {
     accept: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   alternatePaymentMethod: {
     paymentOption: {
       option: {
         value: 'INSTALMENTS',
-        displayValue: 'By instalments'
-      }
+        displayValue: 'By instalments',
+      },
     },
     paymentPlan: {
       totalAmount: 3326.59,
@@ -600,108 +600,108 @@ export const sampleClaimantResponseDraftObj = {
       firstPaymentDate: LocalDate.fromMoment(MomentFactory.currentDate().add(50, 'days')),
       paymentSchedule: {
         value: 'EACH_WEEK',
-        displayValue: 'Each week'
-      }
-    }
+        displayValue: 'Each week',
+      },
+    },
   },
   courtDetermination: {
     courtDecision: {
       paymentOption: {
-        value: 'INSTALMENTS'
+        value: 'INSTALMENTS',
       },
       repaymentPlan: {
         instalmentAmount: 4.3333335,
         firstPaymentDate: '2019-01-01T00:00:00.000',
         paymentSchedule: 'EVERY_MONTH',
         completionDate: MomentFactory.parse('2039-05-08T00:00:00.000'),
-        paymentLength: '20 years 5 months'
-      }
+        paymentLength: '20 years 5 months',
+      },
     },
     rejectionReason: {
-      text: 'i reject repayment plan because ...'
-    }
+      text: 'i reject repayment plan because ...',
+    },
   }
   ,
   formaliseRepaymentPlan: {
     option: {
       value: 'signSettlementAgreement',
-      displayValue: 'Sign a settlement agreement'
-    }
+      displayValue: 'Sign a settlement agreement',
+    },
   },
   settlementAgreement: {
-    signed: true
+    signed: true,
   },
   freeMediation: {
-    option: FreeMediationOption.NO
-  }
-}
+    option: FreeMediationOption.NO,
+  },
+};
 
 export const sampleMediationDraftObj = {
   willYouTryMediation: {
-    option: FreeMediationOption.YES
+    option: FreeMediationOption.YES,
   },
   youCanOnlyUseMediation: {
-    option: FreeMediationOption.YES
+    option: FreeMediationOption.YES,
   },
   canWeUse: {
     option: FreeMediationOption.NO,
-    mediationPhoneNumber: '07777777777'
+    mediationPhoneNumber: '07777777777',
   },
   canWeUseCompany: {
     option: FreeMediationOption.NO,
     mediationPhoneNumber: '07777777777',
-    mediationContactPerson: 'Mary Richards'
-  }
-}
+    mediationContactPerson: 'Mary Richards',
+  },
+};
 
 export const sampleLegacyMediationDraftObj = {
   willYouTryMediation: {
-    option: FreeMediationOption.NO
-  }
-}
+    option: FreeMediationOption.NO,
+  },
+};
 
 export const sampleCompanyMediationDraftObj = {
   willYouTryMediation: {
-    option: FreeMediationOption.YES
+    option: FreeMediationOption.YES,
   },
   youCanOnlyUseMediation: {
-    option: FreeMediationOption.YES
+    option: FreeMediationOption.YES,
   },
   canWeUseCompany: {
     option: FreeMediationOption.NO,
     mediationPhoneNumber: '07777777777',
-    mediationContactPerson: 'Mary Richards'
-  }
-}
+    mediationContactPerson: 'Mary Richards',
+  },
+};
 
 export const sampleDirectionsQuestionnaireDraftObj = {
   selfWitness: {
     option: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   otherWitnesses: {
     otherWitnesses: {
-      option: 'yes'
+      option: 'yes',
     },
-    howMany: 1
+    howMany: 1,
   },
   hearingLocation: {
     courtName: 'Little Whinging, Surrey',
     courtPostCode: undefined,
     courtAccepted: { option: 'yes' },
-    alternateCourtName: 'some other court name'
+    alternateCourtName: 'some other court name',
   },
   exceptionalCircumstances: {
     exceptionalCircumstances: { option: 'yes' },
-    reason: 'Poorly pet owl'
+    reason: 'Poorly pet owl',
   },
   availability: {
     hasUnavailableDates: true,
     unavailableDates: [
       { year: 2020, month: 1, day: 4 },
-      { year: 2020, month: 2, day: 8 }
-    ]
+      { year: 2020, month: 2, day: 8 },
+    ],
   },
   supportRequired: {
     languageSelected: true,
@@ -711,70 +711,70 @@ export const sampleDirectionsQuestionnaireDraftObj = {
     hearingLoopSelected: true,
     disabledAccessSelected: true,
     otherSupportSelected: true,
-    otherSupport: 'Life advice'
+    otherSupport: 'Life advice',
   },
   expertRequired: {
     option: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   expertReports: {
     declared: true,
     rows: [
       {
         expertName: 'Prof. McGonagall',
-        reportDate: { year: 2018, month: 1, day: 10 }
+        reportDate: { year: 2018, month: 1, day: 10 },
       },
       {
         expertName: 'Mr Rubeus Hagrid',
-        reportDate: { year: 2019, month: 2, day: 27 }
-      }
-    ]
+        reportDate: { year: 2019, month: 2, day: 27 },
+      },
+    ],
   },
   permissionForExpert: {
     option: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   expertEvidence: {
     expertEvidence: {
-      option: 'yes'
+      option: 'yes',
     },
-    whatToExamine: 'Photographs'
+    whatToExamine: 'Photographs',
   },
   whyExpertIsNeeded: {
-    explanation: 'for expert opinion'
-  }
-}
+    explanation: 'for expert opinion',
+  },
+};
 
 export const sampleDirectionsQuestionnaireNearestCourtDraftObj = {
   selfWitness: {
     option: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   otherWitnesses: {
     otherWitnesses: {
-      option: 'yes'
+      option: 'yes',
     },
-    howMany: 1
+    howMany: 1,
   },
   hearingLocation: {
     courtName: 'Birmingham District Probate Registry',
     courtPostCode: undefined,
     courtAccepted: { option: 'yes' },
-    alternativeOption: 'nearestCourtSelected'
+    alternativeOption: 'nearestCourtSelected',
   },
   exceptionalCircumstances: {
     exceptionalCircumstances: { option: 'yes' },
-    reason: 'Poorly pet owl'
+    reason: 'Poorly pet owl',
   },
   availability: {
     hasUnavailableDates: true,
     unavailableDates: [
       { year: 2020, month: 1, day: 4 },
-      { year: 2020, month: 2, day: 8 }
-    ]
+      { year: 2020, month: 2, day: 8 },
+    ],
   },
   supportRequired: {
     languageSelected: true,
@@ -784,53 +784,53 @@ export const sampleDirectionsQuestionnaireNearestCourtDraftObj = {
     hearingLoopSelected: true,
     disabledAccessSelected: true,
     otherSupportSelected: true,
-    otherSupport: 'Life advice'
+    otherSupport: 'Life advice',
   },
   expertRequired: {
     option: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   expertReports: {
     declared: true,
     rows: [
       {
         expertName: 'Prof. McGonagall',
-        reportDate: { year: 2018, month: 1, day: 10 }
+        reportDate: { year: 2018, month: 1, day: 10 },
       },
       {
         expertName: 'Mr Rubeus Hagrid',
-        reportDate: { year: 2019, month: 2, day: 27 }
-      }
-    ]
+        reportDate: { year: 2019, month: 2, day: 27 },
+      },
+    ],
   },
   permissionForExpert: {
     option: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   expertEvidence: {
     expertEvidence: {
-      option: 'yes'
+      option: 'yes',
     },
-    whatToExamine: 'Photographs'
+    whatToExamine: 'Photographs',
   },
   whyExpertIsNeeded: {
-    explanation: 'for expert opinion'
-  }
-}
+    explanation: 'for expert opinion',
+  },
+};
 
 export const sampleDirectionsQuestionnaireDraftAltCourtObj = {
   selfWitness: {
     option: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   otherWitnesses: {
     otherWitnesses: {
-      option: 'yes'
+      option: 'yes',
     },
-    howMany: 1
+    howMany: 1,
   },
   hearingLocation: {
     courtName: 'Birmingham District Probate Registry',
@@ -838,18 +838,18 @@ export const sampleDirectionsQuestionnaireDraftAltCourtObj = {
     courtAccepted: { option: 'yes' },
     alternativeOption: 'search',
     alternativeCourtName: 'Birmingham District Probate Registry',
-    alternativePostcode: 'AB1 2CD'
+    alternativePostcode: 'AB1 2CD',
   },
   exceptionalCircumstances: {
     exceptionalCircumstances: { option: 'yes' },
-    reason: 'Poorly pet owl'
+    reason: 'Poorly pet owl',
   },
   availability: {
     hasUnavailableDates: true,
     unavailableDates: [
       { year: 2020, month: 1, day: 4 },
-      { year: 2020, month: 2, day: 8 }
-    ]
+      { year: 2020, month: 2, day: 8 },
+    ],
   },
   supportRequired: {
     languageSelected: true,
@@ -859,53 +859,53 @@ export const sampleDirectionsQuestionnaireDraftAltCourtObj = {
     hearingLoopSelected: true,
     disabledAccessSelected: true,
     otherSupportSelected: true,
-    otherSupport: 'Life advice'
+    otherSupport: 'Life advice',
   },
   expertRequired: {
     option: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   expertReports: {
     declared: true,
     rows: [
       {
         expertName: 'Prof. McGonagall',
-        reportDate: { year: 2018, month: 1, day: 10 }
+        reportDate: { year: 2018, month: 1, day: 10 },
       },
       {
         expertName: 'Mr Rubeus Hagrid',
-        reportDate: { year: 2019, month: 2, day: 27 }
-      }
-    ]
+        reportDate: { year: 2019, month: 2, day: 27 },
+      },
+    ],
   },
   permissionForExpert: {
     option: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   expertEvidence: {
     expertEvidence: {
-      option: 'yes'
+      option: 'yes',
     },
-    whatToExamine: 'Photographs'
+    whatToExamine: 'Photographs',
   },
   whyExpertIsNeeded: {
-    explanation: 'for expert opinion'
-  }
-}
+    explanation: 'for expert opinion',
+  },
+};
 
 export const sampleDirectionsQuestionnaireDraftWithNameObj = {
   selfWitness: {
     option: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   otherWitnesses: {
     otherWitnesses: {
-      option: 'yes'
+      option: 'yes',
     },
-    howMany: 1
+    howMany: 1,
   },
   hearingLocation: {
     courtName: 'Birmingham District Probate Registry',
@@ -919,18 +919,18 @@ export const sampleDirectionsQuestionnaireDraftWithNameObj = {
     searchParam: undefined,
     nearestCourt: undefined,
     searchLoop: undefined,
-    searchType: undefined
+    searchType: undefined,
   },
   exceptionalCircumstances: {
     exceptionalCircumstances: { option: 'yes' },
-    reason: 'Poorly pet owl'
+    reason: 'Poorly pet owl',
   },
   availability: {
     hasUnavailableDates: true,
     unavailableDates: [
       { year: 2020, month: 1, day: 4 },
-      { year: 2020, month: 2, day: 8 }
-    ]
+      { year: 2020, month: 2, day: 8 },
+    ],
   },
   supportRequired: {
     languageSelected: true,
@@ -940,107 +940,107 @@ export const sampleDirectionsQuestionnaireDraftWithNameObj = {
     hearingLoopSelected: true,
     disabledAccessSelected: true,
     otherSupportSelected: true,
-    otherSupport: 'Life advice'
+    otherSupport: 'Life advice',
   },
   expertRequired: {
     option: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   expertReports: {
     declared: true,
     rows: [
       {
         expertName: 'Prof. McGonagall',
-        reportDate: { year: 2018, month: 1, day: 10 }
+        reportDate: { year: 2018, month: 1, day: 10 },
       },
       {
         expertName: 'Mr Rubeus Hagrid',
-        reportDate: { year: 2019, month: 2, day: 27 }
-      }
-    ]
+        reportDate: { year: 2019, month: 2, day: 27 },
+      },
+    ],
   },
   permissionForExpert: {
     option: {
-      option: 'yes'
-    }
+      option: 'yes',
+    },
   },
   expertEvidence: {
     expertEvidence: {
-      option: 'yes'
+      option: 'yes',
     },
-    whatToExamine: 'Photographs'
+    whatToExamine: 'Photographs',
   },
   whyExpertIsNeeded: {
-    explanation: 'for expert opinion'
-  }
-}
+    explanation: 'for expert opinion',
+  },
+};
 
 export const sampleOrdersDraftObj = {
   externalId: 'fe6e9413-e804-48d5-bbfd-645917fc46e5',
-  disagreeReason: { reason: 'I want a judge to review it' }
-}
+  disagreeReason: { reason: 'I want a judge to review it' },
+};
 
-export function resolveFind (draftType: string, draftOverride?: object): mock.Scope {
-  let documentDocument: object
+export function resolveFind(draftType: string, draftOverride?: object): mock.Scope {
+  let documentDocument: object;
 
   switch (draftType) {
     case 'claim':
-      documentDocument = { ...sampleClaimDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleClaimDraftObj, ...draftOverride };
+      break;
     case 'bs':
-      documentDocument = { ...sampleClaimDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleClaimDraftObj, ...draftOverride };
+      break;
     case 'claim:ioc':
-      documentDocument = { ...sampleClaimDraftObjIOC, ...draftOverride }
-      break
+      documentDocument = { ...sampleClaimDraftObjIOC, ...draftOverride };
+      break;
     case 'claim:company':
-      documentDocument = { ...sampleCompanyClaimDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleCompanyClaimDraftObj, ...draftOverride };
+      break;
     case 'claim:companyAsDefendant':
-      documentDocument = { ...sampleCompanyAsDefendantClaimDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleCompanyAsDefendantClaimDraftObj, ...draftOverride };
+      break;
     case 'response':
-      documentDocument = { ...sampleResponseDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleResponseDraftObj, ...draftOverride };
+      break;
     case 'response:company':
-      documentDocument = { ...sampleCompanyResponseDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleCompanyResponseDraftObj, ...draftOverride };
+      break;
     case 'response:full-admission':
-      documentDocument = { ...sampleFullAdmissionResponseDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleFullAdmissionResponseDraftObj, ...draftOverride };
+      break;
     case 'response:partial-admission':
-      documentDocument = { ...samplePartialAdmissionResponseDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...samplePartialAdmissionResponseDraftObj, ...draftOverride };
+      break;
     case 'response:full-rejection':
-      documentDocument = { ...sampleFullRejectionDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleFullRejectionDraftObj, ...draftOverride };
+      break;
     case 'ccj':
-      documentDocument = { ...sampleCCJDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleCCJDraftObj, ...draftOverride };
+      break;
     case 'claimantResponse':
-      documentDocument = { ...sampleClaimantResponseDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleClaimantResponseDraftObj, ...draftOverride };
+      break;
     case 'mediation':
-      documentDocument = { ...sampleMediationDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleMediationDraftObj, ...draftOverride };
+      break;
     case 'directionsQuestionnaire':
-      documentDocument = { ...sampleDirectionsQuestionnaireDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleDirectionsQuestionnaireDraftObj, ...draftOverride };
+      break;
     case 'directionsQuestionnaire:altCourt':
-      documentDocument = { ...sampleDirectionsQuestionnaireDraftAltCourtObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleDirectionsQuestionnaireDraftAltCourtObj, ...draftOverride };
+      break;
     case 'directionsQuestionnaire:name':
-      documentDocument = { ...sampleDirectionsQuestionnaireDraftWithNameObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleDirectionsQuestionnaireDraftWithNameObj, ...draftOverride };
+      break;
     case 'directionsQuestionnaire:nearestCourt':
-      documentDocument = { ...sampleDirectionsQuestionnaireNearestCourtDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleDirectionsQuestionnaireNearestCourtDraftObj, ...draftOverride };
+      break;
     case 'orders':
-      documentDocument = { ...sampleOrdersDraftObj, ...draftOverride }
-      break
+      documentDocument = { ...sampleOrdersDraftObj, ...draftOverride };
+      break;
     default:
-      documentDocument = { ...draftOverride }
+      documentDocument = { ...draftOverride };
   }
 
   return mock(serviceBaseURL)
@@ -1051,12 +1051,12 @@ export function resolveFind (draftType: string, draftOverride?: object): mock.Sc
         type: draftType.split(':')[0],
         document: documentDocument,
         created: '2017-10-01T12:00:00.000',
-        updated: '2017-10-01T12:01:00.000'
-      }]
-    })
+        updated: '2017-10-01T12:01:00.000',
+      }],
+    });
 }
 
-export function resolveFindAllDrafts (): mock.Scope {
+export function resolveFindAllDrafts(): mock.Scope {
   return mock(serviceBaseURL)
     .get(new RegExp('/drafts.*'))
     .reply(HttpStatus.OK, {
@@ -1065,84 +1065,84 @@ export function resolveFindAllDrafts (): mock.Scope {
         type: 'claim',
         document: sampleClaimDraftObj,
         created: '2017-10-01T12:00:00.000',
-        updated: '2017-10-01T12:01:00.000'
+        updated: '2017-10-01T12:01:00.000',
       }, {
         id: 201,
         type: 'response',
         document: {
           ...sampleResponseDraftObj,
-          ...sampleFullAdmissionResponseDraftObj
+          ...sampleFullAdmissionResponseDraftObj,
         },
         created: '2017-10-02T12:00:00.000',
-        updated: '2017-10-02T12:01:00.000'
+        updated: '2017-10-02T12:01:00.000',
       }, {
         id: 203,
         type: 'ccj',
         document: sampleCCJDraftObj,
         created: '2017-10-03T12:00:00.000',
-        updated: '2017-10-03T12:01:00.000'
+        updated: '2017-10-03T12:01:00.000',
       }, {
         id: 204,
         type: 'claimantResponse',
         document: sampleClaimantResponseDraftObj,
         created: '2017-10-03T12:00:00.000',
-        updated: '2017-10-03T12:01:00.000'
+        updated: '2017-10-03T12:01:00.000',
       }, {
         id: 205,
         type: 'paid-in-full',
         document: samplePaidInFullDraftObj,
         created: '2017-10-03T12:00:00.000',
-        updated: '2017-10-03T12:01:00.000'
-      }]
-    })
+        updated: '2017-10-03T12:01:00.000',
+      }],
+    });
 }
 
-export function resolveFindNoDraftFound (): mock.Scope {
+export function resolveFindNoDraftFound(): mock.Scope {
   return mock(serviceBaseURL)
     .get(new RegExp('/drafts.*'))
     .reply(HttpStatus.OK, {
-      data: []
-    })
+      data: [],
+    });
 }
 
-export function rejectFind (reason: string = 'HTTP error'): mock.Scope {
+export function rejectFind(reason: string = 'HTTP error'): mock.Scope {
   return mock(serviceBaseURL)
     .get(new RegExp('/drafts.*'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveUpdate (id: number = 100): mock.Scope {
+export function resolveUpdate(id: number = 100): mock.Scope {
   return mock(serviceBaseURL)
     .put(`/drafts/${id}`)
-    .reply(HttpStatus.OK)
+    .reply(HttpStatus.OK);
 }
 
-export function resolveSave (id: number = 100): mock.Scope {
+export function resolveSave(id: number = 100): mock.Scope {
   return mock(serviceBaseURL)
     .post(`/drafts`)
-    .reply(HttpStatus.OK, sampleOrdersDraftObj)
+    .reply(HttpStatus.OK, sampleOrdersDraftObj);
 }
 
-export function rejectSave (id: number = 100, reason: string = 'HTTP error'): mock.Scope {
+export function rejectSave(id: number = 100, reason: string = 'HTTP error'): mock.Scope {
   return mock(serviceBaseURL)
     .post(`/drafts`)
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function rejectUpdate (id: number = 100, reason: string = 'HTTP error'): mock.Scope {
+export function rejectUpdate(id: number = 100, reason: string = 'HTTP error'): mock.Scope {
   return mock(serviceBaseURL)
     .put(`/drafts/${id}`)
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveDelete (id: number = 100): mock.Scope {
+export function resolveDelete(id: number = 100): mock.Scope {
   return mock(serviceBaseURL)
     .delete(`/drafts/${id}`)
-    .reply(HttpStatus.OK)
+    .reply(HttpStatus.OK);
 }
 
-export function rejectDelete (id: number = 100, reason: string = 'HTTP error'): mock.Scope {
+export function rejectDelete(id: number = 100, reason: string = 'HTTP error'): mock.Scope {
   return mock(serviceBaseURL)
     .delete(`/drafts/${id}`)
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }

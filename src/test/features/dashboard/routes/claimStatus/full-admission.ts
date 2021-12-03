@@ -1,18 +1,18 @@
-import { expect } from 'chai'
-import * as request from 'supertest'
-import * as config from 'config'
+import { expect } from 'chai';
+import * as request from 'supertest';
+import * as config from 'config';
 
-import { attachDefaultHooks } from 'test/routes/hooks'
-import 'test/routes/expectations'
+import { attachDefaultHooks } from 'test/routes/hooks';
+import 'test/routes/expectations';
 
-import { Paths } from 'dashboard/paths'
+import { Paths } from 'dashboard/paths';
 
-import { app } from 'main/app'
+import { app } from 'main/app';
 
-import * as idamServiceMock from 'test/http-mocks/idam'
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store'
-import { MomentFactory } from 'shared/momentFactory'
-import { NumberFormatter } from 'utils/numberFormatter'
+import * as idamServiceMock from 'test/http-mocks/idam';
+import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { MomentFactory } from 'shared/momentFactory';
+import { NumberFormatter } from 'utils/numberFormatter';
 
 import {
   baseFullAdmissionData,
@@ -20,47 +20,46 @@ import {
   basePayBySetDateData,
   basePayImmediatelyData,
   basePayImmediatelyDatePastData,
-  baseResponseData
-} from 'test/data/entity/responseData'
+  baseResponseData,
+} from 'test/data/entity/responseData';
 
 import {
-  claimantReferredToJudgeResponse,
-  claimantReferredToJudgeResponseForInstalments,
   claimantAcceptRepaymentPlan,
-  settlementOfferBySetDate,
-  settlementOfferByInstalments,
-  settlementOfferAcceptBySetDate,
-  settlementOfferAcceptInInstalment,
-  settledWithAgreementBySetDate,
-  settledWithAgreementInInstalments,
-  settledWithAgreementBySetDatePastPaymentDeadline,
-  settledWithAgreementInInstalmentsPastPaymentDeadline,
-  defendantRejectedSettlementOfferAcceptBySetDate,
-  defendantRejectedSettlementOfferAcceptInInstalments,
   claimantAcceptRepaymentPlanByDetermination,
   claimantAcceptRepaymentPlanInInstalmentsByDetermination,
-  defendantOffersSettlementByInstalments
+  claimantReferredToJudgeResponse,
+  claimantReferredToJudgeResponseForInstalments,
+  defendantOffersSettlementByInstalments,
+  defendantRejectedSettlementOfferAcceptBySetDate,
+  defendantRejectedSettlementOfferAcceptInInstalments,
+  settledWithAgreementBySetDate,
+  settledWithAgreementBySetDatePastPaymentDeadline,
+  settledWithAgreementInInstalments,
+  settledWithAgreementInInstalmentsPastPaymentDeadline,
+  settlementOfferAcceptBySetDate,
+  settlementOfferAcceptInInstalment,
+  settlementOfferByInstalments,
+  settlementOfferBySetDate,
+} from 'test/data/entity/fullAdmission';
 
-} from 'test/data/entity/fullAdmission'
-
-const cookieName: string = config.get<string>('session.cookieName')
+const cookieName: string = config.get<string>('session.cookieName');
 
 const fullAdmissionClaim = {
   ...claimStoreServiceMock.sampleClaimObj,
   responseDeadline: MomentFactory.currentDate().add(5, 'days'),
   response: {
     ...baseResponseData,
-    ...baseFullAdmissionData
-  }
-}
+    ...baseFullAdmissionData,
+  },
+};
 
-function testData () {
+function testData() {
   return [
     {
       status: 'Full admission - defendant responded pay immediately',
       claim: fullAdmissionClaim,
       claimOverride: {
-        response: { ...fullAdmissionClaim.response, ...basePayImmediatelyData() }
+        response: { ...fullAdmissionClaim.response, ...basePayImmediatelyData() },
       },
       claimantAssertions: [
         'The defendant said they’ll pay you immediately',
@@ -70,7 +69,7 @@ function testData () {
         'You can settle for less than the full claim amount.',
         'If you haven’t been paid',
         `If the defendant has not paid you`,
-        'request a County Court Judgment.'
+        'request a County Court Judgment.',
       ],
       defendantAssertions: [
         'Your response to the claim',
@@ -78,15 +77,15 @@ function testData () {
         'If you pay by cheque or transfer the money must be clear in their account.',
         'If they don’t receive the money by then, they can request a County Court Judgment against you.',
         'you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay immediately - past payment deadline',
       claim: fullAdmissionClaim,
       claimOverride: {
         response: { ...fullAdmissionClaim.response, ...basePayImmediatelyDatePastData() },
-        responseDeadline: MomentFactory.currentDate().subtract(1, 'days')
+        responseDeadline: MomentFactory.currentDate().subtract(1, 'days'),
       },
       claimantAssertions: [
         'The defendant said they’ll pay you immediately',
@@ -96,7 +95,7 @@ function testData () {
         'You can settle for less than the full claim amount.',
         'If you haven’t been paid',
         'If the defendant has not paid you, you can',
-        'request a County Court Judgment'
+        'request a County Court Judgment',
       ],
       defendantAssertions: [
         'Your response to the claim',
@@ -104,40 +103,40 @@ function testData () {
         'If you pay by cheque or transfer the money must be clear in their account.',
         'If they don’t receive the money by then, they can request a County Court Judgment against you.',
         'you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay by set date',
       claim: fullAdmissionClaim,
       claimOverride: {
         response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
-        ...settlementOfferBySetDate()
+        ...settlementOfferBySetDate(),
       },
       claimantAssertions: [
         `The defendant has offered to pay by`,
         'View and respond to the offer',
         'If you’ve been paid',
-        'Tell us you’ve settled'
+        'Tell us you’ve settled',
       ],
       defendantAssertions: [
         'Your response to the claim',
         `You’ve offered to pay ${fullAdmissionClaim.claim.claimants[0].name} by`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay by set date - claimant rejects repayment plan and referred to judge',
       claim: fullAdmissionClaim,
       claimOverride: {
         response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
-        claimantResponse: { ...claimantReferredToJudgeResponse() }
+        claimantResponse: { ...claimantReferredToJudgeResponse() },
       },
       claimantAssertions: [
         'Wait for a judge to review the case',
         'You’ve rejected the defendant’s repayment plan and haven’t been able to agree to an alternative plan.',
         'A judge will review the case. We’ll contact you by post to tell you what to do next.',
-        'Your online account won’t be updated - any further updates will be by post.'
+        'Your online account won’t be updated - any further updates will be by post.',
       ],
       defendantAssertions: [
         'Wait for a judge to make a repayment plan',
@@ -147,8 +146,8 @@ function testData () {
         `When we’ve processed the request we’ll post a copy of the judgment to you and to ${fullAdmissionClaim.claim.claimants[0].name}.`,
         'A judge will make a repayment plan. We’ll contact you by post to tell you what to do next.',
         'Your online account won’t be updated - any further updates will be by post.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay by set date - claimant accepts repayment plan by admission and offered a settlement agreement',
@@ -157,7 +156,7 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
         claimantRespondedAt: MomentFactory.currentDate(),
         claimantResponse: { ...claimantAcceptRepaymentPlan },
-        ...settlementOfferAcceptBySetDate()
+        ...settlementOfferAcceptBySetDate(),
       },
       claimantAssertions: [
         'You’ve signed a settlement agreement',
@@ -165,14 +164,14 @@ function testData () {
         'They must respond by',
         'We’ll email you when they respond.',
         'If you’ve been paid',
-        'Tell us you’ve settled'
+        'Tell us you’ve settled',
       ],
       defendantAssertions: [
         `${fullAdmissionClaim.claim.claimants[0].name} asked you to sign a settlement agreement`,
         'They accepted your repayment plan and asked you to sign a settlement agreement to formalise it.',
         'View the repayment plan',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay by set date - claimant accepts repayment plan by admission and offered a settlement agreement - defendant past counter signature deadline',
@@ -181,21 +180,21 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
         claimantRespondedAt: MomentFactory.currentDate().subtract(8, 'days'),
         claimantResponse: { ...claimantAcceptRepaymentPlan },
-        ...settlementOfferAcceptBySetDate()
+        ...settlementOfferAcceptBySetDate(),
       },
       claimantAssertions: [
         'The defendant has not signed your settlement agreement',
         `${fullAdmissionClaim.claim.defendants[0].name} can still sign the settlement agreement until you request a CCJ.`,
         'Request a County Court Judgment',
         'If you’ve been paid',
-        'Tell us you’ve settled'
+        'Tell us you’ve settled',
       ],
       defendantAssertions: [
         `${fullAdmissionClaim.claim.claimants[0].name} asked you to sign a settlement agreement`,
         'They accepted your repayment plan and asked you to sign a settlement agreement to formalise it.',
         'View the repayment plan',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay by set date - claimant accepts repayment plan by admission and offered a settlement agreement - defendant signed settlement agreement',
@@ -204,20 +203,20 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
         claimantRespondedAt: MomentFactory.currentDate(),
         claimantResponse: { ...claimantAcceptRepaymentPlan },
-        ...settledWithAgreementBySetDate()
+        ...settledWithAgreementBySetDate(),
       },
       claimantAssertions: [
         'You’ve both signed a settlement agreement',
         'The agreement says the defendant will pay you in full by',
         'Download the settlement agreement',
-        'Tell us you’ve settled'
+        'Tell us you’ve settled',
       ],
       defendantAssertions: [
         'You’ve both signed a settlement agreement',
         'Download the settlement agreement',
         `Contact ${fullAdmissionClaim.claim.claimants[0].name}`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay by set date - claimant accepts repayment plan by admission and offered a settlement agreement - defendant signed settlement agreement - past payment deadline',
@@ -226,7 +225,7 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
         claimantRespondedAt: MomentFactory.currentDate().subtract(8, 'days'),
         claimantResponse: { ...claimantAcceptRepaymentPlan },
-        ...settledWithAgreementBySetDatePastPaymentDeadline()
+        ...settledWithAgreementBySetDatePastPaymentDeadline(),
       },
       claimantAssertions: [
         'You’ve both signed a settlement agreement',
@@ -234,14 +233,14 @@ function testData () {
         'Download the settlement agreement',
         'Tell us you’ve settled',
         'Request County Court Judgment',
-        'request a County Court Judgment'
+        'request a County Court Judgment',
       ],
       defendantAssertions: [
         'You’ve both signed a settlement agreement',
         'Download the settlement agreement',
         `Contact ${fullAdmissionClaim.claim.claimants[0].name}`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay by set date - claimant accepts repayment plan by admission and offered a settlement agreement - defendant rejects settlement agreement',
@@ -250,18 +249,18 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
         claimantRespondedAt: MomentFactory.currentDate().subtract(8, 'days'),
         claimantResponse: { ...claimantAcceptRepaymentPlan },
-        ...defendantRejectedSettlementOfferAcceptBySetDate()
+        ...defendantRejectedSettlementOfferAcceptBySetDate(),
       },
       claimantAssertions: [
         `The defendant has rejected your settlement agreement`,
-        'Request a County Court Judgment (CCJ)'
+        'Request a County Court Judgment (CCJ)',
       ],
       defendantAssertions: [
         'You rejected the settlement agreement',
         `${fullAdmissionClaim.claim.claimants[0].name} can request a County Court Judgment (CCJ) against you.`,
         `If ${fullAdmissionClaim.claim.claimants[0].name} requests a CCJ, you can ask a judge to consider changing the plan, based on your financial details.`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay by set date - claimant accepts repayment plan by determination and offered a settlement agreement',
@@ -270,20 +269,20 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
         claimantRespondedAt: MomentFactory.currentDate(),
         claimantResponse: { ...claimantAcceptRepaymentPlanByDetermination() },
-        ...settlementOfferAcceptBySetDate()
+        ...settlementOfferAcceptBySetDate(),
       },
       claimantAssertions: [
         'You’ve signed a settlement agreement',
         `We’ve emailed ${fullAdmissionClaim.claim.defendants[0].name} the repayment plan and the settlement agreement for them to sign.`,
         'They must respond by ',
-        'We’ll email you when they respond.'
+        'We’ll email you when they respond.',
       ],
       defendantAssertions: [
         `${fullAdmissionClaim.claim.claimants[0].name} rejected your repayment plan.`,
         'They accepted a new repayment plan determined by the court, based on the financial details you provided.',
         'View the repayment plan',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay by set date - claimant accepts repayment plan by determination and offered a settlement agreement - defendant past counter signature deadline',
@@ -292,19 +291,19 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
         claimantRespondedAt: MomentFactory.currentDate().subtract(8, 'days'),
         claimantResponse: { ...claimantAcceptRepaymentPlanByDetermination() },
-        ...settlementOfferAcceptBySetDate()
+        ...settlementOfferAcceptBySetDate(),
       },
       claimantAssertions: [
         'The defendant has not signed your settlement agreement',
         `${fullAdmissionClaim.claim.defendants[0].name} can still sign the settlement agreement until you request a CCJ.`,
-        'Request a County Court Judgment'
+        'Request a County Court Judgment',
       ],
       defendantAssertions: [
         `${fullAdmissionClaim.claim.claimants[0].name} asked you to sign a settlement agreement`,
         'They accepted your repayment plan and asked you to sign a settlement agreement to formalise it.',
         'View the repayment plan',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay by set date - claimant accepts repayment plan by determination and offered a settlement agreement - defendant signed settlement agreement',
@@ -313,20 +312,20 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
         claimantRespondedAt: MomentFactory.currentDate(),
         claimantResponse: { ...claimantAcceptRepaymentPlanByDetermination() },
-        ...settledWithAgreementBySetDate()
+        ...settledWithAgreementBySetDate(),
       },
       claimantAssertions: [
         'You’ve both signed a settlement agreement',
         'The agreement says the defendant will pay you in full by',
         'Download the settlement agreement',
-        'Tell us you’ve settled'
+        'Tell us you’ve settled',
       ],
       defendantAssertions: [
         'You’ve both signed a settlement agreement',
         'Download the settlement agreement',
         `Contact ${fullAdmissionClaim.claim.claimants[0].name}`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay by set date - claimant accepts repayment plan by determination and offered a settlement agreement - defendant signed settlement agreement - past payment deadline',
@@ -335,7 +334,7 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
         claimantRespondedAt: MomentFactory.currentDate().subtract(8, 'days'),
         claimantResponse: { ...claimantAcceptRepaymentPlanByDetermination() },
-        ...settledWithAgreementBySetDatePastPaymentDeadline()
+        ...settledWithAgreementBySetDatePastPaymentDeadline(),
       },
       claimantAssertions: [
         'You’ve both signed a settlement agreement',
@@ -343,14 +342,14 @@ function testData () {
         'Download the settlement agreement',
         'Tell us you’ve settled',
         'Request County Court Judgment',
-        'request a County Court Judgment'
+        'request a County Court Judgment',
       ],
       defendantAssertions: [
         'You’ve both signed a settlement agreement',
         'Download the settlement agreement',
         `Contact ${fullAdmissionClaim.claim.claimants[0].name}`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay by set date - claimant accepts repayment plan by determination and offered a settlement agreement - defendant rejects settlement agreement',
@@ -359,50 +358,50 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
         claimantRespondedAt: MomentFactory.currentDate().subtract(8, 'days'),
         claimantResponse: { ...claimantAcceptRepaymentPlanByDetermination() },
-        ...defendantRejectedSettlementOfferAcceptBySetDate()
+        ...defendantRejectedSettlementOfferAcceptBySetDate(),
       },
       claimantAssertions: [
         `The defendant has rejected your settlement agreement`,
-        'Request a County Court Judgment (CCJ)'
+        'Request a County Court Judgment (CCJ)',
       ],
       defendantAssertions: [
         'You rejected the settlement agreement',
         `${fullAdmissionClaim.claim.claimants[0].name} can request a County Court Judgment (CCJ) against you.`,
         `If ${fullAdmissionClaim.claim.claimants[0].name} requests a CCJ, you can ask a judge to consider changing the plan, based on your financial details.`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay in instalments',
       claim: fullAdmissionClaim,
       claimOverride: {
         response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
-        ...settlementOfferByInstalments()
+        ...settlementOfferByInstalments(),
       },
       claimantAssertions: [
         'The defendant has offered to pay in instalments',
         'View and respond to the offer',
         'If you’ve been paid',
-        'Tell us you’ve settled'
+        'Tell us you’ve settled',
       ],
       defendantAssertions: [
         'Your response to the claim',
         `You’ve offered to pay ${fullAdmissionClaim.claim.claimants[0].name} ${NumberFormatter.formatMoney(basePayByInstalmentsData.paymentIntention.repaymentPlan.instalmentAmount)} every week starting`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay in instalments - claimant rejects repayment plan and referred to judge',
       claim: fullAdmissionClaim,
       claimOverride: {
         response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
-        claimantResponse: { ...claimantReferredToJudgeResponseForInstalments() }
+        claimantResponse: { ...claimantReferredToJudgeResponseForInstalments() },
       },
       claimantAssertions: [
         'Wait for a judge to review the case',
         'You’ve rejected the defendant’s repayment plan and haven’t been able to agree to an alternative plan.',
         'A judge will review the case. We’ll contact you by post to tell you what to do next.',
-        'Your online account won’t be updated - any further updates will be by post.'
+        'Your online account won’t be updated - any further updates will be by post.',
       ],
       defendantAssertions: [
         'Wait for a judge to make a repayment plan',
@@ -412,8 +411,8 @@ function testData () {
         `When we’ve processed the request we’ll post a copy of the judgment to you and to ${fullAdmissionClaim.claim.claimants[0].name}.`,
         'We’ll contact you by post to tell you what to do next.',
         'Your online account won’t be updated - any further updates will be by post.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay in instalments - claimant accepts repayment plan by admission and offered a settlement agreement',
@@ -422,7 +421,7 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
         claimantRespondedAt: MomentFactory.currentDate(),
         claimantResponse: { ...claimantAcceptRepaymentPlan },
-        ...settlementOfferAcceptInInstalment()
+        ...settlementOfferAcceptInInstalment(),
       },
       claimantAssertions: [
         'You’ve signed a settlement agreement',
@@ -430,14 +429,14 @@ function testData () {
         'They must respond by',
         'We’ll email you when they respond.',
         'If you’ve been paid',
-        'Tell us you’ve settled'
+        'Tell us you’ve settled',
       ],
       defendantAssertions: [
         `${fullAdmissionClaim.claim.claimants[0].name} asked you to sign a settlement agreement`,
         'They accepted your repayment plan and asked you to sign a settlement agreement to formalise it.',
         'View the repayment plan',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay in instalments - claimant accepts repayment plan by admission and offered a settlement agreement - defendant past counter signature deadline',
@@ -446,21 +445,21 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
         claimantRespondedAt: MomentFactory.currentDate().subtract(8, 'days'),
         claimantResponse: { ...claimantAcceptRepaymentPlan },
-        ...settlementOfferAcceptInInstalment()
+        ...settlementOfferAcceptInInstalment(),
       },
       claimantAssertions: [
         'The defendant has not signed your settlement agreement',
         `${fullAdmissionClaim.claim.defendants[0].name} can still sign the settlement agreement until you request a CCJ.`,
         'Request a County Court Judgment',
         'If you’ve been paid',
-        'Tell us you’ve settled'
+        'Tell us you’ve settled',
       ],
       defendantAssertions: [
         `${fullAdmissionClaim.claim.claimants[0].name} asked you to sign a settlement agreement`,
         'They accepted your repayment plan and asked you to sign a settlement agreement to formalise it.',
         'View the repayment plan',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay in instalments - claimant accepts repayment plan by admission and offered a settlement agreement - defendant signed settlement agreement',
@@ -469,21 +468,21 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
         claimantRespondedAt: MomentFactory.currentDate(),
         claimantResponse: { ...claimantAcceptRepaymentPlan },
-        ...settledWithAgreementInInstalments()
+        ...settledWithAgreementInInstalments(),
       },
       claimantAssertions: [
         'You’ve both signed a settlement agreement',
         `The agreement says the defendant will pay you in instalments of ${NumberFormatter.formatMoney(defendantOffersSettlementByInstalments()[0].offer.paymentIntention.repaymentPlan.instalmentAmount)} every month starting`,
         'Download the settlement agreement',
-        'Tell us you’ve settled'
+        'Tell us you’ve settled',
       ],
       defendantAssertions: [
         'You’ve both signed a settlement agreement',
         `The agreement says you’ll repay ${NumberFormatter.formatMoney(defendantOffersSettlementByInstalments()[0].offer.paymentIntention.repaymentPlan.instalmentAmount)} every month starting`,
         'Download the settlement agreement',
         `Contact ${fullAdmissionClaim.claim.claimants[0].name}`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay in instalments - claimant accepts repayment plan by admission and offered a settlement agreement - defendant signed settlement agreement - past payment deadline',
@@ -492,7 +491,7 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
         claimantRespondedAt: MomentFactory.currentDate().subtract(8, 'days'),
         claimantResponse: { ...claimantAcceptRepaymentPlan },
-        ...settledWithAgreementInInstalmentsPastPaymentDeadline()
+        ...settledWithAgreementInInstalmentsPastPaymentDeadline(),
       },
       claimantAssertions: [
         'You’ve both signed a settlement agreement',
@@ -500,14 +499,14 @@ function testData () {
         'Download the settlement agreement',
         'Tell us you’ve settled',
         'Request County Court Judgment',
-        'request a County Court Judgment'
+        'request a County Court Judgment',
       ],
       defendantAssertions: [
         'You’ve both signed a settlement agreement',
         'Download the settlement agreement',
         `Contact ${fullAdmissionClaim.claim.claimants[0].name}`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay in instalments - claimant accepts repayment plan by admission and offered a settlement agreement - defendant rejects settlement agreement',
@@ -516,18 +515,18 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
         claimantRespondedAt: MomentFactory.currentDate(),
         claimantResponse: { ...claimantAcceptRepaymentPlan },
-        ...defendantRejectedSettlementOfferAcceptInInstalments()
+        ...defendantRejectedSettlementOfferAcceptInInstalments(),
       },
       claimantAssertions: [
         `The defendant has rejected your settlement agreement`,
-        'Request a County Court Judgment (CCJ)'
+        'Request a County Court Judgment (CCJ)',
       ],
       defendantAssertions: [
         'You rejected the settlement agreement',
         `${fullAdmissionClaim.claim.claimants[0].name} can request a County Court Judgment (CCJ) against you.`,
         `If ${fullAdmissionClaim.claim.claimants[0].name} requests a CCJ, you can ask a judge to consider changing the plan, based on your financial details.`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay in instalments - claimant accepts repayment plan by determination and offered a settlement agreement',
@@ -536,20 +535,20 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
         claimantRespondedAt: MomentFactory.currentDate(),
         claimantResponse: { ...claimantAcceptRepaymentPlanInInstalmentsByDetermination() },
-        ...settlementOfferAcceptInInstalment()
+        ...settlementOfferAcceptInInstalment(),
       },
       claimantAssertions: [
         'You’ve signed a settlement agreement',
         `We’ve emailed ${fullAdmissionClaim.claim.defendants[0].name} the repayment plan and the settlement agreement for them to sign.`,
         'They must respond by',
-        'We’ll email you when they respond.'
+        'We’ll email you when they respond.',
       ],
       defendantAssertions: [
         `${fullAdmissionClaim.claim.claimants[0].name} rejected your repayment plan.`,
         'They accepted a new repayment plan determined by the court, based on the financial details you provided.',
         'View the repayment plan',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay in instalments - claimant accepts repayment plan by determination and offered a settlement agreement - defendant past counter signature deadline',
@@ -558,19 +557,19 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
         claimantRespondedAt: MomentFactory.currentDate().subtract(8, 'days'),
         claimantResponse: { ...claimantAcceptRepaymentPlanInInstalmentsByDetermination() },
-        ...settlementOfferAcceptInInstalment()
+        ...settlementOfferAcceptInInstalment(),
       },
       claimantAssertions: [
         'The defendant has not signed your settlement agreement',
         `${fullAdmissionClaim.claim.defendants[0].name} can still sign the settlement agreement until you request a CCJ.`,
-        'Request a County Court Judgment'
+        'Request a County Court Judgment',
       ],
       defendantAssertions: [
         `${fullAdmissionClaim.claim.claimants[0].name} asked you to sign a settlement agreement`,
         'They accepted your repayment plan and asked you to sign a settlement agreement to formalise it.',
         'View the repayment plan',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay in instalments - claimant accepts repayment plan by determination and offered a settlement agreement - defendant signed settlement agreement',
@@ -579,21 +578,21 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
         claimantRespondedAt: MomentFactory.currentDate(),
         claimantResponse: { ...claimantAcceptRepaymentPlanInInstalmentsByDetermination() },
-        ...settledWithAgreementInInstalments()
+        ...settledWithAgreementInInstalments(),
       },
       claimantAssertions: [
         'You’ve both signed a settlement agreement',
         `The agreement says the defendant will pay you in instalments of ${NumberFormatter.formatMoney(defendantOffersSettlementByInstalments()[0].offer.paymentIntention.repaymentPlan.instalmentAmount)} every month starting`,
         'Download the settlement agreement',
-        'Tell us you’ve settled'
+        'Tell us you’ve settled',
       ],
       defendantAssertions: [
         'You’ve both signed a settlement agreement',
         `The agreement says you’ll repay ${NumberFormatter.formatMoney(defendantOffersSettlementByInstalments()[0].offer.paymentIntention.repaymentPlan.instalmentAmount)} every month starting`,
         'Download the settlement agreement',
         `Contact ${fullAdmissionClaim.claim.claimants[0].name}`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay in instalments - claimant accepts repayment plan by determination and offered a settlement agreement - defendant signed settlement agreement - past payment deadline',
@@ -602,7 +601,7 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
         claimantRespondedAt: MomentFactory.currentDate().subtract(8, 'days'),
         claimantResponse: { ...claimantAcceptRepaymentPlanInInstalmentsByDetermination() },
-        ...settledWithAgreementInInstalmentsPastPaymentDeadline()
+        ...settledWithAgreementInInstalmentsPastPaymentDeadline(),
       },
       claimantAssertions: [
         'You’ve both signed a settlement agreement',
@@ -610,14 +609,14 @@ function testData () {
         'Download the settlement agreement',
         'Tell us you’ve settled',
         'Request County Court Judgment',
-        'request a County Court Judgment'
+        'request a County Court Judgment',
       ],
       defendantAssertions: [
         'You’ve both signed a settlement agreement',
         'Download the settlement agreement',
         `Contact ${fullAdmissionClaim.claim.claimants[0].name}`,
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'Full admission - defendant responded pay in instalments - claimant accepts repayment plan by determination and offered a settlement agreement - defendant rejects settlement agreement',
@@ -626,63 +625,63 @@ function testData () {
         response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
         claimantRespondedAt: MomentFactory.currentDate().subtract(8, 'days'),
         claimantResponse: { ...claimantAcceptRepaymentPlanInInstalmentsByDetermination() },
-        ...defendantRejectedSettlementOfferAcceptInInstalments()
+        ...defendantRejectedSettlementOfferAcceptInInstalments(),
       },
       claimantAssertions: [
         `The defendant has rejected your settlement agreement`,
-        'Request a County Court Judgment (CCJ)'
+        'Request a County Court Judgment (CCJ)',
       ],
       defendantAssertions: [
         'You rejected the settlement agreement',
         `${fullAdmissionClaim.claim.claimants[0].name} can request a County Court Judgment (CCJ) against you.`,
         `If ${fullAdmissionClaim.claim.claimants[0].name} requests a CCJ, you can ask a judge to consider changing the plan, based on your financial details.`,
-        'Download your response'
-      ]
-    }
-  ]
+        'Download your response',
+      ],
+    },
+  ];
 }
 
-const claimPagePath = Paths.claimantPage.evaluateUri({ externalId: fullAdmissionClaim.externalId })
-const defendantPagePath = Paths.defendantPage.evaluateUri({ externalId: fullAdmissionClaim.externalId })
+const claimPagePath = Paths.claimantPage.evaluateUri({ externalId: fullAdmissionClaim.externalId });
+const defendantPagePath = Paths.defendantPage.evaluateUri({ externalId: fullAdmissionClaim.externalId });
 
 describe('Dashboard page full admission claim status', () => {
-  attachDefaultHooks(app)
+  attachDefaultHooks(app);
 
   describe('on GET', () => {
     context('when user authorised', () => {
       context('Claim Status', () => {
         context('as a claimant', () => {
           beforeEach(() => {
-            idamServiceMock.resolveRetrieveUserFor('1', 'citizen')
-          })
+            idamServiceMock.resolveRetrieveUserFor('1', 'citizen');
+          });
 
           testData().forEach(data => {
             it(`should render claim status: ${data.status}`, async () => {
-              claimStoreServiceMock.resolveRetrieveByExternalId(data.claim, data.claimOverride)
+              claimStoreServiceMock.resolveRetrieveByExternalId(data.claim, data.claimOverride);
               await request(app)
                 .get(claimPagePath)
                 .set('Cookie', `${cookieName} = ABC`)
-                .expect(res => expect(res).to.be.successful.withText(...data.claimantAssertions))
-            })
-          })
-        })
+                .expect(res => expect(res).to.be.successful.withText(...data.claimantAssertions));
+            });
+          });
+        });
 
         context('as a defendant', () => {
           beforeEach(() => {
-            idamServiceMock.resolveRetrieveUserFor('123', 'citizen')
-          })
+            idamServiceMock.resolveRetrieveUserFor('123', 'citizen');
+          });
 
           testData().forEach(data => {
             it(`should render dashboard: ${data.status}`, async () => {
-              claimStoreServiceMock.resolveRetrieveByExternalId(data.claim, data.claimOverride)
+              claimStoreServiceMock.resolveRetrieveByExternalId(data.claim, data.claimOverride);
               await request(app)
                 .get(defendantPagePath)
                 .set('Cookie', `${cookieName} = ABC`)
-                .expect(res => expect(res).to.be.successful.withText(...data.defendantAssertions))
-            })
-          })
-        })
-      })
-    })
-  })
-})
+                .expect(res => expect(res).to.be.successful.withText(...data.defendantAssertions));
+            });
+          });
+        });
+      });
+    });
+  });
+});

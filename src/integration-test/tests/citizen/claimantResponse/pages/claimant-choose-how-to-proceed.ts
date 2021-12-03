@@ -1,26 +1,26 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const fields = {
   radioSettlement: 'input[id=optionsignSettlementAgreement]',
-  radioRequestCcj: 'input[id=optionrequestCCJ]'
-}
+  radioRequestCcj: 'input[id=optionrequestCCJ]',
+};
 
 const buttons = {
-  saveAndContinue: 'input[id=saveAndContinue]'
-}
+  saveAndContinue: 'input[id=saveAndContinue]',
+};
 
 export class ClaimantChooseHowToProceed {
 
-  chooseSettlement (): void {
-    I.checkOption(fields.radioSettlement)
-    I.click(buttons.saveAndContinue)
+  chooseSettlement(): void {
+    I.checkOption(fields.radioSettlement);
+    I.click(buttons.saveAndContinue);
   }
 
-  chooseRequestCcj (): void {
-    I.checkOption(fields.radioRequestCcj)
-    I.click(buttons.saveAndContinue)
+  chooseRequestCcj(): void {
+    I.checkOption(fields.radioRequestCcj);
+    I.click(buttons.saveAndContinue);
   }
 
 }

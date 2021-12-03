@@ -1,22 +1,22 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const fields = {
-  text: 'textarea[id=text]'
-}
+  text: 'textarea[id=text]',
+};
 
 const buttons = {
-  submit: 'input[id="saveAndContinue"]'
-}
+  submit: 'input[id="saveAndContinue"]',
+};
 
 export class ExplanationPage {
 
-  enterExplanation (text: string): void {
-    I.fillField(fields.text, text)
+  enterExplanation(text: string): void {
+    I.fillField(fields.text, text);
   }
 
-  clickContinue (): void {
-    I.click(buttons.submit)
+  clickContinue(): void {
+    I.click(buttons.submit);
   }
 }

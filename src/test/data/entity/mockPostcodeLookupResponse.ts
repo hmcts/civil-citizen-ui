@@ -9,7 +9,7 @@ export const mockPostcodeLookupResponse = {
     'lr': 'EN,CY',
     'maxresults': 100,
     'epoch': '64',
-    'output_srs': 'EPSG:27700'
+    'output_srs': 'EPSG:27700',
   },
   'results': [
     {
@@ -38,8 +38,8 @@ export const mockPostcodeLookupResponse = {
         'ENTRY_DATE': '19/03/2001',
         'LANGUAGE': 'EN',
         'MATCH': 1,
-        'MATCH_DESCRIPTION': 'EXACT'
-      }
+        'MATCH_DESCRIPTION': 'EXACT',
+      },
     },
     {
       'DPA': {
@@ -67,11 +67,11 @@ export const mockPostcodeLookupResponse = {
         'ENTRY_DATE': '19/03/2001',
         'LANGUAGE': 'EN',
         'MATCH': 1,
-        'MATCH_DESCRIPTION': 'EXACT'
-      }
-    }
-  ]
-}
+        'MATCH_DESCRIPTION': 'EXACT',
+      },
+    },
+  ],
+};
 
 export const mockScottishPostcodeLookupResponse = {
   'header': {
@@ -84,7 +84,7 @@ export const mockScottishPostcodeLookupResponse = {
     'lr': 'EN,CY',
     'maxresults': 100,
     'epoch': '64',
-    'output_srs': 'EPSG:27700'
+    'output_srs': 'EPSG:27700',
   },
   'results': [
     {
@@ -115,8 +115,8 @@ export const mockScottishPostcodeLookupResponse = {
         'BLPU_STATE_DATE': '01/03/1991',
         'LANGUAGE': 'EN',
         'MATCH': 1,
-        'MATCH_DESCRIPTION': 'EXACT'
-      }
+        'MATCH_DESCRIPTION': 'EXACT',
+      },
     },
     {
       'DPA': {
@@ -147,8 +147,8 @@ export const mockScottishPostcodeLookupResponse = {
         'BLPU_STATE_DATE': '01/03/1991',
         'LANGUAGE': 'EN',
         'MATCH': 1,
-        'MATCH_DESCRIPTION': 'EXACT'
-      }
-    }
-  ]
-}
+        'MATCH_DESCRIPTION': 'EXACT',
+      },
+    },
+  ],
+};

@@ -1,14 +1,14 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const buttons = {
-  submit: 'input[type=submit]'
-}
+  submit: 'input[type=submit]',
+};
 
 export class StartPage {
 
-  clickContinue (): void {
-    I.click(buttons.submit)
+  clickContinue(): void {
+    I.click(buttons.submit);
   }
 }

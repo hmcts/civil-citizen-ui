@@ -1,9 +1,9 @@
-import { Expose } from 'class-transformer'
+import { Expose } from 'class-transformer';
 
 export class FeeOutcome {
-  readonly code: string
-  readonly description: string
+  readonly code: string;
+  readonly description: string;
   @Expose({ name: 'fee_amount' })
-  readonly amount: number
-  readonly version: number | string // fees use number, pay use string
+  readonly amount: number;
+  readonly version: number | string; // fees use number, pay use string
 }

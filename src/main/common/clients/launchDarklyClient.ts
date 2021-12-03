@@ -1,43 +1,43 @@
-import * as config from 'config'
-import { User } from 'idam/user'
-import * as ld from 'ldclient-node'
+import * as config from 'config';
+import { User } from 'idam/user';
+import * as ld from 'ldclient-node';
 
-const sdkKey: string = config.get<string>('secrets.cmc.launchDarkly-sdk-key')
+const sdkKey: string = config.get<string>('secrets.cmc.launchDarkly-sdk-key');
 const ldConfig = {
-  offline: config.get<boolean>('launchDarkly.offline')
-}
+  offline: config.get<boolean>('launchDarkly.offline'),
+};
 
 export class LaunchDarklyClient {
-  private static client: ld.LDClient
+  private static client: ld.LDClient;
 
-  constructor () {
-    LaunchDarklyClient.initClient()
+  constructor() {
+    LaunchDarklyClient.initClient();
   }
 
-  static initClient () {
+  static initClient() {
     if (!LaunchDarklyClient.client) {
-      LaunchDarklyClient.client = ld.init(sdkKey, ldConfig)
+      LaunchDarklyClient.client = ld.init(sdkKey, ldConfig);
     }
   }
 
-  async userVariation (user: User, roles: string[], featureKey: string, offlineDefault): Promise<ld.LDFlagValue> {
+  async userVariation(user: User, roles: string[], featureKey: string, offlineDefault): Promise<ld.LDFlagValue> {
     const ldUser: ld.LDUser = {
       key: user.id,
       custom: {
-        roles
-      }
-    }
-    return LaunchDarklyClient.client.variation(featureKey, ldUser, offlineDefault)
+        roles,
+      },
+    };
+    return LaunchDarklyClient.client.variation(featureKey, ldUser, offlineDefault);
   }
 
-  async serviceVariation (featureKey: string, offlineDefault): Promise<ld.LDFlagValue> {
-    const roles: string[] = []
+  async serviceVariation(featureKey: string, offlineDefault): Promise<ld.LDFlagValue> {
+    const roles: string[] = [];
     const ldUser: ld.LDUser = {
       key: 'citizen-frontend',
       custom: {
-        roles
-      }
-    }
-    return LaunchDarklyClient.client.variation(featureKey, ldUser, offlineDefault)
+        roles,
+      },
+    };
+    return LaunchDarklyClient.client.variation(featureKey, ldUser, offlineDefault);
   }
 }

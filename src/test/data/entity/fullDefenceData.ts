@@ -1,112 +1,112 @@
-import { MomentFactory } from 'shared/momentFactory'
+import { MomentFactory } from 'shared/momentFactory';
 
-export function respondedAt () {
+export function respondedAt() {
   return {
-    respondedAt: MomentFactory.currentDate()
-  }
+    respondedAt: MomentFactory.currentDate(),
+  };
 }
 
-export function claimantRejectAlreadyPaid () {
+export function claimantRejectAlreadyPaid() {
   return {
     claimantResponse: {
       freeMediation: 'no',
       settleForAmount: 'no',
-      type: 'REJECTION'
+      type: 'REJECTION',
     },
-    claimantRespondedAt: MomentFactory.currentDate()
-  }
+    claimantRespondedAt: MomentFactory.currentDate(),
+  };
 }
 
-export function claimantRejectAlreadyPaidWithMediation () {
+export function claimantRejectAlreadyPaidWithMediation() {
   return {
     claimantResponse: {
       freeMediation: 'yes',
       settleForAmount: 'no',
-      type: 'REJECTION'
+      type: 'REJECTION',
     },
-    claimantRespondedAt: MomentFactory.currentDate()
-  }
+    claimantRespondedAt: MomentFactory.currentDate(),
+  };
 }
 
-export function directionsQuestionnaireDeadline () {
+export function directionsQuestionnaireDeadline() {
   return {
-    directionsQuestionnaireDeadline: MomentFactory.currentDate().add(19, 'days')
-  }
+    directionsQuestionnaireDeadline: MomentFactory.currentDate().add(19, 'days'),
+  };
 }
 
-export function intentionToProceedDeadline () {
+export function intentionToProceedDeadline() {
   return {
-    intentionToProceedDeadline: MomentFactory.currentDateTime().subtract(1, 'days')
-  }
+    intentionToProceedDeadline: MomentFactory.currentDateTime().subtract(1, 'days'),
+  };
 }
 
-function defendantOffersSettlement () {
+function defendantOffersSettlement() {
   return [{
     type: 'OFFER',
     madeBy: 'DEFENDANT',
     offer: {
       content: 'test',
-      completionDate: MomentFactory.currentDate().add(1, 'day')
-    }
-  }]
+      completionDate: MomentFactory.currentDate().add(1, 'day'),
+    },
+  }];
 }
 
 const claimantAcceptOffer = [{
   madeBy: 'CLAIMANT',
-  type: 'ACCEPTATION'
-}]
+  type: 'ACCEPTATION',
+}];
 
 const claimantRejectOffer = [{
   madeBy: 'CLAIMANT',
-  type: 'REJECTION'
-}]
+  type: 'REJECTION',
+}];
 
 const defendantCounterSign = [{
   madeBy: 'DEFENDANT',
-  type: 'COUNTERSIGNATURE'
-}]
+  type: 'COUNTERSIGNATURE',
+}];
 
-export function settledWithAgreement () {
+export function settledWithAgreement() {
   return {
     settlement: {
       partyStatements: [
         ...defendantOffersSettlement(),
         ...claimantAcceptOffer,
-        ...defendantCounterSign
-      ]
+        ...defendantCounterSign,
+      ],
     },
-    settlementReachedAt: MomentFactory.currentDate()
-  }
+    settlementReachedAt: MomentFactory.currentDate(),
+  };
 }
 
-export function settlementOfferAccept () {
+export function settlementOfferAccept() {
   return {
     settlement: {
       partyStatements: [
         ...defendantOffersSettlement(),
-        ...claimantAcceptOffer
-      ]
-    }
-  }
+        ...claimantAcceptOffer,
+      ],
+    },
+  };
 }
 
-export function settlementOfferReject () {
+export function settlementOfferReject() {
   return {
     settlement: {
       partyStatements: [
         ...defendantOffersSettlement(),
-        ...claimantRejectOffer
-      ]
-    }
-  }
+        ...claimantRejectOffer,
+      ],
+    },
+  };
 }
 
-export function settlementOffer () {
+export function settlementOffer() {
   return {
     settlement: {
       partyStatements: [
-        ...defendantOffersSettlement()
-      ]
-    }
-  }
+        ...defendantOffersSettlement(),
+      ],
+    },
+  };
 }

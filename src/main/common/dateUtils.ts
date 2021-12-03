@@ -1,5 +1,5 @@
-import { MomentFactory } from 'shared/momentFactory'
+import { MomentFactory } from 'shared/momentFactory';
 
-export function isAfter4pm (): boolean {
-  return MomentFactory.currentDateTime().hour() > 15
+export function isAfter4pm(): boolean {
+  return MomentFactory.currentDateTime().hour() > 15;
 }

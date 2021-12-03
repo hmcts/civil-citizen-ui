@@ -1,10 +1,10 @@
-import { Address as FormAddress } from 'forms/models/address'
-import { Address } from 'claims/models/address'
+import { Address as FormAddress } from 'forms/models/address';
+import { Address } from 'claims/models/address';
 
-export function convertAddress (addressForm: FormAddress) {
+export function convertAddress(addressForm: FormAddress) {
 
-  const address: Address = new Address()
-  Object.assign(address, addressForm)
+  const address: Address = new Address();
+  Object.assign(address, addressForm);
 
-  return address
+  return address;
 }

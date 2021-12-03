@@ -6,7 +6,7 @@ export const mockCountryLookupResponse = {
     'maxresults': 1,
     'offset': 0,
     'totalresults': 2039,
-    'filter': 'fq=LOCAL_TYPE:Postcode'
+    'filter': 'fq=LOCAL_TYPE:Postcode',
   },
   'results': [
     {
@@ -32,11 +32,11 @@ export const mockCountryLookupResponse = {
         'REGION': 'London',
         'REGION_URI': 'http://data.ordnancesurvey.co.uk/id/7000000000041428',
         'COUNTRY': 'England',
-        'COUNTRY_URI': 'http://data.ordnancesurvey.co.uk/id/country/england'
-      }
-    }
-  ]
-}
+        'COUNTRY_URI': 'http://data.ordnancesurvey.co.uk/id/country/england',
+      },
+    },
+  ],
+};
 
 export const mockScottishCountryLookupResponse = {
   'header': {
@@ -46,7 +46,7 @@ export const mockScottishCountryLookupResponse = {
     'maxresults': 1,
     'offset': 0,
     'totalresults': 1842,
-    'filter': 'fq=LOCAL_TYPE:Postcode'
+    'filter': 'fq=LOCAL_TYPE:Postcode',
   },
   'results': [
     {
@@ -69,8 +69,8 @@ export const mockScottishCountryLookupResponse = {
         'REGION': 'Scotland',
         'REGION_URI': 'http://data.ordnancesurvey.co.uk/id/7000000000041429',
         'COUNTRY': 'Scotland',
-        'COUNTRY_URI': 'http://data.ordnancesurvey.co.uk/id/country/scotland'
-      }
-    }
-  ]
-}
+        'COUNTRY_URI': 'http://data.ordnancesurvey.co.uk/id/country/scotland',
+      },
+    },
+  ],
+};

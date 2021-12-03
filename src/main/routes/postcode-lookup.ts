@@ -1,46 +1,46 @@
-import * as express from 'express'
-import { AddressInfoResponse } from '@hmcts/os-places-client'
+import * as express from 'express';
+import { AddressInfoResponse } from '@hmcts/os-places-client';
 
-import { Paths as AppPaths } from 'paths'
-import { Logger } from '@hmcts/nodejs-logging'
-import { ClientFactory } from 'postcode-lookup/clientFactory'
-import { trackCustomEvent } from 'logging/customEventTracker'
+import { Paths as AppPaths } from 'paths';
+import { Logger } from '@hmcts/nodejs-logging';
+import { ClientFactory } from 'postcode-lookup/clientFactory';
+import { trackCustomEvent } from 'logging/customEventTracker';
 
-const osPlacesClient = ClientFactory.createOSPlacesClient()
-const logger = Logger.getLogger('postcode-lookup')
+const osPlacesClient = ClientFactory.createOSPlacesClient();
+const logger = Logger.getLogger('postcode-lookup');
 
 /* tslint:disable:no-default-export */
 export default express.Router()
   .get(AppPaths.postcodeLookupProxy.uri, (req, res) => {
-    const postCodeValue = req.query.postcode as string
+    const postCodeValue = req.query.postcode as string;
     if (!req.query.postcode || !postCodeValue.trim()) {
       return res.status(400).json({
         error: {
           status: 400,
-          message: 'Postcode not provided'
-        }
-      })
+          message: 'Postcode not provided',
+        },
+      });
     }
     osPlacesClient.lookupByPostcodeAndDataSet(postCodeValue, 'DPA,LPI')
       .then((addressInfoResponse: AddressInfoResponse) => {
         addressInfoResponse.addresses
           = addressInfoResponse.addresses.filter((addresses, index, self) =>
             index === self.findIndex((t) =>
-              (t.formattedAddress === addresses.formattedAddress)
-            )
-          )
-        res.json(addressInfoResponse)
+              (t.formattedAddress === addresses.formattedAddress),
+            ),
+        );
+        res.json(addressInfoResponse);
       })
       .catch(err => {
         if (err.message === 'Authentication failed') {
-          trackCustomEvent(`Ordnance Survey keys stopped working`, { error: err })
+          trackCustomEvent(`Ordnance Survey keys stopped working`, { error: err });
         }
-        logger.error(err.stack)
+        logger.error(err.stack);
         res.status(500).json({
           error: {
             status: 500,
-            message: err.message
-          }
-        })
-      })
-  })
+            message: err.message,
+          },
+        });
+      });
+  });

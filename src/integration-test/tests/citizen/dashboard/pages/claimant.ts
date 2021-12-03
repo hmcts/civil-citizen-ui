@@ -1,14 +1,14 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const buttons = {
-  submit: 'input[type=submit]'
-}
+  submit: 'input[type=submit]',
+};
 
 export class ClaimantDashboardPage {
 
-  clickRequestCCJ (): void {
-    I.click(buttons.submit)
+  clickRequestCCJ(): void {
+    I.click(buttons.submit);
   }
 }

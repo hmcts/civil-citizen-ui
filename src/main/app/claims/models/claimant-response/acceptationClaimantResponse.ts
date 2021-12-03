@@ -1,9 +1,9 @@
-import { ClaimantResponseCommon } from 'claims/models/claimant-response/claimantResponseCommon'
-import { ClaimantResponseType } from 'claims/models/claimant-response/claimantResponseType'
-import { FormaliseOption } from 'claims/models/claimant-response/formaliseOption'
+import { ClaimantResponseCommon } from 'claims/models/claimant-response/claimantResponseCommon';
+import { ClaimantResponseType } from 'claims/models/claimant-response/claimantResponseType';
+import { FormaliseOption } from 'claims/models/claimant-response/formaliseOption';
 
-import { PaymentIntention } from 'claims/models/response/core/paymentIntention'
-import { CourtDetermination } from 'claims/models/claimant-response/court-determination/courtDetermination'
+import { PaymentIntention } from 'claims/models/response/core/paymentIntention';
+import { CourtDetermination } from 'claims/models/claimant-response/court-determination/courtDetermination';
 
 export interface AcceptationClaimantResponse extends ClaimantResponseCommon {
   type: ClaimantResponseType.ACCEPTATION
@@ -13,9 +13,9 @@ export interface AcceptationClaimantResponse extends ClaimantResponseCommon {
 }
 
 export namespace AcceptationClaimantResponse {
-  export function deserialize (input: any): AcceptationClaimantResponse {
+  export function deserialize(input: any): AcceptationClaimantResponse {
     if (!input) {
-      return input
+      return input;
     }
 
     return {
@@ -23,7 +23,7 @@ export namespace AcceptationClaimantResponse {
       type: ClaimantResponseType.ACCEPTATION,
       claimantPaymentIntention: PaymentIntention.deserialize(input.claimantPaymentIntention),
       courtDetermination: CourtDetermination.deserialize(input.courtDetermination),
-      formaliseOption: input.formaliseOption
-    }
+      formaliseOption: input.formaliseOption,
+    };
   }
 }

@@ -1,8 +1,8 @@
-import * as moment from 'moment'
-import { Address } from 'claims/models/address'
-import { YesNoOption } from 'models/yesNoOption'
-import { Direction } from 'claims/models/Direction'
-import { MomentFactory } from 'shared/momentFactory'
+import * as moment from 'moment';
+import { Address } from 'claims/models/address';
+import { YesNoOption } from 'models/yesNoOption';
+import { Direction } from 'claims/models/Direction';
+import { MomentFactory } from 'shared/momentFactory';
 
 export interface DirectionOrder {
   createdOn?: moment.Moment
@@ -20,9 +20,9 @@ export interface DirectionOrder {
 }
 
 export namespace DirectionOrder {
-  export function deserialize (input?: any): DirectionOrder {
+  export function deserialize(input?: any): DirectionOrder {
     if (!input) {
-      return input
+      return input;
     }
     return {
       createdOn: MomentFactory.parse(input.createdOn),
@@ -36,20 +36,20 @@ export namespace DirectionOrder {
       preferredCourtObjectingReason: input.preferredCourtObjectingReason,
       hearingCourt: input.hearingCourt,
       estimatedHearingDuration: input.estimatedHearingDuration,
-      postDocumentsLastDay: getPostDocumentsLastDay(input.directions)
-    }
+      postDocumentsLastDay: getPostDocumentsLastDay(input.directions),
+    };
   }
 
-  export function getPostDocumentsLastDay (directions: Direction[]): moment.Moment {
-    const directionActionedDates: moment.Moment[] = directions.map(direction => moment(direction.directionActionedDate))
-    return moment.max(directionActionedDates)
+  export function getPostDocumentsLastDay(directions: Direction[]): moment.Moment {
+    const directionActionedDates: moment.Moment[] = directions.map(direction => moment(direction.directionActionedDate));
+    return moment.max(directionActionedDates);
   }
 
-  export function isReviewOrderEligible (deadline: moment.Moment): boolean {
+  export function isReviewOrderEligible(deadline: moment.Moment): boolean {
     if (!deadline) {
-      return false
+      return false;
     }
 
-    return MomentFactory.currentDateTime().isBefore(deadline.set({ h: 16, m: 0 }))
+    return MomentFactory.currentDateTime().isBefore(deadline.set({ h: 16, m: 0 }));
   }
 }

@@ -1,42 +1,42 @@
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store'
-import { MomentFactory } from 'shared/momentFactory'
+import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { MomentFactory } from 'shared/momentFactory';
 
-export const claim = claimStoreServiceMock.sampleClaimIssueObj
+export const claim = claimStoreServiceMock.sampleClaimIssueObj;
 
-export function responses () {
+export function responses() {
   return {
     fullRejection: {
       response: claimStoreServiceMock.sampleFullDefenceRejectEntirely.response,
       respondedAt: MomentFactory.currentDateTime().subtract(10, 'days'),
-      directionsQuestionnaireDeadline: MomentFactory.currentDate().add(19, 'days')
+      directionsQuestionnaireDeadline: MomentFactory.currentDate().add(19, 'days'),
     },
     partialAdmission: {
       response: claimStoreServiceMock.samplePartialAdmissionWithPaymentBySetDateResponseObj.response,
-      respondedAt: MomentFactory.currentDateTime().subtract(10, 'days')
+      respondedAt: MomentFactory.currentDateTime().subtract(10, 'days'),
     },
     fullAdmission: {
       response: claimStoreServiceMock.sampleFullAdmissionWithPaymentBySetDateResponseObj.response,
-      respondedAt: MomentFactory.currentDateTime().subtract(10, 'days')
-    }
-  }
+      respondedAt: MomentFactory.currentDateTime().subtract(10, 'days'),
+    },
+  };
 }
 
-function dateIn3Months () {
-  return MomentFactory.currentDate().add(3, 'months')
+function dateIn3Months() {
+  return MomentFactory.currentDate().add(3, 'months');
 }
 
-function dateIn6Months () {
-  return MomentFactory.currentDate().add(6, 'months')
+function dateIn6Months() {
+  return MomentFactory.currentDate().add(6, 'months');
 }
 
-export function claimantResponses () {
+export function claimantResponses() {
   return {
     acceptBySettlement: {
       claimantResponse: {
         type: 'ACCEPTATION',
-        formaliseOption: 'SETTLEMENT'
+        formaliseOption: 'SETTLEMENT',
       },
-      claimantRespondedAt: MomentFactory.currentDateTime().toISOString()
+      claimantRespondedAt: MomentFactory.currentDateTime().toISOString(),
     },
     acceptWithNewPlan: {
       claimantResponse: {
@@ -46,20 +46,20 @@ export function claimantResponses () {
           decisionType: 'CLAIMANT',
           courtDecision: {
             paymentDate: dateIn6Months().toISOString(),
-            paymentOption: 'BY_SPECIFIED_DATE'
+            paymentOption: 'BY_SPECIFIED_DATE',
           },
           disposableIncome: 1749.1,
           courtPaymentIntention: {
             paymentDate: dateIn3Months().toISOString(),
-            paymentOption: 'BY_SPECIFIED_DATE'
-          }
+            paymentOption: 'BY_SPECIFIED_DATE',
+          },
         },
         claimantPaymentIntention: {
           paymentDate: dateIn6Months().toISOString(),
-          paymentOption: 'BY_SPECIFIED_DATE'
-        }
+          paymentOption: 'BY_SPECIFIED_DATE',
+        },
       },
-      claimantRespondedAt: MomentFactory.currentDate().toISOString()
+      claimantRespondedAt: MomentFactory.currentDate().toISOString(),
     },
     acceptsWithCourtPlan: {
       claimantResponse: {
@@ -74,26 +74,26 @@ export function claimantResponses () {
               completionDate: dateIn6Months().toISOString(),
               paymentSchedule: 'EVERY_MONTH',
               firstPaymentDate: dateIn3Months().toISOString(),
-              instalmentAmount: 49.1
-            }
+              instalmentAmount: 49.1,
+            },
           },
           disposableIncome: 49.1,
           courtPaymentIntention: {
             paymentDate: dateIn6Months().toISOString(),
-            paymentOption: 'BY_SPECIFIED_DATE'
-          }
+            paymentOption: 'BY_SPECIFIED_DATE',
+          },
         },
         claimantPaymentIntention: {
           paymentDate: dateIn3Months().toISOString(),
-          paymentOption: 'IMMEDIATELY'
-        }
+          paymentOption: 'IMMEDIATELY',
+        },
       },
-      claimantRespondedAt: MomentFactory.currentDate().toISOString()
-    }
-  }
+      claimantRespondedAt: MomentFactory.currentDate().toISOString(),
+    },
+  };
 }
 
-function partyStatement () {
+function partyStatement() {
   return {
     byDefendant: {
       offeringPaymentBySetDate: {
@@ -102,32 +102,32 @@ function partyStatement () {
           completionDate: dateIn3Months().toISOString(),
           paymentIntention: {
             paymentDate: dateIn3Months().toISOString(),
-            paymentOption: 'BY_SPECIFIED_DATE'
-          }
+            paymentOption: 'BY_SPECIFIED_DATE',
+          },
         },
-        madeBy: 'DEFENDANT'
+        madeBy: 'DEFENDANT',
       },
       offeringNonMonetarySettlement: {
         type: 'OFFER',
         offer: {
           content: 'I will send pigeons',
-          completionDate: dateIn3Months().toISOString()
+          completionDate: dateIn3Months().toISOString(),
         },
-        madeBy: 'DEFENDANT'
+        madeBy: 'DEFENDANT',
       },
       countersigning: {
         type: 'COUNTERSIGNATURE',
-        madeBy: 'DEFENDANT'
+        madeBy: 'DEFENDANT',
       },
       rejecting: {
         type: 'REJECTION',
-        madeBy: 'DEFENDANT'
-      }
+        madeBy: 'DEFENDANT',
+      },
     },
     byClaimant: {
       accepting: {
         type: 'ACCEPTATION',
-        madeBy: 'CLAIMANT'
+        madeBy: 'CLAIMANT',
       },
       offeringPaymentBySetDate: {
         type: 'OFFER',
@@ -135,11 +135,11 @@ function partyStatement () {
           completionDate: dateIn3Months().toISOString(),
           paymentIntention: {
             paymentDate: dateIn3Months().toISOString(),
-            paymentOption: 'BY_SPECIFIED_DATE'
-          }
+            paymentOption: 'BY_SPECIFIED_DATE',
+          },
         },
-        madeBy: 'CLAIMANT'
-      }
+        madeBy: 'CLAIMANT',
+      },
     },
     byCourt: {
       offeringPaymentByInstalments: {
@@ -153,78 +153,78 @@ function partyStatement () {
               completionDate: dateIn6Months().toISOString(),
               paymentSchedule: 'EVERY_MONTH',
               firstPaymentDate: dateIn3Months().toISOString(),
-              instalmentAmount: 49.1
-            }
-          }
+              instalmentAmount: 49.1,
+            },
+          },
         },
-        madeBy: 'COURT'
-      }
-    }
-  }
+        madeBy: 'COURT',
+      },
+    },
+  };
 }
 
-export function payBySetDateSettlementReachedPartyStatements () {
+export function payBySetDateSettlementReachedPartyStatements() {
   return {
     settlement: {
       partyStatements: [
         partyStatement().byDefendant.offeringPaymentBySetDate,
         partyStatement().byClaimant.accepting,
-        partyStatement().byDefendant.countersigning
-      ]
+        partyStatement().byDefendant.countersigning,
+      ],
     },
     settlementReachedAt: MomentFactory.currentDateTime(),
-    countyCourtJudgment: undefined
-  }
+    countyCourtJudgment: undefined,
+  };
 }
 
-export function nonMonetaryOfferAwaitingClaimantResponsePartyStatements () {
+export function nonMonetaryOfferAwaitingClaimantResponsePartyStatements() {
   return {
     settlement: {
       partyStatements: [
-        partyStatement().byDefendant.offeringNonMonetarySettlement
-      ]
+        partyStatement().byDefendant.offeringNonMonetarySettlement,
+      ],
     },
-    countyCourtJudgment: undefined
-  }
+    countyCourtJudgment: undefined,
+  };
 }
 
-export function nonMonetaryOfferSettlementReachedPartyStatements () {
+export function nonMonetaryOfferSettlementReachedPartyStatements() {
   return {
     settlement: {
       partyStatements: [
         partyStatement().byDefendant.offeringNonMonetarySettlement,
         partyStatement().byClaimant.accepting,
-        partyStatement().byDefendant.countersigning
-      ]
+        partyStatement().byDefendant.countersigning,
+      ],
     },
     settlementReachedAt: MomentFactory.currentDateTime(),
-    countyCourtJudgment: undefined
-  }
+    countyCourtJudgment: undefined,
+  };
 }
 
-export function defendantRejectsSettlementPartyStatements () {
+export function defendantRejectsSettlementPartyStatements() {
   return {
     settlement: {
       partyStatements: [
         partyStatement().byClaimant.offeringPaymentBySetDate,
         partyStatement().byClaimant.accepting,
-        partyStatement().byDefendant.rejecting
-      ]
+        partyStatement().byDefendant.rejecting,
+      ],
     },
     settlementReachedAt: MomentFactory.currentDateTime(),
-    countyCourtJudgment: undefined
-  }
+    countyCourtJudgment: undefined,
+  };
 }
 
-export function claimantAcceptsCourtOfferPartyStatements () {
+export function claimantAcceptsCourtOfferPartyStatements() {
   return {
     settlement: {
       partyStatements: [
         partyStatement().byCourt.offeringPaymentByInstalments,
-        partyStatement().byClaimant.accepting
-      ]
+        partyStatement().byClaimant.accepting,
+      ],
     },
     settlementReachedAt: undefined,
-    countyCourtJudgment: undefined
-  }
+    countyCourtJudgment: undefined,
+  };
 }

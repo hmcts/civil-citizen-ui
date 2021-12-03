@@ -1,134 +1,143 @@
 /* tslint:disable:no-unused-expression */
-import * as chai from 'chai'
-import * as sinon from 'sinon'
-import * as spies from 'sinon-chai'
+import * as chai from 'chai';
+import * as sinon from 'sinon';
+import * as spies from 'sinon-chai';
+import { RequestLoggingHandler } from 'logging/requestPromiseLoggingHandler';
+import { ApiLogger } from 'logging/apiLogger';
 
-chai.use(spies)
-const expect = chai.expect
-
-import { RequestLoggingHandler } from 'logging/requestPromiseLoggingHandler'
-import { ApiLogger } from 'logging/apiLogger'
+chai.use(spies);
+const expect = chai.expect;
 
 describe('RequestLoggingHandler', () => {
-  let handler
-  let proxy
-  let options
+  let handler;
+  let proxy;
+  let options;
 
   /* tslint:disable:no-empty allow empty for mocking */
   let requestPromise = {
-    get: (options) => { },
-    post: (options) => { },
-    put: (options) => { },
-    del: (options) => { },
-    delete: (options) => { },
-    patch: (options) => { },
-    head: (options) => { },
-    another: (options) => { }
-  }
+    get: (options) => {
+    },
+    post: (options) => {
+    },
+    put: (options) => {
+    },
+    del: (options) => {
+    },
+    delete: (options) => {
+    },
+    patch: (options) => {
+    },
+    head: (options) => {
+    },
+    another: (options) => {
+    },
+  };
 
   let apiLogger = {
-    logRequest: (requestData) => { },
-    logResponse: (responseData) => { }
-  }
+    logRequest: (requestData) => {
+    },
+    logResponse: (responseData) => {
+    },
+  };
   /* tslint:enable:no-empty */
 
   beforeEach(() => {
-    options = {}
-    handler = new RequestLoggingHandler(requestPromise, apiLogger as ApiLogger)
-    proxy = new Proxy(requestPromise, handler)
-  })
+    options = {};
+    handler = new RequestLoggingHandler(requestPromise, apiLogger as ApiLogger);
+    proxy = new Proxy(requestPromise, handler);
+  });
 
   it('should throw an error when initialised without request', () => {
-    expect(() => new RequestLoggingHandler(undefined)).to.throw(Error)
-  })
+    expect(() => new RequestLoggingHandler(undefined)).to.throw(Error);
+  });
 
   describe('request-promise http calls proxy', () => {
-    let logRequestCall
+    let logRequestCall;
 
     beforeEach(() => {
-      logRequestCall = sinon.spy(apiLogger, 'logRequest')
-    })
+      logRequestCall = sinon.spy(apiLogger, 'logRequest');
+    });
 
     afterEach(() => {
-      logRequestCall.restore()
-    })
+      logRequestCall.restore();
+    });
 
     const suiteParameters = [
       { paramName: 'options object', param: {} },
-      { paramName: 'uri string', param: 'http://local.instance/some/path' }
-    ]
+      { paramName: 'uri string', param: 'http://local.instance/some/path' },
+    ];
 
     suiteParameters.forEach((suite) => {
       describe(`when passed an ${suite.paramName}`, () => {
         it('should handle logging on a get call', () => {
-          proxy.get(suite.param)
-          expect(logRequestCall).to.have.been.called
-        })
+          proxy.get(suite.param);
+          expect(logRequestCall).to.have.been.called;
+        });
 
         it('should handle logging on a put call', () => {
-          proxy.put(suite.param)
-          expect(logRequestCall).to.have.been.called
-        })
+          proxy.put(suite.param);
+          expect(logRequestCall).to.have.been.called;
+        });
 
         it('should handle logging on a post call', () => {
-          proxy.post(suite.param)
-          expect(logRequestCall).to.have.been.called
-        })
+          proxy.post(suite.param);
+          expect(logRequestCall).to.have.been.called;
+        });
 
         it('should handle logging on a del call', () => {
-          proxy.del(suite.param)
-          expect(logRequestCall).to.have.been.called
-        })
+          proxy.del(suite.param);
+          expect(logRequestCall).to.have.been.called;
+        });
 
         it('should handle logging on a delete call', () => {
-          proxy.delete(suite.param)
-          expect(logRequestCall).to.have.been.called
-        })
+          proxy.delete(suite.param);
+          expect(logRequestCall).to.have.been.called;
+        });
 
         it('should handle logging on a patch call', () => {
-          proxy.patch(suite.param)
-          expect(logRequestCall).to.have.been.called
-        })
+          proxy.patch(suite.param);
+          expect(logRequestCall).to.have.been.called;
+        });
 
         it('should handle logging on a head call', () => {
-          proxy.head(suite.param)
-          expect(logRequestCall).to.have.been.called
-        })
+          proxy.head(suite.param);
+          expect(logRequestCall).to.have.been.called;
+        });
 
         it('should not handle logging on other calls', () => {
-          proxy.another(suite.param)
-          expect(logRequestCall).not.to.have.been.called
-        })
-      })
-    })
-  })
+          proxy.another(suite.param);
+          expect(logRequestCall).not.to.have.been.called;
+        });
+      });
+    });
+  });
 
   describe('handleLogging', () => {
-    let originalCallback
+    let originalCallback;
 
     beforeEach(() => {
-      originalCallback = sinon.spy()
-    })
+      originalCallback = sinon.spy();
+    });
 
     it('should assign a callback to the options object', () => {
-      handler.handleLogging('any', options)
+      handler.handleLogging('any', options);
       // tslint:disable:disable-next-line no-unused-expression allow chai to be used without ()
-      expect(options.callback).not.to.be.undefined
-    })
+      expect(options.callback).not.to.be.undefined;
+    });
 
     it('should override the originally assigned callback', () => {
-      options.callback = originalCallback
-      handler.handleLogging('any', options)
+      options.callback = originalCallback;
+      handler.handleLogging('any', options);
 
-      expect(options.callback).not.to.equal(originalCallback)
-    })
+      expect(options.callback).not.to.equal(originalCallback);
+    });
 
     it('should call the original callback defined in options object', () => {
-      options.callback = originalCallback
-      handler.handleLogging('any', options)
-      options.callback()
+      options.callback = originalCallback;
+      handler.handleLogging('any', options);
+      options.callback();
 
-      expect(originalCallback).to.have.been.called
-    })
-  })
-})
+      expect(originalCallback).to.have.been.called;
+    });
+  });
+});

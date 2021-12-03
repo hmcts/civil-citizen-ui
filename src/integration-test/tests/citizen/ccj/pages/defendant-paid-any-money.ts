@@ -1,42 +1,42 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const fields = {
   defendantPaidSomeMoney: {
     yes: 'input[id=optionyes]',
-    no: 'input[id=optionno]'
+    no: 'input[id=optionno]',
   },
 
-  paidAmount: 'input[id=amount]'
-}
+  paidAmount: 'input[id=amount]',
+};
 
 const buttons = {
-  submit: 'input[type=submit]'
-}
+  submit: 'input[type=submit]',
+};
 
 export class DefendantPaidAnyMoneyPage {
 
-  paidSome (): void {
-    I.checkOption(fields.defendantPaidSomeMoney.yes)
+  paidSome(): void {
+    I.checkOption(fields.defendantPaidSomeMoney.yes);
   }
 
-  notPaidSome (): void {
-    I.checkOption(fields.defendantPaidSomeMoney.no)
+  notPaidSome(): void {
+    I.checkOption(fields.defendantPaidSomeMoney.no);
   }
 
-  amountPaid (amountPaid: number): void {
-    I.fillField(fields.paidAmount, amountPaid.toString())
+  amountPaid(amountPaid: number): void {
+    I.fillField(fields.paidAmount, amountPaid.toString());
   }
 
-  defendantPaid (amount: number): void {
-    this.paidSome()
-    I.fillField(fields.paidAmount, amount.toString())
-    I.click(buttons.submit)
+  defendantPaid(amount: number): void {
+    this.paidSome();
+    I.fillField(fields.paidAmount, amount.toString());
+    I.click(buttons.submit);
   }
 
-  defendantNotPaid (): void {
-    this.notPaidSome()
-    I.click(buttons.submit)
+  defendantNotPaid(): void {
+    this.notPaidSome();
+    I.click(buttons.submit);
   }
 }

@@ -3,38 +3,38 @@ import {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
-  ValidatorConstraintInterface
-} from '@hmcts/class-validator'
+  ValidatorConstraintInterface,
+} from '@hmcts/class-validator';
 
-import { MomentFactory } from 'shared/momentFactory'
-import { LocalDate } from 'forms/models/localDate'
+import { MomentFactory } from 'shared/momentFactory';
+import { LocalDate } from 'forms/models/localDate';
 
 @ValidatorConstraint()
 export class DateNotInFutureConstraint implements ValidatorConstraintInterface {
-  validate (value: any, args?: ValidationArguments) {
+  validate(value: any, args?: ValidationArguments) {
     if (value === undefined) {
-      return true
+      return true;
     }
 
     if (!(value instanceof LocalDate)) {
-      return false
+      return false;
     }
 
-    const date = value.toMoment()
-    const now = MomentFactory.currentDate()
+    const date = value.toMoment();
+    const now = MomentFactory.currentDate();
 
-    return !date.isAfter(now)
+    return !date.isAfter(now);
   }
 }
 
-export function IsNotInFuture (validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+export function IsNotInFuture(validationOptions?: ValidationOptions) {
+  return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       constraints: [],
-      validator: DateNotInFutureConstraint
-    })
-  }
+      validator: DateNotInFutureConstraint,
+    });
+  };
 }

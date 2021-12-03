@@ -1,36 +1,36 @@
-import 'reflect-metadata'
-import { Payment } from 'payment-hub-client/payment'
-import { Fee } from 'payment-hub-client/fee'
-import { Expose, Type } from 'class-transformer'
+import 'reflect-metadata';
+import { Payment } from 'payment-hub-client/payment';
+import { Fee } from 'payment-hub-client/fee';
+import { Expose, Type } from 'class-transformer';
 
 export class PaymentRetrieveResponse extends Payment {
 
-  readonly description: string
+  readonly description: string;
 
-  readonly currency: string
+  readonly currency: string;
 
   @Expose({ name: 'ccd_case_number' })
-  readonly ccdCaseNumber?: string
+  readonly ccdCaseNumber?: string;
 
   @Expose({ name: 'case_reference' })
-  readonly caseReference: string
+  readonly caseReference: string;
 
-  readonly channel: string
+  readonly channel: string;
 
-  readonly method: string
+  readonly method: string;
 
   @Expose({ name: 'external_provider' })
-  readonly externalProvider: string
+  readonly externalProvider: string;
 
   @Expose({ name: 'external_reference' })
-  readonly externalReference: string
+  readonly externalReference: string;
 
   @Expose({ name: 'site_id' })
-  readonly siteId: string
+  readonly siteId: string;
 
   @Expose({ name: 'service_name' })
-  readonly serviceName: string
+  readonly serviceName: string;
 
   @Type(() => Fee)
-  readonly fees: Fee[]
+  readonly fees: Fee[];
 }

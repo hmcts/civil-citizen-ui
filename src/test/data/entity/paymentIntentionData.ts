@@ -1,34 +1,35 @@
-import { PaymentOption } from 'claims/models/paymentOption'
+import { PaymentOption } from 'claims/models/paymentOption';
 
 import {
-  weeklyRepaymentPlanData,
+  monthlyRepaymentPlanData,
   twoWeeklyRepaymentPlanData,
-  monthlyRepaymentPlanData } from 'test/data/entity/repaymentPlanData'
+  weeklyRepaymentPlanData,
+} from 'test/data/entity/repaymentPlanData';
 
 export const immediatelyPaymentIntentionData = {
-  paymentOption: PaymentOption.IMMEDIATELY
-}
+  paymentOption: PaymentOption.IMMEDIATELY,
+};
 
 export const bySetDatePaymentIntentionData = {
   paymentOption: PaymentOption.BY_SPECIFIED_DATE,
-  paymentDate: '2050-12-31T00:00:00.000'
-}
+  paymentDate: '2050-12-31T00:00:00.000',
+};
 
 const baseInstalmentPaymentIntentionData = {
-  paymentOption: PaymentOption.INSTALMENTS
-}
+  paymentOption: PaymentOption.INSTALMENTS,
+};
 
 export const weeklyInstalmentPaymentIntentionData = {
   ...baseInstalmentPaymentIntentionData,
-  repaymentPlan: weeklyRepaymentPlanData
-}
+  repaymentPlan: weeklyRepaymentPlanData,
+};
 
 export const twoWeeklyInstalmentPaymentIntentionData = {
   ...baseInstalmentPaymentIntentionData,
-  repaymentPlan: twoWeeklyRepaymentPlanData
-}
+  repaymentPlan: twoWeeklyRepaymentPlanData,
+};
 
 export const monthlyInstalmentPaymentIntentionData = {
   ...baseInstalmentPaymentIntentionData,
-  repaymentPlan: monthlyRepaymentPlanData
-}
+  repaymentPlan: monthlyRepaymentPlanData,
+};

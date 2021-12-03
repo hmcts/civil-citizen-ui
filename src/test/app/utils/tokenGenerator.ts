@@ -1,7 +1,7 @@
-import { expect } from 'chai'
+import { expect } from 'chai';
 
-import { BaseParameters } from '../../../main/app/utils/models/pcqParameters'
-import { TokenGenerator } from '../../../main/app/utils/tokenGenerator'
+import { BaseParameters } from '../../../main/app/utils/models/pcqParameters';
+import { TokenGenerator } from '../../../main/app/utils/tokenGenerator';
 
 describe('TokenGenerator', () => {
   describe('should generate the encrypted query string', () => {
@@ -13,10 +13,10 @@ describe('TokenGenerator', () => {
         pcqId: 'abc123',
         partyId: 'test@test.com',
         returnUrl: 'test.com',
-        language: 'en'
-      }
+        language: 'en',
+      };
 
-      expect(TokenGenerator.gen(params)).to.not.equal(null)
-    })
-  })
-})
+      expect(TokenGenerator.gen(params)).to.not.equal(null);
+    });
+  });
+});

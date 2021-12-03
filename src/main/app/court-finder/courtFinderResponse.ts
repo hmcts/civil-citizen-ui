@@ -1,16 +1,16 @@
-import { Court } from './court'
+import { Court } from './court';
 
 export class CourtFinderResponse {
 
-  public courts: Court[] = []
+  public courts: Court[] = [];
 
-  constructor (
+  constructor(
     public readonly statusCode: number,
-    public readonly valid: boolean
+    public readonly valid: boolean,
   ) {
   }
 
-  public addAll (additionalCourts: Court[]) {
-    this.courts.push(...additionalCourts)
+  public addAll(additionalCourts: Court[]) {
+    this.courts.push(...additionalCourts);
   }
 }

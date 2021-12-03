@@ -4,10 +4,10 @@
  * @param {string} referenceNumber the reference number
  * @returns {boolean} true if the number if a CMC reference number, false otherwise
  */
-export function isCMCReference (referenceNumber?: string): boolean {
+export function isCMCReference(referenceNumber?: string): boolean {
   if (!referenceNumber) {
-    return false
+    return false;
   }
 
-  return /^\d\d\dMC\d\d\d$/i.test(referenceNumber)
+  return /^\d\d\dMC\d\d\d$/i.test(referenceNumber);
 }

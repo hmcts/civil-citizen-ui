@@ -1,11 +1,11 @@
-import * as express from 'express'
+import * as express from 'express';
 
-import { Claim } from 'claims/models/claim'
-import { DocumentsClient } from 'documents/documentsClient'
+import { Claim } from 'claims/models/claim';
+import { DocumentsClient } from 'documents/documentsClient';
 
-import { DownloadUtils } from 'utils/downloadUtils'
+import { DownloadUtils } from 'utils/downloadUtils';
 
-const documentsClient: DocumentsClient = new DocumentsClient()
+const documentsClient: DocumentsClient = new DocumentsClient();
 
 export class SealedClaimPdfGenerator {
 
@@ -18,10 +18,10 @@ export class SealedClaimPdfGenerator {
    * @param {e.Response} res HTTP response
    * @returns {Promise<void>}
    */
-  static async requestHandler (req: express.Request, res: express.Response): Promise<void> {
-    const claim: Claim = res.locals.claim
+  static async requestHandler(req: express.Request, res: express.Response): Promise<void> {
+    const claim: Claim = res.locals.claim;
 
-    const pdf: Buffer = await documentsClient.getSealedClaimPDF(claim.externalId, res.locals.user.bearerToken)
-    DownloadUtils.downloadPDF(res, pdf, `${claim.claimNumber}-claim`)
+    const pdf: Buffer = await documentsClient.getSealedClaimPDF(claim.externalId, res.locals.user.bearerToken);
+    DownloadUtils.downloadPDF(res, pdf, `${claim.claimNumber}-claim`);
   }
 }

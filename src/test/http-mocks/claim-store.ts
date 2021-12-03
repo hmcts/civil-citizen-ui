@@ -1,14 +1,14 @@
-import * as config from 'config'
-import * as mock from 'nock'
-import * as HttpStatus from 'http-status-codes'
-import { StatementType } from 'features/offer/form/models/statementType'
-import { MadeBy } from 'claims/models/madeBy'
-import { InterestEndDateOption } from 'claim/form/models/interestEndDate'
-import { InterestDateType } from 'common/interestDateType'
-import { Interest } from 'claims/models/interest'
-import { InterestDate } from 'claims/models/interestDate'
-import { InterestType as ClaimInterestType } from 'claims/models/interestType'
-import { MomentFactory } from 'shared/momentFactory'
+import * as config from 'config';
+import * as mock from 'nock';
+import * as HttpStatus from 'http-status-codes';
+import { StatementType } from 'features/offer/form/models/statementType';
+import { MadeBy } from 'claims/models/madeBy';
+import { InterestEndDateOption } from 'claim/form/models/interestEndDate';
+import { InterestDateType } from 'common/interestDateType';
+import { Interest } from 'claims/models/interest';
+import { InterestDate } from 'claims/models/interestDate';
+import { InterestType as ClaimInterestType } from 'claims/models/interestType';
+import { MomentFactory } from 'shared/momentFactory';
 
 import {
   defenceWithDisputeData,
@@ -26,15 +26,15 @@ import {
   partialAdmissionWithImmediatePaymentData,
   partialAdmissionWithImmediatePaymentDataV2,
   partialAdmissionWithPaymentBySetDateCompanyData,
-  partialAdmissionWithSoMPaymentBySetDateData
-} from 'test/data/entity/responseData'
-import { PaymentOption } from 'claims/models/paymentOption'
-import { PaymentSchedule } from 'claims/models/response/core/paymentSchedule'
-import { organisation, organisationWithPhone } from 'test/data/entity/party'
-import { Moment } from 'moment'
+  partialAdmissionWithSoMPaymentBySetDateData,
+} from 'test/data/entity/responseData';
+import { PaymentOption } from 'claims/models/paymentOption';
+import { PaymentSchedule } from 'claims/models/response/core/paymentSchedule';
+import { organisation, organisationWithPhone } from 'test/data/entity/party';
+import { Moment } from 'moment';
 
-const serviceBaseURL: string = config.get<string>('claim-store.url')
-const externalIdPattern: string = '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+const serviceBaseURL: string = config.get<string>('claim-store.url');
+const externalIdPattern: string = '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}';
 
 export const sampleClaimIssueCommonObj = {
   id: 1,
@@ -49,30 +49,30 @@ export const sampleClaimIssueCommonObj = {
   totalAmountTillDateOfIssue: 200,
   moreTimeRequested: false,
   responseDeadline: '2017-08-08',
-  features: []
-}
+  features: [],
+};
 
 export const sampleClaimIssueOrgVOrgObj = {
   ...sampleClaimIssueCommonObj,
   claim: {
     claimants: [
       {
-        ...organisation
-      }
+        ...organisation,
+      },
     ],
     defendants: [
       {
-        ...organisation
-      }
+        ...organisation,
+      },
     ],
     payment: {
       id: '12',
       amount: 2500,
-      state: { status: 'failed' }
+      state: { status: 'failed' },
     },
     amount: {
       type: 'breakdown',
-      rows: [{ reason: 'Reason', amount: 200 }]
+      rows: [{ reason: 'Reason', amount: 200 }],
     },
     interest: {
       type: ClaimInterestType.STANDARD,
@@ -80,30 +80,30 @@ export const sampleClaimIssueOrgVOrgObj = {
       reason: 'Special case',
       interestDate: {
         type: InterestDateType.SUBMISSION,
-        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT
-      } as InterestDate
+        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT,
+      } as InterestDate,
     } as Interest,
     reason: 'Because I can',
     feeAmountInPennies: 2500,
-    timeline: { rows: [{ date: 'a', description: 'b' }] }
-  }
-}
+    timeline: { rows: [{ date: 'a', description: 'b' }] },
+  },
+};
 
 export const sampleClaimIssueOrgVOrgPhone = {
   ...sampleClaimIssueCommonObj,
   claim: {
     claimants: [
       {
-        ...organisation
-      }
+        ...organisation,
+      },
     ],
     defendants: [
       {
-        ...organisationWithPhone
-      }
-    ]
-  }
-}
+        ...organisationWithPhone,
+      },
+    ],
+  },
+};
 
 export const sampleHwfClaimIssueRejectObj = {
   id: 1,
@@ -132,10 +132,10 @@ export const sampleHwfClaimIssueRejectObj = {
           line1: 'line1',
           line2: 'line2',
           city: 'city',
-          postcode: 'bb127nq'
+          postcode: 'bb127nq',
         },
-        dateOfBirth: '1990-02-17'
-      }
+        dateOfBirth: '1990-02-17',
+      },
     ],
     defendants: [
       {
@@ -145,18 +145,18 @@ export const sampleHwfClaimIssueRejectObj = {
           line1: 'line1',
           line2: 'line2',
           city: 'city',
-          postcode: 'bb127nq'
-        }
-      }
+          postcode: 'bb127nq',
+        },
+      },
     ],
     payment: {
       id: '12',
       amount: 2500,
-      state: { status: 'failed' }
+      state: { status: 'failed' },
     },
     amount: {
       type: 'breakdown',
-      rows: [{ reason: 'Reason', amount: 200 }]
+      rows: [{ reason: 'Reason', amount: 200 }],
     },
     interest: {
       type: ClaimInterestType.STANDARD,
@@ -164,17 +164,17 @@ export const sampleHwfClaimIssueRejectObj = {
       reason: 'Special case',
       interestDate: {
         type: InterestDateType.SUBMISSION,
-        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT
-      } as InterestDate
+        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT,
+      } as InterestDate,
     } as Interest,
     reason: 'Because I can',
     feeAmountInPennies: 2500,
-    timeline: { rows: [{ date: 'a', description: 'b' }] }
+    timeline: { rows: [{ date: 'a', description: 'b' }] },
   },
   responseDeadline: undefined,
   intentionToProceedDeadline: MomentFactory.currentDateTime().add(33, 'days'),
-  features: []
-}
+  features: [],
+};
 
 export const sampleHwfClaimIssueObj = {
   id: 1,
@@ -200,10 +200,10 @@ export const sampleHwfClaimIssueObj = {
           line1: 'line1',
           line2: 'line2',
           city: 'city',
-          postcode: 'bb127nq'
+          postcode: 'bb127nq',
         },
-        dateOfBirth: '1990-02-17'
-      }
+        dateOfBirth: '1990-02-17',
+      },
     ],
     defendants: [
       {
@@ -213,18 +213,18 @@ export const sampleHwfClaimIssueObj = {
           line1: 'line1',
           line2: 'line2',
           city: 'city',
-          postcode: 'bb127nq'
-        }
-      }
+          postcode: 'bb127nq',
+        },
+      },
     ],
     payment: {
       id: '12',
       amount: 2500,
-      state: { status: 'failed' }
+      state: { status: 'failed' },
     },
     amount: {
       type: 'breakdown',
-      rows: [{ reason: 'Reason', amount: 200 }]
+      rows: [{ reason: 'Reason', amount: 200 }],
     },
     interest: {
       type: ClaimInterestType.STANDARD,
@@ -232,17 +232,17 @@ export const sampleHwfClaimIssueObj = {
       reason: 'Special case',
       interestDate: {
         type: InterestDateType.SUBMISSION,
-        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT
-      } as InterestDate
+        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT,
+      } as InterestDate,
     } as Interest,
     reason: 'Because I can',
     feeAmountInPennies: 2500,
-    timeline: { rows: [{ date: 'a', description: 'b' }] }
+    timeline: { rows: [{ date: 'a', description: 'b' }] },
   },
   responseDeadline: undefined,
   intentionToProceedDeadline: MomentFactory.currentDateTime().add(33, 'days'),
-  features: []
-}
+  features: [],
+};
 
 export const sampleClaimDocuments = {
   claimDocumentCollection: {
@@ -253,8 +253,8 @@ export const sampleClaimDocuments = {
         documentType: 'SEALED_CLAIM',
         createdDatetime: '2020-02-26T14:56:49.264',
         createdBy: 'OCMC',
-        size: 79777
-      }
+        size: 79777,
+      },
     ],
     scannedDocuments: [
       {
@@ -262,11 +262,11 @@ export const sampleClaimDocuments = {
         fileName: '000MC258-ocon-form.pdf',
         documentType: 'FORM',
         subtype: 'OCON9x',
-        deliveryDate: '2020-02-26T15:10:13.601'
-      }
-    ]
-  }
-}
+        deliveryDate: '2020-02-26T15:10:13.601',
+      },
+    ],
+  },
+};
 
 export const paperResponseForm = {
   scannedDocuments: [
@@ -275,10 +275,10 @@ export const paperResponseForm = {
       fileName: '000MC258-ocon-form.pdf',
       documentType: 'FORM',
       subtype: 'N9a',
-      deliveryDate: '2020-02-26T15:10:13.601'
-    }
-  ]
-}
+      deliveryDate: '2020-02-26T15:10:13.601',
+    },
+  ],
+};
 
 export const sampleClaimIssueObj = {
   id: 1,
@@ -287,7 +287,7 @@ export const sampleClaimIssueObj = {
   externalId: '400f4c57-9684-49c0-adb4-4cf46579d6dc',
   defendantId: '123',
   referenceNumber: '000MC050',
-  createdAt : MomentFactory.currentDateTime(),
+  createdAt: MomentFactory.currentDateTime(),
   issuedOn: '2017-07-25',
   totalAmountTillToday: 200,
   totalAmountTillDateOfIssue: 200,
@@ -301,10 +301,10 @@ export const sampleClaimIssueObj = {
           line1: 'line1',
           line2: 'line2',
           city: 'city',
-          postcode: 'bb127nq'
+          postcode: 'bb127nq',
         },
-        dateOfBirth: '1990-02-17'
-      }
+        dateOfBirth: '1990-02-17',
+      },
     ],
     defendants: [
       {
@@ -314,18 +314,18 @@ export const sampleClaimIssueObj = {
           line1: 'line1',
           line2: 'line2',
           city: 'city',
-          postcode: 'bb127nq'
-        }
-      }
+          postcode: 'bb127nq',
+        },
+      },
     ],
     payment: {
       id: '12',
       amount: 2500,
-      state: { status: 'failed' }
+      state: { status: 'failed' },
     },
     amount: {
       type: 'breakdown',
-      rows: [{ reason: 'Reason', amount: 200 }]
+      rows: [{ reason: 'Reason', amount: 200 }],
     },
     interest: {
       type: ClaimInterestType.STANDARD,
@@ -333,23 +333,23 @@ export const sampleClaimIssueObj = {
       reason: 'Special case',
       interestDate: {
         type: InterestDateType.SUBMISSION,
-        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT
-      } as InterestDate
+        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT,
+      } as InterestDate,
     } as Interest,
     reason: 'Because I can',
     feeAmountInPennies: 2500,
     outstandingFeeAmountInPennies: 2500,
     feeRemitted: 25,
-    timeline: { rows: [{ date: 'a', description: 'b' }] }
+    timeline: { rows: [{ date: 'a', description: 'b' }] },
   },
   responseDeadline: MomentFactory.currentDate().add(19, 'days'),
   intentionToProceedDeadline: MomentFactory.currentDateTime().add(33, 'days'),
-  features: []
-}
+  features: [],
+};
 
 export const paymentResponse = {
-  nextUrl: 'http://localhost/payment-page'
-}
+  nextUrl: 'http://localhost/payment-page',
+};
 
 export const sampleClaimObj = {
   id: 1,
@@ -373,10 +373,10 @@ export const sampleClaimObj = {
           line1: 'line1',
           line2: 'line2',
           city: 'city',
-          postcode: 'bb127nq'
+          postcode: 'bb127nq',
         },
-        dateOfBirth: '1990-02-17'
-      }
+        dateOfBirth: '1990-02-17',
+      },
     ],
     defendants: [
       {
@@ -387,18 +387,18 @@ export const sampleClaimObj = {
           line1: 'line1',
           line2: 'line2',
           city: 'city',
-          postcode: 'bb127nq'
-        }
-      }
+          postcode: 'bb127nq',
+        },
+      },
     ],
     payment: {
       id: '12',
       amount: 2500,
-      state: { status: 'failed' }
+      state: { status: 'failed' },
     },
     amount: {
       type: 'breakdown',
-      rows: [{ reason: 'Reason', amount: 200 }]
+      rows: [{ reason: 'Reason', amount: 200 }],
     },
     interest: {
       type: ClaimInterestType.STANDARD,
@@ -406,31 +406,31 @@ export const sampleClaimObj = {
       reason: 'Special case',
       interestDate: {
         type: InterestDateType.SUBMISSION,
-        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT
-      } as InterestDate
+        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT,
+      } as InterestDate,
     } as Interest,
     reason: 'Because I can',
     feeAmountInPennies: 2500,
-    timeline: { rows: [{ date: 'a', description: 'b' }] }
+    timeline: { rows: [{ date: 'a', description: 'b' }] },
   },
   responseDeadline: '2017-08-08',
   countyCourtJudgment: {
     defendantDateOfBirth: '1990-11-01',
     paidAmount: 2,
-    paymentOption: 'IMMEDIATELY'
+    paymentOption: 'IMMEDIATELY',
   },
   settlement: {
     partyStatements: [
       {
         type: StatementType.OFFER.value,
         madeBy: MadeBy.DEFENDANT.value,
-        offer: { content: 'offer text', completionDate: '2017-08-08' }
-      }
-    ]
+        offer: { content: 'offer text', completionDate: '2017-08-08' },
+      },
+    ],
   },
   intentionToProceedDeadline: MomentFactory.currentDateTime().add(33, 'days'),
-  features: []
-}
+  features: [],
+};
 
 export const sampleHwfClaimObj = {
   id: 1594030137299050,
@@ -455,10 +455,10 @@ export const sampleHwfClaimObj = {
           line1: 'line1',
           line2: 'line2',
           city: 'city',
-          postcode: 'bb127nq'
+          postcode: 'bb127nq',
         },
-        dateOfBirth: '1990-02-17'
-      }
+        dateOfBirth: '1990-02-17',
+      },
     ],
     defendants: [
       {
@@ -469,18 +469,18 @@ export const sampleHwfClaimObj = {
           line1: 'line1',
           line2: 'line2',
           city: 'city',
-          postcode: 'bb127nq'
-        }
-      }
+          postcode: 'bb127nq',
+        },
+      },
     ],
     payment: {
       id: '12',
       amount: 2500,
-      state: { status: 'failed' }
+      state: { status: 'failed' },
     },
     amount: {
       type: 'breakdown',
-      rows: [{ reason: 'Reason', amount: 200 }]
+      rows: [{ reason: 'Reason', amount: 200 }],
     },
     interest: {
       type: ClaimInterestType.STANDARD,
@@ -488,33 +488,33 @@ export const sampleHwfClaimObj = {
       reason: 'Special case',
       interestDate: {
         type: InterestDateType.SUBMISSION,
-        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT
-      } as InterestDate
+        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT,
+      } as InterestDate,
     } as Interest,
     reason: 'Because I can',
     feeAmountInPennies: 2500,
     timeline: { rows: [{ date: 'a', description: 'b' }] },
     helpWithFeesNumber: 'HWF123456',
-    helpWithFeesType: 'ClaimIssue'
+    helpWithFeesType: 'ClaimIssue',
   },
   responseDeadline: '2020-11-10',
   countyCourtJudgment: {
     defendantDateOfBirth: '1990-11-01',
     paidAmount: 2,
-    paymentOption: 'IMMEDIATELY'
+    paymentOption: 'IMMEDIATELY',
   },
   settlement: {
     partyStatements: [
       {
         type: StatementType.OFFER.value,
         madeBy: MadeBy.DEFENDANT.value,
-        offer: { content: 'offer text', completionDate: '2017-08-08' }
-      }
-    ]
+        offer: { content: 'offer text', completionDate: '2017-08-08' },
+      },
+    ],
   },
   intentionToProceedDeadline: MomentFactory.currentDateTime().add(33, 'days'),
-  features: []
-}
+  features: [],
+};
 
 export const sampleClaimWithDefAsBusinessObj = {
   id: 1,
@@ -538,10 +538,10 @@ export const sampleClaimWithDefAsBusinessObj = {
           line1: 'line1',
           line2: 'line2',
           city: 'city',
-          postcode: 'bb127nq'
+          postcode: 'bb127nq',
         },
-        dateOfBirth: '1990-02-17'
-      }
+        dateOfBirth: '1990-02-17',
+      },
     ],
     defendants: [
       {
@@ -552,18 +552,18 @@ export const sampleClaimWithDefAsBusinessObj = {
           line1: 'line1',
           line2: 'line2',
           city: 'city',
-          postcode: 'bb127nq'
-        }
-      }
+          postcode: 'bb127nq',
+        },
+      },
     ],
     payment: {
       id: '12',
       amount: 2500,
-      state: { status: 'failed' }
+      state: { status: 'failed' },
     },
     amount: {
       type: 'breakdown',
-      rows: [{ reason: 'Reason', amount: 200 }]
+      rows: [{ reason: 'Reason', amount: 200 }],
     },
     interest: {
       type: ClaimInterestType.STANDARD,
@@ -571,31 +571,31 @@ export const sampleClaimWithDefAsBusinessObj = {
       reason: 'Special case',
       interestDate: {
         type: InterestDateType.SUBMISSION,
-        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT
-      } as InterestDate
+        endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT,
+      } as InterestDate,
     } as Interest,
     reason: 'Because I can',
     feeAmountInPennies: 2500,
-    timeline: { rows: [{ date: 'a', description: 'b' }] }
+    timeline: { rows: [{ date: 'a', description: 'b' }] },
   },
   responseDeadline: '2017-08-08',
   countyCourtJudgment: {
     defendantDateOfBirth: '1990-11-01',
     paidAmount: 2,
-    paymentOption: 'IMMEDIATELY'
+    paymentOption: 'IMMEDIATELY',
   },
   settlement: {
     partyStatements: [
       {
         type: StatementType.OFFER.value,
         madeBy: MadeBy.DEFENDANT.value,
-        offer: { content: 'offer text', completionDate: '2017-08-08' }
-      }
-    ]
+        offer: { content: 'offer text', completionDate: '2017-08-08' },
+      },
+    ],
   },
   intentionToProceedDeadline: MomentFactory.currentDateTime().add(33, 'days'),
-  features: []
-}
+  features: [],
+};
 
 export const settlementWithInstalmentsAndAcceptation = {
   settlement: {
@@ -613,18 +613,18 @@ export const settlementWithInstalmentsAndAcceptation = {
               firstPaymentDate: '2018-10-01',
               paymentSchedule: PaymentSchedule.EACH_WEEK,
               completionDate: '2019-02-01',
-              paymentLength: '1'
-            }
-          }
-        }
+              paymentLength: '1',
+            },
+          },
+        },
       },
       {
         madeBy: MadeBy.DEFENDANT.value,
-        type: 'COUNTERSIGNATURE'
-      }
-    ]
-  }
-}
+        type: 'COUNTERSIGNATURE',
+      },
+    ],
+  },
+};
 
 export const settlementWithSetDateAndAcceptation = {
   settlement: {
@@ -637,21 +637,21 @@ export const settlementWithSetDateAndAcceptation = {
           completionDate: '2017-08-08',
           paymentIntention: {
             paymentOption: PaymentOption.BY_SPECIFIED_DATE,
-            paymentDate: '2010-12-31'
-          }
-        }
+            paymentDate: '2010-12-31',
+          },
+        },
       },
       {
         type: 'ACCEPTATION',
-        madeBy: MadeBy.CLAIMANT.value
+        madeBy: MadeBy.CLAIMANT.value,
       },
       {
         madeBy: MadeBy.DEFENDANT.value,
-        type: 'COUNTERSIGNATURE'
-      }
-    ]
-  }
-}
+        type: 'COUNTERSIGNATURE',
+      },
+    ],
+  },
+};
 export const partySettlementWithInstalmentsAndRejection = {
   partyStatements: [{
     type: 'OFFER',
@@ -659,29 +659,29 @@ export const partySettlementWithInstalmentsAndRejection = {
       completionDate: MomentFactory.currentDate().add(2, 'years'),
       paymentIntention: {
         'paymentDate': MomentFactory.currentDate().add(2, 'years'),
-        'paymentOption': 'BY_SPECIFIED_DATE'
-      }
+        'paymentOption': 'BY_SPECIFIED_DATE',
+      },
     },
-    madeBy: 'DEFENDANT'
+    madeBy: 'DEFENDANT',
   }, {
     type: 'ACCEPTATION',
-    madeBy: 'CLAIMANT'
-  }, { type: 'REJECTION', 'madeBy': 'DEFENDANT' }]
-}
+    madeBy: 'CLAIMANT',
+  }, { type: 'REJECTION', 'madeBy': 'DEFENDANT' }],
+};
 
 export const partySettlementWithSetDateAndRejection = {
   partyStatements: [{
     type: 'OFFER',
     offer: {
       completionDate: MomentFactory.currentDate().add(2, 'years'),
-      paymentIntention: { 'paymentDate': '2023-01-01', 'paymentOption': 'BY_SPECIFIED_DATE' }
+      paymentIntention: { 'paymentDate': '2023-01-01', 'paymentOption': 'BY_SPECIFIED_DATE' },
     },
-    madeBy: 'DEFENDANT'
+    madeBy: 'DEFENDANT',
   }, {
     type: 'ACCEPTATION',
-    madeBy: 'CLAIMANT'
-  }, { type: 'REJECTION', 'madeBy': 'DEFENDANT' }]
-}
+    madeBy: 'CLAIMANT',
+  }, { type: 'REJECTION', 'madeBy': 'DEFENDANT' }],
+};
 export const partySettlementWithSetDateAndAcceptation = {
   partyStatements: [{
     type: 'OFFER',
@@ -689,27 +689,27 @@ export const partySettlementWithSetDateAndAcceptation = {
       completionDate: MomentFactory.currentDate().add(2, 'years'),
       paymentIntention: {
         paymentDate: MomentFactory.currentDate().add(2, 'years'),
-        paymentOption: 'BY_SPECIFIED_DATE'
-      }
+        paymentOption: 'BY_SPECIFIED_DATE',
+      },
     },
-    madeBy: 'DEFENDANT'
+    madeBy: 'DEFENDANT',
   }, {
     type: 'ACCEPTATION',
-    madeBy: 'CLAIMANT'
-  }]
-}
+    madeBy: 'CLAIMANT',
+  }],
+};
 
 export const settlementAndSettlementReachedAt: object = {
   settlementReachedAt: '2017-07-25T22:45:51.785',
-  ...settlementWithInstalmentsAndAcceptation
+  ...settlementWithInstalmentsAndAcceptation,
 
-}
+};
 
 export const settlementBySetDateAndSettlementReachedAt: object = {
   settlementReachedAt: '2017-07-25T22:45:51.785',
-  ...settlementWithSetDateAndAcceptation
+  ...settlementWithSetDateAndAcceptation,
 
-}
+};
 
 export const sampleDefendantResponseObj = {
   respondedAt: '2017-07-25T22:45:51.785',
@@ -725,11 +725,11 @@ export const sampleDefendantResponseObj = {
         line1: 'line1',
         line2: 'line2',
         city: 'city',
-        postcode: 'bb127nq'
-      }
-    }
-  }
-}
+        postcode: 'bb127nq',
+      },
+    },
+  },
+};
 
 export const sampleDefendantResponseWithDQAndMediationObj = {
   respondedAt: '2017-07-25T22:45:51.785',
@@ -745,18 +745,18 @@ export const sampleDefendantResponseWithDQAndMediationObj = {
         line1: 'line1',
         line2: 'line2',
         city: 'city',
-        postcode: 'bb127nq'
-      }
+        postcode: 'bb127nq',
+      },
     },
     directionsQuestionnaire: {
       hearingLoop: 'NO',
       selfWitness: 'NO',
       disabledAccess: 'NO',
       hearingLocation: 'Central London County Court',
-      hearingLocationOption: 'SUGGESTED_COURT'
-    }
-  }
-}
+      hearingLocationOption: 'SUGGESTED_COURT',
+    },
+  },
+};
 
 export const sampleDefendantResponseWithoutDQAndWithMediationObj = {
   respondedAt: '2017-07-25T22:45:51.785',
@@ -772,11 +772,11 @@ export const sampleDefendantResponseWithoutDQAndWithMediationObj = {
         line1: 'line1',
         line2: 'line2',
         city: 'city',
-        postcode: 'bb127nq'
-      }
-    }
-  }
-}
+        postcode: 'bb127nq',
+      },
+    },
+  },
+};
 
 export const sampleDefendantResponseWithoutDQAndWithoutMediationObj = {
   respondedAt: '2017-07-25T22:45:51.785',
@@ -792,12 +792,12 @@ export const sampleDefendantResponseWithoutDQAndWithoutMediationObj = {
         line1: 'line1',
         line2: 'line2',
         city: 'city',
-        postcode: 'bb127nq'
-      }
-    }
+        postcode: 'bb127nq',
+      },
+    },
   },
-  directionsQuestionnaireDeadline: MomentFactory.currentDate().add(12, 'days')
-}
+  directionsQuestionnaireDeadline: MomentFactory.currentDate().add(12, 'days'),
+};
 
 export const sampleDefendantResponseWithDQAndNoMediationObj = {
   respondedAt: '2017-07-25T22:45:51.785',
@@ -813,23 +813,23 @@ export const sampleDefendantResponseWithDQAndNoMediationObj = {
         line1: 'line1',
         line2: 'line2',
         city: 'city',
-        postcode: 'bb127nq'
-      }
+        postcode: 'bb127nq',
+      },
     },
     directionsQuestionnaire: {
       hearingLoop: 'NO',
       selfWitness: 'NO',
       disabledAccess: 'NO',
       hearingLocation: 'Central London County Court',
-      hearingLocationOption: 'SUGGESTED_COURT'
-    }
-  }
-}
+      hearingLocationOption: 'SUGGESTED_COURT',
+    },
+  },
+};
 
 export const samplePaginationInfoObj = {
   totalPages: 2,
-  totalClaims: 30
-}
+  totalClaims: 30,
+};
 
 export const sampleDefendantResponseAlreadyPaidWithMediationObj = {
   ...sampleClaimIssueObj,
@@ -840,7 +840,7 @@ export const sampleDefendantResponseAlreadyPaidWithMediationObj = {
     paymentDeclaration: {
       paidDate: '1999-01-01',
       paidAmount: 100,
-      explanation: 'I paid you'
+      explanation: 'I paid you',
     },
     defence: 'I reject this money claim',
     freeMediation: 'yes',
@@ -851,11 +851,11 @@ export const sampleDefendantResponseAlreadyPaidWithMediationObj = {
         line1: 'line1',
         line2: 'line2',
         city: 'city',
-        postcode: 'bb127nq'
-      }
-    }
-  }
-}
+        postcode: 'bb127nq',
+      },
+    },
+  },
+};
 
 export const sampleDefendantResponseAlreadyPaidWithNoMediationObj = {
   ...sampleClaimIssueObj,
@@ -866,7 +866,7 @@ export const sampleDefendantResponseAlreadyPaidWithNoMediationObj = {
     paymentDeclaration: {
       paidDate: '1999-01-01',
       paidAmount: 100,
-      explanation: 'I paid you'
+      explanation: 'I paid you',
     },
     defence: 'I reject this money claim',
     freeMediation: 'no',
@@ -877,486 +877,487 @@ export const sampleDefendantResponseAlreadyPaidWithNoMediationObj = {
         line1: 'line1',
         line2: 'line2',
         city: 'city',
-        postcode: 'bb127nq'
-      }
-    }
-  }
-}
+        postcode: 'bb127nq',
+      },
+    },
+  },
+};
 
 export const samplePartialAdmissionWithPaymentBySetDateResponseObj = {
   ...sampleClaimIssueObj,
   respondedAt: '2017-07-25T22:45:51.785',
   claimantRespondedAt: '2017-07-25T22:45:51.785',
-  response: partialAdmissionWithSoMPaymentBySetDateData
-}
+  response: partialAdmissionWithSoMPaymentBySetDateData,
+};
 
 export const samplePartialAdmissionWithPaymentBySetDateCompanyData = {
   respondedAt: '2017-07-25T22:45:51.785',
   claimantRespondedAt: '2017-07-25T22:45:51.785',
-  response: partialAdmissionWithPaymentBySetDateCompanyData
-}
+  response: partialAdmissionWithPaymentBySetDateCompanyData,
+};
 
-export function samplePartialAdmissionWithPayImmediatelyData () {
+export function samplePartialAdmissionWithPayImmediatelyData() {
   return {
     ...sampleClaimIssueObj,
     respondedAt: '2017-07-25T22:45:51.785',
     claimantRespondedAt: '2017-07-25T22:45:51.785',
-    response: partialAdmissionWithImmediatePaymentData()
-  }
+    response: partialAdmissionWithImmediatePaymentData(),
+  };
 }
 
-export function samplePartialAdmissionWithPayImmediatelyDataV2 () {
+export function samplePartialAdmissionWithPayImmediatelyDataV2() {
   return {
     ...sampleClaimIssueObj,
     respondedAt: '2017-07-25T22:45:51.785',
     claimantRespondedAt: '2017-07-25T22:45:51.785',
-    response: partialAdmissionWithImmediatePaymentDataV2()
-  }
+    response: partialAdmissionWithImmediatePaymentDataV2(),
+  };
 }
 
 export const sampleFullAdmissionWithPaymentBySetDateResponseObj = {
   respondedAt: '2017-07-25T22:45:51.785',
-  response: fullAdmissionWithSoMPaymentBySetDate
-}
+  response: fullAdmissionWithSoMPaymentBySetDate,
+};
 
 export const sampleFullAdmissionWithPaymentBySetDateInNext2daysResponseObj = {
   respondedAt: '2017-07-25T22:45:51.785',
-  response: fullAdmissionWithSoMPaymentBySetDateInNext2Days
-}
+  response: fullAdmissionWithSoMPaymentBySetDateInNext2Days,
+};
 
 export const sampleFullAdmissionWithReasonablePaymentBySetDateResponseObjAndNoDisposableIncome = {
   respondedAt: '2017-07-25T22:45:51.785',
-  response: fullAdmissionWithSoMReasonablePaymentBySetDateAndNoDisposableIncome
-}
+  response: fullAdmissionWithSoMReasonablePaymentBySetDateAndNoDisposableIncome,
+};
 
 export const sampleFullAdmissionWithPaymentByInstalmentsResponseObj = {
   respondedAt: '2017-07-25T22:45:51.785',
-  response: fullAdmissionWithSoMPaymentByInstalmentsData
-}
+  response: fullAdmissionWithSoMPaymentByInstalmentsData,
+};
 
 export const sampleFullAdmissionWithPaymentByInstalmentsResponseObjCompanyData = {
   respondedAt: '2017-07-25T22:45:51.785',
-  response: fullAdmissionWithSoMPaymentByInstalmentsDataCompany
-}
+  response: fullAdmissionWithSoMPaymentByInstalmentsDataCompany,
+};
 
 export const sampleFullAdmissionWithPaymentByInstalmentsResponseObjWithNoDisposableIncome = {
   respondedAt: '2017-07-25T22:45:51.785',
-  response: fullAdmissionWithSoMPaymentByInstalmentsDataWithNoDisposableIncome
-}
+  response: fullAdmissionWithSoMPaymentByInstalmentsDataWithNoDisposableIncome,
+};
 
 export const sampleFullAdmissionWithPaymentByInstalmentsResponseObjWithReasonablePaymentSchedule = {
   respondedAt: '2017-07-25T22:45:51.785',
-  response: fullAdmissionWithSoMPaymentByInstalmentsDataWithReasonablePaymentSchedule
-}
+  response: fullAdmissionWithSoMPaymentByInstalmentsDataWithReasonablePaymentSchedule,
+};
 
 export const sampleFullAdmissionWithPaymentByInstalmentsResponseObjWithUnReasonablePaymentSchedule = {
   respondedAt: '2017-07-25T22:45:51.785',
-  response: fullAdmissionWithSoMPaymentByInstalmentsDataWithUnreasonablePaymentSchedule
-}
+  response: fullAdmissionWithSoMPaymentByInstalmentsDataWithUnreasonablePaymentSchedule,
+};
 
 export const sampleFullDefenceRejectEntirely = {
   ...sampleClaimIssueObj,
   respondedAt: '2017-07-25T22:45:51.785',
-  response: defenceWithDisputeData
-}
+  response: defenceWithDisputeData,
+};
 
 export const sampleFullDefenceWithStatesPaidGreaterThanClaimAmount = {
   respondedAt: '2017-07-25T22:45:51.785',
-  response: fullDefenceWithStatesPaidGreaterThanClaimAmount
-}
+  response: fullDefenceWithStatesPaidGreaterThanClaimAmount,
+};
 
 export const sampleFullDefenceWithStatesPaidLessThanClaimAmount = {
   respondedAt: '2017-07-25T22:45:51.785',
-  response: fullDefenceWithStatesLessThanClaimAmount
-}
+  response: fullDefenceWithStatesLessThanClaimAmount,
+};
 
 export const sampleFullDefenceWithStatesPaidLessThanClaimAmountWithMediation = {
   respondedAt: '2017-07-25T22:45:51.785',
-  response: fullDefenceWithStatesLessThanClaimAmountWithMediation
-}
+  response: fullDefenceWithStatesLessThanClaimAmountWithMediation,
+};
 
-export function mockCalculateInterestRate (expected: number): mock.Scope {
+export function mockCalculateInterestRate(expected: number): mock.Scope {
   return mock(serviceBaseURL)
     .get('/interest/calculate')
     .query(true)
-    .reply(HttpStatus.OK, { amount: expected })
+    .reply(HttpStatus.OK, { amount: expected });
 }
 
-export function mockNextWorkingDay (expected: Moment): mock.Scope {
+export function mockNextWorkingDay(expected: Moment): mock.Scope {
   return mock(serviceBaseURL)
     .get('/calendar/next-working-day')
     .query(true)
-    .reply(HttpStatus.OK, { nextWorkingDay: expected })
+    .reply(HttpStatus.OK, { nextWorkingDay: expected });
 }
 
-export function rejectNextWorkingDay (expected: Moment): mock.Scope {
+export function rejectNextWorkingDay(expected: Moment): mock.Scope {
   return mock(serviceBaseURL)
     .get('/calendar/next-working-day')
     .query({ date: expected.format() })
-    .reply(400)
+    .reply(400);
 }
 
-export function resolveRetrieveClaimIssueByExternalId (claimOverride?: object): mock.Scope {
+export function resolveRetrieveClaimIssueByExternalId(claimOverride?: object): mock.Scope {
   return mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/' + externalIdPattern))
-    .reply(HttpStatus.OK, { ...sampleClaimIssueObj, ...claimOverride })
+    .reply(HttpStatus.OK, { ...sampleClaimIssueObj, ...claimOverride });
 }
 
-export function resolveRetrieveClaimByExternalId (claimOverride?: object): mock.Scope {
+export function resolveRetrieveClaimByExternalId(claimOverride?: object): mock.Scope {
   return mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/' + externalIdPattern))
-    .reply(HttpStatus.OK, { ...sampleClaimObj, ...claimOverride })
-}
-export function resolveRetrieveHwfClaimByExternalId (claimOverride?: object): mock.Scope {
-  return mock(`${serviceBaseURL}/claims`)
-    .get(new RegExp('/' + externalIdPattern))
-    .reply(HttpStatus.OK, { ...sampleHwfClaimObj, ...claimOverride })
+    .reply(HttpStatus.OK, { ...sampleClaimObj, ...claimOverride });
 }
 
-export function resolveRetrieveByExternalId (claim: object = sampleClaimObj, claimOverride?: object): mock.Scope {
+export function resolveRetrieveHwfClaimByExternalId(claimOverride?: object): mock.Scope {
   return mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/' + externalIdPattern))
-    .reply(HttpStatus.OK, { ...claim, ...claimOverride })
+    .reply(HttpStatus.OK, { ...sampleHwfClaimObj, ...claimOverride });
 }
 
-export function resolveRetrieveClaimBySampleExternalId (sampleData?: object): mock.Scope {
+export function resolveRetrieveByExternalId(claim: object = sampleClaimObj, claimOverride?: object): mock.Scope {
   return mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/' + externalIdPattern))
-    .reply(HttpStatus.OK, { ...sampleData })
+    .reply(HttpStatus.OK, { ...claim, ...claimOverride });
 }
 
-export function resolveRetrieveClaimByExternalIdWithResponse (override?: object): mock.Scope {
+export function resolveRetrieveClaimBySampleExternalId(sampleData?: object): mock.Scope {
   return mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/' + externalIdPattern))
-    .reply(HttpStatus.OK, { ...sampleClaimObj, ...sampleDefendantResponseObj, ...override })
+    .reply(HttpStatus.OK, { ...sampleData });
 }
 
-export function resolveRetrieveClaimByExternalIdWithFullAdmissionAndSettlement (override?: object): mock.Scope {
+export function resolveRetrieveClaimByExternalIdWithResponse(override?: object): mock.Scope {
   return mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/' + externalIdPattern))
-    .reply(HttpStatus.OK, { ...sampleClaimObj, ...sampleFullAdmissionWithPaymentByInstalmentsResponseObjWithReasonablePaymentSchedule, ...override })
+    .reply(HttpStatus.OK, { ...sampleClaimObj, ...sampleDefendantResponseObj, ...override });
 }
 
-export function resolveRetrieveClaimByExternalIdWithFullAdmissionAndSettlementBySetDate (override?: object): mock.Scope {
+export function resolveRetrieveClaimByExternalIdWithFullAdmissionAndSettlement(override?: object): mock.Scope {
   return mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/' + externalIdPattern))
-    .reply(HttpStatus.OK, { ...sampleClaimObj, ...sampleFullAdmissionWithPaymentBySetDateResponseObj, ...override })
+    .reply(HttpStatus.OK, { ...sampleClaimObj, ...sampleFullAdmissionWithPaymentByInstalmentsResponseObjWithReasonablePaymentSchedule, ...override });
 }
 
-export function rejectRetrieveClaimByExternalId (reason: string = 'Error') {
+export function resolveRetrieveClaimByExternalIdWithFullAdmissionAndSettlementBySetDate(override?: object): mock.Scope {
+  return mock(`${serviceBaseURL}/claims`)
+    .get(new RegExp('/' + externalIdPattern))
+    .reply(HttpStatus.OK, { ...sampleClaimObj, ...sampleFullAdmissionWithPaymentBySetDateResponseObj, ...override });
+}
+
+export function rejectRetrieveClaimByExternalId(reason: string = 'Error') {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/' + externalIdPattern))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveRetrieveClaimByExternalIdTo404HttpCode (reason: string = 'Claim not found') {
+export function resolveRetrieveClaimByExternalIdTo404HttpCode(reason: string = 'Claim not found') {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/' + externalIdPattern))
-    .reply(HttpStatus.NOT_FOUND, reason)
+    .reply(HttpStatus.NOT_FOUND, reason);
 }
 
-export function resolveRetrieveByClaimantId (claim: object = sampleClaimObj, claimOverride?: object) {
-  mock(`${serviceBaseURL}/claims`)
-    .get(new RegExp('/claimant/[0-9]+'))
-    .reply(HttpStatus.OK, [{ ...claim, ...claimOverride }])
-}
-
-export function resolveRetrievePaginationInfo (pagination: object = samplePaginationInfoObj) {
-  mock(`${serviceBaseURL}/claims`)
-    .get(new RegExp('/pagination-metadata'))
-    .reply(HttpStatus.OK, { ...pagination })
-}
-
-export function resolveRejectPaginationInfo (reason: string) {
-  mock(`${serviceBaseURL}/claims`)
-    .get(new RegExp('/pagination-metadata'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
-}
-
-export function resolveRetrieveByClaimantIdToEmptyList () {
+export function resolveRetrieveByClaimantId(claim: object = sampleClaimObj, claimOverride?: object) {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/claimant/[0-9]+'))
-    .reply(HttpStatus.OK, [])
+    .reply(HttpStatus.OK, [{ ...claim, ...claimOverride }]);
 }
 
-export function resolveRetrievePaginationInfoEmptyList () {
+export function resolveRetrievePaginationInfo(pagination: object = samplePaginationInfoObj) {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/pagination-metadata'))
-    .reply(HttpStatus.OK, [])
+    .reply(HttpStatus.OK, { ...pagination });
 }
 
-export function resolveRetrieveByDefendantIdToEmptyList () {
+export function resolveRejectPaginationInfo(reason: string) {
+  mock(`${serviceBaseURL}/claims`)
+    .get(new RegExp('/pagination-metadata'))
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
+}
+
+export function resolveRetrieveByClaimantIdToEmptyList() {
+  mock(`${serviceBaseURL}/claims`)
+    .get(new RegExp('/claimant/[0-9]+'))
+    .reply(HttpStatus.OK, []);
+}
+
+export function resolveRetrievePaginationInfoEmptyList() {
+  mock(`${serviceBaseURL}/claims`)
+    .get(new RegExp('/pagination-metadata'))
+    .reply(HttpStatus.OK, []);
+}
+
+export function resolveRetrieveByDefendantIdToEmptyList() {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/defendant/[0-9]+'))
-    .reply(HttpStatus.OK, [])
+    .reply(HttpStatus.OK, []);
 }
 
-export function rejectRetrieveByClaimantId (reason: string) {
+export function rejectRetrieveByClaimantId(reason: string) {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/claimant/[0-9]+'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function rejectretrievePaginationInfo (reason: string) {
+export function rejectretrievePaginationInfo(reason: string) {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/pagination-metadata'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveIsClaimLinked (status: boolean) {
+export function resolveIsClaimLinked(status: boolean) {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/.+/defendant-link-status'))
-    .reply(HttpStatus.OK, { linked: status })
+    .reply(HttpStatus.OK, { linked: status });
 }
 
-export function rejectIsClaimLinked () {
+export function rejectIsClaimLinked() {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/.+/defendant-link-status'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, 'Internal server error')
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, 'Internal server error');
 }
 
-export function resolveRetrieveByLetterHolderId (referenceNumber: string, claimOverride?: any): mock.Scope {
+export function resolveRetrieveByLetterHolderId(referenceNumber: string, claimOverride?: any): mock.Scope {
   return mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/letter/[0-9]+'))
-    .reply(HttpStatus.OK, { ...sampleClaimObj, referenceNumber: referenceNumber, ...claimOverride })
+    .reply(HttpStatus.OK, { ...sampleClaimObj, referenceNumber: referenceNumber, ...claimOverride });
 }
 
-export function rejectRetrieveByLetterHolderId (reason: string) {
+export function rejectRetrieveByLetterHolderId(reason: string) {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/letter/[0-9]+'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveRetrieveByDefendantId (referenceNumber: string, defendantId?: string, claim: object = sampleClaimObj, claimOverride?: any) {
+export function resolveRetrieveByDefendantId(referenceNumber: string, defendantId?: string, claim: object = sampleClaimObj, claimOverride?: any) {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/defendant/[0-9]+'))
-    .reply(HttpStatus.OK, [{ ...claim, referenceNumber: referenceNumber, defendantId: defendantId, ...claimOverride }])
+    .reply(HttpStatus.OK, [{ ...claim, referenceNumber: referenceNumber, defendantId: defendantId, ...claimOverride }]);
 }
 
-export function rejectRetrieveByDefendantId (reason: string) {
+export function rejectRetrieveByDefendantId(reason: string) {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/defendant/[0-9]+'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveSaveResponse () {
+export function resolveSaveResponse() {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/.+/defendant/[0-9]+'))
-    .reply(HttpStatus.OK, { ...sampleClaimObj, defendantId: '1' })
+    .reply(HttpStatus.OK, { ...sampleClaimObj, defendantId: '1' });
 }
 
-export function rejectSaveResponse (reason: string) {
+export function rejectSaveResponse(reason: string) {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/.+/defendant/[0-9]+'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveLinkDefendant () {
+export function resolveLinkDefendant() {
   mock(`${serviceBaseURL}/claims`)
     .put('/defendant/link')
-    .reply(HttpStatus.OK)
+    .reply(HttpStatus.OK);
 }
 
-export function resolveRequestForMoreTime () {
+export function resolveRequestForMoreTime() {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/.+/request-more-time'))
-    .reply(HttpStatus.OK)
+    .reply(HttpStatus.OK);
 }
 
-export function rejectRequestForMoreTime (reason: string) {
+export function rejectRequestForMoreTime(reason: string) {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/.+/request-more-time'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveSaveClaimForUser () {
+export function resolveSaveClaimForUser() {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/[0-9]+'))
-    .reply(HttpStatus.OK, { ...sampleClaimObj })
+    .reply(HttpStatus.OK, { ...sampleClaimObj });
 }
 
-export function rejectSaveClaimForUser (reason: string = 'HTTP error', status: number = HttpStatus.INTERNAL_SERVER_ERROR) {
+export function rejectSaveClaimForUser(reason: string = 'HTTP error', status: number = HttpStatus.INTERNAL_SERVER_ERROR) {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/[0-9]+'))
-    .reply(status, reason)
+    .reply(status, reason);
 }
 
-export function resolveSaveHelpWithFeesClaimForUser () {
+export function resolveSaveHelpWithFeesClaimForUser() {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/[0-9]+/hwf'))
-    .reply(HttpStatus.OK, { ...sampleClaimObj })
+    .reply(HttpStatus.OK, { ...sampleClaimObj });
 }
 
-export function resolveSaveHelpWithFeesClaimWithError (reason: string = 'HTTP error') {
+export function resolveSaveHelpWithFeesClaimWithError(reason: string = 'HTTP error') {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/[0-9]+/hwf'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveUpdateHelpWithFeesClaimForUser () {
+export function resolveUpdateHelpWithFeesClaimForUser() {
   mock(`${serviceBaseURL}/claims`)
     .put('/resume-hwf')
-    .reply(HttpStatus.OK, { ...sampleClaimObj })
+    .reply(HttpStatus.OK, { ...sampleClaimObj });
 }
 
-export function resolveUpdateHelpWithFeesClaimWithError (reason: string = 'HTTP error') {
+export function resolveUpdateHelpWithFeesClaimWithError(reason: string = 'HTTP error') {
   mock(`${serviceBaseURL}/claims`)
     .put('/resume-hwf')
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveSaveCcjForExternalId () {
+export function resolveSaveCcjForExternalId() {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/' + externalIdPattern +
       '/county-court-judgment'))
-    .reply(HttpStatus.OK, { ...sampleClaimObj })
+    .reply(HttpStatus.OK, { ...sampleClaimObj });
 }
 
-export function resolveSaveReDeterminationForExternalId (explanation: string) {
+export function resolveSaveReDeterminationForExternalId(explanation: string) {
 
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/' + externalIdPattern +
       '/re-determination'))
-    .reply(HttpStatus.OK, { explanation: explanation, partyType: MadeBy.CLAIMANT })
+    .reply(HttpStatus.OK, { explanation: explanation, partyType: MadeBy.CLAIMANT });
 }
 
-export function rejectSaveReDeterminationForExternalId (reason: string = 'HTTP error') {
+export function rejectSaveReDeterminationForExternalId(reason: string = 'HTTP error') {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/.+/re-determination'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function rejectSaveOfferForDefendant (reason: string = 'HTTP error') {
+export function rejectSaveOfferForDefendant(reason: string = 'HTTP error') {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/.+/offers/defendant'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveSaveOffer () {
+export function resolveSaveOffer() {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/.+/offers/defendant'))
-    .reply(HttpStatus.CREATED)
+    .reply(HttpStatus.CREATED);
 }
 
-export function resolveCreateClaimCitizen (claimOverride?: object): mock.Scope {
+export function resolveCreateClaimCitizen(claimOverride?: object): mock.Scope {
   return mock(`${serviceBaseURL}/claims`)
     .put('/create-citizen-claim')
-    .reply(HttpStatus.OK, { ...sampleClaimObj, ...claimOverride })
+    .reply(HttpStatus.OK, { ...sampleClaimObj, ...claimOverride });
 }
 
-export function resolveSaveOrder () {
+export function resolveSaveOrder() {
   const expectedData = {
     ...sampleClaimIssueObj,
     reviewOrder: {
       reason: 'some reason',
       requestedBy: MadeBy.CLAIMANT,
-      requestedAt: '2017-07-25T22:45:51.785'
-    }
-  }
+      requestedAt: '2017-07-25T22:45:51.785',
+    },
+  };
   mock(`${serviceBaseURL}/claims`)
     .put(new RegExp('/' + externalIdPattern + '/review-order'))
-    .reply(HttpStatus.OK, expectedData)
+    .reply(HttpStatus.OK, expectedData);
 }
 
-export function resolveAcceptOffer (by: string = 'claimant') {
+export function resolveAcceptOffer(by: string = 'claimant') {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp(`/.+/offers/${by}/accept`))
-    .reply(HttpStatus.CREATED)
+    .reply(HttpStatus.CREATED);
 }
 
-export function resolveRejectOffer (by: string = 'claimant') {
+export function resolveRejectOffer(by: string = 'claimant') {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp(`/.+/offers/${by}/reject`))
-    .reply(HttpStatus.CREATED)
+    .reply(HttpStatus.CREATED);
 }
 
-export function rejectSaveClaimantResponse (reason: string = 'HTTP error') {
+export function rejectSaveClaimantResponse(reason: string = 'HTTP error') {
   mock(`${serviceBaseURL}/responses`)
     .post(new RegExp('/.+/claimant/[0-9]+'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveCountersignOffer (by: string = 'defendant') {
+export function resolveCountersignOffer(by: string = 'defendant') {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp(`/.+/offers/${by}/countersign`))
-    .reply(HttpStatus.CREATED)
+    .reply(HttpStatus.CREATED);
 }
 
-export function rejectSaveCcjForExternalId (reason: string = 'HTTP error') {
+export function rejectSaveCcjForExternalId(reason: string = 'HTTP error') {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/' + externalIdPattern +
       '/county-court-judgment'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function rejectRetrieveDocument (reason: string) {
+export function rejectRetrieveDocument(reason: string) {
   mock(`${serviceBaseURL}/documents`)
     .get(new RegExp('/' + externalIdPattern))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveRetrieveDocument () {
+export function resolveRetrieveDocument() {
   mock(`${serviceBaseURL}/documents`)
     .get(new RegExp('/' + externalIdPattern))
-    .reply(HttpStatus.OK)
+    .reply(HttpStatus.OK);
 }
 
-export function resolvePostponedDeadline (deadline: string): mock.Scope {
+export function resolvePostponedDeadline(deadline: string): mock.Scope {
   return mock(`${serviceBaseURL}/deadline`)
     .get(new RegExp('/\\d{4}-\\d{2}-\\d{2}'))
-    .reply(HttpStatus.OK, deadline)
+    .reply(HttpStatus.OK, deadline);
 }
 
-export function rejectPostponedDeadline (reason: string = 'HTTP error'): mock.Scope {
+export function rejectPostponedDeadline(reason: string = 'HTTP error'): mock.Scope {
   return mock(`${serviceBaseURL}/deadline`)
     .get(new RegExp('/\\d{4}-\\d{2}-\\d{2}'))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveAddRolesToUser (role: string) {
+export function resolveAddRolesToUser(role: string) {
   mock(`${serviceBaseURL}/user`)
     .post('/roles')
-    .reply(HttpStatus.CREATED, { role: role })
+    .reply(HttpStatus.CREATED, { role: role });
 }
 
-export function rejectAddRolesToUser (reason: string = 'HTTP error') {
+export function rejectAddRolesToUser(reason: string = 'HTTP error') {
   mock(`${serviceBaseURL}/user`)
     .post('/roles')
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
-export function resolveRetrieveUserRoles (...userRoles: string[]): mock.Scope {
+export function resolveRetrieveUserRoles(...userRoles: string[]): mock.Scope {
   return mock(`${serviceBaseURL}/user`)
     .get('/roles')
-    .reply(HttpStatus.OK, userRoles)
+    .reply(HttpStatus.OK, userRoles);
 }
 
-export function rejectRetrieveUserRoles () {
+export function rejectRetrieveUserRoles() {
   mock(`${serviceBaseURL}/user`)
     .get('/roles')
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR);
 }
 
-export function resolveClaimantResponse () {
+export function resolveClaimantResponse() {
   mock(`${serviceBaseURL}/responses`)
     .post(new RegExp('/.+/claimant/[0-9]+'))
-    .reply(HttpStatus.OK)
+    .reply(HttpStatus.OK);
 }
 
-export function resolveSavePaidInFull () {
+export function resolveSavePaidInFull() {
   mock(`${serviceBaseURL}/claims`)
     .put(new RegExp('/' + externalIdPattern + '/paid-in-full'))
-    .reply(HttpStatus.OK)
+    .reply(HttpStatus.OK);
 }
 
-export function resolveInitiatePayment (nextUrl?: object) {
+export function resolveInitiatePayment(nextUrl?: object) {
   return mock(`${serviceBaseURL}/claims`)
     .post('/initiate-citizen-payment')
-    .reply(HttpStatus.OK, { ...paymentResponse, ...nextUrl })
+    .reply(HttpStatus.OK, { ...paymentResponse, ...nextUrl });
 }
 
-export function resolveResumePayment (nextUrl?: object) {
+export function resolveResumePayment(nextUrl?: object) {
   return mock(`${serviceBaseURL}/claims`)
     .put('/resume-citizen-payment')
-    .reply(HttpStatus.OK, { ...paymentResponse, ...nextUrl })
+    .reply(HttpStatus.OK, { ...paymentResponse, ...nextUrl });
 }

@@ -1,7 +1,7 @@
-import { expect } from 'chai'
+import { expect } from 'chai';
 
-import { DraftClaim } from 'drafts/models/draftClaim'
-import { YourDetails } from 'drafts/tasks/yourDetails'
+import { DraftClaim } from 'drafts/models/draftClaim';
+import { YourDetails } from 'drafts/tasks/yourDetails';
 
 describe('Your details', () => {
   describe('isCompleted', () => {
@@ -9,11 +9,11 @@ describe('Your details', () => {
       const input = {
         claimant: {
           phone: {
-            number: '7123123123'
+            number: '7123123123',
           },
           partyDetails: {
-            type : 'individual',
-            address: { line1: 'Here',line2: 'There',line3: '',city: 'London',postcode: 'BB12 7NQ' },
+            type: 'individual',
+            address: { line1: 'Here', line2: 'There', line3: '', city: 'London', postcode: 'BB12 7NQ' },
             firstName: 'John',
             lastName: 'Doe',
             dateOfBirth: {
@@ -21,19 +21,19 @@ describe('Your details', () => {
               date: {
                 day: 10,
                 month: 11,
-                year: 1990
-              }
-            }
-          }
-        }
-      }
-      const claim: DraftClaim = new DraftClaim().deserialize(input)
-      expect(YourDetails.isCompleted(claim)).to.equal(true)
-    })
+                year: 1990,
+              },
+            },
+          },
+        },
+      };
+      const claim: DraftClaim = new DraftClaim().deserialize(input);
+      expect(YourDetails.isCompleted(claim)).to.equal(true);
+    });
 
     it('should return false when the task is not completed', () => {
-      const claim: DraftClaim = new DraftClaim()
-      expect(YourDetails.isCompleted(claim)).to.equal(false)
-    })
-  })
-})
+      const claim: DraftClaim = new DraftClaim();
+      expect(YourDetails.isCompleted(claim)).to.equal(false);
+    });
+  });
+});

@@ -1,11 +1,11 @@
-import * as express from 'express'
-import { Paths } from 'claim/paths'
+import * as express from 'express';
+import { Paths } from 'claim/paths';
 
-import { ErrorHandling } from 'shared/errorHandling'
-import { ClaimMiddleware } from 'claims/claimMiddleware'
+import { ErrorHandling } from 'shared/errorHandling';
+import { ClaimMiddleware } from 'claims/claimMiddleware';
 
-import { SealedClaimPdfGenerator } from 'services/sealedClaimPdfGenerator'
-import { OnlyDefendantLinkedToClaimCanDoIt } from 'guards/onlyDefendantLinkedToClaimCanDoIt'
+import { SealedClaimPdfGenerator } from 'services/sealedClaimPdfGenerator';
+import { OnlyDefendantLinkedToClaimCanDoIt } from 'guards/onlyDefendantLinkedToClaimCanDoIt';
 
 /* tslint:disable:no-default-export */
 export default express.Router()
@@ -13,4 +13,4 @@ export default express.Router()
     Paths.sealedClaimPdfReceiver.uri,
     ClaimMiddleware.retrieveByExternalId,
     OnlyDefendantLinkedToClaimCanDoIt.check(),
-    ErrorHandling.apply(SealedClaimPdfGenerator.requestHandler))
+    ErrorHandling.apply(SealedClaimPdfGenerator.requestHandler));

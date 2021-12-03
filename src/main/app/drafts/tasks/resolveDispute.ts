@@ -1,8 +1,8 @@
-import { DraftClaim } from 'drafts/models/draftClaim'
+import { DraftClaim } from 'drafts/models/draftClaim';
 
 export class ResolveDispute {
 
-  static isCompleted (claim: DraftClaim): boolean {
-    return claim.readResolveDispute
+  static isCompleted(claim: DraftClaim): boolean {
+    return claim.readResolveDispute;
   }
 }

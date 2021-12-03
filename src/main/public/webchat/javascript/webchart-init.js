@@ -1,11 +1,11 @@
-var _paq = _paq || []
+var _paq = _paq || [];
 /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
 
-var xhttp
-xhttp = new XMLHttpRequest
-xhttp.onreadystatechange = function () {
+var xhttp;
+xhttp = new XMLHttpRequest;
+xhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
-    var json = JSON.parse(this.response)
+    var json = JSON.parse(this.response);
 
     webchat_init({
       uuid: 'script_' + json['cmc-webchat-id'],
@@ -25,18 +25,18 @@ xhttp.onreadystatechange = function () {
       textAdditional: 'Monday to Friday 8.30am to 5pm.',
       stylesheetURL: 'https://' + getUrl() + '/webchat/css/hmcts-webchat-gds-v3.css',
       busHandlerURL: 'https://' + getUrl() + '/webchat/javascript/hmcts-webchat-busHandler.js',
-      gdsMajorVersion: 3
-    })
+      gdsMajorVersion: 3,
+    });
   }
-}
-xhttp.open("GET", '/webchat', true)
-xhttp.send()
+};
+xhttp.open('GET', '/webchat', true);
+xhttp.send();
 
 
-function getUrl () {
+function getUrl() {
   if (window.location.port) {
-    return window.location.hostname + ":" + window.location.port
+    return window.location.hostname + ':' + window.location.port;
   } else {
-    return window.location.hostname
+    return window.location.hostname;
   }
 }

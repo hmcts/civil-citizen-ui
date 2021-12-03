@@ -7,6 +7,7 @@ export interface BaseParameters {
   returnUrl: string,
   language?: string
 }
+
 export interface InvokingParameters extends BaseParameters {
-  token: string
+  token: string;
 }

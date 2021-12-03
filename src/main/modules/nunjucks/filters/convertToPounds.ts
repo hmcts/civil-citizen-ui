@@ -1,6 +1,6 @@
-export function convertToPoundsFilter (value: number): number {
+export function convertToPoundsFilter(value: number): number {
   if (!value || (typeof value !== 'number')) {
-    throw new Error('Value should be a number')
+    throw new Error('Value should be a number');
   }
-  return value / 100
+  return value / 100;
 }

@@ -1,27 +1,27 @@
-import { IsDefined, IsIn } from '@hmcts/class-validator'
-import { FormaliseRepaymentPlanOption } from 'claimant-response/form/models/formaliseRepaymentPlanOption'
-import { ValidationErrors as GlobalValidationErrors } from 'forms/validation/validationErrors'
+import { IsDefined, IsIn } from '@hmcts/class-validator';
+import { FormaliseRepaymentPlanOption } from 'claimant-response/form/models/formaliseRepaymentPlanOption';
+import { ValidationErrors as GlobalValidationErrors } from 'forms/validation/validationErrors';
 
 export class FormaliseRepaymentPlan {
   @IsDefined({ message: GlobalValidationErrors.SELECT_AN_OPTION })
   @IsIn(FormaliseRepaymentPlanOption.all(), { message: GlobalValidationErrors.SELECT_AN_OPTION })
-  option?: FormaliseRepaymentPlanOption
+  option?: FormaliseRepaymentPlanOption;
 
-  constructor (option?: FormaliseRepaymentPlanOption) {
-    this.option = option
+  constructor(option?: FormaliseRepaymentPlanOption) {
+    this.option = option;
   }
 
-  static fromObject (input?: any): FormaliseRepaymentPlan {
+  static fromObject(input?: any): FormaliseRepaymentPlan {
     if (!input) {
-      return input
+      return input;
     }
-    return new FormaliseRepaymentPlan(FormaliseRepaymentPlanOption.valueOf(input.option))
+    return new FormaliseRepaymentPlan(FormaliseRepaymentPlanOption.valueOf(input.option));
   }
 
-  deserialize (input?: any): FormaliseRepaymentPlan {
+  deserialize(input?: any): FormaliseRepaymentPlan {
     if (input && input.option) {
-      this.option = FormaliseRepaymentPlanOption.valueOf(input.option.value)
+      this.option = FormaliseRepaymentPlanOption.valueOf(input.option.value);
     }
-    return this
+    return this;
   }
 }

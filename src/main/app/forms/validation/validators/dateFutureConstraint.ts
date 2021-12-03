@@ -3,51 +3,51 @@ import {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
-  ValidatorConstraintInterface
-} from '@hmcts/class-validator'
+  ValidatorConstraintInterface,
+} from '@hmcts/class-validator';
 
-import { MomentFactory } from 'shared/momentFactory'
-import { LocalDate } from 'forms/models/localDate'
+import { MomentFactory } from 'shared/momentFactory';
+import { LocalDate } from 'forms/models/localDate';
 
 @ValidatorConstraint()
 export class DateFutureConstraint implements ValidatorConstraintInterface {
-  validate (value: any, args?: ValidationArguments) {
+  validate(value: any, args?: ValidationArguments) {
     if (value === undefined) {
-      return true
+      return true;
     }
 
     if (!(value instanceof LocalDate)) {
-      return false
+      return false;
     }
 
-    const [distanceInDays] = args.constraints
+    const [distanceInDays] = args.constraints;
 
-    const date = value.toMoment()
-    const pointInTime = MomentFactory.currentDate().add(distanceInDays, 'day')
-    return date.isAfter(pointInTime)
+    const date = value.toMoment();
+    const pointInTime = MomentFactory.currentDate().add(distanceInDays, 'day');
+    return date.isAfter(pointInTime);
   }
 }
 
-export function IsFutureDate (validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+export function IsFutureDate(validationOptions?: ValidationOptions) {
+  return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       constraints: [0],
-      validator: DateFutureConstraint
-    })
-  }
+      validator: DateFutureConstraint,
+    });
+  };
 }
 
-export function IsFutureDateByNumberOfDays (distanceInDays: number, validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+export function IsFutureDateByNumberOfDays(distanceInDays: number, validationOptions?: ValidationOptions) {
+  return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       constraints: [distanceInDays],
-      validator: DateFutureConstraint
-    })
-  }
+      validator: DateFutureConstraint,
+    });
+  };
 }

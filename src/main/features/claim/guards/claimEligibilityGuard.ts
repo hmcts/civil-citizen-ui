@@ -1,16 +1,16 @@
-import * as express from 'express'
+import * as express from 'express';
 
-import { GuardFactory } from 'response/guards/guardFactory'
+import { GuardFactory } from 'response/guards/guardFactory';
 
-import { Draft } from '@hmcts/draft-store-client'
-import { DraftClaim } from 'drafts/models/draftClaim'
-import { DraftService } from 'services/draftService'
+import { Draft } from '@hmcts/draft-store-client';
+import { DraftClaim } from 'drafts/models/draftClaim';
+import { DraftService } from 'services/draftService';
 
-import { CookieEligibilityStore } from 'eligibility/store'
+import { CookieEligibilityStore } from 'eligibility/store';
 
-import { Paths as EligibilityPaths } from 'eligibility/paths'
+import { Paths as EligibilityPaths } from 'eligibility/paths';
 
-const eligibilityStore = new CookieEligibilityStore()
+const eligibilityStore = new CookieEligibilityStore();
 
 export class ClaimEligibilityGuard {
   /**
@@ -20,28 +20,28 @@ export class ClaimEligibilityGuard {
    *
    * @returns {express.RequestHandler} - request handler middleware
    */
-  static requestHandler (): express.RequestHandler {
+  static requestHandler(): express.RequestHandler {
     return GuardFactory.createAsync(async (req: express.Request, res: express.Response) => {
-      const draft: Draft<DraftClaim> = res.locals.claimDraft
+      const draft: Draft<DraftClaim> = res.locals.claimDraft;
       if (draft.document.eligibility) {
-        return true
+        return true;
       }
 
-      const eligibility = eligibilityStore.read(req, res)
+      const eligibility = eligibilityStore.read(req, res);
       if (eligibility.eligible) {
-        await this.markDraftEligible(draft, res.locals.user)
-        eligibilityStore.clear(req, res)
-        return true
+        await this.markDraftEligible(draft, res.locals.user);
+        eligibilityStore.clear(req, res);
+        return true;
       }
 
-      return false
+      return false;
     }, (req: express.Request, res: express.Response): void => {
-      res.redirect(EligibilityPaths.startPage.uri)
-    })
+      res.redirect(EligibilityPaths.startPage.uri);
+    });
   }
 
-  private static async markDraftEligible (draft: Draft<DraftClaim>, user: User) {
-    draft.document.eligibility = true
-    await new DraftService().save(draft, user.bearerToken)
+  private static async markDraftEligible(draft: Draft<DraftClaim>, user: User) {
+    draft.document.eligibility = true;
+    await new DraftService().save(draft, user.bearerToken);
   }
 }

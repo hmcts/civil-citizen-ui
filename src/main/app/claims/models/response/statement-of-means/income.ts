@@ -1,4 +1,4 @@
-import { FrequencyBasedAmount } from 'claims/models/response/statement-of-means/frequencyBasedAmount'
+import { FrequencyBasedAmount } from 'claims/models/response/statement-of-means/frequencyBasedAmount';
 
 export enum IncomeType {
   JOB = 'JOB',
@@ -15,6 +15,6 @@ export enum IncomeType {
 }
 
 export interface Income extends FrequencyBasedAmount {
-  type: IncomeType
-  otherSource?: string
+  type: IncomeType;
+  otherSource?: string;
 }

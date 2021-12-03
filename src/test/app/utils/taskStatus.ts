@@ -1,12 +1,12 @@
-import { expect } from 'chai'
-import { TaskStatus } from 'utils/taskStatus'
-import { TaskList } from 'drafts/tasks/taskList'
+import { expect } from 'chai';
+import { TaskStatus } from 'utils/taskStatus';
+import { TaskList } from 'drafts/tasks/taskList';
 
 describe('TaskStatus', () => {
   it('should return default values if the task list is empty', () => {
-    TaskStatus.getTaskStatus()
-    expect(TaskStatus.getTaskStatus()).to.be.eql({ completed: 0, total: 0 })
-  })
+    TaskStatus.getTaskStatus();
+    expect(TaskStatus.getTaskStatus()).to.be.eql({ completed: 0, total: 0 });
+  });
 
   it('should return 2 completed tasks and 3 total tasks', () => {
     const taskList: TaskList[] = [
@@ -16,12 +16,12 @@ describe('TaskStatus', () => {
           {
             name: 'Task 1',
             startPageUrl: '/claim/',
-            completed: true
-          }
+            completed: true,
+          },
         ],
         isCompleted: () => {
-          return false
-        }
+          return false;
+        },
       },
       {
         name: 'Step 2',
@@ -29,27 +29,27 @@ describe('TaskStatus', () => {
           {
             name: 'Task 2',
             startPageUrl: '/claim/',
-            completed: true
+            completed: true,
           },
           {
             name: 'Task 3',
             startPageUrl: '/claim/',
-            completed: false
-          }
+            completed: false,
+          },
         ],
         isCompleted: () => {
-          return false
-        }
+          return false;
+        },
       },
       {
         name: 'Step 3',
         tasks: [],
         isCompleted: () => {
-          return false
-        }
-      }
-    ]
-    expect(TaskStatus.getTaskStatus(taskList)).to.be.eql({ completed: 2, total: 3 })
-  })
+          return false;
+        },
+      },
+    ];
+    expect(TaskStatus.getTaskStatus(taskList)).to.be.eql({ completed: 2, total: 3 });
+  });
 
-})
+});

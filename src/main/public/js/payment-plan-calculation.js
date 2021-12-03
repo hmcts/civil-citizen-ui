@@ -1,5 +1,5 @@
-$(document).ready(function () {
-  var feature = (function () {
+$(document).ready(function() {
+  var feature = (function() {
     var config = {
       paymentLengthCalculationApi: '/payment-plan-calculation',
       noPaymentLengthPlaceholder: '-',
@@ -10,8 +10,8 @@ $(document).ready(function () {
       instalmentAmountSelector: 'input[name=instalmentAmount]',
       paymentSchedultSelector: 'input[name=paymentSchedule]',
       calculatePaymentLengthButton: '.calculateLengthOfRepayment',
-      paymentLengthSelector: '.lengthOfRepayment'
-    }
+      paymentLengthSelector: '.lengthOfRepayment',
+    };
 
     var containerElement = null;
 
@@ -21,23 +21,23 @@ $(document).ready(function () {
     var calculatePaymentLengthButtonElement = null;
     var paymentLengthElement = null;
 
-    var getTotalAmount = function () {
+    var getTotalAmount = function() {
       return totalAmountElement.val();
-    }
+    };
 
-    var getInstalmentAmount = function () {
+    var getInstalmentAmount = function() {
       return instalmentAmountElement.val();
-    }
+    };
 
-    var getPaymentSchedule = function () {
+    var getPaymentSchedule = function() {
       return containerElement.find(config.paymentSchedultSelector + ':checked').val();
-    }
+    };
 
-    var setPaymentLength = function (paymentLength) {
+    var setPaymentLength = function(paymentLength) {
       paymentLengthElement.text(paymentLength);
-    }
+    };
 
-    var init = function (settings) {
+    var init = function(settings) {
       // Allow overriding the default config
       $.extend(config, settings);
 
@@ -52,15 +52,15 @@ $(document).ready(function () {
       setup();
     };
 
-    var setup = function () {
+    var setup = function() {
       enableProgressiveEnhancement();
       instalmentAmountElement.keyup(updatePaymentLength);
       paymentScheduleElement.change(updatePaymentLength);
-    }
+    };
 
     var enableProgressiveEnhancement = function() {
       calculatePaymentLengthButtonElement.remove();
-    }
+    };
 
     var updatePaymentLength = function() {
       var totalAmount = getTotalAmount();
@@ -69,31 +69,31 @@ $(document).ready(function () {
 
       if (!totalAmount || !instalmentAmount || !frequencyInWeeks) {
         setPaymentLength(config.noPaymentLengthPlaceholder);
-        return
+        return;
       }
       callPaymentPlanCalculationEndpoint(getTotalAmount, getInstalmentAmount, frequencyInWeeks);
-    }
+    };
 
-    var callPaymentPlanCalculationEndpoint = function (totalAmount, instalmentAmount, frequencyInWeeks) {
+    var callPaymentPlanCalculationEndpoint = function(totalAmount, instalmentAmount, frequencyInWeeks) {
       var parameters = {
         'total-amount': totalAmount,
         'instalment-amount': instalmentAmount,
-        'frequency-in-weeks': frequencyInWeeks
-      }
+        'frequency-in-weeks': frequencyInWeeks,
+      };
       $.getJSON({
         url: buildApiPath(parameters),
-        success: paymentPlanCalculationHandler
-      })
-    }
+        success: paymentPlanCalculationHandler,
+      });
+    };
 
-    var paymentPlanCalculationHandler = function (data) {
+    var paymentPlanCalculationHandler = function(data) {
       var paymentPlan = data.paymentPlan || {};
       setPaymentLength(paymentPlan.paymentLength || config.noPaymentLengthPlaceholder);
-    }
+    };
 
-    var buildApiPath = function (parameters) {
-      return config.paymentLengthCalculationApi + '?' + $.param(parameters)
-    }
+    var buildApiPath = function(parameters) {
+      return config.paymentLengthCalculationApi + '?' + $.param(parameters);
+    };
 
     var mapFrequencyInWeeks = function(frequency) {
       switch (frequency) {
@@ -102,14 +102,14 @@ $(document).ready(function () {
         case 'EVERY_TWO_WEEKS':
           return 2.0;
         case 'EVERY_MONTH':
-          return 52/12;
+          return 52 / 12;
         default:
           return undefined;
       }
-    }
+    };
 
     return {
-      init: init
+      init: init,
     };
   })();
 

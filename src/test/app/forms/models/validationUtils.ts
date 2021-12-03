@@ -1,47 +1,47 @@
-import { expect } from 'chai'
-import * as _ from 'lodash'
+import { expect } from 'chai';
+import * as _ from 'lodash';
 
-import { ValidationError } from '@hmcts/class-validator'
-import * as randomstring from 'randomstring'
+import { ValidationError } from '@hmcts/class-validator';
+import * as randomstring from 'randomstring';
 
 class Violation {
-  constructor (public property: string, public message: string) {
+  constructor(public property: string, public message: string) {
   }
 }
 
-export function expectNumberOfValidationErrors (errors: ValidationError[], expectation: number) {
-  expect(errors.length).to.be.equal(expectation, `Number of errors found (${errors.length}) is not equal ${expectation}. ${stringifyViolations(extractViolationsFrom(errors))}`)
+export function expectNumberOfValidationErrors(errors: ValidationError[], expectation: number) {
+  expect(errors.length).to.be.equal(expectation, `Number of errors found (${errors.length}) is not equal ${expectation}. ${stringifyViolations(extractViolationsFrom(errors))}`);
 }
 
-export function expectValidationError (errors: ValidationError[], message: string) {
-  const violations: Violation[] = extractViolationsFrom(errors)
-  expect(violations.map(violation => violation.message)).to.include(message, `Error '${message}' has not been found. ${stringifyViolations(violations)}`)
+export function expectValidationError(errors: ValidationError[], message: string) {
+  const violations: Violation[] = extractViolationsFrom(errors);
+  expect(violations.map(violation => violation.message)).to.include(message, `Error '${message}' has not been found. ${stringifyViolations(violations)}`);
 }
 
-export function expectValidationErrorNotPresent (errors: ValidationError[], message: string) {
-  const violations: Violation[] = extractViolationsFrom(errors)
-  expect(violations.map(violation => violation.message)).to.not.include(message, `Error '${message}' has been found. ${stringifyViolations(violations)}`)
+export function expectValidationErrorNotPresent(errors: ValidationError[], message: string) {
+  const violations: Violation[] = extractViolationsFrom(errors);
+  expect(violations.map(violation => violation.message)).to.not.include(message, `Error '${message}' has been found. ${stringifyViolations(violations)}`);
 }
 
-export function expectPropertyValidationError (errors: ValidationError[], property: string, message: string) {
-  const violations: Violation[] = extractViolationsFrom(errors)
-  expect(violations).to.deep.include(new Violation(property, message), `Error '${message}' on property '${property}' has not been found. ${stringifyViolations(violations)}`)
+export function expectPropertyValidationError(errors: ValidationError[], property: string, message: string) {
+  const violations: Violation[] = extractViolationsFrom(errors);
+  expect(violations).to.deep.include(new Violation(property, message), `Error '${message}' on property '${property}' has not been found. ${stringifyViolations(violations)}`);
 }
 
-function extractViolationsFrom (errors: ValidationError[], parentProperty?: string): Violation[] {
-  function property (error: ValidationError) {
-    return parentProperty ? `${parentProperty}.${error.property}` : error.property
+function extractViolationsFrom(errors: ValidationError[], parentProperty?: string): Violation[] {
+  function property(error: ValidationError) {
+    return parentProperty ? `${parentProperty}.${error.property}` : error.property;
   }
 
   return _.flattenDeep<Violation>(
     errors.map((error: ValidationError) => {
       if (error.children && error.children.length > 0) {
-        return extractViolationsFrom(error.children, parentProperty)
+        return extractViolationsFrom(error.children, parentProperty);
       } else {
-        return Object.values(error.constraints).map((message: string) => new Violation(property(error), message))
+        return Object.values(error.constraints).map((message: string) => new Violation(property(error), message));
       }
-    })
-  )
+    }),
+  );
 }
 
 /**
@@ -61,26 +61,26 @@ function extractViolationsFrom (errors: ValidationError[], parentProperty?: stri
  *  </li>
  * </ul>
  */
-function stringifyViolations (violations: Violation[]): string {
+function stringifyViolations(violations: Violation[]): string {
   const errors: string = _(violations)
     .groupBy((violation: Violation) => violation.property)
     .map((violations: Violation[], property: string) => {
       return ` - property '${property}':\n${violations.map((violation: Violation) => {
-        return `  - '${violation.message}'\n`
-      })}`
+        return `  - '${violation.message}'\n`;
+      })}`;
     })
-    .join('')
+    .join('');
 
-  return `\n\nThe following errors has been triggered:\n${errors}\n`
+  return `\n\nThe following errors has been triggered:\n${errors}\n`;
 }
 
-export function generateString (length: number): string {
+export function generateString(length: number): string {
   return randomstring.generate({
     length: length,
-    charset: 'alphabetic'
-  })
+    charset: 'alphabetic',
+  });
 }
 
-export function evaluateErrorMsg (errorMsg: string, value: number): string {
-  return errorMsg.replace('$constraint1', value.toString())
+export function evaluateErrorMsg(errorMsg: string, value: number): string {
+  return errorMsg.replace('$constraint1', value.toString());
 }

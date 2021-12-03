@@ -1,15 +1,15 @@
-import { IsDefined, IsInt, Max, Min, ValidateIf } from '@hmcts/class-validator'
+import { IsDefined, IsInt, Max, Min, ValidateIf } from '@hmcts/class-validator';
 import {
   ValidationErrors as DefaultValidationErrors,
-  ValidationErrors as GlobalValidationErrors
-} from 'forms/validation/validationErrors'
-import { CompletableTask } from 'models/task'
-import { toNumberOrUndefined } from 'shared/utils/numericUtils'
-import { YesNoOption } from 'models/yesNoOption'
+  ValidationErrors as GlobalValidationErrors,
+} from 'forms/validation/validationErrors';
+import { CompletableTask } from 'models/task';
+import { toNumberOrUndefined } from 'shared/utils/numericUtils';
+import { YesNoOption } from 'models/yesNoOption';
 
 export class OtherWitnesses implements CompletableTask {
   @IsDefined({ message: GlobalValidationErrors.YES_NO_REQUIRED })
-  otherWitnesses?: YesNoOption
+  otherWitnesses?: YesNoOption;
 
   @ValidateIf(o => o.otherWitnesses && o.otherWitnesses.option === YesNoOption.YES.option)
   @IsDefined()
@@ -17,40 +17,40 @@ export class OtherWitnesses implements CompletableTask {
   @Min(1, { message: GlobalValidationErrors.POSITIVE_NUMBER_REQUIRED })
   @Max(100, { message: DefaultValidationErrors.BELOW_OR_EQUAL_TO_100_REQUIRED })
 
-  howMany?: number
+  howMany?: number;
 
-  constructor (otherWitnesses?: YesNoOption, howMany?: number) {
-    this.otherWitnesses = otherWitnesses
-    this.howMany = howMany
+  constructor(otherWitnesses?: YesNoOption, howMany?: number) {
+    this.otherWitnesses = otherWitnesses;
+    this.howMany = howMany;
   }
 
-  static fromObject (value?: any): OtherWitnesses {
+  static fromObject(value?: any): OtherWitnesses {
     if (!value) {
-      return value
+      return value;
     }
 
     return new OtherWitnesses(
       YesNoOption.fromObject(value.otherWitnesses),
-      toNumberOrUndefined(value.howMany))
+      toNumberOrUndefined(value.howMany));
   }
 
-  deserialize (input?: any): OtherWitnesses {
+  deserialize(input?: any): OtherWitnesses {
     if (input && input.otherWitnesses) {
-      this.otherWitnesses = YesNoOption.fromObject(input.otherWitnesses.option)
+      this.otherWitnesses = YesNoOption.fromObject(input.otherWitnesses.option);
       if (input.otherWitnesses) {
-        this.howMany = toNumberOrUndefined(input.howMany)
+        this.howMany = toNumberOrUndefined(input.howMany);
       }
     }
-    return this
+    return this;
   }
 
-  isCompleted (): boolean {
+  isCompleted(): boolean {
     if (this.otherWitnesses === undefined) {
-      return false
+      return false;
     } else if (this.otherWitnesses.option === YesNoOption.YES.option) {
-      return this.howMany !== undefined
+      return this.howMany !== undefined;
     } else {
-      return true
+      return true;
     }
   }
 }

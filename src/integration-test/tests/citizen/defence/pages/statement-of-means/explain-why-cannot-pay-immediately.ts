@@ -1,14 +1,14 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const fields = {
-  text: 'textarea[id=text]'
-}
+  text: 'textarea[id=text]',
+};
 
 export class CannotPayImmediatelyPage {
 
-  enterExplaination (): void {
-    I.fillField(fields.text, 'I cannot pay immediately')
+  enterExplaination(): void {
+    I.fillField(fields.text, 'I cannot pay immediately');
   }
 }

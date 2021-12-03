@@ -6,7 +6,7 @@ export enum BankAccountType {
 }
 
 export interface BankAccount {
-  type: BankAccountType
-  joint: boolean
-  balance: number
+  type: BankAccountType;
+  joint: boolean;
+  balance: number;
 }

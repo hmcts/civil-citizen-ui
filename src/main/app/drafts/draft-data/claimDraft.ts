@@ -1,15 +1,15 @@
-import * as uuid from 'uuid'
-import { PartyType } from 'common/partyType'
-import { YesNoOption } from 'models/yesNoOption'
+import * as uuid from 'uuid';
+import { PartyType } from 'common/partyType';
+import { YesNoOption } from 'models/yesNoOption';
 
-export function prepareClaimDraft (userEmailAddress: string, helpWithFees: boolean) {
+export function prepareClaimDraft(userEmailAddress: string, helpWithFees: boolean) {
   return {
     externalId: uuid(),
     breathingSpace: {},
     claimant: {
       payment: {},
       phone: {
-        number: '(0)207 127 0000'
+        number: '(0)207 127 0000',
       },
       partyDetails: {
         address: {
@@ -20,13 +20,13 @@ export function prepareClaimDraft (userEmailAddress: string, helpWithFees: boole
           postcode: 'SW1H 9AJ',
           addressVisible: true,
           addressSelectorVisible: false,
-          enterManually: true
+          enterManually: true,
         },
         hasCorrespondenceAddress: false,
         correspondenceAddress: {
           addressVisible: true,
           addressSelectorVisible: false,
-          enterManually: false
+          enterManually: false,
         },
         name: 'Jan Clark',
         title: 'Mr.',
@@ -38,10 +38,10 @@ export function prepareClaimDraft (userEmailAddress: string, helpWithFees: boole
           date: {
             year: 2000,
             month: 1,
-            day: 1
-          }
-        }
-      }
+            day: 1,
+          },
+        },
+      },
     },
     defendant: {
       partyDetails: {
@@ -54,55 +54,55 @@ export function prepareClaimDraft (userEmailAddress: string, helpWithFees: boole
           postcode: 'SW1H 9AJ',
           addressVisible: true,
           addressSelectorVisible: false,
-          enterManually: true
+          enterManually: true,
         },
         correspondenceAddress: {
           addressVisible: true,
           addressSelectorVisible: false,
-          enterManually: false
+          enterManually: false,
         },
         name: 'Mrs. Mary Richards',
         type: PartyType.INDIVIDUAL.value,
         title: 'Mrs.',
         firstName: 'Mary',
-        lastName: 'Richards'
+        lastName: 'Richards',
       },
       email: {
-        address: userEmailAddress
+        address: userEmailAddress,
       },
       phone: {
-        number: ''
-      }
+        number: '',
+      },
     },
     amount: {
       type: 'breakdown',
       rows: [
         {
           reason: 'Roof Fix & repairs to leak',
-          amount: 75
+          amount: 75,
         },
         {},
         {},
-        {}
-      ]
+        {},
+      ],
     },
     interest: {
       option: {
-        option: 'no'
-      }
+        option: 'no',
+      },
     },
     interestType: {},
     interestRate: {},
     interestDate: {},
     interestStartDate: {
-      date: {}
+      date: {},
     },
     interestEndDate: {},
     interestTotal: {},
     interestContinueClaiming: {},
     interestHowMuch: {},
     reason: {
-      reason: 'A strong sense of entitlement that would explain my reasons of the claim, that the Roof work and leaks that followed were done below standards set by the council inspector'
+      reason: 'A strong sense of entitlement that would explain my reasons of the claim, that the Roof work and leaks that followed were done below standards set by the council inspector',
     },
     readResolveDispute: true,
     readCompletingClaim: true,
@@ -110,28 +110,28 @@ export function prepareClaimDraft (userEmailAddress: string, helpWithFees: boole
       rows: [
         {
           date: '01 October 2017',
-          description: 'The day the first bill was issued'
+          description: 'The day the first bill was issued',
         },
         {
           date: '26 March 2018',
-          description: 'A historic day with enormous importance'
+          description: 'A historic day with enormous importance',
         },
         {
           date: '14 June 2018',
-          description: 'line to explain what happened and when'
+          description: 'line to explain what happened and when',
         },
-        {}
-      ]
+        {},
+      ],
     },
     evidence: {
       rows: [
         {},
         {},
         {},
-        {}
-      ]
+        {},
+      ],
     },
     eligibility: true,
-    helpWithFees: helpWithFees ? { declared: YesNoOption.NO } : undefined
-  }
+    helpWithFees: helpWithFees ? { declared: YesNoOption.NO } : undefined,
+  };
 }

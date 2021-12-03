@@ -1,12 +1,12 @@
 export abstract class MultiRowFormItem {
 
-  abstract deserialize (input?: any): MultiRowFormItem
+  abstract deserialize(input?: any): MultiRowFormItem
 
-  isEmpty (): boolean {
-    return Object.values(this).every(value => value === undefined)
+  isEmpty(): boolean {
+    return Object.values(this).every(value => value === undefined);
   }
 
-  isAtLeastOneFieldPopulated (): boolean {
-    return !this.isEmpty()
+  isAtLeastOneFieldPopulated(): boolean {
+    return !this.isEmpty();
   }
 }

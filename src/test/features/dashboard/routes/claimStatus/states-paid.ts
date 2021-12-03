@@ -1,63 +1,63 @@
-import { expect } from 'chai'
-import * as request from 'supertest'
-import * as config from 'config'
+import { expect } from 'chai';
+import * as request from 'supertest';
+import * as config from 'config';
 
-import { attachDefaultHooks } from 'test/routes/hooks'
-import 'test/routes/expectations'
+import { attachDefaultHooks } from 'test/routes/hooks';
+import 'test/routes/expectations';
 
-import { Paths } from 'dashboard/paths'
+import { Paths } from 'dashboard/paths';
 
-import { app } from 'main/app'
+import { app } from 'main/app';
 
-import * as idamServiceMock from 'test/http-mocks/idam'
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store'
-import { checkAuthorizationGuards } from 'test/features/dashboard/routes/checks/authorization-check'
-import { MomentFactory } from 'shared/momentFactory'
+import * as idamServiceMock from 'test/http-mocks/idam';
+import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { checkAuthorizationGuards } from 'test/features/dashboard/routes/checks/authorization-check';
+import { MomentFactory } from 'shared/momentFactory';
 
 import {
   partialAdmissionAlreadyPaidData,
   partialAdmissionFromStatesPaidDefence,
-  partialAdmissionFromStatesPaidWithMediationDefence
-} from 'test/data/entity/responseData'
+  partialAdmissionFromStatesPaidWithMediationDefence,
+} from 'test/data/entity/responseData';
 
 import {
   claimantRejectAlreadyPaid,
   claimantRejectAlreadyPaidWithMediation,
   directionsQuestionnaireDeadline,
-  respondedAt
-} from 'test/data/entity/fullDefenceData'
-import { MediationOutcome } from 'claims/models/mediationOutcome'
+  respondedAt,
+} from 'test/data/entity/fullDefenceData';
+import { MediationOutcome } from 'claims/models/mediationOutcome';
 
-function statesPaidClaim () {
+function statesPaidClaim() {
   return {
     ...claimStoreServiceMock.sampleClaimObj,
     responseDeadline: MomentFactory.currentDate().add(1, 'days'),
-    ...respondedAt()
-  }
+    ...respondedAt(),
+  };
 }
 
-const cookieName: string = config.get<string>('session.cookieName')
+const cookieName: string = config.get<string>('session.cookieName');
 
-const claimPagePath = Paths.claimantPage.evaluateUri({ externalId: statesPaidClaim().externalId })
-const defendantPagePath = Paths.defendantPage.evaluateUri({ externalId: statesPaidClaim().externalId })
+const claimPagePath = Paths.claimantPage.evaluateUri({ externalId: statesPaidClaim().externalId });
+const defendantPagePath = Paths.defendantPage.evaluateUri({ externalId: statesPaidClaim().externalId });
 
-function testData () {
+function testData() {
   return [
     {
       status: 'States paid defence - defendant paid what he believed he owed - claimant rejects',
       claim: statesPaidClaim(),
       claimOverride: {
         response: {
-          ...partialAdmissionFromStatesPaidDefence
+          ...partialAdmissionFromStatesPaidDefence,
         },
         ...claimantRejectAlreadyPaid(),
-        ...directionsQuestionnaireDeadline()
+        ...directionsQuestionnaireDeadline(),
       },
       claimantAssertions: ['Wait for the court to review the case',
         'You’ve rejected John Doe’s response and said you want to take the case to court.',
         'The court will review the case. We’ll email you if we set a hearing date to tell you how to prepare.',
         'Download their response',
-        'Tell us you’ve ended the claim'
+        'Tell us you’ve ended the claim',
       ],
       defendantAssertions: ['Wait for the court to review the case',
         'John Smith has rejected your admission of £100',
@@ -66,28 +66,28 @@ function testData () {
         'complete a directions questionnaire',
         'Download your response',
         'You must make sure we receive the form before 4pm on',
-        'You also need to send a copy of the form to ' + statesPaidClaim().claim.claimants[0].name
-      ]
+        'You also need to send a copy of the form to ' + statesPaidClaim().claim.claimants[0].name,
+      ],
     },
     {
       status: 'States paid defence with mediation - defendant paid what he believed he owed with mediation - claimant rejects',
       claim: statesPaidClaim(),
       claimOverride: {
         response: {
-          ...partialAdmissionFromStatesPaidWithMediationDefence
+          ...partialAdmissionFromStatesPaidWithMediationDefence,
         },
-        ...claimantRejectAlreadyPaidWithMediation()
+        ...claimantRejectAlreadyPaidWithMediation(),
       },
       claimantAssertions: ['Your mediation appointment will be arranged within 28 days',
         'You’ve rejected the defendant’s response',
         'You’ve both agreed to try mediation. Your mediation appointment will be arranged within 28 days.',
-        'Find out more about how mediation works (opens in new tab)'
+        'Find out more about how mediation works (opens in new tab)',
       ],
       defendantAssertions: ['Your mediation appointment will be arranged within 28 days',
         'John Smith rejected your response',
         'You’ve both agreed to try mediation. Your mediation appointment will be arranged within 28 days.',
-        'Find out more about how mediation works (opens in new tab)'
-      ]
+        'Find out more about how mediation works (opens in new tab)',
+      ],
     },
     {
       status: 'States paid defence with mediation - defendant paid what he believed he owed with mediation - claimant rejects - mediation failed',
@@ -100,21 +100,21 @@ function testData () {
             selfWitness: 'NO',
             disabledAccess: 'NO',
             hearingLocation: 'Central London County Court',
-            hearingLocationOption: 'SUGGESTED_COURT'
-          }
+            hearingLocationOption: 'SUGGESTED_COURT',
+          },
         },
         ...claimantRejectAlreadyPaidWithMediation(),
-        mediationOutcome: MediationOutcome.FAILED
+        mediationOutcome: MediationOutcome.FAILED,
       },
       claimantAssertions: [
         'Mediation was unsuccessful',
-        'You weren’t able to resolve your claim against ' + statesPaidClaim().claim.defendants[0].name + ' using mediation.'
+        'You weren’t able to resolve your claim against ' + statesPaidClaim().claim.defendants[0].name + ' using mediation.',
       ],
       defendantAssertions: [
         'Mediation was unsuccessful',
         'You weren’t able to resolve ' + statesPaidClaim().claim.claimants[0].name + '’s claim against you using mediation.',
-        'Download ' + statesPaidClaim().claim.claimants[0].name + '’s hearing requirements'
-      ]
+        'Download ' + statesPaidClaim().claim.claimants[0].name + '’s hearing requirements',
+      ],
     },
     {
       status: 'States paid defence with mediation - defendant paid what he believed he owed with mediation - claimant rejects - DQs enabled',
@@ -127,23 +127,23 @@ function testData () {
             selfWitness: 'NO',
             disabledAccess: 'NO',
             hearingLocation: 'Central London County Court',
-            hearingLocationOption: 'SUGGESTED_COURT'
-          }
+            hearingLocationOption: 'SUGGESTED_COURT',
+          },
         },
-        ...claimantRejectAlreadyPaidWithMediation()
+        ...claimantRejectAlreadyPaidWithMediation(),
       },
       claimantAssertions: [
         'You’ve rejected the defendant’s response',
         'You’ve both agreed to try mediation. Your mediation appointment will be arranged within 28 days.',
-        'Find out more about how mediation works (opens in new tab)'
+        'Find out more about how mediation works (opens in new tab)',
       ],
       defendantAssertions: [
         statesPaidClaim().claim.claimants[0].name + ' rejected your response',
         'You’ve both agreed to try mediation. Your mediation appointment will be arranged within 28 days.',
         'Find out more about how mediation works (opens in new tab)',
         'They’ve also sent us their hearing requirements:',
-        'Download their hearing requirements'
-      ]
+        'Download their hearing requirements',
+      ],
     },
     {
       status: 'States paid defence with mediation - defendant paid what he believed he owed without mediation - claimant rejects - DQEnabled',
@@ -156,14 +156,14 @@ function testData () {
             selfWitness: 'NO',
             disabledAccess: 'NO',
             hearingLocation: 'Central London County Court',
-            hearingLocationOption: 'SUGGESTED_COURT'
-          }
+            hearingLocationOption: 'SUGGESTED_COURT',
+          },
         },
-        ...claimantRejectAlreadyPaid()
+        ...claimantRejectAlreadyPaid(),
       },
       claimantAssertions: [
         'You’ve rejected ' + statesPaidClaim().claim.defendants[0].name + '’s response and said you want to take the case to court.',
-        'The court will review the case. We’ll email you if we set a hearing date to tell you how to prepare.'
+        'The court will review the case. We’ll email you if we set a hearing date to tell you how to prepare.',
       ],
       defendantAssertions: [
         'They said you didn’t pay them',
@@ -171,25 +171,25 @@ function testData () {
         'We’ll contact you if we set a hearing date to tell you how to prepare.',
         'Download your response',
         'They’ve also sent us their hearing requirements',
-        'Download their hearing requirements'
-      ]
+        'Download their hearing requirements',
+      ],
     },
     {
       status: 'States paid defence with mediation - defendant paid what he believed he owed with mediation - claimant rejects - mediation success',
       claim: statesPaidClaim(),
       claimOverride: {
         response: {
-          ...partialAdmissionFromStatesPaidWithMediationDefence
+          ...partialAdmissionFromStatesPaidWithMediationDefence,
         },
         ...claimantRejectAlreadyPaidWithMediation(),
         ...directionsQuestionnaireDeadline(),
-        mediationOutcome: MediationOutcome.SUCCEEDED
+        mediationOutcome: MediationOutcome.SUCCEEDED,
       },
       claimantAssertions: [
         'You settled the claim through mediation',
         'You made an agreement which means the claim is now ended and sets out the terms of how ' + statesPaidClaim().claim.defendants[0].name + ' must repay you.',
         'Download the agreement',
-        '(PDF)'
+        '(PDF)',
       ],
       defendantAssertions: [
         'You settled the claim through mediation',
@@ -197,55 +197,55 @@ function testData () {
         'Download the agreement',
         '(PDF)',
         'Contact ' + statesPaidClaim().claim.claimants[0].name,
-        'if you need their payment details. Make sure you get receipts for any payments.'
-      ]
-    }
-  ]
+        'if you need their payment details. Make sure you get receipts for any payments.',
+      ],
+    },
+  ];
 }
 
 describe('Dashboard page', () => {
-  attachDefaultHooks(app)
+  attachDefaultHooks(app);
 
   describe('on GET', () => {
-    checkAuthorizationGuards(app, 'get', claimPagePath)
-    checkAuthorizationGuards(app, 'get', defendantPagePath)
+    checkAuthorizationGuards(app, 'get', claimPagePath);
+    checkAuthorizationGuards(app, 'get', defendantPagePath);
 
     context('when user authorised', () => {
       context('Claim Status', () => {
         context('as a claimant', () => {
           beforeEach(() => {
-            idamServiceMock.resolveRetrieveUserFor('1', 'citizen')
-          })
+            idamServiceMock.resolveRetrieveUserFor('1', 'citizen');
+          });
 
           testData().forEach(data => {
             it(`should render claim status: ${data.status}`, async () => {
-              claimStoreServiceMock.resolveRetrieveByExternalId(data.claim, data.claimOverride)
-              claimStoreServiceMock.mockNextWorkingDay(MomentFactory.parse('2019-07-01'))
+              claimStoreServiceMock.resolveRetrieveByExternalId(data.claim, data.claimOverride);
+              claimStoreServiceMock.mockNextWorkingDay(MomentFactory.parse('2019-07-01'));
 
               await request(app)
                 .get(claimPagePath)
                 .set('Cookie', `${cookieName}=ABC`)
-                .expect(res => expect(res).to.be.successful.withText(...data.claimantAssertions))
-            })
-          })
-        })
+                .expect(res => expect(res).to.be.successful.withText(...data.claimantAssertions));
+            });
+          });
+        });
 
         context('as a defendant', () => {
           beforeEach(() => {
-            idamServiceMock.resolveRetrieveUserFor('123', 'citizen')
-          })
+            idamServiceMock.resolveRetrieveUserFor('123', 'citizen');
+          });
 
           testData().forEach(data => {
             it(`should render dashboard: ${data.status}`, async () => {
-              claimStoreServiceMock.resolveRetrieveByExternalId(data.claim, data.claimOverride)
+              claimStoreServiceMock.resolveRetrieveByExternalId(data.claim, data.claimOverride);
               await request(app)
                 .get(defendantPagePath)
                 .set('Cookie', `${cookieName}=ABC`)
-                .expect(res => expect(res).to.be.successful.withText(...data.defendantAssertions))
-            })
-          })
-        })
-      })
-    })
-  })
-})
+                .expect(res => expect(res).to.be.successful.withText(...data.defendantAssertions));
+            });
+          });
+        });
+      });
+    });
+  });
+});

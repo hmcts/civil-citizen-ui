@@ -1,7 +1,7 @@
-import { ClaimantResponseCommon } from 'claims/models/claimant-response/claimantResponseCommon'
-import { ClaimantResponseType } from 'claims/models/claimant-response/claimantResponseType'
-import { YesNoOption } from 'claims/models/response/core/yesNoOption'
-import { DirectionsQuestionnaire } from 'claims/models/directions-questionnaire/directionsQuestionnaire'
+import { ClaimantResponseCommon } from 'claims/models/claimant-response/claimantResponseCommon';
+import { ClaimantResponseType } from 'claims/models/claimant-response/claimantResponseType';
+import { YesNoOption } from 'claims/models/response/core/yesNoOption';
+import { DirectionsQuestionnaire } from 'claims/models/directions-questionnaire/directionsQuestionnaire';
 
 export interface RejectionClaimantResponse extends ClaimantResponseCommon {
   type: ClaimantResponseType.REJECTION
@@ -11,9 +11,9 @@ export interface RejectionClaimantResponse extends ClaimantResponseCommon {
 }
 
 export namespace RejectionClaimantResponse {
-  export function deserialize (input: any): RejectionClaimantResponse {
+  export function deserialize(input: any): RejectionClaimantResponse {
     if (!input) {
-      return input
+      return input;
     }
 
     return {
@@ -21,7 +21,7 @@ export namespace RejectionClaimantResponse {
       type: ClaimantResponseType.REJECTION,
       freeMediation: input.freeMediation,
       reason: input.reason,
-      directionsQuestionnaire: DirectionsQuestionnaire.fromObject(input.directionsQuestionnaire)
-    }
+      directionsQuestionnaire: DirectionsQuestionnaire.fromObject(input.directionsQuestionnaire),
+    };
   }
 }

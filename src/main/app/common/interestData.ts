@@ -1,10 +1,10 @@
-import { Moment } from 'moment'
+import { Moment } from 'moment';
 
 export interface InterestData {
-  numberOfDays: number
-  interest: number
-  rate: number
-  interestFromDate: Moment
-  interestToDate: Moment
-  specificDailyAmount: number
+  numberOfDays: number;
+  interest: number;
+  rate: number;
+  interestFromDate: Moment;
+  interestToDate: Moment;
+  specificDailyAmount: number;
 }

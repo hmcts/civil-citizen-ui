@@ -1,12 +1,12 @@
-import { ResponseCommon } from './responseCommon'
+import { ResponseCommon } from './responseCommon';
 
-import { ResponseType } from 'claims/models/response/responseType'
-import { DefenceType } from 'claims/models/response/defenceType'
+import { ResponseType } from 'claims/models/response/responseType';
+import { DefenceType } from 'claims/models/response/defenceType';
 
-import { PaymentDeclaration } from 'claims/models/paymentDeclaration'
-import { DefendantEvidence } from 'response/form/models/defendantEvidence'
-import { DefendantTimeline } from 'response/form/models/defendantTimeline'
-import { DirectionsQuestionnaire } from 'claims/models/directions-questionnaire/directionsQuestionnaire'
+import { PaymentDeclaration } from 'claims/models/paymentDeclaration';
+import { DefendantEvidence } from 'response/form/models/defendantEvidence';
+import { DefendantTimeline } from 'response/form/models/defendantTimeline';
+import { DirectionsQuestionnaire } from 'claims/models/directions-questionnaire/directionsQuestionnaire';
 
 export interface FullDefenceResponse extends ResponseCommon {
   responseType: ResponseType.FULL_DEFENCE
@@ -19,7 +19,7 @@ export interface FullDefenceResponse extends ResponseCommon {
 }
 
 export namespace FullDefenceResponse {
-  export function deserialize (input: any): FullDefenceResponse {
+  export function deserialize(input: any): FullDefenceResponse {
     return {
       ...ResponseCommon.deserialize(input),
       responseType: ResponseType.FULL_DEFENCE,
@@ -28,14 +28,14 @@ export namespace FullDefenceResponse {
       defence: input.defence as string,
       timeline: {
         rows: input.timeline && input.timeline.rows || [],
-        comment: input.timeline && input.timeline.comment || undefined
+        comment: input.timeline && input.timeline.comment || undefined,
       } as DefendantTimeline,
       evidence: {
         rows: input.evidence && input.evidence.rows || [],
-        comment: input.evidence && input.evidence.comment || undefined
+        comment: input.evidence && input.evidence.comment || undefined,
       } as DefendantEvidence,
       directionsQuestionnaire: input.directionsQuestionnaire &&
-        DirectionsQuestionnaire.fromObject(input.directionsQuestionnaire)
-    }
+        DirectionsQuestionnaire.fromObject(input.directionsQuestionnaire),
+    };
   }
 }

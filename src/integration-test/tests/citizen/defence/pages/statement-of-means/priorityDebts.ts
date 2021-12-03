@@ -1,6 +1,6 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const fields = {
   mortgage: {
@@ -10,8 +10,8 @@ const fields = {
       everyWeek: 'input[id="mortgage[schedule]WEEK"]',
       everyTwoWeeks: 'input[id="mortgage[schedule]TWO_WEEKS"]',
       everyFourWeeks: 'input[id=mortgage[schedule]FOUR_WEEKS"]',
-      everyMonth: 'input[id="mortgage[schedule]MONTH"]'
-    }
+      everyMonth: 'input[id="mortgage[schedule]MONTH"]',
+    },
   },
   rent: {
     declared: 'input[id="rentDeclaredtrue"]',
@@ -20,8 +20,8 @@ const fields = {
       everyWeek: 'input[id="rent[schedule]WEEK"]',
       everyTwoWeeks: 'input[id="rent[schedule]TWO_WEEKS"]',
       everyFourWeeks: 'input[id=rent[schedule]FOUR_WEEKS"]',
-      everyMonth: 'input[id="rent[schedule]MONTH"]'
-    }
+      everyMonth: 'input[id="rent[schedule]MONTH"]',
+    },
   },
   councilTax: {
     declared: 'input[id="councilTaxDeclaredtrue"]',
@@ -30,8 +30,8 @@ const fields = {
       everyWeek: 'input[id="councilTax[schedule]WEEK"]',
       everyTwoWeeks: 'input[id="councilTax[schedule]TWO_WEEKS"]',
       everyFourWeeks: 'input[id=councilTax[schedule]FOUR_WEEKS"]',
-      everyMonth: 'input[id="councilTax[schedule]MONTH"]'
-    }
+      everyMonth: 'input[id="councilTax[schedule]MONTH"]',
+    },
   },
   gas: {
     declared: 'input[id="gasDeclaredtrue"]',
@@ -40,8 +40,8 @@ const fields = {
       everyWeek: 'input[id="gas[schedule]WEEK"]',
       everyTwoWeeks: 'input[id="gas[schedule]TWO_WEEKS"]',
       everyFourWeeks: 'input[id=gas[schedule]FOUR_WEEKS"]',
-      everyMonth: 'input[id="gas[schedule]MONTH"]'
-    }
+      everyMonth: 'input[id="gas[schedule]MONTH"]',
+    },
   },
   electricity: {
     declared: 'input[id="electricityDeclaredtrue"]',
@@ -50,8 +50,8 @@ const fields = {
       everyWeek: 'input[id="electricity[schedule]WEEK"]',
       everyTwoWeeks: 'input[id="electricity[schedule]TWO_WEEKS"]',
       everyFourWeeks: 'input[id=electricity[schedule]FOUR_WEEKS"]',
-      everyMonth: 'input[id="electricity[schedule]MONTH"]'
-    }
+      everyMonth: 'input[id="electricity[schedule]MONTH"]',
+    },
   },
   water: {
     declared: 'input[id="waterDeclaredtrue"]',
@@ -60,8 +60,8 @@ const fields = {
       everyWeek: 'input[id="water[schedule]WEEK"]',
       everyTwoWeeks: 'input[id="water[schedule]TWO_WEEKS"]',
       everyFourWeeks: 'input[id=water[schedule]FOUR_WEEKS"]',
-      everyMonth: 'input[id="water[schedule]MONTH"]'
-    }
+      everyMonth: 'input[id="water[schedule]MONTH"]',
+    },
   },
   maintenance: {
     declared: 'input[id="maintenanceDeclaredtrue"]',
@@ -70,10 +70,10 @@ const fields = {
       everyWeek: 'input[id="maintenance[schedule]WEEK"]',
       everyTwoWeeks: 'input[id="maintenance[schedule]TWO_WEEKS"]',
       everyFourWeeks: 'input[id=maintenance[schedule]FOUR_WEEKS"]',
-      everyMonth: 'input[id="maintenance[schedule]MONTH"]'
-    }
-  }
-}
+      everyMonth: 'input[id="maintenance[schedule]MONTH"]',
+    },
+  },
+};
 
 const buttons = {
   resetMortgage: 'input[id="action[resetDebt][mortgage]"]',
@@ -83,82 +83,82 @@ const buttons = {
   resetElectricity: 'input[id="action[resetDebt][electricity]"]',
   resetWater: 'input[id="action[resetDebt][water]"]',
   resetMaintenance: 'input[id="action[resetDebt][maintenance]"]',
-  submit: 'input[id="saveAndContinue"]'
-}
+  submit: 'input[id="saveAndContinue"]',
+};
 
 export class PriorityDebtsPage {
 
-  declareMortgage (repayments: number): void {
-    I.checkOption(fields.mortgage.declared)
-    I.fillField(fields.mortgage.amount, repayments.toFixed())
-    I.checkOption(fields.mortgage.schedule.everyMonth)
+  declareMortgage(repayments: number): void {
+    I.checkOption(fields.mortgage.declared);
+    I.fillField(fields.mortgage.amount, repayments.toFixed());
+    I.checkOption(fields.mortgage.schedule.everyMonth);
   }
 
-  resetMortgage (): void {
-    I.click(buttons.resetMortgage)
+  resetMortgage(): void {
+    I.click(buttons.resetMortgage);
   }
 
-  declareRent (repayments: number): void {
-    I.checkOption(fields.rent.declared)
-    I.fillField(fields.rent.amount, repayments.toFixed())
-    I.checkOption(fields.rent.schedule.everyMonth)
+  declareRent(repayments: number): void {
+    I.checkOption(fields.rent.declared);
+    I.fillField(fields.rent.amount, repayments.toFixed());
+    I.checkOption(fields.rent.schedule.everyMonth);
   }
 
-  resetRent (): void {
-    I.click(buttons.resetRent)
+  resetRent(): void {
+    I.click(buttons.resetRent);
   }
 
-  declareCouncilTax (repayments: number): void {
-    I.checkOption(fields.councilTax.declared)
-    I.fillField(fields.councilTax.amount, repayments.toFixed())
-    I.checkOption(fields.councilTax.schedule.everyMonth)
+  declareCouncilTax(repayments: number): void {
+    I.checkOption(fields.councilTax.declared);
+    I.fillField(fields.councilTax.amount, repayments.toFixed());
+    I.checkOption(fields.councilTax.schedule.everyMonth);
   }
 
-  resetCouncilTax (): void {
-    I.click(buttons.resetCouncilTax)
+  resetCouncilTax(): void {
+    I.click(buttons.resetCouncilTax);
   }
 
-  declareGas (repayments: number): void {
-    I.checkOption(fields.gas.declared)
-    I.fillField(fields.gas.amount, repayments.toFixed())
-    I.checkOption(fields.gas.schedule.everyMonth)
+  declareGas(repayments: number): void {
+    I.checkOption(fields.gas.declared);
+    I.fillField(fields.gas.amount, repayments.toFixed());
+    I.checkOption(fields.gas.schedule.everyMonth);
   }
 
-  resetGas (): void {
-    I.click(buttons.resetGas)
+  resetGas(): void {
+    I.click(buttons.resetGas);
   }
 
-  declareElectricity (repayments: number): void {
-    I.checkOption(fields.electricity.declared)
-    I.fillField(fields.electricity.amount, repayments.toFixed())
-    I.checkOption(fields.electricity.schedule.everyMonth)
+  declareElectricity(repayments: number): void {
+    I.checkOption(fields.electricity.declared);
+    I.fillField(fields.electricity.amount, repayments.toFixed());
+    I.checkOption(fields.electricity.schedule.everyMonth);
   }
 
-  resetElectricity (): void {
-    I.click(buttons.resetElectricity)
+  resetElectricity(): void {
+    I.click(buttons.resetElectricity);
   }
 
-  declareWater (repayments: number): void {
-    I.checkOption(fields.water.declared)
-    I.fillField(fields.water.amount, repayments.toFixed())
-    I.checkOption(fields.water.schedule.everyMonth)
+  declareWater(repayments: number): void {
+    I.checkOption(fields.water.declared);
+    I.fillField(fields.water.amount, repayments.toFixed());
+    I.checkOption(fields.water.schedule.everyMonth);
   }
 
-  resetWater (): void {
-    I.click(buttons.resetWater)
+  resetWater(): void {
+    I.click(buttons.resetWater);
   }
 
-  declareMaintenance (repayments: number): void {
-    I.checkOption(fields.maintenance.declared)
-    I.fillField(fields.maintenance.amount, repayments.toFixed())
-    I.checkOption(fields.maintenance.schedule.everyMonth)
+  declareMaintenance(repayments: number): void {
+    I.checkOption(fields.maintenance.declared);
+    I.fillField(fields.maintenance.amount, repayments.toFixed());
+    I.checkOption(fields.maintenance.schedule.everyMonth);
   }
 
-  resetMaintenance (): void {
-    I.click(buttons.resetMaintenance)
+  resetMaintenance(): void {
+    I.click(buttons.resetMaintenance);
   }
 
-  clickContinue (): void {
-    I.click(buttons.submit)
+  clickContinue(): void {
+    I.click(buttons.submit);
   }
 }

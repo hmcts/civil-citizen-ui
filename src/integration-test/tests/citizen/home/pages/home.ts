@@ -1,11 +1,11 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 export class HomePage {
 
-  open (): void {
-    I.amOnCitizenAppPage('/')
+  open(): void {
+    I.amOnCitizenAppPage('/');
   }
 
 }

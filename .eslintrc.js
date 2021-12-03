@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  env: { browser: true, es6: true, node: true,  mocha: true},
+  env: { browser: true, es6: true, node: true, mocha: true },
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'prettier', 'import', 'mocha'],
   extends: [
@@ -8,7 +8,6 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
-    'plugin:prettier/recommended',
     'plugin:mocha/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
@@ -75,5 +74,7 @@ module.exports = {
         ignoreMemberSort: false,
       },
     ],
+    'mocha/no-exclusive-tests': 'error',
+
   },
 };

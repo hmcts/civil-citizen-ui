@@ -1,839 +1,841 @@
-import { Moment } from 'moment'
-import { ClaimData } from 'claims/models/claimData'
-import { MomentFactory } from 'shared/momentFactory'
-import { Response } from 'claims/models/response'
-import { ResponseType } from 'claims/models/response/responseType'
-import { CountyCourtJudgment } from 'claims/models/countyCourtJudgment'
-import { ClaimantResponse } from 'claims/models/claimantResponse'
-import { Settlement } from 'claims/models/settlement'
-import { Offer } from 'claims/models/offer'
-import { ClaimStatus } from 'claims/models/claimStatus'
-import { isPastDeadline } from 'claims/isPastDeadline'
-import { FullAdmissionResponse } from 'claims/models/response/fullAdmissionResponse'
-import { PaymentOption } from 'claims/models/paymentOption'
-import { CountyCourtJudgmentType } from 'claims/models/countyCourtJudgmentType'
-import { ClaimantResponseType } from 'claims/models/claimant-response/claimantResponseType'
-import { calculateMonthIncrement } from 'common/calculate-month-increment/calculateMonthIncrement'
-import { AcceptationClaimantResponse } from 'claims/models/claimant-response/acceptationClaimantResponse'
-import { ReDetermination } from 'claims/models/claimant-response/reDetermination'
-import { FormaliseOption } from 'claims/models/claimant-response/formaliseOption'
-import { StatementType } from 'offer/form/models/statementType'
-import { DateOfBirth } from 'forms/models/dateOfBirth'
-import { Individual } from 'claims/models/details/yours/individual'
-import { LocalDate } from 'forms/models/localDate'
-import { PartyType } from 'common/partyType'
-import { DefenceType } from 'claims/models/response/defenceType'
-import { User } from 'idam/user'
-import { ClaimTemplate } from 'claims/models/claimTemplate'
-import { ClaimFeatureToggles } from 'utils/claimFeatureToggles'
-import { CalendarClient } from 'claims/calendarClient'
-import { DirectionOrder } from 'claims/models/directionOrder'
-import { ReviewOrder } from 'claims/models/reviewOrder'
-import { MediationOutcome } from 'claims/models/mediationOutcome'
-import { YesNoOption } from 'models/yesNoOption'
-import { ResponseMethod } from 'claims/models/response/responseMethod'
-import { ClaimDocument } from 'claims/models/claimDocument'
-import { TransferContents } from 'claims/models/transferContents'
-import * as _ from 'lodash'
-import { ClaimDocumentType } from 'common/claimDocumentType'
-import { ProceedOfflineReason } from 'claims/models/proceedOfflineReason'
-import * as config from 'config'
-import { ScannedDocumentType } from 'common/scannedDocumentType'
-import { MoneyConverter } from 'fees/moneyConverter'
+import { Moment } from 'moment';
+import { ClaimData } from 'claims/models/claimData';
+import { MomentFactory } from 'shared/momentFactory';
+import { Response } from 'claims/models/response';
+import { ResponseType } from 'claims/models/response/responseType';
+import { CountyCourtJudgment } from 'claims/models/countyCourtJudgment';
+import { ClaimantResponse } from 'claims/models/claimantResponse';
+import { Settlement } from 'claims/models/settlement';
+import { Offer } from 'claims/models/offer';
+import { ClaimStatus } from 'claims/models/claimStatus';
+import { isPastDeadline } from 'claims/isPastDeadline';
+import { FullAdmissionResponse } from 'claims/models/response/fullAdmissionResponse';
+import { PaymentOption } from 'claims/models/paymentOption';
+import { CountyCourtJudgmentType } from 'claims/models/countyCourtJudgmentType';
+import { ClaimantResponseType } from 'claims/models/claimant-response/claimantResponseType';
+import { calculateMonthIncrement } from 'common/calculate-month-increment/calculateMonthIncrement';
+import { AcceptationClaimantResponse } from 'claims/models/claimant-response/acceptationClaimantResponse';
+import { ReDetermination } from 'claims/models/claimant-response/reDetermination';
+import { FormaliseOption } from 'claims/models/claimant-response/formaliseOption';
+import { StatementType } from 'offer/form/models/statementType';
+import { DateOfBirth } from 'forms/models/dateOfBirth';
+import { Individual } from 'claims/models/details/yours/individual';
+import { LocalDate } from 'forms/models/localDate';
+import { PartyType } from 'common/partyType';
+import { DefenceType } from 'claims/models/response/defenceType';
+import { User } from 'idam/user';
+import { ClaimTemplate } from 'claims/models/claimTemplate';
+import { ClaimFeatureToggles } from 'utils/claimFeatureToggles';
+import { CalendarClient } from 'claims/calendarClient';
+import { DirectionOrder } from 'claims/models/directionOrder';
+import { ReviewOrder } from 'claims/models/reviewOrder';
+import { MediationOutcome } from 'claims/models/mediationOutcome';
+import { YesNoOption } from 'models/yesNoOption';
+import { ResponseMethod } from 'claims/models/response/responseMethod';
+import { ClaimDocument } from 'claims/models/claimDocument';
+import { TransferContents } from 'claims/models/transferContents';
+import * as _ from 'lodash';
+import { ClaimDocumentType } from 'common/claimDocumentType';
+import { ProceedOfflineReason } from 'claims/models/proceedOfflineReason';
+import * as config from 'config';
+import { ScannedDocumentType } from 'common/scannedDocumentType';
+import { MoneyConverter } from 'fees/moneyConverter';
 
 interface State {
-  status: ClaimStatus
+  status: ClaimStatus;
 }
 
 export class Claim {
-  id: number
-  claimantId: string
-  externalId: string
-  state: string
-  defendantId: string
-  claimNumber: string
-  responseDeadline?: Moment
-  createdAt: Moment
-  issuedOn?: Moment
-  claimData: ClaimData
-  moreTimeRequested: boolean
-  respondedAt: Moment
-  response: Response
-  claimantEmail: string
-  countyCourtJudgment: CountyCourtJudgment
-  countyCourtJudgmentRequestedAt: Moment
-  countyCourtJudgmentIssuedAt: Moment
-  defendantEmail: string
-  settlement: Settlement
-  settlementReachedAt: Moment
-  claimantResponse: ClaimantResponse
-  claimantRespondedAt: Moment
-  totalClaimAmount?: number
-  totalAmountTillToday: number
-  totalAmountTillDateOfIssue: number
-  totalInterest: number
-  features: string[]
-  directionsQuestionnaireDeadline: Moment
-  moneyReceivedOn: Moment
-  reDetermination: ReDetermination
-  reDeterminationRequestedAt: Moment
-  ccdCaseId: number
-  template: ClaimTemplate
-  directionOrder: DirectionOrder
-  reviewOrder: ReviewOrder
-  intentionToProceedDeadline?: Moment
-  mediationOutcome: string
-  pilotCourt: YesNoOption
-  paperResponse: YesNoOption
-  claimDocuments?: ClaimDocument[]
-  proceedOfflineReason: string
-  proceedViaPaperResponse: boolean
-  transferContent?: TransferContents
-  isOconResponse: boolean
-  directionOrderType: string
-  helpWithFeesNumber?: string
-  helpWithFessBalanceClaimFee?: number
-  lastEventTriggeredForHwfCase?: string
+  id: number;
+  claimantId: string;
+  externalId: string;
+  state: string;
+  defendantId: string;
+  claimNumber: string;
+  responseDeadline?: Moment;
+  createdAt: Moment;
+  issuedOn?: Moment;
+  claimData: ClaimData;
+  moreTimeRequested: boolean;
+  respondedAt: Moment;
+  response: Response;
+  claimantEmail: string;
+  countyCourtJudgment: CountyCourtJudgment;
+  countyCourtJudgmentRequestedAt: Moment;
+  countyCourtJudgmentIssuedAt: Moment;
+  defendantEmail: string;
+  settlement: Settlement;
+  settlementReachedAt: Moment;
+  claimantResponse: ClaimantResponse;
+  claimantRespondedAt: Moment;
+  totalClaimAmount?: number;
+  totalAmountTillToday: number;
+  totalAmountTillDateOfIssue: number;
+  totalInterest: number;
+  features: string[];
+  directionsQuestionnaireDeadline: Moment;
+  moneyReceivedOn: Moment;
+  reDetermination: ReDetermination;
+  reDeterminationRequestedAt: Moment;
+  ccdCaseId: number;
+  template: ClaimTemplate;
+  directionOrder: DirectionOrder;
+  reviewOrder: ReviewOrder;
+  intentionToProceedDeadline?: Moment;
+  mediationOutcome: string;
+  pilotCourt: YesNoOption;
+  paperResponse: YesNoOption;
+  claimDocuments?: ClaimDocument[];
+  proceedOfflineReason: string;
+  proceedViaPaperResponse: boolean;
+  transferContent?: TransferContents;
+  isOconResponse: boolean;
+  directionOrderType: string;
+  helpWithFeesNumber?: string;
+  helpWithFessBalanceClaimFee?: number;
+  lastEventTriggeredForHwfCase?: string;
 
-  get defendantOffer (): Offer {
+  get defendantOffer(): Offer {
     if (!this.settlement) {
-      return undefined
+      return undefined;
     }
 
-    return this.settlement.getDefendantOffer()
+    return this.settlement.getDefendantOffer();
   }
 
-  get respondToResponseDeadline (): Moment {
+  get respondToResponseDeadline(): Moment {
     if (!this.respondedAt) {
-      return undefined
+      return undefined;
     }
-    const daysForService = 5
-    const daysForResponse = 28
-    return this.respondedAt.clone().add(daysForService + daysForResponse, 'days')
+    const daysForService = 5;
+    const daysForResponse = 28;
+    return this.respondedAt.clone().add(daysForService + daysForResponse, 'days');
   }
 
-  async respondToMediationDeadline (): Promise<Moment> {
+  async respondToMediationDeadline(): Promise<Moment> {
     if (!this.respondedAt) {
-      return undefined
+      return undefined;
     }
 
-    return new CalendarClient().getNextWorkingDayAfterDays(this.respondedAt, 5)
+    return new CalendarClient().getNextWorkingDayAfterDays(this.respondedAt, 5);
   }
 
-  async respondToReviewOrderDeadline (): Promise<Moment> {
+  async respondToReviewOrderDeadline(): Promise<Moment> {
     if (!this.reviewOrder) {
-      return undefined
+      return undefined;
     }
 
-    return new CalendarClient().getNextWorkingDayAfterDays(this.reviewOrder.requestedAt, 19)
+    return new CalendarClient().getNextWorkingDayAfterDays(this.reviewOrder.requestedAt, 19);
   }
 
-  async respondToReconsiderationDeadline (): Promise<Moment> {
+  async respondToReconsiderationDeadline(): Promise<Moment> {
     if (!this.directionOrder) {
-      return undefined
+      return undefined;
     }
-    return new CalendarClient().getNextWorkingDayAfterDays(this.directionOrder.createdOn, 7)
+    return new CalendarClient().getNextWorkingDayAfterDays(this.directionOrder.createdOn, 7);
   }
 
-  async respondToOnlineOconReconsiderationDeadline (): Promise<Moment> {
+  async respondToOnlineOconReconsiderationDeadline(): Promise<Moment> {
     if (!this.directionOrder) {
-      return undefined
+      return undefined;
     }
     if (this.isOconFormResponse()) {
-      return new CalendarClient().getNextWorkingDayAfterDays(this.directionOrder.createdOn, config.get<number>('reconsiderationDeadLine.oconNumberOfDays'))
+      return new CalendarClient().getNextWorkingDayAfterDays(this.directionOrder.createdOn, config.get<number>('reconsiderationDeadLine.oconNumberOfDays'));
     }
-    return new CalendarClient().getNextWorkingDayAfterDays(this.directionOrder.createdOn, config.get<number>('reconsiderationDeadLine.onlineNumberOfDays'))
+    return new CalendarClient().getNextWorkingDayAfterDays(this.directionOrder.createdOn, config.get<number>('reconsiderationDeadLine.onlineNumberOfDays'));
   }
 
-  get remainingDays (): number {
-    return this.responseDeadline.diff(MomentFactory.currentDate(), 'days')
+  get remainingDays(): number {
+    return this.responseDeadline.diff(MomentFactory.currentDate(), 'days');
   }
 
-  get eligibleForCCJ (): boolean {
+  get eligibleForCCJ(): boolean {
     return !this.countyCourtJudgmentRequestedAt
       && (this.admissionPayImmediatelyPastPaymentDate
         || this.partAdmissionPayImmediatelyPastPaymentDate
         || this.hasDefendantNotSignedSettlementAgreementInTime()
         || (!this.respondedAt && isPastDeadline(MomentFactory.currentDateTime(), this.responseDeadline))
         && this.isBreathingSpaceEntered
-      )
+      );
   }
 
-  get isBreathingSpaceEntered (): boolean {
+  get isBreathingSpaceEntered(): boolean {
     if (this.claimData.breathingSpace !== undefined) {
       return !(this.claimData.breathingSpace !== undefined && this.claimData.breathingSpace.breathingSpaceEnteredDate !== null
-        && this.claimData.breathingSpace.breathingSpaceLiftedDate === undefined)
-    } else { return true }
+        && this.claimData.breathingSpace.breathingSpaceLiftedDate === undefined);
+    } else {
+      return true;
+    }
   }
 
-  get eligibleForCCJAfterBreachedSettlementTerms (): boolean {
+  get eligibleForCCJAfterBreachedSettlementTerms(): boolean {
     if (this.response && this.settlement && this.settlement.isThroughAdmissionsAndSettled()) {
-      const lastOffer: Offer = this.settlement.getLastOffer()
+      const lastOffer: Offer = this.settlement.getLastOffer();
       if (lastOffer && lastOffer.paymentIntention) {
-        const paymentOption = lastOffer.paymentIntention.paymentOption
+        const paymentOption = lastOffer.paymentIntention.paymentOption;
         switch (paymentOption) {
           case PaymentOption.BY_SPECIFIED_DATE:
             return !this.countyCourtJudgmentRequestedAt
               && isPastDeadline(MomentFactory.currentDateTime(),
-                (this.settlement.partyStatements.filter(o => o.type === StatementType.OFFER.value).pop().offer.completionDate))
+                (this.settlement.partyStatements.filter(o => o.type === StatementType.OFFER.value).pop().offer.completionDate));
 
           case PaymentOption.INSTALMENTS:
             return !this.countyCourtJudgmentRequestedAt
               && isPastDeadline(MomentFactory.currentDateTime(),
-                (this.settlement.partyStatements.filter(o => o.type === StatementType.OFFER.value).pop().offer.paymentIntention.repaymentPlan.firstPaymentDate))
+                (this.settlement.partyStatements.filter(o => o.type === StatementType.OFFER.value).pop().offer.paymentIntention.repaymentPlan.firstPaymentDate));
 
           default:
-            throw new Error(`Payment option ${paymentOption} is not supported`)
+            throw new Error(`Payment option ${paymentOption} is not supported`);
         }
       }
     }
-    return false
+    return false;
   }
 
-  get status (): ClaimStatus {
+  get status(): ClaimStatus {
     if (this.moneyReceivedOn && this.countyCourtJudgmentRequestedAt && this.isCCJPaidWithinMonth()) {
-      return ClaimStatus.PAID_IN_FULL_CCJ_CANCELLED
+      return ClaimStatus.PAID_IN_FULL_CCJ_CANCELLED;
     } else if (this.hasBeenTransferred()) {
-      return ClaimStatus.TRANSFERRED
+      return ClaimStatus.TRANSFERRED;
     } else if (this.moneyReceivedOn && this.countyCourtJudgmentRequestedAt) {
-      return ClaimStatus.PAID_IN_FULL_CCJ_SATISFIED
+      return ClaimStatus.PAID_IN_FULL_CCJ_SATISFIED;
     } else if (this.hasBeenMovedToCCBC()) {
-      return ClaimStatus.BUSINESS_QUEUE
+      return ClaimStatus.BUSINESS_QUEUE;
     } else if (this.hasOrderBeenDrawn()) {
       if (this.reviewOrder) {
-        return ClaimStatus.REVIEW_ORDER_REQUESTED
+        return ClaimStatus.REVIEW_ORDER_REQUESTED;
       } else {
-        return ClaimStatus.ORDER_DRAWN
+        return ClaimStatus.ORDER_DRAWN;
       }
     } else if (this.hasBespokeOrderBeenDrawn()) {
-      return ClaimStatus.BESPOKE_ORDER_DRAWN
+      return ClaimStatus.BESPOKE_ORDER_DRAWN;
     } else if (this.isOfflineResponse()) {
-      return ClaimStatus.DEFENDANT_PAPER_RESPONSE
+      return ClaimStatus.DEFENDANT_PAPER_RESPONSE;
     } else if (this.checkProceedOfflineReason()) {
-      return ClaimStatus.PROCEED_OFFLINE
+      return ClaimStatus.PROCEED_OFFLINE;
     } else if (this.moneyReceivedOn) {
-      return ClaimStatus.PAID_IN_FULL
+      return ClaimStatus.PAID_IN_FULL;
     } else if (this.countyCourtJudgmentRequestedAt) {
       if (this.hasClaimantAcceptedAdmissionWithCCJ()) {
-        return ClaimStatus.CLAIMANT_ACCEPTED_ADMISSION_AND_REQUESTED_CCJ
+        return ClaimStatus.CLAIMANT_ACCEPTED_ADMISSION_AND_REQUESTED_CCJ;
       } else if (this.hasClaimantSuggestedAlternativePlanWithCCJ()) {
-        return ClaimStatus.CLAIMANT_ALTERNATIVE_PLAN_WITH_CCJ
+        return ClaimStatus.CLAIMANT_ALTERNATIVE_PLAN_WITH_CCJ;
       } else if (this.hasRedeterminationBeenRequested()) {
-        return ClaimStatus.REDETERMINATION_BY_JUDGE
+        return ClaimStatus.REDETERMINATION_BY_JUDGE;
       } else if (this.hasCCJBeenRequestedAfterSettlementBreached()) {
-        return ClaimStatus.CCJ_AFTER_SETTLEMENT_BREACHED
+        return ClaimStatus.CCJ_AFTER_SETTLEMENT_BREACHED;
       } else if (this.hasCCJByDeterminationBeenRequestedAfterSettlementBreached()) {
-        return ClaimStatus.CCJ_BY_DETERMINATION_AFTER_SETTLEMENT_BREACHED
+        return ClaimStatus.CCJ_BY_DETERMINATION_AFTER_SETTLEMENT_BREACHED;
       } else if (this.hasClaimantRequestedCCJAfterDefendantRejectsSettlementAgreement()) {
-        return ClaimStatus.CLAIMANT_REQUESTS_CCJ_AFTER_DEFENDANT_REJECTS_SETTLEMENT
+        return ClaimStatus.CLAIMANT_REQUESTS_CCJ_AFTER_DEFENDANT_REJECTS_SETTLEMENT;
       } else {
-        return ClaimStatus.CCJ_REQUESTED
+        return ClaimStatus.CCJ_REQUESTED;
       }
     } else if (this.isSettlementAgreementRejected) {
-      return ClaimStatus.SETTLEMENT_AGREEMENT_REJECTED
+      return ClaimStatus.SETTLEMENT_AGREEMENT_REJECTED;
     } else if (this.isSettlementReachedThroughAdmission()) {
-      return ClaimStatus.ADMISSION_SETTLEMENT_AGREEMENT_REACHED
+      return ClaimStatus.ADMISSION_SETTLEMENT_AGREEMENT_REACHED;
     } else if (this.admissionPayImmediatelyPastPaymentDate && !this.claimantResponse) {
-      return ClaimStatus.ELIGIBLE_FOR_CCJ_AFTER_FULL_ADMIT_PAY_IMMEDIATELY_PAST_DEADLINE
+      return ClaimStatus.ELIGIBLE_FOR_CCJ_AFTER_FULL_ADMIT_PAY_IMMEDIATELY_PAST_DEADLINE;
     } else if (this.partAdmissionPayImmediatelyPastPaymentDate) {
-      return ClaimStatus.ELIGIBLE_FOR_CCJ_AFTER_PART_ADMIT_PAY_IMMEDIATELY_PAST_DEADLINE
+      return ClaimStatus.ELIGIBLE_FOR_CCJ_AFTER_PART_ADMIT_PAY_IMMEDIATELY_PAST_DEADLINE;
     } else if (this.hasDefendantNotSignedSettlementAgreementInTime()) {
-      return ClaimStatus.CLAIMANT_ACCEPTED_ADMISSION_AND_DEFENDANT_NOT_SIGNED
+      return ClaimStatus.CLAIMANT_ACCEPTED_ADMISSION_AND_DEFENDANT_NOT_SIGNED;
     } else if (this.hasClaimantAcceptedOfferAndSignedSettlementAgreement()) {
-      return ClaimStatus.CLAIMANT_ACCEPTED_ADMISSION
+      return ClaimStatus.CLAIMANT_ACCEPTED_ADMISSION;
     } else if (this.hasClaimantSignedSettlementAgreementChosenByCourt()) {
-      return ClaimStatus.CLAIMANT_ACCEPTED_COURT_PLAN_SETTLEMENT
+      return ClaimStatus.CLAIMANT_ACCEPTED_COURT_PLAN_SETTLEMENT;
     } else if (this.isSettlementReached()) {
-      return ClaimStatus.OFFER_SETTLEMENT_REACHED
+      return ClaimStatus.OFFER_SETTLEMENT_REACHED;
     } else if (this.hasClaimantRejectedDefendantDefenceWithoutDQs()) {
-      return ClaimStatus.CLAIMANT_REJECTED_DEFENDANT_DEFENCE_NO_DQ
+      return ClaimStatus.CLAIMANT_REJECTED_DEFENDANT_DEFENCE_NO_DQ;
     } else if (this.hasIntentionToProceedDeadlinePassed()) {
-      return ClaimStatus.INTENTION_TO_PROCEED_DEADLINE_PASSED
+      return ClaimStatus.INTENTION_TO_PROCEED_DEADLINE_PASSED;
     } else if (this.hasDefendantRejectedClaimWithDQs()) {
-      return ClaimStatus.DEFENDANT_REJECTS_WITH_DQS
+      return ClaimStatus.DEFENDANT_REJECTS_WITH_DQS;
     } else if (this.hasClaimantAcceptedStatesPaid()) {
-      return ClaimStatus.CLAIMANT_ACCEPTED_STATES_PAID
+      return ClaimStatus.CLAIMANT_ACCEPTED_STATES_PAID;
     } else if (this.hasClaimantRejectedStatesPaid()) {
-      return ClaimStatus.CLAIMANT_REJECTED_STATES_PAID
+      return ClaimStatus.CLAIMANT_REJECTED_STATES_PAID;
     } else if (this.hasClaimantRejectedPartAdmission()) {
-      return ClaimStatus.CLAIMANT_REJECTED_PART_ADMISSION
+      return ClaimStatus.CLAIMANT_REJECTED_PART_ADMISSION;
     } else if (this.hasClaimantRejectedPartAdmissionDQs()) {
-      return ClaimStatus.CLAIMANT_REJECTED_PART_ADMISSION_DQ
+      return ClaimStatus.CLAIMANT_REJECTED_PART_ADMISSION_DQ;
     } else if (this.hasClaimantRejectedDefendantResponse() && this.isDefendantBusiness()) {
-      return ClaimStatus.CLAIMANT_REJECTED_DEFENDANT_AS_BUSINESS_RESPONSE
+      return ClaimStatus.CLAIMANT_REJECTED_DEFENDANT_AS_BUSINESS_RESPONSE;
     } else if (this.hasClaimantRejectedDefendantDefence()) {
-      return ClaimStatus.CLAIMANT_REJECTED_DEFENDANT_DEFENCE
+      return ClaimStatus.CLAIMANT_REJECTED_DEFENDANT_DEFENCE;
     } else if (this.hasClaimantAcceptedDefendantDefence()) {
-      return ClaimStatus.CLAIMANT_ACCEPTED_DEFENDANT_DEFENCE
+      return ClaimStatus.CLAIMANT_ACCEPTED_DEFENDANT_DEFENCE;
     } else if (this.hasClaimantAcceptedDefendantPartAdmissionResponseWithAlternativePaymentIntention() && this.isDefendantBusiness()) {
-      return ClaimStatus.CLAIMANT_ACCEPTED_DEFENDANT_PART_ADMISSION_AS_BUSINESS_WITH_ALTERNATIVE_PAYMENT_INTENTION_RESPONSE
+      return ClaimStatus.CLAIMANT_ACCEPTED_DEFENDANT_PART_ADMISSION_AS_BUSINESS_WITH_ALTERNATIVE_PAYMENT_INTENTION_RESPONSE;
     } else if (this.hasClaimantAcceptedDefendantFullAdmissionResponseWithAlternativePaymentIntention() && this.isDefendantBusiness()) {
-      return ClaimStatus.CLAIMANT_ACCEPTED_DEFENDANT_FULL_ADMISSION_AS_BUSINESS_WITH_ALTERNATIVE_PAYMENT_INTENTION_RESPONSE
+      return ClaimStatus.CLAIMANT_ACCEPTED_DEFENDANT_FULL_ADMISSION_AS_BUSINESS_WITH_ALTERNATIVE_PAYMENT_INTENTION_RESPONSE;
     } else if (this.hasClaimantAcceptedPartAdmitPayImmediately()) {
-      return ClaimStatus.PART_ADMIT_PAY_IMMEDIATELY
+      return ClaimStatus.PART_ADMIT_PAY_IMMEDIATELY;
     } else if (this.eligibleForCCJ) {
-      return ClaimStatus.ELIGIBLE_FOR_CCJ
+      return ClaimStatus.ELIGIBLE_FOR_CCJ;
     } else if (this.isResponseSubmitted()) {
-      return ClaimStatus.RESPONSE_SUBMITTED
+      return ClaimStatus.RESPONSE_SUBMITTED;
     } else if (this.isInterlocutoryJudgmentRequestedOnAdmissions()) {
-      return ClaimStatus.REDETERMINATION_BY_JUDGE
+      return ClaimStatus.REDETERMINATION_BY_JUDGE;
     } else if (this.isClaimantResponseSubmitted()) {
-      return ClaimStatus.CLAIMANT_RESPONSE_SUBMITTED
+      return ClaimStatus.CLAIMANT_RESPONSE_SUBMITTED;
     } else if (this.moreTimeRequested) {
-      return ClaimStatus.MORE_TIME_REQUESTED
+      return ClaimStatus.MORE_TIME_REQUESTED;
     } else if (this.state === 'BUSINESS_QUEUE') {
-      return ClaimStatus.BUSINESS_QUEUE
+      return ClaimStatus.BUSINESS_QUEUE;
     } else if (this.state === 'TRANSFERRED') {
-      return ClaimStatus.TRANSFERRED
+      return ClaimStatus.TRANSFERRED;
     } else if (!this.response) {
-      return ClaimStatus.NO_RESPONSE
+      return ClaimStatus.NO_RESPONSE;
     } else {
-      throw new Error('Unknown Status')
+      throw new Error('Unknown Status');
     }
   }
 
-  get stateHistory (): State[] {
-    const statuses = [{ status: this.status }]
+  get stateHistory(): State[] {
+    const statuses = [{ status: this.status }];
     if (this.isOfferRejected() && !this.isSettlementReached() && !this.settlement.isThroughAdmissions() && !this.moneyReceivedOn) {
-      statuses.push({ status: ClaimStatus.OFFER_REJECTED })
+      statuses.push({ status: ClaimStatus.OFFER_REJECTED });
     } else if (this.isOfferAccepted() && !this.isSettlementReached() && !this.settlement.isThroughAdmissions() && !this.moneyReceivedOn) {
-      statuses.push({ status: ClaimStatus.OFFER_ACCEPTED })
+      statuses.push({ status: ClaimStatus.OFFER_ACCEPTED });
     } else if (this.isOfferSubmitted() && !this.settlement.isThroughAdmissions() && !this.moneyReceivedOn && !this.isSettlementReached()) {
-      statuses.push({ status: ClaimStatus.OFFER_SUBMITTED })
+      statuses.push({ status: ClaimStatus.OFFER_SUBMITTED });
     }
 
     if (this.eligibleForCCJAfterBreachedSettlementTerms) {
-      statuses.push({ status: ClaimStatus.ELIGIBLE_FOR_CCJ_AFTER_BREACHED_SETTLEMENT })
+      statuses.push({ status: ClaimStatus.ELIGIBLE_FOR_CCJ_AFTER_BREACHED_SETTLEMENT });
     }
     if (this.isPaidInFullLinkEligible()) {
-      statuses.push({ status: ClaimStatus.PAID_IN_FULL_LINK_ELIGIBLE })
+      statuses.push({ status: ClaimStatus.PAID_IN_FULL_LINK_ELIGIBLE });
     }
 
-    return statuses
+    return statuses;
   }
 
-  get admissionPayImmediatelyPastPaymentDate (): boolean {
+  get admissionPayImmediatelyPastPaymentDate(): boolean {
     return this.response
       && (this.response.responseType === ResponseType.FULL_ADMISSION)
       && this.response.paymentIntention
       && this.response.paymentIntention.paymentOption === PaymentOption.IMMEDIATELY
-      && this.response.paymentIntention.paymentDate.isBefore(MomentFactory.currentDateTime())
+      && this.response.paymentIntention.paymentDate.isBefore(MomentFactory.currentDateTime());
   }
 
-  get partAdmissionPayImmediatelyPastPaymentDate (): boolean {
+  get partAdmissionPayImmediatelyPastPaymentDate(): boolean {
     return this.response
       && this.claimantResponse
       && this.claimantResponse.type === ClaimantResponseType.ACCEPTATION
       && (this.response.responseType === ResponseType.PART_ADMISSION)
       && this.response.paymentIntention
       && this.response.paymentIntention.paymentOption === PaymentOption.IMMEDIATELY
-      && this.response.paymentIntention.paymentDate.isBefore(MomentFactory.currentDateTime())
+      && this.response.paymentIntention.paymentDate.isBefore(MomentFactory.currentDateTime());
 
   }
 
-  get retrieveDateOfBirthOfDefendant (): DateOfBirth {
+  get retrieveDateOfBirthOfDefendant(): DateOfBirth {
     if (this.response && this.response.defendant.type === PartyType.INDIVIDUAL.value) {
-      const defendantDateOfBirth: Moment = MomentFactory.parse((this.response.defendant as Individual).dateOfBirth)
-      return new DateOfBirth(true, LocalDate.fromMoment(defendantDateOfBirth))
+      const defendantDateOfBirth: Moment = MomentFactory.parse((this.response.defendant as Individual).dateOfBirth);
+      return new DateOfBirth(true, LocalDate.fromMoment(defendantDateOfBirth));
     }
-    return undefined
+    return undefined;
   }
 
-  deserialize (input: any): Claim {
+  deserialize(input: any): Claim {
     if (input) {
-      this.id = input.id
-      this.state = input.state
-      this.claimantId = input.submitterId
-      this.externalId = input.externalId
-      this.defendantId = input.defendantId
-      this.state = input.state
-      this.createdAt = MomentFactory.parse(input.createdAt)
-      this.claimData = new ClaimData().deserialize(input.claim)
-      this.moreTimeRequested = input.moreTimeRequested
+      this.id = input.id;
+      this.state = input.state;
+      this.claimantId = input.submitterId;
+      this.externalId = input.externalId;
+      this.defendantId = input.defendantId;
+      this.state = input.state;
+      this.createdAt = MomentFactory.parse(input.createdAt);
+      this.claimData = new ClaimData().deserialize(input.claim);
+      this.moreTimeRequested = input.moreTimeRequested;
       if (this.claimData.feeRemitted !== undefined && this.claimData.feeAmountInPennies !== undefined) {
-        this.helpWithFessBalanceClaimFee = MoneyConverter.convertPenniesToPounds(this.claimData.outstandingFeeAmountInPennies)
+        this.helpWithFessBalanceClaimFee = MoneyConverter.convertPenniesToPounds(this.claimData.outstandingFeeAmountInPennies);
       }
 
       if ((input.state === 'HWF_APPLICATION_PENDING' || input.state === 'AWAITING_RESPONSE_HWF' || input.state === 'CLOSED_HWF') && input.claim.helpWithFeesNumber !== undefined) {
-        this.helpWithFeesNumber = input.claim.helpWithFeesNumber
+        this.helpWithFeesNumber = input.claim.helpWithFeesNumber;
       } else {
-        this.helpWithFeesNumber = null
+        this.helpWithFeesNumber = null;
       }
       if (input.issuedOn) {
-        this.issuedOn = MomentFactory.parse(input.issuedOn)
+        this.issuedOn = MomentFactory.parse(input.issuedOn);
       } else if ((input.state === 'HWF_APPLICATION_PENDING' || input.state === 'AWAITING_RESPONSE_HWF' || input.state === 'CLOSED_HWF') && input.issuedOn === undefined && input.claim.helpWithFeesNumber !== undefined) {
-        this.issuedOn = MomentFactory.currentDate()
+        this.issuedOn = MomentFactory.currentDate();
       }
       if (input.responseDeadline) {
-        this.responseDeadline = MomentFactory.parse(input.responseDeadline)
+        this.responseDeadline = MomentFactory.parse(input.responseDeadline);
       } else if ((input.state === 'HWF_APPLICATION_PENDING' || input.state === 'AWAITING_RESPONSE_HWF' || input.state === 'CLOSED_HWF') && input.responseDeadline === undefined && input.claim.helpWithFeesNumber !== undefined) {
-        this.responseDeadline = MomentFactory.currentDate().add(19, 'day')
+        this.responseDeadline = MomentFactory.currentDate().add(19, 'day');
       }
       if (input.respondedAt) {
-        this.respondedAt = MomentFactory.parse(input.respondedAt)
+        this.respondedAt = MomentFactory.parse(input.respondedAt);
       }
       if (input.referenceNumber) {
-        this.claimNumber = input.referenceNumber
+        this.claimNumber = input.referenceNumber;
       }
       if (input.defendantEmail) {
-        this.defendantEmail = input.defendantEmail
+        this.defendantEmail = input.defendantEmail;
       }
       if (input.response) {
-        this.response = Response.deserialize(input.response)
+        this.response = Response.deserialize(input.response);
       }
-      this.claimantEmail = input.submitterEmail
-      this.countyCourtJudgment = new CountyCourtJudgment().deserialize(input.countyCourtJudgment)
+      this.claimantEmail = input.submitterEmail;
+      this.countyCourtJudgment = new CountyCourtJudgment().deserialize(input.countyCourtJudgment);
       if (input.countyCourtJudgmentRequestedAt) {
-        this.countyCourtJudgmentRequestedAt = MomentFactory.parse(input.countyCourtJudgmentRequestedAt)
+        this.countyCourtJudgmentRequestedAt = MomentFactory.parse(input.countyCourtJudgmentRequestedAt);
       }
       if (input.countyCourtJudgmentIssuedAt) {
-        this.countyCourtJudgmentIssuedAt = MomentFactory.parse(input.countyCourtJudgmentIssuedAt)
+        this.countyCourtJudgmentIssuedAt = MomentFactory.parse(input.countyCourtJudgmentIssuedAt);
       }
       if (input.settlement) {
-        this.settlement = new Settlement().deserialize(input.settlement)
+        this.settlement = new Settlement().deserialize(input.settlement);
       }
       if (input.settlementReachedAt) {
-        this.settlementReachedAt = MomentFactory.parse(input.settlementReachedAt)
+        this.settlementReachedAt = MomentFactory.parse(input.settlementReachedAt);
       }
       if (input.claimantResponse) {
-        this.claimantResponse = ClaimantResponse.deserialize(input.claimantResponse)
+        this.claimantResponse = ClaimantResponse.deserialize(input.claimantResponse);
       }
       if (input.claimantRespondedAt) {
-        this.claimantRespondedAt = MomentFactory.parse(input.claimantRespondedAt)
+        this.claimantRespondedAt = MomentFactory.parse(input.claimantRespondedAt);
       }
       if ((input.state === 'HWF_APPLICATION_PENDING' || input.state === 'AWAITING_RESPONSE_HWF' || input.state === 'CLOSED_HWF') && input.responseDeadline === undefined && input.claim.helpWithFeesNumber !== undefined && input.totalAmountTillDateOfIssue === undefined) {
-        this.totalAmountTillDateOfIssue = input.totalAmountTillToday
+        this.totalAmountTillDateOfIssue = input.totalAmountTillToday;
       } else {
-        this.totalAmountTillDateOfIssue = input.totalAmountTillDateOfIssue
+        this.totalAmountTillDateOfIssue = input.totalAmountTillDateOfIssue;
       }
-      this.totalAmountTillToday = input.totalAmountTillToday
-      this.totalClaimAmount = input.totalClaimAmount
-      this.totalInterest = input.totalInterest
-      this.features = input.features
+      this.totalAmountTillToday = input.totalAmountTillToday;
+      this.totalClaimAmount = input.totalClaimAmount;
+      this.totalInterest = input.totalInterest;
+      this.features = input.features;
 
       if (input.lastEventTriggeredForHwfCase) {
-        this.lastEventTriggeredForHwfCase = input.lastEventTriggeredForHwfCase
+        this.lastEventTriggeredForHwfCase = input.lastEventTriggeredForHwfCase;
       }
 
       if (input.directionsQuestionnaireDeadline) {
-        this.directionsQuestionnaireDeadline = MomentFactory.parse(input.directionsQuestionnaireDeadline)
+        this.directionsQuestionnaireDeadline = MomentFactory.parse(input.directionsQuestionnaireDeadline);
       }
       if (input.moneyReceivedOn) {
-        this.moneyReceivedOn = MomentFactory.parse(input.moneyReceivedOn)
+        this.moneyReceivedOn = MomentFactory.parse(input.moneyReceivedOn);
       }
       if (input.reDetermination) {
-        this.reDetermination = ReDetermination.deserialize(input.reDetermination)
+        this.reDetermination = ReDetermination.deserialize(input.reDetermination);
       }
       if (input.reDeterminationRequestedAt) {
-        this.reDeterminationRequestedAt = MomentFactory.parse(input.reDeterminationRequestedAt)
+        this.reDeterminationRequestedAt = MomentFactory.parse(input.reDeterminationRequestedAt);
       }
       if (input.ccdCaseId) {
-        this.ccdCaseId = input.ccdCaseId
+        this.ccdCaseId = input.ccdCaseId;
       }
       if (input.directionOrder) {
-        this.directionOrder = DirectionOrder.deserialize(input.directionOrder)
+        this.directionOrder = DirectionOrder.deserialize(input.directionOrder);
       }
       if (input.reviewOrder) {
-        this.reviewOrder = new ReviewOrder().deserialize(input.reviewOrder)
+        this.reviewOrder = new ReviewOrder().deserialize(input.reviewOrder);
       }
-      this.intentionToProceedDeadline = input.intentionToProceedDeadline && MomentFactory.parse(input.intentionToProceedDeadline)
+      this.intentionToProceedDeadline = input.intentionToProceedDeadline && MomentFactory.parse(input.intentionToProceedDeadline);
       if (input.mediationOutcome) {
-        this.mediationOutcome = input.mediationOutcome
+        this.mediationOutcome = input.mediationOutcome;
       }
 
       if (input.pilotCourt) {
-        this.pilotCourt = YesNoOption.fromObject(input.pilotCourt)
+        this.pilotCourt = YesNoOption.fromObject(input.pilotCourt);
       }
 
       if (input.transferContent) {
-        this.transferContent = new TransferContents().deserialize(input.transferContent)
+        this.transferContent = new TransferContents().deserialize(input.transferContent);
       }
 
       if (input.paperResponse) {
-        this.paperResponse = YesNoOption.fromObject(input.paperResponse)
+        this.paperResponse = YesNoOption.fromObject(input.paperResponse);
       }
 
       if (input.claimDocumentCollection && input.claimDocumentCollection.claimDocuments) {
         this.claimDocuments = input.claimDocumentCollection.claimDocuments.filter(value => ClaimDocumentType[value.documentType] !== undefined).map((value) => {
-          return new ClaimDocument().deserialize(value)
-        })
+          return new ClaimDocument().deserialize(value);
+        });
       }
 
       if (input.claimDocumentCollection && input.claimDocumentCollection.scannedDocuments) {
         const scannedDocuments: ClaimDocument[] = input.claimDocumentCollection.scannedDocuments
           .filter(value => ScannedDocumentType[(value.documentType + '_' + value.subtype).toUpperCase()] !== undefined)
           .map((value) => {
-            this.proceedViaPaperResponse = this.proceedViaPaperResponse || ScannedDocumentType.PAPER_RESPONSE_FORMS.includes(value.subtype)
-            return new ClaimDocument().deserializeScannedDocument(value)
-          })
+            this.proceedViaPaperResponse = this.proceedViaPaperResponse || ScannedDocumentType.PAPER_RESPONSE_FORMS.includes(value.subtype);
+            return new ClaimDocument().deserializeScannedDocument(value);
+          });
 
         if (this.claimDocuments) {
-          this.claimDocuments.push(...scannedDocuments)
+          this.claimDocuments.push(...scannedDocuments);
         } else {
-          this.claimDocuments = scannedDocuments
+          this.claimDocuments = scannedDocuments;
         }
       }
 
       if (this.claimDocuments) {
-        this.claimDocuments = _.sortBy(this.claimDocuments, [function (o) {
-          return o.createdDatetime
-        }]).reverse()
+        this.claimDocuments = _.sortBy(this.claimDocuments, [function(o) {
+          return o.createdDatetime;
+        }]).reverse();
       }
       if (input.proceedOfflineReason) {
-        this.proceedOfflineReason = input.proceedOfflineReason
+        this.proceedOfflineReason = input.proceedOfflineReason;
       }
 
-      this.isOconResponse = this.isOconFormResponse()
+      this.isOconResponse = this.isOconFormResponse();
 
       if (input.directionOrderType) {
-        this.directionOrderType = input.directionOrderType
+        this.directionOrderType = input.directionOrderType;
       }
-      return this
+      return this;
     }
   }
 
-  public isAdmissionsResponse (): boolean {
+  public isAdmissionsResponse(): boolean {
     return (this.response.responseType === ResponseType.FULL_ADMISSION
-      || this.response.responseType === ResponseType.PART_ADMISSION)
+      || this.response.responseType === ResponseType.PART_ADMISSION);
   }
 
-  public isResponseSubmitted (): boolean {
-    return !!this.response && !this.claimantResponse
+  public isResponseSubmitted(): boolean {
+    return !!this.response && !this.claimantResponse;
   }
 
-  hasDefendantNotSignedSettlementAgreementInTime (): boolean {
+  hasDefendantNotSignedSettlementAgreementInTime(): boolean {
     return this.settlement && this.settlement.isOfferAccepted() && this.settlement.isThroughAdmissions() &&
-      this.claimantRespondedAt && this.claimantRespondedAt.clone().add('7', 'days').isBefore(MomentFactory.currentDate())
+      this.claimantRespondedAt && this.claimantRespondedAt.clone().add('7', 'days').isBefore(MomentFactory.currentDate());
   }
 
-  hasClaimantAcceptedAdmissionWithCCJ (): boolean {
+  hasClaimantAcceptedAdmissionWithCCJ(): boolean {
     return this.countyCourtJudgment && this.response && this.claimantResponse && !this.isSettlementAgreementRejected &&
       !this.isSettlementReachedThroughAdmission() &&
       (this.response.responseType === ResponseType.FULL_ADMISSION || this.response.responseType === ResponseType.PART_ADMISSION) &&
-      !(this.claimantResponse as AcceptationClaimantResponse).courtDetermination && !this.reDeterminationRequestedAt
+      !(this.claimantResponse as AcceptationClaimantResponse).courtDetermination && !this.reDeterminationRequestedAt;
   }
 
-  private hasClaimantAcceptedAdmissionWithCourtOfferWithCCJ (): boolean {
+  private hasClaimantAcceptedAdmissionWithCourtOfferWithCCJ(): boolean {
     return this.countyCourtJudgment && this.response && this.claimantResponse && !this.isSettlementReachedThroughAdmission() &&
       (this.response.responseType === ResponseType.FULL_ADMISSION) &&
-      (this.claimantResponse as AcceptationClaimantResponse).courtDetermination && !this.reDeterminationRequestedAt
+      (this.claimantResponse as AcceptationClaimantResponse).courtDetermination && !this.reDeterminationRequestedAt;
   }
 
-  hasClaimantAcceptedDefendantResponseWithCCJ (): boolean {
+  hasClaimantAcceptedDefendantResponseWithCCJ(): boolean {
     return this.claimantResponse
       && this.claimantResponse.type === ClaimantResponseType.ACCEPTATION
       && this.countyCourtJudgmentRequestedAt !== undefined
-      && this.countyCourtJudgment !== undefined
+      && this.countyCourtJudgment !== undefined;
   }
 
-  hasClaimantAcceptedDefendantResponseWithSettlement (): boolean {
+  hasClaimantAcceptedDefendantResponseWithSettlement(): boolean {
     return this.claimantResponse
       && this.claimantResponse.type === ClaimantResponseType.ACCEPTATION
-      && this.settlement !== undefined
+      && this.settlement !== undefined;
   }
 
-  isEligibleForReDetermination (): boolean {
-    const dateAfter19Days = this.countyCourtJudgmentRequestedAt && this.countyCourtJudgmentRequestedAt.clone().add(19, 'days')
+  isEligibleForReDetermination(): boolean {
+    const dateAfter19Days = this.countyCourtJudgmentRequestedAt && this.countyCourtJudgmentRequestedAt.clone().add(19, 'days');
     return this.countyCourtJudgment && this.countyCourtJudgment.ccjType === CountyCourtJudgmentType.DETERMINATION
       && MomentFactory.currentDateTime().isBefore(dateAfter19Days)
-      && this.reDeterminationRequestedAt === undefined
+      && this.reDeterminationRequestedAt === undefined;
   }
 
-  public amountPaid () {
-    return this.claimantResponse && this.claimantResponse.amountPaid ? this.claimantResponse.amountPaid : 0
+  public amountPaid() {
+    return this.claimantResponse && this.claimantResponse.amountPaid ? this.claimantResponse.amountPaid : 0;
   }
 
-  public otherPartyName (user: User): string {
+  public otherPartyName(user: User): string {
     if (!user || !user.id) {
-      throw new Error('user must be provided')
+      throw new Error('user must be provided');
     }
 
-    return this.claimantId === user.id ? this.claimData.defendant.name : this.claimData.claimant.name
+    return this.claimantId === user.id ? this.claimData.defendant.name : this.claimData.claimant.name;
   }
 
-  private isPaidInFullLinkEligible (): boolean {
+  private isPaidInFullLinkEligible(): boolean {
     if (this.moneyReceivedOn || (this.moneyReceivedOn && this.countyCourtJudgmentRequestedAt)) {
-      return false
+      return false;
     }
 
     if (this.hasClaimantAcceptedAdmissionWithCourtOfferWithCCJ()) {
-      return false
+      return false;
     }
 
     if (this.isSettlementReached()) {
-      return false
+      return false;
     }
 
     if (this.hasBeenMovedToCCBC()) {
-      return false
+      return false;
     }
 
     if (this.mediationOutcome !== undefined && this.mediationOutcome === MediationOutcome.SUCCEEDED) {
-      return false
+      return false;
     }
 
     if (this.hasBeenTransferred()) {
-      return false
+      return false;
     }
 
     if (this.isResponseSubmitted() && this.response.responseType === ResponseType.PART_ADMISSION && (this.response && !this.response.paymentDeclaration)) {
-      return true
+      return true;
     }
 
     if (this.isResponseSubmitted() && (this.response.responseType === ResponseType.FULL_DEFENCE || this.response.responseType === ResponseType.PART_ADMISSION)) {
-      return true
+      return true;
     }
 
     if (this.isOfferAccepted() || this.hasClaimantRejectedPartAdmission() || this.hasClaimantRejectedPartAdmissionDQs() || this.hasRedeterminationBeenRequested()) {
-      return true
+      return true;
     }
 
     if (this.claimantResponse && (this.claimantResponse as AcceptationClaimantResponse).formaliseOption === FormaliseOption.REFER_TO_JUDGE) {
-      return true
+      return true;
     }
 
     if (this.hasClaimantRespondedToStatesPaid()) {
-      return false
+      return false;
     }
 
     if (this.hasClaimantRejectedDefendantDefence()) {
-      return true
+      return true;
     }
 
     if (this.hasClaimantRejectedDefendantDefenceWithoutDQs()) {
-      return true
+      return true;
     }
 
     return (((this.response && (this.response as FullAdmissionResponse).paymentIntention
-      && (this.response as FullAdmissionResponse).paymentIntention.paymentOption !==
-      PaymentOption.IMMEDIATELY
-      && !this.isSettlementReachedThroughAdmission() && this.isResponseSubmitted())
-      && !(this.countyCourtJudgmentRequestedAt && this.hasClaimantAcceptedAdmissionWithCCJ()))
-      || !this.response)
+          && (this.response as FullAdmissionResponse).paymentIntention.paymentOption !==
+          PaymentOption.IMMEDIATELY
+          && !this.isSettlementReachedThroughAdmission() && this.isResponseSubmitted())
+        && !(this.countyCourtJudgmentRequestedAt && this.hasClaimantAcceptedAdmissionWithCCJ()))
+      || !this.response);
   }
 
-  private isDefendantBusiness (): boolean {
-    return this.claimData && this.claimData.defendant && this.claimData.defendant.isBusiness()
+  private isDefendantBusiness(): boolean {
+    return this.claimData && this.claimData.defendant && this.claimData.defendant.isBusiness();
   }
 
-  private isOfferSubmitted (): boolean {
-    return this.settlement && this.response && this.response.responseType === ResponseType.FULL_DEFENCE
+  private isOfferSubmitted(): boolean {
+    return this.settlement && this.response && this.response.responseType === ResponseType.FULL_DEFENCE;
   }
 
-  private isOfferAccepted (): boolean {
-    return this.settlement && this.settlement.isOfferAccepted()
+  private isOfferAccepted(): boolean {
+    return this.settlement && this.settlement.isOfferAccepted();
   }
 
-  private isOfferRejected (): boolean {
-    return this.settlement && this.settlement.isOfferRejected()
+  private isOfferRejected(): boolean {
+    return this.settlement && this.settlement.isOfferRejected();
   }
 
-  private isSettlementReached (): boolean {
-    return this.settlement && !!this.settlementReachedAt
+  private isSettlementReached(): boolean {
+    return this.settlement && !!this.settlementReachedAt;
   }
 
-  private isCCJPaidWithinMonth (): boolean {
-    return this.moneyReceivedOn.isSameOrBefore(calculateMonthIncrement(this.countyCourtJudgmentRequestedAt))
+  private isCCJPaidWithinMonth(): boolean {
+    return this.moneyReceivedOn.isSameOrBefore(calculateMonthIncrement(this.countyCourtJudgmentRequestedAt));
   }
 
-  private isSettlementReachedThroughAdmission (): boolean {
-    return this.settlement && !this.settlement.isOfferRejectedByDefendant() && this.settlement.isThroughAdmissionsAndSettled()
+  private isSettlementReachedThroughAdmission(): boolean {
+    return this.settlement && !this.settlement.isOfferRejectedByDefendant() && this.settlement.isThroughAdmissionsAndSettled();
   }
 
-  get isSettlementAgreementRejected (): boolean {
+  get isSettlementAgreementRejected(): boolean {
     if (!this.claimantResponse || this.claimantResponse.type !== ClaimantResponseType.ACCEPTATION) {
-      return false
+      return false;
     }
-    const claimantResponse: AcceptationClaimantResponse = this.claimantResponse
+    const claimantResponse: AcceptationClaimantResponse = this.claimantResponse;
     return claimantResponse.formaliseOption === FormaliseOption.SETTLEMENT
-      && this.settlement && this.settlement.isOfferRejected()
+      && this.settlement && this.settlement.isOfferRejected();
   }
 
-  public isSettlementPaymentDateValid (): boolean {
+  public isSettlementPaymentDateValid(): boolean {
     if (this.settlement) {
-      const offer = this.settlement.getLastOffer()
-      const now = MomentFactory.currentDate()
+      const offer = this.settlement.getLastOffer();
+      const now = MomentFactory.currentDate();
       if (offer && offer.paymentIntention) {
         switch (offer.paymentIntention.paymentOption) {
           case PaymentOption.BY_SPECIFIED_DATE :
-            const paymentDate = offer.paymentIntention.paymentDate
-            return (paymentDate.isAfter(now) || paymentDate.isSame(now))
+            const paymentDate = offer.paymentIntention.paymentDate;
+            return (paymentDate.isAfter(now) || paymentDate.isSame(now));
           case PaymentOption.INSTALMENTS :
-            const firstPaymentDate = offer.paymentIntention.repaymentPlan.firstPaymentDate
-            return (firstPaymentDate.isAfter(now) || firstPaymentDate.isSame(now))
+            const firstPaymentDate = offer.paymentIntention.repaymentPlan.firstPaymentDate;
+            return (firstPaymentDate.isAfter(now) || firstPaymentDate.isSame(now));
           case PaymentOption.IMMEDIATELY :
-            return true
+            return true;
         }
       }
     }
-    return false
+    return false;
   }
 
-  public isSettlementRejectedOrBreached (): boolean {
+  public isSettlementRejectedOrBreached(): boolean {
     return ((this.settlement && (!!this.settlementReachedAt || this.settlement.isOfferRejectedByDefendant()))
-      || this.hasDefendantNotSignedSettlementAgreementInTime())
+      || this.hasDefendantNotSignedSettlementAgreementInTime());
   }
 
-  private hasClaimantAcceptedOfferAndSignedSettlementAgreement (): boolean {
+  private hasClaimantAcceptedOfferAndSignedSettlementAgreement(): boolean {
     return this.settlement && this.settlement.isOfferAccepted() && this.settlement.isThroughAdmissions() &&
-      this.claimantResponse && !(this.claimantResponse as AcceptationClaimantResponse).courtDetermination
+      this.claimantResponse && !(this.claimantResponse as AcceptationClaimantResponse).courtDetermination;
   }
 
-  private hasClaimantSignedSettlementAgreementChosenByCourt (): boolean {
+  private hasClaimantSignedSettlementAgreementChosenByCourt(): boolean {
     return this.settlement && this.settlement.isOfferAccepted() && !this.settlement.isOfferRejectedByDefendant() && this.settlement.isThroughAdmissions() &&
-      this.claimantResponse && !!(this.claimantResponse as AcceptationClaimantResponse).courtDetermination
+      this.claimantResponse && !!(this.claimantResponse as AcceptationClaimantResponse).courtDetermination;
   }
 
-  private hasClaimantRejectedDefendantResponse (): boolean {
+  private hasClaimantRejectedDefendantResponse(): boolean {
     return !ClaimFeatureToggles.isFeatureEnabledOnClaim(this, 'directionsQuestionnaire') &&
-      this.claimantResponse && this.claimantResponse.type === ClaimantResponseType.REJECTION
+      this.claimantResponse && this.claimantResponse.type === ClaimantResponseType.REJECTION;
   }
 
-  private hasClaimantAcceptedDefendantPartAdmissionResponseWithAlternativePaymentIntention (): boolean {
+  private hasClaimantAcceptedDefendantPartAdmissionResponseWithAlternativePaymentIntention(): boolean {
     return this.claimantResponse && this.claimantResponse.type === ClaimantResponseType.ACCEPTATION &&
       this.claimantResponse.claimantPaymentIntention &&
-      this.response && this.response.responseType === ResponseType.PART_ADMISSION
+      this.response && this.response.responseType === ResponseType.PART_ADMISSION;
   }
 
-  private hasClaimantAcceptedDefendantFullAdmissionResponseWithAlternativePaymentIntention (): boolean {
+  private hasClaimantAcceptedDefendantFullAdmissionResponseWithAlternativePaymentIntention(): boolean {
     return this.claimantResponse && this.claimantResponse.type === ClaimantResponseType.ACCEPTATION &&
       this.claimantResponse.claimantPaymentIntention &&
-      this.response && this.response.responseType === ResponseType.FULL_ADMISSION
+      this.response && this.response.responseType === ResponseType.FULL_ADMISSION;
   }
 
-  private isClaimantResponseSubmitted (): boolean {
-    return this.response !== undefined && this.claimantResponse !== undefined
+  private isClaimantResponseSubmitted(): boolean {
+    return this.response !== undefined && this.claimantResponse !== undefined;
   }
 
-  private hasClaimantSuggestedAlternativePlanWithCCJ (): boolean {
+  private hasClaimantSuggestedAlternativePlanWithCCJ(): boolean {
     return this.claimantResponse && this.countyCourtJudgmentRequestedAt && !this.isSettlementAgreementRejected &&
       !this.isSettlementReachedThroughAdmission() &&
       !!(this.claimantResponse as AcceptationClaimantResponse).courtDetermination &&
       (this.claimantResponse as AcceptationClaimantResponse).formaliseOption !== FormaliseOption.SETTLEMENT &&
-      !this.reDeterminationRequestedAt
+      !this.reDeterminationRequestedAt;
   }
 
-  private hasClaimantRequestedCCJAfterDefendantRejectsSettlementAgreement (): boolean {
+  private hasClaimantRequestedCCJAfterDefendantRejectsSettlementAgreement(): boolean {
     return this.claimantResponse && this.countyCourtJudgmentRequestedAt && this.isSettlementAgreementRejected &&
       (this.claimantResponse as AcceptationClaimantResponse).formaliseOption === FormaliseOption.SETTLEMENT &&
-      !this.reDeterminationRequestedAt
+      !this.reDeterminationRequestedAt;
   }
 
-  private hasRedeterminationBeenRequested (): boolean {
-    return this.claimantResponse && this.countyCourtJudgmentRequestedAt && !!this.reDeterminationRequestedAt
+  private hasRedeterminationBeenRequested(): boolean {
+    return this.claimantResponse && this.countyCourtJudgmentRequestedAt && !!this.reDeterminationRequestedAt;
   }
 
-  private hasClaimantRejectedPartAdmission (): boolean {
+  private hasClaimantRejectedPartAdmission(): boolean {
     return !ClaimFeatureToggles.isFeatureEnabledOnClaim(this, 'directionsQuestionnaire') && this.claimantResponse && this.claimantResponse.type === ClaimantResponseType.REJECTION
-      && this.response.responseType === ResponseType.PART_ADMISSION
+      && this.response.responseType === ResponseType.PART_ADMISSION;
   }
 
-  private hasClaimantRejectedPartAdmissionDQs (): boolean {
+  private hasClaimantRejectedPartAdmissionDQs(): boolean {
     return ClaimFeatureToggles.isFeatureEnabledOnClaim(this, 'directionsQuestionnaire') && this.claimantResponse && this.claimantResponse.type === ClaimantResponseType.REJECTION
-      && this.response.responseType === ResponseType.PART_ADMISSION
+      && this.response.responseType === ResponseType.PART_ADMISSION;
   }
 
-  private hasCCJBeenRequestedAfterSettlementBreached (): boolean {
-    return this.isSettlementReachedThroughAdmission() && !!this.countyCourtJudgmentRequestedAt && !(this.claimantResponse as AcceptationClaimantResponse).courtDetermination
+  private hasCCJBeenRequestedAfterSettlementBreached(): boolean {
+    return this.isSettlementReachedThroughAdmission() && !!this.countyCourtJudgmentRequestedAt && !(this.claimantResponse as AcceptationClaimantResponse).courtDetermination;
   }
 
-  private hasCCJByDeterminationBeenRequestedAfterSettlementBreached (): boolean {
+  private hasCCJByDeterminationBeenRequestedAfterSettlementBreached(): boolean {
     return this.isSettlementReachedThroughAdmission() &&
       !this.isSettlementAgreementRejected &&
-      !!this.countyCourtJudgmentRequestedAt && !!(this.claimantResponse as AcceptationClaimantResponse).courtDetermination
+      !!this.countyCourtJudgmentRequestedAt && !!(this.claimantResponse as AcceptationClaimantResponse).courtDetermination;
   }
 
-  private hasClaimantAcceptedPartAdmitPayImmediately (): boolean {
+  private hasClaimantAcceptedPartAdmitPayImmediately(): boolean {
     return this.claimantResponse && this.claimantResponse.type === ClaimantResponseType.ACCEPTATION &&
       this.response.responseType === ResponseType.PART_ADMISSION && !this.response.paymentDeclaration &&
-      this.response.paymentIntention.paymentOption === PaymentOption.IMMEDIATELY
+      this.response.paymentIntention.paymentOption === PaymentOption.IMMEDIATELY;
   }
 
-  private hasClaimantAcceptedStatesPaid (): boolean {
-    return this.hasClaimantRespondedToStatesPaid() && this.claimantResponse.type === ClaimantResponseType.ACCEPTATION
+  private hasClaimantAcceptedStatesPaid(): boolean {
+    return this.hasClaimantRespondedToStatesPaid() && this.claimantResponse.type === ClaimantResponseType.ACCEPTATION;
   }
 
-  private hasClaimantRespondedToStatesPaid (): boolean {
+  private hasClaimantRespondedToStatesPaid(): boolean {
     return !!this.claimantResponse && !!this.claimantResponse.type &&
       ((this.response.responseType === ResponseType.PART_ADMISSION && this.response.paymentDeclaration !== undefined)
-        || (this.response.responseType === ResponseType.FULL_DEFENCE && this.response.defenceType === DefenceType.ALREADY_PAID && this.response.paymentDeclaration !== undefined))
+        || (this.response.responseType === ResponseType.FULL_DEFENCE && this.response.defenceType === DefenceType.ALREADY_PAID && this.response.paymentDeclaration !== undefined));
   }
 
-  private hasClaimantRejectedStatesPaid (): boolean {
+  private hasClaimantRejectedStatesPaid(): boolean {
     return this.claimantResponse
       && this.claimantResponse.type === ClaimantResponseType.REJECTION
       && ((this.response.responseType === ResponseType.FULL_DEFENCE && this.response.defenceType === DefenceType.ALREADY_PAID)
         || this.response.responseType === ResponseType.PART_ADMISSION)
-      && (this.response.paymentDeclaration !== undefined || this.isOconFormResponse())
+      && (this.response.paymentDeclaration !== undefined || this.isOconFormResponse());
   }
 
-  private hasClaimantRejectedDefendantDefence (): boolean {
+  private hasClaimantRejectedDefendantDefence(): boolean {
     return ClaimFeatureToggles.isFeatureEnabledOnClaim(this, 'directionsQuestionnaire') && this.claimantResponse
       && this.claimantResponse.type === ClaimantResponseType.REJECTION
-      && (this.response.responseType === ResponseType.FULL_DEFENCE && this.response.defenceType === DefenceType.DISPUTE)
+      && (this.response.responseType === ResponseType.FULL_DEFENCE && this.response.defenceType === DefenceType.DISPUTE);
   }
 
-  private hasClaimantRejectedDefendantDefenceWithoutDQs (): boolean {
+  private hasClaimantRejectedDefendantDefenceWithoutDQs(): boolean {
     return !ClaimFeatureToggles.isFeatureEnabledOnClaim(this, 'directionsQuestionnaire') && this.claimantResponse
       && this.claimantResponse.type === ClaimantResponseType.REJECTION
-      && (this.response.responseType === ResponseType.FULL_DEFENCE && this.response.defenceType === DefenceType.DISPUTE)
+      && (this.response.responseType === ResponseType.FULL_DEFENCE && this.response.defenceType === DefenceType.DISPUTE);
   }
 
-  private isInterlocutoryJudgmentRequestedOnAdmissions (): boolean {
+  private isInterlocutoryJudgmentRequestedOnAdmissions(): boolean {
     return this.response
       && (this.response.responseType === ResponseType.FULL_ADMISSION
         || this.response.responseType === ResponseType.PART_ADMISSION)
       && this.claimantResponse
-      && (this.claimantResponse as AcceptationClaimantResponse).formaliseOption === FormaliseOption.REFER_TO_JUDGE
+      && (this.claimantResponse as AcceptationClaimantResponse).formaliseOption === FormaliseOption.REFER_TO_JUDGE;
   }
 
-  private hasClaimantAcceptedDefendantDefence (): boolean {
+  private hasClaimantAcceptedDefendantDefence(): boolean {
     return this.claimantResponse
       && this.claimantResponse.type === ClaimantResponseType.ACCEPTATION
-      && (this.response.responseType === ResponseType.FULL_DEFENCE && this.response.defenceType === DefenceType.DISPUTE)
+      && (this.response.responseType === ResponseType.FULL_DEFENCE && this.response.defenceType === DefenceType.DISPUTE);
   }
 
-  private hasDefendantRejectedClaimWithDQs (): boolean {
+  private hasDefendantRejectedClaimWithDQs(): boolean {
     return ClaimFeatureToggles.isFeatureEnabledOnClaim(this, 'directionsQuestionnaire')
       && this.isResponseSubmitted()
-      && this.response.responseType === ResponseType.FULL_DEFENCE
+      && this.response.responseType === ResponseType.FULL_DEFENCE;
   }
 
-  private hasOrderBeenDrawn (): boolean {
-    return !!this.directionOrder
+  private hasOrderBeenDrawn(): boolean {
+    return !!this.directionOrder;
   }
 
-  private hasBespokeOrderBeenDrawn (): boolean {
-    return this.directionOrderType === 'BESPOKE'
+  private hasBespokeOrderBeenDrawn(): boolean {
+    return this.directionOrderType === 'BESPOKE';
   }
 
-  public isIntentionToProceedEligible (): boolean {
-    const dateIntentionToProceedWasReleased: Moment = MomentFactory.parse('2019-09-09').hour(15).minute(12)
-    return this.createdAt.isAfter(dateIntentionToProceedWasReleased)
+  public isIntentionToProceedEligible(): boolean {
+    const dateIntentionToProceedWasReleased: Moment = MomentFactory.parse('2019-09-09').hour(15).minute(12);
+    return this.createdAt.isAfter(dateIntentionToProceedWasReleased);
   }
 
-  private hasIntentionToProceedDeadlinePassed (): boolean {
+  private hasIntentionToProceedDeadlinePassed(): boolean {
     return !this.claimantResponse && this.response && this.response.responseType === ResponseType.FULL_DEFENCE && MomentFactory.currentDateTime().isAfter(this.intentionToProceedDeadline.clone().hour(16)) &&
-      this.isIntentionToProceedEligible()
+      this.isIntentionToProceedEligible();
   }
 
-  private isOconFormResponse (): boolean {
-    return this.response !== undefined && this.response.responseMethod === ResponseMethod.OCON_FORM
+  private isOconFormResponse(): boolean {
+    return this.response !== undefined && this.response.responseMethod === ResponseMethod.OCON_FORM;
   }
 
-  private isOfflineResponse (): boolean {
-    return this.response !== undefined && this.response.responseMethod === ResponseMethod.OFFLINE
+  private isOfflineResponse(): boolean {
+    return this.response !== undefined && this.response.responseMethod === ResponseMethod.OFFLINE;
   }
 
-  private checkProceedOfflineReason (): boolean {
-    return (this.proceedOfflineReason && (this.proceedOfflineReason === ProceedOfflineReason.APPLICATION_BY_DEFENDANT || this.proceedOfflineReason === ProceedOfflineReason.APPLICATION_BY_CLAIMANT))
+  private checkProceedOfflineReason(): boolean {
+    return (this.proceedOfflineReason && (this.proceedOfflineReason === ProceedOfflineReason.APPLICATION_BY_DEFENDANT || this.proceedOfflineReason === ProceedOfflineReason.APPLICATION_BY_CLAIMANT));
   }
 
-  private hasBeenMovedToCCBC (): boolean {
-    return this.state === 'BUSINESS_QUEUE'
+  private hasBeenMovedToCCBC(): boolean {
+    return this.state === 'BUSINESS_QUEUE';
   }
 
-  private hasBeenTransferred (): boolean {
-    return this.state === 'TRANSFERRED'
+  private hasBeenTransferred(): boolean {
+    return this.state === 'TRANSFERRED';
   }
 }

@@ -1,5 +1,5 @@
 interface CompletableTask {
-  isCompleted (): boolean
+  isCompleted(): boolean;
 }
 
-export { CompletableTask }
+export { CompletableTask };

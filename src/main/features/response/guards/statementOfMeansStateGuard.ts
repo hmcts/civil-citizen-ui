@@ -1,13 +1,13 @@
-import { Draft } from '@hmcts/draft-store-client'
-import * as express from 'express'
-import { ResponseDraft } from 'response/draft/responseDraft'
-import { Claim } from 'claims/models/claim'
+import { Draft } from '@hmcts/draft-store-client';
+import * as express from 'express';
+import { ResponseDraft } from 'response/draft/responseDraft';
+import { Claim } from 'claims/models/claim';
 
-import { GuardFactory } from 'response/guards/guardFactory'
-import { StatementOfMeansFeature } from 'response/helpers/statementOfMeansFeature'
+import { GuardFactory } from 'response/guards/guardFactory';
+import { StatementOfMeansFeature } from 'response/helpers/statementOfMeansFeature';
 
-import { Paths } from 'response/paths'
-import { UUIDUtils } from 'shared/utils/uuidUtils'
+import { Paths } from 'response/paths';
+import { UUIDUtils } from 'shared/utils/uuidUtils';
 
 export class StatementOfMeansStateGuard {
   /**
@@ -16,15 +16,15 @@ export class StatementOfMeansStateGuard {
    *
    * @returns {e.RequestHandler}
    */
-  static requestHandler (requireInitiatedModel: boolean = true): express.RequestHandler {
+  static requestHandler(requireInitiatedModel: boolean = true): express.RequestHandler {
     return GuardFactory.create((res: express.Response) => {
-      const draft: Draft<ResponseDraft> = res.locals.responseDraft
-      const claim: Claim = res.locals.claim
+      const draft: Draft<ResponseDraft> = res.locals.responseDraft;
+      const claim: Claim = res.locals.claim;
 
       return StatementOfMeansFeature.isApplicableFor(claim, draft.document)
-        && (requireInitiatedModel ? draft.document.statementOfMeans !== undefined : true)
+        && (requireInitiatedModel ? draft.document.statementOfMeans !== undefined : true);
     }, (req: express.Request, res: express.Response): void => {
-      res.redirect(Paths.taskListPage.evaluateUri({ externalId: UUIDUtils.extractFrom(req.path) }))
-    })
+      res.redirect(Paths.taskListPage.evaluateUri({ externalId: UUIDUtils.extractFrom(req.path) }));
+    });
   }
 }

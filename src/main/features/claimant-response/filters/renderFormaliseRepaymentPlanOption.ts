@@ -1,7 +1,7 @@
-import { FormaliseRepaymentPlanOption } from 'claimant-response/form/models/formaliseRepaymentPlanOption'
+import { FormaliseRepaymentPlanOption } from 'claimant-response/form/models/formaliseRepaymentPlanOption';
 
 export namespace FormaliseRepaymentPlanOptionFilter {
-  export function render (option: FormaliseRepaymentPlanOption): string {
-    return option.displayValue
+  export function render(option: FormaliseRepaymentPlanOption): string {
+    return option.displayValue;
   }
 }

@@ -1,19 +1,19 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const fields = {
-  amount: 'input[id=amount]'
-}
+  amount: 'input[id=amount]',
+};
 
 const buttons = {
-  submit: 'input[type=submit]'
-}
+  submit: 'input[type=submit]',
+};
 
 export class DefendantHowMuchYouOwePage {
 
-  enterAmountOwed (amount: number): void {
-    I.fillField(fields.amount, amount.toString())
-    I.click(buttons.submit)
+  enterAmountOwed(amount: number): void {
+    I.fillField(fields.amount, amount.toString());
+    I.click(buttons.submit);
   }
 }

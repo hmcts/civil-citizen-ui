@@ -1,11 +1,11 @@
-import * as nock from 'nock'
-import * as chai from 'chai'
-import * as chaiAsPromised from 'chai-as-promised'
-import { CourtFinderClient } from 'court-finder-client/courtFinderClient'
-import { CourtFinderResponse } from 'court-finder-client/courtFinderResponse'
+import * as nock from 'nock';
+import * as chai from 'chai';
+import * as chaiAsPromised from 'chai-as-promised';
+import { CourtFinderClient } from 'court-finder-client/courtFinderClient';
+import { CourtFinderResponse } from 'court-finder-client/courtFinderResponse';
 
-const mockClient = 'http://localhost'
-const courtFinderClient: CourtFinderClient = new CourtFinderClient(mockClient)
+const mockClient = 'http://localhost';
+const courtFinderClient: CourtFinderClient = new CourtFinderClient(mockClient);
 
 const apiData = [
   {
@@ -20,19 +20,19 @@ const apiData = [
     addresses: {
       address_lines: [
         'The Priory Courts',
-        '33 Bull Street'
+        '33 Bull Street',
       ],
       postcode: 'B4 6DU',
       town: 'Birmingham',
-      type: 'Visiting'
+      type: 'Visiting',
     },
     areas_of_law: [
       {
         name: 'Probate',
         external_link: 'https%3A//www.gov.uk/wills-probate-inheritance',
         display_url: '<bound method AreaOfLaw.display_url of <AreaOfLaw: Probate>>',
-        external_link_desc: 'Information about wills and probate'
-      }
+        external_link_desc: 'Information about wills and probate',
+      },
     ],
     displayed: true,
     hide_aols: false,
@@ -41,11 +41,11 @@ const apiData = [
     facilities: [
       {
         name: 'Interview room',
-        description: 'Three interview rooms on upper floor and four in the family suite.'
-      }
-    ]
-  }
-]
+        description: 'Three interview rooms on upper floor and four in the family suite.',
+      },
+    ],
+  },
+];
 
 const expectedResponse = {
   courts: [
@@ -53,57 +53,57 @@ const expectedResponse = {
       addresses: {
         address_lines: [
           'The Priory Courts',
-          '33 Bull Street'
+          '33 Bull Street',
         ],
         postcode: 'B4 6DU',
         town: 'Birmingham',
-        type: 'Visiting'
+        type: 'Visiting',
       },
       name: 'Birmingham District Probate Registry',
-      slug: 'birmingham-district-probate-registry'
-    }
-  ], statusCode: 200, valid: true
-}
+      slug: 'birmingham-district-probate-registry',
+    },
+  ], statusCode: 200, valid: true,
+};
 
 describe('CourtFinderClient', () => {
 
-  chai.use(chaiAsPromised)
+  chai.use(chaiAsPromised);
 
   describe('findMoneyClaimCourtsByPostcode', () => {
     it('should return valid false if no court found', () => {
       nock(mockClient)
-          .get(/\/court-finder\/search-postcode\/.+/)
-          .reply(404, [])
+        .get(/\/court-finder\/search-postcode\/.+/)
+        .reply(404, []);
 
       return courtFinderClient.findMoneyClaimCourtsByPostcode('A111AA')
-          .then((courtResponse: CourtFinderResponse) => {
-            chai.expect(courtResponse).eql({ courts: [], statusCode: 404, valid: false })
-          })
-    })
+        .then((courtResponse: CourtFinderResponse) => {
+          chai.expect(courtResponse).eql({ courts: [], statusCode: 404, valid: false });
+        });
+    });
 
     it('should return valid false for bad request', () => {
       nock(mockClient)
         .get(/\/court-finder\/search-postcode\/.+/)
-        .reply(400, [])
+        .reply(400, []);
 
       return courtFinderClient.findMoneyClaimCourtsByPostcode('B222BB')
         .then((courtResponse: CourtFinderResponse) => {
-          chai.expect(courtResponse).eql({ courts: [], statusCode: 400, valid: false })
-        })
-    })
+          chai.expect(courtResponse).eql({ courts: [], statusCode: 400, valid: false });
+        });
+    });
 
     it('should return found courts', () => {
       nock(mockClient)
-          .get(/\/court-finder\/search-postcode\/.+/)
-          .reply(200, apiData)
+        .get(/\/court-finder\/search-postcode\/.+/)
+        .reply(200, apiData);
       return courtFinderClient.findMoneyClaimCourtsByPostcode('B46DS')
-          .then((courtResponse: CourtFinderResponse) => {
-            chai.expect(courtResponse).eql(expectedResponse)
-          })
-    })
+        .then((courtResponse: CourtFinderResponse) => {
+          chai.expect(courtResponse).eql(expectedResponse);
+        });
+    });
 
     it('should reject promise if no postcode', () =>
-      chai.expect(courtFinderClient.findMoneyClaimCourtsByPostcode('')).rejectedWith('Missing postcode')
-    )
-  })
-})
+      chai.expect(courtFinderClient.findMoneyClaimCourtsByPostcode('')).rejectedWith('Missing postcode'),
+    );
+  });
+});

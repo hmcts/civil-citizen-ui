@@ -1,23 +1,23 @@
-$(document).ready(function () {
-  $('.multiline-rows').on('change', '.multiline-row .form-control-select', function (event) {
-    var $content = $(this).next()
+$(document).ready(function() {
+  $('.multiline-rows').on('change', '.multiline-row .form-control-select', function(event) {
+    var $content = $(this).next();
 
     $content
       .find('.evidence-message')
-      .addClass('hidden')
+      .addClass('hidden');
     $content
       .find('textarea')
-      .val('')
+      .val('');
 
     if (this.value) {
       $content
-        .removeClass('js-hidden')
+        .removeClass('js-hidden');
       $content
         .find('.evidence-message-' + this.value)
-        .removeClass('hidden')
+        .removeClass('hidden');
     } else {
       $content
-        .addClass('js-hidden')
+        .addClass('js-hidden');
     }
-  })
-})
+  });
+});

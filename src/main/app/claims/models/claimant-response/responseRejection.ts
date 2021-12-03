@@ -1,4 +1,4 @@
-import { ClaimantResponseCommon } from 'claims/models/claimant-response/claimantResponseCommon'
+import { ClaimantResponseCommon } from 'claims/models/claimant-response/claimantResponseCommon';
 
 export interface ResponseRejection extends ClaimantResponseCommon {
   reason: string,
@@ -6,11 +6,11 @@ export interface ResponseRejection extends ClaimantResponseCommon {
 }
 
 export namespace ResponseRejection {
-  export function deserialize (input: any): ResponseRejection {
+  export function deserialize(input: any): ResponseRejection {
     return {
       ...ClaimantResponseCommon.deserialize(input),
       reason: input.reason,
-      freeMediation: input.freeMediation
-    }
+      freeMediation: input.freeMediation,
+    };
   }
 }

@@ -7,6 +7,6 @@ export enum ResidenceType {
 }
 
 export interface Residence {
-  type: ResidenceType
-  otherDetail: string
+  type: ResidenceType;
+  otherDetail: string;
 }

@@ -1,8 +1,8 @@
-import { ResponseDraft } from 'response/draft/responseDraft'
+import { ResponseDraft } from 'response/draft/responseDraft';
 
 export class HowMuchOwedTask {
-  static isCompleted (responseDraft: ResponseDraft): boolean {
+  static isCompleted(responseDraft: ResponseDraft): boolean {
 
-    return (responseDraft.howMuchOwed.amount && responseDraft.howMuchOwed.text.length > 0)
+    return (responseDraft.howMuchOwed.amount && responseDraft.howMuchOwed.text.length > 0);
   }
 }

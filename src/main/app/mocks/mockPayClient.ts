@@ -1,32 +1,33 @@
-import { User } from 'idam/user'
-import * as config from 'config'
-import { Fee } from 'payment-hub-client/fee'
-import { Payment } from 'payment-hub-client/payment'
-import { PaymentRetrieveResponse } from 'payment-hub-client/paymentRetrieveResponse'
-import * as uuid from 'uuid'
-import { MomentFactory } from 'shared/momentFactory'
-import { PayClient } from 'payment-hub-client/payClient'
+import { User } from 'idam/user';
+import * as config from 'config';
+import { Fee } from 'payment-hub-client/fee';
+import { Payment } from 'payment-hub-client/payment';
+import { PaymentRetrieveResponse } from 'payment-hub-client/paymentRetrieveResponse';
+import * as uuid from 'uuid';
+import { MomentFactory } from 'shared/momentFactory';
+import { PayClient } from 'payment-hub-client/payClient';
 
-const serviceName = config.get<string>('pay.service-name')
-const siteId = config.get<string>('pay.site-id')
-const description = config.get<string>('pay.description')
+const serviceName = config.get<string>('pay.service-name');
+const siteId = config.get<string>('pay.site-id');
+const description = config.get<string>('pay.description');
 
-const delay = ms => new Promise(_ => setTimeout(_, ms))
+const delay = ms => new Promise(_ => setTimeout(_, ms));
 
 export class MockPayClient implements PayClient {
-  constructor (private requestUrl: string) {}
+  constructor(private requestUrl: string) {
+  }
 
-  async create (user: User, externalId: string, fees: Fee[], returnURL: string): Promise<Payment> {
+  async create(user: User, externalId: string, fees: Fee[], returnURL: string): Promise<Payment> {
     /*
     Calculated from:
      dependencies
       | where name == "POST /card-payments"
       | summarize avg(duration)
      */
-    const payCreateDelayInMs = 694
-    await delay(payCreateDelayInMs)
+    const payCreateDelayInMs = 694;
+    await delay(payCreateDelayInMs);
 
-    const reference = `RC-${this.referencePart()}-${this.referencePart()}-${this.referencePart()}-${this.referencePart()}`
+    const reference = `RC-${this.referencePart()}-${this.referencePart()}-${this.referencePart()}-${this.referencePart()}`;
     return Promise.resolve({
       reference: reference,
       date_created: MomentFactory.currentDateTime().toISOString(),
@@ -34,25 +35,25 @@ export class MockPayClient implements PayClient {
       _links: {
         next_url: {
           href: `${this.requestUrl}/${externalId}/receiver`,
-          method: 'GET'
-        }
-      }
-    })
+          method: 'GET',
+        },
+      },
+    });
   }
 
-  private referencePart (): number {
-    return Math.floor(1000 + Math.random() * 9000)
+  private referencePart(): number {
+    return Math.floor(1000 + Math.random() * 9000);
   }
 
-  async retrieve (user: User, paymentReference: string): Promise<PaymentRetrieveResponse | undefined> {
+  async retrieve(user: User, paymentReference: string): Promise<PaymentRetrieveResponse | undefined> {
     /*
     Calculated from:
      dependencies
       | where name contains "GET /card-payments"
       | summarize avg(duration)
      */
-    const payRetrieveDelayInMs = 681
-    await delay(payRetrieveDelayInMs)
+    const payRetrieveDelayInMs = 681;
+    await delay(payRetrieveDelayInMs);
 
     return Promise.resolve(
       {
@@ -69,16 +70,16 @@ export class MockPayClient implements PayClient {
         siteId: siteId,
         serviceName: serviceName,
         fees: [
-          { calculated_amount: 185, code: 'X0029', version: '1' }
-        ]
-      })
+          { calculated_amount: 185, code: 'X0029', version: '1' },
+        ],
+      });
   }
 
-  async update (user: User, paymentReference: string, caseReference: string, caseNumber: string): Promise<void> {
-    const payUpdateDelayInMs = 681
-    await delay(payUpdateDelayInMs)
+  async update(user: User, paymentReference: string, caseReference: string, caseNumber: string): Promise<void> {
+    const payUpdateDelayInMs = 681;
+    await delay(payUpdateDelayInMs);
 
-    return Promise.resolve()
+    return Promise.resolve();
   }
 
 }

@@ -1,44 +1,44 @@
-import { Claim } from 'claims/models/claim'
-import { ResponseType } from 'claims/models/response/responseType'
-import { ClaimantResponseType } from 'claims/models/claimant-response/claimantResponseType'
-import { PartialAdmissionResponse } from 'claims/models/response/partialAdmissionResponse'
+import { Claim } from 'claims/models/claim';
+import { ResponseType } from 'claims/models/response/responseType';
+import { ClaimantResponseType } from 'claims/models/claimant-response/claimantResponseType';
+import { PartialAdmissionResponse } from 'claims/models/response/partialAdmissionResponse';
 
-export function amountSettledFor (claim: Claim): number {
+export function amountSettledFor(claim: Claim): number {
   if (isPartAdmissionAcceptation(claim)) {
-    const response: PartialAdmissionResponse = claim.response as PartialAdmissionResponse
-    return Math.max(response.amount - claim.claimData.feeAmountInPennies / 100, 0)
+    const response: PartialAdmissionResponse = claim.response as PartialAdmissionResponse;
+    return Math.max(response.amount - claim.claimData.feeAmountInPennies / 100, 0);
   } else if (isFullAdmissionAcceptation(claim)) {
-    return Math.max(claim.totalAmountTillToday - claim.claimData.feeAmountInPennies / 100, 0)
+    return Math.max(claim.totalAmountTillToday - claim.claimData.feeAmountInPennies / 100, 0);
   }
-  return undefined
+  return undefined;
 }
 
-export function claimFeeInPennies (claim: Claim): number {
+export function claimFeeInPennies(claim: Claim): number {
   if (isPartAdmissionAcceptation(claim)) {
-    const response: PartialAdmissionResponse = claim.response as PartialAdmissionResponse
+    const response: PartialAdmissionResponse = claim.response as PartialAdmissionResponse;
     if (amountSettledFor(claim) === 0 && response.amount < claim.claimData.feeAmountInPennies / 100) {
-      return response.amount * 100
+      return response.amount * 100;
     }
   }
-  return claim.claimData.feeAmountInPennies
+  return claim.claimData.feeAmountInPennies;
 }
 
-export function isPartAdmissionAcceptation (claim: Claim): boolean {
+export function isPartAdmissionAcceptation(claim: Claim): boolean {
   return claim.response && claim.response.responseType === ResponseType.PART_ADMISSION
-    && claim.claimantResponse && claim.claimantResponse.type === ClaimantResponseType.ACCEPTATION
+    && claim.claimantResponse && claim.claimantResponse.type === ClaimantResponseType.ACCEPTATION;
 }
 
-export function isFullAdmissionAcceptation (claim: Claim): boolean {
+export function isFullAdmissionAcceptation(claim: Claim): boolean {
   return claim.response && claim.response.responseType === ResponseType.FULL_ADMISSION
-    && claim.claimantResponse && claim.claimantResponse.type === ClaimantResponseType.ACCEPTATION
+    && claim.claimantResponse && claim.claimantResponse.type === ClaimantResponseType.ACCEPTATION;
 }
 
-export function totalRemainingToPay (claim: Claim): number {
-  let total: number = amountSettledFor(claim) + claimFeeInPennies(claim) / 100 - claim.amountPaid()
+export function totalRemainingToPay(claim: Claim): number {
+  let total: number = amountSettledFor(claim) + claimFeeInPennies(claim) / 100 - claim.amountPaid();
 
   if (!claim.amountPaid() && claim.countyCourtJudgment && claim.countyCourtJudgment.paidAmount) {
-    total -= claim.countyCourtJudgment.paidAmount
+    total -= claim.countyCourtJudgment.paidAmount;
   }
 
-  return total
+  return total;
 }

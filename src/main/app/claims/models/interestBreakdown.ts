@@ -1,13 +1,14 @@
 export class InterestBreakdown {
 
-  constructor (public totalAmount?: number, public explanation?: string) {}
+  constructor(public totalAmount?: number, public explanation?: string) {
+  }
 
-  deserialize (input?: any): InterestBreakdown {
+  deserialize(input?: any): InterestBreakdown {
     if (input) {
-      this.totalAmount = input.totalAmount
-      this.explanation = input.explanation
+      this.totalAmount = input.totalAmount;
+      this.explanation = input.explanation;
     }
-    return this
+    return this;
   }
 
 }

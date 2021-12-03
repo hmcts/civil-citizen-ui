@@ -1,24 +1,24 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const fields = {
-  claimReference: { css: 'input#reference' }
-}
+  claimReference: { css: 'input#reference' },
+};
 
 const buttons = {
-  submit: { css: 'input[type=submit]' }
-}
+  submit: { css: 'input[type=submit]' },
+};
 
 export class DefendantEnterClaimReferencePage {
 
-  open (): void {
-    I.amOnCitizenAppPage('/first-contact/claim-reference')
+  open(): void {
+    I.amOnCitizenAppPage('/first-contact/claim-reference');
   }
 
-  enterClaimReference (claimReference: string): void {
-    I.fillField(fields.claimReference, claimReference)
+  enterClaimReference(claimReference: string): void {
+    I.fillField(fields.claimReference, claimReference);
 
-    I.click(buttons.submit)
+    I.click(buttons.submit);
   }
 }

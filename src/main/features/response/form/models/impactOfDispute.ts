@@ -1,21 +1,21 @@
-import { ValidationConstraints } from 'forms/validation/validationConstraints'
-import { ValidationErrors } from 'forms/validation/validationErrors'
-import { MaxLength } from '@hmcts/cmc-validators'
+import { ValidationConstraints } from 'forms/validation/validationConstraints';
+import { ValidationErrors } from 'forms/validation/validationErrors';
+import { MaxLength } from '@hmcts/cmc-validators';
 
 export class ImpactOfDispute {
 
   @MaxLength(ValidationConstraints.FREE_TEXT_MAX_LENGTH, { message: ValidationErrors.TEXT_TOO_LONG })
-  text?: string
+  text?: string;
 
-  constructor (text?: string) {
-    this.text = text
+  constructor(text?: string) {
+    this.text = text;
   }
 
-  deserialize (input: any): ImpactOfDispute {
+  deserialize(input: any): ImpactOfDispute {
     if (input) {
-      this.text = input.text
+      this.text = input.text;
     }
-    return this
+    return this;
   }
 
 }

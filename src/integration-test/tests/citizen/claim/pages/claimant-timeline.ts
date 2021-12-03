@@ -1,22 +1,22 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const fields = {
   date: 'rows[0][date]',
-  description: 'rows[0][description]'
-}
+  description: 'rows[0][description]',
+};
 
 const buttons = {
-  submit: 'saveAndContinue'
-}
+  submit: 'saveAndContinue',
+};
 
 export class ClaimantTimelinePage {
 
-  enterTimelineRow (date: string, description: string): void {
-    I.fillField(fields.date, date)
-    I.fillField(fields.description, description)
+  enterTimelineRow(date: string, description: string): void {
+    I.fillField(fields.date, date);
+    I.fillField(fields.description, description);
 
-    I.click(buttons.submit)
+    I.click(buttons.submit);
   }
 }

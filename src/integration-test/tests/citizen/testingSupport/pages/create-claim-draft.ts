@@ -1,18 +1,18 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const buttons = {
-  submit: 'input[type=submit]'
-}
+  submit: 'input[type=submit]',
+};
 
 export class CreateClaimDraftPage {
 
-  open (): void {
-    I.amOnCitizenAppPage('/testing-support/create-claim-draft')
+  open(): void {
+    I.amOnCitizenAppPage('/testing-support/create-claim-draft');
   }
 
-  createClaimDraft (): void {
-    I.click(buttons.submit)
+  createClaimDraft(): void {
+    I.click(buttons.submit);
   }
 }

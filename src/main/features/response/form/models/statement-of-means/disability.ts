@@ -1,27 +1,27 @@
-import { IsDefined, IsIn } from '@hmcts/class-validator'
+import { IsDefined, IsIn } from '@hmcts/class-validator';
 
 export class ValidationErrors {
-  static readonly OPTION_REQUIRED: string = 'Choose option: yes or no'
+  static readonly OPTION_REQUIRED: string = 'Choose option: yes or no';
 }
 
 export class DisabilityOption {
-  static readonly YES = 'yes'
-  static readonly NO = 'no'
+  static readonly YES = 'yes';
+  static readonly NO = 'no';
 
-  static all (): string[] {
+  static all(): string[] {
     return [
       DisabilityOption.YES,
-      DisabilityOption.NO
-    ]
+      DisabilityOption.NO,
+    ];
   }
 }
 
 export class Disability {
   @IsDefined({ message: ValidationErrors.OPTION_REQUIRED })
   @IsIn(DisabilityOption.all(), { message: ValidationErrors.OPTION_REQUIRED })
-  option?: string
+  option?: string;
 
-  constructor (option?: string) {
-    this.option = option
+  constructor(option?: string) {
+    this.option = option;
   }
 }

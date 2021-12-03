@@ -5,19 +5,19 @@ export enum AgeGroupType {
 }
 
 export interface Child {
-  ageGroupType: AgeGroupType
-  numberOfChildren: number
-  numberOfChildrenLivingWithYou?: number
+  ageGroupType: AgeGroupType;
+  numberOfChildren: number;
+  numberOfChildrenLivingWithYou?: number;
 }
 
 export interface OtherDependants {
-  numberOfPeople: number
-  details: string
-  anyDisabled: boolean
+  numberOfPeople: number;
+  details: string;
+  anyDisabled: boolean;
 }
 
 export interface Dependant {
-  children: Child[]
-  otherDependants: OtherDependants
-  anyDisabledChildren: boolean
+  children: Child[];
+  otherDependants: OtherDependants;
+  anyDisabledChildren: boolean;
 }

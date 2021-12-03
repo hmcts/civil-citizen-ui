@@ -1,49 +1,49 @@
-import { IsDefined, IsIn } from '@hmcts/class-validator'
-import { CompletableTask } from 'models/task'
+import { IsDefined, IsIn } from '@hmcts/class-validator';
+import { CompletableTask } from 'models/task';
 
 export class BreathingTypeOption {
-  static readonly STANDARD = 'STANDARD_BS_ENTERED'
-  static readonly MENTAL_HEALTH = 'MENTAL_BS_ENTERED'
+  static readonly STANDARD = 'STANDARD_BS_ENTERED';
+  static readonly MENTAL_HEALTH = 'MENTAL_BS_ENTERED';
 
-  static all (): string[] {
+  static all(): string[] {
     return [
       BreathingTypeOption.STANDARD,
-      BreathingTypeOption.MENTAL_HEALTH
-    ]
+      BreathingTypeOption.MENTAL_HEALTH,
+    ];
   }
 }
 
 export class ValidationErrors {
-  static readonly TYPE_REQUIRED: string = 'You must select the Type before continuing'
+  static readonly TYPE_REQUIRED: string = 'You must select the Type before continuing';
 }
 
 export class BreathingType implements CompletableTask {
 
   @IsDefined({ message: ValidationErrors.TYPE_REQUIRED })
   @IsIn(BreathingTypeOption.all(), { message: ValidationErrors.TYPE_REQUIRED })
-  option?: string
+  option?: string;
 
-  constructor (option?: string) {
-    this.option = option
+  constructor(option?: string) {
+    this.option = option;
   }
 
-  static fromObject (value?: any): BreathingType {
+  static fromObject(value?: any): BreathingType {
     if (value == null) {
-      return value
+      return value;
     }
 
-    return new BreathingType(value.option)
+    return new BreathingType(value.option);
   }
 
-  deserialize (input?: any): BreathingType {
+  deserialize(input?: any): BreathingType {
     if (input) {
-      this.option = input.option
+      this.option = input.option;
     }
 
-    return this
+    return this;
   }
 
-  isCompleted (): boolean {
-    return !!this.option && (this.option === BreathingTypeOption.STANDARD || this.option === BreathingTypeOption.MENTAL_HEALTH)
+  isCompleted(): boolean {
+    return !!this.option && (this.option === BreathingTypeOption.STANDARD || this.option === BreathingTypeOption.MENTAL_HEALTH);
   }
 }

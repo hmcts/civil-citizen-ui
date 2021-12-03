@@ -1,59 +1,62 @@
-import { expect } from 'chai'
-import * as request from 'supertest'
-import * as config from 'config'
+import { expect } from 'chai';
+import * as request from 'supertest';
+import * as config from 'config';
 
-import { attachDefaultHooks } from 'test/routes/hooks'
-import 'test/routes/expectations'
+import { attachDefaultHooks } from 'test/routes/hooks';
+import 'test/routes/expectations';
 
-import { Paths } from 'dashboard/paths'
+import { Paths } from 'dashboard/paths';
 
-import { app } from 'main/app'
+import { app } from 'main/app';
 
-import * as idamServiceMock from 'test/http-mocks/idam'
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store'
-import { checkAuthorizationGuards } from 'test/features/dashboard/routes/checks/authorization-check'
-import { MomentFactory } from 'shared/momentFactory'
+import * as idamServiceMock from 'test/http-mocks/idam';
+import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { checkAuthorizationGuards } from 'test/features/dashboard/routes/checks/authorization-check';
+import { MomentFactory } from 'shared/momentFactory';
 import {
-  baseFullAdmissionData, basePayByInstalmentsData, basePayBySetDateData,
+  baseFullAdmissionData,
+  basePayByInstalmentsData,
+  basePayBySetDateData,
   basePayImmediatelyDatePastData,
-  baseResponseData, partialAdmissionWithSoMPaymentBySetDateData
-} from 'test/data/entity/responseData'
-import { PaymentOption } from 'claims/models/paymentOption'
+  baseResponseData,
+  partialAdmissionWithSoMPaymentBySetDateData,
+} from 'test/data/entity/responseData';
+import { PaymentOption } from 'claims/models/paymentOption';
 import {
   courtDeterminationChoseClaimantData,
+  courtDeterminationChoseCourtData,
   courtDeterminationChoseDefendantData,
-  courtDeterminationChoseCourtData
-} from 'test/data/entity/courtDeterminationData'
+} from 'test/data/entity/courtDeterminationData';
 import {
   ccjAdmissionBySpecifiedDate,
   ccjDeterminationByInstalment,
-  ccjDeterminationBySpecifiedDate
-} from 'test/data/entity/ccjData'
+  ccjDeterminationBySpecifiedDate,
+} from 'test/data/entity/ccjData';
 
-const cookieName: string = config.get<string>('session.cookieName')
+const cookieName: string = config.get<string>('session.cookieName');
 
 const fullAdmissionClaim = {
   ...claimStoreServiceMock.sampleClaimObj,
   responseDeadline: MomentFactory.currentDate().add(1, 'days'),
   response: {
     ...baseResponseData,
-    ...baseFullAdmissionData
-  }
-}
+    ...baseFullAdmissionData,
+  },
+};
 
-function testData () {
+function testData() {
   return [
     {
       status: 'CCJ - claim submitted and defendant has not responded and is past deadline',
       claim: claimStoreServiceMock.sampleClaimObj,
       claimOverride: {
-        responseDeadline: MomentFactory.currentDate().subtract(1, 'days')
+        responseDeadline: MomentFactory.currentDate().subtract(1, 'days'),
       },
       claimantAssertions: [
         'You can request a County Court Judgment',
         claimStoreServiceMock.sampleClaimObj.claim.defendants[0].name + ' has not responded to your claim by the deadline. ' +
         'You can request a County Court Judgment (CCJ) against them.',
-        claimStoreServiceMock.sampleClaimObj.claim.defendants[0].name + ' can still respond to the claim until you request a CCJ.'
+        claimStoreServiceMock.sampleClaimObj.claim.defendants[0].name + ' can still respond to the claim until you request a CCJ.',
       ],
       defendantAssertions: [
         'You haven’t responded to this claim',
@@ -61,28 +64,28 @@ function testData () {
         + ' can now ask for a County Court Judgment against you.',
         'A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile ' +
         'phone contract. Bailiffs could also be sent to your home.',
-        'You can still respond to the claim before they ask for a judgment.'
-      ]
+        'You can still respond to the claim before they ask for a judgment.',
+      ],
     },
     {
       status: 'CCJ - full admission, pay immediately, past deadline',
       claim: fullAdmissionClaim,
       claimOverride: {
-        response: { ...fullAdmissionClaim.response, ...basePayImmediatelyDatePastData() }
+        response: { ...fullAdmissionClaim.response, ...basePayImmediatelyDatePastData() },
       },
       claimantAssertions: ['000MC000',
         'The defendant said they’ll pay you immediately',
         'You need to tell us if you’ve settled the claim, for example because the defendant has paid you.',
         'You can settle for less than the full claim amount.',
         'If you haven’t been paid',
-        'If the defendant has not paid you, you can'
+        'If the defendant has not paid you, you can',
       ],
       defendantAssertions: ['000MC000',
         'Your response to the claim',
         `You said you’ll pay ${claimStoreServiceMock.sampleClaimObj.claim.claimants[0].name} £${claimStoreServiceMock.sampleClaimObj.claim.amount.rows[0].amount} before 4pm on ${MomentFactory.currentDate().subtract(5, 'days').format('D MMMM YYYY')}.`,
         'If you pay by cheque or transfer the money must be clear in their account.',
         'If they don’t receive the money by then, they can request a County Court Judgment against you.',
-        ' if you need their payment details. Make sure you get receipts for any payments.']
+        ' if you need their payment details. Make sure you get receipts for any payments.'],
     },
     {
       status: 'CCJ - full admission, pay immediately, past deadline - claimant requests CCJ',
@@ -91,48 +94,54 @@ function testData () {
         response: {
           ...fullAdmissionClaim.response, paymentIntention: {
             paymentOption: PaymentOption.IMMEDIATELY,
-            paymentDate: MomentFactory.currentDate().subtract(5, 'days')
-          }
+            paymentDate: MomentFactory.currentDate().subtract(5, 'days'),
+          },
         },
         countyCourtJudgment: {
           'ccjType': 'DEFAULT',
           'paidAmount': 10,
           'payBySetDate': '2022-01-01',
           'paymentOption': 'BY_SPECIFIED_DATE',
-          'defendantDateOfBirth': '2000-01-01'
+          'defendantDateOfBirth': '2000-01-01',
         },
         countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
-        responseDeadline: MomentFactory.currentDate().subtract(16, 'days')
+        responseDeadline: MomentFactory.currentDate().subtract(16, 'days'),
       },
       claimantAssertions: ['000MC000',
         'County Court Judgment (CCJ) requested',
         'We’ll process your request and post a copy of the judgment to you and to John Doe. We aim to do this within 10 working days.',
         'Your online account will not be updated with the progress of this claim - any further updates will be by post.',
         'John Doe can no longer respond to your claim online.',
-        'If a postal response is received before the judgment is issued your request will be rejected.'
+        'If a postal response is received before the judgment is issued your request will be rejected.',
       ],
       defendantAssertions: ['000MC000',
         'Claimant has requested a County Court Judgment (CCJ)',
         'John Smith has requested a CCJ against you because the deadline for your response has passed.',
         'Your online account will not be updated with the progress of this claim - any further updates will be by post.',
-        'If your deadline has passed, but the CCJ has not been issued, you can still respond. Contact us for more information'
-      ]
+        'If your deadline has passed, but the CCJ has not been issued, you can still respond. Contact us for more information',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by set date, claimant accepts the repayment plan and request a CCJ',
       claim: claimStoreServiceMock.sampleClaimIssueObj,
       claimOverride: {
         claimantResponse: { 'type': 'ACCEPTATION', 'formaliseOption': 'CCJ' },
-        countyCourtJudgment: { 'ccjType': 'ADMISSIONS', 'paidAmount': 10, 'payBySetDate': '2022-01-01', 'paymentOption': 'BY_SPECIFIED_DATE', 'defendantDateOfBirth': '2000-01-01' },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...fullAdmissionClaim.response, ...basePayBySetDateData }
+        countyCourtJudgment: {
+          'ccjType': 'ADMISSIONS',
+          'paidAmount': 10,
+          'payBySetDate': '2022-01-01',
+          'paymentOption': 'BY_SPECIFIED_DATE',
+          'defendantDateOfBirth': '2000-01-01',
+        },
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
         'When you’ve been paid in full, you need to let us know.',
-        'Tell us you’ve been paid'
+        'Tell us you’ve been paid',
       ],
       defendantAssertions: ['000MC050',
         'John Smith requested a County Court Judgment (CCJ) against you',
@@ -140,24 +149,30 @@ function testData () {
         'If a defendant doesn’t pay immediately, claimants can request a CCJ even if they accept a repayment plan.',
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15 to',
-        'you need their payment details. Make sure you get receipts for any payments.'
-      ]
+        'you need their payment details. Make sure you get receipts for any payments.',
+      ],
     },
     {
       status: 'CCJ - part admission, pay by set date, claimant accepts the repayment plan and request a CCJ',
       claim: claimStoreServiceMock.sampleClaimIssueObj,
       claimOverride: {
         claimantResponse: { type: 'ACCEPTATION', formaliseOption: 'CCJ' },
-        countyCourtJudgment: { ccjType: 'DETERMINATION', paidAmount: 10, payBySetDate: '2022-01-01', paymentOption: 'BY_SPECIFIED_DATE', defendantDateOfBirth: '2000-01-01' },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...partialAdmissionWithSoMPaymentBySetDateData }
+        countyCourtJudgment: {
+          ccjType: 'DETERMINATION',
+          paidAmount: 10,
+          payBySetDate: '2022-01-01',
+          paymentOption: 'BY_SPECIFIED_DATE',
+          defendantDateOfBirth: '2000-01-01',
+        },
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...partialAdmissionWithSoMPaymentBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
         'When you’ve been paid in full, you need to let us know.',
-        'Tell us you’ve been paid'
+        'Tell us you’ve been paid',
       ],
       defendantAssertions: ['000MC050',
         'John Smith requested a County Court Judgment (CCJ) against you',
@@ -166,8 +181,8 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15',
         'you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by set date, claimant accepts the repayment plan with settlement agreement, defendant rejects the settlement agreement',
@@ -175,13 +190,13 @@ function testData () {
       claimOverride: {
         settlement: claimStoreServiceMock.partySettlementWithSetDateAndRejection,
         claimantResponse: { 'type': 'ACCEPTATION', 'formaliseOption': 'SETTLEMENT' },
-        response: { ...fullAdmissionClaim.response, ...basePayBySetDateData }
+        response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'The defendant has rejected your settlement agreement',
         'You can request a County Court Judgment (CCJ) against them based on the repayment plan they offered.',
         'The court will order them to pay the money. It doesn’t guarantee that they’ll pay you.',
-        'Request a County Court Judgment (CCJ)'
+        'Request a County Court Judgment (CCJ)',
       ],
       defendantAssertions: ['000MC050',
         'You rejected the settlement agreement',
@@ -189,8 +204,8 @@ function testData () {
         'A CCJ would order you to repay the money in line with the terms of the agreement.',
         'The court has reviewed the repayment plan and believes you can afford it.',
         'If John Smith requests a CCJ, you can ask a judge to consider changing the plan, based on your financial details.',
-        'We’ll email you when John Smith responds'
-      ]
+        'We’ll email you when John Smith responds',
+      ],
     },
     {
       status: 'CCJ - part admission, pay by set date, claimant accepts the repayment plan with settlement agreement, defendant rejects the settlement agreement',
@@ -198,13 +213,13 @@ function testData () {
       claimOverride: {
         settlement: claimStoreServiceMock.partySettlementWithSetDateAndRejection,
         claimantResponse: { type: 'ACCEPTATION', formaliseOption: 'SETTLEMENT' },
-        response: { ...partialAdmissionWithSoMPaymentBySetDateData }
+        response: { ...partialAdmissionWithSoMPaymentBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'The defendant has rejected your settlement agreement',
         'You can request a County Court Judgment (CCJ) against them based on the repayment plan they offered.',
         'The court will order them to pay the money. It doesn’t guarantee that they’ll pay you.',
-        'Request a County Court Judgment (CCJ)'
+        'Request a County Court Judgment (CCJ)',
       ],
       defendantAssertions: ['000MC050',
         'You rejected the settlement agreement',
@@ -212,8 +227,8 @@ function testData () {
         'A CCJ would order you to repay the money in line with the terms of the agreement.',
         'The court has reviewed the repayment plan and believes you can afford it.',
         'If John Smith requests a CCJ, you can ask a judge to consider changing the plan, based on your financial details.',
-        'We’ll email you when John Smith responds'
-      ]
+        'We’ll email you when John Smith responds',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by set date, rejected the defendants repayment plan and accepted alternative plan suggested by the court then requests a CCJ.',
@@ -223,18 +238,18 @@ function testData () {
           type: 'ACCEPTATION',
           formaliseOption: 'CCJ',
           courtDetermination: {
-            ...courtDeterminationChoseDefendantData
-          }
+            ...courtDeterminationChoseDefendantData,
+          },
         },
         countyCourtJudgment: { ...ccjDeterminationByInstalment },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...fullAdmissionClaim.response, ...basePayBySetDateData }
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
-        'When you’ve been paid in full, you need to let us know.'
+        'When you’ve been paid in full, you need to let us know.',
       ],
       defendantAssertions: ['000MC050',
         'John Smith requested a County Court Judgment (CCJ) against you',
@@ -244,8 +259,8 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15 to',
         'if you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - part admission, pay by set date, rejected the defendants repayment plan and accepted alternative plan suggested by the court then requests a CCJ.',
@@ -255,18 +270,18 @@ function testData () {
           type: 'ACCEPTATION',
           formaliseOption: 'CCJ',
           courtDetermination: {
-            ...courtDeterminationChoseDefendantData
-          }
+            ...courtDeterminationChoseDefendantData,
+          },
         },
         countyCourtJudgment: { ...ccjDeterminationByInstalment },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...partialAdmissionWithSoMPaymentBySetDateData }
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...partialAdmissionWithSoMPaymentBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
-        'When you’ve been paid in full, you need to let us know.'
+        'When you’ve been paid in full, you need to let us know.',
       ],
       defendantAssertions: ['000MC050',
         'John Smith requested a County Court Judgment (CCJ) against you',
@@ -276,8 +291,8 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15 to',
         'if you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by set date, rejected the defendants repayment plan and claimants suggested repayment plan accepted by the court then requests a CCJ.',
@@ -287,23 +302,23 @@ function testData () {
           type: 'ACCEPTATION',
           formaliseOption: 'CCJ',
           courtDetermination: {
-            ...courtDeterminationChoseClaimantData
+            ...courtDeterminationChoseClaimantData,
           },
           claimantPaymentIntention: {
             paymentDate: '2020-01-01',
-            paymentOption: 'BY_SPECIFIED_DATE'
-          }
+            paymentOption: 'BY_SPECIFIED_DATE',
+          },
         },
         countyCourtJudgment: { ...ccjDeterminationBySpecifiedDate() },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...fullAdmissionClaim.response, ...basePayBySetDateData }
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
         'When you’ve been paid in full, you need to let us know.',
-        'Tell us you’ve been paid'
+        'Tell us you’ve been paid',
       ],
       defendantAssertions: ['000MC050',
         'John Smith requested a County Court Judgment (CCJ) against you',
@@ -313,8 +328,8 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15',
         ' you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - part admission, pay by set date, rejected the defendants repayment plan and claimants suggested repayment plan accepted by the court then requests a CCJ.',
@@ -324,23 +339,23 @@ function testData () {
           type: 'ACCEPTATION',
           formaliseOption: 'CCJ',
           courtDetermination: {
-            ...courtDeterminationChoseClaimantData
+            ...courtDeterminationChoseClaimantData,
           },
           claimantPaymentIntention: {
             paymentDate: '2020-01-01',
-            paymentOption: 'BY_SPECIFIED_DATE'
-          }
+            paymentOption: 'BY_SPECIFIED_DATE',
+          },
         },
         countyCourtJudgment: { ...ccjDeterminationBySpecifiedDate() },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...partialAdmissionWithSoMPaymentBySetDateData }
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...partialAdmissionWithSoMPaymentBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
         'When you’ve been paid in full, you need to let us know.',
-        'Tell us you’ve been paid'
+        'Tell us you’ve been paid',
       ],
       defendantAssertions: ['000MC050',
         'John Smith requested a County Court Judgment (CCJ) against you',
@@ -350,22 +365,22 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15',
         ' you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by set date, rejected the defendants repayment plan and rejected alternative plan suggested by the court',
       claim: claimStoreServiceMock.sampleClaimIssueObj,
       claimOverride: {
         claimantResponse: { 'type': 'ACCEPTATION', 'formaliseOption': 'REFER_TO_JUDGE' },
-        settlementReachedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...fullAdmissionClaim.response, ...basePayBySetDateData }
+        settlementReachedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...fullAdmissionClaim.response, ...basePayBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'Wait for a judge to review the case',
         'You’ve rejected the defendant’s repayment plan and haven’t been able to agree to an alternative plan.',
         'A judge will review the case. We’ll contact you by post to tell you what to do next.',
-        'Your online account won’t be updated - any further updates will be by post.'
+        'Your online account won’t be updated - any further updates will be by post.',
       ],
       defendantAssertions: [
         '000MC050',
@@ -376,22 +391,22 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith.',
         'A judge will make a repayment plan. We’ll contact you by post to tell you what to do next.',
         'Your online account won’t be updated - any further updates will be by post.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - part admission, pay by set date, rejected the defendants repayment plan and rejected alternative plan suggested by the court',
       claim: claimStoreServiceMock.sampleClaimIssueObj,
       claimOverride: {
         claimantResponse: { 'type': 'ACCEPTATION', 'formaliseOption': 'REFER_TO_JUDGE' },
-        settlementReachedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...partialAdmissionWithSoMPaymentBySetDateData }
+        settlementReachedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...partialAdmissionWithSoMPaymentBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'Wait for a judge to review the case',
         'You’ve rejected the defendant’s repayment plan and haven’t been able to agree to an alternative plan.',
         'A judge will review the case. We’ll contact you by post to tell you what to do next.',
-        'Your online account won’t be updated - any further updates will be by post.'
+        'Your online account won’t be updated - any further updates will be by post.',
       ],
       defendantAssertions: [
         '000MC050',
@@ -402,24 +417,30 @@ function testData () {
         '>When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith.',
         'A judge will make a repayment plan. We’ll contact you by post to tell you what to do next.',
         'Your online account won’t be updated - any further updates will be by post.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by repayment plan, claimant accepts the repayment plan and requests a CCJ',
       claim: claimStoreServiceMock.sampleClaimIssueObj,
       claimOverride: {
         claimantResponse: { 'type': 'ACCEPTATION', 'formaliseOption': 'CCJ' },
-        countyCourtJudgment: { 'ccjType': 'ADMISSIONS', 'paidAmount': 10, 'payBySetDate': '2022-01-01', 'paymentOption': 'BY_SPECIFIED_DATE', 'defendantDateOfBirth': '2000-01-01' },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData }
+        countyCourtJudgment: {
+          'ccjType': 'ADMISSIONS',
+          'paidAmount': 10,
+          'payBySetDate': '2022-01-01',
+          'paymentOption': 'BY_SPECIFIED_DATE',
+          'defendantDateOfBirth': '2000-01-01',
+        },
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
         'When you’ve been paid in full, you need to let us know.',
-        'Tell us you’ve been paid'
+        'Tell us you’ve been paid',
       ],
       defendantAssertions: ['000MC050',
         'John Smith requested a County Court Judgment (CCJ) against you',
@@ -428,22 +449,22 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15 to ',
         'if you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by repayment plan, rejected the defendants repayment plan and rejected alternative plan suggested by the court',
       claim: claimStoreServiceMock.sampleClaimIssueObj,
       claimOverride: {
         claimantResponse: { 'type': 'ACCEPTATION', 'formaliseOption': 'REFER_TO_JUDGE' },
-        settlementReachedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData }
+        settlementReachedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
       },
       claimantAssertions: ['000MC050',
         'Wait for a judge to review the case',
         'You’ve rejected the defendant’s repayment plan and haven’t been able to agree to an alternative plan.',
         'A judge will review the case. We’ll contact you by post to tell you what to do next.',
-        'Your online account won’t be updated - any further updates will be by post.'
+        'Your online account won’t be updated - any further updates will be by post.',
       ],
       defendantAssertions: [
         '000MC050',
@@ -454,8 +475,8 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith.',
         'A judge will make a repayment plan. We’ll contact you by post to tell you what to do next.',
         'Your online account won’t be updated - any further updates will be by post.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by repayment plan, claimant accepts the repayment plan and offers a settlement agreement, defendant rejects the settlement agreement',
@@ -463,12 +484,12 @@ function testData () {
       claimOverride: {
         settlement: claimStoreServiceMock.partySettlementWithInstalmentsAndRejection,
         claimantResponse: { 'type': 'ACCEPTATION', 'formaliseOption': 'SETTLEMENT' },
-        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData }
+        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
       },
       claimantAssertions: ['000MC050',
         'The defendant has rejected your settlement agreement',
         'You can request a County Court Judgment (CCJ) against them based on the repayment plan they offered.',
-        'The court will order them to pay the money. It doesn’t guarantee that they’ll pay you.'
+        'The court will order them to pay the money. It doesn’t guarantee that they’ll pay you.',
       ],
       defendantAssertions: ['000MC050',
         'John Smith can request a County Court Judgment (CCJ) against you.',
@@ -476,26 +497,26 @@ function testData () {
         'The court has reviewed the repayment plan and believes you can afford it.',
         'If John Smith requests a CCJ, you can ask a judge to consider changing the plan, based on your financial details.',
         'We’ll email you when John Smith responds',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by repayment plan, claimant accepts the repayment plan and offers a settlement agreement, defendant accepts the settlement agreement, claimant requests CCJ after set date',
       claim: claimStoreServiceMock.sampleClaimIssueObj,
       claimOverride: {
         ...claimStoreServiceMock.settlementWithSetDateAndAcceptation,
-        settlementReachedAt:  MomentFactory.currentDate().subtract(1, 'days'),
+        settlementReachedAt: MomentFactory.currentDate().subtract(1, 'days'),
         claimantResponse: { type: 'ACCEPTATION', formaliseOption: 'SETTLEMENT' },
         countyCourtJudgment: { ...ccjAdmissionBySpecifiedDate() },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData }
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
         'When you’ve been paid in full, you need to let us know.',
-        'Tell us you’ve been paid'
+        'Tell us you’ve been paid',
       ],
       defendantAssertions: ['000MC050',
         'John Smith requested a County Court Judgment (CCJ) against you',
@@ -504,36 +525,36 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15',
         'you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by repayment plan, claimant rejects the repayment plan, their offer is accepted by the court and offers a settlement agreement, defendant accepts the settlement agreement, claimant requests CCJ after set date',
       claim: claimStoreServiceMock.sampleClaimIssueObj,
       claimOverride: {
         ...claimStoreServiceMock.settlementWithSetDateAndAcceptation,
-        settlementReachedAt:  MomentFactory.currentDate().subtract(1, 'days'),
+        settlementReachedAt: MomentFactory.currentDate().subtract(1, 'days'),
         claimantResponse: {
           type: 'ACCEPTATION',
           formaliseOption: 'SETTLEMENT',
           courtDetermination: {
-            ...courtDeterminationChoseClaimantData
+            ...courtDeterminationChoseClaimantData,
           },
           claimantPaymentIntention: {
             paymentDate: '2020-01-01',
-            paymentOption: 'BY_SPECIFIED_DATE'
-          }
+            paymentOption: 'BY_SPECIFIED_DATE',
+          },
         },
         countyCourtJudgment: { ...ccjAdmissionBySpecifiedDate() },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData }
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
         'When you’ve been paid in full, you need to let us know.',
-        'Tell us you’ve been paid'
+        'Tell us you’ve been paid',
       ],
       defendantAssertions: ['000MC050',
         'John Smith requested a County Court Judgment (CCJ) against you',
@@ -542,8 +563,8 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15',
         'you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by repayment plan, claimant rejects the repayment plan, accepts the courts offer and offers a settlement agreement, defendant rejects the settlement agreement',
@@ -554,19 +575,19 @@ function testData () {
           type: 'ACCEPTATION',
           formaliseOption: 'SETTLEMENT',
           courtDetermination: {
-            ...courtDeterminationChoseClaimantData
+            ...courtDeterminationChoseClaimantData,
           },
           claimantPaymentIntention: {
             paymentDate: '2020-01-01',
-            paymentOption: 'BY_SPECIFIED_DATE'
-          }
+            paymentOption: 'BY_SPECIFIED_DATE',
+          },
         },
-        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData }
+        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
       },
       claimantAssertions: ['000MC050',
         'The defendant has rejected your settlement agreement',
         'You can request a County Court Judgment (CCJ) against them based on the repayment plan they offered.',
-        'The court will order them to pay the money. It doesn’t guarantee that they’ll pay you.'
+        'The court will order them to pay the money. It doesn’t guarantee that they’ll pay you.',
       ],
       defendantAssertions: ['000MC050',
         'John Smith can request a County Court Judgment (CCJ) against you.',
@@ -574,8 +595,8 @@ function testData () {
         'The court has reviewed the repayment plan and believes you can afford it.',
         'If John Smith requests a CCJ, you can ask a judge to consider changing the plan, based on your financial details.',
         'We’ll email you when John Smith responds',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by repayment plan, claimant rejects the repayment plan, accepts the courts offer and offers a settlement agreement, defendant rejects the settlement agreement. Claimant then requests a CCJ',
@@ -586,23 +607,23 @@ function testData () {
           type: 'ACCEPTATION',
           formaliseOption: 'SETTLEMENT',
           courtDetermination: {
-            ...courtDeterminationChoseCourtData
+            ...courtDeterminationChoseCourtData,
           },
           claimantPaymentIntention: {
             paymentDate: '2020-01-01',
-            paymentOption: 'BY_SPECIFIED_DATE'
-          }
+            paymentOption: 'BY_SPECIFIED_DATE',
+          },
         },
         countyCourtJudgment: { ...ccjAdmissionBySpecifiedDate() },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData }
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
         'When you’ve been paid in full, you need to let us know.',
-        'Tell us you’ve been paid'
+        'Tell us you’ve been paid',
       ],
       defendantAssertions: ['000MC050',
         'A County Court Judgment (CCJ) has been issued against you',
@@ -613,8 +634,8 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15',
         'you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - full admission, pay by repayment plan, claimant rejects the repayment plan, the court accepts their plan and they offer a settlement agreement, defendant rejects the settlement agreement. Claimant then requests a CCJ',
@@ -625,23 +646,23 @@ function testData () {
           type: 'ACCEPTATION',
           formaliseOption: 'SETTLEMENT',
           courtDetermination: {
-            ...courtDeterminationChoseClaimantData
+            ...courtDeterminationChoseClaimantData,
           },
           claimantPaymentIntention: {
             paymentDate: '2020-01-01',
-            paymentOption: 'BY_SPECIFIED_DATE'
-          }
+            paymentOption: 'BY_SPECIFIED_DATE',
+          },
         },
         countyCourtJudgment: { ...ccjAdmissionBySpecifiedDate() },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData }
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...fullAdmissionClaim.response, ...basePayByInstalmentsData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
         'When you’ve been paid in full, you need to let us know.',
-        'Tell us you’ve been paid'
+        'Tell us you’ve been paid',
       ],
       defendantAssertions: ['000MC050',
         'A County Court Judgment (CCJ) has been issued against you',
@@ -652,8 +673,8 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15',
         'you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - part admission, pay by repayment plan, claimant rejects the repayment plan, the courts accepts their plan and offers a settlement agreement, defendant rejects the settlement agreement and claimant requests a CCJ',
@@ -664,23 +685,23 @@ function testData () {
           type: 'ACCEPTATION',
           formaliseOption: 'SETTLEMENT',
           courtDetermination: {
-            ...courtDeterminationChoseClaimantData
+            ...courtDeterminationChoseClaimantData,
           },
           claimantPaymentIntention: {
             paymentDate: '2020-01-01',
-            paymentOption: 'BY_SPECIFIED_DATE'
-          }
+            paymentOption: 'BY_SPECIFIED_DATE',
+          },
         },
         countyCourtJudgment: { ...ccjAdmissionBySpecifiedDate() },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...partialAdmissionWithSoMPaymentBySetDateData }
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...partialAdmissionWithSoMPaymentBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
         'When you’ve been paid in full, you need to let us know.',
-        'Tell us you’ve been paid'
+        'Tell us you’ve been paid',
       ],
       defendantAssertions: ['000MC050',
         'A County Court Judgment (CCJ) has been issued against you',
@@ -691,8 +712,8 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15',
         'you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - part admission, pay by repayment plan, claimant rejects the repayment plan, accepts the courts offer and offers a settlement agreement, defendant rejects the settlement agreement. Claimant then requests a CCJ',
@@ -703,23 +724,23 @@ function testData () {
           type: 'ACCEPTATION',
           formaliseOption: 'SETTLEMENT',
           courtDetermination: {
-            ...courtDeterminationChoseCourtData
+            ...courtDeterminationChoseCourtData,
           },
           claimantPaymentIntention: {
             paymentDate: '2020-01-01',
-            paymentOption: 'BY_SPECIFIED_DATE'
-          }
+            paymentOption: 'BY_SPECIFIED_DATE',
+          },
         },
         countyCourtJudgment: { ...ccjAdmissionBySpecifiedDate() },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...partialAdmissionWithSoMPaymentBySetDateData }
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...partialAdmissionWithSoMPaymentBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
         'When you’ve been paid in full, you need to let us know.',
-        'Tell us you’ve been paid'
+        'Tell us you’ve been paid',
       ],
       defendantAssertions: ['000MC050',
         'A County Court Judgment (CCJ) has been issued against you',
@@ -730,8 +751,8 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15',
         'you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
+        'Download your response',
+      ],
     },
     {
       status: 'CCJ - part admission, pay by repayment plan, claimant accepts the repayment plan and they offer a settlement agreement, defendant rejects the settlement agreement. Claimant then requests a CCJ',
@@ -740,18 +761,18 @@ function testData () {
         settlement: claimStoreServiceMock.partySettlementWithInstalmentsAndRejection,
         claimantResponse: {
           type: 'ACCEPTATION',
-          formaliseOption: 'SETTLEMENT'
+          formaliseOption: 'SETTLEMENT',
         },
         countyCourtJudgment: { ...ccjAdmissionBySpecifiedDate() },
-        countyCourtJudgmentRequestedAt:  MomentFactory.currentDate().subtract(1, 'days'),
-        response: { ...partialAdmissionWithSoMPaymentBySetDateData }
+        countyCourtJudgmentRequestedAt: MomentFactory.currentDate().subtract(1, 'days'),
+        response: { ...partialAdmissionWithSoMPaymentBySetDateData },
       },
       claimantAssertions: ['000MC050',
         'You requested a County Court Judgment against John Doe',
         'When we’ve processed your request, we’ll post a copy of the judgment to you and to John Doe',
         'View the repayment plan',
         'When you’ve been paid in full, you need to let us know.',
-        'Tell us you’ve been paid'
+        'Tell us you’ve been paid',
       ],
       defendantAssertions: ['000MC050',
         'A County Court Judgment (CCJ) has been issued against you',
@@ -761,56 +782,56 @@ function testData () {
         'When we’ve processed the request we’ll post a copy of the judgment to you and to John Smith.',
         'If you pay the debt within one month of the date of judgment, the CCJ is removed from the public register. You can pay £15',
         'you need their payment details. Make sure you get receipts for any payments.',
-        'Download your response'
-      ]
-    }
-  ]
+        'Download your response',
+      ],
+    },
+  ];
 }
 
-const claimPagePath = Paths.claimantPage.evaluateUri({ externalId: claimStoreServiceMock.sampleClaimObj.externalId })
-const defendantPagePath = Paths.defendantPage.evaluateUri({ externalId: claimStoreServiceMock.sampleClaimObj.externalId })
+const claimPagePath = Paths.claimantPage.evaluateUri({ externalId: claimStoreServiceMock.sampleClaimObj.externalId });
+const defendantPagePath = Paths.defendantPage.evaluateUri({ externalId: claimStoreServiceMock.sampleClaimObj.externalId });
 
 describe('Dashboard page', () => {
-  attachDefaultHooks(app)
+  attachDefaultHooks(app);
 
   describe('on GET', () => {
-    checkAuthorizationGuards(app, 'get', claimPagePath)
-    checkAuthorizationGuards(app, 'get', defendantPagePath)
+    checkAuthorizationGuards(app, 'get', claimPagePath);
+    checkAuthorizationGuards(app, 'get', defendantPagePath);
 
     context('when user authorised', () => {
       context('Claim Status', () => {
         context('as a claimant', () => {
           beforeEach(() => {
-            idamServiceMock.resolveRetrieveUserFor('1', 'citizen')
-          })
+            idamServiceMock.resolveRetrieveUserFor('1', 'citizen');
+          });
 
           testData().forEach(data => {
             it(`should render claim status: ${data.status}`, async () => {
-              claimStoreServiceMock.resolveRetrieveByExternalId(data.claim, data.claimOverride)
+              claimStoreServiceMock.resolveRetrieveByExternalId(data.claim, data.claimOverride);
               await request(app)
                 .get(claimPagePath)
                 .set('Cookie', `${cookieName}=ABC`)
-                .expect(res => expect(res).to.be.successful.withText(...data.claimantAssertions))
-            })
-          })
-        })
+                .expect(res => expect(res).to.be.successful.withText(...data.claimantAssertions));
+            });
+          });
+        });
 
         context('as a defendant', () => {
           beforeEach(() => {
-            idamServiceMock.resolveRetrieveUserFor('123', 'citizen')
-          })
+            idamServiceMock.resolveRetrieveUserFor('123', 'citizen');
+          });
 
           testData().forEach(data => {
             it(`should render dashboard: ${data.status}`, async () => {
-              claimStoreServiceMock.resolveRetrieveByExternalId(data.claim, data.claimOverride)
+              claimStoreServiceMock.resolveRetrieveByExternalId(data.claim, data.claimOverride);
               await request(app)
                 .get(defendantPagePath)
                 .set('Cookie', `${cookieName}=ABC`)
-                .expect(res => expect(res).to.be.successful.withText(...data.defendantAssertions))
-            })
-          })
-        })
-      })
-    })
-  })
-})
+                .expect(res => expect(res).to.be.successful.withText(...data.defendantAssertions));
+            });
+          });
+        });
+      });
+    });
+  });
+});

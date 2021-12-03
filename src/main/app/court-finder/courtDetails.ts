@@ -1,9 +1,10 @@
-import { Facilities } from 'court-finder-client/facilities'
+import { Facilities } from 'court-finder-client/facilities';
 
 export class CourtDetails {
-  constructor (
+  constructor(
     public readonly name: string,
     public readonly slug: string,
-    public readonly facilities: Facilities[]
-  ) {}
+    public readonly facilities: Facilities[],
+  ) {
+  }
 }

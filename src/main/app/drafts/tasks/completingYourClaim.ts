@@ -1,9 +1,9 @@
-import { DraftClaim } from 'drafts/models/draftClaim'
+import { DraftClaim } from 'drafts/models/draftClaim';
 
 export class CompletingYourClaim {
 
-  static isCompleted (claim: DraftClaim): boolean {
-    return claim.readCompletingClaim
+  static isCompleted(claim: DraftClaim): boolean {
+    return claim.readCompletingClaim;
   }
 
 }

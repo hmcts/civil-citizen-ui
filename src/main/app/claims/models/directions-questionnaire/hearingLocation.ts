@@ -1,4 +1,4 @@
-import { Address } from 'claims/models/address'
+import { Address } from 'claims/models/address';
 
 export enum CourtLocationType {
   SUGGESTED_COURT = 'SUGGESTED_COURT',

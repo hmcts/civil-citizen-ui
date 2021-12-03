@@ -1,10 +1,10 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 export class DefendantRegisterPage {
 
-  clickLinkIAlreadyHaveAnAccount (): void {
-    I.click('Sign in to your account.')
+  clickLinkIAlreadyHaveAnAccount(): void {
+    I.click('Sign in to your account.');
   }
 }

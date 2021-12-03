@@ -1,4 +1,4 @@
-import { FrequencyBasedAmount } from 'claims/models/response/statement-of-means/frequencyBasedAmount'
+import { FrequencyBasedAmount } from 'claims/models/response/statement-of-means/frequencyBasedAmount';
 
 export enum ExpenseType {
   MORTGAGE = 'MORTGAGE',
@@ -18,6 +18,6 @@ export enum ExpenseType {
 }
 
 export interface Expense extends FrequencyBasedAmount {
-  type: ExpenseType
-  otherName?: string
+  type: ExpenseType;
+  otherName?: string;
 }

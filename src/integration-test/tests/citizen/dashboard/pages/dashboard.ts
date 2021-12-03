@@ -1,14 +1,14 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 export class DashboardPage {
 
-  open (): void {
-    I.click('My account')
+  open(): void {
+    I.click('My account');
   }
 
-  selectClaim (claimRef: string): void {
-    I.click(claimRef)
+  selectClaim(claimRef: string): void {
+    I.click(claimRef);
   }
 }

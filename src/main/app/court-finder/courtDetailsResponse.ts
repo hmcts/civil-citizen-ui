@@ -1,10 +1,11 @@
-import { CourtDetails } from 'court-finder-client/courtDetails'
+import { CourtDetails } from 'court-finder-client/courtDetails';
 
 export class CourtDetailsResponse {
-  public courtDetails: CourtDetails
+  public courtDetails: CourtDetails;
 
-  constructor (
+  constructor(
     public readonly statusCode: number,
-    public readonly valid: boolean
-  ) {}
+    public readonly valid: boolean,
+  ) {
+  }
 }

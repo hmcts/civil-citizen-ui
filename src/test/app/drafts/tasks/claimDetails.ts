@@ -1,7 +1,7 @@
-import { expect } from 'chai'
+import { expect } from 'chai';
 
-import { DraftClaim } from 'drafts/models/draftClaim'
-import { ClaimDetails } from 'drafts/tasks/claimDetails'
+import { DraftClaim } from 'drafts/models/draftClaim';
+import { ClaimDetails } from 'drafts/tasks/claimDetails';
 
 describe('Claim details', () => {
 
@@ -12,47 +12,47 @@ describe('Claim details', () => {
         timeline: {
           rows: [{
             date: 'may',
-            description: 'it is ok'
-          }]
+            description: 'it is ok',
+          }],
         },
-        reason: { reason: 'It is my reason' }
-      }
+        reason: { reason: 'It is my reason' },
+      };
 
-      const claim: DraftClaim = new DraftClaim().deserialize(input)
+      const claim: DraftClaim = new DraftClaim().deserialize(input);
 
-      expect(ClaimDetails.isCompleted(claim)).to.equal(true)
-    })
+      expect(ClaimDetails.isCompleted(claim)).to.equal(true);
+    });
 
     context('should return false', () => {
 
       it('timeline has no rows and reason is valid', () => {
         const input = {
           timeline: {
-            rows: []
+            rows: [],
           },
-          reason: 'It is my reason'
-        }
+          reason: 'It is my reason',
+        };
 
-        const claim: DraftClaim = new DraftClaim().deserialize(input)
+        const claim: DraftClaim = new DraftClaim().deserialize(input);
 
-        expect(ClaimDetails.isCompleted(claim)).to.equal(false)
-      })
+        expect(ClaimDetails.isCompleted(claim)).to.equal(false);
+      });
 
       it('timeline has row but reason is empty', () => {
         const input = {
           timeline: {
             rows: [{
               date: 'may',
-              description: 'it is ok'
-            }]
+              description: 'it is ok',
+            }],
           },
-          reason: ''
-        }
+          reason: '',
+        };
 
-        const claim: DraftClaim = new DraftClaim().deserialize(input)
+        const claim: DraftClaim = new DraftClaim().deserialize(input);
 
-        expect(ClaimDetails.isCompleted(claim)).to.equal(false)
-      })
-    })
-  })
-})
+        expect(ClaimDetails.isCompleted(claim)).to.equal(false);
+      });
+    });
+  });
+});

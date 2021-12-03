@@ -1,12 +1,12 @@
-import { DraftClaim } from 'drafts/models/draftClaim'
+import { DraftClaim } from 'drafts/models/draftClaim';
 
 export class YourDetails {
 
-  static isCompleted (claim: DraftClaim): boolean {
+  static isCompleted(claim: DraftClaim): boolean {
     if (!claim || !claim.claimant) {
-      return false
+      return false;
     }
-    return claim.claimant.isCompleted()
+    return claim.claimant.isCompleted();
   }
 
 }

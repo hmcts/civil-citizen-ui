@@ -1,28 +1,28 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const links = {
-  goBack: '#return-url'
-}
+  goBack: '#return-url',
+};
 
 const buttons = {
-  confirm: '//*[@id="confirm"]'
-}
+  confirm: '//*[@id="confirm"]',
+};
 
 export class PaymentConfirmationPage {
 
-  confirmPayment (): void {
-    I.waitForText('Confirm your payment')
-    I.click(buttons.confirm)
+  confirmPayment(): void {
+    I.waitForText('Confirm your payment');
+    I.click(buttons.confirm);
   }
 
-  cancelPayment (): void {
-    I.waitForText('Confirm your payment')
-    I.click('Cancel payment')
+  cancelPayment(): void {
+    I.waitForText('Confirm your payment');
+    I.click('Cancel payment');
   }
 
-  goBackToService (): void {
-    I.click(links.goBack)
+  goBackToService(): void {
+    I.click(links.goBack);
   }
 }

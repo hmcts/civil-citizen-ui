@@ -1,3 +1,3 @@
 export interface UnavailableDate {
-  unavailableDate: string
+  unavailableDate: string;
 }

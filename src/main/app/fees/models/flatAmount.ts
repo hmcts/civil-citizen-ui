@@ -1,7 +1,7 @@
 export class FlatAmount {
-  readonly amount: number
+  readonly amount: number;
 
-  constructor (amount: number) {
-    this.amount = amount
+  constructor(amount: number) {
+    this.amount = amount;
   }
 }

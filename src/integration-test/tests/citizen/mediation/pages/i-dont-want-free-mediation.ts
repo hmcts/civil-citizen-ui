@@ -1,10 +1,10 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 export class IDontWantFreeMediationPage {
 
-  chooseSkip (): void {
-    I.click('Skip this section')
+  chooseSkip(): void {
+    I.click('Skip this section');
   }
 }

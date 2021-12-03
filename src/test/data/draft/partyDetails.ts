@@ -1,4 +1,4 @@
-import { PartyType } from 'common/partyType'
+import { PartyType } from 'common/partyType';
 
 export const addressCorrespondenceAddress = {
   address: {
@@ -6,7 +6,7 @@ export const addressCorrespondenceAddress = {
     line2: 'Street 2',
     line3: 'Cool house name',
     city: 'London',
-    postcode: 'E2 8FA'
+    postcode: 'E2 8FA',
   },
   hasCorrespondenceAddress: true,
   correspondenceAddress: {
@@ -14,9 +14,9 @@ export const addressCorrespondenceAddress = {
     line2: 'Street 20',
     line3: 'Cooler house name',
     city: 'Belfast',
-    postcode: 'BT2 5GB'
-  }
-}
+    postcode: 'BT2 5GB',
+  },
+};
 
 export const individualDetails = {
   type: PartyType.INDIVIDUAL.value,
@@ -27,51 +27,51 @@ export const individualDetails = {
     date: {
       year: 1999,
       month: 1,
-      day: 1
-    }
-  }
-}
+      day: 1,
+    },
+  },
+};
 
 export const individualDetailsWithSeparatedName = {
   ...individualDetails,
   firstName: 'John',
-  lastName: 'Smith'
-}
+  lastName: 'Smith',
+};
 
 export const individualSplitNameDetails = {
   ...individualDetails,
   name: 'Mr. John Smith',
   title: 'Mr.',
   firstName: 'John',
-  lastName: 'Smith'
-}
+  lastName: 'Smith',
+};
 
 export const defendantIndividualDetails = {
   ...individualDetails,
   title: 'Mr.',
   firstName: 'John',
-  lastName: 'Smith'
-}
+  lastName: 'Smith',
+};
 
 export const soleTraderDetails = {
   type: PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value,
   businessName: 'SoleTrader Ltd.',
-  ...addressCorrespondenceAddress
-}
+  ...addressCorrespondenceAddress,
+};
 
 export const soleTraderDetailsWithSeparatedName = {
   ...soleTraderDetails,
   firstName: 'John',
-  lastName: 'Smith'
-}
+  lastName: 'Smith',
+};
 
 export const claimantSoleTraderDetails = {
   type: PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value,
   firstName: 'Claimant',
   lastName: 'SoleTrader',
   businessName: 'Claimant SoleTrader Ltd.',
-  ...addressCorrespondenceAddress
-}
+  ...addressCorrespondenceAddress,
+};
 
 export const defendantSoleTraderDetails = {
   type: PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value,
@@ -80,34 +80,34 @@ export const defendantSoleTraderDetails = {
   firstName: 'Defendant',
   lastName: 'SoleTrader',
   businessName: 'Defendant SoleTrader Ltd.',
-  ...addressCorrespondenceAddress
-}
+  ...addressCorrespondenceAddress,
+};
 
 export const companyDetails = {
   type: PartyType.COMPANY.value,
   name: 'Company Ltd.',
   contactPerson: 'Company Smith',
-  ...addressCorrespondenceAddress
-}
+  ...addressCorrespondenceAddress,
+};
 
 export const organisationDetails = {
   type: PartyType.ORGANISATION.value,
   name: 'Organisation.',
   contactPerson: 'Organisation Smith',
-  ...addressCorrespondenceAddress
-}
+  ...addressCorrespondenceAddress,
+};
 
-export function partyDetails (partyType: string) {
+export function partyDetails(partyType: string) {
   switch (partyType) {
     case PartyType.INDIVIDUAL.value:
-      return individualDetails
+      return individualDetails;
     case PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value:
-      return soleTraderDetails
+      return soleTraderDetails;
     case PartyType.COMPANY.value:
-      return companyDetails
+      return companyDetails;
     case PartyType.ORGANISATION.value:
-      return organisationDetails
+      return organisationDetails;
     default:
-      throw new Error(`Unknown party type: ${partyType}`)
+      throw new Error(`Unknown party type: ${partyType}`);
   }
 }

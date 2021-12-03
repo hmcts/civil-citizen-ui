@@ -54,12 +54,5 @@
     "no-floating-promises": false,
     "no-console": true,
     "mocha-avoid-only": true
-  },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    }
   }
 }

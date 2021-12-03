@@ -1,10 +1,10 @@
-import * as mock from 'nock'
-import * as HttpStatus from 'http-status-codes'
-import * as config from 'config'
+import * as mock from 'nock';
+import * as HttpStatus from 'http-status-codes';
+import * as config from 'config';
 
-const baseURL = config.get<string>('pay.url')
-const endpointPath = '/card-payments'
-const paymentsPath = '/payments'
+const baseURL = config.get<string>('pay.url');
+const endpointPath = '/card-payments';
+const paymentsPath = '/payments';
 
 export const paymentInitiateResponse: object = {
   reference: 'RC-1520-4225-4161-2265',
@@ -13,10 +13,10 @@ export const paymentInitiateResponse: object = {
   _links: {
     next_url: {
       href: 'https://www.payments.service.gov.uk/secure/8b647ade-02cc-4c85-938d-4db560404df8',
-      method: 'GET'
-    }
-  }
-}
+      method: 'GET',
+    },
+  },
+};
 
 const paymentRetrieveResponse: object = {
   amount: 60,
@@ -36,48 +36,48 @@ const paymentRetrieveResponse: object = {
     {
       code: 'X0026',
       version: '1',
-      calculated_amount: 60
+      calculated_amount: 60,
     }],
   _links: {
     self: {
       href: 'http://localhost:4421/card-payments/RC-1520-4276-0065-8715',
-      method: 'GET'
-    }
-  }
-}
+      method: 'GET',
+    },
+  },
+};
 
-export function resolveCreate () {
+export function resolveCreate() {
   mock(baseURL)
     .post(endpointPath)
-    .reply(HttpStatus.CREATED, paymentInitiateResponse)
+    .reply(HttpStatus.CREATED, paymentInitiateResponse);
 }
 
-export function rejectCreate () {
+export function rejectCreate() {
   mock(baseURL)
     .post(endpointPath)
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR);
 }
 
-export function resolveRetrieve (status: string) {
+export function resolveRetrieve(status: string) {
   mock(baseURL + endpointPath)
     .get(new RegExp(`\/[\\d]+`))
-    .reply(HttpStatus.OK, { ...paymentRetrieveResponse, status: `${status}` })
+    .reply(HttpStatus.OK, { ...paymentRetrieveResponse, status: `${status}` });
 }
 
-export function resolveUpdate (paymentReference: string = 'RC-1520-4276-0065-8715'): mock.Scope {
+export function resolveUpdate(paymentReference: string = 'RC-1520-4276-0065-8715'): mock.Scope {
   return mock(baseURL + paymentsPath)
     .patch(`/${paymentReference}`)
-    .reply(HttpStatus.OK)
+    .reply(HttpStatus.OK);
 }
 
-export function resolveRetrieveToNotFound () {
+export function resolveRetrieveToNotFound() {
   mock(baseURL + endpointPath)
     .get(new RegExp(`\/[\\d]+`))
-    .reply(HttpStatus.NOT_FOUND)
+    .reply(HttpStatus.NOT_FOUND);
 }
 
-export function rejectRetrieve () {
+export function rejectRetrieve() {
   mock(baseURL + endpointPath)
     .get(new RegExp(`\/[\\d]+`))
-    .reply(HttpStatus.INTERNAL_SERVER_ERROR)
+    .reply(HttpStatus.INTERNAL_SERVER_ERROR);
 }

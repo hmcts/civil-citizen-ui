@@ -1,14 +1,14 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const viewAndRespondButton = {
-  submit: 'input#button'
-}
+  submit: 'input#button',
+};
 
 export class ClaimantClaimStatusPage {
 
-  viewAndRespondButton (): void {
-    I.click(viewAndRespondButton.submit)
+  viewAndRespondButton(): void {
+    I.click(viewAndRespondButton.submit);
   }
 }

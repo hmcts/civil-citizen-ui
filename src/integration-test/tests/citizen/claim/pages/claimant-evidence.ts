@@ -1,22 +1,22 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const fields = {
   type: 'rows[0][type]',
-  description: 'rows[0][description]'
-}
+  description: 'rows[0][description]',
+};
 
 const buttons = {
-  submit: 'saveAndContinue'
-}
+  submit: 'saveAndContinue',
+};
 
 export class ClaimantEvidencePage {
 
-  enterEvidenceRow (type: string, description: string): void {
-    I.selectOption(fields.type, type)
-    I.fillField(fields.description, description)
+  enterEvidenceRow(type: string, description: string): void {
+    I.selectOption(fields.type, type);
+    I.fillField(fields.description, description);
 
-    I.click(buttons.submit)
+    I.click(buttons.submit);
   }
 }

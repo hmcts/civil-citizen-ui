@@ -1,4 +1,4 @@
-import { PartyType } from 'common/partyType'
+import { PartyType } from 'common/partyType';
 
 export const addressCorrespondenceAddress = {
   address: {
@@ -6,7 +6,7 @@ export const addressCorrespondenceAddress = {
     line2: 'Street 2',
     line3: 'Cool house name',
     city: 'London',
-    postcode: 'E2 8FA'
+    postcode: 'E2 8FA',
   },
   hasCorrespondenceAddress: true,
   correspondenceAddress: {
@@ -14,9 +14,9 @@ export const addressCorrespondenceAddress = {
     line2: 'Street 20',
     line3: 'Cooler house name',
     city: 'Belfast',
-    postcode: 'BT2 5GB'
-  }
-}
+    postcode: 'BT2 5GB',
+  },
+};
 
 export const individual = {
   type: PartyType.INDIVIDUAL.value,
@@ -24,16 +24,16 @@ export const individual = {
   ...addressCorrespondenceAddress,
   dateOfBirth: '1999-01-01',
   phone: '0700000001',
-  email: 'individual@example.com'
-}
+  email: 'individual@example.com',
+};
 
 export const individualDefendant = {
   ...individual,
   name: 'Mr. John Smith',
   title: 'Mr.',
   firstName: 'John',
-  lastName: 'Smith'
-}
+  lastName: 'Smith',
+};
 
 export const soleTrader = {
   type: PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value,
@@ -41,14 +41,14 @@ export const soleTrader = {
   businessName: 'SoleTrader Ltd.',
   ...addressCorrespondenceAddress,
   phone: '0700000002',
-  email: 'sole-trader@example.com'
-}
+  email: 'sole-trader@example.com',
+};
 
 export const soleTraderWithSeparatedName = {
   ...soleTrader,
   firstName: 'John',
-  lastName: 'Smith'
-}
+  lastName: 'Smith',
+};
 
 export const soleTraderDefendant = {
   ...soleTrader,
@@ -56,8 +56,8 @@ export const soleTraderDefendant = {
   name: 'Defendant SoleTrader',
   title: undefined,
   firstName: 'Defendant',
-  lastName: 'SoleTrader'
-}
+  lastName: 'SoleTrader',
+};
 
 export const company = {
   type: PartyType.COMPANY.value,
@@ -65,16 +65,16 @@ export const company = {
   contactPerson: 'Company Smith',
   ...addressCorrespondenceAddress,
   phone: '0700000003',
-  email: 'company@example.com'
-}
+  email: 'company@example.com',
+};
 
 export const organisation = {
   type: PartyType.ORGANISATION.value,
   name: 'Organisation.',
   contactPerson: 'Organisation Smith',
   ...addressCorrespondenceAddress,
-  email: 'organisation@example.com'
-}
+  email: 'organisation@example.com',
+};
 
 export const organisationWithPhone = {
   type: PartyType.ORGANISATION.value,
@@ -82,5 +82,5 @@ export const organisationWithPhone = {
   contactPerson: 'Organisation Smith',
   ...addressCorrespondenceAddress,
   phone: '0700000004',
-  email: 'organisation@example.com'
-}
+  email: 'organisation@example.com',
+};

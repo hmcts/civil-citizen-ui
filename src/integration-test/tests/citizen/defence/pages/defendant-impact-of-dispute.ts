@@ -1,19 +1,19 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const fields = {
-  text: 'textarea[id="text"]'
-}
+  text: 'textarea[id="text"]',
+};
 
 export class DefendantImpactOfDisputePage {
 
-  enterImpactOfDispute (text: string): void {
-    I.fillField(fields.text, text)
+  enterImpactOfDispute(text: string): void {
+    I.fillField(fields.text, text);
   }
 
-  submitForm (): void {
-    I.click('Save and continue')
+  submitForm(): void {
+    I.click('Save and continue');
   }
 
 }

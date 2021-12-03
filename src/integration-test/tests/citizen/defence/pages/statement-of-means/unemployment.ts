@@ -1,22 +1,22 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const fields = {
-  retired: 'input[id="optionRETIRED"]'
-}
+  retired: 'input[id="optionRETIRED"]',
+};
 
 const buttons = {
-  submit: 'input[id="saveAndContinue"]'
-}
+  submit: 'input[id="saveAndContinue"]',
+};
 
 export class UnemploymentPage {
 
-  selectRetired (): void {
-    I.checkOption(fields.retired)
+  selectRetired(): void {
+    I.checkOption(fields.retired);
   }
 
-  clickContinue (): void {
-    I.click(buttons.submit)
+  clickContinue(): void {
+    I.click(buttons.submit);
   }
 }

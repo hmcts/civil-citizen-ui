@@ -1,4 +1,4 @@
-import { FrequencyBasedAmount } from 'claims/models/response/statement-of-means/frequencyBasedAmount'
+import { FrequencyBasedAmount } from 'claims/models/response/statement-of-means/frequencyBasedAmount';
 
 export enum PriorityDebtType {
   MORTGAGE = 'MORTGAGE',
@@ -11,6 +11,6 @@ export enum PriorityDebtType {
 }
 
 export interface PriorityDebts extends FrequencyBasedAmount {
-  type: PriorityDebtType
-  otherName?: string
+  type: PriorityDebtType;
+  otherName?: string;
 }

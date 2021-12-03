@@ -1,7 +1,7 @@
-$(document).ready(function () {
-  numeral.locale('en-gb')
+$(document).ready(function() {
+  numeral.locale('en-gb');
 
-  var feature = (function () {
+  var feature = (function() {
     var config = {
       incomeExpenseCalculationApi: '/total-income-expense-calculation',
       noTotalMonthlyIncomeExpense: '0.00',
@@ -21,20 +21,20 @@ $(document).ready(function () {
       otherRemoveButtonSelector: '.other-section input.link-button',
 
       amountType: 'amount',
-      scheduleType: 'schedule'
-    }
+      scheduleType: 'schedule',
+    };
 
     var containerElement = null;
     var totalMonthlyIncomeExpenseElement = null;
     var calculateMontlyIncomeExpenseButtonElement = null;
 
-    var getCsrfToken = function () {
+    var getCsrfToken = function() {
       return csrfInputFieldElement.val();
-    }
+    };
 
-    var setTotalMonthlyIncomeExpense = function (totalAmount) {
+    var setTotalMonthlyIncomeExpense = function(totalAmount) {
       totalMonthlyIncomeExpenseElement.text(numeral(totalAmount).format('0,0.00'));
-    }
+    };
 
     var csrfInputFieldElement,
       amountInputFieldElement,
@@ -42,7 +42,7 @@ $(document).ready(function () {
       otherAddAnotherButtonElements,
       otherRemoveButtonElements;
 
-    var init = function (settings) {
+    var init = function(settings) {
       // Allow overriding the default config
       $.extend(config, settings);
 
@@ -52,34 +52,34 @@ $(document).ready(function () {
       scheduleInputFieldElement = containerElement.find(config.scheduleInputFieldSelector);
       calculateMontlyIncomeExpenseButtonElement = containerElement.find(config.calculateMonthlyIncomeExpenseButtonSelector);
       totalMonthlyIncomeExpenseElement = containerElement.find(config.totalMonthlyIncomeExpenseSelector);
-      otherAddAnotherButtonElements = containerElement.find(config.otherAddAnotherButtonSelector)
-      otherRemoveButtonElements = containerElement.find(config.otherRemoveButtonSelector)
+      otherAddAnotherButtonElements = containerElement.find(config.otherAddAnotherButtonSelector);
+      otherRemoveButtonElements = containerElement.find(config.otherRemoveButtonSelector);
 
       setup();
     };
 
     var removeElementListener = function(event) {
-      event.preventDefault()
+      event.preventDefault();
       if ($(config.otherIncomeExpenseSelector).length < 2) {
-        return
+        return;
       }
-      this.parentElement.remove()
+      this.parentElement.remove();
 
-      var otherIncomeElements = $(config.otherIncomeExpenseSelector)
+      var otherIncomeElements = $(config.otherIncomeExpenseSelector);
       if (otherIncomeElements.length < 2) {
-        otherIncomeElements.find('input.link-button').addClass('hidden')
+        otherIncomeElements.find('input.link-button').addClass('hidden');
       }
 
-      updatePaymentLength()
-    }
+      updatePaymentLength();
+    };
 
 
-    var setup = function () {
+    var setup = function() {
       enableProgressiveEnhancement();
       amountInputFieldElement.keyup(updatePaymentLength);
       scheduleInputFieldElement.change(updatePaymentLength);
       otherAddAnotherButtonElements.on('click', function(event) {
-        event.preventDefault()
+        event.preventDefault();
 
         var lastOtherElement = $(config.otherIncomeExpenseSelector).last();
         $(config.otherIncomeExpenseSelector).find('input.link-button').removeClass('hidden');
@@ -91,75 +91,75 @@ $(document).ready(function () {
         newOtherElement.find(config.scheduleInputFieldSelector).change(updatePaymentLength);
 
         lastOtherElement.parent().append(newOtherElement);
-      })
+      });
 
-      otherRemoveButtonElements.on('click', removeElementListener)
+      otherRemoveButtonElements.on('click', removeElementListener);
 
-      function sanitizeContent (newElement) {
-        newElement.find('input[type=text]').val('')
-        newElement.find('input[type=radio]').prop('checked', false)
-        newElement.find('input[type=number]').val('')
+      function sanitizeContent(newElement) {
+        newElement.find('input[type=text]').val('');
+        newElement.find('input[type=radio]').prop('checked', false);
+        newElement.find('input[type=number]').val('');
 
-        newElement.find('*').removeClass('form-group-error')
-        newElement.find('*').removeClass('form-control-error')
-        newElement.find('.error-message').remove()
+        newElement.find('*').removeClass('form-group-error');
+        newElement.find('*').removeClass('form-control-error');
+        newElement.find('.error-message').remove();
       }
 
-      function incrementDomNodesIds (newRow) {
-        var nameOfElement = newRow[0].firstElementChild.firstElementChild.firstElementChild.getAttribute('for').split('[')[0]
+      function incrementDomNodesIds(newRow) {
+        var nameOfElement = newRow[0].firstElementChild.firstElementChild.firstElementChild.getAttribute('for').split('[')[0];
 
-        newRow.html(function (index, oldHtml) {
-          return oldHtml.replace(new RegExp(nameOfElement + '\\[(\\d+)]', 'g'), function (match, capturedRowIndex) {
-            return nameOfElement + '[' + (parseInt(capturedRowIndex) + 1) + ']'
-          })
-        })
+        newRow.html(function(index, oldHtml) {
+          return oldHtml.replace(new RegExp(nameOfElement + '\\[(\\d+)]', 'g'), function(match, capturedRowIndex) {
+            return nameOfElement + '[' + (parseInt(capturedRowIndex) + 1) + ']';
+          });
+        });
       }
 
-    }
+    };
 
     var enableProgressiveEnhancement = function() {
       calculateMontlyIncomeExpenseButtonElement.remove();
-    }
+    };
 
-    var updatePaymentLength = function () {
+    var updatePaymentLength = function() {
       var formData = removeInvalidFormDataEntries(extractFormData());
 
       if (formData.length < 1) {
         setTotalMonthlyIncomeExpense(config.noTotalMonthlyIncomeExpense);
-        return
+        return;
       }
 
       var body = {
-        incomeExpenseSources: formData
+        incomeExpenseSources: formData,
       };
 
       callPaymentPlanCalculationEndpoint(body);
-    }
+    };
 
-    var callPaymentPlanCalculationEndpoint = function (body) {
+    var callPaymentPlanCalculationEndpoint = function(body) {
       $.ajax({
         url: config.incomeExpenseCalculationApi,
         type: 'post',
         data: body,
         headers: {
-          'csrf-token': getCsrfToken()
+          'csrf-token': getCsrfToken(),
         },
         dataType: 'json',
-        success: incomeExpenseCalculationHandler
+        success: incomeExpenseCalculationHandler,
       });
-    }
+    };
 
-    var incomeExpenseCalculationHandler = function (data) {
+    var incomeExpenseCalculationHandler = function(data) {
       setTotalMonthlyIncomeExpense(data.totalMonthlyIncomeExpense || config.noTotalMonthlyIncomeExpense);
-    }
+    };
 
-    var extractFormData = function () {
+    var extractFormData = function() {
       var formData = [];
 
       containerElement
         .find(config.panelSelector)
         .find(config.formDataFieldSelector)
-        .each(function () {
+        .each(function() {
           var fieldType = deriveFieldTypeFromFieldName(this.name);
           var fieldValue = $(this).val();
 
@@ -177,9 +177,9 @@ $(document).ready(function () {
         });
 
       return formData;
-    }
+    };
 
-    var deriveFieldTypeFromFieldName = function (fieldName) {
+    var deriveFieldTypeFromFieldName = function(fieldName) {
       if (fieldName.match(config.amountType)) {
         return config.amountType;
       }
@@ -187,16 +187,16 @@ $(document).ready(function () {
         return config.scheduleType;
       }
       return undefined;
-    }
+    };
 
-    var removeInvalidFormDataEntries = function (formData) {
-      return $.grep(formData, function (entry) {
-        return entry[config.amountType] && entry[config.scheduleType]
-      })
-    }
+    var removeInvalidFormDataEntries = function(formData) {
+      return $.grep(formData, function(entry) {
+        return entry[config.amountType] && entry[config.scheduleType];
+      });
+    };
 
     return {
-      init: init
+      init: init,
     };
   })();
 

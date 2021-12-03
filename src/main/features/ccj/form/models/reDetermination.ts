@@ -1,30 +1,30 @@
-import { IsDefined } from '@hmcts/class-validator'
+import { IsDefined } from '@hmcts/class-validator';
 
 export class ValidationErrors {
-  static readonly REASON_REQUIRED: string = 'Enter a valid reason'
+  static readonly REASON_REQUIRED: string = 'Enter a valid reason';
 }
 
 export class ReDetermination {
   @IsDefined({ message: ValidationErrors.REASON_REQUIRED })
-  text?: string
+  text?: string;
 
-  constructor (text?: string) {
-    this.text = text
+  constructor(text?: string) {
+    this.text = text;
   }
 
-  static fromObject (value?: any): ReDetermination {
+  static fromObject(value?: any): ReDetermination {
     if (value == null) {
-      return value
+      return value;
     }
 
-    return new ReDetermination(value.text)
+    return new ReDetermination(value.text);
   }
 
-  deserialize (input?: any): ReDetermination {
+  deserialize(input?: any): ReDetermination {
     if (input) {
-      this.text = input.text
+      this.text = input.text;
     }
 
-    return this
+    return this;
   }
 }

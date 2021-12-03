@@ -1,30 +1,30 @@
-import { Paths } from 'eligibility/paths'
-import { RoutablePath } from 'shared/router/routablePath'
+import { Paths } from 'eligibility/paths';
+import { RoutablePath } from 'shared/router/routablePath';
 
 export interface EligibilityCheck {
-  eligible: boolean
-  notEligibleReason?: string
-  notEligiblePage?: RoutablePath
+  eligible: boolean;
+  notEligibleReason?: string;
+  notEligiblePage?: RoutablePath;
 }
 
-export function eligible (): EligibilityCheck {
+export function eligible(): EligibilityCheck {
   return {
-    eligible: true
-  }
+    eligible: true,
+  };
 }
 
-export function notEligible (reason: string, notEligiblePage: RoutablePath = Paths.notEligiblePage): EligibilityCheck {
-  return {
-    eligible: false,
-    notEligibleReason: reason,
-    notEligiblePage: notEligiblePage
-  }
-}
-
-export function hwfEligible (reason: string, notEligiblePage: RoutablePath = Paths.hwfEligiblePage): EligibilityCheck {
+export function notEligible(reason: string, notEligiblePage: RoutablePath = Paths.notEligiblePage): EligibilityCheck {
   return {
     eligible: false,
     notEligibleReason: reason,
-    notEligiblePage: notEligiblePage
-  }
+    notEligiblePage: notEligiblePage,
+  };
+}
+
+export function hwfEligible(reason: string, notEligiblePage: RoutablePath = Paths.hwfEligiblePage): EligibilityCheck {
+  return {
+    eligible: false,
+    notEligibleReason: reason,
+    notEligiblePage: notEligiblePage,
+  };
 }

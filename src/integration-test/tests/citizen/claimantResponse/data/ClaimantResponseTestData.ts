@@ -1,4 +1,4 @@
-import moment = require('moment')
+import moment = require('moment');
 
 interface PageSpecificValues {
   paymentDatePageEnterDate: string
@@ -24,64 +24,64 @@ interface PageSpecificValues {
 
 export class ClaimantResponseTestData {
 
-  isExpectingToSeeHowTheyWantToPayPage: boolean = false
-  isExpectingToSeeCourtOfferedInstalmentsPage: boolean = false
+  isExpectingToSeeHowTheyWantToPayPage: boolean = false;
+  isExpectingToSeeCourtOfferedInstalmentsPage: boolean = false;
   pageSpecificValues: PageSpecificValues = {
     paymentDatePageEnterDate: '2025-01-01',
     paymentPlanPageEnterRepaymentPlan: {
       equalInstalment: 5.00,
       firstPaymentDate: '2025-01-01',
-      frequency: 'everyMonth'
+      frequency: 'everyMonth',
     },
     howMuchHaveYouPaidPageEnterAmountPaidWithDateAndExplanation: {
       paidAmount: 0,
       date: '',
-      explanation: ''
+      explanation: '',
     },
     whyYouDisagreePageEnterReason: 'Defendant rejects all the claim because...',
     timelineEventsPageEnterTimelineEvent: {
       eventNum: 0,
       date: '1/1/2000',
-      description: 'something'
+      description: 'something',
     },
     evidencePageEnterEvidenceRow: {
       type: 'CONTRACTS_AND_AGREEMENTS',
       description: 'correspondence',
-      comment:  'have this evidence'
+      comment: 'have this evidence',
     },
-    settleClaimEnterDate: '2018-01-01'
-  }
+    settleClaimEnterDate: '2018-01-01',
+  };
 
 }
 
 export class UnreasonableClaimantResponseTestData {
 
-  isExpectingToSeeHowTheyWantToPayPage: boolean = false
-  isExpectingToSeeCourtOfferedInstalmentsPage: boolean = false
+  isExpectingToSeeHowTheyWantToPayPage: boolean = false;
+  isExpectingToSeeCourtOfferedInstalmentsPage: boolean = false;
   pageSpecificValues: PageSpecificValues = {
     paymentDatePageEnterDate: '2025-01-01',
     paymentPlanPageEnterRepaymentPlan: {
       equalInstalment: 50.00,
       firstPaymentDate: moment().add(50, 'days').toISOString(),
-      frequency: 'everyWeek'
+      frequency: 'everyWeek',
     },
     howMuchHaveYouPaidPageEnterAmountPaidWithDateAndExplanation: {
       paidAmount: 0,
       date: '',
-      explanation: ''
+      explanation: '',
     },
     whyYouDisagreePageEnterReason: 'Defendant rejects all the claim because...',
     timelineEventsPageEnterTimelineEvent: {
       eventNum: 0,
       date: '1/1/2000',
-      description: 'something'
+      description: 'something',
     },
     evidencePageEnterEvidenceRow: {
       type: 'CONTRACTS_AND_AGREEMENTS',
       description: 'correspondence',
-      comment:  'have this evidence'
+      comment: 'have this evidence',
     },
-    settleClaimEnterDate: undefined
-  }
+    settleClaimEnterDate: undefined,
+  };
 
 }

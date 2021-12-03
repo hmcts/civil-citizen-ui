@@ -1,5 +1,5 @@
 export interface Debt {
-  description: string
-  totalOwed: number
-  monthlyPayments: number
+  description: string;
+  totalOwed: number;
+  monthlyPayments: number;
 }

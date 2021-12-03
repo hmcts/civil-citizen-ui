@@ -1,14 +1,14 @@
-import I = CodeceptJS.I
+import I = CodeceptJS.I;
 
-const I: I = actor()
+const I: I = actor();
 
 const buttons = {
-  submit: { css: 'input[type=submit]' }
-}
+  submit: { css: 'input[type=submit]' },
+};
 
 export class DefendantMoreTimeConfirmationPage {
 
-  confirm (): void {
-    I.click(buttons.submit)
+  confirm(): void {
+    I.click(buttons.submit);
   }
 }

@@ -1,16 +1,16 @@
-import { TaskListItem } from 'drafts/tasks/taskListItem'
+import { TaskListItem } from 'drafts/tasks/taskListItem';
 
 export class TaskList {
-  constructor (public name: string, public tasks: TaskListItem[]) {
-    this.name = name
-    this.tasks = tasks
+  constructor(public name: string, public tasks: TaskListItem[]) {
+    this.name = name;
+    this.tasks = tasks;
   }
 
-  isCompleted (): boolean {
+  isCompleted(): boolean {
     return this.tasks
       .map((item: TaskListItem) => {
-        return item.completed
+        return item.completed;
       })
-      .every((completedState: boolean) => completedState === true)
+      .every((completedState: boolean) => completedState === true);
   }
 }

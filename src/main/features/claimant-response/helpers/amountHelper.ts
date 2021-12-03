@@ -1,36 +1,36 @@
-import { DraftClaimantResponse } from 'claimant-response/draft/draftClaimantResponse'
-import { YesNoOption } from 'models/yesNoOption'
-import { Claim } from 'claims/models/claim'
-import { PartialAdmissionResponse } from 'claims/models/response/partialAdmissionResponse'
-import { ResponseType } from 'claims/models/response/responseType'
-import { FormaliseRepaymentPlanOption } from 'claimant-response/form/models/formaliseRepaymentPlanOption'
+import { DraftClaimantResponse } from 'claimant-response/draft/draftClaimantResponse';
+import { YesNoOption } from 'models/yesNoOption';
+import { Claim } from 'claims/models/claim';
+import { PartialAdmissionResponse } from 'claims/models/response/partialAdmissionResponse';
+import { ResponseType } from 'claims/models/response/responseType';
+import { FormaliseRepaymentPlanOption } from 'claimant-response/form/models/formaliseRepaymentPlanOption';
 
 export class AmountHelper {
-  static calculateTotalAmount (claim: Claim, draft: DraftClaimantResponse): number {
-    const settledAmount = AmountHelper.calculateAmountSettledFor(claim, draft)
+  static calculateTotalAmount(claim: Claim, draft: DraftClaimantResponse): number {
+    const settledAmount = AmountHelper.calculateAmountSettledFor(claim, draft);
 
     if (settledAmount && draft.formaliseRepaymentPlan && draft.formaliseRepaymentPlan.option === FormaliseRepaymentPlanOption.SIGN_SETTLEMENT_AGREEMENT) {
-      return settledAmount
+      return settledAmount;
     } else if (settledAmount) {
-      return settledAmount + claim.claimData.feeAmountInPennies / 100
+      return settledAmount + claim.claimData.feeAmountInPennies / 100;
     } else if (claim.response.responseType === ResponseType.PART_ADMISSION) {
-      return Math.max(claim.response.amount , 0)
+      return Math.max(claim.response.amount, 0);
     }
-    return claim.totalAmountTillToday
+    return claim.totalAmountTillToday;
   }
 
-  static calculateAmountSettledFor (claim: Claim, draft: DraftClaimantResponse): number | undefined {
-    const settledForLessThanClaimAmount = AmountHelper.isSettledForLessThanClaim(claim, draft)
+  static calculateAmountSettledFor(claim: Claim, draft: DraftClaimantResponse): number | undefined {
+    const settledForLessThanClaimAmount = AmountHelper.isSettledForLessThanClaim(claim, draft);
 
     if (settledForLessThanClaimAmount) {
-      return Math.max((claim.response as PartialAdmissionResponse).amount - claim.claimData.feeAmountInPennies / 100, 0)
+      return Math.max((claim.response as PartialAdmissionResponse).amount - claim.claimData.feeAmountInPennies / 100, 0);
     }
-    return undefined
+    return undefined;
   }
 
-  static isSettledForLessThanClaim (claim: Claim, draft: DraftClaimantResponse): boolean {
+  static isSettledForLessThanClaim(claim: Claim, draft: DraftClaimantResponse): boolean {
     return claim.response && claim.response.responseType === ResponseType.PART_ADMISSION
-      && draft.settleAdmitted && draft.settleAdmitted.admitted === YesNoOption.YES
+      && draft.settleAdmitted && draft.settleAdmitted.admitted === YesNoOption.YES;
   }
 
 }

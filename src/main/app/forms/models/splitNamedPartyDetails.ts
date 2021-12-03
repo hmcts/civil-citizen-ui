@@ -1,13 +1,14 @@
-import { IsDefined, MaxLength, ValidateIf } from '@hmcts/class-validator'
-import { IsNotBlank } from '@hmcts/cmc-validators'
-import { PartyDetails } from 'forms/models/partyDetails'
-import { NameFormatter } from 'utils/nameFormatter'
+import { IsDefined, MaxLength, ValidateIf } from '@hmcts/class-validator';
+import { IsNotBlank } from '@hmcts/cmc-validators';
+import { PartyDetails } from 'forms/models/partyDetails';
+import { NameFormatter } from 'utils/nameFormatter';
 
 export class ValidationErrors {
-  static readonly FIRSTNAME_REQUIRED: string = 'Enter first name'
-  static readonly LASTNAME_REQUIRED: string = 'Enter last name'
-  static errorTooLong (input: string): string {
-    return `${input} must be no longer than $constraint1 characters`
+  static readonly FIRSTNAME_REQUIRED: string = 'Enter first name';
+  static readonly LASTNAME_REQUIRED: string = 'Enter last name';
+
+  static errorTooLong(input: string): string {
+    return `${input} must be no longer than $constraint1 characters`;
   }
 }
 
@@ -15,53 +16,59 @@ export class SplitNamedPartyDetails extends PartyDetails {
 
   @ValidateIf(o => o.title !== undefined, { groups: ['defendant', 'response', 'claimant'] })
   @MaxLength(35, { message: ValidationErrors.errorTooLong('Title'), groups: ['defendant', 'response', 'claimant'] })
-  title?: string
+  title?: string;
 
   @ValidateIf(o => o.firstName !== undefined, { groups: ['response'] })
   @IsDefined({ message: ValidationErrors.FIRSTNAME_REQUIRED, groups: ['defendant', 'response', 'claimant'] })
   @IsNotBlank({ message: ValidationErrors.FIRSTNAME_REQUIRED, groups: ['defendant', 'response', 'claimant'] })
-  @MaxLength(255, { message: ValidationErrors.errorTooLong('First name'), groups: ['defendant', 'response', 'claimant'] })
-  firstName?: string
+  @MaxLength(255, {
+    message: ValidationErrors.errorTooLong('First name'),
+    groups: ['defendant', 'response', 'claimant'],
+  })
+  firstName?: string;
 
   @ValidateIf(o => o.lastName !== undefined, { groups: ['response'] })
   @IsDefined({ message: ValidationErrors.LASTNAME_REQUIRED, groups: ['defendant', 'response', 'claimant'] })
   @IsNotBlank({ message: ValidationErrors.LASTNAME_REQUIRED, groups: ['defendant', 'response', 'claimant'] })
-  @MaxLength(255, { message: ValidationErrors.errorTooLong('Last name'), groups: ['defendant', 'response', 'claimant'] })
-  lastName?: string
+  @MaxLength(255, {
+    message: ValidationErrors.errorTooLong('Last name'),
+    groups: ['defendant', 'response', 'claimant'],
+  })
+  lastName?: string;
 
-  constructor () {
-    super()
+  constructor() {
+    super();
   }
 
-  static fromObject (input?: any): SplitNamedPartyDetails {
+  static fromObject(input?: any): SplitNamedPartyDetails {
     if (input == null) {
-      return input
+      return input;
     }
-    let deserialized = new SplitNamedPartyDetails()
-    Object.assign(deserialized, PartyDetails.fromObject(input))
+    let deserialized = new SplitNamedPartyDetails();
+    Object.assign(deserialized, PartyDetails.fromObject(input));
     if (input.title) {
-      deserialized.title = input.title
+      deserialized.title = input.title;
     }
-    deserialized.firstName = input.firstName
-    deserialized.lastName = input.lastName
+    deserialized.firstName = input.firstName;
+    deserialized.lastName = input.lastName;
     if (deserialized.firstName && deserialized.lastName) {
-      deserialized.name = NameFormatter.fullName(input.firstName, input.lastName, input.title)
+      deserialized.name = NameFormatter.fullName(input.firstName, input.lastName, input.title);
     } else {
-      deserialized.name = input.name
+      deserialized.name = input.name;
     }
-    return deserialized
+    return deserialized;
   }
 
-  deserialize (input?: any): SplitNamedPartyDetails {
+  deserialize(input?: any): SplitNamedPartyDetails {
     if (input) {
-      Object.assign(this, new PartyDetails().deserialize(input))
-      this.title = input.title
+      Object.assign(this, new PartyDetails().deserialize(input));
+      this.title = input.title;
       if (input.firstName && input.lastName) {
-        this.firstName = input.firstName
-        this.lastName = input.lastName
-        this.name = NameFormatter.fullName(input.firstName, input.lastName, input.title)
+        this.firstName = input.firstName;
+        this.lastName = input.lastName;
+        this.name = NameFormatter.fullName(input.firstName, input.lastName, input.title);
       }
     }
-    return this
+    return this;
   }
 }

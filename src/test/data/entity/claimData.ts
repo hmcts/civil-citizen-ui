@@ -1,24 +1,24 @@
-import { individual } from 'test/data/entity/party'
-import { InterestRateOption } from 'claim/form/models/interestRateOption'
-import { InterestEndDateOption } from 'claim/form/models/interestEndDate'
-import { InterestDateType } from 'common/interestDateType'
-import { Interest } from 'claims/models/interest'
-import * as moment from 'moment'
+import { individual } from 'test/data/entity/party';
+import { InterestRateOption } from 'claim/form/models/interestRateOption';
+import { InterestEndDateOption } from 'claim/form/models/interestEndDate';
+import { InterestDateType } from 'common/interestDateType';
+import { Interest } from 'claims/models/interest';
+import * as moment from 'moment';
 
 export const interestDateData = {
   type: InterestDateType.CUSTOM,
   date: moment({ year: 2018, month: 0, day: 1 }),
   reason: 'reason',
-  endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT
-}
+  endDateType: InterestEndDateOption.SETTLED_OR_JUDGMENT,
+};
 
 export const interestData = {
   interestBreakdown: undefined,
   type: InterestRateOption.DIFFERENT,
   rate: 10,
   reason: 'Special case',
-  interestDate: interestDateData
-}
+  interestDate: interestDateData,
+};
 
 export const breatingSpaceData = {
   breathingSpaceEnteredDate: moment({ year: 2021, month: 3, day: 1 }),
@@ -29,8 +29,8 @@ export const breatingSpaceData = {
   breathingSpaceReferenceNumber: 'BS-1234567890',
   breathingSpaceLiftedFlag: 'NO',
   breathingSpaceType: 'STANDARD_BS_ENTERED',
-  breathingSpaceExternalId: ''
-}
+  breathingSpaceExternalId: '',
+};
 
 export const claimData = {
   externalId: 'fe6e9413-e804-48d5-bbfd-645917fc46e5',
@@ -40,22 +40,22 @@ export const claimData = {
     rows: [
       {
         amount: 1,
-        reason: 'Valid reason'
+        reason: 'Valid reason',
       },
       {
         amount: undefined,
-        reason: undefined
+        reason: undefined,
       },
       {
         amount: undefined,
-        reason: undefined
+        reason: undefined,
       },
       {
         amount: undefined,
-        reason: undefined
-      }
+        reason: undefined,
+      },
     ],
-    type: 'breakdown'
+    type: 'breakdown',
   },
   breathingSpace: {
     breathingSpaceExternalId: 'fe6e9413-e804-48d5-bbfd-645917fc46e5',
@@ -66,7 +66,7 @@ export const claimData = {
     breathingSpaceLiftedbyInsolvencyTeamDate: { day: '31', month: '12', year: 2021 },
     breathingSpaceReferenceNumber: 'BS123456789',
     breathingSpaceLiftedFlag: 'No',
-    breathingSpaceType: 'STANDARD_BS_ENTERED'
+    breathingSpaceType: 'STANDARD_BS_ENTERED',
   },
   interest: interestData as Interest,
   reason: 'Because he did...',
@@ -75,17 +75,17 @@ export const claimData = {
     reference: '123',
     date_created: 12345,
     amount: 10000,
-    status: 'Success'
+    status: 'Success',
   },
   timeline: {
-    rows: []
+    rows: [],
   },
   evidence: {
-    rows: []
-  }
-}
+    rows: [],
+  },
+};
 
-export function defenceClaimData () {
+export function defenceClaimData() {
   return {
     id: 1571828179733564,
     submitterId: '1f9d9e49-c52c-4ae2-8999-0012efb2ef88',
@@ -114,10 +114,10 @@ export function defenceClaimData () {
           line2: 'Street 1',
           line3: 'Middle Road',
           city: 'London',
-          postcode: 'SW1H 9AJ'
+          postcode: 'SW1H 9AJ',
         },
         mobilePhone: '0876564678',
-        dateOfBirth: '2000-01-01'
+        dateOfBirth: '2000-01-01',
       },
       defenceType: 'DISPUTE',
       defence: 'sdfsdfds',
@@ -126,20 +126,20 @@ export function defenceClaimData () {
       directionsQuestionnaire: {
         requireSupport: {
           hearingLoop: 'no',
-          disabledAccess: 'no'
+          disabledAccess: 'no',
         },
         hearingLocation: {
           courtName: 'Central London County Court',
-          locationOption: 'SUGGESTED_COURT'
+          locationOption: 'SUGGESTED_COURT',
         },
         witness: {
-          selfWitness: 'no'
-        }
-      }
+          selfWitness: 'no',
+        },
+      },
     },
     defendantEmail: 'sudheer.chakka@hmcts.net',
     features: [
-      'directionsQuestionnaire'
+      'directionsQuestionnaire',
     ],
     claimantRespondedAt: moment(),
     claimantResponse: {
@@ -149,16 +149,16 @@ export function defenceClaimData () {
       directionsQuestionnaire: {
         requireSupport: {
           hearingLoop: 'no',
-          disabledAccess: 'no'
+          disabledAccess: 'no',
         },
         hearingLocation: {
           courtName: 'Central London County Court',
-          locationOption: 'SUGGESTED_COURT'
+          locationOption: 'SUGGESTED_COURT',
         },
         witness: {
-          selfWitness: 'no'
-        }
-      }
+          selfWitness: 'no',
+        },
+      },
     },
     claimDocumentCollection: {
       claimDocuments: [
@@ -170,7 +170,7 @@ export function defenceClaimData () {
           documentType: 'SEALED_CLAIM',
           createdDatetime: '2019-10-23T10:56:39.725',
           createdBy: 'OCMC',
-          size: 79676
+          size: 79676,
         },
         {
           id: '1d6d996c-f8bd-4609-809e-1474f9540ae4',
@@ -180,7 +180,7 @@ export function defenceClaimData () {
           documentType: 'CLAIM_ISSUE_RECEIPT',
           createdDatetime: '2019-10-23T10:56:41.942',
           createdBy: 'OCMC',
-          size: 72373
+          size: 72373,
         },
         {
           id: '3d1e173b-97bd-48e9-8ddd-77b7a24360b7',
@@ -190,7 +190,7 @@ export function defenceClaimData () {
           documentType: 'DEFENDANT_RESPONSE_RECEIPT',
           createdDatetime: '2019-10-23T10:59:41.157',
           createdBy: 'OCMC',
-          size: 18845
+          size: 18845,
         },
         {
           id: '289ce11b-fa36-427a-9061-2020a9fd46b5',
@@ -200,9 +200,9 @@ export function defenceClaimData () {
           documentType: 'CLAIMANT_DIRECTIONS_QUESTIONNAIRE',
           createdDatetime: '2019-10-23T11:00:47.352',
           createdBy: 'OCMC',
-          size: 10955
-        }
-      ]
+          size: 10955,
+        },
+      ],
     },
     claimSubmissionOperationIndicators: {
       claimantNotification: 'yes',
@@ -211,7 +211,7 @@ export function defenceClaimData () {
       rpa: 'yes',
       staffNotification: 'yes',
       sealedClaimUpload: 'yes',
-      claimIssueReceiptUpload: 'yes'
+      claimIssueReceiptUpload: 'yes',
     },
     ccdCaseId: 1571828179733564,
     intentionToProceedDeadline: moment().add(15, 'days'),
@@ -234,11 +234,11 @@ export function defenceClaimData () {
             line2: 'Street 2',
             line3: 'Street 3',
             city: 'London',
-            postcode: 'SW1H 9AJ'
+            postcode: 'SW1H 9AJ',
           },
           mobilePhone: '(0)207 127 0000',
-          dateOfBirth: '2000-01-01'
-        }
+          dateOfBirth: '2000-01-01',
+        },
       ],
       defendants: [
         {
@@ -250,18 +250,18 @@ export function defenceClaimData () {
             line2: 'Street 1',
             line3: 'Middle Road',
             city: 'London',
-            postcode: 'SW1H 9AJ'
+            postcode: 'SW1H 9AJ',
           },
           email: 'sudheer.chakka@hmcts.net',
           title: 'Mrs.',
           firstName: 'Mary',
-          lastName: 'Richards'
-        }
+          lastName: 'Richards',
+        },
       ],
       payment: {
         amount: 25,
         reference: 'RC-1571-8281-6216-4827',
-        status: 'SUCCESS'
+        status: 'SUCCESS',
       },
       amount: {
         type: 'breakdown',
@@ -269,34 +269,34 @@ export function defenceClaimData () {
           {
             id: 'a0172e82-0b46-46dc-bce2-8b365354fd0b',
             reason: 'Roof Fix & repairs to leak',
-            amount: 75
-          }
-        ]
+            amount: 75,
+          },
+        ],
       },
       feeAmountInPennies: 2500,
       interest: {
-        type: 'no interest'
+        type: 'no interest',
       },
       timeline: {
         rows: [
           {
             id: '1790beae-9f79-4177-9c06-ce155ed668fe',
             date: '01 October 2017',
-            description: 'The day the first bill was issued'
+            description: 'The day the first bill was issued',
           },
           {
             id: '49791276-2a16-4cdb-b930-9eb643685edc',
             date: '26 March 2018',
-            description: 'A historic day with enormous importance'
+            description: 'A historic day with enormous importance',
           },
           {
             id: 'b7712f6a-e587-464e-814b-29b0b77be9c6',
             date: '14 June 2018',
-            description: 'line to explain what happened and when'
-          }
-        ]
+            description: 'line to explain what happened and when',
+          },
+        ],
       },
-      reason: 'A strong sense of entitlement that would explain my reasons of the claim, that the Roof work and leaks that followed were done below standards set by the council inspector'
-    }
-  }
+      reason: 'A strong sense of entitlement that would explain my reasons of the claim, that the Roof work and leaks that followed were done below standards set by the council inspector',
+    },
+  };
 }
