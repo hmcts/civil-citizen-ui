@@ -4,6 +4,7 @@
     "noUnusedLocals": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
     "lib": [
       "es6",
       "es2016.array.include",

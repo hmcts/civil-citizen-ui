@@ -29,7 +29,9 @@ module.exports = {
     'mocha/no-hooks-for-single-case': 'off',
     'mocha/max-top-level-suites': 'off',
     'mocha/no-exports': 'off',
-    'mocha/no-exclusive-tests': 'error',
+    'mocha/no-exclusive-tests': 'off',
+    'mocha/no-top-level-hooks': 'off',
+    'mocha/no-identical-title': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
@@ -37,20 +39,13 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-inferrable-types': 'off',
     curly: 'error',
     eqeqeq: 'error',
     'import/no-duplicates': 'error',
     'import/no-named-as-default': 'error',
-    'import/order': [
-      'error',
-      {
-        alphabetize: {
-          caseInsensitive: false,
-          order: 'asc',
-        },
-        'newlines-between': 'always',
-      },
-    ],
     'linebreak-style': ['error', 'unix'],
     'no-console': 'warn',
     'no-prototype-builtins': 'off',
@@ -81,10 +76,16 @@ module.exports = {
         ignoreMemberSort: false,
       },
     ],
+    'import/no-unresolved': 'off',
+    'import/namespace': 'off',
+    'no-shadow': 'off',
+    "@typescript-eslint/no-shadow": 'off'
   },
   settings: {
     'import/resolver': {
-      typescript: {}
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
     }
   },
 };
