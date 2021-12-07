@@ -1,9 +1,9 @@
 import {
-  registerDecorator,
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
+  registerDecorator,
 } from '@hmcts/class-validator';
 
 import { MomentFactory } from 'shared/momentFactory';
@@ -31,7 +31,7 @@ export function IsNotInFuture(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options: validationOptions,
       constraints: [],
       validator: DateNotInFutureConstraint,

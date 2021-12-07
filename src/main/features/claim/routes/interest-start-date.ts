@@ -15,8 +15,8 @@ function renderView(form: Form<InterestStartDate>, res: express.Response): void 
   const pastDate: Moment = MomentFactory.currentDate().subtract(1, 'year');
 
   res.render(Paths.interestStartDatePage.associatedView, {
-    form: form,
-    pastDate: pastDate,
+    form,
+    pastDate,
   });
 }
 

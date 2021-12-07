@@ -44,11 +44,11 @@ export default express.Router()
 
       res.render(Paths.taskListPage.associatedView,
         {
-          beforeYouStartSection: beforeYouStartSection,
-          submitSection: submitSection,
-          respondToClaimSection: respondToClaimSection,
-          resolvingClaimSection: resolvingClaimSection,
-          directionsQuestionnaireSection: directionsQuestionnaireSection,
+          beforeYouStartSection,
+          submitSection,
+          respondToClaimSection,
+          resolvingClaimSection,
+          directionsQuestionnaireSection,
           claim,
           status,
         });

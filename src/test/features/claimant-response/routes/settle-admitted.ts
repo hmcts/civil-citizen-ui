@@ -17,8 +17,8 @@ import { checkNotClaimantInCaseGuard } from 'test/features/claimant-response/rou
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = ClaimantResponsePaths.settleAdmittedPage.evaluateUri({ externalId: externalId });
-const taskListPagePath = ClaimantResponsePaths.taskListPage.evaluateUri({ externalId: externalId });
+const pagePath = ClaimantResponsePaths.settleAdmittedPage.evaluateUri({ externalId });
+const taskListPagePath = ClaimantResponsePaths.taskListPage.evaluateUri({ externalId });
 
 const validFormData = {
   admitted: 'yes',

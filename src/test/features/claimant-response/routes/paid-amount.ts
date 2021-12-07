@@ -19,8 +19,8 @@ import { sampleFullAdmissionWithPaymentBySetDateResponseObj } from '../../../htt
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = CCJPaths.paidAmountPage.evaluateUri({ externalId: externalId });
-const paidAmountSummaryPage = CCJPaths.paidAmountSummaryPage.evaluateUri({ externalId: externalId });
+const pagePath = CCJPaths.paidAmountPage.evaluateUri({ externalId });
+const paidAmountSummaryPage = CCJPaths.paidAmountSummaryPage.evaluateUri({ externalId });
 
 const validFormData = {
   option: PaidAmountOption.YES.value,

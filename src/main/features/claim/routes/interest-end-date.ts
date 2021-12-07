@@ -15,7 +15,7 @@ const featureToggles: FeatureToggles = new FeatureToggles(new LaunchDarklyClient
 
 function renderView(form: Form<InterestEndDate>, res: express.Response): void {
   res.render(Paths.interestEndDatePage.associatedView, {
-    form: form,
+    form,
   });
 }
 

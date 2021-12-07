@@ -45,7 +45,7 @@ describe('A gettext backend for i18next', () => {
     backend.init(null, {
       loadPath: path.join(__dirname, 'fixtures/invalid_translation.po'),
     });
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     backend.read('cy', 'translation', (error, translation) => {
       expect(error).not.to.be.null;
       done();

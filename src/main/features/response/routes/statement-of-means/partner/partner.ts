@@ -28,12 +28,13 @@ export default express.Router()
     page.uri,
     StatementOfMeansStateGuard.requestHandler(),
     FormValidator.requestHandler(Cohabiting),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<Cohabiting> = req.body;
       const { externalId } = req.params;
 
       if (form.hasErrors()) {
-        res.render(page.associatedView, { form: form });
+        res.render(page.associatedView, { form });
       } else {
         const draft: Draft<ResponseDraft> = res.locals.responseDraft;
         const user: User = res.locals.user;
@@ -47,9 +48,9 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         if (form.model.option === CohabitingOption.YES) {
-          res.redirect(StatementOfMeansPaths.partnerAgePage.evaluateUri({ externalId: externalId }));
+          res.redirect(StatementOfMeansPaths.partnerAgePage.evaluateUri({ externalId }));
         } else {
-          res.redirect(StatementOfMeansPaths.dependantsPage.evaluateUri({ externalId: externalId }));
+          res.redirect(StatementOfMeansPaths.dependantsPage.evaluateUri({ externalId }));
         }
       }
     }),

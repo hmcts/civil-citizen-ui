@@ -68,7 +68,7 @@ function testData() {
         'You need to tell us if you’ve settled the claim, for example because the defendant has paid you.',
         'You can settle for less than the full claim amount.',
         'If you haven’t been paid',
-        `If the defendant has not paid you`,
+        'If the defendant has not paid you',
         'request a County Court Judgment.',
       ],
       defendantAssertions: [
@@ -114,7 +114,7 @@ function testData() {
         ...settlementOfferBySetDate(),
       },
       claimantAssertions: [
-        `The defendant has offered to pay by`,
+        'The defendant has offered to pay by',
         'View and respond to the offer',
         'If you’ve been paid',
         'Tell us you’ve settled',
@@ -252,7 +252,7 @@ function testData() {
         ...defendantRejectedSettlementOfferAcceptBySetDate(),
       },
       claimantAssertions: [
-        `The defendant has rejected your settlement agreement`,
+        'The defendant has rejected your settlement agreement',
         'Request a County Court Judgment (CCJ)',
       ],
       defendantAssertions: [
@@ -361,7 +361,7 @@ function testData() {
         ...defendantRejectedSettlementOfferAcceptBySetDate(),
       },
       claimantAssertions: [
-        `The defendant has rejected your settlement agreement`,
+        'The defendant has rejected your settlement agreement',
         'Request a County Court Judgment (CCJ)',
       ],
       defendantAssertions: [
@@ -518,7 +518,7 @@ function testData() {
         ...defendantRejectedSettlementOfferAcceptInInstalments(),
       },
       claimantAssertions: [
-        `The defendant has rejected your settlement agreement`,
+        'The defendant has rejected your settlement agreement',
         'Request a County Court Judgment (CCJ)',
       ],
       defendantAssertions: [
@@ -628,7 +628,7 @@ function testData() {
         ...defendantRejectedSettlementOfferAcceptInInstalments(),
       },
       claimantAssertions: [
-        `The defendant has rejected your settlement agreement`,
+        'The defendant has rejected your settlement agreement',
         'Request a County Court Judgment (CCJ)',
       ],
       defendantAssertions: [

@@ -27,8 +27,8 @@ function renderView(form: Form<SettlementAgreement>, res: express.Response) {
   const draft: Draft<DraftClaimantResponse> = res.locals.draft;
   const response: FullAdmissionResponse | PartialAdmissionResponse = claim.response as (FullAdmissionResponse | PartialAdmissionResponse);
   res.render(Paths.signSettlementAgreementPage.associatedView, {
-    form: form,
-    claim: claim,
+    form,
+    claim,
     paymentIntention: getPaymentIntention(response, draft.document),
     totalAmount: claim.response.responseType === ResponseType.PART_ADMISSION ? claim.response.amount : claim.totalAmountTillToday,
   });
@@ -56,7 +56,7 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         const externalId: string = req.params.externalId;
-        res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+        res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
       }
     }),
   );

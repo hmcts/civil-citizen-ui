@@ -20,7 +20,7 @@ const page: RoutablePath = StatementOfMeansPaths.priorityDebtsPage;
 
 function renderView(form: Form<PriorityDebt>, res: express.Response): void {
   res.render(page.associatedView, {
-    form: form,
+    form,
     totalMonthlyIncomeExpense: calculateTotalMonthlyIncomeExpense(form.model),
   });
 }
@@ -92,7 +92,7 @@ export default express.Router()
         draft.document.statementOfMeans.priorityDebt = form.model;
         await new DraftService().save(draft, user.bearerToken);
 
-        res.redirect(StatementOfMeansPaths.debtsPage.evaluateUri({ externalId: externalId }));
+        res.redirect(StatementOfMeansPaths.debtsPage.evaluateUri({ externalId }));
       }
     }),
   );

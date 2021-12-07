@@ -70,6 +70,7 @@ describe('InterestStartDate', () => {
     const validator: Validator = new Validator();
 
     it('should accept interest date with recognised type', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       InterestDateType.all().forEach(type => {
         const errors = validator.validateSync(new InterestStartDate(new LocalDate(2016, 12, 24), 'Privileged'));
 

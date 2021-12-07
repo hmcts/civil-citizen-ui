@@ -32,10 +32,10 @@ export default express.Router()
       ]);
       res.render(Paths.taskListPage.associatedView,
         {
-          beforeYouStartSection: beforeYouStartSection,
-          howYouWantToRespondSection: howYouWantToRespondSection,
-          submitSection: submitSection,
-          directionsQuestionnaireSection: directionsQuestionnaireSection,
+          beforeYouStartSection,
+          howYouWantToRespondSection,
+          submitSection,
+          directionsQuestionnaireSection,
           claim,
           status,
         });

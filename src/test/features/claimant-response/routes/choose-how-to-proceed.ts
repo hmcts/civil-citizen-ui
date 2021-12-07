@@ -18,7 +18,7 @@ import { FormaliseRepaymentPlanOption } from 'features/claimant-response/form/mo
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath: string = Paths.chooseHowToProceedPage.evaluateUri({ externalId: externalId });
+const pagePath: string = Paths.chooseHowToProceedPage.evaluateUri({ externalId });
 const pageContent: string = 'Choose how to proceed';
 const defendantPartialAdmissionResponse = claimStoreServiceMock.samplePartialAdmissionWithPaymentBySetDateResponseObj;
 
@@ -131,7 +131,7 @@ describe('Claimant response: choose how to proceed page', () => {
           .post(pagePath)
           .set('Cookie', `${cookieName}=ABC`)
           .send({ option: FormaliseRepaymentPlanOption.SIGN_SETTLEMENT_AGREEMENT.value })
-          .expect(res => expect(res).to.be.redirect.toLocation(Paths.taskListPage.evaluateUri({ externalId: externalId })));
+          .expect(res => expect(res).to.be.redirect.toLocation(Paths.taskListPage.evaluateUri({ externalId })));
       });
 
       it('should redirect to task list page when `requestCCJ` is selected and everything is fine', async () => {
@@ -143,7 +143,7 @@ describe('Claimant response: choose how to proceed page', () => {
           .post(pagePath)
           .set('Cookie', `${cookieName}=ABC`)
           .send({ option: FormaliseRepaymentPlanOption.REQUEST_COUNTY_COURT_JUDGEMENT.value })
-          .expect(res => expect(res).to.be.redirect.toLocation(Paths.taskListPage.evaluateUri({ externalId: externalId })));
+          .expect(res => expect(res).to.be.redirect.toLocation(Paths.taskListPage.evaluateUri({ externalId })));
       });
     });
   });

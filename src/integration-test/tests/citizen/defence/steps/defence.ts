@@ -1,5 +1,5 @@
 import { PaymentOption } from 'integration-test/data/payment-option';
-import { claimAmount, DEFAULT_PASSWORD, defence } from 'integration-test/data/test-data';
+import { DEFAULT_PASSWORD, claimAmount, defence } from 'integration-test/data/test-data';
 import { DefendantCheckAndSendPage } from 'integration-test/tests/citizen/defence/pages/defendant-check-and-send';
 import { DefendantDefenceTypePage } from 'integration-test/tests/citizen/defence/pages/defendant-defence-type';
 import { DefendantDobPage } from 'integration-test/tests/citizen/defence/pages/defendant-dob';

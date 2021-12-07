@@ -29,7 +29,7 @@ const stateGuardRequestHandler: express.RequestHandler = GuardFactory.create((re
 
 function renderView(form: Form<Employers>, res: express.Response): void {
   res.render(page.associatedView, {
-    form: form,
+    form,
     canAddMoreJobs: form.model.canAddMoreRows(),
   });
 }
@@ -76,9 +76,9 @@ export default express.Router()
 
         const { externalId } = req.params;
         if (draft.document.statementOfMeans.employment.selfEmployed) {
-          res.redirect(StatementOfMeansPaths.selfEmploymentPage.evaluateUri({ externalId: externalId }));
+          res.redirect(StatementOfMeansPaths.selfEmploymentPage.evaluateUri({ externalId }));
         } else {
-          res.redirect(StatementOfMeansPaths.courtOrdersPage.evaluateUri({ externalId: externalId }));
+          res.redirect(StatementOfMeansPaths.courtOrdersPage.evaluateUri({ externalId }));
         }
       }
     }),

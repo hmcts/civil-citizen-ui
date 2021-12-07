@@ -21,13 +21,13 @@ export class RequestLoggingHandler {
 
   handleLogging(method, options) {
     this.apiLogger.logRequest({
-      method: method,
+      method,
       uri: options.uri,
       requestBody: options.body,
       query: options.qs,
       headers: options.headers,
     });
-    let originalCallback = intercept(options.callback);
+    const originalCallback = intercept(options.callback);
     options.callback = (err, response, body) => {
       originalCallback(err, response, body);
       this.apiLogger.logResponse({

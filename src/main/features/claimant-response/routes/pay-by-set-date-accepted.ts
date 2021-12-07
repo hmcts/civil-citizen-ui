@@ -26,5 +26,5 @@ export default express.Router()
 
       await new DraftService().save(draft, user.bearerToken);
 
-      res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+      res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
     });

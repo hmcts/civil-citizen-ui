@@ -1,7 +1,7 @@
 /* tslint:disable variable-name allow snake_case */
 
 import 'reflect-metadata';
-import { plainToClass, Type } from 'class-transformer';
+import { Type, plainToClass } from 'class-transformer';
 
 class Link {
   readonly href: string;

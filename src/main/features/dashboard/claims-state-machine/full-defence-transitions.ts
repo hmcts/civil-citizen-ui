@@ -96,7 +96,7 @@ export function fullDefenceTransitions(claim: Claim): StateMachine {
     },
     methods: {
       onInvalidTransition(transition: string, from: string, to: string): void {
-        this.log.invalidTransitions.push({ transition: transition, from: from, to: to });
+        this.log.invalidTransitions.push({ transition, from, to });
       },
 
       onBeforeCheckAlreadyPaid(): boolean {

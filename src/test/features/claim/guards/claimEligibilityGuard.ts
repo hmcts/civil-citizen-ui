@@ -27,7 +27,7 @@ describe('Claim eligibility guard', () => {
   attachDefaultHooks();
 
   let claimDraft: Draft<DraftClaim>;
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const next = (e?: any): void => {
     return void 0;
   };
@@ -36,9 +36,10 @@ describe('Claim eligibility guard', () => {
     claimDraft = new Draft(100, 'claim', new DraftClaim(), moment(), moment());
 
     res.locals = {
-      claimDraft: claimDraft,
+      claimDraft,
       user: new User('1', 'user@example.com', 'John', 'Smith', [], 'citizen', ''),
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     res.redirect = sinon.spy((location: string): void => {
       return void 0;
     });

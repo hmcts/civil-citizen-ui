@@ -5,9 +5,9 @@ import { Unemployment } from 'response/form/models/statement-of-means/unemployme
 import { ValidationErrors as GlobalValidationErrors } from 'forms/validation/validationErrors';
 import { UnemploymentType } from 'response/form/models/statement-of-means/unemploymentType';
 import {
-  UnemploymentDetails,
   ValidationConstraints as UDValidationConstraints,
   ValidationErrors as UDValidationErrors,
+  UnemploymentDetails,
 } from 'response/form/models/statement-of-means/unemploymentDetails';
 import { OtherDetails, ValidationErrors } from 'response/form/models/statement-of-means/otherDetails';
 import { ValidationConstraints } from 'forms/validation/validationConstraints';

@@ -12,7 +12,7 @@ import { YesNoOption } from 'claims/models/response/core/yesNoOption';
 
 function renderView(form: Form<IntentionToProceed>, res: express.Response): void {
   res.render(Paths.intentionToProceedPage.associatedView, {
-    form: form,
+    form,
   });
 }
 

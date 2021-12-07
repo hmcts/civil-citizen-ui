@@ -10,6 +10,7 @@ function stringifyWithoutPropertyQuotes(value: object, pretty: boolean = false):
   if (!pretty) {
     result = result.replace(/\n\s*/g, ' '); // remove new line characters and normalize spaces
   }
+  // eslint-disable-next-line no-useless-escape
   return result.replace(/\"([^(\")"]+)\":/g, '$1:');
 }
 

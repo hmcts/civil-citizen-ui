@@ -17,10 +17,10 @@ function renderView(form: Form<PaidAmount>, req: express.Request, res: express.R
   const amountPaid = claim.claimantResponse && claim.claimantResponse.amountPaid ? claim.claimantResponse.amountPaid : 0;
 
   res.render(Paths.repaymentPlanSummary.associatedView, {
-    form: form,
-    claim: claim,
-    paymentIntention: paymentIntention,
-    isPaymentIntentionMadeByCourt: isPaymentIntentionMadeByCourt,
+    form,
+    claim,
+    paymentIntention,
+    isPaymentIntentionMadeByCourt,
     remainingAmountToPay: claim.totalAmountTillDateOfIssue - amountPaid,
     requestedBy: req.params.madeBy,
   });

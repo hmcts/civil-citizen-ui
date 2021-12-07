@@ -22,7 +22,7 @@ import {
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = PartAdmissionPaths.whyDoYouDisagreePage.evaluateUri({ externalId: externalId });
+const pagePath = PartAdmissionPaths.whyDoYouDisagreePage.evaluateUri({ externalId });
 
 const validFormData = { text: 'I will not pay!' };
 const header: string = 'Why do you disagree with the claim amount?';
@@ -147,7 +147,7 @@ describe('Defendant: partial admission - why do you disagree?', () => {
               .set('Cookie', `${cookieName}=ABC`)
               .send(validFormData)
               .expect(res => expect(res).to.be.redirect
-                .toLocation(Paths.timelinePage.evaluateUri({ externalId: externalId })));
+                .toLocation(Paths.timelinePage.evaluateUri({ externalId })));
           });
 
           it('when form is invalid should render page', async () => {

@@ -17,8 +17,8 @@ import { checkNotDefendantInCaseGuard } from 'test/common/checks/not-defendant-i
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = ClaimantResponsePaths.rejectionReasonPage.evaluateUri({ externalId: externalId });
-const taskListPagePath = ClaimantResponsePaths.taskListPage.evaluateUri({ externalId: externalId });
+const pagePath = ClaimantResponsePaths.rejectionReasonPage.evaluateUri({ externalId });
+const taskListPagePath = ClaimantResponsePaths.taskListPage.evaluateUri({ externalId });
 const defendantPartialAdmissionResponse = claimStoreServiceMock.samplePartialAdmissionWithPaymentBySetDateResponseObj;
 
 const rejectionReason = {

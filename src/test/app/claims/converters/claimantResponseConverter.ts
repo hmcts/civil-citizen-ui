@@ -50,7 +50,7 @@ function createDraftClaimantResponseBaseForAcceptance(accept: YesNoOption, settl
   const draftResponse: DraftClaimantResponse = new DraftClaimantResponse();
   draftResponse.settleAdmitted = new SettleAdmitted(settle);
   draftResponse.paidAmount = new PaidAmount(PaidAmountOption.YES, 10, 100);
-  if (accept) draftResponse.acceptPaymentMethod = new AcceptPaymentMethod(accept);
+  if (accept) {draftResponse.acceptPaymentMethod = new AcceptPaymentMethod(accept);}
   return draftResponse;
 }
 
@@ -65,7 +65,7 @@ function createDraftClaimantResponseWithCourtDecisionType(
   draftClaimantResponse.paidAmount = new PaidAmount(PaidAmountOption.YES, 10, 100);
   draftClaimantResponse.formaliseRepaymentPlan = new FormaliseRepaymentPlan(formaliseOption);
   draftClaimantResponse.acceptPaymentMethod = new AcceptPaymentMethod(YesNoOption.NO);
-  if (claimantPI) draftClaimantResponse.alternatePaymentMethod = claimantPI;
+  if (claimantPI) {draftClaimantResponse.alternatePaymentMethod = claimantPI;}
   draftClaimantResponse.courtDetermination = new CourtDetermination(
     courtDecision,
     courtPaymentIntention,

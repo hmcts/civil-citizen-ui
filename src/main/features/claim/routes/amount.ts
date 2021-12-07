@@ -15,7 +15,7 @@ import { Draft } from '@hmcts/draft-store-client';
 
 function renderView(form: Form<ClaimAmountBreakdown>, res: express.Response): void {
   res.render(Paths.amountPage.associatedView, {
-    form: form,
+    form,
     totalAmount: form.model.totalAmount(),
     canAddMoreRows: form.model.canAddMoreRows(),
   });

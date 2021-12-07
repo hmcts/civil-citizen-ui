@@ -27,7 +27,7 @@ function requestHandler(): express.RequestHandler {
 function render(claim: Claim, type: string): string {
   const dashboardName = ClaimStatusFlow.dashboardFor(claim);
   try {
-    const template = nunjucks.render(path.join(__dirname, './views', 'status', type, dashboardName + '.njk').toString(), { claim: claim });
+    const template = nunjucks.render(path.join(__dirname, './views', 'status', type, dashboardName + '.njk').toString(), { claim });
     return app.settings.nunjucksEnv.filters['safe'](template);
   } catch (err) {
     return '';

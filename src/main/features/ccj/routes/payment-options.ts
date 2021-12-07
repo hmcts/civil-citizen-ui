@@ -26,7 +26,7 @@ export default express.Router()
         const form: Form<CCJPaymentOption> = req.body;
 
         if (form.hasErrors()) {
-          res.render(Paths.paymentOptionsPage.associatedView, { form: form });
+          res.render(Paths.paymentOptionsPage.associatedView, { form });
         } else {
           const draft: Draft<DraftCCJ> = res.locals.ccjDraft;
           const user: User = res.locals.user;
@@ -42,13 +42,13 @@ export default express.Router()
 
           switch (form.model.option) {
             case PaymentType.IMMEDIATELY:
-              res.redirect(Paths.checkAndSendPage.evaluateUri({ externalId: externalId }));
+              res.redirect(Paths.checkAndSendPage.evaluateUri({ externalId }));
               break;
             case PaymentType.BY_SPECIFIED_DATE:
-              res.redirect(Paths.payBySetDatePage.evaluateUri({ externalId: externalId }));
+              res.redirect(Paths.payBySetDatePage.evaluateUri({ externalId }));
               break;
             case PaymentType.INSTALMENTS:
-              res.redirect(Paths.repaymentPlanPage.evaluateUri({ externalId: externalId }));
+              res.redirect(Paths.repaymentPlanPage.evaluateUri({ externalId }));
               break;
           }
         }

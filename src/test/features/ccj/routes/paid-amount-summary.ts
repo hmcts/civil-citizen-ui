@@ -18,7 +18,7 @@ import { MomentFactory } from 'shared/momentFactory';
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = Paths.paidAmountSummaryPage.evaluateUri({ externalId: externalId });
+const pagePath = Paths.paidAmountSummaryPage.evaluateUri({ externalId });
 
 describe('CCJ - paid amount summary page', () => {
   attachDefaultHooks(app);
@@ -82,7 +82,7 @@ describe('CCJ - paid amount summary page', () => {
       });
 
       it('should render page using admitted amount when defendant response is part admission', async () => {
-        let claimWithAdmission = {
+        const claimWithAdmission = {
           ...claimStoreServiceMock.sampleClaimObj,
           ...claimStoreServiceMock.samplePartialAdmissionWithPayImmediatelyData(),
           ...{

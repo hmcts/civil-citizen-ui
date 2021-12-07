@@ -15,7 +15,7 @@ function renderView(form: Form<ClaimSettled>, res: express.Response): void {
   const claim: Claim = res.locals.claim;
 
   res.render(Paths.settleClaimPage.associatedView, {
-    form: form,
+    form,
     totalAmount: StatesPaidHelper.getAlreadyPaidAmount(claim),
     paidInFull: !StatesPaidHelper.isAlreadyPaidLessThanAmount(claim),
   });

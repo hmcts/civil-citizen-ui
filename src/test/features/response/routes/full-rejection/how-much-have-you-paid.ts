@@ -21,7 +21,7 @@ import {
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = FullRejectionPaths.howMuchHaveYouPaidPage.evaluateUri({ externalId: externalId });
+const pagePath = FullRejectionPaths.howMuchHaveYouPaidPage.evaluateUri({ externalId });
 
 const validFormData = { amount: 100, date: { day: 1, month: 1, year: 1990 }, text: 'aaa' };
 const header: string = 'How much have you paid?';
@@ -140,11 +140,11 @@ describe('Defendant: reject all - ' + header, () => {
         });
 
         testValidPost(-1,
-          FullRejectionPaths.youHavePaidLessPage.evaluateUri({ externalId: externalId }));
+          FullRejectionPaths.youHavePaidLessPage.evaluateUri({ externalId }));
         testValidPost(0,
-          Paths.taskListPage.evaluateUri({ externalId: externalId }));
+          Paths.taskListPage.evaluateUri({ externalId }));
         testValidPost(1,
-          Paths.taskListPage.evaluateUri({ externalId: externalId }));
+          Paths.taskListPage.evaluateUri({ externalId }));
       });
     });
   });

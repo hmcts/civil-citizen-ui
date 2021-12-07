@@ -9,7 +9,7 @@ import { isCMCReference } from 'shared/utils/isCMCReference';
 import { Form } from 'forms/form';
 
 function renderView(form: Form<ClaimReference>, res: express.Response): void {
-  res.render(Paths.enterClaimNumberPage.associatedView, { form: form });
+  res.render(Paths.enterClaimNumberPage.associatedView, { form });
 }
 
 const mcolUrl = config.get<string>('mcol.url');

@@ -382,7 +382,7 @@ describe('Claim', () => {
       claim.settlementReachedAt = MomentFactory.currentDate().subtract(1, 'month');
       claim.response = {
         responseType: ResponseType.FULL_ADMISSION,
-        paymentIntention: paymentIntention,
+        paymentIntention,
         defendant: new Individual().deserialize(individual),
       };
 
@@ -396,7 +396,7 @@ describe('Claim', () => {
       };
       claim.response = {
         responseType: ResponseType.FULL_ADMISSION,
-        paymentIntention: paymentIntention,
+        paymentIntention,
         defendant: new Individual().deserialize(individual),
       };
       claim.claimantResponse = baseDeterminationAcceptationClaimantResponseData;
@@ -413,7 +413,7 @@ describe('Claim', () => {
       };
       claim.response = {
         responseType: ResponseType.FULL_ADMISSION,
-        paymentIntention: paymentIntention,
+        paymentIntention,
         defendant: new Individual().deserialize(individual),
       };
       claim.claimantResponse = baseDeterminationAcceptationClaimantResponseData;
@@ -433,7 +433,7 @@ describe('Claim', () => {
       };
       claim.response = {
         responseType: ResponseType.FULL_ADMISSION,
-        paymentIntention: paymentIntention,
+        paymentIntention,
         defendant: new Individual().deserialize(individual),
       };
       claim.claimantResponse = baseDeterminationAcceptationClaimantResponseData;
@@ -478,7 +478,7 @@ describe('Claim', () => {
       claim.settlementReachedAt = MomentFactory.currentDate().subtract(1, 'month');
       claim.response = {
         responseType: ResponseType.FULL_ADMISSION,
-        paymentIntention: paymentIntention,
+        paymentIntention,
         defendant: new Individual().deserialize(individual),
       };
       claim.claimantResponse = baseAcceptationClaimantResponseData;
@@ -497,7 +497,7 @@ describe('Claim', () => {
       claim.settlementReachedAt = MomentFactory.currentDate().subtract(1, 'month');
       claim.response = {
         responseType: ResponseType.FULL_ADMISSION,
-        paymentIntention: paymentIntention,
+        paymentIntention,
         defendant: new Individual().deserialize(individual),
       };
       claim.claimantResponse = baseDeterminationAcceptationClaimantResponseData;
@@ -516,7 +516,7 @@ describe('Claim', () => {
       claim.settlementReachedAt = MomentFactory.currentDate().subtract(1, 'month');
       claim.response = {
         responseType: ResponseType.FULL_ADMISSION,
-        paymentIntention: paymentIntention,
+        paymentIntention,
         defendant: new Individual().deserialize(individual),
       };
       claim.claimantResponse = baseDeterminationAcceptationClaimantResponseData;
@@ -582,7 +582,7 @@ describe('Claim', () => {
       };
       claim.response = {
         responseType: ResponseType.FULL_ADMISSION,
-        paymentIntention: paymentIntention,
+        paymentIntention,
         defendant: new Individual().deserialize(individual),
       };
       claim.claimantResponse = baseDeterminationAcceptationClaimantResponseData;
@@ -598,7 +598,7 @@ describe('Claim', () => {
       };
       claim.response = {
         responseType: ResponseType.FULL_ADMISSION,
-        paymentIntention: paymentIntention,
+        paymentIntention,
         defendant: new Individual().deserialize(individual),
       };
       claim.claimantResponse = baseDeterminationAcceptationClaimantResponseData;
@@ -614,7 +614,7 @@ describe('Claim', () => {
       };
       claim.response = {
         responseType: ResponseType.PART_ADMISSION,
-        paymentIntention: paymentIntention,
+        paymentIntention,
         defendant: new Individual().deserialize(individual),
       };
       claim.claimantResponse = {
@@ -1249,7 +1249,7 @@ function prepareSettlement(paymentIntention: PaymentIntention, party: MadeBy): S
         offer: {
           content: 'My offer contents here.',
           completionDate: '2020-10-10',
-          paymentIntention: paymentIntention,
+          paymentIntention,
         },
       },
       {
@@ -1306,7 +1306,7 @@ function prepareSettlementWithDefendantRejection(paymentIntention: PaymentIntent
         offer: {
           content: 'My offer contents here.',
           completionDate: '2020-10-10',
-          paymentIntention: paymentIntention,
+          paymentIntention,
         },
       },
       {
@@ -1331,7 +1331,7 @@ function prepareSettlementWithCounterSignature(paymentIntention: PaymentIntentio
         offer: {
           content: 'My offer contents here.',
           completionDate: '2020-10-10',
-          paymentIntention: paymentIntention,
+          paymentIntention,
         },
       },
       {
@@ -1356,7 +1356,7 @@ function prepareSettlementWithCounterSignatureWithDatePassed(paymentIntention: P
         offer: {
           content: 'My offer contents here.',
           completionDate: '2010-10-10',
-          paymentIntention: paymentIntention,
+          paymentIntention,
         },
       },
       {

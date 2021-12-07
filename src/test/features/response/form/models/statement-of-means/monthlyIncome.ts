@@ -58,9 +58,9 @@ function getSampleMonthlyIncomeObject(options?: object) {
 
   return {
     sampleData,
-    forConstructor: forConstructor,
-    forFromObjectMethod: forFromObjectMethod,
-    forDeserialize: forDeserialize,
+    forConstructor,
+    forFromObjectMethod,
+    forDeserialize,
   };
 }
 

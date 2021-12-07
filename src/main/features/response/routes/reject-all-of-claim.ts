@@ -33,7 +33,7 @@ function renderView(form: Form<RejectAllOfClaim>, res: express.Response) {
   const claim: Claim = res.locals.claim;
 
   res.render(Paths.defenceRejectAllOfClaimPage.associatedView, {
-    form: form,
+    form,
     claimantName: claim.claimData.claimant.name,
   });
 }
@@ -67,11 +67,11 @@ export default express.Router()
         const { externalId } = req.params;
         switch (draft.document.rejectAllOfClaim.option) {
           case RejectAllOfClaimOption.COUNTER_CLAIM:
-            res.redirect(Paths.sendYourResponseByEmailPage.evaluateUri({ externalId: externalId }));
+            res.redirect(Paths.sendYourResponseByEmailPage.evaluateUri({ externalId }));
             break;
           case RejectAllOfClaimOption.ALREADY_PAID:
           case RejectAllOfClaimOption.DISPUTE:
-            res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+            res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
             break;
           default:
             throw new Error(`Unknown rejection option: ${draft.document.rejectAllOfClaim.option}`);

@@ -7,7 +7,7 @@ import { PaymentIntention as DraftPaymentIntention } from 'shared/components/pay
 
 import { DraftClaimantResponse } from 'claimant-response/draft/draftClaimantResponse';
 
-import { claimantResponsePath, Paths } from 'claimant-response/paths';
+import { Paths, claimantResponsePath } from 'claimant-response/paths';
 import { Claim } from 'claims/models/claim';
 import { PaymentPlanHelper } from 'shared/helpers/paymentPlanHelper';
 import { Moment } from 'moment';

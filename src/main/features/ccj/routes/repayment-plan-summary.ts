@@ -29,12 +29,12 @@ function renderView(form: Form<PaidAmount>, req: express.Request, res: express.R
   }
 
   res.render(Paths.repaymentPlanSummaryPage.associatedView, {
-    form: form,
-    claim: claim,
-    paymentIntention: paymentIntention,
+    form,
+    claim,
+    paymentIntention,
     remainingAmountToPay: CCJHelper.totalRemainingToPay(claim),
     requestedBy: req.params.madeBy,
-    payByDate: payByDate,
+    payByDate,
   });
 }
 

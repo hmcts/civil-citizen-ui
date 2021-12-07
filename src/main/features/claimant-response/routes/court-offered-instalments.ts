@@ -18,8 +18,8 @@ function renderView(form: Form<AcceptCourtOffer>, res: express.Response) {
   const draft: Draft<DraftClaimantResponse> = res.locals.draft;
 
   res.render(ClaimantsResponsePaths.courtOfferedInstalmentsPage.associatedView, {
-    form: form,
-    claim: claim,
+    form,
+    claim,
     courtOrderPaymentPlan: draft.document.courtDetermination.courtDecision.repaymentPlan,
   });
 }
@@ -61,9 +61,9 @@ export default express.Router()
             draft.document.formaliseRepaymentPlan = undefined;
             draft.document.courtDetermination.rejectionReason = undefined;
 
-            await saveAndRedirect(res, draft, ClaimantsResponsePaths.taskListPage.evaluateUri({ externalId: externalId }));
+            await saveAndRedirect(res, draft, ClaimantsResponsePaths.taskListPage.evaluateUri({ externalId }));
           } else {
-            await saveAndRedirect(res, draft, ClaimantsResponsePaths.rejectionReasonPage.evaluateUri({ externalId: externalId }));
+            await saveAndRedirect(res, draft, ClaimantsResponsePaths.rejectionReasonPage.evaluateUri({ externalId }));
           }
         }
       },

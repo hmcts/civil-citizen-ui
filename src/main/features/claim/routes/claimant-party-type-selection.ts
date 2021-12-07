@@ -15,7 +15,7 @@ import { Draft } from '@hmcts/draft-store-client';
 
 function renderView(form: Form<PartyTypeResponse>, res: express.Response, next: express.NextFunction) {
   res.render(Paths.claimantPartyTypeSelectionPage.associatedView, {
-    form: form,
+    form,
   });
 }
 

@@ -76,7 +76,7 @@ function stringifyViolations(violations: Violation[]): string {
 
 export function generateString(length: number): string {
   return randomstring.generate({
-    length: length,
+    length,
     charset: 'alphabetic',
   });
 }

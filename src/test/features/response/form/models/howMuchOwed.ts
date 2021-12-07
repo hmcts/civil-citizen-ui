@@ -27,7 +27,7 @@ describe('HowMuchOwed', () => {
       const description: string = 'I do not owe full amount';
       const amount: number = 300;
       const result: HowMuchOwed = new HowMuchOwed().deserialize({
-        amount: amount,
+        amount,
         text: description,
       });
       expect(result.amount).to.be.equal(amount);

@@ -16,7 +16,7 @@ import { checkNotClaimantInCaseGuard } from 'test/features/ccj/routes/checks/not
 
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
 const cookieName: string = config.get<string>('session.cookieName');
-const pagePath = CCJPaths.ccjConfirmationPage.evaluateUri({ externalId: externalId });
+const pagePath = CCJPaths.ccjConfirmationPage.evaluateUri({ externalId });
 
 describe('CCJ: confirmation page', () => {
   attachDefaultHooks(app);

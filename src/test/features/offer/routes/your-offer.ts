@@ -15,8 +15,8 @@ import { LocalDate } from 'forms/models/localDate';
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const confirmationPage = OfferPaths.offerConfirmationPage.evaluateUri({ externalId: externalId });
-const offerPage = OfferPaths.offerPage.evaluateUri({ externalId: externalId });
+const confirmationPage = OfferPaths.offerConfirmationPage.evaluateUri({ externalId });
+const offerPage = OfferPaths.offerPage.evaluateUri({ externalId });
 
 const validFormData = {
   offerText: 'Offer Text',

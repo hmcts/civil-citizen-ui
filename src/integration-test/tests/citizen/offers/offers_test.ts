@@ -1,5 +1,5 @@
 import { PartyType } from 'integration-test/data/party-type';
-import { createClaimant, createClaimData, createResponseData } from 'integration-test/data/test-data';
+import { createClaimData, createClaimant, createResponseData } from 'integration-test/data/test-data';
 import { UserSteps } from 'integration-test/tests/citizen/home/steps/user';
 import { OfferSteps } from 'integration-test/tests/citizen/offers/steps/offer';
 import I = CodeceptJS.I;

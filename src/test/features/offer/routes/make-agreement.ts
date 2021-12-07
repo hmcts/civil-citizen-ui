@@ -12,7 +12,7 @@ import { checkAuthorizationGuards } from 'test/features/offer/routes/checks/auth
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = '400f4c57-9684-49c0-adb4-4cf46579d6dc';
-const makeLegalAgreementPage = OfferPaths.makeAgreementPage.evaluateUri({ externalId: externalId });
+const makeLegalAgreementPage = OfferPaths.makeAgreementPage.evaluateUri({ externalId });
 
 describe('Make a legal agreement page', () => {
   attachDefaultHooks(app);

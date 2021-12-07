@@ -13,7 +13,7 @@ import { Draft } from '@hmcts/draft-store-client';
 import { Phone } from 'forms/models/phone';
 
 function renderView(form: Form<Phone>, res: express.Response): void {
-  res.render(Paths.defendantPhonePage.associatedView, { form: form });
+  res.render(Paths.defendantPhonePage.associatedView, { form });
 }
 
 /* tslint:disable:no-default-export */

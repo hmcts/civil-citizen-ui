@@ -10,6 +10,6 @@ export default express.Router()
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const claim: Claim = res.locals.claim;
       res.render(Paths.makeAgreementPage.associatedView, {
-        claim: claim,
+        claim,
       });
     }));

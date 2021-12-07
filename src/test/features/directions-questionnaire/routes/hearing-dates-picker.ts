@@ -27,7 +27,7 @@ const claimWithDQ = {
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
 const claim = createClaim(PartyType.INDIVIDUAL, PartyType.ORGANISATION, MadeBy.CLAIMANT);
 const cookieName: string = config.get<string>('session.cookieName');
-const hearingDatesPath = Paths.hearingDatesPage.evaluateUri({ externalId: externalId });
+const hearingDatesPath = Paths.hearingDatesPage.evaluateUri({ externalId });
 
 const unavailableDates: LocalDate[] = [
   daysFromNow(1),
@@ -50,7 +50,7 @@ if (FeatureToggles.isEnabled('directionsQuestionnaire')) {
     attachDefaultHooks(app);
 
     describe('delete a date', () => {
-      const deletePath = Paths.hearingDatesDeleteReceiver.evaluateUri({ externalId: externalId, index: 'date-1' });
+      const deletePath = Paths.hearingDatesDeleteReceiver.evaluateUri({ externalId, index: 'date-1' });
 
       const method = 'get';
       checkAuthorizationGuards(app, method, deletePath);
@@ -66,7 +66,7 @@ if (FeatureToggles.isEnabled('directionsQuestionnaire')) {
           draftStoreServiceMock.resolveFind('directionsQuestionnaire', {
             availability: {
               hasUnavailableDates: true,
-              unavailableDates: unavailableDates,
+              unavailableDates,
             },
           });
           draftStoreServiceMock.resolveFind('response');
@@ -81,14 +81,14 @@ if (FeatureToggles.isEnabled('directionsQuestionnaire')) {
     });
 
     describe('replace selected dates', () => {
-      const replacePath = Paths.hearingDatesReplaceReceiver.evaluateUri({ externalId: externalId });
+      const replacePath = Paths.hearingDatesReplaceReceiver.evaluateUri({ externalId });
 
       const method = 'post';
       checkAuthorizationGuards(app, method, replacePath);
       checkAccessGuard(app, method, replacePath);
 
       context('when user authorised', () => {
-        const validData = { hasUnavailableDates: true, unavailableDates: unavailableDates };
+        const validData = { hasUnavailableDates: true, unavailableDates };
         const invalidData = { hasUnavailableDates: true, unavailableDates: [{ year: 2000, month: 0, day: 2 }] };
 
         beforeEach(() => {

@@ -20,5 +20,5 @@ export default express.Router()
       drafts.forEach(async draft => {
         await new DraftService().delete(draft.id, user.bearerToken);
       });
-      res.render(Paths.confirmationPage.associatedView, { claim: claim });
+      res.render(Paths.confirmationPage.associatedView, { claim });
     }));

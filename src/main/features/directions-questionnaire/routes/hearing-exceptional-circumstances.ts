@@ -47,8 +47,8 @@ async function renderPage(res: express.Response, form: Form<ExceptionalCircumsta
   }
 
   res.render(Paths.hearingExceptionalCircumstancesPage.associatedView, {
-    form: form,
-    party: party,
+    form,
+    party,
     courtName: defendantCourt,
     facilities: courtDetails ? courtDetails.facilities : undefined,
   });

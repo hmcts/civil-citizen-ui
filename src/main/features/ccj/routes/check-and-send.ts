@@ -31,19 +31,19 @@ function prepareUrls(externalId: string, claim: Claim, draft: Draft<DraftCCJ>): 
   if (claim.response && claim.isAdmissionsResponse()) {
     if (draft.document.paymentOption.option !== PaymentType.INSTALMENTS) {
       return {
-        paidAmountUrl: Paths.paidAmountPage.evaluateUri({ externalId: externalId }),
-        paymentOptionUrl: Paths.paymentOptionsPage.evaluateUri({ externalId: externalId }),
+        paidAmountUrl: Paths.paidAmountPage.evaluateUri({ externalId }),
+        paymentOptionUrl: Paths.paymentOptionsPage.evaluateUri({ externalId }),
       };
     } else {
       return {
-        paidAmountUrl: Paths.paidAmountPage.evaluateUri({ externalId: externalId }),
+        paidAmountUrl: Paths.paidAmountPage.evaluateUri({ externalId }),
       };
     }
   }
   return {
-    paidAmountUrl: Paths.paidAmountPage.evaluateUri({ externalId: externalId }),
-    dateOfBirthUrl: Paths.dateOfBirthPage.evaluateUri({ externalId: externalId }),
-    paymentOptionUrl: Paths.paymentOptionsPage.evaluateUri({ externalId: externalId }),
+    paidAmountUrl: Paths.paidAmountPage.evaluateUri({ externalId }),
+    dateOfBirthUrl: Paths.dateOfBirthPage.evaluateUri({ externalId }),
+    paymentOptionUrl: Paths.paymentOptionsPage.evaluateUri({ externalId }),
   };
 }
 
@@ -73,10 +73,10 @@ function renderView(form: Form<Declaration>, req: express.Request, res: express.
   }
 
   res.render(Paths.checkAndSendPage.associatedView, {
-    form: form,
-    claim: claim,
+    form,
+    claim,
     draft: draft.document,
-    defendant: defendant,
+    defendant,
     amountToBePaid: calculateAmountToBePaid(claim, draft),
     ...prepareUrls(req.params.externalId, claim, draft),
   });

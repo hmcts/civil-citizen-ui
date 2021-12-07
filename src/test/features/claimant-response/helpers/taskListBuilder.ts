@@ -68,7 +68,7 @@ describe('Claimant response task list builder', () => {
             ...claimStoreServiceMock.sampleClaimObj,
             response: {
               ...partialAdmissionAlreadyPaidData,
-              amount: amount,
+              amount,
             },
           });
 
@@ -86,7 +86,7 @@ describe('Claimant response task list builder', () => {
             ...claimStoreServiceMock.sampleClaimObj,
             response: {
               ...partialAdmissionAlreadyPaidData,
-              amount: amount,
+              amount,
             },
           });
 
@@ -109,7 +109,7 @@ describe('Claimant response task list builder', () => {
             ...claimStoreServiceMock.sampleClaimObj,
             response: {
               ...partialAdmissionAlreadyPaidData,
-              amount: amount,
+              amount,
             },
           });
 
@@ -127,7 +127,7 @@ describe('Claimant response task list builder', () => {
             ...claimStoreServiceMock.sampleClaimObj,
             response: {
               ...partialAdmissionAlreadyPaidData,
-              amount: amount,
+              amount,
               freeMediation: 'yes',
             },
           });
@@ -146,7 +146,7 @@ describe('Claimant response task list builder', () => {
             ...claimStoreServiceMock.sampleClaimObj,
             response: {
               ...partialAdmissionAlreadyPaidData,
-              amount: amount,
+              amount,
               freeMediation: 'yes',
             },
           });
@@ -166,7 +166,7 @@ describe('Claimant response task list builder', () => {
             ...claimStoreServiceMock.sampleClaimObj,
             response: {
               ...partialAdmissionAlreadyPaidData,
-              amount: amount,
+              amount,
               freeMediation: 'yes',
             },
           });

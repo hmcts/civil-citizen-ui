@@ -21,7 +21,7 @@ import { Moment } from 'moment';
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = Paths.paymentPlanPage.evaluateUri({ externalId: externalId });
+const pagePath = Paths.paymentPlanPage.evaluateUri({ externalId });
 
 const heading: string = 'Suggest instalments for the defendant';
 
@@ -205,7 +205,7 @@ describe('Claimant response: payment plan', () => {
               .post(pagePath)
               .set('Cookie', `${cookieName}=ABC`)
               .send(validFormData)
-              .expect(res => expect(res).to.be.redirect.toLocation(Paths.counterOfferAcceptedPage.evaluateUri({ externalId: externalId })));
+              .expect(res => expect(res).to.be.redirect.toLocation(Paths.counterOfferAcceptedPage.evaluateUri({ externalId })));
           });
 
           it('should redirect to counter offer accepted page when decision type is CLAIMANT_IN_FAVOUR_OF_DEFENDANT', async () => {
@@ -223,7 +223,7 @@ describe('Claimant response: payment plan', () => {
                 firstPaymentDate: setFirstPaymentDate(firstPaymentDate),
                 paymentSchedule: 'EVERY_MONTH',
               })
-              .expect(res => expect(res).to.be.redirect.toLocation(Paths.counterOfferAcceptedPage.evaluateUri({ externalId: externalId })));
+              .expect(res => expect(res).to.be.redirect.toLocation(Paths.counterOfferAcceptedPage.evaluateUri({ externalId })));
           });
 
           it('should redirect to court offered set date page when decision type is DEFENDANT', async () => {
@@ -236,7 +236,7 @@ describe('Claimant response: payment plan', () => {
               .post(pagePath)
               .set('Cookie', `${cookieName}=ABC`)
               .send(dataToSend(firstPaymentDate))
-              .expect(res => expect(res).to.be.redirect.toLocation(Paths.courtOfferedSetDatePage.evaluateUri({ externalId: externalId })));
+              .expect(res => expect(res).to.be.redirect.toLocation(Paths.courtOfferedSetDatePage.evaluateUri({ externalId })));
           });
 
           it('should redirect to court offered instalments page when decision type is DEFENDANT', async () => {
@@ -249,7 +249,7 @@ describe('Claimant response: payment plan', () => {
               .post(pagePath)
               .set('Cookie', `${cookieName}=ABC`)
               .send(dataToSend(firstPaymentDate))
-              .expect(res => expect(res).to.be.redirect.toLocation(Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId: externalId })));
+              .expect(res => expect(res).to.be.redirect.toLocation(Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId })));
           });
 
           it('should redirect to court offered instalments page when decision type is COURT', async () => {
@@ -262,7 +262,7 @@ describe('Claimant response: payment plan', () => {
               .post(pagePath)
               .set('Cookie', `${cookieName}=ABC`)
               .send(dataToSend(firstPaymentDate))
-              .expect(res => expect(res).to.be.redirect.toLocation(Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId: externalId })));
+              .expect(res => expect(res).to.be.redirect.toLocation(Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId })));
           });
 
           it('should redirect to tasks list page when defendant is business', async () => {
@@ -275,7 +275,7 @@ describe('Claimant response: payment plan', () => {
               .post(pagePath)
               .set('Cookie', `${cookieName}=ABC`)
               .send(dataToSend(firstPaymentDate))
-              .expect(res => expect(res).to.be.redirect.toLocation(Paths.taskListPage.evaluateUri({ externalId: externalId })));
+              .expect(res => expect(res).to.be.redirect.toLocation(Paths.taskListPage.evaluateUri({ externalId })));
           });
         });
 

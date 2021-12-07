@@ -18,9 +18,9 @@ function renderView(form: Form<SettleAdmitted>, res: express.Response) {
   const claim: Claim = res.locals.claim;
   const hasPaymentIntention: boolean = (claim.response as PartialAdmissionResponse).paymentIntention.paymentOption !== PaymentOption.IMMEDIATELY;
   res.render(Paths.settleAdmittedPage.associatedView, {
-    form: form,
-    claim: claim,
-    hasPaymentIntention: hasPaymentIntention,
+    form,
+    claim,
+    hasPaymentIntention,
   });
 }
 
@@ -51,6 +51,6 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         const { externalId } = req.params;
-        res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+        res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
       }
     }));

@@ -6,7 +6,7 @@ import { PaymentIntention } from 'shared/components/payment-intention/model/paym
 
 import { ResponseDraft } from 'response/draft/responseDraft';
 
-import { fullAdmissionPath, Paths } from 'response/paths';
+import { Paths, fullAdmissionPath } from 'response/paths';
 
 class ModelAccessor extends AbstractModelAccessor<ResponseDraft, PaymentIntention> {
   get(draft: ResponseDraft): PaymentIntention {
@@ -27,9 +27,10 @@ class PaymentDatePage extends AbstractPaymentDatePage<ResponseDraft> {
     return new ModelAccessor();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   buildPostSubmissionUri(req: express.Request, res: express.Response): string {
     const { externalId } = req.params;
-    return Paths.taskListPage.evaluateUri({ externalId: externalId });
+    return Paths.taskListPage.evaluateUri({ externalId });
   }
 }
 

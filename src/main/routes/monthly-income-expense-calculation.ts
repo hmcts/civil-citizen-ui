@@ -21,7 +21,7 @@ export default express.Router()
       const totalMonthlyIncomeExpense = CalculateMonthlyIncomeExpense
         .calculateTotalAmount(incomeExpenseSources.incomeExpenseSources);
       return res.status(HttpStatus.OK).json({
-        totalMonthlyIncomeExpense: totalMonthlyIncomeExpense,
+        totalMonthlyIncomeExpense,
       });
     } catch (err) {
       return res.status(HttpStatus.UNPROCESSABLE_ENTITY).send(err);

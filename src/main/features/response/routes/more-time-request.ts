@@ -27,9 +27,9 @@ async function renderView(form: Form<MoreTimeNeeded>, res: express.Response, nex
     const responseDeadline: string = 'You’ll have to respond before 4pm on ' + claim.responseDeadline.format('LL');
 
     res.render(Paths.moreTimeRequestPage.associatedView, {
-      form: form,
-      moreTimeDeadline: moreTimeDeadline,
-      responseDeadline: responseDeadline,
+      form,
+      moreTimeDeadline,
+      responseDeadline,
     });
   } catch (err) {
     next(err);

@@ -16,7 +16,7 @@ import { Explanation } from 'response/form/models/statement-of-means/explanation
 
 function renderView(form: Form<Explanation>, res: express.Response) {
   res.render(StatementOfMeansPaths.explanationPage.associatedView, {
-    form: form,
+    form,
   });
 }
 
@@ -32,6 +32,7 @@ export default express.Router()
     StatementOfMeansPaths.explanationPage.uri,
     StatementOfMeansStateGuard.requestHandler(),
     FormValidator.requestHandler(Explanation),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<Explanation> = req.body;
       if (form.hasErrors()) {

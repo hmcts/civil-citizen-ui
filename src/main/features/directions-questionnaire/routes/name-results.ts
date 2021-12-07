@@ -13,11 +13,11 @@ import { DraftService } from 'services/draftService';
 
 function renderPage(res: express.Response, form: Form<HearingLocation>, fallbackPage: boolean, courts: CourtDetails[], searchString: string) {
   res.render(Paths.hearingLocationResultPage.associatedView, {
-    form: form,
-    fallbackPage: fallbackPage,
+    form,
+    fallbackPage,
     party: getUsersRole(res.locals.claim, res.locals.user),
-    courts: courts,
-    searchString: searchString,
+    courts,
+    searchString,
   });
 }
 
@@ -32,9 +32,9 @@ export default express.Router()
       } else {
         const courts: Court[] = await Court.getCourtsByName(searchParam);
         if (courts) {
-          let courtDetails: CourtDetails[] = [];
+          const courtDetails: CourtDetails[] = [];
 
-          for (let court of courts) {
+          for (const court of courts) {
             courtDetails.push(await Court.getCourtDetails(court.slug));
           }
           renderPage(res, new Form<HearingLocation>(new HearingLocation()), false, courtDetails, searchParam);

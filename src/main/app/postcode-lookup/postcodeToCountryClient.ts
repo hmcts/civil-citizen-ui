@@ -21,7 +21,7 @@ export class PostcodeToCountryClient {
       json: true,
       resolveWithFullResponse: true,
       simple: false,
-      uri: uri,
+      uri,
     })
       .then((response) => response.body.results[0]['GAZETTEER_ENTRY']['COUNTRY'])
       .catch(reason => Promise.reject(`Unable to find country for '${postcode}': ${reason}`));

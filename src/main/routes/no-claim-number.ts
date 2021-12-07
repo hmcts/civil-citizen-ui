@@ -9,7 +9,7 @@ import { NoClaimNumber } from 'forms/models/noClaimNumber';
 import { Service } from 'models/service';
 
 function renderView(form: Form<NoClaimNumber>, res: express.Response): void {
-  res.render(Paths.noClaimNumberPage.associatedView, { form: form });
+  res.render(Paths.noClaimNumberPage.associatedView, { form });
 }
 
 const mcolUrl = config.get<string>('mcol.url');

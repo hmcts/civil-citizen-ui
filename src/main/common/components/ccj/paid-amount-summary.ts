@@ -35,7 +35,7 @@ export abstract class AbstractPaidAmountSummaryPage<Draft> {
 
           res.render(
             this.getView(), {
-              claim: claim,
+              claim,
               alreadyPaid: model.amount || 0,
               interestDetails: await getInterestDetails(claim),
               nextPageUrl: this.buildRedirectUri(req, res),

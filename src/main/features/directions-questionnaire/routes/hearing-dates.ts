@@ -22,8 +22,8 @@ function renderPage(res: express.Response, form: Form<Availability>) {
 
   res.render(Paths.hearingDatesPage.associatedView, {
     externalId: res.locals.claim.externalId,
-    form: form,
-    dates: dates,
+    form,
+    dates,
   });
 }
 

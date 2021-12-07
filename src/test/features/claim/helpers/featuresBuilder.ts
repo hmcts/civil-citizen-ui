@@ -12,7 +12,7 @@ const MIN_THRESHOLD = Math.min(
   FeaturesBuilder.LA_PILOT_THRESHOLD,
   FeaturesBuilder.ONLINE_DQ_THRESHOLD,
 );
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function enableFeatures(...features: string[]) {
   FEATURES.map(feature => feature.toggle);
 }
@@ -66,7 +66,7 @@ describe('FeaturesBuilder', () => {
     expect(features).to.equal('LAPilotEligible, directionsQuestionnaire');
   });
 
-  it(`should not add judge pilot if legal advisor pilot is eligible`, async () => {
+  it('should not add judge pilot if legal advisor pilot is eligible', async () => {
     const features = await featuresBuilder.features(FeaturesBuilder.LA_PILOT_THRESHOLD);
     expect(features).to.equal('LAPilotEligible, directionsQuestionnaire');
   });

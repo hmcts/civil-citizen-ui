@@ -21,7 +21,7 @@ import { LocalDate } from 'forms/models/localDate';
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = Paths.paymentDatePage.evaluateUri({ externalId: externalId });
+const pagePath = Paths.paymentDatePage.evaluateUri({ externalId });
 
 const heading: string = 'When do you want the defendant to pay?';
 
@@ -173,7 +173,7 @@ describe('Claimant response: payment date', () => {
               .set('Cookie', `${cookieName}=ABC`)
               .send(dataToSend)
               .expect(res => expect(res).to.redirect.toLocation(
-                Paths.payBySetDateAcceptedPage.evaluateUri({ externalId: externalId })));
+                Paths.payBySetDateAcceptedPage.evaluateUri({ externalId })));
           });
 
           it('should redirect to court offered set date page when court decision is COURT', async () => {
@@ -186,7 +186,7 @@ describe('Claimant response: payment date', () => {
               .set('Cookie', `${cookieName}=ABC`)
               .send(dataToSend)
               .expect(res => expect(res).to.redirect.toLocation(
-                Paths.courtOfferedSetDatePage.evaluateUri({ externalId: externalId })));
+                Paths.courtOfferedSetDatePage.evaluateUri({ externalId })));
           });
 
           it('should redirect to court offered instalments page when court decision is COURT', async () => {
@@ -199,7 +199,7 @@ describe('Claimant response: payment date', () => {
               .set('Cookie', `${cookieName}=ABC`)
               .send(dataToSend)
               .expect(res => expect(res).to.redirect.toLocation(
-                Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId: externalId })));
+                Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId })));
           });
 
           it('should redirect to task list page when Defendant is business', async () => {
@@ -212,7 +212,7 @@ describe('Claimant response: payment date', () => {
               .set('Cookie', `${cookieName}=ABC`)
               .send(dataToSend)
               .expect(res => expect(res).to.redirect.toLocation(
-                Paths.taskListPage.evaluateUri({ externalId: externalId })));
+                Paths.taskListPage.evaluateUri({ externalId })));
           });
         });
 

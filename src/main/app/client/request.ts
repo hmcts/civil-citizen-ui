@@ -12,12 +12,12 @@ export type RequestAPI = RequestPromiseAPI
 
 const defaultOptions = {
   json: true,
-  timeout: timeout,
+  timeout,
 };
 
 const defaultRequestRetryOptions = {
   fullResponse: false,
-  maxAttempts: maxAttempts,
+  maxAttempts,
 };
 
 const retryingRequest: RequestPromiseAPI = RequestLoggingHandler.proxy(requestRetry.defaults({

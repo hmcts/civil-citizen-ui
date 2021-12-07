@@ -10,7 +10,7 @@
 // Detection from https://github.com/Financial-Times/polyfill-service/blob/master/packages/polyfill-library/polyfills/Window/detect.js
     var detect = ('Window' in this);
 
-    if (detect) return;
+    if (detect) {return;}
 
 // Polyfill from https://cdn.polyfill.io/v2/polyfill.js?features=Window&flags=always
     if ((typeof WorkerGlobalScope === 'undefined') && (typeof importScripts !== 'function')) {
@@ -31,7 +31,7 @@
 // Detection from https://github.com/Financial-Times/polyfill-service/blob/master/packages/polyfill-library/polyfills/Document/detect.js
     var detect = ('Document' in this);
 
-    if (detect) return;
+    if (detect) {return;}
 
 // Polyfill from https://cdn.polyfill.io/v2/polyfill.js?features=Document&flags=always
     if ((typeof WorkerGlobalScope === 'undefined') && (typeof importScripts !== 'function')) {
@@ -58,7 +58,7 @@
 // Detection from https://github.com/Financial-Times/polyfill-service/blob/master/packages/polyfill-library/polyfills/Element/detect.js
     var detect = ('Element' in this && 'HTMLElement' in this);
 
-    if (detect) return;
+    if (detect) {return;}
 
 // Polyfill from https://cdn.polyfill.io/v2/polyfill.js?features=Element&flags=always
     (function() {
@@ -140,10 +140,10 @@
 
       // Apply Element prototype to the pre-existing DOM as soon as the body element appears.
       function bodyCheck() {
-        if (!(loopLimit--)) clearTimeout(interval);
+        if (!(loopLimit--)) {clearTimeout(interval);}
         if (document.body && !document.body.prototype && /(complete|interactive)/.test(document.readyState)) {
           shiv(document, true);
-          if (interval && document.body.prototype) clearTimeout(interval);
+          if (interval && document.body.prototype) {clearTimeout(interval);}
           return (!!document.body.prototype);
         }
         return false;
@@ -184,7 +184,7 @@
       }())
     );
 
-    if (detect) return;
+    if (detect) {return;}
 
 // Polyfill from https://cdn.polyfill.io/v2/polyfill.js?features=Object.defineProperty&flags=always
     (function(nativeDefineProperty) {
@@ -260,8 +260,8 @@
     var detect = (
       (function(global) {
 
-        if (!('Event' in global)) return false;
-        if (typeof global.Event === 'function') return true;
+        if (!('Event' in global)) {return false;}
+        if (typeof global.Event === 'function') {return true;}
 
         try {
 
@@ -274,7 +274,7 @@
       }(this))
     );
 
-    if (detect) return;
+    if (detect) {return;}
 
 // Polyfill from https://cdn.polyfill.io/v2/polyfill.js?features=Event&flags=always
     (function() {
@@ -299,7 +299,7 @@
       // This polyfill depends on availability of `document` so will not run in a worker
       // However, we asssume there are no browsers with worker support that lack proper
       // support for `Event` within the worker
-      if (typeof document === 'undefined' || typeof window === 'undefined') return;
+      if (typeof document === 'undefined' || typeof window === 'undefined') {return;}
 
       function indexOf(array, element) {
         var
@@ -507,7 +507,7 @@
     // Detection from https://github.com/Financial-Times/polyfill-service/blob/master/packages/polyfill-library/polyfills/Function/prototype/bind/detect.js
     var detect = 'bind' in Function.prototype;
 
-    if (detect) return;
+    if (detect) {return;}
 
     // Polyfill from https://cdn.polyfill.io/v2/polyfill.js?features=Function.prototype.bind&flags=always
     Object.defineProperty(Function.prototype, 'bind', {

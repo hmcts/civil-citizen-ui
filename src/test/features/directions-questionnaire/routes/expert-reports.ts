@@ -33,7 +33,7 @@ const expertGuidance = Paths.expertGuidancePage.evaluateUri({ externalId });
 const pagePath = Paths.expertReportsPage.evaluateUri({ externalId });
 
 function checkAccessGuard(app: any, method: string) {
-  it(`should redirect to dashboard page when DQ is not enabled for claim`, async () => {
+  it('should redirect to dashboard page when DQ is not enabled for claim', async () => {
     idamServiceMock.resolveRetrieveUserFor('1', 'citizen');
     claimStoreServiceMock.resolveRetrieveClaimByExternalId();
     await request(app)[method](pagePath)

@@ -26,7 +26,7 @@ export class PaymentPlan {
   }
 
   calculatePaymentLength(): string {
-    const paymentLength: Array<string> = [];
+    const paymentLength: string[] = [];
     switch (this.frequency) {
       case (Frequency.WEEKLY):
         paymentLength.push(this.pluralize(this.numberOfInstalments, 'week'));
@@ -75,7 +75,7 @@ export class PaymentPlan {
       default:
         throw new Error(`Incompatible Frequency: ${frequency}`);
     }
-    const paymentPlanStartDate = startDate ? startDate : this.startDate;
+    const paymentPlanStartDate = startDate || this.startDate;
     return PaymentPlan.create(this.totalAmount, monthlyInstalmentAmount, frequency, paymentPlanStartDate);
   }
 

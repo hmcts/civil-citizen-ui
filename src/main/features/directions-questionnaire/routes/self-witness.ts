@@ -9,7 +9,7 @@ import { ErrorHandling } from 'shared/errorHandling';
 import { DraftService } from 'services/draftService';
 
 function renderPage(res: express.Response, form: Form<SelfWitness>) {
-  res.render(Paths.selfWitnessPage.associatedView, { form: form });
+  res.render(Paths.selfWitnessPage.associatedView, { form });
 }
 
 /* tslint:disable:no-default-export */

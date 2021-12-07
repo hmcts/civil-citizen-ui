@@ -17,7 +17,7 @@ export function notEligible(reason: string, notEligiblePage: RoutablePath = Path
   return {
     eligible: false,
     notEligibleReason: reason,
-    notEligiblePage: notEligiblePage,
+    notEligiblePage,
   };
 }
 
@@ -25,6 +25,6 @@ export function hwfEligible(reason: string, notEligiblePage: RoutablePath = Path
   return {
     eligible: false,
     notEligibleReason: reason,
-    notEligiblePage: notEligiblePage,
+    notEligiblePage,
   };
 }

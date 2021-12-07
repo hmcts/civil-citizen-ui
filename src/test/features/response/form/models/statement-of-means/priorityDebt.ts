@@ -40,9 +40,9 @@ function getSamplePriorityDebtObject() {
 
   return {
     sampleData,
-    forConstructor: forConstructor,
-    forFromObject: forFromObject,
-    forDeserialize: forDeserialize,
+    forConstructor,
+    forFromObject,
+    forDeserialize,
   };
 }
 

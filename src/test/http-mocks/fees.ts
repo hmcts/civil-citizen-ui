@@ -349,56 +349,56 @@ export function rejectGetHearingFeeRangeGroup(reason: string = 'HTTP error'): mo
 
 export function resolveCalculateFee(eventType: string, channel: string): mock.Scope {
   return mock(baseFeeUri)
-    .get(`/fees-register/fees/lookup`)
+    .get('/fees-register/fees/lookup')
     .query({
       service: `${service}`,
       jurisdiction1: `${jurisdiction1}`,
       jurisdiction2: `${jurisdiction2}`,
       channel: `${channel}`,
       event: `${eventType}`,
-      amount_or_volume: new RegExp(`[\\d]+`),
+      amount_or_volume: new RegExp('[\\d]+'),
     })
     .reply(HttpStatus.OK, feeOutcome);
 }
 
 export function rejectCalculateFee(eventType: string, channel: string, reason: string = 'HTTP error'): mock.Scope {
   return mock(baseFeeUri)
-    .get(`/fees-register/fees/lookup`)
+    .get('/fees-register/fees/lookup')
     .query({
       service: `${service}`,
       jurisdiction1: `${jurisdiction1}`,
       jurisdiction2: `${jurisdiction2}`,
       channel: `${channel}`,
       event: `${eventType}`,
-      amount_or_volume: new RegExp(`[\\d]+`),
+      amount_or_volume: new RegExp('[\\d]+'),
     })
     .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 
 function resolveGetFeeRangeGroup(eventType: string, channel: string): mock.Scope {
   return mock(baseFeeUri)
-    .get(`/fees-register/fees`)
+    .get('/fees-register/fees')
     .query({
       service: `${service}`,
       jurisdiction1: `${jurisdiction1}`,
       jurisdiction2: `${jurisdiction2}`,
       channel: `${channel}`,
       event: `${eventType}`,
-      feeVersionStatus: `approved`,
+      feeVersionStatus: 'approved',
     })
     .reply(HttpStatus.OK, feeRange);
 }
 
 function rejectGetFeeRangeGroup(eventType: string, channel: string, reason: string = 'HTTP error'): mock.Scope {
   return mock(baseFeeUri)
-    .get(`/fees-register/fees`)
+    .get('/fees-register/fees')
     .query({
       service: `${service}`,
       jurisdiction1: `${jurisdiction1}`,
       jurisdiction2: `${jurisdiction2}`,
       channel: `${channel}`,
       event: `${eventType}`,
-      feeVersionStatus: `approved`,
+      feeVersionStatus: 'approved',
     })
     .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }

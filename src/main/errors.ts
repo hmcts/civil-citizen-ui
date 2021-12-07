@@ -19,7 +19,7 @@ export class ForbiddenError extends Error implements ViewError {
   associatedView: string = 'forbidden';
 
   constructor() {
-    super(`You are not allowed to access this resource`);
+    super('You are not allowed to access this resource');
   }
 }
 

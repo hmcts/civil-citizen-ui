@@ -8,7 +8,7 @@ import { User } from 'idam/user';
 import { TestingSupportClient } from 'testing-support/testingSupportClient';
 
 function renderView(form: Form<UpdateResponseDeadlineRequest>, res: express.Response): void {
-  res.render(Paths.updateResponseDeadlinePage.associatedView, { form: form });
+  res.render(Paths.updateResponseDeadlinePage.associatedView, { form });
 }
 
 /* tslint:disable:no-default-export */

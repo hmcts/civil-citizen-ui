@@ -18,7 +18,7 @@ import { checkAuthorizationGuards } from 'test/routes/authorization-check';
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
 
 const cookieName: string = config.get<string>('session.cookieName');
-const pagePath = Paths.datePaidPage.evaluateUri({ externalId: externalId });
+const pagePath = Paths.datePaidPage.evaluateUri({ externalId });
 
 describe('claim - date money was received', () => {
   attachDefaultHooks(app);
@@ -100,7 +100,7 @@ describe('claim - date money was received', () => {
             .set('Cookie', `${cookieName}=ABC`)
             .send({ date: { day: '10', month: '10', year: '2018' } })
             .expect(res => expect(res).to.be.redirect
-              .toLocation(Paths.confirmationPage.evaluateUri({ externalId: externalId })));
+              .toLocation(Paths.confirmationPage.evaluateUri({ externalId })));
         });
       });
     });

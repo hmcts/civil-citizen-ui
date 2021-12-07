@@ -25,12 +25,12 @@ const accessGuardRequestHandler: express.RequestHandler = GuardFactory.create((r
 
   return claim.claimData.defendant.type === PartyType.INDIVIDUAL.value;
 }, (req: express.Request, res: express.Response): void => {
-  logger.warn(`CCJ state guard: defendant date of birth is only available for individual defendants - redirecting to dashboard page`);
+  logger.warn('CCJ state guard: defendant date of birth is only available for individual defendants - redirecting to dashboard page');
   res.redirect(DashboardPaths.dashboardPage.uri);
 });
 
 function renderView(form: Form<DateOfBirth>, res: express.Response): void {
-  res.render(Paths.dateOfBirthPage.associatedView, { form: form });
+  res.render(Paths.dateOfBirthPage.associatedView, { form });
 }
 
 /* tslint:disable:no-default-export */

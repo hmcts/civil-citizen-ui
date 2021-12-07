@@ -24,9 +24,9 @@ function renderView(form: Form<ReDetermination>, req: express.Request, res: expr
   }
 
   res.render(Paths.redeterminationPage.associatedView, {
-    form: form,
-    claim: claim,
-    paymentIntention: paymentIntention,
+    form,
+    claim,
+    paymentIntention,
     remainingAmountToPay: claim.totalAmountTillDateOfIssue - claim.amountPaid(),
     madeBy: req.params.madeBy,
   });

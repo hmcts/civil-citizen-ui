@@ -27,7 +27,7 @@ export class ClaimantResponseConverter {
     directionsQuestionnaireDraft?: DirectionsQuestionnaireDraft,
   ): Promise<ClaimantResponse> {
     if (!this.isResponseAcceptance(draftClaimantResponse)) {
-      let reject: ResponseRejection = new ResponseRejection();
+      const reject: ResponseRejection = new ResponseRejection();
 
       if (draftClaimantResponse.paidAmount) {
         reject.amountPaid = draftClaimantResponse.paidAmount.amount;
@@ -51,7 +51,7 @@ export class ClaimantResponseConverter {
       }
 
       return reject;
-    } else return this.createResponseAcceptance(draftClaimantResponse, isDefendantBusiness);
+    } else {return this.createResponseAcceptance(draftClaimantResponse, isDefendantBusiness);}
   }
 
   private static isResponseAcceptance(draftClaimantResponse: DraftClaimantResponse): boolean {

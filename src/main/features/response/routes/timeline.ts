@@ -19,7 +19,7 @@ function renderView(form: Form<DefendantTimeline>, res: express.Response): void 
   const claim: Claim = res.locals.claim;
 
   res.render(page.associatedView, {
-    form: form,
+    form,
     timeline: claim.claimData.timeline,
   });
 }
@@ -39,6 +39,7 @@ function actionHandler(req: express.Request, res: express.Response, next: expres
 export default express.Router()
   .get(
     page.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<ResponseDraft> = res.locals.responseDraft;
       let timeline;
@@ -55,6 +56,7 @@ export default express.Router()
     page.uri,
     FormValidator.requestHandler(DefendantTimeline, DefendantTimeline.fromObject, undefined, ['addRow']),
     actionHandler,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<DefendantTimeline> = req.body;
 

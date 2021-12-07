@@ -20,8 +20,8 @@ import {
 
 const externalId: string = claimStoreServiceMock.sampleClaimObj.externalId;
 const cookieName: string = config.get<string>('session.cookieName');
-const pagePath: string = StatementOfMeansPaths.unemployedPage.evaluateUri({ externalId: externalId });
-const nextPagePath: string = StatementOfMeansPaths.courtOrdersPage.evaluateUri({ externalId: externalId });
+const pagePath: string = StatementOfMeansPaths.unemployedPage.evaluateUri({ externalId });
+const nextPagePath: string = StatementOfMeansPaths.courtOrdersPage.evaluateUri({ externalId });
 
 describe('Defendant response: Statement of means: unemployment page', () => {
 

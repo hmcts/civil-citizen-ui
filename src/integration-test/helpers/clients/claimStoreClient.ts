@@ -131,7 +131,7 @@ export class ClaimStoreClient {
     const options = {
       method: 'POST',
       uri: `${baseURL}/user/roles`,
-      body: { role: role },
+      body: { role },
       headers: {
         Authorization: `Bearer ${bearerToken}`,
       },

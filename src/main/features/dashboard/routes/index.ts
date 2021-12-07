@@ -20,12 +20,12 @@ const logger = Logger.getLogger('router/dashboards');
 
 function renderPage(res: express.Response, claimsAsClaimant: Claim[], claimDraftSaved: boolean, claimsAsDefendant: Claim[], responseDraftSaved: boolean, paginationArgumentClaimant: object, paginationArgumentDefendant: object) {
   res.render(Paths.dashboardPage.associatedView, {
-    claimsAsClaimant: claimsAsClaimant,
-    claimDraftSaved: claimDraftSaved,
-    claimsAsDefendant: claimsAsDefendant,
-    responseDraftSaved: responseDraftSaved,
-    paginationArgumentClaimant: paginationArgumentClaimant,
-    paginationArgumentDefendant: paginationArgumentDefendant,
+    claimsAsClaimant,
+    claimDraftSaved,
+    claimsAsDefendant,
+    responseDraftSaved,
+    paginationArgumentClaimant,
+    paginationArgumentDefendant,
   });
 }
 

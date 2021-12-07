@@ -10,7 +10,7 @@ export const defaultAuthToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOi
 export function resolveRetrieveUserFor(id: string, ...roles: string[]) {
   return mock(apiServiceBaseURL)
     .get('/o/userinfo')
-    .reply(HttpStatus.OK, { uid: id, roles: roles, sub: 'user@example.com' });
+    .reply(HttpStatus.OK, { uid: id, roles, sub: 'user@example.com' });
 }
 
 export function resolveExchangeCode(token: string) {
@@ -22,7 +22,7 @@ export function resolveExchangeCode(token: string) {
       expires_in: 28800,
     });
 }
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function rejectExchangeCode(token: string) {
   mock(apiServiceBaseURL)
     .post(new RegExp('/oauth2/token.*'))

@@ -62,7 +62,7 @@ export class IdamClient {
         username: clientId,
         password: clientSecret,
       },
-      form: { grant_type: 'authorization_code', code: code, redirect_uri: redirectUri },
+      form: { grant_type: 'authorization_code', code, redirect_uri: redirectUri },
     })
       .then((response: any) => {
         return new AuthToken(

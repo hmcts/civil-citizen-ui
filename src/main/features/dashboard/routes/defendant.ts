@@ -29,10 +29,10 @@ export default express.Router()
       }
 
       res.render(Paths.defendantPage.associatedView, {
-        claim: claim,
-        reconsiderationDeadline: reconsiderationDeadline,
-        isReviewOrderEligible: isReviewOrderEligible,
-        respondToReviewOrderDeadline: respondToReviewOrderDeadline,
-        judgePilot: judgePilot,
+        claim,
+        reconsiderationDeadline,
+        isReviewOrderEligible,
+        respondToReviewOrderDeadline,
+        judgePilot,
       });
     }));

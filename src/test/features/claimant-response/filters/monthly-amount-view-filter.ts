@@ -39,29 +39,29 @@ describe('Monthly amount view filter', () => {
   context('with valid data', () => {
     function test(frequency: PaymentFrequency, inputAmount: number, expectedAmount: number) {
       const actualAmount: number = MonthlyAmountViewFilter.render({
-        frequency: frequency,
+        frequency,
         amount: inputAmount,
       });
       const roundedAmount: number = +actualAmount.toFixed(2);
       expect(roundedAmount).to.equal(expectedAmount);
     }
-
+    // eslint-disable-next-line mocha/no-nested-tests
     it('should return same amount for monthly frequency', () => {
       test(PaymentFrequency.MONTH, 123.45, 123.45);
     });
-
+    // eslint-disable-next-line mocha/no-nested-tests
     it('should convert four-weekly frequency', () => {
       test(PaymentFrequency.FOUR_WEEKS, 123.45, 133.74);
     });
-
+    // eslint-disable-next-line mocha/no-nested-tests
     it('should convert two-weekly frequency', () => {
       test(PaymentFrequency.TWO_WEEKS, 123.45, 267.47);
     });
-
+    // eslint-disable-next-line mocha/no-nested-tests
     it('should convert weekly frequency', () => {
       test(PaymentFrequency.WEEK, 123.45, 534.95);
     });
-
+    // eslint-disable-next-line mocha/no-nested-tests
     it('should accept zero amount', () => {
       test(PaymentFrequency.MONTH, 0, 0);
     });

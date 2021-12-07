@@ -18,9 +18,9 @@ async function renderView(form: Form<FreeMediation>, res: express.Response) {
   const hint = user.id === claim.defendantId ? 'We’ll ask the claimant if they’ll try free mediation. If they say no, the claim will go to a hearing.' : '';
 
   res.render(Paths.mediationDisagreementPage.associatedView, {
-    form: form,
+    form,
     defendant: user.id === claim.defendantId,
-    hint: hint,
+    hint,
   });
 }
 

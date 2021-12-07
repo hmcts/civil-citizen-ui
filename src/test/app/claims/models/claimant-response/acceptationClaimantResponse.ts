@@ -18,7 +18,7 @@ describe('AcceptationClaimantResponse', () => {
       expect(actual).to.be.eq(undefined);
     });
 
-    it(`should deserialize valid JSON with no optionals to valid AcceptationClaimantResponse object`, () => {
+    it('should deserialize valid JSON with no optionals to valid AcceptationClaimantResponse object', () => {
       const acceptationClaimantResponseWithNoOptionalsData = { ...ccjAcceptationClaimantResponseData };
       delete acceptationClaimantResponseWithNoOptionalsData.claimantPaymentIntention;
       delete acceptationClaimantResponseWithNoOptionalsData.courtDetermination;

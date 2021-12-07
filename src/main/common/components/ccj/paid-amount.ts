@@ -46,7 +46,7 @@ export abstract class AbstractPaidAmountPage<Draft> {
               await new DraftService().save(res.locals.draft, user.bearerToken);
 
               const { externalId } = req.params;
-              res.redirect(new RoutablePath(path + Paths.paidAmountSummaryPage.uri).evaluateUri({ externalId: externalId }));
+              res.redirect(new RoutablePath(path + Paths.paidAmountSummaryPage.uri).evaluateUri({ externalId }));
             }
           }));
   }
@@ -54,7 +54,7 @@ export abstract class AbstractPaidAmountPage<Draft> {
   private renderView(form: Form<PaidAmount>, res: express.Response) {
     const claim: Claim = res.locals.claim;
     res.render(this.getView(), {
-      form: form,
+      form,
       totalAmount: this.totalAmount(claim, res.locals.draft.document),
     });
   }

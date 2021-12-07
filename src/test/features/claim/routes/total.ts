@@ -7,7 +7,7 @@ import 'test/routes/expectations';
 import { checkAuthorizationGuards } from 'test/features/claim/routes/checks/authorization-check';
 import { checkEligibilityGuards } from 'test/features/claim/routes/checks/eligibility-check';
 
-import { ErrorPaths, Paths as ClaimPaths } from 'claim/paths';
+import { Paths as ClaimPaths, ErrorPaths } from 'claim/paths';
 
 import { app } from 'main/app';
 

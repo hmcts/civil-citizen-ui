@@ -13,8 +13,8 @@ async function renderView(form: Form<Offer>, res: express.Response, next: expres
   const claim: Claim = res.locals.claim;
 
   res.render(Paths.offerPage.associatedView, {
-    form: form,
-    claim: claim,
+    form,
+    claim,
   });
 }
 

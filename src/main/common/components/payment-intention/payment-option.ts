@@ -37,9 +37,9 @@ export abstract class AbstractPaymentOptionPage<Draft> {
       case PaymentType.IMMEDIATELY:
         return this.buildTaskListUri(req, res);
       case PaymentType.BY_SET_DATE:
-        return new RoutablePath(path + Paths.paymentDatePage.uri).evaluateUri({ externalId: externalId });
+        return new RoutablePath(path + Paths.paymentDatePage.uri).evaluateUri({ externalId });
       case PaymentType.INSTALMENTS:
-        return new RoutablePath(path + Paths.paymentPlanPage.uri).evaluateUri({ externalId: externalId });
+        return new RoutablePath(path + Paths.paymentPlanPage.uri).evaluateUri({ externalId });
     }
   }
 
@@ -88,7 +88,7 @@ export abstract class AbstractPaymentOptionPage<Draft> {
 
   private renderView(form: Form<PaymentOption>, res: express.Response) {
     res.render(this.getView(), {
-      form: form,
+      form,
     });
   }
 }

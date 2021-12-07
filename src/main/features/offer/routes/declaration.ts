@@ -17,8 +17,8 @@ function renderView(form: Form<Declaration>, res: express.Response) {
   res.render(
     Paths.declarationPage.associatedView,
     {
-      claim: claim,
-      form: form,
+      claim,
+      form,
       offer: claim.status === ClaimStatus.CLAIMANT_ACCEPTED_COURT_PLAN_SETTLEMENT ? claim.settlement.getLastOffer() : claim.defendantOffer,
       isThroughAdmissions: claim.settlement && claim.settlement.isThroughAdmissions(),
       otherPartyName: user.id === claim.defendantId ? claim.claimData.claimant.name : claim.claimData.defendant.name,

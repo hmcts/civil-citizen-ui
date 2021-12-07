@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression */
 import { ExpertReports, ValidationErrors } from 'directions-questionnaire/forms/models/expertReports';
 import { expect } from 'chai';
-import { ReportRow, ValidationErrors as NestedValidationErrors } from 'directions-questionnaire/forms/models/reportRow';
+import { ValidationErrors as NestedValidationErrors, ReportRow } from 'directions-questionnaire/forms/models/reportRow';
 import { LocalDate } from 'forms/models/localDate';
 import { MomentFactory } from 'shared/momentFactory';
 import { Validator } from '@hmcts/class-validator';

@@ -30,7 +30,7 @@ const claimWithDQ = {
 };
 
 function checkAccessGuard(app: any, method: string) {
-  it(`should redirect to dashboard page when DQ is not enabled for claim`, async () => {
+  it('should redirect to dashboard page when DQ is not enabled for claim', async () => {
     idamServiceMock.resolveRetrieveUserFor('1', 'citizen');
     claimStoreServiceMock.resolveRetrieveClaimByExternalId();
     await request(app)[method](pagePath)
@@ -104,7 +104,7 @@ describe('Directions Questionnaire - expert guidance page', () => {
               .set('Cookie', `${cookieName}=ABC`)
               .send()
               .expect(res => expect(res).to.be.redirect.toLocation(Paths.permissionForExpertPage.evaluateUri(
-                { externalId: externalId })));
+                { externalId })));
           });
         });
       });

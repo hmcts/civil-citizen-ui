@@ -27,14 +27,14 @@ export class IdamClient {
       method: 'POST',
       uri: `${baseURL}/testing-support/accounts`,
       body: {
-        email: email,
+        email,
         forename: 'John',
         surname: 'Smith',
         levelOfAccess: 0,
         roles: [{ code: userRoleCode }],
         activationDate: '',
         lastAccess: '',
-        password: password ? password : defaultPassword,
+        password: password || defaultPassword,
       },
     };
     return request(options).then(function() {
@@ -67,7 +67,7 @@ export class IdamClient {
    * @returns {Promise<void>}
    */
   static deleteUsers(usernames: string[]): Promise<void> {
-    let params = usernames.map(function(s) {
+    const params = usernames.map(function(s) {
       return `userNames=${encodeURIComponent(s)}`;
     }).join('&');
 
@@ -164,7 +164,7 @@ export class IdamClient {
         username: oauth2.client_id,
         password: oauth2.client_secret,
       },
-      form: { grant_type: 'authorization_code', code: code, redirect_uri: oauth2.redirect_uri },
+      form: { grant_type: 'authorization_code', code, redirect_uri: oauth2.redirect_uri },
     };
 
     return request(options).then(function(response) {

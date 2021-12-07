@@ -100,7 +100,7 @@ export abstract class AbstractPaymentPlanPage<Draft> {
     res.render(this.getView(), {
       heading: this.getHeading(),
       form,
-      partAdmit: partAdmit,
+      partAdmit,
       totalAmount: amount,
       paymentLength,
       disposableIncome: res.locals.draft.document.courtDetermination ? res.locals.draft.document.courtDetermination.disposableIncome : undefined,

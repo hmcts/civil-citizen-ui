@@ -16,9 +16,9 @@ export function formPaginationToDisplay(pagingInfo: object, selectedPageNo: numb
   const pagesItems: object = formItemswithHyperlink(hyperlinkText, selectedPageNo, totalClaimCount, totalPage);
 
   if (selectedPageNo !== 1) {
-    let updatedFromvalue: number = (10 * (selectedPageNo - 1) + 1);
-    let updatedToValueCalculate: number = (selectedPageNo * 10);
-    let updatedTovalue: number = updatedToValueCalculate > totalClaimCount ? totalClaimCount : updatedToValueCalculate;
+    const updatedFromvalue: number = (10 * (selectedPageNo - 1) + 1);
+    const updatedToValueCalculate: number = (selectedPageNo * 10);
+    const updatedTovalue: number = updatedToValueCalculate > totalClaimCount ? totalClaimCount : updatedToValueCalculate;
     pagesItems['results'].from = updatedFromvalue;
     pagesItems['results'].to = updatedTovalue;
   }
@@ -34,10 +34,10 @@ export function formPaginationToDisplay(pagingInfo: object, selectedPageNo: numb
 }
 
 function formItemswithHyperlink(hyperlinkText: string, selectedPageNo: number, totalClaimCount: number, totalPage: number): object {
-  let pagesItems: Array<object> = [];
+  const pagesItems: object[] = [];
   let nextArrow: object;
   let previousArrow: object;
-  let results: object = {
+  const results: object = {
     from: 1,
     to: 10,
     count: totalClaimCount,
@@ -45,11 +45,11 @@ function formItemswithHyperlink(hyperlinkText: string, selectedPageNo: number, t
 
   for (let i: number = 1; i <= totalPage; i++) {
     let items: object;
-    let href: string = hyperlinkText + i;
+    const href: string = hyperlinkText + i;
     if (i === selectedPageNo) {
-      items = { text: i, href: href, 'selected': true };
+      items = { text: i, href, 'selected': true };
     } else {
-      items = { text: i, href: href, 'selected': false };
+      items = { text: i, href, 'selected': false };
     }
     pagesItems.push(items);
   }
@@ -82,8 +82,8 @@ function formItemswithHyperlink(hyperlinkText: string, selectedPageNo: number, t
     };
   }
 
-  let paginationToDisplay = {
-    results: results,
+  const paginationToDisplay = {
+    results,
     previous: previousArrow,
     next: nextArrow,
     items: pagesItems,

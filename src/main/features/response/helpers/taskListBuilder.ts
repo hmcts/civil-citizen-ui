@@ -48,7 +48,7 @@ export class TaskListBuilder extends TaskStatus {
     tasks.push(
       new TaskListItem(
         'Confirm your details',
-        Paths.defendantYourDetailsPage.evaluateUri({ externalId: externalId }),
+        Paths.defendantYourDetailsPage.evaluateUri({ externalId }),
         YourDetails.isCompleted(draft),
       ),
     );
@@ -65,7 +65,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Decide if you need more time to respond',
-          Paths.moreTimeRequestPage.evaluateUri({ externalId: externalId }),
+          Paths.moreTimeRequestPage.evaluateUri({ externalId }),
           MoreTimeNeededTask.isCompleted(draft, claim.moreTimeRequested),
         ),
       );
@@ -81,7 +81,7 @@ export class TaskListBuilder extends TaskStatus {
     tasks.push(
       new TaskListItem(
         'Choose a response',
-        Paths.responseTypePage.evaluateUri({ externalId: externalId }),
+        Paths.responseTypePage.evaluateUri({ externalId }),
         OweMoneyTask.isCompleted(draft),
       ),
     );
@@ -90,7 +90,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Tell us how much you’ve paid',
-          FullRejectionPaths.howMuchHaveYouPaidPage.evaluateUri({ externalId: externalId }),
+          FullRejectionPaths.howMuchHaveYouPaidPage.evaluateUri({ externalId }),
           ValidationUtils.isValid(draft.rejectAllOfClaim.howMuchHaveYouPaid),
         ),
       );
@@ -100,7 +100,7 @@ export class TaskListBuilder extends TaskStatus {
         tasks.push(
           new TaskListItem(
             'Why do you disagree with the amount claimed?',
-            FullRejectionPaths.whyDoYouDisagreePage.evaluateUri({ externalId: externalId }),
+            FullRejectionPaths.whyDoYouDisagreePage.evaluateUri({ externalId }),
             ValidationUtils.isValid(draft.rejectAllOfClaim.whyDoYouDisagree),
           ),
         );
@@ -111,7 +111,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Tell us why you disagree with the claim',
-          Paths.defencePage.evaluateUri({ externalId: externalId }),
+          Paths.defencePage.evaluateUri({ externalId }),
           YourDefenceTask.isCompleted(draft),
         ),
       );
@@ -121,7 +121,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Decide how you’ll pay',
-          FullAdmissionPaths.paymentOptionPage.evaluateUri({ externalId: externalId }),
+          FullAdmissionPaths.paymentOptionPage.evaluateUri({ externalId }),
           DecideHowYouWillPayTask.isCompleted(draft),
         ),
       );
@@ -130,7 +130,7 @@ export class TaskListBuilder extends TaskStatus {
         tasks.push(
           new TaskListItem(
             'Share your financial details',
-            StatementOfMeansPaths.introPage.evaluateUri({ externalId: externalId }),
+            StatementOfMeansPaths.introPage.evaluateUri({ externalId }),
             StatementOfMeansTask.isCompleted(draft),
           ),
         );
@@ -141,7 +141,7 @@ export class TaskListBuilder extends TaskStatus {
         tasks.push(
           new TaskListItem(
             'Share your financial details',
-            Paths.sendCompanyFinancialDetailsPage.evaluateUri({ externalId: externalId }),
+            Paths.sendCompanyFinancialDetailsPage.evaluateUri({ externalId }),
             ViewSendCompanyFinancialDetailsTask.isCompleted(draft),
           ),
         );
@@ -151,7 +151,7 @@ export class TaskListBuilder extends TaskStatus {
         tasks.push(
           new TaskListItem(
             'Your repayment plan',
-            FullAdmissionPaths.paymentPlanPage.evaluateUri({ externalId: externalId }),
+            FullAdmissionPaths.paymentPlanPage.evaluateUri({ externalId }),
             YourRepaymentPlanTask.isCompleted(draft.fullAdmission.paymentIntention.paymentPlan),
           ),
         );
@@ -167,7 +167,7 @@ export class TaskListBuilder extends TaskStatus {
         tasks.push(
           new TaskListItem(
             'How much have you paid?',
-            PartAdmissionPaths.howMuchHaveYouPaidPage.evaluateUri({ externalId: externalId }),
+            PartAdmissionPaths.howMuchHaveYouPaidPage.evaluateUri({ externalId }),
             ValidationUtils.isValid(draft.partialAdmission.howMuchHaveYouPaid),
           ),
         );
@@ -181,7 +181,7 @@ export class TaskListBuilder extends TaskStatus {
         tasks.push(
           new TaskListItem(
             'How much money do you admit you owe?',
-            PartAdmissionPaths.howMuchDoYouOwePage.evaluateUri({ externalId: externalId }),
+            PartAdmissionPaths.howMuchDoYouOwePage.evaluateUri({ externalId }),
             HowMuchDoYouOweTask.isCompleted(draft),
           ),
         );
@@ -190,7 +190,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Why do you disagree with the amount claimed?',
-          PartAdmissionPaths.whyDoYouDisagreePage.evaluateUri({ externalId: externalId }),
+          PartAdmissionPaths.whyDoYouDisagreePage.evaluateUri({ externalId }),
           ValidationUtils.isValid(draft.partialAdmission.whyDoYouDisagree),
         ),
       );
@@ -201,7 +201,7 @@ export class TaskListBuilder extends TaskStatus {
         tasks.push(
           new TaskListItem(
             `When will you pay the ${NumberFormatter.formatMoney(draft.partialAdmission.howMuchDoYouOwe.amount)}?`,
-            PartAdmissionPaths.paymentOptionPage.evaluateUri({ externalId: externalId }),
+            PartAdmissionPaths.paymentOptionPage.evaluateUri({ externalId }),
             WhenWillYouPayTask.isCompleted(draft),
           ),
         );
@@ -211,7 +211,7 @@ export class TaskListBuilder extends TaskStatus {
         tasks.push(
           new TaskListItem(
             'Share your financial details',
-            StatementOfMeansPaths.introPage.evaluateUri({ externalId: externalId }),
+            StatementOfMeansPaths.introPage.evaluateUri({ externalId }),
             StatementOfMeansTask.isCompleted(draft),
           ),
         );
@@ -222,7 +222,7 @@ export class TaskListBuilder extends TaskStatus {
         tasks.push(
           new TaskListItem(
             'Share your financial details',
-            Paths.sendCompanyFinancialDetailsPage.evaluateUri({ externalId: externalId }),
+            Paths.sendCompanyFinancialDetailsPage.evaluateUri({ externalId }),
             ViewSendCompanyFinancialDetailsTask.isCompleted(draft),
           ),
         );
@@ -233,7 +233,7 @@ export class TaskListBuilder extends TaskStatus {
         tasks.push(
           new TaskListItem(
             'Your repayment plan',
-            PartAdmissionPaths.paymentPlanPage.evaluateUri({ externalId: externalId }),
+            PartAdmissionPaths.paymentPlanPage.evaluateUri({ externalId }),
             YourRepaymentPlanTask.isCompleted(draft.partialAdmission.paymentIntention.paymentPlan),
           ),
         );
@@ -269,7 +269,7 @@ export class TaskListBuilder extends TaskStatus {
       return new TaskList(
         'Your hearing requirements', [
           new TaskListItem(
-            `Give us details in case there’s a hearing`,
+            'Give us details in case there’s a hearing',
             DirectionsQuestionnairePaths.supportPage.evaluateUri({ externalId: claim.externalId }),
             DetailsInCaseOfHearingTask.isCompleted(draft, directionsQuestionnaireDraft, claim),
           ),
@@ -292,7 +292,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Check and submit your response',
-          Paths.checkAndSendPage.evaluateUri({ externalId: externalId }),
+          Paths.checkAndSendPage.evaluateUri({ externalId }),
           false,
         ),
       );

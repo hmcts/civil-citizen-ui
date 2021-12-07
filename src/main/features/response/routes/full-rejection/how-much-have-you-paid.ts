@@ -20,7 +20,7 @@ const page: RoutablePath = FullRejectionPaths.howMuchHaveYouPaidPage;
 
 function renderView(form: Form<HowMuchHaveYouPaid>, res: express.Response) {
   res.render(page.associatedView, {
-    form: form,
+    form,
   });
 }
 
@@ -62,9 +62,9 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         if (paidLessThanClaimed) {
-          res.redirect(FullRejectionPaths.youHavePaidLessPage.evaluateUri({ externalId: externalId }));
+          res.redirect(FullRejectionPaths.youHavePaidLessPage.evaluateUri({ externalId }));
         } else {
-          res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+          res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
         }
       }
     }));

@@ -19,8 +19,8 @@ import { MomentFactory } from 'shared/momentFactory';
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
 
 const cookieName: string = config.get<string>('session.cookieName');
-const pagePath: string = Paths.payBySetDatePage.evaluateUri({ externalId: externalId });
-const checkAndSavePage: string = Paths.checkAndSendPage.evaluateUri({ externalId: externalId });
+const pagePath: string = Paths.payBySetDatePage.evaluateUri({ externalId });
+const checkAndSavePage: string = Paths.checkAndSendPage.evaluateUri({ externalId });
 const checkContent: string = 'When do you want the defendant to pay?';
 
 describe('CCJ - Pay by set date', () => {

@@ -41,7 +41,7 @@ export default express.Router()
       const { externalId } = req.params;
 
       if (form.hasErrors()) {
-        res.render(page.associatedView, { form: form });
+        res.render(page.associatedView, { form });
       } else {
         const draft: Draft<ResponseDraft> = res.locals.responseDraft;
         const user: User = res.locals.user;
@@ -66,9 +66,9 @@ export default express.Router()
 
         await new DraftService().save(draft, user.bearerToken);
         if (skipCarerPage) {
-          res.redirect(Paths.employmentPage.evaluateUri({ externalId: externalId }));
+          res.redirect(Paths.employmentPage.evaluateUri({ externalId }));
         } else {
-          res.redirect(Paths.carerPage.evaluateUri({ externalId: externalId }));
+          res.redirect(Paths.carerPage.evaluateUri({ externalId }));
         }
       }
     }),

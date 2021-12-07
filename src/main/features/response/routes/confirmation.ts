@@ -22,6 +22,6 @@ export default express.Router()
       const claim: Claim = res.locals.claim;
 
       res.render(Paths.confirmationPage.associatedView, {
-        claim: claim,
+        claim,
       });
     });

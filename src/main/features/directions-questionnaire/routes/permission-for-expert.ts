@@ -15,7 +15,7 @@ import { ExpertEvidence } from 'directions-questionnaire/forms/models/expertEvid
 import { WhyExpertIsNeeded } from 'directions-questionnaire/forms/models/whyExpertIsNeeded';
 
 function renderPage(res: express.Response, form: Form<PermissionForExpert>) {
-  res.render(Paths.permissionForExpertPage.associatedView, { form: form });
+  res.render(Paths.permissionForExpertPage.associatedView, { form });
 }
 
 /* tslint:disable:no-default-export */
@@ -33,7 +33,7 @@ export default express.Router()
 
       if (form.hasErrors()) {
         res.render(Paths.permissionForExpertPage.associatedView, {
-          form: form,
+          form,
         });
       } else {
         const claim: Claim = res.locals.claim;

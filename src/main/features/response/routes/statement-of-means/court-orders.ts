@@ -19,7 +19,7 @@ const page: RoutablePath = StatementOfMeansPaths.courtOrdersPage;
 
 function renderView(form: Form<CourtOrders>, res: express.Response): void {
   makeSureThereIsAtLeastOneRow(form.model);
-  res.render(page.associatedView, { form: form });
+  res.render(page.associatedView, { form });
 }
 
 function actionHandler(req: express.Request, res: express.Response, next: express.NextFunction): void {

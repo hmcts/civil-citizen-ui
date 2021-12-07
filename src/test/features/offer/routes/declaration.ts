@@ -14,9 +14,9 @@ import { MadeBy } from 'claims/models/madeBy';
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = '400f4c57-9684-49c0-adb4-4cf46579d6dc';
-const declarationPage = OfferPaths.declarationPage.evaluateUri({ externalId: externalId });
-const acceptedPage = OfferPaths.acceptedPage.evaluateUri({ externalId: externalId });
-const settledPage = OfferPaths.settledPage.evaluateUri({ externalId: externalId });
+const declarationPage = OfferPaths.declarationPage.evaluateUri({ externalId });
+const acceptedPage = OfferPaths.acceptedPage.evaluateUri({ externalId });
+const settledPage = OfferPaths.settledPage.evaluateUri({ externalId });
 const pageHeading: string = 'Sign a settlement agreement';
 
 describe('declaration page', () => {

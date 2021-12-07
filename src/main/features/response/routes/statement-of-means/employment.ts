@@ -34,7 +34,7 @@ export default express.Router()
       const form: Form<Employment> = req.body;
 
       if (form.hasErrors()) {
-        res.render(page.associatedView, { form: form });
+        res.render(page.associatedView, { form });
       } else {
         const draft: Draft<ResponseDraft> = res.locals.responseDraft;
         const user: User = res.locals.user;
@@ -49,12 +49,12 @@ export default express.Router()
 
         const { externalId } = req.params;
         if (form.model.declared === false) {
-          res.redirect(StatementOfMeansPaths.unemployedPage.evaluateUri({ externalId: externalId }));
+          res.redirect(StatementOfMeansPaths.unemployedPage.evaluateUri({ externalId }));
         } else {
           if (form.model.employed) {
-            res.redirect(StatementOfMeansPaths.employersPage.evaluateUri({ externalId: externalId }));
+            res.redirect(StatementOfMeansPaths.employersPage.evaluateUri({ externalId }));
           } else {
-            res.redirect(StatementOfMeansPaths.selfEmploymentPage.evaluateUri({ externalId: externalId }));
+            res.redirect(StatementOfMeansPaths.selfEmploymentPage.evaluateUri({ externalId }));
           }
         }
       }

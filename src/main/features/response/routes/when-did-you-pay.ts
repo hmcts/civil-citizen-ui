@@ -14,7 +14,7 @@ import { Draft } from '@hmcts/draft-store-client';
 
 function renderView(form: Form<WhenDidYouPay>, res: express.Response) {
   res.render(Paths.whenDidYouPay.associatedView, {
-    form: form,
+    form,
   });
 }
 

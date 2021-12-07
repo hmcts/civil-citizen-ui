@@ -9,7 +9,7 @@ import { ErrorHandling } from 'shared/errorHandling';
 import { OtherWitnesses } from 'directions-questionnaire/forms/models/otherWitnesses';
 
 function renderPage(res: express.Response, form: Form<OtherWitnesses>) {
-  res.render(Paths.otherWitnessesPage.associatedView, { form: form });
+  res.render(Paths.otherWitnessesPage.associatedView, { form });
 }
 
 /* tslint:disable:no-default-export */

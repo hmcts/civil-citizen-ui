@@ -309,7 +309,7 @@ describe('Claimant response: check and send page', () => {
             .expect(res => expect(res).to.be.successful.withText('Check your answers'));
         });
 
-        it(`should render page successfully when Defendant's part admit pay immediately response is accepted`, async () => {
+        it('should render page successfully when Defendant\'s part admit pay immediately response is accepted', async () => {
           claimStoreServiceMock.resolveRetrieveClaimByExternalId(claimStoreServiceMock.samplePartialAdmissionWithPayImmediatelyData());
           draftStoreServiceMock.resolveFind(draftType,
             {
@@ -336,7 +336,7 @@ describe('Claimant response: check and send page', () => {
         });
 
         if (FeatureToggles.isEnabled('directionsQuestionnaire')) {
-          it(`should render page with hearing requirements when Defendant's part admit pay immediately response is rejected`, async () => {
+          it('should render page with hearing requirements when Defendant\'s part admit pay immediately response is rejected', async () => {
             const dqPartAdmit = {
               ...claimStoreServiceMock.samplePartialAdmissionWithPayImmediatelyData(),
               features: ['directionsQuestionnaire'],
@@ -367,7 +367,7 @@ describe('Claimant response: check and send page', () => {
           });
         }
 
-        it(`should render page without hearing requirements when Defendant's part admit pay immediately response is accepted`, async () => {
+        it('should render page without hearing requirements when Defendant\'s part admit pay immediately response is accepted', async () => {
           const dqPartAdmit = {
             ...claimStoreServiceMock.samplePartialAdmissionWithPayImmediatelyData(),
             features: ['directionsQuestionnaire'],
@@ -398,7 +398,7 @@ describe('Claimant response: check and send page', () => {
         });
 
         if (FeatureToggles.isEnabled('directionsQuestionnaire')) {
-          it(`should render page with hearing requirements when Defendant's full defence response is rejected`, async () => {
+          it('should render page with hearing requirements when Defendant\'s full defence response is rejected', async () => {
             const dqPartAdmit = {
               ...claimStoreServiceMock.sampleFullDefenceRejectEntirely,
               features: ['directionsQuestionnaire'],
@@ -429,7 +429,7 @@ describe('Claimant response: check and send page', () => {
           });
         }
 
-        it(`should render page without hearing requirements when Defendant's full defence response is accepted`, async () => {
+        it('should render page without hearing requirements when Defendant\'s full defence response is accepted', async () => {
           const dqPartAdmit = {
             ...claimStoreServiceMock.sampleFullDefenceRejectEntirely,
             features: ['directionsQuestionnaire'],
@@ -460,7 +460,7 @@ describe('Claimant response: check and send page', () => {
         });
 
         if (FeatureToggles.isEnabled('directionsQuestionnaire')) {
-          it(`should render page with hearing requirements when Defendant's already paid response is rejected`, async () => {
+          it('should render page with hearing requirements when Defendant\'s already paid response is rejected', async () => {
             const dqPartAdmit = {
               ...claimStoreServiceMock.sampleFullDefenceWithStatesPaidGreaterThanClaimAmount,
               features: ['directionsQuestionnaire'],
@@ -490,7 +490,7 @@ describe('Claimant response: check and send page', () => {
           });
         }
 
-        it(`should render page without hearing requirements when Defendant's already paid response is accepted`, async () => {
+        it('should render page without hearing requirements when Defendant\'s already paid response is accepted', async () => {
           const dqPartAdmit = {
             ...claimStoreServiceMock.sampleFullDefenceWithStatesPaidGreaterThanClaimAmount,
             features: ['directionsQuestionnaire'],

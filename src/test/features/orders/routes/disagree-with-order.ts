@@ -104,7 +104,7 @@ if (FeatureToggles.isEnabled('directionsQuestionnaire')) {
               .set('Cookie', `${cookieName}=ABC`)
               .send({ reason: '' })
               .expect(res => expect(res).to.be.redirect
-                .toLocation(OrdersPaths.confirmationPage.evaluateUri({ externalId: externalId })));
+                .toLocation(OrdersPaths.confirmationPage.evaluateUri({ externalId })));
           });
 
           it('should redirect to the dashboard when everything is fine', async () => {
@@ -120,7 +120,7 @@ if (FeatureToggles.isEnabled('directionsQuestionnaire')) {
               .set('Cookie', `${cookieName}=ABC`)
               .send({ reason: 'I want a judge to review' })
               .expect(res => expect(res).to.be.redirect
-                .toLocation(OrdersPaths.confirmationPage.evaluateUri({ externalId: externalId })));
+                .toLocation(OrdersPaths.confirmationPage.evaluateUri({ externalId })));
           });
         });
       });

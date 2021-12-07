@@ -21,7 +21,7 @@ import {
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = FullRejectionPaths.whyDoYouDisagreePage.evaluateUri({ externalId: externalId });
+const pagePath = FullRejectionPaths.whyDoYouDisagreePage.evaluateUri({ externalId });
 
 const validFormData = { text: 'I will not pay!' };
 const header: string = 'Why do you disagree with the claim amount?';
@@ -149,7 +149,7 @@ describe('Defendant: full reject - why do you disagree?', () => {
             .set('Cookie', `${cookieName}=ABC`)
             .send(validFormData)
             .expect(res => expect(res).to.be.redirect
-              .toLocation(Paths.timelinePage.evaluateUri({ externalId: externalId })));
+              .toLocation(Paths.timelinePage.evaluateUri({ externalId })));
         });
       });
     });

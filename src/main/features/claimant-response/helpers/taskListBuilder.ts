@@ -43,7 +43,7 @@ export class TaskListBuilder extends TaskStatus {
     tasks.push(
       new TaskListItem(
         'View the defendant’s response',
-        Paths.defendantsResponsePage.evaluateUri({ externalId: externalId }),
+        Paths.defendantsResponsePage.evaluateUri({ externalId }),
         ViewDefendantResponseTask.isCompleted(draft.defendantResponseViewed),
       ),
     );
@@ -59,28 +59,28 @@ export class TaskListBuilder extends TaskStatus {
     if (response.responseType === ResponseType.FULL_DEFENCE) {
       tasks.push(
         new TaskListItem('Accept or reject their response',
-          Paths.settleClaimPage.evaluateUri({ externalId: externalId }),
+          Paths.settleClaimPage.evaluateUri({ externalId }),
           ClaimSettledTask.isCompleted(draft),
         ));
     } else {
       if (StatesPaidHelper.isAlreadyPaidLessThanAmount(claim)) {
         tasks.push(
           new TaskListItem(`Have you been paid the ${NumberFormatter.formatMoney(response.amount)}?`,
-            Paths.partPaymentReceivedPage.evaluateUri({ externalId: externalId }),
+            Paths.partPaymentReceivedPage.evaluateUri({ externalId }),
             PartPaymentReceivedTask.isCompleted(draft),
           ));
 
         if (draft.partPaymentReceived && draft.partPaymentReceived.received.option === YesNoOption.YES) {
           tasks.push(
             new TaskListItem(`Settle the claim for ${NumberFormatter.formatMoney(response.amount)}?`,
-              Paths.settleClaimPage.evaluateUri({ externalId: externalId }),
+              Paths.settleClaimPage.evaluateUri({ externalId }),
               ClaimSettledTask.isCompleted(draft),
             ));
         }
       } else {
         tasks.push(
           new TaskListItem(`Have you been paid the full ${NumberFormatter.formatMoney(claim.totalAmountTillDateOfIssue)}?`,
-            Paths.settleClaimPage.evaluateUri({ externalId: externalId }),
+            Paths.settleClaimPage.evaluateUri({ externalId }),
             ClaimSettledTask.isCompleted(draft),
           ));
       }
@@ -124,7 +124,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Decide whether to proceed',
-          Paths.intentionToProceedPage.evaluateUri({ externalId: externalId }),
+          Paths.intentionToProceedPage.evaluateUri({ externalId }),
           IntentionToProceedTask.isCompleted(draft.intentionToProceed),
         ),
       );
@@ -136,7 +136,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Accept or reject the ' + NumberFormatter.formatMoney(claim.response.amount),
-          Paths.settleAdmittedPage.evaluateUri({ externalId: externalId }),
+          Paths.settleAdmittedPage.evaluateUri({ externalId }),
           SettleAdmittedTask.isCompleted(draft.settleAdmitted),
         ),
       );
@@ -147,7 +147,7 @@ export class TaskListBuilder extends TaskStatus {
         tasks.push(
           new TaskListItem(
             'Accept or reject their repayment plan',
-            Paths.acceptPaymentMethodPage.evaluateUri({ externalId: externalId }),
+            Paths.acceptPaymentMethodPage.evaluateUri({ externalId }),
             AcceptPaymentMethodTask.isCompleted(draft.acceptPaymentMethod),
           ),
         );
@@ -168,7 +168,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Accept or reject their repayment plan',
-          Paths.acceptPaymentMethodPage.evaluateUri({ externalId: externalId }),
+          Paths.acceptPaymentMethodPage.evaluateUri({ externalId }),
           AcceptPaymentMethodTask.isCompleted(draft.acceptPaymentMethod),
         ),
       );
@@ -198,7 +198,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Propose an alternative repayment plan',
-          Paths.alternateRepaymentPlanPage.evaluateUri({ externalId: externalId }),
+          Paths.alternateRepaymentPlanPage.evaluateUri({ externalId }),
           isDefinedAndValid(draft.alternatePaymentMethod),
         ),
       );
@@ -212,7 +212,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Sign a settlement agreement',
-          Paths.signSettlementAgreementPage.evaluateUri({ externalId: externalId }),
+          Paths.signSettlementAgreementPage.evaluateUri({ externalId }),
           SignSettlementAgreementTask.isCompleted(draft.settlementAgreement),
         ),
       );
@@ -226,7 +226,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Request a County Court Judgment',
-          CCJPaths.paidAmountPage.evaluateUri({ externalId: externalId }),
+          CCJPaths.paidAmountPage.evaluateUri({ externalId }),
           isDefinedAndValid(draft.paidAmount),
         ),
       );
@@ -247,7 +247,7 @@ export class TaskListBuilder extends TaskStatus {
       tasks.push(
         new TaskListItem(
           'Choose how to formalise repayment',
-          Paths.chooseHowToProceedPage.evaluateUri({ externalId: externalId }),
+          Paths.chooseHowToProceedPage.evaluateUri({ externalId }),
           ChooseHowToProceedTask.isCompleted(draft.formaliseRepaymentPlan),
         ),
       );
@@ -265,7 +265,7 @@ export class TaskListBuilder extends TaskStatus {
     tasks.push(
       new TaskListItem(
         'Check and submit your response',
-        Paths.checkAndSendPage.evaluateUri({ externalId: externalId }),
+        Paths.checkAndSendPage.evaluateUri({ externalId }),
         false,
       ),
     );
@@ -291,7 +291,7 @@ export class TaskListBuilder extends TaskStatus {
       return new TaskList(
         'Your hearing requirements', [
           new TaskListItem(
-            `Give us details in case there’s a hearing`,
+            'Give us details in case there’s a hearing',
             DirectionsQuestionnairePaths.supportPage.evaluateUri({ externalId: claim.externalId }),
             DetailsInCaseOfHearingTask.isCompleted(draft, directionsQuestionnaireDraft, claim),
           ),

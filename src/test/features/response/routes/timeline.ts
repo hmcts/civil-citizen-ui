@@ -21,7 +21,7 @@ import {
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId: string = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath: string = Paths.timelinePage.evaluateUri({ externalId: externalId });
+const pagePath: string = Paths.timelinePage.evaluateUri({ externalId });
 
 describe('Defendant response: timeline', () => {
 
@@ -132,7 +132,7 @@ describe('Defendant response: timeline', () => {
                 .set('Cookie', `${cookieName}=ABC`)
                 .send({ rows: [{ date: 'Damaged roof', description: '299' }] })
                 .expect(res => expect(res).to.be.redirect
-                  .toLocation(Paths.evidencePage.evaluateUri({ externalId: externalId })));
+                  .toLocation(Paths.evidencePage.evaluateUri({ externalId })));
             });
           });
         });

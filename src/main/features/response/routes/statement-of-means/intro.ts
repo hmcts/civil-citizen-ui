@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import { StatementOfMeansPaths, StatementOfMeansPaths as Paths } from 'response/paths';
+import { StatementOfMeansPaths as Paths, StatementOfMeansPaths } from 'response/paths';
 import { StatementOfMeansStateGuard } from 'response/guards/statementOfMeansStateGuard';
 
 import { Claim } from 'claims/models/claim';

@@ -21,7 +21,7 @@ import {
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = Paths.signSettlementAgreement.evaluateUri({ externalId: externalId });
+const pagePath = Paths.signSettlementAgreement.evaluateUri({ externalId });
 
 const claim = {
   ...claimStoreServiceMock.sampleClaimObj,
@@ -123,7 +123,7 @@ describe('Settlement agreement: sign settlement agreement page', () => {
               .send({ option: 'no' })
               .expect(res => expect(res).to.be.redirect
                 .toLocation(Paths.settlementAgreementConfirmation
-                  .evaluateUri({ externalId: externalId })));
+                  .evaluateUri({ externalId })));
           });
 
           it('should redirect to confirmation page when everything is fine and settlement agreement is accepted', async () => {
@@ -136,7 +136,7 @@ describe('Settlement agreement: sign settlement agreement page', () => {
               .send({ option: 'yes' })
               .expect(res => expect(res).to.be.redirect
                 .toLocation(Paths.settlementAgreementConfirmation
-                  .evaluateUri({ externalId: externalId })));
+                  .evaluateUri({ externalId })));
           });
 
           verifyRedirectForPostWhenAlreadyPaidInFull(pagePath, claim, { option: 'yes' });

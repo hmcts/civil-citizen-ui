@@ -17,8 +17,8 @@ import { checkNotClaimantInCaseGuard } from 'test/features/claimant-response/rou
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = ClaimantResponsePaths.defendantsResponsePage.evaluateUri({ externalId: externalId });
-const taskListPagePath = ClaimantResponsePaths.taskListPage.evaluateUri({ externalId: externalId });
+const pagePath = ClaimantResponsePaths.defendantsResponsePage.evaluateUri({ externalId });
+const taskListPagePath = ClaimantResponsePaths.taskListPage.evaluateUri({ externalId });
 
 const fullAdmissionResponseWithPaymentBySetDate = claimStoreServiceMock.sampleFullAdmissionWithPaymentBySetDateResponseObj;
 const fullAdmissionResponseWithPaymentByInstalments = claimStoreServiceMock.sampleFullAdmissionWithPaymentByInstalmentsResponseObj;
@@ -95,7 +95,7 @@ describe('Claimant response: view defendant response page', () => {
         await request(app)
           .get(pagePath)
           .set('Cookie', `${cookieName}=ABC`)
-          .expect(res => expect(res).to.be.successful.withText(`£20,000`));
+          .expect(res => expect(res).to.be.successful.withText('£20,000'));
       });
 
       it('should render full defence with hearing requirements', async () => {
@@ -109,8 +109,8 @@ describe('Claimant response: view defendant response page', () => {
         await request(app)
           .get(pagePath)
           .set('Cookie', `${cookieName}=ABC`)
-          .expect(res => expect(res).to.be.successful.withText(`has rejected the claim.`,
-            `Download their full response and hearing requirements`));
+          .expect(res => expect(res).to.be.successful.withText('has rejected the claim.',
+            'Download their full response and hearing requirements'));
       });
 
       it('should render part admission with hearing requirements', async () => {
@@ -124,7 +124,7 @@ describe('Claimant response: view defendant response page', () => {
         await request(app)
           .get(pagePath)
           .set('Cookie', `${cookieName}=ABC`)
-          .expect(res => expect(res).to.be.successful.withText(`They don’t believe they owe the full amount claimed.`));
+          .expect(res => expect(res).to.be.successful.withText('They don’t believe they owe the full amount claimed.'));
       });
     });
 

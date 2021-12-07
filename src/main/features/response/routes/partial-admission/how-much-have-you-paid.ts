@@ -22,7 +22,7 @@ function renderView(form: Form<HowMuchHaveYouPaid>, res: express.Response) {
   const pastDate: Moment = MomentFactory.currentDate().subtract(3, 'months');
 
   res.render(page.associatedView, {
-    form: form,
+    form,
     totalAmount: res.locals.claim.totalAmountTillToday,
     pastDate,
   });
@@ -33,6 +33,7 @@ export default express.Router()
   .get(
     page.uri,
     PartialAdmissionGuard.requestHandler(),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<ResponseDraft> = res.locals.responseDraft;
       renderView(new Form(draft.document.partialAdmission.howMuchHaveYouPaid), res);
@@ -41,6 +42,7 @@ export default express.Router()
     page.uri,
     PartialAdmissionGuard.requestHandler(),
     FormValidator.requestHandler(HowMuchHaveYouPaid, HowMuchHaveYouPaid.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<HowMuchHaveYouPaid> = req.body;
 
@@ -55,6 +57,6 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         const { externalId } = req.params;
-        res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+        res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
       }
     }));

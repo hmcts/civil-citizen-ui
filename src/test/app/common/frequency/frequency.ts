@@ -26,7 +26,7 @@ describe('Frequency', () => {
         try {
           Frequency.of('unknown');
         } catch (e) {
-          expect(e.message).to.equal(`There is no Frequency for value: 'unknown'`);
+          expect(e.message).to.equal('There is no Frequency for value: \'unknown\'');
         }
       });
     });
@@ -51,7 +51,7 @@ describe('Frequency', () => {
         try {
           Frequency.ofWeekly(0);
         } catch (e) {
-          expect(e.message).to.equal(`There is no Frequency for weekly value: '0'`);
+          expect(e.message).to.equal('There is no Frequency for weekly value: \'0\'');
         }
       });
     });

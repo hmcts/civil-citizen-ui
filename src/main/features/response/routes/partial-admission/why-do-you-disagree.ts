@@ -18,7 +18,7 @@ const page: RoutablePath = PartAdmissionPaths.whyDoYouDisagreePage;
 
 function renderView(form: Form<WhyDoYouDisagree>, res: express.Response) {
   res.render(page.associatedView, {
-    form: form,
+    form,
     totalAmount: res.locals.claim.totalAmountTillToday,
   });
 }
@@ -28,6 +28,7 @@ export default express.Router()
   .get(
     page.uri,
     PartialAdmissionGuard.requestHandler(),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<ResponseDraft> = res.locals.responseDraft;
       renderView(new Form(draft.document.partialAdmission.whyDoYouDisagree), res);
@@ -36,6 +37,7 @@ export default express.Router()
     page.uri,
     PartialAdmissionGuard.requestHandler(),
     FormValidator.requestHandler(WhyDoYouDisagree, WhyDoYouDisagree.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<WhyDoYouDisagree> = req.body;
 
@@ -51,6 +53,6 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         const { externalId } = req.params;
-        res.redirect(Paths.timelinePage.evaluateUri({ externalId: externalId }));
+        res.redirect(Paths.timelinePage.evaluateUri({ externalId }));
       }
     }));

@@ -11,7 +11,7 @@ import { InterestTotal } from 'claim/form/models/interestTotal';
 
 function renderView(form: Form<InterestTotal>, res: express.Response): void {
   res.render(Paths.interestTotalPage.associatedView, {
-    form: form,
+    form,
   });
 }
 

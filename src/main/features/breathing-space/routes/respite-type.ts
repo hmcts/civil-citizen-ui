@@ -14,15 +14,15 @@ import { Draft } from '@hmcts/draft-store-client';
 function renderView(form: Form<BreathingType>, res: express.Response, next: express.NextFunction) {
   const pastDate: Moment = MomentFactory.currentDate().subtract(1, 'day');
   res.render(Paths.bsTypePage.associatedView, {
-    form: form,
-    pastDate: pastDate,
+    form,
+    pastDate,
   });
 }
 
 /* tslint:disable:no-default-export */
 export default express.Router()
   .get(Paths.bsTypePage.uri, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    let draft: Draft<DraftClaim> = res.locals.Draft;
+    const draft: Draft<DraftClaim> = res.locals.Draft;
     renderView(new Form(new BreathingType(draft.document.breathingSpace.breathingSpaceType)), res, next);
   })
   .post(
@@ -34,7 +34,7 @@ export default express.Router()
       if (form.hasErrors()) {
         renderView(form, res, next);
       } else {
-        let draft: Draft<DraftClaim> = res.locals.Draft;
+        const draft: Draft<DraftClaim> = res.locals.Draft;
         const user: User = res.locals.user;
         draft.document.breathingSpace.breathingSpaceType = form.model.option;
         await new DraftService().save(draft, user.bearerToken);

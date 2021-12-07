@@ -11,7 +11,7 @@ import { User } from 'idam/user';
 import { WhyExpertIsNeeded } from 'directions-questionnaire/forms/models/whyExpertIsNeeded';
 
 function renderPage(res: express.Response, form: Form<WhyExpertIsNeeded>) {
-  res.render(Paths.whyExpertIsNeededPage.associatedView, { form: form });
+  res.render(Paths.whyExpertIsNeededPage.associatedView, { form });
 }
 
 export default express.Router()

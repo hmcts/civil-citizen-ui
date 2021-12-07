@@ -8,4 +8,6 @@ coverage/*
 /src/main/public/
 # custom definition files
 /src/main/types/
+# removed eslint to test folders
+/src/test
 

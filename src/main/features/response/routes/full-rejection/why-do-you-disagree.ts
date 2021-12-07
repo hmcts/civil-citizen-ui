@@ -18,7 +18,7 @@ const page: RoutablePath = FullRejectionPaths.whyDoYouDisagreePage;
 
 function renderView(form: Form<WhyDoYouDisagree>, res: express.Response) {
   res.render(page.associatedView, {
-    form: form,
+    form,
   });
 }
 
@@ -49,6 +49,6 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         const { externalId } = req.params;
-        res.redirect(Paths.timelinePage.evaluateUri({ externalId: externalId }));
+        res.redirect(Paths.timelinePage.evaluateUri({ externalId }));
       }
     }));

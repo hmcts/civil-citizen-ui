@@ -59,7 +59,7 @@ describe('OtherWitnesses', () => {
       expect(model.otherWitnesses).to.be.eq(undefined);
     });
 
-    it(`valid object when values provided`, () => {
+    it('valid object when values provided', () => {
       const model = OtherWitnesses.fromObject({ otherWitnesses: 'yes' });
       expect(model.otherWitnesses).to.be.eq(YesNoOption.YES);
     });

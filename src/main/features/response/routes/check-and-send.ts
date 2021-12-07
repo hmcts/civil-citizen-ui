@@ -52,18 +52,18 @@ async function renderView(form: Form<StatementOfTruth>, res: express.Response): 
   }
 
   res.render(Paths.checkAndSendPage.associatedView, {
-    claim: claim,
-    form: form,
+    claim,
+    form,
     draft: draft.document,
     signatureType: signatureTypeFor(claim, draft),
     statementOfMeansIsApplicable: StatementOfMeansFeature.isApplicableFor(claim, draft.document),
-    dqsEnabled: dqsEnabled,
-    mediationDraft: mediationDraft,
+    dqsEnabled,
+    mediationDraft,
     contactPerson: FreeMediationUtil.getMediationContactPerson(claim, mediationDraft.document, draft.document),
     contactNumber: FreeMediationUtil.getMediationPhoneNumber(claim, mediationDraft.document, draft.document),
     directionsQuestionnaireDraft: directionsQuestionnaireDraft.document,
-    datesUnavailable: datesUnavailable,
-    statementOfTruthType: statementOfTruthType,
+    datesUnavailable,
+    statementOfTruthType,
     timeline: getTimeline(draft),
     evidence: getEvidence(draft),
   });
@@ -161,7 +161,7 @@ export default express.Router()
       if (await featureToggles.isPcqEnabled()) {
         const isEligible = await PcqClient.isEligibleRedirect(draft.document.defendantDetails.partyDetails.pcqId, draft.document.defendantDetails.partyDetails.type);
         if (draft.document.defendantDetails.partyDetails.pcqId === undefined) {
-          let pcqID = uuid();
+          const pcqID = uuid();
           draft.document.defendantDetails.partyDetails.pcqId = pcqID;
           new DraftService().save(draft, user.bearerToken);
           if (isEligible) {

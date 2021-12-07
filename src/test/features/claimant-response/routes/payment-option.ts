@@ -19,7 +19,7 @@ import { PaymentType } from 'shared/components/payment-intention/model/paymentOp
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = Paths.alternateRepaymentPlanPage.evaluateUri({ externalId: externalId });
+const pagePath = Paths.alternateRepaymentPlanPage.evaluateUri({ externalId });
 
 const heading: string = 'How do you want the defendant to pay?';
 
@@ -141,19 +141,19 @@ describe('Claimant response: payment options', () => {
             it('should redirect to court offer page for "IMMEDIATELY" option selected', async () => {
               await checkThatSelectedPaymentOptionRedirectsToPage(
                 { option: PaymentType.IMMEDIATELY.value },
-                Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId: externalId }));
+                Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId }));
             });
 
             it('should redirect to payment date page for "BY_SET_DATE" option selected', async () => {
               await checkThatSelectedPaymentOptionRedirectsToPage(
                 { option: PaymentType.BY_SET_DATE.value },
-                Paths.paymentDatePage.evaluateUri({ externalId: externalId }));
+                Paths.paymentDatePage.evaluateUri({ externalId }));
             });
 
             it('should redirect to repayment plan page for "INSTALMENTS" option selected', async () => {
               await checkThatSelectedPaymentOptionRedirectsToPage(
                 { option: PaymentType.INSTALMENTS.value },
-                Paths.paymentPlanPage.evaluateUri({ externalId: externalId }));
+                Paths.paymentPlanPage.evaluateUri({ externalId }));
             });
           });
 
@@ -181,7 +181,7 @@ describe('Claimant response: payment options', () => {
               .post(pagePath)
               .set('Cookie', `${cookieName}=ABC`)
               .send(dataToSend)
-              .expect(res => expect(res).to.be.redirect.toLocation(Paths.taskListPage.evaluateUri({ externalId: externalId })));
+              .expect(res => expect(res).to.be.redirect.toLocation(Paths.taskListPage.evaluateUri({ externalId })));
           });
 
           it('should redirect to court offered instalments page when court decision is COURT', async () => {
@@ -193,7 +193,7 @@ describe('Claimant response: payment options', () => {
               .post(pagePath)
               .set('Cookie', `${cookieName}=ABC`)
               .send({ option: PaymentType.IMMEDIATELY.value })
-              .expect(res => expect(res).to.be.redirect.toLocation(Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId: externalId })));
+              .expect(res => expect(res).to.be.redirect.toLocation(Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId })));
           });
 
           it('should redirect to court offered set date page when court decision is DEFENDANT', async () => {
@@ -205,7 +205,7 @@ describe('Claimant response: payment options', () => {
               .post(pagePath)
               .set('Cookie', `${cookieName}=ABC`)
               .send({ option: PaymentType.IMMEDIATELY.value })
-              .expect(res => expect(res).to.be.redirect.toLocation(Paths.courtOfferedSetDatePage.evaluateUri({ externalId: externalId })));
+              .expect(res => expect(res).to.be.redirect.toLocation(Paths.courtOfferedSetDatePage.evaluateUri({ externalId })));
           });
 
           it('should redirect to court offered instalments page when court decision is DEFENDANT', async () => {
@@ -217,7 +217,7 @@ describe('Claimant response: payment options', () => {
               .post(pagePath)
               .set('Cookie', `${cookieName}=ABC`)
               .send({ option: PaymentType.IMMEDIATELY.value })
-              .expect(res => expect(res).to.be.redirect.toLocation(Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId: externalId })));
+              .expect(res => expect(res).to.be.redirect.toLocation(Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId })));
           });
 
           it('should redirect to pay by set date accepted page when court decision is CLAIMANT', async () => {
@@ -229,7 +229,7 @@ describe('Claimant response: payment options', () => {
               .post(pagePath)
               .set('Cookie', `${cookieName}=ABC`)
               .send({ option: PaymentType.IMMEDIATELY.value })
-              .expect(res => expect(res).to.be.redirect.toLocation(Paths.payBySetDateAcceptedPage.evaluateUri({ externalId: externalId })));
+              .expect(res => expect(res).to.be.redirect.toLocation(Paths.payBySetDateAcceptedPage.evaluateUri({ externalId })));
           });
         });
       });

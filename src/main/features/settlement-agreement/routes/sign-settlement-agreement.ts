@@ -15,8 +15,8 @@ async function renderView(form: Form<DefendantSettlementResponse>, res: express.
   try {
     const claim: Claim = res.locals.claim;
     res.render(Paths.signSettlementAgreement.associatedView, {
-      form: form,
-      claim: claim,
+      form,
+      claim,
       offer: claim.settlement.getLastOffer(),
       name: 'option',
     });

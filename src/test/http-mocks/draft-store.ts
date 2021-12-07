@@ -1117,15 +1117,17 @@ export function resolveUpdate(id: number = 100): mock.Scope {
     .reply(HttpStatus.OK);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function resolveSave(id: number = 100): mock.Scope {
   return mock(serviceBaseURL)
-    .post(`/drafts`)
+    .post('/drafts')
     .reply(HttpStatus.OK, sampleOrdersDraftObj);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function rejectSave(id: number = 100, reason: string = 'HTTP error'): mock.Scope {
   return mock(serviceBaseURL)
-    .post(`/drafts`)
+    .post('/drafts')
     .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
 

@@ -127,11 +127,11 @@ export class GovPayClient implements PayClient {
     return {
       case_reference: externalId,
       ccd_case_number: 'UNKNOWN',
-      description: description,
+      description,
       service: serviceName,
-      currency: currency,
+      currency,
       site_id: siteId,
-      fees: fees,
+      fees,
       amount: fees.reduce((amount: number, fee: Fee) => {
         return amount + fee.calculated_amount;
       }, 0),

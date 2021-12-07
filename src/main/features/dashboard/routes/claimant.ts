@@ -37,12 +37,12 @@ export default express.Router()
         throw new ForbiddenError();
       }
       res.render(Paths.claimantPage.associatedView, {
-        claim: claim,
-        mediationDeadline: mediationDeadline,
-        reconsiderationDeadline: reconsiderationDeadline,
-        isReviewOrderEligible: isReviewOrderEligible,
-        respondToReviewOrderDeadline: respondToReviewOrderDeadline,
-        judgePilot: judgePilot,
+        claim,
+        mediationDeadline,
+        reconsiderationDeadline,
+        isReviewOrderEligible,
+        respondToReviewOrderDeadline,
+        judgePilot,
       });
     }))
   .post(Paths.claimantPage.uri,
@@ -60,8 +60,8 @@ export default express.Router()
       }
 
       if (claim.claimData.defendant.type === PartyType.INDIVIDUAL.value && !claim.retrieveDateOfBirthOfDefendant) {
-        res.redirect(CCJPaths.dateOfBirthPage.evaluateUri({ externalId: externalId }));
+        res.redirect(CCJPaths.dateOfBirthPage.evaluateUri({ externalId }));
       } else {
-        res.redirect(CCJPaths.paidAmountPage.evaluateUri({ externalId: externalId }));
+        res.redirect(CCJPaths.paidAmountPage.evaluateUri({ externalId }));
       }
     }));

@@ -17,7 +17,7 @@ const dateUnder18Pattern: string = ValidationErrors.DATE_UNDER_18.replace('%s', 
 
 function renderView(form: Form<DateOfBirth>, res: express.Response) {
   res.render(Paths.defendantDateOfBirthPage.associatedView, {
-    form: form,
+    form,
   });
 }
 
@@ -38,6 +38,7 @@ export default express.Router()
   .post(
     Paths.defendantDateOfBirthPage.uri,
     FormValidator.requestHandler(DateOfBirth, DateOfBirth.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<DateOfBirth> = req.body;
       const claim: Claim = res.locals.claim;

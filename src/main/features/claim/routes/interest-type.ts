@@ -13,7 +13,7 @@ import { Draft } from '@hmcts/draft-store-client';
 import { InterestType, InterestTypeOption } from 'claim/form/models/interestType';
 
 function renderView(form: Form<InterestType>, res: express.Response): void {
-  res.render(Paths.interestTypePage.associatedView, { form: form });
+  res.render(Paths.interestTypePage.associatedView, { form });
 }
 
 /* tslint:disable:no-default-export */

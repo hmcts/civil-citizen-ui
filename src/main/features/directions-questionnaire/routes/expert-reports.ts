@@ -23,7 +23,7 @@ const page: RoutablePath = Paths.expertReportsPage;
 function renderView(form: Form<ExpertReports>, res: express.Response): void {
   makeSureThereIsAtLeastOneRow(form.model);
   res.render(page.associatedView, {
-    form: form,
+    form,
     reportNumber: form.model.rows.length,
   });
 }

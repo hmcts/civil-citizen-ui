@@ -1119,7 +1119,7 @@ export function rejectIsClaimLinked() {
 export function resolveRetrieveByLetterHolderId(referenceNumber: string, claimOverride?: any): mock.Scope {
   return mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/letter/[0-9]+'))
-    .reply(HttpStatus.OK, { ...sampleClaimObj, referenceNumber: referenceNumber, ...claimOverride });
+    .reply(HttpStatus.OK, { ...sampleClaimObj, referenceNumber, ...claimOverride });
 }
 
 export function rejectRetrieveByLetterHolderId(reason: string) {
@@ -1131,7 +1131,7 @@ export function rejectRetrieveByLetterHolderId(reason: string) {
 export function resolveRetrieveByDefendantId(referenceNumber: string, defendantId?: string, claim: object = sampleClaimObj, claimOverride?: any) {
   mock(`${serviceBaseURL}/claims`)
     .get(new RegExp('/defendant/[0-9]+'))
-    .reply(HttpStatus.OK, [{ ...claim, referenceNumber: referenceNumber, defendantId: defendantId, ...claimOverride }]);
+    .reply(HttpStatus.OK, [{ ...claim, referenceNumber, defendantId, ...claimOverride }]);
 }
 
 export function rejectRetrieveByDefendantId(reason: string) {
@@ -1218,7 +1218,7 @@ export function resolveSaveReDeterminationForExternalId(explanation: string) {
   mock(`${serviceBaseURL}/claims`)
     .post(new RegExp('/' + externalIdPattern +
       '/re-determination'))
-    .reply(HttpStatus.OK, { explanation: explanation, partyType: MadeBy.CLAIMANT });
+    .reply(HttpStatus.OK, { explanation, partyType: MadeBy.CLAIMANT });
 }
 
 export function rejectSaveReDeterminationForExternalId(reason: string = 'HTTP error') {
@@ -1317,7 +1317,7 @@ export function rejectPostponedDeadline(reason: string = 'HTTP error'): mock.Sco
 export function resolveAddRolesToUser(role: string) {
   mock(`${serviceBaseURL}/user`)
     .post('/roles')
-    .reply(HttpStatus.CREATED, { role: role });
+    .reply(HttpStatus.CREATED, { role });
 }
 
 export function rejectAddRolesToUser(reason: string = 'HTTP error') {

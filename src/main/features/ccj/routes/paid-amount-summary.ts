@@ -2,7 +2,7 @@ import * as express from 'express';
 
 import { AbstractPaidAmountSummaryPage } from 'shared/components/ccj/paid-amount-summary';
 import * as CCJHelper from 'main/common/helpers/ccjHelper';
-import { ccjPath, Paths } from 'features/ccj/paths';
+import { Paths, ccjPath } from 'features/ccj/paths';
 
 import { DraftCCJ } from 'ccj/draft/draftCCJ';
 import { AbstractModelAccessor, DefaultModelAccessor } from 'shared/components/model-accessor';
@@ -29,14 +29,14 @@ class PaidAmountSummaryPage extends AbstractPaidAmountSummaryPage<DraftCCJ> {
       const paymentOption: CCJPaymentOption = retrievePaymentOptionsFromClaim(claim);
       if ((paymentOption && paymentOption.option.value === PaymentOption.INSTALMENTS) ||
         (claim.isSettlementAgreementRejected && claim.isSettlementPaymentDateValid())) {
-        return Paths.checkAndSendPage.evaluateUri({ externalId: externalId });
+        return Paths.checkAndSendPage.evaluateUri({ externalId });
       } else if ((paymentOption && paymentOption.option.value === PaymentOption.BY_SPECIFIED_DATE)) {
-        return Paths.checkAndSendPage.evaluateUri({ externalId: externalId });
+        return Paths.checkAndSendPage.evaluateUri({ externalId });
       } else {
-        return Paths.paymentOptionsPage.evaluateUri({ externalId: externalId });
+        return Paths.paymentOptionsPage.evaluateUri({ externalId });
       }
     } else {
-      return Paths.paymentOptionsPage.evaluateUri({ externalId: externalId });
+      return Paths.paymentOptionsPage.evaluateUri({ externalId });
     }
   }
 

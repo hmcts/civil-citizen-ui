@@ -9,7 +9,7 @@ import { ResponseDraft } from 'response/draft/responseDraft';
 import { CalculateMonthlyIncomeExpense } from 'common/calculate-monthly-income-expense/calculateMonthlyIncomeExpense';
 import { IncomeExpenseSources } from 'common/calculate-monthly-income-expense/incomeExpenseSources';
 
-import { fullAdmissionPath, Paths } from 'response/paths';
+import { Paths, fullAdmissionPath } from 'response/paths';
 
 class ModelAccessor extends AbstractModelAccessor<ResponseDraft, PaymentIntention> {
   get(draft: ResponseDraft): PaymentIntention {
@@ -29,10 +29,10 @@ class PaymentPlanPage extends AbstractPaymentPlanPage<ResponseDraft> {
   createModelAccessor(): AbstractModelAccessor<ResponseDraft, PaymentIntention> {
     return new ModelAccessor();
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   buildPostSubmissionUri(req: express.Request, res: express.Response): string {
     const { externalId } = req.params;
-    return Paths.taskListPage.evaluateUri({ externalId: externalId });
+    return Paths.taskListPage.evaluateUri({ externalId });
   }
 }
 

@@ -21,7 +21,7 @@ const page: RoutablePath = StatementOfMeansPaths.monthlyExpensesPage;
 
 function renderView(form: Form<MonthlyExpenses>, res: express.Response): void {
   res.render(page.associatedView, {
-    form: form,
+    form,
     totalMonthlyExpense: calculateTotalMonthlyIncomeExpense(form.model),
   });
 }
@@ -56,18 +56,21 @@ function actionHandler(req: express.Request, res: express.Response, next: expres
     const form: Form<MonthlyExpenses> = req.body;
 
     switch (actionName) {
-      case 'addOther':
+      case 'addOther': {
         form.model.addEmptyOtherExpense();
         break;
-      case 'removeOther':
+      }
+      case 'removeOther': {
         const selectedForRemoval: ExpenseSource = form.valueFor(extractPropertyName(req.body.action[actionName]));
         form.model.removeOtherExpense(selectedForRemoval);
         break;
-      case 'reset':
+      }
+      case 'reset': {
         const propertyName = extractPropertyName(req.body.action[actionName]);
         const selectedForReset: ExpenseSource = form.valueFor(propertyName);
         form.model.resetExpense(propertyName, selectedForReset);
         break;
+      }
     }
 
     return renderView(form, res);
@@ -102,7 +105,7 @@ export default express.Router()
         draft.document.statementOfMeans.monthlyExpenses = form.model;
         await new DraftService().save(draft, user.bearerToken);
 
-        res.redirect(StatementOfMeansPaths.monthlyIncomePage.evaluateUri({ externalId: externalId }));
+        res.redirect(StatementOfMeansPaths.monthlyIncomePage.evaluateUri({ externalId }));
       }
     }),
   );

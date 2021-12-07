@@ -1,9 +1,9 @@
 import {
-  registerDecorator,
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
+  registerDecorator,
 } from '@hmcts/class-validator';
 
 import { MultiRowForm } from 'forms/models/multiRowForm';
@@ -32,7 +32,7 @@ export function AtLeastOnePopulatedRow(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options: validationOptions,
       constraints: [],
       validator: AtLeastOnePopulatedRowConstraint,

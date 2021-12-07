@@ -20,8 +20,8 @@ import { PaymentDate } from 'shared/components/payment-intention/model/paymentDa
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = ClaimantResponsePaths.courtOfferedSetDatePage.evaluateUri({ externalId: externalId });
-const taskListPagePath = ClaimantResponsePaths.taskListPage.evaluateUri({ externalId: externalId });
+const pagePath = ClaimantResponsePaths.courtOfferedSetDatePage.evaluateUri({ externalId });
+const taskListPagePath = ClaimantResponsePaths.taskListPage.evaluateUri({ externalId });
 
 const validFormData = {
   accept: 'yes',

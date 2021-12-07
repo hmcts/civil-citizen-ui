@@ -79,7 +79,7 @@ export function initialTransitions(claim: Claim): StateMachine {
     methods: {
 
       onInvalidTransition(transition: string, from: string, to: string) {
-        this.log.invalidTransitions.push({ transition: transition, from: from, to: to });
+        this.log.invalidTransitions.push({ transition, from, to });
       },
 
       onBeforeCheckNoResponse() {

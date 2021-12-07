@@ -37,7 +37,7 @@ function renderView(form: Form<Education>, res: express.Response): void {
   const draft: Draft<ResponseDraft> = res.locals.responseDraft;
   const numberOfChildren: NumberOfChildren = draft.document.statementOfMeans.dependants.numberOfChildren;
   res.render(page.associatedView, {
-    form: form,
+    form,
     numberOfChildrenBetween16and19: (numberOfChildren && numberOfChildren.between16and19) || 0,
   });
 }
@@ -81,9 +81,9 @@ export default express.Router()
         const skipDisabilityQuestion: boolean = (defendantIsDisabled && partnerIsDisabled) || defendantIsSeverelyDisabled;
 
         if (skipDisabilityQuestion) {
-          res.redirect(Paths.otherDependantsPage.evaluateUri({ externalId: externalId }));
+          res.redirect(Paths.otherDependantsPage.evaluateUri({ externalId }));
         } else {
-          res.redirect(Paths.dependantsDisabilityPage.evaluateUri({ externalId: externalId }));
+          res.redirect(Paths.dependantsDisabilityPage.evaluateUri({ externalId }));
         }
       }
     }),

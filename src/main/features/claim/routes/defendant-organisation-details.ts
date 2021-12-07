@@ -13,7 +13,7 @@ import { User } from 'idam/user';
 import { Draft } from '@hmcts/draft-store-client';
 
 function renderView(form: Form<OrganisationDetails>, res: express.Response): void {
-  res.render(Paths.defendantOrganisationDetailsPage.associatedView, { form: form });
+  res.render(Paths.defendantOrganisationDetailsPage.associatedView, { form });
 }
 
 /* tslint:disable:no-default-export */

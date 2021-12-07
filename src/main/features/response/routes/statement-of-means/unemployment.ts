@@ -30,12 +30,13 @@ export default express.Router()
     page.uri,
     StatementOfMeansStateGuard.requestHandler(),
     FormValidator.requestHandler(Unemployment, Unemployment.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<Unemployment> = req.body;
       const { externalId } = req.params;
 
       if (form.hasErrors()) {
-        res.render(page.associatedView, { form: form });
+        res.render(page.associatedView, { form });
       } else {
         const draft: Draft<ResponseDraft> = res.locals.responseDraft;
         const user: User = res.locals.user;
@@ -43,7 +44,7 @@ export default express.Router()
         draft.document.statementOfMeans.unemployment = form.model;
         await new DraftService().save(draft, user.bearerToken);
 
-        res.redirect(StatementOfMeansPaths.courtOrdersPage.evaluateUri({ externalId: externalId }));
+        res.redirect(StatementOfMeansPaths.courtOrdersPage.evaluateUri({ externalId }));
       }
     }),
   );

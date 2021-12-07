@@ -1,4 +1,4 @@
-import { request as requestPromiseApi, RequestPromiseAPI } from 'client/request';
+import { RequestPromiseAPI, request as requestPromiseApi } from 'client/request';
 import * as HttpStatus from 'http-status-codes';
 import * as config from 'config';
 import { Claim } from 'claims/models/claim';
@@ -399,7 +399,7 @@ export class ClaimStoreClient {
     const options = {
       method: 'POST',
       uri: `${claimApiBaseUrl}/user/roles`,
-      body: { role: role },
+      body: { role },
       headers: {
         Authorization: `Bearer ${user.bearerToken}`,
       },

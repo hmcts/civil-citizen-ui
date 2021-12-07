@@ -13,7 +13,7 @@ import { FormaliseRepaymentPlanOption } from 'claimant-response/form/models/form
 
 function renderView(form: Form<FormaliseRepaymentPlan>, res: express.Response) {
   res.render(Paths.chooseHowToProceedPage.associatedView, {
-    form: form,
+    form,
   });
 }
 
@@ -52,7 +52,7 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         const externalId: string = req.params.externalId;
-        res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+        res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
       }
     }),
   );

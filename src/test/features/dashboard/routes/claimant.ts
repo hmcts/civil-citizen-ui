@@ -143,7 +143,7 @@ describe('Dashboard - claimant page', () => {
       });
 
       context('when claim is in draft stage', () => {
-        it(`should render error page`, async () => {
+        it('should render error page', async () => {
           await request(app)
             .post(draftPagePath)
             .set('Cookie', `${cookieName}=ABC`)

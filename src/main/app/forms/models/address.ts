@@ -150,6 +150,6 @@ export class Address implements CompletableTask {
   }
 
   isCompleted(...groups: string[]): boolean {
-    return validator.validateSync(this, { groups: groups }).length === 0;
+    return validator.validateSync(this, { groups }).length === 0;
   }
 }

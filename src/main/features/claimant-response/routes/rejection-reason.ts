@@ -16,7 +16,7 @@ import { FormaliseRepaymentPlan } from 'claimant-response/form/models/formaliseR
 function renderView(form: Form<RejectionReason>, res: express.Response) {
   const claim: Claim = res.locals.claim;
   res.render(Paths.rejectionReasonPage.associatedView, {
-    form: form,
+    form,
     alreadyPaid: StatesPaidHelper.isResponseAlreadyPaid(claim),
   });
 }
@@ -52,7 +52,7 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         const { externalId } = req.params;
-        res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+        res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
       }
     }),
   );

@@ -12,7 +12,7 @@ import { YesNoOption } from 'models/yesNoOption';
 import { WhyExpertIsNeeded } from 'directions-questionnaire/forms/models/whyExpertIsNeeded';
 
 function renderPage(res: express.Response, form: Form<ExpertEvidence>) {
-  res.render(Paths.expertEvidencePage.associatedView, { form: form });
+  res.render(Paths.expertEvidencePage.associatedView, { form });
 }
 
 export default express.Router()

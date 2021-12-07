@@ -12,7 +12,7 @@ import { getPreferredParty, getUsersRole } from 'directions-questionnaire/helper
 import { Claim } from 'claims/models/claim';
 
 function renderPage(res: express.Response, form: Form<SupportRequired>) {
-  res.render(Paths.supportPage.associatedView, { form: form });
+  res.render(Paths.supportPage.associatedView, { form });
 }
 
 /* tslint:disable:no-default-export */

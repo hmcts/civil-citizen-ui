@@ -14,7 +14,7 @@ describe('RejectionClaimantResponse', () => {
       expect(actual).to.be.eq(undefined);
     });
 
-    it(`should deserialize valid JSON with no optionals to valid RejectionClaimantResponse object`, () => {
+    it('should deserialize valid JSON with no optionals to valid RejectionClaimantResponse object', () => {
       const rejectionClaimantResponseDataWithNoOptionalsData = { ...rejectionClaimantResponseData };
       delete rejectionClaimantResponseDataWithNoOptionalsData.freeMediation;
       delete rejectionClaimantResponseDataWithNoOptionalsData.reason;
@@ -22,7 +22,7 @@ describe('RejectionClaimantResponse', () => {
       expect(convertToRawObject(actual)).to.be.deep.equal(rejectionClaimantResponseDataWithNoOptionalsData);
     });
 
-    it(`should deserialize valid JSON to valid RejectionClaimantResponse object`, () => {
+    it('should deserialize valid JSON to valid RejectionClaimantResponse object', () => {
 
       const actual: RejectionClaimantResponse = RejectionClaimantResponse.deserialize(rejectionClaimantResponseData);
       expect(convertToRawObject(actual)).to.be.deep.equal(rejectionClaimantResponseData);

@@ -1,9 +1,9 @@
 import {
-  registerDecorator,
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
+  registerDecorator,
 } from '@hmcts/class-validator';
 import { isCMCReference } from 'shared/utils/isCMCReference';
 import { isCCBCCaseReference } from 'shared/utils/isCCBCCaseReference';
@@ -27,7 +27,7 @@ export function IsClaimReferenceNumber(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options: validationOptions,
       constraints: [],
       validator: CheckClaimReferenceNumberConstraint,

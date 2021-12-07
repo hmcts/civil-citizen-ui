@@ -18,9 +18,9 @@ import {
 } from 'test/app/guards/alreadyPaidInFullGuard';
 
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = Paths.expertEvidencePage.evaluateUri({ externalId: externalId });
-const whyExpertIsNeededPage = Paths.whyExpertIsNeededPage.evaluateUri({ externalId: externalId });
-const selfWitnessPage = Paths.selfWitnessPage.evaluateUri({ externalId: externalId });
+const pagePath = Paths.expertEvidencePage.evaluateUri({ externalId });
+const whyExpertIsNeededPage = Paths.whyExpertIsNeededPage.evaluateUri({ externalId });
+const selfWitnessPage = Paths.selfWitnessPage.evaluateUri({ externalId });
 const cookieName: string = config.get<string>('session.cookieName');
 const claimWithDQ = {
   ...claimStoreServiceMock.sampleClaimObj,
@@ -28,7 +28,7 @@ const claimWithDQ = {
 };
 
 function checkAccessGuard(app: any, method: string) {
-  it(`should redirect to dashboard page when DQ is not enabled for claim`, async () => {
+  it('should redirect to dashboard page when DQ is not enabled for claim', async () => {
     idamServiceMock.resolveRetrieveUserFor('1', 'citizen');
     claimStoreServiceMock.resolveRetrieveClaimByExternalId();
     await request(app)[method](pagePath)

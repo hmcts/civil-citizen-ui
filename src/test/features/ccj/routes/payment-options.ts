@@ -19,7 +19,7 @@ import { checkNotClaimantInCaseGuard } from 'test/features/ccj/routes/checks/not
 const cookieName: string = config.get<string>('session.cookieName');
 
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = Paths.paymentOptionsPage.evaluateUri({ externalId: externalId });
+const pagePath = Paths.paymentOptionsPage.evaluateUri({ externalId });
 
 const validFormData: object = {
   option: PaymentType.IMMEDIATELY.value,
@@ -137,15 +137,15 @@ describe('CCJ - payment options', () => {
             }
 
             it('should redirect to check and send page for "IMMEDIATELY" option selected', async () => {
-              await checkThatSelectedPaymentOptionRedirectsToPage({ option: PaymentType.IMMEDIATELY.value }, Paths.checkAndSendPage.evaluateUri({ externalId: externalId }));
+              await checkThatSelectedPaymentOptionRedirectsToPage({ option: PaymentType.IMMEDIATELY.value }, Paths.checkAndSendPage.evaluateUri({ externalId }));
             });
 
             it('should redirect to repayment plan page for "INSTALMENTS" option selected', async () => {
-              await checkThatSelectedPaymentOptionRedirectsToPage({ option: PaymentType.INSTALMENTS.value }, Paths.repaymentPlanPage.evaluateUri({ externalId: externalId }));
+              await checkThatSelectedPaymentOptionRedirectsToPage({ option: PaymentType.INSTALMENTS.value }, Paths.repaymentPlanPage.evaluateUri({ externalId }));
             });
 
             it('should redirect to pay by set date page for "BY_SPECIFIED_DATE" option selected', async () => {
-              await checkThatSelectedPaymentOptionRedirectsToPage({ option: PaymentType.BY_SPECIFIED_DATE.value }, Paths.payBySetDatePage.evaluateUri({ externalId: externalId }));
+              await checkThatSelectedPaymentOptionRedirectsToPage({ option: PaymentType.BY_SPECIFIED_DATE.value }, Paths.payBySetDatePage.evaluateUri({ externalId }));
             });
           });
 

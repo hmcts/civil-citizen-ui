@@ -1,9 +1,9 @@
 import {
-  registerDecorator,
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
+  registerDecorator,
 } from '@hmcts/class-validator';
 import { Country } from 'common/country';
 import { ErrorLogger } from 'logging/errorLogger';
@@ -69,7 +69,7 @@ export function IsCountrySupported(countries: Country[], validationOptions?: Val
   return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options: validationOptions,
       constraints: [countries],
       validator: CheckCountryConstraint,

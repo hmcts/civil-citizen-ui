@@ -14,6 +14,7 @@ function isCurrentUserLinkedToClaim(user: User, claim: Claim): boolean {
 /* tslint:disable:no-default-export */
 export default express.Router()
   .get(Paths.claimDetailsPage.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const claim: Claim = res.locals.claim;
       const interestData = await getInterestDetails(claim);
@@ -25,7 +26,7 @@ export default express.Router()
         numOfDaysInYear = 366;
       }
       res.render(Paths.claimDetailsPage.associatedView, {
-        interestData: interestData,
+        interestData,
         numOfDayInYear: numOfDaysInYear,
         pdfUrl: isCurrentUserLinkedToClaim(res.locals.user, res.locals.claim) ? ClaimPaths.sealedClaimPdfReceiver : ClaimPaths.receiptReceiver,
       });

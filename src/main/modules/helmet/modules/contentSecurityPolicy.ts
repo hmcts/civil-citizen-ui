@@ -26,9 +26,9 @@ export class ContentSecurityPolicy {
       directives: {
         defaultSrc: [none],
         fontSrc: [self, 'data:'],
-        scriptSrc: scriptSrc,
-        scriptSrcElem: scriptSrcElem,
-        connectSrc: connectSrc,
+        scriptSrc,
+        scriptSrcElem,
+        connectSrc,
         mediaSrc: ['\'self\''],
         frameSrc: [
           'vcc-eu4.8x8.com',

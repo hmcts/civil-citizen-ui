@@ -25,7 +25,7 @@ describe('Name', () => {
     it('should return an instance from given object', () => {
       const name = 'My Full Name';
       const result: Name = new Name().deserialize({
-        name: name,
+        name,
       });
       expect(result.name).to.be.equals(name);
     });

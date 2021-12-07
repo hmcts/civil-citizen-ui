@@ -11,14 +11,14 @@ export interface Direction {
   extraDocuments?: string[];
   expertReports?: string[];
 }
-
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Direction {
   export function deserialize(input: any): Direction[] {
     if (!input) {
       return input;
     }
 
-    let directions = [];
+    const directions = [];
     _.each(input, function(eachDirection) {
       directions.push({
         directionParty: eachDirection.directionParty,

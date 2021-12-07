@@ -33,7 +33,7 @@ export default express.Router()
       })
       .catch(err => {
         if (err.message === 'Authentication failed') {
-          trackCustomEvent(`Ordnance Survey keys stopped working`, { error: err });
+          trackCustomEvent('Ordnance Survey keys stopped working', { error: err });
         }
         logger.error(err.stack);
         res.status(500).json({

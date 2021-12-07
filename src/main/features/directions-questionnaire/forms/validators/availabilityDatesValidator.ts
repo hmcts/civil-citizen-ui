@@ -1,9 +1,9 @@
 import {
-  registerDecorator,
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
+  registerDecorator,
 } from '@hmcts/class-validator';
 import { IsValidLocalDateConstraint } from '@hmcts/cmc-validators';
 import { LocalDate } from 'forms/models/localDate';
@@ -50,7 +50,7 @@ export function IsValidAvailabilityDates(validationOptions?: ValidationOptions) 
   return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options: validationOptions,
       constraints: [],
       validator: AvailabilityDatesConstraint,

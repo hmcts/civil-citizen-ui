@@ -14,9 +14,9 @@ async function renderView(res: express.Response, next: express.NextFunction) {
     const rows: FeeRangeMerge[] = await FeesTableViewHelper.feesTableContent();
 
     res.render(Paths.counterClaimPage.associatedView, {
-      claim: claim,
+      claim,
       response: draft.document,
-      rows: rows,
+      rows,
     });
   } catch (err) {
     next(err);

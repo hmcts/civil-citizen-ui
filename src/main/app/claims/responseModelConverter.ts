@@ -52,7 +52,7 @@ import { PaymentIntention } from 'claims/models/response/core/paymentIntention';
 import { PaymentIntention as PaymentIntentionDraft } from 'shared/components/payment-intention/model/paymentIntention';
 import { Claim } from 'claims/models/claim';
 import { PriorityDebt as PriorityDebtDraft } from 'response/form/models/statement-of-means/priorityDebt';
-import { PriorityDebts, PriorityDebtType } from 'claims/models/response/statement-of-means/priorityDebts';
+import { PriorityDebtType, PriorityDebts } from 'claims/models/response/statement-of-means/priorityDebts';
 import { DependantsDisabilityOption } from 'response/form/models/statement-of-means/dependantsDisability';
 import { OtherDependantsDisabilityOption } from 'response/form/models/statement-of-means/otherDependantsDisability';
 import { DisabilityStatus } from 'claims/models/response/statement-of-means/disabilityStatus';
@@ -176,7 +176,7 @@ export class ResponseModelConverter {
     return {
       responseType: ResponseType.PART_ADMISSION,
       responseMethod: ResponseMethod.DIGITAL,
-      amount: amount,
+      amount,
       paymentDeclaration: draft.partialAdmission.howMuchHaveYouPaid.date
         && draft.partialAdmission.howMuchHaveYouPaid.text
         && {

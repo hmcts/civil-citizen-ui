@@ -19,7 +19,7 @@ import { MadeBy } from 'claims/models/madeBy';
 
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
 const cookieName: string = config.get<string>('session.cookieName');
-const pagePath = CCJPaths.redeterminationConfirmationPage.evaluateUri({ externalId: externalId });
+const pagePath = CCJPaths.redeterminationConfirmationPage.evaluateUri({ externalId });
 
 describe('CCJ: redetermination confirmation page', () => {
   attachDefaultHooks(app);

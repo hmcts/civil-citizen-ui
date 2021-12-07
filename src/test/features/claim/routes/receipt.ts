@@ -21,7 +21,7 @@ describe('Claim issue: receipt', () => {
   attachDefaultHooks(app);
 
   describe('on GET', () => {
-    checkAuthorizationGuards(app, 'get', ClaimPaths.receiptReceiver.evaluateUri({ externalId: externalId }));
+    checkAuthorizationGuards(app, 'get', ClaimPaths.receiptReceiver.evaluateUri({ externalId }));
 
     describe('for authorized user', () => {
       beforeEach(() => {
@@ -32,7 +32,7 @@ describe('Claim issue: receipt', () => {
         claimStoreServiceMock.rejectRetrieveClaimByExternalId('HTTP error');
 
         await request(app)
-          .get(ClaimPaths.receiptReceiver.evaluateUri({ externalId: externalId }))
+          .get(ClaimPaths.receiptReceiver.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.serverError.withText('Error'));
       });
@@ -42,7 +42,7 @@ describe('Claim issue: receipt', () => {
         claimStoreServiceMock.rejectRetrieveDocument('HTTP error');
 
         await request(app)
-          .get(ClaimPaths.receiptReceiver.evaluateUri({ externalId: externalId }))
+          .get(ClaimPaths.receiptReceiver.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.serverError.withText('Error'));
       });
@@ -52,7 +52,7 @@ describe('Claim issue: receipt', () => {
         claimStoreServiceMock.resolveRetrieveDocument();
 
         await request(app)
-          .get(ClaimPaths.receiptReceiver.evaluateUri({ externalId: externalId }))
+          .get(ClaimPaths.receiptReceiver.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.successful);
       });
@@ -64,7 +64,7 @@ describe('Claim issue: HWF Draft receipt', () => {
   attachDefaultHooks(app);
 
   describe('on GET HWF draft claim', () => {
-    checkAuthorizationGuards(app, 'get', ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId: externalId }));
+    checkAuthorizationGuards(app, 'get', ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId }));
 
     describe('for authorized user', () => {
       beforeEach(() => {
@@ -75,7 +75,7 @@ describe('Claim issue: HWF Draft receipt', () => {
         claimStoreServiceMock.rejectRetrieveClaimByExternalId('HTTP error');
 
         await request(app)
-          .get(ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId: externalId }))
+          .get(ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.serverError.withText('Error'));
       });
@@ -85,7 +85,7 @@ describe('Claim issue: HWF Draft receipt', () => {
         claimStoreServiceMock.rejectRetrieveDocument('HTTP error');
 
         await request(app)
-          .get(ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId: externalId }))
+          .get(ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.serverError.withText('Error'));
       });
@@ -95,7 +95,7 @@ describe('Claim issue: HWF Draft receipt', () => {
         claimStoreServiceMock.resolveRetrieveDocument();
 
         await request(app)
-          .get(ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId: externalId }))
+          .get(ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.successful);
       });

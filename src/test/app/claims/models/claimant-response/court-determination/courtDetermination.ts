@@ -15,7 +15,7 @@ describe('CourtDetermination', () => {
       expect(actual).to.be.eq(undefined);
     });
 
-    it(`should deserialize valid JSON with no optionals to valid CourtDetermination object`, () => {
+    it('should deserialize valid JSON with no optionals to valid CourtDetermination object', () => {
       const courtDeterminationWithNoOptionalsData = { ...courtDeterminationData };
       delete courtDeterminationWithNoOptionalsData.rejectionReason;
       const actual: CourtDetermination = CourtDetermination.deserialize(courtDeterminationWithNoOptionalsData);

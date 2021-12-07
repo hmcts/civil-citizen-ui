@@ -23,7 +23,7 @@ import {
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = FullAdmissionPaths.paymentOptionPage.evaluateUri({ externalId: externalId });
+const pagePath = FullAdmissionPaths.paymentOptionPage.evaluateUri({ externalId });
 
 const validFormData: object = {
   option: PaymentType.INSTALMENTS.value,
@@ -159,19 +159,19 @@ describe('Defendant - when will you pay options', () => {
             it('should redirect to repayment plan page for "INSTALMENTS" option selected', async () => {
               await checkThatSelectedPaymentOptionRedirectsToPage(
                 { option: PaymentType.INSTALMENTS.value },
-                Paths.taskListPage.evaluateUri({ externalId: externalId }));
+                Paths.taskListPage.evaluateUri({ externalId }));
             });
 
             it('should redirect to payment date page for "BY_SET_DATE" option selected', async () => {
               await checkThatSelectedPaymentOptionRedirectsToPage(
                 { option: PaymentType.BY_SET_DATE.value },
-                FullAdmissionPaths.paymentDatePage.evaluateUri({ externalId: externalId }));
+                FullAdmissionPaths.paymentDatePage.evaluateUri({ externalId }));
             });
 
             it('should redirect to task list page for "IMMEDIATELY" option selected', async () => {
               await checkThatSelectedPaymentOptionRedirectsToPage(
                 { option: PaymentType.IMMEDIATELY.value },
-                Paths.taskListPage.evaluateUri({ externalId: externalId }));
+                Paths.taskListPage.evaluateUri({ externalId }));
             });
           });
 

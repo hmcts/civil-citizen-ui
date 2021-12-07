@@ -3,7 +3,7 @@ import * as express from 'express';
 import { AbstractPaidAmountSummaryPage } from 'shared/components/ccj/paid-amount-summary';
 import { AbstractModelAccessor, DefaultModelAccessor } from 'shared/components/model-accessor';
 import { PartialAdmissionResponse } from 'claims/models/response/partialAdmissionResponse';
-import { claimantResponseCCJPath, Paths } from 'features/claimant-response/paths';
+import { Paths, claimantResponseCCJPath } from 'features/claimant-response/paths';
 
 import { DraftClaimantResponse } from 'claimant-response/draft/draftClaimantResponse';
 import { PaidAmount } from 'ccj/form/models/paidAmount';
@@ -18,7 +18,7 @@ class PaidAmountSummaryPage extends AbstractPaidAmountSummaryPage<DraftClaimantR
 
   buildRedirectUri(req: express.Request, res: express.Response): string {
     const { externalId } = req.params;
-    return Paths.taskListPage.evaluateUri({ externalId: externalId });
+    return Paths.taskListPage.evaluateUri({ externalId });
   }
 
   amountSettledFor(claim: Claim, draft: DraftClaimantResponse): number {

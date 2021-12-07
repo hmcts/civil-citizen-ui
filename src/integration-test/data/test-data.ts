@@ -38,7 +38,7 @@ export const claimReason = 'My reasons for the claim are that I am owed this mon
 export async function createClaimData(I: I, claimantType: PartyType, defendantType: PartyType, hasEmailAddress: boolean = true,
                                       interestType: InterestType = InterestType.STANDARD): Promise<ClaimData> {
   const defendant = await createDefendant(I, defendantType, hasEmailAddress);
-  let claimData = {
+  const claimData = {
     claimants: [createClaimant(claimantType)],
     defendants: [defendant],
     payment: {
@@ -95,7 +95,7 @@ export async function createClaimData(I: I, claimantType: PartyType, defendantTy
 
 export function createClaimant(type: PartyType): Party {
   const claimant: Party = {
-    type: type,
+    type,
     name: undefined,
     address: {
       line1: '10, DALBERG ROAD',
@@ -138,7 +138,7 @@ export function createClaimant(type: PartyType): Party {
 
 export async function createDefendant(I: I, type: PartyType, hasEmailAddress: boolean = false): Promise<Party> {
   const defendant: Party = {
-    type: type,
+    type,
     name: undefined,
     address: {
       line1: '11 Dalberg road',
@@ -181,7 +181,7 @@ export async function createResponseData(I, defendantType: PartyType): Promise<R
   return {
     responseType: 'FULL_DEFENCE',
     defenceType: 'DISPUTE',
-    defendant: defendant,
+    defendant,
     moreTimeNeeded: 'no',
     freeMediation: 'no',
     defence: 'I fully dispute this claim',

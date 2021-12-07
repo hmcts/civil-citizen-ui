@@ -40,8 +40,8 @@ function renderView(form: Form<AcceptPaymentMethod>, res: express.Response) {
   const payBySetDate = getPayBySetDate(draft, claimResponse);
 
   res.render(Paths.courtOfferedSetDatePage.associatedView, {
-    form: form,
-    claim: claim,
+    form,
+    claim,
     paymentDate: payBySetDate,
   });
 }
@@ -78,9 +78,9 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         if (form.model.accept.option === YesNoOption.YES.option) {
-          res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+          res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
         } else {
-          res.redirect(Paths.rejectionReasonPage.evaluateUri({ externalId: externalId }));
+          res.redirect(Paths.rejectionReasonPage.evaluateUri({ externalId }));
         }
       }
     }));

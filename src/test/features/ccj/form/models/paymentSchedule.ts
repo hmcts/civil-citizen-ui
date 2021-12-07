@@ -19,7 +19,7 @@ describe('PaymentSchedule', () => {
       try {
         PaymentSchedule.of('unknown');
       } catch (e) {
-        expect(e.message).to.equal(`There is no PaymentSchedule: 'unknown'`);
+        expect(e.message).to.equal('There is no PaymentSchedule: \'unknown\'');
       }
     });
 

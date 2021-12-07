@@ -44,7 +44,7 @@ describe('Document Download', () => {
 
   describe('on GET', () => {
     checkAuthorizationGuards(app, 'get', Paths.documentPage.evaluateUri({
-      externalId: externalId,
+      externalId,
       documentURI: 'sealed-claim',
     }));
 
@@ -56,7 +56,7 @@ describe('Document Download', () => {
       it('should return 500 and render error page when cannot retrieve claim by external id', async () => {
         claimStoreServiceMock.rejectRetrieveClaimByExternalId();
         await request(app)
-          .get(Paths.documentPage.evaluateUri({ externalId: externalId, documentURI: 'sealed-claim' }))
+          .get(Paths.documentPage.evaluateUri({ externalId, documentURI: 'sealed-claim' }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.serverError.withText('Error'));
       });
@@ -66,7 +66,7 @@ describe('Document Download', () => {
         claimStoreServiceMock.rejectRetrieveDocument('Something went wrong');
 
         await request(app)
-          .get(Paths.documentPage.evaluateUri({ externalId: externalId, documentURI: 'sealed-claim' }))
+          .get(Paths.documentPage.evaluateUri({ externalId, documentURI: 'sealed-claim' }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.serverError.withText('Error'));
       });
@@ -76,7 +76,7 @@ describe('Document Download', () => {
         claimStoreServiceMock.resolveRetrieveDocument();
 
         await request(app)
-          .get(Paths.documentPage.evaluateUri({ externalId: externalId, documentURI: 'sealed-claim' }))
+          .get(Paths.documentPage.evaluateUri({ externalId, documentURI: 'sealed-claim' }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.successful);
       });

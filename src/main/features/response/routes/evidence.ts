@@ -18,7 +18,7 @@ function renderView(form: Form<DefendantEvidence>, res: express.Response): void 
   const claim: Claim = res.locals.claim;
 
   res.render(page.associatedView, {
-    form: form,
+    form,
     evidence: claim.claimData.evidence,
   });
 }
@@ -38,6 +38,7 @@ function actionHandler(req: express.Request, res: express.Response, next: expres
 export default express.Router()
   .get(
     page.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<ResponseDraft> = res.locals.responseDraft;
       let evidence;
@@ -54,6 +55,7 @@ export default express.Router()
     page.uri,
     FormValidator.requestHandler(DefendantEvidence, DefendantEvidence.fromObject, undefined, ['addRow']),
     actionHandler,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<DefendantEvidence> = req.body;
 

@@ -96,7 +96,7 @@ export class PartyDetails {
   }
 
   isCompleted(...groups: string[]): boolean {
-    return new Validator().validateSync(this, { groups: groups }).length === 0;
+    return new Validator().validateSync(this, { groups }).length === 0;
   }
 
   isBusiness(): boolean {

@@ -16,7 +16,7 @@ import { MediationDraft } from 'mediation/draft/mediationDraft';
 function renderView(form: Form<Response>, res: express.Response) {
   const claim: Claim = res.locals.claim;
   res.render(Paths.responseTypePage.associatedView, {
-    form: form,
+    form,
     responseDeadline: claim.responseDeadline,
   });
 }
@@ -24,6 +24,7 @@ function renderView(form: Form<Response>, res: express.Response) {
 /* tslint:disable:no-default-export */
 export default express.Router()
   .get(Paths.responseTypePage.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<ResponseDraft> = res.locals.responseDraft;
 
@@ -72,11 +73,11 @@ export default express.Router()
 
         switch (draft.document.response.type) {
           case ResponseType.DEFENCE:
-            res.redirect(Paths.defenceRejectAllOfClaimPage.evaluateUri({ externalId: externalId }));
+            res.redirect(Paths.defenceRejectAllOfClaimPage.evaluateUri({ externalId }));
             break;
 
           case ResponseType.PART_ADMISSION:
-            res.redirect(PartAdmissionPaths.alreadyPaidPage.evaluateUri({ externalId: externalId }));
+            res.redirect(PartAdmissionPaths.alreadyPaidPage.evaluateUri({ externalId }));
             break;
 
           case ResponseType.FULL_ADMISSION:

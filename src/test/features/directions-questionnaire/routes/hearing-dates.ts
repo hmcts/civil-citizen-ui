@@ -27,8 +27,8 @@ const claimWithDQ = {
 
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
 const claim = createClaim(PartyType.INDIVIDUAL, PartyType.ORGANISATION, MadeBy.CLAIMANT);
-const pagePath = Paths.hearingDatesPage.evaluateUri({ externalId: externalId });
-const defendantTaskListPage = ResponsePaths.taskListPage.evaluateUri({ externalId: externalId });
+const pagePath = Paths.hearingDatesPage.evaluateUri({ externalId });
+const defendantTaskListPage = ResponsePaths.taskListPage.evaluateUri({ externalId });
 const cookieName: string = config.get<string>('session.cookieName');
 
 function checkAccessGuard(app: any, method: string) {

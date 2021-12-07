@@ -22,9 +22,9 @@ import { MomentFactory } from 'shared/momentFactory';
 
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
 const cookieName: string = config.get<string>('session.cookieName');
-const pagePath = CCJPaths.checkAndSendPage.evaluateUri({ externalId: externalId });
+const pagePath = CCJPaths.checkAndSendPage.evaluateUri({ externalId });
 const dashboardUri = Paths.dashboardPage.uri;
-const confirmationPage = CCJPaths.ccjConfirmationPage.evaluateUri({ externalId: externalId });
+const confirmationPage = CCJPaths.ccjConfirmationPage.evaluateUri({ externalId });
 
 describe('CCJ: check and send page', () => {
   attachDefaultHooks(app);
@@ -92,7 +92,7 @@ describe('CCJ: check and send page', () => {
         });
 
         it('should render page with admitted amount when part admission response has been accepted', async () => {
-          let claimWithAdmission = {
+          const claimWithAdmission = {
             ...claimStoreServiceMock.sampleClaimObj,
             ...claimStoreServiceMock.samplePartialAdmissionWithPayImmediatelyData(),
             ...{

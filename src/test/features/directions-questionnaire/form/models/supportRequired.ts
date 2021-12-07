@@ -157,7 +157,7 @@ describe('SupportRequired', () => {
       expect(model).to.be.eq(undefined);
     });
 
-    it(`valid object with valid input`, () => {
+    it('valid object with valid input', () => {
       const model = SupportRequired.fromObject({ languageSelected: true });
 
       expect(model.languageSelected).to.be.eq(true);

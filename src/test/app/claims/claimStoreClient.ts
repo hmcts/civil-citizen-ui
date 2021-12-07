@@ -8,7 +8,7 @@ import { User } from 'idam/user';
 import { claimDraft as claimDraftData, claimDraftHelpWithFees } from 'test/data/draft/claimDraft';
 import { claimData } from 'test/data/entity/claimData';
 import { RequestPromiseOptions } from 'request-promise-native';
-import { claimStoreApiUrl, ClaimStoreClient } from 'claims/claimStoreClient';
+import { ClaimStoreClient, claimStoreApiUrl } from 'claims/claimStoreClient';
 import { Draft } from '@hmcts/draft-store-client';
 import { DraftClaim } from 'drafts/models/draftClaim';
 import { Claim } from 'claims/models/claim';
@@ -256,7 +256,7 @@ describe('ClaimStoreClient', () => {
     describe('Initiate citizen payment', async () => {
       function resolveInitiatePayment() {
         mock(`${claimStoreApiUrl}`)
-          .post(`/initiate-citizen-payment`)
+          .post('/initiate-citizen-payment')
           .reply(HttpStatus.OK, paymentResponse);
       }
 
@@ -268,7 +268,7 @@ describe('ClaimStoreClient', () => {
 
       function mockInternalServerErrorOnInitiatePayment() {
         mock(`${claimStoreApiUrl}`)
-          .post(`/initiate-citizen-payment`)
+          .post('/initiate-citizen-payment')
           .times(retryAttempts)
           .reply(HttpStatus.INTERNAL_SERVER_ERROR, 'An unexpected error occurred');
       }
@@ -290,7 +290,7 @@ describe('ClaimStoreClient', () => {
     describe('Resume citizen payment', async () => {
       function resolveInitiatePayment() {
         mock(`${claimStoreApiUrl}`)
-          .put(`/resume-citizen-payment`)
+          .put('/resume-citizen-payment')
           .reply(HttpStatus.OK, paymentResponse);
       }
 
@@ -302,7 +302,7 @@ describe('ClaimStoreClient', () => {
 
       function mockInternalServerErrorOnResumePayment() {
         mock(`${claimStoreApiUrl}`)
-          .put(`/resume-citizen-payment`)
+          .put('/resume-citizen-payment')
           .times(retryAttempts)
           .reply(HttpStatus.INTERNAL_SERVER_ERROR, 'An unexpected error occurred');
       }
@@ -325,7 +325,7 @@ describe('ClaimStoreClient', () => {
 
       function mockCreateCitizenClaimCall() {
         mock(`${claimStoreApiUrl}`)
-          .put(`/create-citizen-claim`)
+          .put('/create-citizen-claim')
           .reply(HttpStatus.OK, returnedClaim);
       }
 
@@ -337,7 +337,7 @@ describe('ClaimStoreClient', () => {
 
       function mockInternalServerErrorOnAllAttempts() {
         mock(`${claimStoreApiUrl}`)
-          .put(`/create-citizen-claim`)
+          .put('/create-citizen-claim')
           .times(retryAttempts)
           .reply(HttpStatus.INTERNAL_SERVER_ERROR, 'An unexpected error occurred');
       }
@@ -365,7 +365,7 @@ describe('ClaimStoreClient', () => {
       it('should fail while saving the Breathing space', async () => {
         mockInternalServerErrorforSaveBreathingSpaceOnAllAttempts();
         try {
-          let draft: DraftClaim = new DraftClaim();
+          const draft: DraftClaim = new DraftClaim();
           draft.breathingSpace.breathingSpaceType = 'STANDARD_BS_LIFTED';
           draft.breathingSpace.breathingSpaceEnteredDate = moment('9999-09-09');
           draft.breathingSpace.breathingSpaceEndDate = moment('9999-09-09');

@@ -128,7 +128,7 @@ function prepareSettlement(paymentIntention: PaymentIntention): Settlement {
         offer: {
           content: 'My offer contents here.',
           completionDate: '2020-10-10',
-          paymentIntention: paymentIntention,
+          paymentIntention,
         },
       },
       {

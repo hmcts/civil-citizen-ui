@@ -1,9 +1,9 @@
 import {
-  registerDecorator,
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
+  registerDecorator,
 } from '@hmcts/class-validator';
 import { MomentFactory } from 'shared/momentFactory';
 
@@ -43,7 +43,7 @@ export function MinimumAgeValidator(minYears: number, validationOptions?: Valida
   return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options: validationOptions,
       constraints: [minYears],
       validator: MinimumAgeValidatorConstraint,

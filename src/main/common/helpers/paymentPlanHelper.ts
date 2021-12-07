@@ -32,7 +32,7 @@ export class PaymentPlanHelper {
 
     switch (responseType) {
       case ResponseType.PART_ADMISSION:
-        let partialAdmissionResponse = response as PartialAdmissionResponse;
+        const partialAdmissionResponse = response as PartialAdmissionResponse;
         return PaymentPlanHelper.createPaymentPlanFromClaimAdmission(partialAdmissionResponse,
           partialAdmissionResponse.amount,
           draft,
@@ -87,7 +87,7 @@ export class PaymentPlanHelper {
       throw new Error('Claim does not have response attached');
     }
     if (response.statementOfMeans === undefined) {
-      throw new Error(`Claim response does not have financial statement attached`);
+      throw new Error('Claim response does not have financial statement attached');
     }
 
     const instalmentAmount: number = Math.min(draft.courtDetermination.disposableIncome / frequency.monthlyRatio, claim.totalAmountTillToday);
@@ -103,7 +103,7 @@ export class PaymentPlanHelper {
       case DraftClaimantResponse:
         return PaymentPlanHelper.createPaymentPlanFromDraftDraftClaimantResponse(draft as DraftClaimantResponse);
       case ResponseDraft:
-        throw new Error(`Draft object of type 'ResponseDraft' not yet supported`);
+        throw new Error('Draft object of type \'ResponseDraft\' not yet supported');
       default:
         throw new Error(`Incompatible draft object: ${draft}`);
     }

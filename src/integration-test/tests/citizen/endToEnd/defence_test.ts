@@ -95,7 +95,7 @@ Scenario('I can as an Individual make a claim against an Individual who then rej
   I.click('Sign out');
   // as claimant
   userSteps.login(testData.claimantEmail);
-  I.see(`Respond to the defendant.`);
+  I.see('Respond to the defendant.');
   claimantResponseSteps.viewClaimFromDashboard(testData.claimRef);
   I.see(testData.claimRef);
   I.see('Respond to the defendant');
@@ -126,7 +126,7 @@ Scenario('I can as an Individual make a claim against an Individual who then rej
   I.click('Sign out');
   // as claimant
   userSteps.login(testData.claimantEmail);
-  I.see(`Respond to the defendant.`);
+  I.see('Respond to the defendant.');
   claimantResponseSteps.viewClaimFromDashboard(testData.claimRef);
   I.see(testData.claimRef);
   I.see('Respond to the defendant');

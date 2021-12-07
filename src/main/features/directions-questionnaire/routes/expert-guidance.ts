@@ -10,7 +10,7 @@ function renderView(res: express.Response): void {
   const otherParty: string = user.id === claim.claimantId ? 'defendant' : 'claimant';
 
   res.render(Paths.expertGuidancePage.associatedView, {
-    otherParty: otherParty,
+    otherParty,
   });
 }
 

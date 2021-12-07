@@ -1,9 +1,9 @@
 import {
-  registerDecorator,
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
+  registerDecorator,
 } from '@hmcts/class-validator';
 
 import { MomentFactory } from 'shared/momentFactory';
@@ -32,7 +32,7 @@ export function IsFutureDate(validationOptions?: ValidationOptions) {
   return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options: validationOptions,
       constraints: [0],
       validator: DateFutureConstraint,
@@ -44,7 +44,7 @@ export function IsFutureDateByNumberOfDays(distanceInDays: number, validationOpt
   return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options: validationOptions,
       constraints: [distanceInDays],
       validator: DateFutureConstraint,

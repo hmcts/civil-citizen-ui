@@ -4,8 +4,8 @@ import { Fractions, IsLessThan, IsValidLocalDate } from '@hmcts/cmc-validators';
 import { IsDefined, IsIn, Min, ValidateNested } from '@hmcts/class-validator';
 import { IsFutureDate } from 'forms/validation/validators/dateFutureConstraint';
 import {
-  ValidationErrors as GlobalValidationErrors,
   ValidationErrors as CommonValidationErrors,
+  ValidationErrors as GlobalValidationErrors,
 } from 'forms/validation/validationErrors';
 import { toNumberOrUndefined } from 'shared/utils/numericUtils';
 import { PaymentPlan as PaymentPlanCalcs } from 'common/payment-plan/paymentPlan';

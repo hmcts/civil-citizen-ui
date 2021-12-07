@@ -28,12 +28,12 @@ const claimWithDQ = {
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
 
 const cookieName: string = config.get<string>('session.cookieName');
-const hearingExceptionalCircumstancesPage = Paths.hearingExceptionalCircumstancesPage.evaluateUri({ externalId: externalId });
-const hearingLocationPage = Paths.hearingLocationPage.evaluateUri({ externalId: externalId });
-const pagePath = Paths.supportPage.evaluateUri({ externalId: externalId });
+const hearingExceptionalCircumstancesPage = Paths.hearingExceptionalCircumstancesPage.evaluateUri({ externalId });
+const hearingLocationPage = Paths.hearingLocationPage.evaluateUri({ externalId });
+const pagePath = Paths.supportPage.evaluateUri({ externalId });
 
 function checkAccessGuard(app: any, method: string) {
-  it(`should redirect to dashboard page when DQ is not enabled for claim`, async () => {
+  it('should redirect to dashboard page when DQ is not enabled for claim', async () => {
     idamServiceMock.resolveRetrieveUserFor('1', 'citizen');
     claimStoreServiceMock.resolveRetrieveClaimByExternalId();
     await request(app)[method](pagePath)

@@ -18,8 +18,8 @@ import { checkNotClaimantInCaseGuard } from 'test/features/ccj/routes/checks/not
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = Paths.paidAmountPage.evaluateUri({ externalId: externalId });
-const paidAmountSummaryPage = Paths.paidAmountSummaryPage.evaluateUri({ externalId: externalId });
+const pagePath = Paths.paidAmountPage.evaluateUri({ externalId });
+const paidAmountSummaryPage = Paths.paidAmountSummaryPage.evaluateUri({ externalId });
 
 const validFormData = {
   option: PaidAmountOption.YES.value,

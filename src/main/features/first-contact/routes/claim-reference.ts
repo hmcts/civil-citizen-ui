@@ -16,7 +16,7 @@ import { isCCBCCaseReference } from 'shared/utils/isCCBCCaseReference';
 const claimStoreClient: ClaimStoreClient = new ClaimStoreClient();
 
 function renderView(form: Form<ClaimReference>, res: express.Response): void {
-  res.render(Paths.claimReferencePage.associatedView, { form: form });
+  res.render(Paths.claimReferencePage.associatedView, { form });
 }
 
 const mcolUrl = config.get<string>('mcol.url');

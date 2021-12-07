@@ -28,8 +28,8 @@ async function renderView(form: Form<CanWeUse>, res: express.Response): Promise<
     phoneNumber = claim.claimData.claimant.phone;
   }
   res.render(Paths.canWeUsePage.associatedView, {
-    form: form,
-    phoneNumber: phoneNumber,
+    form,
+    phoneNumber,
   });
 }
 

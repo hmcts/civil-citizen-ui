@@ -4,13 +4,13 @@ import { buildURL } from 'utils/callbackBuilder';
 
 describe('CallbackBuilder', () => {
 
-  describe(`buildURL should create URL `, () => {
+  describe('buildURL should create URL ', () => {
     it('for SSL request ', () => {
       const path = 'my/service/path';
       const expected = `https://localhost/${path}`;
       req.secure = true;
       req.headers = { host: 'localhost' };
-      let url = buildURL(req, path);
+      const url = buildURL(req, path);
 
       expect(url.length).gt(0);
       expect(url).to.eq(expected);
@@ -22,13 +22,13 @@ describe('CallbackBuilder', () => {
       req.secure = false;
       req.headers = { host: 'localhost' };
 
-      let url = buildURL(req, path);
+      const url = buildURL(req, path);
       expect(url.length).gt(0);
       expect(url).to.eq(expected);
     });
   });
 
-  describe(`buildURL should throw error `, () => {
+  describe('buildURL should throw error ', () => {
     it('for undefined request ', () => {
       const path = 'my/service/path';
       expect(() => buildURL(undefined, path)).to.throw(Error, 'Request is undefined');

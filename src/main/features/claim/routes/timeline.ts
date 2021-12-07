@@ -15,7 +15,7 @@ const page: RoutablePath = Paths.timelinePage;
 
 function renderView(form: Form<ClaimantTimeline>, res: express.Response): void {
   res.render(page.associatedView, {
-    form: form,
+    form,
   });
 }
 

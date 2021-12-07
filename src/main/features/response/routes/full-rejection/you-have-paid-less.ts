@@ -13,5 +13,5 @@ export default express.Router()
     FullRejectionGuard.requestHandler(),
     function(req: express.Request, res: express.Response) {
       const { externalId } = req.params;
-      res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+      res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
     });

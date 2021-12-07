@@ -17,8 +17,8 @@ import { checkNotClaimantInCaseGuard } from 'test/features/claimant-response/rou
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = ClaimantResponsePaths.payBySetDateAcceptedPage.evaluateUri({ externalId: externalId });
-const taskListPagePath = ClaimantResponsePaths.taskListPage.evaluateUri({ externalId: externalId });
+const pagePath = ClaimantResponsePaths.payBySetDateAcceptedPage.evaluateUri({ externalId });
+const taskListPagePath = ClaimantResponsePaths.taskListPage.evaluateUri({ externalId });
 const defendantPartialAdmissionResponse = claimStoreServiceMock.samplePartialAdmissionWithPaymentBySetDateResponseObj;
 
 describe('Claimant response: repayment plan accepted page', () => {

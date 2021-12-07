@@ -51,7 +51,7 @@ describe('PermissionForExpert', () => {
       expect(model.option).to.be.undefined;
     });
 
-    it(`valid object when values provided`, () => {
+    it('valid object when values provided', () => {
       const model = PermissionForExpert.fromObject({ option: 'yes' });
       expect(model.option).to.equal(YesNoOption.YES);
     });

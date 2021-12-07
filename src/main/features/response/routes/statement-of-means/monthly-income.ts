@@ -20,7 +20,7 @@ const page: RoutablePath = StatementOfMeansPaths.monthlyIncomePage;
 
 function renderView(form: Form<MonthlyIncome>, res: express.Response): void {
   res.render(page.associatedView, {
-    form: form,
+    form,
     totalMonthlyIncomeExpense: calculateTotalMonthlyIncomeExpense(form.model),
   });
 }
@@ -55,18 +55,21 @@ function actionHandler(req: express.Request, res: express.Response, next: expres
     const form: Form<MonthlyIncome> = req.body;
 
     switch (actionName) {
-      case 'addOtherIncomeSource':
+      case 'addOtherIncomeSource': {
         form.model.addEmptyOtherIncome();
         break;
-      case 'removeOtherIncomeSource':
+      }
+      case 'removeOtherIncomeSource': {
         const selectedForRemoval: IncomeSource = form.valueFor(extractPropertyName(req.body.action[actionName]));
         form.model.removeOtherIncome(selectedForRemoval);
         break;
-      case 'resetIncomeSource':
+      }
+      case 'resetIncomeSource': {
         const propertyName = extractPropertyName(req.body.action[actionName]);
         const selectedForReset: IncomeSource = form.valueFor(propertyName);
         form.model.resetIncome(propertyName, selectedForReset);
         break;
+      }
     }
 
     return renderView(form, res);
@@ -101,7 +104,7 @@ export default express.Router()
         draft.document.statementOfMeans.monthlyIncome = form.model;
         await new DraftService().save(draft, user.bearerToken);
 
-        res.redirect(StatementOfMeansPaths.explanationPage.evaluateUri({ externalId: externalId }));
+        res.redirect(StatementOfMeansPaths.explanationPage.evaluateUri({ externalId }));
       }
     }),
   );

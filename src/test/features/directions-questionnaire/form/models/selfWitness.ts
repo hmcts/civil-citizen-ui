@@ -53,7 +53,7 @@ describe('SelfWitness', () => {
       expect(model.option).to.be.eq(undefined);
     });
 
-    it(`valid object when values provided`, () => {
+    it('valid object when values provided', () => {
       const model = SelfWitness.fromObject({ option: 'yes' });
       expect(model.option).to.be.eq(YesNoOption.YES);
     });

@@ -26,7 +26,7 @@ const stateGuardRequestHandler: express.RequestHandler = GuardFactory.create((re
 function renderView(form: Form<PartPaymentReceived>, res: express.Response): void {
   const claim: Claim = res.locals.claim;
   res.render(Paths.partPaymentReceivedPage.associatedView, {
-    form: form,
+    form,
     paidAmount: StatesPaidHelper.getAlreadyPaidAmount(claim),
   });
 }

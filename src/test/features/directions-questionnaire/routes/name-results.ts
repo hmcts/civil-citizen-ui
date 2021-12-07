@@ -30,11 +30,11 @@ const claim = createClaim(PartyType.INDIVIDUAL, PartyType.ORGANISATION, MadeBy.C
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
 
 const cookieName: string = config.get<string>('session.cookieName');
-const expertPath = Paths.expertPage.evaluateUri({ externalId: externalId });
-const pagePath = Paths.hearingLocationResultPage.evaluateUri({ externalId: externalId }) + '?name=court';
+const expertPath = Paths.expertPage.evaluateUri({ externalId });
+const pagePath = Paths.hearingLocationResultPage.evaluateUri({ externalId }) + '?name=court';
 
 function checkAccessGuard(app: any, method: string) {
-  it(`should redirect to dashboard page when DQ is not enabled for claim`, async () => {
+  it('should redirect to dashboard page when DQ is not enabled for claim', async () => {
     idamServiceMock.resolveRetrieveUserFor('1', 'citizen');
     claimStoreServiceMock.resolveRetrieveClaimByExternalId();
     await request(app)[method](pagePath)

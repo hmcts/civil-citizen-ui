@@ -21,7 +21,7 @@ import { CompanyDetails } from 'forms/models/companyDetails';
 async function renderView(form: Form<CanWeUseCompany>, res: express.Response): Promise<void> {
 
   res.render(Paths.canWeUseCompanyPage.associatedView, {
-    form: form,
+    form,
     contactName: getContactName(res),
   });
 }

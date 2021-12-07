@@ -12,7 +12,7 @@ import { User } from 'idam/user';
 import { Draft } from '@hmcts/draft-store-client';
 
 function renderView(form: Form<CompanyDetails>, res: express.Response): void {
-  res.render(Paths.defendantCompanyDetailsPage.associatedView, { form: form });
+  res.render(Paths.defendantCompanyDetailsPage.associatedView, { form });
 }
 
 /* tslint:disable:no-default-export */

@@ -18,7 +18,7 @@ import { YesNoOption } from 'claims/models/response/core/yesNoOption';
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath: string = Paths.intentionToProceedPage.evaluateUri({ externalId: externalId });
+const pagePath: string = Paths.intentionToProceedPage.evaluateUri({ externalId });
 const pageContent: string = 'Do you want to proceed with the claim?';
 const defendantPartialAdmissionResponse = claimStoreServiceMock.samplePartialAdmissionWithPaymentBySetDateResponseObj;
 
@@ -133,7 +133,7 @@ describe('Claimant response: intention to proceed page', () => {
           .post(pagePath)
           .set('Cookie', `${cookieName}=ABC`)
           .send({ proceed: YesNoOption.YES })
-          .expect(res => expect(res).to.be.redirect.toLocation(Paths.taskListPage.evaluateUri({ externalId: externalId })));
+          .expect(res => expect(res).to.be.redirect.toLocation(Paths.taskListPage.evaluateUri({ externalId })));
       });
 
       it('should redirect to task list page when No is selected and everything is fine', async () => {
@@ -147,7 +147,7 @@ describe('Claimant response: intention to proceed page', () => {
           .post(pagePath)
           .set('Cookie', `${cookieName}=ABC`)
           .send({ proceed: YesNoOption.NO })
-          .expect(res => expect(res).to.be.redirect.toLocation(Paths.taskListPage.evaluateUri({ externalId: externalId })));
+          .expect(res => expect(res).to.be.redirect.toLocation(Paths.taskListPage.evaluateUri({ externalId })));
       });
     });
   });

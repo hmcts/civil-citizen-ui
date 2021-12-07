@@ -10,6 +10,7 @@ const documentsClient: DocumentsClient = new DocumentsClient();
 /* tslint:disable:no-default-export */
 export default express.Router()
   .get(Paths.receiptReceiver.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const { externalId } = req.params;
       const pdf: Buffer = await documentsClient.getDefendantResponseReceiptPDF(externalId, res.locals.user.bearerToken);

@@ -15,7 +15,7 @@ import { FreeMediationOption } from 'forms/models/freeMediation';
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = Paths.partPaymentReceivedPage.evaluateUri({ externalId: externalId });
+const pagePath = Paths.partPaymentReceivedPage.evaluateUri({ externalId });
 
 const equalToClaimAmountDefendantResponseClaim = {
   ...claimStoreServiceMock.sampleClaimObj,
@@ -120,7 +120,7 @@ describe('Claimant Response: part payment received page', () => {
             .set('Cookie', `${cookieName}=ABC`)
             .send({ received: 'yes' })
             .expect(res => expect(res).to.be.redirect
-              .toLocation(Paths.taskListPage.evaluateUri({ externalId: externalId })));
+              .toLocation(Paths.taskListPage.evaluateUri({ externalId })));
 
         });
 
@@ -130,7 +130,7 @@ describe('Claimant Response: part payment received page', () => {
             .set('Cookie', `${cookieName}=ABC`)
             .send({ received: 'no' })
             .expect(res => expect(res).to.be.redirect
-              .toLocation(Paths.taskListPage.evaluateUri({ externalId: externalId })));
+              .toLocation(Paths.taskListPage.evaluateUri({ externalId })));
         });
       });
     });

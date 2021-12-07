@@ -12,7 +12,7 @@ import { checkAuthorizationGuards } from 'test/features/offer/routes/checks/auth
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const confirmationPage = OfferPaths.offerConfirmationPage.evaluateUri({ externalId: externalId });
+const confirmationPage = OfferPaths.offerConfirmationPage.evaluateUri({ externalId });
 
 describe('Offer confirmation page', () => {
   attachDefaultHooks(app);

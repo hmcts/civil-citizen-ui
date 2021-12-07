@@ -22,7 +22,7 @@ export class ApplicationCluster {
       cluster.fork();
     }
     cluster.on('exit', (worker, code, signal) => {
-      logger.info(`Worker ${worker.process.pid} exited with ${code ? code : signal}`);
+      logger.info(`Worker ${worker.process.pid} exited with ${code || signal}`);
     });
   }
 }

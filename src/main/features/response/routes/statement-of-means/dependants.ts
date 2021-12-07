@@ -36,7 +36,7 @@ export default express.Router()
       const form: Form<Dependants> = req.body;
 
       if (form.hasErrors()) {
-        res.render(page.associatedView, { form: form });
+        res.render(page.associatedView, { form });
       } else {
         const draft: Draft<ResponseDraft> = res.locals.responseDraft;
         const user: User = res.locals.user;
@@ -64,11 +64,11 @@ export default express.Router()
 
         const { externalId } = req.params;
         if (form.model.numberOfChildren && form.model.numberOfChildren.between16and19) {
-          res.redirect(Paths.educationPage.evaluateUri({ externalId: externalId }));
+          res.redirect(Paths.educationPage.evaluateUri({ externalId }));
         } else if (skipDisabilityQuestion) {
-          res.redirect(Paths.otherDependantsPage.evaluateUri({ externalId: externalId }));
+          res.redirect(Paths.otherDependantsPage.evaluateUri({ externalId }));
         } else {
-          res.redirect(Paths.dependantsDisabilityPage.evaluateUri({ externalId: externalId }));
+          res.redirect(Paths.dependantsDisabilityPage.evaluateUri({ externalId }));
         }
       }
     }),

@@ -15,8 +15,8 @@ import { Moment } from 'moment';
 function renderView(form: Form<PaymentDate>, res: express.Response): void {
   const futureDate: Moment = MomentFactory.currentDate().add(30, 'days');
   res.render(Paths.payBySetDatePage.associatedView, {
-    form: form,
-    futureDate: futureDate,
+    form,
+    futureDate,
   });
 }
 
@@ -42,6 +42,6 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         const { externalId } = req.params;
-        res.redirect(Paths.checkAndSendPage.evaluateUri({ externalId: externalId }));
+        res.redirect(Paths.checkAndSendPage.evaluateUri({ externalId }));
       }
     }));

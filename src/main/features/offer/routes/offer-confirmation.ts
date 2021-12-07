@@ -13,7 +13,7 @@ export default express.Router()
       const claim: Claim = res.locals.claim;
       const user: User = res.locals.user;
       res.render(Paths.offerConfirmationPage.associatedView, {
-        claim: claim,
+        claim,
         submittedOn: claim.respondedAt,
         defendantEmail: user.email,
         responsePaths: ResponsePaths,

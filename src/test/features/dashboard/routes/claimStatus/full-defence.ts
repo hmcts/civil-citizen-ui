@@ -718,13 +718,13 @@ function testData() {
         'Wait for us to contact you by post',
         'You applied by post to change something about the claim',
         'You might have to go to a hearing.',
-        `We’ll contact you by post to tell you what to do next.`,
-        `Your online account won’t be updated - any further updates will be by post.`,
+        'We’ll contact you by post to tell you what to do next.',
+        'Your online account won’t be updated - any further updates will be by post.',
       ],
       defendantAssertions: [
         fullDefenceClaim().claim.claimants[0].name + ' applied by post to change something about the claim',
-        `We’ll post you a copy of their application. This will explain what you need to do next.`,
-        `Your online account won’t be updated - any further updates will be by post.`,
+        'We’ll post you a copy of their application. This will explain what you need to do next.',
+        'Your online account won’t be updated - any further updates will be by post.',
       ],
     },
     {

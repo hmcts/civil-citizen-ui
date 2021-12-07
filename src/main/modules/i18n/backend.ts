@@ -43,7 +43,7 @@ export class Backend {
     const translationFile = this.options.loadPath.replace(/{{lng}}/, language).replace(/{{ns}}/, namespace);
 
     readFile(translationFile, (err, data) => {
-      if (err) return callback(err, null);
+      if (err) {return callback(err, null);}
 
       converter
         .gettextToI18next(language, data)

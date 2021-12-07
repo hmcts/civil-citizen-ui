@@ -16,7 +16,7 @@ describe('postcodeToCountryClient', () => {
     try {
       await countryClient.lookupCountry('XXXX');
     } catch (e) {
-      expect(e).to.contain(`Unable to find country for 'XXXX'`);
+      expect(e).to.contain('Unable to find country for \'XXXX\'');
     }
   });
 
@@ -33,7 +33,7 @@ describe('postcodeToCountryClient', () => {
     try {
       await countryClient.lookupCountry('');
     } catch (e) {
-      expect(e.message).to.equal(`Missing required postcode`);
+      expect(e.message).to.equal('Missing required postcode');
     }
   });
 });

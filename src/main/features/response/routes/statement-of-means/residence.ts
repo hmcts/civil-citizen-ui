@@ -15,7 +15,7 @@ import { Claim } from 'claims/models/claim';
 
 function renderView(form: Form<Residence>, res: express.Response): void {
   res.render(Paths.residencePage.associatedView, {
-    form: form,
+    form,
   });
 }
 

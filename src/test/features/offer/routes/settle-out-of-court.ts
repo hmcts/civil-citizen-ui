@@ -12,7 +12,7 @@ import { checkAuthorizationGuards } from 'test/features/offer/routes/checks/auth
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const settleOutOfCourtPage = OfferPaths.settleOutOfCourtPage.evaluateUri({ externalId: externalId });
+const settleOutOfCourtPage = OfferPaths.settleOutOfCourtPage.evaluateUri({ externalId });
 
 describe('Settle out of court page', () => {
   attachDefaultHooks(app);

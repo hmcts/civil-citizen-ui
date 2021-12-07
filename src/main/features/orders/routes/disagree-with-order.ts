@@ -19,7 +19,7 @@ function renderView(form: Form<DisagreeReason>, res: express.Response): void {
 
   res.render(Paths.disagreeReasonPage.associatedView, {
     otherParty: claim.otherPartyName(user),
-    form: form,
+    form,
   });
 }
 

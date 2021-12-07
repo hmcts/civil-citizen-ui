@@ -117,7 +117,7 @@ describe('Timeline', () => {
       expect(actual.rows.length).to.be.eq(INIT_ROW_COUNT + 1);
     });
 
-    it(`adds only up to the maximum row count elements`, () => {
+    it('adds only up to the maximum row count elements', () => {
       const actual: Timeline = new Timeline();
 
       expect(actual.rows.length).to.be.eq(INIT_ROW_COUNT);

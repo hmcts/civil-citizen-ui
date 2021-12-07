@@ -37,10 +37,10 @@ class ClaimStoreHelper extends codecept_helper {
     const uri = `${baseURL}/testing-support/claims/${referenceNumber}/defendant`;
 
     await request.put({
-      uri: uri,
+      uri,
       body: {
         'username': defendant,
-        'password': password,
+        password,
       },
       json: true,
     }).promise();

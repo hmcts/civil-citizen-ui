@@ -24,7 +24,7 @@ export default express.Router()
       const claim: Claim = res.locals.claim;
       const interestData = await getInterestDetails(claim);
       res.render(Paths.claimSummaryPage.associatedView, {
-        interestData: interestData,
+        interestData,
       });
     })
   .post(Paths.claimSummaryPage.uri, (req: express.Request, res: express.Response): void => {

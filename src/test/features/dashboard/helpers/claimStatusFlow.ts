@@ -20,7 +20,7 @@ describe('The dashboard status rule engine', () => {
         next: [],
       };
       const claim: Claim = new Claim().deserialize(sampleClaimObj);
-      expect(ClaimStatusFlow.decide(flow, claim)).to.equal(`first`);
+      expect(ClaimStatusFlow.decide(flow, claim)).to.equal('first');
     });
   });
   it('should return the dashboard of the last valid state', () => {
@@ -51,7 +51,7 @@ describe('The dashboard status rule engine', () => {
       }],
     };
     const claim: Claim = new Claim().deserialize(sampleClaimObj);
-    expect(ClaimStatusFlow.decide(flow, claim)).to.equal(`fourth`);
+    expect(ClaimStatusFlow.decide(flow, claim)).to.equal('fourth');
   });
   it('should return the dashboard of the last valid state even if there are other states after', () => {
     const flow: ClaimStatusNode = {
@@ -91,7 +91,7 @@ describe('The dashboard status rule engine', () => {
       }],
     };
     const claim: Claim = new Claim().deserialize(sampleClaimObj);
-    expect(ClaimStatusFlow.decide(flow, claim)).to.equal(`fourth`);
+    expect(ClaimStatusFlow.decide(flow, claim)).to.equal('fourth');
   });
   it('should throw an error if two paths are possible', () => {
     const flow: ClaimStatusNode = {
@@ -111,7 +111,7 @@ describe('The dashboard status rule engine', () => {
       }],
     };
     const claim: Claim = new Claim().deserialize(sampleClaimObj);
-    expect(() => ClaimStatusFlow.decide(flow, claim)).to.throw(`Two possible paths are valid for a claim, check the flow's logic`);
+    expect(() => ClaimStatusFlow.decide(flow, claim)).to.throw('Two possible paths are valid for a claim, check the flow\'s logic');
   });
   it('should throw an error if trying to render an intermediate state', () => {
     const flow: ClaimStatusNode = {
@@ -130,6 +130,6 @@ describe('The dashboard status rule engine', () => {
       }],
     };
     const claim: Claim = new Claim().deserialize(sampleClaimObj);
-    expect(() => ClaimStatusFlow.decide(flow, claim)).to.throw(`Trying to render an intermediate state with no dashboard, check the flow's logic`);
+    expect(() => ClaimStatusFlow.decide(flow, claim)).to.throw('Trying to render an intermediate state with no dashboard, check the flow\'s logic');
   });
 });

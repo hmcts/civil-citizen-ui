@@ -35,8 +35,8 @@ export default express.Router()
         (defendantPaymentOption !== 'BY_SPECIFIED_DATE') ? defendantPaymentPlan.frequency && differentPaymentFrequency : false;
 
       res.render(Paths.counterOfferAcceptedPage.associatedView, {
-        isCourtOrderPaymentPlanConvertedByDefendantFrequency: isCourtOrderPaymentPlanConvertedByDefendantFrequency,
-        claimantPaymentPlan: claimantPaymentPlan,
+        isCourtOrderPaymentPlanConvertedByDefendantFrequency,
+        claimantPaymentPlan,
         courtOrderPaymentPlan: draft.document.courtDetermination.courtDecision ?
           draft.document.courtDetermination.courtDecision.repaymentPlan : undefined,
       });
@@ -54,5 +54,5 @@ export default express.Router()
 
       await new DraftService().save(draft, user.bearerToken);
 
-      res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+      res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
     }));

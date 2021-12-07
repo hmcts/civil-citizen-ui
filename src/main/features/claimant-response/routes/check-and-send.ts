@@ -87,21 +87,21 @@ async function renderView(form: Form<StatementOfTruth>, res: express.Response): 
 
   res.render(Paths.checkAndSendPage.associatedView, {
     draft: draft.document,
-    claim: claim,
-    form: form,
+    claim,
+    form,
     totalAmount: AmountHelper.calculateTotalAmount(claim, res.locals.draft.document),
-    paymentIntention: paymentIntention,
+    paymentIntention,
     claimantPaymentPlan: draft.document.alternatePaymentMethod ? draft.document.alternatePaymentMethod.toDomainInstance() : undefined,
-    alreadyPaid: alreadyPaid,
+    alreadyPaid,
     amount: alreadyPaid ? StatesPaidHelper.getAlreadyPaidAmount(claim) : undefined,
     directionsQuestionnaireEnabled: dqsEnabled,
     mediationDraft: mediationDraft.document,
     contactPerson: FreeMediationUtil.getMediationContactPerson(claim, mediationDraft.document),
     contactNumber: FreeMediationUtil.getMediationPhoneNumber(claim, mediationDraft.document),
     directionsQuestionnaireDraft: directionsQuestionnaireDraft.document,
-    datesUnavailable: datesUnavailable,
-    dispute: dispute,
-    alternatePaymentMethodDate: alternatePaymentMethodDate,
+    datesUnavailable,
+    dispute,
+    alternatePaymentMethodDate,
   });
 }
 

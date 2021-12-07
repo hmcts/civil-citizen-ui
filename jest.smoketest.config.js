@@ -1,11 +1,11 @@
 module.exports = {
   roots: ['<rootDir>/src/integration-test'],
-  "testRegex": "(/src/integration-test/.*|\\.(test|spec))\\.(ts|js)$",
-   "moduleFileExtensions": [
-    "ts",
-    "js"
+  'testRegex': '(/src/integration-test/.*|\\.(test|spec))\\.(ts|js)$',
+   'moduleFileExtensions': [
+    'ts',
+    'js'
   ],
-  "testEnvironment": "node",
+  'testEnvironment': 'node',
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
@@ -13,8 +13,8 @@ module.exports = {
   reporters: [
     'default',
     [ 'jest-junit', {
-      outputDirectory: "./smoke-output",
-      outputName: "test-output.html"
+      outputDirectory: './smoke-output',
+      outputName: 'test-output.html'
     } ]
   ],
-}
+};

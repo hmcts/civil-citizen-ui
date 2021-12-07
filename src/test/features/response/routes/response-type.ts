@@ -25,7 +25,7 @@ import {
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId: string = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = ResponsePaths.responseTypePage.evaluateUri({ externalId: externalId });
+const pagePath = ResponsePaths.responseTypePage.evaluateUri({ externalId });
 
 describe('Defendant response: response type page', () => {
   attachDefaultHooks(app);
@@ -116,7 +116,7 @@ describe('Defendant response: response type page', () => {
               .set('Cookie', `${cookieName}=ABC`)
               .send({ type: ResponseType.FULL_ADMISSION })
               .expect(res => expect(res).to.be.redirect
-                .toLocation(ResponsePaths.taskListPage.evaluateUri({ externalId: externalId })));
+                .toLocation(ResponsePaths.taskListPage.evaluateUri({ externalId })));
           });
 
           it('should redirect to send your response by email page when everything is fine and PART_ADMISSION is selected', async () => {
@@ -130,7 +130,7 @@ describe('Defendant response: response type page', () => {
               .set('Cookie', `${cookieName}=ABC`)
               .send({ type: ResponseType.PART_ADMISSION })
               .expect(res => expect(res).to.be.redirect
-                .toLocation(PartAdmissionPaths.alreadyPaidPage.evaluateUri({ externalId: externalId })));
+                .toLocation(PartAdmissionPaths.alreadyPaidPage.evaluateUri({ externalId })));
           });
 
           it('should redirect to reject all of claim page when everything is fine and DEFENCE is selected', async () => {
@@ -144,7 +144,7 @@ describe('Defendant response: response type page', () => {
               .set('Cookie', `${cookieName}=ABC`)
               .send({ type: ResponseType.DEFENCE })
               .expect(res => expect(res).to.be.redirect
-                .toLocation(ResponsePaths.defenceRejectAllOfClaimPage.evaluateUri({ externalId: externalId })));
+                .toLocation(ResponsePaths.defenceRejectAllOfClaimPage.evaluateUri({ externalId })));
           });
         });
       });

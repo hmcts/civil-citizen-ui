@@ -19,7 +19,7 @@ import { verifyRedirectForGetWhenAlreadyPaidInFull } from 'test/app/guards/alrea
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = Paths.repaymentPlanSummary.evaluateUri({ externalId: externalId });
+const pagePath = Paths.repaymentPlanSummary.evaluateUri({ externalId });
 
 describe('Settlement agreement: repayment plan summary page', () => {
   attachDefaultHooks(app);

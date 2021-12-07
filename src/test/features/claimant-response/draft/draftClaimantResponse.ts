@@ -24,7 +24,7 @@ describe('DraftClaimantResponse', () => {
     });
 
     it('should return a DraftClaimantResponse instance initialised with valid data', () => {
-      const myExternalId: String = 'b17af4d2-273f-4999-9895-bce382fa24c8';
+      const myExternalId: string = 'b17af4d2-273f-4999-9895-bce382fa24c8';
       const draft: DraftClaimantResponse = new DraftClaimantResponse().deserialize({
         externalId: myExternalId,
         settleAdmitted: {
@@ -82,7 +82,7 @@ describe('DraftClaimantResponse', () => {
     });
 
     it('should return a DraftClaimantResponse instance initialised with partial valid data', () => {
-      const myExternalId: String = 'b17af4d2-273f-4999-9895-bce382fa24c8';
+      const myExternalId: string = 'b17af4d2-273f-4999-9895-bce382fa24c8';
       const draft: DraftClaimantResponse = new DraftClaimantResponse().deserialize({
         externalId: myExternalId,
         courtDetermination: new CourtDetermination(

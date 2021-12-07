@@ -62,7 +62,7 @@ import { CourtLocationType } from 'claims/models/directions-questionnaire/hearin
 function prepareResponseDraft(draftTemplate: any, partyDetails: object): ResponseDraft {
   return new ResponseDraft().deserialize({
     ...draftTemplate,
-    defendantDetails: { ...draftTemplate.defendantDetails, partyDetails: partyDetails },
+    defendantDetails: { ...draftTemplate.defendantDetails, partyDetails },
     timeline: DefendantTimeline.fromObject({ rows: [], comment: 'I do not agree' }),
   });
 }
@@ -188,7 +188,7 @@ describe('ResponseModelConverter', () => {
         });
       });
 
-      it(`should convert company who says YES to mediation and confirm number`, async () => {
+      it('should convert company who says YES to mediation and confirm number', async () => {
         const mediationDraft = new MediationDraft().deserialize({
           willYouTryMediation: {
             option: FreeMediationOption.YES,
@@ -592,7 +592,7 @@ describe('ResponseModelConverter', () => {
         });
       });
 
-      it(`should convert company who says YES to mediation and confirm number`, async () => {
+      it('should convert company who says YES to mediation and confirm number', async () => {
         const mediationDraft = new MediationDraft().deserialize({
           youCanOnlyUseMediation: {
             option: FreeMediationOption.YES,

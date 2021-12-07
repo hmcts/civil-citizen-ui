@@ -1,12 +1,12 @@
 import { PartyType } from 'integration-test/data/party-type';
 import {
+  SMOKE_TEST_CITIZEN_USERNAME,
+  SMOKE_TEST_USER_PASSWORD,
   claimAmount,
   claimReason,
   createClaimant,
   createDefendant,
   postcodeLookupQuery,
-  SMOKE_TEST_CITIZEN_USERNAME,
-  SMOKE_TEST_USER_PASSWORD,
 } from 'integration-test/data/test-data';
 import { CitizenCompletingClaimInfoPage } from 'integration-test/tests/citizen/claim/pages/citizen-completing-claim-info';
 import { CitizenDobPage } from 'integration-test/tests/citizen/claim/pages/citizen-dob';

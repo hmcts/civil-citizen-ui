@@ -17,7 +17,7 @@ chai.use(spies);
 
 describe('Claimant Response guard', () => {
   attachDefaultHooks();
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   const next = (e?: any): void => {
     return void 0;
   };
@@ -29,7 +29,7 @@ describe('Claimant Response guard', () => {
     };
 
     res.locals = {
-      claim: claim,
+      claim,
       user: new User('1', 'user@example.com', 'John', 'Smith', [], 'citizen', ''),
     };
     res.redirect = sinon.spy((location: string): void => {

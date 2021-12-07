@@ -10,6 +10,7 @@ import { mockReq, mockRes } from 'sinon-express-mock';
 chai.use(spies);
 const expect = chai.expect;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 describe('ErrorHandling', () => {
   const resolvingRequestHandler = sinon.spy((req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
     return undefined;

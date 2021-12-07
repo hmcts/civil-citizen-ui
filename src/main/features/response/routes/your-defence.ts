@@ -18,8 +18,8 @@ async function renderView(form: Form<Defence>, res: express.Response, next: expr
     const claim: Claim = res.locals.claim;
 
     res.render(Paths.defencePage.associatedView, {
-      form: form,
-      claim: claim,
+      form,
+      claim,
     });
   } catch (err) {
     next(err);

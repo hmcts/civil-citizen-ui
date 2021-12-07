@@ -112,7 +112,7 @@ export class FeesClient {
     }
     const uri: string = `${feesUrl}/fees-register/fees?service=${service}&jurisdiction1=${jurisdiction1}&jurisdiction2=${jurisdiction2}&channel=${channel}&event=${eventType}&feeVersionStatus=approved`;
     const options = {
-      uri: uri,
+      uri,
     };
     return request(options).then(function(response) {
       return plainToClass(FeeRange, response as object[]);

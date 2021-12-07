@@ -17,7 +17,7 @@ import { Claim } from 'claims/models/claim';
 const page: RoutablePath = StatementOfMeansPaths.bankAccountsPage;
 
 function renderView(form: Form<BankAccounts>, res: express.Response): void {
-  res.render(page.associatedView, { form: form });
+  res.render(page.associatedView, { form });
 }
 
 function actionHandler(req: express.Request, res: express.Response, next: express.NextFunction): void {

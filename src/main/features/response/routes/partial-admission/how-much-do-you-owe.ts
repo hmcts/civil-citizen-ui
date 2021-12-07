@@ -18,7 +18,7 @@ const page: RoutablePath = PartAdmissionPaths.howMuchDoYouOwePage;
 
 function renderView(form: Form<HowMuchDoYouOwe>, res: express.Response) {
   res.render(page.associatedView, {
-    form: form,
+    form,
     totalAmount: res.locals.claim.totalAmountTillToday,
   });
 }
@@ -50,6 +50,6 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         const { externalId } = req.params;
-        res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+        res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
       }
     }));

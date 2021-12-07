@@ -19,7 +19,7 @@ describe('ExpenseSchedule', () => {
       try {
         IncomeExpenseSchedule.of('unknown');
       } catch (e) {
-        expect(e.message).to.equal(`There is no IncomeExpenseSchedule: 'unknown'`);
+        expect(e.message).to.equal('There is no IncomeExpenseSchedule: \'unknown\'');
       }
     });
   });

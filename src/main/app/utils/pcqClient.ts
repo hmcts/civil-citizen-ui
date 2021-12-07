@@ -52,11 +52,11 @@ export class PcqClient {
 
   static getServiceEndpoint(ccdCaseId: string, partyId: string, pcqId: string, returnUri: string, actorCmc: string, claimtype: string): string {
     const baseParameters: BaseParameters = {
-      pcqId: pcqId,
+      pcqId,
       serviceId: actorCmc,
       actor: claimtype,
-      ccdCaseId: ccdCaseId,
-      partyId: partyId,
+      ccdCaseId,
+      partyId,
       returnUrl: returnUri,
       language: 'en',
     };

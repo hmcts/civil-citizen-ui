@@ -14,7 +14,7 @@ import {
   ErrorPaths as DefendantFirstContactErrorPaths,
   Paths as DefendantFirstContactPaths,
 } from 'first-contact/paths';
-import { FullAdmissionPaths, Paths, Paths as DefendantResponsePaths, StatementOfMeansPaths } from 'response/paths';
+import { Paths as DefendantResponsePaths, FullAdmissionPaths, Paths, StatementOfMeansPaths } from 'response/paths';
 import { Paths as ClaimantResponsePaths } from 'claimant-response/paths';
 import { Paths as CCJPaths } from 'ccj/paths';
 import { Paths as OfferPaths } from 'offer/paths';
@@ -24,6 +24,7 @@ import { Paths as DirectionQuestionnairePaths } from 'directions-questionnaire/p
 import { Paths as OrdersPaths } from 'orders/paths';
 import { Paths as BreathingSpacePaths } from 'breathing-space/paths';
 import {
+  CustomChecks,
   checkAnswers,
   checkButton,
   checkClaimAmountRows,
@@ -35,7 +36,6 @@ import {
   checkTable,
   checkTaskList,
   customAccessibilityChecks,
-  CustomChecks,
 } from './customChecks';
 
 import 'test/a11y/mocks';

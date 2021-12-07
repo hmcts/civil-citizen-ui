@@ -19,7 +19,7 @@ function renderView(form: Form<Reason>, res: express.Response): void {
     && draft.document.defendant.partyDetails.name)
     ? draft.document.defendant.partyDetails.name : '';
 
-  res.render(Paths.reasonPage.associatedView, { form: form, defendantName: defendantName });
+  res.render(Paths.reasonPage.associatedView, { form, defendantName });
 }
 
 /* tslint:disable:no-default-export */

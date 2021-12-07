@@ -25,8 +25,8 @@ import {
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = PartAdmissionPaths.howMuchDoYouOwePage.evaluateUri({ externalId: externalId });
-const redirectPath = Paths.taskListPage.evaluateUri({ externalId: externalId });
+const pagePath = PartAdmissionPaths.howMuchDoYouOwePage.evaluateUri({ externalId });
+const redirectPath = Paths.taskListPage.evaluateUri({ externalId });
 
 const validFormData = { amount: 100, totalAmount: claimStoreServiceMock.sampleClaimObj.totalAmountTillToday };
 const header: string = 'How much money do you admit you owe?';

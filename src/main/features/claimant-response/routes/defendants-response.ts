@@ -22,12 +22,12 @@ function renderView(res: express.Response, page: number): void {
     directionsQuestionnaireEnabled = true;
   }
   res.render(Paths.defendantsResponsePage.associatedView, {
-    claim: claim,
-    page: page,
-    alreadyPaid: alreadyPaid,
-    dqsEnabled: dqsEnabled,
+    claim,
+    page,
+    alreadyPaid,
+    dqsEnabled,
     partiallyPaid: alreadyPaid ? StatesPaidHelper.isAlreadyPaidLessThanAmount(claim) : undefined,
-    directionsQuestionnaireEnabled: directionsQuestionnaireEnabled,
+    directionsQuestionnaireEnabled,
   });
 }
 
@@ -57,5 +57,5 @@ export default express.Router()
       await new DraftService().save(draft, user.bearerToken);
 
       const { externalId } = req.params;
-      res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+      res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
     }));

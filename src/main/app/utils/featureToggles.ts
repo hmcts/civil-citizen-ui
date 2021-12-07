@@ -33,38 +33,38 @@ export class FeatureToggles {
   }
 
   async isWarningBannerEnabled(): Promise<boolean> {
-    return this.launchDarklyClient.serviceVariation('warning_banner', toBoolean(config.get<boolean>(`featureToggles.warningBanner`)));
+    return this.launchDarklyClient.serviceVariation('warning_banner', toBoolean(config.get<boolean>('featureToggles.warningBanner')));
   }
 
   async isHelpWithFeesEnabled(): Promise<boolean> {
-    return this.launchDarklyClient.serviceVariation('help-with-fees', toBoolean(config.get<boolean>(`featureToggles.helpWithFees`)));
+    return this.launchDarklyClient.serviceVariation('help-with-fees', toBoolean(config.get<boolean>('featureToggles.helpWithFees')));
   }
 
   async isPcqEnabled(): Promise<boolean> {
-    return this.launchDarklyClient.serviceVariation('pcq', toBoolean(config.get<boolean>(`featureToggles.pcq`)));
+    return this.launchDarklyClient.serviceVariation('pcq', toBoolean(config.get<boolean>('featureToggles.pcq')));
   }
 
   async isAntennaWebChatEnabled(): Promise<boolean> {
-    return this.launchDarklyClient.serviceVariation('antenna-web-chat', toBoolean(config.get<boolean>(`featureToggles.AntennawebChat`)));
+    return this.launchDarklyClient.serviceVariation('antenna-web-chat', toBoolean(config.get<boolean>('featureToggles.AntennawebChat')));
   }
 
   async isSignPostingEnabled(): Promise<boolean> {
-    return this.launchDarklyClient.serviceVariation('sign-posting-ctsc', toBoolean(config.get<boolean>(`featureToggles.signPostingCTSC`)));
+    return this.launchDarklyClient.serviceVariation('sign-posting-ctsc', toBoolean(config.get<boolean>('featureToggles.signPostingCTSC')));
   }
 
   async isDashboardPaginationEnabled(): Promise<boolean> {
-    return this.launchDarklyClient.serviceVariation('dashboard_pagination_enabled', toBoolean(config.get<boolean>(`featureToggles.dashboard_pagination_enabled`)));
+    return this.launchDarklyClient.serviceVariation('dashboard_pagination_enabled', toBoolean(config.get<boolean>('featureToggles.dashboard_pagination_enabled')));
   }
 
   async isOCONEnhancementEnabled(): Promise<boolean> {
-    return this.launchDarklyClient.serviceVariation('ocon-enhancement-2', toBoolean(config.get<boolean>(`featureToggles.oconEnhancements`)));
+    return this.launchDarklyClient.serviceVariation('ocon-enhancement-2', toBoolean(config.get<boolean>('featureToggles.oconEnhancements')));
   }
 
   async isBreathingSpaceEnabled(): Promise<boolean> {
-    return this.launchDarklyClient.serviceVariation('breathing-space', toBoolean(config.get<boolean>(`featureToggles.breathingSpace`)));
+    return this.launchDarklyClient.serviceVariation('breathing-space', toBoolean(config.get<boolean>('featureToggles.breathingSpace')));
   }
 
   async isNewClaimFeesEnabled(): Promise<boolean> {
-    return this.launchDarklyClient.serviceVariation('new-claim-fees', toBoolean(config.get<boolean>(`featureToggles.newClaimFees`)));
+    return this.launchDarklyClient.serviceVariation('new-claim-fees', toBoolean(config.get<boolean>('featureToggles.newClaimFees')));
   }
 }

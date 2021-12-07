@@ -9,7 +9,7 @@ import { PaidAmount } from 'ccj/form/models/paidAmount';
 import { RepaymentPlan } from 'ccj/form/models/repaymentPlan';
 import { FormValidator } from 'forms/validation/formValidator';
 import { DraftCCJ } from 'ccj/draft/draftCCJ';
-import { Draft as DraftWrapper, Draft } from '@hmcts/draft-store-client';
+import { Draft, Draft as DraftWrapper } from '@hmcts/draft-store-client';
 import { Claim } from 'claims/models/claim';
 import { Moment } from 'moment';
 import { getEarliestPaymentDateForPaymentPlan } from 'claimant-response/helpers/paydateHelper';
@@ -22,7 +22,7 @@ class RepaymentPlanPage {
 
   buildPostSubmissionUri(req: express.Request, res: express.Response): string {
     const { externalId } = req.params;
-    return Paths.checkAndSendPage.evaluateUri({ externalId: externalId });
+    return Paths.checkAndSendPage.evaluateUri({ externalId });
   }
 
   postValidation(req: express.Request, res: express.Response): FormValidationError {
@@ -92,7 +92,7 @@ class RepaymentPlanPage {
 
     res.render(this.getView(), {
       heading: this.getHeading(),
-      form: form,
+      form,
       remainingAmount: claim.totalAmountTillToday - alreadyPaid,
     });
   }

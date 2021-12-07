@@ -19,7 +19,7 @@ const page: RoutablePath = PartAdmissionPaths.alreadyPaidPage;
 
 function renderView(form: Form<AlreadyPaid>, res: express.Response) {
   res.render(page.associatedView, {
-    form: form,
+    form,
   });
 }
 
@@ -28,6 +28,7 @@ export default express.Router()
   .get(
     page.uri,
     PartialAdmissionGuard.requestHandler(),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<ResponseDraft> = res.locals.responseDraft;
       renderView(new Form(draft.document.partialAdmission.alreadyPaid), res);
@@ -36,6 +37,7 @@ export default express.Router()
     page.uri,
     PartialAdmissionGuard.requestHandler(),
     FormValidator.requestHandler(AlreadyPaid, AlreadyPaid.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<AlreadyPaid> = req.body;
 
@@ -57,6 +59,6 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         const { externalId } = req.params;
-        res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+        res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
       }
     }));

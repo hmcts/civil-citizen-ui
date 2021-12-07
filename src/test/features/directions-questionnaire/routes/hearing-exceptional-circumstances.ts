@@ -31,9 +31,9 @@ import {
 
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
 const cookieName: string = config.get<string>('session.cookieName');
-const hearingLocationPage = Paths.hearingLocationPage.evaluateUri({ externalId: externalId });
-const expertPath = Paths.expertPage.evaluateUri({ externalId: externalId });
-const pagePath = Paths.hearingExceptionalCircumstancesPage.evaluateUri({ externalId: externalId });
+const hearingLocationPage = Paths.hearingLocationPage.evaluateUri({ externalId });
+const expertPath = Paths.expertPage.evaluateUri({ externalId });
+const pagePath = Paths.hearingExceptionalCircumstancesPage.evaluateUri({ externalId });
 const dashboardPath = DashboardPaths.dashboardPage.uri;
 
 function setupMocks(claimant: PartyType, defendant: PartyType, currentParty: MadeBy) {
@@ -114,7 +114,7 @@ async function shouldBeServerError(method: string, text: string, body?: any) {
 function checkAccessGuards(app: any, method: string) {
 
   if (FeatureToggles.isEnabled('directionsQuestionnaire')) {
-    it(`should redirect to dashboard page when DQ is not enabled for claim`, async () => {
+    it('should redirect to dashboard page when DQ is not enabled for claim', async () => {
       claimStoreServiceMock.resolveRetrieveClaimByExternalId();
       idamServiceMock.resolveRetrieveUserFor('1', 'citizen');
 

@@ -14,7 +14,7 @@ import { PartialAdmissionResponse } from 'claims/models/response/partialAdmissio
 import { CalculateMonthlyIncomeExpense } from 'common/calculate-monthly-income-expense/calculateMonthlyIncomeExpense';
 import { IncomeExpenseSource } from 'common/calculate-monthly-income-expense/incomeExpenseSource';
 
-import { claimantResponsePath, Paths } from 'claimant-response/paths';
+import { Paths, claimantResponsePath } from 'claimant-response/paths';
 
 import { FormValidationError } from 'forms/form';
 import { getEarliestPaymentDateForPaymentPlan } from 'claimant-response/helpers/paydateHelper';
@@ -171,23 +171,23 @@ export class PaymentPlanPage extends AbstractPaymentPlanPage<DraftClaimantRespon
 
     switch (courtDecision) {
       case DecisionType.NOT_APPLICABLE_IS_BUSINESS:
-        return Paths.taskListPage.evaluateUri({ externalId: externalId });
+        return Paths.taskListPage.evaluateUri({ externalId });
       case DecisionType.COURT: {
-        return Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId: externalId });
+        return Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId });
       }
       case DecisionType.DEFENDANT: {
         if (claimResponse.paymentIntention.paymentOption === PaymentOption.INSTALMENTS) {
-          return Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId: externalId });
+          return Paths.courtOfferedInstalmentsPage.evaluateUri({ externalId });
         }
 
         if (claimResponse.paymentIntention.paymentOption === PaymentOption.BY_SPECIFIED_DATE) {
-          return Paths.courtOfferedSetDatePage.evaluateUri({ externalId: externalId });
+          return Paths.courtOfferedSetDatePage.evaluateUri({ externalId });
         }
         break;
       }
       case DecisionType.CLAIMANT:
       case DecisionType.CLAIMANT_IN_FAVOUR_OF_DEFENDANT: {
-        return Paths.counterOfferAcceptedPage.evaluateUri({ externalId: externalId });
+        return Paths.counterOfferAcceptedPage.evaluateUri({ externalId });
       }
     }
   }

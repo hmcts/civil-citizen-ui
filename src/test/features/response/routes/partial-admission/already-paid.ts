@@ -23,7 +23,7 @@ import {
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = PartAdmissionPaths.alreadyPaidPage.evaluateUri({ externalId: externalId });
+const pagePath = PartAdmissionPaths.alreadyPaidPage.evaluateUri({ externalId });
 
 const validFormData = { option: YesNoOption.YES.option };
 
@@ -148,7 +148,7 @@ describe('Defendant: partial admission - already paid?', () => {
               .set('Cookie', `${cookieName}=ABC`)
               .send(validFormData)
               .expect(res => expect(res).to.be.redirect
-                .toLocation(Paths.taskListPage.evaluateUri({ externalId: externalId })));
+                .toLocation(Paths.taskListPage.evaluateUri({ externalId })));
           });
 
           it('when form is invalid should render page', async () => {

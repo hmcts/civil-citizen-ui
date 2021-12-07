@@ -64,7 +64,7 @@ describe('Claim issue: initiate payment receiver', () => {
 
     beforeEach(() => {
       overrideClaimDraftObj = {
-        externalId: externalId,
+        externalId,
         readResolveDispute: true,
         readCompletingClaim: true,
         claimant: {
@@ -249,7 +249,7 @@ describe('Claim issue: initiate payment receiver', () => {
       await request(app)
         .get(Paths.startPaymentReceiver.uri)
         .set('Cookie', `${cookieName}=ABC`)
-        .expect(res => expect(res).to.be.redirect.toLocation(Paths.finishPaymentReceiver.evaluateUri({ externalId: externalId })));
+        .expect(res => expect(res).to.be.redirect.toLocation(Paths.finishPaymentReceiver.evaluateUri({ externalId })));
     });
   });
 });
@@ -264,7 +264,7 @@ describe('Claim issue: post payment callback receiver', () => {
 
     beforeEach(() => {
       overrideClaimDraftObj = {
-        externalId: externalId,
+        externalId,
         readResolveDispute: true,
         readCompletingClaim: true,
         claimant: {
@@ -441,7 +441,7 @@ describe('Claim issue: post payment callback receiver', () => {
             draftStoreServiceMock.resolveFind(draftType, { claimant: undefined });
 
             await request(app)
-              .get(Paths.finishPaymentReceiver.evaluateUri({ externalId: externalId }))
+              .get(Paths.finishPaymentReceiver.evaluateUri({ externalId }))
               .set('Cookie', `${cookieName}=ABC`)
               .expect(res => expect(res).to.be.redirect.toLocation(`/claim/${externalId}/confirmation`));
           });

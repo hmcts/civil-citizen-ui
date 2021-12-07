@@ -13,7 +13,7 @@ describe('FreeMediationUtil', () => {
   context('convertFreeMediation should return expected FreeMediation when', () => {
 
     it('getFreeMediation value is provided for mediation journey', async () => {
-      const myExternalId: String = 'b17af4d2-273f-4999-9895-bce382fa24c8';
+      const myExternalId: string = 'b17af4d2-273f-4999-9895-bce382fa24c8';
       const draft: MediationDraft = new MediationDraft().deserialize({
         externalId: myExternalId,
         youCanOnlyUseMediation: {
@@ -28,7 +28,7 @@ describe('FreeMediationUtil', () => {
     });
 
     it('value is not provided', async () => {
-      const myExternalId: String = 'b17af4d2-273f-4999-9895-bce382fa24c8';
+      const myExternalId: string = 'b17af4d2-273f-4999-9895-bce382fa24c8';
       const draft: MediationDraft = new MediationDraft().deserialize({
         externalId: myExternalId,
         willYouTryMediation: undefined,
@@ -42,7 +42,7 @@ describe('FreeMediationUtil', () => {
   context('getMediationPhoneNumber should return expected value when', () => {
 
     it('company and they say yes to can we use', () => {
-      const myExternalId: String = 'b17af4d2-273f-4999-9895-bce382fa24c8';
+      const myExternalId: string = 'b17af4d2-273f-4999-9895-bce382fa24c8';
       const draft: MediationDraft = new MediationDraft().deserialize({
         externalId: myExternalId,
         youCanOnlyUseMediation: {
@@ -63,7 +63,7 @@ describe('FreeMediationUtil', () => {
     });
 
     it('company and they say no to can we use', () => {
-      const myExternalId: String = 'b17af4d2-273f-4999-9895-bce382fa24c8';
+      const myExternalId: string = 'b17af4d2-273f-4999-9895-bce382fa24c8';
       const draft: MediationDraft = new MediationDraft().deserialize({
         externalId: myExternalId,
         youCanOnlyUseMediation: {
@@ -84,7 +84,7 @@ describe('FreeMediationUtil', () => {
     });
 
     it('individual and they say no to can we use', () => {
-      const myExternalId: String = 'b17af4d2-273f-4999-9895-bce382fa24c8';
+      const myExternalId: string = 'b17af4d2-273f-4999-9895-bce382fa24c8';
       const draft: MediationDraft = new MediationDraft().deserialize({
         externalId: myExternalId,
         youCanOnlyUseMediation: {
@@ -104,7 +104,7 @@ describe('FreeMediationUtil', () => {
     });
 
     it('getMediationPhoneNumber when individual and they say yes to can we use', () => {
-      const myExternalId: String = 'b17af4d2-273f-4999-9895-bce382fa24c8';
+      const myExternalId: string = 'b17af4d2-273f-4999-9895-bce382fa24c8';
       const responseDraft: ResponseDraft = new ResponseDraft().deserialize(defenceWithDisputeDraft);
       const draft: MediationDraft = new MediationDraft().deserialize({
         externalId: myExternalId,
@@ -127,7 +127,7 @@ describe('FreeMediationUtil', () => {
   context('getNoMediationReason should return expected value when', () => {
 
     it('User selects a valid no mediation reason', async () => {
-      const myExternalId: String = 'b17af4d2-273f-4999-9895-bce382fa24c8';
+      const myExternalId: string = 'b17af4d2-273f-4999-9895-bce382fa24c8';
       const draft: MediationDraft = new MediationDraft().deserialize({
         externalId: myExternalId,
         youCanOnlyUseMediation: {
@@ -151,7 +151,7 @@ describe('FreeMediationUtil', () => {
     });
 
     it('User selects other as no mediation reason', async () => {
-      const myExternalId: String = 'b17af4d2-273f-4999-9895-bce382fa24c8';
+      const myExternalId: string = 'b17af4d2-273f-4999-9895-bce382fa24c8';
       const draft: MediationDraft = new MediationDraft().deserialize({
         externalId: myExternalId,
         youCanOnlyUseMediation: {

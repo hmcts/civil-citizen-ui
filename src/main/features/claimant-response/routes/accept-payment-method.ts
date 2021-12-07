@@ -20,8 +20,8 @@ function renderView(form: Form<AcceptPaymentMethod>, res: express.Response) {
   const claim: Claim = res.locals.claim;
 
   res.render(Paths.acceptPaymentMethodPage.associatedView, {
-    form: form,
-    claim: claim,
+    form,
+    claim,
     paymentOption: getPaymentOption(claim.response),
     paymentDate: getPaymentDate(claim.response),
   });
@@ -75,6 +75,6 @@ export default express.Router()
         await new DraftService().save(draft, user.bearerToken);
 
         const { externalId } = req.params;
-        res.redirect(Paths.taskListPage.evaluateUri({ externalId: externalId }));
+        res.redirect(Paths.taskListPage.evaluateUri({ externalId }));
       }
     }));

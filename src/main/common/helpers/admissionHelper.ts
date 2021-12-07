@@ -17,7 +17,7 @@ export class AdmissionHelper {
       case ResponseType.PART_ADMISSION:
         return response.amount;
       default:
-        throw new Error(`Response attached to claim is not an admission`);
+        throw new Error('Response attached to claim is not an admission');
     }
   }
 }

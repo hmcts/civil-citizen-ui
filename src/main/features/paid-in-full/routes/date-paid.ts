@@ -11,7 +11,7 @@ import { DatePaid } from 'paid-in-full/form/models/datePaid';
 import { ClaimStoreClient } from 'claims/claimStoreClient';
 
 function renderView(form: Form<DatePaid>, res: express.Response): void {
-  res.render(Paths.datePaidPage.associatedView, { form: form });
+  res.render(Paths.datePaidPage.associatedView, { form });
 }
 
 /* tslint:disable:no-default-export */

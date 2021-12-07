@@ -5,7 +5,7 @@ import { Paths } from 'response/paths';
 import { ErrorHandling } from 'shared/errorHandling';
 import { ResponseDraft } from 'response/draft/responseDraft';
 import { Draft } from '@hmcts/draft-store-client';
-import { FeeRange as MergableRange, FeesTableViewHelper } from 'claim/helpers/feesTableViewHelper';
+import { FeesTableViewHelper, FeeRange as MergableRange } from 'claim/helpers/feesTableViewHelper';
 
 /* tslint:disable:no-default-export */
 export default express.Router()

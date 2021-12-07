@@ -15,7 +15,7 @@ import { MediationDraft } from 'mediation/draft/mediationDraft';
 
 function renderView(form: Form<Phone>, res: express.Response) {
   res.render(Paths.defendantPhonePage.associatedView, {
-    form: form,
+    form,
   });
 }
 
@@ -29,6 +29,7 @@ export default express.Router()
   .post(
     Paths.defendantPhonePage.uri,
     FormValidator.requestHandler(Phone),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<Phone> = req.body;
 

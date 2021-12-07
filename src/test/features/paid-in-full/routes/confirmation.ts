@@ -15,7 +15,7 @@ import { Paths } from 'paid-in-full/paths';
 const cookieName: string = config.get<string>('session.cookieName');
 
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = Paths.datePaidPage.evaluateUri({ externalId: externalId });
+const pagePath = Paths.datePaidPage.evaluateUri({ externalId });
 
 describe('Paid In Full: confirmation page', () => {
   attachDefaultHooks(app);
@@ -34,7 +34,7 @@ describe('Paid In Full: confirmation page', () => {
         claimStoreServiceMock.rejectRetrieveClaimByExternalId('HTTP error');
 
         await request(app)
-          .get(Paths.confirmationPage.evaluateUri({ externalId: externalId }))
+          .get(Paths.confirmationPage.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.serverError.withText('Error'));
       });
@@ -43,7 +43,7 @@ describe('Paid In Full: confirmation page', () => {
         claimStoreServiceMock.resolveRetrieveClaimByExternalId();
 
         await request(app)
-          .get(Paths.confirmationPage.evaluateUri({ externalId: externalId }))
+          .get(Paths.confirmationPage.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.successful.withText('The claim is now settled'));
       });

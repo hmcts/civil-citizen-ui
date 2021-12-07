@@ -29,7 +29,7 @@ export class MockPayClient implements PayClient {
 
     const reference = `RC-${this.referencePart()}-${this.referencePart()}-${this.referencePart()}-${this.referencePart()}`;
     return Promise.resolve({
-      reference: reference,
+      reference,
       date_created: MomentFactory.currentDateTime().toISOString(),
       status: 'Initiated',
       _links: {
@@ -58,7 +58,7 @@ export class MockPayClient implements PayClient {
     return Promise.resolve(
       {
         amount: 185,
-        description: description,
+        description,
         reference: paymentReference,
         currency: 'GBP',
         caseReference: uuid(),
@@ -67,8 +67,8 @@ export class MockPayClient implements PayClient {
         externalProvider: 'gov pay',
         status: 'Success',
         externalReference: 'a-gov-pay-reference',
-        siteId: siteId,
-        serviceName: serviceName,
+        siteId,
+        serviceName,
         fees: [
           { calculated_amount: 185, code: 'X0029', version: '1' },
         ],

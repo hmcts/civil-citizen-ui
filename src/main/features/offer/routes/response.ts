@@ -19,9 +19,9 @@ function renderView(form: Form<DefendantResponse>, res: express.Response, next: 
     res.redirect(DashboardPaths.claimantPage.evaluateUri({ externalId: responseClaim.externalId }));
   } else {
     res.render(Paths.responsePage.associatedView, {
-      form: form,
-      claim: claim,
-      offer: offer,
+      form,
+      claim,
+      offer,
     });
   }
 }

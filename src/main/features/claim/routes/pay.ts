@@ -44,7 +44,7 @@ const getPayClient = async (req: express.Request): Promise<PayClient> => {
 };
 
 const getReturnURL = (req: express.Request, externalId: string) => {
-  return buildURL(req, Paths.finishPaymentReceiver.evaluateUri({ externalId: externalId }));
+  return buildURL(req, Paths.finishPaymentReceiver.evaluateUri({ externalId }));
 };
 
 function logPaymentError(id: string, payment: Payment) {
@@ -73,7 +73,7 @@ async function successHandler(req, res, next) {
       );
       trackCustomEvent(`Post payment successful but unable to store claim in claim-store with externalId: ${externalId}`,
         {
-          externalId: externalId,
+          externalId,
           payment: draft.document.claimant.payment,
           error: err,
         });
@@ -98,7 +98,7 @@ async function successHandler(req, res, next) {
   const ccdCaseNumber = savedClaim.ccdCaseId === undefined ? 'UNKNOWN' : String(savedClaim.ccdCaseId);
   await payClient.update(user, paymentReference, savedClaim.externalId, ccdCaseNumber);
   await new DraftService().delete(draft.id, user.bearerToken);
-  res.redirect(Paths.confirmationPage.evaluateUri({ externalId: externalId }));
+  res.redirect(Paths.confirmationPage.evaluateUri({ externalId }));
 }
 
 /* tslint:disable:no-default-export */
@@ -124,7 +124,7 @@ export default express.Router()
         const paymentResponse: PaymentRetrieveResponse = await payClient.retrieve(user, paymentRef);
         if (paymentResponse !== undefined) {
           if (paymentResponse.status === 'Success') {
-            return res.redirect(Paths.finishPaymentReceiver.evaluateUri({ externalId: externalId }));
+            return res.redirect(Paths.finishPaymentReceiver.evaluateUri({ externalId }));
           }
         } else if (draft.document.claimant.payment['state'] && draft.document.claimant.payment['state']['status'] === 'success') {
           logError(user.id, draft.document.claimant.payment, 'Successful payment from V1 version of the API cannot be handled');
@@ -146,7 +146,7 @@ export default express.Router()
     } catch (err) {
 
       trackCustomEvent(`Pre payment error for externalId: ${externalId}`, {
-        externalId: externalId,
+        externalId,
         payment: draft.document.claimant.payment,
         error: err,
       });
@@ -164,7 +164,7 @@ export default express.Router()
 
       const paymentReference = draft.document.claimant.payment.reference;
       if (!paymentReference) {
-        return res.redirect(Paths.confirmationPage.evaluateUri({ externalId: externalId }));
+        return res.redirect(Paths.confirmationPage.evaluateUri({ externalId }));
       }
       const payClient = await getPayClient(req);
 
@@ -191,7 +191,7 @@ export default express.Router()
     } catch (err) {
       const { externalId } = req.params;
       trackCustomEvent(`Post payment error for externalId: ${externalId}`, {
-        externalId: externalId,
+        externalId,
         payment: draft.document.claimant.payment,
         error: err,
       });

@@ -26,7 +26,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx'],
-    fallback: { "os": false },
+    fallback: { 'os': false },
     modules: [
       path.join(__dirname, 'node_modules')
     ],

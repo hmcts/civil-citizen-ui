@@ -18,7 +18,7 @@ import { LaunchDarklyClient } from 'shared/clients/launchDarklyClient';
 const featureToggles: FeatureToggles = new FeatureToggles(new LaunchDarklyClient());
 
 function renderView(form: Form<InterestContinueClaiming>, res: express.Response): void {
-  res.render(Paths.interestContinueClaimingPage.associatedView, { form: form });
+  res.render(Paths.interestContinueClaimingPage.associatedView, { form });
 }
 
 /* tslint:disable:no-default-export */

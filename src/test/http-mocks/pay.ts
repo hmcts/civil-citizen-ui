@@ -60,7 +60,8 @@ export function rejectCreate() {
 
 export function resolveRetrieve(status: string) {
   mock(baseURL + endpointPath)
-    .get(new RegExp(`\/[\\d]+`))
+    // eslint-disable-next-line no-useless-escape
+    .get(new RegExp('\/[\\d]+'))
     .reply(HttpStatus.OK, { ...paymentRetrieveResponse, status: `${status}` });
 }
 
@@ -72,12 +73,14 @@ export function resolveUpdate(paymentReference: string = 'RC-1520-4276-0065-8715
 
 export function resolveRetrieveToNotFound() {
   mock(baseURL + endpointPath)
-    .get(new RegExp(`\/[\\d]+`))
+    // eslint-disable-next-line no-useless-escape
+    .get(new RegExp('\/[\\d]+'))
     .reply(HttpStatus.NOT_FOUND);
 }
 
 export function rejectRetrieve() {
   mock(baseURL + endpointPath)
-    .get(new RegExp(`\/[\\d]+`))
+    // eslint-disable-next-line no-useless-escape
+    .get(new RegExp('\/[\\d]+'))
     .reply(HttpStatus.INTERNAL_SERVER_ERROR);
 }

@@ -76,10 +76,10 @@ export class Feature {
       app.settings.nunjucksEnv.globals.DefenceType = DefenceType;
       app.settings.nunjucksEnv.globals.FreeMediationOption = FreeMediationOption;
       app.settings.nunjucksEnv.globals.domain = {
-        ResponseType: ResponseType,
-        ResponseMethod: ResponseMethod,
-        PaymentOption: PaymentOption,
-        PaymentSchedule: PaymentSchedule,
+        ResponseType,
+        ResponseMethod,
+        PaymentOption,
+        PaymentSchedule,
       };
     }
 

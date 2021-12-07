@@ -20,7 +20,7 @@ function renderView(form: Form<NoMediationReason>, res: express.Response): void 
   const claim: Claim = res.locals.claim;
 
   res.render(Paths.iDontWantFreeMediationPage.associatedView, {
-    form: form,
+    form,
     otherParty: claim.otherPartyName(user),
   });
 }
@@ -28,9 +28,9 @@ function renderView(form: Form<NoMediationReason>, res: express.Response): void 
 function reDirectTo(res: express.Response, externalId: string) {
   const claim: Claim = res.locals.claim;
   if (!claim.isResponseSubmitted()) {
-    res.redirect(ResponsePaths.taskListPage.evaluateUri({ externalId: externalId }));
+    res.redirect(ResponsePaths.taskListPage.evaluateUri({ externalId }));
   } else {
-    res.redirect(ClaimantResponsePaths.taskListPage.evaluateUri({ externalId: externalId }));
+    res.redirect(ClaimantResponsePaths.taskListPage.evaluateUri({ externalId }));
   }
 }
 

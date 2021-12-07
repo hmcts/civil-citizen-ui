@@ -79,7 +79,9 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/namespace': 'off',
     'no-shadow': 'off',
-    "@typescript-eslint/no-shadow": 'off'
+    '@typescript-eslint/no-shadow': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off'
+
   },
   settings: {
     'import/resolver': {

@@ -21,7 +21,7 @@ describe('Claim issue: confirmation page', () => {
   attachDefaultHooks(app);
 
   describe('on GET', () => {
-    checkAuthorizationGuards(app, 'get', ClaimPaths.confirmationPage.evaluateUri({ externalId: externalId }));
+    checkAuthorizationGuards(app, 'get', ClaimPaths.confirmationPage.evaluateUri({ externalId }));
 
     describe('for authorized user', () => {
       beforeEach(() => {
@@ -32,7 +32,7 @@ describe('Claim issue: confirmation page', () => {
         claimStoreServiceMock.rejectRetrieveClaimByExternalId('HTTP error');
 
         await request(app)
-          .get(ClaimPaths.confirmationPage.evaluateUri({ externalId: externalId }))
+          .get(ClaimPaths.confirmationPage.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.serverError.withText('Error'));
       });
@@ -43,7 +43,7 @@ describe('Claim issue: confirmation page', () => {
         draftStoreServiceMock.resolveDelete();
 
         await request(app)
-          .get(ClaimPaths.confirmationPage.evaluateUri({ externalId: externalId }))
+          .get(ClaimPaths.confirmationPage.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.successful.withText('Claim submitted'));
       });
@@ -54,7 +54,7 @@ describe('Claim issue: confirmation page', () => {
         draftStoreServiceMock.resolveDelete();
 
         await request(app)
-          .get(ClaimPaths.confirmationPage.evaluateUri({ externalId: externalId }))
+          .get(ClaimPaths.confirmationPage.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.successful.withText('1594-0301-3729-9050'));
       });

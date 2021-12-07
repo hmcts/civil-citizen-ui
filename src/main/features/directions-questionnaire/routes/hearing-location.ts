@@ -28,8 +28,8 @@ import {
 
 export function renderPage(res: express.Response, form: Form<HearingLocation>, resultPage: boolean, apiError: string) {
   res.render(Paths.hearingLocationPage.associatedView, {
-    form: form,
-    resultPage: resultPage,
+    form,
+    resultPage,
     party: getUsersRole(res.locals.claim, res.locals.user),
     error: apiError,
   });
@@ -55,7 +55,7 @@ async function handleFormError(res: express.Response, form: Form<HearingLocation
 export default express.Router()
   .get(Paths.hearingLocationPage.uri, async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
     try {
-      let apiError = '';
+      const apiError = '';
       const draft: Draft<DirectionsQuestionnaireDraft> = res.locals.draft;
 
       if (draft.document.hearingLocation.alternativeOption !== undefined

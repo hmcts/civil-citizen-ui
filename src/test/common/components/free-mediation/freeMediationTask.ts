@@ -6,7 +6,7 @@ import { FreeMediation, FreeMediationOption } from 'forms/models/freeMediation';
 import { MediationDraft } from 'mediation/draft/mediationDraft';
 import { CanWeUse } from 'mediation/form/models/CanWeUse';
 import { CanWeUseCompany } from 'mediation/form/models/CanWeUseCompany';
-
+// eslint-disable-next-line mocha/no-nested-tests
 describe('Free mediation task', () => {
   it('isWillYouTryMediationCompleted should not be completed when willYouTryMediation object is undefined', () => {
     const mediationDraft = new MediationDraft();

@@ -193,7 +193,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('PriorityDebtType', PriorityDebtType);
     nunjucksEnv.addGlobal('Service', Service);
     nunjucksEnv.addGlobal('DisabilityStatus', Disability);
-    nunjucksEnv.addGlobal('serviceName', `Money Claims`);
+    nunjucksEnv.addGlobal('serviceName', 'Money Claims');
     nunjucksEnv.addGlobal('headingVisible', true);
     nunjucksEnv.addGlobal('DecisionType', DecisionType);
     nunjucksEnv.addGlobal('PartyType', PartyType);
@@ -202,8 +202,8 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('SignatureType', SignatureType);
     nunjucksEnv.addGlobal('domain', {
       ResponseType: DomainResponseType,
-      PaymentOption: PaymentOption,
-      PaymentSchedule: PaymentSchedule,
+      PaymentOption,
+      PaymentSchedule,
     });
     nunjucksEnv.addGlobal('PaymentOption', PaymentOption);
     nunjucksEnv.addGlobal('SignatureType', SignatureType);

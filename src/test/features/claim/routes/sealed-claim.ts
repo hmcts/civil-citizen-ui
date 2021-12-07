@@ -28,7 +28,7 @@ describe('Sealed Claim: pdf', () => {
   attachDefaultHooks(app);
 
   describe('on GET', () => {
-    checkAuthorizationGuards(app, 'get', path.evaluateUri({ externalId: externalId }));
+    checkAuthorizationGuards(app, 'get', path.evaluateUri({ externalId }));
 
     describe('for authorized user', () => {
       beforeEach(() => {
@@ -39,7 +39,7 @@ describe('Sealed Claim: pdf', () => {
         rejectRetrieveClaimByExternalId('HTTP error');
 
         await request(app)
-          .get(path.evaluateUri({ externalId: externalId }))
+          .get(path.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.serverError.withText('Error'));
       });
@@ -49,7 +49,7 @@ describe('Sealed Claim: pdf', () => {
         rejectRetrieveDocument('HTTP error');
 
         await request(app)
-          .get(path.evaluateUri({ externalId: externalId }))
+          .get(path.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.serverError.withText('Error'));
       });
@@ -59,7 +59,7 @@ describe('Sealed Claim: pdf', () => {
         resolveRetrieveDocument();
 
         await request(app)
-          .get(path.evaluateUri({ externalId: externalId }))
+          .get(path.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.successful);
       });

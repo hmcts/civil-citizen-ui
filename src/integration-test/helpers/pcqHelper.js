@@ -7,7 +7,7 @@ class PcqHelper extends codecept_helper {
   rejectAnsweringPCQ() {
     const helper = this.helpers['WebDriver'];
     helper.waitForText('Equality and diversity questions');
-    return helper.click(`I don't want to answer these questions`);
+    return helper.click('I don\'t want to answer these questions');
   }
 
   // this silently bypasses PCQ without throwing any errors
@@ -30,7 +30,7 @@ class PcqHelper extends codecept_helper {
     } else if (heading === 'Sorry, there is a problem with the service') {
       // silently move on.
       console.log('Error in PCQ Service, hence Continuing to CMC');
-      return helper.click(`Continue`);
+      return helper.click('Continue');
     }
   }
 
@@ -48,7 +48,7 @@ class PcqHelper extends codecept_helper {
     } else if (heading === 'Sorry, there is a problem with the service') {
       // silently move on.
       console.log('Error in PCQ Service, hence Continuing to CMC');
-      return helper.click(`Continue`);
+      return helper.click('Continue');
     }
   }
 }

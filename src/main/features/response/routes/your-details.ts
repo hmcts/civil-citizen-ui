@@ -27,8 +27,8 @@ function renderView(form: Form<PartyDetails>, res: express.Response) {
   const claim: Claim = res.locals.claim;
 
   res.render(Paths.defendantYourDetailsPage.associatedView, {
-    form: form,
-    claim: claim,
+    form,
+    claim,
   });
 }
 

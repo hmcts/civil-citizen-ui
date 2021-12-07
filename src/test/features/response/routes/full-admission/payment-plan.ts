@@ -23,8 +23,8 @@ import {
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = FullAdmissionPaths.paymentPlanPage.evaluateUri({ externalId: externalId });
-const taskListPage = Paths.taskListPage.evaluateUri({ externalId: externalId });
+const pagePath = FullAdmissionPaths.paymentPlanPage.evaluateUri({ externalId });
+const taskListPage = Paths.taskListPage.evaluateUri({ externalId });
 
 describe('Defendant: payment page', () => {
   attachDefaultHooks(app);

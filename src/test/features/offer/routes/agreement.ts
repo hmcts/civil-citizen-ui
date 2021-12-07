@@ -20,7 +20,7 @@ describe('Settlement agreement: receipt', () => {
   attachDefaultHooks(app);
 
   describe('on GET', () => {
-    checkAuthorizationGuards(app, 'get', Paths.agreementReceiver.evaluateUri({ externalId: externalId }));
+    checkAuthorizationGuards(app, 'get', Paths.agreementReceiver.evaluateUri({ externalId }));
 
     describe('for authorized user', () => {
       beforeEach(() => {
@@ -31,7 +31,7 @@ describe('Settlement agreement: receipt', () => {
         claimStoreServiceMock.rejectRetrieveClaimByExternalId('HTTP error');
 
         await request(app)
-          .get(Paths.agreementReceiver.evaluateUri({ externalId: externalId }))
+          .get(Paths.agreementReceiver.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.serverError.withText('Error'));
       });
@@ -41,7 +41,7 @@ describe('Settlement agreement: receipt', () => {
         claimStoreServiceMock.rejectRetrieveDocument('Something went wrong');
 
         await request(app)
-          .get(Paths.agreementReceiver.evaluateUri({ externalId: externalId }))
+          .get(Paths.agreementReceiver.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.serverError.withText('Error'));
       });
@@ -51,7 +51,7 @@ describe('Settlement agreement: receipt', () => {
         claimStoreServiceMock.resolveRetrieveDocument();
 
         await request(app)
-          .get(Paths.agreementReceiver.evaluateUri({ externalId: externalId }))
+          .get(Paths.agreementReceiver.evaluateUri({ externalId }))
           .set('Cookie', `${cookieName}=ABC`)
           .expect(res => expect(res).to.be.successful);
       });

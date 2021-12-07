@@ -22,7 +22,7 @@ import {
 
 const cookieName: string = config.get<string>('session.cookieName');
 const externalId = claimStoreServiceMock.sampleClaimObj.externalId;
-const pagePath = PartAdmissionPaths.howMuchHaveYouPaidPage.evaluateUri({ externalId: externalId });
+const pagePath = PartAdmissionPaths.howMuchHaveYouPaidPage.evaluateUri({ externalId });
 
 const validFormData = { amount: 100, date: { day: 1, month: 1, year: 1990 }, text: 'aaa' };
 const header: string = 'How much have you paid the claimant?';
@@ -148,7 +148,7 @@ describe('Defendant: partial admission - ' + header, () => {
               .set('Cookie', `${cookieName}=ABC`)
               .send(validFormData)
               .expect(res => expect(res).to.be.redirect
-                .toLocation(Paths.taskListPage.evaluateUri({ externalId: externalId })));
+                .toLocation(Paths.taskListPage.evaluateUri({ externalId })));
           });
 
           it('when form is invalid should render page', async () => {

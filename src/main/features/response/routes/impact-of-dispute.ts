@@ -14,7 +14,7 @@ import { ResponseDraft } from 'response/draft/responseDraft';
 function renderView(form: Form<ImpactOfDispute>, res: express.Response): void {
   const claim: Claim = res.locals.claim;
   res.render(Paths.impactOfDisputePage.associatedView, {
-    form: form,
+    form,
     claimantName: claim.claimData.claimant.name,
   });
 }
@@ -22,12 +22,14 @@ function renderView(form: Form<ImpactOfDispute>, res: express.Response): void {
 /* tslint:disable:no-default-export */
 export default express.Router()
   .get(Paths.impactOfDisputePage.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<ResponseDraft> = res.locals.responseDraft;
       renderView(new Form(draft.document.impactOfDispute), res);
     }))
   .post(Paths.impactOfDisputePage.uri,
     FormValidator.requestHandler(ImpactOfDispute),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<ImpactOfDispute> = req.body;
       if (form.hasErrors()) {

@@ -17,8 +17,8 @@ function renderView(form: Form<Email>, res: express.Response, draft: Draft<Draft
   const individual: boolean = draft.document.defendant.partyDetails.type === PartyType.INDIVIDUAL.value;
   res.render(Paths.defendantEmailPage.associatedView,
     {
-      form: form,
-      individual: individual,
+      form,
+      individual,
     });
 }
 

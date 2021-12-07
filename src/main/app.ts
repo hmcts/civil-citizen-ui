@@ -9,7 +9,7 @@ import * as bodyParser from 'body-parser';
 import { ForbiddenError, NotFoundError } from 'errors';
 import { ErrorLogger } from 'logging/errorLogger';
 import { RouterFinder } from 'shared/router/routerFinder';
-import { Config as HelmetConfig, Helmet } from 'modules/helmet';
+import { Helmet, Config as HelmetConfig } from 'modules/helmet';
 import { I18Next } from 'modules/i18n';
 import { Nunjucks } from 'modules/nunjucks';
 import * as moment from 'moment';
