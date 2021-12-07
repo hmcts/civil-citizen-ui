@@ -23,6 +23,13 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'error',
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-shadow': 'error',
+    'mocha/no-mocha-arrows': 'off',
+    'mocha/no-async-describe': 'off',
+    'mocha/no-setup-in-describe': 'off',
+    'mocha/no-hooks-for-single-case': 'off',
+    'mocha/max-top-level-suites': 'off',
+    'mocha/no-exports': 'off',
+    'mocha/no-exclusive-tests': 'error',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
@@ -74,7 +81,10 @@ module.exports = {
         ignoreMemberSort: false,
       },
     ],
-    'mocha/no-exclusive-tests': 'error',
-
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {}
+    }
   },
 };
