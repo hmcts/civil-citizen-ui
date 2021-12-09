@@ -1,5 +1,6 @@
 (function(global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    // eslint-disable-next-line no-undef
     typeof define === 'function' && define.amd ? define('GOVUKFrontend', factory) :
       (global.GOVUKFrontend = factory());
 }(this, (function() {
@@ -10,7 +11,9 @@
 // Detection from https://github.com/Financial-Times/polyfill-service/blob/master/packages/polyfill-library/polyfills/Window/detect.js
     var detect = ('Window' in this);
 
-    if (detect) return;
+    if (detect) {
+      return;
+    }
 
 // Polyfill from https://cdn.polyfill.io/v2/polyfill.js?features=Window&flags=always
     if ((typeof WorkerGlobalScope === 'undefined') && (typeof importScripts !== 'function')) {
@@ -26,12 +29,14 @@
   })
     .call('object' === typeof window && window || 'object' === typeof self && self || 'object' === typeof global && global || {});
 
-  (function(undefined) {
+  (function() {
 
 // Detection from https://github.com/Financial-Times/polyfill-service/blob/master/packages/polyfill-library/polyfills/Document/detect.js
     var detect = ('Document' in this);
 
-    if (detect) return;
+    if (detect) {
+      return;
+    }
 
 // Polyfill from https://cdn.polyfill.io/v2/polyfill.js?features=Document&flags=always
     if ((typeof WorkerGlobalScope === 'undefined') && (typeof importScripts !== 'function')) {
@@ -53,12 +58,14 @@
   })
     .call('object' === typeof window && window || 'object' === typeof self && self || 'object' === typeof global && global || {});
 
-  (function(undefined) {
+  (function() {
 
 // Detection from https://github.com/Financial-Times/polyfill-service/blob/master/packages/polyfill-library/polyfills/Element/detect.js
     var detect = ('Element' in this && 'HTMLElement' in this);
 
-    if (detect) return;
+    if (detect) {
+      return;
+    }
 
 // Polyfill from https://cdn.polyfill.io/v2/polyfill.js?features=Element&flags=always
     (function() {
@@ -96,7 +103,7 @@
             element[key] = value;
           }
         }
-
+        // eslint-disable-next-line no-cond-assign
         while (childNode = deep && childNodes[++index]) {
           shiv(childNode, deep);
         }
@@ -140,11 +147,17 @@
 
       // Apply Element prototype to the pre-existing DOM as soon as the body element appears.
       function bodyCheck() {
-        if (!(loopLimit--)) clearTimeout(interval);
-        if (document.body && !document.body.prototype && /(complete|interactive)/.test(document.readyState)) {
-          shiv(document, true);
-          if (interval && document.body.prototype) clearTimeout(interval);
-          return (!!document.body.prototype);
+        if (!(loopLimit--))
+        {
+          clearTimeout(interval);
+          if (document.body && !document.body.prototype && /(complete|interactive)/.test(document.readyState)) {
+            shiv(document, true);
+            if (interval && document.body.prototype)
+            {
+              clearTimeout(interval);
+              return (!!document.body.prototype);
+            }
+          }
         }
         return false;
       }
@@ -167,7 +180,7 @@
   })
     .call('object' === typeof window && window || 'object' === typeof self && self || 'object' === typeof global && global || {});
 
-  (function(undefined) {
+  (function() {
 
 // Detection from https://github.com/Financial-Times/polyfill-service/blob/master/packages/polyfill-library/polyfills/Object/defineProperty/detect.js
     var detect = (
@@ -184,7 +197,9 @@
       }())
     );
 
-    if (detect) return;
+    if (detect) {
+      return;
+    }
 
 // Polyfill from https://cdn.polyfill.io/v2/polyfill.js?features=Object.defineProperty&flags=always
     (function(nativeDefineProperty) {
@@ -254,14 +269,18 @@
   })
     .call('object' === typeof window && window || 'object' === typeof self && self || 'object' === typeof global && global || {});
 
-  (function(undefined) {
+  (function() {
 
 // Detection from https://github.com/Financial-Times/polyfill-service/blob/master/packages/polyfill-library/polyfills/Event/detect.js
     var detect = (
       (function(global) {
 
-        if (!('Event' in global)) return false;
-        if (typeof global.Event === 'function') return true;
+        if (!('Event' in global)) {
+          return false;
+        }
+        if (typeof global.Event === 'function') {
+          return true;
+        }
 
         try {
 
@@ -274,7 +293,9 @@
       }(this))
     );
 
-    if (detect) return;
+    if (detect) {
+      return;
+    }
 
 // Polyfill from https://cdn.polyfill.io/v2/polyfill.js?features=Event&flags=always
     (function() {
@@ -299,7 +320,9 @@
       // This polyfill depends on availability of `document` so will not run in a worker
       // However, we asssume there are no browsers with worker support that lack proper
       // support for `Event` within the worker
-      if (typeof document === 'undefined' || typeof window === 'undefined') return;
+      if (typeof document === 'undefined' || typeof window === 'undefined') {
+        return;
+      }
 
       function indexOf(array, element) {
         var
@@ -353,6 +376,7 @@
       if (!('createEvent' in document)) {
         window.addEventListener = Window.prototype.addEventListener = Document.prototype.addEventListener = Element.prototype.addEventListener = function addEventListener() {
           var
+            // eslint-disable-next-line @typescript-eslint/no-this-alias
             element = this,
             type = arguments[0],
             listener = arguments[1];
@@ -422,6 +446,7 @@
 
         window.removeEventListener = Window.prototype.removeEventListener = Document.prototype.removeEventListener = Element.prototype.removeEventListener = function removeEventListener() {
           var
+            // eslint-disable-next-line @typescript-eslint/no-this-alias
             element = this,
             type = arguments[0],
             listener = arguments[1],
@@ -452,6 +477,7 @@
             throw new Error('DOM Events Exception 0');
           }
 
+          // eslint-disable-next-line @typescript-eslint/no-this-alias
           var element = this, type = event.type;
 
           try {
@@ -503,11 +529,13 @@
   })
     .call('object' === typeof window && window || 'object' === typeof self && self || 'object' === typeof global && global || {});
 
-  (function(undefined) {
+  (function() {
     // Detection from https://github.com/Financial-Times/polyfill-service/blob/master/packages/polyfill-library/polyfills/Function/prototype/bind/detect.js
     var detect = 'bind' in Function.prototype;
 
-    if (detect) return;
+    if (detect) {
+      return;
+    }
 
     // Polyfill from https://cdn.polyfill.io/v2/polyfill.js?features=Function.prototype.bind&flags=always
     Object.defineProperty(Function.prototype, 'bind', {
@@ -517,7 +545,8 @@
         var $Object = Object;
         var ObjectPrototype = $Object.prototype;
         var ArrayPrototype = $Array.prototype;
-        var empty = function Empty() {
+        var Empty = function () {
+          //Empty function
         };
         var to_string = ObjectPrototype.toString;
         var hasToStringTag = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
@@ -648,10 +677,10 @@
         bound = Function('binder', 'return function (' + boundArgs.join(',') + '){ return binder.apply(this, arguments); }')(binder);
 
         if (target.prototype) {
-          empty.prototype = target.prototype;
-          bound.prototype = new empty();
+          Empty.prototype = target.prototype;
+          bound.prototype = new Empty();
           // Clean up dangling references.
-          empty.prototype = null;
+          Empty.prototype = null;
         }
 
         // TODO
