@@ -25,6 +25,7 @@ export abstract class AbstractPaidAmountSummaryPage<Draft> {
     return 'components/ccj/paid-amount-summary';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   buildRouter(path: string, ...guards: express.RequestHandler[]): express.Router {
     return express.Router()
       .get(

@@ -23,18 +23,22 @@ export class Claimant implements CompletableTask {
       }
       if (input.partyDetails && input.partyDetails.type) {
         switch (input.partyDetails.type) {
-          case PartyType.INDIVIDUAL.value:
+          case PartyType.INDIVIDUAL.value: {
             this.partyDetails = new IndividualDetails().deserialize(input.partyDetails);
             break;
-          case PartyType.COMPANY.value:
+          }
+          case PartyType.COMPANY.value: {
             this.partyDetails = new CompanyDetails().deserialize(input.partyDetails);
             break;
-          case PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value:
+          }
+          case PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value: {
             this.partyDetails = new SoleTraderDetails().deserialize(input.partyDetails);
             break;
-          case PartyType.ORGANISATION.value:
+          }
+          case PartyType.ORGANISATION.value: {
             this.partyDetails = new OrganisationDetails().deserialize(input.partyDetails);
             break;
+          }
         }
       }
     }
@@ -45,22 +49,26 @@ export class Claimant implements CompletableTask {
     let result = false;
     if (this.partyDetails && this.partyDetails.type) {
       switch (this.partyDetails.type) {
-        case PartyType.INDIVIDUAL.value:
+        case PartyType.INDIVIDUAL.value: {
           const individualDetails = this.partyDetails as IndividualDetails;
           result = individualDetails.isCompleted('claimant');
           break;
-        case PartyType.COMPANY.value:
+        }
+        case PartyType.COMPANY.value: {
           const companyDetails = this.partyDetails as CompanyDetails;
           result = companyDetails.isCompleted('claimant');
           break;
-        case PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value:
+        }
+        case PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value: {
           const soleTraderDetails = this.partyDetails as SoleTraderDetails;
           result = soleTraderDetails.isCompleted('claimant');
           break;
-        case PartyType.ORGANISATION.value:
+        }
+        case PartyType.ORGANISATION.value: {
           const organisationDetails = this.partyDetails as OrganisationDetails;
           result = organisationDetails.isCompleted('claimant');
           break;
+        }
       }
     }
     return result && !!this.phone;

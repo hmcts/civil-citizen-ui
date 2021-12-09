@@ -28,14 +28,15 @@ export class PaymentDatePage extends AbstractPaymentDatePage<DraftClaimantRespon
 
     switch (decisionType) {
       case DecisionType.CLAIMANT:
-      case DecisionType.CLAIMANT_IN_FAVOUR_OF_DEFENDANT:
+      case DecisionType.CLAIMANT_IN_FAVOUR_OF_DEFENDANT: {
         if (draft.alternatePaymentMethod.paymentOption.option.value === PaymentOption.BY_SPECIFIED_DATE) {
           courtOfferedPaymentIntention.paymentDate = draft.alternatePaymentMethod.toDomainInstance().paymentDate;
           courtOfferedPaymentIntention.paymentOption = PaymentOption.BY_SPECIFIED_DATE;
         }
         break;
+      }
 
-      case DecisionType.COURT:
+      case DecisionType.COURT: {
         const paymentPlanFromDefendantFinancialStatement: PaymentPlan = PaymentPlanHelper.createPaymentPlanFromDefendantFinancialStatement(claim, draft);
         const lastPaymentDate: Moment = paymentPlanFromDefendantFinancialStatement.calculateLastPaymentDate();
 
@@ -44,8 +45,9 @@ export class PaymentDatePage extends AbstractPaymentDatePage<DraftClaimantRespon
           courtOfferedPaymentIntention.paymentOption = PaymentOption.BY_SPECIFIED_DATE;
         }
         break;
+      }
 
-      case DecisionType.DEFENDANT:
+      case DecisionType.DEFENDANT: {
         if (claimResponse.paymentIntention.paymentOption === PaymentOption.BY_SPECIFIED_DATE) {
           courtOfferedPaymentIntention.paymentDate = claimResponse.paymentIntention.paymentDate;
           courtOfferedPaymentIntention.paymentOption = PaymentOption.BY_SPECIFIED_DATE;
@@ -57,6 +59,7 @@ export class PaymentDatePage extends AbstractPaymentDatePage<DraftClaimantRespon
           courtOfferedPaymentIntention.repaymentPlan = claimResponse.paymentIntention.repaymentPlan;
         }
         break;
+      }
 
       default:
     }

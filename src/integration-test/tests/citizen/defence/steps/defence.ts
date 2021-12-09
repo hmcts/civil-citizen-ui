@@ -186,7 +186,7 @@ export class DefenceSteps {
     defendantSteps.selectTaskTellUsHowMuchYouHavePaid();
     defendantHowMuchHaveYouPaidPage.enterAmountPaidWithDateAndExplanation(claimAmount.getTotal() - 1, '2018-01-01', 'Paid Cash');
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   enterWhenDidYouPay(defence: PartialDefence) {
     defendantSteps.selectTaskChooseAResponse();
     defendantDefenceTypePage.rejectAllOfMoneyClaim();
@@ -372,6 +372,7 @@ export class DefenceSteps {
     paymentOption: PaymentOption,
     claimantName: string,
     statementOfMeansFullDataSet: boolean = true,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     respondToPCQ?: boolean,
   ): void {
     this.confirmYourDetails(defendantParty);

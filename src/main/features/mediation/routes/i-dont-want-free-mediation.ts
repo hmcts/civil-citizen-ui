@@ -36,6 +36,7 @@ function reDirectTo(res: express.Response, externalId: string) {
 
 /* tslint:disable:no-default-export */
 export default express.Router()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   .get(Paths.iDontWantFreeMediationPage.uri, (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const draft: Draft<MediationDraft> = res.locals.mediationDraft;
     renderView(new Form(draft.document.noMediationReason), res);
@@ -43,6 +44,7 @@ export default express.Router()
   .post(
     Paths.iDontWantFreeMediationPage.uri,
     FormValidator.requestHandler(NoMediationReason, NoMediationReason.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<NoMediationReason> = req.body;
       const externalId: string = req.params.externalId;

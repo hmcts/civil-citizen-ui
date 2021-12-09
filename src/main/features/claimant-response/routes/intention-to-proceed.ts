@@ -19,6 +19,7 @@ function renderView(form: Form<IntentionToProceed>, res: express.Response): void
 /* tslint:disable:no-default-export */
 export default express.Router()
   .get(Paths.intentionToProceedPage.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<DraftClaimantResponse> = res.locals.claimantResponseDraft;
       renderView(new Form(draft.document.intentionToProceed), res);

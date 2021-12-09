@@ -19,7 +19,7 @@ class RepaymentPlanPage {
   getHeading(): string {
     return 'Your repayment plan';
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   buildPostSubmissionUri(req: express.Request, res: express.Response): string {
     const { externalId } = req.params;
     return Paths.checkAndSendPage.evaluateUri({ externalId });

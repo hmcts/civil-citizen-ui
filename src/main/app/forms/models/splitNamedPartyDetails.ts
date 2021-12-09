@@ -41,7 +41,7 @@ export class SplitNamedPartyDetails extends PartyDetails {
   }
 
   static fromObject(input?: any): SplitNamedPartyDetails {
-    if (input == null) {
+    if (input === null) {
       return input;
     }
     const deserialized = new SplitNamedPartyDetails();

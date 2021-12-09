@@ -13,7 +13,7 @@ export class ReDetermination {
   }
 
   static fromObject(value?: any): ReDetermination {
-    if (value == null) {
+    if (value === null) {
       return value;
     }
 

@@ -21,6 +21,7 @@ export class FreeMediationTask {
       (!!mediationDraft.canWeUseCompany && mediationDraft.canWeUseCompany.isCompleted()));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   static async isCompleted(mediationDraft: MediationDraft, claim: Claim): Promise<boolean> {
     return (this.isCanWeUseCompleted(mediationDraft) && this.isYouCanOnlyUseMediationCompleted(mediationDraft)) ||
       (this.isWillYouTryMediationCompleted(mediationDraft) && (this.isMediationDisagreementCompleted(mediationDraft)

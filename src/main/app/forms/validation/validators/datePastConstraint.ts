@@ -11,6 +11,7 @@ import { LocalDate } from 'forms/models/localDate';
 
 @ValidatorConstraint()
 export class DatePastConstraint implements ValidatorConstraintInterface {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   validate(value: any, args?: ValidationArguments) {
     if (value === undefined) {
       return true;

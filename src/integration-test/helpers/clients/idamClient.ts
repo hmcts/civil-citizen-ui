@@ -52,7 +52,7 @@ export class IdamClient {
       method: 'DELETE',
       uri: `${baseURL}/testing-support/accounts/${username}`,
     };
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return request(options).then(function(resp) {
       return Promise.resolve();
     }).catch(function(err) {

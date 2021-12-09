@@ -15,6 +15,7 @@ export default express.Router()
   })
   .post(
     Paths.completingClaimPage.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<DraftClaim> = res.locals.claimDraft;
       const user: User = res.locals.user;

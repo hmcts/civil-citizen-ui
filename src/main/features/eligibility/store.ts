@@ -10,6 +10,7 @@ const cookieTimeToLiveInMinutes = config.get<number>('eligibility.cookie.timeToL
 export const cookieName = 'eligibility-check';
 
 export class CookieEligibilityStore {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   read(req: express.Request, res: express.Response): Eligibility {
     const cookie: string = req.cookies[cookieName];
     return new Eligibility().deserialize(cookie !== undefined ? cookie : undefined);

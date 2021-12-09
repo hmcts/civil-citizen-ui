@@ -13,6 +13,7 @@ import { DraftClaim } from 'drafts/models/draftClaim';
 import { User } from 'idam/user';
 import { Draft } from '@hmcts/draft-store-client';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function renderView(form: Form<PartyTypeResponse>, res: express.Response, next: express.NextFunction) {
   res.render(Paths.defendantPartyTypeSelectionPage.associatedView, {
     form,

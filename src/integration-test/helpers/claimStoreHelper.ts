@@ -17,7 +17,7 @@ class ClaimStoreHelper extends codecept_helper {
     } while (!isClaimOpen && attempts < maxAttempts);
     return isClaimOpen;
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async createClaim(claimData: ClaimData, submitterEmail: string, linkDefendant: boolean = true, features: string[] = ['admissions', 'directionsQuestionnaire'], defendantEmail: string): Promise<string> {
     const submitter: User = await this.prepareAuthenticatedUser(submitterEmail);
     const { referenceNumber } = await ClaimStoreClient.create(claimData, submitter, features);

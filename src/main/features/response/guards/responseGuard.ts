@@ -39,6 +39,7 @@ export class ResponseGuard {
       const claim: Claim = res.locals.claim;
       return claim.response !== undefined;
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const accessDeniedCallback = (req: express.Request, res: express.Response) => {
       logger.warn('State guard: no response exists - rendering not found page');
       throw new NotFoundError(req.path);

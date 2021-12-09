@@ -15,7 +15,10 @@ export class PaidInFullGuard {
       const claim: Claim = res.locals.claim;
       const user: User = res.locals.user;
       return !claim.moneyReceivedOn && claim.claimantId === user.id;
-    }, (req: express.Request, res: express.Response): void => {
+
+    },
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (req: express.Request, res: express.Response): void => {
       throw new ForbiddenError();
     });
   }

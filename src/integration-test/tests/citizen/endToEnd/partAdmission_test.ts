@@ -30,22 +30,22 @@ Before(async (I: I) => {
 });
 
 if (process.env.FEATURE_ADMISSIONS === 'true') {
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Scenario('Admit part of the claim with payment already made @citizen @admissions', { retries: 3 }, async (I: I) => {
     defenceSteps.makePartialAdmission(defendant);
     await defenceSteps.partialPaymentMade(PartyType.INDIVIDUAL);
   });
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Scenario('Admit part of the claim (Pay Immediately) @nightly @admissions', { retries: 3 }, async (I: I) => {
     defenceSteps.makePartialAdmission(defendant);
     await defenceSteps.partialPaymentNotMade(PartyType.INDIVIDUAL, PaymentOption.IMMEDIATELY);
   });
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Scenario('Admit part of the claim (Pay By Set Date) @citizen @admissions', { retries: 3 }, async (I: I) => {
     defenceSteps.makePartialAdmission(defendant);
     await defenceSteps.partialPaymentNotMade(PartyType.INDIVIDUAL, PaymentOption.BY_SET_DATE);
   });
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Scenario('Admit part of the claim (Pay By Instalment) @nightly @admissions', { retries: 3 }, async (I: I) => {
     defenceSteps.makePartialAdmission(defendant);
     await defenceSteps.partialPaymentNotMade(PartyType.INDIVIDUAL, PaymentOption.INSTALMENTS);

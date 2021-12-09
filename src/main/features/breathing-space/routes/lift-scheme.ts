@@ -12,6 +12,7 @@ import { Draft } from '@hmcts/draft-store-client';
 
 /*  tslint:disable:no-default-export */
 export default express.Router()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   .get(Paths.bsLiftCheckAnswersPage.uri, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const draft: Draft<DraftClaim> = res.locals.Draft;
     let breatingSpaceLiftedData: any;
@@ -29,6 +30,7 @@ export default express.Router()
   .post(
     Paths.bsLiftCheckAnswersPage.uri,
     FormValidator.requestHandler(BreathingSpaceLiftDate),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draftBS: Draft<DraftClaim> = res.locals.Draft;
       const draft: DraftClaim = new DraftClaim();

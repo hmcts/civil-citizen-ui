@@ -18,7 +18,7 @@ export class RejectionReason {
   }
 
   static fromObject(input?: any): RejectionReason {
-    if (input == null) {
+    if (input === null) {
       return input;
     }
     return new RejectionReason(input);

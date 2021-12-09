@@ -1,5 +1,6 @@
 import { StringUtils } from 'utils/stringUtils';
 
+// eslint-disable-next-line no-useless-escape
 const pathParameterRegex = /\/:[^\/]+/g;
 
 /**

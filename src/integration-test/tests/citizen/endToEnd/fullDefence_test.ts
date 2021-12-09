@@ -48,7 +48,7 @@ Scenario('Reject/Dispute all of the claim @citizen', { retries: 3 }, async (I: I
   checkAndSendPage.checkFactsTrueAndSubmit(testData.defenceType);
   I.see('You’ve rejected their response');
 });
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 Scenario('Claimant Stop the claim /Case Stayed E2E @citizen @nightly', { retries: 3 }, async (I: I) => {
   claimantResponseSteps.decideNotToProceed();
 });

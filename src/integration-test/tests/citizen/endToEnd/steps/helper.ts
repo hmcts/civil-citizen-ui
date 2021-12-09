@@ -9,6 +9,7 @@ const defenceSteps: DefenceSteps = new DefenceSteps();
 
 export class Helper {
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async enterPinNumber(claimRef: string, claimantEmail: string): Promise<void> {
     defenceSteps.enterClaimReference(claimRef);
     return Promise.resolve();

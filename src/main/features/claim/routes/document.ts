@@ -16,6 +16,7 @@ const documentsClient: DocumentsClient = new DocumentsClient();
 const scannedDocumentsClient: ScannedDocumentsClient = new ScannedDocumentsClient();
 
 function getDocumentPath(path: string): string {
+  // eslint-disable-next-line no-useless-escape
   return path.match('[^\/]+$')[0];
 }
 

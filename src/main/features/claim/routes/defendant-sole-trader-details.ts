@@ -26,6 +26,7 @@ export default express.Router()
   .post(
     Paths.defendantSoleTraderOrSelfEmployedDetailsPage.uri,
     FormValidator.requestHandler(SoleTraderDetails, SoleTraderDetails.fromObject, 'defendant'),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<SoleTraderDetails> = req.body;
 

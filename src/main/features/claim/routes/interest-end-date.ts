@@ -29,6 +29,7 @@ export default express.Router()
   .post(
     Paths.interestEndDatePage.uri,
     FormValidator.requestHandler(InterestEndDate, InterestEndDate.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<InterestEndDate> = req.body;
 

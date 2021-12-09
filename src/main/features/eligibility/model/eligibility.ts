@@ -70,7 +70,7 @@ export class Eligibility {
   }
 
   static fromObject(input: any): Eligibility {
-    if (input == null) {
+    if (input === null) {
       return input;
     }
     return new Eligibility(

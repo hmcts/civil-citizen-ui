@@ -45,6 +45,7 @@ export default express.Router()
     Paths.dateOfBirthPage.uri,
     accessGuardRequestHandler,
     FormValidator.requestHandler(DateOfBirth, DateOfBirth.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<DateOfBirth> = req.body;
 

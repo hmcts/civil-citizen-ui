@@ -11,6 +11,7 @@ import { Draft } from '@hmcts/draft-store-client';
 
 let breathingSpaceExternalId = null;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function renderView(form: Form<BreathingSpaceReferenceNumber>, res: express.Response, next: express.NextFunction) {
   res.render(Paths.referencNumberPage.associatedView, {
     form,

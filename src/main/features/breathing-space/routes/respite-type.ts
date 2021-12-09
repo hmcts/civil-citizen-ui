@@ -11,6 +11,7 @@ import { DraftClaim } from 'drafts/models/draftClaim';
 import { DraftService } from 'services/draftService';
 import { Draft } from '@hmcts/draft-store-client';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function renderView(form: Form<BreathingType>, res: express.Response, next: express.NextFunction) {
   const pastDate: Moment = MomentFactory.currentDate().subtract(1, 'day');
   res.render(Paths.bsTypePage.associatedView, {

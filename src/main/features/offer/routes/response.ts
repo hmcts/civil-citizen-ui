@@ -11,6 +11,7 @@ import { OfferClient } from 'claims/offerClient';
 import { Claim } from 'claims/models/claim';
 import { Offer } from 'claims/models/offer';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function renderView(form: Form<DefendantResponse>, res: express.Response, next: express.NextFunction) {
   const claim: Claim = res.locals.claim;
   const offer: Offer = claim.defendantOffer;

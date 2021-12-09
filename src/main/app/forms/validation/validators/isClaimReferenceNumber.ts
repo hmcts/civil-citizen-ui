@@ -11,6 +11,7 @@ import { isCCBCCaseReference } from 'shared/utils/isCCBCCaseReference';
 @ValidatorConstraint()
 export class CheckClaimReferenceNumberConstraint implements ValidatorConstraintInterface {
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   validate(value: any | string, args?: ValidationArguments): boolean {
     if (value === undefined || value === '') {
       return true;

@@ -14,6 +14,7 @@ import { LocalDate } from 'forms/models/localDate';
 
 let breathingSpaceExternalId = null;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function renderView(form: Form<BreathingSpaceRespiteStart>, res: express.Response, next: express.NextFunction) {
   const pastDate: Moment = MomentFactory.currentDate().subtract(1, 'day');
   res.render(Paths.bsStartDatePage.associatedView, {

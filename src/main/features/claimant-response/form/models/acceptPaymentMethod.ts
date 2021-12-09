@@ -13,7 +13,7 @@ export class AcceptPaymentMethod {
   }
 
   static fromObject(input?: any): AcceptPaymentMethod {
-    if (input == null) {
+    if (input === null) {
       return input;
     }
     return new AcceptPaymentMethod(YesNoOption.fromObject(input.accept));

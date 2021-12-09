@@ -17,6 +17,7 @@ const claimStoreClient: ClaimStoreClient = new ClaimStoreClient(noRetryRequest);
 
 /* tslint:disable:no-default-export */
 export default express.Router()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   .get(Paths.initiatePaymentController.uri, ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
     const draft: Draft<DraftClaim> = res.locals.claimDraft;
     const user: User = res.locals.user;

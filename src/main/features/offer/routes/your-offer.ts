@@ -8,7 +8,7 @@ import { ErrorHandling } from 'shared/errorHandling';
 import { User } from 'idam/user';
 import { OfferClient } from 'claims/offerClient';
 import { Claim } from 'claims/models/claim';
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function renderView(form: Form<Offer>, res: express.Response, next: express.NextFunction) {
   const claim: Claim = res.locals.claim;
 

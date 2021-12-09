@@ -13,7 +13,7 @@ export class SettleAdmitted {
   }
 
   static fromObject(input?: any): SettleAdmitted {
-    if (input == null) {
+    if (input === null) {
       return input;
     }
     return new SettleAdmitted(YesNoOption.fromObject(input.admitted));

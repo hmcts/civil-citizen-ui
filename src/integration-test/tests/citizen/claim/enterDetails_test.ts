@@ -71,6 +71,7 @@ Scenario('Claim with different interest rate and date @citizen', { retries: 3 },
   interestSteps.skipClaimantInterestTotalPage();
   I.see('Prepare your claim');
   claimSteps.enterClaimDetails();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   await I.bypassPCQ().catch(e => {
     return false;
   });
@@ -92,6 +93,7 @@ Scenario('Claim with a manually entered interest amount and a daily amount added
   interestSteps.skipClaimantInterestTotalPage();
   I.see('Prepare your claim');
   claimSteps.enterClaimDetails();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   await I.bypassPCQ().catch(e => {
     return false;
   });

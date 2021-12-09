@@ -31,19 +31,22 @@ export class PaymentPlanHelper {
     const responseType: ResponseType = response.responseType;
 
     switch (responseType) {
-      case ResponseType.PART_ADMISSION:
+      case ResponseType.PART_ADMISSION: {
         const partialAdmissionResponse = response as PartialAdmissionResponse;
         return PaymentPlanHelper.createPaymentPlanFromClaimAdmission(partialAdmissionResponse,
           partialAdmissionResponse.amount,
           draft,
         );
-      case ResponseType.FULL_ADMISSION:
+      }
+      case ResponseType.FULL_ADMISSION: {
         return PaymentPlanHelper.createPaymentPlanFromClaimAdmission(response as FullAdmissionResponse,
           claim.totalAmountTillToday,
           draft,
         );
-      default:
+      }
+      default: {
         throw new Error(`Incompatible response type: ${responseType}`);
+      }
     }
   }
 

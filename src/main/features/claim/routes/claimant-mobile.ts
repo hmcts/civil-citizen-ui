@@ -18,6 +18,7 @@ function renderView(form: Form<Phone>, res: express.Response): void {
 
 /* tslint:disable:no-default-export */
 export default express.Router()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   .get(Paths.claimantPhonePage.uri, (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const draft: Draft<DraftClaim> = res.locals.claimDraft;
 
@@ -26,6 +27,7 @@ export default express.Router()
   .post(
     Paths.claimantPhonePage.uri,
     FormValidator.requestHandler(Phone, Phone.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<Phone> = req.body;
 

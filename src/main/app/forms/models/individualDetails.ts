@@ -12,7 +12,7 @@ export class IndividualDetails extends SplitNamedPartyDetails {
   }
 
   static fromObject(input?: any): IndividualDetails {
-    if (input == null) {
+    if (input === null) {
       return input;
     }
     const deserialized = new IndividualDetails();

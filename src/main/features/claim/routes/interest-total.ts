@@ -25,6 +25,7 @@ export default express.Router()
   .post(
     Paths.interestTotalPage.uri,
     FormValidator.requestHandler(InterestTotal, InterestTotal.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<InterestTotal> = req.body;
 

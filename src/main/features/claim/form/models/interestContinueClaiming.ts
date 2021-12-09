@@ -14,7 +14,7 @@ export class InterestContinueClaiming implements CompletableTask {
   }
 
   static fromObject(input?: any): InterestContinueClaiming {
-    if (input == null) {
+    if (input === null) {
       return input;
     }
 

@@ -43,6 +43,7 @@ export default express.Router()
     Paths.amountPage.uri,
     FormValidator.requestHandler(ClaimAmountBreakdown, ClaimAmountBreakdown.fromObject, undefined, ['addRow']),
     actionHandler,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<ClaimAmountBreakdown> = req.body;
 

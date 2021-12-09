@@ -41,6 +41,7 @@ export default express.Router()
   .post(
     Paths.redeterminationPage.uri,
     FormValidator.requestHandler(ReDetermination, ReDetermination.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<ReDetermination> = req.body;
 

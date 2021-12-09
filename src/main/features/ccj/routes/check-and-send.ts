@@ -132,6 +132,7 @@ export default express.Router()
   .post(
     Paths.checkAndSendPage.uri,
     FormValidator.requestHandler(undefined, deserializerFunction),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<Declaration | QualifiedDeclaration> = req.body;
 

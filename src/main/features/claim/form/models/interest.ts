@@ -13,7 +13,7 @@ export class Interest {
   }
 
   static fromObject(input?: any): Interest {
-    if (input == null) {
+    if (input === null) {
       return input;
     }
     return new Interest(YesNoOption.fromObject(input.option));

@@ -28,7 +28,7 @@ export class InterestEndDate implements CompletableTask {
   }
 
   static fromObject(value?: any): InterestEndDate {
-    if (value == null) {
+    if (value === null) {
       return value;
     }
 

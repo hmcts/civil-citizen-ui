@@ -9,6 +9,7 @@ import { Claim } from 'claims/models/claim';
 export default express.Router()
   .get(
     Paths.offerConfirmationPage.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const claim: Claim = res.locals.claim;
       const user: User = res.locals.user;

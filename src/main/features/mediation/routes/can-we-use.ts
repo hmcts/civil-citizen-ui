@@ -43,6 +43,7 @@ export default express.Router()
   .post(
     Paths.canWeUsePage.uri,
     FormValidator.requestHandler(CanWeUse, CanWeUse.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<CanWeUse> = req.body;
 

@@ -20,6 +20,7 @@ export default express.Router()
   .get(Paths.claimSummaryPage.uri,
     ClaimReferenceMatchesGuard.requestHandler,
     ClaimantRequestedCCJGuard.requestHandler,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const claim: Claim = res.locals.claim;
       const interestData = await getInterestDetails(claim);

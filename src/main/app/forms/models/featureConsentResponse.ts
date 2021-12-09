@@ -15,7 +15,7 @@ export class FeatureConsentResponse {
   }
 
   static fromObject(input?: any): FeatureConsentResponse {
-    if (input == null) {
+    if (input === null) {
       return input;
     }
     return new FeatureConsentResponse(YesNoOption.fromObject(input.consentResponse));

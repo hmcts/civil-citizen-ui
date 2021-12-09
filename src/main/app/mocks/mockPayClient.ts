@@ -17,6 +17,7 @@ export class MockPayClient implements PayClient {
   constructor(private requestUrl: string) {
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async create(user: User, externalId: string, fees: Fee[], returnURL: string): Promise<Payment> {
     /*
     Calculated from:
@@ -74,7 +75,7 @@ export class MockPayClient implements PayClient {
         ],
       });
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async update(user: User, paymentReference: string, caseReference: string, caseNumber: string): Promise<void> {
     const payUpdateDelayInMs = 681;
     await delay(payUpdateDelayInMs);

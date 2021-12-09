@@ -35,6 +35,7 @@ function renderView(form: Form<PartPaymentReceived>, res: express.Response): voi
 export default express.Router()
   .get(Paths.partPaymentReceivedPage.uri,
     stateGuardRequestHandler,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<DraftClaimantResponse> = res.locals.claimantResponseDraft;
       renderView(new Form(draft.document.partPaymentReceived), res);

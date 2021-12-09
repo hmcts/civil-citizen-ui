@@ -51,6 +51,7 @@ function getPaymentDate(response: Response): Moment {
 export default express.Router()
   .get(
     Paths.acceptPaymentMethodPage.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<DraftClaimantResponse> = res.locals.claimantResponseDraft;
       renderView(new Form(draft.document.acceptPaymentMethod), res);
@@ -59,6 +60,7 @@ export default express.Router()
   .post(
     Paths.acceptPaymentMethodPage.uri,
     FormValidator.requestHandler(AcceptPaymentMethod, AcceptPaymentMethod.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<AcceptPaymentMethod> = req.body;
       if (form.hasErrors()) {

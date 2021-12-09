@@ -12,6 +12,7 @@ import { DraftService } from 'services/draftService';
 import { Draft } from '@hmcts/draft-store-client';
 import { LocalDate } from 'forms/models/localDate';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function renderView(form: Form<BreathingSpaceRespiteEnd>, res: express.Response, next: express.NextFunction) {
   const currentDate: Moment = MomentFactory.currentDate().add(0, 'days');
   res.render(Paths.bsEndDatePage.associatedView, {

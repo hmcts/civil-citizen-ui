@@ -34,6 +34,7 @@ function actionHandler(req: express.Request, res: express.Response, next: expres
 export default express.Router()
   .get(
     page.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<DraftClaim> = res.locals.claimDraft;
       renderView(new Form(draft.document.timeline), res);
@@ -42,6 +43,7 @@ export default express.Router()
     page.uri,
     FormValidator.requestHandler(ClaimantTimeline, ClaimantTimeline.fromObject, undefined, ['addRow']),
     actionHandler,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<ClaimantTimeline> = req.body;
 

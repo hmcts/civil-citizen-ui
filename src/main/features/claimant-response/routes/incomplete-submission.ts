@@ -11,6 +11,7 @@ import { MediationDraft } from 'mediation/draft/mediationDraft';
 /* tslint:disable:no-default-export */
 export default express.Router()
   .get(Paths.incompleteSubmissionPage.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<DraftClaimantResponse> = res.locals.claimantResponseDraft;
       const claim: Claim = res.locals.claim;

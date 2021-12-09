@@ -13,7 +13,7 @@ export class ClaimSettled {
   }
 
   static fromObject(input?: any): ClaimSettled {
-    if (input == null) {
+    if (input === null) {
       return input;
     }
 

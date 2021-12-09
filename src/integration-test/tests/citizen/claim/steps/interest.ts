@@ -33,6 +33,7 @@ export class InterestSteps {
     claimantInterestDatePage.selectSubmission();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   enterSpecificInterestRateAndDate(rate: number, date: string): void {
     claimantInterestPage.selectYes();
     claimantInterestTypePage.selectSameRate();

@@ -42,7 +42,7 @@ export class CanWeUseCompany implements CompletableTask {
   }
 
   static fromObject(value?: any): CanWeUseCompany {
-    if (value == null) {
+    if (value === null) {
       return value;
     }
 

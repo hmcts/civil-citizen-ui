@@ -28,6 +28,7 @@ async function renderView(form: Form<FreeMediation>, res: express.Response) {
 export default express.Router()
   .get(
     Paths.mediationDisagreementPage.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<MediationDraft> = res.locals.mediationDraft;
       await renderView(new Form(draft.document.mediationDisagreement), res);
@@ -36,6 +37,7 @@ export default express.Router()
   .post(
     Paths.mediationDisagreementPage.uri,
     FormValidator.requestHandler(FreeMediation),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<FreeMediation> = req.body;
       if (form.hasErrors()) {

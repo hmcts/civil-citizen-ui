@@ -22,6 +22,7 @@ export default express.Router()
   .post(Paths.paymentOptionsPage.uri,
     FormValidator.requestHandler(CCJPaymentOption, CCJPaymentOption.fromObject),
     ErrorHandling.apply(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
         const form: Form<CCJPaymentOption> = req.body;
 

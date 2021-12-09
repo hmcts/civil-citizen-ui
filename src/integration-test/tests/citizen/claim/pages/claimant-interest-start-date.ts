@@ -15,7 +15,7 @@ const buttons = {
 };
 
 export class ClaimantInterestStartDatePage {
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   selectParticularDate(date: string, reason: string): void {
     const [year, month, day] = DateParser.parse(date);
 

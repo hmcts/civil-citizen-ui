@@ -24,7 +24,7 @@ export class PaymentDate {
   }
 
   static fromObject(value?: any): PaymentDate {
-    if (value == null) {
+    if (value === null) {
       return value;
     }
 

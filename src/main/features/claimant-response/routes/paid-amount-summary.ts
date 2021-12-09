@@ -16,6 +16,7 @@ class PaidAmountSummaryPage extends AbstractPaidAmountSummaryPage<DraftClaimantR
     return new DefaultModelAccessor('paidAmount', () => new PaidAmount());
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   buildRedirectUri(req: express.Request, res: express.Response): string {
     const { externalId } = req.params;
     return Paths.taskListPage.evaluateUri({ externalId });

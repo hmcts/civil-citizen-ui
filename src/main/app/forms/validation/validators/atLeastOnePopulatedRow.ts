@@ -11,7 +11,7 @@ import { MultiRowFormItem } from 'forms/models/multiRowFormItem';
 
 @ValidatorConstraint()
 export class AtLeastOnePopulatedRowConstraint implements ValidatorConstraintInterface {
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   validate(value: any | MultiRowForm<MultiRowFormItem>, args?: ValidationArguments): boolean {
     if (value === undefined) {
       return true;

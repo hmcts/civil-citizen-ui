@@ -57,6 +57,7 @@ export class CheckCountryConstraint implements ValidatorConstraintInterface {
       );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   defaultMessage(args: ValidationArguments) {
     return 'Postcode must be in United Kingdom';
   }

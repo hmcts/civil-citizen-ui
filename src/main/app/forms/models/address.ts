@@ -121,7 +121,7 @@ export class Address implements CompletableTask {
   }
 
   static fromObject(input?: any): Address {
-    if (input == null) {
+    if (input === null) {
       return input;
     }
     return new Address(

@@ -24,6 +24,7 @@ export class PcqClient {
     return request.get(pcqBaseUrl + '/health', {
       'json': true,
     })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch(e => {
         return false;
       })

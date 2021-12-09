@@ -14,6 +14,7 @@ export class OptInFeatureToggleGuard {
   static featureEnabledGuard(feature: string): express.RequestHandler {
     return GuardFactory.create(
       (res: express.Response) => FeatureToggles.hasAnyAuthorisedFeature(res.locals.claim.features, feature),
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       (req: express.Request, res: express.Response): void => {
         throw new NotFoundError(req.path);
       });

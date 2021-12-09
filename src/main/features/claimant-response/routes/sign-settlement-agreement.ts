@@ -36,6 +36,7 @@ function renderView(form: Form<SettlementAgreement>, res: express.Response) {
 
 /* tslint:disable:no-default-export */
 export default express.Router()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   .get(Paths.signSettlementAgreementPage.uri, (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const draft: Draft<DraftClaimantResponse> = res.locals.claimantResponseDraft;
     renderView(new Form(draft.document.settlementAgreement), res);
@@ -43,6 +44,7 @@ export default express.Router()
   .post(
     Paths.signSettlementAgreementPage.uri,
     FormValidator.requestHandler(SettlementAgreement, SettlementAgreement.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<SettlementAgreement> = req.body;
       if (form.hasErrors()) {

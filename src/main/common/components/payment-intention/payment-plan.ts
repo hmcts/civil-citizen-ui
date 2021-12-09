@@ -29,6 +29,7 @@ export abstract class AbstractPaymentPlanPage<Draft> {
 
   abstract buildPostSubmissionUri(req: express.Request, res: express.Response): string
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   postValidation(req: express.Request, res: express.Response): FormValidationError {
     return undefined;
   }
@@ -49,7 +50,9 @@ export abstract class AbstractPaymentPlanPage<Draft> {
       return model
         && model.paymentOption
         && model.paymentOption.isOfType(PaymentType.INSTALMENTS);
-    }, (req: express.Request, res: express.Response): void => {
+    },
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (req: express.Request, res: express.Response): void => {
       throw new NotFoundError(req.path);
     });
 

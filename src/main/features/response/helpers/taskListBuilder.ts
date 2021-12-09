@@ -248,8 +248,7 @@ export class TaskListBuilder extends TaskStatus {
       || draft.isResponseRejectedFullyBecausePaidWhatOwed()
       || TaskListBuilder.isPartiallyAdmittedAndWhyDoYouDisagreeTaskCompleted(draft)) {
 
-      let path: string;
-      path = MediationPaths.freeTelephoneMediationPage.evaluateUri({ externalId: claim.externalId });
+      const path = MediationPaths.freeTelephoneMediationPage.evaluateUri({ externalId: claim.externalId });
       return new TaskList(
         'Resolving the claim', [
           new TaskListItem(

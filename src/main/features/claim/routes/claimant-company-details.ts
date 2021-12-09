@@ -25,6 +25,7 @@ export default express.Router()
   .post(
     Paths.claimantCompanyDetailsPage.uri,
     FormValidator.requestHandler(CompanyDetails, CompanyDetails.fromObject, 'claimant'),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const form: Form<CompanyDetails> = req.body;
       if (form.hasErrors()) {

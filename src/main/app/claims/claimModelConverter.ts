@@ -78,7 +78,7 @@ export class ClaimModelConverter {
 
   private static convertClaimantDetails(draftClaim: DraftClaim): Party {
     switch (draftClaim.claimant.partyDetails.type) {
-      case PartyType.INDIVIDUAL.value:
+      case PartyType.INDIVIDUAL.value: {
         const individualDetails = draftClaim.claimant.partyDetails as IndividualDetails;
 
         return new ClaimantAsIndividual(
@@ -90,8 +90,9 @@ export class ClaimModelConverter {
           undefined,
           individualDetails.dateOfBirth.date.asString(),
         );
+      }
 
-      case PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value:
+      case PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value: {
         const soleTraderDetails: SoleTraderDetails = draftClaim.claimant.partyDetails as SoleTraderDetails;
 
         return new ClaimantAsSoleTrader(
@@ -103,8 +104,8 @@ export class ClaimModelConverter {
           undefined,
           soleTraderDetails.businessName,
         );
-
-      case PartyType.COMPANY.value:
+      }
+      case PartyType.COMPANY.value: {
         const companyDetails = draftClaim.claimant.partyDetails as CompanyDetails;
 
         return new ClaimantAsCompany(
@@ -116,8 +117,9 @@ export class ClaimModelConverter {
           undefined,
           companyDetails.contactPerson,
         );
+      }
 
-      case PartyType.ORGANISATION.value:
+      case PartyType.ORGANISATION.value: {
         const organisationDetails = draftClaim.claimant.partyDetails as OrganisationDetails;
 
         return new ClaimantAsOrganisation(
@@ -129,7 +131,7 @@ export class ClaimModelConverter {
           undefined,
           organisationDetails.contactPerson,
         );
-
+      }
       default:
         throw Error('Something went wrong, No claimant type is set');
     }
@@ -138,7 +140,7 @@ export class ClaimModelConverter {
   private static convertDefendantDetails(draftClaim: DraftClaim): TheirDetails {
     const defendantDetails: PartyDetails = draftClaim.defendant.partyDetails;
     switch (defendantDetails.type) {
-      case PartyType.INDIVIDUAL.value:
+      case PartyType.INDIVIDUAL.value: {
         const individualDetails = defendantDetails as IndividualDetails;
 
         return new DefendantAsIndividual(
@@ -149,8 +151,9 @@ export class ClaimModelConverter {
           StringUtils.trimToUndefined(draftClaim.defendant.email.address),
           this.convertPhoneNumber(draftClaim.defendant.phone),
         );
+      }
 
-      case PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value:
+      case PartyType.SOLE_TRADER_OR_SELF_EMPLOYED.value: {
         const soleTraderDetails: SoleTraderDetails = defendantDetails as SoleTraderDetails;
 
         return new DefendantAsSoleTrader(
@@ -162,8 +165,9 @@ export class ClaimModelConverter {
           soleTraderDetails.businessName,
           this.convertPhoneNumber(draftClaim.defendant.phone),
         );
+      }
 
-      case PartyType.COMPANY.value:
+      case PartyType.COMPANY.value: {
         const companyDetails = defendantDetails as CompanyDetails;
 
         return new DefendantAsCompany(
@@ -173,7 +177,8 @@ export class ClaimModelConverter {
           companyDetails.contactPerson,
           this.convertPhoneNumber(draftClaim.defendant.phone),
         );
-      case PartyType.ORGANISATION.value:
+      }
+      case PartyType.ORGANISATION.value: {
         const organisationDetails = defendantDetails as OrganisationDetails;
 
         return new DefendantAsOrganisation(
@@ -183,6 +188,7 @@ export class ClaimModelConverter {
           organisationDetails.contactPerson,
           this.convertPhoneNumber(draftClaim.defendant.phone),
         );
+      }
       default:
         throw Error('Something went wrong, No defendant type is set');
     }

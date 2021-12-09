@@ -18,7 +18,7 @@ export class FullRejectionGuard {
 
       return draft.document.isResponseRejected();
     }
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function accessDeniedCallback(req: express.Request, res: express.Response): void {
       logger.warn('Full Rejection Guard: user tried to access page for full rejection flow');
       throw new NotFoundError(req.path);

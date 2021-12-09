@@ -28,6 +28,7 @@ function renderView(form: Form<SettleAdmitted>, res: express.Response) {
 export default express.Router()
   .get(
     Paths.settleAdmittedPage.uri,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draft: Draft<DraftClaimantResponse> = res.locals.claimantResponseDraft;
       renderView(new Form(draft.document.settleAdmitted), res);
@@ -35,6 +36,7 @@ export default express.Router()
   .post(
     Paths.settleAdmittedPage.uri,
     FormValidator.requestHandler(SettleAdmitted, SettleAdmitted.fromObject),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       const form: Form<SettleAdmitted> = req.body;
       if (form.hasErrors()) {

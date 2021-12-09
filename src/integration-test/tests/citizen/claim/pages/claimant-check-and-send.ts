@@ -16,7 +16,7 @@ const buttons = {
 };
 
 export class ClaimantCheckAndSendPage {
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   open(type: string): void {
     I.amOnCitizenAppPage('/claim/check-and-send');
   }

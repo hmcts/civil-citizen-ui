@@ -11,6 +11,8 @@ import { DraftClaim } from 'drafts/models/draftClaim';
 import { DraftService } from 'services/draftService';
 import { Draft } from '@hmcts/draft-store-client';
 
+/* eslint-disable prefer-const */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function renderView(form: Form<BreathingSpace>, res: express.Response, next: express.NextFunction) {
   let bsType: any;
   let bsEnteredDate: any;
@@ -47,6 +49,7 @@ export default express.Router()
   .post(
     Paths.bsCheckAnswersPage.uri,
     FormValidator.requestHandler(BreathingSpace),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ErrorHandling.apply(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const draftBS: Draft<DraftClaim> = res.locals.Draft;
       const draft: DraftClaim = new DraftClaim();

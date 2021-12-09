@@ -17,6 +17,7 @@ import { BreathingSpace } from 'features/claim/form/models/breathingSpace';
 const claimStoreClient: ClaimStoreClient = new ClaimStoreClient();
 let breathingSpaceExternalId = null;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function renderView(form: Form<BreathingSpaceLiftDate>, res: express.Response, next: express.NextFunction) {
   const currentDate: Moment = MomentFactory.currentDate().add(0, 'days');
   res.render(Paths.bsLiftPage.associatedView, {

@@ -39,7 +39,7 @@ export class InterestRate implements CompletableTask {
   }
 
   static fromObject(value?: any): InterestRate {
-    if (value == null) {
+    if (value === null) {
       return value;
     }
 

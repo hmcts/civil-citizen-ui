@@ -1,5 +1,5 @@
 export function checkDefined(value: any, errorMessage: string) {
-  if (value == null) {
+  if (value === null) {
     throw new Error(errorMessage);
   }
 }

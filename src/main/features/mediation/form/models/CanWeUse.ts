@@ -27,7 +27,7 @@ export class CanWeUse implements CompletableTask {
   }
 
   static fromObject(value?: any): CanWeUse {
-    if (value == null) {
+    if (value === null) {
       return value;
     }
 

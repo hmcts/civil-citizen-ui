@@ -22,7 +22,7 @@ export abstract class AbstractPaidAmountPage<Draft> {
   getView(): string {
     return 'components/ccj/paid-amount';
   }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   buildRouter(path: string, ...guards: express.RequestHandler[]): express.Router {
     return express.Router()
       .get(
