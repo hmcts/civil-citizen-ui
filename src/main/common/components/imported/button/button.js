@@ -124,7 +124,7 @@
           oldValue = cache[propertyName],
           index = -1,
           element;
-
+        // eslint-disable-next-line no-cond-assign
         while (element = elements[++index]) {
           if (element.nodeType === 1) {
             if (nonValue || element[propertyName] === oldValue) {

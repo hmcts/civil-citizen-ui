@@ -29,7 +29,7 @@ export class AtLeastOnePopulatedRowConstraint implements ValidatorConstraintInte
  * Verify there is at least one populated row in multi-row form.
  */
 export function AtLeastOnePopulatedRow(validationOptions?: ValidationOptions) {
-  return function(object: Object, propertyName: string) {
+  return function(object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName,

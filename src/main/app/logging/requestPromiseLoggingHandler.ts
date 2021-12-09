@@ -14,7 +14,7 @@ export class RequestLoggingHandler {
   }
 
   get(target, key) {
-    return HttpProxyCallInterceptor.intercept(target, key, (callTarget: Object, methodName: string, methodArgs: any[]) => {
+    return HttpProxyCallInterceptor.intercept(target, key, (callTarget: object, methodName: string, methodArgs: any[]) => {
       this.handleLogging(methodName.toUpperCase(), asOptions(methodArgs[0]));
     });
   }

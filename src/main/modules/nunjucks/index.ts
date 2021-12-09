@@ -14,7 +14,7 @@ import {
 import { convertToPoundsFilter } from 'modules/nunjucks/filters/convertToPounds';
 import * as numeralFilter from 'nunjucks-numeral-filter';
 import * as numeral from 'numeral';
-import moment from 'moment';
+import * as moment from 'moment';
 import * as toBoolean from 'to-boolean';
 
 import { NUMBER_FORMAT } from 'utils/numberFormatter';

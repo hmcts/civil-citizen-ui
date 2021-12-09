@@ -29,7 +29,7 @@ export class DateTodayOrInFutureConstraint implements ValidatorConstraintInterfa
 }
 
 export function IsTodayOrInFuture(validationOptions?: ValidationOptions) {
-  return function(object: Object, propertyName: string) {
+  return function(object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName,

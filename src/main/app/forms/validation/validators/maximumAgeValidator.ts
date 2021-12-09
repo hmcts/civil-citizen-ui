@@ -40,7 +40,7 @@ export class MaximumAgeValidatorConstraint implements ValidatorConstraintInterfa
  * Verify is a within age limit.
  */
 export function MaximumAgeValidator(maxYears: number, validationOptions?: ValidationOptions) {
-  return function(object: Object, propertyName: string) {
+  return function(object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName,

@@ -25,7 +25,7 @@ export class CheckClaimReferenceNumberConstraint implements ValidatorConstraintI
  * Verify claim reference is valid.
  */
 export function IsClaimReferenceNumber(validationOptions?: ValidationOptions) {
-  return function(object: Object, propertyName: string) {
+  return function(object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName,

@@ -67,7 +67,7 @@ export class CheckCountryConstraint implements ValidatorConstraintInterface {
  * Verify postcode is within accepted list of countries.
  */
 export function IsCountrySupported(countries: Country[], validationOptions?: ValidationOptions) {
-  return function(object: Object, propertyName: string) {
+  return function(object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName,

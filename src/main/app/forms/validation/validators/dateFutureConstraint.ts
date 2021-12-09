@@ -29,7 +29,7 @@ export class DateFutureConstraint implements ValidatorConstraintInterface {
 }
 
 export function IsFutureDate(validationOptions?: ValidationOptions) {
-  return function(object: Object, propertyName: string) {
+  return function(object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName,
@@ -41,7 +41,7 @@ export function IsFutureDate(validationOptions?: ValidationOptions) {
 }
 
 export function IsFutureDateByNumberOfDays(distanceInDays: number, validationOptions?: ValidationOptions) {
-  return function(object: Object, propertyName: string) {
+  return function(object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName,

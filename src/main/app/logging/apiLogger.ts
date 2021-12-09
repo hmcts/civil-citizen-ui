@@ -42,7 +42,7 @@ export class ApiLogger {
 
     return object;
   }
-
+  // eslint-disable-next-line @typescript-eslint/ban-types
   _logLevelFor(statusCode): Function {
     if (statusCode < 400 || statusCode === 404) {
       return this.logger.info;
