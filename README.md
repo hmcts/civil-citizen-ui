@@ -45,6 +45,7 @@ Create docker image:
   docker-compose build
 ```
 
+
 Run the application by executing the following command:
 
 ```bash
