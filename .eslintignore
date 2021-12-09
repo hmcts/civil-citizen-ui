@@ -11,5 +11,3 @@ coverage/*
 # removed eslint to test folders
 /src/test
 /src/integration-test
-
-.eslintrc.js
