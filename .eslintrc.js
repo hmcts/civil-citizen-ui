@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   env: { browser: true, es6: true, node: true, mocha: true },
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'prettier', 'import', 'mocha'],
+  plugins: ['@typescript-eslint', 'import', 'mocha'],
   extends: [
     'eslint:recommended',
     'plugin:import/errors',
@@ -14,8 +14,9 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 2018,
-    sourceType: 'module',
-    project: './tsconfig.eslint.json',
+    sourceType  : 'module',
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.eslint.json'],
   },
   globals: { Atomics: 'readonly', SharedArrayBuffer: 'readonly' },
   rules: {

@@ -12,3 +12,4 @@ coverage/*
 /src/test
 /src/integration-test
 
+.eslintrc.js
