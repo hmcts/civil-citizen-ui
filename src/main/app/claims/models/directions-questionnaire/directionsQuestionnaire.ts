@@ -20,6 +20,28 @@ export interface DirectionsQuestionnaire {
   expertRequest?: ExpertRequest
 }
 
+function toHearingLocation(directionsQuestionnaire: DirectionsQuestionnaireDraft): HearingLocation {
+
+  if (directionsQuestionnaire.hearingLocation.courtName === undefined &&
+    directionsQuestionnaire.hearingLocation.alternativeCourtName === undefined) {
+    return undefined;
+  }
+  return {
+    courtName: directionsQuestionnaire.hearingLocation &&
+    directionsQuestionnaire.hearingLocation.courtAccepted &&
+    directionsQuestionnaire.hearingLocation.courtAccepted.option === YesNoOption.YES ?
+      directionsQuestionnaire.hearingLocation.courtName : directionsQuestionnaire.hearingLocation.alternativeCourtName,
+    hearingLocationSlug: (directionsQuestionnaire.hearingLocationSlug && directionsQuestionnaire.hearingLocationSlug.length) ? directionsQuestionnaire.hearingLocationSlug : undefined,
+    courtAddress: undefined,
+    locationOption: directionsQuestionnaire.hearingLocation &&
+    directionsQuestionnaire.hearingLocation.alternativeCourtName &&
+    directionsQuestionnaire.hearingLocation.alternativeCourtName.length ?
+      CourtLocationType.ALTERNATE_COURT : CourtLocationType.SUGGESTED_COURT,
+    exceptionalCircumstancesReason: directionsQuestionnaire.exceptionalCircumstances ?
+      directionsQuestionnaire.exceptionalCircumstances.reason : undefined,
+  };
+}
+
 export namespace DirectionsQuestionnaire {
 
   export function deserialize(directionsQuestionnaire: DirectionsQuestionnaireDraft): DirectionsQuestionnaire {
@@ -61,27 +83,7 @@ export namespace DirectionsQuestionnaire {
     };
   }
 
-  function toHearingLocation(directionsQuestionnaire: DirectionsQuestionnaireDraft): HearingLocation {
 
-    if (directionsQuestionnaire.hearingLocation.courtName === undefined &&
-      directionsQuestionnaire.hearingLocation.alternativeCourtName === undefined) {
-      return undefined;
-    }
-    return {
-      courtName: directionsQuestionnaire.hearingLocation &&
-      directionsQuestionnaire.hearingLocation.courtAccepted &&
-      directionsQuestionnaire.hearingLocation.courtAccepted.option === YesNoOption.YES ?
-        directionsQuestionnaire.hearingLocation.courtName : directionsQuestionnaire.hearingLocation.alternativeCourtName,
-      hearingLocationSlug: (directionsQuestionnaire.hearingLocationSlug && directionsQuestionnaire.hearingLocationSlug.length) ? directionsQuestionnaire.hearingLocationSlug : undefined,
-      courtAddress: undefined,
-      locationOption: directionsQuestionnaire.hearingLocation &&
-      directionsQuestionnaire.hearingLocation.alternativeCourtName &&
-      directionsQuestionnaire.hearingLocation.alternativeCourtName.length ?
-        CourtLocationType.ALTERNATE_COURT : CourtLocationType.SUGGESTED_COURT,
-      exceptionalCircumstancesReason: directionsQuestionnaire.exceptionalCircumstances ?
-        directionsQuestionnaire.exceptionalCircumstances.reason : undefined,
-    };
-  }
 
   export function fromObject(directionsQuestionnaire: DirectionsQuestionnaire): DirectionsQuestionnaire {
     if (!directionsQuestionnaire) {

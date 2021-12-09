@@ -1,4 +1,4 @@
-const Helper = codecept_helper;
+const {Helper} = require('../tests/citizen/endToEnd/steps/helper');
 
 class SauceLabsBrowserHelper extends Helper {
 

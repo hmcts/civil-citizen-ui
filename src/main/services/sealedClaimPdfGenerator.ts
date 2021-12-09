@@ -1,9 +1,9 @@
 import * as express from 'express';
 
-import { Claim } from 'claims/models/claim';
 import { DocumentsClient } from 'documents/documentsClient';
 
 import { DownloadUtils } from 'utils/downloadUtils';
+import { Claim } from 'claims/models/claim';
 
 const documentsClient: DocumentsClient = new DocumentsClient();
 

@@ -19,19 +19,6 @@ module.exports = {
   },
   globals: { Atomics: 'readonly', SharedArrayBuffer: 'readonly' },
   rules: {
-    '@typescript-eslint/array-type': 'error',
-    '@typescript-eslint/explicit-module-boundary-types': 'error',
-    '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/no-shadow': 'error',
-    'mocha/no-mocha-arrows': 'off',
-    'mocha/no-async-describe': 'off',
-    'mocha/no-setup-in-describe': 'off',
-    'mocha/no-hooks-for-single-case': 'off',
-    'mocha/max-top-level-suites': 'off',
-    'mocha/no-exports': 'off',
-    'mocha/no-exclusive-tests': 'off',
-    'mocha/no-top-level-hooks': 'off',
-    'mocha/no-identical-title': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
@@ -77,11 +64,6 @@ module.exports = {
       },
     ],
     'import/no-unresolved': 'off',
-    'import/namespace': 'off',
-    'no-shadow': 'off',
-    '@typescript-eslint/no-shadow': 'off',
-    '@typescript-eslint/ban-ts-comment': 'off'
-
   },
   settings: {
     'import/resolver': {

@@ -3,7 +3,7 @@ import { Logger } from '@hmcts/nodejs-logging';
 
 const logger = Logger.getLogger('customEventTracker');
 
-export function trackCustomEvent(eventName: string, trackingProperties: {}) {
+export function trackCustomEvent(eventName: string, trackingProperties: object) {
   try {
     if (appInsights.defaultClient) {
       appInsights.defaultClient.trackEvent({

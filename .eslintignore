@@ -10,4 +10,5 @@ coverage/*
 /src/main/types/
 # removed eslint to test folders
 /src/test
+/src/integration-test
 

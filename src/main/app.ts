@@ -12,7 +12,7 @@ import { RouterFinder } from 'shared/router/routerFinder';
 import { Helmet, Config as HelmetConfig } from 'modules/helmet';
 import { I18Next } from 'modules/i18n';
 import { Nunjucks } from 'modules/nunjucks';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Feature as EligibilityFeature } from 'eligibility/index';
 import { Feature as ClaimIssueFeature } from 'claim/index';
 import { Feature as DefendantFirstContactFeature } from 'first-contact/index';

@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { Address } from 'claims/models/address';
 import { YesNoOption } from 'models/yesNoOption';
 import { Direction } from 'claims/models/Direction';
