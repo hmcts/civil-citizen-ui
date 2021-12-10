@@ -9,27 +9,32 @@ def component = "citizen-ui"
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 withPipeline(type, product, component) {
-  enableAksStagingDeployment()
-  disableLegacyDeployment()
 
   after('build') {
     yarnBuilder.yarn('setup')
   }
 
-  after('smoketest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
+  before('smoketest:preview'){
+    onPR {
+      log.info env.TEST_URL
+      env.CLAIM_STORE_URL = generateClaimStoreUrl(env.TEST_URL)
+    }
   }
 
-  after('smoketest:aat') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
+  before('functionalTest:preview'){
+    onPR {
+      log.info env.TEST_URL
+      env.CLAIM_STORE_URL = generateClaimStoreUrl(env.TEST_URL)
+    }
   }
 
-  after('functionalTest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+  after('test') {
+    onMaster {
+      yarnBuilder.yarn('tests:a11y')
+    }
   }
 
-  after('functionalTest:aat') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-  }
+  enableAksStagingDeployment()
+  disableLegacyDeployment()
 
 }
