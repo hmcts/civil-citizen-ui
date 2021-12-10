@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { Paths } from 'dashboard/paths';
 import { Logger } from '@hmcts/nodejs-logging';

@@ -1,6 +1,6 @@
-import * as HttpStatus from 'http-status-codes';
-import * as config from 'config';
-import * as mock from 'nock';
+import HttpStatus from 'http-status-codes';
+import config from 'config';
+import mock from 'nock';
 import { MadeBy } from 'claims/models/madeBy';
 import { StatementType } from 'offer/form/models/statementType';
 

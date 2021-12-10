@@ -1,12 +1,12 @@
-import * as appInsights from 'applicationinsights';
+import { defaultClient } from 'applicationinsights';
 import { Logger } from '@hmcts/nodejs-logging';
 
 const logger = Logger.getLogger('customEventTracker');
 
 export function trackCustomEvent(eventName: string, trackingProperties: object) {
   try {
-    if (appInsights.defaultClient) {
-      appInsights.defaultClient.trackEvent({
+    if (defaultClient) {
+      defaultClient.trackEvent({
         name: eventName,
         properties: trackingProperties,
       });

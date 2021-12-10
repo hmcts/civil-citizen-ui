@@ -11,7 +11,7 @@ import { MomentFormatter } from 'utils/momentFormatter';
 
 import { LocalDate } from 'forms/models/localDate';
 import { CompletableTask } from 'models/task';
-import * as toBoolean from 'to-boolean';
+import toBoolean from 'to-boolean';
 
 export class ValidationErrors {
   static readonly DATE_NOT_VALID: string = 'Please enter a valid date';

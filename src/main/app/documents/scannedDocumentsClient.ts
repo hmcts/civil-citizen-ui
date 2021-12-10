@@ -1,7 +1,7 @@
-import * as config from 'config';
+import config from 'config';
 import { StringUtils } from 'utils/stringUtils';
-import * as requestDefault from 'request';
-import * as requestPromise from 'request-promise-native';
+import requestDefault from 'request';
+import requestPromise from 'request-promise-native';
 
 const claimStoreBaseUrl = config.get<string>('claim-store.url');
 

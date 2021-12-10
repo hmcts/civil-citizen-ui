@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { Paths } from 'ccj/paths';
 import { Paths as DashboardPaths } from 'dashboard/paths';

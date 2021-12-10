@@ -1,8 +1,8 @@
-import * as express from 'express';
-import * as config from 'config';
-import * as fs from 'fs-extra';
+import express from 'express';
+import config from 'config';
+import fs from 'fs-extra';
 import { hostname } from 'os';
-import * as path from 'path';
+import path from 'path';
 import { RequestPromiseOptions } from 'request-promise-native';
 
 import { InfoContributor, InfoContributorConfig, infoRequestHandler } from '@hmcts/info-provider';

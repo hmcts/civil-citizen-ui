@@ -7,7 +7,7 @@ import { MediationDraft } from 'mediation/draft/mediationDraft';
 import { CanWeUse } from 'mediation/form/models/CanWeUse';
 import { CanWeUseCompany } from 'mediation/form/models/CanWeUseCompany';
 import { Claim } from 'claims/models/claim';
-import * as claimStoreMock from '../../../http-mocks/claim-store';
+import claimStoreMock from '../../../http-mocks/claim-store';
 
 describe('Free mediation task', () => {
   const claim: Claim = new Claim().deserialize({

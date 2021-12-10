@@ -1,5 +1,5 @@
-import * as express from 'express';
-import * as _ from 'lodash';
+import express from 'express';
+import _ from 'lodash';
 
 import { AbstractPaymentPlanPage } from 'shared/components/payment-intention/payment-plan';
 import { AbstractModelAccessor, DefaultModelAccessor } from 'shared/components/model-accessor';

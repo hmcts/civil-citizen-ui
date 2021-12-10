@@ -1,16 +1,16 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as config from 'config';
+import request from 'supertest';
+import config from 'config';
 
 import 'test/routes/expectations';
 
 import { Paths } from 'dashboard/paths';
 
 import { app } from 'main/app';
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
-import * as draftStoreMock from 'test/http-mocks/draft-store';
-import * as data from 'test/data/entity/settlement';
+import idamServiceMock from 'test/http-mocks/idam';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import draftStoreMock from 'test/http-mocks/draft-store';
+import data from 'test/data/entity/settlement';
 import { attachDefaultHooks } from 'test/routes/hooks';
 
 const cookieName: string = config.get<string>('session.cookieName');

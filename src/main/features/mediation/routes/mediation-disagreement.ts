@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { Draft } from '@hmcts/draft-store-client';
 import { Paths } from 'mediation/paths';

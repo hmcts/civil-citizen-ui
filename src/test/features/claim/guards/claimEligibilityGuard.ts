@@ -1,10 +1,10 @@
 /* tslint:disable:no-unused-expression */
 
-import * as chai from 'chai';
-import * as sinon from 'sinon';
-import * as spies from 'sinon-chai';
+import chai from 'chai';
+import sinon from 'sinon';
+import spies from 'sinon-chai';
 import { mockReq as req, mockRes as res } from 'sinon-express-mock';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { Paths } from 'eligibility/paths';
 
@@ -16,8 +16,8 @@ import { User } from 'idam/user';
 import { Draft } from '@hmcts/draft-store-client';
 import { DraftClaim } from 'drafts/models/draftClaim';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
+import idamServiceMock from 'test/http-mocks/idam';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
 
 import { attachDefaultHooks } from 'test/hooks';
 

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression */
-import * as chai from 'chai';
-import * as sinon from 'sinon';
-import * as spies from 'sinon-chai';
+import chai from 'chai';
+import sinon from 'sinon';
+import spies from 'sinon-chai';
 import { CallHandler, HttpMethods, HttpProxyCallInterceptor } from 'logging/httpProxyCallInterceptor';
 
 chai.use(spies);

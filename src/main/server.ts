@@ -3,8 +3,8 @@
 import './ts-paths-bootstrap';
 import { Logger } from '@hmcts/nodejs-logging';
 import { AppInsights } from 'modules/app-insights';
-import * as config from 'config';
-import * as toBoolean from 'to-boolean';
+import config from 'config';
+import toBoolean from 'to-boolean';
 import { app } from './app';
 import { ApplicationCluster } from './applicationCluster';
 import { ApplicationRunner } from './applicationRunner';

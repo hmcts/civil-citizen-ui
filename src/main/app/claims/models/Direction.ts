@@ -1,5 +1,5 @@
 import { Moment } from 'moment';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { MomentFactory } from 'shared/momentFactory';
 
 export interface Direction {

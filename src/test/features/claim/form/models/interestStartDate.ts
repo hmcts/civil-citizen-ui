@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression */
 
 import { expect } from 'chai';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { Validator } from '@hmcts/class-validator';
 import { expectValidationError } from 'test/app/forms/models/validationUtils';
 

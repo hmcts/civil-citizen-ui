@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
+import request from 'supertest';
 
 import 'test/routes/expectations';
 

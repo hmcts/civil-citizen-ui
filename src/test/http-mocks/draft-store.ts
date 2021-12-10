@@ -1,6 +1,6 @@
-import * as config from 'config';
-import * as mock from 'nock';
-import * as HttpStatus from 'http-status-codes';
+import config from 'config';
+import mock from 'nock';
+import HttpStatus from 'http-status-codes';
 
 import { ResponseType } from 'response/form/models/responseType';
 import { FreeMediationOption } from 'forms/models/freeMediation';
@@ -42,7 +42,7 @@ import { DefendantAgeOption } from 'eligibility/model/defendantAgeOption';
 import { AlreadyPaid } from 'response/form/models/alreadyPaid';
 import { HowMuchHaveYouPaid } from 'response/form/models/howMuchHaveYouPaid';
 import { MomentFactory } from 'shared/momentFactory';
-import * as moment from 'moment';
+import moment from 'moment';
 import { CompanyDetails } from 'forms/models/companyDetails';
 
 const serviceBaseURL: string = `${config.get('draft-store.url')}`;

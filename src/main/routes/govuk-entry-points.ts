@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { Paths } from 'paths';
 import { Paths as EligibilityPaths } from 'eligibility/paths';
 import { Paths as FirstContactPaths } from 'first-contact/paths';

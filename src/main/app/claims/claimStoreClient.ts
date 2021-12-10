@@ -1,6 +1,6 @@
 import { RequestPromiseAPI, request as requestPromiseApi } from 'client/request';
-import * as HttpStatus from 'http-status-codes';
-import * as config from 'config';
+import HttpStatus from 'http-status-codes';
+import config from 'config';
 import { Claim } from 'claims/models/claim';
 import { User } from 'idam/user';
 import { ClaimModelConverter } from 'claims/claimModelConverter';

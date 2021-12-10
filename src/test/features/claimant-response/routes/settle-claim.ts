@@ -1,16 +1,16 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as config from 'config';
+import request from 'supertest';
+import config from 'config';
 
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { app } from 'main/app';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
-import * as responseData from 'test/data/entity/responseData';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import responseData from 'test/data/entity/responseData';
 import { Paths } from 'claimant-response/paths';
 import { checkAuthorizationGuards } from './checks/authorization-check';
 import { checkNotClaimantInCaseGuard } from './checks/not-claimant-in-case-check';
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
+import idamServiceMock from 'test/http-mocks/idam';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
 import { FreeMediationOption } from 'forms/models/freeMediation';
 
 const cookieName: string = config.get<string>('session.cookieName');

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { Paths } from 'directions-questionnaire/paths';
 import { Form } from 'forms/form';
 import { HearingLocation } from 'directions-questionnaire/forms/models/hearingLocation';

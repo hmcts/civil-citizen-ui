@@ -30,7 +30,7 @@ import {
   payImmediatelyIntent,
 } from 'test/data/draft/claimantPaymentIntentionDraft';
 import { Claim } from 'claims/models/claim';
-import * as claimStoreMock from 'test/http-mocks/claim-store';
+import claimStoreMock from 'test/http-mocks/claim-store';
 import { MediationDraft } from 'mediation/draft/mediationDraft';
 
 function createDraftClaimantResponseForFullRejection(): DraftClaimantResponse {

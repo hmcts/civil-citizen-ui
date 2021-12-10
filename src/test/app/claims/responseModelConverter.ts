@@ -50,7 +50,7 @@ import {
 import { DefendantTimeline } from 'response/form/models/defendantTimeline';
 import { Claim } from 'claims/models/claim';
 import { CohabitingOption } from 'response/form/models/statement-of-means/cohabiting';
-import * as claimStoreMock from 'test/http-mocks/claim-store';
+import claimStoreMock from 'test/http-mocks/claim-store';
 import { MediationDraft } from 'mediation/draft/mediationDraft';
 import { sampleDirectionsQuestionnaireDraftObj, sampleMediationDraftObj } from 'test/http-mocks/draft-store';
 import { FeatureToggles } from 'utils/featureToggles';

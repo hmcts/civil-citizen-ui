@@ -1,8 +1,8 @@
-import * as tsConfigPaths from 'tsconfig-paths';
+import { register } from 'tsconfig-paths'
 
 import tsConfig = require('../../tsconfig.json');
 
-tsConfigPaths.register({
+register({
   baseUrl: process.env.TS_BASE_URL || tsConfig.compilerOptions.baseUrl,
   paths: tsConfig.compilerOptions.paths,
 });

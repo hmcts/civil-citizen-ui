@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { FormValidator } from 'forms/validation/formValidator';
 import { Paths } from 'offer/paths';
 import { Paths as DashboardPaths } from 'dashboard/paths';

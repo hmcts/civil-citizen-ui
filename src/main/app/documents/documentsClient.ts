@@ -1,4 +1,4 @@
-import * as config from 'config';
+import config from 'config';
 import { request } from 'client/request';
 import { StringUtils } from 'utils/stringUtils';
 

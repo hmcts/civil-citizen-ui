@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { plainToClass } from 'class-transformer';
 
 import { Paths } from 'response/paths';

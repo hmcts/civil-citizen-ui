@@ -1,5 +1,5 @@
-import * as express from 'express';
-import * as HttpStatus from 'http-status-codes';
+import express from 'express';
+import HttpStatus from 'http-status-codes';
 
 export class DownloadUtils {
 

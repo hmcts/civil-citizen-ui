@@ -29,7 +29,7 @@ import {
   sampleUnder18PartnerDetails,
 } from 'test/data/entity/statementOfMeansData';
 import { DisabilityStatus } from 'claims/models/response/statement-of-means/disabilityStatus';
-import * as moment from 'moment';
+import moment from 'moment';
 import { AllowanceRepository, ResourceAllowanceRepository } from 'common/allowances/allowanceRepository';
 import { AllowanceCalculations } from 'main/app/common/allowances/allowanceCalculations';
 import { join } from 'path';

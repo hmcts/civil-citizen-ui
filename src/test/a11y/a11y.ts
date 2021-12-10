@@ -2,9 +2,9 @@
 /* tslint:disable:no-unused-expression */
 /* tslint:disable:no-console */
 
-import * as config from 'config';
-import * as supertest from 'supertest';
-import * as pa11y from 'pa11y';
+import config from 'config';
+import supertest from 'supertest';
+import pa11y from 'pa11y';
 import { expect } from 'chai';
 
 import { RoutablePath } from 'shared/router/routablePath';

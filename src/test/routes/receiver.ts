@@ -1,22 +1,22 @@
 import { Paths as AppPaths } from 'paths';
 import { expect } from 'chai';
 import { Paths as EligibilityPaths } from 'eligibility/paths';
-import * as config from 'config';
+import config from 'config';
 import { Paths as DashboardPaths } from 'dashboard/paths';
 import { Paths as FirstContactPaths } from 'first-contact/paths';
-import * as request from 'supertest';
+import request from 'supertest';
 
 import { app } from 'main/app';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
+import idamServiceMock from 'test/http-mocks/idam';
 import 'test/routes/expectations';
-import * as sinon from 'sinon';
+import sinon from 'sinon';
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { FeatureToggles } from 'utils/featureToggles';
 import { LaunchDarklyClient } from 'shared/clients/launchDarklyClient';
-import * as toBoolean from 'to-boolean';
+import toBoolean from 'to-boolean';
 
 let isDashboardPaginationEnabledStub: sinon.SinonStub;
 const cookieName: string = config.get<string>('session.cookieName');

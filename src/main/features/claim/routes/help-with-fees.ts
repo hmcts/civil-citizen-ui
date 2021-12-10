@@ -1,5 +1,5 @@
 /* tslint:disable:no-default-export */
-import * as express from 'express';
+import express from 'express';
 import { Paths } from 'claim/paths';
 import { Draft } from '@hmcts/draft-store-client';
 import { DraftClaim } from 'drafts/models/draftClaim';

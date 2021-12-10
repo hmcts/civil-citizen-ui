@@ -1,5 +1,5 @@
-import * as express from 'express';
-import * as csrf from 'csurf';
+import express from 'express';
+import csrf from 'csurf';
 
 export class CsrfProtection {
   enableFor(app: express.Express) {

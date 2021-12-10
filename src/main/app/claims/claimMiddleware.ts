@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { ClaimStoreClient } from 'claims/claimStoreClient';
 import { Claim } from 'claims/models/claim';

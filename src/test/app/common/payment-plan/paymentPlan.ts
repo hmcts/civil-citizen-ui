@@ -2,7 +2,7 @@
 import { PaymentPlan } from 'common/payment-plan/paymentPlan';
 import { Frequency } from 'common/frequency/frequency';
 import { expect } from 'chai';
-import * as moment from 'moment';
+import moment from 'moment';
 import { MomentFactory } from 'shared/momentFactory';
 
 const TOTAL_AMOUNT = 20;

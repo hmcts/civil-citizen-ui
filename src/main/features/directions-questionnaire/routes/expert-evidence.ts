@@ -1,5 +1,5 @@
 /* tslint:disable:no-default-export */
-import * as express from 'express';
+import express from 'express';
 import { Paths } from 'directions-questionnaire/paths';
 import { DirectionsQuestionnaireDraft } from 'directions-questionnaire/draft/directionsQuestionnaireDraft';
 import { Draft } from '@hmcts/draft-store-client';

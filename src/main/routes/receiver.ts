@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { Eligibility } from 'eligibility/model/eligibility';
 import { CookieEligibilityStore } from 'eligibility/store';
@@ -10,9 +10,9 @@ import { Paths as EligibilityPaths } from 'eligibility/paths';
 import { Paths as FirstContactPaths } from 'first-contact/paths';
 import { ClaimStoreClient } from 'claims/claimStoreClient';
 import { ErrorHandling } from 'shared/errorHandling';
-import * as Cookies from 'cookies';
+import Cookies from 'cookies';
 import { AuthToken } from 'idam/authToken';
-import * as config from 'config';
+import config from 'config';
 import { IdamClient } from 'idam/idamClient';
 import { buildURL } from 'utils/callbackBuilder';
 import { JwtExtractor } from 'idam/jwtExtractor';

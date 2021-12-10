@@ -1,11 +1,11 @@
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
 import 'test/routes/expectations';
 import { MomentFactory } from 'shared/momentFactory';
-import * as request from 'supertest';
+import request from 'supertest';
 import { app } from 'main/app';
 import { expect } from 'chai';
 import { Paths as DashboardPaths } from 'dashboard/paths';
-import * as config from 'config';
+import config from 'config';
 
 const cookieName: string = config.get<string>('session.cookieName');
 

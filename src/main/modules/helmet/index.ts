@@ -1,6 +1,6 @@
-import * as express from 'express';
-import * as helmet from 'helmet';
-import * as nocache from 'nocache';
+import express from 'express';
+import helmet from 'helmet';
+import nocache from 'nocache';
 
 import { ContentSecurityPolicy } from './modules/contentSecurityPolicy';
 import { ReferrerPolicy } from './modules/referredPolicy';

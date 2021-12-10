@@ -1,6 +1,6 @@
-import * as express from 'express';
-import * as config from 'config';
-import * as Cookies from 'cookies';
+import express from 'express';
+import config from 'config';
+import Cookies from 'cookies';
 
 import { IdamClient } from 'idam/idamClient';
 import { Logger } from '@hmcts/nodejs-logging';

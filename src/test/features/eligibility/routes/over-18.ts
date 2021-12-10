@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { YesNoOption } from 'models/yesNoOption';
-import * as request from 'supertest';
+import request from 'supertest';
 
 import { attachDefaultHooks } from 'test/routes/hooks';
 import 'test/routes/expectations';

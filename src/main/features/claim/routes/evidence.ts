@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { Paths } from 'claim/paths';
 import { Form } from 'forms/form';
@@ -10,7 +10,7 @@ import { RoutablePath } from 'shared/router/routablePath';
 import { Draft } from '@hmcts/draft-store-client';
 import { DraftClaim } from 'drafts/models/draftClaim';
 import { Evidence } from 'forms/models/evidence';
-import * as uuid from 'uuid';
+import uuid from 'uuid';
 import { FeatureToggles } from 'utils/featureToggles';
 import { PcqClient } from 'utils/pcqClient';
 import { LaunchDarklyClient } from 'shared/clients/launchDarklyClient';

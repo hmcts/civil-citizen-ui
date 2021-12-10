@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression */
 import { expect } from 'chai';
 
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { isPastDeadline } from 'claims/isPastDeadline';
 

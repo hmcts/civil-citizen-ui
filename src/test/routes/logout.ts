@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as config from 'config';
-import * as mock from 'nock';
+import request from 'supertest';
+import config from 'config';
+import mock from 'nock';
 
 import 'test/routes/expectations';
 
@@ -9,7 +9,7 @@ import { Paths as AppPaths } from 'paths';
 
 import { app } from 'main/app';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
+import idamServiceMock from 'test/http-mocks/idam';
 import { attachDefaultHooks } from 'test/routes/hooks';
 
 const cookieName: string = config.get<string>('session.cookieName');

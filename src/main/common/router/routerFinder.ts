@@ -1,7 +1,7 @@
-import * as path from 'path';
+import path from 'path';
 import { Router } from 'express';
-import * as requireDirectory from 'require-directory';
-import * as uuid from 'uuid';
+import requireDirectory from 'require-directory';
+import uuid from 'uuid';
 
 const fileExtension: string = path.extname(__filename).slice(1);
 

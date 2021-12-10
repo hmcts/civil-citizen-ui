@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as HttpStatus from 'http-status-codes';
-import * as config from 'config';
+import request from 'supertest';
+import HttpStatus from 'http-status-codes';
+import config from 'config';
 
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { checkAuthorizationGuards } from 'test/common/checks/authorization-check';
@@ -10,9 +10,9 @@ import { checkAlreadySubmittedGuard } from 'test/common/checks/already-submitted
 import { Paths as ResponsePaths } from 'response/paths';
 import { app } from 'main/app';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import idamServiceMock from 'test/http-mocks/idam';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
 
 import { MoreTimeNeededOption } from 'response/form/models/moreTimeNeeded';
 import { checkCountyCourtJudgmentRequestedGuard } from 'test/common/checks/ccj-requested-check';

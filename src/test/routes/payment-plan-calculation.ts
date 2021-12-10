@@ -1,8 +1,8 @@
-import * as moment from 'moment';
-import * as sinon from 'sinon';
+import moment from 'moment';
+import sinon from 'sinon';
 
 import request from 'supertest';
-import * as HttpStatus from 'http-status-codes';
+import HttpStatus from 'http-status-codes';
 
 import { PaymentPlan } from 'common/payment-plan/paymentPlan';
 

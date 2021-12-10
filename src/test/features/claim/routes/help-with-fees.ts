@@ -3,11 +3,11 @@ import { app } from 'main/app';
 import { checkAuthorizationGuards } from './checks/authorization-check';
 import { checkEligibilityGuards } from './checks/eligibility-check';
 import { Paths as ClaimPaths } from 'claim/paths';
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
-import * as request from 'supertest';
+import idamServiceMock from 'test/http-mocks/idam';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import request from 'supertest';
 import { expect } from 'chai';
-import * as config from 'config';
+import config from 'config';
 import { YesNoOption } from 'models/yesNoOption';
 
 const pagePath: string = ClaimPaths.helpWithFeesPage.uri;

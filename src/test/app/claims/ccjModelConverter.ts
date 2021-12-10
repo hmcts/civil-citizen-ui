@@ -6,7 +6,7 @@ import { CountyCourtJudgment } from 'claims/models/countyCourtJudgment';
 import { PaymentOption } from 'claims/models/paymentOption';
 import { CountyCourtJudgmentType } from 'claims/models/countyCourtJudgmentType';
 import { Claim } from 'claims/models/claim';
-import * as claimStoreMock from 'test/http-mocks/claim-store';
+import claimStoreMock from 'test/http-mocks/claim-store';
 import { PaymentType } from 'shared/components/payment-intention/model/paymentOption';
 import { Moment } from 'moment';
 import { PaymentSchedule } from 'claims/models/response/core/paymentSchedule';

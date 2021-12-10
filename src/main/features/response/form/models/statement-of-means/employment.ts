@@ -1,6 +1,6 @@
 import { IsDefined, ValidateIf } from '@hmcts/class-validator';
 
-import * as toBoolean from 'to-boolean';
+import toBoolean from 'to-boolean';
 import { IsBooleanTrue } from '@hmcts/cmc-validators';
 import { ValidationErrors as GlobalValidationErrors } from 'forms/validation/validationErrors';
 

@@ -1,7 +1,7 @@
-import * as express from 'express';
+import express from 'express';
 import { RoutablePath } from 'shared/router/routablePath';
 import { buildURL } from 'utils/callbackBuilder';
-import * as config from 'config';
+import config from 'config';
 import { BaseParameters, InvokingParameters } from './models/pcqParameters';
 import { TokenGenerator } from './tokenGenerator';
 

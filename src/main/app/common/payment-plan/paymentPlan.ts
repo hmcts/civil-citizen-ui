@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import 'moment-precise-range-plugin';
 import { MomentFactory } from 'shared/momentFactory';
 import { calculateMonthIncrement } from 'common/calculate-month-increment/calculateMonthIncrement';

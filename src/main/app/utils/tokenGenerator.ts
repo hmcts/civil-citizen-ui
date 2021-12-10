@@ -1,5 +1,5 @@
-import * as config from 'config';
-import * as crypto from 'crypto';
+import config from 'config';
+import crypto from 'crypto';
 import { Logger } from '@hmcts/nodejs-logging';
 import { BaseParameters } from './models/pcqParameters';
 

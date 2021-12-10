@@ -1,6 +1,6 @@
-import * as express from 'express';
-import * as HttpStatus from 'http-status-codes';
-import * as http from 'http';
+import express from 'express';
+import HttpStatus from 'http-status-codes';
+import http from 'http';
 
 export function pdfEndpointResponseHandler(filename: string, res: express.Response): (response: http.IncomingMessage) => void {
 

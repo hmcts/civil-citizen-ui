@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { DocumentsClient } from 'documents/documentsClient';
 

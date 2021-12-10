@@ -1,5 +1,5 @@
 import { readFile } from 'fs';
-import * as converter from 'i18next-conv';
+import converter from 'i18next-conv';
 
 /**
  * A gettext backend for i18next framework

@@ -1,8 +1,8 @@
-import * as express from 'express';
+import express from 'express';
 import { Claim } from 'claims/models/claim';
 import { Draft } from '@hmcts/draft-store-client';
 import { PartyDetails } from 'forms/models/partyDetails';
-import * as path from 'path';
+import path from 'path';
 
 import { AuthorizationMiddleware } from 'idam/authorizationMiddleware';
 import { FullAdmissionPaths, PartAdmissionPaths, StatementOfMeansPaths } from 'response/paths';

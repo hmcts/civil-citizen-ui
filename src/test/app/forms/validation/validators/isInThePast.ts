@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { ValidationArguments } from '@hmcts/class-validator';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { MinimumAgeValidatorConstraint } from 'forms/validation/validators/minimumAgeValidator';
 import { MaximumAgeValidatorConstraint } from 'forms/validation/validators/maximumAgeValidator';

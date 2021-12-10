@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 /* tslint:disable:no-default-export */
 export default express.Router()

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { Paths } from 'claimant-response/paths';
 import { AllClaimantResponseTasksCompletedGuard } from 'claimant-response/guards/allClaimantResponseTasksCompletedGuard';

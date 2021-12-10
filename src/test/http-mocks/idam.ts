@@ -1,6 +1,6 @@
-import * as config from 'config';
-import * as mock from 'nock';
-import * as HttpStatus from 'http-status-codes';
+import config from 'config';
+import mock from 'nock';
+import HttpStatus from 'http-status-codes';
 
 const apiServiceBaseURL: string = config.get<string>('idam.api.url');
 const s2sAuthServiceBaseURL = config.get<string>('idam.service-2-service-auth.url');

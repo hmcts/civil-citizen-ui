@@ -1,8 +1,8 @@
-import * as express from 'express';
-import * as config from 'config';
-import * as healthcheck from '@hmcts/nodejs-healthcheck';
-import * as fs from 'fs';
-import * as path from 'path';
+import express from 'express';
+import config from 'config';
+import healthcheck from '@hmcts/nodejs-healthcheck';
+import fs from 'fs';
+import path from 'path';
 import { FeatureToggles } from 'utils/featureToggles';
 
 /* tslint:disable:no-default-export */

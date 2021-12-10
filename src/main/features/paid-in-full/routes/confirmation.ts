@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { Paths } from 'paid-in-full/paths';
 import { ErrorHandling } from 'shared/errorHandling';

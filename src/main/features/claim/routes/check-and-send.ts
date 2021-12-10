@@ -1,6 +1,6 @@
-import * as express from 'express';
-import * as config from 'config';
-import * as toBoolean from 'to-boolean';
+import express from 'express';
+import config from 'config';
+import toBoolean from 'to-boolean';
 
 import { Paths } from 'claim/paths';
 import { Form } from 'forms/form';

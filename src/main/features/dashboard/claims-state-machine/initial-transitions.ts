@@ -1,12 +1,12 @@
-import * as StateMachine from '@taoqf/javascript-state-machine';
+import StateMachine from '@taoqf/javascript-state-machine';
 import { Claim } from 'claims/models/claim';
 
 import { ResponseType } from 'claims/models/response/responseType';
 import { isPastDeadline } from 'claims/isPastDeadline';
 import { MomentFactory } from 'shared/momentFactory';
 
-import * as _ from 'lodash';
-import * as path from 'path';
+import _ from 'lodash';
+import path from 'path';
 import { InitialStates } from 'claims/models/claim-states/initial-states';
 import { FullDefenceStates } from 'claims/models/claim-states/full-defence-states';
 

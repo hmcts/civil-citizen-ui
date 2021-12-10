@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-expression */
 
-import * as chai from 'chai';
+import chai from 'chai';
 
 import { Country } from 'common/country';
 

@@ -1,6 +1,6 @@
-import * as express from 'express';
+import express from 'express';
 import { Claim } from 'claims/models/claim';
-import * as Cookies from 'cookies';
+import Cookies from 'cookies';
 import { ClaimStoreClient } from 'claims/claimStoreClient';
 import { ErrorPaths } from 'first-contact/paths';
 import { User } from 'idam/user';

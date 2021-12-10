@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { AbstractPaymentDatePage } from 'shared/components/payment-intention/payment-date';
 import { AbstractModelAccessor, DefaultModelAccessor } from 'shared/components/model-accessor';

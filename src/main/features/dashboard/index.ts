@@ -1,6 +1,6 @@
-import * as express from 'express';
-import * as path from 'path';
-import * as nunjucks from 'nunjucks';
+import express from 'express';
+import path from 'path';
+import nunjucks from 'nunjucks';
 
 import { AuthorizationMiddleware } from 'idam/authorizationMiddleware';
 import { RouterFinder } from 'shared/router/routerFinder';

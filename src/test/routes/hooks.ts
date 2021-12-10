@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { attachDefaultHooks as attachBaseDefaultHooks } from 'test/hooks';
 

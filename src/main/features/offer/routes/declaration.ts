@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { Paths } from 'offer/paths';
 import { User } from 'idam/user';
 import { ErrorHandling } from 'shared/errorHandling';

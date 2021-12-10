@@ -34,10 +34,10 @@ import { YesNoOption } from 'models/yesNoOption';
 import { ResponseMethod } from 'claims/models/response/responseMethod';
 import { ClaimDocument } from 'claims/models/claimDocument';
 import { TransferContents } from 'claims/models/transferContents';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { ClaimDocumentType } from 'common/claimDocumentType';
 import { ProceedOfflineReason } from 'claims/models/proceedOfflineReason';
-import * as config from 'config';
+import config from 'config';
 import { ScannedDocumentType } from 'common/scannedDocumentType';
 import { MoneyConverter } from 'fees/moneyConverter';
 

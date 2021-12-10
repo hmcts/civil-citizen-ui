@@ -1,11 +1,11 @@
-import * as StateMachine from '@taoqf/javascript-state-machine';
+import StateMachine from '@taoqf/javascript-state-machine';
 import { Claim } from 'claims/models/claim';
 
 import { FreeMediationOption } from 'forms/models/freeMediation';
 import { DefenceType } from 'claims/models/response/defenceType';
 import { ClaimantResponseType } from 'claims/models/claimant-response/claimantResponseType';
-import * as _ from 'lodash';
-import * as path from 'path';
+import _ from 'lodash';
+import path from 'path';
 import { FullDefenceStates } from 'claims/models/claim-states/full-defence-states';
 import { FullDefenceResponse } from 'claims/models/response/fullDefenceResponse';
 

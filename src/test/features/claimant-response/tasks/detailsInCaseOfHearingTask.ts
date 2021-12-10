@@ -15,7 +15,7 @@ import { WhyExpertIsNeeded } from 'directions-questionnaire/forms/models/whyExpe
 import { DraftClaimantResponse } from 'claimant-response/draft/draftClaimantResponse';
 import { ExceptionalCircumstances } from 'directions-questionnaire/forms/models/exceptionalCircumstances';
 import { Claim } from 'claims/models/claim';
-import * as claimStoreMock from '../../../http-mocks/claim-store';
+import claimStoreMock from '../../../http-mocks/claim-store';
 
 describe('Details In case of hearing task', () => {
   it('should not be completed when all directions questionnaire are not filled', () => {

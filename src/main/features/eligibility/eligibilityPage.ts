@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { RoutablePath } from 'shared/router/routablePath';
 import { ErrorHandling } from 'shared/errorHandling';

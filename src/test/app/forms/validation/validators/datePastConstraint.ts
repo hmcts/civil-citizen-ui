@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { DatePastConstraint } from 'forms/validation/validators/datePastConstraint';
 

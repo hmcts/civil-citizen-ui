@@ -1,6 +1,6 @@
-import * as express from 'express';
-import * as HttpStatus from 'http-status-codes';
-import * as _ from 'lodash';
+import express from 'express';
+import HttpStatus from 'http-status-codes';
+import _ from 'lodash';
 
 import { Paths as AppPaths } from 'paths';
 import { PaymentPlan } from 'common/payment-plan/paymentPlan';

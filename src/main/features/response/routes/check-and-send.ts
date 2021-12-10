@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { Paths } from 'response/paths';
 
@@ -26,7 +26,7 @@ import { FreeMediationUtil } from 'shared/utils/freeMediationUtil';
 import { FeatureToggles } from 'utils/featureToggles';
 import { DefendantTimeline } from 'response/form/models/defendantTimeline';
 import { DefendantEvidence } from 'response/form/models/defendantEvidence';
-import * as uuid from 'uuid';
+import uuid from 'uuid';
 import { PcqClient } from 'utils/pcqClient';
 import { LaunchDarklyClient } from 'shared/clients/launchDarklyClient';
 

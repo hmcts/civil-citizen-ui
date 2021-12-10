@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as config from 'config';
+import request from 'supertest';
+import config from 'config';
 
 import 'test/routes/expectations';
 import { attachDefaultHooks } from 'test/routes/hooks';
@@ -9,9 +9,9 @@ import { checkAuthorizationGuards } from 'test/features/claimant-response/routes
 
 import { app } from 'main/app';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
-import * as settlementAgreementServiceMock from 'test/http-mocks/settlement-agreement';
+import idamServiceMock from 'test/http-mocks/idam';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import settlementAgreementServiceMock from 'test/http-mocks/settlement-agreement';
 
 import { Paths } from 'settlement-agreement/paths';
 import {

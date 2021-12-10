@@ -1,5 +1,5 @@
-import * as config from 'config';
-import * as otp from 'otp';
+import config from 'config';
+import otp from 'otp';
 
 import { request } from 'client/request';
 import { User } from 'idam/user';

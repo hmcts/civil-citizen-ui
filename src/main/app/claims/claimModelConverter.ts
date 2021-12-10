@@ -37,7 +37,7 @@ import { InterestBreakdown } from 'claims/models/interestBreakdown';
 import { InterestTypeOption } from 'claim/form/models/interestType';
 import { InterestEndDateOption } from 'claim/form/models/interestEndDate';
 import { Phone } from 'forms/models/phone';
-import * as config from 'config';
+import config from 'config';
 import { Logger } from '@hmcts/nodejs-logging';
 
 export const paymentReturnUrlBase: string = `${config.get<string>('pay.return-url')}`;

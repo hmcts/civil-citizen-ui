@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { Validator } from '@hmcts/class-validator';
-import * as moment from 'moment';
+import moment from 'moment';
 import { expectValidationError } from 'test/app/forms/models/validationUtils';
 import { PaymentDate, ValidationErrors } from 'shared/components/payment-intention/model/paymentDate';
 import { LocalDate, ValidationErrors as LocalDateValidationErrors } from 'forms/models/localDate';

@@ -1,6 +1,6 @@
-import * as express from 'express';
-import * as config from 'config';
-import * as Cookies from 'cookies';
+import express from 'express';
+import config from 'config';
+import Cookies from 'cookies';
 import { Paths } from 'first-contact/paths';
 import { Claim } from 'claims/models/claim';
 import { ClaimReferenceMatchesGuard } from 'first-contact/guards/claimReferenceMatchesGuard';

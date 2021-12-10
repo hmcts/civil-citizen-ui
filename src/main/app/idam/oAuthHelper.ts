@@ -1,7 +1,7 @@
-import * as config from 'config';
-import * as uuid from 'uuid';
-import * as Cookies from 'cookies';
-import * as express from 'express';
+import config from 'config';
+import uuid from 'uuid';
+import Cookies from 'cookies';
+import express from 'express';
 import { buildURL } from 'utils/callbackBuilder';
 import { Paths } from 'paths';
 import { RoutablePath } from 'shared/router/routablePath';

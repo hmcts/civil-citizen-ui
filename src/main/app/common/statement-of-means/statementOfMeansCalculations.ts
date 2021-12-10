@@ -1,6 +1,6 @@
 import { Logger } from '@hmcts/nodejs-logging';
 
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { FrequencyConversions } from 'common/frequency/frequencyConversions';
 import { Frequency } from 'common/frequency/frequency';

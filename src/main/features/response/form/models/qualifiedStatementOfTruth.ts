@@ -1,6 +1,6 @@
 import { IsDefined, MaxLength, ValidateIf } from '@hmcts/class-validator';
 import { IsBooleanTrue, IsNotBlank } from '@hmcts/cmc-validators';
-import * as toBoolean from 'to-boolean';
+import toBoolean from 'to-boolean';
 import { SignatureType } from 'common/signatureType';
 
 export class ValidationErrors {

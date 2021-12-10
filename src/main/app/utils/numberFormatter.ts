@@ -1,4 +1,4 @@
-import * as numeral from 'numeral';
+import numeral from 'numeral';
 import 'numeral/locales/en-gb';
 
 numeral.locale('en-gb');

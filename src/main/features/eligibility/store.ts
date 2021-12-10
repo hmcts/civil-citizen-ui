@@ -1,6 +1,6 @@
-import * as config from 'config';
-import * as express from 'express';
-import * as _ from 'lodash';
+import config from 'config';
+import express from 'express';
+import _ from 'lodash';
 
 import { Eligibility } from 'eligibility/model/eligibility';
 

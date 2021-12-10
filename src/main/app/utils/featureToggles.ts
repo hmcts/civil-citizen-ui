@@ -1,5 +1,5 @@
-import * as config from 'config';
-import * as toBoolean from 'to-boolean';
+import config from 'config';
+import toBoolean from 'to-boolean';
 import { LaunchDarklyClient } from 'shared/clients/launchDarklyClient';
 
 export class FeatureToggles {

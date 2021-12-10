@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { calculateMonthIncrement } from 'common/calculate-month-increment/calculateMonthIncrement';
-import * as moment from 'moment';
+import moment from 'moment';
 import { MomentFactory } from 'shared/momentFactory';
 
 describe('calculateMonthIncrement', () => {

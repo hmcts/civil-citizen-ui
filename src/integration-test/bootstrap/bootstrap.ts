@@ -1,6 +1,6 @@
 /* tslint:disable:no-console */
 
-import * as fs from 'fs';
+import fs from 'fs';
 import { request } from 'integration-test/helpers/clients/base/request';
 import { RequestResponse } from 'request';
 import { IdamClient } from 'integration-test/helpers/clients/idamClient';

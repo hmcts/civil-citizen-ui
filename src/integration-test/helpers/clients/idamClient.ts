@@ -1,6 +1,6 @@
 import { request } from 'integration-test/helpers/clients/base/request';
-import * as url from 'url';
-import * as urlencode from 'urlencode';
+import url from 'url';
+import urlencode from 'urlencode';
 
 const baseURL: string = process.env.IDAM_URL;
 

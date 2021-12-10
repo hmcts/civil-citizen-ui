@@ -3,7 +3,7 @@ import { PaymentOption, PaymentType } from 'main/common/components/payment-inten
 import { PaymentDate } from 'main/common/components/payment-intention/model/paymentDate';
 import { PaymentPlan } from 'main/common/components/payment-intention/model/paymentPlan';
 
-import * as domain from 'claims/models/response/core/paymentIntention';
+import domain from 'claims/models/response/core/paymentIntention';
 
 export class PaymentIntention {
   @IsDefined()

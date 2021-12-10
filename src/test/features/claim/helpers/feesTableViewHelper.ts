@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 
 import { FeeRange, FeeRangeMerge, FeesTableViewHelper } from 'claim/helpers/feesTableViewHelper';
-import * as feesServiceMock from 'test/http-mocks/fees';
+import feesServiceMock from 'test/http-mocks/fees';
 import { mock, reset } from 'ts-mockito';
 import { LaunchDarklyClient } from 'shared/clients/launchDarklyClient';
 import { FeatureToggles } from 'utils/featureToggles';
-import * as sinon from 'sinon';
+import sinon from 'sinon';
 
 const mockLaunchDarklyClient: LaunchDarklyClient = mock(LaunchDarklyClient);
 

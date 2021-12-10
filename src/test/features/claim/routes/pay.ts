@@ -1,17 +1,17 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as config from 'config';
+import request from 'supertest';
+import config from 'config';
 
 import { Paths as ClaimPaths, Paths } from 'claim/paths';
 
 import { app } from 'main/app';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import idamServiceMock from 'test/http-mocks/idam';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
 
-import * as feesServiceMock from 'test/http-mocks/fees';
-import * as payServiceMock from 'test/http-mocks/pay';
+import feesServiceMock from 'test/http-mocks/fees';
+import payServiceMock from 'test/http-mocks/pay';
 
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { checkAuthorizationGuards } from 'test/features/claim/routes/checks/authorization-check';

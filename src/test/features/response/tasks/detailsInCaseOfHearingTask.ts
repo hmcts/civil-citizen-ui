@@ -14,7 +14,7 @@ import { Availability } from 'directions-questionnaire/forms/models/availability
 import { SupportRequired } from 'directions-questionnaire/forms/models/supportRequired';
 import { WhyExpertIsNeeded } from 'directions-questionnaire/forms/models/whyExpertIsNeeded';
 import { Claim } from 'claims/models/claim';
-import * as claimStoreMock from '../../../http-mocks/claim-store';
+import claimStoreMock from '../../../http-mocks/claim-store';
 import { ExceptionalCircumstances } from 'directions-questionnaire/forms/models/exceptionalCircumstances';
 
 describe('Details In case of hearing task', () => {

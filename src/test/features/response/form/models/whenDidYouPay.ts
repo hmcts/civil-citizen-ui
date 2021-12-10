@@ -2,11 +2,11 @@
 /* tslint:disable:no-unused-expression */
 
 import { expect } from 'chai';
-import * as randomstring from 'randomstring';
+import randomstring from 'randomstring';
 import { Validator } from '@hmcts/class-validator';
 import { expectNumberOfValidationErrors, expectValidationError } from 'test/app/forms/models/validationUtils';
 import { ValidationErrors, WhenDidYouPay } from 'response/form/models/whenDidYouPay';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ValidationConstraints } from 'forms/validation/validationConstraints';
 import { ValidationErrors as CommonValidationErrors } from 'forms/validation/validationErrors';
 import { MomentFactory } from 'shared/momentFactory';

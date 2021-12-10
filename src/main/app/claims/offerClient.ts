@@ -3,7 +3,7 @@ import { Offer } from 'claims/models/offer';
 import { Claim } from 'claims/models/claim';
 import { User } from 'idam/user';
 import { Offer as OfferForm } from 'features/offer/form/models/offer';
-import * as config from 'config';
+import config from 'config';
 import { request } from 'client/request';
 
 export const claimStoreApiUrl: string = `${config.get<string>('claim-store.url')}/claims`;

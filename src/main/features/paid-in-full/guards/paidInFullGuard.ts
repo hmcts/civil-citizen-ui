@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { GuardFactory } from 'features/response/guards/guardFactory';
 import { ForbiddenError } from 'errors';
 import { Claim } from 'claims/models/claim';

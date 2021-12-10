@@ -1,4 +1,4 @@
-import * as numeral from 'numeral';
+import numeral from 'numeral';
 
 function containsAThousandSeparator(input: string): boolean {
   // eslint-disable-next-line no-useless-escape

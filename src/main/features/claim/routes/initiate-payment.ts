@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { Paths } from 'claim/paths';
 import { DraftClaim } from 'drafts/models/draftClaim';
@@ -8,7 +8,7 @@ import { ClaimStoreClient } from 'claims/claimStoreClient';
 import { User } from 'idam/user';
 import { ClaimState } from 'claims/models/claimState';
 import { Logger } from '@hmcts/nodejs-logging';
-import * as HttpStatus from 'http-status-codes';
+import HttpStatus from 'http-status-codes';
 import { ErrorHandling } from 'shared/errorHandling';
 import { noRetryRequest } from 'client/request';
 

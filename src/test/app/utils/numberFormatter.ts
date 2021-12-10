@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as numeral from 'numeral';
+import numeral from 'numeral';
 import 'numeral/locales/en-gb';
 
 import { NumberFormatter } from 'utils/numberFormatter';

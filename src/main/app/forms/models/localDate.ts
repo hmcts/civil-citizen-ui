@@ -1,6 +1,6 @@
 import { Max, Min } from '@hmcts/class-validator';
-import * as _ from 'lodash';
-import * as moment from 'moment';
+import _ from 'lodash';
+import moment from 'moment';
 
 import { DATE_FORMAT } from 'utils/momentFormatter';
 

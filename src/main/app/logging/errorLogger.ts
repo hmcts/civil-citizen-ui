@@ -1,4 +1,4 @@
-import * as HttpStatus from 'http-status-codes';
+import HttpStatus from 'http-status-codes';
 import { Logger } from '@hmcts/nodejs-logging';
 
 export class ErrorLogger {

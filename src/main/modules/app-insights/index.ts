@@ -1,6 +1,6 @@
-import * as config from 'config';
-import * as appInsights from 'applicationinsights';
-import * as telemetryProcessors from './telemetryProcessors';
+import config from 'config';
+import { defaultClient, TelemetryClient, DistributedTracingModes, start, Configuration, setup, DistributedTracingModes } from 'applicationinsights';
+import { operationNameUUIDHider, errorLogger } from './telemetryProcessors';
 import { LoggerInstance } from 'winston';
 import { Logger } from '@hmcts/nodejs-logging';
 
@@ -8,11 +8,11 @@ const logger: LoggerInstance = Logger.getLogger('customEventTracker');
 
 export class AppInsights {
   private readonly instrumentationKey: string;
-  private client: appInsights.TelemetryClient;
+  private client: TelemetryClient;
 
-  constructor(instrumentationKey?: string, client?: appInsights.TelemetryClient) {
+  constructor(instrumentationKey?: string, client?: TelemetryClient) {
     this.instrumentationKey = instrumentationKey || config.get<string>('secrets.cmc.AppInsightsInstrumentationKey');
-    this.client = client || appInsights.defaultClient;
+    this.client = client || defaultClient;
   }
 
   enable() {
@@ -22,16 +22,16 @@ export class AppInsights {
     this.start();
   }
 
-  setup(): typeof appInsights.Configuration {
-    return appInsights.setup(this.instrumentationKey)
-      .setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C)
+  setup(): typeof Configuration {
+    return setup(this.instrumentationKey)
+      .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
       .setSendLiveMetrics(true)
       .setAutoCollectConsole(true, true);
   }
 
   getClient() {
     if (!this.client) {
-      this.client = appInsights.defaultClient;
+      this.client = defaultClient;
     }
     return this.client;
   }
@@ -41,13 +41,13 @@ export class AppInsights {
   }
 
   prepareTelemetryProcessors() {
-    this.getClient().addTelemetryProcessor(telemetryProcessors.operationNameUUIDHider());
+    this.getClient().addTelemetryProcessor(operationNameUUIDHider());
     if (this.instrumentationKey === 'STDOUT') {
-      this.client.addTelemetryProcessor(telemetryProcessors.errorLogger(logger));
+      this.client.addTelemetryProcessor(errorLogger(logger));
     }
   }
 
   start() {
-    appInsights.start();
+    start();
   }
 }

@@ -1,8 +1,8 @@
-import * as requestDefault from 'request';
-import * as requestPromise from 'request-promise-native';
+import requestDefault from 'request';
+import requestPromise from 'request-promise-native';
 import { Court } from './court';
 import { CourtFinderResponse } from './courtFinderResponse';
-import * as config from 'config';
+import config from 'config';
 import { CourtDetailsResponse } from 'court-finder-client/courtDetailsResponse';
 import { CourtDetails } from 'court-finder-client/courtDetails';
 

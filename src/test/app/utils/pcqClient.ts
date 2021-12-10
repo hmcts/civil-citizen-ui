@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { mockReq as req } from 'sinon-express-mock';
 import { RoutablePath } from 'shared/router/routablePath';
 import { PcqClient } from 'utils/pcqClient';
-import * as config from 'config';
+import config from 'config';
 
 describe('PCQ Client', () => {
 

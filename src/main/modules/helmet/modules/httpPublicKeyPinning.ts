@@ -1,5 +1,5 @@
-import * as express from 'express';
-import * as hpkp from 'hpkp';
+import express from 'express';
+import hpkp from 'hpkp';
 
 export interface Config {
   maxAge: number;

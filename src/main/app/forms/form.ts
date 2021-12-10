@@ -1,6 +1,6 @@
 import { ValidateNested, ValidationError } from '@hmcts/class-validator';
 
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 export class Converter {
 

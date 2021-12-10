@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { PartAdmissionPaths, Paths } from 'response/paths';
 
 import { FormValidator } from 'forms/validation/formValidator';

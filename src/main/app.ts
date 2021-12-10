@@ -1,11 +1,11 @@
 import { Logger } from '@hmcts/nodejs-logging';
-import * as express from 'express';
-import * as config from 'config';
-import * as path from 'path';
-import * as favicon from 'serve-favicon';
-import * as cookieParser from 'cookie-parser';
-import * as cookieEncrypter from '@hmcts/cookie-encrypter';
-import * as bodyParser from 'body-parser';
+import express from 'express';
+import config from 'config';
+import path from 'path';
+import favicon from 'serve-favicon';
+import cookieParser from 'cookie-parser';
+import cookieEncrypter from '@hmcts/cookie-encrypter';
+import bodyParser from 'body-parser';
 import { ForbiddenError, NotFoundError } from 'errors';
 import { ErrorLogger } from 'logging/errorLogger';
 import { RouterFinder } from 'shared/router/routerFinder';

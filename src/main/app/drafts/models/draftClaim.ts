@@ -1,11 +1,11 @@
-import * as toBoolean from 'to-boolean';
+import toBoolean from 'to-boolean';
 
 import { Claimant } from 'drafts/models/claimant';
 import { ClaimAmountBreakdown } from 'claim/form/models/claimAmountBreakdown';
 import { InterestRate } from 'claim/form/models/interestRate';
 import { InterestDate } from 'claim/form/models/interestDate';
 import { Reason } from 'claim/form/models/reason';
-import * as uuid from 'uuid';
+import uuid from 'uuid';
 import { Defendant } from 'drafts/models/defendant';
 import { DraftDocument } from '@hmcts/cmc-draft-store-middleware';
 import { QualifiedStatementOfTruth } from 'forms/models/qualifiedStatementOfTruth';

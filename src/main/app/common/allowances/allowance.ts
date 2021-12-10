@@ -1,6 +1,6 @@
 import { AllowanceItem } from 'common/allowances/allowanceItem';
 import { MomentFactory } from 'shared/momentFactory';
-import * as moment from 'moment';
+import moment from 'moment';
 
 export enum DependantAllowanceType {
   PER_DEPENDANT = 'EACH'

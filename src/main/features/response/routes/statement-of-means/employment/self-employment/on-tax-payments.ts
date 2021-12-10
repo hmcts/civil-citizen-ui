@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { GuardFactory } from 'response/guards/guardFactory';
 
 import { StatementOfMeansPaths as Paths, StatementOfMeansPaths } from 'response/paths';

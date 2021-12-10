@@ -1,10 +1,10 @@
 /* tslint:disable:no-unused-expression */
 import { ErrorHandling } from 'shared/errorHandling';
-import * as express from 'express';
+import express from 'express';
 
-import * as chai from 'chai';
-import * as sinon from 'sinon';
-import * as spies from 'sinon-chai';
+import chai from 'chai';
+import sinon from 'sinon';
+import spies from 'sinon-chai';
 import { mockReq, mockRes } from 'sinon-express-mock';
 
 chai.use(spies);

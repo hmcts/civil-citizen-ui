@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { FullRejectionPaths, Paths } from 'response/paths';
 import { FullRejectionGuard } from 'response/guards/fullRejectionGuard';
 

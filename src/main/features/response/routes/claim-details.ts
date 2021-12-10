@@ -1,11 +1,11 @@
-import * as express from 'express';
+import express from 'express';
 import { Paths } from 'response/paths';
 import { Paths as ClaimPaths } from 'claim/paths';
 import { Claim } from 'claims/models/claim';
 import { getInterestDetails } from 'shared/interestUtils';
 import { ErrorHandling } from 'shared/errorHandling';
 import { User } from 'idam/user';
-import * as moment from 'moment';
+import moment from 'moment';
 
 function isCurrentUserLinkedToClaim(user: User, claim: Claim): boolean {
   return claim.defendantId === user.id;

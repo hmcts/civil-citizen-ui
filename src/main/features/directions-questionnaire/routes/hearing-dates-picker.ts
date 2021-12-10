@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { Paths } from 'directions-questionnaire/paths';
 import { ErrorHandling } from 'shared/errorHandling';
 import { Draft } from '@hmcts/draft-store-client';
@@ -6,7 +6,7 @@ import { DirectionsQuestionnaireDraft } from 'directions-questionnaire/draft/dir
 import { Availability, ValidationErrors } from 'directions-questionnaire/forms/models/availability';
 import { DraftService } from 'services/draftService';
 import { LocalDate } from 'forms/models/localDate';
-import * as Moment from 'moment';
+import Moment from 'moment';
 import { FormValidator } from 'forms/validation/formValidator';
 import { Form } from 'forms/form';
 

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { FormValidator } from 'main/app/forms/validation/formValidator';
 import { Form } from 'main/app/forms/form';

@@ -1,14 +1,14 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as config from 'config';
+import request from 'supertest';
+import config from 'config';
 import 'test/routes/expectations';
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { Paths as ClaimantResponsePaths } from 'claimant-response/paths';
 import { checkAuthorizationGuards } from 'test/routes/authorization-check';
 import { app } from 'main/app';
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import idamServiceMock from 'test/http-mocks/idam';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
 
 const cookieName: string = config.get<string>('session.cookieName');
 

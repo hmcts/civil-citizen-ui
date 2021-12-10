@@ -1,5 +1,5 @@
 import { calculateMonthIncrement } from 'common/calculate-month-increment/calculateMonthIncrement';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Claim } from 'claims/models/claim';
 import { FullAdmissionResponse } from 'claims/models/response/fullAdmissionResponse';
 import { PartialAdmissionResponse } from 'claims/models/response/partialAdmissionResponse';

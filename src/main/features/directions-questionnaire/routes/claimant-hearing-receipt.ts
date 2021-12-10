@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { Paths } from 'directions-questionnaire/paths';
 import { Claim } from 'claims/models/claim';
 import { DocumentsClient } from 'documents/documentsClient';

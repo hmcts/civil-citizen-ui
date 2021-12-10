@@ -1,15 +1,15 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as config from 'config';
+import request from 'supertest';
+import config from 'config';
 
 import { attachDefaultHooks } from 'test/routes/hooks';
 import 'test/routes/expectations';
 
 import { checkAuthorizationGuards } from 'test/features/claimant-response/routes/checks/authorization-check';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
-import * as settlementAgreementServiceMock from 'test/http-mocks/settlement-agreement';
+import idamServiceMock from 'test/http-mocks/idam';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import settlementAgreementServiceMock from 'test/http-mocks/settlement-agreement';
 import { Paths } from 'settlement-agreement/paths';
 import { app } from 'main/app';
 import { verifyRedirectForGetWhenAlreadyPaidInFull } from '../../../app/guards/alreadyPaidInFullGuard';

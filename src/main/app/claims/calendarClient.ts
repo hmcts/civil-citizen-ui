@@ -2,7 +2,7 @@ import { claimApiBaseUrl } from 'claims/claimStoreClient';
 import { MomentFormatter } from 'utils/momentFormatter';
 import { Moment } from 'moment';
 import { MomentFactory } from 'shared/momentFactory';
-import * as requestPromise from 'request-promise-native';
+import requestPromise from 'request-promise-native';
 
 export class CalendarClient {
   constructor(

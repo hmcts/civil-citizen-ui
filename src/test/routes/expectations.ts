@@ -1,7 +1,7 @@
-import * as chai from 'chai';
-import * as cookie from 'cookie';
-import * as _ from 'lodash';
-import * as HttpStatus from 'http-status-codes';
+import chai from 'chai';
+import cookie from 'cookie';
+import _ from 'lodash';
+import HttpStatus from 'http-status-codes';
 
 const Assertion = chai['Assertion'];
 

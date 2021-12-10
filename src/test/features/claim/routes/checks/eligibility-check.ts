@@ -1,12 +1,12 @@
 import { expect } from 'chai';
-import * as config from 'config';
-import * as mock from 'nock';
-import * as request from 'supertest';
+import config from 'config';
+import mock from 'nock';
+import request from 'supertest';
 
 import { Paths } from 'eligibility/paths';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
+import idamServiceMock from 'test/http-mocks/idam';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
 
 const cookieName: string = config.get<string>('session.cookieName');
 

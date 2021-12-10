@@ -1,6 +1,6 @@
-import * as config from 'config';
-import * as mock from 'nock';
-import * as HttpStatus from 'http-status-codes';
+import config from 'config';
+import mock from 'nock';
+import HttpStatus from 'http-status-codes';
 
 const service = config.get<string>('fees.service');
 const jurisdiction1 = config.get<string>('fees.jurisdiction1');

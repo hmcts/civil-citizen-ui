@@ -1,5 +1,5 @@
-import * as express from 'express';
-import * as config from 'config';
+import express from 'express';
+import config from 'config';
 
 import { Paths } from 'claim/paths';
 
@@ -20,7 +20,7 @@ import { Logger } from '@hmcts/nodejs-logging';
 import { FeeOutcome } from 'fees/models/feeOutcome';
 import { Fee } from 'payment-hub-client/fee';
 import { PaymentRetrieveResponse } from 'payment-hub-client/paymentRetrieveResponse';
-import * as HttpStatus from 'http-status-codes';
+import HttpStatus from 'http-status-codes';
 import { FeatureToggles } from 'utils/featureToggles';
 import { trackCustomEvent } from 'logging/customEventTracker';
 import { Claim } from 'claims/models/claim';

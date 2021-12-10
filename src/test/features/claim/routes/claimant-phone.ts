@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as config from 'config';
+import request from 'supertest';
+import config from 'config';
 
 import { attachDefaultHooks } from 'test/routes/hooks';
 import 'test/routes/expectations';
@@ -11,8 +11,8 @@ import { Paths as ClaimPaths } from 'claim/paths';
 
 import { app } from 'main/app';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
+import idamServiceMock from 'test/http-mocks/idam';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
 
 const cookieName: string = config.get<string>('session.cookieName');
 const headerText: string = 'Enter a phone number (optional)';

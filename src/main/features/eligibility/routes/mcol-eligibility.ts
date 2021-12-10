@@ -1,7 +1,7 @@
-import * as express from 'express';
+import express from 'express';
 
 import { Paths } from 'eligibility/paths';
-import * as config from 'config';
+import config from 'config';
 
 /* tslint:disable:no-default-export */
 export default express.Router()

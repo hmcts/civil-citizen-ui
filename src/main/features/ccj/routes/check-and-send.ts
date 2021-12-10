@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { Paths } from 'ccj/paths';
 import { Form } from 'forms/form';
 import { FormValidator } from 'forms/validation/formValidator';
@@ -23,7 +23,7 @@ import { CCJPaymentOption, PaymentType } from 'ccj/form/models/ccjPaymentOption'
 import { PaymentOption } from 'claims/models/paymentOption';
 import { PaymentDate } from 'shared/components/payment-intention/model/paymentDate';
 import { LocalDate } from 'forms/models/localDate';
-import * as CCJHelper from 'main/common/helpers/ccjHelper';
+import CCJHelper from 'main/common/helpers/ccjHelper';
 
 import { MomentFactory } from 'shared/momentFactory';
 

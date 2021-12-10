@@ -15,7 +15,7 @@ import { Offer } from 'claims/models/offer';
 import { MomentFactory } from 'shared/momentFactory';
 import { Claim } from 'claims/models/claim';
 import { DraftClaimantResponse } from 'claimant-response/draft/draftClaimantResponse';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
 import { sampleClaimantResponseDraftObj } from 'test/http-mocks/draft-store';
 
 describe('settlementHelper', () => {

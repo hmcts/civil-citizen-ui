@@ -1,6 +1,6 @@
-import * as mock from 'nock';
-import * as HttpStatus from 'http-status-codes';
-import * as config from 'config';
+import mock from 'nock';
+import HttpStatus from 'http-status-codes';
+import config from 'config';
 
 const baseURL = `${config.get<string>('claim-store.url')}`;
 const endpointPath = /\/court-finder\/search-postcode\/.+/;

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { Paths as DashboardPaths } from 'dashboard/paths';
 import { Claim } from 'claims/models/claim';
 import { Logger } from '@hmcts/nodejs-logging';

@@ -1,13 +1,13 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as config from 'config';
+import request from 'supertest';
+import config from 'config';
 import { attachDefaultHooks } from 'test/routes/hooks';
 import 'test/routes/expectations';
 
 import { app } from 'main/app';
 import { Paths as OfferPaths } from 'offer/paths';
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import idamServiceMock from 'test/http-mocks/idam';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
 import { checkAuthorizationGuards } from 'test/features/offer/routes/checks/authorization-check';
 import { StatementType } from 'offer/form/models/statementType';
 import { MadeBy } from 'claims/models/madeBy';

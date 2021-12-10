@@ -10,7 +10,7 @@ import {
 import { Paths as MediationPaths } from 'mediation/paths';
 import { Paths as DirectionsQuestionnairePaths } from 'directions-questionnaire/paths';
 import { ResponseDraft } from 'response/draft/responseDraft';
-import * as moment from 'moment';
+import moment from 'moment';
 import { MomentFactory } from 'shared/momentFactory';
 import { MoreTimeNeededTask } from 'response/tasks/moreTimeNeededTask';
 import { OweMoneyTask } from 'response/tasks/oweMoneyTask';

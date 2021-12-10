@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { AddressInfoResponse } from '@hmcts/os-places-client';
 
 import { Paths as AppPaths } from 'paths';

@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { LocalDate } from 'forms/models/localDate';
 
 export function localDateFrom(momentObject: moment.Moment): LocalDate {

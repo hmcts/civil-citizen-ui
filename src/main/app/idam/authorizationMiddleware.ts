@@ -1,7 +1,7 @@
-import * as express from 'express';
-import * as config from 'config';
-import * as HttpStatus from 'http-status-codes';
-import * as Cookies from 'cookies';
+import express from 'express';
+import config from 'config';
+import HttpStatus from 'http-status-codes';
+import Cookies from 'cookies';
 
 import { JwtExtractor } from 'idam/jwtExtractor';
 import { IdamClient } from 'idam/idamClient';

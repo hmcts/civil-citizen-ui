@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as config from 'config';
+import request from 'supertest';
+import config from 'config';
 import 'test/routes/expectations';
 
 import { attachDefaultHooks } from 'test/routes/hooks';
@@ -9,9 +9,9 @@ import { FullRejectionPaths, Paths } from 'response/paths';
 
 import { app } from 'main/app';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import idamServiceMock from 'test/http-mocks/idam';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
 import { checkAuthorizationGuards } from 'test/common/checks/authorization-check';
 import { checkNotDefendantInCaseGuard } from 'test/common/checks/not-defendant-in-case-check';
 import { checkAlreadySubmittedGuard } from 'test/common/checks/already-submitted-check';

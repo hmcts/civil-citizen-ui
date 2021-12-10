@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { AbstractModelAccessor } from 'shared/components/model-accessor';
 import { PaymentIntention } from 'shared/components/payment-intention/model/paymentIntention';

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as config from 'config';
+import request from 'supertest';
+import config from 'config';
 
 import { ValidationErrors } from 'forms/validation/validationErrors';
 import { attachDefaultHooks } from 'test/routes/hooks';
@@ -12,9 +12,9 @@ import { FullAdmissionPaths, Paths } from 'response/paths';
 
 import { app } from 'main/app';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
+import idamServiceMock from 'test/http-mocks/idam';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
 import { ResponseType } from 'response/form/models/responseType';
 import {
   verifyRedirectForGetWhenAlreadyPaidInFull,

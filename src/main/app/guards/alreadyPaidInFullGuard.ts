@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { Claim } from 'claims/models/claim';
 import { Paths } from 'dashboard/paths';
 

@@ -2,14 +2,14 @@
 
 import { expect } from 'chai';
 
-import * as sinon from 'sinon';
-import * as moment from 'moment';
+import sinon from 'sinon';
+import moment from 'moment';
 
 import { TaskListBuilder } from 'response/helpers/taskListBuilder';
 import { FullAdmission, PartialAdmission, ResponseDraft } from 'response/draft/responseDraft';
 import { MediationDraft } from 'mediation/draft/mediationDraft';
 import { TaskList } from 'drafts/tasks/taskList';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
 import { Claim } from 'claims/models/claim';
 import {
   defenceWithDisputeDraft,

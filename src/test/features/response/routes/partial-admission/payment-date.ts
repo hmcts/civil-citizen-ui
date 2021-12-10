@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { PaymentType } from 'shared/components/payment-intention/model/paymentOption';
-import * as request from 'supertest';
-import * as config from 'config';
-import * as _ from 'lodash';
+import request from 'supertest';
+import config from 'config';
+import _ from 'lodash';
 
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { checkAuthorizationGuards } from 'test/common/checks/authorization-check';
@@ -12,12 +12,12 @@ import { PartAdmissionPaths, Paths } from 'response/paths';
 
 import { app } from 'main/app';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import idamServiceMock from 'test/http-mocks/idam';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
 
 import { checkCountyCourtJudgmentRequestedGuard } from 'test/common/checks/ccj-requested-check';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ValidationErrors } from 'shared/components/payment-intention/model/paymentDate';
 import { checkNotDefendantInCaseGuard } from 'test/common/checks/not-defendant-in-case-check';
 import {

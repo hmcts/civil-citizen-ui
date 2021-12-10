@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 import { ValidationError } from '@hmcts/class-validator';
-import * as randomstring from 'randomstring';
+import randomstring from 'randomstring';
 
 class Violation {
   constructor(public property: string, public message: string) {

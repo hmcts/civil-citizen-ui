@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { AbstractPaidAmountSummaryPage } from 'shared/components/ccj/paid-amount-summary';
 import { AbstractModelAccessor, DefaultModelAccessor } from 'shared/components/model-accessor';

@@ -1,9 +1,9 @@
 import { IncomeExpenseSchedule } from 'common/calculate-monthly-income-expense/incomeExpenseSchedule';
-import * as request from 'supertest';
+import request from 'supertest';
 import { app } from 'main/app';
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { Paths } from 'paths';
-import * as HttpStatus from 'http-status-codes';
+import HttpStatus from 'http-status-codes';
 
 describe('Monthly Income Expenses Calculation', () => {
   attachDefaultHooks(app);

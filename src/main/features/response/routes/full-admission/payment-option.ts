@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { AbstractPaymentOptionPage } from 'shared/components/payment-intention/payment-option';
 import { AbstractModelAccessor } from 'shared/components/model-accessor';

@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import * as mock from 'nock';
+import mock from 'nock';
 
 import { request } from 'client/request';
-import * as HttpStatus from 'http-status-codes';
+import HttpStatus from 'http-status-codes';
 
 import { User } from 'idam/user';
 import { claimDraft as claimDraftData, claimDraftHelpWithFees } from 'test/data/draft/claimDraft';
@@ -14,7 +14,7 @@ import { DraftClaim } from 'drafts/models/draftClaim';
 import { Claim } from 'claims/models/claim';
 import { ClaimData } from 'claims/models/claimData';
 import { InterestType as ClaimInterestType } from 'claims/models/interestType';
-import * as moment from 'moment';
+import moment from 'moment';
 import { sampleOrdersDraftObj } from 'test/http-mocks/draft-store';
 import { ReviewOrder } from 'claims/models/reviewOrder';
 import { OrdersDraft } from 'orders/draft/ordersDraft';

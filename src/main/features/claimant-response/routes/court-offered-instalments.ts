@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { Paths as ClaimantsResponsePaths } from 'claimant-response/paths';
 import { AcceptCourtOffer } from 'claimant-response/form/models/acceptCourtOffer';

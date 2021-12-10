@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { Paths } from 'claim/paths';
 
 import { Claim } from 'claims/models/claim';
@@ -8,7 +8,7 @@ import { DocumentsClient } from 'documents/documentsClient';
 import { ErrorHandling } from 'shared/errorHandling';
 
 import { DownloadUtils } from 'utils/downloadUtils';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { ClaimDocument } from 'claims/models/claimDocument';
 import { ScannedDocumentsClient } from 'documents/scannedDocumentsClient';
 

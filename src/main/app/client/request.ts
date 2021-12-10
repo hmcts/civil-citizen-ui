@@ -1,8 +1,8 @@
 import { RequestLoggingHandler } from 'logging/requestPromiseLoggingHandler';
-import * as config from 'config';
-import * as requestBase from 'request';
-import * as requestPromise from 'request-promise-native';
-import * as requestRetry from '@hmcts/requestretry';
+import config from 'config';
+import requestBase from 'request';
+import requestPromise from 'request-promise-native';
+import requestRetry from '@hmcts/requestretry';
 
 const timeout: number = config.get<number>('http.timeout');
 const maxAttempts: number = config.get<number>('requestRetry.maxAttempts');

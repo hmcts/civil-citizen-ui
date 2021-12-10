@@ -3,7 +3,7 @@ import { Validator } from '@hmcts/class-validator';
 import { expectValidationError } from 'test/app/forms/models/validationUtils';
 import { Offer, ValidationErrors } from 'offer/form/models/offer';
 import { LocalDate } from 'forms/models/localDate';
-import * as moment from 'moment';
+import moment from 'moment';
 
 describe('Offer', () => {
 

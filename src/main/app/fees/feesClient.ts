@@ -1,4 +1,4 @@
-import * as config from 'config';
+import config from 'config';
 import { request } from 'client/request';
 import { plainToClass } from 'class-transformer';
 import { ClaimValidator } from 'utils/claimValidator';

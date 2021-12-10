@@ -1,5 +1,5 @@
-import * as express from 'express';
-import * as config from 'config';
+import express from 'express';
+import config from 'config';
 
 class Paths {
   static main: string = '/analytics';

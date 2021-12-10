@@ -1,6 +1,6 @@
-import * as config from 'config';
-import * as mock from 'nock';
-import * as HttpStatus from 'http-status-codes';
+import config from 'config';
+import mock from 'nock';
+import HttpStatus from 'http-status-codes';
 import { StatementType } from 'features/offer/form/models/statementType';
 import { MadeBy } from 'claims/models/madeBy';
 import { InterestEndDateOption } from 'claim/form/models/interestEndDate';

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { StringUtils } from 'utils/stringUtils';
 
 export function buildURL(req: express.Request, path: string): string {

@@ -1,11 +1,11 @@
 import { expect } from 'chai';
-import * as request from 'supertest';
-import * as config from 'config';
+import request from 'supertest';
+import config from 'config';
 
 import 'test/routes/expectations';
 
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
-import * as idamServiceMock from 'test/http-mocks/idam';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import idamServiceMock from 'test/http-mocks/idam';
 
 const cookieName: string = config.get<string>('session.cookieName');
 

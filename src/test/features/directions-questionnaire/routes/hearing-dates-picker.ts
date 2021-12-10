@@ -1,14 +1,14 @@
 import { expect } from 'chai';
 import { app } from 'main/app';
-import * as config from 'config';
-import * as request from 'supertest';
+import config from 'config';
+import request from 'supertest';
 
 import { Paths } from 'directions-questionnaire/paths';
 import { Paths as DashboardPaths } from 'dashboard/paths';
 
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as draftStoreServiceMock from 'test/http-mocks/draft-store';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import idamServiceMock from 'test/http-mocks/idam';
+import draftStoreServiceMock from 'test/http-mocks/draft-store';
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { checkAuthorizationGuards } from 'test/routes/authorization-check';
 

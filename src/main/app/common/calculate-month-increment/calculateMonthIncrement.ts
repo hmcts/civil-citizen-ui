@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 
 export function calculateMonthIncrement(startDate: moment.Moment, monthsToAdd?: number) {
 

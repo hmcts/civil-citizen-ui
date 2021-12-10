@@ -1,10 +1,10 @@
-import * as express from 'express';
-import * as mock from 'mock-require';
+import express from 'express';
+import mock from 'mock-require';
 
-import * as idamServiceMock from 'test/http-mocks/idam';
-import * as draftStoreMock from 'test/http-mocks/draft-store';
-import * as claimStoreMock from 'test/http-mocks/claim-store';
-import * as feesMock from 'test/http-mocks/fees';
+import idamServiceMock from 'test/http-mocks/idam';
+import draftStoreMock from 'test/http-mocks/draft-store';
+import claimStoreMock from 'test/http-mocks/claim-store';
+import feesMock from 'test/http-mocks/fees';
 import { Claim } from 'claims/models/claim';
 
 import {
@@ -15,7 +15,7 @@ import {
 } from 'test/data/entity/responseData';
 import { CountyCourtJudgmentType } from 'claims/models/countyCourtJudgmentType';
 import { ClaimantResponseType } from 'claims/models/claimant-response/claimantResponseType';
-import * as courtFinderMock from '../http-mocks/court-finder-client';
+import courtFinderMock from '../http-mocks/court-finder-client';
 import { MomentFactory } from 'shared/momentFactory';
 
 idamServiceMock.resolveRetrieveUserFor('1', 'citizen', 'letter-holder').persist();

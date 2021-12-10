@@ -2,7 +2,7 @@
 /* tslint:disable:no-unused-expression */
 
 import { expect } from 'chai';
-import * as randomstring from 'randomstring';
+import randomstring from 'randomstring';
 import { Validator } from '@hmcts/class-validator';
 import { expectValidationError } from 'test/app/forms/models/validationUtils';
 import { HowMuchOwed } from 'features/response/form/models/howMuchOwed';

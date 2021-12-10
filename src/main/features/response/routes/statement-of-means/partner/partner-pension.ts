@@ -1,6 +1,6 @@
 import { RoutablePath } from 'main/common/router/routablePath';
 import { StatementOfMeansPaths } from 'response/paths';
-import * as express from 'express';
+import express from 'express';
 import { StatementOfMeansStateGuard } from 'response/guards/statementOfMeansStateGuard';
 import { Draft } from '@hmcts/draft-store-client';
 import { ResponseDraft } from 'response/draft/responseDraft';

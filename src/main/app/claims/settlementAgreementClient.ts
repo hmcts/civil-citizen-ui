@@ -1,6 +1,6 @@
 import { Claim } from 'claims/models/claim';
 import { User } from 'idam/user';
-import * as config from 'config';
+import config from 'config';
 import { request } from 'client/request';
 
 export const claimStoreApiUrl: string = `${config.get<string>('claim-store.url')}/claims`;

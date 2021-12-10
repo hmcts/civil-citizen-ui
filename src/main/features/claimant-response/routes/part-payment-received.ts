@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { Paths } from 'claimant-response/paths';
 import { ErrorHandling } from 'main/common/errorHandling';
 import { Claim } from 'main/app/claims/models/claim';

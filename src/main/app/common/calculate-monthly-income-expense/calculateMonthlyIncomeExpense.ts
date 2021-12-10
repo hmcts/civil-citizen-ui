@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { IncomeExpenseSource } from 'common/calculate-monthly-income-expense/incomeExpenseSource';
 
 export class CalculateMonthlyIncomeExpense {

@@ -3,8 +3,8 @@ import { MadeBy } from 'claims/models/madeBy';
 import { PartyType } from 'integration-test/data/party-type';
 import { Interest } from 'claims/models/interest';
 import { InterestDateType } from 'common/interestDateType';
-import * as SampleParty from 'test/data/entity/party';
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import SampleParty from 'test/data/entity/party';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
 import { InterestEndDateOption } from 'claim/form/models/interestEndDate';
 import { InterestDate } from 'claims/models/interestDate';
 

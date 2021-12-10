@@ -1,5 +1,5 @@
-import * as express from 'express';
-import * as helmet from 'helmet';
+import express from 'express';
+import helmet from 'helmet';
 
 const none = '\'none\'';
 const self = '\'self\'';

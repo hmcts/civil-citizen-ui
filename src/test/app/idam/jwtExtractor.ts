@@ -1,4 +1,4 @@
-import * as config from 'config';
+import config from 'config';
 import { expect } from 'chai';
 import { Request } from 'express';
 

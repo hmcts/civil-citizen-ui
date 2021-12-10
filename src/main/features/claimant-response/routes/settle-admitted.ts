@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { FormValidator } from 'forms/validation/formValidator';
 import { Form } from 'forms/form';

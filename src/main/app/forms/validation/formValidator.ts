@@ -1,8 +1,8 @@
-import * as express from 'express';
+import express from 'express';
 import { ValidationError, Validator } from '@hmcts/class-validator';
 
 import { Form } from 'forms/form';
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 type Constructor<T> = { new(): T }
 type Mapper<T> = (value: any) => T

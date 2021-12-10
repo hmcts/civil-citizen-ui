@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { ErrorHandling } from 'shared/errorHandling';
 import { DocumentsClient } from 'documents/documentsClient';
 import { Claim } from 'claims/models/claim';

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { ErrorPaths } from 'first-contact/paths';
 import { Claim } from 'claims/models/claim';
 import { Logger } from '@hmcts/nodejs-logging';

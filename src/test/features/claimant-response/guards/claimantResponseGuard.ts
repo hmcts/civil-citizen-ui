@@ -1,13 +1,13 @@
 /* tslint:disable:no-unused-expression */
 
-import * as chai from 'chai';
-import * as sinon from 'sinon';
-import * as spies from 'sinon-chai';
+import chai from 'chai';
+import sinon from 'sinon';
+import spies from 'sinon-chai';
 import { mockReq as req, mockRes as res } from 'sinon-express-mock';
 
 import { User } from 'idam/user';
 
-import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
+import claimStoreServiceMock from 'test/http-mocks/claim-store';
 
 import { attachDefaultHooks } from 'test/hooks';
 import { ClaimantResponseGuard } from 'claimant-response/guards/claimantResponseGuard';

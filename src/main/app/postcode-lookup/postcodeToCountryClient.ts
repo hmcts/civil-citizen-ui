@@ -1,5 +1,5 @@
-import * as requestDefault from 'request';
-import * as requestPromise from 'request-promise-native';
+import requestDefault from 'request';
+import requestPromise from 'request-promise-native';
 
 export class PostcodeToCountryClient {
   constructor(

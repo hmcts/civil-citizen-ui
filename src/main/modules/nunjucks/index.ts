@@ -1,9 +1,9 @@
 import { isAfter4pm } from 'shared/dateUtils';
 import { InitOptions } from 'i18next';
-import * as path from 'path';
-import * as express from 'express';
-import * as config from 'config';
-import * as nunjucks from 'nunjucks';
+import path from 'path';
+import express from 'express';
+import config from 'config';
+import nunjucks from 'nunjucks';
 import {
   addDaysFilter,
   dateFilter,
@@ -12,10 +12,10 @@ import {
   monthIncrementFilter,
 } from 'modules/nunjucks/filters/dateFilter';
 import { convertToPoundsFilter } from 'modules/nunjucks/filters/convertToPounds';
-import * as numeralFilter from 'nunjucks-numeral-filter';
-import * as numeral from 'numeral';
+import numeralFilter from 'nunjucks-numeral-filter';
+import numeral from 'numeral';
 const moment = require('moment');
-import * as toBoolean from 'to-boolean';
+import toBoolean from 'to-boolean';
 
 import { NUMBER_FORMAT } from 'utils/numberFormatter';
 import { RejectAllOfClaimOption } from 'response/form/models/rejectAllOfClaim';
