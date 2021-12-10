@@ -2,6 +2,7 @@
   "name": "civil-citizen-ui",
   "version": "0.0.1",
   "private": true,
+  "type" : "module",
   "engines": {
     "node": ">=14.0.0"
   },
