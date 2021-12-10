@@ -25,6 +25,7 @@ dist/
 public/
 smoke-output/
 functional-output/
+coverage-report/
 *.crt
 *.key
 
