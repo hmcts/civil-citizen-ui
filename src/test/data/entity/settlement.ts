@@ -1,5 +1,6 @@
 import * as claimStoreServiceMock from 'test/http-mocks/claim-store';
 import { MomentFactory } from 'shared/momentFactory';
+import moment from 'moment/moment';
 
 export const claim = claimStoreServiceMock.sampleClaimIssueObj;
 
@@ -45,7 +46,7 @@ export function claimantResponses() {
         courtDetermination: {
           decisionType: 'CLAIMANT',
           courtDecision: {
-            paymentDate: dateIn6Months().toISOString(),
+            paymentDate: moment(dateIn6Months().toISOString()).add(6, 'M').format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
             paymentOption: 'BY_SPECIFIED_DATE',
           },
           disposableIncome: 1749.1,

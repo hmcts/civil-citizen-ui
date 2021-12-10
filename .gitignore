@@ -33,3 +33,9 @@ functional-output/
 *.crt
 *.key
 
+coverage-report
+.scannerwork
+smoke-output/
+functional-output/
+acb.yaml
+/src/main/public/webchat/sass/

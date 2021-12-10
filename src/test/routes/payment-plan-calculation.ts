@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import * as sinon from 'sinon';
 
-import * as request from 'supertest';
+import request from 'supertest';
 import * as HttpStatus from 'http-status-codes';
 
 import { PaymentPlan } from 'common/payment-plan/paymentPlan';

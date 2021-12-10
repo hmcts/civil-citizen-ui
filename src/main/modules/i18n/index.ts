@@ -13,6 +13,7 @@ export class I18Next {
 
   static enableFor(app: express.Express) {
     i18next
+      // eslint-disable-next-line import/namespace
       .use(Backend)
       .use(postProcessor)
       .use(middleware.LanguageDetector)

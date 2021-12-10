@@ -11,3 +11,5 @@ coverage/*
 # removed eslint to test folders
 /src/test
 /src/integration-test
+/src/main/common/components/imported/button/button.js
+

@@ -139,9 +139,8 @@ if (FeatureToggles.isEnabled('directionsQuestionnaire')) {
 
 // Below method overrides the moment's toISOString method, which is used by RequestPromise
 // to convert moment object to String
-moment.prototype.toISOString = function() {
-  return this.format('YYYY-MM-DD[T]HH:mm:ss.SSS');
-};
+moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+
 
 logger.info('Loading routes');
 app.use('/', RouterFinder.findAll(path.join(__dirname, 'routes')));

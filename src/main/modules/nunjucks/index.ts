@@ -14,7 +14,7 @@ import {
 import { convertToPoundsFilter } from 'modules/nunjucks/filters/convertToPounds';
 import * as numeralFilter from 'nunjucks-numeral-filter';
 import * as numeral from 'numeral';
-import moment from 'moment';
+const moment = require('moment');
 import * as toBoolean from 'to-boolean';
 
 import { NUMBER_FORMAT } from 'utils/numberFormatter';
@@ -119,8 +119,8 @@ export class Nunjucks {
     require('numeral/locales/en-gb');
     numeral.locale('en-gb');
     numeral.defaultFormat(NUMBER_FORMAT);
-
-    moment.locale('en-gb');
+    const ukLocale = require('moment/locale/en-gb');
+    moment.updateLocale('en', ukLocale);
 
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('serviceName', 'Money Claims');
