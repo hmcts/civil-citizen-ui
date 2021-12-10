@@ -8,8 +8,8 @@ import { checkAuthorizationGuards } from 'test/features/offer/routes/checks/auth
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { Paths } from 'offer/paths';
 
 const cookieName: string = config.get<string>('session.cookieName');

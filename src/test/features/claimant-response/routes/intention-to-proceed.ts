@@ -10,9 +10,9 @@ import { Paths } from 'claimant-response/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 
 import { YesNoOption } from 'claims/models/response/core/yesNoOption';
 

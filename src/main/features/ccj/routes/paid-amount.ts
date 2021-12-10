@@ -5,7 +5,7 @@ import { DraftCCJ } from 'ccj/draft/draftCCJ';
 import { PaidAmount } from 'ccj/form/models/paidAmount';
 import { AbstractModelAccessor, DefaultModelAccessor } from 'shared/components/model-accessor';
 import { Claim } from 'claims/models/claim';
-import CCJHelper from 'main/common/helpers/ccjHelper';
+import { CCJHelper } from 'main/common/helpers/ccjHelper';
 
 class PaidAmountPage extends AbstractPaidAmountPage<DraftCCJ> {
 

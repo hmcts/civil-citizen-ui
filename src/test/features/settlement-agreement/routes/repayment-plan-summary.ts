@@ -9,9 +9,9 @@ import { checkAuthorizationGuards } from 'test/features/claimant-response/routes
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import settlementAgreementServiceMock from 'test/http-mocks/settlement-agreement';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { settlementAgreementServiceMock } from 'test/http-mocks/settlement-agreement';
 
 import { Paths } from 'settlement-agreement/paths';
 

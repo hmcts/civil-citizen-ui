@@ -7,7 +7,7 @@ import { mockReq as req, mockRes as res } from 'sinon-express-mock';
 
 import { User } from 'idam/user';
 
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 
 import { attachDefaultHooks } from 'test/hooks';
 import { ClaimantResponseGuard } from 'claimant-response/guards/claimantResponseGuard';

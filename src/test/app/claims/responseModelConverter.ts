@@ -50,7 +50,7 @@ import {
 import { DefendantTimeline } from 'response/form/models/defendantTimeline';
 import { Claim } from 'claims/models/claim';
 import { CohabitingOption } from 'response/form/models/statement-of-means/cohabiting';
-import claimStoreMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { MediationDraft } from 'mediation/draft/mediationDraft';
 import { sampleDirectionsQuestionnaireDraftObj, sampleMediationDraftObj } from 'test/http-mocks/draft-store';
 import { FeatureToggles } from 'utils/featureToggles';
@@ -164,7 +164,7 @@ describe('ResponseModelConverter', () => {
             ...directionsQuestionnaireResponseData,
           }, party);
           const claim: Claim = new Claim().deserialize({
-            ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+            ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
           });
           expect(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)).to.deep.equal(responseData);
         });
@@ -180,7 +180,7 @@ describe('ResponseModelConverter', () => {
             ...directionsQuestionnaireResponseData,
           }, party);
           const claim: Claim = new Claim().deserialize({
-            ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+            ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
           });
 
           expect(Response.deserialize(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -217,7 +217,7 @@ describe('ResponseModelConverter', () => {
           ...directionsQuestionnaireResponseData,
         }, company);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(Response.deserialize(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -243,7 +243,7 @@ describe('ResponseModelConverter', () => {
           ...directionsQuestionnaireResponseData,
         }, individual);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)).to.deep.equal(responseData);
@@ -262,7 +262,7 @@ describe('ResponseModelConverter', () => {
           ...mediationResponseData,
         }, individual);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -280,7 +280,7 @@ describe('ResponseModelConverter', () => {
           ...mediationResponseData,
         }, individualDefendant);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -297,7 +297,7 @@ describe('ResponseModelConverter', () => {
           ...mediationResponseData,
         }, individual);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -316,7 +316,7 @@ describe('ResponseModelConverter', () => {
           ...mediationResponseData,
         }, individual);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -333,7 +333,7 @@ describe('ResponseModelConverter', () => {
           ...mediationResponseData,
         }, individual);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -352,7 +352,7 @@ describe('ResponseModelConverter', () => {
           statementOfMeans: { ...statementOfMeansWithAllFieldsData },
         }, individual);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -373,7 +373,7 @@ describe('ResponseModelConverter', () => {
           ...directionsQuestionnaireResponseData,
         }, individual);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -391,7 +391,7 @@ describe('ResponseModelConverter', () => {
           ...directionsQuestionnaireResponseData,
         }, individual);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -409,7 +409,7 @@ describe('ResponseModelConverter', () => {
           ...directionsQuestionnaireResponseData,
         }, individual);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -429,7 +429,7 @@ describe('ResponseModelConverter', () => {
           ...directionsQuestionnaireResponseData,
         }, individual);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -447,7 +447,7 @@ describe('ResponseModelConverter', () => {
         responseDraft.statementOfMeans.severeDisability.option = YesNoOption.NO;
 
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
         const converted = await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim);
         expect(converted.statementOfTruth).to.equals(undefined);
@@ -464,7 +464,7 @@ describe('ResponseModelConverter', () => {
           ...directionsQuestionnaireResponseData,
         }, individual);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -484,7 +484,7 @@ describe('ResponseModelConverter', () => {
           ...directionsQuestionnaireResponseData,
         }, individual);
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -511,7 +511,7 @@ describe('ResponseModelConverter', () => {
         });
 
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -538,7 +538,7 @@ describe('ResponseModelConverter', () => {
         });
 
         const claim: Claim = new Claim().deserialize({
-          ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+          ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
         });
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
@@ -571,7 +571,7 @@ describe('ResponseModelConverter', () => {
             ...defenceWithDisputeData,
             ...mediationResponseData,
           }, party);
-          const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+          const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
           expect(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)).to.deep.equal(responseData);
         });
@@ -585,7 +585,7 @@ describe('ResponseModelConverter', () => {
             ...partialAdmissionFromStatesPaidDefence,
             ...mediationResponseData,
           }, party);
-          const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+          const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
           expect(Response.deserialize(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
             .to.deep.equal(Response.deserialize(responseData));
@@ -616,7 +616,7 @@ describe('ResponseModelConverter', () => {
             noMediationReason: undefined,
           },
         }, company);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(Response.deserialize(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(Response.deserialize(responseData));
@@ -639,7 +639,7 @@ describe('ResponseModelConverter', () => {
           ...defenceWithDisputeData,
           ...mediationResponseData,
         }, individual);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)).to.deep.equal(responseData);
       });
@@ -656,7 +656,7 @@ describe('ResponseModelConverter', () => {
           ...fullAdmissionWithImmediatePaymentData(),
           ...mediationResponseData,
         }, individual);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -672,7 +672,7 @@ describe('ResponseModelConverter', () => {
           ...fullAdmissionWithImmediatePaymentData(),
           ...mediationResponseData,
         }, individualDefendant);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -687,7 +687,7 @@ describe('ResponseModelConverter', () => {
           ...fullAdmissionWithPaymentBySetDateData,
           ...mediationResponseData,
         }, individual);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -704,7 +704,7 @@ describe('ResponseModelConverter', () => {
           statementOfMeans: { ...statementOfMeansWithMandatoryFieldsOnlyData },
           ...mediationResponseData,
         }, individual);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -719,7 +719,7 @@ describe('ResponseModelConverter', () => {
           ...fullAdmissionWithPaymentByInstalmentsData,
           ...mediationResponseData,
         }, individual);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -736,7 +736,7 @@ describe('ResponseModelConverter', () => {
           ...mediationResponseData,
           statementOfMeans: { ...statementOfMeansWithAllFieldsData },
         }, individual);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -753,7 +753,7 @@ describe('ResponseModelConverter', () => {
           ...partialAdmissionAlreadyPaidData,
           ...mediationResponseData,
         }, individual);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -768,7 +768,7 @@ describe('ResponseModelConverter', () => {
           ...partialAdmissionWithImmediatePaymentData(),
           ...mediationResponseData,
         }, individual);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -783,7 +783,7 @@ describe('ResponseModelConverter', () => {
           ...partialAdmissionWithPaymentBySetDateData,
           ...mediationResponseData,
         }, individual);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -800,7 +800,7 @@ describe('ResponseModelConverter', () => {
           ...mediationResponseData,
           statementOfMeans: { ...statementOfMeansWithMandatoryFieldsOnlyData },
         }, individual);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -815,7 +815,7 @@ describe('ResponseModelConverter', () => {
           ...partialAdmissionWithPaymentByInstalmentsData,
           ...mediationResponseData,
         }, individual);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -832,7 +832,7 @@ describe('ResponseModelConverter', () => {
           ...mediationResponseData,
           statementOfMeans: { ...statementOfMeansWithAllFieldsData },
         }, individual);
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -856,7 +856,7 @@ describe('ResponseModelConverter', () => {
           },
         });
 
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));
@@ -881,7 +881,7 @@ describe('ResponseModelConverter', () => {
           },
         });
 
-        const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+        const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
         expect(convertObjectLiteralToJSON(await ResponseModelConverter.convert(responseDraft, mediationDraft, directionsQuestionnaireDraft, claim)))
           .to.deep.equal(convertObjectLiteralToJSON(responseData));

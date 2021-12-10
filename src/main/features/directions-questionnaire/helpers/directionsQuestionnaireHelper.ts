@@ -20,3 +20,5 @@ export function getUsersRole(claim: Claim, user: User): MadeBy {
     throw Error('User has no role in claim');
   }
 }
+
+export * as DirectionsQuestionnaireHelper from './directionsQuestionnaireHelper';

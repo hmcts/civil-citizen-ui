@@ -72,3 +72,5 @@ export const paginationObjectForClaimantforPage = {
     },
   ],
 };
+
+export * as samplePaginationObject from './pagination';

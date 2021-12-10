@@ -84,3 +84,5 @@ export const organisationWithPhone = {
   phone: '0700000004',
   email: 'organisation@example.com',
 };
+
+export * as SampleParty from './party';

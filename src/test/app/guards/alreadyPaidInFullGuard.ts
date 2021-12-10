@@ -1,4 +1,4 @@
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import 'test/routes/expectations';
 import { MomentFactory } from 'shared/momentFactory';
 import request from 'supertest';

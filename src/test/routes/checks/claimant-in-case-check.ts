@@ -4,8 +4,8 @@ import config from 'config';
 
 import 'test/routes/expectations';
 
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import idamServiceMock from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
 
 const cookieName: string = config.get<string>('session.cookieName');
 

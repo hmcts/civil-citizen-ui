@@ -1,8 +1,8 @@
 import { attachDefaultHooks } from 'test/routes/hooks';
-import idamServiceMock from 'test/http-mocks/idam';
+import { idamServiceMock } from 'test/http-mocks/idam';
 import 'test/routes/expectations';
 
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import request from 'supertest';
 import { app } from 'main/app';
 import { Paths } from 'ccj/paths';

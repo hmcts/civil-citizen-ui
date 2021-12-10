@@ -10,8 +10,8 @@ import { Paths as ClaimPaths } from 'claim/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 
 const cookieName: string = config.get<string>('session.cookieName');
 

@@ -5,9 +5,9 @@ import config from 'config';
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { checkAuthorizationGuards } from 'test/common/checks/authorization-check';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 
 import { StatementOfMeansPaths as Paths } from 'response/paths';
 import { app } from 'main/app';

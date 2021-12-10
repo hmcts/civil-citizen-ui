@@ -5,8 +5,8 @@ import { attachDefaultHooks } from 'test/routes/hooks';
 import 'test/routes/expectations';
 import { Paths } from 'claim/paths';
 import { app } from 'main/app';
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 
 import { checkAuthorizationGuards } from 'test/features/claim/routes/checks/authorization-check';
 import { checkEligibilityGuards } from 'test/features/claim/routes/checks/eligibility-check';

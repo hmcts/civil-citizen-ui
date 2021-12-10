@@ -4,7 +4,7 @@ import config from 'config';
 
 import 'test/routes/expectations';
 
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { Paths } from 'dashboard/paths';
 
 const cookieName: string = config.get<string>('session.cookieName');

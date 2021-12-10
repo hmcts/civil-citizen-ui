@@ -11,10 +11,10 @@ import { Paths as ClaimPaths, ErrorPaths } from 'claim/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
-import feesServiceMock from 'test/http-mocks/fees';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { feesServiceMock } from 'test/http-mocks/fees';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 
 import { mock, reset } from 'ts-mockito';
 import { LaunchDarklyClient } from 'shared/clients/launchDarklyClient';

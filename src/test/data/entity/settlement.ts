@@ -1,4 +1,4 @@
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { MomentFactory } from 'shared/momentFactory';
 import moment from 'moment/moment';
 
@@ -229,3 +229,5 @@ export function claimantAcceptsCourtOfferPartyStatements() {
     countyCourtJudgment: undefined,
   };
 }
+
+export * as data from './settlement';

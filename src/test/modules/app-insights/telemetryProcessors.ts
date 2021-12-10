@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-expression */
 import chai from 'chai';
-import telemetryProcessors from 'modules/app-insights/telemetryProcessors';
+import { telemetryProcessors } from 'modules/app-insights/telemetryProcessors';
 import { LoggerInstance } from 'winston';
 import Envelope = require('applicationinsights/out/Declarations/Contracts/Generated/Envelope');
 

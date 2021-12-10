@@ -402,3 +402,5 @@ function rejectGetFeeRangeGroup(eventType: string, channel: string, reason: stri
     })
     .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
+
+export * as feesServiceMock from './fees';

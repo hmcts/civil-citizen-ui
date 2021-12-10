@@ -1,5 +1,5 @@
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 import { StatementOfMeansPaths } from 'response/paths';
 import request from 'supertest';
 import config from 'config';
@@ -7,7 +7,7 @@ import { app } from 'main/app';
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { checkAuthorizationGuards } from 'test/routes/authorization-check';
 import { checkNotDefendantInCaseGuard } from 'test/common/checks/not-defendant-in-case-check';
-import idamServiceMock from 'test/http-mocks/idam';
+import { idamServiceMock } from 'test/http-mocks/idam';
 import { checkAlreadySubmittedGuard } from 'test/common/checks/already-submitted-check';
 import { checkCountyCourtJudgmentRequestedGuard } from 'test/common/checks/ccj-requested-check';
 import { expect } from 'chai';

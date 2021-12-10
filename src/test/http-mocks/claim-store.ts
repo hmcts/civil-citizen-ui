@@ -1361,3 +1361,5 @@ export function resolveResumePayment(nextUrl?: object) {
     .put('/resume-citizen-payment')
     .reply(HttpStatus.OK, { ...paymentResponse, ...nextUrl });
 }
+
+export * as claimStoreServiceMock from './claim-store';

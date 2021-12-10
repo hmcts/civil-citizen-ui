@@ -31,7 +31,7 @@ import {
 import { Company } from 'claims/models/details/theirs/company';
 import { ClaimantResponseType } from 'claims/models/claimant-response/claimantResponseType';
 import { FormaliseOption } from 'claims/models/claimant-response/formaliseOption';
-import claimStoreMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { DateOfBirth } from 'forms/models/dateOfBirth';
 import { LocalDate } from 'forms/models/localDate';
 import { DecisionType } from 'common/court-calculations/decisionType';
@@ -39,7 +39,7 @@ import { ClaimData } from 'claims/models/claimData';
 import { TheirDetails } from 'claims/models/details/theirs/theirDetails';
 import { User } from 'idam/user';
 import { PaymentSchedule } from 'claims/models/response/core/paymentSchedule';
-import data from 'test/data/entity/settlement';
+import { data } from 'test/data/entity/settlement';
 import { FeatureToggles } from 'utils/featureToggles';
 import { MediationOutcome } from 'claims/models/mediationOutcome';
 import { defenceClaimData } from 'test/data/entity/claimData';
@@ -117,12 +117,12 @@ describe('Claim', () => {
   describe('Defendant date of birth', () => {
 
     it('should return date of birth when response is present', () => {
-      const claimWithResponse = new Claim().deserialize({ ...claimStoreMock.sampleClaimIssueObj, ...claimStoreMock.sampleFullAdmissionWithPaymentBySetDateResponseObj });
+      const claimWithResponse = new Claim().deserialize({ ...claimStoreServiceMock.sampleClaimIssueObj, ...claimStoreServiceMock.sampleFullAdmissionWithPaymentBySetDateResponseObj });
       const dateOfBirth: DateOfBirth = claimWithResponse.retrieveDateOfBirthOfDefendant;
       expect(dateOfBirth).to.be.deep.eq(new DateOfBirth(true, new LocalDate(1999, 1, 1)));
     });
     it('should return undefined when response not present', () => {
-      const claimWithoutResponse = new Claim().deserialize({ ...claimStoreMock.sampleClaimIssueObj });
+      const claimWithoutResponse = new Claim().deserialize({ ...claimStoreServiceMock.sampleClaimIssueObj });
       const dateOfBirth: DateOfBirth = claimWithoutResponse.retrieveDateOfBirthOfDefendant;
       expect(dateOfBirth).to.be.eq(undefined);
     });
@@ -131,19 +131,19 @@ describe('Claim', () => {
   describe('otherParty', () => {
 
     it('should return the claimant name when the defendant user is given', () => {
-      const claimWithResponse = new Claim().deserialize({ ...claimStoreMock.sampleClaimIssueObj, ...claimStoreMock.sampleFullAdmissionWithPaymentBySetDateResponseObj });
+      const claimWithResponse = new Claim().deserialize({ ...claimStoreServiceMock.sampleClaimIssueObj, ...claimStoreServiceMock.sampleFullAdmissionWithPaymentBySetDateResponseObj });
       const user: User = new User('1', '', 'John', 'Doe', [], '', '');
       expect(claimWithResponse.otherPartyName(user)).to.be.eq(claimWithResponse.claimData.defendant.name);
     });
 
     it('should return the defendant name when the claimant user is given', () => {
-      const claimWithResponse = new Claim().deserialize({ ...claimStoreMock.sampleClaimIssueObj, ...claimStoreMock.sampleFullAdmissionWithPaymentBySetDateResponseObj });
+      const claimWithResponse = new Claim().deserialize({ ...claimStoreServiceMock.sampleClaimIssueObj, ...claimStoreServiceMock.sampleFullAdmissionWithPaymentBySetDateResponseObj });
       const user: User = new User('123', '', 'John', 'Smith', [], '', '');
       expect(claimWithResponse.otherPartyName(user)).to.be.eq(claimWithResponse.claimData.claimant.name);
     });
 
     it('should throw an error when a user is not given', () => {
-      const claimWithResponse = new Claim().deserialize({ ...claimStoreMock.sampleClaimIssueObj, ...claimStoreMock.sampleFullAdmissionWithPaymentBySetDateResponseObj });
+      const claimWithResponse = new Claim().deserialize({ ...claimStoreServiceMock.sampleClaimIssueObj, ...claimStoreServiceMock.sampleFullAdmissionWithPaymentBySetDateResponseObj });
       expect(() => claimWithResponse.otherPartyName(undefined)).to.throw(Error, 'user must be provided');
     });
 
@@ -802,22 +802,22 @@ describe('Claim', () => {
   describe('Help With fees', () => {
 
     it('should return HWF number when the claim is submited with HWF', () => {
-      const claimWithHwf = new Claim().deserialize(claimStoreMock.sampleHwfClaimIssueObj);
+      const claimWithHwf = new Claim().deserialize(claimStoreServiceMock.sampleHwfClaimIssueObj);
       expect(claimWithHwf.helpWithFeesNumber).to.be.eq('hwf123');
     });
 
     it('should return todays data for issued-on', () => {
-      const claimWithHwf = new Claim().deserialize(claimStoreMock.sampleHwfClaimIssueObj);
+      const claimWithHwf = new Claim().deserialize(claimStoreServiceMock.sampleHwfClaimIssueObj);
       expect(claimWithHwf.issuedOn.toISOString()).to.be.eq(MomentFactory.currentDate().toISOString());
     });
 
     it('should return response dead line', () => {
-      const claimWithHwf = new Claim().deserialize(claimStoreMock.sampleHwfClaimIssueObj);
+      const claimWithHwf = new Claim().deserialize(claimStoreServiceMock.sampleHwfClaimIssueObj);
       expect(claimWithHwf.responseDeadline).to.be.not.null;
     });
 
     it('should return total Amount Till Date Of Issue', () => {
-      const claimWithHwf = new Claim().deserialize(claimStoreMock.sampleHwfClaimIssueObj);
+      const claimWithHwf = new Claim().deserialize(claimStoreServiceMock.sampleHwfClaimIssueObj);
       expect(claimWithHwf.totalAmountTillDateOfIssue).to.be.eq(claimWithHwf.totalAmountTillToday);
     });
   });
@@ -843,7 +843,7 @@ describe('Claim', () => {
       const claim = new Claim();
       claim.respondedAt = moment();
 
-      claimStoreMock.mockNextWorkingDay(MomentFactory.parse('2019-06-28'));
+      claimStoreServiceMock.mockNextWorkingDay(MomentFactory.parse('2019-06-28'));
 
       claim.respondToMediationDeadline().then(
         res => expect(res.format('YYYY-MM-DD'))
@@ -865,7 +865,7 @@ describe('Claim', () => {
       claim.directionOrder = {
         createdOn: MomentFactory.currentDate(),
       };
-      claimStoreMock.mockNextWorkingDay(MomentFactory.parse('2020-08-27'));
+      claimStoreServiceMock.mockNextWorkingDay(MomentFactory.parse('2020-08-27'));
       claim.respondToReconsiderationDeadline().then(
         res => {
           expect(res.format('YYYY-MM-DD'))
@@ -900,7 +900,7 @@ describe('Claim', () => {
       claim.directionOrder = {
         createdOn: MomentFactory.parse('2020-11-24'),
       };
-      claimStoreMock.mockNextWorkingDay(MomentFactory.parse('2020-12-07'));
+      claimStoreServiceMock.mockNextWorkingDay(MomentFactory.parse('2020-12-07'));
 
       claim.respondToOnlineOconReconsiderationDeadline().then(
         res => {
@@ -918,7 +918,7 @@ describe('Claim', () => {
         defenceType: DefenceType.DISPUTE,
         responseMethod: 'DIGITAL',
       };
-      claimStoreMock.mockNextWorkingDay(MomentFactory.parse('2020-12-01'));
+      claimStoreServiceMock.mockNextWorkingDay(MomentFactory.parse('2020-12-01'));
       claim.respondToOnlineOconReconsiderationDeadline().then(
         res => {
           expect(res.format('YYYY-MM-DD'))
@@ -1396,20 +1396,20 @@ describe('OconFormResponse', () => {
 
 describe('ScannedDocument', () => {
   it('should return Claim Documents including Scanned Document', () => {
-    const claimWithResponse = new Claim().deserialize({ ...claimStoreMock.sampleClaimIssueObj, ...claimStoreMock.sampleClaimDocuments });
+    const claimWithResponse = new Claim().deserialize({ ...claimStoreServiceMock.sampleClaimIssueObj, ...claimStoreServiceMock.sampleClaimDocuments });
     const claimDocs: ClaimDocument[] = claimWithResponse.claimDocuments;
     expect(2).to.be.eq(claimDocs.length);
   });
   it('should return Claim Documents including Scanned Document', () => {
-    claimStoreMock.sampleClaimDocuments.claimDocumentCollection.claimDocuments = undefined;
-    const claimWithResponse = new Claim().deserialize({ ...claimStoreMock.sampleClaimIssueObj, ...claimStoreMock.sampleClaimDocuments });
+    claimStoreServiceMock.sampleClaimDocuments.claimDocumentCollection.claimDocuments = undefined;
+    const claimWithResponse = new Claim().deserialize({ ...claimStoreServiceMock.sampleClaimIssueObj, ...claimStoreServiceMock.sampleClaimDocuments });
     const claimDocs: ClaimDocument[] = claimWithResponse.claimDocuments;
     expect(1).to.be.eq(claimDocs.length);
   });
 });
 
 describe('HwF fees details', () => {
-  const claim = new Claim().deserialize({ ...claimStoreMock.sampleClaimIssueObj });
+  const claim = new Claim().deserialize({ ...claimStoreServiceMock.sampleClaimIssueObj });
   it('should return helpWithFessBalanceClaimFee', () => {
     expect(claim.helpWithFessBalanceClaimFee).to.equal(25);
   });

@@ -32,3 +32,5 @@ export function errorLogger(logger: LoggerInstance): (envelope: Envelope, contex
     return true;
   };
 }
+
+export * as telemetryProcessors from './telemetryProcessors';

@@ -9,7 +9,7 @@ import { Paths as AppPaths } from 'paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
+import { idamServiceMock } from 'test/http-mocks/idam';
 
 const cookieName: string = config.get<string>('session.cookieName');
 

@@ -7,8 +7,8 @@ import 'test/routes/expectations';
 
 import { app } from 'main/app';
 import { Paths as OfferPaths } from 'offer/paths';
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { checkAuthorizationGuards } from 'test/features/offer/routes/checks/authorization-check';
 
 import { LocalDate } from 'forms/models/localDate';

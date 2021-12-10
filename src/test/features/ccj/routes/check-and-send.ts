@@ -11,9 +11,9 @@ import { Paths as CCJPaths } from 'ccj/paths';
 import { app } from 'main/app';
 import { Paths } from 'dashboard/paths';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 import { SignatureType } from 'common/signatureType';
 import { ValidationErrors as BasicValidationErrors } from 'ccj/form/models/declaration';
 import { ValidationErrors as QualifiedValidationErrors } from 'ccj/form/models/qualifiedDeclaration';

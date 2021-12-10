@@ -1,10 +1,10 @@
 import express from 'express';
 import mock from 'mock-require';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreMock from 'test/http-mocks/draft-store';
-import claimStoreMock from 'test/http-mocks/claim-store';
-import feesMock from 'test/http-mocks/fees';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { feesServiceMock } from 'test/http-mocks/fees';
 import { Claim } from 'claims/models/claim';
 
 import {
@@ -15,17 +15,17 @@ import {
 } from 'test/data/entity/responseData';
 import { CountyCourtJudgmentType } from 'claims/models/countyCourtJudgmentType';
 import { ClaimantResponseType } from 'claims/models/claimant-response/claimantResponseType';
-import courtFinderMock from '../http-mocks/court-finder-client';
+import { courtFinderMock } from '../http-mocks/court-finder-client';
 import { MomentFactory } from 'shared/momentFactory';
 
 idamServiceMock.resolveRetrieveUserFor('1', 'citizen', 'letter-holder').persist();
 idamServiceMock.resolveRetrieveServiceToken().persist();
 
-draftStoreMock.resolveFindAllDrafts().persist();
+draftStoreServiceMock.resolveFindAllDrafts().persist();
 
-claimStoreMock.resolvePostponedDeadline('2020-01-01').persist();
-claimStoreMock.resolveRetrieveByLetterHolderId('000MC000').persist();
-claimStoreMock.resolveRetrieveClaimByExternalId({
+claimStoreServiceMock.resolvePostponedDeadline('2020-01-01').persist();
+claimStoreServiceMock.resolveRetrieveByLetterHolderId('000MC000').persist();
+claimStoreServiceMock.resolveRetrieveClaimByExternalId({
   respondedAt: '2017-08-07T15:27:34.654',
   claimantRespondedAt: MomentFactory.parse('2017-09-09'),
   response: {
@@ -58,17 +58,17 @@ claimStoreMock.resolveRetrieveClaimByExternalId({
   reDeterminationRequestedAt: '2018-12-01T12:34:56.789',
 }).persist();
 
-claimStoreMock.mockCalculateInterestRate(0).persist();
-claimStoreMock.resolveRetrieveUserRoles('cmc-new-features-consent-given').persist();
-claimStoreMock.mockNextWorkingDay(MomentFactory.parse('2019-01-01')).persist();
-feesMock.resolveCalculateIssueFee().persist();
-feesMock.resolveCalculateHearingFee().persist();
-feesMock.resolveGetIssueFeeRangeGroup().persist();
-feesMock.resolveGetHearingFeeRangeGroup().persist();
-feesMock.resolveCalculateIssueFeeDefaultChannel().persist();
-feesMock.rejectCalculateIssueFeeDefaultChannel().persist();
-feesMock.resolveGetIssueFeeRangeGroupDefaultChannel().persist();
-feesMock.rejectGetIssueFeeRangeGroupDefaultChannel().persist();
+claimStoreServiceMock.mockCalculateInterestRate(0).persist();
+claimStoreServiceMock.resolveRetrieveUserRoles('cmc-new-features-consent-given').persist();
+claimStoreServiceMock.mockNextWorkingDay(MomentFactory.parse('2019-01-01')).persist();
+feesServiceMock.resolveCalculateIssueFee().persist();
+feesServiceMock.resolveCalculateHearingFee().persist();
+feesServiceMock.resolveGetIssueFeeRangeGroup().persist();
+feesServiceMock.resolveGetHearingFeeRangeGroup().persist();
+feesServiceMock.resolveCalculateIssueFeeDefaultChannel().persist();
+feesServiceMock.rejectCalculateIssueFeeDefaultChannel().persist();
+feesServiceMock.resolveGetIssueFeeRangeGroupDefaultChannel().persist();
+feesServiceMock.rejectGetIssueFeeRangeGroupDefaultChannel().persist();
 courtFinderMock.resolveFind().persist();
 courtFinderMock.resolveCourtDetails().persist();
 
@@ -81,7 +81,7 @@ const justForwardRequestHandler = {
 mock('first-contact/guards/claimReferenceMatchesGuard', {
   ClaimReferenceMatchesGuard: {
     requestHandler: (req: express.Request, res: express.Response, next: express.NextFunction): void => {
-      res.locals.claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+      res.locals.claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
       next();
     },
   },

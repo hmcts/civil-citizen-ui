@@ -84,3 +84,5 @@ export function rejectRetrieve() {
     .get(new RegExp('\/[\\d]+'))
     .reply(HttpStatus.INTERNAL_SERVER_ERROR);
 }
+
+export * as payServiceMock from './pay';

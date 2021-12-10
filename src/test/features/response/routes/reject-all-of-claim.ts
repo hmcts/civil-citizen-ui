@@ -12,9 +12,9 @@ import { ResponseType } from 'response/form/models/responseType';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { checkNotDefendantInCaseGuard } from 'test/common/checks/not-defendant-in-case-check';
 import { RejectAllOfClaimOption } from 'response/form/models/rejectAllOfClaim';
 import {

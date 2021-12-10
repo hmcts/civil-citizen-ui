@@ -10,10 +10,10 @@ import { Paths as DashboardPaths } from 'dashboard/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { checkAuthorizationGuards } from 'test/features/ccj/routes/checks/authorization-check';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 import { FeatureToggles } from 'utils/featureToggles';
 import {
   verifyRedirectForGetWhenAlreadyPaidInFull,

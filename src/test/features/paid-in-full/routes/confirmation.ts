@@ -7,8 +7,8 @@ import { checkAuthorizationGuards } from 'test/features/claim/routes/checks/auth
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { checkNotClaimantInCaseGuard } from './checks/not-claimant-in-case-check';
 import { Paths } from 'paid-in-full/paths';
 

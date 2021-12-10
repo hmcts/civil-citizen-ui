@@ -14,7 +14,7 @@ import { Availability } from 'directions-questionnaire/forms/models/availability
 import { SupportRequired } from 'directions-questionnaire/forms/models/supportRequired';
 import { WhyExpertIsNeeded } from 'directions-questionnaire/forms/models/whyExpertIsNeeded';
 import { Claim } from 'claims/models/claim';
-import claimStoreMock from '../../../http-mocks/claim-store';
+import { claimStoreServiceMock } from '../../../http-mocks/claim-store';
 import { ExceptionalCircumstances } from 'directions-questionnaire/forms/models/exceptionalCircumstances';
 
 describe('Details In case of hearing task', () => {
@@ -22,7 +22,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
 
     expect(DetailsInCaseOfHearingTask.isCompleted(draft, directionsQuestionnaireDraft, claim)).to.be.false;
@@ -32,7 +32,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.exceptionalCircumstances = new ExceptionalCircumstances().deserialize({
       exceptionalCircumstances: { option: 'no' },
@@ -46,7 +46,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimWithDefAsBusinessObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimWithDefAsBusinessObj, ...{ features: ['directionsQuestionnaire'] },
     });
     expect(DetailsInCaseOfHearingTask.isCompleted(draft, directionsQuestionnaireDraft, claim)).to.be.false;
   });
@@ -55,7 +55,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.exceptionalCircumstances = new ExceptionalCircumstances().deserialize({
       exceptionalCircumstances: { option: 'no' },
@@ -69,7 +69,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
 
@@ -86,7 +86,7 @@ describe('Details In case of hearing task', () => {
 
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
 
     expect(DetailsInCaseOfHearingTask.isCompleted(draft, directionsQuestionnaireDraft, claim)).to.be.false;
@@ -96,7 +96,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -108,7 +108,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -121,7 +121,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -135,7 +135,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -152,7 +152,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -169,7 +169,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -191,7 +191,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -206,7 +206,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -224,7 +224,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -246,7 +246,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -268,7 +268,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -288,7 +288,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -303,7 +303,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -321,7 +321,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -340,7 +340,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -364,7 +364,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -396,7 +396,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -430,7 +430,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -466,7 +466,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });
@@ -502,7 +502,7 @@ describe('Details In case of hearing task', () => {
     const draft = new ResponseDraft();
     const directionsQuestionnaireDraft = new DirectionsQuestionnaireDraft();
     const claim: Claim = new Claim().deserialize({
-      ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+      ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
     });
     directionsQuestionnaireDraft.hearingLocation.courtName = 'London';
     directionsQuestionnaireDraft.selfWitness = new SelfWitness().deserialize({ option: 'yes' });

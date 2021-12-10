@@ -7,7 +7,7 @@ import { PaidAmount } from 'ccj/form/models/paidAmount';
 import { Claim } from 'claims/models/claim';
 import { PaymentIntention } from 'claims/models/response/core/paymentIntention';
 import { Moment } from 'moment';
-import CCJHelper from 'main/common/helpers/ccjHelper';
+import { CCJHelper } from 'main/common/helpers/ccjHelper';
 import { PaymentOption } from 'claims/models/paymentOption';
 
 function renderView(form: Form<PaidAmount>, req: express.Request, res: express.Response): void {

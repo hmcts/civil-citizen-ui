@@ -30,7 +30,7 @@ import {
   payImmediatelyIntent,
 } from 'test/data/draft/claimantPaymentIntentionDraft';
 import { Claim } from 'claims/models/claim';
-import claimStoreMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { MediationDraft } from 'mediation/draft/mediationDraft';
 
 function createDraftClaimantResponseForFullRejection(): DraftClaimantResponse {
@@ -77,7 +77,7 @@ function createDraftClaimantResponseWithCourtDecisionType(
 }
 
 describe('claimant response converter', () => {
-  const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimObj);
+  const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimObj);
 
   const mediationDraft = new MediationDraft().deserialize({
     willYouTryMediation: {

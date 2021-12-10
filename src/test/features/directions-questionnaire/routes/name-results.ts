@@ -10,10 +10,10 @@ import { Paths as DashboardPaths } from 'dashboard/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
-import courtFinderMock from 'test/http-mocks/court-finder-client';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { courtFinderMock } from 'test/http-mocks/court-finder-client';
 import { checkAuthorizationGuards } from 'test/features/ccj/routes/checks/authorization-check';
 
 import { createClaim } from 'test/features/directions-questionnaire/routes/helper/dqRouteHelper';

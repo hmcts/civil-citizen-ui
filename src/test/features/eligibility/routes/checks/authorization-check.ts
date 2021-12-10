@@ -5,7 +5,7 @@ import mock from 'nock';
 
 import 'test/routes/expectations';
 
-import idamServiceMock from 'test/http-mocks/idam';
+import { idamServiceMock } from 'test/http-mocks/idam';
 
 const cookieName: string = config.get<string>('session.cookieName');
 

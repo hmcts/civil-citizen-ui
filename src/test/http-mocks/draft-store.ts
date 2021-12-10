@@ -1148,3 +1148,5 @@ export function rejectDelete(id: number = 100, reason: string = 'HTTP error'): m
     .delete(`/drafts/${id}`)
     .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
+
+export * as draftStoreServiceMock from './draft-store';

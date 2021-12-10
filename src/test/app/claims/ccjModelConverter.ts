@@ -6,7 +6,7 @@ import { CountyCourtJudgment } from 'claims/models/countyCourtJudgment';
 import { PaymentOption } from 'claims/models/paymentOption';
 import { CountyCourtJudgmentType } from 'claims/models/countyCourtJudgmentType';
 import { Claim } from 'claims/models/claim';
-import claimStoreMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { PaymentType } from 'shared/components/payment-intention/model/paymentOption';
 import { Moment } from 'moment';
 import { PaymentSchedule } from 'claims/models/response/core/paymentSchedule';
@@ -113,12 +113,12 @@ const fullAdmissionResponseWithInstallmentsAndPaymentDateElapsed = {
 };
 
 const sampleClaimWithFullAdmissionWithSetDateResponseObj = {
-  ...claimStoreMock.sampleClaimIssueObj,
+  ...claimStoreServiceMock.sampleClaimIssueObj,
   response: fullAdmissionResponseWithSetDateAndPaymentDateElapsed,
 };
 
 const sampleClaimWithFullAdmissionWithInstallmentsResponseObj = {
-  ...claimStoreMock.sampleClaimIssueObj,
+  ...claimStoreServiceMock.sampleClaimIssueObj,
   response: fullAdmissionResponseWithInstallmentsAndPaymentDateElapsed,
   settlement: {
     partyStatements: [
@@ -143,7 +143,7 @@ describe('CCJModelConverter - convert CCJDraft to CountyCourtJudgement', () => {
 
     it('should convert to CCJ - for a valid CCJ draft', () => {
       const draft: DraftCCJ = ccjDraft;
-      const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimIssueObj);
+      const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimIssueObj);
       const countyCourtJudgment: CountyCourtJudgment = CCJModelConverter.convertForRequest(draft, claim);
       expect(countyCourtJudgment).to.be.deep.equal(new CountyCourtJudgment(undefined, PaymentOption.IMMEDIATELY, undefined, undefined, undefined, undefined, CountyCourtJudgmentType.DEFAULT));
     });
@@ -177,7 +177,7 @@ describe('CCJModelConverter - convert CCJDraft to CountyCourtJudgement', () => {
 
 describe('CCJModelConverter - Unit test on ModelConverter', () => {
   const sampleClaimWithInstalments = {
-    ...claimStoreMock.sampleClaimIssueObj,
+    ...claimStoreServiceMock.sampleClaimIssueObj,
     response: fullAdmissionResponseWithInstallmentsAndPaymentDateElapsed,
     settlement: {
       partyStatements: [
@@ -199,7 +199,7 @@ describe('CCJModelConverter - Unit test on ModelConverter', () => {
     settlementReachedAt: new LocalDate(2010, 1, 1).toMoment(),
   };
   it('should get undefined CCJPaymentOption when response not present', () => {
-    const claim: Claim = new Claim().deserialize(claimStoreMock.sampleClaimIssueObj);
+    const claim: Claim = new Claim().deserialize(claimStoreServiceMock.sampleClaimIssueObj);
     const ccjPaymentOption: CCJPaymentOption = retrievePaymentOptionsFromClaim(claim);
     expect(ccjPaymentOption).to.be.undefined;
   });

@@ -7,9 +7,9 @@ import 'test/routes/expectations';
 
 import { checkAuthorizationGuards } from 'test/features/claimant-response/routes/checks/authorization-check';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import settlementAgreementServiceMock from 'test/http-mocks/settlement-agreement';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { settlementAgreementServiceMock } from 'test/http-mocks/settlement-agreement';
 import { Paths } from 'settlement-agreement/paths';
 import { app } from 'main/app';
 import { verifyRedirectForGetWhenAlreadyPaidInFull } from '../../../app/guards/alreadyPaidInFullGuard';

@@ -58,3 +58,5 @@ export function rejectRetrieveServiceToken(reason: string = 'HTTP error') {
     .post('/lease')
     .reply(HttpStatus.INTERNAL_SERVER_ERROR, reason);
 }
+
+export * as idamServiceMock from './idam';

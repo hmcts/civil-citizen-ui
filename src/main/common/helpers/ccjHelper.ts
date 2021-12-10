@@ -42,3 +42,5 @@ export function totalRemainingToPay(claim: Claim): number {
 
   return total;
 }
+
+export * as CCJHelper from './ccjHelper';

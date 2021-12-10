@@ -6,9 +6,9 @@ import request from 'supertest';
 import { Paths } from 'directions-questionnaire/paths';
 import { Paths as DashboardPaths } from 'dashboard/paths';
 
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { checkAuthorizationGuards } from 'test/routes/authorization-check';
 

@@ -10,7 +10,7 @@ import { Paths as ClaimPaths } from 'claim/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
+import { idamServiceMock } from 'test/http-mocks/idam';
 import {
   rejectRetrieveClaimByExternalId,
   rejectRetrieveDocument,

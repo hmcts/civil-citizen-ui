@@ -1,4 +1,4 @@
-import { register } from 'tsconfig-paths'
+import { register } from 'tsconfig-paths';
 
 import tsConfig = require('../../tsconfig.json');
 

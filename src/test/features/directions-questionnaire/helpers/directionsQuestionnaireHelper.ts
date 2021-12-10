@@ -1,4 +1,4 @@
-import RouteHelper from 'test/features/directions-questionnaire/routes/helper/dqRouteHelper';
+import { RouteHelper } from 'test/features/directions-questionnaire/routes/helper/dqRouteHelper';
 import { PartyType } from 'integration-test/data/party-type';
 import { expect } from 'chai';
 import { MadeBy } from 'claims/models/madeBy';

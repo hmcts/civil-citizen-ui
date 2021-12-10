@@ -10,10 +10,10 @@ import { Paths as ResponsePaths } from 'response/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import feesServiceMock from 'test/http-mocks/fees';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { feesServiceMock } from 'test/http-mocks/fees';
 import { checkNotDefendantInCaseGuard } from 'test/common/checks/not-defendant-in-case-check';
 import { verifyRedirectForGetWhenAlreadyPaidInFull } from 'test/app/guards/alreadyPaidInFullGuard';
 

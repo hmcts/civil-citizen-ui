@@ -7,8 +7,8 @@ import { Paths } from 'directions-questionnaire/paths';
 import { Paths as DashboardPaths } from 'dashboard/paths';
 
 import { app } from 'main/app';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import idamServiceMock from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
 
 import { checkAuthorizationGuards } from 'test/features/ccj/routes/checks/authorization-check';
 import { PartyType } from 'integration-test/data/party-type';
@@ -18,12 +18,12 @@ import { Interest } from 'claims/models/interest';
 import { InterestDateType } from 'common/interestDateType';
 import { InterestEndDateOption } from 'claim/form/models/interestEndDate';
 import { InterestDate } from 'claims/models/interestDate';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
-import RouteHelper from './helper/dqRouteHelper';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { RouteHelper } from './helper/dqRouteHelper';
 import { YesNoOption } from 'claims/models/response/core/yesNoOption';
 import { CourtLocationType } from 'claims/models/directions-questionnaire/hearingLocation';
 import { FeatureToggles } from 'utils/featureToggles';
-import courtFinderMock from 'test/http-mocks/court-finder-client';
+import { courtFinderMock } from 'test/http-mocks/court-finder-client';
 import {
   verifyRedirectForGetWhenAlreadyPaidInFull,
   verifyRedirectForPostWhenAlreadyPaidInFull,

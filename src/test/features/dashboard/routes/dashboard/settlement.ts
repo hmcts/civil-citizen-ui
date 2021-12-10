@@ -7,10 +7,10 @@ import 'test/routes/expectations';
 import { Paths } from 'dashboard/paths';
 
 import { app } from 'main/app';
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import draftStoreMock from 'test/http-mocks/draft-store';
-import data from 'test/data/entity/settlement';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { data } from 'test/data/entity/settlement';
 import { attachDefaultHooks } from 'test/routes/hooks';
 
 const cookieName: string = config.get<string>('session.cookieName');
@@ -155,7 +155,7 @@ describe('Settlement dashboard statuses dashboard', () => {
   testData().forEach(data => {
     context(data.status, () => {
       beforeEach(() => {
-        draftStoreMock.resolveFindNoDraftFound();
+        draftStoreServiceMock.resolveFindNoDraftFound();
         claimStoreServiceMock.resolveRetrievePaginationInfoEmptyList();
         claimStoreServiceMock.resolveRetrievePaginationInfoEmptyList();
       });

@@ -9,11 +9,11 @@ import { Paths as ResponsePaths } from 'response/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 
 import { checkNotDefendantInCaseGuard } from 'test/common/checks/not-defendant-in-case-check';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 import { EvidenceType } from 'forms/models/evidenceType';
 import { verifyRedirectForGetWhenAlreadyPaidInFull } from 'test/app/guards/alreadyPaidInFullGuard';
 

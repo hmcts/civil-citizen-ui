@@ -8,10 +8,10 @@ import { Paths } from 'dashboard/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { sampleClaimDraftObj } from 'test/http-mocks/draft-store';
-import data from 'test/data/entity/settlement';
+import { data } from 'test/data/entity/settlement';
 import { MomentFactory } from 'shared/momentFactory';
 
 const cookieName: string = config.get<string>('session.cookieName');

@@ -6,8 +6,8 @@ import 'test/routes/expectations';
 
 import { Paths as BreathingSpacePaths } from 'breathing-space/paths';
 import { app } from 'main/app';
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { checkAuthorizationGuards } from 'test/features/claim/routes/checks/authorization-check';
 

@@ -12,12 +12,12 @@ import { Paths as ClaimPaths } from 'claim/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
-import feesServiceMock from 'test/http-mocks/fees';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { feesServiceMock } from 'test/http-mocks/fees';
 import { SignatureType } from 'common/signatureType';
 import { YesNoOption } from 'models/yesNoOption';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import {
   claimantSoleTraderDetails,
   companyDetails,

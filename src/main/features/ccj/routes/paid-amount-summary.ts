@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { AbstractPaidAmountSummaryPage } from 'shared/components/ccj/paid-amount-summary';
-import CCJHelper from 'main/common/helpers/ccjHelper';
+import { CCJHelper } from 'main/common/helpers/ccjHelper';
 import { Paths, ccjPath } from 'features/ccj/paths';
 
 import { DraftCCJ } from 'ccj/draft/draftCCJ';

@@ -1,6 +1,6 @@
 import config from 'config';
-import { defaultClient, TelemetryClient, DistributedTracingModes, start, Configuration, setup, DistributedTracingModes } from 'applicationinsights';
-import { operationNameUUIDHider, errorLogger } from './telemetryProcessors';
+import { Configuration, DistributedTracingModes, TelemetryClient, defaultClient, setup, start } from 'applicationinsights';
+import { errorLogger, operationNameUUIDHider } from './telemetryProcessors';
 import { LoggerInstance } from 'winston';
 import { Logger } from '@hmcts/nodejs-logging';
 

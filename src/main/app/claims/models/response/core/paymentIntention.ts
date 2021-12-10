@@ -44,3 +44,5 @@ export class PaymentIntention {
     } as PaymentIntention;
   }
 }
+
+export * as domain from './paymentIntention';

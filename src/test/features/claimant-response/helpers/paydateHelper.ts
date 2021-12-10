@@ -9,7 +9,7 @@ import {
 import { Claim } from 'claims/models/claim';
 import { calculateMonthIncrement } from 'common/calculate-month-increment/calculateMonthIncrement';
 import moment from 'moment';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { MomentFactory } from 'shared/momentFactory';
 import { FullAdmissionResponse } from 'claims/models/response/fullAdmissionResponse';
 import { PartialAdmissionResponse } from 'claims/models/response/partialAdmissionResponse';

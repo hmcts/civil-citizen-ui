@@ -7,10 +7,10 @@ import { Paths as FirstContactPaths } from 'first-contact/paths';
 import request from 'supertest';
 
 import { app } from 'main/app';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 
-import idamServiceMock from 'test/http-mocks/idam';
+import { idamServiceMock } from 'test/http-mocks/idam';
 import 'test/routes/expectations';
 import sinon from 'sinon';
 import { attachDefaultHooks } from 'test/routes/hooks';

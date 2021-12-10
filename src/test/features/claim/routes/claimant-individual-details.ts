@@ -13,8 +13,8 @@ import { Paths as ClaimPaths } from 'claim/paths';
 import { Address } from 'forms/models/address';
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 
 const cookieName: string = config.get<string>('session.cookieName');
 const heading: string = 'Enter your details';

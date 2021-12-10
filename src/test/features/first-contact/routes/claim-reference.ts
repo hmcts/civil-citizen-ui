@@ -6,7 +6,7 @@ import { attachDefaultHooks } from 'test/routes/hooks';
 import 'test/routes/expectations';
 
 import { Paths as DefendantFirstContactPaths } from 'first-contact/paths';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 
 import { app } from 'main/app';
 

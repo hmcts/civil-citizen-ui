@@ -10,8 +10,8 @@ import { ErrorPaths, Paths } from 'first-contact/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { MomentFactory } from 'shared/momentFactory';
 import { EvidenceType } from 'forms/models/evidenceType';
 

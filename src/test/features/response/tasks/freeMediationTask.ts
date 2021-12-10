@@ -7,11 +7,11 @@ import { MediationDraft } from 'mediation/draft/mediationDraft';
 import { CanWeUse } from 'mediation/form/models/CanWeUse';
 import { CanWeUseCompany } from 'mediation/form/models/CanWeUseCompany';
 import { Claim } from 'claims/models/claim';
-import claimStoreMock from '../../../http-mocks/claim-store';
+import { claimStoreServiceMock } from '../../../http-mocks/claim-store';
 
 describe('Free mediation task', () => {
   const claim: Claim = new Claim().deserialize({
-    ...claimStoreMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
+    ...claimStoreServiceMock.sampleClaimObj, ...{ features: ['directionsQuestionnaire'] },
   });
 
   it('should not be completed when free mediation object is undefined', async () => {

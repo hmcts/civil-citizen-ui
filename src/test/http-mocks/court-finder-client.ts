@@ -83,3 +83,5 @@ export function rejectName(): mock.Scope {
     .get(searchNamePath)
     .reply(HttpStatus.INTERNAL_SERVER_ERROR);
 }
+
+export * as courtFinderMock from './court-finder-client';

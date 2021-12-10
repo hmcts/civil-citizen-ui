@@ -5,8 +5,8 @@ import request from 'supertest';
 
 import { Paths } from 'eligibility/paths';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 
 const cookieName: string = config.get<string>('session.cookieName');
 

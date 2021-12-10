@@ -90,3 +90,5 @@ export function resolveCountersignSettlementAgreement() {
     .post(new RegExp(`/${externalIdPattern}/settlement-agreement/countersign`))
     .reply(HttpStatus.CREATED);
 }
+
+export * as settlementAgreementServiceMock from './settlement-agreement';

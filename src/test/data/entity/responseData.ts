@@ -572,3 +572,5 @@ export const fullDefenceWithStatesLessThanClaimAmountWithMediation = {
   responseType: 'PART_ADMISSION',
   freeMediation: 'yes',
 };
+
+export * as responseData from './responseData';

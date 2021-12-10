@@ -9,7 +9,7 @@ import { TaskListBuilder } from 'response/helpers/taskListBuilder';
 import { FullAdmission, PartialAdmission, ResponseDraft } from 'response/draft/responseDraft';
 import { MediationDraft } from 'mediation/draft/mediationDraft';
 import { TaskList } from 'drafts/tasks/taskList';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { Claim } from 'claims/models/claim';
 import {
   defenceWithDisputeDraft,

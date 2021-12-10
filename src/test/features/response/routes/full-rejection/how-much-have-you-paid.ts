@@ -9,9 +9,9 @@ import { FullRejectionPaths, Paths } from 'response/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 import { checkAuthorizationGuards } from 'test/common/checks/authorization-check';
 import { checkNotDefendantInCaseGuard } from 'test/common/checks/not-defendant-in-case-check';
 import {

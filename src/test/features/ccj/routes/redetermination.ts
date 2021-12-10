@@ -9,8 +9,8 @@ import { Paths } from 'ccj/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { checkAuthorizationGuards } from 'test/features/ccj/routes/checks/authorization-check';
 import { checkNotClaimantInCaseGuard } from 'test/features/ccj/routes/checks/not-claimant-in-case-check';
 import { MomentFactory } from 'shared/momentFactory';

@@ -5,9 +5,9 @@ import { attachDefaultHooks } from 'test/routes/hooks';
 import 'test/routes/expectations';
 import { Paths } from 'response/paths';
 import { app } from 'main/app';
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import randomstring from 'randomstring';
 
 import { checkAuthorizationGuards } from 'test/common/checks/authorization-check';

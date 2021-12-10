@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { paginationData } from '../routes/index';
 import { formPaginationToDisplay } from 'dashboard/helpers/paginationBuilder';
 import { ActorType } from 'claims/models/claim-states/actor-type';
-import samplePaginationObject from 'test/data/entity/pagination';
+import { samplePaginationObject } from 'test/data/entity/pagination';
 
 const defaultPage = 1;
 const selectedPage = 2;

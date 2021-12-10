@@ -1,6 +1,6 @@
 import { CourtDecisionHelper } from 'shared/helpers/CourtDecisionHelper';
 import { Claim } from 'claims/models/claim';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { DraftClaimantResponse } from 'claimant-response/draft/draftClaimantResponse';
 import { expect } from 'chai';
 import { DecisionType } from 'common/court-calculations/decisionType';

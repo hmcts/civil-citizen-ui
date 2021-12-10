@@ -5,12 +5,12 @@ import 'test/routes/expectations';
 import { Paths as BreathingSpacePaths, Paths } from 'breathing-space/paths';
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
+import { idamServiceMock } from 'test/http-mocks/idam';
 import { Moment } from 'moment';
 import { MomentFactory } from 'shared/momentFactory';
 
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { checkAuthorizationGuards } from 'test/features/claim/routes/checks/authorization-check';
 

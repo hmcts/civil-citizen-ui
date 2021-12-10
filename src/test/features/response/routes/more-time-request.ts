@@ -10,9 +10,9 @@ import { checkAlreadySubmittedGuard } from 'test/common/checks/already-submitted
 import { Paths as ResponsePaths } from 'response/paths';
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 
 import { MoreTimeNeededOption } from 'response/form/models/moreTimeNeeded';
 import { checkCountyCourtJudgmentRequestedGuard } from 'test/common/checks/ccj-requested-check';

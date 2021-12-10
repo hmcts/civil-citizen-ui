@@ -6,12 +6,12 @@ import { Paths as ClaimPaths, Paths } from 'claim/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 
-import feesServiceMock from 'test/http-mocks/fees';
-import payServiceMock from 'test/http-mocks/pay';
+import { feesServiceMock } from 'test/http-mocks/fees';
+import { payServiceMock } from 'test/http-mocks/pay';
 
 import { attachDefaultHooks } from 'test/routes/hooks';
 import { checkAuthorizationGuards } from 'test/features/claim/routes/checks/authorization-check';

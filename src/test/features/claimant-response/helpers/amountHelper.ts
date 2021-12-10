@@ -3,7 +3,7 @@
 import { expect } from 'chai';
 import { DraftClaimantResponse } from 'claimant-response/draft/draftClaimantResponse';
 import { Claim } from 'claims/models/claim';
-import claimStoreServiceMock from '../../../http-mocks/claim-store';
+import { claimStoreServiceMock } from '../../../http-mocks/claim-store';
 import { AmountHelper } from 'claimant-response/helpers/amountHelper';
 import { PartialAdmissionResponse } from 'claims/models/response/partialAdmissionResponse';
 

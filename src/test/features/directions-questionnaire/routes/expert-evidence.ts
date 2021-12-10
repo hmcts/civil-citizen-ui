@@ -6,10 +6,10 @@ import { attachDefaultHooks } from 'test/routes/hooks';
 import { app } from 'main/app';
 import { checkAuthorizationGuards } from 'test/routes/authorization-check';
 import { Paths } from 'directions-questionnaire/paths';
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { Paths as DashboardPaths } from 'dashboard/paths';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 import { YesNoOption } from 'models/yesNoOption';
 import { FeatureToggles } from 'utils/featureToggles';
 import {

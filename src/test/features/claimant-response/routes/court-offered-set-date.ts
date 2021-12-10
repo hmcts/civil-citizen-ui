@@ -9,9 +9,9 @@ import { Paths as ClaimantResponsePaths } from 'claimant-response/paths';
 
 import { app } from 'main/app';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 import { checkAuthorizationGuards } from 'test/features/claimant-response/routes/checks/authorization-check';
 import { checkNotClaimantInCaseGuard } from 'test/features/claimant-response/routes/checks/not-claimant-in-case-check';
 import { MomentFactory } from 'shared/momentFactory';

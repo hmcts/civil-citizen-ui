@@ -4,7 +4,7 @@ import { FreeMediationUtil } from 'shared/utils/freeMediationUtil';
 import { FreeMediationOption } from 'forms/models/freeMediation';
 import { YesNoOption } from 'claims/models/response/core/yesNoOption';
 import { MediationDraft } from 'mediation/draft/mediationDraft';
-import claimStoreServiceMock from '../../http-mocks/claim-store';
+import { claimStoreServiceMock } from '../../http-mocks/claim-store';
 import { Claim } from 'claims/models/claim';
 import { ResponseDraft } from 'response/draft/responseDraft';
 import { defenceWithDisputeDraft } from 'test/data/draft/responseDraft';

@@ -8,8 +8,8 @@ import 'test/routes/expectations';
 import { checkAuthorizationGuards } from 'test/features/claimant-response/routes/checks/authorization-check';
 import { checkNotClaimantInCaseGuard } from 'test/features/claimant-response/routes/checks/not-claimant-in-case-check';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import claimStoreServiceMock from 'test/http-mocks/claim-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import {
   baseAcceptationClaimantResponseData,
   baseDeterminationAcceptationClaimantResponseData,

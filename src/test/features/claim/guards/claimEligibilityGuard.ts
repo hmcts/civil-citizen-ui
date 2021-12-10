@@ -16,8 +16,8 @@ import { User } from 'idam/user';
 import { Draft } from '@hmcts/draft-store-client';
 import { DraftClaim } from 'drafts/models/draftClaim';
 
-import idamServiceMock from 'test/http-mocks/idam';
-import draftStoreServiceMock from 'test/http-mocks/draft-store';
+import { idamServiceMock } from 'test/http-mocks/idam';
+import { draftStoreServiceMock } from 'test/http-mocks/draft-store';
 
 import { attachDefaultHooks } from 'test/hooks';
 
