@@ -12,7 +12,7 @@ export const immediatelyPaymentIntentionData = {
 
 export const bySetDatePaymentIntentionData = {
   paymentOption: PaymentOption.BY_SPECIFIED_DATE,
-  paymentDate: '2050-12-31T00:00:00.000',
+  paymentDate: '2050-12-31T00:00:00.000Z',
 };
 
 const baseInstalmentPaymentIntentionData = {

@@ -2,8 +2,8 @@ import { PaymentSchedule } from 'claims/models/response/core/paymentSchedule';
 
 const baseRepaymentPlanData = {
   instalmentAmount: 100,
-  firstPaymentDate: '2050-12-31T00:00:00.000',
-  completionDate: '2052-12-31T00:00:00.000',
+  firstPaymentDate: '2050-12-31T00:00:00.000Z',
+  completionDate: '2052-12-31T00:00:00.000Z',
   paymentLength: '2 years',
 };
 
