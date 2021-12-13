@@ -17,7 +17,7 @@ export class SoleTraderDetails extends SplitNamedPartyDetails {
   }
 
   static fromObject(input?: any): SoleTraderDetails {
-    if (input === null) {
+    if (input === null || input === undefined) {
       return input;
     }
     const deserialized = new SoleTraderDetails();

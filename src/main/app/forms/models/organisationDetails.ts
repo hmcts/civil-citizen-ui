@@ -24,7 +24,7 @@ export class OrganisationDetails extends PartyDetails {
   }
 
   static fromObject(input?: any): OrganisationDetails {
-    if (input === null) {
+    if (input === null || input === undefined) {
       return input;
     }
     const deserialized = new OrganisationDetails();

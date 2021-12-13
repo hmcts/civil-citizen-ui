@@ -58,7 +58,7 @@ export class PartyDetails {
   }
 
   static fromObject(input?: any): PartyDetails {
-    if (input === null) {
+    if (input === null || input === undefined) {
       return input;
     }
     const deserialized: PartyDetails = new PartyDetails(
