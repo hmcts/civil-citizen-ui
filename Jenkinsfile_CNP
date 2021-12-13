@@ -2,34 +2,95 @@
 
 @Library("Infrastructure")
 
-def type = "nodejs"
-def product = "civil"
-def component = "citizen-ui"
+String product = "civil"
+String component = "citizen-ui"
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
-withPipeline(type, product, component) {
-  enableAksStagingDeployment()
-  disableLegacyDeployment()
+def secrets = [
+  'cmc-${env}':
+    [
+      secret('citizen-oauth-client-secret', 'OAUTH_CLIENT_SECRET'),
+      secret('smoke-test-citizen-username', 'SMOKE_TEST_CITIZEN_USERNAME'),
+      secret('smoke-test-user-password', 'SMOKE_TEST_USER_PASSWORD')
+    ],
+  'ccd-${env}': [
+    secret('ccd-data-s2s-secret', 'DATA_STORE_S2S_KEY'),
+    secret('ccd-definition-s2s-secret', 'DEFINITION_STORE_S2S_KEY'),
+    secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
+    secret('idam-data-store-client-secret','IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET'),
+    secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
+    secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD')
+  ]
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+  [ $class: 'AzureKeyVaultSecret',
+    secretType: 'Secret',
+    name: secretName,
+    version: '',
+    envVariable: envVar
+  ]
+}
+
+def String generateClaimStoreUrl(String testUrl) {
+  String claimStoreUrl = 'http://cmc-claim-store-aat.service.core-compute-aat.internal'
+  String startOfClaimStoreServiceName = 'claim-store-'
+  if (testUrl?.trim()) {
+    claimStoreUrl = 'http://' + startOfClaimStoreServiceName + testUrl.minus('https://')
+    println('generateClaimStoreUrl -> ' + claimStoreUrl)
+  }
+  return claimStoreUrl
+}
+
+// Vars needed for AKS testing - keep values in sync with: charts/cmc-citizen-frontend/...
+// THESE WILL BE OVERWRITTEN IN ASE DEPLOYMENTS WITH TERRAFORM OUTPUTS.TF
+// THESE CAN BE PICKED UP IN INTEGRATION-TEST CODE DIRECTLY
+env.IDAM_URL = 'https://idam-api.aat.platform.hmcts.net'
+env.CLAIM_STORE_URL = 'http://cmc-claim-store-aat.service.core-compute-aat.internal'
+env.FEATURE_ADMISSIONS = 'true'
+env.FEATURE_DIRECTIONS_QUESTIONNAIRE = 'true'
+env.FEATURE_TESTING_SUPPORT = 'true'
+env.FEATURE_INVERSION_OF_CONTROL = 'true'
+env.FEATURE_PCQ = 'true'
+env.FEATURE_BREATHING_SPACE = 'true'
+// add any others needed to selective testing...
+
+String notificationsChannel = '#cmc-tech-notification'
+
+def branchesToSync = ['demo', 'perftest', 'ithc']
+
+
+withPipeline("nodejs", product, component) {
 
   after('build') {
     yarnBuilder.yarn('setup')
   }
 
-  after('smoketest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
+  before('smoketest:preview'){
+    onPR {
+      log.info env.TEST_URL
+      env.CLAIM_STORE_URL = generateClaimStoreUrl(env.TEST_URL)
+    }
   }
 
-  after('smoketest:aat') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
+  before('functionalTest:preview'){
+    onPR {
+      log.info env.TEST_URL
+      env.CLAIM_STORE_URL = generateClaimStoreUrl(env.TEST_URL)
+    }
   }
 
-  after('functionalTest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+  after('test') {
+    onMaster {
+      yarnBuilder.yarn('tests:a11y')
+    }
   }
 
-  after('functionalTest:aat') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-  }
+  enableAksStagingDeployment()
+  disableLegacyDeployment()
 
+  loadVaultSecrets(secrets)
+  enableSlackNotifications(notificationsChannel)
+  syncBranchesWithMaster(branchesToSync)
 }
