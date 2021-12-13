@@ -13,7 +13,7 @@ export class PartPaymentReceived {
   }
 
   static fromObject(input?: any): PartPaymentReceived {
-    if (input === null) {
+    if (input === null || input === undefined) {
       return input;
     }
 

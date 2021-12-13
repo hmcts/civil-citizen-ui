@@ -28,7 +28,7 @@ export class BreathingType implements CompletableTask {
   }
 
   static fromObject(value?: any): BreathingType {
-    if (value === null) {
+    if (value === null || value === undefined) {
       return value;
     }
 

@@ -12,7 +12,7 @@ export class AcceptCourtOffer {
   }
 
   static fromObject(input?: any): AcceptCourtOffer {
-    if (input === null) {
+    if (input === null || input === undefined) {
       return input;
     }
     return new AcceptCourtOffer((YesNoOption.fromObject(input.accept)));

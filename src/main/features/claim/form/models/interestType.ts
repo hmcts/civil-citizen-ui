@@ -28,7 +28,7 @@ export class InterestType implements CompletableTask {
   }
 
   static fromObject(value?: any): InterestType {
-    if (value === null) {
+    if (value === null || value === undefined) {
       return value;
     }
 
