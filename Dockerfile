@@ -1,7 +1,7 @@
 # ---- Base image ----
 FROM hmctspublic.azurecr.io/base/node:14-alpine as base
 RUN yarn config set proxy "$http_proxy" && yarn config set https-proxy "$https_proxy"
-COPY package.json yarn.lock ./
+COPY --chown=hmcts:hmcts package.json yarn.lock ./
 RUN yarn install --production \
   && yarn cache clean
 
