@@ -80,7 +80,7 @@
     "jest-junit": "^13.0.0",
     "mini-css-extract-plugin": "^1.6.2",
     "nock": "^13.2.1",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "nodemon": "^2.0.15",
     "pa11y": "^6.0.1",
     "request": "^2.88.0",
