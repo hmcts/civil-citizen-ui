@@ -7,6 +7,8 @@
 !package.json
 !yarn.lock
 
+!gulpfile.js
+!server.js
 !tsconfig.json
 !webpack/**
 !src/main/**
