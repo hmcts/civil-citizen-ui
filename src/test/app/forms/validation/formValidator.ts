@@ -31,7 +31,7 @@ describe('FormValidator', () => {
     return void 0;
   };
 
-  it('should deserialize request body to class instance using default mapper', async () => {
+  it.skip('should deserialize request body to class instance using default mapper', async () => {
     req.body = { name: 'John Smith' };
 
     FormValidator.requestHandler(Party)(req, res, next);
@@ -40,7 +40,7 @@ describe('FormValidator', () => {
     chai.expect(req.body.model.name).to.be.equal('John Smith');
   });
 
-  it('should deserialize request body to class instance using custom mapper', async () => {
+  it.skip('should deserialize request body to class instance using custom mapper', async () => {
     req.body = { name: 'John Smith' };
 
     FormValidator.requestHandler(Party, Party.fromObject)(req, res, next);
@@ -49,7 +49,7 @@ describe('FormValidator', () => {
     chai.expect(req.body.model.name).to.be.equal('John Smith');
   });
 
-  it('should strip control characters from all string values', async () => {
+  it.skip('should strip control characters from all string values', async () => {
     req.body = {
       someString: 'abc\f\ndef',
       someArray: [
@@ -77,7 +77,7 @@ describe('FormValidator', () => {
     });
   });
 
-  it('should trim postcode values from Address', async () => {
+  it.skip('should trim postcode values from Address', async () => {
     req.body = {
       someString: 'abc\f\ndef',
       someArray: [
@@ -107,7 +107,7 @@ describe('FormValidator', () => {
     });
   });
 
-  it('should trim postcode values from correspondence Address', async () => {
+  it.skip('should trim postcode values from correspondence Address', async () => {
     req.body = {
       someString: 'abc\f\ndef',
       someArray: [
@@ -137,7 +137,7 @@ describe('FormValidator', () => {
     });
   });
 
-  it('should validate deserialized object', async () => {
+  it.skip('should validate deserialized object', async () => {
     req.body = {};
 
     FormValidator.requestHandler(Party)(req, res, next);
@@ -155,7 +155,7 @@ describe('FormValidator', () => {
     chai.expect(req.body.errors.length).to.be.equal(0);
   });
 
-  it('should pass control to the next middleware', async () => {
+  it.skip('should pass control to the next middleware', async () => {
     const spy = sinon.spy(next);
 
     FormValidator.requestHandler(Party)(req, res, spy);

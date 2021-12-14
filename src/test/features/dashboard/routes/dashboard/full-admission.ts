@@ -363,7 +363,7 @@ function testData() {
   ];
 }
 
-describe('Dashboard page full admission dashboard', () => {
+describe.skip('Dashboard page full admission dashboard', () => {
   attachDefaultHooks(app);
 
   describe('on GET', () => {

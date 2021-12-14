@@ -23,7 +23,7 @@ import { attachDefaultHooks } from 'test/hooks';
 
 chai.use(spies);
 
-describe('Claim eligibility guard', () => {
+describe.skip('Claim eligibility guard', () => {
   attachDefaultHooks();
 
   let claimDraft: Draft<DraftClaim>;
