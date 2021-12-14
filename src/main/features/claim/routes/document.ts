@@ -15,9 +15,8 @@ import { ScannedDocumentsClient } from 'documents/scannedDocumentsClient';
 const documentsClient: DocumentsClient = new DocumentsClient();
 const scannedDocumentsClient: ScannedDocumentsClient = new ScannedDocumentsClient();
 
-function getDocumentPath(path: string): string {
-  // eslint-disable-next-line no-useless-escape
-  return path.match('[^\/]+$')[0];
+export function getDocumentPath(path: string): string {
+  return path.split('/').pop();
 }
 
 /* tslint:disable:no-default-export */
