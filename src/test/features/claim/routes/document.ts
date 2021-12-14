@@ -11,6 +11,7 @@ import { app } from 'main/app';
 import { idamServiceMock } from 'test/http-mocks/idam';
 import { claimStoreServiceMock } from 'test/http-mocks/claim-store';
 import { Paths } from 'claim/paths';
+import { getDocumentPath } from "claim/routes/document";
 
 const cookieName: string = config.get<string>('session.cookieName');
 
@@ -38,6 +39,17 @@ const claimDocuments = {
     ],
   },
 };
+
+const pathTestData = [
+  {
+    path: "path/to/file",
+    expectedLastElement: "file",
+  },
+  {
+    path: "path_to/file.ext",
+    expectedLastElement: "file.ext",
+  },
+];
 
 describe('Document Download', () => {
   attachDefaultHooks(app);
@@ -81,5 +93,15 @@ describe('Document Download', () => {
           .expect(res => expect(res).to.be.successful);
       });
     });
+  });
+
+  describe('for path variable input', () => {
+
+    pathTestData.forEach(test =>
+      it(`should extract last element of '${test.path}'`, () => {
+        const actualLastElement: string = getDocumentPath(test.path);
+        expect(actualLastElement).to.be.deep.equal(test.expectedLastElement);
+      }),
+    );
   });
 });
