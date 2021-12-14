@@ -109,7 +109,7 @@ export class Feature {
       DraftMiddleware.requestHandler(new DraftService(), 'mediation', 100, (value: any): MediationDraft => {
         return new MediationDraft().deserialize(value);
       }));
-    app.all(/^\/case\/.+\/response\/task-list|check-and-send|incomplete-submission.*$/,
+    app.all(/^\/case\/.+\/response\/task-list|check-and-send|incomplete-submission.*$/,//NOSONAR
       DraftMiddleware.requestHandler(new DraftService(), 'directionsQuestionnaire', 100, (value: any): DirectionsQuestionnaireDraft => {
         return new DirectionsQuestionnaireDraft().deserialize(value);
       }));
