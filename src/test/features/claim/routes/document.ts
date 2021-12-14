@@ -100,7 +100,6 @@ describe('Document Download', () => {
     pathTestData.forEach(test =>
       it(`should extract last element of '${test.path}'`, () => {
         const actualLastElement: string = getDocumentPath(test.path);
-        console.log(actualLastElement)
         expect(actualLastElement).to.be.deep.equal(test.expectedLastElement);
       }),
     );
