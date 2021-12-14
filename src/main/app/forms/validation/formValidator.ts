@@ -60,7 +60,7 @@ function removeIllegalCharacters(value) {
     // Used the same criteria for excluding characters as in pdf service:
     // https://github.com/hmcts/cmc-pdf-service/commit/0d329cdf316c4170505cea0b1d55fc9e955ef9ed#diff-33006e1cd375862451ac613046341e82R34
     // eslint-disable-next-line no-control-regex
-    return value.replace(/[^\u0009\u000A\u000D\u0020-\uD7FF\uE000-\uFFFD]/g, '');
+    return value.replace(/[^\u0009\u000A\u000D\u0020-\uD7FF\uE000-\uFFFD]/g, ''); //NOSONAR
   }
 
   if (typeof value === 'object') {
