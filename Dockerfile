@@ -8,7 +8,9 @@ RUN yarn install --production \
 # ---- Build image ----
 FROM base as build
 RUN PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
-COPY --chown=hmcts:hmcts tsconfig.json $WORKDIR/gulpfile.js server.js ./
+COPY --chown=hmcts:hmcts tsconfig.json ./
+COPY --chown=hmcts:hmcts gulpfile.js ./
+COPY --chown=hmcts:hmcts server.js ./
 COPY --chown=hmcts:hmcts src/main ./src/main
 RUN yarn setup
 
