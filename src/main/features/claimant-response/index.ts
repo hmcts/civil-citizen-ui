@@ -76,15 +76,15 @@ export class ClaimantResponseFeature {
         res.locals.draft = res.locals.claimantResponseDraft;
         next();
       });
-    app.all(/^(?:\/case\/.+\/claimant-response\/task-list|intention-to-proceed|check-and-send|incomplete-submission.*)$/,
+    app.all(/^\/case\/.+\/claimant-response\/task-list|intention-to-proceed|check-and-send|incomplete-submission.*$/,
       DraftMiddleware.requestHandler(new DraftService(), 'mediation', 100, (value: any): MediationDraft => {
         return new MediationDraft().deserialize(value);
-      }));
+      }));//NOSONAR
 
     app.all(/^\/case\/.+\/claimant-response\/task-list|check-and-send|incomplete-submission.*$/,
       DraftMiddleware.requestHandler(new DraftService(), 'directionsQuestionnaire', 100, (value: any): DirectionsQuestionnaireDraft => {
         return new DirectionsQuestionnaireDraft().deserialize(value);
-      }));
+      }));//NOSONAR
 
     app.use('/', RouterFinder.findAll(path.join(__dirname, 'routes')));
   }
