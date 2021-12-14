@@ -44,7 +44,7 @@ describe('Defendant response: more time needed page', () => {
 
       context('when response not submitted', () => {
         describe('should render editable page', async () => {
-          it('when no option selected', async () => {
+          it.skip('when no option selected', async () => {
             draftStoreServiceMock.resolveFind('response', { moreTimeNeeded: { option: undefined } });
             draftStoreServiceMock.resolveFind('mediation');
             claimStoreServiceMock.resolveRetrieveClaimByExternalId();
@@ -57,7 +57,7 @@ describe('Defendant response: more time needed page', () => {
                 'You’ll have to respond before 4pm on 1 January 2020'));
           });
 
-          it.skip('when answer is "no"', async () => {
+          it('when answer is "no"', async () => {
             draftStoreServiceMock.resolveFind('response', { moreTimeNeeded: { option: MoreTimeNeededOption.NO } });
             draftStoreServiceMock.resolveFind('mediation');
             claimStoreServiceMock.resolveRetrieveClaimByExternalId();
@@ -70,7 +70,7 @@ describe('Defendant response: more time needed page', () => {
                 'You’ll have to respond before 4pm on 1 January 2020'));
           });
 
-          it.skip('when deadline calculation fails', async () => {
+          it('when deadline calculation fails', async () => {
             draftStoreServiceMock.resolveFind('response');
             draftStoreServiceMock.resolveFind('mediation');
             claimStoreServiceMock.resolveRetrieveClaimByExternalId();
