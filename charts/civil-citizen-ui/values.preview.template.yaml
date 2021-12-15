@@ -38,8 +38,8 @@ nodejs:
     maxReplicas: 5    # Required setting
     targetCPUUtilizationPercentage: 80 # Default is 80% target CPU utilization
   environment:
-    REFORM_TEAM: cmc
-    REFORM_SERVICE_NAME: citizen-frontend
+    REFORM_TEAM: civil
+    REFORM_SERVICE_NAME: citizen-ui
     LOG_LEVEL: DEBUG
     HTTP_TIMEOUT: 60000
     FEATURE_TOGGLES_API_URL: http://${SERVICE_NAME}-ftr-tgl
