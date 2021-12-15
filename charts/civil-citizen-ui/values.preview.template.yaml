@@ -1,7 +1,7 @@
 postgresql:
   enabled: true
   image:
-    tag: '11.3.0'
+    tag: '10.13.14'
   resources:
     requests:
       cpu: 25m
