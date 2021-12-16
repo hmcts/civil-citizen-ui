@@ -11,7 +11,7 @@ nodejs:
   devcpuLimits: 2500m
   readinessDelay: 130  # claim-store will start much slower
   livenessDelay: 130  # claim-store will start much slower
-  aadIdentityName: money-claims
+  aadIdentityName: civil
   autoscaling:        # Default is false
     enabled: true
     maxReplicas: 5    # Required setting
