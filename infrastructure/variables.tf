@@ -6,7 +6,7 @@ variable "raw_product" {
 }
 
 variable "microservice" {
-  default = "citizen-frontend"
+  default = "citizen-ui"
 }
 
 variable "location" {
