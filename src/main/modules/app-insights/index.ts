@@ -23,6 +23,7 @@ export class AppInsights {
   }
 
   setup(): typeof Configuration {
+    // eslint-disable-next-line mocha/no-top-level-hooks,mocha/no-hooks-for-single-case
     return setup(this.instrumentationKey)
       .setDistributedTracingMode(DistributedTracingModes.AI_AND_W3C)
       .setSendLiveMetrics(true)
