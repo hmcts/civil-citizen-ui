@@ -1,7 +1,7 @@
 import path from 'path';
 import i18next from 'i18next';
 import postProcessor from 'i18next-sprintf-postprocessor';
-import middleware from 'i18next-express-middleware';
+import middleware from 'i18next-http-middleware';
 import express from 'express';
 
 import { Backend } from './backend';
