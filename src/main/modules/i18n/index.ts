@@ -30,7 +30,7 @@ export class I18Next {
         interpolation: {
           escapeValue: false, // Escaping is already handled by Nunjucks
         },
-        whitelist: ['en', 'cy'],
+        supportedLngs: ['en', 'cy'],
         fallbackLng: 'en',
         nsSeparator: false,
         keySeparator: false,
