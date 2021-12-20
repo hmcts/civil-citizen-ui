@@ -1,5 +1,5 @@
 import config from 'config';
-import uuid from 'uuid';
+import { v4 as uuid } from 'uuid';
 import Cookies from 'cookies';
 import express from 'express';
 import { buildURL } from 'utils/callbackBuilder';
