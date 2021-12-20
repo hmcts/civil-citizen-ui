@@ -1,5 +1,5 @@
 import { readFile } from 'fs';
-import converter from 'i18next-conv';
+import { gettextToI18next } from 'i18next-conv';
 
 /**
  * A gettext backend for i18next framework
@@ -45,8 +45,7 @@ export class Backend {
     readFile(translationFile, (err, data) => {
       if (err) {return callback(err, null);}
 
-      converter
-        .gettextToI18next(language, data)
+      gettextToI18next(language, data)
         .then(translation => callback(null, JSON.parse(translation)))
         .catch(error => callback(error, null));
     });
