@@ -22,7 +22,7 @@ class ServiceAuthRequest {
 export class IdamClient {
 
   static retrieveServiceToken(): Promise<ServiceAuthToken> {
-    const oneTimePassword = otp({ secret: totpSecret }).totp();
+    const oneTimePassword = new otp({ secret: totpSecret }).totp(1);
 
     return request.post({
       uri: `${s2sUrl}/lease`,
