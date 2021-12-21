@@ -1,6 +1,5 @@
 import config from 'config';
-import OTP from 'otp';
-
+import otp from 'totp-generator';
 import { request } from 'client/request';
 import { User } from 'idam/user';
 import { ServiceAuthToken } from 'idam/serviceAuthToken';
@@ -22,7 +21,8 @@ class ServiceAuthRequest {
 export class IdamClient {
 
   static retrieveServiceToken(): Promise<ServiceAuthToken> {
-    const oneTimePassword = new OTP({ secret: totpSecret }).totp(1);
+    //const oneTimePassword = new OTP({ secret: totpSecret }).totp(Date.now());
+    const oneTimePassword =  otp(totpSecret).toString();
 
     return request.post({
       uri: `${s2sUrl}/lease`,
