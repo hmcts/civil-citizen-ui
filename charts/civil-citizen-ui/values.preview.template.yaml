@@ -25,7 +25,7 @@ nodejs:
   ingressHost: ${SERVICE_FQDN}
   readinessDelay: 130  # claim-store will start much slower
   livenessDelay: 130  # claim-store will start much slower
-  memoryRequests: 512i
+  memoryRequests: 512Mi
   cpuRequests: 1000m
   memoryLimits: 1024Mi
   cpuLimits: 2500m
