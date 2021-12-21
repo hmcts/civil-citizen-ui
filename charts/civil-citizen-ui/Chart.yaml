@@ -17,3 +17,9 @@ dependencies:
     version: 2.2.7
     repository: '@hmctspublic'
     condition: idam-pr.enabled
+
+  - name: cmc-claim-store
+    version: 4.1.32
+    repository: '@hmctspublic'
+    condition: cmc-claim-store.enabled
+
