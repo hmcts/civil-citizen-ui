@@ -23,3 +23,13 @@ dependencies:
     repository: '@hmctspublic'
     condition: cmc-claim-store.enabled
 
+  - name: postgresql
+    version: 10.4.3
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+
+  - name: ccd
+    version: 6.0.0
+    repository: '@hmctspublic'
+    condition: ccd.enabled
+
