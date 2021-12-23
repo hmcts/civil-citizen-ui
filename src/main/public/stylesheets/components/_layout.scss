@@ -1,7 +1,7 @@
 .column-three-quarters {
-  @include grid-column(3 / 4);
+  @include grid-column(3 * 0.25);
 }
 
 .column-four-fifths {
-  @include grid-column(4.5 / 5);
+  @include grid-column(4.5 * 0.2);
 }

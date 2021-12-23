@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const nodemon = require('gulp-nodemon');
 const plumber = require('gulp-plumber');
 const livereload = require('gulp-livereload');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const path = require('path');
 const replace = require('gulp-replace');
 const rename = require('gulp-rename');
@@ -165,7 +165,7 @@ function copyClientPolyfills () {
     .pipe(rename('classlist-polyfill.js'))
     .pipe(gulp.dest(`${assetsDirectory}/js/lib/`));
 
-  gulp.src('./node_modules/string.prototype.startswith/startswith.js')
+  gulp.src('./node_modules/string.prototype.startswith/index.js')
     .pipe(rename('startswith-polyfill.js'))
     .pipe(gulp.dest(`${assetsDirectory}/js/lib/`));
 }
