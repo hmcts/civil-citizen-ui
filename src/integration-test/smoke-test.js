@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const { expect } = require('jest');
 const request = require('supertest');
 
 const { app } = require('../main/app');
@@ -10,16 +10,8 @@ describe('Dummy Smoke test - Home page', () => {
       await request(app)
         .get('/')
         .expect((res) => {
-          expect(res.status).to.equal(200);
-          expect(res.text).to.contain('Default page template');
-        });
-    });
-    test('should return cy sample home page', async () => {
-      await request(app)
-        .get('/?lang=cy')
-        .expect((res) => {
-          expect(res.status).to.equal(200);
-          expect(res.text).to.contain('Tluafed Egap etalpmet');
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Default page template');
         });
     });
   });
