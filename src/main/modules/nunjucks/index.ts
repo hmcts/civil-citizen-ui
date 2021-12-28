@@ -1,15 +1,30 @@
-import * as path from 'path';
-import * as express from 'express';
-import * as nunjucks from 'nunjucks';
+import { join } from 'path';
+import { Express } from 'express';
+import { configure } from 'nunjucks';
+import { InitOptions } from 'i18next';
+
+const packageDotJson = require('../../../../package.json');
+
+const appAssetPaths = {
+  js: '/js',
+  jsVendor: '/js/lib',
+  webchat: '/webchat',
+  style: '/stylesheets',
+  styleVendor: '/stylesheets/lib',
+  images: '/img',
+  imagesVendor: '/img/lib',
+  pdf: '/pdf',
+};
 
 export class Nunjucks {
-  constructor(public developmentMode: boolean) {
+  constructor(public developmentMode: boolean, public i18next: any) {
     this.developmentMode = developmentMode;
+    this.i18next = i18next;
   }
 
-  enableFor(app: express.Express): void {
+  enableFor(app: Express): void {
     app.set('view engine', 'njk');
-    const govUkFrontendPath = path.join(
+    const govUkFrontendPath = join(
       __dirname,
       '..',
       '..',
@@ -18,14 +33,22 @@ export class Nunjucks {
       'node_modules',
       'govuk-frontend',
     );
-    nunjucks.configure(
-      [path.join(__dirname, '..', '..', 'views'), govUkFrontendPath],
+    const nunjucksEnv = configure(
+      [join(__dirname, '..', '..', 'views'),
+        govUkFrontendPath,
+        join(__dirname, '..', '..', '..', '..', 'node_modules', '@hmcts'),
+      ],
       {
         autoescape: true,
         watch: this.developmentMode,
         express: app,
       },
     );
+
+    nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
+    nunjucksEnv.addGlobal('development', this.developmentMode);
+    nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
+    nunjucksEnv.addGlobal('t', (key: string, options?: InitOptions): string => this.i18next.t(key, options));
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

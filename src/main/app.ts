@@ -1,7 +1,4 @@
 import { glob } from 'glob';
-
-const { Logger } = require('@hmcts/nodejs-logging');
-
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
@@ -13,6 +10,9 @@ import { HTTPError } from 'HttpError';
 import { Nunjucks } from './modules/nunjucks';
 import { PropertiesVolume } from './modules/properties-volume';
 import { AppInsights } from './modules/appinsights';
+import { I18Next } from './modules/i18n';
+
+const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
 
 const env = process.env.NODE_ENV || 'development';
@@ -20,12 +20,13 @@ const developmentMode = env === 'development';
 
 export const app = express();
 app.locals.ENV = env;
+const i18next = I18Next.enableFor(app);
 
 const logger = Logger.getLogger('app');
 
 new PropertiesVolume().enableFor(app);
 new AppInsights().enable();
-new Nunjucks(developmentMode).enableFor(app);
+new Nunjucks(developmentMode, i18next).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 
 app.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
