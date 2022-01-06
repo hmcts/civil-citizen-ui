@@ -9,7 +9,7 @@ describe('i18n test - Home page', () => {
         .get('/')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Default page template');
+          expect(res.text).toContain('Claims made against you');
         });
     });
   });
@@ -19,7 +19,7 @@ describe('i18n test - Home page', () => {
         .get('/?lang=en')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Default page template');
+          expect(res.text).toContain('Claims made against you');
         });
     });
   });
@@ -29,7 +29,7 @@ describe('i18n test - Home page', () => {
         .get('/?lang=cy')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Tluafed Egap etalpmet');
+          expect(res.text).toContain('Smialc edam tsniaga uoy');
         });
     });
   });
