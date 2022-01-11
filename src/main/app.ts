@@ -1,4 +1,3 @@
-import { glob } from 'glob';
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
@@ -11,6 +10,7 @@ import { Nunjucks } from './modules/nunjucks';
 import { PropertiesVolume } from './modules/properties-volume';
 import { AppInsights } from './modules/appinsights';
 import { I18Next } from './modules/i18n';
+import dashboardRouter from './routes/features/dashboard/index';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -45,9 +45,7 @@ app.use((req, res, next) => {
 const testProperty = `${config.get<string>('testProperty')}`;
 logger.info(`Test Property value is: ${testProperty}`);
 
-glob.sync(__dirname + '/routes/**/*.+(ts|js)')
-  .map(filename => require(filename))
-  .forEach(route => route.default(app));
+app.use(dashboardRouter);
 
 setupDev(app,developmentMode);
 // returning "not found" page for requests with paths not resolved by the router
