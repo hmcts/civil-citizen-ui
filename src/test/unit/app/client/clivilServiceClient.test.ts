@@ -38,5 +38,6 @@ describe('DocumentManagementClient', () => {
     expect(actualClaims[0].applicant1.individualFirstName).toEqual('Jane');
     expect(actualClaims[0].applicant1.individualLastName).toEqual('Clark');
     expect(actualClaims[0].formattedResponseDeadline()).toEqual('24 January 2022');
+    expect(actualClaims[0].formattedTotalClaimAmount()).toEqual('£1,500.00');
   });
 });
