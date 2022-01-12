@@ -19,14 +19,16 @@
         </tr>
         </thead>
         <tbody class="govuk-table__body">
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell">352MC733</td>
-          <td class="govuk-table__cell">Jan Clark</td>
-          <td class="govuk-table__cell">£1500</td>
-          <td class="govuk-table__cell">Respond to the claim</td>
-          <td class="govuk-table__cell">13 December 2020</td>
-          <td class="govuk-table__cell">View</td>
-        </tr>
+        {% for claim in claimsAsDefendant %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">{{ claim.legacyCaseReference }}</td>
+            <td class="govuk-table__cell">{{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }}</td>
+            <td class="govuk-table__cell">{{ claim.totalClaimAmount }}</td>
+            <td class="govuk-table__cell">Respond to the claim</td>
+            <td class="govuk-table__cell">{{ claim.respondent1ResponseDeadline }}</td>
+            <td class="govuk-table__cell">View</td>
+          </tr>
+        {% endfor %}
         </tbody>
       </table>
 

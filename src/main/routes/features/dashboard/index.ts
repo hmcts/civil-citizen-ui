@@ -1,11 +1,13 @@
 import * as express from 'express';
-
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
+import {Claim} from '../../../common/models/claim';
 
-const civilServiceClient: CivilServiceClient = new CivilServiceClient();
+const civilServiceApiBaseUrl = 'http://localhost:8765';
 
-function renderPage(res: express.Response, claimsAsClaimant: object[], claimDraftSaved: boolean,
-  claimsAsDefendant: object[], responseDraftSaved: boolean,
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+
+function renderPage(res: express.Response, claimsAsClaimant: Claim[], claimDraftSaved: boolean,
+  claimsAsDefendant: Claim[], responseDraftSaved: boolean,
   paginationArgumentClaimant: object, paginationArgumentDefendant: object): void {
 
   res.render('features/dashboard/dashboard', {
@@ -27,8 +29,8 @@ router.get('/dashboard', async function (req, res) {
   const paginationArgumentClaimant: object = undefined;
   const paginationArgumentDefendant: object = undefined;
 
-  const claimsAsClaimant: object[] = [];
-  const claimsAsDefendant: object[] = civilServiceClient.retrieveByDefendantId();
+  const claimsAsClaimant: Claim[] = [];
+  const claimsAsDefendant: Claim[] = await civilServiceClient.retrieveByDefendantId();
 
   renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
 
