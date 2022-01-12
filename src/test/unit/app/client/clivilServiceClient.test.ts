@@ -37,5 +37,6 @@ describe('DocumentManagementClient', () => {
     expect(actualClaims[0].legacyCaseReference).toEqual('000MC003');
     expect(actualClaims[0].applicant1.individualFirstName).toEqual('Jane');
     expect(actualClaims[0].applicant1.individualLastName).toEqual('Clark');
+    expect(actualClaims[0].formattedResponseDeadline()).toEqual('24 January 2022');
   });
 });

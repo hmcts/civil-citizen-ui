@@ -25,7 +25,7 @@
             <td class="govuk-table__cell">{{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }}</td>
             <td class="govuk-table__cell">{{ claim.totalClaimAmount }}</td>
             <td class="govuk-table__cell">Respond to the claim</td>
-            <td class="govuk-table__cell">{{ claim.respondent1ResponseDeadline }}</td>
+            <td class="govuk-table__cell">{{ claim.formattedResponseDeadline() }}</td>
             <td class="govuk-table__cell">View</td>
           </tr>
         {% endfor %}
