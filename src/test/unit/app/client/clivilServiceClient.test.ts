@@ -7,9 +7,9 @@ jest.mock('axios');
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe('DocumentManagementClient', () => {
-  it('creates documents', async () => {
-    const mockResponse: object = {
+describe('Civil Service Client', () => {
+  it('retrieve cases', async () => {
+    const mockResponse: object = [{
       legacyCaseReference: '000MC003',
       applicant1:
         {
@@ -20,7 +20,7 @@ describe('DocumentManagementClient', () => {
         },
       totalClaimAmount: 1500,
       respondent1ResponseDeadline: '2022-01-24T15:59:59',
-    };
+    }];
     const mockGet = jest.fn().mockResolvedValue({data: mockResponse});
     mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
 
