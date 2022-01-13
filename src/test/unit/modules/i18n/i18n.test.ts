@@ -1,8 +1,16 @@
 const request = require('supertest');
+const nock = require('nock');
 
 const {app} = require('../../../../main/app');
 
 describe('i18n test - Dashboard', () => {
+
+  beforeEach(() => {
+    nock('http://localhost:8765')
+      .get('/cases')
+      .reply(200, []);
+  });
+
   describe('on GET', () => {
     test('should return english dashboard page', async () => {
       await request(app)
