@@ -15,7 +15,7 @@ export class CivilServiceClient {
     const response: AxiosResponse<object> = await this.client.get('/cases');
     const objects: Claim[] = response.data as Claim[];
     const claims: Claim[] = [];
-    objects.map(item => {
+    objects.forEach(item => {
       const claim: Claim = new Claim();
       claim.legacyCaseReference = item.legacyCaseReference;
       claim.applicant1 = item.applicant1;

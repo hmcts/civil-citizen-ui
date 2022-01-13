@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import format from '../../common/utils/moneyFormatter';
+import currencyFormat from '../utils/currencyFormat';
 
 export class Claim {
   legacyCaseReference: string;
@@ -12,7 +12,7 @@ export class Claim {
   }
 
   formattedTotalClaimAmount(): string {
-    return this.totalClaimAmount ? format(this.totalClaimAmount) : '';
+    return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
   }
 }
 
