@@ -1,4 +1,5 @@
 Feature: Homepage
 
-Scenario: Load Citizen UI homepage
-  Then I expect the page title to be "civil citizen ui"
+Scenario: Test Preview Url functionality
+  Given Load Citizen UI homepage
+  Then I expect the page to have content "Default page template"
