@@ -10,6 +10,7 @@ import { Nunjucks } from './modules/nunjucks';
 import { PropertiesVolume } from './modules/properties-volume';
 import { AppInsights } from './modules/appinsights';
 import { I18Next } from './modules/i18n';
+import { HealthCheck } from './modules/health';
 import dashboardRouter from './routes/features/dashboard/index';
 
 const { Logger } = require('@hmcts/nodejs-logging');
@@ -28,6 +29,7 @@ new PropertiesVolume().enableFor(app);
 new AppInsights().enable();
 new Nunjucks(developmentMode, i18next).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
+new HealthCheck().enableFor(app);
 
 app.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
 app.use(bodyParser.json());
