@@ -10,7 +10,6 @@ def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 withPipeline(type, product, component) {
   enableAksStagingDeployment()
-  enableCrossBrowserTest()
   disableLegacyDeployment()
 
   after('build') {
