@@ -12,9 +12,7 @@ export const config = {
   WaitForTimeout: 10000,
   Gherkin: {
     features: './features/**/*.feature',
-    steps: [
-      '../steps/homepage.ts',
-    ],
+    steps: ['./e2e/step_definitions/steps.ts'],
   },
   helpers: {},
 };
