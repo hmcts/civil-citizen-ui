@@ -11,7 +11,7 @@ import { PropertiesVolume } from './modules/properties-volume';
 import { AppInsights } from './modules/appinsights';
 import { I18Next } from './modules/i18n';
 import { HealthCheck } from './modules/health';
-import dashboardRouter from './routes/features/dashboard/index';
+import routes from './routes/routes';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 const testProperty = `${config.get<string>('testProperty')}`;
 logger.info(`Test Property value is: ${testProperty}`);
 
-app.use(dashboardRouter);
+app.use(routes);
 
 setupDev(app,developmentMode);
 // returning "not found" page for requests with paths not resolved by the router

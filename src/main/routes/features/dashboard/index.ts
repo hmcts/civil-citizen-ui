@@ -36,8 +36,4 @@ router.get('/dashboard', async function (req, res) {
 
 });
 
-router.get('/', (req, res) => {
-  res.render('home');
-});
-
 export default router;

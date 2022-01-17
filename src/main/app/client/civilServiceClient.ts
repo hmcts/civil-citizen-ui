@@ -1,5 +1,5 @@
 import {Claim} from '../../common/models/claim';
-import Axios, { AxiosInstance, AxiosResponse } from 'axios';
+import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 
 export class CivilServiceClient {
   client: AxiosInstance;
