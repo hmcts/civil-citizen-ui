@@ -1,4 +1,3 @@
-import { glob } from 'glob';
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
@@ -11,6 +10,8 @@ import { Nunjucks } from './modules/nunjucks';
 import { PropertiesVolume } from './modules/properties-volume';
 import { AppInsights } from './modules/appinsights';
 import { I18Next } from './modules/i18n';
+import { HealthCheck } from './modules/health';
+import routes from './routes/routes';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -28,6 +29,7 @@ new PropertiesVolume().enableFor(app);
 new AppInsights().enable();
 new Nunjucks(developmentMode, i18next).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
+new HealthCheck().enableFor(app);
 
 app.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
 app.use(bodyParser.json());
@@ -45,9 +47,7 @@ app.use((req, res, next) => {
 const testProperty = `${config.get<string>('testProperty')}`;
 logger.info(`Test Property value is: ${testProperty}`);
 
-glob.sync(__dirname + '/routes/**/*.+(ts|js)')
-  .map(filename => require(filename))
-  .forEach(route => route.default(app));
+app.use(routes);
 
 setupDev(app,developmentMode);
 // returning "not found" page for requests with paths not resolved by the router
