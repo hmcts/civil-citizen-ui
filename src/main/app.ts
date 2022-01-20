@@ -4,7 +4,6 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import { Helmet } from './modules/helmet';
 import * as path from 'path';
-import favicon from 'serve-favicon';
 import { HTTPError } from 'HttpError';
 import { Nunjucks } from './modules/nunjucks';
 import { PropertiesVolume } from './modules/properties-volume';
@@ -12,6 +11,9 @@ import { AppInsights } from './modules/appinsights';
 import { I18Next } from './modules/i18n';
 import { HealthCheck } from './modules/health';
 import routes from './routes/routes';
+
+import { Feature as DefendantResponseFeature } from './features/response/index';
+
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -31,7 +33,6 @@ new Nunjucks(developmentMode, i18next).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
 
-app.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -44,8 +45,13 @@ app.use((req, res, next) => {
   next();
 });
 
+logger.info('Loading DefendantResponseFeature')
+new DefendantResponseFeature().enableFor(app)
+
 const testProperty = `${config.get<string>('testProperty')}`;
 logger.info(`Test Property value is: ${testProperty}`);
+app.use('/', express.static(path.join(__dirname, '/main')));
+
 
 app.use(routes);
 

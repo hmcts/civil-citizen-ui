@@ -35,8 +35,13 @@ export class Nunjucks {
     );
     const nunjucksEnv = configure(
       [join(__dirname, '..', '..', 'views'),
+        join(__dirname, '..', '..', 'common'),
+        join(__dirname, '..', '..', 'features'),
+        join(__dirname, '..', '..', 'views', 'macro'),
+        join(__dirname, '..', '..', 'views', 'includes'),
+        join(__dirname, '..', '..', 'views', 'macro', 'back-link'),
         govUkFrontendPath,
-        join(__dirname, '..', '..', '..', '..', 'node_modules', '@hmcts'),
+        join(__dirname, '..', '..', '..', '..', 'node_modules', '@hmcts', 'civil-citizen-ui', 'macros'),
       ],
       {
         autoescape: true,
