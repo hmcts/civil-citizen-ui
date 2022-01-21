@@ -6,12 +6,6 @@ import { app } from '../../main/app';
 
 const agent = supertest.agent(app);
 
-class Pa11yResult {
-  documentTitle: string;
-  pageUrl: string;
-  issues: PallyIssue[];
-}
-
 class PallyIssue {
   code: string;
   context: string;
@@ -19,6 +13,12 @@ class PallyIssue {
   selector: string;
   type: string;
   typeCode: number;
+}
+
+class Pa11yResult {
+  documentTitle: string;
+  pageUrl: string;
+  issues: PallyIssue[];
 }
 
 beforeAll((done /* call it or remove it*/) => {

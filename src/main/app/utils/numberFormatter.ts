@@ -1,14 +1,14 @@
 const numeral = require('numeral');
 
-import 'numeral/locales/en-gb'
+import 'numeral/locales/en-gb';
 
-numeral.locale('en-gb')
+numeral.locale('en-gb');
 
-export const NUMBER_FORMAT = '$0,0[.]00'
+export const NUMBER_FORMAT = '$0,0[.]00';
 
 export class NumberFormatter {
 
   static formatMoney (value: number): string {
-    return numeral(value).format(NUMBER_FORMAT)
+    return numeral(value).format(NUMBER_FORMAT);
   }
 }
