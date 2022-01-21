@@ -1,8 +1,9 @@
 import * as express from 'express';
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import {Claim} from '../../../common/models/claim';
+import config from 'config';
 
-const civilServiceApiBaseUrl = 'http://localhost:8765';
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 

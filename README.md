@@ -35,7 +35,7 @@ Run:
 $ yarn start
 ```
 
-The applications's home page will be available at https://localhost:3100
+The application's home page will be available at https://localhost:3001
 
 ### Running with Docker
 
@@ -52,10 +52,8 @@ Run the application by executing the following command:
 ```
 
 This will start the frontend container exposing the application's port
-(set to `3100` in this template app).
 
-In order to test if the application is up, you can visit https://localhost:3100 in your browser.
-You should get a very basic home page (no styles, etc.).
+In order to test if the application is up, you can visit https://localhost:3001 in your browser.
 
 ## Developing
 
@@ -136,7 +134,7 @@ Make sure you have those values set correctly for your application.
 
 ### Healthcheck
 
-The application exposes a health endpoint (https://localhost:3100/health), created with the use of
+The application exposes a health endpoint (https://localhost:3001/health), created with the use of
 [Nodejs Healthcheck](https://github.com/hmcts/nodejs-healthcheck) library. This endpoint is defined
 in [health.ts](src/main/routes/health.ts) file. Make sure you adjust it correctly in your application.
 In particular, remember to replace the sample check with checks specific to your frontend app,
