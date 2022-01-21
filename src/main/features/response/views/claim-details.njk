@@ -33,7 +33,7 @@
           {% endif %}
           <p class="govuk-body">
             <span class="bold-small">{{ t('Claim amount') }}:</span>
-            {# {{ claim.totalAmountTillToday | numeral }} #}
+            {{ claim.totalAmountTillToday | numeral }}
           </p>
           {# {{ amountBreakdownTable('View amount breakdown', claim, interestData) }} #}
           {% if claim.helpWithFeesNumber and interestData !== undefined and interestData.rate !== undefined and claim.claimData.interest.type !== 'breakdown' %}
@@ -64,10 +64,10 @@
           </p>
           <p
             class="govuk-body">{# {% if claim.state !== 'HWF_APPLICATION_PENDING' and claim.state !== 'AWAITING_RESPONSE_HWF' %}
-                                                                      {{ internalLink(t('Download claim (PDF)'), pdfUrl.evaluateUri({ externalId: claim.externalId })) }}
-                                                                    {% else %}
-                                                                      {{ internalLink(t('Download claim (PDF)'), ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId: claim.externalId})) }}
-                                                                    {% endif %} #}
+                                                                                                                {{ internalLink(t('Download claim (PDF)'), pdfUrl.evaluateUri({ externalId: claim.externalId })) }}
+                                                                                                              {% else %}
+                                                                                                                {{ internalLink(t('Download claim (PDF)'), ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId: claim.externalId})) }}
+                                                                                                              {% endif %} #}
           </p>
         </div>
       </div>

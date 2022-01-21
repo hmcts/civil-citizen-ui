@@ -24,7 +24,7 @@
       {
         href: "#1",
         text: "My account",
-        active: true
+        active: false
       },
       {
         href: "#2",
@@ -36,9 +36,9 @@
 {% block beforeContent %}
   {{ govukPhaseBanner({
     tag: {
-      text: "alpha"
+      text: "beta"
     },
-    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+    html: 'This is a new service – your <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen" target="_blank">feedback</a> will help us to improve it.'
   }) }}
 {% endblock %}
 {% block footer %}
