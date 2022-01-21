@@ -41,62 +41,62 @@ export class PartyDetails {
   correspondenceAddress?: CorrespondenceAddress
 
   constructor (name?: string,
-               pcqId?: string,
-               address: Address = new Address(),
-               hasCorrespondenceAddress: boolean = false,
-               correspondenceAddress: Address = new CorrespondenceAddress(),
-               phone?: string) {
-    this.address = address
-    this.hasCorrespondenceAddress = hasCorrespondenceAddress
-    this.correspondenceAddress = correspondenceAddress
-    this.name = name
-    this.phone = phone
-    this.pcqId = pcqId
+    pcqId?: string,
+    address: Address = new Address(),
+    hasCorrespondenceAddress = false,
+    correspondenceAddress: Address = new CorrespondenceAddress(),
+    phone?: string) {
+    this.address = address;
+    this.hasCorrespondenceAddress = hasCorrespondenceAddress;
+    this.correspondenceAddress = correspondenceAddress;
+    this.name = name;
+    this.phone = phone;
+    this.pcqId = pcqId;
   }
 
   static fromObject (input?: any): PartyDetails {
     if (input == null) {
-      return input
+      return input;
     }
     const deserialized: PartyDetails = new PartyDetails(
       input.name,
       input.pcqId,
       new Address().deserialize(input.address),
       input.hasCorrespondenceAddress === 'true',
-      new CorrespondenceAddress().deserialize(input.correspondenceAddress)
-    )
+      new CorrespondenceAddress().deserialize(input.correspondenceAddress),
+    );
     if (deserialized.hasCorrespondenceAddress === false) {
-      deserialized.correspondenceAddress = undefined
+      deserialized.correspondenceAddress = undefined;
     }
-    deserialized.type = input.type
+    deserialized.type = input.type;
 
     if (input.phone !== undefined) {
-      deserialized.phone = input.phone
+      deserialized.phone = input.phone;
     }
-    return deserialized
+    return deserialized;
   }
 
   deserialize (input?: any): PartyDetails {
     if (input) {
-      this.address = new Address().deserialize(input.address)
-      this.type = input.type
-      this.name = input.name
-      this.pcqId = input.pcqId
-      this.address = new Address().deserialize(input.address)
-      this.hasCorrespondenceAddress = input.hasCorrespondenceAddress
-      this.correspondenceAddress = new CorrespondenceAddress().deserialize(input.correspondenceAddress)
+      this.address = new Address().deserialize(input.address);
+      this.type = input.type;
+      this.name = input.name;
+      this.pcqId = input.pcqId;
+      this.address = new Address().deserialize(input.address);
+      this.hasCorrespondenceAddress = input.hasCorrespondenceAddress;
+      this.correspondenceAddress = new CorrespondenceAddress().deserialize(input.correspondenceAddress);
       if (input.phone !== undefined) {
-        this.phone = input.phone
+        this.phone = input.phone;
       }
     }
-    return this
+    return this;
   }
 
   isCompleted (...groups: string[]): boolean {
-    return new Validator().validateSync(this, { groups: groups }).length === 0
+    return new Validator().validateSync(this, { groups: groups }).length === 0;
   }
 
   isBusiness (): boolean {
-    return this.type === PartyType.COMPANY.value || this.type === PartyType.ORGANISATION.value
+    return this.type === PartyType.COMPANY.value || this.type === PartyType.ORGANISATION.value;
   }
 }

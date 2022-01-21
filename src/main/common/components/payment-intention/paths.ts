@@ -1,4 +1,4 @@
-import { RoutablePath } from '../../../common/router/routablePath'
+import { RoutablePath } from '../../../common/router/routablePath';
 
 export class Paths {
   static readonly paymentOptionPage = new RoutablePath('/payment-option')

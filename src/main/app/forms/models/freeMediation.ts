@@ -1,5 +1,5 @@
-import { IsDefined, IsIn } from '@hmcts/class-validator'
-import { CompletableTask } from '../../models/task'
+import { IsDefined, IsIn } from '@hmcts/class-validator';
+import { CompletableTask } from '../../models/task';
 
 export class ValidationErrors {
   static readonly OPTION_REQUIRED: string = 'Choose option: yes or no'
@@ -12,8 +12,8 @@ export class FreeMediationOption {
   static all (): string[] {
     return [
       FreeMediationOption.YES,
-      FreeMediationOption.NO
-    ]
+      FreeMediationOption.NO,
+    ];
   }
 }
 
@@ -23,10 +23,10 @@ export class FreeMediation implements CompletableTask {
   option?: string
 
   constructor (option?: string) {
-    this.option = option
+    this.option = option;
   }
 
   isCompleted (): boolean {
-    return !!this.option
+    return !!this.option;
   }
 }

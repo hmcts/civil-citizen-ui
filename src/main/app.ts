@@ -45,8 +45,8 @@ app.use((req, res, next) => {
   next();
 });
 
-logger.info('Loading DefendantResponseFeature')
-new DefendantResponseFeature().enableFor(app)
+logger.info('Loading DefendantResponseFeature');
+new DefendantResponseFeature().enableFor(app);
 
 const testProperty = `${config.get<string>('testProperty')}`;
 logger.info(`Test Property value is: ${testProperty}`);

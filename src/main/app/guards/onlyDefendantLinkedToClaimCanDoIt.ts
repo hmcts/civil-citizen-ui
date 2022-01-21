@@ -14,11 +14,11 @@ export class OnlyDefendantLinkedToClaimCanDoIt {
    */
   static check (): express.RequestHandler {
     return GuardFactory.create((res: express.Response) => {
-      const claim: Claim = res.locals.claim
-      const user: User = res.locals.user
-      return claim.defendantId === user.id
+      const claim: Claim = res.locals.claim;
+      const user: User = res.locals.user;
+      return claim.defendantId === user.id;
     }, (req: express.Request, res: express.Response): void => {
-      throw new ForbiddenError()
-    })
+      throw new ForbiddenError();
+    });
   }
 }
