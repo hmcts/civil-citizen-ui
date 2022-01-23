@@ -59,15 +59,19 @@
               {{ evidenceSummary(evidenceRows) }}
             </div>
           {% endif %}
+          {% from "govuk/components/button/macro.njk" import govukButton %}
+          {{ govukButton({
+            text: "Respond to claim"
+          }) }}
           <p class="govuk-body">
             <span class="bold-small">{{ t('Download the claim') }}</span>
           </p>
           <p
             class="govuk-body">{# {% if claim.state !== 'HWF_APPLICATION_PENDING' and claim.state !== 'AWAITING_RESPONSE_HWF' %}
-                                                                                                                {{ internalLink(t('Download claim (PDF)'), pdfUrl.evaluateUri({ externalId: claim.externalId })) }}
-                                                                                                              {% else %}
-                                                                                                                {{ internalLink(t('Download claim (PDF)'), ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId: claim.externalId})) }}
-                                                                                                              {% endif %} #}
+                                                                                                                              {{ internalLink(t('Download claim (PDF)'), pdfUrl.evaluateUri({ externalId: claim.externalId })) }}
+                                                                                                                            {% else %}
+                                                                                                                              {{ internalLink(t('Download claim (PDF)'), ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId: claim.externalId})) }}
+                                                                                                                            {% endif %} #}
           </p>
         </div>
       </div>
