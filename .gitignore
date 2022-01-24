@@ -25,3 +25,6 @@ dist/
 public/
 smoke-output/
 functional-output/
+
+.yarn/
+.yarnrc
