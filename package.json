@@ -112,6 +112,9 @@
     "**/jest/**/node-notifier": "^8.0.1",
     "**/sass-lint/**/minimist": "^1.2.3",
     "**/**/json-schema": "^0.4.0",
-    "**/sass-lint/**/jsonpointer": "^5.0.0"
+    "**/sass-lint/**/jsonpointer": "^5.0.0",
+    "node-fetch": "^2.6.7",
+    "shelljs": "^0.8.5",
+    "postcss": "^8.2.13"
   }
 }
