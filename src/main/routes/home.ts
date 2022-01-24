@@ -1,9 +1,9 @@
-import { Application } from 'express';
+import * as express from 'express';
 
-export default function(app: Application): void {
+const router = express.Router();
 
-  app.get('/', (req, res) => {
-    res.render('home');
-  });
+router.get('/', (req, res) => {
+  res.render('home');
+});
 
-}
+export default router;
