@@ -4,6 +4,12 @@
 {% from "govuk/components/header/macro.njk" import govukHeader %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
+{% set htmlClasses = "app-html-class" %}
+{% set htmlLang = "en" %}
+{% set assetPath = "" %}
+{% set assetUrl = "<YOUR-DOMAIN>" %}
+{% set themeColor = "blue" %}
+{% set bodyClasses = "app-body-class" %}
 {% extends "govuk/template.njk" %}
 {% block head %}
   {% include "webpack/css.njk" %}
@@ -17,32 +23,40 @@
 {% block header %}
   {{ govukHeader({
     homepageUrl: "#",
-    containerClasses: "app-width-container",
+    containerClasses: "govuk-width-container",
     serviceName: "Money Claims",
     serviceUrl: "#",
     navigation: [
       {
         href: "#",
-        text: "My account",
+        text: "",
         active: false
       },
       {
         href: "#",
-        text: "Sign out"
+        text: ""
       }
     ]
   }) }}
-{% endblock %}
-{% block beforeContent %}
-  {{ govukPhaseBanner({
+  <!--[if !IE 8]><!-->
+  <link href="/govuk-frontend/all.css" rel="stylesheet">
+  <!--<![endif]-->
+    {# For Internet Explorer 8, you need to compile specific stylesheet #}
+    {# see https://frontend.design-system.service.gov.uk/supporting-ie8/#support-internet-explorer-8 #}
+    <!-- [if IE 8]> <link href="/govuk-frontend/all-ie8.css" rel="stylesheet"> <![endif] -->
+    {# For older browsers to allow them to recognise HTML5 elements such as `<header>` #}
+    <!-- [if lt IE 9]> <script src="/html5-shiv/html5shiv.js"></script> <![endif] -->
+  {% endblock %}
+  {% block beforeContent %}
+    {{ govukPhaseBanner({
     tag: {
       text: "beta"
     },
     html: 'This is a new service – your <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen" target="_blank">feedback</a> will help us to improve it.'
   }) }}
-{% endblock %}
-{% block footer %}
-  {{ govukFooter({
+  {% endblock %}
+  {% block footer %}
+    {{ govukFooter({
     meta: {
       items: [
         {
@@ -72,8 +86,8 @@
       ]
     }
   }) }}
-{% endblock %}
-{% block bodyEnd %}
-  {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  {% include "webpack/js.njk" %}
-{% endblock %}
+  {% endblock %}
+  {% block bodyEnd %}
+    {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
+    {% include "webpack/js.njk" %}
+  {% endblock %}
