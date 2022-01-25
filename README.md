@@ -90,6 +90,22 @@ Running accessibility tests:
 $ yarn test:a11y
 ```
 
+Running functional tests:
+
+Update required secrets on your machine then run below command
+
+```bash
+$ yarn test:functional
+```
+
+Running Crossbrowser tests:
+
+Install saucelabs on local machine
+
+```bash
+$ yarn test:crossbrowser
+```
+
 Make sure all the paths in your application are covered by accessibility tests (see [a11y.ts](src/test/a11y/a11y.ts)).
 
 ### Security
