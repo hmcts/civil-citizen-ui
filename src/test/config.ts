@@ -6,7 +6,7 @@ if (!process.env.TEST_PASSWORD) {
 }
 
 export const config = {
-  TEST_URL: process.env.TEST_URL || 'http://localhost:3000',
+  TestUrl: process.env.TEST_URL || 'http://localhost:3000',
   TestHeadlessBrowser: process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true,
   TestSlowMo: 250,
   WaitForTimeout: 10000,
@@ -19,7 +19,7 @@ export const config = {
 
 config.helpers = {
   Playwright: {
-    url: config.TEST_URL,
+    url: config.TestUrl,
     show: !config.TestHeadlessBrowser,
     browser: 'chromium',
     waitForTimeout: config.WaitForTimeout,

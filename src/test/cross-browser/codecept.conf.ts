@@ -10,7 +10,7 @@ let plugins = {};
 if (process.env.SAUCE === 'true') {
   helpers = {
     WebDriver: {
-      url: testConfig.TEST_URL,
+      url: testConfig.TestUrl,
       browser: 'MicrosoftEdge',
       waitForTimeout: testConfig.WaitForTimeout,
       keepCookies: true,
