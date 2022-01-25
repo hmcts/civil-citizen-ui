@@ -83,7 +83,7 @@
     "codeceptjs": "^3.2.3",
     "copy-webpack-plugin": "^6.1.0",
     "css-loader": "^3.4.2",
-    "debug": "^4.1.1",
+    "debug": "^4.3.3",
     "eslint": "^6.8.0",
     "html-webpack-plugin": "^4.3.0",
     "jest": "^25.1.0",
