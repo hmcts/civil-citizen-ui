@@ -13,7 +13,7 @@ const moment = require('moment');
 //   return claim.defendantId === user.id;
 // }
 
-const civilServiceApiBaseUrl = 'http://localhost:8765';
+const civilServiceApiBaseUrl = 'http://localhost:4000';
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 /* tslint:disable:no-default-export */
