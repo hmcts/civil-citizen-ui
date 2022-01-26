@@ -1024,13 +1024,6 @@
     "@hmcts/draft-store-client" "^1.2.1"
     moment "^2.19.1"
 
-"@hmcts/cmc-validators@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@hmcts/cmc-validators/-/cmc-validators-0.2.6.tgz#5e49b3d5f4ac3188234a98e05cb5272b8592e270"
-  integrity sha512-kEHEKdifF3qYRAGTSJ/qmYZf/CPS0WNYEzzYATJUVKwaXhJ22Wf6Q2d2U3Sb/WsI7HUqlHjpP1J3dPY2kssVhA==
-  dependencies:
-    "@hmcts/class-validator" "^0.9.1-e"
-
 "@hmcts/draft-store-client@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@hmcts/draft-store-client/-/draft-store-client-1.2.1.tgz#0406d7d772b5a29b75caf957738763c6a3c1ee62"
