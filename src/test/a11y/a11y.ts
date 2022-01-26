@@ -69,7 +69,7 @@ function testAccessibility(url: string): void {
 
 describe('Accessibility', () => {
   // testing accessibility of the home page
-  //testAccessibility('/');
-  testAccessibility('/case/f9214273-ee74-42e4-bce2-f519bc6060d6/response/claim-details');
+  testAccessibility('/');
+  //testAccessibility('/case/f9214273-ee74-42e4-bce2-f519bc6060d6/response/claim-details');
   // TODO: include each path of your application in accessibility checks
 });
