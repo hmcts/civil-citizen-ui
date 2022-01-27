@@ -1,0 +1,19 @@
+useCSRFProtection: true
+security:
+  referrerPolicy: 'origin'
+port: 3001
+timeout: 30000
+services:
+  civilService:
+    url: 'http://localhost:8765'
+    microservice: 'civil_service'
+  idam:
+    authorizationURL: 'http://localhost:3501/login'
+    tokenURL: 'http://localhost:5000/o/token'
+    clientID: 'civil_citizen_ui'
+    clientSecret: 'TBC'
+health:
+  timeout: 5000
+  deadline: 15000
+appInsights:
+  instrumentationKey:
