@@ -17,7 +17,7 @@ const appAssetPaths = {
 };
 
 export class Nunjucks {
-  constructor(public developmentMode: boolean, public i18next: any) {
+  constructor(public developmentMode: boolean, public i18next: unknown) {
     this.developmentMode = developmentMode;
     this.i18next = i18next;
   }
