@@ -1,3 +1,4 @@
+useCSRFProtection: true
 security:
   referrerPolicy: 'origin'
 port: 3001
