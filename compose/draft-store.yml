@@ -1,6 +1,6 @@
 version: '2'
 services:
-  cache:
+  draft-store:
     image: redis:6.2.6-alpine
 #    restart: always
     ports:
