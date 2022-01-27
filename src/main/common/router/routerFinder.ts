@@ -1,8 +1,7 @@
 import * as path from 'path';
 import { Router } from 'express';
-//import * as requireDirectory from 'require-directory'
-const requireDirectory = require('require-directory');
-import * as uuid from 'uuid';
+import requireDirectory from 'require-directory';
+import { v4 as uuid } from 'uuid';
 
 const fileExtension: string = path.extname(__filename).slice(1);
 
@@ -10,7 +9,7 @@ const options: object = {
   extensions: [fileExtension],
   recurse: true,
   rename: (name: any) => {
-    return `${name}-${uuid.v1()}`;
+    return `${name}-${uuid()}`;
   },
   visit: (obj: any) => {
     return (typeof obj === 'object' && obj.default !== undefined) ? obj.default : obj;
