@@ -2,7 +2,7 @@
 import {  config as testConfig } from '../../config';
 
 module.exports = {
-  homepage(I) {
+  homepage(I): void {
     Given('Load Citizen UI homepage', async () => {
       await I.amOnPage(testConfig.TestUrl);
     });

@@ -44,9 +44,6 @@ app.use((req, res, next) => {
   next();
 });
 
-const testProperty = `${config.get<string>('testProperty')}`;
-logger.info(`Test Property value is: ${testProperty}`);
-
 app.use(routes);
 
 setupDev(app,developmentMode);
