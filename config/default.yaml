@@ -7,8 +7,8 @@ services:
     url: 'http://localhost:8765'
     microservice: 'civil_service'
   idam:
-    authorizationURL: 'https://idam-web-public.aat.platform.hmcts.net/login'
-    tokenURL: 'https://idam-api.aat.platform.hmcts.net/o/token'
+    authorizationURL: 'http://localhost:3501/login'
+    tokenURL: 'http://localhost:5000/o/token'
     clientID: 'civil_citizen_ui'
     clientSecret: 'TBC'
 health:
