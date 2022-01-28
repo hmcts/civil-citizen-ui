@@ -14,8 +14,10 @@
           <h1 class="govuk-heading-l">Claim details</h1>
           {% if claim.helpWithFeesNumber %}
             <p class="govuk-body">
-              <span class="bold-small">{{ t('Claim number:') }}
-              </span>
+              <span>
+                <strong>{{ t('Claim number:') }}
+                </span>
+              </strong>
               <span>
                 {% set dash = joiner("-") %}
                 {% for batch in claim.ccdCaseId | string | batch(4) -%}
@@ -28,11 +30,15 @@
             </p>
           {% else %}
             <p class="govuk-body">
-              <span class="bold-small">{{ t('Claim number') }}:</span>
+              <span>
+                <strong>{{ t('Claim number') }}:</strong>
+              </span>
               {{ claim.legacyCaseReference }}</p>
           {% endif %}
           <p class="govuk-body">
-            <span class="bold-small">{{ t('Claim amount') }}:</span>
+            <span>
+              <strong>{{ t('Claim amount') }}:</strong>
+            </span>
             {{ claim.totalClaimAmount | numeral }}
           </p>
           {# {{ amountBreakdownTable('View amount breakdown', claim, interestData) }} #}
@@ -40,13 +46,17 @@
             {{ interestCalculationBreakdownTable('How interest to date is calculated', claim, interestData, numOfDayInYear) }}
           {% endif %}
           <p class="govuk-body">
-            <span class="govuk-body bold-small">{{ t('Reason for claim') }}:</span>
+            <span class="govuk-body">
+              <strong>{{ t('Reason for claim') }}:</strong>
+            </span>
           </p>
           <p class="govuk-body">{{ claim.detailsOfClaim }}</p>
           {% if timelineRows and timelineRows.length > 0 %}
             <div class="form-group">
               <p class="govuk-body">
-                <span class="bold-small">{{ t('Timeline') }}</span>
+                <span>
+                  <strong>{{ t('Timeline') }}</strong>
+                </span>
               </p>
               {{ timelineSummary(timelineRows) }}
             </div>
@@ -54,7 +64,9 @@
           {% if evidenceRows and evidenceRows.length > 0 %}
             <div class="form-group">
               <p class="govuk-body">
-                <span class="bold-small">{{ t('Evidence') }}</span>
+                <span>
+                  <strong>{{ t('Evidence') }}</strong>
+                </span>
               </p>
               {{ evidenceSummary(evidenceRows) }}
             </div>
@@ -64,14 +76,16 @@
             text: "Respond to claim"
           }) }}
           <p class="govuk-body">
-            <span class="bold-small">{{ t('Download the claim') }}</span>
+            <span>
+              <strong>{{ t('Download the claim') }}</strong>
+            </span>
           </p>
           <p
             class="govuk-body">{# {% if claim.state !== 'HWF_APPLICATION_PENDING' and claim.state !== 'AWAITING_RESPONSE_HWF' %}
-                                                                                                                                                                                                    {{ internalLink(t('Download claim (PDF)'), pdfUrl.evaluateUri({ externalId: claim.externalId })) }}
-                                                                                                                                                                                                  {% else %}
-                                                                                                                                                                                                    {{ internalLink(t('Download claim (PDF)'), ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId: claim.externalId})) }}
-                                                                                                                                                                                                  {% endif %} #}
+                                                                                                                                                                                                                                                            {{ internalLink(t('Download claim (PDF)'), pdfUrl.evaluateUri({ externalId: claim.externalId })) }}
+                                                                                                                                                                                                                                                          {% else %}
+                                                                                                                                                                                                                                                            {{ internalLink(t('Download claim (PDF)'), ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId: claim.externalId})) }}
+                                                                                                                                                                                                                                                          {% endif %} #}
           </p>
         </div>
       </div>
