@@ -1,12 +1,12 @@
 import { join } from 'path';
 import { Express } from 'express';
 import { configure } from 'nunjucks';
-import { InitOptions } from 'i18next';
 import { Paths as AppPaths } from '../../app/paths';
 import { NUMBER_FORMAT } from '../../app/utils/numberFormatter';
 const numeralFilter = require('nunjucks-numeral-filter');
 import * as numeral from 'numeral';
 import * as moment from 'moment';
+import { i18n, TOptions } from 'i18next';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -22,7 +22,7 @@ const appAssetPaths = {
 };
 
 export class Nunjucks {
-  constructor(public developmentMode: boolean, public i18next: any) {
+  constructor(public developmentMode: boolean, public i18next : i18n) {
     this.developmentMode = developmentMode;
     this.i18next = i18next;
   }
@@ -64,9 +64,9 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
-    nunjucksEnv.addGlobal('t', (key: string, options?: InitOptions): string => this.i18next.t(key, options));
     nunjucksEnv.addFilter('numeral', numeralFilter);
     nunjucksEnv.addGlobal('AppPaths', AppPaths);
+    nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
