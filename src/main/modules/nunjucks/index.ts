@@ -48,9 +48,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
-    nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => {
-      this.i18next.t(key, options);
-    });
+    nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
