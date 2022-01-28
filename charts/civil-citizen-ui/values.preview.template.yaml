@@ -4,3 +4,11 @@ nodejs:
   ingressHost: ${SERVICE_FQDN}
   environment:
     TEST_PROPERTY: preview-test-value
+
+    OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
+
+    idam-pr:
+      enabled: true
+      redirect_uris:
+        divorce:
+          - https://${SERVICE_FQDN}/oauth2/callback
