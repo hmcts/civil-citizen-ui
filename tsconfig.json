@@ -17,12 +17,6 @@
     ],
     "baseUrl": "src/main",
     "paths": {
-      "shared/*": [
-        "main/common/*"
-      ],
-      "response/*": [
-        "main/features/response/*"
-      ],
       "router/*": [
         "router/*"
       ],
