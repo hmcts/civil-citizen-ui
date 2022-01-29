@@ -10,7 +10,7 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 describe('Claim Details', () => {
   it('retrieve claim details', async () => {
     const mockResponse = {
-      legacyCaseReference: '000MC003',
+      legacyCaseReference: '497MC585',
       applicant1:
         {
           type: 'INDIVIDUAL',
@@ -18,9 +18,9 @@ describe('Claim Details', () => {
           individualLastName: 'Clark',
           individualFirstName: 'Jane',
         },
-      totalClaimAmount: 1500,
+      totalClaimAmount: '110',
       respondent1ResponseDeadline: '2022-01-24T15:59:59',
-      detailsOfClaim: 'A strong sense of entitlement that would explain my reasons of the claim, that the Roof work and leaks that followed were done below standards set by the council inspector',
+      detailsOfClaim: 'the reason i have given',
     };
 
 
