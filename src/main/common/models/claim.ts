@@ -1,11 +1,6 @@
 import dayjs from 'dayjs';
 import currencyFormat from '../utils/currencyFormat';
 
-class Individual {
-  individualTitle: string;
-  individualLastName: string;
-  individualFirstName: string;
-}
 export class Claim {
   legacyCaseReference: string;
   applicant1: Individual;
@@ -20,4 +15,10 @@ export class Claim {
   formattedTotalClaimAmount(): string {
     return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
   }
+}
+
+class Individual {
+  individualTitle: string;
+  individualLastName: string;
+  individualFirstName: string;
 }
