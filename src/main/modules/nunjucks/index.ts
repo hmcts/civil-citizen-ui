@@ -1,10 +1,7 @@
 import { join } from 'path';
 import { Express } from 'express';
 import { configure } from 'nunjucks';
-//import { NUMBER_FORMAT } from '../../app/utils/numberFormatter';
-// const numeralFilter = require('nunjucks-numeral-filter');
-// import * as numeral from 'numeral';
-// import * as moment from 'moment';
+import * as numeral from '../../common/utils/currencyFormat';
 import { i18n, TOptions } from 'i18next';
 
 const packageDotJson = require('../../../../package.json');
@@ -54,16 +51,12 @@ export class Nunjucks {
       },
     );
 
-    // require('numeral/locales/en-gb');
-    // numeral.locale('en-gb');
-    // numeral.defaultFormat(NUMBER_FORMAT);
-
-    //moment.locale('en-gb');
+    const currencyFormat = (value: any) => numeral.default(value);
 
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
-    //nunjucksEnv.addFilter('numeral', numeralFilter);
+    nunjucksEnv.addFilter('currencyFormat', currencyFormat);
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
 
     app.use((req, res, next) => {
