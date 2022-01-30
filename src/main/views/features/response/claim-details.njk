@@ -8,7 +8,7 @@
 {% set evidenceRows = claim.claimData.evidence.getPopulatedRowsOnly() if claim.claimData.evidence %}
 {% set timelineRows = claim.claimData.timeline.getPopulatedRowsOnly() if claim.claimData.timeline %}
   {% block content %}
-    <div class="govuk-width-container"> <main class="govuk-main-wrapper" id="main-content" role="main">
+    <div class="govuk-width-container"> <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">Claim details</h1>
@@ -82,10 +82,10 @@
           </p>
           <p
             class="govuk-body">{# {% if claim.state !== 'HWF_APPLICATION_PENDING' and claim.state !== 'AWAITING_RESPONSE_HWF' %}
-                                                                                                                                                                                                                                                                                                                    {{ internalLink(t('Download claim (PDF)'), pdfUrl.evaluateUri({ externalId: claim.externalId })) }}
-                                                                                                                                                                                                                                                                                                                  {% else %}
-                                                                                                                                                                                                                                                                                                                    {{ internalLink(t('Download claim (PDF)'), ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId: claim.externalId})) }}
-                                                                                                                                                                                                                                                                                                                  {% endif %} #}
+                                                                                                                                                                                                                                                                                                                                  {{ internalLink(t('Download claim (PDF)'), pdfUrl.evaluateUri({ externalId: claim.externalId })) }}
+                                                                                                                                                                                                                                                                                                                                {% else %}
+                                                                                                                                                                                                                                                                                                                                  {{ internalLink(t('Download claim (PDF)'), ClaimPaths.draftReceiptReceiver.evaluateUri({ externalId: claim.externalId})) }}
+                                                                                                                                                                                                                                                                                                                                {% endif %} #}
           </p>
         </div>
       </div>

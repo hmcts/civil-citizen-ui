@@ -6,6 +6,12 @@ import { app } from '../../main/app';
 
 const agent = supertest.agent(app);
 
+class Pa11yResult {
+  documentTitle: string;
+  pageUrl: string;
+  issues: PallyIssue[];
+}
+
 class PallyIssue {
   code: string;
   context: string;
@@ -13,12 +19,6 @@ class PallyIssue {
   selector: string;
   type: string;
   typeCode: number;
-}
-
-class Pa11yResult {
-  documentTitle: string;
-  pageUrl: string;
-  issues: PallyIssue[];
 }
 
 beforeAll((done /* call it or remove it*/) => {
@@ -69,7 +69,7 @@ function testAccessibility(url: string): void {
 
 describe('Accessibility', () => {
   // testing accessibility of the home page
-  testAccessibility('/');
-  //testAccessibility('/case/f9214273-ee74-42e4-bce2-f519bc6060d6/response/claim-details');
+  //testAccessibility('/');
+  testAccessibility('/case/1643033241924739/response/claim-details');
   // TODO: include each path of your application in accessibility checks
 });
