@@ -1,12 +1,4 @@
-{% from "govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
-{% from "govuk/components/skip-link/macro.njk" import govukSkipLink %}
-{% from "govuk/components/header/macro.njk" import govukHeader %}
-{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
-{% from "govuk/components/footer/macro.njk" import govukFooter %}
-{% extends "govuk/template.njk" %}
-{% block head %}
-  {% include "webpack/css.njk" %}
-{% endblock %}
+{% extends "template.njk" %}
 {% block content %}
   <h1 class="govuk-heading-xl">Something went wrong</h1>
 {% endblock %}
