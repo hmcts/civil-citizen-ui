@@ -10,5 +10,5 @@ nodejs:
     idam-pr:
       enabled: true
       redirect_uris:
-        divorce:
+        civil-citizen-ui:
           - https://${SERVICE_FQDN}/oauth2/callback
