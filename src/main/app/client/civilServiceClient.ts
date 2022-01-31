@@ -26,7 +26,7 @@ export class CivilServiceClient {
     return claims;
   }
 
-  async retrieveClaimDetails(claimId: any): Promise<any> {
+  async retrieveClaimDetails(claimId: string): Promise<Claim> {
     const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`);
     const objects = response.data as Claim;
     return objects;
