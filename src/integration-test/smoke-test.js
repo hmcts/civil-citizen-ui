@@ -15,9 +15,3 @@ describe('Dummy Smoke test - Home page', () => {
     });
   });
 });
-
-afterAll(done => {
-  // Closing Redis connection to allow Jest to exit successfully.
-  app.locals.draftStorageClient.quit();
-  done();
-});

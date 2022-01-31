@@ -4,16 +4,6 @@ import * as express from 'express';
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  const draftStorageClient = req.app.locals.draftStorageClient;
-
-  // (async() => {
-  //   await draftStorageClient.set('testKey', 'testValue');
-  // })();
-
-  (async() => {
-    console.info(await draftStorageClient.get('testKey'));
-  })();
-
   res.render('home');
 });
 

@@ -42,9 +42,3 @@ describe('i18n test - Dashboard', () => {
     });
   });
 });
-
-afterAll(done => {
-  // Closing Redis connection to allow Jest to exit successfully.
-  app.locals.draftStorageClient.quit();
-  done();
-});

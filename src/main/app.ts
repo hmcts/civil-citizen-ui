@@ -11,7 +11,6 @@ import { PropertiesVolume } from './modules/properties-volume';
 import { AppInsights } from './modules/appinsights';
 import { I18Next } from './modules/i18n';
 import { HealthCheck } from './modules/health';
-import {DraftStorageClient} from './modules/draft-storage';
 import routes from './routes/routes';
 
 const { Logger } = require('@hmcts/nodejs-logging');
@@ -31,7 +30,6 @@ new AppInsights().enable();
 new Nunjucks(developmentMode, i18next).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
-new DraftStorageClient().enableFor(app);
 
 app.use(favicon(path.join(__dirname, '/public/img/favicon.ico')));
 app.use(bodyParser.json());
