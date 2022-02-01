@@ -1,7 +1,6 @@
-import {Application, NextFunction, Request, Response} from 'express';
+import {Application, Request, Response} from 'express';
 import Axios from 'axios';
 import config from 'config';
-import jwt_decode from 'jwt-decode';
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -20,7 +19,7 @@ export class OidcMiddleware {
     });
 
     server.get('/oauth2/callback', async (req: Request, res: Response) => {
-      const response = await Axios.post(
+      await Axios.post(
         tokenUrl,
         `client_id=${clientId}&client_secret=${clientSecret}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(redirectUri)}&code=${encodeURIComponent(req.query.code as string)}`,
         {
@@ -31,31 +30,16 @@ export class OidcMiddleware {
         },
       );
 
-      req.session.user = response.data;
-      req.session.user!.jwt = jwt_decode(response.data.id_token);
-      req.session.save(() => res.redirect('/'));
+      res.redirect('/');
     });
 
-    server.get('/logout', function(req: Request, res){
-      req.session.user = undefined;
-      req.session.save(() => res.redirect('/'));
+    server.get('/logout', function (req: Request, res) {
+      res.redirect('/');
     });
 
-    server.use((req: Request, res: Response, next: NextFunction) => {
-      if (req.session.user) {
-        res.locals.isLoggedIn = true;
-
-        return next();
-      }
+    server.use((req: Request, res: Response) => {
       res.redirect('/login');
     });
-
   }
 
-}
-
-declare module 'express-session' {
-  export interface SessionData {
-    user: Record<string, unknown>
-  }
 }

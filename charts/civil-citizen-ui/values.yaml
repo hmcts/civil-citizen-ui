@@ -9,13 +9,13 @@ nodejs:
 #        - AppInsightsInstrumentationKey
   environment:
     TEST_PROPERTY: test-value-from-values-yaml
-  IDAM_WEB_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login"
+    IDAM_WEB_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login"
     IDAM_API_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token"
     OAUTH_CLIENT_REDIRECT: "https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback"
-autoscaling:
-  enabled: true
-  maxReplicas: 16
-  targetCPUUtilizationPercentage: 80
+  autoscaling:
+    enabled: true
+    maxReplicas: 16
+    targetCPUUtilizationPercentage: 80
 
 idam-pr:
   enabled: false
