@@ -51,7 +51,7 @@ export class Nunjucks {
       },
     );
 
-    const currencyFormat = (value: any) => numeral.default(value);
+    const currencyFormat = (value: number) => numeral.default(value);
 
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);

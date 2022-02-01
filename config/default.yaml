@@ -17,3 +17,8 @@ health:
   deadline: 15000
 appInsights:
   instrumentationKey:
+draftStore:
+  redis:
+    host: 'localhost'
+    port: 6379
+    key:
