@@ -1,0 +1,86 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
+{% from "govuk/components/skip-link/macro.njk" import govukSkipLink %}
+{% from "govuk/components/header/macro.njk" import govukHeader %}
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+{% from "govuk/components/footer/macro.njk" import govukFooter %}
+{% set htmlClasses = "app-html-class" %}
+{% set htmlLang = "en" %}
+{% set assetPath = "" %}
+{% set assetUrl = "<YOUR-DOMAIN>" %}
+{% set themeColor = "blue" %}
+{% set bodyClasses = "app-body-class" %}
+{% extends "govuk/template.njk" %}
+{% block head %}
+  {% include "webpack/css.njk" %}
+{% endblock %}
+{% block pageTitle %}Your money claims account - Money Claims{% endblock %}
+{% block skipLink %}
+  {{ govukSkipLink({
+    href: "#main-content",
+    text: "Skip to main content"
+  }) }}
+{% endblock %}
+{% block header %}
+  {{ govukHeader({
+    homepageUrl: "#",
+    containerClasses: "govuk-width-container",
+    serviceName: "Money Claims",
+    serviceUrl: "#",
+    navigation: [
+      {
+        href: "#",
+        text: "",
+        active: false
+      },
+      {
+        href: "#",
+        text: ""
+      }
+    ]
+  }) }}
+{% endblock %}
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "beta"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen" target="_blank">feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+{% block footer %}
+  {{ govukFooter({
+    meta: {
+      items: [
+        {
+          href: AppPaths.cookiesPage.uri,
+          text: "Cookies"
+        },
+        {
+          href: AppPaths.privacyPolicyPage.uri,
+          text: "Privacy Policy"
+        },
+        {
+          href: "https://www.gov.uk/help",
+          text: "Help using GOV.UK"
+        },
+        {
+          href: AppPaths.contactUsPage.uri,
+          text: "Contact us"
+        },
+        {
+          href: AppPaths.accessibilityPage.uri,
+          text: "Accessibility statement"
+        },
+        {
+          href: TestingSupportPaths.indexPage.uri,
+          text: "Testing support"
+        }
+      ]
+    }
+  }) }}
+{% endblock %}
+{% block bodyEnd %}
+  {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
+  {% include "webpack/js.njk" %}
+{% endblock %}
