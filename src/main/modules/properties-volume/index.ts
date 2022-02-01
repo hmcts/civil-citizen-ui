@@ -25,7 +25,7 @@ export class PropertiesVolume {
    * Load a secret from the AAT vault using azure cli
    */
   private setLocalSecret(secret: string, toPath: string): void {
-    const result = execSync('az keyvault secret show --vault-name nfdiv-aat -o tsv --query value --name ' + secret);
+    const result = execSync('az keyvault secret show --vault-name civil-citizan-ui-aat -o tsv --query value --name ' + secret);
 
     set(config, toPath, result.toString().replace('\n', ''));
   }

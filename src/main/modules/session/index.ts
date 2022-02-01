@@ -17,7 +17,7 @@ export class SessionStorage {
 
     app.use(
       session({
-        name: 'nfdiv-session',
+        name: 'civil-session',
         resave: false,
         saveUninitialized: false,
         secret: config.get('session.secret'),
