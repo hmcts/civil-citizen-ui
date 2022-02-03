@@ -19,27 +19,21 @@ export class OidcMiddleware {
     });
 
     server.get('/oauth2/callback', async (req: Request, res: Response) => {
-      await Axios.post(
-        tokenUrl,
-        `client_id=${clientId}&client_secret=${clientSecret}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(redirectUri)}&code=${encodeURIComponent(req.query.code as string)}`,
-        {
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded',
+      if (typeof req.query.code === 'string') {
+        await Axios.post(
+          tokenUrl,
+          `client_id=${clientId}&client_secret=${clientSecret}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(redirectUri)}&code=${encodeURIComponent(req.query.code as string)}`,
+          {
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
           },
-        },
-      );
-
-      res.redirect('/');
-    });
-
-    server.get('/logout', function (req: Request, res) {
-      res.redirect('/');
-    });
-
-    server.use((req: Request, res: Response) => {
-      res.redirect('/login');
+        );
+        res.redirect('/info');
+      }else {
+        res.redirect('/login');
+      }
     });
   }
-
 }
