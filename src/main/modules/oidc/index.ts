@@ -1,39 +1,45 @@
 import {Application, Request, Response} from 'express';
-import Axios from 'axios';
 import config from 'config';
+import {AppRequest, UserDetails} from '../../common/models/AppRequest';
+import {getUserDetails} from '../../app/auth/user/oidc';
 
 /**
  * Adds the oidc middleware to add oauth authentication
  */
 export class OidcMiddleware {
 
-  public enableFor(server: Application): void {
+  public enableFor(app: Application): void {
     const loginUrl: string = config.get('services.idam.authorizationURL');
-    const tokenUrl: string = config.get('services.idam.tokenURL');
     const clientId: string = config.get('services.idam.clientID');
-    const clientSecret: string = config.get('services.idam.clientSecret');
     const redirectUri: string = config.get('services.idam.callbackURL');
 
-    server.get('/login', (req: Request, res) => {
+    app.get('/login', (req: Request, res) => {
       res.redirect(loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri));
     });
 
-    server.get('/oauth2/callback', async (req: Request, res: Response) => {
+    app.get('/oauth2/callback', async (req: AppRequest, res: Response) => {
+      console.info('INSIDE CALLBACK ROUTE');
       if (typeof req.query.code === 'string') {
-        await Axios.post(
-          tokenUrl,
-          `client_id=${clientId}&client_secret=${clientSecret}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(redirectUri)}&code=${encodeURIComponent(req.query.code as string)}`,
-          {
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-          },
-        );
+        console.info('INSIDE IF STMT');
+        console.info(`req.query.code: ${req.query.code}`);
+        // req.session.user = await getUserDetails(redirectUri, req.query.code);
+        const user: UserDetails = await getUserDetails(redirectUri, req.query.code);
+        console.info(JSON.stringify(user));
+        // req.session.save(() => ...);
         res.redirect('/info');
-      }else {
+      } else {
         res.redirect('/login');
       }
     });
+
+    // app.use((req: AppRequest, res: Response, next: NextFunction) => {
+    //   next();
+    //   if (req.session.user) {
+    //     const roles = req.session.user?.roles;
+    //     if (roles && roles.includes('civil-citizen')){
+    //       return next();
+    //     }
+    //   }
+    // });
   }
 }

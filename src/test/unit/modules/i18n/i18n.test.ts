@@ -6,7 +6,7 @@ const {app} = require('../../../../main/app');
 describe('i18n test - Dashboard', () => {
 
   beforeEach(() => {
-    nock('http://localhost:8765')
+    nock('http://localhost:4000')
       .get('/cases')
       .reply(200, []);
   });
