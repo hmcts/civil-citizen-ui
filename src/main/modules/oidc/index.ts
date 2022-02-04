@@ -1,6 +1,6 @@
-import {Application, Request, Response} from 'express';
+import {Application, NextFunction, Request, Response} from 'express';
 import config from 'config';
-import {AppRequest, UserDetails} from '../../common/models/AppRequest';
+import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 
 /**
@@ -18,28 +18,34 @@ export class OidcMiddleware {
     });
 
     app.get('/oauth2/callback', async (req: AppRequest, res: Response) => {
-      console.info('INSIDE CALLBACK ROUTE');
       if (typeof req.query.code === 'string') {
-        console.info('INSIDE IF STMT');
-        console.info(`req.query.code: ${req.query.code}`);
-        // req.session.user = await getUserDetails(redirectUri, req.query.code);
-        const user: UserDetails = await getUserDetails(redirectUri, req.query.code);
-        console.info(JSON.stringify(user));
-        // req.session.save(() => ...);
-        res.redirect('/info');
+        req.session.user = await getUserDetails(redirectUri, req.query.code);
+        req.session.save(() => {
+          if (req.session.user?.roles?.includes('civil-citizen')) {
+            return res.redirect('/dashboard');
+          }
+          return res.render('unauthorised');
+        });
       } else {
-        res.redirect('/login');
+        res.redirect('/');
       }
     });
 
-    // app.use((req: AppRequest, res: Response, next: NextFunction) => {
-    //   next();
-    //   if (req.session.user) {
-    //     const roles = req.session.user?.roles;
-    //     if (roles && roles.includes('civil-citizen')){
-    //       return next();
-    //     }
-    //   }
-    // });
+    app.get('/logout', (req: AppRequest, res: Response) => {
+      req.session.user = undefined;
+      res.redirect('/');
+    });
+
+    app.use((req: AppRequest, res: Response, next: NextFunction) => {
+
+      if (req.session.user) {
+        if (req.session?.user?.roles?.includes('civil-citizen')) {
+          return next();
+        }
+        return res.redirect('/unauthorised');
+      }
+      res.redirect('/login');
+
+    });
   }
 }

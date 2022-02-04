@@ -1,6 +1,5 @@
 import { Request } from 'express';
 import { Session } from 'express-session';
-import type { LoggerInstance } from 'winston';
 import { Claim } from './claim';
 
 export interface AppRequest<T = Partial<Claim>> extends Request {
@@ -8,14 +7,12 @@ export interface AppRequest<T = Partial<Claim>> extends Request {
   locals: {
     env: string;
     lang: string;
-    logger: LoggerInstance;
   };
   body: T;
 }
 
 export interface AppSession extends Session {
   user: UserDetails;
-  isApplicant2: boolean;
   lang: string | undefined;
 }
 
