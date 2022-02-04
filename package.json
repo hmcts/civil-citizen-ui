@@ -91,7 +91,7 @@
     "nock": "^13.2.1",
     "nodemon": "^2.0.15",
     "pa11y": "^6.0.1",
-    "playwright": "^1.17.2",
+    "playwright": "^1.18.1",
     "request": "^2.88.0",
     "sass": "^1.49.0",
     "sass-lint": "^1.13.1",
@@ -108,7 +108,7 @@
     "webdriverio": "^7.16.13",
     "webpack": "^5.67.0",
     "webpack-cli": "^4.9.2",
-    "webpack-dev-middleware": "^5.2.2",
+    "webpack-dev-middleware": "^5.3.1",
     "webpack-node-externals": "^3.0.0"
   },
   "resolutions": {
