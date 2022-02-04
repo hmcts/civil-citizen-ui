@@ -1,7 +1,7 @@
 import {Application, Request, Response} from 'express';
 import Axios from 'axios';
 import config from 'config';
-
+import {SIGN_IN_URL,CALLBACK_URL,DASHBOARD} from '../../routes/urls';
 /**
  * Adds the oidc middleware to add oauth authentication
  */
@@ -14,11 +14,11 @@ export class OidcMiddleware {
     const clientSecret: string = config.get('services.idam.clientSecret');
     const redirectUri: string = config.get('services.idam.callbackURL');
 
-    server.get('/login', (req: Request, res) => {
+    server.get(SIGN_IN_URL, (req: Request, res) => {
       res.redirect(loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri));
     });
 
-    server.get('/oauth2/callback', async (req: Request, res: Response) => {
+    server.get(CALLBACK_URL, async (req: Request, res: Response) => {
       if (typeof req.query.code === 'string') {
         await Axios.post(
           tokenUrl,
@@ -30,9 +30,9 @@ export class OidcMiddleware {
             },
           },
         );
-        res.redirect('/info');
+        res.redirect(DASHBOARD);
       }else {
-        res.redirect('/login');
+        res.redirect(SIGN_IN_URL);
       }
     });
   }

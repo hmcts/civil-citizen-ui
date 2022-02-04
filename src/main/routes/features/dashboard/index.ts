@@ -1,11 +1,11 @@
 import * as express from 'express';
-import {CivilServiceClient} from '../../../app/client/civilServiceClient';
+//import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import {Claim} from '../../../common/models/claim';
-import config from 'config';
+import {DASHBOARD} from '../../urls';
+//import config from 'config';
 
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+//const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+//const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderPage(res: express.Response, claimsAsClaimant: Claim[], claimDraftSaved: boolean,
   claimsAsDefendant: Claim[], responseDraftSaved: boolean,
@@ -23,16 +23,13 @@ function renderPage(res: express.Response, claimsAsClaimant: Claim[], claimDraft
 
 const router = express.Router();
 
-router.get('/dashboard', async function (req, res) {
-
+router.get(DASHBOARD, async function (req, res) {
   const claimDraftSaved = false;
   const responseDraftSaved = false;
   const paginationArgumentClaimant: object = undefined;
   const paginationArgumentDefendant: object = undefined;
-
   const claimsAsClaimant: Claim[] = [];
-  const claimsAsDefendant: Claim[] = await civilServiceClient.retrieveByDefendantId();
-
+  const claimsAsDefendant: Claim[] = [];//await civilServiceClient.retrieveByDefendantId();
   renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
 
 });
