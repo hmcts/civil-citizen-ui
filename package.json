@@ -28,7 +28,7 @@
     "@hmcts/nodejs-healthcheck": "^1.7.0",
     "@hmcts/nodejs-logging": "^3.0.2",
     "@hmcts/properties-volume": "^0.0.13",
-    "@types/config": "^0.0.40",
+    "@types/config": "^0.0.41",
     "@types/cookie-parser": "^1.4.2",
     "@types/csurf": "^1.9.36",
     "@types/es6-promisify": "^6.0.0",
