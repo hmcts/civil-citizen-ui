@@ -1,5 +1,5 @@
 import {Claim} from '../../common/models/claim';
-import Axios, {AxiosInstance, AxiosResponse} from 'axios';
+import Axios, {AxiosInstance,AxiosResponse} from 'axios';
 
 export class CivilServiceClient {
   client: AxiosInstance;
@@ -11,7 +11,6 @@ export class CivilServiceClient {
   }
 
   async retrieveByDefendantId(): Promise<Claim[]> {
-
     const response: AxiosResponse<object> = await this.client.get('/cases');
     const objects: Claim[] = response.data as Claim[];
     const claims: Claim[] = [];
