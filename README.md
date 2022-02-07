@@ -10,7 +10,7 @@
 
 ### Prerequisites
 
-Running the application requires the following tools to be installed in your environment:
+Running the application requires the following tools  to be installed in your environment:
 
   * [Node.js](https://nodejs.org/) v14.0.0 or later
   * [yarn](https://yarnpkg.com/)
