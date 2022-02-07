@@ -5,7 +5,6 @@ import express from 'express';
 import session from 'express-session';
 import { Helmet } from './modules/helmet';
 import * as path from 'path';
-import favicon from 'serve-favicon';
 import {v4} from 'uuid';
 import { HTTPError } from 'HttpError';
 import { Nunjucks } from './modules/nunjucks';
@@ -51,7 +50,6 @@ new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
 new OidcMiddleware().enableFor(app);
 
-app.use(favicon(path.join(__dirname, '/public/img/favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
