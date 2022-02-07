@@ -3,7 +3,7 @@ import config from 'config';
 import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 
-import {SIGN_IN_URL,SIGN_OUT_URL, CALLBACK_URL, DASHBOARD_URL, ROOT, UNAUTHORISED} from '../../routes/urls';
+import {SIGN_IN_URL,SIGN_OUT_URL, CALLBACK_URL, DASHBOARD_URL, ROOT_URL, UNAUTHORISED_URL} from '../../routes/urls';
 /**
  * Adds the oidc middleware to add oauth authentication
  */
@@ -28,13 +28,13 @@ export class OidcMiddleware {
           return res.render('unauthorised');
         });
       } else {
-        res.redirect(ROOT);
+        res.redirect(ROOT_URL);
       }
     });
 
     app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
       req.session.user = undefined;
-      res.redirect(ROOT);
+      res.redirect(ROOT_URL);
     });
 
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
@@ -43,7 +43,7 @@ export class OidcMiddleware {
         if (req.session?.user?.roles?.includes('civil-citizen')) {
           return next();
         }
-        return res.redirect(UNAUTHORISED);
+        return res.redirect(UNAUTHORISED_URL);
       }
       res.redirect(SIGN_IN_URL);
 

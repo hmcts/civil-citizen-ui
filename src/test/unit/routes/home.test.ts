@@ -2,6 +2,7 @@ import request from 'supertest';
 
 import {app} from '../../../main/app';
 import nock from 'nock';
+import config from 'config';
 
 const agent = request.agent(app);
 
@@ -18,7 +19,7 @@ function authenticate() {
 // TODO: replace this sample test with proper route tests for your application
 describe('Home page', () => {
 
-  const citizenRoleToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NUb2tlbiI6InRva2VuIiwic3ViIjoianNAdGVzdC5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiU21pdGgiLCJ1aWQiOiIxMjMiLCJyb2xlcyI6WyJjaXZpbC1jaXRpemVuIl19.Ra3lo2bgl_mmiK8tHMVpBNf6mOTXDXUturb4Wy9ZbJc';
+  const citizenRoleToken: string = config.get('citizenRoleToken');
 
   beforeEach(() => {
     nock('http://localhost:5000')

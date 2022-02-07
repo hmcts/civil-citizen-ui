@@ -1,4 +1,5 @@
 import express from 'express';
+import config from 'config';
 
 const request = require('supertest');
 const nock = require('nock');
@@ -18,7 +19,7 @@ function authenticate() {
 
 describe('i18n test - Dashboard', () => {
 
-  const citizenRoleToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NUb2tlbiI6InRva2VuIiwic3ViIjoianNAdGVzdC5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiU21pdGgiLCJ1aWQiOiIxMjMiLCJyb2xlcyI6WyJjaXZpbC1jaXRpemVuIl19.Ra3lo2bgl_mmiK8tHMVpBNf6mOTXDXUturb4Wy9ZbJc';
+  const citizenRoleToken: string = config.get('citizenRoleToken');
 
   beforeEach(() => {
     nock('http://localhost:4000')
