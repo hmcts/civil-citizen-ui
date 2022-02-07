@@ -1,6 +1,4 @@
 import { fail } from 'assert';
-import config from 'config';
-import nock from 'nock';
 const pa11y = require('pa11y');
 import * as supertest from 'supertest';
 import { app } from '../../main/app';
@@ -18,11 +16,9 @@ class PallyIssue {
   type: string;
   typeCode: number;
 }
-beforeAll(async () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  nock(config.get('services.idam.tokenURL'))
-    .post('/o/token')
-    .reply(200, {id_token: citizenRoleToken});
+
+beforeAll((done /* call it or remove it*/) => {
+  done(); // calling it
 });
 function ensurePageCallWillSucceed(url: string): Promise<void> {
   return agent.get(url).then((res: supertest.Response) => {
