@@ -66,7 +66,7 @@ function expectNoErrors(messages: PallyIssue[]): void {
 }
 
 function testAccessibility(url: string): void {
-  describe(`Page ${url}`, async () => {
+  describe(`Page ${url}`, () => {
     const citizenRoleToken: string = config.get('citizenRoleToken');
     beforeEach(() => {
       nock('http://localhost:5000')
