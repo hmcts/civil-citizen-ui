@@ -1,6 +1,7 @@
 const request = require('supertest');
 const { app } = require('../main/app');
 const nock = require('nock');
+const config = require('config');
 
 const agent = request.agent(app);
 
@@ -16,8 +17,7 @@ function authenticate() {
 // TODO: replace this sample test with proper smoke tests later
 describe('Dummy Smoke test - Home page', () => {
   describe('on GET', () => {
-    const citizenRoleToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NUb2tlbiI6InRva2VuIiwic3ViIjoianNAdGVzdC5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiU21pdGgiLCJ1aWQiOiIxMjMiLCJyb2xlcyI6WyJjaXZpbC1jaXRpemVuIl19.Ra3lo2bgl_mmiK8tHMVpBNf6mOTXDXUturb4Wy9ZbJc';
-
+    const citizenRoleToken = config.get('citizenRoleToken');
     beforeEach(() => {
       nock('http://localhost:5000')
         .post('/o/token')

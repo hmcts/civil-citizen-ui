@@ -2,6 +2,7 @@ import { fail } from 'assert';
 import * as supertest from 'supertest';
 import { app } from '../../main/app';
 import request from 'supertest';
+import config from 'config';
 
 const pa11y = require('pa11y');
 const nock = require('nock');
@@ -66,8 +67,7 @@ function expectNoErrors(messages: PallyIssue[]): void {
 
 function testAccessibility(url: string): void {
   describe(`Page ${url}`, async () => {
-    const citizenRoleToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NUb2tlbiI6InRva2VuIiwic3ViIjoianNAdGVzdC5jb20iLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiU21pdGgiLCJ1aWQiOiIxMjMiLCJyb2xlcyI6WyJjaXZpbC1jaXRpemVuIl19.Ra3lo2bgl_mmiK8tHMVpBNf6mOTXDXUturb4Wy9ZbJc';
-
+    const citizenRoleToken: string = config.get('citizenRoleToken');
     beforeEach(() => {
       nock('http://localhost:5000')
         .post('/o/token')
