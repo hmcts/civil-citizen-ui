@@ -42,19 +42,19 @@ function runPally(url: string): Pa11yResult {
   });
 }
 
-/*function expectNoErrors(messages: PallyIssue[]): void {
+function expectNoErrors(messages: PallyIssue[]): void {
   const errors = messages.filter(m => m.type === 'error');
   if (errors.length > 0) {
     const errorsAsJson = `${JSON.stringify(errors, null, 2)}`;
     fail(`There are accessibility issues: \n${errorsAsJson}\n`);
   }
-}*/
+}
 
 describe.each(urlsNoSignOut)('Page %s', url => {
   test('should have no accessibility errors', async () => {
     await ensurePageCallWillSucceed(url);
     const result = await runPally(url);
     expect(result.issues).toEqual(expect.any(Array));
-    //expectNoErrors(result.issues);
+    expectNoErrors(result.issues);
   });
 });
