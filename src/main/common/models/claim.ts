@@ -6,6 +6,7 @@ export class Claim {
   applicant1: Individual;
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
+  detailsOfClaim: string;
 
   formattedResponseDeadline(): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).format('D MMMM YYYY') : '';

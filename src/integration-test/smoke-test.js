@@ -1,4 +1,3 @@
-const { expect } = require('chai');
 const request = require('supertest');
 
 const { app } = require('../main/app');
@@ -10,8 +9,8 @@ describe('Dummy Smoke test - Home page', () => {
       await request(app)
         .get('/')
         .expect((res) => {
-          expect(res.status).to.equal(200);
-          expect(res.text).to.contain('Default page template');
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Default page template');
         });
     });
   });

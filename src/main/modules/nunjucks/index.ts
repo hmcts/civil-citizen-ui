@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { Express } from 'express';
 import { configure } from 'nunjucks';
+import * as numeral from '../../common/utils/currencyFormat';
 import { i18n, TOptions } from 'i18next';
 
 const packageDotJson = require('../../../../package.json');
@@ -35,8 +36,13 @@ export class Nunjucks {
     );
     const nunjucksEnv = configure(
       [join(__dirname, '..', '..', 'views'),
+        join(__dirname, '..', '..', 'common'),
+        join(__dirname, '..', '..', 'features'),
+        join(__dirname, '..', '..', 'views', 'macro'),
+        join(__dirname, '..', '..', 'views', 'includes'),
+        join(__dirname, '..', '..', 'views', 'macro', 'back-link'),
         govUkFrontendPath,
-        join(__dirname, '..', '..', '..', '..', 'node_modules', '@hmcts'),
+        join(__dirname, '..', '..', '..', '..', 'node_modules', '@hmcts', 'civil-citizen-ui', 'macros'),
       ],
       {
         autoescape: true,
@@ -45,9 +51,12 @@ export class Nunjucks {
       },
     );
 
+    const currencyFormat = (value: number) => numeral.default(value);
+
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
+    nunjucksEnv.addFilter('currencyFormat', currencyFormat);
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
 
     app.use((req, res, next) => {
