@@ -3,7 +3,7 @@ import config from 'config';
 import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 
-import {SIGN_IN_URL,SIGN_OUT_URL, CALLBACK_URL, DASHBOARD, ROOT, UNAUTHORISED} from 'routes/urls';
+import {SIGN_IN_URL,SIGN_OUT_URL, CALLBACK_URL, DASHBOARD_URL, ROOT, UNAUTHORISED} from 'routes/urls';
 /**
  * Adds the oidc middleware to add oauth authentication
  */
@@ -23,9 +23,9 @@ export class OidcMiddleware {
         req.session.user = await getUserDetails(redirectUri, req.query.code);
         req.session.save(() => {
           if (req.session.user?.roles?.includes('civil-citizen')) {
-            return res.redirect(DASHBOARD);
+            return res.redirect(DASHBOARD_URL);
           }
-          return res.render(UNAUTHORISED);
+          return res.render('unauthorised');
         });
       } else {
         res.redirect(ROOT);
