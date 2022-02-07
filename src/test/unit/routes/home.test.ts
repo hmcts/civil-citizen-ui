@@ -1,7 +1,7 @@
 import request from 'supertest';
 
 import {app} from '../../../main/app';
-import nock from 'nock';
+const nock = require('nock');
 
 const agent = request.agent(app);
 
@@ -13,7 +13,6 @@ function authenticate() {
         expect(res.status).toBe(302);
       });
 }
-
 
 // TODO: replace this sample test with proper route tests for your application
 describe('Home page', () => {
