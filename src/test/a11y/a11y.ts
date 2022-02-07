@@ -1,29 +1,15 @@
 import { fail } from 'assert';
+import config from 'config';
+import nock from 'nock';
+const pa11y = require('pa11y');
 import * as supertest from 'supertest';
 import { app } from '../../main/app';
-import request from 'supertest';
-import config from 'config';
-
-const pa11y = require('pa11y');
-const nock = require('nock');
-
-const agent = request.agent(app);
-
-function authenticate() {
-  return async () =>
-    agent.get('/oauth2/callback')
-      .query('code=ABC')
-      .then((res) => {
-        expect(res.status).toBe(302);
-      });
-}
-
+const agent = supertest.agent(app);
 class Pa11yResult {
   documentTitle: string;
   pageUrl: string;
   issues: PallyIssue[];
 }
-
 class PallyIssue {
   code: string;
   context: string;
@@ -32,14 +18,15 @@ class PallyIssue {
   type: string;
   typeCode: number;
 }
-
-beforeAll((done /* call it or remove it*/) => {
-  done(); // calling it
+beforeAll(async () => {
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+  nock(config.get('services.idam.tokenURL'))
+    .post('/o/token')
+    .reply(200, {id_token: citizenRoleToken});
 });
-
 function ensurePageCallWillSucceed(url: string): Promise<void> {
   return agent.get(url).then((res: supertest.Response) => {
-    if (res.redirect) {
+    if (res.redirect && res.get('Location') === 'login') {
       throw new Error(
         `Call to ${url} resulted in a redirect to ${res.get('Location')}`,
       );
@@ -49,32 +36,20 @@ function ensurePageCallWillSucceed(url: string): Promise<void> {
     }
   });
 }
-
 function runPally(url: string): Pa11yResult {
   return pa11y(url, {
     hideElements: '.govuk-footer__licence-logo, .govuk-header__logotype-crown',
   });
 }
-
 function expectNoErrors(messages: PallyIssue[]): void {
   const errors = messages.filter(m => m.type === 'error');
-
   if (errors.length > 0) {
     const errorsAsJson = `${JSON.stringify(errors, null, 2)}`;
     fail(`There are accessibility issues: \n${errorsAsJson}\n`);
   }
 }
-
 function testAccessibility(url: string): void {
   describe(`Page ${url}`, () => {
-    const citizenRoleToken: string = config.get('citizenRoleToken');
-    beforeEach(() => {
-      nock('http://localhost:5000')
-        .post('/o/token')
-        .reply(200, {id_token: citizenRoleToken});
-    });
-
-    test('Authenticate Callback', authenticate());
     test('should have no accessibility errors', done => {
       ensurePageCallWillSucceed(url)
         .then(() => runPally(agent.get(url).url))
@@ -86,10 +61,8 @@ function testAccessibility(url: string): void {
     });
   });
 }
-
 describe('Accessibility', () => {
   // testing accessibility of the home page
   testAccessibility('/');
-  // testAccessibility('/case/1643033241924739/response/claim-details');
   // TODO: include each path of your application in accessibility checks
 });
