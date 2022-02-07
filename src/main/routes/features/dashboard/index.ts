@@ -2,7 +2,7 @@ import * as express from 'express';
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import {Claim} from '../../../common/models/claim';
 import config from 'config';
-import {DASHBOARD_URL} from 'routes/urls';
+import {DASHBOARD_URL} from '../../urls';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 
