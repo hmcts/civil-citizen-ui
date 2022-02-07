@@ -1,4 +1,4 @@
-//import { fail } from 'assert';
+import { fail } from 'assert';
 const pa11y = require('pa11y');
 import * as supertest from 'supertest';
 import { app } from '../../main/app';
