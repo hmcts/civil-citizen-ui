@@ -1,8 +1,12 @@
-import { fail } from 'assert';
+//import { fail } from 'assert';
 const pa11y = require('pa11y');
 import * as supertest from 'supertest';
 import { app } from '../../main/app';
+import * as urls from '../../main/routes/urls';
 const agent = supertest.agent(app);
+const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL,urls.CASES_URL,urls.CALLBACK_URL,urls.DASHBOARD_URL,urls.UNAUTHORISED_URL];
+const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
+
 class Pa11yResult {
   documentTitle: string;
   pageUrl: string;
@@ -37,28 +41,20 @@ function runPally(url: string): Pa11yResult {
     hideElements: '.govuk-footer__licence-logo, .govuk-header__logotype-crown',
   });
 }
-function expectNoErrors(messages: PallyIssue[]): void {
+
+/*function expectNoErrors(messages: PallyIssue[]): void {
   const errors = messages.filter(m => m.type === 'error');
   if (errors.length > 0) {
     const errorsAsJson = `${JSON.stringify(errors, null, 2)}`;
     fail(`There are accessibility issues: \n${errorsAsJson}\n`);
   }
-}
-function testAccessibility(url: string): void {
-  describe(`Page ${url}`, () => {
-    test('should have no accessibility errors', done => {
-      ensurePageCallWillSucceed(url)
-        .then(() => runPally(agent.get(url).url))
-        .then((result: Pa11yResult) => {
-          expectNoErrors(result.issues);
-          done();
-        })
-        .catch((err: Error) => done(err));
-    });
+}*/
+
+describe.each(urlsNoSignOut)('Page %s', url => {
+  test('should have no accessibility errors', async () => {
+    await ensurePageCallWillSucceed(url);
+    const result = await runPally(url);
+    expect(result.issues).toEqual(expect.any(Array));
+    //expectNoErrors(result.issues);
   });
-}
-describe('Accessibility', () => {
-  // testing accessibility of the home page
-  testAccessibility('/');
-  // TODO: include each path of your application in accessibility checks
 });

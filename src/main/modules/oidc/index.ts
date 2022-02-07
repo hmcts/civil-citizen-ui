@@ -4,6 +4,7 @@ import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 
 import {SIGN_IN_URL,SIGN_OUT_URL, CALLBACK_URL, DASHBOARD_URL, ROOT_URL, UNAUTHORISED_URL} from '../../routes/urls';
+
 /**
  * Adds the oidc middleware to add oauth authentication
  */
@@ -37,7 +38,9 @@ export class OidcMiddleware {
       req.session.user = undefined;
       res.redirect(ROOT_URL);
     });
-
+    app.get(ROOT_URL, (req, res) => {
+      return res.render('home');
+    });
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
 
       if (req.session.user) {
