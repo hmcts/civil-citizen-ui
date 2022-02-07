@@ -13,6 +13,7 @@ services:
     clientID: 'civil_citizen_ui'
     clientSecret: 'citizen-ui-secret'
     callbackURL: 'https://localhost:3001/oauth2/callback'
+    citizenRole: 'civil-citizen'
 health:
   timeout: 5000
   deadline: 15000
