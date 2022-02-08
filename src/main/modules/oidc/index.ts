@@ -38,7 +38,7 @@ export class OidcMiddleware {
       req.session.user = undefined;
       res.redirect(ROOT_URL);
     });
-    app.get(ROOT_URL, (req, res) => {
+    app.get(ROOT_URL, (req: AppRequest, res: Response) => {
       return res.render('home');
     });
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
