@@ -6,7 +6,7 @@ if (!process.env.TEST_PASSWORD) {
 }
 
 export const config = {
-  TestUrl: process.env.TEST_URL || 'http://localhost:3001/home',
+  TestUrl: process.env.TEST_URL || 'http://localhost:3001',
   TestHeadlessBrowser: process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true,
   TestSlowMo: 250,
   WaitForTimeout: 10000,

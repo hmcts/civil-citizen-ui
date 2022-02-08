@@ -1,9 +1,9 @@
-import {Application, NextFunction, Request, Response} from 'express';
+import {Application, NextFunction,Response} from 'express';
 import config from 'config';
 import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 
-import {SIGN_IN_URL,SIGN_OUT_URL, CALLBACK_URL, DASHBOARD_URL, ROOT_URL, UNAUTHORISED_URL} from '../../routes/urls';
+import {SIGN_IN_URL, UNAUTHORISED_URL,SIGN_OUT_URL,CALLBACK_URL,DASHBOARD_URL,ROOT_URL} from '../../routes/urls';
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -15,9 +15,10 @@ export class OidcMiddleware {
     const clientId: string = config.get('services.idam.clientID');
     const redirectUri: string = config.get('services.idam.callbackURL');
     const citizenRole: string = config.get('services.idam.citizenRole');
+    const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri);
 
-    app.get(SIGN_IN_URL, (req: Request, res) => {
-      res.redirect(loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri));
+    app.get(SIGN_IN_URL, (req: AppRequest, res: Response) => {
+      res.redirect(idamUrlLogin);
     });
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
@@ -36,9 +37,10 @@ export class OidcMiddleware {
 
     app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
       req.session.user = undefined;
-      res.redirect(ROOT_URL);
+      res.redirect(SIGN_IN_URL);
     });
-    app.get(ROOT_URL, (req: AppRequest, res: Response) => {
+
+    app.get('/', (req: AppRequest, res: Response) => {
       return res.render('home');
     });
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
