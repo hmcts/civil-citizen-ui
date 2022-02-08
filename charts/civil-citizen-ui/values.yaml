@@ -2,15 +2,15 @@ nodejs:
   applicationPort: 3001
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
   image: hmctspublic.azurecr.io/civil/citizen-ui:latest
-#  Uncomment once the vault containing the app insights key has been set up
 #  keyVaults:
-#    civil:
+#    civil-shared:
+#      resourceGroup: civil-shared
 #      secrets:
 #        - AppInsightsInstrumentationKey
   environment:
-    TEST_PROPERTY: test-value-from-values-yaml
     IDAM_WEB_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login"
     IDAM_API_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token"
+    IDAM_CLIENT_ID: "civil_citizen_ui"
     OAUTH_CLIENT_REDIRECT: "https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback"
   autoscaling:
     enabled: true
