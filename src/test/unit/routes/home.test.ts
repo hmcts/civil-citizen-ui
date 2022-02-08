@@ -30,7 +30,7 @@ describe('Home page', () => {
     test('Authenticate Callback', authenticate());
     test('should return sample home page', async () => {
       await agent
-        .get('/')
+        .get('/home')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Default page template');
