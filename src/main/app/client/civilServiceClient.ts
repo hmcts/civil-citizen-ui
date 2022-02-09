@@ -1,5 +1,6 @@
 import {Claim} from '../../common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
+import { AssertionError } from 'chai';
 
 export class CivilServiceClient {
   client: AxiosInstance;
@@ -28,11 +29,11 @@ export class CivilServiceClient {
 
   async retrieveClaimDetails(claimId: string): Promise<Claim> {
     const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`);
-    if (response.data) {
-      const objects = response.data as Claim;
-      return objects;
-    } else {
-      throw new Error("Shouldn't be reachable");
+    if (!response.data) {
+      throw new AssertionError('Claim details not available.');
     }
+
+    const claim = response.data as Claim;
+    return claim;
   }
 }
