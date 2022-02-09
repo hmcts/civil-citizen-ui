@@ -43,7 +43,7 @@
     "@types/serve-favicon": "^2.5.1",
     "@types/uuid": "^8.3.4",
     "@wdio/sauce-service": "^7.16.13",
-    "applicationinsights": "^2.2.0",
+    "applicationinsights": "^2.2.1",
     "axios": "^0.25.0",
     "config": "^3.3.2",
     "cookie-parser": "^1.4.6",
