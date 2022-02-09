@@ -10,10 +10,12 @@
       <p class="govuk-body">{{ t("We will only call you if we need more information about this claim.") }}</p>
       <p class="govuk-body">{{ t("We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.") }}</p>
       <form method="post">
+        {% set error = form.errorFor('telephoneNumber') %}
+        {% if error %}<span class="govuk-form-group--error">{{ t(error) }}</span>{% endif %}
         <div class="govuk-form-group">
-          <label class="govuk-label" for="telephone-number">
+          <label class="govuk-label" for="telephoneNumber">
           </label>
-          <input class="govuk-input govuk-input--width-20" id="telephone-number"  name="telephone-number" type="text" inputmode="numeric" autocomplete="tel" pattern="[0-9]*" required>
+          <input class="govuk-input govuk-input--width-20" id="telephoneNumber"  name="telephoneNumber" type="text" inputmode="numeric" autocomplete="tel">
         </div>
         <div class="govuk-form-group">
           {{ saveAndContinueButton() }}
