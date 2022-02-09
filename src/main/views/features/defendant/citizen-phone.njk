@@ -1,0 +1,31 @@
+{% extends "claim-details-tpl.njk" %}
+{# % from "crsf.njk" import csrf %#}
+{% from "buttons.njk" import saveAndContinueButton %}
+{% from "support.njk" import contactUsForHelp %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <h1 class="govuk-heading-l">Enter a phone number (optional)</h1>
+      <p class="govuk-body">{{ t("We will only call you if we need more information about this claim.") }}</p>
+      <p class="govuk-body">{{ t("We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.") }}</p>
+      <form method="post">
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="telephone-number">
+          </label>
+          <input class="govuk-input govuk-input--width-20" id="telephone-number"  name="telephone-number" type="text" inputmode="numeric" autocomplete="tel" pattern="[0-9]*" required>
+        </div>
+        <div class="govuk-form-group">
+          {{ saveAndContinueButton() }}
+        </div>
+      </form>
+    </div>
+  </div>
+  {% block contactForHelp %}
+    {% include "includes/contact-us-for-help.njk" %}
+    {% if antennawebChat %}
+      <button class="chat-button">Talk to an Agent</button>
+    {% endif %}
+  {% endblock %}
+{% endblock %}
+
