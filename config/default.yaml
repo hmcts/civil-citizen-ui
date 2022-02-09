@@ -11,9 +11,10 @@ services:
     authorizationURL: 'http://localhost:3501/login'
     tokenURL: 'http://localhost:5000/o/token'
     clientID: 'civil_citizen_ui'
-    clientSecret: 'Citizen-ui-secret'
-    callbackURL: 'https://localhost:3001/oauth2/callback'
+    clientSecret: 'citizen-ui-secret'
+    callbackURL: 'http://localhost:3001/oauth2/callback'
     citizenRole: 'citizen'
+    scope: '&scope=profile%20openid%20roles%20manage-user%20create-user%20search-user'
 health:
   timeout: 5000
   deadline: 15000

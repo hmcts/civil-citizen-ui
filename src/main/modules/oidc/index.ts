@@ -3,7 +3,7 @@ import config from 'config';
 import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 
-import {SIGN_IN_URL, UNAUTHORISED_URL,SIGN_OUT_URL,CALLBACK_URL,DASHBOARD_URL,ROOT_URL} from '../../routes/urls';
+import {SIGN_IN_URL, UNAUTHORISED_URL, SIGN_OUT_URL, CALLBACK_URL, ROOT_URL, DASHBOARD_URL} from '../../routes/urls';
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -15,7 +15,8 @@ export class OidcMiddleware {
     const clientId: string = config.get('services.idam.clientID');
     const redirectUri: string = config.get('services.idam.callbackURL');
     const citizenRole: string = config.get('services.idam.citizenRole');
-    const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri);
+    const scope: string = config.get('services.idam.scope');
+    const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri)+scope;
 
     app.get(SIGN_IN_URL, (req: AppRequest, res: Response) => {
       res.redirect(idamUrlLogin);
