@@ -11,9 +11,9 @@ services:
     authorizationURL: 'http://localhost:3501/login'
     tokenURL: 'http://localhost:5000/o/token'
     clientID: 'civil_citizen_ui'
-    clientSecret: 'citizen-ui-secret'
+    clientSecret: 'Citizen-ui-secret'
     callbackURL: 'https://localhost:3001/oauth2/callback'
-    citizenRole: 'civil-citizen'
+    citizenRole: 'citizen'
 health:
   timeout: 5000
   deadline: 15000
