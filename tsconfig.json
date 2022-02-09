@@ -4,15 +4,11 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2020",
-    "strict": true,
-    "noImplicitAny": false,
-    "noImplicitThis": false,
+    "target": "es6",
+    "noImplicitAny": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "experimentalDecorators": true,
-    "useUnknownInCatchVariables": false,
-    "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "lib": [
       "es6",
@@ -21,12 +17,15 @@
     ],
     "baseUrl": "src/main",
     "paths": {
-      "router/*": ["router/*"],
-      "routes/*": ["routes/*"],
+      "router/*": [
+        "router/*"
+      ],
+      "routes/*": [
+        "routes/*"
+      ]
     },
     "typeRoots": [
       "./node_modules/@types"
     ]
-  },
-  "exclude": ["**/*.test.ts", "**/codecept.conf.ts", "**/__mocks__/*"]
+  }
 }

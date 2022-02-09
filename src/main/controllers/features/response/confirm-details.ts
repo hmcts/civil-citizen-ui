@@ -10,7 +10,13 @@ const claim: Claim = new Claim();
 const respondent: Respondent = new Respondent();
 const primaryAddress: PrimaryAddress = new PrimaryAddress();
 
-let errorList: any[] = [];
+
+
+type IErrorList = {
+  [key: string]: string
+};
+
+let errorList: IErrorList[] = [];
 let addressLineOneValidated: object = {};
 let townOrCityValidated: object = {};
 
@@ -34,7 +40,7 @@ const townOrCityObj = {
   autocomplete: 'city',
 };
 
-const isEmpty = (val) => validator.isEmpty(val);
+const isEmpty = (val:string) => validator.isEmpty(val);
 
 const validateField = (formVal: string, errorMsg: string, formName: string, formObject: object) => {
   let formControlValidated: object = {};
@@ -72,7 +78,7 @@ function renderPage(res: express.Response, claimDetails: Claim): void {
   });
 }
 
-function renderYourDetailsPage(res: express.Response, errorList, addressLineOneObj, townOrCityObj, citizenDetails): void {
+function renderYourDetailsPage(res: express.Response, errorList:IErrorList[], addressLineOneObj:object, townOrCityObj:object, citizenDetails:object): void {
   res.render('features/response/your-details', {
     errorList: errorList,
     addressLineOneObj: addressLineOneObj,
@@ -81,12 +87,12 @@ function renderYourDetailsPage(res: express.Response, errorList, addressLineOneO
   });
 }
 
-const getClaimDetails = async (req, res) => {
+const getClaimDetails = async (req:express.Request, res:express.Response) => {
   const claimDetails: Claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
   renderPage(res, claimDetails);
 };
 
-const getCitizenDetails = (req, res) => {
+const getCitizenDetails = (req:express.Request, res:express.Response) => {
   (async () => {
     const draftStoreClient = req.app.locals.draftStoreClient;
 
@@ -106,7 +112,7 @@ const getCitizenDetails = (req, res) => {
   })();
 };
 
-const formHandler = (req, res) => {
+const formHandler = (req:express.Request, res:express.Response) => {
   console.log('REQ BODY', req.body);
   addressLineOneValidated = validateField(req.body.addressLineOne, 'Enter first address line', 'addressLineOne', addressLineOneObj);
   townOrCityValidated = validateField(req.body.city, 'Enter a valid town/city', 'city', townOrCityObj);
