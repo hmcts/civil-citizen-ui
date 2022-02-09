@@ -28,12 +28,11 @@ export class CivilServiceClient {
 
   async retrieveClaimDetails(claimId: string): Promise<Claim> {
     const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`);
-    try {
+    if (response.data) {
       const objects = response.data as Claim;
       return objects;
-    }
-    catch(error) {
-      console.log(error);
+    } else {
+      throw new Error("Shouldn't be reachable");
     }
   }
 }

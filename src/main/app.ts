@@ -11,6 +11,7 @@ import { AppInsights } from './modules/appinsights';
 import { I18Next } from './modules/i18n';
 import { HealthCheck } from './modules/health';
 import routes from './routes/routes';
+import { DraftStoreClient } from './modules/draft-store';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -24,6 +25,7 @@ const i18next = I18Next.enableFor(app);
 
 const logger = Logger.getLogger('app');
 
+new DraftStoreClient().enableFor(app);
 new PropertiesVolume().enableFor(app);
 new AppInsights().enable();
 new Nunjucks(developmentMode, i18next).enableFor(app);

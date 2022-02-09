@@ -1,0 +1,137 @@
+{% extends "claim-details-tpl.njk" %}
+{% set heading = 'Confirm your details' %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../macros/contact-us-for-help.njk" import contactUsForHelp %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        {% if errorList.length > 0 %}
+          <div class="govuk-grid-column-full">
+            {{ govukErrorSummary({
+            titleText: "There was a problem",
+            errorList: errorList
+          }) }}
+          </div>
+        {% endif %}
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">Confirm your details</h1>
+          <p class="govuk-body">Your name and address were provided by the person, business or organisation claiming from you (the
+            claimant).</p>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h2 class="govuk-heading-m">Title</h2>
+          <p class="govuk-body">{{ citizenDetails.respondent1.individualTitle }}</p>
+          <h2 class="govuk-heading-m">First name</h2>
+          <p class="govuk-body">{{ citizenDetails.respondent1.individualFirstName }}</p>
+          <h2 class="govuk-heading-m">Last name</h2>
+          <p class="govuk-body">{{ citizenDetails.respondent1.individualLastName }}</p>
+          <form action="/confirm-your-details" method="post" class="govuk-!-padding-top-4" novalidate>
+            <h2 class="govuk-heading-m">Your address</h2>
+            <p class="govuk-body">If your address is not correct you can change it here. Any changes will be shared with the
+              claimant when you submit your response.</p>
+            {{ govukInput(addressLineOneObj) }}
+            {{ govukInput(
+            {
+                label: {
+                text: ""
+              },
+              classes: "govuk-input--width-20",
+              id: "addressLineTwo",
+              name: "addressLineTwo",
+              value: citizenDetails.respondent1.primaryAddress.AddressLine2
+            }
+            ) }}
+            {{ govukInput(
+            {
+                label: {
+                text: "",
+                isPageHeading: true
+              },
+              classes: "govuk-input--width-20",
+              id: "addressLineThree",
+              name: "addressLineThree",
+              value: citizenDetails.respondent1.primaryAddress.AddressLine3
+            }
+            ) }}
+            {{ govukInput(townOrCityObj) }}
+            {{ govukInput(
+            {
+                label: {
+                text: "Postcode",
+                isPageHeading: true
+              },
+              classes: "govuk-input--width-10",
+              id: "postcode",
+              name: "postcode"
+            }
+            ) }}
+            {% set noHtml %}
+            {% endset -%}
+            {% set differentAddressHtml %}
+            {{ govukInput(
+            {
+                label: {
+                html: "<p>All correspondence will be sent to this address. This is known as an 'address for service'.</p><p>Enter a UK postcode</p>",
+                text: "Enter a UK postcode",
+                isPageHeading: true
+              },
+              classes: "govuk-input--width-10",
+              id: "postcode",
+              name: "postcode"
+            }
+            ) }}
+            {{ govukButton({
+              text: "Find address",
+              classes: "govuk-button--secondary"
+            }) }}
+            <div>
+              <a class="govuk-link" href="#">Enter address manually</a>
+            </div>
+            {% endset -%}
+            <h2 class="govuk-heading-m">Enter address manually</h2>
+            {{ govukRadios({
+              idPrefix: "post-to-this-address",
+              name: "post-to-this-address",
+              fieldset: {
+                legend: {
+                  text: "Would you like correspondence sent to a different address?",
+                  isPageHeading: false
+                }
+              },
+              items: [
+                {
+                  value: "no",
+                  text: "No",
+                  checked: true,
+                  conditional: {
+                    html: noHtml
+                  }
+                },
+                {
+                  value: "yes",
+                  text: "Yes, add a correspondence address",
+                  conditional: {
+                    html: differentAddressHtml
+                  }
+                }
+              ]
+            }) }}
+            {{ govukButton({
+              text: "Save and continue"
+            }) }}
+            {{ contactUsForHelp() }}
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+{% endblock %}
