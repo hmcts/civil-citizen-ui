@@ -1,7 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {# % from "crsf.njk" import csrf %#}
 {% from "buttons.njk" import saveAndContinueButton %}
-{% from "support.njk" import contactUsForHelp %}
+{% from "contact-us-for-help.njk" import contactUsForHelp %}
 
 {% block content %}
   <div class="grid-row">
@@ -19,13 +19,10 @@
           {{ saveAndContinueButton() }}
         </div>
       </form>
+      <div class="govuk-!-display-block">
+        {{ contactUsForHelp() }}
+      </div>
     </div>
   </div>
-  {% block contactForHelp %}
-    {% include "includes/contact-us-for-help.njk" %}
-    {% if antennawebChat %}
-      <button class="chat-button">Talk to an Agent</button>
-    {% endif %}
-  {% endblock %}
 {% endblock %}
 
