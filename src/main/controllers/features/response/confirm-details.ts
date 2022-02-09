@@ -86,7 +86,7 @@ const getClaimDetails = async (req, res) => {
   renderPage(res, claimDetails);
 };
 
-const getYourDetails = (req, res) => {
+const getCitizenDetails = (req, res) => {
   (async () => {
     const draftStoreClient = req.app.locals.draftStoreClient;
 
@@ -140,4 +140,4 @@ const formHandler = (req, res) => {
   }
 };
 
-module.exports = { getClaimDetails, getYourDetails, formHandler, validateField };
+module.exports = { getClaimDetails, getCitizenDetails, formHandler, validateField };
