@@ -22,7 +22,7 @@ describe('i18n test - Dashboard', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
 
   beforeEach(() => {
-    nock('http://localhost:4000')
+    nock('http://localhost:8765')
       .get('/cases')
       .reply(200, []);
     nock('http://localhost:5000')

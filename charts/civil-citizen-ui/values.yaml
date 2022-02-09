@@ -13,7 +13,7 @@ nodejs:
     IDAM_CLIENT_ID: civil_citizen_ui
     OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback
   autoscaling:
-    enabled: true
+    enabled: false
     maxReplicas: 16
     targetCPUUtilizationPercentage: 80
 
