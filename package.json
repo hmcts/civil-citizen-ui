@@ -42,7 +42,7 @@
     "@types/require-directory": "^2.1.1",
     "@types/serve-favicon": "^2.5.1",
     "@types/uuid": "^8.3.4",
-    "@wdio/sauce-service": "^7.16.13",
+    "@wdio/sauce-service": "^7.16.14",
     "applicationinsights": "^2.2.0",
     "axios": "^0.25.0",
     "config": "^3.3.2",
