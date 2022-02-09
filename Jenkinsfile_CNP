@@ -6,6 +6,20 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 
+static Map<String, Object> secret(String secretName, String envVariable) {
+  [$class     : 'AzureKeyVaultSecret',
+   secretType : 'Secret',
+   name       : secretName,
+   envVariable: envVariable
+  ]
+}
+
+def secrets = [
+        'civil-shared-${env}'    :[
+                secret('idam-secret', 'IDAM_SECRET')
+        ]
+]
+
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 withPipeline(type, product, component) {
@@ -31,5 +45,5 @@ withPipeline(type, product, component) {
   after('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
   }
-  
+
 }

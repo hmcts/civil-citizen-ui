@@ -2,6 +2,7 @@ import {CivilServiceClient} from '../../../../main/app/client/civilServiceClient
 
 import axios, {AxiosInstance} from 'axios';
 import {Claim} from '../../../../main/common/models/claim';
+import {CASES_URL} from '../../../../main/routes/urls';
 
 jest.mock('axios');
 
@@ -32,7 +33,7 @@ describe('Civil Service Client', () => {
       baseURL: 'http://localhost',
     });
 
-    expect(mockGet.mock.calls[0][0]).toEqual('/cases');
+    expect(mockGet.mock.calls[0][0]).toEqual(CASES_URL);
     expect(actualClaims.length).toEqual(1);
     expect(actualClaims[0].legacyCaseReference).toEqual('000MC003');
     expect(actualClaims[0].applicant1.individualFirstName).toEqual('Jane');
