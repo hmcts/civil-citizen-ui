@@ -1,6 +1,6 @@
 const path = require('path');
 
-const sourcePath = path.resolve(__dirname, 'src/main/');
+const sourcePath = path.resolve(__dirname, 'src/main/assets/js');
 const govukFrontend = require(path.resolve(__dirname, 'webpack/govukFrontend'));
 const scss = require(path.resolve(__dirname, 'webpack/scss'));
 const HtmlWebpack = require(path.resolve(__dirname, 'webpack/htmlWebpack'));
@@ -15,7 +15,17 @@ module.exports = {
   entry: path.resolve(sourcePath, 'index.ts'),
   mode: devMode ? 'development' : 'production',
   module: {
-    rules: [...scss.rules],
+    rules: [
+      ...scss.rules,
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
   },
   output: {
     path: path.resolve(__dirname, 'src/main/public/'),

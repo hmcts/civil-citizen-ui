@@ -27,5 +27,6 @@
     "typeRoots": [
       "./node_modules/@types"
     ]
-  }
+  },
+  "exclude": ["**/*.test.ts", "**/codecept.conf.ts", "**/__mocks__/*"]
 }
