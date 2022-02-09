@@ -1,7 +1,7 @@
 import * as express from 'express';
-import { ValidationError, Validator } from 'class-validator';
+import {ValidationError, Validator} from 'class-validator';
 
-import { Form } from '../../form/form';
+import {Form} from '../../form/form';
 
 
 type Constructor<T> = { new(): T }
@@ -9,7 +9,7 @@ type Mapper<T> = (value: any) => T
 
 export class FormValidator {
 
-  static requestHandler<T> (modelType: Constructor<T>, modelTypeMapper?: Mapper<T>, validationGroup?: string, actionsWithoutValidation?: string[]): express.RequestHandler {
+  static requestHandler<T>(modelType: Constructor<T>, modelTypeMapper?: Mapper<T>, validationGroup?: string, actionsWithoutValidation?: string[]): express.RequestHandler {
     const validator: Validator = new Validator();
 
     if (!modelTypeMapper) {
@@ -29,7 +29,7 @@ export class FormValidator {
     return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const model: T = modelTypeMapper(req.body);
 
-      const errors: ValidationError[] = isValidationEnabledFor(req) ? await validator.validate(model as unknown as object, { groups: validationGroup !== undefined ? [validationGroup] : [] }) : [];
+      const errors: ValidationError[] = isValidationEnabledFor(req) ? await validator.validate(model as unknown as object, {groups: validationGroup !== undefined ? [validationGroup] : []}) : [];
       const action: object = req.body.action;
 
       req.body = new Form<T>(model, errors, req.body);
