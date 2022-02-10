@@ -22,5 +22,14 @@ describe('Citizen phone number', () => {
           expect(res.text).toContain('There was a problem. Please enter numeric number');
         });
     });
+    test('should not have error oncorrect input', async () => {
+      await request(app)
+        .post('/citizen-phone')
+        .send('telephoneNumber=123')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain('There was a problem. Please enter numeric number');
+        });
+    });
   });
 });
