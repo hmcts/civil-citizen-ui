@@ -12,4 +12,15 @@ describe('Citizen phone number', () => {
         });
     });
   });
+  describe('on POST', () => {
+    test('should return error on incorrect input', async () => {
+      await request(app)
+        .post('/citizen-phone')
+        .send('telephoneNumber=abc')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('There was a problem. Please enter numeric number');
+        });
+    });
+  });
 });
