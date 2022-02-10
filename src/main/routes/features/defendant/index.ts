@@ -20,9 +20,12 @@ router.post('/citizen-phone',
     const model: DefendantDetailsTelephoneNumber = form.model;
     const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(model);
-    if(errors && errors.length>0){
+    if (errors && errors.length > 0){
       const formWithErrors = new Form<DefendantDetailsTelephoneNumber>(model, errors);
       renderView(formWithErrors, res);
+    } else {
+      // temporary to show error removed, should forward to next page in sequence
+      renderView(form, res);
     }
   });
 
