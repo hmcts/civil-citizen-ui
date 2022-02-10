@@ -6,7 +6,8 @@ const validator = require('validator');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-const claim: Claim = new Claim();
+let claim: Claim = new Claim();
+
 const respondent: Respondent = new Respondent();
 const primaryAddress: PrimaryAddress = new PrimaryAddress();
 
@@ -70,7 +71,7 @@ function renderPage(res: express.Response, claimDetails: Claim): void {
   });
 }
 
-function renderYourDetailsPage(res: express.Response, errorList:IErrorList[], addressLineOneObj:object, townOrCityObj:object, citizenDetails:object): void {
+function renderCitizenDetailsPage(res: express.Response, errorList:IErrorList[], addressLineOneObj:object, townOrCityObj:object, citizenDetails:object): void {
   res.render('features/response/your-details', {
     errorList: errorList,
     addressLineOneObj: addressLineOneObj,
@@ -79,19 +80,27 @@ function renderYourDetailsPage(res: express.Response, errorList:IErrorList[], ad
   });
 }
 
-const getClaimDetails = async (req:express.Request, res:express.Response) => {
-  const claimDetails: Claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
-  renderPage(res, claimDetails);
+// -- Retrive Claim
+(async () => {
+  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+})();
+
+// -- Display Claim Details
+const getClaimDetails = async (req:express.Request, res:express.Response)  => {
+  renderPage(res, claim);
 };
 
-const getCitizenDetails = (req:express.Request, res:express.Response) => {
+// -- Display Citizen  Details
+const getCitizenDetails = (req: express.Request, res: express.Response) => {
   (async () => {
-    const draftStoreClient = req.app.locals.draftStoreClient;
 
-    let citizenDetails = await draftStoreClient.get('000CMC001');
+    // -- Retrive from Redis
+    const draftStoreClient = req.app.locals.draftStoreClient;
+    let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
     citizenDetails = JSON.parse(citizenDetails);
     console.log('REDIS:', citizenDetails);
 
+    // Add value to Form input
     const addressInput = {
       ...addressLineOneObj,
       value: citizenDetails ? citizenDetails.respondent1.primaryAddress.AddressLine1 : '',
@@ -100,19 +109,22 @@ const getCitizenDetails = (req:express.Request, res:express.Response) => {
       ...townOrCityObj,
       value: citizenDetails ?  citizenDetails.respondent1.primaryAddress.PostTown : '',
     };
-    renderYourDetailsPage(res, errorList, addressInput, townInput, citizenDetails);
+
+    // -- Render Page
+    renderCitizenDetailsPage(res, errorList, addressInput, townInput, citizenDetails);
   })();
 };
 
+// Save details
 const formHandler = (req:express.Request, res:express.Response) => {
   console.log('REQ BODY', req.body);
   addressLineOneValidated = validateField(req.body.addressLineOne, 'Enter first address line', 'addressLineOne', addressLineOneObj);
   townOrCityValidated = validateField(req.body.city, 'Enter a valid town/city', 'city', townOrCityObj);
   const draftStoreClient = req.app.locals.draftStoreClient;
 
+  // -- If valid save into Redis
   if (!isEmpty(req.body.addressLineOne) && !isEmpty(req.body.city)) {
 
-    claim.legacyCaseReference = '000CMC001';
     respondent.individualTitle = 'Mrs.';
     respondent.individualLastName = 'Richards';
     respondent.individualFirstName = 'Mary';
@@ -128,12 +140,12 @@ const formHandler = (req:express.Request, res:express.Response) => {
       await draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim));
       res.redirect('case/1643033241924739/response/your-dob');
     })();
-  } else {
+  } else { // -- else get existing values and render page with error message
     (async () => {
-      let citizenDetails = await draftStoreClient.get('000CMC001');
+      let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
       citizenDetails = JSON.parse(citizenDetails);
       console.log('REDIS:', citizenDetails);
-      renderYourDetailsPage(res, errorList, addressLineOneValidated, townOrCityValidated, citizenDetails);
+      renderCitizenDetailsPage(res, errorList, addressLineOneValidated, townOrCityValidated, citizenDetails);
     })();
   }
 };
