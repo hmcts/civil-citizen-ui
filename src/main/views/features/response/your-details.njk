@@ -21,23 +21,27 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">Confirm your details</h1>
-          <p class="govuk-body">Your name and address were provided by the person, business or organisation claiming from you (the
-            claimant).</p>
+          <h1 class="govuk-heading-l">{{ t('Confirm your details') }}</h1>
+          <p class="govuk-body">{{ t('Your name and address were provided by the person, business or organisation claiming from you the claimant.') }}</p>
         </div>
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h2 class="govuk-heading-m">Title</h2>
+          <h2 class="govuk-heading-m">{{ t('Title') }}</h2>
           <p class="govuk-body">{{ citizenDetails.respondent1.individualTitle }}</p>
-          <h2 class="govuk-heading-m">First name</h2>
+          <h2 class="govuk-heading-m">{{ t('First name') }}</h2>
           <p class="govuk-body">{{ citizenDetails.respondent1.individualFirstName }}</p>
-          <h2 class="govuk-heading-m">Last name</h2>
+          <h2 class="govuk-heading-m">{{ t('Last name') }}</h2>
           <p class="govuk-body">{{ citizenDetails.respondent1.individualLastName }}</p>
           <form action="/confirm-your-details" method="post" class="govuk-!-padding-top-4" novalidate>
-            <h2 class="govuk-heading-m">Your address</h2>
-            <p class="govuk-body">If your address is not correct you can change it here. Any changes will be shared with the
-              claimant when you submit your response.</p>
+            <h2 class="govuk-heading-m">{{ t('Your address') }}</h2>
+            <p class="govuk-body">{{ t('If your address is not correct you can change it here. Any changes will be shared with the
+              claimant when you submit your response.') }}</p>
+            <div class="govuk-form-group govuk-!-margin-0">
+              <label class="govuk-label" for="addressLineOne">
+                {{ t('Address') }}
+              </label>
+            </div>
             {{ govukInput(addressLineOneObj) }}
             {{ govukInput(
             {
@@ -62,11 +66,16 @@
               value: citizenDetails.respondent1.primaryAddress.AddressLine3
             }
             ) }}
+            <div class="govuk-form-group govuk-!-margin-0">
+              <label class="govuk-label" for="addressLineOne">
+                {{ t('Town or city') }}
+              </label>
+            </div>
             {{ govukInput(townOrCityObj) }}
             {{ govukInput(
             {
                 label: {
-                text: "Postcode",
+                text: t("Postcode"),
                 isPageHeading: true
               },
               classes: "govuk-input--width-10",
@@ -80,8 +89,7 @@
             {{ govukInput(
             {
                 label: {
-                html: "<p>All correspondence will be sent to this address. This is known as an 'address for service'.</p><p>Enter a UK postcode</p>",
-                text: "Enter a UK postcode",
+                html: t("All correspondence will be sent to this address. This is known as an 'address for service'.") + "<p>" + t("Enter a UK postcode") + "</p>",
                 isPageHeading: true
               },
               classes: "govuk-input--width-10",
@@ -90,27 +98,27 @@
             }
             ) }}
             {{ govukButton({
-              text: "Find address",
+              text: t("Find address"),
               classes: "govuk-button--secondary"
             }) }}
             <div>
-              <a class="govuk-link" href="#">Enter address manually</a>
+              <a class="govuk-link" href="#">{{ t('Enter address manually') }}</a>
             </div>
             {% endset -%}
-            <h2 class="govuk-heading-m">Enter address manually</h2>
+            <h2 class="govuk-heading-m">{{ t('Correspondence address') }}</h2>
             {{ govukRadios({
               idPrefix: "post-to-this-address",
               name: "post-to-this-address",
               fieldset: {
                 legend: {
-                  text: "Would you like correspondence sent to a different address?",
+                  text: t("Would you like correspondence sent to a different address?"),
                   isPageHeading: false
                 }
               },
               items: [
                 {
                   value: "no",
-                  text: "No",
+                  text: t("No"),
                   checked: true,
                   conditional: {
                     html: noHtml
@@ -118,7 +126,7 @@
                 },
                 {
                   value: "yes",
-                  text: "Yes, add a correspondence address",
+                  text: t("Yes, add a correspondence address"),
                   conditional: {
                     html: differentAddressHtml
                   }
@@ -126,7 +134,7 @@
               ]
             }) }}
             {{ govukButton({
-              text: "Save and continue"
+              text: t("Save and continue")
             }) }}
             {{ contactUsForHelp() }}
           </div>

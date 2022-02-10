@@ -10,8 +10,6 @@ const claim: Claim = new Claim();
 const respondent: Respondent = new Respondent();
 const primaryAddress: PrimaryAddress = new PrimaryAddress();
 
-
-
 type IErrorList = {
   [key: string]: string
 };
@@ -21,9 +19,6 @@ let addressLineOneValidated: object = {};
 let townOrCityValidated: object = {};
 
 const addressLineOneObj = {
-  label: {
-    text: 'Address',
-  },
   classes: 'govuk-input--width-20',
   id: 'addressLineOne',
   name: 'addressLineOne',
@@ -31,9 +26,6 @@ const addressLineOneObj = {
 };
 
 const townOrCityObj = {
-  label: {
-    text: 'Town or city',
-  },
   classes: 'govuk-input--width-20',
   id: 'city',
   name: 'city',
