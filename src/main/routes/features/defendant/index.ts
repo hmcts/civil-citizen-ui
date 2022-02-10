@@ -1,34 +1,29 @@
 import * as express from 'express';
-import {DefendendDetailsTelephoneNumber} from '../../../common/form/models/defendendDetailsTelephoneNumber';
+import {DefendantDetailsTelephoneNumber} from '../../../common/form/models/defendantDetailsTelephoneNumber';
 import {Form} from '../../../common/form/form';
 //import {FormValidator} from '../../../common/form/validation/formValidator';
-import {ValidationError, Validator, isNumberString} from 'class-validator';
+import {ValidationError, Validator} from 'class-validator';
 
 const router = express.Router();
-const defendantDetailsTelephoneNumber = new DefendendDetailsTelephoneNumber();
+const defendantDetailsTelephoneNumber = new DefendantDetailsTelephoneNumber();
 
-function renderView(form: Form<DefendendDetailsTelephoneNumber>, res: express.Response): void {
+function renderView(form: Form<DefendantDetailsTelephoneNumber>, res: express.Response): void {
   res.render('features/defendant/citizen-phone', {form: form});
 }
 
 router.get('/citizen-phone', (req, res) => {
-  renderView(new Form<DefendendDetailsTelephoneNumber>(defendantDetailsTelephoneNumber), res);
+  renderView(new Form<DefendantDetailsTelephoneNumber>(defendantDetailsTelephoneNumber), res);
 });
 router.post('/citizen-phone',
   (req, res) => {
-    const form: Form<DefendendDetailsTelephoneNumber> = new Form<DefendendDetailsTelephoneNumber>(Object.assign(new DefendendDetailsTelephoneNumber(), req.body));
-    const model: DefendendDetailsTelephoneNumber = form.model;
-    console.log(form);
-    console.log(model);
+    const form: Form<DefendantDetailsTelephoneNumber> = new Form<DefendantDetailsTelephoneNumber>(Object.assign(new DefendantDetailsTelephoneNumber(), req.body));
+    const model: DefendantDetailsTelephoneNumber = form.model;
     const validator = new Validator();
-    console.log(model.telephoneNumber);
-    console.log(isNumberString(model.telephoneNumber));
-    if (model.telephoneNumber && !isNumberString(model.telephoneNumber)) {
-      const errors: ValidationError[] = validator.validateSync(model);
-      const formWithErrors = new Form<DefendendDetailsTelephoneNumber>(model, errors);
+    const errors: ValidationError[] = validator.validateSync(model);
+    if(errors && errors.length>0){
+      const formWithErrors = new Form<DefendantDetailsTelephoneNumber>(model, errors);
       renderView(formWithErrors, res);
     }
-
   });
 
 export default router;
