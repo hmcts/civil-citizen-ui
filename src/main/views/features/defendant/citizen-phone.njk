@@ -11,11 +11,12 @@
       <p class="govuk-body">{{ t("We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.") }}</p>
       <form method="post">
         {% set error = form.errorFor('telephoneNumber') %}
-        {% if error %}<span class="govuk-form-group--error">{{ t(error) }}</span>{% endif %}
-        <div class="govuk-form-group">
+
+        <div class="govuk-form-group {% if error %} govuk-form-group--error{% endif %}">
+          {% if error %}<span class="govuk-error-message">{{ t(error) }}</span>{% endif %}
           <label class="govuk-label" for="telephoneNumber">
           </label>
-          <input class="govuk-input govuk-input--width-20" id="telephoneNumber"  name="telephoneNumber" type="text" inputmode="numeric" autocomplete="tel">
+          <input class="{% if error %}govuk-textarea--error{% endif %} govuk-input govuk-input--width-20 " id="telephoneNumber"  name="telephoneNumber" type="text" inputmode="numeric" autocomplete="tel">
         </div>
         <div class="govuk-form-group">
           {{ saveAndContinueButton() }}
