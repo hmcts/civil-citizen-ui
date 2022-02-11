@@ -2,14 +2,17 @@ import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import session from 'express-session';
 import { Helmet } from './modules/helmet';
 import * as path from 'path';
+import {v4} from 'uuid';
 import { HTTPError } from 'HttpError';
 import { Nunjucks } from './modules/nunjucks';
 import { PropertiesVolume } from './modules/properties-volume';
 import { AppInsights } from './modules/appinsights';
 import { I18Next } from './modules/i18n';
 import { HealthCheck } from './modules/health';
+import { OidcMiddleware } from './modules/oidc';
 import routes from './routes/routes';
 import favicon from 'serve-favicon';
 import { DraftStoreClient } from './modules/draft-store';
@@ -19,8 +22,24 @@ const { setupDev } = require('./development');
 
 const env = process.env.NODE_ENV || 'development';
 const developmentMode = env === 'development';
+export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 
 export const app = express();
+app.use(session({
+  genid: function() {
+    return v4();
+  },
+  name: 'citizen-ui-session',
+  resave: false,
+  saveUninitialized: false,
+  secret: 'local',
+  cookie: {
+    secure: false,
+    maxAge: cookieMaxAge,
+  },
+  rolling: true, // Renew the cookie for another 20 minutes on each request
+}));
+
 app.locals.ENV = env;
 const i18next = I18Next.enableFor(app);
 
@@ -32,6 +51,7 @@ new AppInsights().enable();
 new Nunjucks(developmentMode, i18next).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
+new OidcMiddleware().enableFor(app);
 
 app.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
 app.use(bodyParser.json());
