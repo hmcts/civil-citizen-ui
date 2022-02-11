@@ -154,7 +154,7 @@ const formHandler = async (req:express.Request, res:express.Response) => {
   const draftStoreClient = req.app.locals.draftStoreClient;
 
   // -- If valid save into Redis
-  if (!isEmpty(req.body.addressLineOne) && !isEmpty(req.body.city)) {
+  if (req.body?.addressLineOne && req.body?.city) {
 
     respondent.individualTitle = 'Mrs.';
     respondent.individualLastName = 'Richards';
