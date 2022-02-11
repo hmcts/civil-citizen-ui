@@ -15,13 +15,13 @@ services:
     callbackURL: 'http://localhost:3001/oauth2/callback'
     citizenRole: 'citizen'
     scope: '&scope=profile%20openid%20roles%20manage-user%20create-user%20search-user'
+  draftStore:
+    redis:
+      host: 'localhost'
+      port: 6379
+      key:
 health:
   timeout: 5000
   deadline: 15000
 appInsights:
   instrumentationKey:
-draftStore:
-  redis:
-    host: 'localhost'
-    port: 6379
-    key:

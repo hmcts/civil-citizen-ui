@@ -17,4 +17,5 @@ module.exports = {
       outputName: "test-output.html"
     } ]
   ],
+  setupFilesAfterEnv: ['./jest.setup.redis-mock.ts'],
 }

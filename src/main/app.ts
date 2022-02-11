@@ -13,6 +13,7 @@ import { AppInsights } from './modules/appinsights';
 import { I18Next } from './modules/i18n';
 import { HealthCheck } from './modules/health';
 import { OidcMiddleware } from './modules/oidc';
+import {DraftStoreClient} from './modules/draft-store';
 import routes from './routes/routes';
 
 const { Logger } = require('@hmcts/nodejs-logging');
@@ -49,6 +50,7 @@ new Nunjucks(developmentMode, i18next).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
 new OidcMiddleware().enableFor(app);
+new DraftStoreClient().enableFor(app);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
