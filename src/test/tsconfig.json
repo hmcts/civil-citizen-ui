@@ -8,6 +8,11 @@
     "esModuleInterop": true,
     "module": "commonjs",
     "strictNullChecks": true,
-    "types": ["codeceptjs", "jest"]
+    "types": ["codeceptjs", "jest"],
+    "paths": {
+      "common/*": [
+        "main/common/*"
+      ]
+    }
   }
 }
