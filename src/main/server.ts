@@ -8,7 +8,7 @@ import { app } from './app';
 const logger = Logger.getLogger('server');
 
 // TODO: set the right port for your application
-const port: number = parseInt(process.env.PORT || '3001', 10);
+const port: number = parseInt(process.env.PORT) || 3001;
 
 if (app.locals.ENV === 'development') {
   const sslDirectory = path.join(__dirname, 'resources', 'localhost-ssl');
