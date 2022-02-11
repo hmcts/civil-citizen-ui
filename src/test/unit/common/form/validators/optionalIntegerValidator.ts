@@ -4,7 +4,7 @@ import {ValidationArguments} from 'class-validator';
 
 
 describe('OptionalIntegerValidator', () => {
-  class DummyClass implements ValidationArguments {
+  class MockValidator implements ValidationArguments {
     constraints: any[];
     object: object;
     property: string;
@@ -16,7 +16,7 @@ describe('OptionalIntegerValidator', () => {
     const optionalIntegerValidator = new OptionalIntegerValidator();
     const validNumericInput  = '1232134234';
     //when input is validated
-    const result = optionalIntegerValidator.validate(validNumericInput, new DummyClass());
+    const result = optionalIntegerValidator.validate(validNumericInput, new MockValidator());
     //then
     expect(result).toBeTruthy();
   });
@@ -26,7 +26,7 @@ describe('OptionalIntegerValidator', () => {
     const optionalIntegerValidator = new OptionalIntegerValidator();
     const validNumericInput  = '+442342845452';
     //when
-    const result = optionalIntegerValidator.validate(validNumericInput, new DummyClass());
+    const result = optionalIntegerValidator.validate(validNumericInput, new MockValidator());
     //then
     expect(result).toBeFalsy();
   });
@@ -36,7 +36,7 @@ describe('OptionalIntegerValidator', () => {
     const optionalIntegerValidator = new OptionalIntegerValidator();
     const validNumericInput  = 'sdfswsdfsdf';
     //when
-    const result = optionalIntegerValidator.validate(validNumericInput, new DummyClass());
+    const result = optionalIntegerValidator.validate(validNumericInput, new MockValidator());
     //then
     expect(result).toBeFalsy();
   });
@@ -46,7 +46,7 @@ describe('OptionalIntegerValidator', () => {
     const optionalIntegerValidator = new OptionalIntegerValidator();
     const validNumericInput  = '';
     //when
-    const result = optionalIntegerValidator.validate(validNumericInput, new DummyClass());
+    const result = optionalIntegerValidator.validate(validNumericInput, new MockValidator());
     //then
     expect(result).toBeTruthy();
   });
