@@ -14,7 +14,8 @@ import { I18Next } from './modules/i18n';
 import { HealthCheck } from './modules/health';
 import { OidcMiddleware } from './modules/oidc';
 import routes from './routes/routes';
-import {DraftStoreClient} from './modules/draft-store';
+import favicon from 'serve-favicon';
+import { DraftStoreClient } from './modules/draft-store';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -52,6 +53,7 @@ new HealthCheck().enableFor(app);
 new OidcMiddleware().enableFor(app);
 new DraftStoreClient().enableFor(app);
 
+app.use(favicon(path.join(__dirname, '/public/assets/images/favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

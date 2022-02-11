@@ -27,8 +27,8 @@ const router = express.Router();
 router.get(DASHBOARD_URL, async function (req, res) {
   const claimDraftSaved = false;
   const responseDraftSaved = false;
-  const paginationArgumentClaimant: object = undefined;
-  const paginationArgumentDefendant: object = undefined;
+  const paginationArgumentClaimant: object = {};
+  const paginationArgumentDefendant: object = {};
 
   const claimsAsClaimant: Claim[] = [];
   const claimsAsDefendant: Claim[] = await civilServiceClient.retrieveByDefendantId();

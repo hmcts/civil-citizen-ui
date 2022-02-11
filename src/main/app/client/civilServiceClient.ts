@@ -1,5 +1,6 @@
 import {Claim} from '../../common/models/claim';
-import Axios, {AxiosInstance,AxiosResponse} from 'axios';
+import Axios, {AxiosInstance, AxiosResponse} from 'axios';
+import { AssertionError } from 'assert';
 
 export class CivilServiceClient {
   client: AxiosInstance;
@@ -14,6 +15,7 @@ export class CivilServiceClient {
   }
 
   async retrieveByDefendantId(): Promise<Claim[]> {
+
     const response: AxiosResponse<object> = await this.client.get('/cases');
     const objects: Claim[] = response.data as Claim[];
     const claims: Claim[] = [];
@@ -27,12 +29,11 @@ export class CivilServiceClient {
 
   async retrieveClaimDetails(claimId: string): Promise<Claim> {
     const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`);
-    try {
-      const objects = response.data as Claim;
-      return objects;
+    if (!response.data) {
+      throw new AssertionError({message: 'Claim details not available.'});
     }
-    catch(error) {
-      console.log(error);
-    }
+
+    const claim = response.data as Claim;
+    return claim;
   }
 }
