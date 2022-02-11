@@ -1,4 +1,4 @@
-import { ValidateNested, ValidationError } from 'class-validator';
+import {ValidateNested, ValidationError} from 'class-validator';
 
 import * as _ from 'lodash';
 
@@ -7,14 +7,14 @@ export class Converter {
   /**
    * Converts HTML form field in `foo[bar]` format to property in `foo.bar` format.
    */
-  static asProperty (fieldName: string): string {
-    return fieldName.replace(/\[/g, '.').replace(/]/g, '')
+  static asProperty(fieldName: string): string {
+    return fieldName.replace(/\[/g, '.').replace(/]/g, '');
   }
 
   /**
    * Converts property in `foo.bar` format to HTML form field name in `foo[bar]` format.
    */
-  static asFieldName (property: string): string {
+  static asFieldName(property: string): string {
     const parts: string[] = property.split('.');
     return parts[0] + parts.slice(1).map((part: string) => `[${part}]`).join('');
   }
@@ -32,7 +32,7 @@ export class FormValidationError extends ValidationError {
    */
   message: string
 
-  constructor (error: ValidationError, parentProperty?: string) {
+  constructor(error: ValidationError, parentProperty?: string) {
     super();
     Object.assign(this, error);
 
@@ -56,17 +56,17 @@ export class Form<Model> {
    * @param errors - an array of error objects
    * @param rawData - a raw data used to create model instance
    */
-  constructor (model: Model, errors: ValidationError[] = [], rawData: object = undefined) {
+  constructor(model: Model, errors: ValidationError[] = [], rawData: object = undefined) {
     this.model = model;
     this.rawData = rawData;
     this.errors = this.flatMapDeep(errors);
   }
 
-  static empty<Model> (): Form<Model> {
+  static empty<Model>(): Form<Model> {
     return new Form<Model>(undefined, []);
   }
 
-  hasErrors (): boolean {
+  hasErrors(): boolean {
     return this.errors.length > 0;
   }
 
@@ -75,7 +75,7 @@ export class Form<Model> {
    *
    * @param fieldName - field name / model property
    */
-  errorFor (fieldName: string): string {
+  errorFor(fieldName: string): string {
     return this.errors
       .filter((error: FormValidationError) => error.fieldName === fieldName)
       .map((error: FormValidationError) => error.message)[0];
@@ -86,7 +86,7 @@ export class Form<Model> {
    * @param {string} fieldName
    * @returns {object}
    */
-  rawDataFor (fieldName: string): object {
+  rawDataFor(fieldName: string): object {
     if (this.rawData) {
       return this.getValueFrom(this.rawData, fieldName);
     } else {
@@ -99,11 +99,11 @@ export class Form<Model> {
    *
    * @param fieldName - field name / model property
    */
-  valueFor (fieldName: string): any | undefined {
+  valueFor(fieldName: string): any | undefined {
     if (this.model) {
-      return this.getValueFrom(this.model, fieldName)
+      return this.getValueFrom(this.model, fieldName);
     } else {
-      return undefined
+      return undefined;
     }
   }
 
@@ -113,13 +113,13 @@ export class Form<Model> {
    * @param {string} fieldName
    * @returns {object}
    */
-  private getValueFrom (input: any, fieldName: string): any {
-    let value: any = input
+  private getValueFrom(input: any, fieldName: string): any {
+    let value: any = input;
 
     Converter.asProperty(fieldName).split('.').forEach(property => {
-      value = value ? value[property] : value
-    })
-    return value
+      value = value ? value[property] : value;
+    });
+    return value;
   }
 
   /**
@@ -130,15 +130,15 @@ export class Form<Model> {
    * @param errors - list of errors
    * @param parentProperty - parent property name
    */
-  private flatMapDeep (errors: ValidationError[], parentProperty?: string): FormValidationError[] {
+  private flatMapDeep(errors: ValidationError[], parentProperty?: string): FormValidationError[] {
     return _.flattenDeep<FormValidationError>(
       errors.map((error: ValidationError) => {
         if (error.children && error.children.length > 0) {
-          return this.flatMapDeep(error.children, parentProperty ? `${parentProperty}.${error.property}` : error.property)
+          return this.flatMapDeep(error.children, parentProperty ? `${parentProperty}.${error.property}` : error.property);
         } else {
-          return new FormValidationError(error, parentProperty)
+          return new FormValidationError(error, parentProperty);
         }
-      })
-    )
+      }),
+    );
   }
 }
