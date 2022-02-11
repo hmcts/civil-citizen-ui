@@ -15,9 +15,9 @@ describe('OptionalIntegerValidator', () => {
     //Given a valid input
     const optionalIntegerValidator = new OptionalIntegerValidator();
     const validNumericInput  = '1232134234';
-    //when input is validated
+    //When input is validated
     const result = optionalIntegerValidator.validate(validNumericInput, new MockValidator());
-    //then
+    //Then
     expect(result).toBeTruthy();
   });
 
@@ -25,9 +25,9 @@ describe('OptionalIntegerValidator', () => {
     //Given input with special characters
     const optionalIntegerValidator = new OptionalIntegerValidator();
     const validNumericInput  = '+442342845452';
-    //when
+    //When
     const result = optionalIntegerValidator.validate(validNumericInput, new MockValidator());
-    //then
+    //Then
     expect(result).toBeFalsy();
   });
 
@@ -35,9 +35,9 @@ describe('OptionalIntegerValidator', () => {
     //Given alphanumeric input
     const optionalIntegerValidator = new OptionalIntegerValidator();
     const validNumericInput  = 'sdfswsdfsdf';
-    //when
+    //When
     const result = optionalIntegerValidator.validate(validNumericInput, new MockValidator());
-    //then
+    //Then
     expect(result).toBeFalsy();
   });
 

@@ -1,49 +1,12 @@
 import {ValidateNested, ValidationError} from 'class-validator';
-
 import * as _ from 'lodash';
+import {FormValidationError} from './validationErrors/formValidationError';
 
-export class Converter {
-
-  /**
-   * Converts HTML form field in `foo[bar]` format to property in `foo.bar` format.
-   */
-  static asProperty(fieldName: string): string {
-    return fieldName.replace(/\[/g, '.').replace(/]/g, '');
-  }
-
-  /**
-   * Converts property in `foo.bar` format to HTML form field name in `foo[bar]` format.
-   */
-  static asFieldName(property: string): string {
-    const parts: string[] = property.split('.');
-    return parts[0] + parts.slice(1).map((part: string) => `[${part}]`).join('');
-  }
-}
-
-export class FormValidationError extends ValidationError {
-
-  /**
-   * Field name associated with validated model property.
-   */
-  fieldName: string
-
-  /**
-   * Message associated with first constraint violated of validated model property.
-   */
-  message: string
-
-  constructor(error: ValidationError, parentProperty?: string) {
-    super();
-    Object.assign(this, error);
-
-    this.property = parentProperty ? `${parentProperty}.${this.property}` : this.property;
-    this.fieldName = Converter.asFieldName(this.property);
-
-    const firstConstraintName: string = Object.keys(error.constraints).reverse()[0];
-    this.message = error.constraints[firstConstraintName];
-  }
-}
-
+/**
+ * Represents a form that the user needs to fill in.
+ * Contains validation errors on fields of the model.
+ * Model contains fields that the user needs to fill in.
+ */
 export class Form<Model> {
 
   @ValidateNested()
@@ -81,46 +44,6 @@ export class Form<Model> {
       .map((error: FormValidationError) => error.message)[0];
   }
 
-  /**
-   * Get raw data for given field name.
-   * @param {string} fieldName
-   * @returns {object}
-   */
-  rawDataFor(fieldName: string): object {
-    if (this.rawData) {
-      return this.getValueFrom(this.rawData, fieldName);
-    } else {
-      return undefined;
-    }
-  }
-
-  /**
-   * Get model value for given field name.
-   *
-   * @param fieldName - field name / model property
-   */
-  valueFor(fieldName: string): any | undefined {
-    if (this.model) {
-      return this.getValueFrom(this.model, fieldName);
-    } else {
-      return undefined;
-    }
-  }
-
-  /**
-   * Iterate though elements of input and find value for field
-   * @param {any} input of type model/rawData
-   * @param {string} fieldName
-   * @returns {object}
-   */
-  private getValueFrom(input: any, fieldName: string): any {
-    let value: any = input;
-
-    Converter.asProperty(fieldName).split('.').forEach(property => {
-      value = value ? value[property] : value;
-    });
-    return value;
-  }
 
   /**
    * Maps array of ValidationError returned by validation framework to FormValidationErrors containing extra form related properties.
