@@ -1,7 +1,18 @@
 import request from 'supertest';
 import {app} from '../../../main/app';
+import nock from 'nock';
+import config from 'config';
 
+jest.mock('../../../main/modules/oidc');
 describe('Citizen phone number', () => {
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+
+  beforeEach(() => {
+    nock('http://localhost:5000')
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
+
+  });
   describe('on GET', () => {
     test('should return citizen phone number page', async () => {
       await request(app)
@@ -22,7 +33,7 @@ describe('Citizen phone number', () => {
           expect(res.text).toContain('There was a problem. Please enter numeric number');
         });
     });
-    test('should not have error oncorrect input', async () => {
+    test('should not have error on correct input', async () => {
       await request(app)
         .post('/citizen-phone')
         .send('telephoneNumber=123')

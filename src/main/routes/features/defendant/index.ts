@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {DefendantDetailsTelephoneNumber} from '../../../common/form/models/defendantDetailsTelephoneNumber';
 import {Form} from '../../../common/form/form';
-//import {FormValidator} from '../../../common/form/validation/formValidator';
+
 import {ValidationError, Validator} from 'class-validator';
 
 const router = express.Router();
