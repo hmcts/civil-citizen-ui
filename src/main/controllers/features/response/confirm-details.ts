@@ -1,11 +1,11 @@
 import * as express from 'express';
 import { Claim, Respondent, PrimaryAddress } from '../../../common/models/claim';
-import { CivilServiceClient } from '../../../app/client/civilServiceClient';
-import config from 'config';
+//import { CivilServiceClient } from '../../../app/client/civilServiceClient';
+//import config from 'config';
 const validator = require('validator');
 
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+//const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+//const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 let claim: Claim = new Claim();
 
 const respondent: Respondent = new Respondent();
@@ -82,7 +82,41 @@ function renderCitizenDetailsPage(res: express.Response, errorList:IErrorList[],
 
 // -- Retrive Claim
 (async () => {
-  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+  //claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+  claim = {
+    legacyCaseReference: '000CMC001',
+    applicant1: {
+      individualTitle: 'string',
+      individualLastName: 'string',
+      individualFirstName: 'string',
+    },
+    totalClaimAmount: 110,
+    respondent1ResponseDeadline: new Date(),
+    detailsOfClaim: 'string',
+    respondent1: {
+      primaryAddress: {
+        County: 'string',
+        Country: 'string',
+        PostCode: 'string',
+        PostTown: 'string',
+        AddressLine1: 'string',
+        AddressLine2: 'string',
+        AddressLine3: 'string',
+      },
+      individualTitle: 'string',
+      individualLastName: 'string',
+      individualFirstName: 'string',
+    },
+    individualTitle: 'string',
+    individualLastName: 'string',
+    individualFirstName: 'string',
+    formattedResponseDeadline: function (): string {
+      throw new Error('Function not implemented.');
+    },
+    formattedTotalClaimAmount: function (): string {
+      throw new Error('Function not implemented.');
+    },
+  };
 })();
 
 // -- Display Claim Details
@@ -91,32 +125,29 @@ const getClaimDetails = async (req:express.Request, res:express.Response)  => {
 };
 
 // -- Display Citizen  Details
-const getCitizenDetails = (req: express.Request, res: express.Response) => {
-  (async () => {
+const getCitizenDetails = async (req: express.Request, res: express.Response) => {
+  // -- Retrive from Redis
+  const draftStoreClient = req.app.locals.draftStoreClient;
+  let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
+  citizenDetails = JSON.parse(citizenDetails);
+  console.log('REDIS:', citizenDetails);
 
-    // -- Retrive from Redis
-    const draftStoreClient = req.app.locals.draftStoreClient;
-    let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
-    citizenDetails = JSON.parse(citizenDetails);
-    console.log('REDIS:', citizenDetails);
+  // Add value to Form input
+  const addressInput = {
+    ...addressLineOneObj,
+    value: citizenDetails ? citizenDetails.respondent1.primaryAddress.AddressLine1 : '',
+  };
+  const townInput = {
+    ...townOrCityObj,
+    value: citizenDetails ?  citizenDetails.respondent1.primaryAddress.PostTown : '',
+  };
 
-    // Add value to Form input
-    const addressInput = {
-      ...addressLineOneObj,
-      value: citizenDetails ? citizenDetails.respondent1.primaryAddress.AddressLine1 : '',
-    };
-    const townInput = {
-      ...townOrCityObj,
-      value: citizenDetails ?  citizenDetails.respondent1.primaryAddress.PostTown : '',
-    };
-
-    // -- Render Page
-    renderCitizenDetailsPage(res, errorList, addressInput, townInput, citizenDetails);
-  })();
+  // -- Render Page
+  renderCitizenDetailsPage(res, errorList, addressInput, townInput, citizenDetails);
 };
 
 // Save details
-const formHandler = (req:express.Request, res:express.Response) => {
+const formHandler = async (req:express.Request, res:express.Response) => {
   console.log('REQ BODY', req.body);
   addressLineOneValidated = validateField(req.body.addressLineOne, 'Enter first address line', 'addressLineOne', addressLineOneObj);
   townOrCityValidated = validateField(req.body.city, 'Enter a valid town/city', 'city', townOrCityObj);
@@ -136,17 +167,13 @@ const formHandler = (req:express.Request, res:express.Response) => {
     respondent.primaryAddress = primaryAddress;
     claim.respondent1 = respondent;
 
-    (async () => {
-      await draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim));
-      res.redirect('case/1643033241924739/response/your-dob');
-    })();
+    await draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim));
+    res.redirect('case/1643033241924739/response/your-dob');
   } else { // -- else get existing values and render page with error message
-    (async () => {
-      let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
-      citizenDetails = JSON.parse(citizenDetails);
-      console.log('REDIS:', citizenDetails);
-      renderCitizenDetailsPage(res, errorList, addressLineOneValidated, townOrCityValidated, citizenDetails);
-    })();
+    let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
+    citizenDetails = JSON.parse(citizenDetails);
+    console.log('REDIS:', citizenDetails);
+    renderCitizenDetailsPage(res, errorList, addressLineOneValidated, townOrCityValidated, citizenDetails);
   }
 };
 
