@@ -1,13 +1,14 @@
 import * as express from 'express';
 import { Claim, Respondent, PrimaryAddress } from '../../../common/models/claim';
-//import { CivilServiceClient } from '../../../app/client/civilServiceClient';
-//import config from 'config';
-const validator = require('validator');
+import { CivilServiceClient } from '../../../app/client/civilServiceClient';
+import config from 'config';
+const validator = require('../../../common/utils/validator');
 
-//const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-//const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+
 let claim: Claim = new Claim();
-
 const respondent: Respondent = new Respondent();
 const primaryAddress: PrimaryAddress = new PrimaryAddress();
 
@@ -33,11 +34,9 @@ const townOrCityObj = {
   autocomplete: 'city',
 };
 
-const isEmpty = (val:string) => validator.isEmpty(val);
-
 const validateField = (formVal: string, errorMsg: string, formName: string, formObject: object) => {
   let formControlValidated: object = {};
-  if (isEmpty(formVal)) {
+  if (validator.isEmpty(formVal)) {
 
     if (!errorList.some(item => item.href === `#${formName}`)) {
       errorList.push({
@@ -82,41 +81,7 @@ function renderCitizenDetailsPage(res: express.Response, errorList:IErrorList[],
 
 // -- Retrive Claim
 (async () => {
-  //claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
-  claim = {
-    legacyCaseReference: '000CMC001',
-    applicant1: {
-      individualTitle: 'string',
-      individualLastName: 'string',
-      individualFirstName: 'string',
-    },
-    totalClaimAmount: 110,
-    respondent1ResponseDeadline: new Date(),
-    detailsOfClaim: 'string',
-    respondent1: {
-      primaryAddress: {
-        County: 'string',
-        Country: 'string',
-        PostCode: 'string',
-        PostTown: 'string',
-        AddressLine1: 'string',
-        AddressLine2: 'string',
-        AddressLine3: 'string',
-      },
-      individualTitle: 'string',
-      individualLastName: 'string',
-      individualFirstName: 'string',
-    },
-    individualTitle: 'string',
-    individualLastName: 'string',
-    individualFirstName: 'string',
-    formattedResponseDeadline: function (): string {
-      throw new Error('Function not implemented.');
-    },
-    formattedTotalClaimAmount: function (): string {
-      throw new Error('Function not implemented.');
-    },
-  };
+  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
 })();
 
 // -- Display Claim Details
