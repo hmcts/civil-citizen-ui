@@ -1,21 +1,24 @@
 import * as express from 'express';
 
 //import { ErrorHandling } from 'common/errorHandling';
-import {Claim} from 'common/models/claim';
+//import {Claim} from 'common/models/claim';
 
-function renderView (res: express.Response) {
-  res.render('' );
+const router = express.Router();
+
+function renderView (res: express.Response): void {
+  res.render('features/response/routes/your-dob');
 }
-
 /* tslint:disable:no-default-export */
-export default express.Router()
-  .get('', (req: express.Request, res: express.Response) => {
-    if (Claim.name === undefined) {
-      res.redirect('');
-    }else{
-      renderView(res);
-    }
+router.get('/your-dob', (req: express.Request, res: express.Response) => {
+  renderView(res);
+});
+
+router.post('/your-dob',
+  (req, res) => {
+    renderView(res);
   });
+
+export default router;
 
 
 

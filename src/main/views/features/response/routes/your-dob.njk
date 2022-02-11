@@ -1,6 +1,6 @@
 {% extends "layout.njk" %}
-{% from "form.njk" import csrfProtection, saveAndContinueButton, errorSummary %}
-{% from "date.njk" import dateInput %}
+{% from "../../../macro/form.njk" import csrfProtection, saveAndContinueButton, errorSummary %}
+{% from "../../../macro/date.njk" import dateInput %}
 
 {% set heading = 'Enter your date of birth' %}
 
@@ -12,7 +12,6 @@
 
         {{ csrfProtection(csrf) }}
 
-        {{ dateInput(form = form, name = 'date', visuallyHiddenLabelValue = 'date of birth') }}
 
         {{ saveAndContinueButton() }}
       </form>

@@ -12,7 +12,9 @@
     "paths": {
       "common/*": [
         "main/common/*"
-      ]
+      ],
+      "router/*": ["router/*"],
+      "routes/*": ["routes/*"],
     }
   }
 }
