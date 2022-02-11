@@ -11,11 +11,19 @@
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
         {% if errorList.length > 0 %}
-          <div class="govuk-grid-column-full">
-            {{ govukErrorSummary({
-            titleText: "There was a problem",
-            errorList: errorList
-          }) }}
+          <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+            <h2 class="govuk-error-summary__title" id="error-summary-title">
+              {{ t("There was a problem") }}
+            </h2>
+            <div class="govuk-error-summary__body">
+              <ul class="govuk-list govuk-error-summary__list">
+                {% for item in errorList %}
+                  <li>
+                    <a href={{ item.href }}>{{ t(item.text) }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
         {% endif %}
       </div>
@@ -46,7 +54,7 @@
             {{ govukInput(
             {
                 label: {
-                text: ""
+                html: '<span class="govuk-visually-hidden">Address line 2 of 3</span>'
               },
               classes: "govuk-input--width-20",
               id: "addressLineTwo",
@@ -57,8 +65,7 @@
             {{ govukInput(
             {
                 label: {
-                text: "",
-                isPageHeading: true
+                html: '<span class="govuk-visually-hidden">Address line 3 of 3</span>'
               },
               classes: "govuk-input--width-20",
               id: "addressLineThree",

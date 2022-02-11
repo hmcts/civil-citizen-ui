@@ -5,9 +5,10 @@
   {% set Tel = t('Telephone') %}
   {% set Days = t('Monday to Friday') %}
   {% set Line2 = t('Find out about call charges (opens in a new window)') %}
+  {% set ContactUs = t('Contact us for help') %}
 
   {{ govukDetails({
-    summaryText: t("Contact us for help"),
+    summaryText: ContactUs,
     html: "
       <h3 class='govuk-heading-m'>" + Email + "</h3>
       <p><a href='mailto:contactocmc@justice.gov.uk' class='govuk-details__summary'>contactocmc@justice.gov.uk</a><br />" + Line1 + ".</p>
