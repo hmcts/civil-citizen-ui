@@ -14,15 +14,12 @@ export class DraftStoreClient {
         port: config.get('services.draftStore.redis.port'),
         connectTimeout: 15000,
       },
-      password: config.get('services.draftStore.redis.key') as string,
+      password: config.get('services.draftStore.redis.key'),
     });
+    app.locals.draftStoreClient = client;
 
     client.connect().then(() => {
-      app.locals.draftStoreClient = client;
-      client.ping().then((pingResponse) => {
-        logger.info(`Redis Ping Response: ${pingResponse}`);
-        logger.info('Connected to Redis instance successfully');
-      });
+      logger.info('Connected to Redis instance successfully');
     });
   }
 }

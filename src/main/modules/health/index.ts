@@ -7,13 +7,15 @@ export class HealthCheck {
   public enableFor(app: Application): void {
 
     const redis = app.locals.draftStoreClient
-      ? healthCheck.raw(() => (app.locals.draftStoreClient.ping() ? healthCheck.up() : healthCheck.down()))
-      : healthCheck.raw(() => (healthCheck.down()));
+      ? healthCheck.raw(() => app.locals.draftStoreClient.ping()
+        .then(() => healthCheck.up())
+        .catch(() => healthCheck.down()))
+      : null;
 
     const healthCheckConfig = {
       checks: {
         'draft-store': redis,
-        // TODO: add health checks for other application dependency services
+        // add health checks for other application dependency services
       },
       buildInfo: {
         name: 'civil-citizen-ui',
