@@ -18,6 +18,7 @@ type IErrorList = {
 
 let errorList: IErrorList[] = [];
 let addressLineOneValidated: object = {};
+let birthdayValidated: object = {};
 let townOrCityValidated: object = {};
 
 const addressLineOneObj = {
@@ -34,8 +35,15 @@ const townOrCityObj = {
   autocomplete: 'city',
 };
 
+const birthdayObj = {
+  classes: 'govuk-input--width-20',
+  id: 'birthdayObj',
+  name: 'birthdayObj',
+  autocomplete: 'birthdayObj',
+};
+
 const validateField = (formVal: string, errorMsg: string, formName: string, formObject: object) => {
-  let formControlValidated: object = {};
+  let formControlValidated: object;
   if (validator.isEmpty(formVal)) {
 
     if (!errorList.some(item => item.href === `#${formName}`)) {
@@ -63,6 +71,31 @@ const validateField = (formVal: string, errorMsg: string, formName: string, form
   return formControlValidated;
 };
 
+const validateDateField = (formVal: string, errorMsg: string, formName: string, formObject: object) => {
+  let formControlValidated: object;
+  if (!validator.isNumber(formVal)) {
+    if (!errorList.some(item => item.href === `#${formName}`)) {
+      errorList.push({
+        text: errorMsg,
+        href: `#${formName}`,
+      });
+    }
+    formControlValidated = {
+      ...formObject,
+      errorMessage: { 'text': errorMsg },
+    };
+  }
+  else {
+    formControlValidated = {
+      ...formObject,
+      value: formVal,
+    };
+    errorList = errorList.filter(function (item) {
+      return item.href != `#${formName}`;
+    });
+  }
+  return formControlValidated;
+};
 
 function renderPage(res: express.Response, claimDetails: Claim): void {
   res.render('features/response/claim-details', {
@@ -76,6 +109,13 @@ function renderCitizenDetailsPage(res: express.Response, errorList:IErrorList[],
     addressLineOneObj: addressLineOneObj,
     townOrCityObj: townOrCityObj,
     citizenDetails: citizenDetails,
+  });
+}
+
+function renderCitizenDobPage(res: express.Response, errorList:IErrorList[], birthdayObj:object): void {
+  res.render('features/response/routes/your-dob', {
+    errorList: errorList,
+    birthdayObj: birthdayObj,
   });
 }
 
@@ -185,11 +225,16 @@ const formDateHandler = async (req:express.Request, res:express.Response) => {
   claim.legacyCaseReference='000CMC001';
 
   //Todo validate dates
-  //addressLineOneValidated = validateField(req.body.addressLineOne, 'Enter first address line', 'addressLineOne', addressLineOneObj);
-  //townOrCityValidated = validateField(req.body.city, 'Enter a valid town/city', 'city', townOrCityObj);
+  birthdayValidated = validateDateField(req.body.day, 'Enter a correct number', 'day', birthdayObj);
+  birthdayValidated = validateDateField(req.body.month, 'Enter a correct number', 'month', birthdayObj);
+  birthdayValidated = validateDateField(req.body.year, 'Enter a correct number', 'year', birthdayObj);
+  birthdayValidated = validateField(req.body.day, 'Enter a number', 'day', birthdayObj);
+  birthdayValidated = validateField(req.body.month, 'Enter a number', 'month', birthdayObj);
+  birthdayValidated = validateField(req.body.year, 'Enter a number', 'year', birthdayObj);
+
+  console.log('REQ day' + req.body?.day);
 
   const draftStoreClient = req.app.locals.draftStoreClient;
-
   // -- If valid save into Redis
   if (req.body?.day && req.body?.month && req.body?.year) {
     const birthDate : Date = new Date(req.body.year,req.body.month,req.body.day);
@@ -205,9 +250,8 @@ const formDateHandler = async (req:express.Request, res:express.Response) => {
     let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
     citizenDetails = JSON.parse(citizenDetails);
     console.log('REDIS:', citizenDetails);
-    renderCitizenDetailsPage(res, errorList, addressLineOneValidated, townOrCityValidated, citizenDetails);
+    renderCitizenDobPage(res, errorList, birthdayValidated);
   }
 };
-
 
 module.exports = { getClaimDetails, getCitizenDetails, formHandler,formDateHandler, validateField };
