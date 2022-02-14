@@ -1,20 +1,83 @@
-{% extends "layout.njk" %}
-{% from "../../../macro/form.njk" import csrfProtection, saveAndContinueButton, errorSummary %}
-{% from "../../../macro/date.njk" import dateInput %}
-
-{% set heading = 'Enter your date of birth' %}
-
+{% extends "claim-details-tpl.njk" %}
+{% set heading = t('Confirm your details') %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macros/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% block content %}
-  <div class="grid-row">
-    <div class="column-two-thirds">
-      <form method="post">
-        <input type="hidden" name="known" value="true" />
-
-        {{ csrfProtection(csrf) }}
-
-
-        {{ saveAndContinueButton() }}
-      </form>
-    </div>
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        {% if errorList.length > 0 %}
+          <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+            <h2 class="govuk-error-summary__title" id="error-summary-title">
+              {{ t("There was a problem") }}
+            </h2>
+            <div class="govuk-error-summary__body">
+              <ul class="govuk-list govuk-error-summary__list">
+                {% for item in errorList %}
+                  <li>
+                    <a href={{ item.href }}>{{ t(item.text) }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('Enter your date of birth') }}</h1>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form action="/confirm-your-dateOfBirth" method="post" class="govuk-!-padding-top-4" novalidate>
+             {{ govukDateInput({
+                    id: "birthDate",
+                    name: "birthDate",
+                    fieldset: {
+                      legend: {
+                        isPageHeading: false,
+                        classes: 'govuk-fieldset__legend--m'
+                      }
+                    },
+                    hint: {
+                      text: "For example, 31 3 1980"
+                    },
+                    items: [
+                      {
+                        classes: "govuk-input--width-2",
+                        id: "day",
+                        label: "Day",
+                        name: "day",
+                        value: day
+                      },
+                      {
+                        classes: "govuk-input--width-2",
+                        id: "month",
+                        label: "Month",
+                        name: "month",
+                        value: month
+                      },
+                      {
+                        classes: "govuk-input--width-4",
+                        id: "year",
+                        label: "Year",
+                        name: "year",
+                        value: year
+                      }
+                      ]
+                  }) }}
+            {{ govukButton({ text: t("Save and continue") }) }}
+            {{ contactUsForHelp(t) }}
+          </form>
+        </div>
+      </div>
+    </main>
   </div>
 {% endblock %}
+

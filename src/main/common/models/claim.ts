@@ -35,9 +35,11 @@ export class Respondent {
   individualTitle: string;
   individualLastName: string;
   individualFirstName: string;
+  individualDateOfBirth: Date;
 }
 class Individual {
   individualTitle: string;
   individualLastName: string;
   individualFirstName: string;
+  individualDateOfBirth:Date;
 }

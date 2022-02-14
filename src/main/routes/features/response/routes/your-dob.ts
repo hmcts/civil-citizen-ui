@@ -1,9 +1,7 @@
 import * as express from 'express';
 
-//import { ErrorHandling } from 'common/errorHandling';
-//import {Claim} from 'common/models/claim';
-
 const router = express.Router();
+const confirmDetailsController = require('../../../../controllers/features/response/confirm-details');
 
 function renderView (res: express.Response): void {
   res.render('features/response/routes/your-dob');
@@ -12,12 +10,7 @@ function renderView (res: express.Response): void {
 router.get('/your-dob', (req: express.Request, res: express.Response) => {
   renderView(res);
 });
-
-router.post('/your-dob',
-  (req, res) => {
-    renderView(res);
-  });
-
+router.post('/confirm-your-dateOfBirth', confirmDetailsController.formDateHandler);
 export default router;
 
 

@@ -1,12 +1,12 @@
 import * as express from 'express';
 import { Claim, Respondent, PrimaryAddress } from '../../../common/models/claim';
-import { CivilServiceClient } from '../../../app/client/civilServiceClient';
-import config from 'config';
+//import { CivilServiceClient } from '../../../app/client/civilServiceClient';
+//import config from 'config';
 const validator = require('../../../common/utils/validator');
 
 
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+//const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+//const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 let claim: Claim = new Claim();
 const respondent: Respondent = new Respondent();
@@ -81,7 +81,45 @@ function renderCitizenDetailsPage(res: express.Response, errorList:IErrorList[],
 
 // -- Retrive Claim
 (async () => {
-  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+
+  //claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+  claim = {
+    legacyCaseReference: '000CMC001',
+    applicant1: {
+      individualTitle: 'string',
+      individualLastName: 'string',
+      individualFirstName: 'string',
+      individualDateOfBirth: new Date(),
+    },
+    totalClaimAmount: 110,
+    respondent1ResponseDeadline: new Date(),
+    detailsOfClaim: 'string',
+    respondent1: {
+      primaryAddress: {
+        County: 'string',
+        Country: 'string',
+        PostCode: 'string',
+        PostTown: 'string',
+        AddressLine1: 'string',
+        AddressLine2: 'string',
+        AddressLine3: 'string',
+      },
+      individualTitle: 'string',
+      individualLastName: 'string',
+      individualFirstName: 'string',
+      individualDateOfBirth: new Date(),
+
+    },
+    individualTitle: 'string',
+    individualLastName: 'string',
+    individualFirstName: 'string',
+    formattedResponseDeadline: function (): string {
+      throw new Error('Function not implemented.');
+    },
+    formattedTotalClaimAmount: function (): string {
+      throw new Error('Function not implemented.');
+    },
+  };
 })();
 
 // -- Display Claim Details
@@ -142,4 +180,34 @@ const formHandler = async (req:express.Request, res:express.Response) => {
   }
 };
 
-module.exports = { getClaimDetails, getCitizenDetails, formHandler, validateField };
+const formDateHandler = async (req:express.Request, res:express.Response) => {
+  console.log('REQ BODY', req.body);
+  claim.legacyCaseReference='000CMC001';
+
+  //Todo validate dates
+  //addressLineOneValidated = validateField(req.body.addressLineOne, 'Enter first address line', 'addressLineOne', addressLineOneObj);
+  //townOrCityValidated = validateField(req.body.city, 'Enter a valid town/city', 'city', townOrCityObj);
+
+  const draftStoreClient = req.app.locals.draftStoreClient;
+
+  // -- If valid save into Redis
+  if (req.body?.day && req.body?.month && req.body?.year) {
+    const birthDate : Date = new Date(req.body.year,req.body.month,req.body.day);
+
+    birthDate.setFullYear(req.body.year,req.body.month,req.body.day);
+    respondent.individualDateOfBirth= birthDate;
+    claim.respondent1 = respondent;
+    console.log('DATE: ' + claim.respondent1);
+    await draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim));
+    console.log('redirect to next step:');
+    //res.redirect('case/1643033241924739/response/your-dob');
+  } else { // -- else get existing values and render page with error message
+    let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
+    citizenDetails = JSON.parse(citizenDetails);
+    console.log('REDIS:', citizenDetails);
+    renderCitizenDetailsPage(res, errorList, addressLineOneValidated, townOrCityValidated, citizenDetails);
+  }
+};
+
+
+module.exports = { getClaimDetails, getCitizenDetails, formHandler,formDateHandler, validateField };
