@@ -118,13 +118,15 @@
   },
   "resolutions": {
     "**/chokidar/**/glob-parent": "^5.1.2",
+    "**/jest/**/node-notifier": "^8.0.1",
+    "**/sass-lint/**/jsonpointer": "^5.0.0",
     "**/sass-lint/**/merge": "^2.1.1",
+    "**/sass-lint/**/minimist": "^1.2.3",
+    "**/sass-lint/**/ajv": "^6.12.3",
     "**/uglifyjs-webpack-plugin/**/serialize-javascript": "^3.1.0",
     "**/**/ansi-regex": "^5.0.1",
-    "**/jest/**/node-notifier": "^8.0.1",
-    "**/sass-lint/**/minimist": "^1.2.3",
     "**/**/json-schema": "^0.4.0",
-    "**/sass-lint/**/jsonpointer": "^5.0.0",
+    "**/**/follow-redirects": "^1.14.8",
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
     "postcss": "^8.2.13"
