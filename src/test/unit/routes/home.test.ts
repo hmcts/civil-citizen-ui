@@ -45,5 +45,20 @@ describe('Home page', () => {
           expect(res.text).toContain('Confirm your details');
         });
     });
+
+    test('should return claim details page', async () => {
+      await agent
+        .get('/case/12334/response/claim-details')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
+    test('POST/Citizen details', async () => {
+      await agent
+        .post('/confirm-your-details')
+        .send({ addressLineOne: '38 Highland Road', city: 'Birmingham' })
+        .expect(200);
+    });
   });
 });
