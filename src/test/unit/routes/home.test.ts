@@ -36,5 +36,14 @@ describe('Home page', () => {
           expect(res.text).toContain('Default page template');
         });
     });
+
+    test('should return your details page', async () => {
+      await agent
+        .get('/case/12334/response/your-details')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Confirm your details');
+        });
+    });
   });
 });
