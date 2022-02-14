@@ -23,7 +23,6 @@ router.post(CITIZEN_PHONE_NUMBER_URL,
       model.error = errors[0];
     }
     //temporary outside the if statement to show there are no errors.
-    //TODO: put back inside the if statement and add next()
     renderView(model, res);
   });
 
