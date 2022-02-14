@@ -10,8 +10,7 @@
       <p class="govuk-body">{{ t("We will only call you if we need more information about this claim.") }}</p>
       <p class="govuk-body">{{ t("We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.") }}</p>
       <form method="post">
-        {% set error = form.errorFor('telephoneNumber') %}
-
+        {% set error = form.getErrorMessage() %}
         <div class="govuk-form-group {% if error %} govuk-form-group--error{% endif %}">
           {% if error %}<span class="govuk-error-message">{{ t(error) }}</span>{% endif %}
           <label class="govuk-label" for="telephoneNumber">
