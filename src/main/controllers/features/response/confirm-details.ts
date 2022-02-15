@@ -79,13 +79,10 @@ function renderCitizenDetailsPage(res: express.Response, errorList:IErrorList[],
   });
 }
 
-// -- Retrive Claim
-(async () => {
-  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
-})();
 
 // -- Display Claim Details
-const getClaimDetails = async (req:express.Request, res:express.Response)  => {
+const getClaimDetails = async (req: express.Request, res: express.Response) => {
+  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
   renderPage(res, claim);
 };
 
@@ -112,7 +109,7 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
 };
 
 // Save details
-const formHandler = async (req:express.Request, res:express.Response) => {
+const formHandler = async (req: express.Request, res: express.Response) => {
   console.log('REQ BODY', req.body);
   addressLineOneValidated = validateField(req.body.addressLineOne, 'Enter first address line', 'addressLineOne', addressLineOneObj);
   townOrCityValidated = validateField(req.body.city, 'Enter a valid town/city', 'city', townOrCityObj);
