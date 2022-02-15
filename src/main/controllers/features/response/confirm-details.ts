@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Claim, Respondent, PrimaryAddress } from '../../../common/models/claim';
+import { Claim, Respondent, PrimaryAddress } from 'common/models/claim';
 //import { CivilServiceClient } from '../../../app/client/civilServiceClient';
 //import config from 'config';
 const validator = require('../../../common/utils/validator');
@@ -244,8 +244,7 @@ const formDateHandler = async (req:express.Request, res:express.Response) => {
     claim.respondent1 = respondent;
     console.log('DATE: ' + claim.respondent1);
     await draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim));
-    console.log('redirect to next step:');
-    //res.redirect('case/1643033241924739/response/your-dob');
+    res.redirect('/citizen-phone');
   } else { // -- else get existing values and render page with error message
     let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
     citizenDetails = JSON.parse(citizenDetails);

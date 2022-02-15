@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CivilServiceClient} from '../../../app/client/civilServiceClient';
+import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';

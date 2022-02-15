@@ -9,12 +9,16 @@
     "module": "commonjs",
     "strictNullChecks": true,
     "types": ["codeceptjs", "jest"],
+    "baseUrl": "src",
     "paths": {
       "common/*": [
         "main/common/*"
       ],
       "router/*": ["router/*"],
       "routes/*": ["routes/*"],
+      "models/*": ["main/common/models/*"],
+      "modules/*": ["main/modules/*"],
+      "client/*": ["main/app/client/*"]
     }
   }
 }
