@@ -48,9 +48,8 @@ export class OidcMiddleware {
       return res.render('home');
     });
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
-
       if (req.session.user) {
-        if (req.session?.user?.roles?.includes(citizenRole)) {
+        if (OidcMiddleware.isMainFile(req.path) || req.session?.user?.roles?.includes(citizenRole)) {
           return next();
         }
         return res.redirect(ROOT_URL);
@@ -58,5 +57,11 @@ export class OidcMiddleware {
       res.redirect(SIGN_IN_URL);
 
     });
+  }
+  private static isMainFile(path: string): boolean {
+    const js = /\/main\.([a-zA-Z]*[0-9]*[a-zA-Z]*)+\.js/gm;
+    const css = /\/main\.([a-zA-Z]*[0-9]*[a-zA-Z]*)+\.css/gm;
+
+    return js.test(path) || css.test(path);
   }
 }
