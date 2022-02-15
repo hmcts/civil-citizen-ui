@@ -4,8 +4,9 @@ import * as supertest from 'supertest';
 import { app } from '../../main/app';
 import * as urls from '../../main/routes/urls';
 
+
 const agent = supertest.agent(app);
-const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL,urls.CASES_URL,urls.CALLBACK_URL,urls.DASHBOARD_URL,urls.UNAUTHORISED_URL,urls.CITIZEN_PHONE_NUMBER_URL];
+const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL,urls.CASES_URL,urls.CALLBACK_URL,urls.DASHBOARD_URL,urls.UNAUTHORISED_URL];
 const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 
 
@@ -65,7 +66,7 @@ function expectNoErrors(messages: PallyIssue[]): void {
 describe.each(urlsNoSignOut)('Page %s', url => {
   test('should have no accessibility errors', async () => {
     await ensurePageCallWillSucceed(url);
-    const result = await runPally(url);
+    const result = await runPally(agent.get(url).url);
     expect(result.issues).toEqual(expect.any(Array));
     expectNoErrors(result.issues);
   });
