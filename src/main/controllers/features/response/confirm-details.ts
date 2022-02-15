@@ -91,7 +91,15 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
   // -- Retrive from Redis
   const draftStoreClient = req.app.locals.draftStoreClient;
   let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
-  citizenDetails = JSON.parse(citizenDetails);
+
+  // -- Data in Redis exists
+  if (citizenDetails) {
+    citizenDetails = JSON.parse(citizenDetails);
+  } else { // -- Otherwise user visit page first time
+    claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+    citizenDetails = claim;
+  }
+
   console.log('REDIS:', citizenDetails);
 
   // Add value to Form input
