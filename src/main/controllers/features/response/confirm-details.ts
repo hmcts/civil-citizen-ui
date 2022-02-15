@@ -1,12 +1,12 @@
 import * as express from 'express';
 import { Claim, Respondent, PrimaryAddress } from '../../../common/models/claim';
-import { CivilServiceClient } from '../../../app/client/civilServiceClient';
-import config from 'config';
+// import { CivilServiceClient } from '../../../app/client/civilServiceClient';
+// import config from 'config';
 const validator = require('../../../common/utils/validator');
 
 
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+// const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+// const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 let claim: Claim = new Claim();
 const respondent: Respondent = new Respondent();
@@ -81,7 +81,7 @@ function renderCitizenDetailsPage(res: express.Response, errorList:IErrorList[],
 
 // -- Retrive Claim
 (async () => {
-  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+  claim = new Claim();
 })();
 
 // -- Display Claim Details
