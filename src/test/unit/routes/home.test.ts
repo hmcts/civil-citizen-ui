@@ -58,7 +58,7 @@ describe('Home page', () => {
       await agent
         .post('/confirm-your-details')
         .send({ addressLineOne: '38 Highland Road', city: 'Birmingham' })
-        .expect(200);
+        .expect(302);
     });
   });
 });

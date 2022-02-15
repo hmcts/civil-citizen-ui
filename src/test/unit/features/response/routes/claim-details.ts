@@ -18,7 +18,7 @@ describe('Claim Details', () => {
           individualLastName: 'Clark',
           individualFirstName: 'Jane',
         },
-      totalClaimAmount: '110',
+      totalClaimAmount: 110,
       respondent1ResponseDeadline: '2022-01-24T15:59:59',
       detailsOfClaim: 'the reason i have given',
     };
