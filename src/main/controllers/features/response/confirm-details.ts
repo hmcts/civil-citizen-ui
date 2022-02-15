@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Claim, Respondent, PrimaryAddress } from 'common/models/claim';
+import { Claim, Respondent, PrimaryAddress } from '../../../common/models/claim';
 //import { CivilServiceClient } from '../../../app/client/civilServiceClient';
 //import config from 'config';
 const validator = require('../../../common/utils/validator');
@@ -17,9 +17,11 @@ type IErrorList = {
 };
 
 let errorList: IErrorList[] = [];
+let errorDateList: IErrorList[] = [];
 let addressLineOneValidated: object = {};
 let birthdayValidated: object = {};
 let townOrCityValidated: object = {};
+let formControlValidated: object;
 
 const addressLineOneObj = {
   classes: 'govuk-input--width-20',
@@ -43,9 +45,7 @@ const birthdayObj = {
 };
 
 const validateField = (formVal: string, errorMsg: string, formName: string, formObject: object) => {
-  let formControlValidated: object;
   if (validator.isEmpty(formVal)) {
-
     if (!errorList.some(item => item.href === `#${formName}`)) {
       errorList.push({
         text: errorMsg,
@@ -72,10 +72,10 @@ const validateField = (formVal: string, errorMsg: string, formName: string, form
 };
 
 const validateDateField = (formVal: string, errorMsg: string, formName: string, formObject: object) => {
-  let formControlValidated: object;
-  if (!validator.isNumber(formVal)) {
-    if (!errorList.some(item => item.href === `#${formName}`)) {
-      errorList.push({
+
+  if (validator.isNumber(formVal)!= null) {
+    if (!errorDateList.some(item => item.href === `#${formName}`)) {
+      errorDateList.push({
         text: errorMsg,
         href: `#${formName}`,
       });
@@ -90,7 +90,7 @@ const validateDateField = (formVal: string, errorMsg: string, formName: string, 
       ...formObject,
       value: formVal,
     };
-    errorList = errorList.filter(function (item) {
+    errorDateList = errorDateList.filter(function (item) {
       return item.href != `#${formName}`;
     });
   }
@@ -191,7 +191,6 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
 
 // Save details
 const formHandler = async (req:express.Request, res:express.Response) => {
-  console.log('REQ BODY', req.body);
   addressLineOneValidated = validateField(req.body.addressLineOne, 'Enter first address line', 'addressLineOne', addressLineOneObj);
   townOrCityValidated = validateField(req.body.city, 'Enter a valid town/city', 'city', townOrCityObj);
   const draftStoreClient = req.app.locals.draftStoreClient;
@@ -212,7 +211,7 @@ const formHandler = async (req:express.Request, res:express.Response) => {
 
     await draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim));
     res.redirect('case/1643033241924739/response/your-dob');
-  } else { // -- else get existing values and render page with error message
+  } else {
     let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
     citizenDetails = JSON.parse(citizenDetails);
     console.log('REDIS:', citizenDetails);
@@ -221,7 +220,6 @@ const formHandler = async (req:express.Request, res:express.Response) => {
 };
 
 const formDateHandler = async (req:express.Request, res:express.Response) => {
-  console.log('REQ BODY', req.body);
   claim.legacyCaseReference='000CMC001';
 
   //Todo validate dates
@@ -231,24 +229,21 @@ const formDateHandler = async (req:express.Request, res:express.Response) => {
   birthdayValidated = validateField(req.body.day, 'Enter a number', 'day', birthdayObj);
   birthdayValidated = validateField(req.body.month, 'Enter a number', 'month', birthdayObj);
   birthdayValidated = validateField(req.body.year, 'Enter a number', 'year', birthdayObj);
-
-  console.log('REQ day' + req.body?.day);
+  errorList=errorList.concat(errorDateList);
 
   const draftStoreClient = req.app.locals.draftStoreClient;
   // -- If valid save into Redis
-  if (req.body?.day && req.body?.month && req.body?.year) {
+  if (errorList.length==0) {
     const birthDate : Date = new Date(req.body.year,req.body.month,req.body.day);
 
     birthDate.setFullYear(req.body.year,req.body.month,req.body.day);
     respondent.individualDateOfBirth= birthDate;
     claim.respondent1 = respondent;
-    console.log('DATE: ' + claim.respondent1);
     await draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim));
     res.redirect('/citizen-phone');
-  } else { // -- else get existing values and render page with error message
+  } else {
     let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
     citizenDetails = JSON.parse(citizenDetails);
-    console.log('REDIS:', citizenDetails);
     renderCitizenDobPage(res, errorList, birthdayValidated);
   }
 };
