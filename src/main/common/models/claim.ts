@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import currencyFormat from '../utils/currencyFormat';
+import {Respondent} from './respondent';
 
 export class Claim {
   legacyCaseReference: string;
@@ -7,6 +8,7 @@ export class Claim {
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
   detailsOfClaim: string;
+  respondent:Respondent;
 
   formattedResponseDeadline(): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).format('D MMMM YYYY') : '';
