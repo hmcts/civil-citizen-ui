@@ -59,9 +59,7 @@ export class OidcMiddleware {
     });
   }
   private static isMainFile(path: string): boolean {
-    const js = /\/main\.([a-zA-Z]*[0-9]*[a-zA-Z]*)+\.js/gm;
     const css = /\/main\.([a-zA-Z]*[0-9]*[a-zA-Z]*)+\.css/gm;
-
-    return js.test(path) || css.test(path);
+    return css.test(path);
   }
 }
