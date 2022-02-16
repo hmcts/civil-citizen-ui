@@ -32,6 +32,8 @@ describe('Citizen telephone number get error message', () => {
     expect(result).toBe(ERROR_MESSAGE);
   });
   it('should return undefined when there is no error', () => {
+    //Given
+    citizenTelephoneNumber.error = undefined;
     //When
     const result = citizenTelephoneNumber.getErrorMessage();
     //Then
