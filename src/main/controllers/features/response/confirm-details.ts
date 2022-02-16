@@ -1,12 +1,12 @@
 import * as express from 'express';
 import { Claim, Respondent, PrimaryAddress } from '../../../common/models/claim';
-// import { CivilServiceClient } from '../../../app/client/civilServiceClient';
-// import config from 'config';
+import { CivilServiceClient } from '../../../app/client/civilServiceClient';
+import config from 'config';
 const validator = require('../../../common/utils/validator');
 
 
-// const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-// const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 let claim: Claim = new Claim();
 const respondent: Respondent = new Respondent();
@@ -79,13 +79,10 @@ function renderCitizenDetailsPage(res: express.Response, errorList:IErrorList[],
   });
 }
 
-// -- Retrive Claim
-(async () => {
-  claim = new Claim();
-})();
 
 // -- Display Claim Details
-const getClaimDetails = async (req:express.Request, res:express.Response)  => {
+const getClaimDetails = async (req: express.Request, res: express.Response) => {
+  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
   renderPage(res, claim);
 };
 
@@ -94,7 +91,15 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
   // -- Retrive from Redis
   const draftStoreClient = req.app.locals.draftStoreClient;
   let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
-  citizenDetails = JSON.parse(citizenDetails);
+
+  // -- Data in Redis exists
+  if (citizenDetails) {
+    citizenDetails = JSON.parse(citizenDetails);
+  } else { // -- Otherwise user visit page first time
+    claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+    citizenDetails = claim;
+  }
+
   console.log('REDIS:', citizenDetails);
 
   // Add value to Form input
@@ -112,7 +117,7 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
 };
 
 // Save details
-const formHandler = async (req:express.Request, res:express.Response) => {
+const formHandler = async (req: express.Request, res: express.Response) => {
   console.log('REQ BODY', req.body);
   addressLineOneValidated = validateField(req.body.addressLineOne, 'Enter first address line', 'addressLineOne', addressLineOneObj);
   townOrCityValidated = validateField(req.body.city, 'Enter a valid town/city', 'city', townOrCityObj);
