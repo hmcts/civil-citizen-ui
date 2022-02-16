@@ -70,11 +70,11 @@ function renderPage(res: express.Response, claimDetails: Claim): void {
   });
 }
 
-function renderCitizenDetailsPage(res: express.Response, errorList:IErrorList[], addressLineOneObj:object, townOrCityObj:object, citizenDetails:object): void {
+function renderCitizenDetailsPage(res: express.Response, _errorList:IErrorList[], _addressLineOneObj:object, _townOrCityObj:object, citizenDetails:object): void {
   res.render('features/response/your-details', {
-    errorList: errorList,
-    addressLineOneObj: addressLineOneObj,
-    townOrCityObj: townOrCityObj,
+    errorList: _errorList,
+    addressLineOneObj: _addressLineOneObj,
+    townOrCityObj: _townOrCityObj,
     citizenDetails: citizenDetails,
   });
 }

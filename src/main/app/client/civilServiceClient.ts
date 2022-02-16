@@ -32,7 +32,7 @@ export class CivilServiceClient {
       throw new AssertionError({message: 'Claim details not available.'});
     }
 
-    const claim = response.data as Claim;
-    return claim;
+    return response.data as Claim;
+
   }
 }
