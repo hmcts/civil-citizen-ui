@@ -2,6 +2,7 @@ import request from 'supertest';
 
 import {app} from '../../../main/app';
 import config from 'config';
+
 jest.mock('../../../main/modules/draft-store');
 const nock = require('nock');
 
@@ -18,11 +19,11 @@ function authenticate() {
 
 // TODO: replace this sample test with proper route tests for your application
 describe('Home page', () => {
-
+  const idamUrl: string = config.get('idamUrl');
   const citizenRoleToken: string = config.get('citizenRoleToken');
 
   beforeEach(() => {
-    nock('http://localhost:5000')
+    nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });

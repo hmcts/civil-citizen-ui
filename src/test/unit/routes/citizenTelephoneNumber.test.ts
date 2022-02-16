@@ -9,9 +9,9 @@ jest.mock('../../../main/modules/draft-store');
 
 describe('Citizen phone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
-
+  const idamUrl: string = config.get('idamUrl');
   beforeEach(() => {
-    nock('http://localhost:5000')
+    nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
 
