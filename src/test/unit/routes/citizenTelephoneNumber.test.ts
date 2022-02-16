@@ -37,9 +37,21 @@ describe('Citizen phone number', () => {
           expect(res.text).toContain('There was a problem. Please enter numeric number');
         });
     });
+    test('should accept input with trailing whitepsaces', async () => {
+      const mockDraftStore = {
+        set: jest.fn(() => Promise.resolve({ data: {} })),
+      };
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .post('/citizen-phone')
+        .send('telephoneNumber= 123 ')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
     test('should redirect on correct input', async () => {
       const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
+        set: jest.fn(() => Promise.resolve({ data: {} })),
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)

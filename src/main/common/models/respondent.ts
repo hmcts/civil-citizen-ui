@@ -1,3 +1,3 @@
 export class Respondent {
-  telephoneNumber: number
+  telephoneNumber: string
 }

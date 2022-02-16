@@ -1,15 +1,15 @@
 import {OptionalIntegerValidator} from '../validators/optionalIntegerValidator';
 import {Validate, ValidationError} from 'class-validator';
 import {FormValidationError} from '../validationErrors/formValidationError';
-import {NON_NUMERIC_VALUES_NOT_ALLOWED} from '../validationErrors/erroMessageConstants';
+import {NON_NUMERIC_VALUES_NOT_ALLOWED} from '../validationErrors/errorMessageConstants';
 
 export class CitizenTelephoneNumber {
 
   @Validate(OptionalIntegerValidator, {message: NON_NUMERIC_VALUES_NOT_ALLOWED})
-  telephoneNumber?: number
+  telephoneNumber?: string
   error?: ValidationError
 
-  constructor(telephoneNumber?: number, error?: ValidationError) {
+  constructor(telephoneNumber?: string, error?: ValidationError) {
     this.telephoneNumber = telephoneNumber;
     this.error = error;
   }
