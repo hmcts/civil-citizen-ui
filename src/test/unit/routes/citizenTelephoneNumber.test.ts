@@ -38,6 +38,19 @@ describe('Citizen phone number', () => {
           expect(res.text).toContain('There was a problem. Please enter numeric number');
         });
     });
+    test('should not have error, whitespaced input should be trimmed', async () => {
+      const mockDraftStore = {
+        set: jest.fn(() => Promise.resolve({ data: {} })),
+      };
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .post('/citizen-phone')
+        .send('telephoneNumber= 123 ')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain('There was a problem. Please enter numeric number');
+        });
+    });
     test('should not have error on correct input', async () => {
       const mockDraftStore = {
         set: jest.fn(() => Promise.resolve({ data: {} })),
