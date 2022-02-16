@@ -25,7 +25,6 @@ router.post(CITIZEN_PHONE_NUMBER_URL,
       model.error = errors[0];
       renderView(model, res);
     }else {
-
       const respondent = new Respondent();
       respondent.telephoneNumber = model.telephoneNumber;
       const claim = new Claim();
