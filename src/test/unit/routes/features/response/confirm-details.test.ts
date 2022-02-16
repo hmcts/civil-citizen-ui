@@ -14,7 +14,7 @@ function authenticate() {
     });
 }
 
-describe('Home page', () => {
+describe('Confirm Details page', () => {
 
   const citizenRoleToken: string = config.get('citizenRoleToken');
 
