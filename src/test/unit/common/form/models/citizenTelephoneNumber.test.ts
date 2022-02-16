@@ -42,7 +42,7 @@ describe('Citizen telephone number get error message', () => {
 });
 
 describe('Cititzen telephone number constructor', ()=>{
-  it("should trim telehone number value when given value has trailing spaces", ()=> {
+  it('should trim telehone number value when given value has trailing spaces', ()=> {
     //Given
     const inputWithTrailingSpaces = ' 234234 ';
     //When
