@@ -1,4 +1,5 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
+import {NON_NUMERIC_VALUES_NOT_ALLOWED} from '../validationErrors/erroMessageConstants';
 
 /**
  * Validates that the input value is either empty or an integer with no special characters
