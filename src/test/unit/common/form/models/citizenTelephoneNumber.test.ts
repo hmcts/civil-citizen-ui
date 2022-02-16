@@ -41,6 +41,20 @@ describe('Citizen telephone number get error message', () => {
   });
 });
 
+describe('Cititzen telephone number constructor', ()=>{
+  it("should trim telehone number value when given value has trailing spaces", ()=> {
+    //Given
+    const inputWithTrailingSpaces = ' 234234 ';
+    //When
+    const citizenTelephoneNumber = new CitizenTelephoneNumber(inputWithTrailingSpaces);
+
+    //Then
+    const expected = '234234';
+    const result = citizenTelephoneNumber.telephoneNumber;
+    expect(result).toBe(expected);
+  });
+});
+
 function createValidationError() {
   const validationError = new ValidationError();
   validationError.property = PROPERTY;

@@ -18,8 +18,7 @@ router.get(CITIZEN_PHONE_NUMBER_URL, (req, res) => {
 });
 router.post(CITIZEN_PHONE_NUMBER_URL,
   (req, res) => {
-    const model: CitizenTelephoneNumber = Object.assign(new CitizenTelephoneNumber(), req.body);
-    model.telephoneNumber = model.telephoneNumber.trim();
+    const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
     const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(model);
     if (errors && errors.length > 0) {

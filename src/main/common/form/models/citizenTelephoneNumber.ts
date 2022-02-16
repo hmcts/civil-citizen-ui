@@ -10,7 +10,7 @@ export class CitizenTelephoneNumber {
   error?: ValidationError
 
   constructor(telephoneNumber?: string, error?: ValidationError) {
-    this.telephoneNumber = telephoneNumber;
+    this.telephoneNumber = telephoneNumber?.trim();
     this.error = error;
   }
 
