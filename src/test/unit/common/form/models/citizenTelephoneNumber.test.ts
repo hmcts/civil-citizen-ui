@@ -1,5 +1,6 @@
 import {ValidationError} from 'class-validator';
 import {CitizenTelephoneNumber} from '../../../../../main/common/form/models/citizenTelephoneNumber';
+
 const ERROR_MESSAGE = 'Error message';
 const PROPERTY = 'property';
 describe('Citizen telephone number has errors', () => {
@@ -11,7 +12,7 @@ describe('Citizen telephone number has errors', () => {
     expect(result).toBeFalsy();
   });
 
-  it('should return true when errors exist', ()=> {
+  it('should return true when errors exist', () => {
     //Given
     citizenTelephoneNumber.error = createValidationError();
     //When
@@ -23,7 +24,7 @@ describe('Citizen telephone number has errors', () => {
 
 describe('Citizen telephone number get error message', () => {
   const citizenTelephoneNumber = new CitizenTelephoneNumber();
-  it('should return error message when there is an error', ()=> {
+  it('should return error message when there is an error', () => {
     //Given
     citizenTelephoneNumber.error = createValidationError();
     //When
@@ -41,13 +42,12 @@ describe('Citizen telephone number get error message', () => {
   });
 });
 
-describe('Cititzen telephone number constructor', ()=>{
-  it('should trim telehone number value when given value has trailing spaces', ()=> {
+describe('Citizen telephone number constructor', () => {
+  it('should trim telephone number value when given value has trailing spaces', () => {
     //Given
     const inputWithTrailingSpaces = ' 234234 ';
     //When
     const citizenTelephoneNumber = new CitizenTelephoneNumber(inputWithTrailingSpaces);
-
     //Then
     const expected = '234234';
     const result = citizenTelephoneNumber.telephoneNumber;
