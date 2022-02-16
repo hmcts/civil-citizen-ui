@@ -49,7 +49,7 @@ export class OidcMiddleware {
     });
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
       if (req.session.user) {
-        if (OidcMiddleware.isMainFile(req.path) || req.session?.user?.roles?.includes(citizenRole)) {
+        if (req.session?.user?.roles?.includes(citizenRole)) {
           return next();
         }
         return res.redirect(ROOT_URL);
@@ -57,9 +57,5 @@ export class OidcMiddleware {
       res.redirect(SIGN_IN_URL);
 
     });
-  }
-  private static isMainFile(path: string): boolean {
-    const css = /\/main\.([a-zA-Z]*[0-9]*[a-zA-Z]*)+\.css/gm;
-    return css.test(path);
   }
 }
