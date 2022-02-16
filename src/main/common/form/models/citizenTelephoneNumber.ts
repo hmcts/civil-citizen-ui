@@ -15,11 +15,13 @@ export class CitizenTelephoneNumber {
     this.telephoneNumber = telephoneNumber;
     this.error = error;
   }
+
   hasError(): boolean {
     return this.error !== undefined;
   }
+
   getErrorMessage(): string {
-    if(this.hasError()) {
+    if (this.hasError()) {
       return new FormValidationError(this.error, 'telephoneNumber').message;
     }
   }

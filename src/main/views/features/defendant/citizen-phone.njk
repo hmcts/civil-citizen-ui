@@ -1,7 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
-{# % from "crsf.njk" import csrf %#}
 {% from "buttons.njk" import saveAndContinueButton %}
-{% from "contact-us-for-help.njk" import contactUsForHelp %}
 
 {% block content %}
   <div class="grid-row">
@@ -22,9 +20,6 @@
           {{ saveAndContinueButton() }}
         </div>
       </form>
-      <div class="govuk-!-display-block">
-        {{ contactUsForHelp() }}
-      </div>
     </div>
   </div>
 {% endblock %}

@@ -17,5 +17,4 @@ export class OptionalIntegerValidator implements ValidatorConstraintInterface {
   defaultMessage() {
     return 'There was a problem. Please enter numeric number';
   }
-
 }
