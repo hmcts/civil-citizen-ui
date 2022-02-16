@@ -105,11 +105,11 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
   // Add value to Form input
   const addressInput = {
     ...addressLineOneObj,
-    value: citizenDetails ? citizenDetails.respondent1.primaryAddress.AddressLine1 : '',
+    value: citizenDetails?.respondent1?.primaryAddress?.AddressLine1,
   };
   const townInput = {
     ...townOrCityObj,
-    value: citizenDetails ?  citizenDetails.respondent1.primaryAddress.PostTown : '',
+    value: citizenDetails?.respondent1?.primaryAddress?.PostTown,
   };
 
   // -- Render Page
