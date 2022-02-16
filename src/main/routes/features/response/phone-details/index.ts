@@ -7,14 +7,14 @@ import {Claim} from '../../../../common/models/claim';
 
 const citizenPhoneViewPath = 'features/response/phone-details/citizen-phone';
 const router = express.Router();
-const defendantDetailsTelephoneNumber = new CitizenTelephoneNumber();
+const citizenTelephoneNumber = new CitizenTelephoneNumber();
 
 function renderView(form: CitizenTelephoneNumber, res: express.Response): void {
   res.render(citizenPhoneViewPath, {form: form});
 }
 
 router.get(CITIZEN_PHONE_NUMBER_URL, (req, res) => {
-  renderView(defendantDetailsTelephoneNumber, res);
+  renderView(citizenTelephoneNumber, res);
 });
 router.post(CITIZEN_PHONE_NUMBER_URL,
   (req, res) => {
@@ -24,7 +24,7 @@ router.post(CITIZEN_PHONE_NUMBER_URL,
     if (errors && errors.length > 0) {
       model.error = errors[0];
       renderView(model, res);
-    }else {
+    } else {
       const respondent = new Respondent();
       respondent.telephoneNumber = model.telephoneNumber;
       const claim = new Claim();
