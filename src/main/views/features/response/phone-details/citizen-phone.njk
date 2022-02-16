@@ -1,5 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
-
+{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "buttons.njk" import saveAndContinueButton %}
 
 {% block content %}
@@ -19,7 +19,9 @@
                  id="telephoneNumber" name="telephoneNumber" type="text" inputmode="numeric" autocomplete="tel">
         </div>
         <div class="govuk-form-group">
-          {{ saveAndContinueButton() }}
+          {{ govukButton({
+            text: t("Save and continue")
+          }) }}
         </div>
       </form>
     </div>
