@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
-import {CITIZEN_PHONE_NUMBER_URL} from '../../../urls';
+import {CITIZEN_PHONE_NUMBER_URL, ROOT_URL} from '../../../urls';
 import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
@@ -31,8 +31,8 @@ router.post(CITIZEN_PHONE_NUMBER_URL,
       claim.respondent = respondent;
       claim.legacyCaseReference = 'phone-number';
       const draftStoreClient = req.app.locals.draftStoreClient;
-      draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim)).then(()=> {
-        renderView(model, res);
+      draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim)).then(() => {
+        res.redirect(ROOT_URL);
       });
     }
   });
