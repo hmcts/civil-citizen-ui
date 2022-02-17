@@ -29,12 +29,12 @@ router.post('/your-dob',
 
     const validator = new Validator();
     const error: ValidationError[] = validator.validateSync(citizenDob);
-    console.log('citizenDob: ', citizenDob);
-    console.log('error: ', error);
-    console.log('error.length: ', error.length);
 
     if (error && error.length > 0){
-
+      citizenDob.error=error;
+      console.log('citizenDob: ', citizenDob);
+      console.log('error: ', error);
+      console.log('error.length: ', error.length);
       renderView(res, citizenDob, error);
     } else {
       // temporary to show error removed, should forward to next page in sequence

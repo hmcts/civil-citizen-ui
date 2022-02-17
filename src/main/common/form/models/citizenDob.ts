@@ -20,9 +20,9 @@ export class CitizenDob {
   @Max(31)
   @Length(1, 2)
   day:number
-  error?: ValidationError
+  error?: ValidationError[]
 
-  constructor(dateOfBirth?: Date,  year?:number,  month?:number,  day?:number, error?: ValidationError) {
+  constructor(dateOfBirth?: Date,  year?:number,  month?:number,  day?:number, error?: ValidationError[]) {
     this.dateOfBirth = dateOfBirth;
     this.year = year;
     this.month = month;
@@ -32,9 +32,12 @@ export class CitizenDob {
   hasError(): boolean {
     return this.error !== undefined;
   }
-  getErrorMessage(): string {
+  getErrorMessage(): string[] {
     if(this.hasError()) {
-      return new FormValidationError(this.error).message;
+      const messages : string[]= [];
+      messages.push(new FormValidationError(this.error[0]).message);
+      messages.push(new FormValidationError(this.error[1]).message);
+      return messages;
     }
   }
 }

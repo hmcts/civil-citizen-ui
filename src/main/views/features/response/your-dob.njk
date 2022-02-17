@@ -34,6 +34,8 @@
           <form method="post">
             {% set error = form.getErrorMessage() %}
           <div class="govuk-form-group {% if error %} govuk-form-group--error{% endif %}">
+          {% if error %}<span class="govuk-error-message">{{ t(error) }}</span>{% endif %}
+
              {{ govukDateInput({
                     id: "birthDate",
                     type: "number",
