@@ -4,16 +4,17 @@ import {Validator,ValidationError} from 'class-validator';
 
 
 const router = express.Router();
+let citizenDob = new CitizenDob();
 
-function renderView (res: express.Response,citizenDob?:CitizenDob, error?:ValidationError[]): void {
+function renderView (res: express.Response,form:CitizenDob, error?:ValidationError[]): void {
   if (error) {
     console.log('renderView: ', error.length);
   }
-  res.render('features/response/your-dob', {error, citizenDob});
+  res.render('features/response/your-dob', {form:form});
 }
 /* tslint:disable:no-default-export */
 router.get('/your-dob', (req: express.Request, res: express.Response) => {
-  renderView(res);
+  renderView(res, citizenDob);
 });
 
 router.post('/your-dob',
@@ -23,7 +24,7 @@ router.post('/your-dob',
     console.log('REQ BODY', req.body);
     const birthdate: Date = new Date();
     birthdate.setFullYear(req.body.year,req.body.month,req.body.day);
-    const citizenDob = new CitizenDob(birthdate,req.body.year,req.body.month,req.body.day);
+    citizenDob = new CitizenDob(birthdate,req.body.year,req.body.month,req.body.day);
     console.log('birthdate: ', birthdate);
 
     const validator = new Validator();

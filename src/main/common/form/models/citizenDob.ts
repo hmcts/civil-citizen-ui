@@ -34,7 +34,7 @@ export class CitizenDob {
   }
   getErrorMessage(): string {
     if(this.hasError()) {
-      return new FormValidationError(this.error, 'dateOfBirth').message;
+      return new FormValidationError(this.error).message;
     }
   }
 }

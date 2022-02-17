@@ -32,12 +32,8 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post">
-              {% set errorMessage =  error if error %}
-              {% set errorMessage =  error.error if error.error %}
-              {% set errorMessage =  error.dateOfBirth if error.dateOfBirth else errorMessage %}
-              {% set errorMessage =  error.day if error.day else errorMessage %}
-              {% set errorMessage =  error.CitizenDob.day if error.CitizenDob.day else errorMessage %}
-
+            {% set error = form.getErrorMessage() %}
+          <div class="govuk-form-group {% if error %} govuk-form-group--error{% endif %}">
              {{ govukDateInput({
                     id: "birthDate",
                     type: "number",
@@ -81,7 +77,8 @@
                         max: 9999
                       }
                       ]
-                  }) }}
+             }) }}
+          </div>
             {{ govukButton({ text: t("Save and continue") }) }}
             {{ contactUsForHelp(t) }}
           </form>
