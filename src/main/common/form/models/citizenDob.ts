@@ -34,10 +34,11 @@ export class CitizenDob {
   }
   getErrorMessage(): string[] {
     if(this.hasError()) {
-      const messages : string[]= [];
-      messages.push(new FormValidationError(this.error[0]).message);
-      messages.push(new FormValidationError(this.error[1]).message);
-      return messages;
+      const validators : string[] = [];
+      for (const item of this.error) {
+        validators.push(new FormValidationError(item).message);
+      }
+      return validators;
     }
   }
 }
