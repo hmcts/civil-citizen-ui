@@ -5,7 +5,7 @@ import { app } from '../../main/app';
 import * as urls from '../../main/routes/urls';
 
 const agent = supertest.agent(app);
-const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL,urls.CASES_URL,urls.CALLBACK_URL,urls.DASHBOARD_URL,urls.UNAUTHORISED_URL];
+const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL,urls.CASES_URL,urls.CALLBACK_URL,urls.DASHBOARD_URL,urls.UNAUTHORISED_URL,urls.CONFIRM_CITIZEN_DETAILS_URL, urls.CITIZEN_DETAILS_URL, urls.CLAIM_DETAILS_URL];
 const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 
 
@@ -26,6 +26,16 @@ class PallyIssue {
 beforeAll((done /* call it or remove it*/) => {
   done(); // calling it
 });
+
+beforeEach(() => {
+  jest.useFakeTimers();
+  jest.setTimeout(100000);
+});
+
+afterEach(() => {
+  jest.clearAllTimers();
+});
+
 function ensurePageCallWillSucceed(url: string): Promise<void> {
   return agent.get(url).then((res: supertest.Response) => {
     if (res.redirect && res.get('Location') === 'login') {
@@ -65,7 +75,7 @@ function expectNoErrors(messages: PallyIssue[]): void {
 describe.each(urlsNoSignOut)('Page %s', url => {
   test('should have no accessibility errors', async () => {
     await ensurePageCallWillSucceed(url);
-    const result = await runPally(url);
+    const result = await runPally(agent.get(url).url);
     expect(result.issues).toEqual(expect.any(Array));
     expectNoErrors(result.issues);
   });
