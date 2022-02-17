@@ -46,7 +46,7 @@
     "@wdio/sauce-service": "^7.16.13",
     "applicationinsights": "^2.2.0",
     "axios": "^0.25.0",
-    "config": "^3.3.2",
+    "config": "^3.3.7",
     "cookie-parser": "^1.4.6",
     "csurf": "^1.11.0",
     "dayjs": "^1.10.7",
