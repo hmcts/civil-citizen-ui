@@ -1,28 +1,29 @@
-import {IsDate, IsInt, Length, Min, Max, ValidationError} from 'class-validator';
+import {IsDate, Min, Max, ValidationError,Validate} from 'class-validator';
 import {FormValidationError} from '../validationErrors/formValidationError';
+import {OptionalDateValidator} from '../validators/optionalDateValidator';
+import {REAL_DATE_VALUES_NOT_ALLOWED} from '../validationErrors/errorMessageConstants';
 
 export class CitizenDob {
 
   @IsDate()
+  @Validate(OptionalDateValidator, {message: REAL_DATE_VALUES_NOT_ALLOWED})
   dateOfBirth?: Date
-  @IsInt()
-  @Min(1890)
+
+  @Min(1872)
   @Max(9999)
-  @Length(4, 4)
   year:number
-  @IsInt()
-  @Min(0)
+
+  @Min(1)
   @Max(12)
-  @Length(1, 2)
   month:number
-  @IsInt()
-  @Min(0)
+
+  @Min(1)
   @Max(31)
-  @Length(1, 2)
   day:number
   error?: ValidationError[]
 
   constructor(dateOfBirth?: Date,  year?:number,  month?:number,  day?:number, error?: ValidationError[]) {
+
     this.dateOfBirth = dateOfBirth;
     this.year = year;
     this.month = month;
