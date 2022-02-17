@@ -29,6 +29,14 @@ beforeAll((done /* call it or remove it*/) => {
   done(); // calling it
 });
 
+beforeEach(() => {
+  jest.useFakeTimers();
+  jest.setTimeout(100000);
+});
+
+afterEach(() => {
+  jest.clearAllTimers();
+});
 function ensurePageCallWillSucceed(url: string): Promise<void> {
   return agent.get(url).then((res: supertest.Response) => {
     if (res.redirect && res.get('Location') === 'login') {
