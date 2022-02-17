@@ -32,10 +32,11 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post">
-              {% set errorMessage =  errors.day.text if errors.day %}
-              {% set errorMessage =  errors.month.text if errors.month else errorMessage %}
-              {% set errorMessage =  errors.year.text if errors.year else errorMessage %}
-              {% set errorMessage =  errors.date.text if errors.date else errorMessage %}
+              {% set errorMessage =  error if error %}
+              {% set errorMessage =  error.error if error.error %}
+              {% set errorMessage =  error.dateOfBirth if error.dateOfBirth else errorMessage %}
+              {% set errorMessage =  error.day if error.day else errorMessage %}
+              {% set errorMessage =  error.CitizenDob.day if error.CitizenDob.day else errorMessage %}
 
              {{ govukDateInput({
                     id: "birthDate",

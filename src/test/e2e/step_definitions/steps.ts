@@ -1,6 +1,6 @@
 const { homepage } = require('../pages/homepage');
 
-let inject;
+inject;
 const { I } = inject();
 
 homepage(I);
