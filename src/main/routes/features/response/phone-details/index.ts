@@ -28,7 +28,7 @@ router.post(CITIZEN_PHONE_NUMBER_URL,
       const respondent = new Respondent();
       respondent.telephoneNumber = model.telephoneNumber;
       const claim = new Claim();
-      claim.respondent = respondent;
+      claim.respondent1 = respondent;
       claim.legacyCaseReference = 'phone-number';
       const draftStoreClient = req.app.locals.draftStoreClient;
       draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim)).then(() => {

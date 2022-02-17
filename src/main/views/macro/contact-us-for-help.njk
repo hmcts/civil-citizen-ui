@@ -1,0 +1,20 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% macro contactUsForHelp(t) %}
+  {% set Email = t('Email') %}
+  {% set Line1 = t('We\'ll get back to you within 10 days') %}
+  {% set Tel = t('Telephone') %}
+  {% set Days = t('Monday to Friday') %}
+  {% set Line2 = t('Find out about call charges (opens in a new window)') %}
+  {% set ContactUs = t('Contact us for help') %}
+
+  {{ govukDetails({
+    summaryText: ContactUs,
+    html: "
+      <h3 class='govuk-heading-m'>" + Email + "</h3>
+      <p><a href='mailto:contactocmc@justice.gov.uk' class='govuk-details__summary'>contactocmc@justice.gov.uk</a><br />" + Line1 + ".</p>
+      <h3 class='govuk-heading-m'>"+ Tel +"</h3>
+      <p>0300 123 7050<br />
+      "+ Days +", 8.30am to 5pm.<br />
+      <a href='/call-charges' target='_blank' class='govuk-details__summary'>"+ Line2 +"</a></p>"
+  }) }}
+{% endmacro %}

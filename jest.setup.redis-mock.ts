@@ -1,4 +1,3 @@
-
 jest.mock('redis');
 import {createClient} from 'redis';
 

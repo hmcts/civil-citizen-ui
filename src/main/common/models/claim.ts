@@ -8,7 +8,10 @@ export class Claim {
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
   detailsOfClaim: string;
-  respondent:Respondent;
+  respondent1: Respondent;
+  individualTitle: string;
+  individualLastName: string;
+  individualFirstName: string;
 
   formattedResponseDeadline(): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).format('D MMMM YYYY') : '';

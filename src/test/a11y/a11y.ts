@@ -1,12 +1,11 @@
-import {fail} from 'assert';
-
+import { fail } from 'assert';
 const pa11y = require('pa11y');
 import * as supertest from 'supertest';
-import {app} from '../../main/app';
+import { app } from '../../main/app';
 import * as urls from '../../main/routes/urls';
 
 const agent = supertest.agent(app);
-const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL, urls.CASES_URL, urls.CALLBACK_URL, urls.DASHBOARD_URL, urls.UNAUTHORISED_URL, urls.CITIZEN_PHONE_NUMBER_URL];
+const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL, urls.CASES_URL, urls.CALLBACK_URL, urls.DASHBOARD_URL, urls.UNAUTHORISED_URL, urls.CITIZEN_PHONE_NUMBER_URL, urls.UNAUTHORISED_URL,urls.CONFIRM_CITIZEN_DETAILS_URL, urls.CITIZEN_DETAILS_URL, urls.CLAIM_DETAILS_URL];
 const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 
 
@@ -37,6 +36,7 @@ beforeEach(() => {
 afterEach(() => {
   jest.clearAllTimers();
 });
+
 function ensurePageCallWillSucceed(url: string): Promise<void> {
   return agent.get(url).then((res: supertest.Response) => {
     if (res.redirect && res.get('Location') === 'login') {

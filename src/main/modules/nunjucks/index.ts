@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { join } from 'path';
 import { Express } from 'express';
 import { configure } from 'nunjucks';
@@ -34,22 +35,11 @@ export class Nunjucks {
       'node_modules',
       'govuk-frontend',
     );
-    const nunjucksEnv = configure(
-      [join(__dirname, '..', '..', 'views'),
-        join(__dirname, '..', '..', 'common'),
-        join(__dirname, '..', '..', 'features'),
-        join(__dirname, '..', '..', 'views', 'macro'),
-        join(__dirname, '..', '..', 'views', 'includes'),
-        join(__dirname, '..', '..', 'views', 'macro', 'back-link'),
-        govUkFrontendPath,
-        join(__dirname, '..', '..', '..', '..', 'node_modules', '@hmcts', 'civil-citizen-ui', 'macros'),
-      ],
-      {
-        autoescape: true,
-        watch: this.developmentMode,
-        express: app,
-      },
-    );
+    const nunjucksEnv = configure([path.join(__dirname, '..', '..', 'views'), govUkFrontendPath], {
+      autoescape: true,
+      watch: this.developmentMode,
+      express: app,
+    });
 
     const currencyFormat = (value: number) => numeral.default(value);
 
