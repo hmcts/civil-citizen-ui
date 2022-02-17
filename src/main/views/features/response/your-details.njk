@@ -30,7 +30,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('Confirm your details') }}</h1>
-          <p class="govuk-body">{{ t('Your name and address were provided by the person, business or organisation claiming from you the claimant.') }}</p>
+          <p class="govuk-body">{{ t('Your name and address were provided by the person, business or organisation claiming from you (the claimant).') }}</p>
         </div>
       </div>
       <div class="govuk-grid-row">
@@ -47,7 +47,7 @@
               claimant when you submit your response.') }}</p>
             <div class="govuk-form-group govuk-!-margin-0">
               <label class="govuk-label" for="addressLineOne">
-                {{ t('Address') }}
+                {{ t('Building and street') }}
               </label>
             </div>
             {{ govukInput(addressLineOneObj) }}
@@ -87,7 +87,8 @@
               },
               classes: "govuk-input--width-10",
               id: "postcode",
-              name: "postcode"
+              name: "postcode",
+              value: citizenDetails.respondent1.primaryAddress.PostCode
             }
             ) }}
             {% set noHtml %}
@@ -109,8 +110,8 @@
               classes: "govuk-button--secondary"
             }) }}
             {# <div>
-                          <a class="govuk-link" href="#">{{ t('Enter address manually') }}</a>
-                        </div> #}
+                                                              <a class="govuk-link" href="#">{{ t('Enter address manually') }}</a>
+                                                            </div> #}
             {% endset -%}
             <h2 class="govuk-heading-m">{{ t('Correspondence address') }}</h2>
             {{ govukRadios({
