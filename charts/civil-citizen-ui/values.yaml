@@ -5,7 +5,7 @@ nodejs:
   aadIdentityName: civil
   keyVaults:
     civil:
-      resourceGroup: civil
+      resourceGroup: civil-service
       secrets:
         - AppInsightsInstrumentationKey
         - redis-access-key

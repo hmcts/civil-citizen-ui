@@ -4,7 +4,7 @@ nodejs:
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
     civil:
-      resourceGroup: civil
+      resourceGroup: civil-service
       secrets:
         - AppInsightsInstrumentationKey
         - redis-access-key
