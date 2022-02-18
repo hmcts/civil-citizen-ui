@@ -44,7 +44,6 @@ const i18next = I18Next.enableFor(app);
 
 const logger = Logger.getLogger('app');
 
-new DraftStoreClient().enableFor(app);
 new PropertiesVolume().enableFor(app);
 new DraftStoreClient().enableFor(app);
 new AppInsights().enable();
