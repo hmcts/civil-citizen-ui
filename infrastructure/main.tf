@@ -2,13 +2,9 @@ provider "azurerm" {
   features {}
 }
 
-locals {
-  vaultName = "${var.product}-${var.env}"
-}
-
-data "azurerm_key_vault" "key_vault" {
-  name = local.vaultName
-  resource_group_name = local.vaultName
+data "azurerm_key_vault" "civil_vault" {
+  name                = "civil-${var.env}"
+  resource_group_name = "civil-${var.env}"
 }
 
 data "azurerm_subnet" "core_infra_redis_subnet" {
@@ -19,7 +15,7 @@ data "azurerm_subnet" "core_infra_redis_subnet" {
 
 module "civil-citizen-ui-draft-store" {
   source   = "git@github.com:hmcts/cnp-module-redis?ref=master"
-  product  = "${var.product}-${var.component}-draft-store"
+  product  = var.product
   location = var.location
   env      = var.env
   subnetid = data.azurerm_subnet.core_infra_redis_subnet.id
@@ -29,5 +25,5 @@ module "civil-citizen-ui-draft-store" {
 resource "azurerm_key_vault_secret" "redis_access_key" {
   name         = "redis-access-key"
   value        = module.civil-citizen-ui-draft-store.access_key
-  key_vault_id = data.azurerm_key_vault.key_vault.id
+  key_vault_id = data.azurerm_key_vault.civil_vault.id
 }

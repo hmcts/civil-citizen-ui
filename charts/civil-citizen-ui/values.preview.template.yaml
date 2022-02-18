@@ -3,8 +3,8 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
-    civil-aat:
-      resourceGroup: civil-service-aat
+    civil:
+      resourceGroup: civil
       secrets:
         - AppInsightsInstrumentationKey
         - redis-access-key

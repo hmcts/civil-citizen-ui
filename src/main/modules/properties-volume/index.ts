@@ -9,8 +9,8 @@ export class PropertiesVolume {
     if (server.locals.ENV !== 'development') {
       propertiesVolume.addTo(config);
 
-      this.setSecret('secrets.civil-aat.AppInsightsInstrumentationKey', 'appInsights.instrumentationKey');
-      this.setSecret('secrets.civil-aat.redis-access-key', 'services.draftStore.redis.key');
+      this.setSecret('secrets.civil.AppInsightsInstrumentationKey', 'appInsights.instrumentationKey');
+      this.setSecret('secrets.civil.redis-access-key', 'services.draftStore.redis.key');
     }
   }
 
