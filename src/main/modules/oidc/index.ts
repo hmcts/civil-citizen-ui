@@ -48,7 +48,6 @@ export class OidcMiddleware {
       return res.render('home');
     });
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
-
       if (req.session.user) {
         if (req.session?.user?.roles?.includes(citizenRole)) {
           return next();
@@ -57,7 +56,6 @@ export class OidcMiddleware {
         //return res.redirect(ROOT_URL);
       }
       res.redirect(SIGN_IN_URL);
-
     });
   }
 }

@@ -1,3 +1,13 @@
+import {PrimaryAddress} from './primaryAddress';
+
 export class Respondent {
-  dateOfBirth: Date
+  primaryAddress: PrimaryAddress;
+  individualTitle: string;
+  individualLastName: string;
+  individualFirstName: string;
+  telephoneNumber: string;
+  dateOfBirth: Date;
 }
+
+
+

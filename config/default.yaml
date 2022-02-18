@@ -8,6 +8,7 @@ services:
     url: 'http://localhost:8765'
     microservice: 'civil_service'
   idam:
+    url: 'http://localhost:5000'
     authorizationURL: 'http://localhost:3501/login'
     tokenURL: 'http://localhost:5000/o/token'
     clientID: 'civil_citizen_ui'
