@@ -2,8 +2,8 @@ import * as express from 'express';
 import {CitizenDob} from '../../../../common/form/models/citizenDob';
 import {Validator} from 'class-validator';
 import {DOB_URL, ROOT_URL} from '../../../../routes/urls';
-import {Respondent} from 'models/respondent';
-import {Claim} from 'models/claim';
+import {Respondent} from '../../../../common/models/respondent';
+import {Claim} from '../../../../common/models/claim';
 
 const router = express.Router();
 let citizenDob = new CitizenDob();

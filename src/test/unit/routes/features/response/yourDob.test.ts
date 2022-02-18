@@ -65,13 +65,12 @@ describe('Citizen date of birth', () => {
         });
     });
     test('should return error on future date', async () => {
-      const tomorrowDate = new Date();
-      tomorrowDate.setUTCDate(tomorrowDate.getUTCDate() + 1);
+
       await request(app)
         .post('/your-dob')
-        .send('year=' + tomorrowDate.getFullYear())
-        .send('month=' + tomorrowDate.getMonth())
-        .send('day=' + tomorrowDate.getDay())
+        .send('year=2400')
+        .send('month=1')
+        .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Please enter a date in the past for date of birth');
