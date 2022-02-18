@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CitizenDob} from '../../../common/form/models/citizenDob';
+import {CitizenDob} from '../../../../common/form/models/citizenDob';
 import {Validator} from 'class-validator';
 import {DOB_URL} from 'routes/urls';
 
@@ -7,7 +7,7 @@ const router = express.Router();
 let citizenDob = new CitizenDob();
 
 function renderView (res: express.Response,form:CitizenDob): void {
-  res.render('features/response/your-dob', {form:form});
+  res.render('features/response/yourDob/your-dob', {form:form});
 }
 
 router.get(DOB_URL, (req: express.Request, res: express.Response) => {
