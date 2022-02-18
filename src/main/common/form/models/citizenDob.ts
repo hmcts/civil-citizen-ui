@@ -1,6 +1,6 @@
 import {IsDate, Min, Max,MaxDate, ValidationError} from 'class-validator';
 import {FormValidationError} from '../validationErrors/formValidationError';
-import {NON_FUTURE_VALUES_NOT_ALLOWED} from 'common/form/validationErrors/errorMessageConstants';
+import {NON_FUTURE_VALUES_NOT_ALLOWED} from '../validationErrors/errorMessageConstants';
 
 export class CitizenDob {
 
