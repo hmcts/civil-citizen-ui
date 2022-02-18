@@ -20,7 +20,7 @@ export class CitizenTelephoneNumber {
 
   getErrorMessage(): string {
     if (this.hasError()) {
-      return new FormValidationError(this.error, 'telephoneNumber').message;
+      return new FormValidationError(this.error, 'telephoneNumber').text;
     }
   }
 }

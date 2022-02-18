@@ -33,15 +33,17 @@ export class CitizenDob {
   hasError(): boolean {
     return this.error !== undefined;
   }
-  getErrorMessage(): string[] {
+
+  getErrors(): FormValidationError[] {
     if(this.hasError()) {
-      const validators : string[] = [];
+      const validators : FormValidationError[] = [];
       for (const item of this.error) {
-        validators.push(new FormValidationError(item).message);
+        validators.push(new FormValidationError(item));
       }
       return validators;
     }
   }
+
   private ValidDate (year:string,month:string,day:string){
     const dob = new Date(year+'-'+month+'-'+day);
     const dobDay = Number(day);

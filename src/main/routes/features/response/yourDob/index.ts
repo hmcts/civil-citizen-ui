@@ -6,19 +6,19 @@ import {Respondent} from 'models/respondent';
 import {Claim} from 'models/claim';
 
 const router = express.Router();
-let citizenDob = new CitizenDob();
+
 
 function renderView (res: express.Response,form:CitizenDob): void {
   res.render('features/response/yourDob/your-dob', {form:form});
 }
 
 router.get(DOB_URL, (req: express.Request, res: express.Response) => {
+  const citizenDob = new CitizenDob();
   renderView(res, citizenDob);
 });
 
 router.post(DOB_URL,(req, res) => {
-
-  citizenDob = new CitizenDob(req.body.year,req.body.month,req.body.day);
+  const citizenDob = new CitizenDob(req.body.year,req.body.month,req.body.day);
   const validator = new Validator();
   citizenDob.error = validator.validateSync(citizenDob);
 
