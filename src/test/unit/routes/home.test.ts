@@ -2,6 +2,8 @@ import request from 'supertest';
 
 import {app} from '../../../main/app';
 import config from 'config';
+
+jest.mock('../../../main/modules/draft-store');
 const nock = require('nock');
 
 const agent = request.agent(app);
@@ -15,11 +17,11 @@ function authenticate() {
 }
 
 describe('Home page', () => {
-
+  const idamUrl: string = config.get('idamUrl');
   const citizenRoleToken: string = config.get('citizenRoleToken');
 
   beforeEach(() => {
-    nock('http://localhost:5000')
+    nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     authenticate();

@@ -1,7 +1,9 @@
 import * as express from 'express';
-import { Claim, Respondent, PrimaryAddress } from '../../../common/models/claim';
+import { Claim } from '../../../common/models/claim';
 import { CivilServiceClient } from '../../../app/client/civilServiceClient';
 import config from 'config';
+import {Respondent} from '../../../common/models/respondent';
+import {PrimaryAddress} from '../../../common/models/primaryAddress';
 const validator = require('../../../common/utils/validator');
 
 
@@ -99,8 +101,6 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
     claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
     citizenDetails = claim;
   }
-
-  console.log('REDIS:', citizenDetails);
 
   // Add value to Form input
   const addressInput = {

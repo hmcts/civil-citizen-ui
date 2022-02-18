@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import currencyFormat from '../utils/currencyFormat';
+import {Respondent} from './respondent';
 
 export class Claim {
   legacyCaseReference: string;
@@ -21,21 +22,6 @@ export class Claim {
   }
 }
 
-export class PrimaryAddress {
-  County: string;
-  Country: string;
-  PostCode: string;
-  PostTown: string;
-  AddressLine1: string;
-  AddressLine2: string;
-  AddressLine3: string;
-}
-export class Respondent {
-  primaryAddress: PrimaryAddress;
-  individualTitle: string;
-  individualLastName: string;
-  individualFirstName: string;
-}
 class Individual {
   individualTitle: string;
   individualLastName: string;
