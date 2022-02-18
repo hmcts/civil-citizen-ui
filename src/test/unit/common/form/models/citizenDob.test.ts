@@ -23,7 +23,7 @@ describe('Citizen dob get error message', () => {
   const citizenDob = new CitizenDob();
   it('should return undefined when no errors exist', () => {
     //When
-    const result = citizenDob.getErrorMessage();
+    const result = citizenDob.getErrors();
     //Then
     expect(result).toBeUndefined();
   });
@@ -31,10 +31,9 @@ describe('Citizen dob get error message', () => {
     //Given
     citizenDob.error = createValidationErrors();
     //When
-    const result = citizenDob.getErrorMessage();
+    const result = citizenDob.getErrors();
     //Then
-    const expected = ['error'];
-    expect(result).toEqual(expected);
+    expect(result.length).toEqual(1);
   });
 });
 

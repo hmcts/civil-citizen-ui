@@ -18,9 +18,9 @@ export class CitizenTelephoneNumber {
     return this.error !== undefined;
   }
 
-  getErrorMessage(): string {
+  getError(): FormValidationError {
     if (this.hasError()) {
-      return new FormValidationError(this.error, 'telephoneNumber').text;
+      return new FormValidationError(this.error);
     }
   }
 }

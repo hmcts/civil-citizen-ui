@@ -28,15 +28,15 @@ describe('Citizen telephone number get error message', () => {
     //Given
     citizenTelephoneNumber.error = createValidationError();
     //When
-    const result = citizenTelephoneNumber.getErrorMessage();
+    const result = citizenTelephoneNumber.getError();
     //Then
-    expect(result).toBe(ERROR_MESSAGE);
+    expect(result.text).toBe(ERROR_MESSAGE);
   });
   it('should return undefined when there is no error', () => {
     //Given
     citizenTelephoneNumber.error = undefined;
     //When
-    const result = citizenTelephoneNumber.getErrorMessage();
+    const result = citizenTelephoneNumber.getError();
     //Then
     expect(result).toBeUndefined();
   });

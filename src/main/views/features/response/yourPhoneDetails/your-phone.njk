@@ -9,9 +9,9 @@
       <p
         class="govuk-body">{{ t("We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.") }}</p>
       <form method="post">
-        {% set error = form.getErrorMessage() %}
+        {% set error = form.getError() %}
         <div class="govuk-form-group {% if error %} govuk-form-group--error{% endif %}">
-          {% if error %}<span class="govuk-error-message">{{ t(error) }}</span>{% endif %}
+          {% if error %}<span class="govuk-error-message">{{ t(error.text) }}</span>{% endif %}
           <label class="govuk-label" for="telephoneNumber">
           </label>
           <input class="{% if error %}govuk-input--error{% endif %} govuk-input govuk-input--width-20 "

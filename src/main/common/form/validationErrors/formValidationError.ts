@@ -17,12 +17,10 @@ export class FormValidationError extends ValidationError {
   constructor(error: ValidationError, parentProperty?: string) {
     super();
     Object.assign(this, error);
-
     this.property = parentProperty ? `${parentProperty}.${this.property}` : this.property;
     this.fieldName = HtmlConverter.asFieldName(this.property);
-
-    const constraintName: string = Object.keys(error.constraints)[0];
-    this.text = error.constraints[constraintName];
-    this.href = error.property;
+    const constraintMessages: string[] = Object.values(error.constraints);
+    this.text = constraintMessages.join(', ');
+    this.href = '#'+error.property;
   }
 }
