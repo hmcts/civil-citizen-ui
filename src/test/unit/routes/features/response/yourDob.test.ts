@@ -65,7 +65,6 @@ describe('Citizen date of birth', () => {
         });
     });
     test('should return error on future date', async () => {
-
       await request(app)
         .post('/your-dob')
         .send('year=2400')
@@ -74,6 +73,20 @@ describe('Citizen date of birth', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Please enter a date in the past for date of birth');
+        });
+    });
+    test('should accept a valid input', async () => {
+      const mockDraftStore = {
+        set: jest.fn(() => Promise.resolve({ data: {} })),
+      };
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .post('/your-dob')
+        .send('year=2000')
+        .send('month=1')
+        .send('day=1')
+        .expect((res) => {
+          expect(res.status).toBe(302);
         });
     });
 
