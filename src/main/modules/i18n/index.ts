@@ -25,6 +25,7 @@ export class I18Next {
         fallbackLng: 'en',
         supportedLngs: ['en', 'cy'],
         load: 'languageOnly',
+        skipOnVariables: true,
       });
 
     app.use(i18nextMiddleware.handle(i18next));

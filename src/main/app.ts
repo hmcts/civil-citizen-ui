@@ -15,6 +15,7 @@ import { HealthCheck } from './modules/health';
 import { OidcMiddleware } from './modules/oidc';
 import {DraftStoreClient} from './modules/draft-store';
 import routes from './routes/routes';
+import { DraftStoreClient } from './modules/draft-store';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -44,6 +45,7 @@ const i18next = I18Next.enableFor(app);
 
 const logger = Logger.getLogger('app');
 
+new DraftStoreClient().enableFor(app);
 new PropertiesVolume().enableFor(app);
 new DraftStoreClient().enableFor(app);
 new AppInsights().enable();

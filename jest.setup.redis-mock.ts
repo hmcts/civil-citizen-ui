@@ -6,5 +6,7 @@ const mockedCreateClient = createClient as jest.MockedFunction<(...args: unknown
 const mockedRedisClient = {
   connect: jest.fn(async () => ''),
   ping: jest.fn(async () => 'PONG'),
+  set: jest.fn(async () => ''),
+  get: jest.fn(async () => '{}'),
 };
 mockedCreateClient.mockReturnValue(mockedRedisClient);
