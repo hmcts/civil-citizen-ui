@@ -50,7 +50,7 @@ describe('Citizen phone number', () => {
           expect(res.text).toContain('There was a problem. Please enter numeric number');
         });
     });
-    test('should accept input with trailing whitepsaces', async () => {
+    test('should accept input with trailing whitespaces', async () => {
       const mockDraftStore = {
         set: jest.fn(() => Promise.resolve({ data: {} })),
       };
