@@ -20,9 +20,9 @@ router.get(DOB_URL, (req: express.Request, res: express.Response) => {
 router.post(DOB_URL,(req, res) => {
   const citizenDob = new CitizenDob(req.body.year,req.body.month,req.body.day);
   const validator = new Validator();
-  citizenDob.error = validator.validateSync(citizenDob);
+  citizenDob.errors = validator.validateSync(citizenDob);
 
-  if (citizenDob.error && citizenDob.error.length > 0) {
+  if (citizenDob.errors && citizenDob.errors.length > 0) {
     renderView(res, citizenDob);
   } else {
     const respondent = new Respondent();

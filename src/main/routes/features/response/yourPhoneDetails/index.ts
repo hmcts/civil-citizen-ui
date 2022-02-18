@@ -22,7 +22,7 @@ router.post(CITIZEN_PHONE_NUMBER_URL,
     const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(model);
     if (errors && errors.length > 0) {
-      model.error = errors[0];
+      model.errors = errors;
       renderView(model, res);
     } else {
       const respondent = new Respondent();
