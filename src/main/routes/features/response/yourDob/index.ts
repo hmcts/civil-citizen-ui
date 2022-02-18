@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {CitizenDob} from '../../../../common/form/models/citizenDob';
 import {Validator} from 'class-validator';
-import {DOB_URL} from 'routes/urls';
+import {DOB_URL} from '../../../../routes/urls';
 
 const router = express.Router();
 let citizenDob = new CitizenDob();
