@@ -1,6 +1,7 @@
 import express from 'express';
 import config from 'config';
 
+jest.mock('../../../../main/modules/draft-store');
 const request = require('supertest');
 const nock = require('nock');
 
