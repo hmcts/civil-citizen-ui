@@ -1,12 +1,9 @@
-import {IsDate, Min, Max, ValidationError,Validate} from 'class-validator';
+import {IsDate, Min, Max, ValidationError} from 'class-validator';
 import {FormValidationError} from '../validationErrors/formValidationError';
-import {OptionalDateValidator} from '../validators/optionalDateValidator';
-import {REAL_DATE_VALUES_NOT_ALLOWED} from '../validationErrors/errorMessageConstants';
 
 export class CitizenDob {
 
   @IsDate()
-  @Validate(OptionalDateValidator, {message: REAL_DATE_VALUES_NOT_ALLOWED})
   dateOfBirth?: Date
 
   @Min(1872)
@@ -22,13 +19,14 @@ export class CitizenDob {
   day:number
   error?: ValidationError[]
 
-  constructor(dateOfBirth?: Date,  year?:number,  month?:number,  day?:number, error?: ValidationError[]) {
+  constructor(year?:string,  month?:string,  day?:string, error?: ValidationError[]) {
 
-    this.dateOfBirth = dateOfBirth;
-    this.year = year;
-    this.month = month;
-    this.day = day;
+    this.dateOfBirth = this.ValidDate(year,month,day);
+    this.year = Number(year);
+    this.month = Number(month);
+    this.day = Number(day);
     this.error = error;
+
   }
   hasError(): boolean {
     return this.error !== undefined;
@@ -41,5 +39,13 @@ export class CitizenDob {
       }
       return validators;
     }
+  }
+  private ValidDate (year:string,month:string,day:string){
+    const dob = new Date(year+'-'+month+'-'+day);
+    const dobDay = Number(day);
+    if ((dob.getDate()==dobDay)){
+      return dob;
+    }
+    return null;
   }
 }

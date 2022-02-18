@@ -14,24 +14,17 @@ router.get(DOB_URL, (req: express.Request, res: express.Response) => {
   renderView(res, citizenDob);
 });
 
-router.post(DOB_URL,
-  (req, res) => {
+router.post(DOB_URL,(req, res) => {
 
-    const birthdate: Date = new Date();
-    const day = Number(req.body.day);
-    const month = Number(req.body.month);
-    const year = Number(req.body.year);
+  citizenDob = new CitizenDob(req.body.year,req.body.month,req.body.day);
+  const validator = new Validator();
+  citizenDob.error = validator.validateSync(citizenDob);
 
-    birthdate.setFullYear(year,month,day);
-    citizenDob = new CitizenDob(birthdate,year,month,day);
-    const validator = new Validator();
-    citizenDob.error = validator.validateSync(citizenDob);
-
-    if (citizenDob.error && citizenDob.error.length > 0){
-      renderView(res, citizenDob);
-    } else {
-      res.redirect('/template');
-    }
-  });
+  if (citizenDob.error && citizenDob.error.length > 0) {
+    renderView(res, citizenDob);
+  } else {
+    res.redirect('/template');
+  }
+});
 
 export default router;
