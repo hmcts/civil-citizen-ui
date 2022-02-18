@@ -1,7 +1,9 @@
 import * as express from 'express';
 import {CitizenDob} from '../../../../common/form/models/citizenDob';
 import {Validator} from 'class-validator';
-import {DOB_URL} from '../../../../routes/urls';
+import {DOB_URL, ROOT_URL} from '../../../../routes/urls';
+import {Respondent} from 'models/respondent';
+import {Claim} from 'models/claim';
 
 const router = express.Router();
 let citizenDob = new CitizenDob();
@@ -23,7 +25,15 @@ router.post(DOB_URL,(req, res) => {
   if (citizenDob.error && citizenDob.error.length > 0) {
     renderView(res, citizenDob);
   } else {
-    res.redirect('/template');
+    const respondent = new Respondent();
+    respondent.dateOfBirth = citizenDob.dateOfBirth;
+    const claim = new Claim();
+    claim.respondent1 = respondent;
+    claim.legacyCaseReference = 'dob';
+    const draftStoreClient = req.app.locals.draftStoreClient;
+    draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim)).then(() => {
+      res.redirect(ROOT_URL);
+    });
   }
 });
 
