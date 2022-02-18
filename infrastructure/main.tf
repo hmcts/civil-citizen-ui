@@ -4,7 +4,7 @@ provider "azurerm" {
 
 data "azurerm_key_vault" "civil_vault" {
   name                = "civil-${var.env}"
-  resource_group_name = "civil-${var.env}"
+  resource_group_name = "civil-service-${var.env}"
 }
 
 data "azurerm_subnet" "core_infra_redis_subnet" {
