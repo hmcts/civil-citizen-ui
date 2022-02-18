@@ -3,8 +3,8 @@ nodejs:
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
   image: hmctspublic.azurecr.io/civil/citizen-ui:latest
   keyVaults:
-    civil-shared:
-      resourceGroup: civil-shared
+    civil:
+      resourceGroup: civil
       secrets:
         - AppInsightsInstrumentationKey
         - redis-access-key

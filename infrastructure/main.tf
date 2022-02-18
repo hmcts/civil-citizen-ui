@@ -3,7 +3,7 @@ provider "azurerm" {
 }
 
 locals {
-  vaultName = "${var.product}-shared-${var.env}"
+  vaultName = "${var.product}-${var.env}"
 }
 
 data "azurerm_key_vault" "key_vault" {
