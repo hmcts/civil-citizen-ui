@@ -2,10 +2,9 @@ import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
 import express from 'express';
-import session from 'express-session';
+import cookieSession from 'cookie-session';
 import { Helmet } from './modules/helmet';
 import * as path from 'path';
-import {v4} from 'uuid';
 import { HTTPError } from 'HttpError';
 import { Nunjucks } from './modules/nunjucks';
 import { PropertiesVolume } from './modules/properties-volume';
@@ -24,19 +23,11 @@ const developmentMode = env === 'development';
 export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 
 export const app = express();
-app.use(session({
-  genid: function() {
-    return v4();
-  },
+app.use(cookieSession({
   name: 'citizen-ui-session',
-  resave: false,
-  saveUninitialized: false,
   secret: 'local',
-  cookie: {
-    secure: false,
-    maxAge: cookieMaxAge,
-  },
-  rolling: true, // Renew the cookie for another 20 minutes on each request
+  maxAge: cookieMaxAge,
+  secure: false,
 }));
 
 app.locals.ENV = env;

@@ -25,12 +25,10 @@ export class OidcMiddleware {
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
         req.session.user = await getUserDetails(redirectUri, req.query.code);
-        req.session.save(() => {
-          if (req.session.user?.roles?.includes(citizenRole)) {
-            return res.redirect(ROOT_URL);
-          }
-          return res.redirect(UNAUTHORISED_URL);
-        });
+        if (req.session.user?.roles?.includes(citizenRole)) {
+          return res.redirect(ROOT_URL);
+        }
+        return res.redirect(UNAUTHORISED_URL);
       } else {
         res.redirect(ROOT_URL);
       }
