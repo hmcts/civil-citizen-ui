@@ -1,42 +1,5 @@
-import {ValidationError, Validator} from 'class-validator';
+import {Validator} from 'class-validator';
 import {CitizenDob} from '../../../../../main/common/form/models/citizenDob';
-
-describe('Citizen dob has errors', () => {
-  const citizenDob = new CitizenDob();
-  it('should return false when no errors exist', () => {
-    //When
-    const result = citizenDob.hasError();
-    //Then
-    expect(result).toBeFalsy();
-  });
-  it('should return true when errors exist', () => {
-    //Given
-    citizenDob.error = createValidationErrors();
-    //When
-    const result = citizenDob.hasError();
-    //Then
-    expect(result).toBeTruthy();
-  });
-});
-
-describe('Citizen dob get error message', () => {
-  const citizenDob = new CitizenDob();
-  it('should return undefined when no errors exist', () => {
-    //When
-    const result = citizenDob.getErrorMessage();
-    //Then
-    expect(result).toBeUndefined();
-  });
-  it('should return error message when errors exist', () => {
-    //Given
-    citizenDob.error = createValidationErrors();
-    //When
-    const result = citizenDob.getErrorMessage();
-    //Then
-    const expected = ['error'];
-    expect(result).toEqual(expected);
-  });
-});
 
 describe('Citizen dob field validation', () => {
   const validator = new Validator();
@@ -114,9 +77,3 @@ describe('Citizen dob field validation', () => {
   });
 });
 
-function createValidationErrors() {
-  const validationError = new ValidationError();
-  validationError.property = 'dob';
-  validationError.constraints = {'constraint': 'error'};
-  return [validationError];
-}
