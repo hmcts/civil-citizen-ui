@@ -2,7 +2,7 @@ import {Min, Max, ValidationError, Validate, IsDate} from 'class-validator';
 import {NON_FUTURE_VALUES_NOT_ALLOWED, VALID_DATE} from '../validationErrors/errorMessageConstants';
 import {Form} from './form';
 import {DateConverter} from '../../../common/utils/dateConverter';
-import {OptionalDateValidator} from 'common/form/validators/optionalDateValidator';
+import {OptionalDateValidator} from '../validators/optionalDateValidator';
 
 export class CitizenDob extends Form{
 
