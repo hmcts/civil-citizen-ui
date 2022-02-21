@@ -5,7 +5,7 @@ import {NON_FUTURE_VALUES_NOT_ALLOWED} from '../validationErrors/errorMessageCon
  * Validates that the input value is either empty or an integer with no special characters
  */
 @ValidatorConstraint({name: 'customDate', async: false})
-export class OptionalDateValidator implements ValidatorConstraintInterface {
+export class OptionalDateNotInFutureValidator implements ValidatorConstraintInterface {
 
   validate(inputDate: Date) {
     if (inputDate !== null && (inputDate > (new Date(Date.now())))) {
