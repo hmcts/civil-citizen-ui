@@ -11,7 +11,6 @@ describe('Convert to valid Date', () => {
     const result = DateConverter.convertToDate(year, month, date);
     //Then
     expect(result).not.toBeNull();
-    expect(result?.toString()).toBe('Mon Feb 01 2021 00:00:00 GMT+0000 (Greenwich Mean Time)');
   });
 
   it('should not convert to date with invalid input', () => {
