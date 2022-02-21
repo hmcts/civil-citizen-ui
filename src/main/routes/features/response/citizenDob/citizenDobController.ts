@@ -9,7 +9,7 @@ const router = express.Router();
 
 
 function renderView (res: express.Response,form:CitizenDob): void {
-  res.render('features/response/yourDob/your-dob', {form:form});
+  res.render('features/response/citizenDob/citizen-dob', {form:form});
 }
 
 router.get(DOB_URL, (req: express.Request, res: express.Response) => {

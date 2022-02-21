@@ -5,7 +5,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 
-const citizenPhoneViewPath = 'features/response/yourPhoneDetails/your-phone';
+const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
 const router = express.Router();
 const citizenTelephoneNumber = new CitizenTelephoneNumber();
 
