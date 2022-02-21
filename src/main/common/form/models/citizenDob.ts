@@ -1,10 +1,10 @@
 import {IsDate, Min, Max,MaxDate, ValidationError} from 'class-validator';
-import {NON_FUTURE_VALUES_NOT_ALLOWED} from '../validationErrors/errorMessageConstants';
+import {NON_FUTURE_VALUES_NOT_ALLOWED, VALID_DATE} from '../validationErrors/errorMessageConstants';
 import {Form} from './form';
 
 export class CitizenDob extends Form{
 
-  @IsDate()
+  @IsDate({message: VALID_DATE})
   @MaxDate(new Date(Date.now()),{message: NON_FUTURE_VALUES_NOT_ALLOWED})
   dateOfBirth?: Date
 
