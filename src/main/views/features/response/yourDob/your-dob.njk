@@ -25,12 +25,21 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post">
-          <div class="govuk-form-group {% if error %} govuk-form-group--error{% endif %}">
+          <div class="govuk-form-group {% if errors %} govuk-form-group--error{% endif %}">
+          {% set errorDay =  false %}
+          {% set errorMonth =  false %}
+          {% set errorYear =  false %}
           {% if errors %}
             {% for item in errors %}
-                          <span class="govuk-error-message">{{ t(item.text) }}</span>
-                        {% endfor %}
-            {% endif %}
+                <span class="govuk-error-message">{{ t(item.text) }}</span>
+                {% set errorDay =  true if item.fieldName=="day" and errorDay==false else false  %}
+                {% set errorMonth = true if item.fieldName=="month" and errorMonth==false else false %}
+                {% set errorYear = true if item.fieldName=="year" and errorYear==false else false %}
+            {% endfor %}
+          {% endif %}
+          <span class="govuk-error-message">{{ t(errorDay) }}</span>
+           <span class="govuk-error-message">{{ t(errorMonth) }}</span>
+            <span class="govuk-error-message">{{ t(errorYear) }}</span>
              {{ govukDateInput({
                     id: "birthDate",
                     type: "number",
@@ -50,7 +59,7 @@
                     } if errors,
                     items: [
                       {
-                        classes: "govuk-input--width-2 govuk-input--error" if errors else "govuk-input--width-2",
+                        classes: "govuk-input--width-2 govuk-input--error" if errorDay else "govuk-input--width-2",
                         id: "day",
                         label: "Day",
                         name: "day",
@@ -58,7 +67,7 @@
                         max: 31
                       },
                       {
-                        classes:"govuk-input--width-2 govuk-input--error" if errors else "govuk-input--width-2",
+                        classes:"govuk-input--width-2 govuk-input--error" if errorMonth else "govuk-input--width-2",
                         id: "month",
                         label: "Month",
                         name: "month",
@@ -66,7 +75,7 @@
                         max: 12
                       },
                       {
-                        classes: "govuk-input--width-4 govuk-input--error" if errors else "govuk-input--width-4",
+                        classes: "govuk-input--width-4 govuk-input--error" if errorYear else "govuk-input--width-4",
                         id: "year",
                         label: "Year",
                         name: "year",
