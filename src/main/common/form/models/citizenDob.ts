@@ -23,7 +23,7 @@ export class CitizenDob extends Form{
 
   constructor(year?:string,  month?:string,  day?:string, errors?: ValidationError[]) {
     super(errors);
-    this.dateOfBirth = DateConverter.validDate(year,month,day);
+    this.dateOfBirth = DateConverter.convertToDate(year,month,day);
     this.year = Number(year);
     this.month = Number(month);
     this.day = Number(day);
