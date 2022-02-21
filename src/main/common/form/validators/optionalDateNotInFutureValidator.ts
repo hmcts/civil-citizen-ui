@@ -2,7 +2,7 @@ import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator
 import {NON_FUTURE_VALUES_NOT_ALLOWED} from '../validationErrors/errorMessageConstants';
 
 /**
- * Validates that the input value is either empty or an integer with no special characters
+ * Validates that the input value is not a date in the future
  */
 @ValidatorConstraint({name: 'customDate', async: false})
 export class OptionalDateNotInFutureValidator implements ValidatorConstraintInterface {
