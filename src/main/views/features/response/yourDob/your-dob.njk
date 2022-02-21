@@ -32,14 +32,17 @@
           {% if errors %}
             {% for item in errors %}
                 <span class="govuk-error-message">{{ t(item.text) }}</span>
-                {% set errorDay =  true if item.fieldName=="day" and errorDay==false else false  %}
-                {% set errorMonth = true if item.fieldName=="month" and errorMonth==false else false %}
-                {% set errorYear = true if item.fieldName=="year" and errorYear==false else false %}
+                {% if item.fieldName=="day" %}
+                  {% set errorDay =  true %}
+                {% endif %}
+                {% if item.fieldName=="month" %}
+                   {% set errorMonth =  true %}
+                {% endif %}
+                {% if item.fieldName=="year" %}
+                  {% set errorYear =  true %}
+                {% endif %}
             {% endfor %}
           {% endif %}
-          <span class="govuk-error-message">{{ t(errorDay) }}</span>
-           <span class="govuk-error-message">{{ t(errorMonth) }}</span>
-            <span class="govuk-error-message">{{ t(errorYear) }}</span>
              {{ govukDateInput({
                     id: "birthDate",
                     type: "number",
