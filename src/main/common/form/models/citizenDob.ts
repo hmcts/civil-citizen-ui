@@ -1,6 +1,7 @@
 import {IsDate, Min, Max,MaxDate, ValidationError} from 'class-validator';
 import {NON_FUTURE_VALUES_NOT_ALLOWED, VALID_DATE} from '../validationErrors/errorMessageConstants';
 import {Form} from './form';
+import {DateConverter} from '../../../common/utils/dateConverter';
 
 export class CitizenDob extends Form{
 
@@ -22,19 +23,9 @@ export class CitizenDob extends Form{
 
   constructor(year?:string,  month?:string,  day?:string, errors?: ValidationError[]) {
     super(errors);
-    this.dateOfBirth = this.ValidDate(year,month,day);
+    this.dateOfBirth = DateConverter.validDate(year,month,day);
     this.year = Number(year);
     this.month = Number(month);
     this.day = Number(day);
-  }
-
-
-  private ValidDate (year:string,month:string,day:string){
-    const dob = new Date(year+'-'+month+'-'+day);
-    const dobDay = Number(day);
-    if ((dob.getDate()==dobDay)){
-      return dob;
-    }
-    return null;
   }
 }
