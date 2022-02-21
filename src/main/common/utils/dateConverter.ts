@@ -9,6 +9,5 @@ export class DateConverter {
       return date;
     }
     return null;
-
   }
 }
