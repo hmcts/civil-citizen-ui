@@ -25,6 +25,25 @@ describe('Citizen telephone number get error message', () => {
     expect(result).toBeUndefined();
   });
 });
+describe('Citizen date of birth get error message', () => {
+  const form = new Form();
+  it('should return field error when there are error', () => {
+    //Given
+    form.errors = createValidationError();
+    //When
+    const result = form.hasFieldError(PROPERTY);
+    //Then
+    expect(result).toBe(true);
+  });
+  it('should return undefined when there is no error', () => {
+    //Given
+    form.errors = createValidationError();
+    //When
+    const result = form.hasFieldError('');
+    //Then
+    expect(result).toBe(false);
+  });
+});
 
 function createValidationError() {
   const validationError = new ValidationError();
