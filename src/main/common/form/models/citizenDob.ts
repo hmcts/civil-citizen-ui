@@ -1,4 +1,4 @@
-import {Min, Max, ValidationError, Validate, IsDate} from 'class-validator';
+import {Min, Max, ValidationError, Validate, IsDate, ValidateIf} from 'class-validator';
 import {VALID_MONTH,VALID_YEAR,VALID_DAY, VALID_DATE} from '../validationErrors/errorMessageConstants';
 import {Form} from './form';
 import {DateConverter} from '../../../common/utils/dateConverter';
@@ -6,6 +6,7 @@ import {OptionalDateNotInFutureValidator} from '../validators/optionalDateNotInF
 
 export class CitizenDob extends Form {
 
+  @ValidateIf(o => (o.day <32 && o.month<13))
   @IsDate({message: VALID_DATE})
   @Validate(OptionalDateNotInFutureValidator, {message: VALID_DATE})
   dateOfBirth?: Date
