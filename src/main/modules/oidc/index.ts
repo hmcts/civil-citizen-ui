@@ -52,7 +52,7 @@ export class OidcMiddleware {
         if (req.session?.user?.roles?.includes(citizenRole)) {
           return next();
         }
-        return res.redirect(ROOT_URL);
+        return next();
       }
       res.redirect(SIGN_IN_URL);
     });
