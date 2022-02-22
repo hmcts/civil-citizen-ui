@@ -16,7 +16,7 @@ describe('Convert to valid Date', () => {
   it('should not convert to date with invalid input', () => {
     //Given
     const date = '1';
-    const month = '22';
+    const month = 'abc';
     const year = '2021';
     //When
     const result = DateConverter.convertToDate(year, month, date);
