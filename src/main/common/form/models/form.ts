@@ -21,4 +21,10 @@ export class Form {
       return validators;
     }
   }
+
+  public hasFieldError(field: string) : boolean{
+    if (this.errors){
+      return this.errors.some((error) => field == error.property);
+    }
+  }
 }
