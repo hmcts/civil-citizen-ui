@@ -6,7 +6,7 @@ const ERROR_MESSAGE = 'Error message';
 const PROPERTY = 'property';
 
 
-describe('Citizen telephone number get error message', () => {
+describe('Form get error message', () => {
   const form = new Form();
   it('should return errors when there are errors', () => {
     //Given
@@ -25,7 +25,7 @@ describe('Citizen telephone number get error message', () => {
     expect(result).toBeUndefined();
   });
 });
-describe('Citizen date of birth get error message', () => {
+describe('Form has field errors', () => {
   const form = new Form();
   it('should return field error when there are error', () => {
     //Given
