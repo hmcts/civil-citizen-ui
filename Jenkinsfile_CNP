@@ -15,7 +15,7 @@ static Map<String, Object> secret(String secretName, String envVariable) {
 }
 
 def secrets = [
-        'civil-shared-${env}'    :[
+        'civil-${env}'    :[
                 secret('idam-secret', 'IDAM_SECRET')
         ]
 ]

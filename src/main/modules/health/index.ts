@@ -5,9 +5,19 @@ const healthCheck = require('@hmcts/nodejs-healthcheck');
 
 export class HealthCheck {
   public enableFor(app: Application): void {
+
+    // const redis = app.locals.draftStoreClient
+    //   ? healthCheck.raw(() => app.locals.draftStoreClient.ping()
+    //     .then(() => healthCheck.up())
+    //     .catch(() => healthCheck.down()))
+    //   : null;
+
+    const redis = () => healthCheck.up();
+
     const healthCheckConfig = {
       checks: {
-        // TODO: add proper health checks for the application
+        'draft-store': redis,
+        // add health checks for other application dependency services
       },
       buildInfo: {
         name: 'civil-citizen-ui',

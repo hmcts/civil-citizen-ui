@@ -4,7 +4,4 @@ nodejs:
   ingressHost: ${SERVICE_FQDN}
 
 idam-pr:
-  enabled: true
-  redirect_uris:
-    civil-citizen-ui:
-      - https://${SERVICE_FQDN}/oauth2/callback
+  enabled: false
