@@ -17,7 +17,7 @@ describe('Age eligibility is over 18', () =>{
     //Then
     expect(result).toBeFalsy();
   });
-  it('sould return true when age is 18', ()=> {
+  it('should return true when age is 18', ()=> {
     //Given
     const dob = calculateDobForAge(18);
     //When
@@ -25,10 +25,19 @@ describe('Age eligibility is over 18', () =>{
     //Then
     expect(result).toBeTruthy();
   });
+  it('should return false when a day before 18th birthday', ()=>{
+    //Given
+    const dobADayBeforeBirthday = calculateDobForAge(18, new Date().getDate()-1);
+    //When
+    const result = AgeEligibilityVerification.isOverEighteen(dobADayBeforeBirthday);
+    //Then
+    expect(result).toBeFalsy();
+  });
 });
 
-function calculateDobForAge(age: number) {
+function calculateDobForAge(age: number, day?: number) {
   const currentDate = new Date();
   const dobYear = currentDate.getFullYear() - age;
-  return new Date(dobYear, currentDate.getMonth(), currentDate.getDay());
+  return new Date(dobYear,  currentDate.getMonth(), day? day : currentDate.getDate());
 }
+

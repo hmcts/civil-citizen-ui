@@ -5,7 +5,14 @@ export class AgeEligibilityVerification {
   }
 
   private static getAge(dob: Date){
-    const timeDiff = Math.abs(Date.now() - dob.getTime());
-    return Math.floor((timeDiff / (1000 * 3600 * 24))/365.25);
+    const today = new Date();
+    today.setHours(0,0,0);
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDifference = today.getMonth() - dob.getMonth();
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() > dob.getDate()))
+    {
+      age = age-1;
+    }
+    return age;
   }
 }
