@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {CitizenDob} from '../../../../common/form/models/citizenDob';
 import {Validator} from 'class-validator';
-import {DOB_URL, ROOT_URL, AGE_ELIGIBILITY} from '../../../../routes/urls';
+import {DOB_URL, ROOT_URL, AGE_ELIGIBILITY_URL} from '../../../../routes/urls';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilityVerification';
@@ -16,7 +16,7 @@ function redirectToNextPage(req: express.Request, res: express.Response, dob: Da
   if (AgeEligibilityVerification.isOverEighteen(dob)) {
     res.redirect(ROOT_URL);
   } else {
-    res.redirect(AGE_ELIGIBILITY);
+    res.redirect(AGE_ELIGIBILITY_URL);
   }
 }
 

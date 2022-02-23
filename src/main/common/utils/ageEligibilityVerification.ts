@@ -1,4 +1,4 @@
-export const AGE_THRESHOLD = 18;
+export const AGE_THRESHOLD = 17;
 export class AgeEligibilityVerification {
   public static isOverEighteen(dob: Date) {
     return AgeEligibilityVerification.getAge(dob) > AGE_THRESHOLD;

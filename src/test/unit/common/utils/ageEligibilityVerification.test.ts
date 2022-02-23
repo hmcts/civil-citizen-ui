@@ -17,4 +17,18 @@ describe('Age eligibility is over 18', () =>{
     //Then
     expect(result).toBeFalsy();
   });
+  it('sould return true when age is 18', ()=> {
+    //Given
+    const dob = calculateDobForAge(18);
+    //When
+    const result = AgeEligibilityVerification.isOverEighteen(dob);
+    //Then
+    expect(result).toBeTruthy();
+  });
 });
+
+function calculateDobForAge(age: number) {
+  const currentDate = new Date();
+  const dobYear = currentDate.getFullYear() - age;
+  return new Date(dobYear, currentDate.getMonth(), currentDate.getDay());
+}
