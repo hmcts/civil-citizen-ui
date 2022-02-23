@@ -18,8 +18,9 @@ export class DraftStoreClient {
     });
     app.locals.draftStoreClient = client;
 
-    client.connect().then(() => {
-      logger.info('Connected to Redis instance successfully');
-    });
+    logger.warn('Not attempting to connect to Redis instance. This is a workaround until AAT redis instance is provisioned');
+    // client.connect().then(() => {
+    //   logger.info('Connected to Redis instance successfully');
+    // });
   }
 }

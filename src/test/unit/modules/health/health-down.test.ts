@@ -14,7 +14,7 @@ mockedCreateClient.mockReturnValue(mockedRedisClient);
 
 import {app} from '../../../../main/app';
 
-describe('Draft Store Health Check - DOWN', () => {
+describe.skip('Draft Store Health Check - DOWN', () => {
   test('When draft store not responding, health check should return DOWN', async () => {
     await request(app)
       .get('/health')
