@@ -1,0 +1,30 @@
+{% block content %}{% endblock %}
+{% extends "template.njk" %}
+
+{% block head %}
+  {% include "includes/head.njk" %}
+  {% block additional_head %}{% endblock %}
+{% endblock %}
+
+{% block warning_message %}
+  {% if warningBanner %}
+    {% include "includes/banner.njk" %}
+  {% endif %}
+{% endblock %}
+
+{% block proposition_header %}
+  {% include "includes/propositional_navigation.njk" %}
+{% endblock %}
+
+{% block header_class %}
+  with-proposition
+{% endblock %}
+
+{% block footer_support_links %}
+  {% include "includes/support-links.njk" %}
+{% endblock %}
+
+{% block body_end %}
+  {% include "includes/scripts.njk" %}
+  {% block additional_scripts %}{% endblock %}
+{% endblock %}

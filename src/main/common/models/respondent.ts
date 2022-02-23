@@ -5,7 +5,8 @@ export class Respondent {
   individualTitle: string;
   individualLastName: string;
   individualFirstName: string;
-  telephoneNumber: string
+  telephoneNumber: string;
+  dateOfBirth: Date;
 }
 
 

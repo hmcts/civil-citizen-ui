@@ -1,0 +1,87 @@
+{% extends "claim-details-tpl.njk" %}
+{% set heading = t('Confirm your details') %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+    {% set errors = form.getErrors() %}
+     {% if errors %}
+        {{ govukErrorSummary({
+           "titleText": 'There was a problem',
+           "errorList": errors
+        })}}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('Enter your date of birth') }}</h1>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post">
+          <div class="govuk-form-group {% if errors %} govuk-form-group--error{% endif %}">
+          {% if errors %}
+            {% for error in errors %}
+                <span class="govuk-error-message">{{ t(error.text) }}</span>
+            {% endfor %}
+          {% endif %}
+             {{ govukDateInput({
+                    id: "birthDate",
+                    type: "number",
+                    inputmode: "numeric",
+                    name: "birthDate",
+                    fieldset: {
+                      legend: {
+                        isPageHeading: false,
+                        classes: 'govuk-fieldset__legend--m'
+                      }
+                    },
+                    hint: {
+                      text: "For example, 31 3 1980"
+                    },
+                    errorMessage: {
+                         html: errorMessage
+                    } if errors,
+                    items: [
+                      {
+                        classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+                        id: "day",
+                        label: "Day",
+                        name: "day",
+                        value: form.day,
+                        max: 31
+                      },
+                      {
+                        classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+                        id: "month",
+                        label: "Month",
+                        name: "month",
+                        value: form.month,
+                        max: 12
+                      },
+                      {
+                        classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+                        id: "year",
+                        label: "Year",
+                        name: "year",
+                        value: form.year,
+                        max: 9999
+                      }
+                      ]
+             }) }}
+          </div>
+            {{ govukButton({ text: t("Save and continue") }) }}
+            {{ contactUsForHelp(t) }}
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
+
