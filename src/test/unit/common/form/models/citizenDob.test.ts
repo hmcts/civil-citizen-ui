@@ -9,7 +9,7 @@ describe('Citizen dob field validation', () => {
     //When
     const result = validator.validateSync(citizenDob);
     //Then
-    expect(result.length).toBe(4);
+    expect(result.length).toBe(3);
   });
   it('should have errors when date is not specified', ()=>{
     //Given
@@ -17,7 +17,7 @@ describe('Citizen dob field validation', () => {
     //When
     const result = validator.validateSync(citizenDob);
     //Then
-    expect(result.length).toBe(2);
+    expect(result.length).toBe(1);
   });
   it('should have errors when month is not specified', ()=>{
     //Given
@@ -41,7 +41,7 @@ describe('Citizen dob field validation', () => {
     //When
     const result = validator.validateSync(citizenDob);
     //Then
-    expect(result.length).toBe(2);
+    expect(result.length).toBe(1);
   });
   it('should have errors when month is less than 1', ()=> {
     //Given
@@ -57,7 +57,7 @@ describe('Citizen dob field validation', () => {
     //When
     const result = validator.validateSync(citizenDob);
     //Then
-    expect(result.length).toBe(2);
+    expect(result.length).toBe(1);
   });
   it('should have errors when day is less than 1', ()=> {
     //Given

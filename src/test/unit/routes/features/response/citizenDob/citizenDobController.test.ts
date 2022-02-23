@@ -2,10 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {
-  FUTURE_VALUES_NOT_ALLOWED,
-  VALID_DATE,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {VALID_DATE, VALID_DAY, VALID_MONTH, VALID_YEAR} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -45,9 +42,9 @@ describe('Citizen date of birth', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_DATE);
-          expect(res.text).toContain('year must not be less than 1872');
-          expect(res.text).toContain('month must not be less than 1');
-          expect(res.text).toContain('day must not be less than 1');
+          expect(res.text).toContain(VALID_DAY);
+          expect(res.text).toContain(VALID_MONTH);
+          expect(res.text).toContain(VALID_YEAR);
         });
     });
     test('should return error on year less than 1872', async () => {
@@ -58,7 +55,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('year must not be less than 1872');
+          expect(res.text).toContain(VALID_YEAR);
         });
     });
     test('should return error on empty year', async () => {
@@ -69,7 +66,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('year must not be less than 1872');
+          expect(res.text).toContain(VALID_YEAR);
         });
     });
     test('should return error on future date', async () => {
@@ -80,7 +77,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(FUTURE_VALUES_NOT_ALLOWED);
+          expect(res.text).toContain(VALID_DATE);
         });
     });
     test('should accept a valid input', async () => {

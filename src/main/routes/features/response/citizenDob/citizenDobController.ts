@@ -8,8 +8,6 @@ import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilit
 
 
 const router = express.Router();
-
-
 function renderView(res: express.Response, form: CitizenDob): void {
   res.render('features/response/citizenDob/citizen-dob', {form: form});
 }

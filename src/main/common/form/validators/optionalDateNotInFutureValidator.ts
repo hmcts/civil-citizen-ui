@@ -1,5 +1,5 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {FUTURE_VALUES_NOT_ALLOWED} from '../validationErrors/errorMessageConstants';
+import {VALID_DATE} from '../validationErrors/errorMessageConstants';
 
 /**
  * Validates that the input value is not a date in the future
@@ -15,6 +15,6 @@ export class OptionalDateNotInFutureValidator implements ValidatorConstraintInte
   }
 
   defaultMessage() {
-    return FUTURE_VALUES_NOT_ALLOWED;
+    return VALID_DATE;
   }
 }
