@@ -22,3 +22,6 @@ nodejs:
 
 idam-pr:
   enabled: false
+
+redis-pr:
+  enabled: false
