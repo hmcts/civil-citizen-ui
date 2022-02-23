@@ -103,7 +103,7 @@ describe('Citizen date of birth', () => {
           expect(res.status).toBe(302);
           expect(res.text).toContain('Redirecting to /eligibility/under-18');
         });
-    })
+    });
   });
 
 });
