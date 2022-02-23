@@ -3,8 +3,10 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "../../../macro/details-content.njk" import detailsContent %}
 
-{% set heading = t('How do you respond to the claim?') %}
+{% set heading = 'How do you respond to the claim?' %}
+
 
 {% block content %}
   <div class="govuk-width-container">
@@ -18,11 +20,18 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-         <form method="post">
-           {% set error = form.getErrors() %}
-
-
-
+          <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
+          <form method="post">
+            <div class="govuk-form-group {% if errors %} govuk-form-group--error{% endif %}">
+              {% if errors %}
+                {% for error in errors %}
+                  <span class="govuk-error-message">{{ t(error.text) }}</span>
+                {% endfor %}
+              {% endif %}
+          {{ govukDetails({
+              summaryText: "test",
+              html: detailsContent(test)
+            }) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")
