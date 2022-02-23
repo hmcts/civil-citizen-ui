@@ -27,7 +27,7 @@ describe('Age eligibility is over 18', () =>{
   });
   it('should return false when a day before 18th birthday', ()=>{
     //Given
-    const dobADayBeforeBirthday = calculateDobForAge(18, new Date().getDate()-1);
+    const dobADayBeforeBirthday = calculateDobForAge(18, new Date().getDate()+1);
     //When
     const result = AgeEligibilityVerification.isOverEighteen(dobADayBeforeBirthday);
     //Then

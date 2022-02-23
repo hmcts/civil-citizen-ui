@@ -9,7 +9,7 @@ export class AgeEligibilityVerification {
     today.setHours(0,0,0);
     let age = today.getFullYear() - dob.getFullYear();
     const monthDifference = today.getMonth() - dob.getMonth();
-    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() > dob.getDate()))
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dob.getDate()))
     {
       age = age-1;
     }
