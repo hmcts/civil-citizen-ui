@@ -3,12 +3,11 @@ import {Form} from './form';
 
 export class CitizenResponseType extends Form {
   @IsEmpty()
-  responseType?: string
+  responseType?: ResponseType
 
-  constructor(responseType?: string, errors?: ValidationError[]) {
+  constructor(responseType?: ResponseType, errors?: ValidationError[]) {
     super(errors);
     this.responseType = responseType;
   }
-
 
 }

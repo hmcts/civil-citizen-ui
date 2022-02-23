@@ -6,17 +6,18 @@ import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from 'common/form/models/citizenResponseType';
 
-const citizenResponseType = 'features/response/citizenResponseType/citizen-response-type';
+const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const router = express.Router();
-const citizenTelephoneNumber = new CitizenTelephoneNumber();
+const citizenResponseType = new CitizenResponseType();
 
 function renderView(form: CitizenTelephoneNumber, res: express.Response): void {
-  res.render(citizenResponseType, {form: form});
+  res.render(citizenResponseTypeViewPath, {form: form});
 }
 
 router.get(CITIZEN_RESPONSE_TYPE, (req, res) => {
-  renderView(citizenTelephoneNumber, res);
+  renderView(citizenResponseType, res);
 });
+
 router.post(CITIZEN_RESPONSE_TYPE,
   (req, res) => {
     const model: CitizenResponseType = new CitizenResponseType(req.body.responsetype);
@@ -30,7 +31,7 @@ router.post(CITIZEN_RESPONSE_TYPE,
       respondent.responseType = model.responseType;
       const claim = new Claim();
       claim.respondent1 = respondent;
-      claim.legacyCaseReference = 'response-type';
+      claim.legacyCaseReference = 'responseType';
       const draftStoreClient = req.app.locals.draftStoreClient;
       draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim)).then(() => {
         res.redirect(ROOT_URL);
