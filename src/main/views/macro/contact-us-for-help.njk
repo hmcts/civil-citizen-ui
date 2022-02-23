@@ -1,20 +1,42 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-{% macro contactUsForHelp(t) %}
-  {% set Email = t('Email') %}
-  {% set Line1 = t('We\'ll get back to you within 10 days') %}
-  {% set Tel = t('Telephone') %}
-  {% set Days = t('Monday to Friday') %}
-  {% set Line2 = t('Find out about call charges (opens in a new window)') %}
-  {% set ContactUs = t('Contact us for help') %}
 
+{% macro contactUsForHelp(t) %}
+  {% set ContactUs = t('Contact us for help') %}
   {{ govukDetails({
     summaryText: ContactUs,
-    html: "
-      <h3 class='govuk-heading-m'>" + Email + "</h3>
-      <p><a href='mailto:contactocmc@justice.gov.uk' class='govuk-details__summary'>contactocmc@justice.gov.uk</a><br />" + Line1 + ".</p>
-      <h3 class='govuk-heading-m'>"+ Tel +"</h3>
-      <p>0300 123 7050<br />
-      "+ Days +", 8.30am to 5pm.<br />
-      <a href='/call-charges' target='_blank' class='govuk-details__summary'>"+ Line2 +"</a></p>"
+    html:_webChatWidget()
+        + _antennawebChatWidget()
+        + _emailWidget()
+        + _phoneWidget()
   }) }}
 {% endmacro %}
+
+{% macro _webChatWidget() %}
+  {% set Web_chat = t('Web chat') %}
+  {% set WebChatLine1 = t('The web chat service is temporarily unavailable, please try again later.') %}
+  <h3 class='govuk-heading-m'>{{t( Web_chat) }}</h3>
+  <p> {{t( WebChatLine1) }}</p>
+{% endmacro %}
+
+{% macro _antennawebChatWidget() %}
+  {% set Web_chat = t('Web chat') %}
+  {% set WebChatLine2 = t('Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.') %}
+  {% set WebChatLine1 = t('The web chat service is temporarily unavailable, please try again later.') %}
+    <h3 class='govuk-heading-m'>{{t( Web_chat) }}</h3>
+    <p><span class="block"> {{t(WebChatLine2) }}</span></p>
+{% endmacro %}
+
+{% macro _phoneWidget(phoneNumber = '0300 123 7050') %}
+    {% set Line2 = t('Find out about call charges (opens in a new window)') %}
+      <h3 class="govuk-heading-m">{{ t('Telephone') }}</h3>
+      <p>{{ t(phoneNumber) }}<br>
+      <span class="block">{{ t("Monday to Friday, 8.30am to 5pm.") }}</span><br>
+      <a href='/call-charges' target='_blank' class='govuk-details__summary'>{{t(Line2)}}</a></p>
+{% endmacro %}
+
+{% macro _emailWidget(email = supportEmailAddress) %}
+    {% set Line1 = t('We\'ll get back to you within 10 days') %}
+    <h3 class="govuk-heading-m">{{ t('Email') }}</h2>
+    <p><a href='mailto:contactocmc@justice.gov.uk' class='govuk-details__summary'>contactocmc@justice.gov.uk</a><br />{{t(Line1)}}</p>
+    </p>
+{% endmacro%}
