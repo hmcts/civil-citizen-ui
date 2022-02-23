@@ -13,13 +13,17 @@
         <div class="govuk-grid-column-two-thirds">
           <p class="govuk-body">{{ t('If you are under 18 you need to email or phone the court. Claimants cannot submit a claim against someone under 18 so you may be able to have the claim stopped.') }}</p>
           <h3 class='govuk-heading-m'> {{ t('Email')}} </h3>
-          <p class="govuk-body"><a href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>
-            <br />{{ t('We\'ll get back to you within 10 days') }}
+          <p class="govuk-body">
+            <a href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>
           </p>
           <h3 class='govuk-heading-m'> {{ t('Telephone') }}</h3>
           <p class="govuk-body">0300 123 7050<br />
             {{ t('Monday to Friday') }}, 8.30am to 5pm.<br />
-            <a href='/call-charges' target='_blank'>{{ t('Find out about call charges (opens in a new window)') }}"</a>
+            <a href='https://www.gov.uk/call-charges' target='_blank'>{{ t('Find out about call charges (opens in a new window)') }}</a>
+          </p>
+          <p class="govuk-body">
+            {{t('You might be able to get advice about the claim from ')}}
+            <a href="https://www.citizensadvice.org.uk/about-us/contact-us/" target='_blank'>{{ t('Citizens Advice (opens in a new window)') }}</a>
           </p>
         </div>
       </div>
