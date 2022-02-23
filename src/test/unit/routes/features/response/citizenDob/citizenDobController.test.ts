@@ -3,7 +3,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {
-  NON_FUTURE_VALUES_NOT_ALLOWED,
+  FUTURE_VALUES_NOT_ALLOWED,
   VALID_DATE,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
@@ -76,7 +76,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NON_FUTURE_VALUES_NOT_ALLOWED);
+          expect(res.text).toContain(FUTURE_VALUES_NOT_ALLOWED);
         });
     });
     test('should accept a valid input', async () => {
