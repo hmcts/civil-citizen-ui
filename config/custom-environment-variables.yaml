@@ -10,8 +10,6 @@ services:
   draftStore:
     redis:
       host: REDIS_HOST
-      port: REDIS_PORT
-      key: REDIS_PASSWORD
 
 port: PORT
 appInsights:

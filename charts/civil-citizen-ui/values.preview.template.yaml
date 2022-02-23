@@ -10,15 +10,9 @@ nodejs:
         - redis-access-key
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
-    REDIS_HOST: "{{ .Release.Name }}-redis-master"
-    REDIS_PORT: 6379
-    REDIS_PASSWORD: fake-password
 
 idam-pr:
   enabled: true
   redirect_uris:
     civil-citizen-ui:
       - https://${SERVICE_FQDN}/oauth2/callback
-
-redis-pr:
-  enabled: true
