@@ -2,7 +2,7 @@ import request from 'supertest';
 
 import {app} from '../../../main/app';
 import config from 'config';
-
+jest.mock('../../../main/modules/oidc');
 jest.mock('../../../main/modules/draft-store');
 const nock = require('nock');
 

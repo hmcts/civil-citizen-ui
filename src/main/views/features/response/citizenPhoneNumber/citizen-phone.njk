@@ -1,0 +1,44 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getErrors() %}
+      {% if errors %}
+        {{ govukErrorSummary({
+          "titleText": 'There was a problem',
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">Enter a phone number (optional)</h1>
+          <p class="govuk-body">{{ t("We will only call you if we need more information about this claim.") }}</p>
+          <p class="govuk-body">
+            {{ t("We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.") }}
+          </p>
+          <form method="post">
+            {% set error = form.getErrors() %}
+            <div class="govuk-form-group {% if error %} govuk-form-group--error{% endif %}">
+              {% if error %}<span class="govuk-error-message">{{ t(error[0].text) }}</span>{% endif %}
+              <label class="govuk-label" for="telephoneNumber">
+              </label>
+              <input class="{% if error %}govuk-input--error{% endif %} govuk-input govuk-input--width-20 "
+                     id="telephoneNumber" name="telephoneNumber" type="text" inputmode="numeric" autocomplete="tel"
+                     value="{{ form.telephoneNumber }}">
+            </div>
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
+

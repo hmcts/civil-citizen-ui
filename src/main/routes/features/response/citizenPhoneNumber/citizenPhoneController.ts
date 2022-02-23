@@ -5,7 +5,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 
-const citizenPhoneViewPath = 'features/response/phone-details/citizen-phone';
+const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
 const router = express.Router();
 const citizenTelephoneNumber = new CitizenTelephoneNumber();
 
@@ -22,7 +22,7 @@ router.post(CITIZEN_PHONE_NUMBER_URL,
     const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(model);
     if (errors && errors.length > 0) {
-      model.error = errors[0];
+      model.errors = errors;
       renderView(model, res);
     } else {
       const respondent = new Respondent();

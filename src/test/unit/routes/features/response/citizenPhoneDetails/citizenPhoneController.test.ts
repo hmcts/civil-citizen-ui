@@ -1,10 +1,10 @@
 import request from 'supertest';
-import {app} from '../../../main/app';
+import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 
-jest.mock('../../../main/modules/oidc');
-jest.mock('../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 
 describe('Citizen phone number', () => {
@@ -50,7 +50,7 @@ describe('Citizen phone number', () => {
           expect(res.text).toContain('There was a problem. Please enter numeric number');
         });
     });
-    test('should accept input with trailing whitepsaces', async () => {
+    test('should accept input with trailing whitespaces', async () => {
       const mockDraftStore = {
         set: jest.fn(() => Promise.resolve({ data: {} })),
       };

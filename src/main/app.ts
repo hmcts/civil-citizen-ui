@@ -5,7 +5,7 @@ import express from 'express';
 import cookieSession from 'cookie-session';
 import { Helmet } from './modules/helmet';
 import * as path from 'path';
-import { HTTPError } from 'HttpError';
+import { HTTPError } from '../main/HttpError';
 import { Nunjucks } from './modules/nunjucks';
 import { PropertiesVolume } from './modules/properties-volume';
 import { AppInsights } from './modules/appinsights';

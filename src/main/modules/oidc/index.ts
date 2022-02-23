@@ -42,9 +42,11 @@ export class OidcMiddleware {
     app.get('/', (req: AppRequest, res: Response) => {
       return res.render('home');
     });
+
     app.get(ROOT_URL, (req: AppRequest, res: Response) => {
       return res.render('home');
     });
+
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
       if (req.session.user) {
         if (req.session?.user?.roles?.includes(citizenRole)) {

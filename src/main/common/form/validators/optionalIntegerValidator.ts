@@ -8,7 +8,7 @@ import {NON_NUMERIC_VALUES_NOT_ALLOWED} from '../validationErrors/errorMessageCo
 export class OptionalIntegerValidator implements ValidatorConstraintInterface {
 
   validate(value: string) {
-    const numberPattern = /^[0-9]+$/;
+    const numberPattern = /^\d+$/;
     if (value === '' || value === undefined) {
       return true;
     }
