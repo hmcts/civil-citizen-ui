@@ -1,11 +1,18 @@
 (function () {
-  const addressManuallyLink = document.querySelector('#conditional-enter-address-manually');
-  if (addressManuallyLink) {
-    document.querySelector('#conditional-enter-address-manually')
+  const enterAddressManuallyElment = document.querySelector('#enterAddressManually');
+  if (enterAddressManuallyElment) {
+
+    const govukVisuallyHidden = 'govuk-visually-hidden';
+    let isCorrespondenceAddressToBeValidated = document.forms['address']['isCorrespondenceAddressToBeValidated'];
+    let correspondenceAddressDIV = document.querySelector('#correspondenceAddress');
+
+    // -- Click on enter address manually link to display form
+    enterAddressManuallyElment
       .addEventListener('click', function (event) {
         event.preventDefault();
-        this.classList.add('govuk-visually-hidden');
-        document.querySelector('#correspondence-address').classList.remove('govuk-visually-hidden');
+        this.classList.add(govukVisuallyHidden);
+        correspondenceAddressDIV.classList.remove(govukVisuallyHidden);
+        isCorrespondenceAddressToBeValidated.value = true;
       });
   }
 })();

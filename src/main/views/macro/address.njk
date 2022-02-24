@@ -6,8 +6,8 @@
   {% set textInputLabel = t('Building and street') %}
   {% call govukFieldset({
   legend: {
-    text: fieldSetLabel if addressType == 'primary' else '',
-    classes: "govuk-fieldset__legend--m" ,
+    text: fieldSetLabel,
+    classes: "govuk-fieldset__legend--m" if addressType == 'primary' else "govuk-fieldset__legend--m govuk-visually-hidden" ,
     isPageHeading: true
   }
   }) %}

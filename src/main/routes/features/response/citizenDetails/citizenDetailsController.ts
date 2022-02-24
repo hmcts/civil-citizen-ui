@@ -12,6 +12,7 @@ const router = express.Router();
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+let citizenFullName: object;
 
 let claim: Claim = new Claim();
 
@@ -19,16 +20,6 @@ function renderPage(res: express.Response, claimDetails: Claim): void {
   res.render('features/response/claim-details', {
     claim: claimDetails,
   });
-}
-
-const getCitizenFullName = () => {
-  const citizenFullName = {
-    individualTitle: claim.respondent1.individualTitle,
-    individualFirstName: claim.respondent1.individualFirstName,
-    individualLastName: claim.respondent1.individualLastName,
-  };
-
-  return citizenFullName;
 }
 
 // -- GET Claim Details
@@ -43,6 +34,13 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
   let formCorrespondenceModel;
   // -- Retrive form service
   claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+
+  citizenFullName = {
+    individualTitle: claim.respondent1.individualTitle,
+    individualFirstName: claim.respondent1.individualFirstName,
+    individualLastName: claim.respondent1.individualLastName,
+  };
+
   // -- Retrive from Redis
   const draftStoreClient = req.app.locals.draftStoreClient;
 
@@ -80,9 +78,10 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
   });
 
   res.render('features/response/citizenDetails/citizen-details', {
-    citizenFullName: getCitizenFullName(),
+    citizenFullName: citizenFullName,
     citizenAddress: formAddressModel,
     citizenCorrespondenceAddress: formCorrespondenceModel,
+    isCorrespondenceAddressToBeValidated: false,
   });
 });
 
@@ -108,17 +107,21 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
   );
 
   const validator = new Validator();
-  citizenAddress.errors = validator.validateSync(citizenAddress);
-  citizenCorrespondenceAddress.errors = validator.validateSync(citizenCorrespondenceAddress);
-
   const errorList = new Form();
+
+  if (req.body.isCorrespondenceAddressToBeValidated) {
+    citizenAddress.errors = validator.validateSync(citizenAddress);
+    citizenCorrespondenceAddress.errors = validator.validateSync(citizenCorrespondenceAddress);
+  } else {
+    citizenAddress.errors = validator.validateSync(citizenAddress);
+  }
+
   errorList.errors = citizenAddress.errors.concat(citizenCorrespondenceAddress.errors);
-  console.log("ERRORList", citizenAddress.getErrors())
 
   if ((citizenAddress.errors && citizenAddress.errors.length > 0)
       || citizenCorrespondenceAddress.errors && citizenCorrespondenceAddress.errors.length > 0) {
     res.render('features/response/citizenDetails/citizen-details', {
-      citizenFullName: getCitizenFullName(),
+      citizenFullName: citizenFullName,
       citizenAddress: citizenAddress,
       citizenCorrespondenceAddress: citizenCorrespondenceAddress,
       errorList: errorList.getErrors(),
@@ -127,7 +130,8 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
       addressPostCodeError: errorList.getTextError(citizenAddress.getErrors(), 'primaryPostCode'),
       correspondenceAddressLine1Error: errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceAddressLine1'),
       correspondenceCityError: errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceCity'),
-      correspondencePostCodeError: errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondencePostCode')
+      correspondencePostCodeError: errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondencePostCode'),
+      isCorrespondenceAddressToBeValidated: req.body.isCorrespondenceAddressToBeValidated,
     });
   } else {
     await draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(
