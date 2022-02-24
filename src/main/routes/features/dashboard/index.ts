@@ -3,6 +3,7 @@ import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
+import {AppRequest} from 'models/AppRequest';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 console.log(civilServiceApiBaseUrl);
@@ -31,7 +32,7 @@ router.get(DASHBOARD_URL, async function (req, res) {
   const paginationArgumentDefendant: object = {};
 
   const claimsAsClaimant: Claim[] = [];
-  const claimsAsDefendant: Claim[] = await civilServiceClient.retrieveByDefendantId();
+  const claimsAsDefendant: Claim[] = await civilServiceClient.retrieveByDefendantId(<AppRequest>req);
 
   renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
 

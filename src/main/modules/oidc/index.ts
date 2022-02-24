@@ -25,7 +25,6 @@ export class OidcMiddleware {
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
         req.session.user = await getUserDetails(redirectUri, req.query.code);
-        app.locals.token = req.session.user.accessToken;
         req.session.save(() => {
           if (req.session.user?.roles?.includes(citizenRole)) {
             return res.redirect(ROOT_URL);
