@@ -20,7 +20,8 @@ export class CivilServiceClient {
     this.client.post('/cases',
       {
         headers: {
-          Authorization: `Bearer ${app.locals.token}`,
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${app.locals.token}`,
         },
         data: {'match_all': {}},
       }).then(response => {
