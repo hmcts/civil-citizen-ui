@@ -9,19 +9,19 @@ export class CitizenDob extends Form {
   @ValidateIf(o => (o.day <32 && o.month<13))
   @IsDate({message: VALID_DATE})
   @Validate(OptionalDateNotInFutureValidator, {message: VALID_DATE})
-  dateOfBirth?: Date
+    dateOfBirth?: Date;
 
   @Min(1872,{message:VALID_YEAR })
   @Max(9999,{message:VALID_YEAR })
-  year: number
+    year: number;
 
   @Min(1,{message:VALID_MONTH })
   @Max(12,{message:VALID_MONTH })
-  month: number
+    month: number;
 
   @Min(1,{message:VALID_DAY })
   @Max(31,{message:VALID_DAY })
-  day: number
+    day: number;
 
   constructor(year?: string, month?: string, day?: string, errors?: ValidationError[]) {
     super(errors);

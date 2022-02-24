@@ -6,13 +6,13 @@ export class FormValidationError extends ValidationError {
   /**
    * Field name associated with validated model property.
    */
-  fieldName: string
+  fieldName: string;
 
   /**
    * Message associated with first constraint violated of validated model property.
    */
-  text: string
-  href: string
+  text: string;
+  href: string;
 
   constructor(error: ValidationError, parentProperty?: string) {
     super();
