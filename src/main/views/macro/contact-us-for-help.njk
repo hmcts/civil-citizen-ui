@@ -11,16 +11,17 @@
 {% set openingHours = t('Monday to Friday, 8.30am to 5pm.') %}
 
 {% macro _widget(spanContent, name, href, hrefContact, hrefContent, phoneNumber) %}
-            <h3 class="govuk-heading-m">{{name}}</h3>
-            {% if phoneNumber %}
-                   {{phoneNumber}}
-            {% endif %}
-            {% if spanContent %}
-                <p><span class="block">{{spanContent}}</span></p>
-            {% endif %}
-            {% if href %}
-                <a href={{href}} class="govuk-details__summary">{% if hrefContact!=='' %}{{hrefContact}}</a><br/>{% endif %}{{hrefContent}}</a></p>
-            {% endif %}
+  <h3 class="govuk-heading-m">{{ name }}</h3>
+  {% if phoneNumber %}
+    {{ phoneNumber }}
+  {% endif %}
+  {% if spanContent %}
+    <p><span class="block">{{ spanContent }}</span></p>
+  {% endif %}
+  {% if href %}
+    <a href={{ href }} class="govuk-details__summary">{% if hrefContact!=='' %}{{ hrefContact }}</a>
+    <br/>{% endif %}{{ hrefContent }}</a></p>
+  {% endif %}
 {% endmacro %}
 
 {% macro contactUsForHelp(t,widget) %}
@@ -28,10 +29,10 @@
   {% set content = '' %}
   {% if widget ==='Web_chat' %}
     {% set content = _widget(webChatUnavailable,webChat,'','','','')
-                   + _widget(webChatClosed,webChat,'','','','')%}
+      + _widget(webChatClosed,webChat,'','','','') %}
   {% endif %}
   {% set content = content + _widget('','Email','mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk',responseDelay,'')
-                           + _widget(openingHours,'Telephone','https://www.gov.uk/call-charges','',callCharges,'0300 123 7050')%}
+    + _widget(openingHours,'Telephone','https://www.gov.uk/call-charges','',callCharges,'0300 123 7050') %}
 
   {{ govukDetails({
     summaryText: ContactUs,
