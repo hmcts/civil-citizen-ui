@@ -1,14 +1,16 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-{% macro detailsContent(list) %}
-    {% for item in list %}
+{% macro detailsContent(findOut) %}
+    {% for item in findOut %}
       {% if item.title %}
-        <h2 class="govuk-heading-l">{{ t(item.title) }}</h2>
+        <h3 class="govuk-heading-m">{{ t(item.title) }}</h3>
       {% endif %}
       {% if item.subtitle %}
-        <h3 class="govuk-heading-m">{{ t(item.subtitle) }}</h3>
+        <h3 class="govuk-heading-s">{{ t(item.subtitle) }}</h3>
       {% endif %}
       {% if item.content %}
-        <p>{{ t(item.content) }}</p>
+        {% for content in item.content %}
+          <p class="govuk-body">{{ t(content) }}</p>
+        {% endfor %}
       {% endif %}
     {% endfor %}
 {% endmacro %}

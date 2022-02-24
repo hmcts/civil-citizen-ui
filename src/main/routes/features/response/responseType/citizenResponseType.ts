@@ -4,22 +4,25 @@ import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from 'common/form/models/citizenResponseType';
+import {FindOut} from 'common/form/models/findOut/findOut';
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const router = express.Router();
 const citizenResponseType = new CitizenResponseType();
-// eslint-disable-next-line no-sparse-arrays
-const test = [{
-  'title': 'Admit all of the claim',
-  'content': 'You have until 4pm on {{ deadline }} to admit the claim.\', deadline = responseDeadline | date) '},
-{
-  'subtitle': 'Pay immediately',
-  'content': 'If you admit all the claim and want to pay it in full, including interest and claim fee, contact the claimant to arrange payment.'},
-{
-  'title': 'title',
-  'subtitle': 'subtitle'}];
+
+
+const findOut: FindOut[] = [new FindOut('Admit all of the claim', null, ['You have until 4pm on {{ deadline }} to admit the claim.\', deadline = responseDeadline | date)']),
+  new FindOut(null, 'Pay immediately', ['If you admit all the claim and want to pay it in full, including interest and claim fee, contact the claimant to arrange payment.', 'If you pay at the same time as admitting the claim, you won’t get a County Court Judgment (CCJ).', 'You should ask the claimant to give you a receipt.']),
+  new FindOut('Admit part of the claim', null, ['You have until 4pm on {{ deadline }} to admit part of the claim.\', deadline = responseDeadline | date)']),
+  new FindOut(null, 'Pay immediately', ['To admit part of the claim, contact the claimant and pay the amount you believe you owe then send the court your part admission.', 'They can accept the amount you’ve paid and settle the claim, or ask the court to transfer the claim to a County Court hearing centre.']),
+  new FindOut('Reject all of the claim', 'If you can’t pay immediately', ['You have until 4pm on {{ deadline }} to reject the claim.\', deadline = responseDeadline | date)', 'If you reject all of the claim, the claim may be transferred to a County Court hearing centre.', 'If you reject because you believe you’ve paid the money, the claimant has 28 days to tell you and the court whether they’re proceeding with the claim. If they proceed, the claim may be transferred to a County Court hearing centre.']),
+  new FindOut(null, 'Hearing centre location', ['If the claim is against you as an individual, the hearing centre will be the nearest one to your home or business.', 'If the claimant is an individual and the claim is against you as an organisation, the hearing centre will be the nearest one to their home or business.']),
+
+];
+
+
 function renderView(form: CitizenResponseType, res: express.Response): void {
-  res.render(citizenResponseTypeViewPath, {form: form, test: test});
+  res.render(citizenResponseTypeViewPath, {form: form, findOut: findOut });
 }
 
 router.get(CITIZEN_RESPONSE_TYPE, (req, res) => {
