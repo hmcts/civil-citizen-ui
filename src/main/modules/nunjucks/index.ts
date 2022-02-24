@@ -4,6 +4,7 @@ import { Express } from 'express';
 import { configure } from 'nunjucks';
 import * as numeral from '../../common/utils/currencyFormat';
 import { i18n, TOptions } from 'i18next';
+import {ResponseType} from 'common/form/models/responseType';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -48,6 +49,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
     nunjucksEnv.addFilter('currencyFormat', currencyFormat);
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
+    nunjucksEnv.addGlobal('ResponseType', ResponseType);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

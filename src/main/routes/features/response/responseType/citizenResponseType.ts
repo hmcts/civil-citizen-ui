@@ -22,7 +22,7 @@ const findOut: FindOut[] = [new FindOut('Admit all of the claim', null, ['You ha
 
 
 function renderView(form: CitizenResponseType, res: express.Response): void {
-  res.render(citizenResponseTypeViewPath, {form: form, findOut: findOut });
+  res.render(citizenResponseTypeViewPath, {form: form, findOut: findOut});
 }
 
 router.get(CITIZEN_RESPONSE_TYPE, (req, res) => {
@@ -31,7 +31,8 @@ router.get(CITIZEN_RESPONSE_TYPE, (req, res) => {
 
 router.post(CITIZEN_RESPONSE_TYPE,
   (req, res) => {
-    const model: CitizenResponseType = new CitizenResponseType(req.body.responsetype);
+
+    const model: CitizenResponseType = new CitizenResponseType(req.body.responseType);
     const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(model);
     if (errors && errors.length > 0) {

@@ -22,13 +22,9 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
+
           <form method="post">
-            <div class="govuk-form-group {% if errors %} govuk-form-group--error{% endif %}">
-              {% if errors %}
-                {% for error in errors %}
-                  <span class="govuk-error-message">{{ t(error.text) }}</span>
-                {% endfor %}
-              {% endif %}
+
 
           {{ govukDetails({
               summaryText: t('Find out what each response means'),
@@ -37,25 +33,25 @@
 
 
 {{ govukRadios({
-  idPrefix: "response-type",
-  name: "response-type",
+  idPrefix: "responseType",
+  name: "responseType",
   items: [
     {
-      value: ResponseType.FULL_ADMISSION.value,
+      value: ResponseType.FULL_ADMISSION,
       html: "<span class=\"govuk-!-font-weight-bold\">" + t('I admit all of the claim') + "</span>" ,
       hint: {
         text: t('You’ll have a user ID if you’ve registered for Self Assessment or filed a tax return online before.')
       }
     },
     {
-      value: ResponseType.PART_ADMISSION.value,
+      value: ResponseType.PART_ADMISSION,
       html: "<span class=\"govuk-!-font-weight-bold\">" + t('I admit part of the claim') + "</span>" ,
       hint: {
         text: t('You agree you owe some money but not the full amount claimed.')
       }
     },
     {
-      value: ResponseType.DEFENCE.value,
+      value: ResponseType.FULL_DEFENCE,
       html: "<span class=\"govuk-!-font-weight-bold\">" + t('I reject all of the claim') + "</span>" ,
       hint: {
         text: t('You’ve either paid what you believe you owe or you reject the claim.')
@@ -73,6 +69,7 @@
 
               {{ contactUsForHelp(t) }}
             </div>
+
           </form>
         </div>
       </div>
