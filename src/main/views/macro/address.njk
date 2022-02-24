@@ -1,0 +1,71 @@
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% macro addressForm(t,citizenAddress = '', addressLine1Error, addressCityError, addressPostCodeError, addressType) %}
+  {% set fieldSetLabel = t('Your address') %}
+  {% set fieldSetText = t('If your address is not correct you can change it here. Any changes will be shared with the claimant when you submit your response.') %}
+  {% set textInputLabel = t('Building and street') %}
+  {% call govukFieldset({
+  legend: {
+    text: fieldSetLabel if addressType == 'primary' else '',
+    classes: "govuk-fieldset__legend--m" ,
+    isPageHeading: true
+  }
+  }) %}
+  {% if addressType == 'primary' %}
+    <p class="govuk-body govuk-!-padding-top-4">{{ fieldSetText }}</p>
+  {% endif %}
+  {{ govukInput({
+    label: {
+      html: textInputLabel + ' <span class="govuk-visually-hidden">line 1 of 3</span>'
+    },
+    classes: "govuk-input--width-20",
+    id: addressType + "AddressLine1",
+    name: addressType + "AddressLine1",
+    autocomplete: addressType + "AddressLine-1",
+    value: citizenAddress.primaryAddressLine1 if addressType == 'primary' else citizenAddress.correspondenceAddressLine1,
+    errorMessage: { text: addressLine1Error } if addressLine1Error else ''
+  }) }}
+  {{ govukInput({
+    label: {
+      html: '<span class="govuk-visually-hidden">' + textInputLabel + ' line 2 of 3</span>'
+    },
+    classes: "govuk-input--width-20",
+    id: addressType + "AddressLine2",
+    name: addressType + "AddressLine2",
+    autocomplete: addressType + "AddressLine-2",
+    value: citizenAddress.primaryAddressLine2 if addressType == 'primary' else citizenAddress.correspondenceAddressLine2
+  }) }}
+  {{ govukInput({
+    label: {
+      html: '<span class="govuk-visually-hidden">' + textInputLabel + ' <span class="govuk-visually-hidden">line 3 of 3</span>'
+    },
+    classes: "govuk-input--width-20",
+    id: addressType + "AddressLine3",
+    name: addressType + "AddressLine3",
+    autocomplete: addressType + "AddressLine-3",
+    value: citizenAddress.primaryAddressLine3 if addressType == 'primary' else citizenAddress.correspondenceAddressLine3
+  }) }}
+  {{ govukInput({
+    label: {
+      text: t('Town or city')
+    },
+    classes: "govuk-input--width-20",
+    id: addressType + "City",
+    name: addressType + "City",
+    autocomplete: addressType + "address-level2",
+    value: citizenAddress.primaryCity if addressType == 'primary' else citizenAddress.correspondenceCity,
+    errorMessage: { text: addressCityError } if addressCityError else ''
+  }) }}
+  {{ govukInput({
+    label: {
+      text: t('Postcode')
+    },
+    classes: "govuk-input--width-10",
+    id: addressType + "PostCode",
+    name: addressType + "PostCode",
+    autocomplete: addressType + "postal-code",
+    value: citizenAddress.primaryPostCode if addressType == 'primary' else citizenAddress.correspondencePostCode,
+    errorMessage: { text: addressPostCodeError } if addressPostCodeError else ''
+  }) }}
+  {% endcall %}
+{% endmacro %}
