@@ -3,12 +3,12 @@
 {# Set some default values #}
 
 {% set contactocmc = 'contactocmc@justice.gov.uk' %}
-{% set Line1 = t('We\'ll get back to you within 10 days') %}
-{% set Web_chat = t('Web chat') %}
-{% set WebChatLine2 = t('Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.') %}
-{% set WebChatLine1 = t('The web chat service is temporarily unavailable, please try again later.') %}
-{% set Line2 = t('Find out about call charges (opens in a new window)') %}
-{% set Line = t('Monday to Friday, 8.30am to 5pm.') %}
+{% set responseDelay = t('We\'ll get back to you within 10 days') %}
+{% set webChat = t('Web chat') %}
+{% set webChatClosed = t('Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.') %}
+{% set webChatUnavailable = t('The web chat service is temporarily unavailable, please try again later.') %}
+{% set callCharges = t('Find out about call charges (opens in a new window)') %}
+{% set openingHours = t('Monday to Friday, 8.30am to 5pm.') %}
 
 {% macro _widget(spanContent, name, href, hrefContact, hrefContent, phoneNumber) %}
             <h3 class="govuk-heading-m">{{name}}</h3>
@@ -27,11 +27,11 @@
   {% set ContactUs = t('Contact us for help') %}
   {% set content = '' %}
   {% if widget ==='Web_chat' %}
-    {% set content = _widget(WebChatLine1,Web_chat,'','','','')
-                   + _widget(WebChatLine2,Web_chat,'','','','')%}
+    {% set content = _widget(webChatUnavailable,webChat,'','','','')
+                   + _widget(webChatClosed,webChat,'','','','')%}
   {% endif %}
-  {% set content = content + _widget('','Email','mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk',Line1,'')
-                           + _widget(Line,'Telephone','/call-charges','',Line2,'0300 123 7050')%}
+  {% set content = content + _widget('','Email','mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk',responseDelay,'')
+                           + _widget(openingHours,'Telephone','https://www.gov.uk/call-charges','',callCharges,'0300 123 7050')%}
 
   {{ govukDetails({
     summaryText: ContactUs,
