@@ -4,7 +4,7 @@ import { Express } from 'express';
 import { configure } from 'nunjucks';
 import * as numeral from '../../common/utils/currencyFormat';
 import { i18n, TOptions } from 'i18next';
-import {ResponseType} from 'common/form/models/responseType';
+import { ResponseType } from '../../common/form/models/responseType';
 
 const packageDotJson = require('../../../../package.json');
 

@@ -1,18 +1,20 @@
 import * as express from 'express';
-import {CITIZEN_RESPONSE_TYPE, ROOT_URL} from 'routes/urls';
-import {ValidationError, Validator} from 'class-validator';
-import {Respondent} from 'models/respondent';
-import {Claim} from 'models/claim';
-import {CitizenResponseType} from 'common/form/models/citizenResponseType';
-import {FindOut} from 'common/form/models/findOut/findOut';
 import moment from 'moment';
+
+import {CITIZEN_RESPONSE_TYPE, ROOT_URL} from '../../../urls';
+import {ValidationError, Validator} from 'class-validator';
+import {Respondent} from '../../../../common/models/respondent';
+import {Claim} from '../../../../common/models/claim';
+import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
+import {FindOut} from '../../../../common/form/models/findOut/findOut';
+
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const router = express.Router();
 const citizenResponseType = new CitizenResponseType();
 const DEADLINE = moment().add(28,'d').format('d MMMM YYYY');
 
-const findOut: FindOut[] = [new FindOut('Admit all of the claim', null, ['You have until 4pm on ' + DEADLINE ]),
+const findOut: FindOut[] = [new FindOut('Admit all of the claim', null, ['You have until 4pm on ' + DEADLINE + ' to admit the claim.']),
   new FindOut(null, 'Pay immediately', ['If you admit all the claim and want to pay it in full, including interest and claim fee, contact the claimant to arrange payment.', 'If you pay at the same time as admitting the claim, you won’t get a County Court Judgment (CCJ).', 'You should ask the claimant to give you a receipt.']),
   new FindOut('Admit part of the claim', null, ['You have until 4pm on ' + DEADLINE + ' to admit part of the claim.']),
   new FindOut(null, 'Pay immediately', ['To admit part of the claim, contact the claimant and pay the amount you believe you owe then send the court your part admission.', 'They can accept the amount you’ve paid and settle the claim, or ask the court to transfer the claim to a County Court hearing centre.']),
