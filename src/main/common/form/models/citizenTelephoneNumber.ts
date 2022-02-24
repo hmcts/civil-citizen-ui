@@ -1,6 +1,7 @@
 import {OptionalIntegerValidator} from '../validators/optionalIntegerValidator';
 import {Validate, ValidationError} from 'class-validator';
 import {NON_NUMERIC_VALUES_NOT_ALLOWED} from '../validationErrors/errorMessageConstants';
+import {Form} from './form';
 
 export class CitizenTelephoneNumber extends Form {
 
