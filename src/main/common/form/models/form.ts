@@ -2,7 +2,7 @@ import {ValidationError} from 'class-validator';
 import {FormValidationError} from '../validationErrors/formValidationError';
 
 export class Form {
-  errors?: ValidationError[]
+  errors?: ValidationError[];
 
   constructor(errors?: ValidationError[]) {
     this.errors = errors;
