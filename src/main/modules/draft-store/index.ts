@@ -10,14 +10,17 @@ export class DraftStoreClient {
   public enableFor(app: Application): void {
     const client = createClient({
       socket: {
-        host: config.get('draftStore.redis.host'),
-        port: config.get('draftStore.redis.port'),
+        host: config.get('services.draftStore.redis.host'),
+        port: config.get('services.draftStore.redis.port'),
+        connectTimeout: 15000,
       },
+      password: config.get('services.draftStore.redis.key'),
     });
     app.locals.draftStoreClient = client;
 
-    client.connect().then(() => {
-      logger.info('Connected to Redis instance successfully');
-    });
+    logger.warn('Not attempting to connect to Redis instance. This is a workaround until AAT redis instance is provisioned');
+    // client.connect().then(() => {
+    //   logger.info('Connected to Redis instance successfully');
+    // });
   }
 }
