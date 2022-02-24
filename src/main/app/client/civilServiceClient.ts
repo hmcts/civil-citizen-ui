@@ -1,6 +1,7 @@
 import {Claim} from '../../common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import { AssertionError } from 'assert';
+import {app} from '../../app';
 
 export class CivilServiceClient {
   client: AxiosInstance;
@@ -14,7 +15,14 @@ export class CivilServiceClient {
   }
 
   async retrieveByDefendantId(): Promise<Claim[]> {
-    const response: AxiosResponse<object> = await this.client.get('/cases');
+    console.log('civilServiceClient::\n' + app.locals.token);
+    const response: AxiosResponse<object> = await this.client.post('/cases',
+      {
+        headers: { Authorization: 'Bearer ' + app.locals.token,
+        },
+        data : {'match_all': {}},
+      });
+    console.log(response);
     const objects: Claim[] = response.data as Claim[];
     const claims: Claim[] = [];
     objects.forEach((_claim) => {
