@@ -12,13 +12,13 @@
 
 {% macro _widget(spanContent, name, href, hrefContact, hrefContent, phoneNumber) %}
             <h3 class="govuk-heading-m">{{name}}</h3>
-            {% if phoneNumber!=='' %}
+            {% if phoneNumber %}
                    {{phoneNumber}}
             {% endif %}
-            {% if spanContent!=='' %}
+            {% if spanContent %}
                 <p><span class="block">{{spanContent}}</span></p>
             {% endif %}
-            {% if href!=='' %}
+            {% if href %}
                 <a href={{href}} class="govuk-details__summary">{% if hrefContact!=='' %}{{hrefContact}}</a><br/>{% endif %}{{hrefContent}}</a></p>
             {% endif %}
 {% endmacro %}
