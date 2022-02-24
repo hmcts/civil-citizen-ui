@@ -25,43 +25,41 @@
 
           <form method="post">
 
-
-          {{ govukDetails({
+            {{ govukDetails({
               summaryText: t('Find out what each response means'),
               html: detailsContent(findOut)
             }) }}
 
-
-{{ govukRadios({
-  idPrefix: "responseType",
-  name: "responseType",
-  items: [
-    {
-      value: ResponseType.FULL_ADMISSION,
-      html: "<span class=\"govuk-!-font-weight-bold\">" + t('I admit all of the claim') + "</span>" ,
-      hint: {
-        text: t('You’ll have a user ID if you’ve registered for Self Assessment or filed a tax return online before.')
-      }
-    },
-    {
-      value: ResponseType.PART_ADMISSION,
-      html: "<span class=\"govuk-!-font-weight-bold\">" + t('I admit part of the claim') + "</span>" ,
-      hint: {
-        text: t('You agree you owe some money but not the full amount claimed.')
-      }
-    },
-    {
-      value: ResponseType.FULL_DEFENCE,
-      html: "<span class=\"govuk-!-font-weight-bold\">" + t('I reject all of the claim') + "</span>" ,
-      hint: {
-        text: t('You’ve either paid what you believe you owe or you reject the claim.')
-      }
-    }
-  ],
-  errorMessage: {
-    text: t(error.text)
-  }
-}) }}
+            {{ govukRadios({
+              idPrefix: "responseType",
+              name: "responseType",
+              items: [
+                {
+                  value: ResponseType.FULL_ADMISSION,
+                  html: "<span class=\"govuk-!-font-weight-bold\">" + t('I admit all of the claim') + "</span>" ,
+                  hint: {
+                  text: t('You’ll have a user ID if you’ve registered for Self Assessment or filed a tax return online before.')
+                }
+                },
+                {
+                  value: ResponseType.PART_ADMISSION,
+                  html: "<span class=\"govuk-!-font-weight-bold\">" + t('I admit part of the claim') + "</span>" ,
+                  hint: {
+                  text: t('You agree you owe some money but not the full amount claimed.')
+                }
+                },
+                {
+                  value: ResponseType.FULL_DEFENCE,
+                  html: "<span class=\"govuk-!-font-weight-bold\">" + t('I reject all of the claim') + "</span>" ,
+                  hint: {
+                  text: t('You’ve either paid what you believe you owe or you reject the claim.')
+                }
+                }
+              ],
+              errorMessage: {
+                html: t(errors[0].text)
+              } if errors
+            }) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")
