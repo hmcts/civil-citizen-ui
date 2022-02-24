@@ -18,8 +18,12 @@ export class DraftStoreClient {
     });
     app.locals.draftStoreClient = client;
 
-    client.connect().then(() => {
-      logger.info('Connected to Redis instance successfully');
-    });
+    client.connect()
+      .then(() => {
+        logger.info('Connected to Redis instance successfully');
+      })
+      .catch((err) => {
+        logger.error(`An error occurred while attempting to connect to Redis draft store: ${err}`);
+      });
   }
 }
