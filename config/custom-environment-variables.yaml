@@ -7,6 +7,10 @@ services:
     clientID: IDAM_CLIENT_ID
     clientSecret: IDAM_SECRET
     callbackURL: OAUTH_CLIENT_REDIRECT
+  draftStore:
+    redis:
+      host: REDIS_HOST
+
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY

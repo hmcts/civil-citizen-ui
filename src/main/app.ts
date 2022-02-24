@@ -2,10 +2,9 @@ import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
 import express from 'express';
-import session from 'express-session';
+import cookieSession from 'cookie-session';
 import { Helmet } from './modules/helmet';
 import * as path from 'path';
-import {v4} from 'uuid';
 import { HTTPError } from '../main/HttpError';
 import { Nunjucks } from './modules/nunjucks';
 import { PropertiesVolume } from './modules/properties-volume';
@@ -13,8 +12,8 @@ import { AppInsights } from './modules/appinsights';
 import { I18Next } from './modules/i18n';
 import { HealthCheck } from './modules/health';
 import { OidcMiddleware } from './modules/oidc';
-import routes from './routes/routes';
 import {DraftStoreClient} from './modules/draft-store';
+import routes from './routes/routes';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -24,19 +23,11 @@ const developmentMode = env === 'development';
 export const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 
 export const app = express();
-app.use(session({
-  genid: function() {
-    return v4();
-  },
+app.use(cookieSession({
   name: 'citizen-ui-session',
-  resave: false,
-  saveUninitialized: false,
   secret: 'local',
-  cookie: {
-    secure: false,
-    maxAge: cookieMaxAge,
-  },
-  rolling: true, // Renew the cookie for another 20 minutes on each request
+  maxAge: cookieMaxAge,
+  secure: false,
 }));
 
 app.locals.ENV = env;
@@ -45,12 +36,12 @@ const i18next = I18Next.enableFor(app);
 const logger = Logger.getLogger('app');
 
 new PropertiesVolume().enableFor(app);
+new DraftStoreClient().enableFor(app);
 new AppInsights().enable();
 new Nunjucks(developmentMode, i18next).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
 new OidcMiddleware().enableFor(app);
-new DraftStoreClient().enableFor(app);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
