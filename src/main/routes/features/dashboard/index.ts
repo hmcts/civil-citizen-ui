@@ -31,9 +31,9 @@ router.get(DASHBOARD_URL, async function (req, res) {
   const paginationArgumentDefendant: object = {};
 
   const claimsAsClaimant: Claim[] = [];
-  const claimsAsDefendant: Claim[] = await civilServiceClient.retrieveByDefendantId(<AppRequest>req);
+  const claimsAsDefendant: Promise<Claim[]> = civilServiceClient.retrieveByDefendantId(<AppRequest>req);
 
-  renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
+  renderPage(res, claimsAsClaimant, claimDraftSaved, await claimsAsDefendant, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
 
 });
 

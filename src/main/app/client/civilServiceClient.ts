@@ -15,21 +15,22 @@ export class CivilServiceClient {
   }
 
   async retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
-    console.log('civilServiceClient::\n' + req.session.user.accessToken);
     const claims: Claim[] = [];
-    this.client.post('/cases',
+    await this.client.post('/cases/',
+      { match_all: {} },
       {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${req.session.user.accessToken}`,
         },
-        data: {'match_all': {}},
       }).then(response => {
-      console.log(response);
-      const objects: Claim[] = response.data;
+      const objects: Claim[] = response.data.cases;
       objects.forEach((_claim) => {
+        console.log('_claim::\n' + _claim);
         const claim: Claim = Object.assign(new Claim(), _claim);
+        console.log('Claim caseReference::\n' + claim.legacyCaseReference);
         claims.push(claim);
+        console.log('Claims array::\n' + claims);
       });
     }).catch(error => {
       console.log(error.message);
