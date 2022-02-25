@@ -42,7 +42,7 @@ describe('Citizen phone number', () => {
     });
     test('should return error on input with interior spaces', async () => {
       const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({ data: {} })),
+        set: jest.fn(() => Promise.resolve({data: {}})),
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
@@ -55,7 +55,7 @@ describe('Citizen phone number', () => {
     });
     test('should accept input with trailing whitespaces', async () => {
       const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({ data: {} })),
+        set: jest.fn(() => Promise.resolve({data: {}})),
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
@@ -67,7 +67,7 @@ describe('Citizen phone number', () => {
     });
     test('should redirect on correct input', async () => {
       const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({ data: {} })),
+        set: jest.fn(() => Promise.resolve({data: {}})),
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
