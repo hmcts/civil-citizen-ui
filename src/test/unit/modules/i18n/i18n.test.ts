@@ -1,13 +1,9 @@
 import express from 'express';
 import config from 'config';
-import {createClient} from 'redis';
-import {mockCreateClient} from '../../../utils/mockCreateClient';
-
-const request = require('supertest');
-const nock = require('nock');
 
 jest.mock('redis');
-mockCreateClient(createClient);
+const request = require('supertest');
+const nock = require('nock');
 
 const {app} = require('../../../../main/app');
 

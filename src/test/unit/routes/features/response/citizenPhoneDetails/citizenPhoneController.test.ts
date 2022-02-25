@@ -1,12 +1,10 @@
 import request from 'supertest';
+import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('redis');
-
-const {app} = require('../../../../../../main/app');
-
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Citizen phone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

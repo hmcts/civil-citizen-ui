@@ -8,6 +8,5 @@ const mockedRedisClient = {
   ping: jest.fn(async () => 'PONG'),
   set: jest.fn(async () => ''),
   get: jest.fn(async () => '{}'),
-  on: jest.fn(async () => ''),
 };
 mockedCreateClient.mockReturnValue(mockedRedisClient);
