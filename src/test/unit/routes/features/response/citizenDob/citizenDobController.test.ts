@@ -1,11 +1,15 @@
-import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {VALID_DATE, VALID_DAY, VALID_MONTH, VALID_YEAR} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {createClient} from 'redis';
+import {mockCreateClient} from '../../../../../utils/mockCreateClient';
 
+jest.mock('redis');
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+mockCreateClient(createClient);
+
+const {app} = require('../../../../../../main/app');
 
 
 describe('Citizen date of birth', () => {

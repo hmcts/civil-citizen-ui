@@ -1,10 +1,14 @@
 import request from 'supertest';
-
-import {app} from '../../../main/app';
 import config from 'config';
-jest.mock('../../../main/modules/oidc');
-jest.mock('../../../main/modules/draft-store');
+import {createClient} from 'redis';
+import {mockCreateClient} from '../../utils/mockCreateClient';
+
 const nock = require('nock');
+jest.mock('../../../main/modules/oidc');
+jest.mock('redis');
+mockCreateClient(createClient);
+
+const {app} = require('../../../main/app');
 
 const agent = request.agent(app);
 

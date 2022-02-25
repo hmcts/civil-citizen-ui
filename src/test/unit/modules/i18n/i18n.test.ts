@@ -1,9 +1,13 @@
 import express from 'express';
 import config from 'config';
+import {createClient} from 'redis';
+import {mockCreateClient} from '../../../utils/mockCreateClient';
 
-jest.mock('../../../../main/modules/draft-store');
 const request = require('supertest');
 const nock = require('nock');
+
+jest.mock('redis');
+mockCreateClient(createClient);
 
 const {app} = require('../../../../main/app');
 

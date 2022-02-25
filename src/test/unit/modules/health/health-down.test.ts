@@ -2,15 +2,16 @@ import request from 'supertest';
 
 jest.mock('redis');
 import {createClient} from 'redis';
+import {mockCreateClient} from '../../../utils/mockCreateClient';
 
-const mockedCreateClient = createClient as jest.MockedFunction<(...args: unknown[]) => unknown>;
-const mockedRedisClient = {
+const mockedBehaviour = {
   connect: jest.fn(async () => ''),
   ping: jest.fn(async () => {
     throw new Error();
   }),
+  on: jest.fn(async () => ''),
 };
-mockedCreateClient.mockReturnValue(mockedRedisClient);
+mockCreateClient(createClient, mockedBehaviour);
 
 import {app} from '../../../../main/app';
 
