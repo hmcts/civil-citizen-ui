@@ -6,6 +6,7 @@
   const selectAddress = document.querySelector('#selectAddress');
   let correspondenceAddressContainer = document.querySelector('#correspondenceAddress');
   const govukVisuallyHidden = 'govuk-visually-hidden';
+  let postcodeResponse;
 
   // -- ENTER ADDRESS MANUALLY
   if (enterAddressManuallyLink) {
@@ -33,10 +34,14 @@
     // -- Select an address and bind it to the correspondence form
     selectAddress.addEventListener('change', (event) => {
       event.preventDefault();
-      const addressArray = event.target.value.split(',');
-      formAddress['correspondenceAddressLine1'].value = addressArray[0] + ' ' + addressArray[1];
-      formAddress['correspondenceCity'].value = addressArray[2];
-      formAddress['correspondencePostCode'].value = addressArray[3];
+      const addressSelected = postcodeResponse.addresses.filter((item) => item.uprn === event.target.value);
+      formAddress['correspondenceAddressLine1'].value =
+        + ', ' + addressSelected[0].subBuildingName
+        + ', ' + addressSelected[0].buildingName
+        + ', ' + addressSelected[0].thoroughfareName;
+      formAddress['correspondenceCity'].value = addressSelected[0].postTown;
+      formAddress['correspondencePostCode'].value = addressSelected[0].postcode;
+      console.log(addressSelected);
       enterAddressManuallyLink.classList.add(govukVisuallyHidden);
       correspondenceAddressContainer.classList.remove(govukVisuallyHidden);
       isCorrespondenceAddressToBeValidated.value = true;
@@ -55,7 +60,7 @@
     postcodeResponse.addresses.map((item) => {
       const option = document.createElement('option');
       option.label = item.formattedAddress;
-      option.value = item.formattedAddress;
+      option.value = item.uprn;
       correspondenceAddressList.add(option);
     });
     selectAddress.classList.remove(govukVisuallyHidden);
