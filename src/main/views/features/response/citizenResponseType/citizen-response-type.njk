@@ -5,9 +5,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "./details-content.njk" import detailsContent %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-
 {% set heading = 'How do you respond to the claim?' %}
-
 
 {% block content %}
   <div class="govuk-width-container">
@@ -22,14 +20,11 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
-
           <form method="post">
-
             {{ govukDetails({
               summaryText: t('Find out what each response means'),
               html: detailsContent(findOut)
             }) }}
-
             {{ govukRadios({
               idPrefix: "responseType",
               name: "responseType",
@@ -64,10 +59,8 @@
               {{ govukButton({
                 text: t("Save and continue")
               }) }}
-
               {{ contactUsForHelp(t) }}
             </div>
-
           </form>
         </div>
       </div>
