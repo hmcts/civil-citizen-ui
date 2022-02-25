@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import {AGE_ELIGIBILITY_URL} from '../../../../../../main/routes/urls';
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('redis');
 const nock = require('nock');
 
 describe('Under 18 Contact court', ()=> {

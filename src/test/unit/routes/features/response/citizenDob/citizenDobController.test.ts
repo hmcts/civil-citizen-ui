@@ -2,12 +2,9 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {VALID_DATE, VALID_DAY, VALID_MONTH, VALID_YEAR} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {createClient} from 'redis';
-import {mockCreateClient} from '../../../../../utils/mockCreateClient';
 
 jest.mock('redis');
 jest.mock('../../../../../../main/modules/oidc');
-mockCreateClient(createClient);
 
 const {app} = require('../../../../../../main/app');
 

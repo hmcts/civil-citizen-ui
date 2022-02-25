@@ -1,12 +1,8 @@
 import request from 'supertest';
-import {createClient} from 'redis';
-import {mockCreateClient} from '../../../utils/mockCreateClient';
+import {app} from '../../../../main/app';
 
 jest.mock('redis');
 
-mockCreateClient(createClient);
-
-import {app} from '../../../../main/app';
 
 describe('Draft Store Health Check - UP', () => {
   test('When draft store responding, health check should return UP', async () => {

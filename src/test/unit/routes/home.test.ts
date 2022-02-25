@@ -1,12 +1,9 @@
 import request from 'supertest';
 import config from 'config';
-import {createClient} from 'redis';
-import {mockCreateClient} from '../../utils/mockCreateClient';
 
 const nock = require('nock');
 jest.mock('../../../main/modules/oidc');
 jest.mock('redis');
-mockCreateClient(createClient);
 
 const {app} = require('../../../main/app');
 
