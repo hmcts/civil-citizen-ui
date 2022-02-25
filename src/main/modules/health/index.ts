@@ -6,15 +6,15 @@ const healthCheck = require('@hmcts/nodejs-healthcheck');
 export class HealthCheck {
   public enableFor(app: Application): void {
 
-    const redis = app.locals.draftStoreClient
-      ? healthCheck.raw(() => app.locals.draftStoreClient.ping()
-        .then(() => healthCheck.up())
-        .catch(() => healthCheck.down()))
-      : null;
+    // const redis = app.locals.draftStoreClient
+    //   ? healthCheck.raw(() => app.locals.draftStoreClient.ping()
+    //     .then(() => healthCheck.up())
+    //     .catch(() => healthCheck.down()))
+    //   : null;
 
     const healthCheckConfig = {
       checks: {
-        'draft-store': redis,
+        // 'draft-store': redis,
         // add health checks for other application dependency services
       },
       buildInfo: {
