@@ -4,7 +4,7 @@ import {VALID_CHOOSE} from '../../form/validationErrors/errorMessageConstants';
 
 export class CitizenResponseType extends Form {
   @IsNotEmpty({message: VALID_CHOOSE})
-  responseType?: string
+    responseType?: string;
 
   constructor(responseType?: string, errors?: ValidationError[]) {
     super(errors);
