@@ -19,8 +19,8 @@
     <p><span class="block">{{ spanContent }}</span></p>
   {% endif %}
   {% if href %}
-    <a href={{ href }} class="govuk-details__summary">{% if hrefContact!=='' %}{{ hrefContact }}</a>
-    <br/>{% endif %}{{ hrefContent }}</a></p>
+    <a href={{ href }}>{% if hrefContact!=='' %}{{ hrefContact }}</a>
+    {% endif %}{{ hrefContent }}</a></p>
   {% endif %}
 {% endmacro %}
 
@@ -31,7 +31,7 @@
     {% set content = _widget(webChatUnavailable,webChat,'','','','')
       + _widget(webChatClosed,webChat,'','','','') %}
   {% endif %}
-  {% set content = content + _widget('','Email','mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk',responseDelay,'')
+  {% set content = content + _widget('','Email','mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk','','')
     + _widget(openingHours,'Telephone','https://www.gov.uk/call-charges','',callCharges,'0300 123 7050') %}
 
   {{ govukDetails({
