@@ -1,20 +1,42 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-{% macro contactUsForHelp(t) %}
-  {% set Email = t('Email') %}
-  {% set Line1 = t('We\'ll get back to you within 10 days') %}
-  {% set Tel = t('Telephone') %}
-  {% set Days = t('Monday to Friday') %}
-  {% set Line2 = t('Find out about call charges (opens in a new window)') %}
+
+{# Set some default values #}
+
+{% set contactocmc = 'contactocmc@justice.gov.uk' %}
+{% set responseDelay = t('We\'ll get back to you within 10 days') %}
+{% set webChat = t('Web chat') %}
+{% set webChatClosed = t('Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.') %}
+{% set webChatUnavailable = t('The web chat service is temporarily unavailable, please try again later.') %}
+{% set callCharges = t('Find out about call charges (opens in a new window)') %}
+{% set openingHours = t('Monday to Friday, 8.30am to 5pm.') %}
+
+{% macro _widget(spanContent, name, href, hrefContact, hrefContent, phoneNumber) %}
+  <h3 class="govuk-heading-m">{{ name }}</h3>
+  {% if phoneNumber %}
+    {{ phoneNumber }}
+  {% endif %}
+  {% if spanContent %}
+    <p><span class="block">{{ spanContent }}</span></p>
+  {% endif %}
+  {% if href %}
+    <a href={{ href }}>{% if hrefContact!=='' %}{{ hrefContact }}</a>
+    {% endif %}{{ hrefContent }}</a></p>
+  {% endif %}
+{% endmacro %}
+
+{% macro contactUsForHelp(t,widget) %}
   {% set ContactUs = t('Contact us for help') %}
+  {% set content = '' %}
+  {% if widget ==='Web_chat' %}
+    {% set content = _widget(webChatUnavailable,webChat,'','','','')
+      + _widget(webChatClosed,webChat,'','','','') %}
+  {% endif %}
+  {% set content = content + _widget('','Email','mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk','','')
+    + _widget(openingHours,'Telephone','https://www.gov.uk/call-charges','',callCharges,'0300 123 7050') %}
 
   {{ govukDetails({
     summaryText: ContactUs,
-    html: "
-      <h3 class='govuk-heading-m'>" + Email + "</h3>
-      <p><a href='mailto:contactocmc@justice.gov.uk' class='govuk-details__summary'>contactocmc@justice.gov.uk</a><br />" + Line1 + ".</p>
-      <h3 class='govuk-heading-m'>"+ Tel +"</h3>
-      <p>0300 123 7050<br />
-      "+ Days +", 8.30am to 5pm.<br />
-      <a href='/call-charges' target='_blank' class='govuk-details__summary'>"+ Line2 +"</a></p>"
+    html: content
   }) }}
 {% endmacro %}
+
