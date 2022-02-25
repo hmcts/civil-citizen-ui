@@ -4,6 +4,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
@@ -60,15 +61,25 @@
                   name="correspondencePostcode"
                   type="text"
                   autocomplete="postal-code">
-                  <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                  <button class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddress">
                     {{ t('Find address') }}
                   </button>
-                  {% if isCorrespondenceAddressToBeValidated == false %}
-                    <div>
-                      <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">{{ t('Enter address manually') }}</a>
-                    </div>
-                  {% endif %}
+                  <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
+                    {{ govukSelect({
+                    id: "correspondenceAddressList",
+                    name: "correspondenceAddressList",
+                    label: {
+                      text: "Pick an address"
+                    },
+                    items: []
+                  }) }}
+                  </div>
                 </div>
+                {% if isCorrespondenceAddressToBeValidated == false %}
+                  <div>
+                    <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">{{ t('Enter address manually') }}</a>
+                  </div>
+                {% endif %}
                 <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
                   {{ addressForm(
                     t,
