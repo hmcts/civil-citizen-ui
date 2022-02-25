@@ -6,7 +6,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
-import {ComponentDetailItems} from 'common/form/models/componentDetailItems/componentDetailItems';
+import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
 
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
