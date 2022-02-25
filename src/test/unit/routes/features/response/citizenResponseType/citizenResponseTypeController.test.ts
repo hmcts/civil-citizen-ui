@@ -15,8 +15,6 @@ describe('Citizen phone number', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-
-
   });
 
   describe('on GET', () => {
@@ -43,7 +41,7 @@ describe('Citizen phone number', () => {
 
     test('should redirect page when correct input', async () => {
       const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({ data: {} })),
+        set: jest.fn(() => Promise.resolve({data: {}})),
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
