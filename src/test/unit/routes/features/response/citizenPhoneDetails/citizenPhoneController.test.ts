@@ -3,8 +3,8 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  NON_NUMERIC_VALUES_NOT_ALLOWED
-} from "../../../../../../main/common/form/validationErrors/errorMessageConstants";
+  NON_NUMERIC_VALUES_NOT_ALLOWED,
+} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
