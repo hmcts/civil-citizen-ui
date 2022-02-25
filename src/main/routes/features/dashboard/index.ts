@@ -25,16 +25,15 @@ function renderPage(res: express.Response, claimsAsClaimant: Claim[], claimDraft
 const router = express.Router();
 
 router.get(DASHBOARD_URL, async function (req, res) {
-  const claimDraftSaved = false;
-  const responseDraftSaved = false;
-  const paginationArgumentClaimant: object = {};
-  const paginationArgumentDefendant: object = {};
-
-  const claimsAsClaimant: Claim[] = [];
-  const claimsAsDefendant: Promise<Claim[]> = civilServiceClient.retrieveByDefendantId(<AppRequest>req);
-
-  renderPage(res, claimsAsClaimant, claimDraftSaved, await claimsAsDefendant, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
-
+  civilServiceClient.retrieveByDefendantId(<AppRequest>req).then(claimsAsDefendant  => {
+    console.log(claimsAsDefendant);
+    const claimDraftSaved = false;
+    const responseDraftSaved = false;
+    const paginationArgumentClaimant: object = {};
+    const paginationArgumentDefendant: object = {};
+    const claimsAsClaimant: Claim[] = [];
+    renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
+  });
 });
 
 export default router;

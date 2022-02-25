@@ -24,13 +24,11 @@ export class CivilServiceClient {
           'Authorization': `Bearer ${req.session.user.accessToken}`,
         },
       }).then(response => {
-      const objects: Claim[] = response.data.cases;
-      objects.forEach((_claim) => {
-        console.log('_claim::\n' + _claim);
-        const claim: Claim = Object.assign(new Claim(), _claim);
-        console.log('Claim caseReference::\n' + claim.legacyCaseReference);
+      const objects: [] = response.data.cases;
+      objects.forEach((_claim : any) => {
+        const claim: Claim = Object.assign(new Claim(), _claim.case_data);
+        console.log('Claim caseReference before pushing::\n' + claim.legacyCaseReference);
         claims.push(claim);
-        console.log('Claims array::\n' + claims);
       });
     }).catch(error => {
       console.log(error.message);
