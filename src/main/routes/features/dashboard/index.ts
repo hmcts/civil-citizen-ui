@@ -6,7 +6,6 @@ import {DASHBOARD_URL} from '../../urls';
 import {AppRequest} from 'models/AppRequest';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-console.log(civilServiceApiBaseUrl);
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderPage(res: express.Response, claimsAsClaimant: Claim[], claimDraftSaved: boolean,
