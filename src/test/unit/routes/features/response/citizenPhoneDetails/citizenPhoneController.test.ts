@@ -2,6 +2,9 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
+import {
+  NON_NUMERIC_VALUES_NOT_ALLOWED,
+} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -34,12 +37,12 @@ describe('Citizen phone number', () => {
         .send('telephoneNumber=abc')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('There was a problem. Please enter numeric number');
+          expect(res.text).toContain(NON_NUMERIC_VALUES_NOT_ALLOWED);
         });
     });
     test('should return error on input with interior spaces', async () => {
       const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({ data: {} })),
+        set: jest.fn(() => Promise.resolve({data: {}})),
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
@@ -47,12 +50,12 @@ describe('Citizen phone number', () => {
         .send('telephoneNumber=123 456')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('There was a problem. Please enter numeric number');
+          expect(res.text).toContain(NON_NUMERIC_VALUES_NOT_ALLOWED);
         });
     });
     test('should accept input with trailing whitespaces', async () => {
       const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({ data: {} })),
+        set: jest.fn(() => Promise.resolve({data: {}})),
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
@@ -64,7 +67,7 @@ describe('Citizen phone number', () => {
     });
     test('should redirect on correct input', async () => {
       const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({ data: {} })),
+        set: jest.fn(() => Promise.resolve({data: {}})),
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
