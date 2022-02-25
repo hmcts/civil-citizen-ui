@@ -28,7 +28,7 @@ client.on('error', error => {
   logger.error('Error connecting to Redis draft store', error);
 });
 
-function pingRedis() {
+export function pingRedis() {
   logger.info('Sending Ping to Redis draft store ...');
   client.ping()
     .then(() => logger.info('Connection to Redis draft store still alive'))
