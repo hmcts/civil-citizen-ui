@@ -23,7 +23,7 @@
           <form method="post">
             {{ govukDetails({
               summaryText: t('Find out what each response means'),
-              html: detailsContent(findOut)
+              html: detailsContent(componentDetailItemsList)
             }) }}
             {{ govukRadios({
               idPrefix: "responseType",

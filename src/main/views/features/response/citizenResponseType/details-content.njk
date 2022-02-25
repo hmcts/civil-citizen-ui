@@ -1,6 +1,6 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-{% macro detailsContent(findOut) %}
-  {% for item in findOut %}
+{% macro detailsContent(componentDetailItemsList) %}
+  {% for item in componentDetailItemsList %}
     {% if item.title %}
       <h3 class="govuk-heading-m">{{ t(item.title) }}</h3>
     {% endif %}
