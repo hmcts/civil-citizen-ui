@@ -8,14 +8,12 @@ import {AppRequest} from 'models/AppRequest';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-function renderPage(res: express.Response, claimsAsClaimant: Claim[], claimDraftSaved: boolean,
-  claimsAsDefendant: Claim[], responseDraftSaved: boolean,
+function renderPage(res: express.Response, claimsAsClaimant: Claim[], claimDraftSaved: boolean, responseDraftSaved: boolean,
   paginationArgumentClaimant: object, paginationArgumentDefendant: object): void {
 
   res.render('features/dashboard/dashboard', {
     claimsAsClaimant: claimsAsClaimant,
     claimDraftSaved: claimDraftSaved,
-    claimsAsDefendant: claimsAsDefendant,
     responseDraftSaved: responseDraftSaved,
     paginationArgumentClaimant: paginationArgumentClaimant,
     paginationArgumentDefendant: paginationArgumentDefendant,
@@ -25,15 +23,15 @@ function renderPage(res: express.Response, claimsAsClaimant: Claim[], claimDraft
 const router = express.Router();
 
 router.get(DASHBOARD_URL, async function (req, res) {
-  civilServiceClient.retrieveByDefendantId(<AppRequest>req).then(claimsAsDefendant  => {
-    console.log(claimsAsDefendant);
-    const claimDraftSaved = false;
-    const responseDraftSaved = false;
-    const paginationArgumentClaimant: object = {};
-    const paginationArgumentDefendant: object = {};
-    const claimsAsClaimant: Claim[] = [];
-    renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
-  });
+
+  const claimsAsClaimant : Claim[]  = await civilServiceClient.retrieveByDefendantId(<AppRequest>req);
+
+  const claimDraftSaved = false;
+  const responseDraftSaved = false;
+  const paginationArgumentClaimant: object = {};
+  const paginationArgumentDefendant: object = {};
+
+  renderPage(res, claimsAsClaimant, claimDraftSaved, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
 });
 
 export default router;

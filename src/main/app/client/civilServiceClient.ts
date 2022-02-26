@@ -14,9 +14,8 @@ export class CivilServiceClient {
     });
   }
 
-  async retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
-    const claims: Claim[] = [];
-    await this.client.post('/cases/',
+  retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
+    return this.client.post('/cases/',
       { match_all: {} },
       {
         headers: {
@@ -24,16 +23,14 @@ export class CivilServiceClient {
           'Authorization': `Bearer ${req.session.user.accessToken}`,
         },
       }).then(response => {
-      const objects: [] = response.data.cases;
-      objects.forEach((_claim : any) => {
-        const claim: Claim = Object.assign(new Claim(), _claim.case_data);
-        console.log('Claim caseReference before pushing::\n' + claim.legacyCaseReference);
-        claims.push(claim);
-      });
+      const claims = response.data.cases.map((claim: any) => Object.assign(new Claim(), claim.case_data));
+
+      return claims;
+
     }).catch(error => {
       console.log(error.message);
     });
-    return claims;
+
   }
 
   async retrieveClaimDetails(claimId: string): Promise<Claim> {
