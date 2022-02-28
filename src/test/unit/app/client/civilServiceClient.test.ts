@@ -2,21 +2,11 @@ import {CivilServiceClient} from '../../../../main/app/client/civilServiceClient
 import axios, {AxiosInstance} from 'axios';
 import {Claim} from '../../../../main/common/models/claim';
 import * as requestModels from '../../../../main/common/models/AppRequest';
-import {CivilClaimResponse} from "../../../../main/common/models/civilClaimResponse";
+import {CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
 
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-
-const user = {
-  accessToken: 'abc',
-  id: 'id',
-  email: 'dummy@gmail.com',
-  givenName: 'John',
-  familyName: 'Doe',
-  roles: ['civil', 'citizen'],
-};
-
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
@@ -49,7 +39,5 @@ describe('Civil Service Client', () => {
     expect(actualClaims[0].legacyCaseReference).toEqual('000MC003');
     expect(actualClaims[0].applicant1.individualFirstName).toEqual('Jane');
     expect(actualClaims[0].applicant1.individualLastName).toEqual('Clark');
-    expect(actualClaims[0].formattedResponseDeadline()).toEqual('24 January 2022');
-    expect(actualClaims[0].formattedTotalClaimAmount()).toEqual('£1,500.00');
   });
 });

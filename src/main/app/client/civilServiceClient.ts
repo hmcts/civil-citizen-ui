@@ -2,7 +2,7 @@ import {Claim} from '../../common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
-import {CivilClaimResponse} from "models/civilClaimResponse";
+import {CivilClaimResponse} from 'models/civilClaimResponse';
 
 export class CivilServiceClient {
   client: AxiosInstance;
@@ -19,7 +19,7 @@ export class CivilServiceClient {
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${req.session.user.accessToken}`,
+          'Authorization': `Bearer ${req.session?.user?.accessToken}`,
         },
       }).then(response => {
       const claims = response.data.cases.map((claim: CivilClaimResponse) => Object.assign(new Claim(), claim.case_data));
