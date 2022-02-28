@@ -1,12 +1,12 @@
 import config from 'config';
 import {createClient} from 'redis';
 import {Application} from 'express';
-
-const {Logger} = require('@hmcts/nodejs-logging');
-
-const logger = Logger.getLogger('draftStoreClient');
+import {LoggerInstance} from 'winston';
 
 export class DraftStoreClient {
+
+  constructor(private readonly logger: LoggerInstance) {}
+
   public enableFor(app: Application): void {
     const client = createClient({
       socket: {
@@ -20,10 +20,10 @@ export class DraftStoreClient {
 
     client.connect()
       .then(() => {
-        logger.info('Connected to Redis instance successfully');
+        this.logger.info('Connected to Redis instance successfully');
       })
       .catch((error: Error) => {
-        logger.error('Error connecting to Redis instance', error);
+        this.logger.error('Error connecting to Redis instance', error);
       });
   }
 }
