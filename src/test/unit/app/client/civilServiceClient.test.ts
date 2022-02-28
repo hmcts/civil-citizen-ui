@@ -3,11 +3,11 @@ import axios, {AxiosInstance} from 'axios';
 import {Claim} from '../../../../main/common/models/claim';
 import * as requestModels from '../../../../main/common/models/AppRequest';
 import {CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
-
+import config from 'config';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-
+const baseUrl:string = config.get('baseUrl');
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 
@@ -29,10 +29,10 @@ describe('Civil Service Client', () => {
 
     const mockPost = jest.fn().mockResolvedValue({data: {cases: [mockResponse]}});
     mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
-    const civilServiceClient = new CivilServiceClient('http://localhost');
+    const civilServiceClient = new CivilServiceClient(baseUrl);
     const actualClaims: Claim[] = await civilServiceClient.retrieveByDefendantId(mockedAppRequest);
     expect(mockedAxios.create).toHaveBeenCalledWith({
-      baseURL: 'http://localhost',
+      baseURL: baseUrl,
     });
     expect(mockPost.mock.calls[0][0]).toEqual('/cases/');
     expect(actualClaims.length).toEqual(1);
