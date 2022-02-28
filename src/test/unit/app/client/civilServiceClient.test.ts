@@ -1,19 +1,15 @@
 import {CivilServiceClient} from '../../../../main/app/client/civilServiceClient';
-
 import axios, {AxiosInstance} from 'axios';
 import {Claim} from '../../../../main/common/models/claim';
-import {CASES_URL} from '../../../../main/routes/urls';
-import {AppRequest, AppSession} from '../../../../main/common/models/AppRequest';
-
+import * as requestModels from '../../../../main/common/models/AppRequest';
+import {CivilClaimResponse} from "../../../../main/common/models/civilClaimResponse";
 
 
 jest.mock('axios');
-jest.mock('AppRequest');
-jest.mock('AppSession');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-const user : object = {
-  accessToken : 'abc',
+const user = {
+  accessToken: 'abc',
   id: 'id',
   email: 'dummy@gmail.com',
   givenName: 'John',
@@ -22,32 +18,33 @@ const user : object = {
 };
 
 
-const mockedAppRequest = jest.fn<AppRequest, []>(() => {
-  return jest.fn().mockResolvedValue({session : user});
-});
+declare const appRequest: requestModels.AppRequest;
+const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 
 describe('Civil Service Client', () => {
   it('retrieve cases', async () => {
-    const mockResponse: object = [{
-      legacyCaseReference: '000MC003',
-      applicant1:
-        {
-          type: 'INDIVIDUAL',
-          individualTitle: 'Mrs',
-          individualLastName: 'Clark',
-          individualFirstName: 'Jane',
-        },
-      totalClaimAmount: 1500,
-      respondent1ResponseDeadline: '2022-01-24T15:59:59',
-    }];
-    const mockGet = jest.fn().mockResolvedValue({data: mockResponse});
-    mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+    const claim = new Claim();
+    claim.legacyCaseReference = '000MC003';
+    claim.applicant1 =
+      {
+        individualTitle: 'Mrs',
+        individualLastName: 'Clark',
+        individualFirstName: 'Jane',
+      };
+    claim.totalClaimAmount = 1500;
+
+    const mockResponse: CivilClaimResponse = {
+      case_data: claim,
+    };
+
+    const mockPost = jest.fn().mockResolvedValue({data: {cases: [mockResponse]}});
+    mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
     const civilServiceClient = new CivilServiceClient('http://localhost');
     const actualClaims: Claim[] = await civilServiceClient.retrieveByDefendantId(mockedAppRequest);
     expect(mockedAxios.create).toHaveBeenCalledWith({
       baseURL: 'http://localhost',
     });
-    expect(mockGet.mock.calls[0][0]).toEqual(CASES_URL);
+    expect(mockPost.mock.calls[0][0]).toEqual('/cases/');
     expect(actualClaims.length).toEqual(1);
     expect(actualClaims[0].legacyCaseReference).toEqual('000MC003');
     expect(actualClaims[0].applicant1.individualFirstName).toEqual('Jane');
