@@ -1,56 +1,55 @@
 (function () {
   const formAddress = document.forms['address'];
-  let isCorrespondenceAddressToBeValidated = formAddress['isCorrespondenceAddressToBeValidated'];
-  const enterAddressManuallyLink = document.querySelector('#enterAddressManually');
-  const findAddressBtn = document.querySelector('#findAddress');
+  const isCorrespondenceAddressToBeValidated = formAddress['isCorrespondenceAddressToBeValidated'];
+  const correspondenceAddressList = formAddress['correspondenceAddressList'];
+  const addressManuallyLink = document.querySelector('#enterAddressManually');
+  const findAddressButton = document.querySelector('#findAddressButton');
   const selectAddress = document.querySelector('#selectAddress');
-  let correspondenceAddressContainer = document.querySelector('#correspondenceAddress');
+  const correspondenceAddress = document.querySelector('#correspondenceAddress');
   const govukVisuallyHidden = 'govuk-visually-hidden';
   let postcodeResponse;
 
+  const isDefined = (property) => property ? property + ', ' : '';
+
   // -- ENTER ADDRESS MANUALLY
-  if (enterAddressManuallyLink) {
+  if (addressManuallyLink) {
     // -- Click on enter address manually link to display form
-    enterAddressManuallyLink
+    addressManuallyLink
       .addEventListener('click', function (event) {
         event.preventDefault();
         this.classList.add(govukVisuallyHidden);
-        correspondenceAddressContainer.classList.remove(govukVisuallyHidden);
+        correspondenceAddress.classList.remove(govukVisuallyHidden);
         isCorrespondenceAddressToBeValidated.value = true;
       });
   }
 
 
   // -- FIND ADDRESS BUTTON
-  if (findAddressBtn) {
+  if (findAddressButton) {
     const correspondencePostcode = formAddress['correspondencePostcode'];
     // -- Enter postcode and submit
-    findAddressBtn
+    findAddressButton
       .addEventListener('click', (event) => {
         event.preventDefault();
         lookupPostcode(correspondencePostcode.value);
       });
 
     // -- Select an address and bind it to the correspondence form
-    selectAddress.addEventListener('change', (event) => {
+    correspondenceAddressList.addEventListener('change', (event) => {
       event.preventDefault();
       const addressSelected = postcodeResponse.addresses.filter((item) => item.uprn === event.target.value);
-      formAddress['correspondenceAddressLine1'].value =
-        + ', ' + addressSelected[0].subBuildingName
-        + ', ' + addressSelected[0].buildingName
-        + ', ' + addressSelected[0].thoroughfareName;
+      console.log(addressSelected);
+      formAddress['correspondenceAddressLine1'].value = isDefined(addressSelected[0].buildingNumber) + isDefined(addressSelected[0].subBuildingName) + isDefined(addressSelected[0].buildingName) + isDefined(addressSelected[0].thoroughfareName);
       formAddress['correspondenceCity'].value = addressSelected[0].postTown;
       formAddress['correspondencePostCode'].value = addressSelected[0].postcode;
-      console.log(addressSelected);
-      enterAddressManuallyLink.classList.add(govukVisuallyHidden);
-      correspondenceAddressContainer.classList.remove(govukVisuallyHidden);
+      addressManuallyLink.classList.add(govukVisuallyHidden);
+      correspondenceAddress.classList.remove(govukVisuallyHidden);
       isCorrespondenceAddressToBeValidated.value = true;
     });
   }
 
   // -- Bind list of addresses to selecte drop down
   const addDataToSelectComponent = (postcodeResponse) => {
-    const correspondenceAddressList = formAddress['correspondenceAddressList'];
     const nonSelectableoption = document.createElement('option');
     nonSelectableoption.label = postcodeResponse.addresses.length + ' addresses found';
     nonSelectableoption.value = postcodeResponse.addresses.length + ' addresses found';
@@ -78,4 +77,3 @@
   };
 
 })();
-
