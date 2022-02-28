@@ -1,7 +1,7 @@
 import express from 'express';
 import config from 'config';
 
-jest.mock('../../../../main/modules/draft-store');
+jest.mock('redis');
 const request = require('supertest');
 const nock = require('nock');
 

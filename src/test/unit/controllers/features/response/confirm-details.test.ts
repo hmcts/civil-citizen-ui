@@ -1,9 +1,7 @@
 import express from 'express';
-import { DraftStoreClient } from '../../../../../main/modules/draft-store';
 const confirmDetailsController = require('../../../../../main/controllers/features/response/confirm-details');
 
 export const app = express();
-new DraftStoreClient().enableFor(app);
 
 let addressLineOneValidated: object = {};
 let townOrCityValidated: object = {};
