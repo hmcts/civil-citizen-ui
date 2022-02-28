@@ -3,6 +3,7 @@ import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {CASES_URL} from '../../routes/urls';
 
 export class CivilServiceClient {
   client: AxiosInstance;
@@ -14,7 +15,7 @@ export class CivilServiceClient {
   }
 
   retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
-    return this.client.post('/cases/',
+    return this.client.post(CASES_URL,
       { match_all: {} },
       {
         headers: {

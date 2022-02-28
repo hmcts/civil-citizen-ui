@@ -4,6 +4,7 @@ import {Claim} from '../../../../main/common/models/claim';
 import * as requestModels from '../../../../main/common/models/AppRequest';
 import {CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
 import config from 'config';
+import {CASES_URL} from '../../../../main/routes/urls';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -34,7 +35,7 @@ describe('Civil Service Client', () => {
     expect(mockedAxios.create).toHaveBeenCalledWith({
       baseURL: baseUrl,
     });
-    expect(mockPost.mock.calls[0][0]).toEqual('/cases/');
+    expect(mockPost.mock.calls[0][0]).toEqual(CASES_URL);
     expect(actualClaims.length).toEqual(1);
     expect(actualClaims[0].legacyCaseReference).toEqual('000MC003');
     expect(actualClaims[0].applicant1.individualFirstName).toEqual('Jane');
