@@ -8,13 +8,13 @@ import { Form } from './form';
 
 export class CitizenCorrespondenceAddress extends Form {
   @IsNotEmpty({message: NON_CORRESPONDENCE_ADDRESS_VALUE_NOT_ALLOWED})
-  correspondenceAddressLine1?: string;
+    correspondenceAddressLine1?: string;
   correspondenceAddressLine2?: string;
   correspondenceAddressLine3?: string;
   @IsNotEmpty({message: NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED})
-  correspondencePostCode?: string;
+    correspondencePostCode?: string;
   @IsNotEmpty({message: NON_CORRESPONDENCE_CITY_OR_TOWN_VALUE_NOT_ALLOWED})
-  correspondenceCity?: string;
+    correspondenceCity?: string;
 
   constructor(
     correspondenceAddressLine1?: string,

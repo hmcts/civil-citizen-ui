@@ -26,3 +26,7 @@ health:
   deadline: 15000
 appInsights:
   instrumentationKey:
+
+secrets:
+  cmc:
+    os-postcode-lookup-api-key: AAAAAAA

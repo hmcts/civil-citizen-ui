@@ -8,13 +8,13 @@ import { Form } from './form';
 
 export class CitizenAddress extends Form {
   @IsNotEmpty({message: NON_ADDRESS_VALUE_NOT_ALLOWED})
-  primaryAddressLine1?: string;
+    primaryAddressLine1?: string;
   primaryAddressLine2?: string;
   primaryAddressLine3?: string;
   @IsNotEmpty({message: NON_POSTCODE_VALUE_NOT_ALLOWED})
-  primaryPostCode?: string;
+    primaryPostCode?: string;
   @IsNotEmpty({message: NON_CITY_OR_TOWN_VALUE_NOT_ALLOWED})
-  primaryCity?: string;
+    primaryCity?: string;
 
   constructor(
     primaryAddressLine1?: string,

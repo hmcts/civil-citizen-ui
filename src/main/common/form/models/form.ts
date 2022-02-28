@@ -32,7 +32,7 @@ export class Form {
     let error;
     errors.filter((item) => {
       if (item.property == property) {
-        error = item.constraints.isNotEmpty
+        error = item.constraints.isNotEmpty;
       }
     });
     return error;

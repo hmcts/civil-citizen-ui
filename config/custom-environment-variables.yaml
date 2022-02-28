@@ -14,3 +14,7 @@ services:
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
+
+secrets:
+  cmc:
+    os-postcode-lookup-api-key: POSTCODE_LOOKUP_API_KEY
