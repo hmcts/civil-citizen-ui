@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  NON_NUMERIC_VALUES_NOT_ALLOWED,
+  VALID_PHONE_NUMBER,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -37,7 +37,7 @@ describe('Citizen phone number', () => {
         .send('telephoneNumber=abc')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NON_NUMERIC_VALUES_NOT_ALLOWED);
+          expect(res.text).toContain(VALID_PHONE_NUMBER);
         });
     });
     test('should return error on input with interior spaces', async () => {
@@ -50,7 +50,7 @@ describe('Citizen phone number', () => {
         .send('telephoneNumber=123 456')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NON_NUMERIC_VALUES_NOT_ALLOWED);
+          expect(res.text).toContain(VALID_PHONE_NUMBER);
         });
     });
     test('should accept input with trailing whitespaces', async () => {
