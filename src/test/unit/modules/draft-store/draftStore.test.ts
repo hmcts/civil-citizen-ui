@@ -13,11 +13,6 @@ const mockedBehaviour = {
 };
 mockCreateClient(createClient, mockedBehaviour);
 
-// const mockLogger = {
-//   info: jest.fn(),
-//   error: jest.fn(),
-// };
-
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
