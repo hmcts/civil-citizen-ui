@@ -19,14 +19,10 @@ export class CivilServiceClient {
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${req.session?.user?.accessToken}`,
+          'Authorization': `Bearer ${req.session.user.accessToken}`,
         },
       }).then(response => {
-      const claims = response.data.cases.map((claim: CivilClaimResponse) => {
-        const assigned = Object.assign(new Claim(), claim.case_data);
-        console.log('assigned ' + assigned);
-      });
-      console.log(claims);
+      const claims = response.data.cases.map((claim: CivilClaimResponse) => Object.assign(new Claim(), claim.case_data));
       return claims;
     }).catch(error => {
       console.log(error.message);
