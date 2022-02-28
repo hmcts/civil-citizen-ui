@@ -1,16 +1,14 @@
 import {Claim} from '../../common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest} from '../../common/models/AppRequest';
 
 export class CivilServiceClient {
   client: AxiosInstance;
 
   constructor(baseURL: string) {
-
     this.client = Axios.create({
       baseURL,
-
     });
   }
 
@@ -27,7 +25,6 @@ export class CivilServiceClient {
       const objects: [] = response.data.cases;
       objects.forEach((_claim : any) => {
         const claim: Claim = Object.assign(new Claim(), _claim.case_data);
-        console.log('Claim caseReference before pushing::\n' + claim.legacyCaseReference);
         claims.push(claim);
       });
     }).catch(error => {
@@ -41,8 +38,6 @@ export class CivilServiceClient {
     if (!response.data) {
       throw new AssertionError({message: 'Claim details not available.'});
     }
-
     return response.data as Claim;
-
   }
 }

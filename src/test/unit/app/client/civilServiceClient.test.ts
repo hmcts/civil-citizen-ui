@@ -3,10 +3,28 @@ import {CivilServiceClient} from '../../../../main/app/client/civilServiceClient
 import axios, {AxiosInstance} from 'axios';
 import {Claim} from '../../../../main/common/models/claim';
 import {CASES_URL} from '../../../../main/routes/urls';
+import {AppRequest, AppSession} from '../../../../main/common/models/AppRequest';
+
+
 
 jest.mock('axios');
-
+jest.mock('AppRequest');
+jest.mock('AppSession');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
+
+const user : object = {
+  accessToken : 'abc',
+  id: 'id',
+  email: 'dummy@gmail.com',
+  givenName: 'John',
+  familyName: 'Doe',
+  roles: ['civil', 'citizen'],
+};
+
+
+const mockedAppRequest = jest.fn<AppRequest, []>(() => {
+  return jest.fn().mockResolvedValue({session : user});
+});
 
 describe('Civil Service Client', () => {
   it('retrieve cases', async () => {
@@ -24,15 +42,11 @@ describe('Civil Service Client', () => {
     }];
     const mockGet = jest.fn().mockResolvedValue({data: mockResponse});
     mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
-
     const civilServiceClient = new CivilServiceClient('http://localhost');
-
-    const actualClaims: Claim[] = await civilServiceClient.retrieveByDefendantId();
-
+    const actualClaims: Claim[] = await civilServiceClient.retrieveByDefendantId(mockedAppRequest);
     expect(mockedAxios.create).toHaveBeenCalledWith({
       baseURL: 'http://localhost',
     });
-
     expect(mockGet.mock.calls[0][0]).toEqual(CASES_URL);
     expect(actualClaims.length).toEqual(1);
     expect(actualClaims[0].legacyCaseReference).toEqual('000MC003');
