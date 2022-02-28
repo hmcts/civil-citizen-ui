@@ -6,7 +6,7 @@ home: https://github.com/hmcts/civil-citizen-ui
 version: 0.0.8
 dependencies:
   - name: nodejs
-    version: 2.4.0
+    version: 2.4.1
     repository: '@hmctspublic'
   - name: idam-pr
     version: 2.2.6
