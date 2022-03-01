@@ -50,22 +50,17 @@
               {% set noHtml %}
               {% endset -%}
               {% set correspondenceAddressHtml %}
-              <div class="govuk-form-group">
+              <div class="govuk-form-group" id="postcodeContainer">
                 <p class="govuk-label govuk-!-margin-bottom-5">{{ t('All correspondence will be sent to this address. This is known as an "address for service".') }}</p>
-                <label class="govuk-label" for="correspondencePostcode">
+                <label class="govuk-label" for="postcode">
                   {{ t('Enter a UK postcode') }}
                 </label>
-                <input
-                  class="govuk-input govuk-input--width-10"
-                  id="correspondencePostcode"
-                  name="correspondencePostcode"
-                  type="text"
-                  autocomplete="postal-code">
-                  <button class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
-                    {{ t('Find address') }}
-                  </button>
-                  <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
-                    {{ govukSelect({
+                <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
+                <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
+                  {{ t('Find address') }}
+                </button>
+                <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
+                  {{ govukSelect({
                     id: "correspondenceAddressList",
                     name: "correspondenceAddressList",
                     label: {
@@ -73,25 +68,25 @@
                     },
                     items: []
                   }) }}
-                  </div>
                 </div>
-                {% if isCorrespondenceAddressToBeValidated == false %}
-                  <div>
-                    <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">{{ t('Enter address manually') }}</a>
-                  </div>
-                {% endif %}
-                <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
-                  {{ addressForm(
+              </div>
+              {% if isCorrespondenceAddressToBeValidated == false %}
+                <div>
+                  <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">{{ t('Enter address manually') }}</a>
+                </div>
+              {% endif %}
+              <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
+                {{ addressForm(
                     t,
                     citizenAddress = citizenCorrespondenceAddress,
                     addressLine1Error = correspondenceAddressLine1Error,
                     addressCityError = correspondenceCityError,
                     addressPostCodeError = correspondencePostCodeError,
                     addressType = 'correspondence') }}
-                </div>
-                {% endset -%}
-                <h2 class="govuk-heading-m">{{ t('Correspondence address') }}</h2>
-                {{ govukRadios({
+              </div>
+              {% endset -%}
+              <h2 class="govuk-heading-m">{{ t('Correspondence address') }}</h2>
+              {{ govukRadios({
                   idPrefix: "post-to-this-address",
                   name: "post-to-this-address",
                   fieldset: {
@@ -119,13 +114,13 @@
                     }
                   ]
                 }) }}
-                {{ govukButton({
+              {{ govukButton({
                   text: t("Save and continue")
                 }) }}
-                {{ contactUsForHelp(t) }}
-              </div>
-            </form>
-          </div>
-        </main>
-      </div>
-    {% endblock %}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  {% endblock %}

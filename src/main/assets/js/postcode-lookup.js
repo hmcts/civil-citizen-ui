@@ -2,14 +2,34 @@
   const formAddress = document.forms['address'];
   const isCorrespondenceAddressToBeValidated = formAddress['isCorrespondenceAddressToBeValidated'];
   const correspondenceAddressList = formAddress['correspondenceAddressList'];
+  const correspondenceAddressLine1 = 'correspondenceAddressLine1';
+  const correspondenceCity = 'correspondenceCity';
+  const correspondencePostCodeId = 'correspondencePostCode';
+
   const addressManuallyLink = document.querySelector('#enterAddressManually');
   const findAddressButton = document.querySelector('#findAddressButton');
   const selectAddress = document.querySelector('#selectAddress');
   const correspondenceAddress = document.querySelector('#correspondenceAddress');
+  const postcodeContainer = document.querySelector('#postcodeContainer');
   const govukVisuallyHidden = 'govuk-visually-hidden';
+  const govukFormGroupError = 'govuk-form-group--error';
+  const govukInputError = 'govuk-input--error';
+
   let postcodeResponse;
 
-  const isDefined = (property) => property ? property + ', ' : '';
+  const hasAddressProperty = (property) => property ? property : '';
+  const resetFormInput = (id) => formAddress[id].value = '';
+  const isValidPostcode = (postcode) => {
+    if (postcode.value) {
+      postcode.classList.remove(govukInputError);
+      postcodeContainer.classList.remove(govukFormGroupError);
+      return true;
+    } else {
+      postcode.classList.add(govukInputError);
+      postcodeContainer.classList.add(govukFormGroupError);
+      return false;
+    }
+  };
 
   // -- ENTER ADDRESS MANUALLY
   if (addressManuallyLink) {
@@ -26,22 +46,32 @@
 
   // -- FIND ADDRESS BUTTON
   if (findAddressButton) {
-    const correspondencePostcode = formAddress['correspondencePostcode'];
+    const postcode = formAddress['postcode'];
     // -- Enter postcode and submit
     findAddressButton
       .addEventListener('click', (event) => {
         event.preventDefault();
-        lookupPostcode(correspondencePostcode.value);
+        if (isValidPostcode(postcode)) {
+          lookupPostcode(postcode.value);
+        }
       });
 
     // -- Select an address and bind it to the correspondence form
     correspondenceAddressList.addEventListener('change', (event) => {
       event.preventDefault();
-      const addressSelected = postcodeResponse.addresses.filter((item) => item.uprn === event.target.value);
+      let addressSelected = [];
+      if (postcodeResponse) {
+        addressSelected = postcodeResponse.addresses.filter((item) => item.uprn === event.target.value);
+        resetFormInput(correspondenceAddressLine1);
+        resetFormInput(correspondenceCity);
+        resetFormInput(correspondencePostCodeId);
+      }
       console.log(addressSelected);
-      formAddress['correspondenceAddressLine1'].value = isDefined(addressSelected[0].buildingNumber) + isDefined(addressSelected[0].subBuildingName) + isDefined(addressSelected[0].buildingName) + isDefined(addressSelected[0].thoroughfareName);
-      formAddress['correspondenceCity'].value = addressSelected[0].postTown;
-      formAddress['correspondencePostCode'].value = addressSelected[0].postcode;
+
+      formAddress[correspondenceAddressLine1].value = hasAddressProperty(addressSelected[0].buildingNumber) + ' ' + hasAddressProperty(addressSelected[0].subBuildingName) + ' ' + hasAddressProperty(addressSelected[0].buildingName) + ' ' + hasAddressProperty(addressSelected[0].thoroughfareName);
+      formAddress[correspondenceCity].value = addressSelected[0].postTown;
+      formAddress[correspondencePostCodeId].value = addressSelected[0].postcode;
+
       addressManuallyLink.classList.add(govukVisuallyHidden);
       correspondenceAddress.classList.remove(govukVisuallyHidden);
       isCorrespondenceAddressToBeValidated.value = true;
@@ -50,6 +80,7 @@
 
   // -- Bind list of addresses to selecte drop down
   const addDataToSelectComponent = (postcodeResponse) => {
+    correspondenceAddressList.options.length = 0;
     const nonSelectableoption = document.createElement('option');
     nonSelectableoption.label = postcodeResponse.addresses.length + ' addresses found';
     nonSelectableoption.value = postcodeResponse.addresses.length + ' addresses found';
@@ -70,7 +101,7 @@
     postcode = postcode.trim().replace(/[\u202F\u00A0\u2000\u2001\u2003]/g, ' ');
     xhr.open('GET', '/postcode-lookup?postcode=' + encodeURIComponent(postcode));
     xhr.onload = function () {
-      let postcodeResponse = JSON.parse(xhr.responseText);
+      postcodeResponse = JSON.parse(xhr.responseText);
       addDataToSelectComponent(postcodeResponse);
     };
     xhr.send();
