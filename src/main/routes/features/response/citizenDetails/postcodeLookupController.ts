@@ -29,7 +29,6 @@ export default express.Router()
             ),
           );
         res.json(addressInfoResponse);
-        console.log('Address Response', res.json(addressInfoResponse));
       })
       .catch((err:any) => {
         if (err.message === 'Authentication failed') {

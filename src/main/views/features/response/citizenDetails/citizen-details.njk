@@ -50,11 +50,14 @@
               {% set noHtml %}
               {% endset -%}
               {% set correspondenceAddressHtml %}
-              <div class="govuk-form-group" id="postcodeContainer">
+              <div class="govuk-form-group" id="postcode">
                 <p class="govuk-label govuk-!-margin-bottom-5">{{ t('All correspondence will be sent to this address. This is known as an "address for service".') }}</p>
                 <label class="govuk-label" for="postcode">
                   {{ t('Enter a UK postcode') }}
                 </label>
+                <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
+                  We can’t find an address for that postcode. Try again or enter the address manually.
+                </div>
                 <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
                 <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
                   {{ t('Find address') }}
