@@ -35,8 +35,8 @@ export class DraftStoreClient {
       'id': 1645882162449409,
       'jurisdiction': 'CIVIL',
       'case_type_id': 'CIVIL',
-      'created_date': '2022-03-01T13:29:22.447',
-      'last_modified': '2022-03-01T13:29:24.971',
+      'created_date':  new Date(),
+      'last_modified':  new Date(),
       'state': 'PENDING_CASE_ISSUED',
       'security_classification': 'PUBLIC',
       'case_data': {
@@ -77,7 +77,7 @@ export class DraftStoreClient {
           'partyTypeDisplayValue': 'Organisation',
         },
         'claimInterest': 'Yes',
-        'submittedDate': '2022-03-01T11:57:10.592492',
+        'submittedDate':  new Date(),
         'totalInterest': 0,
         'detailsOfClaim': 'Test details of claim',
         'superClaimType': 'SPEC_CLAIM',
@@ -113,8 +113,8 @@ export class DraftStoreClient {
           'respondentSolicitor1Reference': 'Respondent Reference',
         },
         'interestClaimOptions': 'SAME_RATE_INTEREST',
-        'claimNotificationDate': '2022-03-01T11:57:10.592492',
-        'paymentSuccessfulDate': '2022-03-01T11:57:10.592492',
+        'claimNotificationDate':  new Date(),
+        'paymentSuccessfulDate':  new Date(),
         'respondent1Represented': 'Yes',
         'respondent1OrgRegistered': 'Yes',
         'speclistYourEvidenceList': [
@@ -131,12 +131,12 @@ export class DraftStoreClient {
           'reference': 'RC-1234-1234-1234-1234',
           'customerReference': 'abcdefg',
         },
-        'claimNotificationDeadline': '2022-03-01T23:59:59',
+        'claimNotificationDeadline':  new Date(),
         'sameRateInterestSelection': {
           'sameRateInterestType': 'SAME_RATE_INTEREST_8_PC',
         },
         'specRespondent1Represented': 'Yes',
-        'respondent1ResponseDeadline': '2022-03-01T15:59:59',
+        'respondent1ResponseDeadline':  new Date(),
         'applicant1OrganisationPolicy': {
           'Organisation': {
             'OrganisationID': 'Q1KOKP2',
@@ -196,7 +196,7 @@ export class DraftStoreClient {
         'specRespondentCorrespondenceAddressRequired': 'Yes',
       },
     };
-    draftStoreClient.set('claim', JSON.stringify(claimData,  null, 4));
+    draftStoreClient.set(1645882162449409, JSON.stringify(claimData,  null, 4));
   }
 
 }
