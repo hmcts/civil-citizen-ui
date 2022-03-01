@@ -1,6 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% set heading = t('Confirm your details') %}
-{% set correspondenceAddressClass = '' if isCorrespondenceAddressToBeValidated else 'govuk-visually-hidden' %}
+{% set correspondenceAddressClass = '' if isCorrespondenceAddressToBeValidated == true else 'govuk-visually-hidden' %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -109,7 +109,7 @@
                     },
                     {
                       value: "yes",
-                      checked: true if isCorrespondenceAddressToBeValidated else false,
+                      checked: true if isCorrespondenceAddressToBeValidated == true else false,
                       text: t("Yes, add a correspondence address"),
                       conditional: {
                         html: correspondenceAddressHtml

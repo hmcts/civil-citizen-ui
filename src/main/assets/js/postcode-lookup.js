@@ -32,7 +32,7 @@
       return true;
     } else {
       postcodeError(postcode, true);
-      enterAddressManually(true);
+      isAddressManuallyEntered(true);
       return false;
     }
   };
@@ -63,7 +63,7 @@
     return option;
   };
 
-  const enterAddressManually = (isLinkHidden) => {
+  const isAddressManuallyEntered = (isLinkHidden) => {
     const link = addressManuallyLink.classList;
     const address = addressContainer.classList;
 
@@ -101,7 +101,7 @@
     addressManuallyLink
       .addEventListener('click', function (event) {
         event.preventDefault();
-        enterAddressManually(true);
+        isAddressManuallyEntered(true);
       });
   }
 
@@ -148,7 +148,7 @@
 
   // -- Bind list of addresses to selecte drop down
   const bindDataToSelectMenu = (postcodeResponse) => {
-    enterAddressManually(false);
+    isAddressManuallyEntered(false);
     addressSelectMenu.options.length = 0;
     addressSelectMenu.add(createOptionMenuItem(postcodeResponse.addresses.length + ' addresses found', '', true, true));
     postcodeResponse.addresses.map((item) => {
@@ -165,7 +165,7 @@
     xhr.onload = function () {
       if (xhr.status !== 200) {
         postcodeError(postcodeCtrl, true);
-        enterAddressManually(true);
+        isAddressManuallyEntered(true);
         return;
       }
       postcodeResponse = JSON.parse(xhr.responseText);
