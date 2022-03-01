@@ -14,7 +14,7 @@ data "azurerm_subnet" "core_infra_redis_subnet" {
 }
 
 module "civil-citizen-ui-draft-store" {
-  source   = "git@github.com:hmcts/cnp-module-redis?ref=master"
+  source   = "git@github.com:hmcts/cnp-module-redis?ref=add-diagnostic-settings"
   product  = var.product
   location = var.location
   env      = var.env
