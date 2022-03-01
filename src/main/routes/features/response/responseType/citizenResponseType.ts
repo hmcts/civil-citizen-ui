@@ -1,5 +1,4 @@
 import * as express from 'express';
-import moment from 'moment';
 
 import {CITIZEN_RESPONSE_TYPE, ROOT_URL} from '../../../urls';
 import {ValidationError, Validator} from 'class-validator';
@@ -12,7 +11,7 @@ import {ComponentDetailItems} from '../../../../common/form/models/componentDeta
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const router = express.Router();
 const citizenResponseType = new CitizenResponseType();
-const DEADLINE = moment().add(28,'d').format('d MMMM YYYY');
+const DEADLINE = new Claim().formattedResponseDeadline();
 
 const componentDetailItemsList: ComponentDetailItems[] = [new ComponentDetailItems('Admit all of the claim', null, ['You have until 4pm on ' + DEADLINE + ' to admit the claim.']),
   new ComponentDetailItems(null, 'Pay immediately', ['If you admit all the claim and want to pay it in full, including interest and claim fee, contact the claimant to arrange payment.', 'If you pay at the same time as admitting the claim, you won’t get a County Court Judgment (CCJ).', 'You should ask the claimant to give you a receipt.']),
