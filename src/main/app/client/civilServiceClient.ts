@@ -3,7 +3,8 @@ import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
-import {CASES_URL} from '../../routes/urls';
+import {CASES_URL} from './civilServiceUrls';
+
 
 export class CivilServiceClient {
   client: AxiosInstance;

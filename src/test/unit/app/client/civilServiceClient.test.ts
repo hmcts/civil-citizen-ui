@@ -4,7 +4,8 @@ import {Claim} from '../../../../main/common/models/claim';
 import * as requestModels from '../../../../main/common/models/AppRequest';
 import {CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
 import config from 'config';
-import {CASES_URL} from '../../../../main/routes/urls';
+import {CASES_URL} from '../../../../main/app/client/civilServiceUrls';
+
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
