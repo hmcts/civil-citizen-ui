@@ -2,6 +2,12 @@ nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  keyVaults:
+    civil:
+      resourceGroup: civil-service
+      secrets:
+        - AppInsightsInstrumentationKey
+        - redis-access-key
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
 
