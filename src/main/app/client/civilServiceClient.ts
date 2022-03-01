@@ -15,20 +15,25 @@ export class CivilServiceClient {
     });
   }
 
-  retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
-    return this.client.post(CASES_URL,
-      { match_all: {} },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${req.session?.user?.accessToken}`,
-        },
-      }).then(response => {
-      const claims = response.data.cases.map((claim: CivilClaimResponse) => Object.assign(new Claim(), claim.case_data));
-      return claims;
-    }).catch(error => {
-      console.log(error.message);
-    });
+  getConfig(req : AppRequest) {
+    return {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${req.session?.user?.accessToken}`,
+      },
+    };
+  }
+
+  async retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
+    const config = this.getConfig(req);
+    let claims : Claim[] = [];
+    await this.client.post(CASES_URL,{ match_all: {} }, config)
+      .then(response => {
+        claims = response.data.cases.map((claim: CivilClaimResponse) => Object.assign(new Claim(), claim.case_data));
+      }).catch(error => {
+        console.log(error.message);
+      });
+    return claims;
   }
 
   async retrieveClaimDetails(claimId: string): Promise<Claim> {
