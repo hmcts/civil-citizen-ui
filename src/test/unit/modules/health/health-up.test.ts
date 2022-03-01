@@ -1,16 +1,8 @@
 import request from 'supertest';
+import {app} from '../../../../main/app';
 
 jest.mock('redis');
-import {createClient} from 'redis';
 
-const mockedCreateClient = createClient as jest.MockedFunction<(...args: unknown[]) => unknown>;
-const mockedRedisClient = {
-  connect: jest.fn(async () => ''),
-  ping: jest.fn(async () => 'PONG'),
-};
-mockedCreateClient.mockReturnValue(mockedRedisClient);
-
-import {app} from '../../../../main/app';
 
 describe('Draft Store Health Check - UP', () => {
   test('When draft store responding, health check should return UP', async () => {
