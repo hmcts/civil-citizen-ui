@@ -2,16 +2,20 @@ nodejs:
   applicationPort: 3001
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
   image: hmctspublic.azurecr.io/civil/citizen-ui:latest
-#  keyVaults:
-#    civil-shared:
-#      resourceGroup: civil-shared
-#      secrets:
-#        - AppInsightsInstrumentationKey
+  aadIdentityName: civil
+  keyVaults:
+    civil:
+      resourceGroup: civil-service
+      secrets:
+        - AppInsightsInstrumentationKey
+        - redis-access-key
   environment:
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
     IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
     IDAM_CLIENT_ID: civil_citizen_ui
     OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback
+    REDIS_HOST: 'civil-{{ .Values.global.environment }}.redis.cache.windows.net'
+    REDIS_PORT: 6380
   autoscaling:
     enabled: false
     maxReplicas: 16

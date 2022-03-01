@@ -29,6 +29,10 @@ describe('Citizen date of birth', () => {
   });
 
   describe('on POST', () => {
+    const mockDraftStore = {
+      set: jest.fn(() => Promise.resolve({ data: {} })),
+    };
+    app.locals.draftStoreClient = mockDraftStore;
     test('should return errors on no input', async () => {
       await request(app)
         .post('/your-dob')
@@ -77,10 +81,6 @@ describe('Citizen date of birth', () => {
         });
     });
     test('should accept a valid input', async () => {
-      const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({ data: {} })),
-      };
-      app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post('/your-dob')
         .send('year=2000')
@@ -90,7 +90,17 @@ describe('Citizen date of birth', () => {
           expect(res.status).toBe(302);
         });
     });
-
+    test('should redirect to under 18 contact court page', async () => {
+      await request(app)
+        .post('/your-dob')
+        .send('year=2021')
+        .send('month=1')
+        .send('day=1')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain('Redirecting to /eligibility/under-18');
+        });
+    });
   });
 
 });
