@@ -37,7 +37,6 @@ const logger = Logger.getLogger('app');
 
 new PropertiesVolume().enableFor(app);
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
-new DraftStoreClient(Logger.getLogger('draftStoreClient')).setData(app);
 
 new AppInsights().enable();
 new Nunjucks(developmentMode, i18next).enableFor(app);
