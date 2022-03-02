@@ -2,8 +2,8 @@ import config from 'config';
 import {createClient} from 'redis';
 import {Application} from 'express';
 import {LoggerInstance} from 'winston';
-import {REDIS_DATA} from './redisData';
 
+const REDIS_DATA = require('./redisData.json');
 
 export class DraftStoreClient {
 
