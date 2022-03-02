@@ -25,7 +25,7 @@
   let postcodeResponse;
 
 
-  const isEmptyPostcode = (postcode) => {
+  const isNotEmptyPostcode = (postcode) => {
     if (postcode.value) {
       postcodeError(postcode, false);
       return true;
@@ -99,7 +99,7 @@
     findAddressButton
       .addEventListener('click', (event) => {
         event.preventDefault();
-        if (isEmptyPostcode(postcodeCtrl)) {
+        if (isNotEmptyPostcode(postcodeCtrl)) {
           lookupPostcode(postcodeCtrl.value);
         }
       });
