@@ -10,7 +10,7 @@ export class HealthCheck {
 
     const redis = healthCheck.raw(() => {
       logger.info('about to ping Redis...');
-      logger.info('app.locals.draftStoreClient: ', JSON.stringify(app.locals.draftStoreClient));
+      logger.info('app.locals.draftStoreClient: ', app.locals.draftStoreClient);
       return app.locals.draftStoreClient.ping()
         .then((pingResponse: string) => {
           logger.info('pingResponse: ', pingResponse);
