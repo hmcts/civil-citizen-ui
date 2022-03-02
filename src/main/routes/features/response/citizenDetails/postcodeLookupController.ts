@@ -29,7 +29,7 @@ export default express.Router()
           );
         res.json(addressInfoResponse);
       })
-      .catch((err:any) => {
+      .catch((err:Error) => {
         if (err.message === 'Authentication failed') {
           console.log('Ordnance Survey keys stopped working', { error: err });
         }

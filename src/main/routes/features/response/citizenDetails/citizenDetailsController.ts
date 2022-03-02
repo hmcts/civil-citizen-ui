@@ -32,7 +32,7 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
   // -- Retrive from Redis
   const draftStoreClient = req.app.locals.draftStoreClient;
 
-  await draftStoreClient.get(claim.legacyCaseReference).then((data: any) => {
+  await draftStoreClient.get(claim.legacyCaseReference).then((data: string) => {
     if (data) {
       try {
         formAddressModel = new CitizenAddress(

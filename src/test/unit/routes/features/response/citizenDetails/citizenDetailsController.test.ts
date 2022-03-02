@@ -8,7 +8,7 @@ import {
   NON_POSTCODE_VALUE_NOT_ALLOWED,
   NON_CORRESPONDENCE_ADDRESS_VALUE_NOT_ALLOWED,
   NON_CORRESPONDENCE_CITY_OR_TOWN_VALUE_NOT_ALLOWED,
-  NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED
+  NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
