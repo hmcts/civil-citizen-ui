@@ -14,4 +14,6 @@ export const UNAUTHORISED_URL: Urls = '/unauthorised';
 export const CLAIM_DETAILS_URL: Urls = `${BASE_CASE_URL_RESPONSE}/claim-details`;
 export const CITIZEN_DETAILS_URL: Urls = `${BASE_CASE_URL_RESPONSE}/your-details`;
 export const CONFIRM_CITIZEN_DETAILS_URL: Urls = `${BASE_CASE_URL_RESPONSE}/confirm-your-details`;
+export const CITIZEN_RESPONSE_TYPE: Urls = '/citizen-response-type';
+
 
