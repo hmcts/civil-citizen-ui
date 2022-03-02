@@ -1,6 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% set heading = t('Confirm your details') %}
-{% set correspondenceAddressClass = '' if isCorrespondenceAddressToBeValidated == true else 'govuk-visually-hidden' %}
+{% set correspondenceAddressClass = '' if postToThisAddress == 'yes' else 'govuk-visually-hidden' %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -35,35 +35,30 @@
           <h2 class="govuk-heading-m">{{ t('Last name') }}</h2>
           <p class="govuk-body">{{ citizenFullName.individualLastName }}</p>
           <form method="post" class="govuk-!-padding-top-4" name="address">
-            <input
-              type="hidden"
-              id="isCorrespondenceAddressToBeValidated"
-              name="isCorrespondenceAddressToBeValidated"
-              value="false">
-              {{ addressForm(
+            {{ addressForm(
               t,
               citizenAddress = citizenAddress,
               addressLine1Error = addressLine1Error,
               addressCityError = addressCityError,
               addressPostCodeError = addressPostCodeError,
               addressType = 'primary') }}
-              {% set noHtml %}
-              {% endset -%}
-              {% set correspondenceAddressHtml %}
-              <div class="govuk-form-group" id="postcode">
-                <p class="govuk-label govuk-!-margin-bottom-5">{{ t('All correspondence will be sent to this address. This is known as an "address for service".') }}</p>
-                <label class="govuk-label" for="postcode">
-                  {{ t('Enter a UK postcode') }}
-                </label>
-                <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
-                  We can’t find an address for that postcode. Try again or enter the address manually.
-                </div>
-                <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
-                <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
-                  {{ t('Find address') }}
-                </button>
-                <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
-                  {{ govukSelect({
+            {% set noHtml %}
+            {% endset -%}
+            {% set correspondenceAddressHtml %}
+            <div class="govuk-form-group" id="postcode">
+              <p class="govuk-label govuk-!-margin-bottom-5">{{ t('All correspondence will be sent to this address. This is known as an "address for service".') }}</p>
+              <label class="govuk-label" for="postcode">
+                {{ t('Enter a UK postcode') }}
+              </label>
+              <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
+                We can’t find an address for that postcode. Try again or enter the address manually.
+              </div>
+              <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
+              <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
+                {{ t('Find address') }}
+              </button>
+              <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
+                {{ govukSelect({
                     id: "correspondenceAddressList",
                     name: "correspondenceAddressList",
                     label: {
@@ -71,27 +66,27 @@
                     },
                     items: []
                   }) }}
-                </div>
               </div>
-              {% if isCorrespondenceAddressToBeValidated == false %}
-                <div>
-                  <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">{{ t('Enter address manually') }}</a>
-                </div>
-              {% endif %}
-              <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
-                {{ addressForm(
+            </div>
+            {% if postToThisAddress == 'no' %}
+              <div>
+                <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">{{ t('Enter address manually') }}</a>
+              </div>
+            {% endif %}
+            <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
+              {{ addressForm(
                     t,
                     citizenAddress = citizenCorrespondenceAddress,
                     addressLine1Error = correspondenceAddressLine1Error,
                     addressCityError = correspondenceCityError,
                     addressPostCodeError = correspondencePostCodeError,
                     addressType = 'correspondence') }}
-              </div>
-              {% endset -%}
-              <h2 class="govuk-heading-m">{{ t('Correspondence address') }}</h2>
-              {{ govukRadios({
-                  idPrefix: "post-to-this-address",
-                  name: "post-to-this-address",
+            </div>
+            {% endset -%}
+            <h2 class="govuk-heading-m">{{ t('Correspondence address') }}</h2>
+            {{ govukRadios({
+                  idPrefix: "postToThisAddress",
+                  name: "postToThisAddress",
                   fieldset: {
                     legend: {
                       text: t("Would you like correspondence sent to a different address?"),
@@ -109,7 +104,7 @@
                     },
                     {
                       value: "yes",
-                      checked: true if isCorrespondenceAddressToBeValidated == true else false,
+                      checked: true if postToThisAddress == 'yes' else false,
                       text: t("Yes, add a correspondence address"),
                       conditional: {
                         html: correspondenceAddressHtml
@@ -117,13 +112,13 @@
                     }
                   ]
                 }) }}
-              {{ govukButton({
+            {{ govukButton({
                   text: t("Save and continue")
                 }) }}
-              {{ contactUsForHelp(t) }}
-            </div>
-          </form>
-        </div>
-      </main>
-    </div>
-  {% endblock %}
+            {{ contactUsForHelp(t) }}
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+{% endblock %}

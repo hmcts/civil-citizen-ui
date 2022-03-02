@@ -81,7 +81,7 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
     citizenFullName: citizenFullName,
     citizenAddress: formAddressModel,
     citizenCorrespondenceAddress: formCorrespondenceModel,
-    isCorrespondenceAddressToBeValidated: false,
+    postToThisAddress: 'no',
   });
 });
 
@@ -109,14 +109,14 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
   const validator = new Validator();
   const errorList = new Form();
 
-  if (req.body.isCorrespondenceAddressToBeValidated) {
+  if (req.body.postToThisAddress === 'yes') {
     citizenAddress.errors = validator.validateSync(citizenAddress);
     citizenCorrespondenceAddress.errors = validator.validateSync(citizenCorrespondenceAddress);
+    errorList.errors = citizenAddress.errors.concat(citizenCorrespondenceAddress.errors);
   } else {
     citizenAddress.errors = validator.validateSync(citizenAddress);
+    errorList.errors = citizenAddress.errors;
   }
-
-  errorList.errors = citizenAddress.errors.concat(citizenCorrespondenceAddress.errors);
 
   if ((citizenAddress.errors && citizenAddress.errors.length > 0)
       || citizenCorrespondenceAddress.errors && citizenCorrespondenceAddress.errors.length > 0) {
@@ -128,10 +128,10 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
       addressLine1Error: errorList.getTextError(citizenAddress.getErrors(), 'primaryAddressLine1'),
       addressCityError: errorList.getTextError(citizenAddress.getErrors(), 'primaryCity'),
       addressPostCodeError: errorList.getTextError(citizenAddress.getErrors(), 'primaryPostCode'),
-      correspondenceAddressLine1Error: errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceAddressLine1'),
-      correspondenceCityError: errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceCity'),
-      correspondencePostCodeError: errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondencePostCode'),
-      isCorrespondenceAddressToBeValidated: req.body.isCorrespondenceAddressToBeValidated,
+      correspondenceAddressLine1Error: req.body.postToThisAddress == 'yes' ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceAddressLine1') : '',
+      correspondenceCityError: req.body.postToThisAddress == 'yes' ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceCity') : '',
+      correspondencePostCodeError: req.body.postToThisAddress == 'yes' ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondencePostCode') : '',
+      postToThisAddress: req.body.postToThisAddress,
     });
   } else {
     await draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(

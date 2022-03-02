@@ -1,7 +1,6 @@
 (function () {
   const formAddress = document.forms['address'];
   const postcodeCtrl = formAddress['postcode'];
-  const isAddressToBeValidated = formAddress['isCorrespondenceAddressToBeValidated'];
   const addressSelectMenu = formAddress['correspondenceAddressList'];
   const addressLine1Id = 'correspondenceAddressLine1';
   const addressLine2Id = 'correspondenceAddressLine2';
@@ -26,13 +25,12 @@
   let postcodeResponse;
 
 
-  const isValidPostcode = (postcode) => {
+  const isEmptyPostcode = (postcode) => {
     if (postcode.value) {
       postcodeError(postcode, false);
       return true;
     } else {
       postcodeError(postcode, true);
-      isAddressManuallyEntered(true);
       return false;
     }
   };
@@ -46,7 +44,6 @@
       postcodecontainer.add(govukFormGroupError);
       errorContainer.remove(govukVisuallyHidden);
       selectAddress.classList.add(govukVisuallyHidden);
-      clearForm();
     } else {
       postcodeInput.remove(govukInputError);
       postcodecontainer.remove(govukFormGroupError);
@@ -63,19 +60,9 @@
     return option;
   };
 
-  const isAddressManuallyEntered = (isLinkHidden) => {
-    const link = addressManuallyLink.classList;
-    const address = addressContainer.classList;
-
-    if (isLinkHidden) {
-      link.add(govukVisuallyHidden);
-      address.remove(govukVisuallyHidden);
-      isAddressToBeValidated.value = true;
-    } else {
-      link.remove(govukVisuallyHidden);
-      address.add(govukVisuallyHidden);
-      isAddressToBeValidated.value = false;
-    }
+  const isAddressManuallyEntered = () => {
+    addressManuallyLink.classList.add(govukVisuallyHidden);
+    addressContainer.classList.remove(govukVisuallyHidden);
   };
 
   const hasAddressProperty = (property) => property ? property : '';
@@ -101,7 +88,7 @@
     addressManuallyLink
       .addEventListener('click', function (event) {
         event.preventDefault();
-        isAddressManuallyEntered(true);
+        isAddressManuallyEntered();
       });
   }
 
@@ -112,7 +99,7 @@
     findAddressButton
       .addEventListener('click', (event) => {
         event.preventDefault();
-        if (isValidPostcode(postcodeCtrl)) {
+        if (isEmptyPostcode(postcodeCtrl)) {
           lookupPostcode(postcodeCtrl.value);
         }
       });
@@ -140,15 +127,14 @@
       formAddress[cityId].value = addressSelected[0].postTown;
       formAddress[postcodeId].value = addressSelected[0].postcode;
 
-      addressManuallyLink.classList.add(govukVisuallyHidden);
-      addressContainer.classList.remove(govukVisuallyHidden);
-      isAddressToBeValidated.value = true;
+      if (addressManuallyLink) {
+        isAddressManuallyEntered();
+      }
     });
   }
 
   // -- Bind list of addresses to selecte drop down
   const bindDataToSelectMenu = (postcodeResponse) => {
-    isAddressManuallyEntered(false);
     addressSelectMenu.options.length = 0;
     addressSelectMenu.add(createOptionMenuItem(postcodeResponse.addresses.length + ' addresses found', '', true, true));
     postcodeResponse.addresses.map((item) => {
@@ -165,7 +151,6 @@
     xhr.onload = function () {
       if (xhr.status !== 200) {
         postcodeError(postcodeCtrl, true);
-        isAddressManuallyEntered(true);
         return;
       }
       postcodeResponse = JSON.parse(xhr.responseText);
