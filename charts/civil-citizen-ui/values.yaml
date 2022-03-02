@@ -2,6 +2,10 @@ nodejs:
   applicationPort: 3001
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
   image: hmctspublic.azurecr.io/civil/citizen-ui:latest
+  memoryLimits: '256Mi'
+  memoryRequests: '256Mi'
+  cpuLimits: '1000m'
+  cpuRequests: '200m'
   aadIdentityName: civil
   keyVaults:
     civil:
