@@ -6,7 +6,7 @@ export class Claim {
   legacyCaseReference: string;
   applicant1: Individual;
   totalClaimAmount: number;
-  respondent1ResponseDeadline: Date;
+  respondent1ResponseDeadline: Date = new Date();
   detailsOfClaim: string;
   respondent1: Respondent;
   individualTitle: string;

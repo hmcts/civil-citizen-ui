@@ -7,6 +7,7 @@ import ageEligibilityRoute from './features/response/ageEligibility/ageEligibili
 import responseDetailsRoute from './features/response/citizenDetails/citizenDetailsController';
 import claimDetailsRoute from './features/response/claimDetails/claimDetailsController';
 import responsePostcodeLookupRoute from './features/response/citizenDetails/postcodeLookupController';
+import citizenResponseType from './features/response/responseType/citizenResponseType';
 
 export default [
   homeRoute,
@@ -18,4 +19,5 @@ export default [
   claimDetailsRoute,
   ageEligibilityRoute,
   responsePostcodeLookupRoute,
+  citizenResponseType,
 ];

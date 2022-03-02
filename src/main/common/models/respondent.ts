@@ -8,4 +8,5 @@ export class Respondent {
   individualFirstName: string;
   telephoneNumber: string;
   dateOfBirth: Date;
+  responseType: string;
 }
