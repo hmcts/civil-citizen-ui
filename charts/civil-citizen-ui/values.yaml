@@ -25,7 +25,7 @@ nodejs:
     REDIS_HOST: 'civil-{{ .Values.global.environment }}.redis.cache.windows.net'
     REDIS_PORT: 6380
   autoscaling:
-    enabled: true
+    enabled: false
     maxReplicas: 4
     targetCPUUtilizationPercentage: 80
 
