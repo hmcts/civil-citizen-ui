@@ -4,3 +4,6 @@ export const VALID_DAY = 'Enter a valid day';
 export const VALID_MONTH = 'Enter a valid month';
 export const VALID_YEAR = 'Enter a valid year';
 export const VALID_CHOOSE = 'Choose your response';
+export const TYPE_OF_ACCOUNT_REQUIRED = 'Select a type of account';
+export const NUMBER_REQUIRED = 'Enter a valid number';
+export const SELECT_AN_OPTION = 'Select an option';
