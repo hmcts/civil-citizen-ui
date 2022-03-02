@@ -12,15 +12,15 @@ export class BankAccount extends Form {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsDefined({message: TYPE_OF_ACCOUNT_REQUIRED})
   @IsIn(BankAccountType.all(), {message: TYPE_OF_ACCOUNT_REQUIRED})
-  typeOfAccount?: BankAccountType;
+    typeOfAccount?: BankAccountType;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsDefined({message: SELECT_AN_OPTION})
-  joint?: boolean;
+    joint?: boolean;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsDefined({message: NUMBER_REQUIRED})
-  balance?: number;
+    balance?: number;
 
   constructor(typeOfAccount?: BankAccountType, joint?: boolean, balance?: number) {
     super();
