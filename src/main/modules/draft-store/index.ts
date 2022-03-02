@@ -14,6 +14,10 @@ export class DraftStoreClient {
         port: config.get('services.draftStore.redis.port'),
         tls: config.get('services.draftStore.redis.port'),
         connectTimeout: 15000,
+        reconnectStrategy() {
+          this.logger.info('Reconnecting in 5 seconds');
+          return 5000;
+        },
       },
       password: config.get('services.draftStore.redis.key'),
     });
