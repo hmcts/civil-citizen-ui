@@ -2,6 +2,7 @@ import request from 'supertest';
 
 import {app} from '../../../../../main/app';
 import config from 'config';
+import {CONFIRM_CITIZEN_DETAILS_URL} from '../../../../../main/routes/urls';
 
 const nock = require('nock');
 
@@ -38,7 +39,7 @@ describe('Confirm Details page', () => {
   test('Authenticate Callback', authenticate());
   test('POST/Citizen details', async () => {
     await agent
-      .post('/confirm-your-details')
+      .post(CONFIRM_CITIZEN_DETAILS_URL)
       .send({addressLineOne: '38 Highland Road', city: 'Birmingham'})
       .expect((res) => {
         expect(res.status).toBe(302);

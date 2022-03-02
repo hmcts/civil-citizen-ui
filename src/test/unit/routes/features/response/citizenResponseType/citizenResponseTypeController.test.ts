@@ -8,7 +8,7 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
 
-describe('Citizen phone number', () => {
+describe('Citizen response type', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   beforeEach(() => {
@@ -45,7 +45,7 @@ describe('Citizen phone number', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post('/citizen-phone')
+        .post(CITIZEN_RESPONSE_TYPE)
         .send('responseType=test')
         .expect((res) => {
           expect(res.status).toBe(302);
