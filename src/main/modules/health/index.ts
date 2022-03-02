@@ -1,20 +1,29 @@
 import os from 'os';
-import { Application } from 'express';
+import {Application} from 'express';
 
 const healthCheck = require('@hmcts/nodejs-healthcheck');
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('healthCheck');
 
 export class HealthCheck {
   public enableFor(app: Application): void {
 
-    // const redis = app.locals.draftStoreClient
-    //   ? healthCheck.raw(() => app.locals.draftStoreClient.ping()
-    //     .then(() => healthCheck.up())
-    //     .catch(() => healthCheck.down()))
-    //   : null;
+    const redis = app.locals.draftStoreClient
+      ? healthCheck.raw(() => {
+        return app.locals.draftStoreClient.ping()
+          .then((pingResponse: string) => {
+            return healthCheck.status(pingResponse === 'PONG');
+          })
+          .catch((error: Error) => {
+            logger.error('Health check failed on redis', error);
+            return false;
+          });
+      })
+      : null;
 
     const healthCheckConfig = {
       checks: {
-        // 'draft-store': redis,
+        'draft-store': redis,
         // add health checks for other application dependency services
       },
       buildInfo: {
