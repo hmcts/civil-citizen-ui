@@ -1,7 +1,7 @@
 (function () {
   const formAddress = document.forms['address'];
-  const postcodeCtrl = formAddress['postcode'];
-  const addressSelectMenu = formAddress['correspondenceAddressList'];
+  const postcodeCtrl = formAddress ? formAddress['postcode'] : null;
+  const addressSelectMenu = formAddress ? formAddress['correspondenceAddressList'] : null;
   const addressLine1Id = 'correspondenceAddressLine1';
   const addressLine2Id = 'correspondenceAddressLine2';
   const cityId = 'correspondenceCity';

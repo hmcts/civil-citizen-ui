@@ -5,6 +5,7 @@ import phoneDetailsRoute from './features/response/citizenPhoneNumber/citizenPho
 import responseDobRoute from './features/response/citizenDob/citizenDobController';
 import ageEligibilityRoute from './features/response/ageEligibility/ageEligibilityController';
 import responseDetailsRoute from './features/response/citizenDetails/citizenDetailsController';
+import claimDetailsRoute from './features/response/claimDetails/claimDetailsController';
 import responsePostcodeLookupRoute from './features/response/citizenDetails/postcodeLookupController';
 
 export default [
@@ -14,6 +15,7 @@ export default [
   responseDetailsRoute,
   phoneDetailsRoute,
   responseDobRoute,
+  claimDetailsRoute,
   ageEligibilityRoute,
   responsePostcodeLookupRoute,
 ];
