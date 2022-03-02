@@ -9,8 +9,11 @@ export class HealthCheck {
   public enableFor(app: Application): void {
 
     const redis = healthCheck.raw(() => {
+      logger.info('about to ping Redis...');
+      logger.info('app.locals.draftStoreClient: ', JSON.stringify(app.locals.draftStoreClient));
       return app.locals.draftStoreClient.ping()
         .then((pingResponse: string) => {
+          logger.info('pingResponse: ', pingResponse);
           return healthCheck.status(pingResponse === 'PONG');
         })
         .catch((error: Error) => {
