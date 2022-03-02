@@ -6,6 +6,10 @@ nodejs:
   memoryRequests: '256Mi'
   cpuLimits: '1000m'
   cpuRequests: '200m'
+  devmemoryLimits: '256Mi'
+  devmemoryRequests: '256Mi'
+  devcpuLimits: '1000m'
+  devcpuRequests: '400m'
   aadIdentityName: civil
   keyVaults:
     civil:
