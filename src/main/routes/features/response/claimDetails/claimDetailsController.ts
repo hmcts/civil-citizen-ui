@@ -12,7 +12,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 let claim: Claim = new Claim();
 
 function renderPage(res: express.Response, claimDetails: Claim): void {
-  res.render('features/response/claim-details', {
+  res.render('features/response/claimDetails/claim-details', {
     claim: claimDetails,
   });
 }

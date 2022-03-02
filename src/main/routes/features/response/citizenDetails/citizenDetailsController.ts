@@ -33,21 +33,24 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
   const draftStoreClient = req.app.locals.draftStoreClient;
 
   await draftStoreClient.get(claim.legacyCaseReference).then((data: any) => {
-    console.log('DATA: ', JSON.parse(data));
     if (data) {
-      formAddressModel = new CitizenAddress(
-        JSON.parse(data).primaryAddressLine1,
-        JSON.parse(data).primaryAddressLine2,
-        JSON.parse(data).primaryAddressLine3,
-        JSON.parse(data).primaryCity,
-        JSON.parse(data).primaryPostCode);
+      try {
+        formAddressModel = new CitizenAddress(
+          JSON.parse(data).primaryAddressLine1,
+          JSON.parse(data).primaryAddressLine2,
+          JSON.parse(data).primaryAddressLine3,
+          JSON.parse(data).primaryCity,
+          JSON.parse(data).primaryPostCode);
 
-      formCorrespondenceModel = new CitizenCorrespondenceAddress(
-        JSON.parse(data).correspondenceAddressLine1,
-        JSON.parse(data).correspondenceAddressLine2,
-        JSON.parse(data).correspondenceAddressLine3,
-        JSON.parse(data).correspondenceCity,
-        JSON.parse(data).correspondencePostCode);
+        formCorrespondenceModel = new CitizenCorrespondenceAddress(
+          JSON.parse(data).correspondenceAddressLine1,
+          JSON.parse(data).correspondenceAddressLine2,
+          JSON.parse(data).correspondenceAddressLine3,
+          JSON.parse(data).correspondenceCity,
+          JSON.parse(data).correspondencePostCode);
+      } catch (e) {
+        console.log(e);
+      }
     } else {
       formAddressModel = new CitizenAddress(
         claim.respondent1.primaryAddress.AddressLine1,
@@ -76,7 +79,6 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
 
 // -- POST Citizen Address
 router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
-  console.log('BODY: ', req.body);
   const draftStoreClient = req.app.locals.draftStoreClient;
   const citizenAddress = new CitizenAddress(
     req.body.primaryAddressLine1,

@@ -1,11 +1,18 @@
 import { app } from '../../../../../../main/app';
 import config from 'config';
-import nock from 'nock';
 import request from 'supertest';
-import { CitizenAddress } from '../../../../../../main/common/form/models/citizenAddress';
-import { CitizenCorrespondenceAddress } from '../../../../../../main/common/form/models/citizenCorrespondenceAddress';
+import { CITIZEN_DETAILS_URL } from '../../../../../../main/routes/urls';
+import {
+  NON_ADDRESS_VALUE_NOT_ALLOWED,
+  NON_CITY_OR_TOWN_VALUE_NOT_ALLOWED,
+  NON_POSTCODE_VALUE_NOT_ALLOWED,
+  NON_CORRESPONDENCE_ADDRESS_VALUE_NOT_ALLOWED,
+  NON_CORRESPONDENCE_CITY_OR_TOWN_VALUE_NOT_ALLOWED,
+  NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED
+} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+const nock = require('nock');
 
 describe('Confirm Details page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -17,27 +24,32 @@ describe('Confirm Details page', () => {
   });
 
   test('should return your details page', async () => {
+    const mockDraftStore = {
+      get: jest.fn(() => Promise.resolve({ data: {} })),
+    };
+    app.locals.draftStoreClient = mockDraftStore;
     await request(app)
-      .get('/case/12334/response/your-details')
+      .get(CITIZEN_DETAILS_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Confirm your details');
       });
   });
 
-  test('POST/Citizen details', async () => {
+  test('POST/Citizen details - should redirect on correct primary address', async () => {
     const mockDraftStore = {
       set: jest.fn(() => Promise.resolve({ data: {} })),
     };
     app.locals.draftStoreClient = mockDraftStore;
     await request(app)
-      .post('/case/12334/response/your-details')
+      .post(CITIZEN_DETAILS_URL)
       .send({
         primaryAddressLine1: 'Flat 3A Middle Road',
-        primaryAddressLine2: 'Flat 3A Middle Road',
+        primaryAddressLine2: '',
         primaryAddressLine3: '',
         primaryCity: 'London',
         primaryPostCode: 'SW1H 9AJ',
+        postToThisAddress: 'no',
         correspondenceAddressLine1: '',
         correspondenceAddressLine2: '',
         correspondenceAddressLine3: '',
@@ -46,46 +58,274 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toContain('case/1643033241924739/response/your-dob');
       });
   });
 
-  test('GET/Citizen details', async () => {
+  test('POST/Citizen details - should redirect on correct correspondence address', async () => {
     const mockDraftStore = {
-      get: jest.fn(() => Promise.resolve({ data: {} })),
+      set: jest.fn(() => Promise.resolve({ data: {} })),
     };
     app.locals.draftStoreClient = mockDraftStore;
-
-    const citizenFullName = {
-      individualTitle: 'Mr',
-      individualFirstName: 'Richards',
-      individualLastName: 'Mary',
-    };
-
-    let formAddressModel = new CitizenAddress(
-      'Flat 3A Middle Road',
-      '',
-      '',
-      'London',
-      'SW1H 9AJ');
-
-    let formCorrespondenceModel = new CitizenCorrespondenceAddress(
-      '',
-      '',
-      '',
-      '',
-      '');
-
     await request(app)
-      .get('/case/12334/response/your-details')
+      .post(CITIZEN_DETAILS_URL)
       .send({
-        citizenFullName: citizenFullName,
-        citizenAddress: formAddressModel,
-        citizenCorrespondenceAddress: formCorrespondenceModel,
-        isCorrespondenceAddressToBeValidated: false,
+        primaryAddressLine1: 'Flat 3A Middle Road',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: 'London',
+        primaryPostCode: 'SW1H 9AJ',
+        postToThisAddress: 'yes',
+        correspondenceAddressLine1: 'Flat 3A Middle Road',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: 'London',
+        correspondencePostCode: 'SW1H 9AJ',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(302);
+      });
+  });
+
+  test('POST/Citizen details - should return error on empty primary address line', async () => {
+    const mockDraftStore = {
+      set: jest.fn(() => Promise.resolve({ data: {} })),
+    };
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: '',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: 'London',
+        primaryPostCode: 'SW1H 9AJ',
+        postToThisAddress: 'no',
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
+        expect(res.text).toContain(NON_ADDRESS_VALUE_NOT_ALLOWED);
+      });
+  });
+
+  test('POST/Citizen details - should return error on empty primary city', async () => {
+    const mockDraftStore = {
+      set: jest.fn(() => Promise.resolve({ data: {} })),
+    };
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: 'Flat 3A Middle Road',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: '',
+        primaryPostCode: 'SW1H 9AJ',
+        postToThisAddress: 'no',
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(NON_CITY_OR_TOWN_VALUE_NOT_ALLOWED);
+      });
+  });
+
+  test('POST/Citizen details - should return error on empty primary postcode', async () => {
+    const mockDraftStore = {
+      set: jest.fn(() => Promise.resolve({ data: {} })),
+    };
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: 'Flat 3A Middle Road',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: 'London',
+        primaryPostCode: '',
+        postToThisAddress: 'no',
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(NON_POSTCODE_VALUE_NOT_ALLOWED);
+      });
+  });
+
+  test('POST/Citizen details - should return error on empty correspondence address line', async () => {
+    const mockDraftStore = {
+      set: jest.fn(() => Promise.resolve({ data: {} })),
+    };
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: 'Flat 3A Middle Road',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: 'London',
+        primaryPostCode: 'SW1H 9AJ',
+        postToThisAddress: 'yes',
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(NON_CORRESPONDENCE_ADDRESS_VALUE_NOT_ALLOWED);
+      });
+  });
+
+  test('POST/Citizen details - should return error on empty correspondence city', async () => {
+    const mockDraftStore = {
+      set: jest.fn(() => Promise.resolve({ data: {} })),
+    };
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: 'Flat 3A Middle Road',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: 'London',
+        primaryPostCode: 'SW1H 9AJ',
+        postToThisAddress: 'yes',
+        correspondenceAddressLine1: 'Flat 3A Middle Road',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: 'SW1H 9AJ',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(NON_CORRESPONDENCE_CITY_OR_TOWN_VALUE_NOT_ALLOWED);
+      });
+  });
+
+  test('POST/Citizen details - should return error on empty correspondence postcode', async () => {
+    const mockDraftStore = {
+      set: jest.fn(() => Promise.resolve({ data: {} })),
+    };
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: 'Flat 3A Middle Road',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: 'London',
+        primaryPostCode: 'SW1H 9AJ',
+        postToThisAddress: 'yes',
+        correspondenceAddressLine1: 'Flat 3A Middle Road',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: 'London',
+        correspondencePostCode: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED);
+      });
+  });
+
+  test('POST/Citizen details - should return error on no input', async () => {
+    const mockDraftStore = {
+      set: jest.fn(() => Promise.resolve({ data: {} })),
+    };
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: '',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: '',
+        primaryPostCode: '',
+        postToThisAddress: 'yes',
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(NON_ADDRESS_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(NON_CITY_OR_TOWN_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(NON_POSTCODE_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(NON_CORRESPONDENCE_ADDRESS_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(NON_CORRESPONDENCE_CITY_OR_TOWN_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED);
+      });
+  });
+
+  test('POST/Citizen details - should return error on input for primary address when postToThisAddress is set to NO', async () => {
+    const mockDraftStore = {
+      set: jest.fn(() => Promise.resolve({ data: {} })),
+    };
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: '',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: '',
+        primaryPostCode: '',
+        postToThisAddress: 'no',
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(NON_ADDRESS_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(NON_CITY_OR_TOWN_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(NON_POSTCODE_VALUE_NOT_ALLOWED);
+      });
+  });
+
+  test('POST/Citizen details - should return error on input for correspondence address when postToThisAddress is set to YES', async () => {
+    const mockDraftStore = {
+      set: jest.fn(() => Promise.resolve({ data: {} })),
+    };
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: '',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: '',
+        primaryPostCode: '',
+        postToThisAddress: 'yes',
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(NON_CORRESPONDENCE_ADDRESS_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(NON_CORRESPONDENCE_CITY_OR_TOWN_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED);
       });
   });
 });

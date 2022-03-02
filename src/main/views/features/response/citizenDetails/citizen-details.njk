@@ -75,12 +75,12 @@
             {% endif %}
             <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
               {{ addressForm(
-                    t,
-                    citizenAddress = citizenCorrespondenceAddress,
-                    addressLine1Error = correspondenceAddressLine1Error,
-                    addressCityError = correspondenceCityError,
-                    addressPostCodeError = correspondencePostCodeError,
-                    addressType = 'correspondence') }}
+              t,
+              citizenAddress = citizenCorrespondenceAddress,
+              addressLine1Error = correspondenceAddressLine1Error,
+              addressCityError = correspondenceCityError,
+              addressPostCodeError = correspondencePostCodeError,
+              addressType = 'correspondence') }}
             </div>
             {% endset -%}
             <h2 class="govuk-heading-m">{{ t('Correspondence address') }}</h2>
