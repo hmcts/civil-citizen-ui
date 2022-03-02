@@ -81,7 +81,7 @@
     "@types/copy-webpack-plugin": "^10.1.0",
     "@types/jest": "^27.0.3",
     "@types/supertest": "^2.0.8",
-    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/eslint-plugin-tslint": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.0",
     "@babel/eslint-parser": "^7.17.0",
