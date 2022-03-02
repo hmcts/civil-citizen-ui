@@ -1,11 +1,11 @@
 import {OptionalIntegerValidator} from '../validators/optionalIntegerValidator';
 import {Validate, ValidationError} from 'class-validator';
-import {NON_NUMERIC_VALUES_NOT_ALLOWED} from '../validationErrors/errorMessageConstants';
+import {VALID_PHONE_NUMBER} from '../validationErrors/errorMessageConstants';
 import {Form} from './form';
 
 export class CitizenTelephoneNumber extends Form {
 
-  @Validate(OptionalIntegerValidator, {message: NON_NUMERIC_VALUES_NOT_ALLOWED})
+  @Validate(OptionalIntegerValidator, {message: VALID_PHONE_NUMBER})
     telephoneNumber?: string;
 
   constructor(telephoneNumber?: string, errors?: ValidationError[]) {
