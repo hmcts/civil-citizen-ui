@@ -112,7 +112,6 @@
         addressSelected = postcodeResponse.addresses.filter((item) => item.uprn === event.target.value);
         clearForm();
       }
-      console.log(addressSelected);
 
       hasAddressPorperties(addressSelected[0]);
 
