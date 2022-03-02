@@ -12,7 +12,7 @@ export class DraftStoreClient {
       socket: {
         host: config.get('services.draftStore.redis.host'),
         port: config.get('services.draftStore.redis.port'),
-        tls: true,
+        tls: config.get('services.draftStore.redis.port'),
         connectTimeout: 15000,
       },
       password: config.get('services.draftStore.redis.key'),
