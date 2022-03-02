@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_RESPONSE_TYPE} from '../../../../../../main/routes/urls';
+import {CITIZEN_RESPONSE_TYPE_URL} from '../../../../../../main/routes/urls';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -20,7 +20,7 @@ describe('Citizen response type', () => {
   describe('on GET', () => {
     test('should return citizen response type page', async () => {
       await request(app)
-        .get(CITIZEN_RESPONSE_TYPE)
+        .get(CITIZEN_RESPONSE_TYPE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('How do you respond to the claim?');
@@ -31,7 +31,7 @@ describe('Citizen response type', () => {
   describe('on POST', () => {
     test('should return error on incorrect input', async () => {
       await request(app)
-        .post(CITIZEN_RESPONSE_TYPE)
+        .post(CITIZEN_RESPONSE_TYPE_URL)
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -45,7 +45,7 @@ describe('Citizen response type', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(CITIZEN_RESPONSE_TYPE)
+        .post(CITIZEN_RESPONSE_TYPE_URL)
         .send('responseType=test')
         .expect((res) => {
           expect(res.status).toBe(302);
