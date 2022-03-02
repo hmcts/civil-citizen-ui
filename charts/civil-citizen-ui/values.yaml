@@ -26,7 +26,7 @@ nodejs:
     REDIS_PORT: 6380
   autoscaling:
     enabled: false
-    maxReplicas: 4
+    maxReplicas: 16
     targetCPUUtilizationPercentage: 80
 
 idam-pr:
