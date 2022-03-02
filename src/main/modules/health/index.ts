@@ -8,18 +8,16 @@ const logger = Logger.getLogger('healthCheck');
 export class HealthCheck {
   public enableFor(app: Application): void {
 
-    const redis = app.locals.draftStoreClient
-      ? healthCheck.raw(() => {
-        return app.locals.draftStoreClient.ping()
-          .then((pingResponse: string) => {
-            return healthCheck.status(pingResponse === 'PONG');
-          })
-          .catch((error: Error) => {
-            logger.error('Health check failed on redis', error);
-            return false;
-          });
-      })
-      : null;
+    const redis = healthCheck.raw(() => {
+      return app.locals.draftStoreClient.ping()
+        .then((pingResponse: string) => {
+          return healthCheck.status(pingResponse === 'PONG');
+        })
+        .catch((error: Error) => {
+          logger.error('Health check failed on redis', error);
+          return false;
+        });
+    });
 
     const healthCheckConfig = {
       checks: {
