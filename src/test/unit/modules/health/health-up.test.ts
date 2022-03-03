@@ -3,7 +3,10 @@ import {app} from '../../../../main/app';
 
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
-    return {ping: jest.fn(async () => 'PONG')};
+    return {
+      ping: jest.fn(async () => 'PONG'),
+      set: jest.fn(async () => {return;}),
+    };
   });
 });
 

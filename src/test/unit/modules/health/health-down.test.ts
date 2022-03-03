@@ -6,6 +6,9 @@ jest.mock('ioredis', () => {
       ping: jest.fn(async () => {
         throw new Error();
       }),
+      set: jest.fn(async () => {
+        return;
+      }),
     };
   });
 });
