@@ -22,7 +22,7 @@ nodejs:
     IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
     IDAM_CLIENT_ID: civil_citizen_ui
     OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback
-    REDIS_HOST: 'rediss://civil-{{ .Values.global.environment }}.redis.cache.windows.net'
+    REDIS_HOST: 'civil-{{ .Values.global.environment }}.redis.cache.windows.net'
     REDIS_PORT: 6380
     REDIS_TLS: true
   autoscaling:
