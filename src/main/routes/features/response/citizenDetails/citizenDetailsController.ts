@@ -35,19 +35,20 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
   await draftStoreClient.get(claim.legacyCaseReference).then((data: string) => {
     if (data) {
       try {
+        const _data = JSON.parse(data);
         formAddressModel = new CitizenAddress(
-          JSON.parse(data).primaryAddressLine1,
-          JSON.parse(data).primaryAddressLine2,
-          JSON.parse(data).primaryAddressLine3,
-          JSON.parse(data).primaryCity,
-          JSON.parse(data).primaryPostCode);
+          _data.primaryAddressLine1,
+          _data.primaryAddressLine2,
+          _data.primaryAddressLine3,
+          _data.primaryCity,
+          _data.primaryPostCode);
 
         formCorrespondenceModel = new CitizenCorrespondenceAddress(
-          JSON.parse(data).correspondenceAddressLine1,
-          JSON.parse(data).correspondenceAddressLine2,
-          JSON.parse(data).correspondenceAddressLine3,
-          JSON.parse(data).correspondenceCity,
-          JSON.parse(data).correspondencePostCode);
+          _data.correspondenceAddressLine1,
+          _data.correspondenceAddressLine2,
+          _data.correspondenceAddressLine3,
+          _data.correspondenceCity,
+          _data.correspondencePostCode);
       } catch (e) {
         console.log(e);
       }
