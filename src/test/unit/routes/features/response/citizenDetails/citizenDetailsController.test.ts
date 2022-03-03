@@ -23,7 +23,7 @@ describe('Confirm Details page', () => {
       .reply(200, { id_token: citizenRoleToken });
   });
 
-  test('should return your details page', async () => {
+  test.skip('should return your details page', async () => {
     const mockDraftStore = {
       get: jest.fn(() => Promise.resolve({ data: {} })),
     };
