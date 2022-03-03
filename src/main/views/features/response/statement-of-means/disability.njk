@@ -1,0 +1,45 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post">
+            {{ govukRadios({
+              idPrefix: "disability",
+              name: "disability",
+              fieldset: {
+                legend: {
+                  text: "Are you disabled?",
+                  isPageHeading: true,
+                  classes: "govuk-fieldset__legend--l"
+                }
+              },
+              items: [
+                {
+                  value: "YES",
+                  checked: true,
+                  html: "<span>" + t('Yes') + "</span>"
+                },
+                {
+                  value: "NO",
+                  html: "<span>" + t('No') + "</span>"
+                }
+              ]
+            }) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
