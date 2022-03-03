@@ -39,6 +39,10 @@
               {% for row in form.bankAccounts %}
               {{ bankAccountRow(form, bankAccountDropDownItems, loop.index0) }}
               {% endfor %}
+              {{ govukButton({
+                text: t("Add another account"),
+                classes: "govuk-button--secondary append-row"
+              }) }}
             {% endcall %}
             <div class="govuk-form-group">
               {{ govukButton({
@@ -56,3 +60,4 @@
     </main>
   </div>
 {% endblock %}
+
