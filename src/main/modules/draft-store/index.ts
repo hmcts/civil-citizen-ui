@@ -1,34 +1,23 @@
 import config from 'config';
-import {createClient} from 'redis';
 import {Application} from 'express';
 import {LoggerInstance} from 'winston';
+const Redis = require('ioredis');
 
 export class DraftStoreClient {
 
-  constructor(private readonly logger: LoggerInstance) {}
+  public static REDIS_CONNECTION_SUCCESS = 'Connected to Redis instance successfully';
+
+  constructor(private readonly logger: LoggerInstance) {
+  }
 
   public enableFor(app: Application): void {
-    const client = createClient({
-      socket: {
-        host: config.get('services.draftStore.redis.host'),
-        port: config.get('services.draftStore.redis.port'),
-        tls: config.get('services.draftStore.redis.port'),
-        connectTimeout: 15000,
-        reconnectStrategy() {
-          this.logger.info('Reconnecting in 5 seconds');
-          return 5000;
-        },
-      },
+    app.locals.draftStoreClient = new Redis({
+      host: config.get('services.draftStore.redis.host'),
+      port: config.get('services.draftStore.redis.port'),
       password: config.get('services.draftStore.redis.key'),
+      connectTimeout: 15000,
     });
-    app.locals.draftStoreClient = client;
 
-    client.connect()
-      .then(() => {
-        this.logger.info('Connected to Redis instance successfully');
-      })
-      .catch((error: Error) => {
-        this.logger.error('Error connecting to Redis instance', error);
-      });
+    this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
   }
 }

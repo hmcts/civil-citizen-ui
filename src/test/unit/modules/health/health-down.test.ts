@@ -1,17 +1,14 @@
 import request from 'supertest';
 
-jest.mock('redis');
-import {createClient} from 'redis';
-import {mockCreateClient} from '../../../utils/mockCreateClient';
-
-const mockedBehaviour = {
-  connect: jest.fn(async () => ''),
-  ping: jest.fn(async () => {
-    throw new Error();
-  }),
-  on: jest.fn(async () => ''),
-};
-mockCreateClient(createClient, mockedBehaviour);
+jest.mock('ioredis', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      ping: jest.fn(async () => {
+        throw new Error();
+      }),
+    };
+  });
+});
 
 import {app} from '../../../../main/app';
 
