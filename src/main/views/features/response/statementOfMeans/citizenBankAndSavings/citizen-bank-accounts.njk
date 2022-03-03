@@ -1,0 +1,94 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getErrors() %}
+      {% if errors %}
+        {{ govukErrorSummary({
+          "titleText": 'There was a problem',
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post">
+            {% call govukFieldset({
+              legend: {
+                text: t('List your bank and savings accounts'),
+                classes: "govuk-fieldset__legend--l",
+                isPageHeading: true
+              }
+            }) %}
+              <p class="govuk-body">
+                {{ t('Put a minus (-) in front of the amount if you’re overdrawn. For example £-804.45.') }}
+              </p>
+              <div class="govuk-grid-column-one-third govuk-!-display-inline">
+                <label id="account-balance-label" class="govuk-label--m">{{t('Type of account')}}</label>
+              </div>
+              <div class="govuk-grid-column-one-third govuk-!-display-inline">
+                <label id="account-balance-label" class="govuk-label--m">{{t('Joint account')}}</label>
+              </div>
+              <div class="govuk-grid-column-one-third govuk-!-display-inline">
+                <label id="account-balance-label" class="govuk-label--m">{{t('Balance')}}</label>
+              </div>
+              <div class="govuk-grid-column-one-third govuk-!-display-inline">
+                {{ govukSelect({
+                  id: "typeOfAccount",
+                  name: "typeOfAccount",
+                  items: bankAccountDropDownItems
+                }) }}
+              </div>
+              <div class="govuk-grid-column-one-third govuk-!-display-inline">
+                {{ govukSelect({
+                  id: "joint",
+                  name: "joint",
+                  items: [
+                    {
+                      value: "",
+                      text: "Choose"
+                    },
+                    {
+                      value: true,
+                      text: "Yes"
+                    },
+                    {
+                      value: false,
+                      text: "No"
+                    }
+                  ]
+                }) }}
+              </div>
+              <div class="govuk-grid-column-one-third govuk-!-display-inline">
+                {{ govukInput({
+                  id: "cost-per-item",
+                  name: "cost-per-item",
+                  prefix: {
+                    text: "£"
+                  },
+                  classes: "govuk-input--width-5",
+                  spellcheck: false
+                }) }}
+              </div>
+            {% endcall %}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-thirds">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

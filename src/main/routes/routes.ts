@@ -6,6 +6,7 @@ import phoneDetailsRoute from './features/response/citizenPhoneNumber/citizenPho
 import responseDobRoute from './features/response/citizenDob/citizenDobController';
 import ageEligibilityRoute from './features/response/ageEligibility/ageEligibilityController';
 import citizenResponseType from './features/response/responseType/citizenResponseType';
+import bankAccountsRoute from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
 
 export default [
   homeRoute,
@@ -16,4 +17,5 @@ export default [
   responseDobRoute,
   ageEligibilityRoute,
   citizenResponseType,
+  bankAccountsRoute,
 ];

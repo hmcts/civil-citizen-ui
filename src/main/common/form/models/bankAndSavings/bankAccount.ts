@@ -12,7 +12,7 @@ export class BankAccount extends Form {
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsDefined({message: TYPE_OF_ACCOUNT_REQUIRED})
-  @IsIn(BankAccountType.all(), {message: TYPE_OF_ACCOUNT_REQUIRED})
+  @IsIn(BankAccountType.required(), {message: TYPE_OF_ACCOUNT_REQUIRED})
     typeOfAccount?: BankAccountType;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
