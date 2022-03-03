@@ -8,7 +8,7 @@ nodejs:
   cpuRequests: '200m'
   devmemoryLimits: '256Mi'
   devmemoryRequests: '256Mi'
-  devcpuLimits: '1000m'
+  devcpuLimits: '2000m'
   devcpuRequests: '400m'
   aadIdentityName: civil
   keyVaults:
