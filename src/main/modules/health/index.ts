@@ -12,11 +12,9 @@ export class HealthCheck {
     //     .catch(() => healthCheck.down()))
     //   : null;
 
-    const redis = () => healthCheck.up();
-
     const healthCheckConfig = {
       checks: {
-        'draft-store': redis,
+        // 'draft-store': redis,
         // add health checks for other application dependency services
       },
       buildInfo: {
