@@ -1,6 +1,6 @@
 import * as express from 'express';
-import {CivilServiceClient} from '../../../app/client/civilServiceClient';
-import {Claim} from 'common/models/claim';
+import {CivilServiceClient} from '../../../../main/app/client/civilServiceClient';
+import {Claim} from 'models/claim';
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
 import {AppRequest} from 'models/AppRequest';
