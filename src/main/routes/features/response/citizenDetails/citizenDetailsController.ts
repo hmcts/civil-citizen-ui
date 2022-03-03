@@ -53,18 +53,18 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
       }
     } else {
       formAddressModel = new CitizenAddress(
-        claim.respondent1.primaryAddress.AddressLine1,
-        claim.respondent1.primaryAddress.AddressLine2,
-        claim.respondent1.primaryAddress.AddressLine3,
-        claim.respondent1.primaryAddress.PostTown,
-        claim.respondent1.primaryAddress.PostCode);
+        claim.respondent1.primaryAddress.addressLine1,
+        claim.respondent1.primaryAddress.addressLine2,
+        claim.respondent1.primaryAddress.addressLine3,
+        claim.respondent1.primaryAddress.postTown,
+        claim.respondent1.primaryAddress.postCode);
 
       formCorrespondenceModel = new CitizenCorrespondenceAddress(
-        claim.respondent1.correspondenceAddress.AddressLine1,
-        claim.respondent1.correspondenceAddress.AddressLine2,
-        claim.respondent1.correspondenceAddress.AddressLine3,
-        claim.respondent1.correspondenceAddress.PostTown,
-        claim.respondent1.correspondenceAddress.PostCode);
+        claim.respondent1.correspondenceAddress.addressLine1,
+        claim.respondent1.correspondenceAddress.addressLine2,
+        claim.respondent1.correspondenceAddress.addressLine3,
+        claim.respondent1.correspondenceAddress.postTown,
+        claim.respondent1.correspondenceAddress.postCode);
     }
   });
 
