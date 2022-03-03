@@ -32,3 +32,8 @@ nodejs:
 
 idam-pr:
   enabled: false
+
+securityContext:
+  sysctls:
+    - name: net.ipv4.tcp_retries2
+      value: '5'
