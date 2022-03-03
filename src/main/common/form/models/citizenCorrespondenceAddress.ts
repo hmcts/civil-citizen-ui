@@ -1,19 +1,19 @@
 import { IsNotEmpty, ValidationError } from 'class-validator';
 import {
-  NON_CORRESPONDENCE_ADDRESS_VALUE_NOT_ALLOWED,
-  NON_CORRESPONDENCE_CITY_OR_TOWN_VALUE_NOT_ALLOWED,
-  NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED,
+  VALID_CORRESPONDENCE_ADDRESS_LINE_1,
+  VALID_CORRESPONDENCE_CITY,
+  VALID_CORRESPONDENCE_POSTCODE,
 } from '../validationErrors/errorMessageConstants';
 import { Form } from './form';
 
 export class CitizenCorrespondenceAddress extends Form {
-  @IsNotEmpty({message: NON_CORRESPONDENCE_ADDRESS_VALUE_NOT_ALLOWED})
+  @IsNotEmpty({message: VALID_CORRESPONDENCE_ADDRESS_LINE_1})
     correspondenceAddressLine1?: string;
   correspondenceAddressLine2?: string;
   correspondenceAddressLine3?: string;
-  @IsNotEmpty({message: NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED})
+  @IsNotEmpty({message: VALID_CORRESPONDENCE_POSTCODE})
     correspondencePostCode?: string;
-  @IsNotEmpty({message: NON_CORRESPONDENCE_CITY_OR_TOWN_VALUE_NOT_ALLOWED})
+  @IsNotEmpty({message: VALID_CORRESPONDENCE_CITY})
     correspondenceCity?: string;
 
   constructor(

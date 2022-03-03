@@ -3,13 +3,14 @@ import config from 'config';
 import request from 'supertest';
 import { CITIZEN_DETAILS_URL } from '../../../../../../main/routes/urls';
 import {
-  NON_ADDRESS_VALUE_NOT_ALLOWED,
-  NON_CITY_OR_TOWN_VALUE_NOT_ALLOWED,
-  NON_POSTCODE_VALUE_NOT_ALLOWED,
-  NON_CORRESPONDENCE_ADDRESS_VALUE_NOT_ALLOWED,
-  NON_CORRESPONDENCE_CITY_OR_TOWN_VALUE_NOT_ALLOWED,
-  NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED,
+  VALID_ADDRESS_LINE_1,
+  VALID_CITY,
+  VALID_POSTCODE,
+  VALID_CORRESPONDENCE_ADDRESS_LINE_1,
+  VALID_CORRESPONDENCE_CITY,
+  VALID_CORRESPONDENCE_POSTCODE,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 const nock = require('nock');
@@ -108,7 +109,7 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(NON_ADDRESS_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
       });
   });
 
@@ -134,7 +135,7 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(NON_CITY_OR_TOWN_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(VALID_CITY);
       });
   });
 
@@ -160,7 +161,7 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(NON_POSTCODE_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(VALID_POSTCODE);
       });
   });
 
@@ -186,7 +187,7 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(NON_CORRESPONDENCE_ADDRESS_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
       });
   });
 
@@ -212,7 +213,7 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(NON_CORRESPONDENCE_CITY_OR_TOWN_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
       });
   });
 
@@ -238,7 +239,7 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
       });
   });
 
@@ -264,12 +265,12 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(NON_ADDRESS_VALUE_NOT_ALLOWED);
-        expect(res.text).toContain(NON_CITY_OR_TOWN_VALUE_NOT_ALLOWED);
-        expect(res.text).toContain(NON_POSTCODE_VALUE_NOT_ALLOWED);
-        expect(res.text).toContain(NON_CORRESPONDENCE_ADDRESS_VALUE_NOT_ALLOWED);
-        expect(res.text).toContain(NON_CORRESPONDENCE_CITY_OR_TOWN_VALUE_NOT_ALLOWED);
-        expect(res.text).toContain(NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
+        expect(res.text).toContain(VALID_CITY);
+        expect(res.text).toContain(VALID_POSTCODE);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
       });
   });
 
@@ -295,9 +296,9 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(NON_ADDRESS_VALUE_NOT_ALLOWED);
-        expect(res.text).toContain(NON_CITY_OR_TOWN_VALUE_NOT_ALLOWED);
-        expect(res.text).toContain(NON_POSTCODE_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(VALID_ADDRESS_LINE_1);
+        expect(res.text).toContain(VALID_CITY);
+        expect(res.text).toContain(VALID_POSTCODE);
       });
   });
 
@@ -323,9 +324,9 @@ describe('Confirm Details page', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(NON_CORRESPONDENCE_ADDRESS_VALUE_NOT_ALLOWED);
-        expect(res.text).toContain(NON_CORRESPONDENCE_CITY_OR_TOWN_VALUE_NOT_ALLOWED);
-        expect(res.text).toContain(NON_CORRESPONDENCE_POSTCODE_VALUE_NOT_ALLOWED);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
       });
   });
 });

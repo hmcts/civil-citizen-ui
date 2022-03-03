@@ -1,19 +1,19 @@
 import { IsNotEmpty, ValidationError } from 'class-validator';
 import {
-  NON_ADDRESS_VALUE_NOT_ALLOWED,
-  NON_CITY_OR_TOWN_VALUE_NOT_ALLOWED,
-  NON_POSTCODE_VALUE_NOT_ALLOWED,
+  VALID_ADDRESS_LINE_1,
+  VALID_CITY,
+  VALID_POSTCODE,
 } from '../validationErrors/errorMessageConstants';
 import { Form } from './form';
 
 export class CitizenAddress extends Form {
-  @IsNotEmpty({message: NON_ADDRESS_VALUE_NOT_ALLOWED})
+  @IsNotEmpty({message: VALID_ADDRESS_LINE_1})
     primaryAddressLine1?: string;
   primaryAddressLine2?: string;
   primaryAddressLine3?: string;
-  @IsNotEmpty({message: NON_POSTCODE_VALUE_NOT_ALLOWED})
+  @IsNotEmpty({message: VALID_POSTCODE})
     primaryPostCode?: string;
-  @IsNotEmpty({message: NON_CITY_OR_TOWN_VALUE_NOT_ALLOWED})
+  @IsNotEmpty({message: VALID_CITY})
     primaryCity?: string;
 
   constructor(
