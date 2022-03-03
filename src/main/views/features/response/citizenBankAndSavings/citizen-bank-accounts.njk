@@ -1,0 +1,36 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% block content %}
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper" role="main">
+    {% set errors = form.getErrors() %}
+    {% if errors %}
+      {{ govukErrorSummary({
+        "titleText": 'There was a problem',
+        "errorList": errors
+      }) }}
+    {% endif %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">{{ t('List your bank and savings accounts') }}</h1>
+        <p>{{ t('Put a minus (-) in front of the amount if you’re overdrawn. For example £-804.45.') }}</p>
+      </div>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            <form method="post">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-three-thirds">
+        {{ contactUsForHelp(t) }}
+      </div>
+    </div>
+  </main>
+</div>

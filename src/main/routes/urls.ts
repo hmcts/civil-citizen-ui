@@ -1,5 +1,6 @@
 export type Urls = `/${string}`;
-
+const BASE_CASE_RESPONSE_URL: Urls = '/case/:id/response';
+const STATEMENT_OF_MEANS_URL: Urls = `${BASE_CASE_RESPONSE_URL}/statement-of-means`;
 export const CALLBACK_URL: Urls= '/oauth2/callback';
 export const SIGN_IN_URL: Urls = '/login';
 export const SIGN_OUT_URL: Urls = '/logout';
@@ -13,5 +14,7 @@ export const UNAUTHORISED_URL: Urls = '/unauthorised';
 export const CLAIM_DETAILS_URL: Urls = '/case/:id/response/claim-details';
 export const CITIZEN_DETAILS_URL: Urls = '/case/:id/response/your-details';
 export const CONFIRM_CITIZEN_DETAILS_URL: Urls = '/confirm-your-details';
-export const CITIZEN_RESPONSE_TYPE: Urls = '/citizen-response-type';
+export const CITIZEN_RESPONSE_TYPE_URL: Urls = '/citizen-response-type';
+export const CITIZEN_BANK_ACCOUNT_URL: Urls = `${STATEMENT_OF_MEANS_URL}/bank-accounts`;
+
 
