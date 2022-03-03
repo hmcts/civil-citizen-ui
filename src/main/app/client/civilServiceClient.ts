@@ -26,12 +26,17 @@ export class CivilServiceClient {
   }
 
   async retrieveClaimDetails(claimId: string): Promise<Claim> {
-    const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`);
-    if (!response.data) {
-      throw new AssertionError({message: 'Claim details not available.'});
+    try {
+      const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`);
+
+      if (!response.data) {
+        throw new AssertionError({ message: 'Claim details not available.' });
+      }
+
+      return response.data as Claim;
+
+    } catch(err:any) {
+      console.log(err);
     }
-
-    return response.data as Claim;
-
   }
 }
