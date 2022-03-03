@@ -4,7 +4,7 @@ import {LoggerInstance} from 'winston';
 
 const Redis = require('ioredis');
 
-const REDIS_DATA = require('./redisData.json');
+// const REDIS_DATA = require('./redisData.json');
 
 export class DraftStoreClient {
 
@@ -24,8 +24,8 @@ export class DraftStoreClient {
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
 
-    client.set('1645882162449409', JSON.stringify(REDIS_DATA, null, 4)).then(() =>
-      this.logger.info('Create data on Redis'),
-    );
+    // client.set('1645882162449409', JSON.stringify(REDIS_DATA, null, 4)).then(() =>
+    //   this.logger.info('Create data on Redis'),
+    // );
   }
 }
