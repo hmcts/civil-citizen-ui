@@ -1,8 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
-{% from "govuk/components/select/macro.njk" import govukSelect %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "../../../../macro/bankAccount.njk" import bankAccountRow %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% block content %}
@@ -37,44 +36,9 @@
               <div class="govuk-grid-column-one-third govuk-!-display-inline">
                 <label id="account-balance-label" class="govuk-label--m">{{t('Balance')}}</label>
               </div>
-              <div class="govuk-grid-column-one-third govuk-!-display-inline">
-                {{ govukSelect({
-                  id: "typeOfAccount",
-                  name: "typeOfAccount",
-                  items: bankAccountDropDownItems
-                }) }}
-              </div>
-              <div class="govuk-grid-column-one-third govuk-!-display-inline">
-                {{ govukSelect({
-                  id: "joint",
-                  name: "joint",
-                  items: [
-                    {
-                      value: "",
-                      text: "Choose"
-                    },
-                    {
-                      value: true,
-                      text: "Yes"
-                    },
-                    {
-                      value: false,
-                      text: "No"
-                    }
-                  ]
-                }) }}
-              </div>
-              <div class="govuk-grid-column-one-third govuk-!-display-inline">
-                {{ govukInput({
-                  id: "cost-per-item",
-                  name: "cost-per-item",
-                  prefix: {
-                    text: "£"
-                  },
-                  classes: "govuk-input--width-5",
-                  spellcheck: false
-                }) }}
-              </div>
+              {% for row in form.bankAccounts %}
+              {{ bankAccountRow(form, bankAccountDropDownItems, loop.index0) }}
+              {% endfor %}
             {% endcall %}
             <div class="govuk-form-group">
               {{ govukButton({

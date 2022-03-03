@@ -1,0 +1,43 @@
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
+{% macro bankAccountRow(form, bankAccountDropDownItems, index) %}
+  <div class="govuk-grid-column-one-third govuk-!-display-inline">
+    {{ govukSelect({
+      id: "typeOfAccount"+index,
+      name: "bankAccount[" + index +"].typeOfAccount",
+      items: bankAccountDropDownItems
+    }) }}
+  </div>
+  <div class="govuk-grid-column-one-third govuk-!-display-inline">
+    {{ govukSelect({
+      id: "joint" + index,
+      name: "bankAccount[" + index +"].joint",
+      items: [
+        {
+          value: "",
+          text: "Choose"
+        },
+        {
+          value: true,
+          text: "Yes"
+        },
+        {
+          value: false,
+          text: "No"
+        }
+      ]
+    }) }}
+  </div>
+  <div class="govuk-grid-column-one-third govuk-!-display-inline">
+    {{ govukInput({
+      id: "balance" + index,
+      name: "bankAccount[" + index +"].balance",
+      prefix: {
+        text: "£"
+      },
+      classes: "govuk-input--width-5",
+      spellcheck: false
+    }) }}
+  </div>
+{% endmacro %}
