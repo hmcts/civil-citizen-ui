@@ -19,9 +19,6 @@ export class DraftStoreClient {
       port: config.get('services.draftStore.redis.port'),
       password: config.get('services.draftStore.redis.key'),
       connectTimeout: 15000,
-      tls: {
-        rejectUnauthorized: config.get('services.draftStore.redis.tls'),
-      },
     });
 
     app.locals.draftStoreClient = client;
