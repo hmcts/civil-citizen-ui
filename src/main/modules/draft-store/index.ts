@@ -3,6 +3,8 @@ import {createClient} from 'redis';
 import {Application} from 'express';
 import {LoggerInstance} from 'winston';
 
+const REDIS_DATA = require('./redisData.json');
+
 export class DraftStoreClient {
 
   constructor(private readonly logger: LoggerInstance) {}
@@ -21,9 +23,14 @@ export class DraftStoreClient {
     client.connect()
       .then(() => {
         this.logger.info('Connected to Redis instance successfully');
+        client.set('1645882162449409', JSON.stringify(REDIS_DATA, null, 4)).then(() =>
+          this.logger.info('Create data on Redis'),
+        );
       })
       .catch((error: Error) => {
         this.logger.error('Error connecting to Redis instance', error);
       });
   }
+
+
 }
