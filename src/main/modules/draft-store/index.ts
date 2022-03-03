@@ -14,8 +14,12 @@ export class DraftStoreClient {
   }
 
   public enableFor(app: Application): void {
-    const redisURL = `${config.get('services.draftStore.redis.protocol')}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
-    const client = new Redis(redisURL);
+
+    const redisHost = `${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
+    const redisOptions = {
+      password: config.get('services.draftStore.redis.key'),
+    };
+    const client = new Redis(redisHost, redisOptions);
 
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);

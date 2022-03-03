@@ -9,7 +9,6 @@ services:
     callbackURL: OAUTH_CLIENT_REDIRECT
   draftStore:
     redis:
-      protocol: REDIS_PROTOCOL
       host: REDIS_HOST
       port: REDIS_PORT
       tls: REDIS_TLS
