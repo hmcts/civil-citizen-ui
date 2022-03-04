@@ -3,7 +3,7 @@ import config from 'config';
 import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 
-import {SIGN_IN_URL, SIGN_OUT_URL, CALLBACK_URL, ROOT_URL, UNAUTHORISED_URL} from '../../routes/urls';
+import {SIGN_IN_URL, SIGN_OUT_URL, CALLBACK_URL, DASHBOARD_URL, UNAUTHORISED_URL} from '../../routes/urls';
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -26,11 +26,11 @@ export class OidcMiddleware {
       if (typeof req.query.code === 'string') {
         req.session.user = await getUserDetails(redirectUri, req.query.code);
         if (req.session.user?.roles?.includes(citizenRole)) {
-          return res.redirect(ROOT_URL);
+          return res.redirect(DASHBOARD_URL);
         }
         return res.redirect(UNAUTHORISED_URL);
       } else {
-        res.redirect(ROOT_URL);
+        res.redirect(DASHBOARD_URL);
       }
     });
 
@@ -40,11 +40,7 @@ export class OidcMiddleware {
     });
 
     app.get('/', (req: AppRequest, res: Response) => {
-      return res.render('home');
-    });
-
-    app.get(ROOT_URL, (req: AppRequest, res: Response) => {
-      return res.render('home');
+      res.redirect(DASHBOARD_URL);
     });
 
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
@@ -52,7 +48,7 @@ export class OidcMiddleware {
         if (req.session?.user?.roles?.includes(citizenRole)) {
           return next();
         }
-        return res.redirect(ROOT_URL);
+        return res.redirect(DASHBOARD_URL);
       }
       res.redirect(SIGN_IN_URL);
     });
