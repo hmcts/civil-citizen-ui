@@ -7,15 +7,16 @@
 
     <div class="govuk-grid-column-full">
       <h2 class="govuk-heading-m">{{ t('Claims made against you') }}</h2>
+      <p class="govuk-body">
+          {{ t('To view or progress your claim click on your claim number. Most recently created claims are listed first.') }}
+      </p>
       <table class="govuk-table">
         <thead class="govuk-table__head">
         <tr class="govuk-table__row">
           <th scope="col" class="govuk-table__header">{{ t('Claim number') }}</th>
           <th scope="col" class="govuk-table__header">{{ t('Claimant name') }}</th>
           <th scope="col" class="govuk-table__header">{{ t('Claim amount') }}</th>
-          <th scope="col" class="govuk-table__header">{{ t('Next steps') }}</th>
-          <th scope="col" class="govuk-table__header">{{ t('Deadline') }}</th>
-          <th scope="col" class="govuk-table__header">{{ t('Actions') }}</th>
+          <th scope="col" class="govuk-table__header">{{ t('Status') }}</th>
         </tr>
         </thead>
         <tbody class="govuk-table__body">
@@ -24,9 +25,7 @@
             <td class="govuk-table__cell">{{ claim.legacyCaseReference }}</td>
             <td class="govuk-table__cell">{{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }}</td>
             <td class="govuk-table__cell">{{ claim.formattedTotalClaimAmount() }}</td>
-            <td class="govuk-table__cell">{{ t('Respond to the claim') }}</td>
-            <td class="govuk-table__cell">{{ claim.formattedResponseDeadline() }}</td>
-            <td class="govuk-table__cell">{{ t('View') }}</td>
+            <td class="govuk-table__cell">{{ t('You need to respond before ') }}{{ claim.formattedResponseDeadline() }}</td>
           </tr>
         {% endfor %}
         </tbody>
