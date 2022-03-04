@@ -16,6 +16,8 @@ nodejs:
     OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback
     REDIS_HOST: 'civil-{{ .Values.global.environment }}.redis.cache.windows.net'
     REDIS_PORT: 6380
+    REDIS_TLS: true
+    ALLOW_CONFIG_MUTATIONS: true
   autoscaling:
     enabled: false
     maxReplicas: 16

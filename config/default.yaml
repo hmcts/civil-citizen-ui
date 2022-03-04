@@ -21,6 +21,7 @@ services:
       host: 'localhost'
       port: 6379
       key:
+      tls: false
 health:
   timeout: 5000
   deadline: 15000

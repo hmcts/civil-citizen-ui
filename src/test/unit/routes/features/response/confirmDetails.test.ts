@@ -1,11 +1,19 @@
 import request from 'supertest';
-
 import {app} from '../../../../../main/app';
 import config from 'config';
 
 const nock = require('nock');
-
 const agent = request.agent(app);
+
+jest.mock('ioredis', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      ping: jest.fn(async () => 'PONG'),
+      set: jest.fn(async () => ''),
+      get: jest.fn(async () => {return JSON.stringify({});}),
+    };
+  });
+});
 
 function authenticate() {
   return () =>
