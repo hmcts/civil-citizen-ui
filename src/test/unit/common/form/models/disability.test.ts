@@ -1,7 +1,7 @@
 import {Validator} from 'class-validator';
 import {Disability} from '../../../../../main/common/form/models/statement-of-means/disability';
 
-describe('Citizen dob field validation', () => {
+describe('Citizen disability radio validation', () => {
   const validator = new Validator();
   it('should have errors when disability is not specified', () => {
     //Given
