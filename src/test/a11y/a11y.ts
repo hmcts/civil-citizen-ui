@@ -6,10 +6,8 @@ import * as urls from '../../main/routes/urls';
 const pa11y = require('pa11y');
 
 const agent = supertest.agent(app);
-const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL, urls.CASES_URL, urls.CALLBACK_URL, urls.DASHBOARD_URL, urls.UNAUTHORISED_URL, urls.CITIZEN_PHONE_NUMBER_URL, urls.UNAUTHORISED_URL, urls.CONFIRM_CITIZEN_DETAILS_URL, urls.CITIZEN_DETAILS_URL, urls.CLAIM_DETAILS_URL, urls.DOB_URL, urls.AGE_ELIGIBILITY_URL, urls.ROOT_URL, urls.HOME_URL, urls.CITIZEN_RESPONSE_TYPE];
-const IGNORED_URLS_STM = [urls.CITIZEN_DISABILITY_URL];
+const IGNORED_URLS = [urls.CITIZEN_DISABILITY_URL, urls.SIGN_IN_URL, urls.SIGN_OUT_URL, urls.CASES_URL, urls.CALLBACK_URL, urls.DASHBOARD_URL, urls.UNAUTHORISED_URL, urls.CITIZEN_PHONE_NUMBER_URL, urls.UNAUTHORISED_URL, urls.CONFIRM_CITIZEN_DETAILS_URL, urls.CITIZEN_DETAILS_URL, urls.CLAIM_DETAILS_URL, urls.DOB_URL, urls.AGE_ELIGIBILITY_URL, urls.CITIZEN_RESPONSE_TYPE];
 const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
-urlsNoSignOut.concat(Object.values(urls).filter(url => !IGNORED_URLS_STM.includes(url)));
 
 class Pa11yResult {
   documentTitle: string;
