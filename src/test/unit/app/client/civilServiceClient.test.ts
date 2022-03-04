@@ -1,44 +1,45 @@
 import {CivilServiceClient} from '../../../../main/app/client/civilServiceClient';
-
 import axios, {AxiosInstance} from 'axios';
 import {Claim} from '../../../../main/common/models/claim';
-import {CASES_URL} from '../../../../main/routes/urls';
+import * as requestModels from '../../../../main/common/models/AppRequest';
+import {CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
+import config from 'config';
+import {CIVIL_SERVICE_CASES_URL} from '../../../../main/app/client/civilServiceUrls';
+
 
 jest.mock('axios');
-
 const mockedAxios = axios as jest.Mocked<typeof axios>;
+const baseUrl:string = config.get('baseUrl');
+declare const appRequest: requestModels.AppRequest;
+const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 
 describe('Civil Service Client', () => {
   it('retrieve cases', async () => {
-    const mockResponse: object = [{
-      legacyCaseReference: '000MC003',
-      applicant1:
-        {
-          type: 'INDIVIDUAL',
-          individualTitle: 'Mrs',
-          individualLastName: 'Clark',
-          individualFirstName: 'Jane',
-        },
-      totalClaimAmount: 1500,
-      respondent1ResponseDeadline: '2022-01-24T15:59:59',
-    }];
-    const mockGet = jest.fn().mockResolvedValue({data: mockResponse});
-    mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+    const claim = new Claim();
+    claim.legacyCaseReference = '000MC003';
+    claim.applicant1 =
+      {
+        individualTitle: 'Mrs',
+        individualLastName: 'Clark',
+        individualFirstName: 'Jane',
+      };
+    claim.totalClaimAmount = 1500;
 
-    const civilServiceClient = new CivilServiceClient('http://localhost');
+    const mockResponse: CivilClaimResponse = {
+      case_data: claim,
+    };
 
-    const actualClaims: Claim[] = await civilServiceClient.retrieveByDefendantId();
-
+    const mockPost = jest.fn().mockResolvedValue({data: {cases: [mockResponse]}});
+    mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+    const civilServiceClient = new CivilServiceClient(baseUrl);
+    const actualClaims: Claim[] = await civilServiceClient.retrieveByDefendantId(mockedAppRequest);
     expect(mockedAxios.create).toHaveBeenCalledWith({
-      baseURL: 'http://localhost',
+      baseURL: baseUrl,
     });
-
-    expect(mockGet.mock.calls[0][0]).toEqual(CASES_URL);
+    expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_CASES_URL);
     expect(actualClaims.length).toEqual(1);
     expect(actualClaims[0].legacyCaseReference).toEqual('000MC003');
     expect(actualClaims[0].applicant1.individualFirstName).toEqual('Jane');
     expect(actualClaims[0].applicant1.individualLastName).toEqual('Clark');
-    expect(actualClaims[0].formattedResponseDeadline()).toEqual('24 January 2022');
-    expect(actualClaims[0].formattedTotalClaimAmount()).toEqual('£1,500.00');
   });
 });

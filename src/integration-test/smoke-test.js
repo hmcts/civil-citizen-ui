@@ -2,6 +2,7 @@ const request = require('supertest');
 const { app } = require('../main/app');
 const nock = require('nock');
 const config = require('config');
+const {ROOT_URL} = require('../main/routes/urls');
 
 const agent = request.agent(app);
 
@@ -14,7 +15,7 @@ function authenticate() {
 }
 
 // TODO: replace this sample test with proper smoke tests later
-describe('Dummy Smoke test - Home page', () => {
+describe('Dummy Smoke test - Dashboard page', () => {
   describe('on GET', () => {
     const citizenRoleToken = config.get('citizenRoleToken');
     beforeEach(() => {
@@ -24,12 +25,12 @@ describe('Dummy Smoke test - Home page', () => {
       authenticate();
     });
 
-    test('should return sample home page', async () => {
+    test('should redirect to dashboard page', async () => {
       await agent
-        .get('/')
+        .get(ROOT_URL)
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Default page template');
+          expect(res.status).toBe(302);
+          expect(res.text).toContain('Found. Redirecting to /dashboard');
         });
     });
   });
