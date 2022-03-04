@@ -15,15 +15,10 @@ export class DraftStoreClient {
 
   public enableFor(app: Application): void {
 
-    const redisOptions = {
-      host: config.get('services.draftStore.redis.host'),
-      port: config.get('services.draftStore.redis.port'),
-      password: config.get('services.draftStore.redis.key'),
-      tls: config.get('services.draftStore.redis.tls') && {
-        servername: config.get('services.draftStore.redis.host'),
-      },
-    };
-    const client = new Redis(redisOptions);
+    const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
+    const connectionString = `${protocol}default:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
+    this.logger.info(`connectionString: ${connectionString}`);
+    const client = new Redis(connectionString);
 
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
