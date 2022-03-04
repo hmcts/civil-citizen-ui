@@ -17,7 +17,6 @@ export class DraftStoreClient {
 
     const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
     const connectionString = `${protocol}default:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
-    this.logger.info(`connectionString: ${connectionString}`);
     const client = new Redis(connectionString);
 
     app.locals.draftStoreClient = client;
