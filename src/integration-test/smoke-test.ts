@@ -1,14 +1,23 @@
 const request = require('supertest');
-const { app } = require('../main/app');
+import {app} from '../main/app';
 const nock = require('nock');
 const config = require('config');
 
 const agent = request.agent(app);
 
+jest.mock('ioredis', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      ping: jest.fn(async () => 'PONG'),
+      set: jest.fn(async () => {return;}),
+    };
+  });
+});
+
 function authenticate() {
   agent.get('/oauth2/callback')
     .query('code=ABC')
-    .then((res) => {
+    .then((res: Response) => {
       expect(res.status).toBe(302);
     });
 }
@@ -27,7 +36,7 @@ describe('Dummy Smoke test - Home page', () => {
     test('should return sample home page', async () => {
       await agent
         .get('/')
-        .expect((res) => {
+        .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Default page template');
         });
