@@ -11,7 +11,7 @@ const logger = Logger.getLogger('postcode-lookup');
 
 export default express.Router()
   .get(POSTCODE_LOOKUP_URL, (req, res) => {
-    if (!req.query.postcode || !req.query.postcode) {
+    if (!req.query.postcode || !req.query.postcode.toString().trim()) {
       return res.status(400).json({
         error: {
           status: 400,

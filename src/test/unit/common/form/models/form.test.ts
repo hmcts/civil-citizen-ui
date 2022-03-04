@@ -5,6 +5,21 @@ import {Form} from '../../../../../main/common/form/models/form';
 const ERROR_MESSAGE = 'Error message';
 const PROPERTY = 'property';
 
+const _errors = [
+  {
+    CitizenAddress: {
+      primaryAddressLine1: '',
+      primaryAddressLine2: '',
+      primaryAddressLine3: '',
+      primaryCity: 'London',
+      primaryPostCode: 'SW1H 9AJ',
+    },
+    value: '',
+    property: 'primaryAddressLine1',
+    constraints: { isNotEmpty: 'Enter first address line' },
+  },
+];
+
 
 describe('Form get error message', () => {
   const form = new Form();
@@ -42,6 +57,18 @@ describe('Form has field errors', () => {
     const result = form.hasFieldError('');
     //Then
     expect(result).toBe(false);
+  });
+});
+
+describe('Form has field text error', () => {
+  const form = new Form();
+  it('should return text error when there is an error', () => {
+    //Given
+    form.errors = createValidationError();
+    //When
+    const textError = form.getTextError(_errors, 'primaryAddressLine1');
+    //Then
+    expect(textError).toContain('Enter first address line');
   });
 });
 

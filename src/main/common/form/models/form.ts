@@ -29,12 +29,7 @@ export class Form {
   }
 
   public getTextError(errors: ValidationError[], property: string) {
-    let error;
-    errors.filter((item) => {
-      if (item.property == property) {
-        error = item.constraints.isNotEmpty;
-      }
-    });
-    return error;
+    const error = errors.filter((item) => item.property == property);
+    return error.length > 0 ? error[0].constraints.isNotEmpty : '';
   }
 }
