@@ -1,17 +1,15 @@
-import {createClient} from 'redis';
-import {mockCreateClient} from '../../../utils/mockCreateClient';
 import {DraftStoreClient} from '../../../../main/modules/draft-store';
 import {LoggerInstance} from 'winston';
 import express from 'express';
 
-jest.mock('redis');
-
-const mockedBehaviour = {
-  connect: jest.fn(async () => {
-    throw new Error();
-  }),
-};
-mockCreateClient(createClient, mockedBehaviour);
+jest.mock('ioredis', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      ping: jest.fn(async () => 'PONG'),
+      set: jest.fn(async () => {return;}),
+    };
+  });
+});
 
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
@@ -26,10 +24,10 @@ const app: express.Application = {
 
 describe('Draft Store Client', () => {
 
-  test('When can\'t connect to Redis, log error message', async () => {
+  test('Upon successful connection to Redis, log info message', async () => {
     const draftStoreClient: DraftStoreClient = new DraftStoreClient(mockLogger);
     draftStoreClient.enableFor(app);
     await new Promise(process.nextTick);
-    expect(mockLogger.error).toHaveBeenCalledTimes(1);
+    expect(mockLogger.info).toHaveBeenCalledWith(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
   });
 });

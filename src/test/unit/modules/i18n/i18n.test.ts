@@ -1,13 +1,22 @@
 import express from 'express';
 import config from 'config';
 
-jest.mock('redis');
 const request = require('supertest');
 const nock = require('nock');
 
 const {app} = require('../../../../main/app');
 
 const agent = request.agent(app);
+
+jest.mock('ioredis', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      set: jest.fn(async () => {
+        return;
+      }),
+    };
+  });
+});
 
 function authenticate() {
   return () =>

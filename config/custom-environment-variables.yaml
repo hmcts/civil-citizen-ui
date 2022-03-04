@@ -11,6 +11,7 @@ services:
     redis:
       host: REDIS_HOST
       port: REDIS_PORT
+      tls: REDIS_TLS
 
 port: PORT
 appInsights:
