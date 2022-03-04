@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function incrementIndexOnName(input) {
     let newIndex = document.getElementsByClassName('multiple-row').length - 1;
-    const indexRegex = /\[[0-9]+\]/;
-    input.name = input.name.replace(indexRegex, '[' + newIndex + ']');
+    const indexRegex = /\[rows(\d+)\]/;
+    input.name = input.name.replace(indexRegex, '[rows' + newIndex + ']');
   }
 });

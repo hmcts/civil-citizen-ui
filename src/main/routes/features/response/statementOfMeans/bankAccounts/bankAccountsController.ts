@@ -10,9 +10,22 @@ function renderView(form: ListOfBanksAndSavings, res: express.Response): void {
   res.render(citizenBankAccountsViewPath, {form: form, bankAccountDropDownItems: BankAccountType.all()});
 }
 
+function convertToFormModel(req: express.Request){
+  const rows = req.body.rows;
+  const accounts:BankAccount[] = Object.values(rows);
+  return new ListOfBanksAndSavings(accounts);
+}
+
 router.get(CITIZEN_BANK_ACCOUNT_URL, (req, res) => {
   const form = new ListOfBanksAndSavings([new BankAccount(), new BankAccount()]);
   renderView(form, res);
 });
+router.post(CITIZEN_BANK_ACCOUNT_URL, (req, res) => {
+  const form: ListOfBanksAndSavings = convertToFormModel(req);
+  renderView(form, res);
+});
+
+
+
 
 export default router;

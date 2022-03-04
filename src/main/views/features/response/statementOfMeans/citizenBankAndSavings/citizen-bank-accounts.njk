@@ -16,7 +16,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <form method="post">
+          <form name="accounts" method="post">
             {% call govukFieldset({
               legend: {
                 text: t('List your bank and savings accounts'),
@@ -36,8 +36,8 @@
               <div class="govuk-grid-column-one-third govuk-!-display-inline">
                 <label id="account-balance-label" class="govuk-label--m">{{t('Balance')}}</label>
               </div>
-              {% for row in form.bankAccounts %}
-              {{ bankAccountRow(form, bankAccountDropDownItems, loop.index0) }}
+              {% for account in form.rows %}
+              {{ bankAccountRow(account, bankAccountDropDownItems, loop.index0) }}
               {% endfor %}
               {{ govukButton({
                 text: t("Add another account"),

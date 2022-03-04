@@ -5,10 +5,10 @@ import {SELECT_AN_OPTION} from '../../../form/validationErrors/errorMessageConst
 
 export class ListOfBanksAndSavings extends Form{
   @ArrayMaxSize(1, {message: SELECT_AN_OPTION})
-    bankAccounts:BankAccount[];
+    rows:BankAccount[];
 
-  constructor(bankAccounts : BankAccount[]) {
+  constructor(rows : BankAccount[]) {
     super();
-    this.bankAccounts = bankAccounts;
+    this.rows = rows;
   }
 }
