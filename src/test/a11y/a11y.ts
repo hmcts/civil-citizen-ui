@@ -70,11 +70,19 @@ function expectNoErrors(messages: PallyIssue[]): void {
   }
 }
 
-describe.each(urlsNoSignOut)('Page %s', url => {
-  test('should have no accessibility errors', async () => {
-    await ensurePageCallWillSucceed(url);
-    const result = await runPally(agent.get(url).url);
-    expect(result.issues).toEqual(expect.any(Array));
-    expectNoErrors(result.issues);
-  });
+describe('check URLs for accessibility errors', () => {
+  if (urlsNoSignOut.length > 0) {
+    describe.each(urlsNoSignOut)('Page %s', url => {
+      test('should have no accessibility errors', async () => {
+        await ensurePageCallWillSucceed(url);
+        const result = await runPally(agent.get(url).url);
+        expect(result.issues).toEqual(expect.any(Array));
+        expectNoErrors(result.issues);
+      });
+    });
+  } else {
+    it('does nothing', async () => {
+      //see https://github.com/facebook/jest/issues/5783#issuecomment-450626450
+    });
+  }
 });
