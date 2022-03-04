@@ -1,13 +1,13 @@
 import * as express from 'express';
 import {CITIZEN_BANK_ACCOUNT_URL} from '../../../../../routes/urls';
 import {ListOfBanksAndSavings} from 'common/form/models/bankAndSavings/listOfBanksAndSavings';
-import {BankAccountType} from 'common/form/models/bankAndSavings/bankAccountType';
 import {BankAccount} from 'common/form/models/bankAndSavings/bankAccount';
+import { BankAccountTypes } from 'common/form/models/bankAndSavings/bankAccountTypes';
 
 const citizenBankAccountsViewPath = 'features/response/statementOfMeans/citizenBankAndSavings/citizen-bank-accounts';
 const router = express.Router();
-function renderView(form: ListOfBanksAndSavings, res: express.Response): void {
-  res.render(citizenBankAccountsViewPath, {form: form, bankAccountDropDownItems: BankAccountType.all()});
+function renderView(form: ListOfBanksAndSavings, bankAccountDropDownItems: BankAccountTypes, res: express.Response): void {
+  res.render(citizenBankAccountsViewPath, {form: form, bankAccountDropDownItems:bankAccountDropDownItems});
 }
 
 function convertToFormModel(req: express.Request){
@@ -18,11 +18,14 @@ function convertToFormModel(req: express.Request){
 
 router.get(CITIZEN_BANK_ACCOUNT_URL, (req, res) => {
   const form = new ListOfBanksAndSavings([new BankAccount(), new BankAccount()]);
-  renderView(form, res);
+  renderView(form,  new BankAccountTypes(), res);
 });
+
 router.post(CITIZEN_BANK_ACCOUNT_URL, (req, res) => {
   const form: ListOfBanksAndSavings = convertToFormModel(req);
-  renderView(form, res);
+
+  console.log(form);
+  renderView(form, new BankAccountTypes(), res);
 });
 
 

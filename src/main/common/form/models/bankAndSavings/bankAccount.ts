@@ -7,12 +7,13 @@ import {
   NUMBER_REQUIRED,
 } from '../../../form/validationErrors/errorMessageConstants';
 import {AccountBalanceValidator} from '../../../form/validators/accountBalanceValidator';
+import { BankAccountTypes } from './bankAccountTypes';
 
 export class BankAccount extends Form {
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsDefined({message: TYPE_OF_ACCOUNT_REQUIRED})
-  @IsIn(BankAccountType.required(), {message: TYPE_OF_ACCOUNT_REQUIRED})
+  @IsIn(new BankAccountTypes().required(), {message: TYPE_OF_ACCOUNT_REQUIRED})
     typeOfAccount?: BankAccountType;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())

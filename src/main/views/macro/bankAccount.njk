@@ -7,24 +7,28 @@
       <div class="govuk-grid-column-one-third govuk-!-display-inline">
         {{ govukSelect({
           name: "rows[rows"+index+"][typeOfAccount]",
-          items: bankAccountDropDownItems
+          items: bankAccountDropDownItems.all(bankAccount.typeOfAccount)
         }) }}
       </div>
       <div class="govuk-grid-column-one-third govuk-!-display-inline">
         {{ govukSelect({
           name: "rows[rows"+index+"][joint]",
+          value: bankAccount.joint,
           items: [
             {
               value: "",
               text: "Choose"
             },
             {
-              value: true,
-              text: "Yes"
+              value: 'true',
+              text: "Yes",
+              selected: true if bankAccount.joint == 'true'
+
             },
             {
-              value: false,
-              text: "No"
+              value: 'false',
+              text: "No",
+              selected: true if bankAccount.joint == 'false'
             }
           ]
         }) }}
