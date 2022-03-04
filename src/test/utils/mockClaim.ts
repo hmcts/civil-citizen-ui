@@ -40,9 +40,6 @@ export const mockClaim: Claim = {
   respondent1ResponseDeadline: new Date('2022-01-24T15:59:59'),
   detailsOfClaim: 'the reason i have given',
   respondent1: respondent1,
-  individualTitle: 'string',
-  individualLastName: 'string',
-  individualFirstName: 'string',
   formattedResponseDeadline: function (): string {
     throw new Error('Function not implemented.');
   },
