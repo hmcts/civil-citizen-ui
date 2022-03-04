@@ -35,6 +35,7 @@ const i18next = I18Next.enableFor(app);
 
 const logger = Logger.getLogger('app');
 
+logger.info(`process.env.ALLOW_CONFIG_MUTATIONS: ${process.env.ALLOW_CONFIG_MUTATIONS}`);
 new PropertiesVolume().enableFor(app);
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
 
