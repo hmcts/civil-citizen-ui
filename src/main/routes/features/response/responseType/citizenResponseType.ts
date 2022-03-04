@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import {CITIZEN_RESPONSE_TYPE_URL, ROOT_URL} from '../../../urls';
+import {RESPONSE_TYPE_URL, ROOT_URL} from '../../../urls';
 import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
@@ -28,11 +28,11 @@ function renderView(form: CitizenResponseType, res: express.Response): void {
   res.render(citizenResponseTypeViewPath, {form: form, componentDetailItemsList: componentDetailItemsList});
 }
 
-router.get(CITIZEN_RESPONSE_TYPE_URL, (req, res) => {
+router.get(RESPONSE_TYPE_URL, (req, res) => {
   renderView(citizenResponseType, res);
 });
 
-router.post(CITIZEN_RESPONSE_TYPE_URL,
+router.post(RESPONSE_TYPE_URL,
   (req, res) => {
 
     const model: CitizenResponseType = new CitizenResponseType(req.body.responseType);

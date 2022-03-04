@@ -23,7 +23,7 @@ export class DraftStoreClient {
     client.connect()
       .then(() => {
         this.logger.info('Connected to Redis instance successfully');
-        client.set('1645882162449409', JSON.stringify(REDIS_DATA, null, 4)).then(() =>
+        client.set('1643033241924739', JSON.stringify(REDIS_DATA, null, 4)).then(() =>
           this.logger.info('Create data on Redis'),
         );
       })
