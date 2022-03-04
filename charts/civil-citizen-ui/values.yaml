@@ -2,14 +2,6 @@ nodejs:
   applicationPort: 3001
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
   image: hmctspublic.azurecr.io/civil/citizen-ui:latest
-  memoryLimits: '256Mi'
-  memoryRequests: '256Mi'
-  cpuLimits: '1000m'
-  cpuRequests: '200m'
-  devmemoryLimits: '256Mi'
-  devmemoryRequests: '256Mi'
-  devcpuLimits: '1000m'
-  devcpuRequests: '400m'
   aadIdentityName: civil
   keyVaults:
     civil:
@@ -33,8 +25,3 @@ nodejs:
 
 idam-pr:
   enabled: false
-
-securityContext:
-  sysctls:
-    - name: net.ipv4.tcp_retries2
-      value: '5'
