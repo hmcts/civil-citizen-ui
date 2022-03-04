@@ -2,44 +2,46 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
 {% macro bankAccountRow(form, bankAccountDropDownItems, index) %}
-  <div class="multiple-row">
-    <div class="govuk-grid-column-one-third govuk-!-display-inline">
-      {{ govukSelect({
-        id: "bankAccount[" + index +"].typeOfAccount",
-        name: "bankAccount[" + index +"].typeOfAccount",
-        items: bankAccountDropDownItems
-      }) }}
-    </div>
-    <div class="govuk-grid-column-one-third govuk-!-display-inline">
-      {{ govukSelect({
-        id: "bankAccount[" + index +"].joint",
-        name: "bankAccount[" + index +"].joint",
-        items: [
-          {
-            value: "",
-            text: "Choose"
+  <div id="row-container">
+    <div class="multiple-row">
+      <div class="govuk-grid-column-one-third govuk-!-display-inline">
+        {{ govukSelect({
+          id: "bankAccount[" + index +"].typeOfAccount",
+          name: "bankAccount[" + index +"].typeOfAccount",
+          items: bankAccountDropDownItems
+        }) }}
+      </div>
+      <div class="govuk-grid-column-one-third govuk-!-display-inline">
+        {{ govukSelect({
+          id: "bankAccount[" + index +"].joint",
+          name: "bankAccount[" + index +"].joint",
+          items: [
+            {
+              value: "",
+              text: "Choose"
+            },
+            {
+              value: true,
+              text: "Yes"
+            },
+            {
+              value: false,
+              text: "No"
+            }
+          ]
+        }) }}
+      </div>
+      <div class="govuk-grid-column-one-third govuk-!-display-inline">
+        {{ govukInput({
+          id: "bankAccount[" + index +"].balance",
+          name: "bankAccount[" + index +"].balance",
+          prefix: {
+            text: "£"
           },
-          {
-            value: true,
-            text: "Yes"
-          },
-          {
-            value: false,
-            text: "No"
-          }
-        ]
-      }) }}
-    </div>
-    <div class="govuk-grid-column-one-third govuk-!-display-inline">
-      {{ govukInput({
-        id: "bankAccount[" + index +"].balance",
-        name: "bankAccount[" + index +"].balance",
-        prefix: {
-          text: "£"
-        },
-        classes: "govuk-input--width-5",
-        spellcheck: false
-      }) }}
+          classes: "govuk-input--width-5",
+          spellcheck: false
+        }) }}
+      </div>
     </div>
   </div>
 {% endmacro %}
