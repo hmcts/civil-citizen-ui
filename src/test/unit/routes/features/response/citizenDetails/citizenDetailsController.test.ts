@@ -25,7 +25,10 @@ describe('Confirm Details page', () => {
       .reply(200, { id_token: citizenRoleToken });
     nock('http://localhost:8765')
       .get('/cases/1643033241924739')
-      .reply(200,  mockResponse);
+      .reply(200, mockResponse);
+    nock('http://localhost:4000')
+      .get('/cases/1643033241924739')
+      .reply(200, mockResponse);
   });
 
   test('should return your details page', async () => {
