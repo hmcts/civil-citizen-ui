@@ -5,7 +5,7 @@ import { app } from '../../main/app';
 import * as urls from '../../main/routes/urls';
 
 const agent = supertest.agent(app);
-const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL, urls.CASES_URL, urls.CALLBACK_URL, urls.DASHBOARD_URL, urls.UNAUTHORISED_URL, urls.CITIZEN_PHONE_NUMBER_URL, urls.UNAUTHORISED_URL,urls.CONFIRM_CITIZEN_DETAILS_URL, urls.CITIZEN_DETAILS_URL, urls.CLAIM_DETAILS_URL, urls.DOB_URL,  urls.AGE_ELIGIBILITY_URL, urls.CITIZEN_RESPONSE_TYPE, urls.ROOT_URL];
+const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL, urls.CASES_URL, urls.CALLBACK_URL, urls.DASHBOARD_URL, urls.UNAUTHORISED_URL, urls.CITIZEN_PHONE_NUMBER_URL, urls.UNAUTHORISED_URL,urls.CONFIRM_CITIZEN_DETAILS_URL, urls.CITIZEN_DETAILS_URL, urls.CLAIM_DETAILS_URL, urls.DOB_URL,  urls.AGE_ELIGIBILITY_URL, urls.CITIZEN_RESPONSE_TYPE, urls.ROOT_URL, urls.HOME_URL];
 const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 
 
@@ -69,12 +69,19 @@ function expectNoErrors(messages: PallyIssue[]): void {
     fail(`There are accessibility issues: \n${errorsAsJson}\n`);
   }
 }
-
-describe.each(urlsNoSignOut)('Page %s', url => {
-  test('should have no accessibility errors', async () => {
-    await ensurePageCallWillSucceed(url);
-    const result = await runPally(agent.get(url).url);
-    expect(result.issues).toEqual(expect.any(Array));
-    expectNoErrors(result.issues);
-  });
+describe('check URLs for accessibility errors', () => {
+  if (urlsNoSignOut.length > 0 ) {
+    describe.each(urlsNoSignOut)('Page %s', url => {
+      test('should have no accessibility errors', async () => {
+        await ensurePageCallWillSucceed(url);
+        const result = await runPally(agent.get(url).url);
+        expect(result.issues).toEqual(expect.any(Array));
+        expectNoErrors(result.issues);
+      });
+    });
+  } else {
+    it('does nothing', async () => {
+      //see https://github.com/facebook/jest/issues/5783#issuecomment-450626450
+    });
+  }
 });
