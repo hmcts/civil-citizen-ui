@@ -31,11 +31,20 @@ describe('Postcode Lookup Controller', () => {
       });
   });
 
-  test('should return list of addresses', async () => {
+  test('should return 400 as postcode not provided', async () => {
     await request(app)
       .get(POSTCODE_LOOKUP_URL + '?postcode=')
       .expect((res) => {
         expect(res.status).toBe(400);
+        expect(res.text).toContain('Postcode not provided');
+      });
+  });
+
+  test('should return 500 as postcode incomplete', async () => {
+    await request(app)
+      .get(POSTCODE_LOOKUP_URL + '?postcode=BT')
+      .expect((res) => {
+        expect(res.status).toBe(500);
       });
   });
 });
