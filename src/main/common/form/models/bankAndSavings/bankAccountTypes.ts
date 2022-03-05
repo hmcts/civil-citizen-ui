@@ -2,15 +2,34 @@ import { BankAccountType } from './bankAccountType';
 
 export class BankAccountTypes{
   readonly CHOOSE = new BankAccountType('', 'Choose');
-  CURRENT_ACCOUNT = new BankAccountType('CURRENT_ACCOUNT', 'Current account');
-  SAVING_ACCOUNT = new BankAccountType('SAVINGS_ACCOUNT', 'Saving account');
-  ISA = new BankAccountType('ISA', 'ISA');
-  OTHER = new BankAccountType('OTHER', 'Other');
+  CURRENT_ACCOUNT : BankAccountType;
+  SAVING_ACCOUNT :  BankAccountType;
+  ISA : BankAccountType;
+  OTHER : BankAccountType;
 
-  all (value?: string): BankAccountType[] {
-    if(value) {
+  constructor() {
+    this.createRequiredTypes();
+  }
+
+  all (value:string): BankAccountType[] {
+    this.createRequiredTypes();
+    return this.selectAndGetBankAccountTypes(value);
+  }
+
+  private createRequiredTypes() {
+    this.CURRENT_ACCOUNT = new BankAccountType('CURRENT_ACCOUNT', 'Current account');
+    this.SAVING_ACCOUNT = new BankAccountType('SAVINGS_ACCOUNT', 'Saving account');
+    this.ISA = new BankAccountType('ISA', 'ISA');
+    this.OTHER = new BankAccountType('OTHER', 'Other');
+  }
+
+  selectAndGetBankAccountTypes(value?:string): BankAccountType[] {
+    if(value){
       this.selected(value);
     }
+    return this.getAllBankBankAccountTypes();
+  }
+  getAllBankBankAccountTypes() : BankAccountType[] {
     return [
       this.CHOOSE,
       this.CURRENT_ACCOUNT,
@@ -29,7 +48,7 @@ export class BankAccountTypes{
   }
 
   valueOf (value: string): BankAccountType {
-    return this.all()
+    return this.getAllBankBankAccountTypes()
       .filter(type => type.value === value)
       .pop();
   }
