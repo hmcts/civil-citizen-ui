@@ -5,8 +5,9 @@ import {SELECT_AN_OPTION} from '../../../form/validationErrors/errorMessageConst
 import {ArrayAtLeastOneSelectedValidator} from '../../../form/validators/arrayAtLeastOneSelectedValidator';
 
 export class BankAccounts extends Form{
+
+  @ValidateNested()
   @Validate( ArrayAtLeastOneSelectedValidator,{message: SELECT_AN_OPTION})
-  @ValidateNested({ each: true })
     accounts:BankAccount[];
 
   constructor(accounts : BankAccount[]) {

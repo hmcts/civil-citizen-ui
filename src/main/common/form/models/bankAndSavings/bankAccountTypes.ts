@@ -1,7 +1,8 @@
-import { BankAccountType } from './bankAccountType';
+import {BankAccountType} from './bankAccountType';
+import {BankAccountTypeValues} from '../../../form/models/bankAndSavings/bankAccountTypeValues';
 
 export class BankAccountTypes{
-  readonly CHOOSE = new BankAccountType('', 'Choose');
+  readonly CHOOSE = new BankAccountType(undefined, 'Choose');
   CURRENT_ACCOUNT : BankAccountType;
   SAVING_ACCOUNT :  BankAccountType;
   ISA : BankAccountType;
@@ -17,10 +18,10 @@ export class BankAccountTypes{
   }
 
   private createRequiredTypes() {
-    this.CURRENT_ACCOUNT = new BankAccountType('CURRENT_ACCOUNT', 'Current account');
-    this.SAVING_ACCOUNT = new BankAccountType('SAVINGS_ACCOUNT', 'Saving account');
-    this.ISA = new BankAccountType('ISA', 'ISA');
-    this.OTHER = new BankAccountType('OTHER', 'Other');
+    this.CURRENT_ACCOUNT = new BankAccountType(BankAccountTypeValues.CURRENT_ACCOUNT, 'Current account');
+    this.SAVING_ACCOUNT = new BankAccountType(BankAccountTypeValues.SAVINGS_ACCOUNT, 'Saving account');
+    this.ISA = new BankAccountType(BankAccountTypeValues.ISA, 'ISA');
+    this.OTHER = new BankAccountType(BankAccountTypeValues.OTHER, 'Other');
   }
 
   selectAndGetBankAccountTypes(value?:string): BankAccountType[] {

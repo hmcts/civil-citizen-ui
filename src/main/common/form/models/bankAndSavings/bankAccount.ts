@@ -1,5 +1,4 @@
 import {IsDefined, IsIn, Validate, ValidateIf} from 'class-validator';
-import {BankAccountType} from './bankAccountType';
 import {Form} from '../../../form/models/form';
 import {
   SELECT_AN_OPTION,
@@ -7,14 +6,14 @@ import {
   NUMBER_REQUIRED,
 } from '../../../form/validationErrors/errorMessageConstants';
 import {AccountBalanceValidator} from '../../../form/validators/accountBalanceValidator';
-import { BankAccountTypes } from './bankAccountTypes';
+import {BankAccountTypeValues} from '../../../form/models/bankAndSavings/bankAccountTypeValues';
 
 export class BankAccount extends Form {
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsDefined({message: TYPE_OF_ACCOUNT_REQUIRED})
-  @IsIn(new BankAccountTypes().required(), {message: TYPE_OF_ACCOUNT_REQUIRED})
-    typeOfAccount?: BankAccountType;
+  @IsIn(Object.values(BankAccountTypeValues), {message: TYPE_OF_ACCOUNT_REQUIRED})
+    typeOfAccount?: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsDefined({message: SELECT_AN_OPTION})
@@ -25,7 +24,7 @@ export class BankAccount extends Form {
   @Validate(AccountBalanceValidator)
     balance?: string;
 
-  constructor(typeOfAccount?: BankAccountType, joint?: boolean, balance?: string) {
+  constructor(typeOfAccount?: string, joint?: boolean, balance?: string) {
     super();
     this.typeOfAccount = typeOfAccount;
     this.joint = joint;
@@ -33,7 +32,7 @@ export class BankAccount extends Form {
   }
 
   public isEmpty (): boolean {
-    return Object.values(this).every(value => (value === undefined || value === ''));
+    return Object.values(this).every(value => value === undefined || value === '');
   }
 
   isAtLeastOneFieldPopulated (): boolean {

@@ -1,13 +1,12 @@
-/**
- * Bank account type enum
- */
+import {BankAccountTypeValues} from './bankAccountTypeValues';
+
 export class BankAccountType {
 
-  readonly value: string;
+  readonly value: BankAccountTypeValues;
   readonly text: string;
   selected: boolean;
 
-  constructor (value: string, displayValue: string) {
+  constructor (value: BankAccountTypeValues, displayValue: string) {
     this.value = value;
     this.text = displayValue;
   }
