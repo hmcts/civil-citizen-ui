@@ -6,13 +6,13 @@
     <div class="multiple-row">
       <div class="govuk-grid-column-one-third govuk-!-display-inline">
         {{ govukSelect({
-          name: "rows[rows"+index+"][typeOfAccount]",
+          name: "accounts["+index+"][typeOfAccount]",
           items: bankAccountDropDownItems.all(bankAccount.typeOfAccount)
         }) }}
       </div>
       <div class="govuk-grid-column-one-third govuk-!-display-inline">
         {{ govukSelect({
-          name: "rows[rows"+index+"][joint]",
+          name: "accounts["+index+"][joint]",
           value: bankAccount.joint,
           items: [
             {
@@ -35,7 +35,7 @@
       </div>
       <div class="govuk-grid-column-one-third govuk-!-display-inline">
         {{ govukInput({
-          name: "rows[rows"+index+"][balance]",
+          name: "accounts["+index+"][balance]",
           value: bankAccount.balance,
           prefix: {
             text: "£"

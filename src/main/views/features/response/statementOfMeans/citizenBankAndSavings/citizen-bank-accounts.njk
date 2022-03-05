@@ -36,7 +36,7 @@
               <div class="govuk-grid-column-one-third govuk-!-display-inline">
                 <label id="account-balance-label" class="govuk-label--m">{{t('Balance')}}</label>
               </div>
-              {% for account in form.rows %}
+              {% for account in form.accounts %}
               {{ bankAccountRow(account, bankAccountDropDownItems, loop.index0) }}
               {% endfor %}
               {{ govukButton({

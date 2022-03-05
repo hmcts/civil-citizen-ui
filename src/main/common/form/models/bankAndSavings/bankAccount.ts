@@ -32,8 +32,8 @@ export class BankAccount extends Form {
     this.balance = balance;
   }
 
-  isEmpty (): boolean {
-    return Object.values(this).every(value => value === undefined);
+  public isEmpty (): boolean {
+    return Object.values(this).every(value => (value === undefined || value === ''));
   }
 
   isAtLeastOneFieldPopulated (): boolean {
