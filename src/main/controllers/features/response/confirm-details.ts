@@ -84,7 +84,7 @@ function renderCitizenDetailsPage(res: express.Response, _errorList:IErrorList[]
 
 // -- Display Claim Details
 const getClaimDetails = async (req: express.Request, res: express.Response) => {
-  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+  claim = await civilServiceClient.retrieveClaimDetails(req.body.id);
   renderPage(res, claim);
 };
 
