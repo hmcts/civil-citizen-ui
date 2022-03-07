@@ -1,46 +1,24 @@
 {% extends "claim-details-tpl.njk" %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/yesNoForm.njk" import yesNoRadioButton %}
 
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
+      {% set name = "Are you disabled?" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": 'There was a problem',
+          "titleText": "There was a problem",
           "errorList": errors
         }) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post">
-            {{ govukRadios({
-              idPrefix: "disability",
-              name: "disability",
-              fieldset: {
-                legend: {
-                  text: "Are you disabled?",
-                  isPageHeading: true,
-                  classes: "govuk-fieldset__legend--l"
-                }
-              },
-              items: [
-                {
-                  value: "yes",
-                  html: "<span>" + t('Yes') + "</span>"
-                },
-                {
-                  value: "no",
-                  html: "<span>" + t('No') + "</span>"
-                }
-              ],
-              errorMessage: {
-                html: errors[0].text
-              } if errors
-            }) }}
+            {{ yesNoRadioButton(t,name,errors) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")
