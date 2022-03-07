@@ -95,7 +95,7 @@ const getClaimDetails = async (req: express.Request, res: express.Response) => {
 const getCitizenDetails = async (req: express.Request, res: express.Response) => {
   // -- Retrive from Redis
   const draftStoreClient = req.app.locals.draftStoreClient;
-  let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
+  let citizenDetails = await draftStoreClient.get(req.params.id);
 
   // -- Data in Redis exists
   if (citizenDetails) {
@@ -121,7 +121,6 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
 
 // Save details
 const formHandler = async (req: express.Request, res: express.Response) => {
-  console.log('REQ BODY', req.body);
   addressLineOneValidated = validateField(req.body.addressLineOne, 'Enter first address line', 'addressLineOne', addressLineOneObj);
   townOrCityValidated = validateField(req.body.city, 'Enter a valid town/city', 'city', townOrCityObj);
   const draftStoreClient = req.app.locals.draftStoreClient;
@@ -140,12 +139,11 @@ const formHandler = async (req: express.Request, res: express.Response) => {
     respondent.primaryAddress = primaryAddress;
     claim.respondent1 = respondent;
 
-    await draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim));
+    await draftStoreClient.set(req.params.id, JSON.stringify(claim));
     res.redirect(UrlPatchReplace.replaceIDFromUrl(DOB_URL, req.params.id));
   } else { // -- else get existing values and render page with error message
-    let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
+    let citizenDetails = await draftStoreClient.get(req.params.id);
     citizenDetails = JSON.parse(citizenDetails);
-    console.log('REDIS:', citizenDetails);
     renderCitizenDetailsPage(res, errorList, addressLineOneValidated, townOrCityValidated, citizenDetails);
   }
 };
