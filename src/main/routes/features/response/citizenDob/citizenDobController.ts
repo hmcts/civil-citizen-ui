@@ -5,6 +5,7 @@ import {DOB_URL, DASHBOARD_URL, AGE_ELIGIBILITY_URL} from '../../../../routes/ur
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilityVerification';
+import {UrlPatchReplace} from 'common/utils/urlPatchReplace';
 
 
 const router = express.Router();
@@ -16,7 +17,7 @@ function redirectToNextPage(req: express.Request, res: express.Response, dob: Da
   if (AgeEligibilityVerification.isOverEighteen(dob)) {
     res.redirect(DASHBOARD_URL);
   } else {
-    res.redirect(AGE_ELIGIBILITY_URL);
+    res.redirect(UrlPatchReplace.replaceIDFromUrl(AGE_ELIGIBILITY_URL, req.params.id));
   }
 }
 

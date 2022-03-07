@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import {RESPONSE_TYPE_URL, ROOT_URL} from '../../../urls';
+import {DASHBOARD_URL, RESPONSE_TYPE_URL} from '../../../urls';
 import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
@@ -49,7 +49,7 @@ router.post(RESPONSE_TYPE_URL,
       claim.legacyCaseReference = 'responseType';
       const draftStoreClient = req.app.locals.draftStoreClient;
       draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim)).then(() => {
-        res.redirect(ROOT_URL);
+        res.redirect(DASHBOARD_URL);
       });
     }
   });
