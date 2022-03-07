@@ -15,7 +15,7 @@ export class CivilServiceClient {
     });
   }
 
-  getConfig(req : AppRequest) {
+  getConfig(req: AppRequest) {
     return {
       headers: {
         'Content-Type': 'application/json',
@@ -26,8 +26,8 @@ export class CivilServiceClient {
 
   async retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
     const config = this.getConfig(req);
-    let claims : Claim[] = [];
-    await this.client.post(CIVIL_SERVICE_CASES_URL,{ match_all: {} }, config)
+    let claims: Claim[] = [];
+    await this.client.post(CIVIL_SERVICE_CASES_URL, {match_all: {}}, config)
       .then(response => {
         claims = response.data.cases.map((claim: CivilClaimResponse) => Object.assign(new Claim(), claim.case_data));
       }).catch(error => {
@@ -36,8 +36,8 @@ export class CivilServiceClient {
     return claims;
   }
 
-  async retrieveClaimDetails(claimId: string): Promise<Claim> {
-    const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`);
+  async retrieveClaimDetails(claimId: string, req: AppRequest): Promise<Claim> {
+    const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`, this.getConfig(req));
     if (!response.data) {
       throw new AssertionError({message: 'Claim details not available.'});
     }

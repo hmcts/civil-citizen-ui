@@ -1,9 +1,11 @@
 import * as express from 'express';
-import { Claim } from '../../../common/models/claim';
-import { CivilServiceClient } from '../../../app/client/civilServiceClient';
+import {Claim} from '../../../common/models/claim';
+import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import config from 'config';
 import {Respondent} from '../../../common/models/respondent';
 import {PrimaryAddress} from '../../../common/models/primaryAddress';
+import {AppRequest} from 'models/AppRequest';
+
 const validator = require('../../../common/utils/validator');
 
 
@@ -49,10 +51,9 @@ const validateField = (formVal: string, errorMsg: string, formName: string, form
 
     formControlValidated = {
       ...formObject,
-      errorMessage: { 'text': errorMsg },
+      errorMessage: {'text': errorMsg},
     };
-  }
-  else {
+  } else {
     formControlValidated = {
       ...formObject,
       value: formVal,
@@ -72,7 +73,7 @@ function renderPage(res: express.Response, claimDetails: Claim): void {
   });
 }
 
-function renderCitizenDetailsPage(res: express.Response, _errorList:IErrorList[], _addressLineOneObj:object, _townOrCityObj:object, citizenDetails:object): void {
+function renderCitizenDetailsPage(res: express.Response, _errorList: IErrorList[], _addressLineOneObj: object, _townOrCityObj: object, citizenDetails: object): void {
   res.render('features/response/your-details', {
     errorList: _errorList,
     addressLineOneObj: _addressLineOneObj,
@@ -84,7 +85,7 @@ function renderCitizenDetailsPage(res: express.Response, _errorList:IErrorList[]
 
 // -- Display Claim Details
 const getClaimDetails = async (req: express.Request, res: express.Response) => {
-  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739', <AppRequest>req);
   renderPage(res, claim);
 };
 
@@ -98,7 +99,7 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
   if (citizenDetails) {
     citizenDetails = JSON.parse(citizenDetails);
   } else { // -- Otherwise user visit page first time
-    claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+    claim = await civilServiceClient.retrieveClaimDetails('1643033241924739', <AppRequest>req);
     citizenDetails = claim;
   }
 
@@ -146,4 +147,4 @@ const formHandler = async (req: express.Request, res: express.Response) => {
   }
 };
 
-module.exports = { getClaimDetails, getCitizenDetails, formHandler, validateField };
+module.exports = {getClaimDetails, getCitizenDetails, formHandler, validateField};
