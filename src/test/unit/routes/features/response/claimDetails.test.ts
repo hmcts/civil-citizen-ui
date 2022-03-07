@@ -1,43 +1,54 @@
-import {CivilServiceClient} from '../../../../../main/app/client/civilServiceClient';
+import request from 'supertest';
+import {app} from '../../../../../main/app';
+import config from 'config';
 
-import axios, {AxiosInstance} from 'axios';
-import {Claim} from '../../../../../main/common/models/claim';
+const nock = require('nock');
 
-jest.mock('axios');
+const agent = request.agent(app);
 
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+
+/*const mockResponse = {
+  legacyCaseReference: '497MC585',
+  applicant1:
+    {
+      type: 'INDIVIDUAL',
+      individualTitle: 'Mrs',
+      individualLastName: 'Clark',
+      individualFirstName: 'Jane',
+    },
+  totalClaimAmount: 110,
+  respondent1ResponseDeadline: '2022-01-24T15:59:59',
+  detailsOfClaim: 'the reason i have given',
+};*/
+
+function authenticate() {
+  return () =>
+    agent.get('/oauth2/callback')
+      .query('code=ABC')
+      .then((res) => {
+        expect(res.status).toBe(302);
+      });
+}
 
 describe('Claim Details', () => {
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const idamUrl: string = config.get('idamUrl');
+  beforeEach(() => {
+    nock(idamUrl)
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
+    authenticate();
+    nock('http://localhost:4000')
+      .post('/cases/111')
+      .reply(200, {});
+  });
   it('retrieve claim details', async () => {
-    const mockResponse = {
-      legacyCaseReference: '497MC585',
-      applicant1:
-        {
-          type: 'INDIVIDUAL',
-          individualTitle: 'Mrs',
-          individualLastName: 'Clark',
-          individualFirstName: 'Jane',
-        },
-      totalClaimAmount: 110,
-      respondent1ResponseDeadline: '2022-01-24T15:59:59',
-      detailsOfClaim: 'the reason i have given',
-    };
 
-
-    const mockGet = jest.fn().mockResolvedValue({data: mockResponse});
-    mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
-
-    const civilServiceClient = new CivilServiceClient('http://localhost');
-
-    const actualClaims: Claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
-
-    expect(mockedAxios.create).toHaveBeenCalledWith({
-      baseURL: 'http://localhost',
-    });
-
-    expect(actualClaims.legacyCaseReference).toEqual(mockResponse.legacyCaseReference);
-    expect(actualClaims.totalClaimAmount).toEqual(mockResponse.totalClaimAmount);
-    expect(actualClaims.detailsOfClaim).toEqual(mockResponse.detailsOfClaim);
+    await agent
+      .get('/case/111/response/claim-details')
+      .expect((res) => {
+        expect(res.status).toBe(200);
+      });
   });
 });
 

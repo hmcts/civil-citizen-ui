@@ -5,6 +5,8 @@ import config from 'config';
 import {Respondent} from '../../../common/models/respondent';
 import {PrimaryAddress} from '../../../common/models/primaryAddress';
 import {AppRequest} from 'models/AppRequest';
+import {DOB_URL} from 'routes/urls';
+import {UrlPatchReplace} from 'common/utils/urlPatchReplace';
 const validator = require('../../../common/utils/validator');
 
 
@@ -139,7 +141,7 @@ const formHandler = async (req: express.Request, res: express.Response) => {
     claim.respondent1 = respondent;
 
     await draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim));
-    res.redirect('case/1643033241924739/response/your-dob');
+    res.redirect(UrlPatchReplace.replaceIDFromUrl(DOB_URL, req.params.id));
   } else { // -- else get existing values and render page with error message
     let citizenDetails = await draftStoreClient.get(claim.legacyCaseReference);
     citizenDetails = JSON.parse(citizenDetails);
