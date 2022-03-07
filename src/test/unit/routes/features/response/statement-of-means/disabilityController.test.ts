@@ -37,7 +37,7 @@ describe('Disability', () => {
       .post(CITIZEN_DISABILITY_URL)
       .send('responseType=test')
       .expect((res) => {
-        expect(res.status).toBe(302);
+        expect(res.status).toBe(200);
       });
   });
 });
