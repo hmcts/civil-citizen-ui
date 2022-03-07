@@ -1,5 +1,6 @@
 import os from 'os';
 import {Application} from 'express';
+import config from 'config';
 
 const healthCheck = require('@hmcts/nodejs-healthcheck');
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -9,6 +10,9 @@ export class HealthCheck {
   public enableFor(app: Application): void {
 
     const redis = healthCheck.raw(() => {
+      const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
+      const connectionString = `${protocol}default:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
+      logger.info(`connectionString: ${connectionString}`);
       logger.info('About to ping Redis...');
       return app.locals.draftStoreClient.ping()
         .then((pingResponse: string) => {
