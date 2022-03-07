@@ -5,8 +5,8 @@ import config from 'config';
 import {Respondent} from '../../../common/models/respondent';
 import {PrimaryAddress} from '../../../common/models/primaryAddress';
 import {AppRequest} from 'models/AppRequest';
-import {DOB_URL} from 'routes/urls';
-import {UrlPatchReplace} from 'common/utils/urlPatchReplace';
+import {DOB_URL} from '../../../routes/urls';
+import {UrlPatchReplace} from '../../../common/utils/urlPatchReplace';
 const validator = require('../../../common/utils/validator');
 
 

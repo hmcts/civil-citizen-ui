@@ -5,7 +5,7 @@ import {DOB_URL, DASHBOARD_URL, AGE_ELIGIBILITY_URL} from '../../../../routes/ur
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilityVerification';
-import {UrlPatchReplace} from 'common/utils/urlPatchReplace';
+import {UrlPatchReplace} from '../../../../common/utils/urlPatchReplace';
 
 
 const router = express.Router();
