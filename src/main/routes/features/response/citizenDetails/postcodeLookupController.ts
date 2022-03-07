@@ -5,7 +5,7 @@ import config from 'config';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 
-const postcodeLookupApiKey = config.get<string>('secrets.cmc.os-postcode-lookup-api-key');
+const postcodeLookupApiKey = config.get<string>('services.civil.ordnanceSurveyApiKey');
 const osPlacesClient = new OSPlacesClient(postcodeLookupApiKey);
 const logger = Logger.getLogger('postcode-lookup');
 

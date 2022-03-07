@@ -27,3 +27,8 @@ resource "azurerm_key_vault_secret" "redis_access_key" {
   value        = module.civil-citizen-ui-draft-store.access_key
   key_vault_id = data.azurerm_key_vault.civil_vault.id
 }
+
+data "azurerm_key_vault_secret" "ordnance-survey-api-key" {
+  name = "ordnance-survey-api-key"
+  key_vault_id = "${data.azurerm_key_vault.cmc_key_vault.id}"
+}

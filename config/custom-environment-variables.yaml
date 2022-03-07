@@ -7,6 +7,8 @@ services:
     clientID: IDAM_CLIENT_ID
     clientSecret: IDAM_SECRET
     callbackURL: OAUTH_CLIENT_REDIRECT
+  civil:
+     ordnanceSurveyApiKey: ORDNANCE_SURVEY_API_KEY
   draftStore:
     redis:
       host: REDIS_HOST
@@ -16,7 +18,3 @@ services:
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
-
-secrets:
-  cmc:
-    os-postcode-lookup-api-key: akmD49XpaGfTWz8CD5PUGlhAFw2FBo3a
