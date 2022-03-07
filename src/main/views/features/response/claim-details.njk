@@ -11,9 +11,8 @@
           {% if claim.helpWithFeesNumber %}
             <p class="govuk-body">
               <span>
-                <strong>{{ t('Claim number:') }}
-                </span>
-              </strong>
+                <strong>{{ t('Claim number:') }} </strong>
+              </span>
               <span>
                 {% set dash = joiner("-") %}
                 {% for batch in claim.ccdCaseId | string | batch(4) -%}
