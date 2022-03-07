@@ -1,8 +1,14 @@
 import request from 'supertest';
 import {app} from '../../../../main/app';
 
-jest.mock('redis');
-
+jest.mock('ioredis', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      ping: jest.fn(async () => 'PONG'),
+      set: jest.fn(async () => {return;}),
+    };
+  });
+});
 
 describe('Draft Store Health Check - UP', () => {
   test('When draft store responding, health check should return UP', async () => {
