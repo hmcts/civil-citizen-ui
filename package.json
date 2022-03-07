@@ -81,7 +81,7 @@
     "@types/supertest": "^2.0.8",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/eslint-plugin-tslint": "^5.10.1",
-    "@typescript-eslint/parser": "^5.10.0",
+    "@typescript-eslint/parser": "^5.13.0",
     "@babel/eslint-parser": "^7.17.0",
     "babel-loader": "^8.2.3",
     "codeceptjs": "^3.3.0",
