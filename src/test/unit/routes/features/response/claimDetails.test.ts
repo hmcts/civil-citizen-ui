@@ -7,7 +7,7 @@ const nock = require('nock');
 const agent = request.agent(app);
 
 
-/*const mockResponse = {
+const mockResponse = {
   legacyCaseReference: '497MC585',
   applicant1:
     {
@@ -19,7 +19,7 @@ const agent = request.agent(app);
   totalClaimAmount: 110,
   respondent1ResponseDeadline: '2022-01-24T15:59:59',
   detailsOfClaim: 'the reason i have given',
-};*/
+};
 
 function authenticate() {
   return () =>
@@ -33,6 +33,7 @@ function authenticate() {
 describe('Claim Details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -40,14 +41,15 @@ describe('Claim Details', () => {
     authenticate();
     nock('http://localhost:4000')
       .post('/cases/111')
-      .reply(200, {});
+      .reply(200, {mockResponse});
   });
-  it('retrieve claim details', async () => {
 
+  //TODO should add the correct call when claim-details will be restore
+  it('retrieve claim details', async () => {
     await agent
       .get('/case/111/response/claim-details')
       .expect((res) => {
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(302);
       });
   });
 });

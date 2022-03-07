@@ -24,15 +24,18 @@ describe('Confirm Details page', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    authenticate();
+    nock('http://localhost:4000')
+      .post('/cases/12334')
+      .reply(200, {});
   });
 
-  test('Authenticate Callback', authenticate());
   test('should return your details page', async () => {
     await agent
       .get('/case/12334/response/your-details')
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Confirm your details');
+        expect(res.header.location).toContain('case/12334/response/your-dob');
       });
   });
 
