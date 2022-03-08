@@ -27,4 +27,8 @@ export class Form {
       return this.errors.some((error) => field == error.property);
     }
   }
+  public getErrorMessageForField(field: string): string {
+    const error = this.errors.filter(error => error.property == field).pop();
+    return error? new FormValidationError(error).text : '';
+  }
 }

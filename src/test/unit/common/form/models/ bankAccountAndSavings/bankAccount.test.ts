@@ -30,7 +30,7 @@ describe('BankAccount validation', () => {
     //Then
     expect(result.length).toBe(2);
   });
-  it('should not allow empty value when two fieldw is populated', () =>{
+  it('should not allow empty value when two fields is populated', () =>{
     //Given
     const account = new BankAccount(undefined, true, undefined);
     //When

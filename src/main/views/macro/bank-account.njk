@@ -1,0 +1,64 @@
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% macro bankAccountRow(bankAccount, bankAccountDropDownItems, index) %}
+  <div id="row-container">
+    <div class="multiple-row">
+      {% set errors = bankAccount.getErrors() %}
+      <div class="govuk-form-group {%- if bankAccount.hasErrors() %} govuk-form-group--error{% endif %}">
+          {% if errors %}
+          {% for error in errors %}
+            {{ govukErrorMessage({
+              text:t(error.text)
+            })| indent(2) | trim  }}
+          {% endfor %}
+        {% endif %}
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+            {{ govukSelect({
+              name: "accounts["+index+"][typeOfAccount]",
+              items: bankAccountDropDownItems.all(bankAccount.typeOfAccount),
+              classes: "govuk-select--error" if bankAccount.hasFieldError('typeOfAccount') else ""
+            }) }}
+          </div>
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+            {{ govukSelect({
+              name: "accounts["+index+"][joint]",
+              classes: "govuk-select--error" if bankAccount.hasFieldError('joint') else "",
+              items: [
+                {
+                  value: "",
+                  text: t("Choose")
+                },
+                {
+                  value: 'true',
+                  text: t("Yes"),
+                  selected: true if bankAccount.joint == 'true'
+
+                },
+                {
+                  value: 'false',
+                  text: t("No"),
+                  selected: true if bankAccount.joint == 'false'
+                }
+              ]
+
+            }) }}
+          </div>
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+            {{ govukInput({
+              name: "accounts["+index+"][balance]",
+              value: bankAccount.balance,
+              prefix: {
+                text: "£"
+              },
+              classes: "govuk-input--width-5 govuk-input--error" if bankAccount.hasFieldError('balance') else "govuk-input--width-5",
+              spellcheck: false
+
+            }) }}
+          </div>
+      </div>
+    </div>
+  </div>
+
+{% endmacro %}
