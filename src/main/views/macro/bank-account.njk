@@ -6,7 +6,7 @@
   <div id="row-container">
     <div class="multiple-row">
       {% set errors = bankAccount.getErrors() %}
-      <div class="govuk-form-group {%- if bankAccount.hasErrors() %} govuk-form-group--error{% endif %}">
+      <div class="govuk-form-group {%- if errors.length>0 %} govuk-form-group--error{% endif %}">
           {% if errors %}
           {% for error in errors %}
             {{ govukErrorMessage({

@@ -25,12 +25,27 @@ document.addEventListener('DOMContentLoaded', function () {
     let newRow = getLastRow();
     let inputs = newRow.querySelectorAll('input, textarea, select');
     updateInputs(inputs);
+    removeErrors(newRow);
+  }
+
+  function removeErrors(newRow) {
+    let errorRow = newRow.getElementsByClassName('govuk-form-group govuk-form-group--error');
+    if(errorRow && errorRow.length>0){
+      const errors = errorRow[0].getElementsByClassName('govuk-error-message');
+      if(errors && errors.length>0){
+        while(errors[0]){
+          errors[0].parentNode.removeChild(errors[0]);
+        }
+      }
+      errorRow[0].classList.remove('govuk-form-group--error');
+    }
   }
 
   function updateInputs(inputs) {
     if(inputs && inputs.length>0){
       inputs.forEach(input => {
         input.value = '';
+        input.classList.remove('govuk-input--error', 'govuk-select--error');
         incrementIndexOnName(input);
       });
     }
