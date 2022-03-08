@@ -10,7 +10,9 @@ jest.mock('ioredis', () => {
     return {
       ping: jest.fn(async () => 'PONG'),
       set: jest.fn(async () => ''),
-      get: jest.fn(async () => {return JSON.stringify({});}),
+      get: jest.fn(async () => {
+        return JSON.stringify({});
+      }),
     };
   });
 });
@@ -53,4 +55,22 @@ describe('Confirm Details page', () => {
         expect(res.header.location).toContain('case/1643033241924739/response/your-dob');
       });
   });
+  test('POST/Citizen details no send data', async () => {
+    await agent
+      .post('/confirm-your-details')
+      .expect((res) => {
+        expect(res.status).toBe(200);
+      });
+  });
+
+  test('Authenticate Callback', authenticate());
+  test('should return claim details page', async () => {
+    await agent
+      .get('/case/12334/response/claim-details')
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Claim details');
+      });
+  });
+
 });

@@ -36,7 +36,7 @@ describe('Claim Details', () => {
       .reply(200, {id_token: citizenRoleToken});
     authenticate();
     nock('http://localhost:4000')
-      .post('/cases/111')
+      .get('/cases/12334')
       .reply(200, {mockResponse});
   });
   //TODO should add the correct call when claim-details will be restore

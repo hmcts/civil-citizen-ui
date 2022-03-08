@@ -85,7 +85,12 @@ function renderCitizenDetailsPage(res: express.Response, _errorList: IErrorList[
 
 // -- Display Claim Details
 const getClaimDetails = async (req: express.Request, res: express.Response) => {
-  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739', <AppRequest>req);
+  // -- Retrive from Redis
+  const draftStoreClient = req.app.locals.draftStoreClient;
+  claim = await draftStoreClient.get(claim.legacyCaseReference);
+  if (!claim) {
+    claim = await civilServiceClient.retrieveClaimDetails('1643033241924739', <AppRequest>req);
+  }
   renderPage(res, claim);
 };
 
@@ -119,8 +124,10 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
 
 // Save details
 const formHandler = async (req: express.Request, res: express.Response) => {
-  addressLineOneValidated = validateField(req.body.addressLineOne, 'Enter first address line', 'addressLineOne', addressLineOneObj);
-  townOrCityValidated = validateField(req.body.city, 'Enter a valid town/city', 'city', townOrCityObj);
+  if (req.body?.addressLineOne && req.body?.city) {
+    addressLineOneValidated = validateField(req.body.addressLineOne, 'Enter first address line', 'addressLineOne', addressLineOneObj);
+    townOrCityValidated = validateField(req.body.city, 'Enter a valid town/city', 'city', townOrCityObj);
+  }
   const draftStoreClient = req.app.locals.draftStoreClient;
 
   // -- If valid save into Redis
