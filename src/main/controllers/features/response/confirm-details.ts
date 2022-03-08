@@ -118,7 +118,6 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
 
 // Save details
 const formHandler = async (req: express.Request, res: express.Response) => {
-  console.log('REQ BODY', req.body);
   addressLineOneValidated = validateField(req.body.addressLineOne, 'Enter first address line', 'addressLineOne', addressLineOneObj);
   townOrCityValidated = validateField(req.body.city, 'Enter a valid town/city', 'city', townOrCityObj);
   const draftStoreClient = req.app.locals.draftStoreClient;

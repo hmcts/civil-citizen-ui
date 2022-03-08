@@ -3,8 +3,16 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import {AGE_ELIGIBILITY_URL} from '../../../../../../main/routes/urls';
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('redis');
 const nock = require('nock');
+jest.mock('ioredis', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      set: jest.fn(async () => {
+        return;
+      }),
+    };
+  });
+});
 
 describe('Under 18 Contact court', ()=> {
   const citizenRoleToken: string = config.get('citizenRoleToken');
