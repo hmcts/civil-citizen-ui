@@ -7,8 +7,6 @@ services:
     clientID: IDAM_CLIENT_ID
     clientSecret: IDAM_SECRET
     callbackURL: OAUTH_CLIENT_REDIRECT
-  civil:
-     ordnanceSurveyApiKey: ORDNANCE_SURVEY_API_KEY
   draftStore:
     redis:
       host: REDIS_HOST

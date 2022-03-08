@@ -5,7 +5,7 @@ import config from 'config';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 
-const postcodeLookupApiKey = config.get<string>('services.civil.ordnanceSurveyApiKey');
+const postcodeLookupApiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
 const osPlacesClient = new OSPlacesClient(postcodeLookupApiKey);
 const logger = Logger.getLogger('postcode-lookup');
 
