@@ -60,7 +60,7 @@ describe('Postcode Lookup Controller - HTTP 500', () => {
   beforeEach(() => {
     nock(mockPostcodeServer)
       .get(mockPostcodePath)
-      .reply(500, { status: 500, message: "Error with OS Places service" });
+      .reply(500, { status: 500, message: 'Error with OS Places service' });
   });
   test('should return 500 as postcode incomplete', async () => {
     await request(app)
