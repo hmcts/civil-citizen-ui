@@ -1,17 +1,9 @@
 import * as express from 'express';
 import {Claim} from '../../../common/models/claim';
-import {CivilServiceClient} from '../../../app/client/civilServiceClient';
-import config from 'config';
 import {Respondent} from '../../../common/models/respondent';
 import {PrimaryAddress} from '../../../common/models/primaryAddress';
-import {AppRequest} from 'models/AppRequest';
 
 const validator = require('../../../common/utils/validator');
-
-
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-
 let claim: Claim = new Claim();
 const respondent: Respondent = new Respondent();
 const primaryAddress: PrimaryAddress = new PrimaryAddress();
@@ -88,9 +80,6 @@ const getClaimDetails = async (req: express.Request, res: express.Response) => {
   // -- Retrive from Redis
   const draftStoreClient = req.app.locals.draftStoreClient;
   claim = await draftStoreClient.get(claim.legacyCaseReference);
-  if (!claim) {
-    claim = await civilServiceClient.retrieveClaimDetails('1643033241924739', <AppRequest>req);
-  }
   renderPage(res, claim);
 };
 
@@ -103,9 +92,6 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
   // -- Data in Redis exists
   if (citizenDetails) {
     citizenDetails = JSON.parse(citizenDetails);
-  } else { // -- Otherwise user visit page first time
-    claim = await civilServiceClient.retrieveClaimDetails('1643033241924739', <AppRequest>req);
-    citizenDetails = claim;
   }
 
   // Add value to Form input
