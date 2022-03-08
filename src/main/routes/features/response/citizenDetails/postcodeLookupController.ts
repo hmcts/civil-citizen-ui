@@ -7,7 +7,7 @@ const { Logger } = require('@hmcts/nodejs-logging');
 
 const postcodeLookupApiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
 const osPlacesClient = new OSPlacesClient(postcodeLookupApiKey);
-const logger = Logger.getLogger('postcode-lookup');
+const logger = Logger.getLogger('postcodeLookupController');
 
 export default express.Router()
   .get(POSTCODE_LOOKUP_URL, (req, res) => {
@@ -31,7 +31,7 @@ export default express.Router()
       })
       .catch((err:Error) => {
         if (err.message === 'Authentication failed') {
-          console.log('Ordnance Survey keys stopped working', { error: err });
+          logger.error(err.stack);
         }
         logger.error(err.stack);
         res.status(500).json({

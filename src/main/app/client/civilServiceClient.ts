@@ -5,7 +5,7 @@ import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {CIVIL_SERVICE_CASES_URL} from './civilServiceUrls';
 const { Logger } = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('ciivil-service');
+const logger = Logger.getLogger('ciivilServiceClient');
 
 export class CivilServiceClient {
   client: AxiosInstance;

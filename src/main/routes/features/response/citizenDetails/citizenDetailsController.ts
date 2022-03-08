@@ -7,6 +7,8 @@ import { CivilServiceClient } from '../../../../app/client/civilServiceClient';
 import {Claim} from '../../../../common/models/claim';
 import { CitizenAddress } from '../../../../common/form/models/citizenAddress';
 import { CitizenCorrespondenceAddress } from '../../../../common/form/models/citizenCorrespondenceAddress';
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('citizenDetailsController');
 
 const router = express.Router();
 
@@ -49,8 +51,8 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
           _data.correspondenceAddressLine3,
           _data.correspondenceCity,
           _data.correspondencePostCode);
-      } catch (e) {
-        console.log(e);
+      } catch (err) {
+        logger.error(`${err.stack || err}`);
       }
     } else {
       formAddressModel = new CitizenAddress(
