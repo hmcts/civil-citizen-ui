@@ -1,25 +1,14 @@
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import config from 'config';
+import { ClaimMock } from '../../../../utils/claimMock';
 
 const nock = require('nock');
 
 const agent = request.agent(app);
 
 
-const mockResponse = {
-  legacyCaseReference: '497MC585',
-  applicant1:
-    {
-      type: 'INDIVIDUAL',
-      individualTitle: 'Mrs',
-      individualLastName: 'Clark',
-      individualFirstName: 'Jane',
-    },
-  totalClaimAmount: 110,
-  respondent1ResponseDeadline: '2022-01-24T15:59:59',
-  detailsOfClaim: 'the reason i have given',
-};
+
 
 function authenticate() {
   return () =>
@@ -41,7 +30,7 @@ describe('Claim Details', () => {
     authenticate();
     nock('http://localhost:4000')
       .post('/cases/111')
-      .reply(200, {mockResponse});
+      .reply(200, ClaimMock.MOCK_RESPONSE);
   });
 
   //TODO should add the correct call when claim-details will be restore

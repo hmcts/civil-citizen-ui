@@ -4,6 +4,7 @@ import config from 'config';
 import {CITIZEN_DETAILS_URL, CONFIRM_CITIZEN_DETAILS_URL, DOB_URL} from '../../../../../main/routes/urls';
 import {CLAIM_ID, CONFIRM_YOUR_DETAILS} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {UrlPatchReplace} from '../../../../../main/common/utils/urlPatchReplace';
+import {ClaimMock} from "../../../../utils/claimMock";
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -20,19 +21,6 @@ function authenticate() {
       });
 }
 
-const mockResponse = {
-  legacyCaseReference: '497MC585',
-  applicant1:
-    {
-      type: 'INDIVIDUAL',
-      individualTitle: 'Mrs',
-      individualLastName: 'Clark',
-      individualFirstName: 'Jane',
-    },
-  totalClaimAmount: 110,
-  respondent1ResponseDeadline: '2022-01-24T15:59:59',
-  detailsOfClaim: 'the reason i have given',
-};
 
 describe('Confirm Details page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -44,7 +32,7 @@ describe('Confirm Details page', () => {
     authenticate();
     nock('http://localhost:4000')
       .get(UrlPatchReplace.replaceIDFromUrl(CITIZEN_DETAILS_URL, CLAIM_ID))
-      .reply(200, {mockResponse});
+      .reply(200, ClaimMock.MOCK_RESPONSE);
   });
 
   test('should return your details page', async () => {
@@ -68,11 +56,11 @@ describe('Confirm Details page', () => {
     };
     app.locals.draftStoreClient = mockDraftStore;
     await agent
-      .post(UrlPatchReplace.replaceIDFromUrl(CONFIRM_CITIZEN_DETAILS_URL,CLAIM_ID))
+      .post('/confirm-your-details')
       .send({addressLineOne: '38 Highland Road', city: 'Birmingham'})
       .expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toContain((UrlPatchReplace.replaceIDFromUrl(DOB_URL,CLAIM_ID)));
+        expect(res.header.location).toContain((UrlPatchReplace.replaceIDFromUrl(DOB_URL, CLAIM_ID)));
       });
   });
 });

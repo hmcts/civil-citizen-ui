@@ -138,7 +138,6 @@ const formHandler = async (req: express.Request, res: express.Response) => {
     primaryAddress.PostCode = req.body.postcode;
     respondent.primaryAddress = primaryAddress;
     claim.respondent1 = respondent;
-
     await draftStoreClient.set(req.params.id, JSON.stringify(claim));
     res.redirect(UrlPatchReplace.replaceIDFromUrl(DOB_URL, req.params.id));
   } else { // -- else get existing values and render page with error message
