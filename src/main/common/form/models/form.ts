@@ -12,11 +12,11 @@ export class Form {
     return this.errors !== undefined;
   }
 
-  public getErrors(): FormValidationError[] {
+  public getErrors(parentProperty?: string): FormValidationError[] {
     if (this.hasErrors()) {
       const validators: FormValidationError[] = [];
       for (const item of this.errors) {
-        validators.push(new FormValidationError(item));
+        validators.push(new FormValidationError(item, parentProperty));
       }
       return validators;
     }

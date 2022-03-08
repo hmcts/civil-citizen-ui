@@ -19,9 +19,9 @@ export class BankAccounts extends Form{
   public getFormErrors(): FormValidationError[]{
     let formErrors = super.getErrors();
     if(this.accounts.length > 0 && this.hasErrors()) {
-      for(const account of this.accounts){
-        formErrors = formErrors.concat(account.getErrors());
-      }
+      this.accounts.forEach((account, i) => {
+        formErrors = formErrors.concat(account.getErrors('accounts['+ i +']'));
+      });
     }
     console.log(formErrors);
     return formErrors;

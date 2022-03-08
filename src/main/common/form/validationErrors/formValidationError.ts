@@ -21,6 +21,6 @@ export class FormValidationError extends ValidationError {
     this.fieldName = HtmlConverter.asFieldName(this.property);
     const constraintMessages: string[] = error.constraints? Object.values(error.constraints): undefined;
     this.text = constraintMessages? constraintMessages.join(', '): '';
-    this.href = '#'+error.property;
+    this.href = '#'+this.property;
   }
 }

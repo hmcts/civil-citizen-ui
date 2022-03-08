@@ -55,5 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let newIndex = document.getElementsByClassName('multiple-row').length - 1;
     const indexRegex = /\[(\d+)\]/;
     input.name = input.name.replace(indexRegex, '[' + newIndex + ']');
+    input.id = input.id.replace(indexRegex, '[' + newIndex + ']');
   }
 });
