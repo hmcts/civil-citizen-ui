@@ -56,6 +56,22 @@ const mockPostcodeLookupResponse = {
   ],
 };
 
+describe('Postcode Lookup Controller - HTTP 500', () => {
+  beforeEach(() => {
+    nock(mockPostcodeServer)
+      .get(mockPostcodePath)
+      .reply(500, { status: 500, message: "Error with OS Places service" });
+  });
+  test('should return 500 as postcode incomplete', async () => {
+    await request(app)
+      .get(POSTCODE_LOOKUP_URL + '?postcode=BT')
+      .expect((res) => {
+        expect(res.status).toBe(500);
+      });
+  });
+});
+
+
 describe('Postcode Lookup Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -90,14 +106,6 @@ describe('Postcode Lookup Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(400);
         expect(res.text).toContain('Postcode not provided');
-      });
-  });
-
-  test('should return 500 as postcode incomplete', async () => {
-    await request(app)
-      .get(POSTCODE_LOOKUP_URL + '?postcode=BT')
-      .expect((res) => {
-        expect(res.status).toBe(500);
       });
   });
 });
