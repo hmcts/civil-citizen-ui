@@ -4,7 +4,8 @@ import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {CIVIL_SERVICE_CASES_URL} from './civilServiceUrls';
-
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('ciivil-service');
 
 export class CivilServiceClient {
   client: AxiosInstance;
@@ -47,7 +48,7 @@ export class CivilServiceClient {
       return response.data as Claim;
 
     } catch(err:any) {
-      console.log(err);
+      logger.error(`${err.stack || err}`);
     }
   }
 }
