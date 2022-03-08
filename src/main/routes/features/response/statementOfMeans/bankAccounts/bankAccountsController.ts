@@ -5,7 +5,7 @@ import {BankAccount} from 'common/form/models/bankAndSavings/bankAccount';
 import { BankAccountTypes } from 'common/form/models/bankAndSavings/bankAccountTypes';
 import {Validator} from 'class-validator';
 import {Form} from 'common/form/models/form';
-
+import {BASE_CASE_RESPONSE_URL} from 'routes/baseUrlConstants';
 
 const citizenBankAccountsViewPath = 'features/response/statementOfMeans/citizenBankAndSavings/citizen-bank-accounts';
 const router = express.Router();
@@ -19,13 +19,13 @@ function transformToAccounts(req: express.Request){
   });
 }
 
-router.get(CITIZEN_BANK_ACCOUNT_URL, (req, res) => {
+router.get( BASE_CASE_RESPONSE_URL + CITIZEN_BANK_ACCOUNT_URL, (req, res) => {
+  console.log(req.params.id);
   const form = new BankAccounts([new BankAccount(), new BankAccount()]);
   renderView(form,  new BankAccountTypes(), res);
 });
 
 router.post(CITIZEN_BANK_ACCOUNT_URL,  async(req, res) => {
-  console.log(req.body);
   const form: BankAccounts = new BankAccounts(transformToAccounts(req));
   await renderErrorsIfExist(form, res);
 });
@@ -34,11 +34,8 @@ async function renderErrorsIfExist(form: BankAccounts, res: express.Response) {
   await validate(form);
   await validateArray(form.accounts);
   if (form.hasErrors()) {
-    console.log('has errors');
-    console.log(form.errors);
     renderView(form, new BankAccountTypes(), res);
   } else {
-    console.log('does not have errors');
     renderView(form, new BankAccountTypes(), res);
   }
 }
@@ -46,14 +43,12 @@ async function renderErrorsIfExist(form: BankAccounts, res: express.Response) {
 async function validate(form:Form){
   const validator = new Validator();
   const errors = await validator.validate(form);
-  console.log(errors);
   form.errors = errors;
 }
 
 async function validateArray(forms:BankAccount[]){
   if(forms && forms.length>0){
     for (const form of forms) {
-      console.log(form.isAtLeastOneFieldPopulated());
       await validate(form);
     }
   }

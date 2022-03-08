@@ -1,6 +1,7 @@
+
+
 export type Urls = `/${string}`;
-const BASE_CASE_RESPONSE_URL: Urls = '/case/:id/response';
-const STATEMENT_OF_MEANS_URL: Urls = `${BASE_CASE_RESPONSE_URL}/statement-of-means`;
+const STATEMENT_OF_MEANS_URL: Urls = `/statement-of-means`;
 export const CALLBACK_URL: Urls= '/oauth2/callback';
 export const SIGN_IN_URL: Urls = '/login';
 export const SIGN_OUT_URL: Urls = '/logout';
