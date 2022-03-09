@@ -5,6 +5,7 @@ import * as requestModels from '../../../../main/common/models/AppRequest';
 import {CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
 import config from 'config';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../main/app/client/civilServiceUrls';
+import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
 
 
 jest.mock('axios');
@@ -22,6 +23,7 @@ describe('Civil Service Client', () => {
         individualTitle: 'Mrs',
         individualLastName: 'Clark',
         individualFirstName: 'Jane',
+        type : CounterpartyType.individual,
       };
     claim.totalClaimAmount = 1500;
 
@@ -40,7 +42,7 @@ describe('Civil Service Client', () => {
     expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_CASES_URL);
     expect(actualClaims.length).toEqual(1);
     expect(actualClaims[0].legacyCaseReference).toEqual('000MC003');
-    expect(actualClaims[0].applicant1.individualFirstName).toEqual('Jane');
-    expect(actualClaims[0].applicant1.individualLastName).toEqual('Clark');
+    expect(actualClaims[0].applicant1?.individualFirstName).toEqual('Jane');
+    expect(actualClaims[0].applicant1?.individualLastName).toEqual('Clark');
   });
 });
