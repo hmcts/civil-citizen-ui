@@ -3,6 +3,7 @@ import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {Claim} from '../../common/models/claim';
 
 export class DraftStoreService {
+
   /**
    * Gets civil claim response object with claim from draft store
    * @param claimId
