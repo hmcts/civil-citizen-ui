@@ -7,6 +7,7 @@ import { CivilServiceClient } from '../../../../app/client/civilServiceClient';
 import {Claim} from '../../../../common/models/claim';
 import { CitizenAddress } from '../../../../common/form/models/citizenAddress';
 import { CitizenCorrespondenceAddress } from '../../../../common/form/models/citizenCorrespondenceAddress';
+import {AppRequest} from "models/AppRequest";
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDetailsController');
 
@@ -23,7 +24,7 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
   let formAddressModel;
   let formCorrespondenceModel;
   // -- Retrive form service
-  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+  claim = await civilServiceClient.retrieveClaimDetails('1646649855553790', <AppRequest>req);
 
   citizenFullName = {
     individualTitle: claim.respondent1.individualTitle,
@@ -111,7 +112,7 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     errorList.errors = citizenAddress.errors;
   }
 
-  if ((citizenAddress.errors && citizenAddress.errors.length > 0)
+  if ((citizenAddress.  errors && citizenAddress.errors.length > 0)
       || citizenCorrespondenceAddress.errors && citizenCorrespondenceAddress.errors.length > 0) {
     res.render('features/response/citizenDetails/citizen-details', {
       citizenFullName: citizenFullName,

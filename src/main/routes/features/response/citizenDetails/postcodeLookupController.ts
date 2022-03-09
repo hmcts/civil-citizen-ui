@@ -33,6 +33,7 @@ export default express.Router()
         if (err.message === 'Authentication failed') {
           logger.error(err.stack);
         }
+
         logger.error(err.stack);
         res.status(500).json({
           error: {
