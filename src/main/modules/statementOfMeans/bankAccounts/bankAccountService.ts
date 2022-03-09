@@ -13,11 +13,11 @@ export class BankAccountService {
     return new BankAccounts([new BankAccount(), new BankAccount()]);
   }
 
-  public async saveBankAccounts(claimId: string, bankAccounts: BankAccounts) {
+  public async saveBankAccounts(claimId:string,bankAccounts: BankAccounts) {
     const claim = await this.draftStoreClient.getDraftClaimFromStore(claimId);
     console.log(claim);
     bankAccounts.removeEmptyAccounts();
     claim.statementOfMeans.bankAccounts = bankAccounts;
-    this.draftStoreClient.saveDraftClaim(claimId, claim);
+    await this.draftStoreClient.saveDraftClaim(claimId, claim);
   }
 }

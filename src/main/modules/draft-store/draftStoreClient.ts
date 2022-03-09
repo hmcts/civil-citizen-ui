@@ -6,7 +6,7 @@ export class DraftStoreClient {
 
   public async getDraftClaimFromStore(claimId: string): Promise<Claim> {
     const storedClaim: CivilClaimResponse = await app.locals.draftStoreClient.get(claimId);
-    console.log(storedClaim);
+    console.log(storedClaim.case_data);
     return storedClaim.case_data;
   }
   public async saveDraftClaim(claimId: string, claim:Claim) {
