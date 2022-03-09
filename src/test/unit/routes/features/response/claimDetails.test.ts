@@ -2,10 +2,13 @@ import {CivilServiceClient} from '../../../../../main/app/client/civilServiceCli
 
 import axios, {AxiosInstance} from 'axios';
 import {Claim} from '../../../../../main/common/models/claim';
+import * as requestModels from '../../../../../main/common/models/AppRequest';
 
 jest.mock('axios');
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
+declare const appRequest: requestModels.AppRequest;
+const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 
 describe('Claim Details', () => {
   it('retrieve claim details', async () => {
@@ -29,7 +32,7 @@ describe('Claim Details', () => {
 
     const civilServiceClient = new CivilServiceClient('http://localhost');
 
-    const actualClaims: Claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+    const actualClaims: Claim = await civilServiceClient.retrieveClaimDetails(mockedAppRequest,'1643033241924739');
 
     expect(mockedAxios.create).toHaveBeenCalledWith({
       baseURL: 'http://localhost',
