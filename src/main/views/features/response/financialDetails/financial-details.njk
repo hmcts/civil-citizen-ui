@@ -1,30 +1,48 @@
 {% extends "template.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% set heading = 'Your individual financial details' %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% set heading = 'Your financial details' %}
 
 {% block content %}
 
   <div class="govuk-grid-row">
 
     <div class="govuk-grid-column-two-thirds">
-      <h2 class="govuk-heading-l">{{ t('Send ') }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(' your financial details') }}</h2>
-      <p class="govuk-body">
-        {{ t('You need to give ') }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(' details of your finances.') }}
-      </p>
-      <p class="govuk-body">
-        {{ t("We'll ask you for the details, then we'll send them to ") }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(' to review.') }}
-      </p>
-      <p class="govuk-body">
-        {{ t('They can reject your proposal, if they believe you can pay sooner.') }}
-      </p>
-      <p class="govuk-body">
-        {{ t('If they reject your proposal, the court will make a new plan using your financial details.') }}
-      </p>
+      <h2 class="govuk-heading-l">{{ t('Send ') }} {{ claim.applicant1.individualTitle }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(' your financial details') }}</h2>
+      {% set type = claim.respondent1.type %}
+      {% if (type == 'INDIVIDUAL' or type == 'SOLE_TRADER') %}
+        <p class="govuk-body">
+          {{ t('You need to give ') }} {{ claim.applicant1.individualTitle }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(' details of your finances.') }}
+        </p>
+        <p class="govuk-body">
+          {{ t("We'll ask you for the details, then we'll send them to ") }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(' to review.') }}
+        </p>
+        <p class="govuk-body">
+          {{ t('They can reject your proposal, if they believe you can pay sooner.') }}
+        </p>
+        <p class="govuk-body">
+          {{ t('If they reject your proposal, the court will make a new plan using your financial details.') }}
+        </p>
+      {% elseif (type == 'COMPANY' or type == 'ORGANISATION') %}
+        <p class="govuk-body">
+          {{ t('You need to send ') }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(" your company or organisation's most recent statement of accounts.") }}
+        </p>
+        <p class="govuk-body">
+          {{ t("They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.") }}
+        </p>
+        <p class="govuk-body">
+          {{ t('If they reject your plan, the court will make a new plan based on your financial details.') }}
+        </p>
+        <p class="govuk-body">
+          {{ t('Get ') }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }}{{ t("'s contact details.") }}
+        </p>
+      {% endif %}
       <form method="post">
         <div class="govuk-form-group">
           {{ govukButton({
           text: t('Continue')
           }) }}
+          {{ contactUsForHelp(t) }}
         </div>
       </form>
     </div>
