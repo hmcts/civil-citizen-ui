@@ -2,7 +2,6 @@ import {app} from '../../app';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 
-
 export class DraftStoreClient {
 
   public async getDraftClaimFromStore(claimId: string): Promise<Claim> {
