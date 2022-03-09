@@ -31,7 +31,7 @@ describe('Draft store service to save and retrieve claim', ()=> {
     const result = await draftStoreService.getDraftClaimFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
-    expect(result).not.toBeUndefined();
+    expect(result).not.toBeNull();
   });
   it('should return undefined when no data exists', async ()=> {
     //Given
@@ -43,7 +43,7 @@ describe('Draft store service to save and retrieve claim', ()=> {
     const result = await draftStoreService.getDraftClaimFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
-    expect(result).toBeUndefined();
+    expect(result).toBeNull();
   });
   it('should update existing claim when data exists', async ()=> {
     //Given
