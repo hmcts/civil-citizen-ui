@@ -9,8 +9,9 @@ export class DraftStoreService {
    * @returns claim from redis or undefined when no there is no data for claim id
    */
   public async getDraftClaimFromStore(claimId: string): Promise<CivilClaimResponse> {
-    const storedClaim: CivilClaimResponse = await app.locals.draftStoreClient.get(claimId);
-    return storedClaim;
+    const dataFromRedis = await app.locals.draftStoreClient.get(claimId);
+    const claim = Object.assign(JSON.parse(dataFromRedis), new CivilClaimResponse());
+    return claim;
   }
 
   /**
@@ -22,13 +23,13 @@ export class DraftStoreService {
    * @param claim
    */
   public async saveDraftClaim(claimId: string, claim:Claim) {
-    let storedClaimResponse = await app.locals.draftStoreClient.get(claimId);
+    let storedClaimResponse = await this.getDraftClaimFromStore(claimId);
     if(!storedClaimResponse){
       storedClaimResponse = this.createNewCivilClaimResponse(claimId);
     }
     storedClaimResponse.case_data = claim;
     const draftStoreClient = app.locals.draftStoreClient;
-    draftStoreClient.set(claimId, storedClaimResponse);
+    draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
   }
 
   private createNewCivilClaimResponse(claimId: string) {
