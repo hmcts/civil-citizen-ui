@@ -4,6 +4,7 @@
   {% set fieldSetLabel = t('Your address') %}
   {% set fieldSetText = t('If your address is not correct you can change it here. Any changes will be shared with the claimant when you submit your response.') %}
   {% set textInputLabel = t('Building and street') %}
+  {% set govukFormGroupError = 'govuk-form-group govuk-form-group--error' if addressLine1Error else '' %}
   {% call govukFieldset({
   legend: {
     text: fieldSetLabel,
@@ -14,7 +15,8 @@
   {% if addressType == 'primary' %}
     <p class="govuk-body govuk-!-padding-top-4">{{ fieldSetText }}</p>
   {% endif %}
-  {{ govukInput({
+  <div class="{{ govukFormGroupError }}">
+    {{ govukInput({
     label: {
       html: textInputLabel + ' <span class="govuk-visually-hidden">line 1 of 3</span>'
     },
@@ -25,7 +27,7 @@
     value: citizenAddress.primaryAddressLine1 if addressType == 'primary' else citizenAddress.correspondenceAddressLine1,
     errorMessage: { text: addressLine1Error } if addressLine1Error else ''
   }) }}
-  {{ govukInput({
+    {{ govukInput({
     label: {
       html: '<span class="govuk-visually-hidden">' + textInputLabel + ' line 2 of 3</span>'
     },
@@ -35,7 +37,7 @@
     autocomplete: addressType + "AddressLine-2",
     value: citizenAddress.primaryAddressLine2 if addressType == 'primary' else citizenAddress.correspondenceAddressLine2
   }) }}
-  {{ govukInput({
+    {{ govukInput({
     label: {
       html: '<span class="govuk-visually-hidden">' + textInputLabel + ' <span class="govuk-visually-hidden">line 3 of 3</span>'
     },
@@ -45,6 +47,7 @@
     autocomplete: addressType + "AddressLine-3",
     value: citizenAddress.primaryAddressLine3 if addressType == 'primary' else citizenAddress.correspondenceAddressLine3
   }) }}
+  </div>
   {{ govukInput({
     label: {
       text: t('Town or city')
