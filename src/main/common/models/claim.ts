@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import currencyFormat from '../utils/currencyFormat';
 import {Respondent} from './respondent';
+import {StatementOfMeans} from './statementOfMeans';
 
 export class Claim {
   legacyCaseReference: string;
@@ -9,6 +10,7 @@ export class Claim {
   respondent1ResponseDeadline: Date = new Date();
   detailsOfClaim: string;
   respondent1?: Respondent;
+  statementOfMeans?: StatementOfMeans;
 
 
   formattedResponseDeadline(): string {

@@ -18,12 +18,21 @@ export class BankAccounts extends Form{
 
   public getFormErrors(): FormValidationError[]{
     let formErrors = super.getErrors();
-    if(this.accounts.length > 0 && this.hasErrors()) {
+    if(this.hasAccounts() && this.hasErrors()) {
       this.accounts.forEach((account, i) => {
         formErrors = formErrors.concat(account.getErrors('accounts['+ i +']'));
       });
     }
-    console.log(formErrors);
     return formErrors;
+  }
+
+  public removeEmptyAccounts(){
+    if(this.hasAccounts()){
+      this.accounts = this.accounts.filter(account => account.isAtLeastOneFieldPopulated());
+    }
+  }
+
+  private hasAccounts(){
+    return this.accounts && this.accounts.length > 0
   }
 }

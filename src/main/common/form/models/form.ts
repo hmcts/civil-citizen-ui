@@ -9,7 +9,7 @@ export class Form {
   }
 
   hasErrors(): boolean {
-    return this.errors !== undefined;
+    return this.errors !== undefined && this.errors.length > 0;
   }
 
   public getErrors(parentProperty?: string): FormValidationError[] {
