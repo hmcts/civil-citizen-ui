@@ -43,4 +43,14 @@ describe('Bank accounts validation', ()=>{
     //Then
     expect(accounts.hasErrors()).toBeTruthy();
   });
+  it('should filter out all empty accounts', ()=>{
+    //Given
+    const account = new BankAccount('OTHER', true, '345');
+    const accounts = new BankAccounts([account, new BankAccount()]);
+    //When
+    accounts.removeEmptyAccounts();
+    //Then
+    expect(accounts.accounts.length).toBe(1);
+    expect(accounts.accounts[0].joint).toBeTruthy();
+  });
 });

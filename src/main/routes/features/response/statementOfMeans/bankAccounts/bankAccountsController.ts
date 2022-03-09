@@ -1,13 +1,11 @@
 import * as express from 'express';
 import {CITIZEN_BANK_ACCOUNT_URL, BASE_CASE_RESPONSE_URL} from '../../../../../routes/urls';
-import {BankAccounts} from 'common/form/models/bankAndSavings/bankAccounts';
-import {BankAccount} from 'common/form/models/bankAndSavings/bankAccount';
-import { BankAccountTypes } from 'common/form/models/bankAndSavings/bankAccountTypes';
+import {BankAccounts} from '../../../../../common/form/models/bankAndSavings/bankAccounts';
+import {BankAccount} from '../../../../../common/form/models/bankAndSavings/bankAccount';
+import { BankAccountTypes } from '../../../../../common/form/models/bankAndSavings/bankAccountTypes';
 import {Validator} from 'class-validator';
-import {Form} from 'common/form/models/form';
-
-
-import {BankAccountService} from 'modules/statementOfMeans/bankAccounts/bankAccountService';
+import {Form} from '../../../../../common/form/models/form';
+import {BankAccountService} from '../../../../../modules/statementOfMeans/bankAccounts/bankAccountService';
 
 const citizenBankAccountsViewPath = 'features/response/statementOfMeans/citizenBankAndSavings/citizen-bank-accounts';
 const router = express.Router();
