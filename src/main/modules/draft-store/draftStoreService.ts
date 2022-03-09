@@ -12,15 +12,15 @@ export class DraftStoreService {
   public async saveDraftClaim(claimId: string, claim:Claim) {
     let storedClaim = await app.locals.draftStoreClient.get(claimId);
     if(!storedClaim){
-      storedClaim = this.createNewClaim(storedClaim, claimId);
+      storedClaim = this.createNewClaim(claimId);
     }
     storedClaim.case_data = claim;
     const draftStoreClient = app.locals.draftStoreClient;
     draftStoreClient.set(claimId, storedClaim);
   }
 
-  private createNewClaim(storedClaim: any, claimId: string) {
-    storedClaim = new CivilClaimResponse();
+  private createNewClaim(claimId: string) {
+    const storedClaim = new CivilClaimResponse();
     storedClaim.id = claimId;
     return storedClaim;
   }
