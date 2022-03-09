@@ -4,6 +4,7 @@ import { CivilServiceClient } from '../../../app/client/civilServiceClient';
 import config from 'config';
 import {Respondent} from '../../../common/models/respondent';
 import {PrimaryAddress} from '../../../common/models/primaryAddress';
+import {AppRequest} from "models/AppRequest";
 const validator = require('../../../common/utils/validator');
 
 
@@ -84,7 +85,7 @@ function renderCitizenDetailsPage(res: express.Response, _errorList:IErrorList[]
 
 // -- Display Claim Details
 const getClaimDetails = async (req: express.Request, res: express.Response) => {
-  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+  claim = await civilServiceClient.retrieveClaimDetails(<AppRequest>req, '1643033241924739');
   renderPage(res, claim);
 };
 
@@ -98,7 +99,7 @@ const getCitizenDetails = async (req: express.Request, res: express.Response) =>
   if (citizenDetails) {
     citizenDetails = JSON.parse(citizenDetails);
   } else { // -- Otherwise user visit page first time
-    claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
+    claim = await civilServiceClient.retrieveClaimDetails(<AppRequest>req,'1643033241924739');
     citizenDetails = claim;
   }
 
