@@ -7,7 +7,10 @@ import { CivilServiceClient } from '../../../../app/client/civilServiceClient';
 import {Claim} from '../../../../common/models/claim';
 import { CitizenAddress } from '../../../../common/form/models/citizenAddress';
 import { CitizenCorrespondenceAddress } from '../../../../common/form/models/citizenCorrespondenceAddress';
+import { DraftStoreService } from '../../../../modules/draft-store/draftStoreService'
+
 import {AppRequest} from "models/AppRequest";
+import { CivilClaimResponse } from 'common/models/civilClaimResponse';
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDetailsController');
 
@@ -18,6 +21,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 let citizenFullName: object;
 
 let claim: Claim = new Claim();
+let draftStoreClient = new DraftStoreService();
 
 // -- GET Citizen Details
 router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
@@ -33,25 +37,22 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
   };
 
   // -- Retrive from Redis
-  const draftStoreClient = req.app.locals.draftStoreClient;
-
-  await draftStoreClient.get(claim.legacyCaseReference).then((data: string) => {
+  await draftStoreClient.getDraftClaimFromStore(claim.legacyCaseReference).then((data: CivilClaimResponse) => {
     if (data) {
       try {
-        const _data = JSON.parse(data);
         formAddressModel = new CitizenAddress(
-          _data.primaryAddressLine1,
-          _data.primaryAddressLine2,
-          _data.primaryAddressLine3,
-          _data.primaryCity,
-          _data.primaryPostCode);
+          data.case_data.respondent1.primaryAddress.addressLine1,
+          data.case_data.respondent1.primaryAddress.addressLine2,
+          data.case_data.respondent1.primaryAddress.addressLine3,
+          data.case_data.respondent1.primaryAddress.postTown,
+          data.case_data.respondent1.primaryAddress.postCode);
 
         formCorrespondenceModel = new CitizenCorrespondenceAddress(
-          _data.correspondenceAddressLine1,
-          _data.correspondenceAddressLine2,
-          _data.correspondenceAddressLine3,
-          _data.correspondenceCity,
-          _data.correspondencePostCode);
+          data.case_data.respondent1.correspondenceAddress.addressLine1,
+          data.case_data.respondent1.correspondenceAddress.addressLine2,
+          data.case_data.respondent1.correspondenceAddress.addressLine3,
+          data.case_data.respondent1.correspondenceAddress.postTown,
+          data.case_data.respondent1.correspondenceAddress.postCode);
       } catch (err) {
         logger.error(`${err.stack || err}`);
       }
@@ -83,7 +84,6 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
 
 // -- POST Citizen Address
 router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
-  const draftStoreClient = req.app.locals.draftStoreClient;
   const citizenAddress = new CitizenAddress(
     req.body.primaryAddressLine1,
     req.body.primaryAddressLine2,
@@ -128,22 +128,18 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
       postToThisAddress: req.body.postToThisAddress,
     });
   } else {
-    await draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(
-      {
-        primaryAddressLine1: req.body.primaryAddressLine1,
-        primaryAddressLine2: req.body.primaryAddressLine2,
-        primaryAddressLine3: req.body.primaryAddressLine3,
-        primaryCity: req.body.primaryCity,
-        primaryPostCode: req.body.primaryPostCode,
-        correspondenceAddressLine1: req.body.correspondenceAddressLine1,
-        correspondenceAddressLine2: req.body.correspondenceAddressLine2,
-        correspondenceAddressLine3: req.body.correspondenceAddressLine3,
-        correspondenceCity: req.body.correspondenceCity,
-        correspondencePostCode: req.body.correspondencePostCode,
-      },
-    )).then(() => {
-      res.redirect('/case/1643033241924739/response/your-dob');
-    });
+    claim.respondent1.primaryAddress.addressLine1 = req.body.primaryAddressLine1;
+    claim.respondent1.primaryAddress.addressLine2 = req.body.primaryAddressLine2;
+    claim.respondent1.primaryAddress.addressLine3 = req.body.primaryAddressLine3;
+    claim.respondent1.primaryAddress.postTown = req.body.primaryCity;
+    claim.respondent1.primaryAddress.postCode = req.body.primaryPostCode;
+    claim.respondent1.correspondenceAddress.addressLine1 = req.body.correspondenceAddressLine1;
+    claim.respondent1.correspondenceAddress.addressLine2 = req.body.correspondenceAddressLine2;
+    claim.respondent1.correspondenceAddress.addressLine3 = req.body.correspondenceAddressLine3;
+    claim.respondent1.correspondenceAddress.postTown = req.body.correspondenceCity;
+    claim.respondent1.correspondenceAddress.postCode = req.body.correspondencePostCode;
+    draftStoreClient.saveDraftClaim(claim.legacyCaseReference, claim);
+    res.redirect('/case/1643033241924739/response/your-dob');
   }
 });
 
