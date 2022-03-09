@@ -10,3 +10,7 @@ export const VALID_CORRESPONDENCE_ADDRESS_LINE_1 = 'Enter first correspondence a
 export const VALID_CORRESPONDENCE_CITY = 'Enter correspondence town/city';
 export const VALID_CORRESPONDENCE_POSTCODE = 'Enter correspondence address postcode';
 export const VALID_CHOOSE = 'Choose your response';
+export const POSTCODE_NOT_VALID = 'Postcode must be in United Kingdom';
+export const DEFENDANT_POSTCODE_NOT_VALID = 'Postcode must be in England or Wales';
+
+
