@@ -18,7 +18,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post">
-            {{ yesNoRadioButton(t,name,errors) }}
+            {{ yesNoRadioButton(t,name,form,checked) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")

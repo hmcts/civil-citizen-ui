@@ -8,11 +8,11 @@ const citizenDisabilityViewPath = 'features/response/statement-of-means/disabili
 const router = express.Router();
 const citizenDisability = new Disability();
 
-function renderView(form: Disability, res: express.Response): void {
-  res.render(citizenDisabilityViewPath, {form: form});
+function renderView(form: Disability, res: express.Response, checked?: object): void {
+  res.render(citizenDisabilityViewPath, {form, checked});
 }
 
-router.get(CITIZEN_DISABILITY_URL, (req, res) => {
+router.get(CITIZEN_DISABILITY_URL, async (req, res) => {
   renderView(citizenDisability, res);
 });
 
