@@ -1,4 +1,5 @@
 import {PrimaryAddress} from './primaryAddress';
+import {CounterpartyType} from './counterpartyType';
 
 export class Respondent {
   primaryAddress: PrimaryAddress;
@@ -8,6 +9,7 @@ export class Respondent {
   telephoneNumber: string;
   dateOfBirth: Date;
   responseType: string;
+  type: CounterpartyType;
 }
 
 

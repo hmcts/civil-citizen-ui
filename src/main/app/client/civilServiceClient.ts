@@ -36,8 +36,10 @@ export class CivilServiceClient {
     return claims;
   }
 
-  async retrieveClaimDetails(claimId: string): Promise<Claim> {
-    const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`);
+
+  async retrieveClaimDetails(req: AppRequest, claimId: string): Promise<Claim> {
+    const config = this.getConfig(req);
+    const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`, config);
     if (!response.data) {
       throw new AssertionError({message: 'Claim details not available.'});
     }
