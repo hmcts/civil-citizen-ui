@@ -2,7 +2,11 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_DISABILITY_URL} from '../../../../../../main/routes/urls';
+import {
+  CITIZEN_DISABILITY_URL,
+  CITIZEN_SEVERELY_DISABLED_URL,
+  CITIZEN_WHERE_LIVE_URL,
+} from '../../../../../../main/routes/urls';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -26,17 +30,43 @@ describe('Disability', () => {
         });
     });
   });
+  describe('on POST', () => {
+    test('should return error on incorrect input', async () => {
+      await request(app)
+        .post(CITIZEN_DISABILITY_URL)
+        .send('')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Choose option: Yes or No');
+        });
+    });
 
-  test('should redirect page when correct input', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({data: {}})),
-    };
-    app.locals.draftStoreClient = mockDraftStore;
-    await request(app)
-      .post(CITIZEN_DISABILITY_URL)
-      .send('responseType=test')
-      .expect((res) => {
-        expect(res.status).toBe(200);
-      });
+    test('should redirect page when "yes"', async () => {
+      const mockDraftStore = {
+        set: jest.fn(() => Promise.resolve({data: {}})),
+      };
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .post(CITIZEN_DISABILITY_URL)
+        .send('disability=yes')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_SEVERELY_DISABLED_URL);
+        });
+    });
+
+    test('should redirect page when "no"', async () => {
+      const mockDraftStore = {
+        set: jest.fn(() => Promise.resolve({data: {}})),
+      };
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .post(CITIZEN_DISABILITY_URL)
+        .send('disability=no')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_WHERE_LIVE_URL);
+        });
+    });
   });
 });

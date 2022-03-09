@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CITIZEN_DISABILITY_URL, ROOT_URL} from '../../../urls';
+import {CITIZEN_DISABILITY_URL, CITIZEN_SEVERELY_DISABLED_URL, CITIZEN_WHERE_LIVE_URL} from '../../../urls';
 import {Disability} from '../../../../common/form/models/statementOfMeans/disability';
 import {StatementOfMeans} from '../../../../common/models/statementOfMeans';
 import {ValidationError, Validator} from 'class-validator';
@@ -30,8 +30,12 @@ router.post(CITIZEN_DISABILITY_URL,
       const draftStoreClient = req.app.locals.draftStoreClient;
       citizenDisability.option = model.option;
       statementOfMeans.disability = citizenDisability;
-      draftStoreClient.set(statementOfMeans.disability, JSON.stringify(1645882162449409)).then(() => {
-        res.redirect(ROOT_URL);
+      draftStoreClient.set(statementOfMeans, JSON.stringify(1645882162449409)).then(() => {
+        if (citizenDisability.option == 'yes') {
+          res.redirect(CITIZEN_SEVERELY_DISABLED_URL);
+        } else {
+          res.redirect(CITIZEN_WHERE_LIVE_URL);
+        }
       });
     }
   });
