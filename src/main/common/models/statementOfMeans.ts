@@ -1,4 +1,4 @@
-import {Disability} from '../form/models/statement-of-means/disability';
+import {Disability} from '../form/models/statementOfMeans/disability';
 
 export class StatementOfMeans {
   disability?: Disability;
