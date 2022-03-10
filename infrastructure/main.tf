@@ -30,5 +30,5 @@ resource "azurerm_key_vault_secret" "redis_access_key" {
 
 data "azurerm_key_vault_secret" "ordnance-survey-api-key" {
   name = "ordnance-survey-api-key"
-  key_vault_id = "${data.azurerm_key_vault.civil_key_vault.id}"
+  key_vault_id = data.azurerm_key_vault.civil_vault.id
 }
