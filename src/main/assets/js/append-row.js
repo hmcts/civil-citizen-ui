@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if(inputs && inputs.length>0){
       inputs.forEach(input => {
         input.value = '';
-        input.classList.remove('govuk-input--error', 'govuk-select--error');
+        input.classList.remove('govuk-input--error', 'govuk-select--error', 'govuk-textarea--error');
         incrementIndexOnName(input);
       });
     }
