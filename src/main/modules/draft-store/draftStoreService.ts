@@ -3,6 +3,7 @@ import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {Claim} from '../../common/models/claim';
 
 export class DraftStoreService {
+
   /**
    * Gets civil claim response object with claim from draft store
    * @param claimId
@@ -10,18 +11,8 @@ export class DraftStoreService {
    */
   public async getDraftClaimFromStore(claimId: string): Promise<CivilClaimResponse> {
     const dataFromRedis = await app.locals.draftStoreClient.get(claimId);
-    const claim = this.convertRedisData(dataFromRedis);
+    const claim = this.convertRedisDataToCivilClaimResponse(dataFromRedis);
     return claim;
-  }
-
-  /**
-   * Gets only case data.
-   * @param claimId
-   */
-  public async getCaseDataFormStore(claimId: string): Promise<Claim> {
-    const civilClaimResponse = await this.getDraftClaimFromStore(claimId);
-    console.log(civilClaimResponse.id);
-    return civilClaimResponse?.case_data;
   }
 
   /**
@@ -32,9 +23,9 @@ export class DraftStoreService {
    * @param claimId
    * @param claim
    */
-  public async saveDraftClaim(claimId: string, claim: Claim) {
+  public async saveDraftClaim(claimId: string, claim:Claim) {
     let storedClaimResponse = await this.getDraftClaimFromStore(claimId);
-    if (!storedClaimResponse) {
+    if(!storedClaimResponse){
       storedClaimResponse = this.createNewCivilClaimResponse(claimId);
     }
     storedClaimResponse.case_data = claim;
@@ -48,11 +39,11 @@ export class DraftStoreService {
     return storedClaimResponse;
   }
 
-  private convertRedisData(data: any): CivilClaimResponse {
+  private convertRedisDataToCivilClaimResponse(data:string): CivilClaimResponse{
     let jsonData = undefined;
-    if (data) {
+    if(data){
       jsonData = JSON.parse(data);
     }
-    return jsonData ? Object.assign(jsonData, new CivilClaimResponse()) : undefined;
+    return Object.assign( new CivilClaimResponse(), jsonData);
   }
 }
