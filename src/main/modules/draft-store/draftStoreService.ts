@@ -11,7 +11,7 @@ export class DraftStoreService {
    */
   public async getDraftClaimFromStore(claimId: string): Promise<CivilClaimResponse> {
     const dataFromRedis = await app.locals.draftStoreClient.get(claimId);
-    const claim = this.convertRedisData(dataFromRedis);
+    const claim = this.convertRedisDataToCivilClaimResponse(dataFromRedis);
     return claim;
   }
 
@@ -39,11 +39,11 @@ export class DraftStoreService {
     return storedClaimResponse;
   }
 
-  private convertRedisData(data:any): CivilClaimResponse{
+  private convertRedisDataToCivilClaimResponse(data:string): CivilClaimResponse{
     let jsonData = undefined;
     if(data){
       jsonData = JSON.parse(data);
     }
-    return jsonData? Object.assign(jsonData, new CivilClaimResponse()): undefined;
+    return Object.assign( new CivilClaimResponse(), jsonData);
   }
 }
