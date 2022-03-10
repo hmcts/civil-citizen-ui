@@ -30,6 +30,8 @@ export class Form {
 
   public getTextError(errors: ValidationError[], property: string) {
     const error = errors.filter((item) => item.property == property);
-    return error.length > 0 ? error[0].constraints.isNotEmpty : '';
+    if (error.length > 0) {
+      return error[0].constraints.isNotEmpty || error[0].constraints.customInt ? error[0].constraints.isNotEmpty || error[0].constraints.customInt : '';
+    }
   }
 }
