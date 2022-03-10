@@ -3,7 +3,6 @@ import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {Claim} from '../../common/models/claim';
 
 export class DraftStoreService {
-
   /**
    * Gets civil claim response object with claim from draft store
    * @param claimId
@@ -11,7 +10,7 @@ export class DraftStoreService {
    */
   public async getDraftClaimFromStore(claimId: string): Promise<CivilClaimResponse> {
     const dataFromRedis = await app.locals.draftStoreClient.get(claimId);
-    const claim = this.convertRedisDataToCivilClaimResponse(dataFromRedis);
+    const claim = Object.assign(JSON.parse(dataFromRedis), new CivilClaimResponse());
     return claim;
   }
 
@@ -37,13 +36,5 @@ export class DraftStoreService {
     const storedClaimResponse = new CivilClaimResponse();
     storedClaimResponse.id = claimId;
     return storedClaimResponse;
-  }
-
-  private convertRedisDataToCivilClaimResponse(data:string): CivilClaimResponse{
-    let jsonData = undefined;
-    if(data){
-      jsonData = JSON.parse(data);
-    }
-    return Object.assign( new CivilClaimResponse(), jsonData);
   }
 }
