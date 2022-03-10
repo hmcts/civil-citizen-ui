@@ -21,6 +21,14 @@ describe('Convert bank account entity to and from from', ()=> {
     //Then
     expect(result).toBeUndefined();
   });
+  it('should not convert form to citizen bank account entity successfully when bank accounts forms are empty', ()=> {
+    //Given
+    const input = new BankAccounts([new BankAccount('','',''), new BankAccount('','','')]);
+    //When
+    const result = convertFormToCitizenBankAccount(input);
+    //Then
+    expect(result).toBeUndefined();
+  });
   it('should convert bank account entity to form', ()=>{
     //Given
     const input = [new CitizenBankAccount('OTHER', 'true', '22'), new CitizenBankAccount('OTHER', 'false', '33')];
