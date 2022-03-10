@@ -1,7 +1,8 @@
 import {app} from '../../app';
 import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {Claim} from '../../common/models/claim';
-
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('draftStoreService');
 export class DraftStoreService {
 
   /**
@@ -45,7 +46,7 @@ export class DraftStoreService {
       try {
         jsonData = JSON.parse(data);
       } catch (err: any) {
-        console.log(err)
+        logger.error(`${err.stack || err}`);
       }
     }
     return Object.assign( new CivilClaimResponse(), jsonData);
