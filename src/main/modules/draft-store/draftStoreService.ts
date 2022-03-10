@@ -3,14 +3,16 @@ import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {Claim} from '../../common/models/claim';
 
 export class DraftStoreService {
+
   /**
    * Gets civil claim response object with claim from draft store
    * @param claimId
    * @returns claim from redis or undefined when no there is no data for claim id
    */
   public async getDraftClaimFromStore(claimId: string): Promise<CivilClaimResponse> {
-    const storedClaim: CivilClaimResponse = await app.locals.draftStoreClient.get(claimId);
-    return storedClaim;
+    const dataFromRedis = await app.locals.draftStoreClient.get(claimId);
+    const claim = this.convertRedisDataToCivilClaimResponse(dataFromRedis);
+    return claim;
   }
 
   /**
@@ -22,18 +24,26 @@ export class DraftStoreService {
    * @param claim
    */
   public async saveDraftClaim(claimId: string, claim:Claim) {
-    let storedClaimResponse = await app.locals.draftStoreClient.get(claimId);
+    let storedClaimResponse = await this.getDraftClaimFromStore(claimId);
     if(!storedClaimResponse){
       storedClaimResponse = this.createNewCivilClaimResponse(claimId);
     }
     storedClaimResponse.case_data = claim;
     const draftStoreClient = app.locals.draftStoreClient;
-    draftStoreClient.set(claimId, storedClaimResponse);
+    draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
   }
 
   private createNewCivilClaimResponse(claimId: string) {
     const storedClaimResponse = new CivilClaimResponse();
     storedClaimResponse.id = claimId;
     return storedClaimResponse;
+  }
+
+  private convertRedisDataToCivilClaimResponse(data:string): CivilClaimResponse{
+    let jsonData = undefined;
+    if(data){
+      jsonData = JSON.parse(data);
+    }
+    return Object.assign( new CivilClaimResponse(), jsonData);
   }
 }

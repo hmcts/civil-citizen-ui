@@ -8,14 +8,14 @@ const CLAIM_ID = '1645882162449409';
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
     return {
-      get: jest.fn(async () => REDIS_DATA),
+      get: jest.fn(async () => JSON.stringify(REDIS_DATA)),
       set: jest.fn(async () => {return;}),
     };
   });
 });
 function createMockDraftStore( returnData: any){
   return {
-    get: jest.fn(async () => returnData),
+    get: jest.fn(async () => JSON.stringify(returnData)),
     set: jest.fn(async () => {return;}),
   };
 }
@@ -31,9 +31,9 @@ describe('Draft store service to save and retrieve claim', ()=> {
     const result = await draftStoreService.getDraftClaimFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
-    expect(result).not.toBeNull();
+    expect(result.id).toBe(Number(CLAIM_ID));
   });
-  it('should return undefined when no data exists', async ()=> {
+  it('should return empty result', async ()=> {
     //Given
     const draftStoreWithNoData = createMockDraftStore(null);
     app.locals.draftStoreClient = draftStoreWithNoData;
@@ -43,7 +43,7 @@ describe('Draft store service to save and retrieve claim', ()=> {
     const result = await draftStoreService.getDraftClaimFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
-    expect(result).toBeNull();
+    expect(result.id).toBeUndefined();
   });
   it('should update existing claim when data exists', async ()=> {
     //Given
