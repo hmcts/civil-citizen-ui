@@ -11,6 +11,8 @@ import {
   VALID_CORRESPONDENCE_POSTCODE,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import { mockClaim as mockResponse } from '../../../../../../test/utils/mockClaim';
+import {CivilClaimResponse} from '../../../../../../main/common/models/civilClaimResponse';
+
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 const nock = require('nock');
@@ -349,4 +351,23 @@ describe('Confirm Details page', () => {
         expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
       });
   });
+
+  test('get/Citizen details - should return test variable when there is no data on redis and civil-service', async () => {
+    const mockDraftStore = {
+      set: jest.fn(() => Promise.resolve({ data: {} })),
+      get: jest.fn(() => Promise.resolve(JSON.stringify(new CivilClaimResponse()))),
+    };
+    nock('http://localhost:4000')
+      .get('/cases/1111')
+      .reply(400);
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .get('/case/1111/response/your-details')
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Confirm your details');
+        expect(res.text).toContain('individualTitle Test');
+      });
+  });
+
 });
