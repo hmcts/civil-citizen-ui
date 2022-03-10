@@ -6,7 +6,7 @@ const respondent1: Respondent = {
     County: 'Greater London',
     Country: 'UK',
     PostCode: 'SW1H 9AJ',
-    postTown: 'London',
+    PostTown: 'London',
     AddressLine1: 'Flat 3A Middle Road',
     AddressLine2: '',
     AddressLine3: '',

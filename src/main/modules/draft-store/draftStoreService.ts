@@ -41,8 +41,12 @@ export class DraftStoreService {
 
   private convertRedisDataToCivilClaimResponse(data:string): CivilClaimResponse{
     let jsonData = undefined;
-    if(data){
-      jsonData = JSON.parse(data);
+    if (data) {
+      try {
+        jsonData = JSON.parse(data);
+      } catch (err: any) {
+        console.log(err)
+      }
     }
     return Object.assign( new CivilClaimResponse(), jsonData);
   }

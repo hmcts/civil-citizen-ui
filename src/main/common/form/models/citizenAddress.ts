@@ -6,7 +6,7 @@ import {
   VALID_POSTCODE,
 } from '../validationErrors/errorMessageConstants';
 import { Form } from './form';
-import {PostcodeValidator} from 'common/form/validators/postcodeValidator';
+import {PostcodeValidator} from '../validators/postcodeValidator';
 
 export class CitizenAddress extends Form {
   @IsNotEmpty({message: VALID_ADDRESS_LINE_1})

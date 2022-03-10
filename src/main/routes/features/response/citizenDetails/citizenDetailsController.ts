@@ -11,10 +11,9 @@ import { DraftStoreService } from '../../../../modules/draft-store/draftStoreSer
 
 import {AppRequest} from 'models/AppRequest';
 import { CivilClaimResponse } from 'common/models/civilClaimResponse';
-import {Respondent} from 'models/respondent';
-import {PrimaryAddress} from 'models/primaryAddress';
-import {CorrespondenceAddress} from 'models/correspondenceAddress';
-import _ from 'lodash';
+import {Respondent} from '../../../../common/models/respondent';
+import {PrimaryAddress} from '../../../../common/models/primaryAddress';
+import {CorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDetailsController');
 const router = express.Router();
