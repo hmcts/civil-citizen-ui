@@ -2,7 +2,7 @@ import * as express from 'express';
 import { Validator } from 'class-validator';
 import config from 'config';
 import { Form } from '../../../../common/form/models/form';
-import { CITIZEN_DETAILS_URL } from '../../../urls';
+import {CITIZEN_DETAILS_URL, DOB_URL} from '../../../urls';
 import { CivilServiceClient } from '../../../../app/client/civilServiceClient';
 import {Claim} from '../../../../common/models/claim';
 import { CitizenAddress } from '../../../../common/form/models/citizenAddress';
@@ -34,14 +34,36 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
     let formAddressModel;
     let formCorrespondenceModel;
     // -- Retrive form service
+    await draftStoreClient.getDraftClaimFromStore(req.params.id).then((data: CivilClaimResponse) => {
+      if (data) {
+        formAddressModel = new CitizenAddress(
+          data.case_data.respondent1.primaryAddress.AddressLine1,
+          data.case_data.respondent1.primaryAddress.AddressLine2,
+          data.case_data.respondent1.primaryAddress.AddressLine3,
+          data.case_data.respondent1.primaryAddress.PostTown,
+          data.case_data.respondent1.primaryAddress.PostCode);
+
+        formCorrespondenceModel = new CitizenCorrespondenceAddress(
+          data.case_data.respondent1.correspondenceAddress.AddressLine1,
+          data.case_data.respondent1.correspondenceAddress.AddressLine2,
+          data.case_data.respondent1.correspondenceAddress.AddressLine3,
+          data.case_data.respondent1.correspondenceAddress.PostTown,
+          data.case_data.respondent1.correspondenceAddress.PostCode);
+        claim = data.case_data;
+      }
+    }).catch((err) => {
+      throw Error(err);
+      logger.error(`${err.stack || err}`);
+    });
     claim = await civilServiceClient.retrieveClaimDetails(req.params.id, <AppRequest>req);
-    if(claim){
+
+    if(claim) {
       citizenFullName = {
         individualTitle: claim.respondent1.individualTitle,
         individualFirstName: claim.respondent1.individualFirstName,
         individualLastName: claim.respondent1.individualLastName,
       };
-      if (claim.respondent1.primaryAddress){
+      if (claim.respondent1.primaryAddress) {
         //TODO create a new method
         formAddressModel = new CitizenAddress(
           claim.respondent1.primaryAddress.AddressLine1,
@@ -50,42 +72,18 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
           claim.respondent1.primaryAddress.PostTown,
           claim.respondent1.primaryAddress.PostCode);
       }
-      if (claim.respondent1.correspondenceAddress){
+      if (claim.respondent1.correspondenceAddress) {
         formCorrespondenceModel = new CitizenCorrespondenceAddress(
           claim.respondent1.correspondenceAddress.AddressLine1,
           claim.respondent1.correspondenceAddress.AddressLine2,
           claim.respondent1.correspondenceAddress.AddressLine3,
           claim.respondent1.correspondenceAddress.PostTown,
           claim.respondent1.correspondenceAddress.PostCode);
-      }else {
-        formCorrespondenceModel = new CitizenCorrespondenceAddress();
-
+      } else {
+        //formCorrespondenceModel = new CitizenCorrespondenceAddress();
       }
-    }else {
-      // -- Retrive from Redis
-      await draftStoreClient.getDraftClaimFromStore(req.params.id).then((data: CivilClaimResponse) => {
-        if (data) {
-          formAddressModel = new CitizenAddress(
-            data.case_data.respondent1.primaryAddress.AddressLine1,
-            data.case_data.respondent1.primaryAddress.AddressLine2,
-            data.case_data.respondent1.primaryAddress.AddressLine3,
-            data.case_data.respondent1.primaryAddress.PostTown,
-            data.case_data.respondent1.primaryAddress.PostCode);
-
-          formCorrespondenceModel = new CitizenCorrespondenceAddress(
-            data.case_data.respondent1.correspondenceAddress.AddressLine1,
-            data.case_data.respondent1.correspondenceAddress.AddressLine2,
-            data.case_data.respondent1.correspondenceAddress.AddressLine3,
-            data.case_data.respondent1.correspondenceAddress.PostTown,
-            data.case_data.respondent1.correspondenceAddress.PostCode);
-          claim = data.case_data;
-        }else {
-          claim = new Claim();
-        }
-      }).catch((err) => {
-        throw Error(err);
-        logger.error(`${err.stack || err}`);
-      });
+    } else {
+      claim = new Claim();
     }
     res.render('features/response/citizenDetails/citizen-details', {
       citizenFullName: citizenFullName,
@@ -98,6 +96,9 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
     logger.error(`${err.stack || err}`);
   }
 });
+
+
+
 
 
 // -- POST Citizen Address
@@ -164,7 +165,7 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     ///const claim = new Claim();
     claim.respondent1 = respondent;
     await draftStoreClient.saveDraftClaim(req.params.id, claim);
-    res.redirect('/case/1643033241924739/response/your-dob');
+    res.redirect(DOB_URL);
   }
 });
 
