@@ -5,6 +5,7 @@ import {SELECT_AN_OPTION} from '../../../form/validationErrors/errorMessageConst
 import {ArrayAtLeastOneSelectedValidator} from '../../../form/validators/arrayAtLeastOneSelectedValidator';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 
+const MINIMUM_ROWS = 2;
 export class BankAccounts extends Form{
 
   @ValidateNested()
@@ -14,6 +15,7 @@ export class BankAccounts extends Form{
   constructor(accounts : BankAccount[]) {
     super();
     this.accounts = accounts;
+    this.addEmptyRowsIfNotEnough();
   }
 
   public getFormErrors(): FormValidationError[]{
@@ -26,13 +28,21 @@ export class BankAccounts extends Form{
     return formErrors;
   }
 
-  public removeEmptyAccounts(){
+  public getOnlyCompletedAccounts(): BankAccount[]{
     if(this.hasAccounts()){
-      this.accounts = this.accounts.filter(account => account.isAtLeastOneFieldPopulated());
+      return this.accounts.filter(account => account.typeOfAccount !=='' && account.joint !== undefined && account.balance!== undefined );
     }
   }
 
   private hasAccounts(){
     return this.accounts && this.accounts.length > 0;
+  }
+
+  private addEmptyRowsIfNotEnough(){
+    if(this.accounts.length > MINIMUM_ROWS){
+      for(let i = 0; i < MINIMUM_ROWS - this.accounts.length; i++){
+        this.accounts.push(new BankAccount());
+      }
+    }
   }
 }

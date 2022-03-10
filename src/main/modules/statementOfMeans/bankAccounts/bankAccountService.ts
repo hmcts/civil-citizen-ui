@@ -3,16 +3,16 @@ import {BankAccount} from '../../../common/form/models/bankAndSavings/bankAccoun
 import {DraftStoreService} from '../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../common/models/claim';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
+import{convertFormToCitizenBankAccount, convertCitizenBankAccountsToForm} from './BankAccountConverter';
 
 export class BankAccountService {
-
 
   public async getBankAccounts(claimId: string) {
     const draftStoreService = new DraftStoreService();
     const claim = await draftStoreService.getCaseDataFormStore(claimId);
     console.log(claim);
     if (claim && claim.statementOfMeans && claim.statementOfMeans.bankAccounts) {
-      return claim.statementOfMeans.bankAccounts;
+      return convertCitizenBankAccountsToForm(claim.statementOfMeans.bankAccounts);
     }
     return new BankAccounts([new BankAccount(), new BankAccount()]);
   }
@@ -23,15 +23,17 @@ export class BankAccountService {
     console.log(claim);
     this.updateBankAccounts(bankAccounts, claim);
     await draftStoreService.saveDraftClaim(claimId, claim);
+    console.log('account saved');
+    console.log(claim);
   }
 
   private updateBankAccounts(bankAccounts: BankAccounts, claim: Claim) {
-    bankAccounts.removeEmptyAccounts();
+    const citizenAccounts = convertFormToCitizenBankAccount(bankAccounts);
     if (claim.statementOfMeans) {
-      claim.statementOfMeans.bankAccounts = bankAccounts;
+      claim.statementOfMeans.bankAccounts = citizenAccounts;
     } else {
       const statementOfMeans = new StatementOfMeans();
-      statementOfMeans.bankAccounts = bankAccounts;
+      statementOfMeans.bankAccounts = citizenAccounts;
       claim.statementOfMeans = statementOfMeans;
     }
   }

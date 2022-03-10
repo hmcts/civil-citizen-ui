@@ -17,7 +17,7 @@ function renderView(form: BankAccounts, bankAccountDropDownItems: BankAccountTyp
 
 function transformToAccounts(req: express.Request){
   return req.body.accounts.map((account:BankAccount) =>{
-    return new BankAccount(account.typeOfAccount, account.joint, account.balance);
+    return new BankAccount(account.typeOfAccount, String(account.joint), account.balance);
   });
 }
 
@@ -40,7 +40,7 @@ async function renderErrorsIfExist(form: BankAccounts, res: express.Response, cl
   if (form.hasErrors()) {
     renderView(form, new BankAccountTypes(), res);
   } else {
-    bankAccountService.saveBankAccounts(claimId, form);
+    await bankAccountService.saveBankAccounts(claimId, form);
     renderView(form, new BankAccountTypes(), res);
   }
 }

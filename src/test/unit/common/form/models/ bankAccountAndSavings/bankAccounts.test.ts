@@ -6,8 +6,8 @@ describe('Bank accounts validation', ()=>{
   const validator = new Validator();
   it('should not allow empty value when one field is populated', async () =>{
     //Given
-    const account = new BankAccount(undefined, true, undefined);
-    const accounts = new BankAccounts([account, new BankAccount()]);
+    const account = new BankAccount(undefined, 'true', undefined);
+    const accounts = new BankAccounts([account, new BankAccount('', '', '')]);
     //When
     const result = await validator.validate(accounts);
     //Then
@@ -16,8 +16,8 @@ describe('Bank accounts validation', ()=>{
   });
   it('should not allow empty value when two fields are populated', async () =>{
     //Given
-    const account = new BankAccount(undefined, true, '345');
-    const accounts = new BankAccounts([account, new BankAccount()]);
+    const account = new BankAccount(undefined, 'true', '345');
+    const accounts = new BankAccounts([account, new BankAccount('', '', '')]);
     //When
     const result = await validator.validate(accounts);
     //Then
@@ -26,8 +26,8 @@ describe('Bank accounts validation', ()=>{
   });
   it('should not have errors when all fields are populated', async () =>{
     //Given
-    const account = new BankAccount('OTHER', true, '345');
-    const accounts = new BankAccounts([account, new BankAccount()]);
+    const account = new BankAccount('OTHER', 'true', '345');
+    const accounts = new BankAccounts([account, new BankAccount('','','')]);
     //When
     const result = await validator.validate(accounts);
     //Then
@@ -35,7 +35,7 @@ describe('Bank accounts validation', ()=>{
   });
   it('should return true for has errors when there is a validation error in accounts array element', async ()=>{
     //Given
-    const account = new BankAccount(undefined, true, undefined);
+    const account = new BankAccount(undefined, 'true', undefined);
     const accounts = new BankAccounts([account, new BankAccount()]);
     //When
     const result = await validator.validate(accounts);
@@ -45,12 +45,13 @@ describe('Bank accounts validation', ()=>{
   });
   it('should filter out all empty accounts', ()=>{
     //Given
-    const account = new BankAccount('OTHER', true, '345');
-    const accounts = new BankAccounts([account, new BankAccount()]);
+    const account = new BankAccount('OTHER', 'true', '345');
+    const accounts = new BankAccounts([account, new BankAccount('', '', '')]);
     //When
-    accounts.removeEmptyAccounts();
+    const result = accounts.getOnlyCompletedAccounts();
     //Then
-    expect(accounts.accounts.length).toBe(1);
-    expect(accounts.accounts[0].joint).toBeTruthy();
+    console.log(result);
+    expect(result.length).toEqual(1);
+    expect(result[0].joint).toBeTruthy();
   });
 });

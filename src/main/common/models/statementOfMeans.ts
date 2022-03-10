@@ -1,5 +1,5 @@
-import {BankAccounts} from '../form/models/bankAndSavings/bankAccounts';
+import {CitizenBankAccount} from './citizenBankAccount';
 
 export class StatementOfMeans {
-  bankAccounts?: BankAccounts;
+  bankAccounts?: CitizenBankAccount[];
 }

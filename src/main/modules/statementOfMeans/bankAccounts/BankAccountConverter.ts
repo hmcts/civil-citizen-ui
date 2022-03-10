@@ -1,0 +1,25 @@
+import {BankAccounts} from '../../../common/form/models/bankAndSavings/bankAccounts';
+import {CitizenBankAccount} from '../../../common/models/citizenBankAccount';
+import {BankAccount} from '../../../common/form/models/bankAndSavings/bankAccount';
+
+export function convertFormToCitizenBankAccount(bankAccountForm: BankAccounts): CitizenBankAccount[]{
+  if(bankAccountsExist) {
+    const accounts = bankAccountForm.getOnlyCompletedAccounts();
+    console.log(accounts);
+    if(accounts.length > 0) {
+      return accounts.map(account => (new CitizenBankAccount(account.typeOfAccount, account.joint, account.balance)));
+    }
+  }
+}
+
+export function convertCitizenBankAccountsToForm(citizenBankAccounts: CitizenBankAccount[]): BankAccounts {
+  if(citizenBankAccounts && citizenBankAccounts.length >0){
+    const accountsForForm = citizenBankAccounts.map(account => Object.assign(new BankAccount(), account));
+    return new BankAccounts(accountsForForm);
+  }
+  return new BankAccounts( [new BankAccount(), new BankAccount()]);
+}
+
+function bankAccountsExist(bankAccountForm: BankAccounts): boolean{
+  return bankAccountForm && bankAccountForm.accounts && bankAccountForm.accounts.length>0;
+}

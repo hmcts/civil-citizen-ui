@@ -23,18 +23,19 @@ export class BankAccount extends Form {
   @Validate(AccountBalanceValidator)
     balance?: string;
 
-  constructor(typeOfAccount?: string, joint?: boolean, balance?: string) {
+  constructor(typeOfAccount?: string, joint?: string, balance?: string) {
     super();
     this.typeOfAccount = typeOfAccount;
-    this.joint = joint;
+    this.joint = joint === ''? undefined : Boolean(joint);
     this.balance = balance;
   }
 
   public isEmpty (): boolean {
-    return Object.values(this).every(value => value === undefined || value === '');
+    return Object.values(this).every(value => value === undefined || value === '' || value === []);
   }
 
   isAtLeastOneFieldPopulated (): boolean {
+    console.log(this.isEmpty());
     return !this.isEmpty();
   }
 }
