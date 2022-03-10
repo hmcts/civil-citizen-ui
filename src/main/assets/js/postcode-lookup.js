@@ -4,6 +4,7 @@
   const addressSelectMenu = formAddress ? formAddress['correspondenceAddressList'] : null;
   const addressLine1Id = 'correspondenceAddressLine1';
   const addressLine2Id = 'correspondenceAddressLine2';
+  const addressLine3Id = 'correspondenceAddressLine3';
   const cityId = 'correspondenceCity';
   const postcodeId = 'correspondencePostCode';
 
@@ -21,6 +22,8 @@
   let _subBuildingName = '';
   let _buildingName = '';
   let _thoroughfareName = '';
+  let _dependentLocality = '';
+  let _organisationName = '';
 
   let postcodeResponse;
 
@@ -81,6 +84,8 @@
     _subBuildingName = hasAddressProperty(addressSelected.subBuildingName);
     _buildingName = hasAddressProperty(addressSelected.buildingName);
     _thoroughfareName = hasAddressProperty(addressSelected.thoroughfareName);
+    _dependentLocality = hasAddressProperty(addressSelected.dependentLocality);
+    _organisationName = hasAddressProperty(addressSelected.organisationName);
   };
 
   const resetFormInput = (id) => formAddress[id].value = '';
@@ -130,12 +135,18 @@
 
       hasAddressPorperties(addressSelected[0]);
 
-      if (_subBuildingName !== '' || _buildingName !== '') {
-        // split in 2 lines
-        formAddress[addressLine1Id].value = _buildingNumber + ' ' + _subBuildingName + ' ' + _buildingName;
-        formAddress[addressLine2Id].value = _thoroughfareName;
+      if (_organisationName !== '') {
+        formAddress[addressLine1Id].value = _organisationName;
+        formAddress[addressLine2Id].value = _buildingNumber + ' ' + _subBuildingName + ' ' + _buildingName + ' ' + _thoroughfareName;
+        formAddress[addressLine3Id].value = _dependentLocality;
+      }
+      else if (_organisationName === '' && _subBuildingName === '' && _buildingName === '') {
+        formAddress[addressLine1Id].value = _buildingNumber + ' ' + _thoroughfareName;
+        formAddress[addressLine2Id].value = _dependentLocality;
       } else {
-        formAddress[addressLine1Id].value = _buildingNumber + ' ' + _thoroughfareName + ' ';
+        formAddress[addressLine1Id].value = _organisationName + '' + _buildingNumber + ' ' + _subBuildingName + ' ' + _buildingName;
+        formAddress[addressLine2Id].value = _thoroughfareName;
+        formAddress[addressLine3Id].value = _dependentLocality;
       }
 
       formAddress[cityId].value = addressSelected[0].postTown;
