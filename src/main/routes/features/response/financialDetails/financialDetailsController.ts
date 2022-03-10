@@ -1,13 +1,11 @@
 import * as express from 'express';
 import config from 'config';
-import {FINANCIAL_DETAILS, ROOT_URL} from '../../../urls';
+import {BASE_CASE_RESPONSE_URL, CITIZEN_BANK_ACCOUNT_URL, CLAIM_TASK_LIST, FINANCIAL_DETAILS} from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
-import { CivilServiceClient } from '../../../../app/client/civilServiceClient';
+import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {Respondent} from '../../../../common/models/respondent';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
 import {AppRequest} from '../../../../common/models/AppRequest';
-
-
 
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
@@ -44,7 +42,11 @@ router.post(FINANCIAL_DETAILS,  (req, res) => {
   claim.legacyCaseReference = 'counterpartyType';
   const draftStoreClient = req.app.locals.draftStoreClient;
   draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim)).then(() => {
-    res.redirect(ROOT_URL);
+    if (counterpartyType == CounterpartyType.individual || counterpartyType == CounterpartyType.soleTrader) {
+      res.redirect(BASE_CASE_RESPONSE_URL + CITIZEN_BANK_ACCOUNT_URL);
+    } else if (counterpartyType == CounterpartyType.company || counterpartyType == CounterpartyType.organisation) {
+      res.render(CLAIM_TASK_LIST);
+    }
   });
 
 });
