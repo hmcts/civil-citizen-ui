@@ -1,5 +1,7 @@
 export type Urls = `/${string}`;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const BASE_CASE_RESPONSE_URL: Urls = '/case/:id/response';
 export const CALLBACK_URL: Urls= '/oauth2/callback';
 export const SIGN_IN_URL: Urls = '/login';
 export const SIGN_OUT_URL: Urls = '/logout';
@@ -17,3 +19,4 @@ export const CONFIRM_CITIZEN_DETAILS_URL: Urls = '/confirm-your-details';
 export const CITIZEN_RESPONSE_TYPE: Urls = '/citizen-response-type';
 export const RESIDENCE_URL: Urls = '/statement-of-means/residence';
 
+export const DUMMY_URL = `${BASE_CASE_RESPONSE_URL}/dummy/url `;
