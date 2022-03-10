@@ -19,5 +19,6 @@ export const CITIZEN_DETAILS_URL: Urls = '/case/:id/response/your-details';
 export const CONFIRM_CITIZEN_DETAILS_URL: Urls = '/confirm-your-details';
 export const CITIZEN_RESPONSE_TYPE_URL: Urls = '/citizen-response-type';
 export const CITIZEN_BANK_ACCOUNT_URL: Urls = `${STATEMENT_OF_MEANS_URL}/bank-accounts`;
+export const CITIZEN_SEVERELY_DISABLED_URL: Urls = `${STATEMENT_OF_MEANS_URL}/are-you-severely-disabled`;
 
 
