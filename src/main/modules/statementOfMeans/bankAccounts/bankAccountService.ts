@@ -19,10 +19,8 @@ export class BankAccountService {
   public async saveBankAccounts(claimId:string, bankAccounts: BankAccounts) {
     const draftStoreService = new DraftStoreService();
     const claim = await draftStoreService.getCaseDataFormStore(claimId);
-    console.log(claim);
     this.updateBankAccounts(bankAccounts, claim);
     await draftStoreService.saveDraftClaim(claimId, claim);
-    console.log('account saved');
   }
 
   private updateBankAccounts(bankAccounts: BankAccounts, claim: Claim) {
