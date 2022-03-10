@@ -6,4 +6,5 @@ export const VALID_YEAR = 'Enter a valid year';
 export const VALID_CHOOSE = 'Choose your response';
 export const TYPE_OF_ACCOUNT_REQUIRED = 'Select a type of account';
 export const NUMBER_REQUIRED = 'Enter a valid number';
+export const VALID_TWO_DECIMAL_NUMBER = 'Enter a valid number, maximum two decimal places';
 export const SELECT_AN_OPTION = 'Select an option';

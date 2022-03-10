@@ -1,5 +1,5 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {NUMBER_REQUIRED} from '../validationErrors/errorMessageConstants';
+import {VALID_TWO_DECIMAL_NUMBER} from '../validationErrors/errorMessageConstants';
 
 /**
  * Validator for account balance that allows two decimal places and negative values
@@ -14,7 +14,7 @@ export class AccountBalanceValidator implements ValidatorConstraintInterface {
     return decimalPattern.test(value);
   }
   defaultMessage() {
-    return NUMBER_REQUIRED;
+    return VALID_TWO_DECIMAL_NUMBER;
   }
 
 }
