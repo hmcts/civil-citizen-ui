@@ -21,6 +21,10 @@ export default express.Router()
     }
     osPlacesClient.lookupByPostcodeAndDataSet(req.query.postcode as string, 'DPA,LPI')
       .then((addressInfoResponse: AddressInfoResponse) => {
+        if(!addressInfoResponse.isValid){
+          throw new Error('Invalid post code');
+        }
+
         addressInfoResponse.addresses
           = addressInfoResponse.addresses.filter((addresses, index, self) =>
             index === self.findIndex((t) =>
@@ -30,6 +34,7 @@ export default express.Router()
         res.json(addressInfoResponse);
       })
       .catch((err:Error) => {
+        logger.error(err.stack);
         if (err.message === 'Authentication failed') {
           logger.error(err.stack);
         }
