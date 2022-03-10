@@ -89,7 +89,7 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
       citizenFullName: citizenFullName,
       citizenAddress: formAddressModel,
       citizenCorrespondenceAddress: formCorrespondenceModel,
-      postToThisAddress: 'no',
+      postToThisAddress: formCorrespondenceModel ? 'yes' : 'no',
     });
   } catch (err) {
     logger.error(`${err.stack || err}`);

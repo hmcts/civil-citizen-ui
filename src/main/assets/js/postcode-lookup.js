@@ -24,6 +24,16 @@
 
   let postcodeResponse;
 
+  const isNotEmptyAddressCorrespondence = () => {
+    if (formAddress[addressLine1Id].value ||
+      formAddress[addressLine2Id].value ||
+      formAddress[cityId].value ||
+      formAddress[postcodeId].value) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const isNotEmptyPostcode = (postcode) => {
     if (postcode.value) {
@@ -84,6 +94,11 @@
 
   // -- ENTER ADDRESS MANUALLY
   if (addressManuallyLink) {
+    // -- Keep Correspondence Address form visible if values availabel
+    if (isNotEmptyAddressCorrespondence()) {
+      isAddressManuallyEntered();
+    }
+
     // -- Click on enter address manually link to display form
     addressManuallyLink
       .addEventListener('click', function (event) {
