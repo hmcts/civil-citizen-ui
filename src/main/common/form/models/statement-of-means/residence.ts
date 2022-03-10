@@ -1,11 +1,11 @@
-import {ResidenceType} from 'common/form/models/statement-of-means/residenceType';
+import {ResidenceType} from './residenceType';
 import {
   VALID_HOUSING,
   VALID_OPTION_SELECTION,
   VALID_TEXT_LENGTH,
-} from 'common/form/validationErrors/errorMessageConstants';
+} from '../../../../common/form/validationErrors/errorMessageConstants';
 import {IsDefined, IsIn, IsNotEmpty, MaxLength, ValidateIf} from 'class-validator';
-import {FREE_TEXT_MAX_LENGTH} from 'common/form/validators/validationConstraints';
+import {FREE_TEXT_MAX_LENGTH} from '../../../../common/form/validators/validationConstraints';
 
 export class Residence {
   @IsDefined({message: VALID_OPTION_SELECTION})

@@ -33,39 +33,41 @@
                 {{ govukInput({
                   id: "housingDetails",
                   name: "housingDetails",
-                  value: type.housingDetails,
-                  classes: "govuk-!-width-one-third",
+                  classes: "govuk-!-width-two-third",
                   label: {
                     text: t('What type of housing?')
                   },
                   errorMessage: {
-                    html: t(errors[0].text)
-                  } if errors
+                    text: t(errors[0].text)
+                  } if errors[0]
                 }) }}
               {% endset -%}
 
               {{ govukRadios({
                 idPrefix: "residenceType",
                 name: "type",
+                hint: {
+                  text: t('Select one option')
+                },
                 items: [
                   {
-                    value: ResidenceType.OWN_HOME,
+                    value: ResidenceType.OWN_HOME.value,
                     text: t(ResidenceType.OWN_HOME.displayValue)
                   },
                   {
-                    value: ResidenceType.JOINT_OWN_HOME,
+                    value: ResidenceType.JOINT_OWN_HOME.value,
                     text: t(ResidenceType.JOINT_OWN_HOME.displayValue)
                   },
                   {
-                    value: ResidenceType.PRIVATE_RENTAL,
+                    value: ResidenceType.PRIVATE_RENTAL.value,
                     text: t(ResidenceType.PRIVATE_RENTAL.displayValue)
                   },
                   {
-                    value: ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME,
+                    value: ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME.value,
                     text: t(ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME.displayValue)
                   },
                   {
-                    value: ResidenceType.OTHER,
+                    value: ResidenceType.OTHER.value,
                     text: t(ResidenceType.OTHER.displayValue),
                     conditional: {
                       html: housingDetailsHtml
