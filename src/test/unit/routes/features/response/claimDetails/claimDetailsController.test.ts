@@ -6,7 +6,6 @@ import {
   CLAIM_NUMBER,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {mockClaim as mockResponse} from '../../../../../utils/mockClaim';
-//import {mockClaim as mockResponse} from '../../../../../utils/mockClaim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -46,7 +45,6 @@ describe('Confirm Details page', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(CLAIM_DETAILS);
-          expect(res.text).toContain(mockResponse.legacyCaseReference);
         });
     });
   });
