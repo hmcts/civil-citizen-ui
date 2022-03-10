@@ -20,7 +20,13 @@ function renderPage(res: express.Response, claimDetails: Claim): void {
 
 // -- GET Claim Details
 router.get(CLAIM_DETAILS_URL, async (req: express.Request, res: express.Response) => {
-  claim = await civilServiceClient.retrieveClaimDetails('1643033241924739', <AppRequest>req);
+  claim = await civilServiceClient.retrieveClaimDetails(req.params.id, <AppRequest>req);
+  if(!claim){
+    claim = new Claim();
+    claim.legacyCaseReference = 'testCaseReference';
+    claim.totalClaimAmount = 200;
+    claim.detailsOfClaim = 'detailsOfClaimTest';
+  }
   renderPage(res, claim);
 });
 
