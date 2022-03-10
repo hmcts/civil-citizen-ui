@@ -41,7 +41,9 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
 
     try {
-      const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`, config );
+
+      const ur= (new URL(`/cases/${claimId}`));
+      const response: AxiosResponse<object> = await this.client.get(ur.hostname, config );
 
       if (!response.data) {
         throw new AssertionError({ message: 'Claim details not available.' });
