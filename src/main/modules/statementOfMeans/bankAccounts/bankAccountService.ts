@@ -10,7 +10,6 @@ export class BankAccountService {
   public async getBankAccounts(claimId: string) {
     const draftStoreService = new DraftStoreService();
     const claim = await draftStoreService.getCaseDataFormStore(claimId);
-    console.log(claim);
     if (claim && claim.statementOfMeans && claim.statementOfMeans.bankAccounts) {
       return convertCitizenBankAccountsToForm(claim.statementOfMeans.bankAccounts);
     }
@@ -24,7 +23,6 @@ export class BankAccountService {
     this.updateBankAccounts(bankAccounts, claim);
     await draftStoreService.saveDraftClaim(claimId, claim);
     console.log('account saved');
-    console.log(claim);
   }
 
   private updateBankAccounts(bankAccounts: BankAccounts, claim: Claim) {

@@ -16,7 +16,7 @@ export class BankAccount extends Form {
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: SELECT_AN_OPTION})
-    joint?: boolean;
+    joint?: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: NUMBER_REQUIRED})
@@ -26,7 +26,7 @@ export class BankAccount extends Form {
   constructor(typeOfAccount?: string, joint?: string, balance?: string) {
     super();
     this.typeOfAccount = typeOfAccount;
-    this.joint = joint === ''? undefined : Boolean(joint);
+    this.joint = joint;
     this.balance = balance;
   }
 
@@ -35,7 +35,6 @@ export class BankAccount extends Form {
   }
 
   isAtLeastOneFieldPopulated (): boolean {
-    console.log(this.isEmpty());
     return !this.isEmpty();
   }
 }

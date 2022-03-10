@@ -17,7 +17,7 @@ function renderView(form: BankAccounts, bankAccountDropDownItems: BankAccountTyp
 
 function transformToAccounts(req: express.Request){
   return req.body.accounts.map((account:BankAccount) =>{
-    return new BankAccount(account.typeOfAccount, String(account.joint), account.balance);
+    return new BankAccount(account.typeOfAccount, account.joint, account.balance);
   });
 }
 
@@ -34,7 +34,6 @@ router.post(BASE_CASE_RESPONSE_URL + CITIZEN_BANK_ACCOUNT_URL,  async(req, res) 
 });
 
 async function renderErrorsIfExist(form: BankAccounts, res: express.Response, claimId:string) {
-  console.log(claimId);
   await validate(form);
   await validateArray(form.accounts);
   if (form.hasErrors()) {

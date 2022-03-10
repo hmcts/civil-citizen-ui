@@ -15,7 +15,6 @@ export class BankAccounts extends Form{
   constructor(accounts : BankAccount[]) {
     super();
     this.accounts = accounts;
-    this.addEmptyRowsIfNotEnough();
   }
 
   public getFormErrors(): FormValidationError[]{
@@ -30,7 +29,7 @@ export class BankAccounts extends Form{
 
   public getOnlyCompletedAccounts(): BankAccount[]{
     if(this.hasAccounts()){
-      return this.accounts.filter(account => account.typeOfAccount !=='' && account.joint !== undefined && account.balance!== undefined );
+      return this.accounts.filter(account => account.typeOfAccount !=='' && account.joint !== '' && account.balance!== '' );
     }
   }
 
@@ -38,8 +37,9 @@ export class BankAccounts extends Form{
     return this.accounts && this.accounts.length > 0;
   }
 
-  private addEmptyRowsIfNotEnough(){
-    if(this.accounts.length > MINIMUM_ROWS){
+  public addEmptyRowsIfNotEnough(){
+    if(this.accounts.length < MINIMUM_ROWS){
+      console.log('adding rows');
       for(let i = 0; i < MINIMUM_ROWS - this.accounts.length; i++){
         this.accounts.push(new BankAccount());
       }

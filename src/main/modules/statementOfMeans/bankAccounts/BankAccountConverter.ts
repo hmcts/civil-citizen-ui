@@ -14,8 +14,12 @@ export function convertFormToCitizenBankAccount(bankAccountForm: BankAccounts): 
 
 export function convertCitizenBankAccountsToForm(citizenBankAccounts: CitizenBankAccount[]): BankAccounts {
   if(citizenBankAccounts && citizenBankAccounts.length >0){
-    const accountsForForm = citizenBankAccounts.map(account => Object.assign(new BankAccount(), account));
-    return new BankAccounts(accountsForForm);
+    const accountsForForm = citizenBankAccounts.map(account =>  new BankAccount(account.typeOfAccount, String(account.joint), account.balance));
+    const bankAccountForm = new BankAccounts(accountsForForm);
+    bankAccountForm.addEmptyRowsIfNotEnough();
+    console.log('converted form');
+    console.log(bankAccountForm);
+    return bankAccountForm;
   }
   return new BankAccounts( [new BankAccount(), new BankAccount()]);
 }
