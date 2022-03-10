@@ -10,8 +10,17 @@ export class DraftStoreService {
    */
   public async getDraftClaimFromStore(claimId: string): Promise<CivilClaimResponse> {
     const dataFromRedis = await app.locals.draftStoreClient.get(claimId);
-    const claim = Object.assign(JSON.parse(dataFromRedis), new CivilClaimResponse());
+    const claim = this.convertRedisDataToCivilClaimResponse(dataFromRedis);
     return claim;
+  }
+
+  /**
+   * Gets only case data.
+   * @param claimId
+   */
+  public async getCaseDataFormStore(claimId: string): Promise<Claim> {
+    const civilClaimResponse = await this.getDraftClaimFromStore(claimId);
+    return civilClaimResponse?.case_data;
   }
 
   /**
@@ -36,5 +45,13 @@ export class DraftStoreService {
     const storedClaimResponse = new CivilClaimResponse();
     storedClaimResponse.id = claimId;
     return storedClaimResponse;
+  }
+
+  private convertRedisDataToCivilClaimResponse(data:string): CivilClaimResponse{
+    let jsonData = undefined;
+    if(data){
+      jsonData = JSON.parse(data);
+    }
+    return Object.assign( new CivilClaimResponse(), jsonData);
   }
 }
