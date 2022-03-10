@@ -7,24 +7,28 @@ import { CivilServiceClient } from '../../../../app/client/civilServiceClient';
 import {Claim} from '../../../../common/models/claim';
 import { CitizenAddress } from '../../../../common/form/models/citizenAddress';
 import { CitizenCorrespondenceAddress } from '../../../../common/form/models/citizenCorrespondenceAddress';
-import { DraftStoreService } from '../../../../modules/draft-store/draftStoreService';
-
 import {AppRequest} from 'models/AppRequest';
-import { CivilClaimResponse } from 'common/models/civilClaimResponse';
+import { CivilClaimResponse } from '../../../../common/models/civilClaimResponse';
 import {Respondent} from '../../../../common/models/respondent';
 import {PrimaryAddress} from '../../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
 import _ from 'lodash';
+
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDetailsController');
 const router = express.Router();
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+import {getDraftClaimFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+
+
 let citizenFullName: object;
 
 let claim: Claim = new Claim();
-const draftStoreClient = new DraftStoreService();
+
+
+
 
 // -- GET Citizen Details
 router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
@@ -32,7 +36,7 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
     let formAddressModel;
     let formCorrespondenceModel;
     // -- Retrive from redis
-    await draftStoreClient.getDraftClaimFromStore(req.params.id).then((data: CivilClaimResponse) => {
+    await getDraftClaimFromStore(req.params.id).then((data: CivilClaimResponse) => {
       if (!_.isEmpty(data)) {
         formAddressModel = new CitizenAddress(
           data.case_data.respondent1.primaryAddress.AddressLine1,
@@ -49,7 +53,7 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
           data.case_data.respondent1.correspondenceAddress.PostCode);
         claim = data.case_data;
       }
-    }).catch((err) => {
+    }).catch((err : any) => {
       logger.error(`${err.stack || err}`);
     });
 
@@ -160,7 +164,7 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     respondent.correspondenceAddress.PostCode = req.body.correspondencePostCode;
     ///const claim = new Claim();
     claim.respondent1 = respondent;
-    await draftStoreClient.saveDraftClaim(req.params.id, claim);
+    await saveDraftClaim(req.params.id, claim);
     res.redirect(DOB_URL);
   }
 });
