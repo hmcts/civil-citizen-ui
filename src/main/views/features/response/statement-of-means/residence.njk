@@ -1,0 +1,100 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getErrors() %}
+      {% if errors %}
+        {{ govukErrorSummary({
+          "titleText": 'There was a problem',
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('Where do you live?') }}</h1>
+          <form
+            method="POST">
+
+            {{ csrfProtection(csrf) }}
+
+            {% set error = form.getErrors() %}
+            <div class="govuk-form-group {% if error %} govuk-form-group--error {% endif %}">
+              {#                <legend class="visually-hidden">{{ t('Where do you live?') }}</legend> #}
+              {#                {% if error %}<span class="error-message">{{ t(error) }}</span>{% endif %} #}
+
+              {% set housingDetailsHtml %}
+                {{ govukInput({
+                  id: "housingDetails",
+                  name: "housingDetails",
+                  value: type.housingDetails,
+                  classes: "govuk-!-width-one-third",
+                  label: {
+                    text: t('What type of housing?')
+                  },
+                  errorMessage: {
+                    html: t(errors[0].text)
+                  } if errors
+                }) }}
+              {% endset -%}
+
+              {{ govukRadios({
+                idPrefix: "residenceType",
+                name: "type",
+                items: [
+                  {
+                    value: ResidenceType.OWN_HOME,
+                    text: t(ResidenceType.OWN_HOME.displayValue)
+                  },
+                  {
+                    value: ResidenceType.JOINT_OWN_HOME,
+                    text: t(ResidenceType.JOINT_OWN_HOME.displayValue)
+                  },
+                  {
+                    value: ResidenceType.PRIVATE_RENTAL,
+                    text: t(ResidenceType.PRIVATE_RENTAL.displayValue)
+                  },
+                  {
+                    value: ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME,
+                    text: t(ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME.displayValue)
+                  },
+                  {
+                    value: ResidenceType.OTHER,
+                    text: t(ResidenceType.OTHER.displayValue),
+                    conditional: {
+                      html: housingDetailsHtml
+                    }
+                  }
+                ],
+                errorMessage: {
+                  html: t(errors[0].text)
+                } if errors
+              }) }}
+
+            </div>
+
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-thirds">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
+

@@ -4,12 +4,13 @@ import {CITIZEN_PHONE_NUMBER_URL, DASHBOARD_URL} from '../../../urls';
 import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
+import {Form} from '../../../../common/form/models/form';
 
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
 const router = express.Router();
-const citizenTelephoneNumber = new CitizenTelephoneNumber();
+const citizenTelephoneNumber = new Form(new CitizenTelephoneNumber());
 
-function renderView(form: CitizenTelephoneNumber, res: express.Response): void {
+function renderView(form: Form<CitizenTelephoneNumber>, res: express.Response): void {
   res.render(citizenPhoneViewPath, {form: form});
 }
 
@@ -18,15 +19,15 @@ router.get(CITIZEN_PHONE_NUMBER_URL, (req, res) => {
 });
 router.post(CITIZEN_PHONE_NUMBER_URL,
   (req, res) => {
-    const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
+    const form: Form<CitizenTelephoneNumber> = new Form(new CitizenTelephoneNumber(req.body.telephoneNumber));
     const validator = new Validator();
-    const errors: ValidationError[] = validator.validateSync(model);
+    const errors: ValidationError[] = validator.validateSync(form.model);
     if (errors && errors.length > 0) {
-      model.errors = errors;
-      renderView(model, res);
+      form.errors = errors;
+      renderView(form, res);
     } else {
       const respondent = new Respondent();
-      respondent.telephoneNumber = model.telephoneNumber;
+      respondent.telephoneNumber = form.model.telephoneNumber;
       const claim = new Claim();
       claim.respondent1 = respondent;
       claim.legacyCaseReference = 'phone-number';

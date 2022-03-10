@@ -5,6 +5,7 @@ import { configure } from 'nunjucks';
 import * as numeral from '../../common/utils/currencyFormat';
 import { i18n, TOptions } from 'i18next';
 import { ResponseType } from '../../common/form/models/responseType';
+import {ResidenceType} from '../../common/form/models/statement-of-means/residenceType';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -50,6 +51,8 @@ export class Nunjucks {
     nunjucksEnv.addFilter('currencyFormat', currencyFormat);
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
+    nunjucksEnv.addGlobal('ResidenceType', ResidenceType);
+
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

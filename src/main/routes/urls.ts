@@ -15,4 +15,5 @@ export const CLAIM_DETAILS_URL: Urls = '/case/:id/response/claim-details';
 export const CITIZEN_DETAILS_URL: Urls = '/case/:id/response/your-details';
 export const CONFIRM_CITIZEN_DETAILS_URL: Urls = '/confirm-your-details';
 export const CITIZEN_RESPONSE_TYPE: Urls = '/citizen-response-type';
+export const RESIDENCE_URL: Urls = '/statement-of-means/residence';
 
