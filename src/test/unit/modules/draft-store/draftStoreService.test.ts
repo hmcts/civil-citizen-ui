@@ -33,7 +33,7 @@ describe('Draft store service to save and retrieve claim', ()=> {
     expect(spyGet).toBeCalled();
     expect(result.id).toBe(Number(CLAIM_ID));
   });
-  it('should return undefined when no data exists', async ()=> {
+  it('should return empty result', async ()=> {
     //Given
     const draftStoreWithNoData = createMockDraftStore(null);
     app.locals.draftStoreClient = draftStoreWithNoData;
@@ -43,7 +43,7 @@ describe('Draft store service to save and retrieve claim', ()=> {
     const result = await draftStoreService.getDraftClaimFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
-    expect(result).toBeUndefined();
+    expect(result.id).toBeUndefined();
   });
   it('should update existing claim when data exists', async ()=> {
     //Given
@@ -71,5 +71,28 @@ describe('Draft store service to save and retrieve claim', ()=> {
     expect(spyGet).toBeCalled();
     expect(spySet).toBeCalled();
   });
-
+  it('should return case data when getting case data and data in redis exists', async ()=> {
+    //Given
+    const draftStoreWithData = createMockDraftStore(REDIS_DATA);
+    app.locals.draftStoreClient = draftStoreWithData;
+    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
+    //When
+    const draftStoreService = new DraftStoreService();
+    const result = await draftStoreService.getCaseDataFormStore(CLAIM_ID);
+    //Then
+    expect(spyGet).toBeCalled();
+    expect(result).not.toBeUndefined();
+  });
+  it('should return undefined when getting case data data in redis exists', async ()=> {
+    //Given
+    const draftStoreWithData = createMockDraftStore(null);
+    app.locals.draftStoreClient = draftStoreWithData;
+    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
+    //When
+    const draftStoreService = new DraftStoreService();
+    const result = await draftStoreService.getCaseDataFormStore(CLAIM_ID);
+    //Then
+    expect(spyGet).toBeCalled();
+    expect(result).toBeUndefined();
+  });
 });
