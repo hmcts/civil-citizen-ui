@@ -47,7 +47,7 @@ export class CivilServiceClient {
         throw new AssertionError({ message: 'Claim details not available.' });
       }
 
-      return Object.assign(new Claim(), response.data);
+      return response.data as Claim;
 
     } catch(err:any) {
       logger.error(`${err.stack || err}`);

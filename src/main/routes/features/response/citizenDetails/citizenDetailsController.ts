@@ -78,7 +78,7 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
             data.case_data.respondent1.correspondenceAddress.AddressLine3,
             data.case_data.respondent1.correspondenceAddress.PostTown,
             data.case_data.respondent1.correspondenceAddress.PostCode);
-
+          claim = data.case_data;
         }else {
           claim = new Claim();
         }
@@ -167,7 +167,6 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     res.redirect('/case/1643033241924739/response/your-dob');
   }
 });
-
 
 
 export default router;
