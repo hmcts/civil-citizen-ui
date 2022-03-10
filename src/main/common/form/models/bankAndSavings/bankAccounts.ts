@@ -39,7 +39,6 @@ export class BankAccounts extends Form{
 
   public addEmptyRowsIfNotEnough(){
     if(this.accounts.length < MINIMUM_ROWS){
-      console.log('adding rows');
       for(let i = 0; i < MINIMUM_ROWS - this.accounts.length; i++){
         this.accounts.push(new BankAccount());
       }
