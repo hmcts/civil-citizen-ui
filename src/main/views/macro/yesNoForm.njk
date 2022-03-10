@@ -1,8 +1,7 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 
-{% macro yesNoRadioButton(t,name,form,checked) %}
+{% macro yesNoRadioButton(t,name,form) %}
   {% set errors = form.getErrors() %}
-  {% set checked = checked.disability.option %}
               {{ govukRadios({
               idPrefix: "disability",
               name: "disability",
@@ -16,12 +15,12 @@
               items: [
                 {
                   value: YesNo.YES,
-                  checked: true if checked=="yes" else false,
+                  checked: true if form.option=="yes" else false,
                   html: "<span>" + t('Yes') + "</span>"
                 },
                 {
                   value: YesNo.NO,
-                  checked: true if checked=="no" else false,
+                  checked: true if form.option=="no" else false,
                   html: "<span>" + t('No') + "</span>"
                 }
               ],

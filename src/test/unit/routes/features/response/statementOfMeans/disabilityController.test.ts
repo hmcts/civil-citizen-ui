@@ -8,6 +8,14 @@ import {
   CITIZEN_WHERE_LIVE_URL,
 } from '../../../../../../main/routes/urls';
 
+const civilClaimResponseMock = require('./civilClaimResponseMock.json');
+const noDisabilityMock = require('./noDisabilityMock.json');
+const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
+const noDisabilityCivilClaimResponse: string = JSON.stringify(noDisabilityMock);
+const mockDraftStore = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(civilClaimResponse)),
+};
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
@@ -22,6 +30,7 @@ describe('Disability', () => {
 
   describe('on GET', () => {
     test('should return citizen disability page', async () => {
+      app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .get(CITIZEN_DISABILITY_URL)
         .expect((res) => {
@@ -30,36 +39,48 @@ describe('Disability', () => {
         });
     });
   });
-  describe('on POST', () => {
-    test('should return error on incorrect input', async () => {
-      await request(app)
-        .post(CITIZEN_DISABILITY_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Choose option: Yes or No');
-        });
-    });
+  test('should return error on incorrect input', async () => {
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .post(CITIZEN_DISABILITY_URL)
+      .send('')
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Choose option: Yes or No');
+      });
+  });
 
-    test('should redirect page when "yes"', async () => {
-      const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
-      };
+  test('should redirect page when "yes"', async () => {
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .post(CITIZEN_DISABILITY_URL)
+      .send('disability=yes')
+      .expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(CITIZEN_SEVERELY_DISABLED_URL);
+      });
+  });
+
+  describe('on POST', () => {
+    test('should redirect page when "no"', async () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
-        .send('disability=yes')
+        .send('disability=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_SEVERELY_DISABLED_URL);
+          expect(res.header.location).toEqual(CITIZEN_WHERE_LIVE_URL);
         });
     });
+  });
 
-    test('should redirect page when "no"', async () => {
-      const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
+  describe('on POST', () => {
+    test('should redirect page when "no" and haven´t statementOfMeans', async () => {
+      const noDisabilityMock = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => Promise.resolve(noDisabilityCivilClaimResponse)),
       };
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = noDisabilityMock;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('disability=no')

@@ -10,19 +10,19 @@ const disability = new Disability();
 
 const disabilityService = new DisabilityService();
 
-function renderView(form: Disability, res: express.Response, checked?: object): void {
-  res.render(citizenDisabilityViewPath, {form, checked});
+function renderView(form: Disability, res: express.Response): void {
+  res.render(citizenDisabilityViewPath, {form});
 }
 
-router.get(CITIZEN_DISABILITY_URL, async (req: any, res) => {
+router.get(CITIZEN_DISABILITY_URL.toString(), async (req, res) => {
   console.log(req.params.id);
   disabilityService.getDisability(req.params.id).then(() => {
     renderView(disability, res);
   });
 });
 
-router.post(CITIZEN_DISABILITY_URL,
-  (req: any, res) => {
+router.post(CITIZEN_DISABILITY_URL.toString(),
+  (req, res) => {
     const model: Disability = new Disability(req.body.disability);
     const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(model);
