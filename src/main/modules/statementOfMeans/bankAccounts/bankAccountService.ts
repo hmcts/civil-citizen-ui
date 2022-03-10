@@ -3,7 +3,7 @@ import {BankAccount} from '../../../common/form/models/bankAndSavings/bankAccoun
 import {DraftStoreService} from '../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../common/models/claim';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
-import{convertFormToCitizenBankAccount, convertCitizenBankAccountsToForm} from './BankAccountConverter';
+import {convertFormToCitizenBankAccount, convertCitizenBankAccountsToForm} from './bankAccountConverter';
 
 export class BankAccountService {
 
@@ -16,7 +16,7 @@ export class BankAccountService {
     return new BankAccounts([new BankAccount(), new BankAccount()]);
   }
 
-  public async saveBankAccounts(claimId:string, bankAccounts: BankAccounts) {
+  public async saveBankAccounts(claimId: string, bankAccounts: BankAccounts) {
     const draftStoreService = new DraftStoreService();
     const claim = await draftStoreService.getCaseDataFormStore(claimId);
     this.updateBankAccounts(bankAccounts, claim);
@@ -25,6 +25,9 @@ export class BankAccountService {
 
   private updateBankAccounts(bankAccounts: BankAccounts, claim: Claim) {
     const citizenAccounts = convertFormToCitizenBankAccount(bankAccounts);
+    if (claim === undefined) {
+      claim = new Claim();
+    }
     if (claim.statementOfMeans) {
       claim.statementOfMeans.bankAccounts = citizenAccounts;
     } else {

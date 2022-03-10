@@ -5,7 +5,6 @@ import {BankAccount} from '../../../common/form/models/bankAndSavings/bankAccoun
 export function convertFormToCitizenBankAccount(bankAccountForm: BankAccounts): CitizenBankAccount[]{
   if(bankAccountsExist) {
     const accounts = bankAccountForm.getOnlyCompletedAccounts();
-    console.log(accounts);
     if(accounts.length > 0) {
       return accounts.map(account => (new CitizenBankAccount(account.typeOfAccount, account.joint, account.balance)));
     }
@@ -17,8 +16,6 @@ export function convertCitizenBankAccountsToForm(citizenBankAccounts: CitizenBan
     const accountsForForm = citizenBankAccounts.map(account =>  new BankAccount(account.typeOfAccount, String(account.joint), account.balance));
     const bankAccountForm = new BankAccounts(accountsForForm);
     bankAccountForm.addEmptyRowsIfNotEnough();
-    console.log('converted form');
-    console.log(bankAccountForm);
     return bankAccountForm;
   }
   return new BankAccounts( [new BankAccount(), new BankAccount()]);

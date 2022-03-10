@@ -26,7 +26,6 @@ function transformToAccounts(req: express.Request){
 }
 
 router.get( BASE_CASE_RESPONSE_URL + CITIZEN_BANK_ACCOUNT_URL, (req, res) => {
-  console.log(req.params.id);
   bankAccountService.getBankAccounts(req.params.id).then((form:BankAccounts)=>{
     renderView(form,  new BankAccountTypes(), res);
   });
