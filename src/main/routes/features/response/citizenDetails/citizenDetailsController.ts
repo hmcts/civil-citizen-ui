@@ -14,6 +14,7 @@ import { CivilClaimResponse } from 'common/models/civilClaimResponse';
 import {Respondent} from 'models/respondent';
 import {PrimaryAddress} from 'models/primaryAddress';
 import {CorrespondenceAddress} from 'models/correspondenceAddress';
+import _ from 'lodash';
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDetailsController');
 const router = express.Router();
@@ -32,7 +33,7 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
     let formCorrespondenceModel;
     // -- Retrive from redis
     await draftStoreClient.getDraftClaimFromStore(req.params.id).then((data: CivilClaimResponse) => {
-      if (data) {
+      if (!_.isEmpty(data)) {
         formAddressModel = new CitizenAddress(
           data.case_data.respondent1.primaryAddress.AddressLine1,
           data.case_data.respondent1.primaryAddress.AddressLine2,
