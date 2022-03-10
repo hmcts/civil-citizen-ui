@@ -26,6 +26,7 @@ describe('Civil Service Client', () => {
     claim.totalClaimAmount = 1500;
 
     const mockResponse: CivilClaimResponse = {
+      id:'1',
       case_data: claim,
     };
 

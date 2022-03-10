@@ -1,10 +1,8 @@
-import {fail} from 'assert';
-import * as supertest from 'supertest';
-import {app} from '../../main/app';
-import * as urls from '../../main/routes/urls';
-import {CITIZEN_SEVERELY_DISABLED_URL, CITIZEN_WHERE_LIVE_URL} from '../../main/routes/urls';
-
+import { fail } from 'assert';
 const pa11y = require('pa11y');
+import * as supertest from 'supertest';
+import { app } from '../../main/app';
+import * as urls from '../../main/routes/urls';
 
 const agent = supertest.agent(app);
 const IGNORED_URLS = [urls.CITIZEN_DISABILITY_URL, urls.SIGN_IN_URL, urls.SIGN_OUT_URL, urls.CASES_URL, urls.CALLBACK_URL,
@@ -12,6 +10,7 @@ const IGNORED_URLS = [urls.CITIZEN_DISABILITY_URL, urls.SIGN_IN_URL, urls.SIGN_O
   urls.CITIZEN_DETAILS_URL, urls.CLAIM_DETAILS_URL, urls.DOB_URL, urls.AGE_ELIGIBILITY_URL, urls.CITIZEN_RESPONSE_TYPE, urls.ROOT_URL,
   urls.HOME_URL, CITIZEN_SEVERELY_DISABLED_URL, CITIZEN_WHERE_LIVE_URL];
 const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
+
 
 class Pa11yResult {
   documentTitle: string;
@@ -73,9 +72,8 @@ function expectNoErrors(messages: PallyIssue[]): void {
     fail(`There are accessibility issues: \n${errorsAsJson}\n`);
   }
 }
-
 describe('check URLs for accessibility errors', () => {
-  if (urlsNoSignOut.length > 0) {
+  if (urlsNoSignOut.length > 0 ) {
     describe.each(urlsNoSignOut)('Page %s', url => {
       test('should have no accessibility errors', async () => {
         await ensurePageCallWillSucceed(url);
