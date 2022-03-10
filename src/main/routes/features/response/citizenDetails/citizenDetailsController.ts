@@ -14,6 +14,7 @@ import { CivilClaimResponse } from 'common/models/civilClaimResponse';
 import {Respondent} from '../../../../common/models/respondent';
 import {PrimaryAddress} from '../../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
+import _ from 'lodash';
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDetailsController');
 const router = express.Router();

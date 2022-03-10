@@ -1,23 +1,21 @@
-import { app } from '../../../../../../main/app';
 import request from 'supertest';
+import {app} from '../../../../../../main/app';
 import config from 'config';
-import {CivilServiceClient} from '../../../../../../main/app/client/civilServiceClient';
-import axios, {AxiosInstance} from 'axios';
-import { Claim } from '../../../../../../main/common/models/claim';
-import { mockClaim as mockResponse } from '../../../../../../test/utils/mockClaim';
-import { CLAIM_DETAILS_URL } from '../../../../../../main/routes/urls';
-
-const nock = require('nock');
+import {
+  CLAIM_DETAILS,
+  CLAIM_NUMBER,
+} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {mockClaim as mockResponse} from '../../../../../utils/mockClaim';
+//import {mockClaim as mockResponse} from '../../../../../utils/mockClaim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+const nock = require('nock');
 
 describe('Confirm Details page', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -25,38 +23,32 @@ describe('Confirm Details page', () => {
   });
 
   describe('on Get', () => {
-    it('should return claim data', async () => {
+    test('should return your claim details page with default values', async () => {
+      nock('http://localhost:4000')
+        .get('/cases/1111')
+        .reply(400 );
 
-      const mockGet = jest.fn().mockResolvedValue({data: mockResponse});
-      mockedAxios.create.mockReturnValueOnce({ get: mockGet } as unknown as AxiosInstance);
-
-      const civilServiceClient = new CivilServiceClient('http://localhost/case/1643033241924739/response/claim-details');
-
-      const actualClaims: Claim = await civilServiceClient.retrieveClaimDetails('1643033241924739');
-
-      expect(mockedAxios.create).toHaveBeenCalledWith({
-        baseURL: 'http://localhost/case/1643033241924739/response/claim-details',
-      });
-
-      nock('http://localhost')
-        .get('/case/1643033241924739/response/claim-details')
-        .reply(200, { mockResponse: mockResponse });
-
-      expect(actualClaims.legacyCaseReference).toEqual(mockResponse.legacyCaseReference);
-      expect(actualClaims.totalClaimAmount).toEqual(mockResponse.totalClaimAmount);
-      expect(actualClaims.detailsOfClaim).toEqual(mockResponse.detailsOfClaim);
-
-    });
-  });
-
-  describe('on Get', () => {
-    test('should return your claim details page', async () => {
       await request(app)
-        .get(CLAIM_DETAILS_URL)
+        .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Claim details');
+          expect(res.text).toContain(CLAIM_DETAILS);
+          expect(res.text).toContain(CLAIM_NUMBER);
+        });
+    });
+    test('should return your claim details page with values from civil-service', async () => {
+      nock('http://localhost:4000')
+        .get('/cases/1111')
+        .reply(200, mockResponse );
+
+      await request(app)
+        .get('/case/1111/response/claim-details')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(CLAIM_DETAILS);
+          expect(res.text).toContain(mockResponse.legacyCaseReference);
         });
     });
   });
 });
+
