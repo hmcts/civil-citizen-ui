@@ -16,6 +16,10 @@ const mockDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponse)),
 };
+const mockNoDisabilityDraftStore = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(noDisabilityCivilClaimResponse)),
+};
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
@@ -76,17 +80,26 @@ describe('Disability', () => {
 
   describe('on POST', () => {
     test('should redirect page when "no" and haven´t statementOfMeans', async () => {
-      const noDisabilityMock = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(noDisabilityCivilClaimResponse)),
-      };
-      app.locals.draftStoreClient = noDisabilityMock;
+      app.locals.draftStoreClient = mockNoDisabilityDraftStore;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('disability=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_WHERE_LIVE_URL);
+        });
+    });
+  });
+
+  describe('on GET', () => {
+    test('should show disability page when haven´t statementOfMeans', async () => {
+
+      app.locals.draftStoreClient = mockNoDisabilityDraftStore;
+      await request(app)
+        .get(CITIZEN_DISABILITY_URL)
+        .send('')
+        .expect((res) => {
+          expect(res.status).toBe(200);
         });
     });
   });

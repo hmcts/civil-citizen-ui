@@ -7,7 +7,6 @@ import {DisabilityService} from '../../../../modules/statementOfMeans/disability
 const citizenDisabilityViewPath = 'features/response/statement-of-means/disability';
 const router = express.Router();
 const disability = new Disability();
-
 const disabilityService = new DisabilityService();
 
 function renderView(form: Disability, res: express.Response): void {
@@ -15,7 +14,6 @@ function renderView(form: Disability, res: express.Response): void {
 }
 
 router.get(CITIZEN_DISABILITY_URL.toString(), async (req, res) => {
-  console.log(req.params.id);
   disabilityService.getDisability(req.params.id).then(() => {
     renderView(disability, res);
   });
