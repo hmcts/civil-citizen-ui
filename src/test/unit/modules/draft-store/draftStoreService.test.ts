@@ -77,7 +77,6 @@ describe('Draft store service to save and retrieve claim', ()=> {
     app.locals.draftStoreClient = draftStoreWithData;
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     //When
-
     const result = await getCaseDataFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();

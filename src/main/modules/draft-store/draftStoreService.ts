@@ -35,7 +35,7 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
 export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
   const civilClaimResponse = await getDraftClaimFromStore(claimId);
   return civilClaimResponse?.case_data;
-}
+};
 
 /**
  * Saves claim in Draft store. If the claim does not exist
