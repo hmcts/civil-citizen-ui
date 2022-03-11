@@ -1,6 +1,7 @@
 import {
   getDraftClaimFromStore,
   saveDraftClaim,
+  getCaseDataFromStore,
 } from '../../../../main/modules/draft-store/draftStoreService';
 import {app} from '../../../../main/app';
 import {Claim} from '../../../../main/common/models/claim';
@@ -76,8 +77,8 @@ describe('Draft store service to save and retrieve claim', ()=> {
     app.locals.draftStoreClient = draftStoreWithData;
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     //When
-    const draftStoreService = new DraftStoreService();
-    const result = await draftStoreService.getCaseDataFromStore(CLAIM_ID);
+
+    const result = await getCaseDataFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
     expect(result).not.toBeUndefined();
@@ -88,8 +89,7 @@ describe('Draft store service to save and retrieve claim', ()=> {
     app.locals.draftStoreClient = draftStoreWithData;
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     //When
-    const draftStoreService = new DraftStoreService();
-    const result = await draftStoreService.getCaseDataFromStore(CLAIM_ID);
+    const result = await getCaseDataFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
     expect(result).toBeUndefined();
