@@ -8,19 +8,14 @@ import {
 import {Claim} from '../../../../common/models/claim';
 import {DraftStoreService} from '../../../../modules/draft-store/draftStoreService';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
-
-
-
+import {getBaseUrlWithIdParam} from '../../../../common/utils/urlFormatter';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const router = express.Router();
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('financialDetailsController');
-
 const draftStoreService : DraftStoreService = new DraftStoreService();
 
-//let claim : Claim = new Claim();
-let counterpartyType : CounterpartyType;
 
 function renderPage(res: express.Response, claim: Claim): void {
   res.render(financialDetailsViewPath, {claim: claim});
@@ -30,7 +25,6 @@ function renderPage(res: express.Response, claim: Claim): void {
 router.get(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS, async (req, res) => {
   await draftStoreService.getCaseDataFormStore(req.params.id)
     .then(claim => {
-      counterpartyType = claim.respondent1.type;
       renderPage(res, claim);
     }).catch(error => {
       logger.error(error.message);
@@ -38,6 +32,7 @@ router.get(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS, async (req, res) => {
 });
 
 router.post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS,  async (req, res) => {
+  let counterpartyType : CounterpartyType;
   await draftStoreService.getCaseDataFormStore(req.params.id)
     .then(claim => {
       counterpartyType = claim.respondent1.type;
@@ -46,9 +41,9 @@ router.post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS,  async (req, res) => {
     });
   if (counterpartyType) {
     if (counterpartyType == CounterpartyType.individual || counterpartyType == CounterpartyType.soleTrader) {
-      res.redirect(BASE_CASE_RESPONSE_URL + CITIZEN_BANK_ACCOUNT_URL);
+      res.redirect(getBaseUrlWithIdParam(req.params.id) + CITIZEN_BANK_ACCOUNT_URL);
     } else if (counterpartyType == CounterpartyType.company || counterpartyType == CounterpartyType.organisation) {
-      res.redirect(BASE_CASE_RESPONSE_URL + CLAIM_TASK_LIST);
+      res.redirect(getBaseUrlWithIdParam(req.params.id) + CLAIM_TASK_LIST);
     }
   } else {
     logger.error('No counterpartyType found.');
