@@ -37,7 +37,13 @@ router.get(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS, async (req, res) => {
     });
 });
 
-router.post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS,  (req, res) => {
+router.post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS,  async (req, res) => {
+  await draftStoreService.getCaseDataFormStore(req.params.id)
+    .then(claim => {
+      counterpartyType = claim.respondent1.type;
+    }).catch(error => {
+      logger.error(error.message);
+    });
   if (counterpartyType) {
     if (counterpartyType == CounterpartyType.individual || counterpartyType == CounterpartyType.soleTrader) {
       res.redirect(BASE_CASE_RESPONSE_URL + CITIZEN_BANK_ACCOUNT_URL);

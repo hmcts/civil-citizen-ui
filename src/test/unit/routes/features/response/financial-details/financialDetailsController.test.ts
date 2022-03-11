@@ -8,7 +8,7 @@ import {
   CLAIM_TASK_LIST,
   FINANCIAL_DETAILS,
 } from '../../../../../../main/routes/urls';
-import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
+
 
 
 const claimIndividualMock = require('./claimIndividualMock.json');
@@ -72,29 +72,44 @@ describe('Citizen financial details', () => {
 
   describe('on POST', () => {
     test('should redirect for individual',  async () => {
+      const mockDraftStore = {
+        set: jest.fn(() => Promise.resolve({data: {}})),
+        get: jest.fn(() => Promise.resolve(claimIndividual)),
+      };
+      app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS)
-        .send('counterpartyType=INDIVIDUAL')
+        .set('id', '1646818997929180')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toContain('case/:id/response/statement-of-means/bank-accounts');
         });
     });
     test('should redirect for organisation',  async() => {
+      const mockDraftStore = {
+        set: jest.fn(() => Promise.resolve({data: {}})),
+        get: jest.fn(() => Promise.resolve(claimOrganisation)),
+      };
+      app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS)
-        .send({counterpartyType: CounterpartyType.organisation})
+        .set('id', '1646768947464020')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toContain('/case/:id/response/claim-task-list');
         });
     });
     test('should log error for no counterpartyType', async () => {
+      const mockDraftStore = {
+        set: jest.fn(() => Promise.resolve({data: {}})),
+        get: jest.fn(() => Promise.resolve(claimOrganisation)),
+      };
+      app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS)
         .send({counterpartyType: ''})
         .expect((res) => {
-          expect(res.status).toBe(200);
+          expect(res.status).toBe(302);
         });
     });
   });
