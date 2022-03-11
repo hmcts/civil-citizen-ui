@@ -1,5 +1,10 @@
 import * as express from 'express';
-import {BASE_CASE_RESPONSE_URL, CITIZEN_BANK_ACCOUNT_URL, CLAIM_TASK_LIST, FINANCIAL_DETAILS} from '../../../urls';
+import {
+  BASE_CASE_RESPONSE_URL,
+  CITIZEN_BANK_ACCOUNT_URL,
+  CLAIM_TASK_LIST,
+  FINANCIAL_DETAILS,
+} from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
 import {DraftStoreService} from '../../../../modules/draft-store/draftStoreService';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
@@ -9,6 +14,8 @@ import {CounterpartyType} from '../../../../common/models/counterpartyType';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const router = express.Router();
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('financialDetailsController');
 
 const draftStoreService : DraftStoreService = new DraftStoreService();
 
@@ -26,15 +33,19 @@ router.get(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS, async (req, res) => {
       counterpartyType = claim.respondent1.type;
       renderPage(res, claim);
     }).catch(error => {
-      console.log(error.message);
+      logger.error(error.message);
     });
 });
 
 router.post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS,  (req, res) => {
-  if (counterpartyType == CounterpartyType.individual || counterpartyType == CounterpartyType.soleTrader) {
-    res.redirect(BASE_CASE_RESPONSE_URL + CITIZEN_BANK_ACCOUNT_URL);
-  } else if (counterpartyType == CounterpartyType.company || counterpartyType == CounterpartyType.organisation) {
-    res.redirect(BASE_CASE_RESPONSE_URL + CLAIM_TASK_LIST);
+  if (counterpartyType) {
+    if (counterpartyType == CounterpartyType.individual || counterpartyType == CounterpartyType.soleTrader) {
+      res.redirect(BASE_CASE_RESPONSE_URL + CITIZEN_BANK_ACCOUNT_URL);
+    } else if (counterpartyType == CounterpartyType.company || counterpartyType == CounterpartyType.organisation) {
+      res.redirect(BASE_CASE_RESPONSE_URL + CLAIM_TASK_LIST);
+    }
+  } else {
+    logger.error('No counterpartyType found.');
   }
 });
 

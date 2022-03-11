@@ -2,8 +2,14 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {BASE_CASE_RESPONSE_URL, FINANCIAL_DETAILS} from '../../../../../../main/routes/urls';
-import {CounterpartyType} from "../../../../../../main/common/models/counterpartyType";
+import {
+  BASE_CASE_RESPONSE_URL,
+  CITIZEN_BANK_ACCOUNT_URL,
+  CLAIM_TASK_LIST,
+  FINANCIAL_DETAILS,
+} from '../../../../../../main/routes/urls';
+import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
+
 
 const claimIndividualMock = require('./claimIndividualMock.json');
 const claimOrganisationMock = require('./claimOrganisationMock.json');
@@ -24,8 +30,12 @@ describe('Citizen financial details', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.useFakeTimers();
-    //    jest.setTimeout(100000);
+    nock('http://localhost:3001')
+      .post(BASE_CASE_RESPONSE_URL + CITIZEN_BANK_ACCOUNT_URL)
+      .reply(200, {});
+    nock('http://localhost:3001')
+      .post(BASE_CASE_RESPONSE_URL + CLAIM_TASK_LIST)
+      .reply(200, {});
   });
 
   afterEach(() => {
@@ -61,22 +71,30 @@ describe('Citizen financial details', () => {
 
 
   describe('on POST', () => {
-    test('should redirect for individual',   () => {
-      request(app)
+    test('should redirect for individual',  async () => {
+      await request(app)
         .post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS)
-        .send({counterpartyType: CounterpartyType.individual})
+        .send('counterpartyType=INDIVIDUAL')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toContain('case/:id/response/statement-of-means/bank-accounts');
         });
     });
-    test('should redirect for organisation',  () => {
-      request(app)
+    test('should redirect for organisation',  async() => {
+      await request(app)
         .post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS)
         .send({counterpartyType: CounterpartyType.organisation})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toContain('/case/:id/response/claim-task-list');
+        });
+    });
+    test('should log error for no counterpartyType', async () => {
+      await request(app)
+        .post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS)
+        .send({counterpartyType: ''})
+        .expect((res) => {
+          expect(res.status).toBe(200);
         });
     });
   });
