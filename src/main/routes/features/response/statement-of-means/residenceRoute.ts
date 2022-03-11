@@ -15,24 +15,23 @@ residenceRoute
     RESIDENCE_URL,
     (req: express.Request, res: express.Response) => {
       let draftResponse: DraftResponse = undefined;
-      req.app.locals.draftStoreClient.get('externalId').then((_object: unknown) => {
-        console.log(JSON.stringify(_object));
-        draftResponse = Object.assign(new DraftResponse(), _object);
-        console.log(draftResponse);
+      req.app.locals.draftStoreClient.get('externalId').then((_object: string) => {
+
+        let jsonData = undefined;
+        if(_object){
+          jsonData = JSON.parse(_object);
+        }
+        draftResponse = Object.assign(new DraftResponse(), jsonData);
         assert(draftResponse);
+
         res.render(residenceViewPath, {
           form: new Form(draftResponse.residence),
         });
-
       });
-
-
     })
   .post(
     RESIDENCE_URL,
     (req: express.Request, res: express.Response) => {
-      console.log(req.body.type);
-      console.log(req.body.housingDetails);
       const residence = new Residence(ResidenceType.valueOf(req.body.type), req.body.housingDetails);
       const form: Form<Residence> = new Form(residence);
       const validator = new Validator();
