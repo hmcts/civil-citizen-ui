@@ -1,35 +1,27 @@
 import * as express from 'express';
-import { Validator } from 'class-validator';
+import {Validator} from 'class-validator';
 import config from 'config';
-import { Form } from '../../../../common/form/models/form';
+import {Form} from '../../../../common/form/models/form';
 import {CITIZEN_DETAILS_URL, DOB_URL} from '../../../urls';
-import { CivilServiceClient } from '../../../../app/client/civilServiceClient';
+import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {Claim} from '../../../../common/models/claim';
-import { CitizenAddress } from '../../../../common/form/models/citizenAddress';
-import { CitizenCorrespondenceAddress } from '../../../../common/form/models/citizenCorrespondenceAddress';
+import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
+import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {AppRequest} from 'models/AppRequest';
-import { CivilClaimResponse } from '../../../../common/models/civilClaimResponse';
+import {CivilClaimResponse} from '../../../../common/models/civilClaimResponse';
 import {Respondent} from '../../../../common/models/respondent';
 import {PrimaryAddress} from '../../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
 import _ from 'lodash';
-
-const { Logger } = require('@hmcts/nodejs-logging');
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDetailsController');
 const router = express.Router();
+import {getDraftClaimFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-import {getDraftClaimFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-
-
 let citizenFullName: object;
-
 let claim: Claim = new Claim();
-
-
-
-
 // -- GET Citizen Details
 router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   try {
@@ -44,7 +36,6 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
           data.case_data.respondent1.primaryAddress.AddressLine3,
           data.case_data.respondent1.primaryAddress.PostTown,
           data.case_data.respondent1.primaryAddress.PostCode);
-
         formCorrespondenceModel = new CitizenCorrespondenceAddress(
           data.case_data.respondent1.correspondenceAddress.AddressLine1,
           data.case_data.respondent1.correspondenceAddress.AddressLine2,
@@ -53,14 +44,13 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
           data.case_data.respondent1.correspondenceAddress.PostCode);
         claim = data.case_data;
       }
-    }).catch((err : any) => {
+    }).catch((err: any) => {
       logger.error(`${err.stack || err}`);
     });
-
-    if(!claim.legacyCaseReference) {
+    if (!claim.legacyCaseReference) {
       // -- Retrive from civil-service
       claim = await civilServiceClient.retrieveClaimDetails(req.params.id, <AppRequest>req);
-      if(claim){
+      if (claim) {
         if (claim.respondent1.primaryAddress) {
           //TODO create a new method
           formAddressModel = new CitizenAddress(
@@ -89,7 +79,6 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
       individualFirstName: claim?.respondent1?.individualFirstName || 'individualFirstName test',
       individualLastName: claim?.respondent1?.individualLastName || 'individualLastName test',
     };
-
     res.render('features/response/citizenDetails/citizen-details', {
       citizenFullName: citizenFullName,
       citizenAddress: formAddressModel,
@@ -110,7 +99,6 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     req.body.primaryCity,
     req.body.primaryPostCode,
   );
-
   const citizenCorrespondenceAddress = new CitizenCorrespondenceAddress(
     req.body.correspondenceAddressLine1,
     req.body.correspondenceAddressLine2,
@@ -118,10 +106,8 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     req.body.correspondenceCity,
     req.body.correspondencePostCode,
   );
-
   const validator = new Validator();
   const errorList = new Form();
-
   if (req.body.postToThisAddress === 'yes') {
     citizenAddress.errors = validator.validateSync(citizenAddress);
     citizenCorrespondenceAddress.errors = validator.validateSync(citizenCorrespondenceAddress);
@@ -130,9 +116,8 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     citizenAddress.errors = validator.validateSync(citizenAddress);
     errorList.errors = citizenAddress.errors;
   }
-
   if ((citizenAddress.errors && citizenAddress.errors.length > 0)
-      || (citizenCorrespondenceAddress.errors && citizenCorrespondenceAddress.errors.length > 0)) {
+    || (citizenCorrespondenceAddress.errors && citizenCorrespondenceAddress.errors.length > 0)) {
     res.render('features/response/citizenDetails/citizen-details', {
       citizenFullName: citizenFullName,
       citizenAddress: citizenAddress,
@@ -149,14 +134,12 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
   } else {
     const respondent = new Respondent();
     respondent.primaryAddress = new PrimaryAddress();
-
     respondent.primaryAddress.AddressLine1 = citizenAddress.primaryAddressLine1;
     respondent.primaryAddress.AddressLine2 = citizenAddress.primaryAddressLine2;
     respondent.primaryAddress.AddressLine3 = citizenAddress.primaryAddressLine3;
     respondent.primaryAddress.PostTown = citizenAddress.primaryCity;
     respondent.primaryAddress.PostCode = citizenAddress.primaryPostCode;
-
-    if(req.body.correspondenceAddressLine1 && req.body.correspondenceCity && req.body.correspondencePostCode){
+    if (req.body.correspondenceAddressLine1 && req.body.correspondenceCity && req.body.correspondencePostCode) {
       respondent.correspondenceAddress = new CorrespondenceAddress();
       respondent.correspondenceAddress.AddressLine1 = req.body.correspondenceAddressLine1;
       respondent.correspondenceAddress.AddressLine2 = req.body.correspondenceAddressLine2;
@@ -169,6 +152,5 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     res.redirect(DOB_URL);
   }
 });
-
 
 export default router;
