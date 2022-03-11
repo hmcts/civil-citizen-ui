@@ -12,7 +12,7 @@ const router = express.Router();
 
 const draftStoreService : DraftStoreService = new DraftStoreService();
 
-let claim : Claim = new Claim();
+//let claim : Claim = new Claim();
 let counterpartyType : CounterpartyType;
 
 function renderPage(res: express.Response, claim: Claim): void {
@@ -21,19 +21,13 @@ function renderPage(res: express.Response, claim: Claim): void {
 
 
 router.get(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS, async (req, res) => {
-  try {
-    const id = req.params.id;
-    console.log('Id:: ' + id);
-    claim = await draftStoreService.getCaseDataFormStore(id);
-    console.log(claim);
-    console.log('Claim Respondent::' + JSON.stringify(claim.respondent1));
-    counterpartyType = claim.respondent1.type;
-    console.log('CounterpartyType::' + counterpartyType);
-    await draftStoreService.saveDraftClaim(id, claim);
-    renderPage(res, claim);
-  } catch (e) {
-    console.log(e);
-  }
+  await draftStoreService.getCaseDataFormStore(req.params.id)
+    .then(claim => {
+      counterpartyType = claim.respondent1.type;
+      renderPage(res, claim);
+    }).catch(error => {
+      console.log(error.message);
+    });
 });
 
 router.post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS,  (req, res) => {
