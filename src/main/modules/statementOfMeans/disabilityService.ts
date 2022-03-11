@@ -33,7 +33,6 @@ export class DisabilityService {
         civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
-      return new Disability('');
     } catch (err: any) {
       logger.error(`${err.stack || err}`);
     }
