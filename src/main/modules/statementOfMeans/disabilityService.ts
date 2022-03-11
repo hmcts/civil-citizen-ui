@@ -19,7 +19,7 @@ export class DisabilityService {
     const draftStoreService = new DraftStoreService();
     const civilClaimResponse = await draftStoreService.getDraftClaimFromStore(claimId);
     console.log(civilClaimResponse);
-    if (civilClaimResponse.case_data.statementOfMeans) {
+    if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {
       civilClaimResponse.case_data.statementOfMeans.disability = disability;
     } else {
       const statementOfMeans = new StatementOfMeans();
