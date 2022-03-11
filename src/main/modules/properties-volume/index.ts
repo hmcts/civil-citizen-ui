@@ -11,6 +11,7 @@ export class PropertiesVolume {
 
       this.setSecret('secrets.civil.AppInsightsInstrumentationKey', 'appInsights.instrumentationKey');
       this.setSecret('secrets.civil.redis-access-key', 'services.draftStore.redis.key');
+      this.setSecret('secrets.civil.ordnance-survey-api-key', 'services.postcodeLookup.ordnanceSurveyApiKey');
     }
   }
 

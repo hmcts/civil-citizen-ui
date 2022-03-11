@@ -8,6 +8,7 @@ nodejs:
       secrets:
         - AppInsightsInstrumentationKey
         - redis-access-key
+        - ordnance-survey-api-key
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
 

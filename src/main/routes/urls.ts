@@ -16,9 +16,10 @@ export const AGE_ELIGIBILITY_URL: Urls = '/eligibility/under-18';
 export const UNAUTHORISED_URL: Urls = '/unauthorised';
 export const CLAIM_DETAILS_URL: Urls = '/case/:id/response/claim-details';
 export const CITIZEN_DETAILS_URL: Urls = '/case/:id/response/your-details';
+export const POSTCODE_LOOKUP_URL: Urls = '/postcode-lookup';
+export const CITIZEN_RESPONSE_TYPE: Urls = '/citizen-response-type';
 export const CONFIRM_CITIZEN_DETAILS_URL: Urls = '/confirm-your-details';
 export const CITIZEN_RESPONSE_TYPE_URL: Urls = '/citizen-response-type';
 export const CITIZEN_BANK_ACCOUNT_URL: Urls = `${STATEMENT_OF_MEANS_URL}/bank-accounts`;
 export const CITIZEN_SEVERELY_DISABLED_URL: Urls = `${STATEMENT_OF_MEANS_URL}/are-you-severely-disabled`;
-
 

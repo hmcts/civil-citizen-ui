@@ -27,8 +27,11 @@ export class Form {
       return this.errors.some((error) => field == error.property);
     }
   }
-  public getErrorMessageForField(field: string): string {
-    const error = this.errors.filter(error => error.property == field).pop();
-    return error? new FormValidationError(error).text : '';
+
+  public getTextError(errors: ValidationError[], property: string) {
+    const error = errors.filter((item) => item.property == property);
+    if (error.length > 0) {
+      return error[0].constraints.isNotEmpty || error[0].constraints.customInt ? error[0].constraints.isNotEmpty || error[0].constraints.customInt : '';
+    }
   }
 }
