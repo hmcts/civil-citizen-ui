@@ -1,4 +1,7 @@
-import {DraftStoreService} from '../../../../main/modules/draft-store/draftStoreService';
+import {
+  getDraftClaimFromStore,
+  saveDraftClaim,
+} from '../../../../main/modules/draft-store/draftStoreService';
 import {app} from '../../../../main/app';
 import {Claim} from '../../../../main/common/models/claim';
 
@@ -27,11 +30,10 @@ describe('Draft store service to save and retrieve claim', ()=> {
     app.locals.draftStoreClient = draftStoreWithData;
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     //When
-    const draftStoreService = new DraftStoreService();
-    const result = await draftStoreService.getDraftClaimFromStore(CLAIM_ID);
+    const {id} = await getDraftClaimFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
-    expect(result.id).toBe(Number(CLAIM_ID));
+    expect(id).toBe(Number(CLAIM_ID));
   });
   it('should return empty result', async ()=> {
     //Given
@@ -39,11 +41,10 @@ describe('Draft store service to save and retrieve claim', ()=> {
     app.locals.draftStoreClient = draftStoreWithNoData;
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     //When
-    const draftStoreService = new DraftStoreService();
-    const result = await draftStoreService.getDraftClaimFromStore(CLAIM_ID);
+    const {id} = await getDraftClaimFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
-    expect(result.id).toBeUndefined();
+    expect(id).toBeUndefined();
   });
   it('should update existing claim when data exists', async ()=> {
     //Given
@@ -52,8 +53,7 @@ describe('Draft store service to save and retrieve claim', ()=> {
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
     //When
-    const draftStoreService = new DraftStoreService();
-    await draftStoreService.saveDraftClaim(CLAIM_ID, new Claim());
+    await saveDraftClaim(CLAIM_ID, new Claim());
     //Then
     expect(spyGet).toBeCalled();
     expect(spySet).toBeCalled();
@@ -65,8 +65,7 @@ describe('Draft store service to save and retrieve claim', ()=> {
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
     //When
-    const draftStoreService = new DraftStoreService();
-    await draftStoreService.saveDraftClaim(CLAIM_ID, new Claim());
+    await saveDraftClaim(CLAIM_ID, new Claim());
     //Then
     expect(spyGet).toBeCalled();
     expect(spySet).toBeCalled();

@@ -1,0 +1,124 @@
+{% extends "claim-details-tpl.njk" %}
+{% set heading = t('Confirm your details') %}
+{% set correspondenceAddressClass = '' if postToThisAddress == 'yes' else 'govuk-visually-hidden' %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/address.njk" import addressForm %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        {% if errorList.length > 0 %}
+          {{ govukErrorSummary({
+           "titleText": 'There was a problem',
+           "errorList": errorList
+        }) }}
+        {% endif %}
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('Confirm your details') }}</h1>
+          <p class="govuk-body">{{ t('Your name and address were provided by the person, business or organisation claiming from you (the claimant).') }}</p>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h2 class="govuk-heading-m">{{ t('Title') }}</h2>
+          <p class="govuk-body">{{ citizenFullName.individualTitle }}</p>
+          <h2 class="govuk-heading-m">{{ t('First name') }}</h2>
+          <p class="govuk-body">{{ citizenFullName.individualFirstName }}</p>
+          <h2 class="govuk-heading-m">{{ t('Last name') }}</h2>
+          <p class="govuk-body">{{ citizenFullName.individualLastName }}</p>
+          <form method="post" class="govuk-!-padding-top-4" name="address">
+            {{ addressForm(
+              t,
+              citizenAddress = citizenAddress,
+              addressLine1Error = addressLine1Error,
+              addressCityError = addressCityError,
+              addressPostCodeError = addressPostCodeError,
+              addressType = 'primary') }}
+            {% set noHtml %}
+            {% endset -%}
+            {% set correspondenceAddressHtml %}
+            <div class="govuk-form-group" id="postcode">
+              <p class="govuk-label govuk-!-margin-bottom-5">{{ t('All correspondence will be sent to this address. This is known as an "address for service".') }}</p>
+              <label class="govuk-label" for="postcode">
+                {{ t('Enter a UK postcode') }}
+              </label>
+              <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
+                We can’t find an address for that postcode. Try again or enter the address manually.
+              </div>
+              <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
+              <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
+                {{ t('Find address') }}
+              </button>
+              <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
+                {{ govukSelect({
+                    id: "correspondenceAddressList",
+                    name: "correspondenceAddressList",
+                    label: {
+                      text: "Pick an address"
+                    },
+                    items: []
+                  }) }}
+              </div>
+            </div>
+            {% if postToThisAddress == 'no' %}
+              <div>
+                <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">{{ t('Enter address manually') }}</a>
+              </div>
+            {% endif %}
+            <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
+              {{ addressForm(
+              t,
+              citizenAddress = citizenCorrespondenceAddress,
+              addressLine1Error = correspondenceAddressLine1Error,
+              addressCityError = correspondenceCityError,
+              addressPostCodeError = correspondencePostCodeError,
+              addressType = 'correspondence') }}
+            </div>
+            {% endset -%}
+            <h2 class="govuk-heading-m">{{ t('Correspondence address') }}</h2>
+            {{ govukRadios({
+                  idPrefix: "postToThisAddress",
+                  name: "postToThisAddress",
+                  fieldset: {
+                    legend: {
+                      text: t("Would you like correspondence sent to a different address?"),
+                      isPageHeading: false
+                    }
+                  },
+                  items: [
+                    {
+                      value: "no",
+                      text: t("No"),
+                      checked: true,
+                      conditional: {
+                        html: noHtml
+                      }
+                    },
+                    {
+                      value: "yes",
+                      checked: true if postToThisAddress == 'yes' else false,
+                      text: t("Yes, add a correspondence address"),
+                      conditional: {
+                        html: correspondenceAddressHtml
+                      }
+                    }
+                  ]
+                }) }}
+            {{ govukButton({
+                  text: t("Save and continue")
+                }) }}
+            {{ contactUsForHelp(t) }}
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+{% endblock %}
