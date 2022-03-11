@@ -131,7 +131,7 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     errorList.errors = citizenAddress.errors;
   }
 
-  if ((citizenAddress.  errors && citizenAddress.errors.length > 0)
+  if ((citizenAddress.errors && citizenAddress.errors.length > 0)
       || (citizenCorrespondenceAddress.errors && citizenCorrespondenceAddress.errors.length > 0)) {
     res.render('features/response/citizenDetails/citizen-details', {
       citizenFullName: citizenFullName,
@@ -156,13 +156,14 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     respondent.primaryAddress.PostTown = citizenAddress.primaryCity;
     respondent.primaryAddress.PostCode = citizenAddress.primaryPostCode;
 
-    respondent.correspondenceAddress = new CorrespondenceAddress();
-    respondent.correspondenceAddress.AddressLine1 = req.body.correspondenceAddressLine1;
-    respondent.correspondenceAddress.AddressLine2 = req.body.correspondenceAddressLine2;
-    respondent.correspondenceAddress.AddressLine3 = req.body.correspondenceAddressLine3;
-    respondent.correspondenceAddress.PostTown = req.body.correspondenceCity;
-    respondent.correspondenceAddress.PostCode = req.body.correspondencePostCode;
-    ///const claim = new Claim();
+    if(req.body.correspondenceAddressLine1 && req.body.correspondenceCity && req.body.correspondencePostCode){
+      respondent.correspondenceAddress = new CorrespondenceAddress();
+      respondent.correspondenceAddress.AddressLine1 = req.body.correspondenceAddressLine1;
+      respondent.correspondenceAddress.AddressLine2 = req.body.correspondenceAddressLine2;
+      respondent.correspondenceAddress.AddressLine3 = req.body.correspondenceAddressLine3;
+      respondent.correspondenceAddress.PostTown = req.body.correspondenceCity;
+      respondent.correspondenceAddress.PostCode = req.body.correspondencePostCode;
+    }
     claim.respondent1 = respondent;
     await saveDraftClaim(req.params.id, claim);
     res.redirect(DOB_URL);
