@@ -19,7 +19,7 @@ export class DraftStoreService {
    * Gets only case data.
    * @param claimId
    */
-  public async getCaseDataFormStore(claimId: string): Promise<Claim> {
+  public async getCaseDataFromStore(claimId: string): Promise<Claim> {
     const civilClaimResponse = await this.getDraftClaimFromStore(claimId);
     return civilClaimResponse?.case_data;
   }

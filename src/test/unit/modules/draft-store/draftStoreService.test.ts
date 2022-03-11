@@ -78,7 +78,7 @@ describe('Draft store service to save and retrieve claim', ()=> {
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     //When
     const draftStoreService = new DraftStoreService();
-    const result = await draftStoreService.getCaseDataFormStore(CLAIM_ID);
+    const result = await draftStoreService.getCaseDataFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
     expect(result).not.toBeUndefined();
@@ -90,7 +90,7 @@ describe('Draft store service to save and retrieve claim', ()=> {
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     //When
     const draftStoreService = new DraftStoreService();
-    const result = await draftStoreService.getCaseDataFormStore(CLAIM_ID);
+    const result = await draftStoreService.getCaseDataFromStore(CLAIM_ID);
     //Then
     expect(spyGet).toBeCalled();
     expect(result).toBeUndefined();

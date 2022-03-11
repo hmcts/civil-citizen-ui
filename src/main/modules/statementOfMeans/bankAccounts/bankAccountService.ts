@@ -6,10 +6,9 @@ import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {convertFormToCitizenBankAccount, convertCitizenBankAccountsToForm} from './bankAccountConverter';
 
 export class BankAccountService {
-
   public async getBankAccounts(claimId: string) {
     const draftStoreService = new DraftStoreService();
-    const claim = await draftStoreService.getCaseDataFormStore(claimId);
+    const claim = await draftStoreService.getCaseDataFromStore(claimId);
     if (claim && claim.statementOfMeans && claim.statementOfMeans.bankAccounts) {
       return convertCitizenBankAccountsToForm(claim.statementOfMeans.bankAccounts);
     }
@@ -18,7 +17,7 @@ export class BankAccountService {
 
   public async saveBankAccounts(claimId: string, bankAccounts: BankAccounts) {
     const draftStoreService = new DraftStoreService();
-    const claim = await draftStoreService.getCaseDataFormStore(claimId);
+    const claim = await draftStoreService.getCaseDataFromStore(claimId);
     this.updateBankAccounts(bankAccounts, claim);
     await draftStoreService.saveDraftClaim(claimId, claim);
   }
