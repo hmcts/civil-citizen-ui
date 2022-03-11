@@ -50,4 +50,12 @@ describe('Convert bank account entity to and from from', ()=> {
     //Then
     expect(result.accounts.length).toEqual(2);
   });
+  it('should not convert entity to form and return empty forms when there are no account entities', () => {
+    //Given
+    const input:CitizenBankAccount[] = [];
+    //When
+    const result = convertCitizenBankAccountsToForm(input);
+    //Then
+    expect(result.accounts.length).toEqual(2);
+  });
 });
