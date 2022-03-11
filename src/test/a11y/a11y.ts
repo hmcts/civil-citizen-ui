@@ -1,15 +1,14 @@
-import {fail} from 'assert';
+import { fail } from 'assert';
+const pa11y = require('pa11y');
 import * as supertest from 'supertest';
-import {app} from '../../main/app';
+import { app } from '../../main/app';
 import * as urls from '../../main/routes/urls';
 
-const pa11y = require('pa11y');
-
 const agent = supertest.agent(app);
-const IGNORED_URLS = [urls.CITIZEN_DISABILITY_URL, urls.SIGN_IN_URL, urls.SIGN_OUT_URL, urls.CASES_URL, urls.CALLBACK_URL,
-  urls.DASHBOARD_URL, urls.UNAUTHORISED_URL, urls.CITIZEN_PHONE_NUMBER_URL, urls.UNAUTHORISED_URL, urls.CONFIRM_CITIZEN_DETAILS_URL,
-  urls.CITIZEN_DETAILS_URL, urls.CLAIM_DETAILS_URL, urls.DOB_URL, urls.AGE_ELIGIBILITY_URL, urls.CITIZEN_RESPONSE_TYPE, urls.ROOT_URL,
-  urls.HOME_URL, urls.CITIZEN_SEVERELY_DISABLED_URL, urls.CITIZEN_WHERE_LIVE_URL];
+const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL, urls.CASES_URL, urls.CALLBACK_URL, urls.DASHBOARD_URL,
+  urls.UNAUTHORISED_URL, urls.CITIZEN_PHONE_NUMBER_URL, urls.UNAUTHORISED_URL,urls.CONFIRM_CITIZEN_DETAILS_URL,
+  urls.CITIZEN_DETAILS_URL, urls.CLAIM_DETAILS_URL, urls.DOB_URL,  urls.AGE_ELIGIBILITY_URL, urls.CITIZEN_RESPONSE_TYPE,
+  urls.ROOT_URL, urls.HOME_URL, urls.CITIZEN_DISABILITY_URL, urls.CITIZEN_SEVERELY_DISABLED_URL, urls.CITIZEN_WHERE_LIVE_URL];
 const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 
 
@@ -73,9 +72,8 @@ function expectNoErrors(messages: PallyIssue[]): void {
     fail(`There are accessibility issues: \n${errorsAsJson}\n`);
   }
 }
-
 describe('check URLs for accessibility errors', () => {
-  if (urlsNoSignOut.length > 0) {
+  if (urlsNoSignOut.length > 0 ) {
     describe.each(urlsNoSignOut)('Page %s', url => {
       test('should have no accessibility errors', async () => {
         await ensurePageCallWillSucceed(url);
