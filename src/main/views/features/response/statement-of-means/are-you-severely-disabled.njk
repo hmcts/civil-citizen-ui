@@ -8,8 +8,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = "Are you severely disabled?" %}
-      {% set id = "severeDisability?" %}
-      {% set name = "severeDisability?" %}
+      {% set id = "severeDisability" %}
+      {% set name = "severeDisability" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
