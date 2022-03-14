@@ -45,9 +45,9 @@ router.post(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
       logger.error(error.message);
     });
   if (counterpartyType) {
-    if (counterpartyType == CounterpartyType.individual || counterpartyType == CounterpartyType.soleTrader) {
+    if (counterpartyType == CounterpartyType.INDIVIDUAL || counterpartyType == CounterpartyType.SOLE_TRADER) {
       res.redirect(getCitizenBankAccountUrlWithIdParam(req.params.id));
-    } else if (counterpartyType == CounterpartyType.company || counterpartyType == CounterpartyType.organisation) {
+    } else if (counterpartyType == CounterpartyType.COMPANY || counterpartyType == CounterpartyType.ORGANISATION) {
       res.redirect(getClaimTaskListAccountUrlWithIdParam(req.params.id));
     }
   } else {
