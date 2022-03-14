@@ -19,14 +19,14 @@
               id:"accounts["+index+"][typeOfAccount]",
               name: "accounts["+index+"][typeOfAccount]",
               items: bankAccountDropDownItems.all(bankAccount.typeOfAccount),
-              classes: "govuk-select--error" if bankAccount.hasFieldError('typeOfAccount') else ""
+              classes: "govuk-select--width-7 govuk-select--error" if bankAccount.hasFieldError('typeOfAccount') else "govuk-select--width-7"
             }) }}
           </div>
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
             {{ govukSelect({
               id: "accounts["+index+"][joint]",
               name: "accounts["+index+"][joint]",
-              classes: "govuk-select--error" if bankAccount.hasFieldError('joint') else "",
+              classes: "govuk-select--width-7 govuk-select--error" if bankAccount.hasFieldError('joint') else "govuk-select--width-7",
               items: [
                 {
                   value: "",
