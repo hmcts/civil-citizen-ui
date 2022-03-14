@@ -8,13 +8,17 @@ import {
   CLAIM_TASK_LIST,
   FINANCIAL_DETAILS,
 } from '../../../../../../main/routes/urls';
-
-
+import {getBaseUrlWithIdParam} from '../../../../../../main/common/utils/urlFormatter';
+import {setLogger} from '../../../../../../main/routes/features/response/financialDetails/financialDetailsController';
+import {LoggerInstance} from 'winston';
 
 const claimIndividualMock = require('./claimIndividualMock.json');
+const claimIndividualMockNoType = require('./claimIndividualMockNoType.json');
 const claimOrganisationMock = require('./claimOrganisationMock.json');
 const claimIndividual: string = JSON.stringify(claimIndividualMock);
+const claimIndividualNoType: string = JSON.stringify(claimIndividualMockNoType);
 const claimOrganisation: string = JSON.stringify(claimOrganisationMock);
+
 const mockDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(claimIndividual)),
@@ -22,6 +26,27 @@ const mockDraftStore = {
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/properties-volume');
+
+jest.mock('winston', () =>  {
+  const mLogger = {
+    error: jest.fn(),
+  };
+  const mContainer = {
+    add: jest.fn(),
+  };
+  return {
+    transports: {
+      Console: jest.fn(),
+    },
+    Container: jest.fn(() => mContainer),
+    LoggerInstance: jest.fn(() => mLogger),
+  };
+});
+const mockLogger = {
+  error: jest.fn().mockImplementation((message: string) => message),
+  info: jest.fn().mockImplementation((message: string) => message),
+} as unknown as LoggerInstance;
 
 describe('Citizen financial details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -36,18 +61,14 @@ describe('Citizen financial details', () => {
     nock('http://localhost:3001')
       .post(BASE_CASE_RESPONSE_URL + CLAIM_TASK_LIST)
       .reply(200, {});
-  });
-
-  afterEach(() => {
-    jest.clearAllTimers();
+    setLogger(mockLogger);
   });
 
   describe('on GET', () => {
     test('should return individual financial details page', async () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .get(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS)
-        .set('id', '1646818997929180')
+        .get(getBaseUrlWithIdParam('1646818997929180') + FINANCIAL_DETAILS)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('details of your finances');
@@ -60,8 +81,7 @@ describe('Citizen financial details', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .get(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS)
-        .set('id', '1646768947464020')
+        .get(getBaseUrlWithIdParam('1646768947464020') + FINANCIAL_DETAILS)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('your company or organisation&#39;s most recent statement of accounts');
@@ -78,11 +98,10 @@ describe('Citizen financial details', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS)
-        .set('id', '1646818997929180')
+        .post(getBaseUrlWithIdParam('1646818997929180') + FINANCIAL_DETAILS)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toContain('case/:id/response/statement-of-means/bank-accounts');
+          expect(res.header.location).toContain('case/1646818997929180/response/statement-of-means/bank-accounts');
         });
     });
     test('should redirect for organisation',  async() => {
@@ -92,24 +111,35 @@ describe('Citizen financial details', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS)
-        .set('id', '1646768947464020')
+        .post(getBaseUrlWithIdParam('1646768947464020') + FINANCIAL_DETAILS)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toContain('/case/:id/response/claim-task-list');
+          expect(res.header.location).toContain('/case/1646768947464020/response/claim-task-list');
         });
     });
-    test('should log error for no counterpartyType', async () => {
+    test('should be 404 for no caseId in path', async () => {
       const mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimOrganisation)),
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS)
-        .send({counterpartyType: ''})
+        .post(getBaseUrlWithIdParam('') + FINANCIAL_DETAILS)
+        .expect((res) => {
+          expect(res.status).toBe(404);
+        });
+    });
+    test('should be error for no respondent type in JSON',  async() => {
+      const mockDraftStore = {
+        set: jest.fn(() => Promise.resolve({data: {}})),
+        get: jest.fn(() => Promise.resolve(claimIndividualNoType)),
+      };
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .post(getBaseUrlWithIdParam('1646818997929180') + FINANCIAL_DETAILS)
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(mockLogger.error).toHaveBeenCalledWith('No counterpartyType found.');
         });
     });
   });

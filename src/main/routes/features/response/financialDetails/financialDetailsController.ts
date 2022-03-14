@@ -9,13 +9,17 @@ import {Claim} from '../../../../common/models/claim';
 import {DraftStoreService} from '../../../../modules/draft-store/draftStoreService';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
 import {getBaseUrlWithIdParam} from '../../../../common/utils/urlFormatter';
+import * as winston from 'winston';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const router = express.Router();
 const { Logger } = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('financialDetailsController');
+let logger : winston.LoggerInstance = Logger.getLogger('financialDetailsController');
 const draftStoreService : DraftStoreService = new DraftStoreService();
 
+export function setLogger(winstonLogger : winston.LoggerInstance){
+  logger = winstonLogger;
+}
 
 function renderPage(res: express.Response, claim: Claim): void {
   res.render(financialDetailsViewPath, {claim: claim});
