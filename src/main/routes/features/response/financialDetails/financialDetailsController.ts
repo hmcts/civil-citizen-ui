@@ -35,22 +35,27 @@ router.get(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS, async (req, res) => {
     });
 });
 
-router.post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS,  async (req, res) => {
+router.post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS,   (req, res) => {
   let counterpartyType : CounterpartyType;
-  await draftStoreService.getCaseDataFormStore(req.params.id)
-    .then(claim => {
-      counterpartyType = claim.respondent1.type;
+  let claim : Claim = new Claim();
+  draftStoreService.getCaseDataFormStore(req.params.id)
+    .then(claimResponse => {
+      counterpartyType = claimResponse.respondent1.type;
+      claim = claimResponse;
     }).catch(error => {
       logger.error(error.message);
     });
   if (counterpartyType) {
     if (counterpartyType == CounterpartyType.individual || counterpartyType == CounterpartyType.soleTrader) {
+      console.log('CounterpartyType is ::' + counterpartyType);
       res.redirect(getBaseUrlWithIdParam(req.params.id) + CITIZEN_BANK_ACCOUNT_URL);
     } else if (counterpartyType == CounterpartyType.company || counterpartyType == CounterpartyType.organisation) {
+      console.log(counterpartyType);
       res.redirect(getBaseUrlWithIdParam(req.params.id) + CLAIM_TASK_LIST);
     }
   } else {
     logger.error('No counterpartyType found.');
+    renderPage(res, claim);
   }
 });
 
