@@ -1,5 +1,5 @@
 import {app} from '../../../../../../../main/app';
-import { getBaseUrlWithIdParam } from '../../../../../../../main/common/utils/urlFormatter';
+import { constructResponseUrlWithIdParams } from '../../../../../../../main/common/utils/urlFormatter';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
@@ -25,7 +25,7 @@ describe('Bank Accounts and Savings', ()=>{
   });
   describe('on Get', ()=>{
     test('should return accounts page successfully', async () =>{
-      await request(app).get(getBaseUrlWithIdParam(CLAIM_ID) + CITIZEN_BANK_ACCOUNT_URL)
+      await request(app).get(constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_BANK_ACCOUNT_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('List your bank and savings accounts');
@@ -48,7 +48,7 @@ describe('Bank Accounts and Savings', ()=>{
           },
         ],
       };
-      await request(app).post(getBaseUrlWithIdParam(CLAIM_ID) + CITIZEN_BANK_ACCOUNT_URL)
+      await request(app).post(constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_BANK_ACCOUNT_URL))
         .send(data)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -70,7 +70,7 @@ describe('Bank Accounts and Savings', ()=>{
           },
         ],
       };
-      await request(app).post(getBaseUrlWithIdParam(CLAIM_ID) + CITIZEN_BANK_ACCOUNT_URL)
+      await request(app).post(constructResponseUrlWithIdParams(CLAIM_ID ,CITIZEN_BANK_ACCOUNT_URL))
         .send(data)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -92,7 +92,7 @@ describe('Bank Accounts and Savings', ()=>{
           },
         ],
       };
-      await request(app).post(getBaseUrlWithIdParam(CLAIM_ID) + CITIZEN_BANK_ACCOUNT_URL)
+      await request(app).post(constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_BANK_ACCOUNT_URL))
         .send(data)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -114,7 +114,7 @@ describe('Bank Accounts and Savings', ()=>{
           },
         ],
       };
-      await request(app).post(getBaseUrlWithIdParam(CLAIM_ID) + CITIZEN_BANK_ACCOUNT_URL)
+      await request(app).post(constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_BANK_ACCOUNT_URL))
         .send(data)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -136,7 +136,7 @@ describe('Bank Accounts and Savings', ()=>{
           },
         ],
       };
-      await request(app).post(getBaseUrlWithIdParam(CLAIM_ID) + CITIZEN_BANK_ACCOUNT_URL)
+      await request(app).post(constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_BANK_ACCOUNT_URL))
         .send(data)
         .expect((res) => {
           expect(res.status).toBe(302);

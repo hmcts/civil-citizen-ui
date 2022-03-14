@@ -9,7 +9,7 @@ import {BankAccount} from '../../../../../common/form/models/bankAndSavings/bank
 import { BankAccountTypes } from '../../../../../common/form/models/bankAndSavings/bankAccountTypes';
 import {BankAccountService} from '../../../../../modules/statementOfMeans/bankAccounts/bankAccountService';
 import {validateForm, validateFormArray} from '../../../../../common/form/validators/formValidator';
-import { getBaseUrlWithIdParam } from '../../../../../common/utils/urlFormatter';
+import { constructResponseUrlWithIdParams } from '../../../../../common/utils/urlFormatter';
 
 const citizenBankAccountsViewPath = 'features/response/statementOfMeans/citizenBankAndSavings/citizen-bank-accounts';
 const router = express.Router();
@@ -43,7 +43,7 @@ async function renderErrorsIfExist(form: BankAccounts, res: express.Response, cl
     renderView(form, new BankAccountTypes(), res);
   } else {
     await bankAccountService.saveBankAccounts(claimId, form);
-    res.redirect(getBaseUrlWithIdParam(claimId) + CITIZEN_SEVERELY_DISABLED_URL);
+    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SEVERELY_DISABLED_URL));
   }
 }
 
