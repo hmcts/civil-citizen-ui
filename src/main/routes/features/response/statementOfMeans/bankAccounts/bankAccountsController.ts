@@ -1,8 +1,6 @@
 import * as express from 'express';
 import {
-  CITIZEN_BANK_ACCOUNT_URL,
-  BASE_CASE_RESPONSE_URL,
-  CITIZEN_SEVERELY_DISABLED_URL,
+  CITIZEN_BANK_ACCOUNT_URL, DISABILITY_PATH_URL,
 } from '../../../../../routes/urls';
 import {BankAccounts} from '../../../../../common/form/models/bankAndSavings/bankAccounts';
 import {BankAccount} from '../../../../../common/form/models/bankAndSavings/bankAccount';
@@ -25,13 +23,13 @@ function transformToAccounts(req: express.Request){
   });
 }
 
-router.get( BASE_CASE_RESPONSE_URL + CITIZEN_BANK_ACCOUNT_URL, (req, res) => {
+router.get(  CITIZEN_BANK_ACCOUNT_URL.toString(), (req, res) => {
   bankAccountService.getBankAccounts(req.params.id).then((form:BankAccounts)=>{
     renderView(form,  new BankAccountTypes(), res);
   });
 });
 
-router.post(BASE_CASE_RESPONSE_URL + CITIZEN_BANK_ACCOUNT_URL,  async(req, res) => {
+router.post(CITIZEN_BANK_ACCOUNT_URL.toString(),  async(req, res) => {
   const form: BankAccounts = new BankAccounts(transformToAccounts(req));
   await renderErrorsIfExist(form, res, req.params.id);
 });
@@ -43,7 +41,7 @@ async function renderErrorsIfExist(form: BankAccounts, res: express.Response, cl
     renderView(form, new BankAccountTypes(), res);
   } else {
     await bankAccountService.saveBankAccounts(claimId, form);
-    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SEVERELY_DISABLED_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, DISABILITY_PATH_URL));
   }
 }
 
