@@ -6,8 +6,7 @@ import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {convertFormToCitizenBankAccount, convertCitizenBankAccountsToForm} from './bankAccountConverter';
 
 export class BankAccountService {
-  public async getBankAccounts(claimId: string) {
-
+  public async getBankAccounts(claimId: string): Promise<BankAccounts>{
     const claim = await getCaseDataFromStore(claimId);
     if (claim && claim.statementOfMeans && claim.statementOfMeans.bankAccounts) {
       return convertCitizenBankAccountsToForm(claim.statementOfMeans.bankAccounts);
