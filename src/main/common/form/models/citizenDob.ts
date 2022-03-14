@@ -4,7 +4,7 @@ import {Form} from './form';
 import {DateConverter} from '../../../common/utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from '../validators/optionalDateNotInFutureValidator';
 
-export class CitizenDob extends Form{
+export class CitizenDob extends Form {
 
   @ValidateIf(o => (o.day <32 && o.month<13))
   @IsDate({message: VALID_DATE})

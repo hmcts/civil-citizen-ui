@@ -21,12 +21,12 @@ function redirectToNextPage(req: express.Request, res: express.Response, dob: Da
 }
 
 router.get(DOB_URL, (req: express.Request, res: express.Response) => {
-  const citizenDobForm: CitizenDob = new CitizenDob();
-  renderView(res, citizenDobForm);
+  const citizenDob = new CitizenDob();
+  renderView(res, citizenDob);
 });
 
 router.post(DOB_URL, (req, res) => {
-  const citizenDob: CitizenDob = new CitizenDob(req.body.year, req.body.month, req.body.day);
+  const citizenDob = new CitizenDob(req.body.year, req.body.month, req.body.day);
   const validator = new Validator();
   citizenDob.errors = validator.validateSync(citizenDob);
   if (citizenDob.errors && citizenDob.errors.length > 0) {

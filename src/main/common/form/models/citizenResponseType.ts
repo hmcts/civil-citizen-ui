@@ -1,8 +1,8 @@
 import {IsNotEmpty, ValidationError} from 'class-validator';
-import {VALID_CHOOSE} from '../../form/validationErrors/errorMessageConstants';
 import {Form} from './form';
+import {VALID_CHOOSE} from '../../form/validationErrors/errorMessageConstants';
 
-export class CitizenResponseType extends Form{
+export class CitizenResponseType extends Form {
   @IsNotEmpty({message: VALID_CHOOSE})
     responseType?: string;
 

@@ -33,6 +33,9 @@ residenceRoute
     RESIDENCE_URL,
     (req: express.Request, res: express.Response) => {
       const residence = new Residence(ResidenceType.valueOf(req.body.type), req.body.housingDetails);
+      if (residence.type !== ResidenceType.OTHER) {
+        residence.housingDetails = '';
+      }
       const form: GenericForm<Residence> = new GenericForm(residence);
       const validator = new Validator();
       const errors: ValidationError[] = validator.validateSync(form.model);
