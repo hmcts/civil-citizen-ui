@@ -40,7 +40,7 @@ router.post(CITIZEN_PARTNER_URL.toString(),
         res.redirect(CITIZEN_PARTENER_PENSION_URL);
       } else {
         disabilityService.getDisability(req.params.id).then((response) => {
-          if (response == 'yes') {
+          if (response && response.option == 'yes') {
             res.redirect(CITIZEN_PARTNER_DISABILITY_URL);
           } else {
             res.redirect(CITIZEN_DEPENDANTS_URL);
