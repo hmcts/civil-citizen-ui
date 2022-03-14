@@ -26,11 +26,4 @@ export class ResidenceType {
       ResidenceType.OTHER,
     ];
   }
-
-  static except(residenceType: ResidenceType): ResidenceType[] {
-    if (residenceType === undefined) {
-      throw new Error('Residence type is required');
-    }
-    return ResidenceType.all().filter(item => item !== residenceType);
-  }
 }

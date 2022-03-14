@@ -18,7 +18,7 @@ residenceRoute
       req.app.locals.draftStoreClient.get('externalId').then((_object: string) => {
 
         let jsonData = undefined;
-        if(_object){
+        if (_object) {
           jsonData = JSON.parse(_object);
         }
         draftResponse = Object.assign(new DraftResponse(), jsonData);
