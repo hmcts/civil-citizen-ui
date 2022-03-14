@@ -1,13 +1,13 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 
-{% macro yesNoRadioButton(t,name,form) %}
+{% macro yesNoRadioButton(t,id,name,title,form) %}
   {% set errors = form.getErrors() %}
               {{ govukRadios({
-              idPrefix: "disability",
-              name: "disability",
+              idPrefix: id,
+              name: name,
               fieldset: {
                 legend: {
-                  text: name,
+                  text: title,
                   isPageHeading: true,
                   classes: "govuk-fieldset__legend--l"
                 }
