@@ -1,21 +1,20 @@
 import * as express from 'express';
 import {
-  BASE_CASE_RESPONSE_URL,
-  CITIZEN_BANK_ACCOUNT_URL,
-  CLAIM_TASK_LIST,
-  FINANCIAL_DETAILS,
+  FINANCIAL_DETAILS_URL,
 } from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
-import {DraftStoreService} from '../../../../modules/draft-store/draftStoreService';
+import {
+  getDraftClaimFromStore,
+} from '../../../../modules/draft-store/draftStoreService';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
-import {getBaseUrlWithIdParam} from '../../../../common/utils/urlFormatter';
 import * as winston from 'winston';
+import {getCitizenBankAccountUrlWithIdParam, getClaimTaskListAccountUrlWithIdParam} from '../../../../common/utils/urlFormatter';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const router = express.Router();
 const { Logger } = require('@hmcts/nodejs-logging');
 let logger : winston.LoggerInstance = Logger.getLogger('financialDetailsController');
-const draftStoreService : DraftStoreService = new DraftStoreService();
+
 
 export function setLogger(winstonLogger : winston.LoggerInstance){
   logger = winstonLogger;
@@ -26,32 +25,30 @@ function renderPage(res: express.Response, claim: Claim): void {
 }
 
 
-router.get(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS, async (req, res) => {
-  await draftStoreService.getCaseDataFormStore(req.params.id)
+router.get(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
+  await getDraftClaimFromStore(req.params.id)
     .then(claim => {
-      renderPage(res, claim);
+      renderPage(res, claim.case_data);
     }).catch(error => {
       logger.error(error.message);
     });
 });
 
-router.post(BASE_CASE_RESPONSE_URL + FINANCIAL_DETAILS,   (req, res) => {
+router.post(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
   let counterpartyType : CounterpartyType;
   let claim : Claim = new Claim();
-  draftStoreService.getCaseDataFormStore(req.params.id)
+  await getDraftClaimFromStore(req.params.id)
     .then(claimResponse => {
-      counterpartyType = claimResponse.respondent1.type;
-      claim = claimResponse;
+      counterpartyType = claimResponse.case_data.respondent1.type;
+      claim = claimResponse.case_data;
     }).catch(error => {
       logger.error(error.message);
     });
   if (counterpartyType) {
     if (counterpartyType == CounterpartyType.individual || counterpartyType == CounterpartyType.soleTrader) {
-      console.log('CounterpartyType is ::' + counterpartyType);
-      res.redirect(getBaseUrlWithIdParam(req.params.id) + CITIZEN_BANK_ACCOUNT_URL);
+      res.redirect(getCitizenBankAccountUrlWithIdParam(req.params.id));
     } else if (counterpartyType == CounterpartyType.company || counterpartyType == CounterpartyType.organisation) {
-      console.log(counterpartyType);
-      res.redirect(getBaseUrlWithIdParam(req.params.id) + CLAIM_TASK_LIST);
+      res.redirect(getClaimTaskListAccountUrlWithIdParam(req.params.id));
     }
   } else {
     logger.error('No counterpartyType found.');

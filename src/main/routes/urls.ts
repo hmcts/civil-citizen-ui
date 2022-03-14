@@ -21,8 +21,8 @@ export const CITIZEN_DISABILITY_URL: Urls = `${STATEMENT_OF_MEANS_URL}/disabilit
 export const CITIZEN_SEVERELY_DISABLED_URL: Urls = `${STATEMENT_OF_MEANS_URL}/are-you-severely-disabled`;
 export const CITIZEN_WHERE_LIVE_URL: Urls = `${STATEMENT_OF_MEANS_URL}/where-do-you-live`;
 export const CITIZEN_RESIDENCE_URL: Urls = `${STATEMENT_OF_MEANS_URL}/residence`;
-export const FINANCIAL_DETAILS: Urls = '/financial-details';
+export const FINANCIAL_DETAILS_URL: Urls = `${BASE_CASE_RESPONSE_URL}/financial-details`;
 export const CITIZEN_BANK_ACCOUNT_URL: Urls = `${STATEMENT_OF_MEANS_URL}/bank-accounts`;
-export const CLAIM_TASK_LIST: Urls = '/claim-task-list';
+export const CLAIM_TASK_LIST: Urls = `${BASE_CASE_RESPONSE_URL}/claim-task-list`;
 
 

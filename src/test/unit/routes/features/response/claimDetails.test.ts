@@ -32,7 +32,7 @@ describe('Claim Details', () => {
 
     const civilServiceClient = new CivilServiceClient('http://localhost');
 
-    const actualClaims: Claim = await civilServiceClient.retrieveClaimDetails(mockedAppRequest,'1643033241924739');
+    const actualClaims: Claim = await civilServiceClient.retrieveClaimDetails('1643033241924739', mockedAppRequest);
 
     expect(mockedAxios.create).toHaveBeenCalledWith({
       baseURL: 'http://localhost',

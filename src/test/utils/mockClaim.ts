@@ -1,5 +1,6 @@
 import {Respondent} from '../../main/common/models/respondent';
-import { Claim } from '../../main/common/models/claim';
+import {Claim} from '../../main/common/models/claim';
+import {CounterpartyType} from '../../main/common/models/counterpartyType';
 
 const respondent1: Respondent = {
   primaryAddress: {
@@ -26,6 +27,7 @@ const respondent1: Respondent = {
   telephoneNumber: '0208339922',
   dateOfBirth: new Date('2022-01-24T15:59:59'),
   responseType: '',
+  type: CounterpartyType.individual,
 };
 
 export const mockClaim: Claim = {
@@ -35,6 +37,7 @@ export const mockClaim: Claim = {
       individualTitle: 'Mrs',
       individualLastName: 'Clark',
       individualFirstName: 'Jane',
+      type: CounterpartyType.individual,
     },
   totalClaimAmount: 110,
   respondent1ResponseDeadline: new Date('2022-01-24T15:59:59'),

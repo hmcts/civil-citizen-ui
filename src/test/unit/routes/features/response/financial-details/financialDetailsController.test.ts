@@ -3,12 +3,8 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-/*  BASE_CASE_RESPONSE_URL,
-  CITIZEN_BANK_ACCOUNT_URL,
-  CLAIM_TASK_LIST,*/
-  FINANCIAL_DETAILS,
-} from '../../../../../../main/routes/urls';
-import {getBaseUrlWithIdParam} from '../../../../../../main/common/utils/urlFormatter';
+  getFinancialDetailsUrlWithIdParam,
+} from '../../../../../../main/common/utils/urlFormatter';
 import {setLogger} from '../../../../../../main/routes/features/response/financialDetails/financialDetailsController';
 import {LoggerInstance} from 'winston';
 
@@ -18,11 +14,6 @@ const claimOrganisationMock = require('./claimOrganisationMock.json');
 const claimIndividual: string = JSON.stringify(claimIndividualMock);
 const claimIndividualNoType: string = JSON.stringify(claimIndividualMockNoType);
 const claimOrganisation: string = JSON.stringify(claimOrganisationMock);
-
-const mockDraftStore = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(claimIndividual)),
-};
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -39,20 +30,19 @@ describe('Citizen financial details', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    /*    nock('http://localhost:3001')
-      .post(BASE_CASE_RESPONSE_URL + CITIZEN_BANK_ACCOUNT_URL)
-      .reply(200, {});
-    nock('http://localhost:3001')
-      .post(BASE_CASE_RESPONSE_URL + CLAIM_TASK_LIST)
-      .reply(200, {});*/
     setLogger(mockLogger);
   });
 
   describe('on GET', () => {
     test('should return individual financial details page', async () => {
+      const mockDraftStore = {
+        set: jest.fn(() => Promise.resolve({data: {}})),
+        get: jest.fn(() => Promise.resolve(claimIndividual)),
+      };
       app.locals.draftStoreClient = mockDraftStore;
+      console.log(claimIndividual);
       await request(app)
-        .get(getBaseUrlWithIdParam('1646818997929180') + FINANCIAL_DETAILS)
+        .get( getFinancialDetailsUrlWithIdParam('1646818997929180') )
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('details of your finances');
@@ -65,7 +55,7 @@ describe('Citizen financial details', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .get(getBaseUrlWithIdParam('1646768947464020') + FINANCIAL_DETAILS)
+        .get(getFinancialDetailsUrlWithIdParam('1646768947464020') )
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('your company or organisation&#39;s most recent statement of accounts');
@@ -82,9 +72,9 @@ describe('Citizen financial details', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(getBaseUrlWithIdParam('1646818997929180') + FINANCIAL_DETAILS)
+        .post(getFinancialDetailsUrlWithIdParam('1646818997929180') )
         .expect((res) => {
-          expect(res.status).toBe(200);
+          expect(res.status).toBe(302);
         });
     });
     test('should redirect for organisation',  async() => {
@@ -94,9 +84,9 @@ describe('Citizen financial details', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(getBaseUrlWithIdParam('1646768947464020') + FINANCIAL_DETAILS)
+        .post(getFinancialDetailsUrlWithIdParam('1646768947464020') )
         .expect((res) => {
-          expect(res.status).toBe(200);
+          expect(res.status).toBe(302);
         });
     });
     test('should be 404 for no caseId in path', async () => {
@@ -106,7 +96,7 @@ describe('Citizen financial details', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(getBaseUrlWithIdParam('') + FINANCIAL_DETAILS)
+        .post(getFinancialDetailsUrlWithIdParam(''))
         .expect((res) => {
           expect(res.status).toBe(404);
         });
@@ -118,7 +108,7 @@ describe('Citizen financial details', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(getBaseUrlWithIdParam('1646818997929180') + FINANCIAL_DETAILS)
+        .post(getFinancialDetailsUrlWithIdParam('1646818997929180'))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(mockLogger.error).toHaveBeenCalledWith('No counterpartyType found.');
