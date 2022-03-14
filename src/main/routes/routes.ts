@@ -8,6 +8,7 @@ import responseDetailsRoute from './features/response/citizenDetails/citizenDeta
 import claimDetailsRoute from './features/response/claimDetails/claimDetailsController';
 import responsePostcodeLookupRoute from './features/response/citizenDetails/postcodeLookupController';
 import citizenResponseType from './features/response/responseType/citizenResponseType';
+import citizenPartnerAgeController from './features/response/statementOfMeans/partnerAgeController';
 
 export default [
   homeRoute,
@@ -20,4 +21,5 @@ export default [
   ageEligibilityRoute,
   responsePostcodeLookupRoute,
   citizenResponseType,
+  citizenPartnerAgeController,
 ];
