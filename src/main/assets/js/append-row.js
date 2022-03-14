@@ -1,3 +1,10 @@
+/**
+ * This adds a cloning functionality to a button with class name append-row.
+ * Anything in a div wth name multiple-row will be cloned (duplicated). Indexes for the input elements would be increased accordingly.
+ * The input elements would be reset to their original state.
+ * To use this functionality create a button with class name append-row, create a div with class name multiple-row.
+ * Put all the elements that are needed to be cloned in the div with class name multiple-row
+ */
 document.addEventListener('DOMContentLoaded', function () {
   const appendRowButton = document.getElementsByClassName('append-row');
   if (elementExists(appendRowButton)) {
