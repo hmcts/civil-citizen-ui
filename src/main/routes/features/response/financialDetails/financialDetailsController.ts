@@ -27,8 +27,8 @@ function renderPage(res: express.Response, claim: Claim): void {
 
 router.get(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
   await getDraftClaimFromStore(req.params.id)
-    .then(claim => {
-      renderPage(res, claim.case_data);
+    .then(claimResponse => {
+      renderPage(res, claimResponse.case_data);
     }).catch(error => {
       logger.error(error.message);
     });
