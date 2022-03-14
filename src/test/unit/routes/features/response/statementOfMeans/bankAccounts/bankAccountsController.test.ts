@@ -33,28 +33,6 @@ describe('Bank Accounts and Savings', ()=>{
     });
   });
   describe('on Post', ()=> {
-    test('should return error when no account specified', async ()=>{
-      const data = {
-        accounts: [
-          {
-            typeOfAccount:'',
-            joint:'',
-            balance:'',
-          },
-          {
-            typeOfAccount:'',
-            joint:'',
-            balance:'',
-          },
-        ],
-      };
-      await request(app).post(getBaseUrlWithIdParam(CLAIM_ID) + CITIZEN_BANK_ACCOUNT_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(SELECT_AN_OPTION);
-        });
-    });
     test('should return error when type of account is not specified', async ()=>{
       const data = {
         accounts: [
