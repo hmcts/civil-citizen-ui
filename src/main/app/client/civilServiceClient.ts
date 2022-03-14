@@ -4,7 +4,8 @@ import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {CIVIL_SERVICE_CASES_URL} from './civilServiceUrls';
-
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('ciivilServiceClient');
 
 export class CivilServiceClient {
   client: AxiosInstance;
@@ -36,13 +37,21 @@ export class CivilServiceClient {
     return claims;
   }
 
-
-  async retrieveClaimDetails(req: AppRequest, claimId: string): Promise<Claim> {
+  async retrieveClaimDetails(claimId: string, req: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
-    const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`, config);
-    if (!response.data) {
-      throw new AssertionError({message: 'Claim details not available.'});
+
+    try {
+
+      const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`, config );// nosonar
+
+      if (!response.data) {
+        throw new AssertionError({ message: 'Claim details not available.' });
+      }
+
+      return response.data as Claim;
+
+    } catch(err:any) {
+      logger.error(`${err.stack || err}`);
     }
-    return response.data as Claim;
   }
 }
