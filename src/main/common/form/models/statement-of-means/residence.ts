@@ -22,12 +22,4 @@ export class Residence {
     this.type = type;
     this.housingDetails = housingDetails;
   }
-
-  get residenceType() {
-    if (this.type === ResidenceType.OTHER) {
-      return this.housingDetails;
-    } else {
-      return this.type.displayValue;
-    }
-  }
 }
