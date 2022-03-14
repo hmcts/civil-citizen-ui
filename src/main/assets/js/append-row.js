@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   const appendRowButton = document.getElementsByClassName('append-row');
-  if (appendRowButton && appendRowButton.length > 0) {
+  if (elementExists(appendRowButton)) {
     appendRowButton[0].addEventListener('click', (event) => {
       event.preventDefault();
       cloneRow();
@@ -8,21 +8,22 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function cloneRow() {
-    if (document.getElementsByClassName('multiple-row') && document.getElementsByClassName('multiple-row').length > 0) {
-      const lastRow = getLastRow();
+    const multipleRowElement = document.getElementsByClassName('multiple-row');
+    if (elementExists(multipleRowElement)) {
+      const lastRow = getLastRow(multipleRowElement);
       let newRow = lastRow.cloneNode(true);
       lastRow.parentNode.appendChild(newRow);
-      updateNewRow();
+      updateNewRow(document.getElementsByClassName('multiple-row'));
     }
   }
 
-  function getLastRow(){
-    const lastElementIndex = document.getElementsByClassName('multiple-row').length - 1;
-    return document.getElementsByClassName('multiple-row')[lastElementIndex];
+  function getLastRow(multipleRowElement){
+    const lastElementIndex = multipleRowElement.length - 1;
+    return multipleRowElement[lastElementIndex];
   }
 
-  function updateNewRow(){
-    let newRow = getLastRow();
+  function updateNewRow(addedRow){
+    let newRow = getLastRow(addedRow);
     let inputs = newRow.querySelectorAll('input, textarea, select');
     updateInputs(inputs);
     removeErrors(newRow);
@@ -30,9 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function removeErrors(newRow) {
     let errorRow = newRow.getElementsByClassName('govuk-form-group govuk-form-group--error');
-    if(errorRow && errorRow.length>0){
+    if(elementExists(errorRow)){
       const errors = errorRow[0].getElementsByClassName('govuk-error-message');
-      if(errors && errors.length>0){
+      if(elementExists(errors)){
         while(errors[0]){
           errors[0].parentNode.removeChild(errors[0]);
         }
@@ -42,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function updateInputs(inputs) {
-    if(inputs && inputs.length>0){
+    if(elementExists(inputs)){
       inputs.forEach(input => {
         input.value = '';
         input.classList.remove('govuk-input--error', 'govuk-select--error', 'govuk-textarea--error');
@@ -56,5 +57,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const indexRegex = /\[(\d+)\]/;
     input.name = input.name.replace(indexRegex, '[' + newIndex + ']');
     input.id = input.id.replace(indexRegex, '[' + newIndex + ']');
+  }
+
+  function elementExists(element){
+    return element && element.length > 0;
   }
 });
