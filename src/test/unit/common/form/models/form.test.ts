@@ -4,7 +4,6 @@ import {Form} from '../../../../../main/common/form/models/form';
 
 const ERROR_MESSAGE = 'Error message';
 const PROPERTY = 'property';
-const model: object = new Object();
 
 const _errors = [
   {
@@ -38,7 +37,7 @@ const _correspondenceAddressErrors = [
 
 
 describe('Form get error message', () => {
-  const form = new Form(model);
+  const form = new Form();
   it('should return errors when there are errors', () => {
     //Given
     form.errors = createValidationError();
@@ -57,7 +56,7 @@ describe('Form get error message', () => {
   });
 });
 describe('Form has field errors', () => {
-  const form = new Form(model);
+  const form = new Form();
   it('should return field error when there are error', () => {
     //Given
     form.errors = createValidationError();

@@ -2,7 +2,7 @@ import express from 'express';
 import assert from 'assert';
 import {Residence} from '../../../../common/form/models/statement-of-means/residence';
 import {DASHBOARD_URL, RESIDENCE_URL} from '../../../../routes/urls';
-import {Form} from '../../../../common/form/models/form';
+import {GenericForm} from '../../../../common/form/models/genericForm';
 import {DraftResponse} from '../../../../common/form/models/draftResponse';
 import {ValidationError, Validator} from 'class-validator';
 import {ResidenceType} from '../../../../common/form/models/statement-of-means/residenceType';
@@ -25,7 +25,7 @@ residenceRoute
         assert(draftResponse);
 
         res.render(residenceViewPath, {
-          form: new Form(draftResponse.residence),
+          form: new GenericForm(draftResponse.residence),
         });
       });
     })
@@ -33,7 +33,7 @@ residenceRoute
     RESIDENCE_URL,
     (req: express.Request, res: express.Response) => {
       const residence = new Residence(ResidenceType.valueOf(req.body.type), req.body.housingDetails);
-      const form: Form<Residence> = new Form(residence);
+      const form: GenericForm<Residence> = new GenericForm(residence);
       const validator = new Validator();
       const errors: ValidationError[] = validator.validateSync(form.model);
       if (errors && errors.length > 0) {

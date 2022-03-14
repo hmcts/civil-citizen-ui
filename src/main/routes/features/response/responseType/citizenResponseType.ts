@@ -6,12 +6,11 @@ import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
 import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
-import {Form} from '../../../../common/form/models/form';
 
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const router = express.Router();
-const citizenResponseType = new Form(new CitizenResponseType());
+const citizenResponseType = new CitizenResponseType();
 const DEADLINE = new Claim().formattedResponseDeadline();
 
 const componentDetailItemsList: ComponentDetailItems[] = [
@@ -25,7 +24,7 @@ const componentDetailItemsList: ComponentDetailItems[] = [
   new ComponentDetailItems('Hearing centre location', null, ['If the claim is against you as an individual, the hearing centre will be the nearest one to your home or business.', 'If the claimant is an individual and the claim is against you as an organisation, the hearing centre will be the nearest one to their home or business.']),
 ];
 
-function renderView(form: Form<CitizenResponseType>, res: express.Response): void {
+function renderView(form: CitizenResponseType, res: express.Response): void {
   res.render(citizenResponseTypeViewPath, {form: form, componentDetailItemsList: componentDetailItemsList});
 }
 
@@ -36,15 +35,15 @@ router.get(CITIZEN_RESPONSE_TYPE, (req, res) => {
 router.post(CITIZEN_RESPONSE_TYPE,
   (req, res) => {
 
-    const form: Form<CitizenResponseType> = new Form(new CitizenResponseType(req.body.responseType));
+    const model: CitizenResponseType = new CitizenResponseType(req.body.responseType);
     const validator = new Validator();
-    const errors: ValidationError[] = validator.validateSync(form.model);
+    const errors: ValidationError[] = validator.validateSync(model);
     if (errors && errors.length > 0) {
-      form.errors = errors;
-      renderView(form, res);
+      model.errors = errors;
+      renderView(model, res);
     } else {
       const respondent = new Respondent();
-      respondent.responseType = form.model.responseType;
+      respondent.responseType = model.responseType;
       const claim = new Claim();
       claim.respondent1 = respondent;
       claim.legacyCaseReference = 'responseType';

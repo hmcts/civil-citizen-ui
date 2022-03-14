@@ -1,18 +1,18 @@
-import {ValidationError} from 'class-validator';
+import {ValidateNested, ValidationError} from 'class-validator';
 import {FormValidationError} from '../validationErrors/formValidationError';
 
-/**
- * @deprecated use GenericForm instead
- */
-export class Form {
+export class GenericForm<Model> {
+  @ValidateNested()
+    model: Model;
   errors?: ValidationError[];
 
-  constructor(errors?: ValidationError[]) {
+  constructor(model: Model, errors?: ValidationError[]) {
+    this.model = model;
     this.errors = errors;
   }
 
   hasErrors(): boolean {
-    return this.errors !== undefined;
+    return this.errors?.length > 0;
   }
 
   public getErrors(): FormValidationError[] {
@@ -28,13 +28,6 @@ export class Form {
   public hasFieldError(field: string): boolean {
     if (this.errors) {
       return this.errors.some((error) => field == error.property);
-    }
-  }
-
-  public getTextError(errors: ValidationError[], property: string) {
-    const error = errors.filter((item) => item.property == property);
-    if (error.length > 0) {
-      return error[0].constraints.isNotEmpty || error[0].constraints.customInt ? error[0].constraints.isNotEmpty || error[0].constraints.customInt : '';
     }
   }
 }
