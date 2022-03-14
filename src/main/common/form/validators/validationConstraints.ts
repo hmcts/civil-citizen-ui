@@ -1,0 +1,1 @@
+export const MAX_AMOUNT_VALUE: number = 999999999999999;
