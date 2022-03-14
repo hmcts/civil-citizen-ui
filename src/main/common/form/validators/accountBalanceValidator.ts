@@ -1,5 +1,5 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {VALID_TWO_DECIMAL_NUMBER} from '../validationErrors/errorMessageConstants';
+import {NUMBER_REQUIRED, VALID_TWO_DECIMAL_NUMBER} from '../validationErrors/errorMessageConstants';
 import {MAX_AMOUNT_VALUE} from './validationConstraints';
 
 /**
@@ -7,16 +7,17 @@ import {MAX_AMOUNT_VALUE} from './validationConstraints';
  */
 @ValidatorConstraint({name: 'customAccountBalanceValidator', async: false})
 export class AccountBalanceValidator implements ValidatorConstraintInterface {
+  numericValue: number;
   validate(value: string): Promise<boolean> | boolean {
     if (value === undefined || value === null || value === '') {
       return true;
     }
     const decimalPattern = /^-?\d*\.?\d{0,2}$/;
-    const numericValue = Number(value);
-    return decimalPattern.test(value) && numericValue !==0 && numericValue < MAX_AMOUNT_VALUE ;
+    this.numericValue = Number(value);
+    return decimalPattern.test(value) && this.numericValue !==0 && this.numericValue < MAX_AMOUNT_VALUE ;
   }
   defaultMessage() {
-    return VALID_TWO_DECIMAL_NUMBER;
+    return this.numericValue ===0? NUMBER_REQUIRED : VALID_TWO_DECIMAL_NUMBER;
   }
 
 }

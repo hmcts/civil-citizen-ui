@@ -97,7 +97,7 @@ describe('Bank Accounts and Savings', ()=>{
           expect(res.text).toContain(NUMBER_REQUIRED);
         });
     });
-    test('should return error when balance is not specified', async ()=>{
+    test('should return error when balance has more than two decimal places', async ()=>{
       const data = {
         accounts: [
           {
@@ -117,6 +117,28 @@ describe('Bank Accounts and Savings', ()=>{
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_TWO_DECIMAL_NUMBER);
+        });
+    });
+    test('should return error when balance is 0', async ()=>{
+      const data = {
+        accounts: [
+          {
+            typeOfAccount:'CURRENT_ACCOUNT',
+            joint:'No',
+            balance:'00.0',
+          },
+          {
+            typeOfAccount:'',
+            joint:'',
+            balance:'',
+          },
+        ],
+      };
+      await request(app).post(CITIZEN_BANK_ACCOUNT_URL)
+        .send(data)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(NUMBER_REQUIRED);
         });
     });
     test('should should redirect when no validation errors', async ()=>{

@@ -82,14 +82,6 @@ describe('Account Balance Validator validate', () => {
     //Then
     expect(result).toBeFalsy();
   });
-  it('should not allow 0 values', ()=>{
-    //Given
-    const input = '0.0';
-    //When
-    const result = validator.validate(input);
-    //Then
-    expect(result).toBeFalsy();
-  });
   it('should not allow value greater than 99999999999999999999999999', ()=>{
     //Given
     const input = '99999999999999999999999999';
