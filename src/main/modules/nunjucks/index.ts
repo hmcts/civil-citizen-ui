@@ -1,10 +1,11 @@
 import * as path from 'path';
-import { join } from 'path';
-import { Express } from 'express';
-import { configure } from 'nunjucks';
+import {join} from 'path';
+import {Express} from 'express';
+import {configure} from 'nunjucks';
 import * as numeral from '../../common/utils/currencyFormat';
-import { i18n, TOptions } from 'i18next';
-import { ResponseType } from '../../common/form/models/responseType';
+import {i18n, TOptions} from 'i18next';
+import {ResponseType} from '../../common/form/models/responseType';
+import {YesNo} from '../../common/form/models/yesNo';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -20,7 +21,7 @@ const appAssetPaths = {
 };
 
 export class Nunjucks {
-  constructor(public developmentMode: boolean, public i18next : i18n) {
+  constructor(public developmentMode: boolean, public i18next: i18n) {
     this.developmentMode = developmentMode;
     this.i18next = i18next;
   }
@@ -50,6 +51,7 @@ export class Nunjucks {
     nunjucksEnv.addFilter('currencyFormat', currencyFormat);
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
+    nunjucksEnv.addGlobal('YesNo', YesNo);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

@@ -14,5 +14,4 @@ export const POSTCODE_NOT_VALID = 'Postcode must be in United Kingdom';
 export const DEFENDANT_POSTCODE_NOT_VALID = 'Postcode must be in England or Wales';
 export const CLAIM_NUMBER= 'testCaseReference';
 export const CLAIM_DETAILS= 'Claim details';
-
-
+export const VALID_OPTION = 'Choose option: Yes or No';
