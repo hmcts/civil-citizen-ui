@@ -11,6 +11,7 @@ import citizenResponseType from './features/response/responseType/citizenRespons
 import citizenPartnerAgeController from './features/response/statementOfMeans/partner/partnerAgeController';
 import citizenDisability from './features/response/statementOfMeans/disabilityController';
 import citizenSevereDisability from './features/response/statementOfMeans/severeDisabilityController';
+import bankAccountsRoute from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
 
 export default [
   homeRoute,
@@ -26,4 +27,5 @@ export default [
   citizenPartnerAgeController,
   citizenDisability,
   citizenSevereDisability,
+  bankAccountsRoute,
 ];
