@@ -6,11 +6,14 @@ import config from 'config';
 import {
   VALID_HOUSING,
   VALID_OPTION_SELECTION,
+  VALID_TEXT_LENGTH,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../../../main/app/client/civilServiceUrls';
 import {DASHBOARD_URL} from '../../../../../../main/routes/urls';
+import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
 
 const agent = request.agent(app);
+const tooLongHousingDetails: string = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');
 
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
@@ -89,7 +92,7 @@ describe('Citizen residence', () => {
           expect(res.text).toContain(VALID_HOUSING);
         });
     });
-    test('should redirect when type is \'Other\' and housing details is provided', async () => {
+    test('should redirect when type is \'Other\' and housing details are provided', async () => {
       await agent
         .post('/statement-of-means/residence')
         .send('type=OTHER')
@@ -97,6 +100,16 @@ describe('Citizen residence', () => {
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DASHBOARD_URL);
+        });
+    });
+    test('should return error when type is \'Other\' and housing details are too long', async () => {
+      await agent
+        .post('/statement-of-means/residence')
+        .send('type=OTHER')
+        .send(`housingDetails=${tooLongHousingDetails}`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(VALID_TEXT_LENGTH);
         });
     });
   });

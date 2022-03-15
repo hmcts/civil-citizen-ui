@@ -12,7 +12,7 @@
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": 'There was a problem',
+          "titleText": t('There was a problem'),
           "errorList": errors
         }) }}
       {% endif %}
@@ -26,8 +26,6 @@
 
             {% set error = form.getErrors() %}
             <div class="govuk-form-group {% if error %} govuk-form-group--error {% endif %}">
-              {#                <legend class="visually-hidden">{{ t('Where do you live?') }}</legend> #}
-              {#                {% if error %}<span class="error-message">{{ t(error) }}</span>{% endif %} #}
 
               {% set housingDetailsHtml %}
                 {{ govukInput({
@@ -47,9 +45,6 @@
               {{ govukRadios({
                 idPrefix: "residenceType",
                 name: "type",
-                hint: {
-                  text: t('Select one option')
-                },
                 items: [
                   {
                     value: ResidenceType.OWN_HOME.value,
