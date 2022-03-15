@@ -1,0 +1,31 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% macro yesNoRadioButton(t,id,name,title,form) %}
+  {% set errors = form.getErrors() %}
+              {{ govukRadios({
+              idPrefix: id,
+              name: name,
+              fieldset: {
+                legend: {
+                  text: title,
+                  isPageHeading: true,
+                  classes: "govuk-fieldset__legend--l"
+                }
+              },
+              items: [
+                {
+                  value: YesNo.YES,
+                  checked: true if form.option=="yes" else false,
+                  html: "<span>" + t('Yes') + "</span>"
+                },
+                {
+                  value: YesNo.NO,
+                  checked: true if form.option=="no" else false,
+                  html: "<span>" + t('No') + "</span>"
+                }
+              ],
+                errorMessage: {
+                  html: errors[0].text
+                } if errors
+            }) }}
+{% endmacro %}
