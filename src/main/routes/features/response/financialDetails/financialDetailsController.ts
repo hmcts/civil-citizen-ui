@@ -1,5 +1,6 @@
 import * as express from 'express';
 import {
+  CITIZEN_BANK_ACCOUNT_URL, CLAIM_TASK_LIST,
   FINANCIAL_DETAILS_URL,
 } from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
@@ -8,7 +9,9 @@ import {
 } from '../../../../modules/draft-store/draftStoreService';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
 import * as winston from 'winston';
-import {getCitizenBankAccountUrlWithIdParam, getClaimTaskListAccountUrlWithIdParam} from '../../../../common/utils/urlFormatter';
+import {
+  constructResponseUrlWithIdParams,
+} from '../../../../common/utils/urlFormatter';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const router = express.Router();
@@ -26,11 +29,14 @@ function renderPage(res: express.Response, claim: Claim): void {
 
 
 router.get(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
+  let claim : Claim = new Claim();
   await getDraftClaimFromStore(req.params.id)
     .then(claimResponse => {
-      renderPage(res, claimResponse.case_data);
+      claim = claimResponse.case_data;
+      renderPage(res, claim);
     }).catch(error => {
       logger.error(error.message);
+      renderPage(res, claim);
     });
 });
 
@@ -46,9 +52,9 @@ router.post(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
     });
   if (counterpartyType) {
     if (counterpartyType == CounterpartyType.INDIVIDUAL || counterpartyType == CounterpartyType.SOLE_TRADER) {
-      res.redirect(getCitizenBankAccountUrlWithIdParam(req.params.id));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));
     } else if (counterpartyType == CounterpartyType.COMPANY || counterpartyType == CounterpartyType.ORGANISATION) {
-      res.redirect(getClaimTaskListAccountUrlWithIdParam(req.params.id));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST));
     }
   } else {
     logger.error('No counterpartyType found.');
