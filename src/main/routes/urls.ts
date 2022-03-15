@@ -21,5 +21,7 @@ export const CITIZEN_DISABILITY_URL: Urls = `${STATEMENT_OF_MEANS_URL}/disabilit
 export const CITIZEN_SEVERELY_DISABLED_URL: Urls = `${STATEMENT_OF_MEANS_URL}/are-you-severely-disabled`;
 export const CITIZEN_WHERE_LIVE_URL: Urls = `${STATEMENT_OF_MEANS_URL}/where-do-you-live`;
 export const CITIZEN_RESIDENCE_URL: Urls = `${STATEMENT_OF_MEANS_URL}/residence`;
-export const DO_YOU_LIVE_WITH_PARTNER_URL: Urls = `${STATEMENT_OF_MEANS_URL}/partner/partner`;
+export const PARTNER_URL: Urls = `${STATEMENT_OF_MEANS_URL}/partner/partner`;
+export const PARTNER_AGE_URL: Urls = `${STATEMENT_OF_MEANS_URL}/partner/partner-age`;
+export const PARTNER_DEPENDANTS_URL: Urls = `${STATEMENT_OF_MEANS_URL}/partner/dependants`;
 

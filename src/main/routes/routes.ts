@@ -10,6 +10,7 @@ import responsePostcodeLookupRoute from './features/response/citizenDetails/post
 import citizenResponseType from './features/response/responseType/citizenResponseType';
 import citizenDisability from './features/response/statementOfMeans/disabilityController';
 import citizenSevereDisability from './features/response/statementOfMeans/severeDisabilityController';
+import partner from './features/response/statementOfMeans/partner/partnerController';
 
 export default [
   homeRoute,
@@ -24,4 +25,6 @@ export default [
   citizenResponseType,
   citizenDisability,
   citizenSevereDisability,
+  partner,
+
 ];

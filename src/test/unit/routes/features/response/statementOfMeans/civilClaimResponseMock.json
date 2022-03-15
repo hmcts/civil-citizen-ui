@@ -15,6 +15,9 @@
     "statementOfMeans": {
       "disability": {
         "option": "yes"
+      },
+      "partner": {
+        "option": "yes"
       }
     }
   }
