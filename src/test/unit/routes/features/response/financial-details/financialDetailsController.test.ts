@@ -23,6 +23,11 @@ const mockLogger = {
   info: jest.fn().mockImplementation((message: string) => message),
 } as unknown as LoggerInstance;
 
+let mockDraftStore = {
+  set: jest.fn(() => Promise.resolve({data: {}})),
+  get: jest.fn(() => Promise.resolve(claimIndividual)),
+};
+
 describe('Citizen financial details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -35,7 +40,7 @@ describe('Citizen financial details', () => {
 
   describe('on GET', () => {
     test('should return individual financial details page', async () => {
-      const mockDraftStore = {
+      mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimIndividual)),
       };
@@ -49,7 +54,7 @@ describe('Citizen financial details', () => {
         });
     });
     test('should return organisation financial details page', async () => {
-      const mockDraftStore = {
+      mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimOrganisation)),
       };
@@ -66,7 +71,7 @@ describe('Citizen financial details', () => {
 
   describe('on POST', () => {
     test('should redirect for individual',  async () => {
-      const mockDraftStore = {
+      mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimIndividual)),
       };
@@ -78,7 +83,7 @@ describe('Citizen financial details', () => {
         });
     });
     test('should redirect for organisation',  async() => {
-      const mockDraftStore = {
+      mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimOrganisation)),
       };
@@ -90,7 +95,7 @@ describe('Citizen financial details', () => {
         });
     });
     test('should be 404 for no caseId in path', async () => {
-      const mockDraftStore = {
+      mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimOrganisation)),
       };
@@ -102,7 +107,7 @@ describe('Citizen financial details', () => {
         });
     });
     test('should be error for no respondent type in JSON',  async() => {
-      const mockDraftStore = {
+      mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimIndividualNoType)),
       };

@@ -10,7 +10,7 @@
     <div class="govuk-grid-column-two-thirds">
       <h2 class="govuk-heading-l">{{ t('Send ') }} {{ claim.applicant1.individualTitle }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(' your financial details') }}</h2>
       {% set type = claim.respondent1.type %}
-      {% if (type == 'INDIVIDUAL' or type == 'SOLE_TRADER') %}
+      {% if (type == CounterpartyType.INDIVIDUAL or type == CounterpartyType.SOLE_TRADER) %}
         <p class="govuk-body">
           {{ t('You need to give ') }} {{ claim.applicant1.individualTitle }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(' details of your finances.') }}
         </p>
@@ -23,7 +23,7 @@
         <p class="govuk-body">
           {{ t('If they reject your proposal, the court will make a new plan using your financial details.') }}
         </p>
-      {% elseif (type == 'COMPANY' or type == 'ORGANISATION') %}
+      {% elseif (type == CounterpartyType.COMPANY or type == CounterpartyType.ORGANISATION) %}
         <p class="govuk-body">
           {{ t('You need to send ') }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(" your company or organisation's most recent statement of accounts.") }}
         </p>
