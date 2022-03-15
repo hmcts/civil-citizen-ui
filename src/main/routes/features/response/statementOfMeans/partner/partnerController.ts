@@ -3,6 +3,7 @@ import {PARTNER_AGE_URL, PARTNER_DEPENDANTS_URL, PARTNER_URL} from '../../../../
 import {Cohabiting} from '../../../../../common/form/models/statementOfMeans/partner/cohabiting';
 import {ValidationError, Validator} from 'class-validator';
 import {CohabitingService} from '../../../../../modules/statementOfMeans/partner/cohabitingService';
+import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const partnerViewPath = 'features/response/statement-of-means/partner/partner';
 const router = express.Router();
@@ -30,9 +31,9 @@ router.post(PARTNER_URL.toString(),
     } else {
       cohabitingService.saveCohabiting(req.params.id, cohabiting);
       if (cohabiting.option == 'yes') {
-        res.redirect(PARTNER_AGE_URL);
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, PARTNER_AGE_URL));
       } else {
-        res.redirect(PARTNER_DEPENDANTS_URL);
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, PARTNER_DEPENDANTS_URL));
       }
     }
   });
