@@ -109,7 +109,7 @@ describe('Citizen date of birth', () => {
         .send('month=1')
         .send('day=1')
         .expect((res) => {
-          expect(res.status).toBe(200);
+          expect(res.status).toBe(302);
           expect(res.text).toContain(`Redirecting to ${CITIZEN_PHONE_NUMBER_URL}`);
         });
     });
