@@ -119,7 +119,7 @@ describe('Bank Accounts and Savings', ()=>{
           expect(res.text).toContain(VALID_TWO_DECIMAL_NUMBER);
         });
     });
-    test('should return error when balance is 0', async ()=>{
+    test('should return error when balance for input is 00', async ()=>{
       const data = {
         accounts: [
           {
