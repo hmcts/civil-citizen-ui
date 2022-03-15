@@ -17,7 +17,7 @@ jest.mock('ioredis', () => {
     };
   });
 });
-function createMockDraftStore( returnData: any){
+function createMockDraftStore( returnData: unknown){
   return {
     get: jest.fn(async () => JSON.stringify(returnData)),
     set: jest.fn(async () => {return;}),

@@ -44,8 +44,8 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
           data.case_data.respondent1.correspondenceAddress.PostCode);
         claim = data.case_data;
       }
-    }).catch((err: any) => {
-      logger.error(`${err.stack || err}`);
+    }).catch((err: unknown) => {
+      logger.error(`${(err as Error).stack || err}`);
     });
     if (!claim.legacyCaseReference) {
       // -- Retrive from civil-service
@@ -85,8 +85,8 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
       citizenCorrespondenceAddress: formCorrespondenceModel,
       postToThisAddress: formCorrespondenceModel ? 'yes' : 'no',
     });
-  } catch (err) {
-    logger.error(`${err.stack || err}`);
+  } catch (err: unknown) {
+    logger.error(`${(err as Error).stack || err}`);
   }
 });
 
