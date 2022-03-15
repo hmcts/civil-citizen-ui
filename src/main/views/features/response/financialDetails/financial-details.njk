@@ -4,9 +4,7 @@
 {% set heading = 'Your financial details' %}
 
 {% block content %}
-
   <div class="govuk-grid-row">
-
     <div class="govuk-grid-column-two-thirds">
       <h2 class="govuk-heading-l">{{ t('Send ') }} {{ claim.applicant1.individualTitle }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(' your financial details') }}</h2>
       {% set type = claim.respondent1.type %}
