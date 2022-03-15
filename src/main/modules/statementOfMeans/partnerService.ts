@@ -16,7 +16,7 @@ export class PartnerService {
         return civilClaimResponse.case_data.statementOfMeans.partnerAge;
       }
       return new Partner('');
-    } catch (err: any) {
+    } catch (err) {
       logger.error(`${err.stack || err}`);
     }
   }
@@ -32,7 +32,7 @@ export class PartnerService {
         civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
-    } catch (err: any) {
+    } catch (err) {
       logger.error(`${err.stack || err}`);
     }
   }
