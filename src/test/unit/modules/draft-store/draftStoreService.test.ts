@@ -1,6 +1,7 @@
 import {
   getDraftClaimFromStore,
   saveDraftClaim,
+  getCaseDataFromStore,
 } from '../../../../main/modules/draft-store/draftStoreService';
 import {app} from '../../../../main/app';
 import {Claim} from '../../../../main/common/models/claim';
@@ -71,5 +72,26 @@ describe('Draft store service to save and retrieve claim', ()=> {
     expect(spyGet).toBeCalled();
     expect(spySet).toBeCalled();
   });
-
+  it('should return case data when getting case data and data in redis exists', async ()=> {
+    //Given
+    const draftStoreWithData = createMockDraftStore(REDIS_DATA);
+    app.locals.draftStoreClient = draftStoreWithData;
+    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
+    //When
+    const result = await getCaseDataFromStore(CLAIM_ID);
+    //Then
+    expect(spyGet).toBeCalled();
+    expect(result).not.toBeUndefined();
+  });
+  it('should return undefined when getting case data data in redis exists', async ()=> {
+    //Given
+    const draftStoreWithData = createMockDraftStore(null);
+    app.locals.draftStoreClient = draftStoreWithData;
+    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
+    //When
+    const result = await getCaseDataFromStore(CLAIM_ID);
+    //Then
+    expect(spyGet).toBeCalled();
+    expect(result).toBeUndefined();
+  });
 });

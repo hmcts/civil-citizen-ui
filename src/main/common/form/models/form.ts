@@ -12,14 +12,14 @@ export class Form {
   }
 
   hasErrors(): boolean {
-    return this.errors !== undefined;
+    return this.errors !== undefined && this.errors.length > 0;
   }
 
-  public getErrors(): FormValidationError[] {
+  public getErrors(parentProperty?: string): FormValidationError[] {
     if (this.hasErrors()) {
       const validators: FormValidationError[] = [];
       for (const item of this.errors) {
-        validators.push(new FormValidationError(item));
+        validators.push(new FormValidationError(item, parentProperty));
       }
       return validators;
     }
@@ -32,8 +32,8 @@ export class Form {
   }
 
   public getTextError(errors: ValidationError[], property: string) {
-    const error = errors.filter((item) => item.property == property);
-    if (error.length > 0) {
+    const error = errors?.filter((item) => item.property == property);
+    if (error?.length > 0) {
       return error[0].constraints.isNotEmpty || error[0].constraints.customInt ? error[0].constraints.isNotEmpty || error[0].constraints.customInt : '';
     }
   }
