@@ -50,8 +50,8 @@ export class CivilServiceClient {
 
       return response.data as Claim;
 
-    } catch(err:any) {
-      logger.error(`${err.stack || err}`);
+    } catch (err: unknown) {
+      logger.error(`${(err as Error).stack || err}`);
     }
   }
 }

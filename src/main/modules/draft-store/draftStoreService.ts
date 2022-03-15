@@ -22,8 +22,8 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
   if (data) {
     try {
       jsonData = JSON.parse(data);
-    } catch (err: any) {
-      logger.error(`${err.stack || err}`);
+    } catch (err: unknown) {
+      logger.error(`${(err as Error).stack || err}`);
     }
   }
   return Object.assign(new CivilClaimResponse(), jsonData);
