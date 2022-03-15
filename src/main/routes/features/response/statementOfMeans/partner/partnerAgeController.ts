@@ -4,13 +4,13 @@ import {
   CITIZEN_PARTENER_PENSION_URL,
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_DEPENDANTS_URL,
-} from '../../../urls';
-import {Partner} from '../../../../common/form/models/statementOfMeans/partner';
+} from '../../../../urls';
+import {Partner} from '../../../../../common/form/models/statementOfMeans/partner';
 import {ValidationError, Validator} from 'class-validator';
-import {PartnerService} from '../../../../modules/statementOfMeans/partnerService';
-import {DisabilityService} from '../../../../modules/statementOfMeans/disabilityService';
+import {PartnerService} from '../../../../../modules/statementOfMeans/partner/partnerService';
+import {DisabilityService} from '../../../../../modules/statementOfMeans/disabilityService';
 
-const citizenPartnerAgeViewPath = 'features/response/statement-of-means/partner-age';
+const citizenPartnerAgeViewPath = 'features/response/statement-of-means/partner/partner-age';
 const router = express.Router();
 const partner = new Partner();
 const partnerService = new PartnerService();

@@ -1,6 +1,6 @@
-import {Partner} from '../../common/form/models/statementOfMeans/partner';
-import {getDraftClaimFromStore, saveDraftClaim} from '../../modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../common/models/statementOfMeans';
+import {Partner} from '../../../common/form/models/statementOfMeans/partner';
+import {getDraftClaimFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
+import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partnerService');
