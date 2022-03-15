@@ -28,6 +28,14 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
   }
   return Object.assign(new CivilClaimResponse(), jsonData);
 };
+/**
+ * Gets only case data.
+ * @param claimId
+ */
+export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
+  const civilClaimResponse = await getDraftClaimFromStore(claimId);
+  return civilClaimResponse?.case_data;
+};
 
 /**
  * Saves claim in Draft store. If the claim does not exist
@@ -46,6 +54,8 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   const draftStoreClient = app.locals.draftStoreClient;
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
 };
+
+
 
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
