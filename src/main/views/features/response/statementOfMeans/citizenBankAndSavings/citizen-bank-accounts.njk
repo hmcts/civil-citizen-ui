@@ -20,6 +20,9 @@
           <p class="govuk-body">
             {{ t('Put a minus (-) in front of the amount if you’re overdrawn. For example £-804.45.') }}
           </p>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
           <form name="accounts" method="post">
             <div class="govuk-grid-column-one-third govuk-!-display-inline">
               <label id="account-balance-label" class="govuk-label--s">{{ t('Type of account') }}</label>
@@ -44,12 +47,10 @@
             </div>
           </form>
         </div>
-      </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-three-thirds">
           {{ contactUsForHelp(t) }}
         </div>
-
       </div>
     </main>
   </div>
