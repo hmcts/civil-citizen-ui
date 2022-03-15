@@ -33,11 +33,10 @@ router.get(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
   await getDraftClaimFromStore(req.params.id)
     .then(claimResponse => {
       claim = claimResponse.case_data;
-      renderPage(res, claim);
     }).catch(error => {
       logger.error(error.message);
-      renderPage(res, claim);
     });
+  renderPage(res, claim);
 });
 
 router.post(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
