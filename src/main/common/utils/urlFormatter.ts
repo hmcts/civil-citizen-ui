@@ -7,7 +7,7 @@ export function getFinancialDetailsUrlWithIdParam(id: string): string {
 }
 
 export function getCitizenBankAccountUrlWithIdParam(id: string): string {
-  return `/case/${id}/response/bank-accounts`;
+  return `/case/${id}/response/statement-of-means/bank-accounts`;
 }
 
 export function getClaimTaskListAccountUrlWithIdParam(id: string): string {
