@@ -5,6 +5,7 @@ import config from 'config';
 import {
   VALID_PHONE_NUMBER,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -22,7 +23,7 @@ describe('Citizen phone number', () => {
   describe('on GET', () => {
     test('should return citizen phone number page', async () => {
       await request(app)
-        .get('/citizen-phone')
+        .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Enter a phone number (optional)');
@@ -32,7 +33,7 @@ describe('Citizen phone number', () => {
   describe('on POST', () => {
     test('should return error on incorrect input', async () => {
       await request(app)
-        .post('/citizen-phone')
+        .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=abc')
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -45,7 +46,7 @@ describe('Citizen phone number', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post('/citizen-phone')
+        .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=123 456')
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -58,7 +59,7 @@ describe('Citizen phone number', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post('/citizen-phone')
+        .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber= 123 ')
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -70,7 +71,7 @@ describe('Citizen phone number', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post('/citizen-phone')
+        .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=123')
         .expect((res) => {
           expect(res.status).toBe(302);

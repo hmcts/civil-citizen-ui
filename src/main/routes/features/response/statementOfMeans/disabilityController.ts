@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CITIZEN_DISABILITY_URL, CITIZEN_SEVERELY_DISABLED_URL, CITIZEN_WHERE_LIVE_URL} from '../../../urls';
+import {CITIZEN_DISABILITY_URL, CITIZEN_SEVERELY_DISABLED_URL, CITIZEN_RESIDENCE_URL} from '../../../urls';
 import {Disability} from '../../../../common/form/models/statementOfMeans/disability';
 import {ValidationError, Validator} from 'class-validator';
 import {DisabilityService} from '../../../../modules/statementOfMeans/disabilityService';
@@ -32,7 +32,7 @@ router.post(CITIZEN_DISABILITY_URL.toString(),
       if (disability.option == 'yes') {
         res.redirect(CITIZEN_SEVERELY_DISABLED_URL);
       } else {
-        res.redirect(CITIZEN_WHERE_LIVE_URL);
+        res.redirect(CITIZEN_RESIDENCE_URL);
       }
     }
   });
