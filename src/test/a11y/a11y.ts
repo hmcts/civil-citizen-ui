@@ -13,7 +13,8 @@ const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL, urls.CASES_URL, urls.
   urls.CITIZEN_RESIDENCE_URL,
   urls.CITIZEN_PARTNER_URL,
   urls.CITIZEN_PARTENER_PENSION_URL,
-  urls.CITIZEN_DEPENDANTS_URL];
+  urls.CITIZEN_DEPENDANTS_URL,
+  urls.CITIZEN_PARTNER_DISABILITY_URL];
 const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 
 
