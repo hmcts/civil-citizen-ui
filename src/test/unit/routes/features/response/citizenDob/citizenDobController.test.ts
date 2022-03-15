@@ -3,7 +3,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {VALID_DATE, VALID_DAY, VALID_MONTH, VALID_YEAR} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {AGE_ELIGIBILITY_URL, DOB_URL} from '../../../../../../main/routes/urls';
+import {AGE_ELIGIBILITY_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -100,6 +100,17 @@ describe('Citizen date of birth', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.text).toContain(`Redirecting to ${AGE_ELIGIBILITY_URL}`);
+        });
+    });
+    test('should redirect to phone number page on valid DOB', async () => {
+      await request(app)
+        .post(DOB_URL)
+        .send('year=1981')
+        .send('month=1')
+        .send('day=1')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(`Redirecting to ${CITIZEN_PHONE_NUMBER_URL}`);
         });
     });
   });
