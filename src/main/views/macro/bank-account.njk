@@ -3,7 +3,7 @@
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% macro bankAccountRow(bankAccount, bankAccountDropDownItems, index) %}
-  <div id="row-container">
+  <div id="row-container govuk-grid-column-two-thirds">
     <div class="multiple-row">
       {% set errors = bankAccount.getErrors() %}
       <div class="govuk-form-group {%- if errors.length>0 %} govuk-form-group--error{% endif %}">
@@ -19,14 +19,14 @@
               id:"accounts["+index+"][typeOfAccount]",
               name: "accounts["+index+"][typeOfAccount]",
               items: bankAccountDropDownItems.all(bankAccount.typeOfAccount),
-              classes: "govuk-select--width-7 govuk-select--error" if bankAccount.hasFieldError('typeOfAccount') else "govuk-select--width-7"
+              classes: "govuk-grid-column-full govuk-select--error" if bankAccount.hasFieldError('typeOfAccount') else "govuk-grid-column-full"
             }) }}
           </div>
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
             {{ govukSelect({
               id: "accounts["+index+"][joint]",
               name: "accounts["+index+"][joint]",
-              classes: "govuk-select--width-7 govuk-select--error" if bankAccount.hasFieldError('joint') else "govuk-select--width-7",
+              classes: "govuk-grid-column-full govuk-select--error" if bankAccount.hasFieldError('joint') else "govuk-grid-column-full",
               items: [
                 {
                   value: "",
@@ -55,7 +55,7 @@
               prefix: {
                 text: "£"
               },
-              classes: "govuk-input--width-5 govuk-input--error" if bankAccount.hasFieldError('balance') else "govuk-input--width-5",
+              classes: "govuk-grid-column-full govuk-input--error" if bankAccount.hasFieldError('balance') else "govuk-grid-column-full",
               spellcheck: false
 
             }) }}
