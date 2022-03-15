@@ -23,19 +23,20 @@
         </div>
       </div>
       <div class="govuk-grid-row">
-          <form name="accounts" method="post">
-            <div class="govuk-grid-column-one-third govuk-!-display-inline">
-              <label id="account-balance-label" class="govuk-label--s">{{ t('Type of account') }}</label>
-            </div>
-            <div class="govuk-grid-column-one-third govuk-!-display-inline">
-              <label id="account-balance-label" class="govuk-label--s">{{ t('Joint account') }}</label>
-            </div>
-            <div class="govuk-grid-column-one-third govuk-!-display-inline">
-              <label id="account-balance-label" class="govuk-label--s">{{ t('Balance') }}</label>
-            </div>
-            {% for account in form.accounts %}
-              {{ bankAccountRow(account, bankAccountDropDownItems, loop.index0) }}
-            {% endfor %}
+        <form name="accounts" method="post">
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+            <label id="account-balance-label" class="govuk-label--s">{{ t('Type of account') }}</label>
+          </div>
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+            <label id="account-balance-label" class="govuk-label--s">{{ t('Joint account') }}</label>
+          </div>
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+            <label id="account-balance-label" class="govuk-label--s">{{ t('Balance') }}</label>
+          </div>
+          {% for account in form.accounts %}
+            {{ bankAccountRow(account, bankAccountDropDownItems, loop.index0) }}
+          {% endfor %}
+          <div class="govuk-grid-column-two-thirds">
             {{ govukButton({
               text: t("Add another account"),
               classes: "govuk-button--secondary append-row"
@@ -45,10 +46,11 @@
                 text: t("Save and continue")
               }) }}
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
+      </div>
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-three-thirds">
+        <div class="govuk-grid-column-two-thirds">
           {{ contactUsForHelp(t) }}
         </div>
       </div>
