@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_RESPONSE_TYPE} from '../../../../../../main/routes/urls';
+import {CITIZEN_PHONE_NUMBER_URL, CITIZEN_RESPONSE_TYPE} from '../../../../../../main/routes/urls';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -45,7 +45,7 @@ describe('Citizen phone number', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post('/citizen-phone')
+        .post(CITIZEN_PHONE_NUMBER_URL)
         .send('responseType=test')
         .expect((res) => {
           expect(res.status).toBe(302);
