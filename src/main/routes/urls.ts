@@ -20,5 +20,8 @@ export const CITIZEN_RESPONSE_TYPE_URL: Urls = `${BASE_CASE_RESPONSE_URL}/citize
 export const CITIZEN_DISABILITY_URL: Urls = `${STATEMENT_OF_MEANS_URL}/disability`;
 export const CITIZEN_SEVERELY_DISABLED_URL: Urls = `${STATEMENT_OF_MEANS_URL}/severe-disability`;
 export const CITIZEN_RESIDENCE_URL: Urls = `${STATEMENT_OF_MEANS_URL}/residence`;
+export const CITIZEN_PARTNER_URL: Urls = `${STATEMENT_OF_MEANS_URL}/partner/partner-age`;
+export const CITIZEN_PARTENER_PENSION_URL: Urls = `${STATEMENT_OF_MEANS_URL}/partner/partner-pension`;
+export const CITIZEN_PARTNER_DISABILITY_URL: Urls = `${STATEMENT_OF_MEANS_URL}/partner/partner-disability`;
+export const CITIZEN_DEPENDANTS_URL: Urls = `${STATEMENT_OF_MEANS_URL}/dependants`;
 export const CITIZEN_BANK_ACCOUNT_URL: Urls = `${STATEMENT_OF_MEANS_URL}/bank-accounts`;
-
