@@ -3,7 +3,7 @@ import {getDraftClaimFromStore, saveDraftClaim} from '../../draft-store/draftSto
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('disabilityService');
+const logger = Logger.getLogger('cohabitingService');
 
 export class CohabitingService {
 
@@ -11,8 +11,8 @@ export class CohabitingService {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
       logger.info(civilClaimResponse);
-      if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.disability) {
-        return civilClaimResponse.case_data.statementOfMeans.disability;
+      if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.cohabiting) {
+        return civilClaimResponse.case_data.statementOfMeans.cohabiting;
       }
       return new Cohabiting('');
     } catch (err: any) {
