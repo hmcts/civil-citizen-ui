@@ -9,6 +9,7 @@ import claimDetailsRoute from './features/response/claimDetails/claimDetailsCont
 import responsePostcodeLookupRoute from './features/response/citizenDetails/postcodeLookupController';
 import citizenResponseType from './features/response/responseType/citizenResponseType';
 import citizenDisability from './features/response/statementOfMeans/disabilityController';
+import citizenSevereDisability from './features/response/statementOfMeans/severeDisabilityController';
 
 export default [
   homeRoute,
@@ -22,4 +23,5 @@ export default [
   responsePostcodeLookupRoute,
   citizenResponseType,
   citizenDisability,
+  citizenSevereDisability,
 ];

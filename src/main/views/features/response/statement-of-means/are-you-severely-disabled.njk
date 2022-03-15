@@ -7,9 +7,9 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = "Are you disabled?" %}
-      {% set id = "disability" %}
-      {% set name = "disability" %}
+      {% set title = "Are you severely disabled?" %}
+      {% set id = "severeDisability" %}
+      {% set name = "severeDisability" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
@@ -20,7 +20,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post">
-            {{ yesNoRadioButton(t,id,name,title,form)  }}
+            {{ yesNoRadioButton(t,id,name,title,form) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")
