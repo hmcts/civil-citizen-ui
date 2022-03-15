@@ -5,7 +5,7 @@ import config from 'config';
 import {
   CITIZEN_DISABILITY_URL,
   CITIZEN_SEVERELY_DISABLED_URL,
-  CITIZEN_WHERE_LIVE_URL,
+  CITIZEN_RESIDENCE_URL,
 } from '../../../../../../main/routes/urls';
 
 const civilClaimResponseMock = require('./civilClaimResponseMock.json');
@@ -73,7 +73,7 @@ describe('Disability', () => {
         .send('disability=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_WHERE_LIVE_URL);
+          expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
         });
     });
   });
@@ -86,7 +86,7 @@ describe('Disability', () => {
         .send('disability=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_WHERE_LIVE_URL);
+          expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
         });
     });
   });
