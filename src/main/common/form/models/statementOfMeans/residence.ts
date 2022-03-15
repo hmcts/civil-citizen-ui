@@ -3,9 +3,9 @@ import {
   VALID_HOUSING,
   VALID_OPTION_SELECTION,
   VALID_TEXT_LENGTH,
-} from '../../../../common/form/validationErrors/errorMessageConstants';
+} from '../../validationErrors/errorMessageConstants';
 import {IsIn, IsNotEmpty, MaxLength, ValidateIf} from 'class-validator';
-import {FREE_TEXT_MAX_LENGTH} from '../../../../common/form/validators/validationConstraints';
+import {FREE_TEXT_MAX_LENGTH} from '../../validators/validationConstraints';
 
 export class Residence {
   @IsIn(ResidenceType.all(), {message: VALID_OPTION_SELECTION})

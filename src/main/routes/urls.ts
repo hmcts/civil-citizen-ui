@@ -20,5 +20,5 @@ export const CITIZEN_RESPONSE_TYPE: Urls = '/citizen-response-type';
 export const CITIZEN_DISABILITY_URL: Urls = `${STATEMENT_OF_MEANS_URL}/disability`;
 export const CITIZEN_SEVERELY_DISABLED_URL: Urls = `${STATEMENT_OF_MEANS_URL}/are-you-severely-disabled`;
 export const CITIZEN_WHERE_LIVE_URL: Urls = `${STATEMENT_OF_MEANS_URL}/where-do-you-live`;
-export const CITIZEN_RESIDENCE_URL: Urls = `${STATEMENT_OF_MEANS_URL}/residence`;
-export const RESIDENCE_URL: Urls = '/statement-of-means/residence';
+export const RESPONDENT_RESIDENCE_URL: Urls = `${STATEMENT_OF_MEANS_URL}/residence`;
+export const RESPONDENT_PARTNER_URL: Urls = `${STATEMENT_OF_MEANS_URL}/partner/partner`;

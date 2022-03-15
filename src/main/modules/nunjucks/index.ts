@@ -6,7 +6,7 @@ import * as numeral from '../../common/utils/currencyFormat';
 import {i18n, TOptions} from 'i18next';
 import {ResponseType} from '../../common/form/models/responseType';
 import {YesNo} from '../../common/form/models/yesNo';
-import {ResidenceType} from '../../common/form/models/statement-of-means/residenceType';
+import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
 
 const packageDotJson = require('../../../../package.json');
 

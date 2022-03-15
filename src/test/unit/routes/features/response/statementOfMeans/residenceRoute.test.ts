@@ -9,17 +9,19 @@ import {
   VALID_TEXT_LENGTH,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../../../main/app/client/civilServiceUrls';
-import {DASHBOARD_URL} from '../../../../../../main/routes/urls';
+import {RESPONDENT_PARTNER_URL} from '../../../../../../main/routes/urls';
 import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
 
 const agent = request.agent(app);
 const tooLongHousingDetails: string = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');
+const respondentResidenceUrl = '/case/aaa/response/statement-of-means/residence';
+const mockDraftResponse = require('./civilClaimResponseMock.json');
 
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
     return {
       get: jest.fn(async () => {
-        return '{}';
+        return JSON.stringify(mockDraftResponse);
       }),
       set: jest.fn(async () => {
         return;
@@ -55,7 +57,7 @@ describe('Citizen residence', () => {
     test('Authenticate Callback', authenticate());
     test('should return residence page', async () => {
       await agent
-        .get('/statement-of-means/residence')
+        .get(respondentResidenceUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Where do you live?');
@@ -66,16 +68,16 @@ describe('Citizen residence', () => {
     test('Authenticate Callback', authenticate());
     test('should redirect when OWN_HOME option selected', async () => {
       await agent
-        .post('/statement-of-means/residence')
+        .post(respondentResidenceUrl)
         .send('type=OWN_HOME')
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DASHBOARD_URL);
+          expect(res.get('location')).toBe(RESPONDENT_PARTNER_URL);
         });
     });
     test('should return error when no option selected', async () => {
       await agent
-        .post('/statement-of-means/residence')
+        .post(respondentResidenceUrl)
         .send('type=')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -84,7 +86,7 @@ describe('Citizen residence', () => {
     });
     test('should return error when type is \'Other\' and housing details not provided', async () => {
       await agent
-        .post('/statement-of-means/residence')
+        .post(respondentResidenceUrl)
         .send('type=OTHER')
         .send('housingDetails=')
         .expect((res: Response) => {
@@ -94,17 +96,17 @@ describe('Citizen residence', () => {
     });
     test('should redirect when type is \'Other\' and housing details are provided', async () => {
       await agent
-        .post('/statement-of-means/residence')
+        .post(respondentResidenceUrl)
         .send('type=OTHER')
         .send('housingDetails=Palace')
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DASHBOARD_URL);
+          expect(res.get('location')).toBe(RESPONDENT_PARTNER_URL);
         });
     });
     test('should return error when type is \'Other\' and housing details are too long', async () => {
       await agent
-        .post('/statement-of-means/residence')
+        .post(respondentResidenceUrl)
         .send('type=OTHER')
         .send(`housingDetails=${tooLongHousingDetails}`)
         .expect((res: Response) => {

@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
+import {RESPONDENT_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
 import {SevereDisability} from '../../../../common/form/models/statementOfMeans/severeDisability';
 import {ValidationError, Validator} from 'class-validator';
 import {SevereDisabilityService} from '../../../../modules/statementOfMeans/severeDisabilityService';
@@ -29,7 +29,7 @@ router.post(CITIZEN_SEVERELY_DISABLED_URL.toString(),
       renderView(severeDisability, res);
     } else {
       severeDisabilityService.saveSevereDisability(req.params.id, severeDisability);
-      res.redirect(CITIZEN_RESIDENCE_URL);
+      res.redirect(RESPONDENT_RESIDENCE_URL);
     }
   });
 
