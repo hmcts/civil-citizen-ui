@@ -27,7 +27,7 @@ const respondent1: Respondent = {
   telephoneNumber: '0208339922',
   dateOfBirth: new Date('2022-01-24T15:59:59'),
   responseType: '',
-  type: CounterpartyType.individual,
+  type: CounterpartyType.INDIVIDUAL,
 };
 
 export const mockClaim: Claim = {
@@ -37,7 +37,7 @@ export const mockClaim: Claim = {
       individualTitle: 'Mrs',
       individualLastName: 'Clark',
       individualFirstName: 'Jane',
-      type: CounterpartyType.individual,
+      type: CounterpartyType.INDIVIDUAL,
     },
   totalClaimAmount: 110,
   respondent1ResponseDeadline: new Date('2022-01-24T15:59:59'),
