@@ -23,7 +23,7 @@ describe('Civil Service Client', () => {
         individualTitle: 'Mrs',
         individualLastName: 'Clark',
         individualFirstName: 'Jane',
-        type : CounterpartyType.individual,
+        type : CounterpartyType.INDIVIDUAL,
       };
     claim.totalClaimAmount = 1500;
 
