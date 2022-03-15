@@ -18,7 +18,6 @@ export const CITIZEN_DETAILS_URL: Urls = `${BASE_CASE_RESPONSE_URL}/your-details
 export const POSTCODE_LOOKUP_URL: Urls = '/postcode-lookup';
 export const CITIZEN_RESPONSE_TYPE: Urls = `${BASE_CASE_RESPONSE_URL}/citizen-response-type`;
 export const CITIZEN_DISABILITY_URL: Urls = `${STATEMENT_OF_MEANS_URL}/disability`;
-export const CITIZEN_SEVERELY_DISABLED_URL: Urls = `${STATEMENT_OF_MEANS_URL}/are-you-severely-disabled`;
-export const CITIZEN_WHERE_LIVE_URL: Urls = `${STATEMENT_OF_MEANS_URL}/where-do-you-live`;
+export const CITIZEN_SEVERELY_DISABLED_URL: Urls = `${STATEMENT_OF_MEANS_URL}/severe-disability`;
 export const CITIZEN_RESIDENCE_URL: Urls = `${STATEMENT_OF_MEANS_URL}/residence`;
 
