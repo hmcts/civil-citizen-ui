@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {
-  CITIZEN_BANK_ACCOUNT_URL, DISABILITY_PATH_URL,
+  CITIZEN_BANK_ACCOUNT_URL, CITIZEN_DISABILITY_URL,
 } from '../../../../../routes/urls';
 import {BankAccounts} from '../../../../../common/form/models/bankAndSavings/bankAccounts';
 import {BankAccount} from '../../../../../common/form/models/bankAndSavings/bankAccount';
@@ -41,7 +41,7 @@ async function renderErrorsIfExist(form: BankAccounts, res: express.Response, cl
     renderView(form, new BankAccountTypes(), res);
   } else {
     await bankAccountService.saveBankAccounts(claimId, form);
-    res.redirect(constructResponseUrlWithIdParams(claimId, DISABILITY_PATH_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DISABILITY_URL));
   }
 }
 
