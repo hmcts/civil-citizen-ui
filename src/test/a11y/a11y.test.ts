@@ -2,6 +2,7 @@ import {fail} from 'assert';
 import * as supertest from 'supertest';
 import {app} from '../../main/app';
 import * as urls from '../../main/routes/urls';
+import {IGNORED_URLS} from './ignored-urls';
 
 const pa11y = require('pa11y');
 
