@@ -9,7 +9,7 @@ import {
   VALID_TEXT_LENGTH,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../../../main/app/client/civilServiceUrls';
-import {RESPONDENT_PARTNER_URL} from '../../../../../../main/routes/urls';
+import {CITIZEN_PARTNER_URL} from '../../../../../../main/routes/urls';
 import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
 
 const agent = request.agent(app);
@@ -72,7 +72,7 @@ describe('Citizen residence', () => {
         .send('type=OWN_HOME')
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(RESPONDENT_PARTNER_URL);
+          expect(res.get('location')).toBe(CITIZEN_PARTNER_URL);
         });
     });
     test('should return error when no option selected', async () => {
@@ -101,7 +101,7 @@ describe('Citizen residence', () => {
         .send('housingDetails=Palace')
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(RESPONDENT_PARTNER_URL);
+          expect(res.get('location')).toBe(CITIZEN_PARTNER_URL);
         });
     });
     test('should return error when type is \'Other\' and housing details are too long', async () => {

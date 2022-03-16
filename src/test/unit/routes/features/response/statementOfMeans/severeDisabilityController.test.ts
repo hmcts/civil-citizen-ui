@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {RESPONDENT_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../../../../main/routes/urls';
+import {CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../../../../main/routes/urls';
 
 const civilClaimResponseMock = require('./civilClaimResponseMock.json');
 const noSevereDisabilityMock = require('./noStatementOfMeansMock.json');
@@ -57,7 +57,7 @@ describe('SevereDisability', () => {
       .send('severeDisability=yes')
       .expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(RESPONDENT_RESIDENCE_URL);
+        expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
       });
   });
 
@@ -69,7 +69,7 @@ describe('SevereDisability', () => {
         .send('severeDisability=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONDENT_RESIDENCE_URL);
+          expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
         });
     });
   });
@@ -82,7 +82,7 @@ describe('SevereDisability', () => {
         .send('severeDisability=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONDENT_RESIDENCE_URL);
+          expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
         });
     });
   });

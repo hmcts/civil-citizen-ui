@@ -1,7 +1,7 @@
 import express from 'express';
 import assert from 'assert';
 import {Residence} from '../../../../common/form/models/statementOfMeans/residence';
-import {RESPONDENT_PARTNER_URL, RESPONDENT_RESIDENCE_URL} from '../../../urls';
+import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ValidationError, Validator} from 'class-validator';
 import {ResidenceType} from '../../../../common/form/models/statementOfMeans/residenceType';
@@ -17,7 +17,7 @@ const residenceViewPath = 'features/response/statement-of-means/residence';
 const residenceRoute = express.Router();
 residenceRoute
   .get(
-    RESPONDENT_RESIDENCE_URL,
+    CITIZEN_RESIDENCE_URL,
     (req: express.Request, res: express.Response) => {
       getDraftClaimFromStore(req.params.id).then((draftResponse: CivilClaimResponse) => {
         assert(draftResponse);
@@ -28,7 +28,7 @@ residenceRoute
       });
     })
   .post(
-    RESPONDENT_RESIDENCE_URL,
+    CITIZEN_RESIDENCE_URL,
     (req: express.Request, res: express.Response) => {
       const residence = new Residence(ResidenceType.valueOf(req.body.type), req.body.housingDetails);
       if (residence.type !== ResidenceType.OTHER) {
@@ -44,7 +44,7 @@ residenceRoute
         });
       } else {
         saveResidence(req.params.id, residence).then(() => {
-          res.redirect(RESPONDENT_PARTNER_URL);
+          res.redirect(CITIZEN_PARTNER_URL);
         });
       }
     });
