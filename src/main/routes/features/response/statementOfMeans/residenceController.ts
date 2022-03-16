@@ -11,11 +11,11 @@ import {StatementOfMeans} from '../../../../common/models/statementOfMeans';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 
-const logger = Logger.getLogger('residenceRoute');
+const logger = Logger.getLogger('residenceController');
 const residenceViewPath = 'features/response/statement-of-means/residence';
 
-const residenceRoute = express.Router();
-residenceRoute
+const residenceController = express.Router();
+residenceController
   .get(
     CITIZEN_RESIDENCE_URL,
     (req: express.Request, res: express.Response) => {
@@ -65,4 +65,4 @@ const saveResidence = async (claimId: string, residence: Residence): Promise<voi
   }
 };
 
-export default residenceRoute;
+export default residenceController;
