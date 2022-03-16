@@ -27,7 +27,7 @@ router.get(CITIZEN_PARTNER_URL.toString(), async (req, res) => {
 });
 
 router.post(CITIZEN_PARTNER_URL.toString(),
-  (req, res) => {
+  async (req, res) => {
     const cohabiting: Cohabiting = new Cohabiting(req.body.cohabiting);
     const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(cohabiting);
@@ -35,11 +35,15 @@ router.post(CITIZEN_PARTNER_URL.toString(),
       cohabiting.errors = errors;
       renderView(cohabiting, res);
     } else {
-      cohabitingService.saveCohabiting(req.params.id, cohabiting);
-      if (cohabiting.option == 'yes') {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_AGE_URL));
-      } else {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DEPENDANTS_URL));
+      try {
+        await cohabitingService.saveCohabiting(req.params.id, cohabiting);
+        if (cohabiting.option == 'yes') {
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_AGE_URL));
+        } else {
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DEPENDANTS_URL));
+        }
+      } catch (err: unknown) {
+          logger.error(`${err as Error || err}`);
       }
     }
   });
