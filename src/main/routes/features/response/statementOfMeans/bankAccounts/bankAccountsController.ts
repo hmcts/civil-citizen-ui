@@ -23,13 +23,13 @@ function transformToAccounts(req: express.Request){
   });
 }
 
-router.get(  CITIZEN_BANK_ACCOUNT_URL.toString(), (req, res) => {
+router.get(  CITIZEN_BANK_ACCOUNT_URL, (req, res) => {
   bankAccountService.getBankAccounts(req.params.id).then((form:BankAccounts)=>{
     renderView(form,  new BankAccountTypes(), res);
   });
 });
 
-router.post(CITIZEN_BANK_ACCOUNT_URL.toString(),  async(req, res) => {
+router.post(CITIZEN_BANK_ACCOUNT_URL,  async(req, res) => {
   const form: BankAccounts = new BankAccounts(transformToAccounts(req));
   await renderErrorsIfExist(form, res, req.params.id);
 });

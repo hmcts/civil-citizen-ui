@@ -4,7 +4,7 @@ import nock from 'nock';
 import config from 'config';
 import {
   CITIZEN_PARTNER_URL,
-  CITIZEN_PARTENER_PENSION_URL,
+  CITIZEN_PARTNER_PENSION_URL,
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_DEPENDANTS_URL,
 } from '../../../../../../main/routes/urls';
@@ -62,7 +62,7 @@ describe('Partner Age', () => {
       .send('partnerAge=yes')
       .expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CITIZEN_PARTENER_PENSION_URL);
+        expect(res.header.location).toEqual(CITIZEN_PARTNER_PENSION_URL);
       });
   });
 
