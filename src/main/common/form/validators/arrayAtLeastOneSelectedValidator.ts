@@ -3,7 +3,7 @@ import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator
 @ValidatorConstraint({name: 'customArrayAtLeastOneSelectedValidator', async: false})
 export class ArrayAtLeastOneSelectedValidator implements  ValidatorConstraintInterface {
 
-  validate(array: (any)[]): Promise<boolean> | boolean {
+  validate(array: (unknown)[]): Promise<boolean> | boolean {
     if(array && array.length> 0 ){
       const emptyElementArray = array.filter(element=> this.isElementEmpty(element));
       return emptyElementArray.length !== array.length;
@@ -11,7 +11,7 @@ export class ArrayAtLeastOneSelectedValidator implements  ValidatorConstraintInt
     return false;
   }
 
-  isElementEmpty(element : any){
+  isElementEmpty(element : unknown){
     return Object.values(element).every(value => value === undefined || value === '');
   }
 

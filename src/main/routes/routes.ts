@@ -8,6 +8,7 @@ import responseDetailsRoute from './features/response/citizenDetails/citizenDeta
 import claimDetailsRoute from './features/response/claimDetails/claimDetailsController';
 import responsePostcodeLookupRoute from './features/response/citizenDetails/postcodeLookupController';
 import citizenResponseType from './features/response/responseType/citizenResponseType';
+import citizenPartnerAgeController from './features/response/statementOfMeans/partner/partnerAgeController';
 import citizenDisability from './features/response/statementOfMeans/disabilityController';
 import citizenSevereDisability from './features/response/statementOfMeans/severeDisabilityController';
 import bankAccountsRoute from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
@@ -24,6 +25,7 @@ export default [
   ageEligibilityRoute,
   responsePostcodeLookupRoute,
   citizenResponseType,
+  citizenPartnerAgeController,
   citizenDisability,
   citizenSevereDisability,
   bankAccountsRoute,

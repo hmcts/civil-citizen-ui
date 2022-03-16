@@ -11,21 +11,6 @@
       "code": "FEE0204",
       "version": "4",
       "calculatedAmountInPence": "7000"
-    },
-    "statementOfMeans": {
-      "disability": {
-        "option": "yes"
-      },
-      "partner": {
-        "option": "yes"
-      },
-      "residence": {
-        "type": {
-          "value": "PRIVATE_RENTAL",
-          "displayValue": "Private rental"
-        },
-        "housingDetails": ""
-      }
     }
   }
 }
