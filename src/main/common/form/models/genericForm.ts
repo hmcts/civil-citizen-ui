@@ -15,6 +15,19 @@ export class GenericForm<Model> {
     return this.errors?.length > 0;
   }
 
+  /**
+   * Get error message associated with first constraint violated for given field name.
+   *
+   * @param fieldName - field name / model property
+   */
+  errorFor(fieldName: string): string {
+    if (this.hasFieldError(fieldName)) {
+      return this.getErrors()
+        .filter((error: FormValidationError) => error.property === fieldName)
+        .map((error: FormValidationError) => error.text)[0];
+    }
+  }
+
   public getErrors(): FormValidationError[] {
     if (this.hasErrors()) {
       const validators: FormValidationError[] = [];

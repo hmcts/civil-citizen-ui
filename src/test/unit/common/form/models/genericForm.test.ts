@@ -45,6 +45,34 @@ describe('Form has field errors', () => {
   });
 });
 
+describe('Get error message for field', () => {
+  const form = new GenericForm(model);
+  it('should return error message for field', () => {
+    //Given
+    form.errors = [
+      {
+        target: {
+          type: {
+            value: 'OTHER',
+            displayValue: 'Other',
+          },
+          housingDetails: '',
+        },
+        value: '',
+        property: 'housingDetails',
+        children: [],
+        constraints: {
+          isNotEmpty: 'Describe your housing',
+        },
+      },
+    ];
+    //When
+    const result = form.errorFor('housingDetails');
+    //Then
+    expect(result).toBe('Describe your housing');
+  });
+});
+
 function createValidationError() {
   const validationError = new ValidationError();
   validationError.property = PROPERTY;

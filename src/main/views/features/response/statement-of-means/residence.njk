@@ -24,10 +24,11 @@
 
             {{ csrfProtection(csrf) }}
 
-            {% set error = form.getErrors() %}
-            <div class="govuk-form-group {% if error %} govuk-form-group--error {% endif %}">
+            {% set typeError = form.errorFor('type') %}
+            <div class="govuk-form-group {% if errors %} govuk-form-group--error {% endif %}">
 
               {% set housingDetailsHtml %}
+                {% set housingDetailsError = form.errorFor('housingDetails') %}
                 {{ govukInput({
                   id: "housingDetails",
                   name: "housingDetails",
@@ -37,8 +38,8 @@
                     text: t('What type of housing?')
                   },
                   errorMessage: {
-                    text: t(errors[0].text)
-                  } if errors[0]
+                    text: t(housingDetailsError)
+                  } if housingDetailsError
                 }) }}
               {% endset -%}
 
@@ -76,8 +77,8 @@
                   }
                 ],
                 errorMessage: {
-                  html: t(errors[0].text)
-                } if errors
+                  text: typeError
+                } if typeError
               }) }}
 
             </div>
