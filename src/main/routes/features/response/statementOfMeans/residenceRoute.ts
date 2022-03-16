@@ -52,7 +52,6 @@ residenceRoute
 const saveResidence = async (claimId: string, residence: Residence): Promise<void> => {
   try {
     const civilClaimResponse = await getDraftClaimFromStore(claimId);
-    logger.info(civilClaimResponse);
     if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {
       civilClaimResponse.case_data.statementOfMeans.residence = residence;
     } else {
