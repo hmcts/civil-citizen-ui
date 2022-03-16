@@ -5,19 +5,25 @@ import {ValidationError, Validator} from 'class-validator';
 import {CohabitingService} from '../../../../../modules/statementOfMeans/partner/cohabitingService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
-const partnerViewPath = 'features/response/statement-of-means/partner/partner';
+const partnerViewPath = 'features/response/statementOfMeans/partner/partner';
 const router = express.Router();
 const cohabiting = new Cohabiting();
 const cohabitingService = new CohabitingService();
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('cohabitingService');
 
 function renderView(form: Cohabiting, res: express.Response): void {
   res.render(partnerViewPath, {form});
 }
 
 router.get(CITIZEN_PARTNER_URL.toString(), async (req, res) => {
-  cohabitingService.getCohabiting(req.params.id).then(() => {
+  try {
+    const currentCohabing = await cohabitingService.getCohabiting(req.params.id)
+    cohabiting.option = currentCohabing.option;
     renderView(cohabiting, res);
-  });
+  } catch (err: unknown) {
+      logger.error(`${err as Error || err}`);
+  }
 });
 
 router.post(CITIZEN_PARTNER_URL.toString(),

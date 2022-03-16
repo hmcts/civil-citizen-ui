@@ -10,7 +10,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {PartnerService} from '../../../../../modules/statementOfMeans/partner/partnerService';
 import {DisabilityService} from '../../../../../modules/statementOfMeans/disabilityService';
 
-const citizenPartnerAgeViewPath = 'features/response/statement-of-means/partner/partner-age';
+const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
 const router = express.Router();
 const partner = new Partner();
 const partnerService = new PartnerService();
