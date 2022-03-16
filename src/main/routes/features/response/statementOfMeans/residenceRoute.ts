@@ -44,7 +44,7 @@ residenceRoute
         });
       } else {
         saveResidence(req.params.id, residence).then(() => {
-          res.redirect(CITIZEN_PARTNER_URL);
+          res.redirect(CITIZEN_PARTNER_URL.replace(':id', req.params.id));
         });
       }
     });
