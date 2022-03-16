@@ -27,4 +27,5 @@ export const CITIZEN_PARTNER_DISABILITY_URL: Urls = `${STATEMENT_OF_MEANS_URL}/p
 export const CITIZEN_DEPENDANTS_URL: Urls = `${STATEMENT_OF_MEANS_URL}/dependants`;
 export const CITIZEN_BANK_ACCOUNT_URL: Urls = `${STATEMENT_OF_MEANS_URL}/bank-accounts`;
 export const CLAIM_TASK_LIST: Urls = `${BASE_CASE_RESPONSE_URL}/claim-task-list`;
+export const STATEMENT_MEANS_INTRO_URL: Urls = `${STATEMENT_OF_MEANS_URL}/intro`;
 

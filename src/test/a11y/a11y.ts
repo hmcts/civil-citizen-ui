@@ -2,6 +2,7 @@ import {fail} from 'assert';
 import * as supertest from 'supertest';
 import {app} from '../../main/app';
 import * as urls from '../../main/routes/urls';
+import {STATEMENT_MEANS_INTRO_URL} from "../../main/routes/urls";
 
 const pa11y = require('pa11y');
 
@@ -12,7 +13,7 @@ const IGNORED_URLS = [urls.SIGN_IN_URL, urls.SIGN_OUT_URL, urls.CASES_URL, urls.
   urls.ROOT_URL, urls.HOME_URL, urls.CITIZEN_DISABILITY_URL, urls.CITIZEN_SEVERELY_DISABLED_URL, urls.CITIZEN_RESIDENCE_URL,
   urls.CITIZEN_RESIDENCE_URL, urls.FINANCIAL_DETAILS_URL, urls.CITIZEN_BANK_ACCOUNT_URL, urls.CLAIM_TASK_LIST,
   urls.CITIZEN_BANK_ACCOUNT_URL, urls.CITIZEN_RESIDENCE_URL, urls.CITIZEN_PARTNER_URL, urls.CITIZEN_PARTNER_PENSION_URL, urls.CITIZEN_DEPENDANTS_URL,
-  urls.CITIZEN_PARTNER_DISABILITY_URL];
+  urls.CITIZEN_PARTNER_DISABILITY_URL, urls.STATEMENT_MEANS_INTRO_URL];
 const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 
 

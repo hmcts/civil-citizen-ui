@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {
-  CITIZEN_BANK_ACCOUNT_URL, CLAIM_TASK_LIST,
-  FINANCIAL_DETAILS_URL,
+  CLAIM_TASK_LIST,
+  FINANCIAL_DETAILS_URL, STATEMENT_MEANS_INTRO_URL,
 } from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
 import {
@@ -51,7 +51,7 @@ router.post(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
     });
   if (counterpartyType) {
     if (counterpartyType == CounterpartyType.INDIVIDUAL || counterpartyType == CounterpartyType.SOLE_TRADER) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, STATEMENT_MEANS_INTRO_URL));
     } else if (counterpartyType == CounterpartyType.COMPANY || counterpartyType == CounterpartyType.ORGANISATION) {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST));
     }
