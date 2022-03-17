@@ -15,8 +15,8 @@ export class CohabitingService {
         return civilClaimResponse.case_data.statementOfMeans.cohabiting;
       }
       return new Cohabiting('');
-    } catch (err: any) {
-      logger.error(`${err.stack || err}`);
+    } catch (err: unknown) {
+      logger.error(`${err as Error || err}`);
     }
   }
 
@@ -32,8 +32,8 @@ export class CohabitingService {
         civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
-    } catch (err: any) {
-      logger.error(`${err.stack || err}`);
+    } catch (err: unknown) {
+      logger.error(`${err as Error || err}`);
     }
   }
 }

@@ -104,7 +104,7 @@ Install saucelabs on local machine
 $ yarn test:crossbrowser
 ```
 
-Make sure all the paths in your application are covered by accessibility tests (see [a11y.ts](src/test/a11y/a11y.ts)).
+Make sure all the paths in your application are covered by accessibility tests (see [a11y.test.ts](src/test/a11y/a11y.test.ts)).
 
 ### Security
 

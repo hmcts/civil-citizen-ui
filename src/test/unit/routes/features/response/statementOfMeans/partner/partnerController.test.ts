@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {PARTNER_AGE_URL, PARTNER_DEPENDANTS_URL, PARTNER_URL} from '../../../../../../../main/routes/urls';
+import {CITIZEN_PARTNER_AGE_URL, CITIZEN_PARTNER_DEPENDANTS_URL, CITIZEN_PARTNER_URL} from '../../../../../../../main/routes/urls';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const noPartnerMock = require('../noStatementOfMeansMock.json');
@@ -32,7 +32,7 @@ describe('Partner', () => {
     test('should return citizen partner page', async () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .get(PARTNER_URL)
+        .get(CITIZEN_PARTNER_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Do you live with a partner?');
@@ -43,7 +43,7 @@ describe('Partner', () => {
   test('should return error on incorrect input', async () => {
     app.locals.draftStoreClient = mockDraftStore;
     await request(app)
-      .post(PARTNER_URL)
+      .post(CITIZEN_PARTNER_URL)
       .send('')
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -54,11 +54,11 @@ describe('Partner', () => {
   test('should redirect page when "yes"', async () => {
     app.locals.draftStoreClient = mockDraftStore;
     await request(app)
-      .post(PARTNER_URL)
+      .post(CITIZEN_PARTNER_URL)
       .send('cohabiting=yes')
       .expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(PARTNER_AGE_URL);
+        expect(res.header.location).toEqual(CITIZEN_PARTNER_AGE_URL);
       });
   });
 
@@ -66,11 +66,11 @@ describe('Partner', () => {
     test('should redirect page when "no"', async () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(PARTNER_URL)
+        .post(CITIZEN_PARTNER_URL)
         .send('cohabiting=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(PARTNER_DEPENDANTS_URL);
+          expect(res.header.location).toEqual(CITIZEN_PARTNER_DEPENDANTS_URL);
         });
     });
   });
@@ -79,11 +79,11 @@ describe('Partner', () => {
     test('should redirect page when "no" and haven´t statementOfMeans', async () => {
       app.locals.draftStoreClient = mockNoPartnerDraftStore;
       await request(app)
-        .post(PARTNER_URL)
+        .post(CITIZEN_PARTNER_URL)
         .send('cohabiting=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(PARTNER_DEPENDANTS_URL);
+          expect(res.header.location).toEqual(CITIZEN_PARTNER_DEPENDANTS_URL);
         });
     });
   });
@@ -92,7 +92,7 @@ describe('Partner', () => {
     test('should show partner page when haven´t statementOfMeans', async () => {
       app.locals.draftStoreClient = mockNoPartnerDraftStore;
       await request(app)
-        .get(PARTNER_URL)
+        .get(CITIZEN_PARTNER_URL)
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
