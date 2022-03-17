@@ -17,6 +17,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDetailsController');
 const router = express.Router();
 import {getDraftClaimFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -149,7 +150,7 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     }
     claim.respondent1 = respondent;
     await saveDraftClaim(req.params.id, claim);
-    res.redirect(DOB_URL);
+    res.redirect(constructResponseUrlWithIdParams(req.params.id,DOB_URL));
   }
 });
 
