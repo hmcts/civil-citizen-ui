@@ -11,10 +11,9 @@ const validator = new Validator();
 
 class ResidenceService {
 
-  public async getResidence(claimId: string) {
+  public async getResidence(claimId: string): Promise<Residence> {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      logger.info(civilClaimResponse);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.residence) {
         return civilClaimResponse.case_data.statementOfMeans.residence;
       }

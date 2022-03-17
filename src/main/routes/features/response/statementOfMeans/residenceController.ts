@@ -8,7 +8,7 @@ import residenceService from '../../../../modules/statementOfMeans/residence/res
 const {Logger} = require('@hmcts/nodejs-logging');
 
 const logger = Logger.getLogger('residenceController');
-const residenceViewPath = 'features/response/statement-of-means/residence';
+const residenceViewPath = 'features/response/statementOfMeans/residence';
 
 const residenceController = express.Router();
 residenceController

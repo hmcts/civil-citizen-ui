@@ -1,6 +1,6 @@
 import express from 'express';
 const request = require('supertest');
-import {app} from '../../../../../../main/app';
+const {app} = require('../../../../../../main/app');
 import nock from 'nock';
 import config from 'config';
 import {
@@ -9,12 +9,12 @@ import {
   VALID_TEXT_LENGTH,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../../../main/app/client/civilServiceUrls';
-import {CITIZEN_PARTNER_URL} from '../../../../../../main/routes/urls';
+import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../../../../main/routes/urls';
 import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
 
 const agent = request.agent(app);
 const tooLongHousingDetails: string = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');
-const respondentResidenceUrl = '/case/aaa/response/statement-of-means/residence';
+const respondentResidenceUrl = CITIZEN_RESIDENCE_URL.replace(':id', 'aaa');
 const mockDraftResponse = require('./civilClaimResponseMock.json');
 
 jest.mock('ioredis', () => {
@@ -72,7 +72,7 @@ describe('Citizen residence', () => {
         .send('type=OWN_HOME')
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CITIZEN_PARTNER_URL.replace(':id','aaa'));
+          expect(res.get('location')).toBe(CITIZEN_PARTNER_URL.replace(':id', 'aaa'));
         });
     });
     test('should return error when no option selected', async () => {
@@ -101,7 +101,7 @@ describe('Citizen residence', () => {
         .send('housingDetails=Palace')
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CITIZEN_PARTNER_URL.replace(':id','aaa'));
+          expect(res.get('location')).toBe(CITIZEN_PARTNER_URL.replace(':id', 'aaa'));
         });
     });
     test('should return error when type is \'Other\' and housing details are too long', async () => {
