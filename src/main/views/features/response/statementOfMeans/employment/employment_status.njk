@@ -8,8 +8,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = "Do you have a job?" %}
-      {% set id = "employment" %}
-      {% set name = "employment" %}
+      {% set id = "option" %}
+      {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
@@ -38,7 +38,10 @@
               value: EmploymentCategory.SELF_EMPLOYED,
               text: t("Self-employed")
             }
-          ]
+          ],
+          errorMessage: {
+            text:t(form.errorFor('employmentCategory'))
+          } if form.hasFieldError('employmentCategory')
         }) }}
       {% endset -%}
       <div class="govuk-grid-row">

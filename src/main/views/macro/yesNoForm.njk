@@ -32,6 +32,6 @@
     ],
     errorMessage: {
       html: errors[0].text
-    } if errors
+    } if form.hasFieldError(name)
   }) }}
 {% endmacro %}

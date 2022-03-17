@@ -7,7 +7,7 @@ import {EmploymentCategory} from 'common/form/models/statementOfMeans/employment
 export class EmploymentStatus extends Form {
   @IsDefined({message: VALID_YES_NO_OPTION})
     option: YesNo;
-  @ValidateIf(o => o.optionDefined())
+  @ValidateIf(o => o.optionYesDefined())
   @IsDefined({message: VALID_AT_LEAST_ONE_OPTION})
     employmentCategory: EmploymentCategory[];
 
@@ -17,7 +17,7 @@ export class EmploymentStatus extends Form {
     this.employmentCategory = employmentCategory;
   }
 
-  optionDefined(): boolean {
-    return this.option !== null && this.option !== undefined;
+  optionYesDefined(): boolean {
+    return this.option === YesNo.YES;
   }
 }
