@@ -13,6 +13,7 @@ import citizenDisability from './features/response/statementOfMeans/disabilityCo
 import citizenSevereDisability from './features/response/statementOfMeans/severeDisabilityController';
 import bankAccountsRoute from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
 import employmentStatusRoute from './features/response/statementOfMeans/employment/employmentStatusController';
+import partner from './features/response/statementOfMeans/partner/partnerController';
 
 export default [
   homeRoute,
@@ -30,4 +31,5 @@ export default [
   citizenSevereDisability,
   bankAccountsRoute,
   employmentStatusRoute,
+  partner,
 ];

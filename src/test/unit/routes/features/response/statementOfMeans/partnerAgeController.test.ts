@@ -3,8 +3,8 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  CITIZEN_PARTNER_URL,
-  CITIZEN_PARTENER_PENSION_URL,
+  CITIZEN_PARTNER_AGE_URL,
+  CITIZEN_PARTNER_PENSION_URL,
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_DEPENDANTS_URL,
 } from '../../../../../../main/routes/urls';
@@ -37,7 +37,7 @@ describe('Partner Age', () => {
     test('should return citizen partner age page', async () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .get(CITIZEN_PARTNER_URL)
+        .get(CITIZEN_PARTNER_AGE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Is your partner aged 18 or over?');
@@ -47,7 +47,7 @@ describe('Partner Age', () => {
   test('should return error on incorrect input', async () => {
     app.locals.draftStoreClient = mockDraftStore;
     await request(app)
-      .post(CITIZEN_PARTNER_URL)
+      .post(CITIZEN_PARTNER_AGE_URL)
       .send('')
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -58,11 +58,11 @@ describe('Partner Age', () => {
   test('should redirect page when "yes"', async () => {
     app.locals.draftStoreClient = mockDraftStore;
     await request(app)
-      .post(CITIZEN_PARTNER_URL)
+      .post(CITIZEN_PARTNER_AGE_URL)
       .send('partnerAge=yes')
       .expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CITIZEN_PARTENER_PENSION_URL);
+        expect(res.header.location).toEqual(CITIZEN_PARTNER_PENSION_URL);
       });
   });
 
@@ -70,7 +70,7 @@ describe('Partner Age', () => {
     test('should redirect page when "no" and defendant disabled = YES', async () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(CITIZEN_PARTNER_URL)
+        .post(CITIZEN_PARTNER_AGE_URL)
         .send('partnerAge=no')
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -89,7 +89,7 @@ describe('Partner Age', () => {
       };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(CITIZEN_PARTNER_URL)
+        .post(CITIZEN_PARTNER_AGE_URL)
         .send('partnerAge=no')
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -103,7 +103,7 @@ describe('Partner Age', () => {
 
       app.locals.draftStoreClient = mockNoDisabilityDraftStore;
       await request(app)
-        .get(CITIZEN_PARTNER_URL)
+        .get(CITIZEN_PARTNER_AGE_URL)
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
