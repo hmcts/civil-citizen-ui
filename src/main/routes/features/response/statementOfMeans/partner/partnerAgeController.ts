@@ -20,13 +20,13 @@ function renderView(form: Partner, res: express.Response): void {
   res.render(citizenPartnerAgeViewPath, {form});
 }
 
-router.get(CITIZEN_PARTNER_AGE_URL.toString(), async (req, res) => {
+router.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
   partnerService.getPartnerAge(req.params.id).then(() => {
     renderView(partner, res);
   });
 });
 
-router.post(CITIZEN_PARTNER_AGE_URL.toString(),
+router.post(CITIZEN_PARTNER_AGE_URL,
   (req, res) => {
     const partner: Partner = new Partner(req.body.partnerAge);
     const validator = new Validator();
@@ -37,7 +37,7 @@ router.post(CITIZEN_PARTNER_AGE_URL.toString(),
     } else {
       partnerService.savePartnerAge(req.params.id, partner);
       if (partner.option == 'yes') {
-        res.redirect(CITIZEN_PARTENER_PENSION_URL);
+        res.redirect(CITIZEN_PARTNER_PENSION_URL);
       } else {
         disabilityService.getDisability(req.params.id).then((response) => {
           if (response && response.option == 'yes') {

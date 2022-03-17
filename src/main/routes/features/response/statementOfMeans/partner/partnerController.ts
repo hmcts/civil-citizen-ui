@@ -16,7 +16,7 @@ function renderView(form: Cohabiting, res: express.Response): void {
   res.render(partnerViewPath, {form});
 }
 
-router.get(CITIZEN_PARTNER_URL.toString(), async (req, res) => {
+router.get(CITIZEN_PARTNER_URL, async (req, res) => {
   try {
     const currentCohabing = await cohabitingService.getCohabiting(req.params.id);
     cohabiting.option = currentCohabing.option;
@@ -26,7 +26,7 @@ router.get(CITIZEN_PARTNER_URL.toString(), async (req, res) => {
   }
 });
 
-router.post(CITIZEN_PARTNER_URL.toString(),
+router.post(CITIZEN_PARTNER_URL,
   async (req, res) => {
     const cohabiting: Cohabiting = new Cohabiting(req.body.cohabiting);
     const validator = new Validator();
