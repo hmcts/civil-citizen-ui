@@ -1,5 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% block content %}
@@ -17,11 +19,11 @@
       {% endif %}
       {% set yesHtml %}
         {{ govukCheckboxes({
-          idPrefix: "employmentStatus",
-          name: "employmentStatus",
+          idPrefix: "employmentCategory",
+          name: "employmentCategory",
           fieldset: {
             legend: {
-              text: t("What's your employment status?"),
+              text: t("What's your employment status?")
             }
           },
           hint: {
@@ -29,11 +31,11 @@
           },
           items: [
             {
-              value: "employed",
+              value: EmploymentCategory.EMPLOYED,
               text: t("Employed")
             },
             {
-              value: "selfEmployed",
+              value: EmploymentCategory.SELF_EMPLOYED,
               text: t("Self-employed")
             }
           ]
@@ -42,7 +44,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post">
-            {{ yesNoRadioButton(t,id,name,title,form,{yesHtml: yesHtml}) }}
+            {{ yesNoRadioButton(t,id,name,title,form,{yesHtml:yesHtml}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")
