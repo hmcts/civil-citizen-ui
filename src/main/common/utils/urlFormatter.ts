@@ -1,3 +1,3 @@
 export function constructResponseUrlWithIdParams(id: string, path:string): string{
-  return path.toString().replace(/(:id)/i, id);
+  return path.replace(/(:id)/i, id);
 }
