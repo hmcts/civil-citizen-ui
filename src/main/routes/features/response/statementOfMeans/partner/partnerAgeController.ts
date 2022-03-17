@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {
   CITIZEN_PARTNER_AGE_URL,
-  CITIZEN_PARTENER_PENSION_URL,
+  CITIZEN_PARTNER_PENSION_URL,
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_DEPENDANTS_URL,
 } from '../../../../urls';
@@ -10,7 +10,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {PartnerService} from '../../../../../modules/statementOfMeans/partner/partnerService';
 import {DisabilityService} from '../../../../../modules/statementOfMeans/disabilityService';
 
-const citizenPartnerAgeViewPath = 'features/response/statement-of-means/partner/partner-age';
+const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
 const router = express.Router();
 const partner = new Partner();
 const partnerService = new PartnerService();
@@ -37,7 +37,7 @@ router.post(CITIZEN_PARTNER_AGE_URL.toString(),
     } else {
       partnerService.savePartnerAge(req.params.id, partner);
       if (partner.option == 'yes') {
-        res.redirect(CITIZEN_PARTENER_PENSION_URL);
+        res.redirect(CITIZEN_PARTNER_PENSION_URL);
       } else {
         disabilityService.getDisability(req.params.id).then((response) => {
           if (response && response.option == 'yes') {
