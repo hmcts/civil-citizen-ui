@@ -1,5 +1,5 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% macro yesNoRadioButton(t,id,name,title,form,description) %}
+{% macro yesNoRadioButton(t,id,name,title,form,description, params) %}
   {% set errors = form.getErrors() %}
   {{ govukRadios({
     idPrefix: id,
@@ -30,9 +30,10 @@
         conditional:{
         html: params.noHtml
       }
+      }
     ],
-        errorMessage: {
-        html: errors[0].text
-      } if form.hasFieldError(name)
+    errorMessage: {
+      html: errors[0].text
+    } if form.hasFieldError(name)
   }) }}
 {% endmacro %}
