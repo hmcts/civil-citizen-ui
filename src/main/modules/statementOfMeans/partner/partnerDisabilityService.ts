@@ -1,7 +1,7 @@
 import {PartnerDisability} from '../../../common/form/models/statementOfMeans/partner/partnerDisability';
 import {getDraftClaimFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
-import {Claim} from 'models/claim';
+import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partnerDisabilityService');
