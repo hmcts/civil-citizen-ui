@@ -2,7 +2,7 @@ import {ValidationError} from 'class-validator';
 import {FormValidationError} from '../validationErrors/formValidationError';
 
 /**
- * @deprecated use GenericForm instead
+ * @deprecated This can potentially be deprecated and we may end up using GenericForm instead
  */
 export class Form {
   errors?: ValidationError[];
