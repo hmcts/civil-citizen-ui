@@ -28,7 +28,7 @@ class ResidenceService {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {
-        civilClaimResponse.case_data.statementOfMeans.disability = residence;
+        civilClaimResponse.case_data.statementOfMeans.residence = residence;
       } else {
         const statementOfMeans = new StatementOfMeans();
         statementOfMeans.residence = residence;
