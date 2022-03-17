@@ -4,7 +4,7 @@ import {Disability} from '../../../../common/form/models/statementOfMeans/disabi
 import {ValidationError, Validator} from 'class-validator';
 import {DisabilityService} from '../../../../modules/statementOfMeans/disabilityService';
 
-const citizenDisabilityViewPath = 'features/response/statement-of-means/disability';
+const citizenDisabilityViewPath = 'features/response/statementOfMeans/disability';
 const router = express.Router();
 const disability = new Disability();
 const disabilityService = new DisabilityService();
