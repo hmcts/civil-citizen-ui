@@ -50,12 +50,16 @@ router.post(DOB_URL.toString(), async (req, res) => {
     if (citizenDob.errors && citizenDob.errors.length > 0) {
       renderView(res, citizenDob);
     } else {
-      const respondent = new Respondent();
-      respondent.dateOfBirth = citizenDob.dateOfBirth;
-      const claim = new Claim();
-      claim.respondent1 = respondent;
+      const claim = await getCaseDataFromStore(req.params.id) || new Claim();
+      if (claim.respondent1){
+        claim.respondent1.dateOfBirth = citizenDob.dateOfBirth;
+      } else {
+        const respondent = new Respondent();
+        respondent.dateOfBirth = citizenDob.dateOfBirth;
+        claim.respondent1 = respondent;
+      }
       await saveDraftClaim(req.params.id, claim);
-      redirectToNextPage(req, res, respondent.dateOfBirth);
+      redirectToNextPage(req, res, claim.respondent1.dateOfBirth);
     }
   } catch (error) {
     logger.error(error);

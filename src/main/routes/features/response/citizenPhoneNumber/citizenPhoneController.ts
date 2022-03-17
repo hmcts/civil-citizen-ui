@@ -26,23 +26,27 @@ router.get(CITIZEN_PHONE_NUMBER_URL.toString(), async(req, res) => {
 });
 router.post(CITIZEN_PHONE_NUMBER_URL.toString(),
   async(req, res) => {
-    const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
-    const validator = new Validator();
-    const errors: ValidationError[] = validator.validateSync(model);
-    if (errors && errors.length > 0) {
-      model.errors = errors;
-      renderView(model, res);
-    } else {
-      const claim = await getCaseDataFromStore(req.params.id) || new Claim();
-      if (claim.respondent1){
-        claim.respondent1.telephoneNumber =  model.telephoneNumber;
+    try{
+      const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
+      const validator = new Validator();
+      const errors: ValidationError[] = validator.validateSync(model);
+      if (errors && errors.length > 0) {
+        model.errors = errors;
+        renderView(model, res);
       } else {
-        const respondent = new Respondent();
-        respondent.telephoneNumber = model.telephoneNumber;
-        claim.respondent1 = respondent;
+        const claim = await getCaseDataFromStore(req.params.id) || new Claim();
+        if (claim.respondent1){
+          claim.respondent1.telephoneNumber =  model.telephoneNumber;
+        } else {
+          const respondent = new Respondent();
+          respondent.telephoneNumber = model.telephoneNumber;
+          claim.respondent1 = respondent;
+        }
+        await saveDraftClaim(req.params.id, claim);
+        res.redirect(DASHBOARD_URL);
       }
-      await saveDraftClaim(req.params.id, claim);
-      res.redirect(DASHBOARD_URL);
+    }catch (error) {
+      logger.error(error);
     }
   });
 
