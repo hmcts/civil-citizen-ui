@@ -18,11 +18,11 @@ function renderView(form: Cohabiting, res: express.Response): void {
 
 router.get(CITIZEN_PARTNER_URL.toString(), async (req, res) => {
   try {
-    const currentCohabing = await cohabitingService.getCohabiting(req.params.id)
+    const currentCohabing = await cohabitingService.getCohabiting(req.params.id);
     cohabiting.option = currentCohabing.option;
     renderView(cohabiting, res);
   } catch (err: unknown) {
-      logger.error(`${err as Error || err}`);
+    logger.error(`${err as Error || err}`);
   }
 });
 
@@ -43,7 +43,7 @@ router.post(CITIZEN_PARTNER_URL.toString(),
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DEPENDANTS_URL));
         }
       } catch (err: unknown) {
-          logger.error(`${err as Error || err}`);
+        logger.error(`${err as Error || err}`);
       }
     }
   });
