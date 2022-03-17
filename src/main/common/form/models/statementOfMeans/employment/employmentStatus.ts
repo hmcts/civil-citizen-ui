@@ -17,6 +17,13 @@ export class EmploymentStatus extends Form {
     this.employmentCategory = employmentCategory;
   }
 
+  static convertToArray(param: any): EmploymentCategory[] {
+    if (!Array.isArray(param)) {
+      return [param];
+    }
+    return param;
+  }
+
   optionYesDefined(): boolean {
     return this.option === YesNo.YES;
   }
