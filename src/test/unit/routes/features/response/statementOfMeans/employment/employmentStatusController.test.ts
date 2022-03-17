@@ -2,7 +2,12 @@ import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_EMPLOYMENT_URL} from '../../../../../../../main/routes/urls';
+import {
+  CITIZEN_EMPLOYMENT_URL,
+  SELF_EMPLOYED_URL,
+  UNEMPLOYED_URL,
+  WHO_EMPLOYS_YOU_URL,
+} from '../../../../../../../main/routes/urls';
 import {
   VALID_AT_LEAST_ONE_OPTION,
   VALID_YES_NO_OPTION,
@@ -44,6 +49,38 @@ describe('Employment status', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_AT_LEAST_ONE_OPTION);
+        });
+    });
+    it('should redirect to employers page when option is yes and employment type is self-employed', async () => {
+      await request(app).post(CITIZEN_EMPLOYMENT_URL)
+        .send({option: 'yes', employmentCategory: 'SELF-EMPLOYED'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(SELF_EMPLOYED_URL);
+        });
+    });
+    it('should redirect to employers page when option is yes and employment type is employed', async () => {
+      await request(app).post(CITIZEN_EMPLOYMENT_URL)
+        .send({option: 'yes', employmentCategory: 'EMPLOYED'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(WHO_EMPLOYS_YOU_URL);
+        });
+    });
+    it('should redirect to employers page when option is yes and employment type is self-employed and employed', async () => {
+      await request(app).post(CITIZEN_EMPLOYMENT_URL)
+        .send({option: 'yes', employmentCategory: ['EMPLOYED', 'SELF-EMPLOYED']})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(WHO_EMPLOYS_YOU_URL);
+        });
+    });
+    it('should redirect to unemployed page when option is no', async () => {
+      await request(app).post(CITIZEN_EMPLOYMENT_URL)
+        .send('option=no')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(UNEMPLOYED_URL);
         });
     });
   });

@@ -18,7 +18,7 @@ export class EmploymentStatus extends Form {
   }
 
   static convertToArray(param: any): EmploymentCategory[] {
-    if (!Array.isArray(param)) {
+    if (param && !Array.isArray(param)) {
       return [param];
     }
     return param;

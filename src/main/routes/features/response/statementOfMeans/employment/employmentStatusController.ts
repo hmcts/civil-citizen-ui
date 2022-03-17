@@ -9,7 +9,7 @@ import {
 } from '../../../../../routes/urls';
 import {validateForm} from '../../../../../common/form/validators/formValidator';
 import {YesNo} from '../../../../../common/form/models/yesNo';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment_status';
 const router = express.Router();
