@@ -10,7 +10,10 @@ import {
 import {validateForm} from '../../../../../common/form/validators/formValidator';
 import {YesNo} from '../../../../../common/form/models/yesNo';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {getEmploymentForm, saveEmploymentData} from 'modules/statementOfMeans/employment/employmentService';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('cohabitingService');
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment_status';
 const router = express.Router();
 
@@ -34,9 +37,13 @@ function redirectToEmployersPage(employmentCategory: EmploymentCategory[], claim
   }
 }
 
-router.get(CITIZEN_EMPLOYMENT_URL, (req, res) => {
-  const form = new EmploymentStatus();
-  renderView(form, res);
+router.get(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
+  try {
+    const form = await getEmploymentForm(req.params.id);
+    renderView(form, res);
+  } catch (error) {
+    logger.error(`${error as Error || error}`);
+  }
 });
 
 router.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
@@ -45,6 +52,7 @@ router.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
   if (form.hasErrors()) {
     renderView(form, res);
   } else {
+    await saveEmploymentData(req.params.id, form);
     redirectToNextPage(form, req.params.id, res);
   }
 });
