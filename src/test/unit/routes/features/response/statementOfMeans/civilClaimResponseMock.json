@@ -18,6 +18,9 @@
       },
       "partner": {
         "option": "yes"
+      },
+      "partnerSevereDisability": {
+        "option": "yes"
       }
     }
   }
