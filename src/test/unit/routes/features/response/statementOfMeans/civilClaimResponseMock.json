@@ -18,6 +18,11 @@
       },
       "partner": {
         "option": "yes"
+      },
+      "otherDependants": {
+        "option": "yes",
+        "numberOfPeople": 1,
+        "details": "Test details"
       }
     }
   }

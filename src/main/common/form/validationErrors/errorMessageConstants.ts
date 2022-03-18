@@ -19,3 +19,6 @@ export const TYPE_OF_ACCOUNT_REQUIRED = 'Select a type of account';
 export const NUMBER_REQUIRED = 'Enter a valid number';
 export const VALID_TWO_DECIMAL_NUMBER = 'Enter a valid ammount, maximum two decimal places';
 export const SELECT_AN_OPTION = 'Select an option';
+export const NUMBER_OF_PEOPLE_REQUIRED = 'Enter a numeric, for example 3';
+export const VALID_NUMBER_OF_PEOPLE = 'Enter a number higher than 0';
+export const DETAILS_REQUIRED = 'Enter details';
