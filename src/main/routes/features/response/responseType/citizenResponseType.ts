@@ -29,6 +29,7 @@ function renderView(form: CitizenResponseType, res: express.Response): void {
 }
 
 router.get(CITIZEN_RESPONSE_TYPE_URL, (req, res) => {
+
   renderView(citizenResponseType, res);
 });
 

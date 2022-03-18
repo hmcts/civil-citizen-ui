@@ -5,6 +5,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+
 const {Logger} = require('@hmcts/nodejs-logging');
 
 const logger = Logger.getLogger('citizenPhoneController');
@@ -15,18 +16,18 @@ function renderView(form: CitizenTelephoneNumber, res: express.Response): void {
   res.render(citizenPhoneViewPath, {form: form});
 }
 
-router.get(CITIZEN_PHONE_NUMBER_URL.toString(), async(req, res) => {
+router.get(CITIZEN_PHONE_NUMBER_URL.toString(), async (req, res) => {
   try {
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
-    const citizenTelephoneNumber = !(responseDataRedis && responseDataRedis.respondent1.telephoneNumber) ? new CitizenTelephoneNumber() : new CitizenTelephoneNumber( responseDataRedis.respondent1.telephoneNumber);
+    const citizenTelephoneNumber = !(responseDataRedis && responseDataRedis.respondent1.telephoneNumber) ? new CitizenTelephoneNumber() : new CitizenTelephoneNumber(responseDataRedis.respondent1.telephoneNumber);
     renderView(citizenTelephoneNumber, res);
   } catch (error) {
     logger.error(error);
   }
 });
 router.post(CITIZEN_PHONE_NUMBER_URL.toString(),
-  async(req, res) => {
-    try{
+  async (req, res) => {
+    try {
       const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
       const validator = new Validator();
       const errors: ValidationError[] = validator.validateSync(model);
@@ -35,8 +36,8 @@ router.post(CITIZEN_PHONE_NUMBER_URL.toString(),
         renderView(model, res);
       } else {
         const claim = await getCaseDataFromStore(req.params.id) || new Claim();
-        if (claim.respondent1){
-          claim.respondent1.telephoneNumber =  model.telephoneNumber;
+        if (claim.respondent1) {
+          claim.respondent1.telephoneNumber = model.telephoneNumber;
         } else {
           const respondent = new Respondent();
           respondent.telephoneNumber = model.telephoneNumber;
@@ -45,7 +46,7 @@ router.post(CITIZEN_PHONE_NUMBER_URL.toString(),
         await saveDraftClaim(req.params.id, claim);
         res.redirect(DASHBOARD_URL);
       }
-    }catch (error) {
+    } catch (error) {
       logger.error(error);
     }
   });
