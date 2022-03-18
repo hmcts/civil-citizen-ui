@@ -8,15 +8,15 @@
     <div class="govuk-grid-column-two-thirds">
     {% set claimantType = claim.applicant1.type %}
       {% if (claimantType == CounterpartyType.INDIVIDUAL) %}
-      {% set individualTitle = claim.applicant1.individualTitle %}
-      {% set applicant1Details =  (individualTitle if individualTitle else '')  + ' ' +  claim.applicant1.individualFirstName + ' ' + claim.applicant1.individualLastName %}
+        {% set individualTitle = claim.applicant1.individualTitle %}
+        {% set applicant1Details =  (individualTitle if individualTitle else '')  + ' ' +  claim.applicant1.individualFirstName + ' ' + claim.applicant1.individualLastName %}
       {% elseif (claimantType == CounterpartyType.SOLE_TRADER) %}
-      {% set soleTraderTitle = claim.applicant1.soleTraderTitle %}
-      {% set applicant1Details = (soleTraderTitle if soleTraderTitle else '') + ' ' +  claim.applicant1.soleTraderFirstName + ' ' + claim.applicant1.soleTraderLastName %}
+        {% set soleTraderTitle = claim.applicant1.soleTraderTitle %}
+        {% set applicant1Details = (soleTraderTitle if soleTraderTitle else '') + ' ' +  claim.applicant1.soleTraderFirstName + ' ' + claim.applicant1.soleTraderLastName %}
       {% elseif (claimantType == CounterpartyType.ORGANISATION) %}
-      {% set applicant1Details = claim.applicant1.organisationName %}
+        {% set applicant1Details = claim.applicant1.organisationName %}
       {% elseif (claimantType == CounterpartyType.COMPANY) %}
-      {% set applicant1Details = claim.applicant1.companyName %}
+        {% set applicant1Details = claim.applicant1.companyName %}
       {% endif %}
 
       <h2 class="govuk-heading-l">{{ t('Send ') }}  {{ applicant1Details }} {{ t(' your financial details') }}</h2>
