@@ -7,7 +7,20 @@ import {AGE_ELIGIBILITY_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../.
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+const civilClaimResponseMock = require('../statementOfMeans/civilClaimResponseMock.json');
+const noCitizenDobMock = require('./noCitizenDobMock.json');
+const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
+const noDisabilityCivilClaimResponse: string = JSON.stringify(noCitizenDobMock);
 
+const mockDraftStore = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(civilClaimResponse)),
+};
+const mockWithoutDobDraftStore = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(noDisabilityCivilClaimResponse)),
+};
 
 describe('Citizen date of birth', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -18,8 +31,34 @@ describe('Citizen date of birth', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
+  describe('test exceptions', () => {
+    test('should return citizen date of birth page with all information from redis', async () => {
+      const mockDraftStore = {
+        get: jest.fn(() => Promise.reject(new Error('fail'))),
+      };
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .get(DOB_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Enter your date of birth');
+        });
+    });
+  });
+
   describe('on GET', () => {
-    test('should return citizen date of birth page', async () => {
+    test('should return citizen date of birth page with all information from redis', async () => {
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .get(DOB_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Enter your date of birth');
+        });
+    });
+
+    test('should return citizen date of birth page empty when there is no information on redis', async () => {
+      app.locals.draftStoreClient = mockWithoutDobDraftStore;
       await request(app)
         .get(DOB_URL)
         .expect((res) => {
@@ -48,6 +87,7 @@ describe('Citizen date of birth', () => {
           expect(res.text).toContain(VALID_YEAR);
         });
     });
+
     test('should return error on year less than 1872', async () => {
       await request(app)
         .post(DOB_URL)
@@ -92,6 +132,20 @@ describe('Citizen date of birth', () => {
         });
     });
     test('should redirect to under 18 contact court page', async () => {
+      app.locals.draftStoreClient = mockWithoutDobDraftStore;
+
+      await request(app)
+        .post(DOB_URL)
+        .send('year=2021')
+        .send('month=1')
+        .send('day=1')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(`Redirecting to ${AGE_ELIGIBILITY_URL}`);
+        });
+    });
+    test('should redirect to under 18 contact court page when has information on redis', async () => {
+      app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(DOB_URL)
         .send('year=2021')
@@ -109,10 +163,11 @@ describe('Citizen date of birth', () => {
         .send('month=1')
         .send('day=1')
         .expect((res) => {
-          expect(res.status).toBe(302);
+          expect(res.status).toBe(200);
           expect(res.text).toContain(`Redirecting to ${CITIZEN_PHONE_NUMBER_URL}`);
         });
     });
   });
+
 
 });
