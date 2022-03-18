@@ -1,4 +1,5 @@
 import * as urls from '../../main/routes/urls';
+import {CLAIM_TASK_LIST} from "../../main/routes/urls";
 
 export const IGNORED_URLS =
   [urls.SIGN_IN_URL,
@@ -26,4 +27,7 @@ export const IGNORED_URLS =
     urls.CITIZEN_PARTNER_PENSION_URL,
     urls.CITIZEN_DEPENDANTS_URL,
     urls.CITIZEN_PARTNER_DISABILITY_URL,
+    urls.FINANCIAL_DETAILS_URL,
+    urls.CLAIM_TASK_LIST,
+    urls.STATEMENT_MEANS_INTRO_URL,
   ];
