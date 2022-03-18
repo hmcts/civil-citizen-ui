@@ -11,7 +11,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner-disability';
 const router = express.Router();
-const partnerDisability = new PartnerDisability();
+
 const partnerDisabilityService = new PartnerDisabilityService();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partnerDisabilityService');
@@ -23,8 +23,7 @@ function renderView(form: PartnerDisability, res: express.Response): void {
 
 router.get(CITIZEN_PARTNER_DISABILITY_URL, async (req, res) => {
   try {
-    const currentPartnerDisability = await partnerDisabilityService.getPartnerDisability(req.params.id);
-    partnerDisability.option = currentPartnerDisability.option;
+    const partnerDisability = await partnerDisabilityService.getPartnerDisability(req.params.id);
     renderView(partnerDisability, res);
   } catch (err: unknown) {
     logger.error(`${err as Error || err}`);
@@ -34,6 +33,7 @@ router.get(CITIZEN_PARTNER_DISABILITY_URL, async (req, res) => {
 router.post(CITIZEN_PARTNER_DISABILITY_URL,
   async (req, res) => {
     const partnerDisability: PartnerDisability = new PartnerDisability(req.body.partnerDisability);
+
     const errors: ValidationError[] = validator.validateSync(partnerDisability);
     if (errors && errors.length > 0) {
       partnerDisability.errors = errors;
