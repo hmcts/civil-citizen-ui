@@ -10,7 +10,6 @@ export class CohabitingService {
   public async getCohabiting(claimId: string) {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      logger.info(civilClaimResponse);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.cohabiting) {
         return civilClaimResponse.case_data.statementOfMeans.cohabiting;
       }
@@ -23,7 +22,6 @@ export class CohabitingService {
   public async saveCohabiting(claimId: string, cohabiting: Cohabiting) {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      logger.info(civilClaimResponse);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {
         civilClaimResponse.case_data.statementOfMeans.cohabiting = cohabiting;
       } else {

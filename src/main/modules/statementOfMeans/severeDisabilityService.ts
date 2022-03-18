@@ -9,9 +9,7 @@ export class SevereDisabilityService {
 
   public async getSevereDisability(claimId: string) {
     try {
-
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      logger.info(civilClaimResponse);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.severeDisability) {
         return civilClaimResponse.case_data.statementOfMeans.severeDisability;
       }
@@ -24,7 +22,6 @@ export class SevereDisabilityService {
   public async saveSevereDisability(claimId: string, severeDisability: SevereDisability) {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      logger.info(civilClaimResponse);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {
         civilClaimResponse.case_data.statementOfMeans.severeDisability = severeDisability;
       } else {
