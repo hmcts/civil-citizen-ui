@@ -2,7 +2,11 @@ import request from 'supertest';
 import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_PARTNER_AGE_URL, CITIZEN_PARTNER_DEPENDANTS_URL, CITIZEN_PARTNER_URL} from '../../../../../../../main/routes/urls';
+import {
+  CITIZEN_DEPENDANTS_URL,
+  CITIZEN_PARTNER_AGE_URL,
+  CITIZEN_PARTNER_URL,
+} from '../../../../../../../main/routes/urls';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const noPartnerMock = require('../noStatementOfMeansMock.json');
@@ -70,7 +74,7 @@ describe('Partner', () => {
         .send('cohabiting=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PARTNER_DEPENDANTS_URL);
+          expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
         });
     });
   });
@@ -83,7 +87,7 @@ describe('Partner', () => {
         .send('cohabiting=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PARTNER_DEPENDANTS_URL);
+          expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
         });
     });
   });

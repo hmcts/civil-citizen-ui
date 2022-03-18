@@ -10,7 +10,6 @@ export class PartnerSevereDisabilityService {
   public async getPartnerSevereDisability(claimId: string) {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      logger.info(civilClaimResponse);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.partnerSevereDisability) {
         return civilClaimResponse.case_data.statementOfMeans.partnerSevereDisability;
       }
@@ -23,7 +22,6 @@ export class PartnerSevereDisabilityService {
   public async savePartnerSevereDisability(claimId: string, partnerSevereDisability: PartnerSevereDisability) {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      logger.info(civilClaimResponse);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {
         civilClaimResponse.case_data.statementOfMeans.partnerSevereDisability = partnerSevereDisability;
       } else {
