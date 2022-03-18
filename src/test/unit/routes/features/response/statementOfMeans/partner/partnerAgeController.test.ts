@@ -1,28 +1,28 @@
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  CITIZEN_PARTNER_AGE_URL,
-  CITIZEN_PARTNER_PENSION_URL,
-  CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_DEPENDANTS_URL,
-} from '../../../../../../main/routes/urls';
+  CITIZEN_PARTNER_AGE_URL,
+  CITIZEN_PARTNER_DISABILITY_URL,
+  CITIZEN_PARTNER_PENSION_URL,
+} from '../../../../../../../main/routes/urls';
 
-const civilClaimResponseMock = require('./civilClaimResponseMock.json');
-const noDisabilityMock = require('./noDisabilityMock.json');
+const civilClaimResponseMock = require('../civilClaimResponseMock.json');
+const noPartnerAgeMock = require('../noDisabilityMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
-const noDisabilityCivilClaimResponse: string = JSON.stringify(noDisabilityMock);
+const noPartnerAgeCivilClaimResponse: string = JSON.stringify(noPartnerAgeMock);
 const mockDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponse)),
 };
 const mockNoDisabilityDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(noDisabilityCivilClaimResponse)),
+  get: jest.fn(() => Promise.resolve(noPartnerAgeCivilClaimResponse)),
 };
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('../../../../../../../main/modules/draft-store');
 
 describe('Partner Age', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
