@@ -82,8 +82,9 @@ describe('Form has field text error', () => {
     form.errors = createValidationError();
     //When
     const textError = form.getTextError(_errors, 'primaryAddressLine1');
+    console.log(textError);
     //Then
-    expect(textError).toContain('Enter first address line');
+    expect(textError).toEqual({'isNotEmpty': 'Enter first address line'});
   });
 });
 
@@ -95,7 +96,7 @@ describe('Form has postcode error on correspondence address form', () => {
     //When
     const textError = form.getTextError(_correspondenceAddressErrors, 'correspondencePostCode');
     //Then
-    expect(textError).toContain('Postcode must be in England or Wales');
+    expect(textError).toEqual({'customInt': 'Postcode must be in England or Wales'});
   });
 });
 
