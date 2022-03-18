@@ -46,7 +46,6 @@ describe('Citizen financial details', () => {
         get: jest.fn(() => Promise.resolve(claimIndividual)),
       };
       app.locals.draftStoreClient = mockDraftStore;
-      console.log(claimIndividual);
       await request(app)
         .get( constructResponseUrlWithIdParams('1646818997929180', FINANCIAL_DETAILS_URL) )
         .expect((res) => {

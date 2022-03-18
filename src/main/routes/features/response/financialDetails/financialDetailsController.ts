@@ -23,12 +23,12 @@ export function setLogger(winstonLogger : winston.LoggerInstance){
   logger = winstonLogger;
 }
 
-function renderPage(res: express.Response, claim: Claim): void {
+function renderView(res: express.Response, claim: Claim): void {
   res.render(financialDetailsViewPath, {claim: claim});
 }
 
 
-router.get(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
+router.get(FINANCIAL_DETAILS_URL,  async (req : express.Request, res: express.Response) => {
   let claim : Claim = new Claim();
   await getDraftClaimFromStore(req.params.id)
     .then(claimResponse => {
@@ -36,10 +36,10 @@ router.get(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
     }).catch(error => {
       logger.error(error.message);
     });
-  renderPage(res, claim);
+  renderView(res, claim);
 });
 
-router.post(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
+router.post(FINANCIAL_DETAILS_URL,  async (req: express.Request, res : express.Response) => {
   let counterpartyType : CounterpartyType;
   let claim : Claim = new Claim();
   await getDraftClaimFromStore(req.params.id)
@@ -57,7 +57,7 @@ router.post(FINANCIAL_DETAILS_URL.toString(),  async (req, res) => {
     }
   } else {
     logger.error('No counterpartyType found.');
-    renderPage(res, claim);
+    renderView(res, claim);
   }
 });
 
