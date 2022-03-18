@@ -1,22 +1,22 @@
 import * as express from 'express';
 import {
-  CITIZEN_PARTNER_AGE_URL,
-  CITIZEN_PARTNER_PENSION_URL,
-  CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_DEPENDANTS_URL,
+  CITIZEN_PARTNER_AGE_URL,
+  CITIZEN_PARTNER_DISABILITY_URL,
+  CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../urls';
-import {Partner} from '../../../../../common/form/models/statementOfMeans/partner';
+import {PartnerAge} from '../../../../../common/form/models/statementOfMeans/partner';
 import {ValidationError, Validator} from 'class-validator';
 import {PartnerService} from '../../../../../modules/statementOfMeans/partner/partnerService';
 import {DisabilityService} from '../../../../../modules/statementOfMeans/disabilityService';
 
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
 const router = express.Router();
-const partner = new Partner();
+const partner = new PartnerAge();
 const partnerService = new PartnerService();
 const disabilityService = new DisabilityService();
 
-function renderView(form: Partner, res: express.Response): void {
+function renderView(form: PartnerAge, res: express.Response): void {
   res.render(citizenPartnerAgeViewPath, {form});
 }
 
@@ -28,7 +28,7 @@ router.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
 
 router.post(CITIZEN_PARTNER_AGE_URL,
   (req, res) => {
-    const partner: Partner = new Partner(req.body.partnerAge);
+    const partner: PartnerAge = new PartnerAge(req.body.partnerAge);
     const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(partner);
     if (errors && errors.length > 0) {

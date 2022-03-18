@@ -1,4 +1,4 @@
-import {Partner} from '../../../common/form/models/statementOfMeans/partner';
+import {PartnerAge} from '../../../common/form/models/statementOfMeans/partner';
 import {getDraftClaimFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 
@@ -15,13 +15,13 @@ export class PartnerService {
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.partner) {
         return civilClaimResponse.case_data.statementOfMeans.partnerAge;
       }
-      return new Partner('');
+      return new PartnerAge('');
     } catch (err) {
       logger.error(`${err.stack || err}`);
     }
   }
 
-  public async savePartnerAge(claimId: string, partner: Partner) {
+  public async savePartnerAge(claimId: string, partner: PartnerAge) {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {

@@ -1,8 +1,8 @@
 import {IsDefined, ValidationError} from 'class-validator';
-import {Form} from '../../../form/models/form';
-import {VALID_OPTION} from '../../../form/validationErrors/errorMessageConstants';
+import {Form} from '../../form';
+import {VALID_OPTION} from '../../../validationErrors/errorMessageConstants';
 
-export class SevereDisability extends Form {
+export class PartnerAge extends Form {
   @IsDefined({message: VALID_OPTION})
     option?: string;
 
