@@ -8,38 +8,26 @@
     <div class="govuk-grid-column-two-thirds">
     {% set claimantType = claim.applicant1.type %}
       {% if (claimantType == CounterpartyType.INDIVIDUAL) %}
-      <h2 class="govuk-heading-l">{{ t('Send ') }} {{ claim.applicant1.individualTitle }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(' your financial details') }}</h2>
+      {% set individualTitle = claim.applicant1.individualTitle %}
+      {% set applicant1Details =  (individualTitle if individualTitle else '')  + ' ' +  claim.applicant1.individualFirstName + ' ' + claim.applicant1.individualLastName %}
       {% elseif (claimantType == CounterpartyType.SOLE_TRADER) %}
-      <h2 class="govuk-heading-l">{{ t('Send ') }} {{ claim.applicant1.soleTraderTitle }} {{ claim.applicant1.soleTraderFirstName }} {{ claim.applicant1.soleTraderLastName }} {{ t(' your financial details') }}</h2>
+      {% set soleTraderTitle = claim.applicant1.soleTraderTitle %}
+      {% set applicant1Details = (soleTraderTitle if soleTraderTitle else '') + ' ' +  claim.applicant1.soleTraderFirstName + ' ' + claim.applicant1.soleTraderLastName %}
       {% elseif (claimantType == CounterpartyType.ORGANISATION) %}
-      <h2 class="govuk-heading-l">{{ t('Send ') }} {{ claim.applicant1.organisationName }} {{ t(' your financial details') }}</h2>
+      {% set applicant1Details = claim.applicant1.organisationName %}
       {% elseif (claimantType == CounterpartyType.COMPANY) %}
-      <h2 class="govuk-heading-l">{{ t('Send ') }} {{ claim.applicant1.companyName }} {{ t(' your financial details') }}</h2>
+      {% set applicant1Details = claim.applicant1.companyName %}
       {% endif %}
+
+      <h2 class="govuk-heading-l">{{ t('Send ') }}  {{ applicant1Details }} {{ t(' your financial details') }}</h2>
 
       {% set defendantType = claim.respondent1.type %}
       {% if (defendantType == CounterpartyType.INDIVIDUAL or defendantType == CounterpartyType.SOLE_TRADER) %}
         <p class="govuk-body">
-          {% if (claimantType == CounterpartyType.INDIVIDUAL) %}
-          {{ t('You need to give ') }} {{ claim.applicant1.individualTitle }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(' details of your finances.') }}
-          {% elseif (claimantType == CounterpartyType.SOLE_TRADER) %}
-          {{ t('You need to give ') }} {{ claim.applicant1.soleTraderTitle }} {{ claim.applicant1.soleTraderFirstName }} {{ claim.applicant1.soleTraderLastName }} {{ t(' details of your finances.') }}
-          {% elseif (claimantType == CounterpartyType.ORGANISATION) %}
-          {{ t('You need to give ') }} {{ claim.applicant1.organisationName }} {{ t(' details of your finances.') }}
-          {% elseif (claimantType == CounterpartyType.COMPANY) %}
-          {{ t('You need to give ') }} {{ claim.applicant1.companyName }} {{ t(' details of your finances.') }}
-          {% endif %}
+          {{ t('You need to give ') }} {{ applicant1Details }} {{ t(' details of your finances.') }}
         </p>
         <p class="govuk-body">
-          {% if (claimantType == CounterpartyType.INDIVIDUAL) %}
-          {{ t("We'll ask you for the details, then we'll send them to ") }} {{ claim.applicant1.individualTitle }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(' to review.') }}
-          {% elseif (claimantType == CounterpartyType.SOLE_TRADER) %}
-          {{ t("We'll ask you for the details, then we'll send them to ") }} {{ claim.applicant1.soleTraderTitle }} {{ claim.applicant1.soleTraderFirstName }} {{ claim.applicant1.soleTraderLastName }} {{ t(' to review.') }}
-          {% elseif (claimantType == CounterpartyType.ORGANISATION) %}
-          {{ t("We'll ask you for the details, then we'll send them to ") }} {{ claim.applicant1.organisationName }} {{ t(' to review.') }}
-          {% elseif (claimantType == CounterpartyType.COMPANY) %}
-          {{ t("We'll ask you for the details, then we'll send them to ") }} {{ claim.applicant1.companyName }} {{ t(' to review.') }}
-          {% endif %}
+          {{ t("We'll ask you for the details, then we'll send them to ") }} {{ applicant1Details }} {{ t(' to review.') }}
         </p>
         <p class="govuk-body">
           {{ t('They can reject your proposal, if they believe you can pay sooner.') }}
@@ -49,15 +37,7 @@
         </p>
       {% elseif (defendantType == CounterpartyType.COMPANY or defendantType == CounterpartyType.ORGANISATION) %}
         <p class="govuk-body">
-          {% if (claimantType == CounterpartyType.INDIVIDUAL) %}
-          {{ t('You need to send ') }} {{ claim.applicant1.individualTitle }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }} {{ t(" your company or organisation's most recent statement of accounts.") }}
-          {% elseif (claimantType == CounterpartyType.SOLE_TRADER) %}
-          {{ t('You need to send ') }} {{ claim.applicant1.soleTraderTitle }} {{ claim.applicant1.soleTraderFirstName }} {{ claim.applicant1.soleTraderLastName }} {{ t(" your company or organisation's most recent statement of accounts.") }}
-          {% elseif (claimantType == CounterpartyType.ORGANISATION) %}
-          {{ t('You need to send ') }} {{ claim.applicant1.organisationName }} {{ t(" your company or organisation's most recent statement of accounts.") }}
-          {% elseif (claimantType == CounterpartyType.COMPANY) %}
-          {{ t('You need to send ') }} {{ claim.applicant1.companyName }} {{ t(" your company or organisation's most recent statement of accounts.") }}
-          {% endif %}
+          {{ t('You need to send ') }} {{ applicant1Details }} {{ t(" your company or organisation's most recent statement of accounts.") }}
         </p>
         <p class="govuk-body">
           {{ t("They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.") }}
@@ -66,15 +46,7 @@
           {{ t('If they reject your plan, the court will make a new plan based on your financial details.') }}
         </p>
         <p class="govuk-body">
-          {% if (claimantType == CounterpartyType.INDIVIDUAL) %}
-          {{ t('Get ') }} {{ claim.applicant1.individualTitle }} {{ claim.applicant1.individualFirstName }} {{ claim.applicant1.individualLastName }}{{ t("'s contact details.") }}
-          {% elseif (claimantType == CounterpartyType.SOLE_TRADER) %}
-          {{ t('Get ') }} {{ claim.applicant1.soleTraderTitle }} {{ claim.applicant1.soleTraderFirstName }} {{ claim.applicant1.soleTraderLastName }}{{ t("'s contact details.") }}
-          {% elseif (claimantType == CounterpartyType.ORGANISATION) %}
-          {{ t('Get ') }} {{ claim.applicant1.organisationName }}{{ t("'s contact details.") }}
-          {% elseif (claimantType == CounterpartyType.COMPANY) %}
-          {{ t('Get ') }} {{ claim.applicant1.companyName }}{{ t("'s contact details.") }}
-          {% endif %}
+          {{ t('Get ') }} {{ applicant1Details }}{{ t("'s contact details.") }}
         </p>
       {% endif %}
       <form method="post">
