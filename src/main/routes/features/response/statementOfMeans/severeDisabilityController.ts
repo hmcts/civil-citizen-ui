@@ -13,13 +13,13 @@ function renderView(form: SevereDisability, res: express.Response): void {
   res.render(citizenSevereDisabilityViewPath, {form});
 }
 
-router.get(CITIZEN_SEVERELY_DISABLED_URL.toString(), async (req, res) => {
+router.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res) => {
   severeDisabilityService.getSevereDisability(req.params.id).then(() => {
     renderView(severeDisability, res);
   });
 });
 
-router.post(CITIZEN_SEVERELY_DISABLED_URL.toString(),
+router.post(CITIZEN_SEVERELY_DISABLED_URL,
   (req, res) => {
     const severeDisability: SevereDisability = new SevereDisability(req.body.severeDisability);
     const validator = new Validator();
