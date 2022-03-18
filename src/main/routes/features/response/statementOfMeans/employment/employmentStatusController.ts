@@ -10,7 +10,10 @@ import {
 import {validateForm} from '../../../../../common/form/validators/formValidator';
 import {YesNo} from '../../../../../common/form/models/yesNo';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {getEmploymentForm, saveEmploymentData} from 'modules/statementOfMeans/employment/employmentService';
+import {
+  getEmploymentForm,
+  saveEmploymentData,
+} from '../../../../../modules/statementOfMeans/employment/employmentService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('cohabitingService');
