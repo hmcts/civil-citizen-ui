@@ -13,7 +13,7 @@ export class DisabilityService {
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.disability) {
         return civilClaimResponse.case_data.statementOfMeans.disability;
       }
-      return new Disability('');
+      return new Disability();
     } catch (err: unknown) {
       logger.error(`${(err as Error).stack || err}`);
     }

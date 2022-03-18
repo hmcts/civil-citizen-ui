@@ -5,7 +5,7 @@ import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partnerService');
 
-export class PartnerService {
+export class PartnerAgeService {
 
   public async getPartnerAge(claimId: string) {
     try {
