@@ -32,5 +32,8 @@ const updateEmployment = (claim: Claim, form: EmploymentStatus) => {
     claim = new Claim();
     claim.statementOfMeans = new StatementOfMeans();
   }
+  if (claim.statementOfMeans === undefined) {
+    claim.statementOfMeans = new StatementOfMeans();
+  }
   claim.statementOfMeans.employment = convertFromForm(form);
 };

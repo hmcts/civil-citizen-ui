@@ -24,6 +24,10 @@ export class EmploymentStatus extends Form {
     return param;
   }
 
+  hasEmploymentCategory(value: EmploymentCategory) {
+    return this.employmentCategory && this.employmentCategory.includes(value);
+  }
+
   optionYesDefined(): boolean {
     return this.option === YesNo.YES;
   }

@@ -32,11 +32,13 @@
           items: [
             {
               value: EmploymentCategory.EMPLOYED,
-              text: t("Employed")
+              text: t("Employed"),
+              checked: true if form.hasEmploymentCategory(EmploymentCategory.EMPLOYED)
             },
             {
               value: EmploymentCategory.SELF_EMPLOYED,
-              text: t("Self-employed")
+              text: t("Self-employed"),
+              checked: true if form.hasEmploymentCategory(EmploymentCategory.SELF_EMPLOYED)
             }
           ],
           errorMessage: {
