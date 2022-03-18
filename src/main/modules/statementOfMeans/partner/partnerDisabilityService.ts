@@ -12,13 +12,12 @@ export class PartnerDisabilityService {
     try {
 
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      logger.info(civilClaimResponse);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.partnerDisability) {
         return civilClaimResponse.case_data.statementOfMeans.partnerDisability;
       }
       return new PartnerDisability('');
-    } catch (err) {
-      logger.error(`${err.stack || err}`);
+    } catch (err: unknown) {
+      logger.error(`${err as Error || err}`);
     }
   }
 
@@ -34,8 +33,8 @@ export class PartnerDisabilityService {
         civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
-    } catch (err) {
-      logger.error(`${err.stack || err}`);
+    } catch (err: unknown) {
+      logger.error(`${err as Error || err}`);
     }
   }
 }

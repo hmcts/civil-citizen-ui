@@ -21,7 +21,7 @@ function renderView(form: PartnerDisability, res: express.Response): void {
   res.render(partnerViewPath, {form});
 }
 
-router.get(CITIZEN_PARTNER_DISABILITY_URL.toString(), async (req, res) => {
+router.get(CITIZEN_PARTNER_DISABILITY_URL, async (req, res) => {
   try {
     const currentPartnerDisability = await partnerDisabilityService.getPartnerDisability(req.params.id);
     partnerDisability.option = currentPartnerDisability.option;
@@ -31,7 +31,7 @@ router.get(CITIZEN_PARTNER_DISABILITY_URL.toString(), async (req, res) => {
   }
 });
 
-router.post(CITIZEN_PARTNER_DISABILITY_URL.toString(),
+router.post(CITIZEN_PARTNER_DISABILITY_URL,
   async (req, res) => {
     const partnerDisability: PartnerDisability = new PartnerDisability(req.body.partnerDisability);
     const validator = new Validator();
