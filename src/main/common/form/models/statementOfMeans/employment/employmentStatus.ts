@@ -2,7 +2,7 @@ import {Form} from '../../form';
 import {YesNo} from '../../yesNo';
 import {IsDefined, ValidateIf} from 'class-validator';
 import {VALID_AT_LEAST_ONE_OPTION, VALID_YES_NO_OPTION} from '../../../validationErrors/errorMessageConstants';
-import {EmploymentCategory} from 'common/form/models/statementOfMeans/employment/employmentCategory';
+import {EmploymentCategory} from './employmentCategory';
 
 export class EmploymentStatus extends Form {
   @IsDefined({message: VALID_YES_NO_OPTION})
@@ -17,11 +17,13 @@ export class EmploymentStatus extends Form {
     this.employmentCategory = employmentCategory;
   }
 
-  static convertToArray(param: any): EmploymentCategory[] {
-    if (param && !Array.isArray(param)) {
+  static convertToArray(param: EmploymentCategory[] | EmploymentCategory): EmploymentCategory[] {
+    if (Array.isArray(param)) {
+      return param;
+    }
+    if (param) {
       return [param];
     }
-    return param;
   }
 
   hasEmploymentCategory(value: EmploymentCategory) {
@@ -30,5 +32,9 @@ export class EmploymentStatus extends Form {
 
   optionYesDefined(): boolean {
     return this.option === YesNo.YES;
+  }
+
+  isSelfEmployed() {
+    return this.employmentCategory.length == 1 && this.employmentCategory[0] === EmploymentCategory.SELF_EMPLOYED;
   }
 }

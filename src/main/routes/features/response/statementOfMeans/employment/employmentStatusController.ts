@@ -8,7 +8,6 @@ import {
   WHO_EMPLOYS_YOU_URL,
 } from '../../../../../routes/urls';
 import {validateForm} from '../../../../../common/form/validators/formValidator';
-import {YesNo} from '../../../../../common/form/models/yesNo';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {
   getEmploymentForm,
@@ -25,15 +24,15 @@ function renderView(form: EmploymentStatus, res: express.Response): void {
 }
 
 function redirectToNextPage(form: EmploymentStatus, claimId: string, res: express.Response) {
-  if (form.option === YesNo.YES) {
-    redirectToEmployersPage(form.employmentCategory, claimId, res);
+  if (form.optionYesDefined()) {
+    redirectToEmployersPage(form, claimId, res);
   } else {
     res.redirect(constructResponseUrlWithIdParams(claimId, UNEMPLOYED_URL));
   }
 }
 
-function redirectToEmployersPage(employmentCategory: EmploymentCategory[], claimId: string, res: express.Response) {
-  if (employmentCategory.length == 1 && employmentCategory[0] === EmploymentCategory.SELF_EMPLOYED) {
+function redirectToEmployersPage(form: EmploymentStatus, claimId: string, res: express.Response) {
+  if (form.isSelfEmployed()) {
     res.redirect(constructResponseUrlWithIdParams(claimId, SELF_EMPLOYED_URL));
   } else {
     res.redirect(constructResponseUrlWithIdParams(claimId, WHO_EMPLOYS_YOU_URL));
@@ -51,12 +50,16 @@ router.get(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
 
 router.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
   const form = new EmploymentStatus(req.body.option, EmploymentStatus.convertToArray(req.body.employmentCategory));
-  await validateForm(form);
-  if (form.hasErrors()) {
-    renderView(form, res);
-  } else {
-    await saveEmploymentData(req.params.id, form);
-    redirectToNextPage(form, req.params.id, res);
+  try {
+    await validateForm(form);
+    if (form.hasErrors()) {
+      renderView(form, res);
+    } else {
+      await saveEmploymentData(req.params.id, form);
+      redirectToNextPage(form, req.params.id, res);
+    }
+  } catch (error) {
+    logger.error(`${error as Error || error}`);
   }
 });
 
