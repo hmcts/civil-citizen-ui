@@ -1,5 +1,5 @@
 import {PartnerDisability} from '../../../common/form/models/statementOfMeans/partner/partnerDisability';
-import {getDraftClaimFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Claim} from '../../../common/models/claim';
 
@@ -10,10 +10,9 @@ export class PartnerDisabilityService {
 
   public async getPartnerDisability(claimId: string) {
     try {
-
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.partnerDisability) {
-        return civilClaimResponse.case_data.statementOfMeans.partnerDisability;
+      const case_data = await getCaseDataFromStore(claimId);
+      if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.partnerDisability) {
+        return case_data.statementOfMeans.partnerDisability;
       }
       return new PartnerDisability('');
     } catch (err: unknown) {
@@ -23,16 +22,15 @@ export class PartnerDisabilityService {
 
   public async savePartnerDisability(claimId: string, partnerDisability: PartnerDisability) {
     try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {
-        civilClaimResponse.case_data.statementOfMeans.partnerDisability = partnerDisability;
+      const case_data = await getCaseDataFromStore(claimId) || new Claim();
+      if (case_data && case_data.statementOfMeans) {
+        case_data.statementOfMeans.partnerDisability = partnerDisability;
       } else {
         const statementOfMeans = new StatementOfMeans();
-        civilClaimResponse.case_data = new Claim();
         statementOfMeans.partnerDisability = partnerDisability;
-        civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
+        case_data.statementOfMeans = statementOfMeans;
       }
-      await saveDraftClaim(claimId, civilClaimResponse.case_data);
+      await saveDraftClaim(claimId, case_data);
     } catch (err: unknown) {
       logger.error(`${err as Error || err}`);
     }
