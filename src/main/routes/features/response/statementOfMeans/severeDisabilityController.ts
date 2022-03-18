@@ -4,7 +4,7 @@ import {SevereDisability} from '../../../../common/form/models/statementOfMeans/
 import {ValidationError, Validator} from 'class-validator';
 import {SevereDisabilityService} from '../../../../modules/statementOfMeans/severeDisabilityService';
 
-const citizenSevereDisabilityViewPath = 'features/response/statement-of-means/are-you-severely-disabled';
+const citizenSevereDisabilityViewPath = 'features/response/statementOfMeans/are-you-severely-disabled';
 const router = express.Router();
 const severeDisability = new SevereDisability();
 const severeDisabilityService = new SevereDisabilityService();
@@ -13,13 +13,13 @@ function renderView(form: SevereDisability, res: express.Response): void {
   res.render(citizenSevereDisabilityViewPath, {form});
 }
 
-router.get(CITIZEN_SEVERELY_DISABLED_URL.toString(), async (req, res) => {
+router.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res) => {
   severeDisabilityService.getSevereDisability(req.params.id).then(() => {
     renderView(severeDisability, res);
   });
 });
 
-router.post(CITIZEN_SEVERELY_DISABLED_URL.toString(),
+router.post(CITIZEN_SEVERELY_DISABLED_URL,
   (req, res) => {
     const severeDisability: SevereDisability = new SevereDisability(req.body.severeDisability);
     const validator = new Validator();

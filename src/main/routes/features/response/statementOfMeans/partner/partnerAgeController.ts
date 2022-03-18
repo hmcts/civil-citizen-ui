@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {
-  CITIZEN_PARTNER_URL,
-  CITIZEN_PARTENER_PENSION_URL,
+  CITIZEN_PARTNER_AGE_URL,
+  CITIZEN_PARTNER_PENSION_URL,
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_DEPENDANTS_URL,
 } from '../../../../urls';
@@ -21,13 +21,13 @@ function renderView(form: Partner, res: express.Response): void {
   res.render(citizenPartnerAgeViewPath, {form});
 }
 
-router.get(CITIZEN_PARTNER_URL.toString(), async (req, res) => {
+router.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
   partnerService.getPartnerAge(req.params.id).then(() => {
     renderView(partner, res);
   });
 });
 
-router.post(CITIZEN_PARTNER_URL.toString(),
+router.post(CITIZEN_PARTNER_AGE_URL,
   (req, res) => {
     const partner: Partner = new Partner(req.body.option);
     const validator = new Validator();
@@ -38,7 +38,7 @@ router.post(CITIZEN_PARTNER_URL.toString(),
     } else {
       partnerService.savePartnerAge(req.params.id, partner);
       if (partner.option == 'yes') {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTENER_PENSION_URL));
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_PENSION_URL));
       } else {
         disabilityService.getDisability(req.params.id).then((response) => {
           if (response && response.option == 'yes') {
