@@ -21,10 +21,13 @@ export const getEmploymentForm = async (claimId: string): Promise<EmploymentStat
 };
 
 export const saveEmploymentData = async (claimId: string, form: EmploymentStatus) => {
-  const claim = await getCaseDataFromStore(claimId);
-  updateEmployment(claim, form);
-  await saveDraftClaim(claimId, claim);
-
+  try {
+    const claim = await getCaseDataFromStore(claimId);
+    updateEmployment(claim, form);
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(`${error.stack || error}`);
+  }
 };
 
 const updateEmployment = (claim: Claim, form: EmploymentStatus) => {
