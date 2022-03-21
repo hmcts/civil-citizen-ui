@@ -20,8 +20,9 @@ residenceController
         res.render(residenceViewPath, {
           form: new GenericForm(residence),
         });
-      } catch (err: unknown) {
-        logger.error(`${err as Error || err}`);
+      } catch (error) {
+        logger.error(`${error.stack || error}`);
+        res.status(500).send({error: error.stack});
       }
     })
   .post(
@@ -38,8 +39,9 @@ residenceController
         try {
           await residenceService.saveResidence(req.params.id, residence);
           res.redirect(CITIZEN_PARTNER_URL.replace(':id', req.params.id));
-        } catch (err: unknown) {
-          logger.error(`${err as Error || err}`);
+        } catch (error) {
+          logger.error(`${error.stack || error}`);
+          res.status(500).send({error: error.stack});
         }
       }
     });
