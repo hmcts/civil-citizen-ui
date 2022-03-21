@@ -2,7 +2,7 @@ import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator
 import {DEFENDANT_POSTCODE_NOT_VALID} from '../validationErrors/errorMessageConstants';
 
 /**
- * Validates that the input value is either empty or an integer with no special characters
+ * Validates that the input value is in correct post code format
  */
 @ValidatorConstraint({name: 'customInt', async: false})
 export class PostcodeValidator implements ValidatorConstraintInterface {
