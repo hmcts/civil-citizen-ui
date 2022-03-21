@@ -122,7 +122,7 @@
     "**/jest/**/node-notifier": "^8.0.1",
     "**/sass-lint/**/jsonpointer": "^5.0.0",
     "**/sass-lint/**/merge": "^2.1.1",
-    "**/sass-lint/**/minimist": "^1.2.3",
+    "**/sass-lint/**/minimist": "^1.2.5",
     "**/sass-lint/**/ajv": "^6.12.3",
     "**/uglifyjs-webpack-plugin/**/serialize-javascript": "^3.1.0",
     "**/**/ansi-regex": "^5.0.1",
