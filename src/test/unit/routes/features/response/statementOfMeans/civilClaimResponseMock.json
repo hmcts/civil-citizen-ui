@@ -31,6 +31,9 @@
       "partnerDisability": {
         "option": "yes"
       },
+      "partnerPension": {
+        "option": "yes"
+      },
       "residence": {
         "type": {
           "value": "PRIVATE_RENTAL",

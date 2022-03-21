@@ -6,7 +6,7 @@ import {PartnerPensionService} from '../../../../../modules/statementOfMeans/par
 import {DisabilityService} from '../../../../../modules/statementOfMeans/disabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
-const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-pension';
+const citizenPartnerPensionViewPath = 'features/response/statementOfMeans/partner/partner-pension';
 const router = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partnerPensionService');
@@ -15,7 +15,7 @@ const disabilityService = new DisabilityService();
 const validator = new Validator();
 
 function renderView(form: PartnerPension, res: express.Response): void {
-  res.render(citizenPartnerAgeViewPath, {form});
+  res.render(citizenPartnerPensionViewPath, {form});
 }
 
 router.get(CITIZEN_PARTNER_PENSION_URL, async (req, res) => {
@@ -29,7 +29,7 @@ router.get(CITIZEN_PARTNER_PENSION_URL, async (req, res) => {
 
 router.post(CITIZEN_PARTNER_PENSION_URL,
   async (req, res) => {
-    const partnerPension: PartnerPension = new PartnerPension(req.body.partnerAge);
+    const partnerPension: PartnerPension = new PartnerPension(req.body.partnerPension);
     const errors: ValidationError[] = validator.validateSync(partnerPension);
     if (errors && errors.length > 0) {
       partnerPension.errors = errors;
