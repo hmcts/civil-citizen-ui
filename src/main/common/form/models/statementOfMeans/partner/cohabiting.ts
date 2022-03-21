@@ -1,6 +1,6 @@
 import {IsDefined, ValidationError} from 'class-validator';
 import {Form} from '../../form';
-import {VALID_OPTION} from '../../../validationErrors/errorMessageConstants';
+import {VALID_YES_NO_OPTION} from '../../../validationErrors/errorMessageConstants';
 
 export class CohabitingOption extends Form {
   static readonly YES = 'yes';
@@ -8,7 +8,7 @@ export class CohabitingOption extends Form {
 }
 
 export class Cohabiting extends Form {
-  @IsDefined({message: VALID_OPTION})
+  @IsDefined({message: VALID_YES_NO_OPTION})
     option?: string;
 
   constructor(option?: string, errors?: ValidationError[]) {

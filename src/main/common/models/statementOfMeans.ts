@@ -6,12 +6,14 @@ import {Cohabiting} from '../form/models/statementOfMeans/partner/cohabiting';
 import {PartnerDisability} from '../form/models/statementOfMeans/partner/partnerDisability';
 import {PartnerSevereDisability} from '../form/models/statementOfMeans/partner/partnerSevereDisability';
 
+import {Employment} from './employment';
 export class StatementOfMeans {
   disability?: Disability;
   severeDisability?: SevereDisability;
   partnerAge?: Partner;
   bankAccounts?: CitizenBankAccount[];
   cohabiting?: Cohabiting;
+  employment?: Employment;
   partnerDisability?: PartnerDisability;
   partnerSevereDisability?: PartnerSevereDisability;
 }
