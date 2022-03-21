@@ -11,7 +11,6 @@ import {Claim} from '../../../../../../main/common/models/claim';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
