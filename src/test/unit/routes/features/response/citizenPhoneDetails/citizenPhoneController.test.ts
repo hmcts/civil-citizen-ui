@@ -127,7 +127,7 @@ describe('Citizen phone number', () => {
           expect(res.status).toBe(302);
         });
     });
-    test('should redirect on correct input when redis response is undefined', async () => {
+    test('should redirect on correct input when has information on redis', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         const respondent1 = new Respondent();
@@ -135,7 +135,6 @@ describe('Citizen phone number', () => {
         claim.respondent1 = respondent1;
         return claim;
       });
-
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=123')

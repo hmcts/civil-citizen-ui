@@ -1,13 +1,12 @@
 import * as express from 'express';
 
-import {CITIZEN_RESPONSE_TYPE_URL, DASHBOARD_URL, ROOT_URL} from '../../../urls';
+import {CITIZEN_RESPONSE_TYPE_URL, ROOT_URL} from '../../../urls';
 import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
 import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {CitizenTelephoneNumber} from "common/form/models/citizenTelephoneNumber";
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 const {Logger} = require('@hmcts/nodejs-logging');
 
 const logger = Logger.getLogger('citizenPhoneController');
@@ -46,49 +45,29 @@ router.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) => {
 });
 
 router.post(CITIZEN_RESPONSE_TYPE_URL,
-    async (req, res) => {
-      try {
-        const model: CitizenResponseType = new CitizenResponseType(req.body.responseType);
-        const validator = new Validator();
-        const errors: ValidationError[] = validator.validateSync(model);
-        if (errors && errors.length > 0) {
-          model.errors = errors;
-          renderView(model, res);
+  async (req, res) => {
+    try {
+      const model: CitizenResponseType = new CitizenResponseType(req.body.responseType);
+      const validator = new Validator();
+      const errors: ValidationError[] = validator.validateSync(model);
+      if (errors && errors.length > 0) {
+        model.errors = errors;
+        renderView(model, res);
+      } else {
+        const claim = await getCaseDataFromStore(req.params.id) || new Claim();
+        if (claim.respondent1) {
+          claim.respondent1.responseType = model.responseType;
         } else {
-          const claim = await getCaseDataFromStore(req.params.id) || new Claim();
-          if (claim.respondent1) {
-            claim.respondent1.telephoneNumber = model.responseType;
-          } else {
-            const respondent = new Respondent();
-            respondent.telephoneNumber = model.responseType;
-            claim.respondent1 = respondent;
-          }
-          await saveDraftClaim(req.params.id, claim);
-          res.redirect(DASHBOARD_URL);
+          const respondent = new Respondent();
+          respondent.responseType = model.responseType;
+          claim.respondent1 = respondent;
         }
-      } catch (error) {
-        logger.error(error);
-        res.status(500).send({error: error.message});
-      }
-
-
-
-
-    const model: CitizenResponseType = new CitizenResponseType(req.body.responseType);
-    const validator = new Validator();
-    const errors: ValidationError[] = validator.validateSync(model);
-    if (errors && errors.length > 0) {
-      model.errors = errors;
-      renderView(model, res);
-    } else {
-      const respondent = new Respondent();
-      respondent.responseType = model.responseType;
-      const claim = new Claim();
-      claim.respondent1 = respondent;
-      const draftStoreClient = req.app.locals.draftStoreClient;
-      draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim)).then(() => {
+        await saveDraftClaim(req.params.id, claim);
         res.redirect(ROOT_URL);
-      });
+      }
+    } catch (error) {
+      logger.error(error);
+      res.status(500).send({error: error.message});
     }
   });
 
