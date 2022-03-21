@@ -19,3 +19,7 @@ export const TYPE_OF_ACCOUNT_REQUIRED = 'Select a type of account';
 export const NUMBER_REQUIRED = 'Enter a valid number';
 export const VALID_TWO_DECIMAL_NUMBER = 'Enter a valid ammount, maximum two decimal places';
 export const SELECT_AN_OPTION = 'Select an option';
+export const YES_NO_REQUIRED = 'Please select yes or no';
+export const NON_NEGATIVE_NUMBER_REQUIRED = 'Don’t enter a negative number';
+export const INTEGER_REQUIRED = 'Enter a numeric, for example 3';
+export const ENTER_AT_LEAST_ONE = 'Enter a number for at least one field';
