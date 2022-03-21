@@ -43,29 +43,16 @@ describe('Partner', () => {
           expect(res.text).toContain('For example, a boyfriend, girlfriend, husband, wife or civil partner.');
         });
     });
+    test('should show partner page when haven´t statementOfMeans', async () => {
+      app.locals.draftStoreClient = mockNoPartnerDraftStore;
+      await request(app)
+        .get(CITIZEN_PARTNER_URL)
+        .send('')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
   });
-  test('should return error on incorrect input', async () => {
-    app.locals.draftStoreClient = mockDraftStore;
-    await request(app)
-      .post(CITIZEN_PARTNER_URL)
-      .send('')
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Choose option: Yes or No');
-      });
-  });
-
-  test('should redirect page when "yes"', async () => {
-    app.locals.draftStoreClient = mockDraftStore;
-    await request(app)
-      .post(CITIZEN_PARTNER_URL)
-      .send('cohabiting=yes')
-      .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CITIZEN_PARTNER_AGE_URL);
-      });
-  });
-
   describe('on POST', () => {
     test('should redirect page when "no"', async () => {
       app.locals.draftStoreClient = mockDraftStore;
@@ -90,17 +77,27 @@ describe('Partner', () => {
           expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
         });
     });
-  });
-
-  describe('on GET', () => {
-    test('should show partner page when haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockNoPartnerDraftStore;
+    test('should return error on incorrect input', async () => {
+      app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .get(CITIZEN_PARTNER_URL)
+        .post(CITIZEN_PARTNER_URL)
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('Choose option: Yes or No');
+        });
+    });
+
+    test('should redirect page when "yes"', async () => {
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .post(CITIZEN_PARTNER_URL)
+        .send('cohabiting=yes')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_PARTNER_AGE_URL);
         });
     });
   });
+
 });

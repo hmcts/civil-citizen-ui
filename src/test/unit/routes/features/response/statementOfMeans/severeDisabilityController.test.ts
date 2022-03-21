@@ -38,41 +38,18 @@ describe('SevereDisability', () => {
           expect(res.text).toContain('Are you severely disabled?');
         });
     });
-  });
-  test('should return error on incorrect input', async () => {
-    app.locals.draftStoreClient = mockDraftStore;
-    await request(app)
-      .post(CITIZEN_SEVERELY_DISABLED_URL)
-      .send('')
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Choose option: Yes or No');
-      });
-  });
+    test('should show disability page when haven´t statementOfMeans', async () => {
 
-  test('should redirect page when "yes"', async () => {
-    app.locals.draftStoreClient = mockDraftStore;
-    await request(app)
-      .post(CITIZEN_SEVERELY_DISABLED_URL)
-      .send('severeDisability=yes')
-      .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
-      });
-  });
-
-  describe('on POST', () => {
-    test('should redirect page when "no"', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockNoDisabilityDraftStore;
       await request(app)
-        .post(CITIZEN_SEVERELY_DISABLED_URL)
-        .send('severeDisability=no')
+        .get(CITIZEN_SEVERELY_DISABLED_URL)
+        .send('')
         .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
+          expect(res.status).toBe(200);
         });
     });
   });
+
 
   describe('on POST', () => {
     test('should redirect page when "no" and haven´t statementOfMeans', async () => {
@@ -85,17 +62,34 @@ describe('SevereDisability', () => {
           expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
         });
     });
-  });
-
-  describe('on GET', () => {
-    test('should show disability page when haven´t statementOfMeans', async () => {
-
-      app.locals.draftStoreClient = mockNoDisabilityDraftStore;
+    test('should redirect page when "no"', async () => {
+      app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .get(CITIZEN_SEVERELY_DISABLED_URL)
+        .post(CITIZEN_SEVERELY_DISABLED_URL)
+        .send('severeDisability=no')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
+        });
+    });
+    test('should return error on incorrect input', async () => {
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .post(CITIZEN_SEVERELY_DISABLED_URL)
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('Choose option: Yes or No');
+        });
+    });
+    test('should redirect page when "yes"', async () => {
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .post(CITIZEN_SEVERELY_DISABLED_URL)
+        .send('severeDisability=yes')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
         });
     });
   });
