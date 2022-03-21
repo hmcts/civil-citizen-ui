@@ -16,7 +16,7 @@ import {
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('cohabitingService');
-const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment_status';
+const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
 const router = express.Router();
 
 function renderView(form: EmploymentStatus, res: express.Response): void {
