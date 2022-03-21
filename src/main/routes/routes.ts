@@ -16,6 +16,7 @@ import employmentStatusController from './features/response/statementOfMeans/emp
 import partner from './features/response/statementOfMeans/partner/partnerController';
 import partnerDisability from './features/response/statementOfMeans/partner/partnerDisabilityController';
 import partnerSevereDisability from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
+import residenceController from './features/response/statementOfMeans/residenceController';
 
 export default [
   homeRoute,
@@ -36,4 +37,5 @@ export default [
   partner,
   partnerDisability,
   partnerSevereDisability,
+  residenceController,
 ];
