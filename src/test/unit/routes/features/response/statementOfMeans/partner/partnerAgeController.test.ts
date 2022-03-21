@@ -8,6 +8,7 @@ import {
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../../../../main/routes/urls';
+import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const noPartnerAgeMock = require('../noStatementOfMeansMock.json');
@@ -76,7 +77,7 @@ describe('Partner Age', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Choose option: Yes or No');
+          expect(res.text).toContain(VALID_YES_NO_OPTION);
         });
     });
     test('should redirect page when "yes"', async () => {
