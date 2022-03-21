@@ -175,5 +175,17 @@ describe('Citizen date of birth', () => {
           expect(res.text).toContain(`Redirecting to ${CITIZEN_PHONE_NUMBER_URL}`);
         });
     });
+    test('should redirect to phone number page on valid DOB when has undefined on redis', async () => {
+      mockGetCaseData.mockImplementation(async () => undefined);
+      await request(app)
+        .post(DOB_URL)
+        .send('year=1981')
+        .send('month=1')
+        .send('day=1')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(`Redirecting to ${CITIZEN_PHONE_NUMBER_URL}`);
+        });
+    });
   });
 });
