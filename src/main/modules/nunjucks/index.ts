@@ -6,6 +6,8 @@ import * as numeral from '../../common/utils/currencyFormat';
 import {i18n, TOptions} from 'i18next';
 import {ResponseType} from '../../common/form/models/responseType';
 import {YesNo} from '../../common/form/models/yesNo';
+import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
+import {CounterpartyType} from '../../common/models/counterpartyType';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -52,6 +54,8 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
     nunjucksEnv.addGlobal('YesNo', YesNo);
+    nunjucksEnv.addGlobal('ResidenceType', ResidenceType);
+    nunjucksEnv.addGlobal('CounterpartyType', CounterpartyType);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

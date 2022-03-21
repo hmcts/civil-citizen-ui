@@ -29,6 +29,13 @@
         "option": "yes",
         "numberOfPeople": 1,
         "details": "Test details"
+      },
+      "residence": {
+        "type": {
+          "value": "PRIVATE_RENTAL",
+          "displayValue": "Private rental"
+        },
+        "housingDetails": ""
       }
     }
   }
