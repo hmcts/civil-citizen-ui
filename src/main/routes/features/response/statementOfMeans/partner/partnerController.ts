@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CITIZEN_PARTNER_AGE_URL, CITIZEN_PARTNER_DEPENDANTS_URL, CITIZEN_PARTNER_URL} from '../../../../urls';
+import {CITIZEN_PARTNER_AGE_URL, CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_URL} from '../../../../urls';
 import {Cohabiting} from '../../../../../common/form/models/statementOfMeans/partner/cohabiting';
 import {ValidationError, Validator} from 'class-validator';
 import {CohabitingService} from '../../../../../modules/statementOfMeans/partner/cohabitingService';
@@ -40,7 +40,7 @@ router.post(CITIZEN_PARTNER_URL,
         if (cohabiting.option == 'yes') {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_AGE_URL));
         } else {
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DEPENDANTS_URL));
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
         }
       } catch (err: unknown) {
         logger.error(`${err as Error || err}`);
