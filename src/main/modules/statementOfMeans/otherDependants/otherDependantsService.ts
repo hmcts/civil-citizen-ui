@@ -18,6 +18,7 @@ export class OtherDependantsService {
       return new OtherDependants('');
     } catch (err) {
       logger.error(`${err.stack || err}`);
+      throw new Error(err);
     }
   }
 

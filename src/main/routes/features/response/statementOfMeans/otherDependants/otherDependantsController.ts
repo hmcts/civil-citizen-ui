@@ -14,7 +14,7 @@ const router = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('otherDependantsController');
 
-const otherDependants = new OtherDependants();
+//const otherDependants = new OtherDependants();
 const otherDependantsService = new OtherDependantsService();
 
 function renderView(form: OtherDependants, res: express.Response): void {
@@ -23,9 +23,8 @@ function renderView(form: OtherDependants, res: express.Response): void {
 
 router.get(CITIZEN_OTHER_DEPENDANTS_URL.toString(), async (req, res) => {
   try {
-    otherDependantsService.getOtherDependants(req.params.id).then(() => {
-      renderView(otherDependants, res);
-    });
+    const claim = await otherDependantsService.getOtherDependants(req.params.id);
+    renderView(claim.statementOfMeans.otherDependants, res);
   } catch (error) {
     logger.error(`${error.stack || error}`);
     res.status(500).send({error: error.message});
