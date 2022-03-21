@@ -6,6 +6,8 @@ import {
   CITIZEN_OTHER_DEPENDANTS_URL,
   CITIZEN_EMPLOYMENT_URL,
 } from '../../../../../../../main/routes/urls';
+import { OtherDependantsService } from '../../../../../../../main/modules/statementOfMeans/otherDependants/otherDependantsService';
+import { Claim } from '../../../../../../../main/common/models/claim';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
@@ -15,6 +17,9 @@ const mockDraftStore = {
 };
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
+
+const otherDependantsService = new OtherDependantsService();
+const mockGetOtherDependantsData = otherDependantsService.getOtherDependants as jest.Mock;
 
 describe('Other Dependants', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -46,6 +51,20 @@ describe('on GET', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Number of people');
         expect(res.text).toContain('Give details');
+      });
+  });
+
+  test('should return error when Cannot read property \'numberOfPeople\' and \'details\' of undefined', async () => {
+    mockGetOtherDependantsData.mockImplementation(async () => {
+      const claim = new Claim();
+      claim.respondent1 = undefined;
+      return claim;
+    });
+    await request(app)
+      .get(CITIZEN_OTHER_DEPENDANTS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(500);
+        expect(res.body).toEqual({error: 'Cannot read property \'numberOfPeople\' and \'details\' of undefined'});
       });
   });
 });
