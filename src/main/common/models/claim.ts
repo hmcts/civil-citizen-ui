@@ -2,10 +2,11 @@ import dayjs from 'dayjs';
 import currencyFormat from '../utils/currencyFormat';
 import {Respondent} from './respondent';
 import {StatementOfMeans} from './statementOfMeans';
+import {CounterpartyType} from './counterpartyType';
 
 export class Claim {
   legacyCaseReference: string;
-  applicant1: Individual;
+  applicant1?: Individual | Organisation;
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date = new Date();
   detailsOfClaim: string;
@@ -22,8 +23,18 @@ export class Claim {
   }
 }
 
-class Individual {
+export class Individual {
   individualTitle: string;
   individualLastName: string;
   individualFirstName: string;
+  type: CounterpartyType;
 }
+
+export class Organisation {
+  individualTitle: string;
+  individualLastName: string;
+  individualFirstName: string;
+  type: CounterpartyType;
+}
+
+

@@ -1,0 +1,105 @@
+{
+  "case_data": {
+    "specApplicantCorrespondenceAddressRequired": "No",
+    "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 50 | \n | Interest amount | £ 0 | \n | Total amount | £ 50 |",
+    "claimInterest": "No",
+    "totalClaimAmount": 50,
+    "legacyCaseReference": "000MC006",
+    "submittedDate": "2022-03-08T19:49:07.535197",
+    "paymentSuccessfulDate": "2022-03-08T19:49:11.91388",
+    "respondent1Represented": "No",
+    "applicantSolicitor1ClaimStatementOfTruth": {
+      "role": "Claimant",
+      "name": "John Doe"
+    },
+    "specRespondent1Represented": "No",
+    "applicantSolicitor1UserDetails": {
+      "email": "cmcclaimant23@gmail.com"
+    },
+    "claimAmountBreakupSummaryObject": "| Description | Amount | \n |---|---| \n | Ticket refund | £ 50.00 |\n  | **Total** | £ 50.00 |",
+    "speclistYourEvidenceList": [
+      {
+        "id": "e8a277d9-bb2a-4ebc-bb68-95e2f0e40819",
+        "value": {
+          "evidenceType": "EXPERT_WITNESS",
+          "expertWitnessEvidence": "Everton did not attempt to play football"
+        }
+      }
+    ],
+    "respondent1": {
+      "organisationName": "Everton FC",
+      "partyTypeDisplayValue": "Organisation",
+      "partyName": "Everton FC",
+      "primaryAddress": {
+        "AddressLine1": "Goodison Park",
+        "PostCode": "L4 4EL"
+      },
+      "type": "ORGANISATION"
+    },
+    "applicantSolicitor1PbaAccounts": {
+      "value": {
+        "code": "00f7dccf-e613-46be-b33d-af1f25a9559f",
+        "label": "PBA0088192"
+      },
+      "list_items": [
+        {
+          "code": "00f7dccf-e613-46be-b33d-af1f25a9559f",
+          "label": "PBA0088192"
+        },
+        {
+          "code": "48c1b690-7d25-470a-ab42-f84ba580a9ba",
+          "label": "PBA0078095"
+        }
+      ]
+    },
+    "applicant1": {
+      "individualLastName": "Doe",
+      "partyTypeDisplayValue": "Individual",
+      "partyName": "John Doe",
+      "individualFirstName": "John",
+      "primaryAddress": {
+        "AddressLine1": "100 Ross Street",
+        "PostCode": "CB1 3AZ"
+      },
+      "type": "INDIVIDUAL",
+      "individualDateOfBirth": "1980-01-01"
+    },
+    "timelineOfEvents": [
+      {
+        "id": "425140b1-6d04-4d9e-981d-f9879ae487d3",
+        "value": {
+          "timelineDate": "2022-03-07",
+          "timelineDescription": "Paid to watch Everton play football. They didn't.\nI want a refund."
+        }
+      }
+    ],
+    "applicant1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]",
+      "Organisation": {
+        "OrganisationID": "79ZRSOU"
+      }
+    },
+    "claimIssuedPaymentDetails": {
+      "reference": "RC-1234-1234-1234-1234",
+      "customerReference": "EVERTON",
+      "status": "SUCCESS"
+    },
+    "totalInterest": 0,
+    "detailsOfClaim": "Ticket refunds",
+    "claimFee": {
+      "calculatedAmountInPence": "3500",
+      "code": "FEE0202",
+      "version": "4"
+    },
+    "claimAmountBreakup": [
+      {
+        "id": "4fd44c8a-b096-4eaf-83ac-be6809988fa1",
+        "value": {
+          "claimAmount": "5000",
+          "claimReason": "Ticket refund"
+        }
+      }
+    ],
+    "superClaimType": "SPEC_CLAIM"
+  }
+}
