@@ -23,6 +23,7 @@ router.get(CITIZEN_PHONE_NUMBER_URL.toString(), async (req, res) => {
     renderView(citizenTelephoneNumber, res);
   } catch (error) {
     logger.error(error);
+    res.status(500).send({error: error.message});
   }
 });
 router.post(CITIZEN_PHONE_NUMBER_URL.toString(),
@@ -48,6 +49,7 @@ router.post(CITIZEN_PHONE_NUMBER_URL.toString(),
       }
     } catch (error) {
       logger.error(error);
+      res.status(500).send({error: error.message});
     }
   });
 
