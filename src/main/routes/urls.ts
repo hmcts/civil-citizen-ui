@@ -8,6 +8,7 @@ export const DASHBOARD_URL = '/dashboard';
 export const CITIZEN_PHONE_NUMBER_URL = `${BASE_CASE_RESPONSE_URL}/your-phone`;
 export const ROOT_URL = '/';
 export const HOME_URL = '/home';
+export const ERROR_URL = '/error';
 export const DOB_URL = `${BASE_CASE_RESPONSE_URL}/your-dob`;
 export const AGE_ELIGIBILITY_URL = `${BASE_CASE_RESPONSE_URL}/eligibility/under-18`;
 export const UNAUTHORISED_URL = '/unauthorised';

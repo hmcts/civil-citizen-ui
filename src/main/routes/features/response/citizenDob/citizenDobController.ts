@@ -31,18 +31,18 @@ router.get(DOB_URL, async (req: express.Request, res: express.Response) => {
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
     if (responseDataRedis && responseDataRedis.respondent1.dateOfBirth) {
       const dateOfBirth =  new Date(responseDataRedis.respondent1.dateOfBirth);
-      citizenDob.day = dateOfBirth.getDay();
+      citizenDob.day = dateOfBirth.getDate();
       citizenDob.month = (dateOfBirth.getMonth() + 1);
       citizenDob.year = dateOfBirth.getFullYear();
     }
     renderView(res, citizenDob);
   } catch (error) {
     logger.error(error);
+    res.status(500).send({error: error.message});
   }
-
 });
 
-router.post(DOB_URL.toString(), async (req, res) => {
+router.post(DOB_URL, async (req, res) => {
   try {
     const citizenDob = new CitizenDob(req.body.year, req.body.month, req.body.day);
     const validator = new Validator();
@@ -63,6 +63,7 @@ router.post(DOB_URL.toString(), async (req, res) => {
     }
   } catch (error) {
     logger.error(error);
+    res.status(500).send({error: error.message});
   }
 });
 
