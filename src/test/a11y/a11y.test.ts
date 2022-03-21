@@ -18,6 +18,7 @@ jest.mock('ioredis', () => {
 const pa11y = require('pa11y');
 
 const agent = supertest.agent(app);
+
 const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 
 class Pa11yResult {

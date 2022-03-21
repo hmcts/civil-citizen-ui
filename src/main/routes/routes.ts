@@ -12,11 +12,8 @@ import citizenPartnerAgeRoute from './features/response/statementOfMeans/partner
 import citizenDisability from './features/response/statementOfMeans/disabilityController';
 import citizenSevereDisability from './features/response/statementOfMeans/severeDisabilityController';
 import bankAccountsRoute from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
-<<<<<<< HEAD
 import otherDependantsRoute from './features/response/statementOfMeans/otherDependants/otherDependantsController';
-=======
 import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
->>>>>>> master
 import partner from './features/response/statementOfMeans/partner/partnerController';
 import partnerDisability from './features/response/statementOfMeans/partner/partnerDisabilityController';
 import partnerSevereDisability from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
@@ -36,11 +33,8 @@ export default [
   citizenDisability,
   citizenSevereDisability,
   bankAccountsRoute,
-<<<<<<< HEAD
   otherDependantsRoute,
-=======
   employmentStatusController,
->>>>>>> master
   partner,
   partnerDisability,
   partnerSevereDisability,
