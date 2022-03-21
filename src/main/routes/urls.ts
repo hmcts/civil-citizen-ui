@@ -27,5 +27,5 @@ export const CITIZEN_DEPENDANTS_URL = `${STATEMENT_OF_MEANS_URL}/dependants`;
 export const CITIZEN_BANK_ACCOUNT_URL = `${STATEMENT_OF_MEANS_URL}/bank-accounts`;
 export const CITIZEN_EMPLOYMENT_URL = `${STATEMENT_OF_MEANS_URL}/employment`;
 export const WHO_EMPLOYS_YOU_URL = `${CITIZEN_EMPLOYMENT_URL}/employers`;
-export const UNEMPLOYED_URL = `${STATEMENT_OF_MEANS_URL}/unemployed`;
+export const UNEMPLOYED_URL = `${STATEMENT_OF_MEANS_URL}/unemployment`;
 export const SELF_EMPLOYED_URL = `${CITIZEN_EMPLOYMENT_URL}/self-employment`;
