@@ -9,6 +9,8 @@ import claimDetailsController from './features/response/claimDetails/claimDetail
 import responsePostcodeLookupController from './features/response/citizenDetails/postcodeLookupController';
 import citizenResponseTypeController from './features/response/responseType/citizenResponseType';
 import citizenPartnerAgeController from './features/response/statementOfMeans/partner/partnerAgeController';
+import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
+import residenceController from './features/response/statementOfMeans/residenceController';
 import citizenDisabilityController from './features/response/statementOfMeans/disabilityController';
 import citizenSevereDisabilityController from './features/response/statementOfMeans/severeDisabilityController';
 import bankAccountsController from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
@@ -34,4 +36,6 @@ export default [
   bankAccountsController,
   partnerController,
   partnerSevereDisabilityController,
+  residenceController,
+  employmentStatusController,
 ];
