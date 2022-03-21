@@ -31,6 +31,17 @@ export class Form {
     }
   }
 
+  /**
+   * Get error message associated with first constraint violated for given field name.
+   *
+   * @param fieldName - field name / model property
+   */
+  errorFor(fieldName: string): string {
+    return this.getErrors()
+      .filter((error: FormValidationError) => error.fieldName === fieldName)
+      .map((error: FormValidationError) => error.text)[0];
+  }
+
   public getTextError(errors: ValidationError[], property: string) {
     const error = errors?.filter((item) => item.property == property);
     if (error?.length > 0) {
