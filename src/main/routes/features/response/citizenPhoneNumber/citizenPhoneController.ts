@@ -16,7 +16,7 @@ function renderView(form: CitizenTelephoneNumber, res: express.Response): void {
   res.render(citizenPhoneViewPath, {form: form});
 }
 
-router.get(CITIZEN_PHONE_NUMBER_URL.toString(), async (req, res) => {
+router.get(CITIZEN_PHONE_NUMBER_URL, async (req, res) => {
   try {
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
     const citizenTelephoneNumber = !(responseDataRedis && responseDataRedis.respondent1.telephoneNumber) ? new CitizenTelephoneNumber() : new CitizenTelephoneNumber(responseDataRedis.respondent1.telephoneNumber);
@@ -26,7 +26,7 @@ router.get(CITIZEN_PHONE_NUMBER_URL.toString(), async (req, res) => {
     res.status(500).send({error: error.message});
   }
 });
-router.post(CITIZEN_PHONE_NUMBER_URL.toString(),
+router.post(CITIZEN_PHONE_NUMBER_URL,
   async (req, res) => {
     try {
       const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
