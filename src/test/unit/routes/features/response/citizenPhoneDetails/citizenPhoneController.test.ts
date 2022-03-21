@@ -128,6 +128,22 @@ describe('Citizen phone number', () => {
           expect(res.status).toBe(302);
         });
     });
+    test('should redirect on correct input when redis response is undefined', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        const respondent1 = new Respondent();
+        respondent1.telephoneNumber = '111';
+        claim.respondent1 = respondent1;
+        return claim;
+      });
+
+      await request(app)
+        .post(CITIZEN_PHONE_NUMBER_URL)
+        .send('telephoneNumber=123')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
   });
 })
 ;
