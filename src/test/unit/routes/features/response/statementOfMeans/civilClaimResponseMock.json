@@ -16,10 +16,16 @@
       "disability": {
         "option": "yes"
       },
-      "partner": {
+      "severeDisability": {
+        "option": "yes"
+      },
+      "cohabiting": {
         "option": "yes"
       },
       "partnerSevereDisability": {
+        "option": "yes"
+      },
+      "partnerAge": {
         "option": "yes"
       }
     }

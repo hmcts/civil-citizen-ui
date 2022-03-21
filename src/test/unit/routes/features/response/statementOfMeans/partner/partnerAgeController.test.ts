@@ -68,13 +68,13 @@ describe('Partner Age', () => {
 
   describe('on POST', () => {
     test('should redirect page when "no" and defendant disabled = YES', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockNoDisabilityDraftStore;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
         .send('partnerAge=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
+          expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
         });
     });
   });
@@ -82,18 +82,13 @@ describe('Partner Age', () => {
   describe('on POST', () => {
     test('should redirect page when "no" and defendant disabled = NO', async () => {
       civilClaimResponseMock.case_data.statementOfMeans.disability.option = 'no';
-      const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
-      const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(civilClaimResponse)),
-      };
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
         .send('partnerAge=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
+          expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
         });
     });
   });
