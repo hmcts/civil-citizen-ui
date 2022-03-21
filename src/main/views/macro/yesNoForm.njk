@@ -1,8 +1,8 @@
 {# This macro has params that include conditional html to show on yes or no.
 To include html on yes add htmlYes in parameter
-for exaomeple {yesHtml:'<span>you clicked on yes</span>'}
+for example {yesHtml:'<span>you clicked on yes</span>'}
 To include html on when no is selected add htmlNo parameter
-for example {noHtml:'<span>you clcked on no</span>' #}
+for example {noHtml:'<span>you clicked on no</span>' #}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% macro yesNoRadioButton(t, id, name, title, form, description, params) %}
   {% set errors = form.getErrors() %}
