@@ -15,6 +15,7 @@ import bankAccountsRoute from './features/response/statementOfMeans/bankAccounts
 import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
 import partner from './features/response/statementOfMeans/partner/partnerController';
 import partnerDisability from './features/response/statementOfMeans/partner/partnerDisabilityController';
+import partnerSevereDisability from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
 
 export default [
   homeRoute,
@@ -34,4 +35,5 @@ export default [
   employmentStatusController,
   partner,
   partnerDisability,
+  partnerSevereDisability,
 ];
