@@ -55,8 +55,6 @@ export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
 };
 
-
-
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;

@@ -14,11 +14,16 @@ export const POSTCODE_NOT_VALID = 'Postcode must be in United Kingdom';
 export const DEFENDANT_POSTCODE_NOT_VALID = 'Postcode must be in England or Wales';
 export const CLAIM_NUMBER= 'testCaseReference';
 export const CLAIM_DETAILS= 'Claim details';
-export const VALID_OPTION = 'Choose option: Yes or No';
+export const VALID_YES_NO_OPTION = 'Choose option: Yes or No';
 export const TYPE_OF_ACCOUNT_REQUIRED = 'Select a type of account';
 export const NUMBER_REQUIRED = 'Enter a valid number';
 export const VALID_TWO_DECIMAL_NUMBER = 'Enter a valid ammount, maximum two decimal places';
 export const SELECT_AN_OPTION = 'Select an option';
+export const VALID_AT_LEAST_ONE_OPTION = 'You must select at least one option';
+export const VALID_HOUSING = 'Describe your housing';
+export const VALID_TEXT_LENGTH = 'You’ve entered too many characters';
+export const VALID_OPTION_SELECTION = 'Select an option';
+
 export const YES_NO_REQUIRED = 'Please select yes or no';
 export const NON_NEGATIVE_NUMBER_REQUIRED = 'Don’t enter a negative number';
 export const INTEGER_REQUIRED = 'Enter a numeric, for example 3';

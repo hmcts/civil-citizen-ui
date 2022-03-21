@@ -4,8 +4,8 @@ import nock from 'nock';
 import config from 'config';
 import {
   CITIZEN_DEPENDANTS_URL,
-  CITIZEN_PARTNER_AGE_URL,
-  CITIZEN_PARTNER_URL,
+  CITIZEN_PARTNER_DISABILITY_URL,
+  CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
 } from '../../../../../../../main/routes/urls';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
@@ -23,7 +23,7 @@ const mockNoPartnerDraftStore = {
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 
-describe('Partner', () => {
+describe('Partner disability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   beforeEach(() => {
@@ -33,21 +33,20 @@ describe('Partner', () => {
   });
 
   describe('on GET', () => {
-    test('should return citizen partner page', async () => {
+    test('should return citizen disability partner page', async () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .get(CITIZEN_PARTNER_URL)
+        .get(CITIZEN_PARTNER_DISABILITY_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Do you live with a partner?');
-          expect(res.text).toContain('For example, a boyfriend, girlfriend, husband, wife or civil partner.');
+          expect(res.text).toContain('Is your partner disabled?');
         });
     });
   });
   test('should return error on incorrect input', async () => {
     app.locals.draftStoreClient = mockDraftStore;
     await request(app)
-      .post(CITIZEN_PARTNER_URL)
+      .post(CITIZEN_PARTNER_DISABILITY_URL)
       .send('')
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -58,11 +57,11 @@ describe('Partner', () => {
   test('should redirect page when "yes"', async () => {
     app.locals.draftStoreClient = mockDraftStore;
     await request(app)
-      .post(CITIZEN_PARTNER_URL)
-      .send('cohabiting=yes')
+      .post(CITIZEN_PARTNER_DISABILITY_URL)
+      .send('partnerDisability=yes')
       .expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CITIZEN_PARTNER_AGE_URL);
+        expect(res.header.location).toEqual(CITIZEN_PARTNER_SEVERE_DISABILITY_URL);
       });
   });
 
@@ -70,8 +69,8 @@ describe('Partner', () => {
     test('should redirect page when "no"', async () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(CITIZEN_PARTNER_URL)
-        .send('cohabiting=no')
+        .post(CITIZEN_PARTNER_DISABILITY_URL)
+        .send('partnerDisability=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
@@ -83,8 +82,8 @@ describe('Partner', () => {
     test('should redirect page when "no" and haven´t statementOfMeans', async () => {
       app.locals.draftStoreClient = mockNoPartnerDraftStore;
       await request(app)
-        .post(CITIZEN_PARTNER_URL)
-        .send('cohabiting=no')
+        .post(CITIZEN_PARTNER_DISABILITY_URL)
+        .send('partnerDisability=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
@@ -96,7 +95,7 @@ describe('Partner', () => {
     test('should show partner page when haven´t statementOfMeans', async () => {
       app.locals.draftStoreClient = mockNoPartnerDraftStore;
       await request(app)
-        .get(CITIZEN_PARTNER_URL)
+        .get(CITIZEN_PARTNER_DISABILITY_URL)
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
