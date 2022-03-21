@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {
-  CITIZEN_PARTNER_DEPENDANTS_URL,
+  CITIZEN_DEPENDANTS_URL,
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
 } from '../../../../urls';
@@ -44,7 +44,7 @@ router.post(CITIZEN_PARTNER_DISABILITY_URL,
         if (partnerDisability.option == 'yes') {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_SEVERE_DISABILITY_URL));
         } else {
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DEPENDANTS_URL));
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
         }
       } catch (err: unknown) {
         logger.error(`${err as Error || err}`);

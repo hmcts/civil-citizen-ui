@@ -21,6 +21,9 @@
       },
       "partnerDisability": {
         "option": "yes"
+      },
+      "partnerSevereDisability": {
+        "option": "yes"
       }
     }
   }

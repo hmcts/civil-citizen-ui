@@ -3,7 +3,7 @@ import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  CITIZEN_PARTNER_DEPENDANTS_URL,
+  CITIZEN_DEPENDANTS_URL,
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
 } from '../../../../../../../main/routes/urls';
@@ -73,7 +73,7 @@ describe('Partner disability', () => {
         .send('partnerDisability=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PARTNER_DEPENDANTS_URL);
+          expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
         });
     });
   });
@@ -86,7 +86,7 @@ describe('Partner disability', () => {
         .send('partnerDisability=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PARTNER_DEPENDANTS_URL);
+          expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
         });
     });
   });
