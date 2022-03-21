@@ -11,6 +11,9 @@ import { constructResponseUrlWithIdParams } from '../../../../../common/utils/ur
 const citizenOtherDependantsViewPath = 'features/response/statementOfMeans/otherDependants/other-dependants';
 const router = express.Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('otherDependantsController');
+
 const otherDependants = new OtherDependants();
 const otherDependantsService = new OtherDependantsService();
 
@@ -19,9 +22,14 @@ function renderView(form: OtherDependants, res: express.Response): void {
 }
 
 router.get(CITIZEN_OTHER_DEPENDANTS_URL.toString(), async (req, res) => {
-  otherDependantsService.getOtherDependants(req.params.id).then(() => {
-    renderView(otherDependants, res);
-  });
+  try {
+    otherDependantsService.getOtherDependants(req.params.id).then(() => {
+      renderView(otherDependants, res);
+    });
+  } catch (error) {
+    logger.error(`${error.stack || error}`);
+    res.status(500).send({error: error.message});
+  }
 });
 
 
