@@ -45,7 +45,7 @@ router.get(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
     renderView(form, res);
   } catch (error) {
     logger.error(`${(error as Error).stack || error}`);
-    res.status(500);
+    res.status(500).send({error: error.message});
   }
 });
 
@@ -61,7 +61,7 @@ router.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
     }
   } catch (error) {
     logger.error(`${(error as Error).stack || error}`);
-    res.status(500);
+    res.status(500).send({error: error.message});
   }
 });
 
