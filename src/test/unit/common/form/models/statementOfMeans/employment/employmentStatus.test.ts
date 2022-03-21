@@ -13,32 +13,34 @@ describe('Validate employment status', () => {
     //Given
     const form = new EmploymentStatus();
     //When
-    const result = validator.validateSync(form);
+    const errors = validator.validateSync(form);
     //Then
-    expect(result.length).toBe(1);
+    expect(errors.length).toBe(1);
+    expect(errors[0].constraints?.isDefined).toBeDefined();
   });
   it('should have errors when yes is an option but no employment type is specified', () => {
     //Given
     const form = new EmploymentStatus(YesNo.YES);
     //When
-    const result = validator.validateSync(form);
+    const errors = validator.validateSync(form);
     //Then
-    expect(result.length).toBe(1);
+    expect(errors.length).toBe(1);
+    expect(errors[0].constraints?.isDefined).toBeDefined();
   });
   it('should have no errors when no is an option but no employment type is specified', () => {
     //Given
     const form = new EmploymentStatus(YesNo.NO);
     //When
-    const result = validator.validateSync(form);
+    const errors = validator.validateSync(form);
     //Then
-    expect(result.length).toBe(0);
+    expect(errors.length).toBe(0);
   });
   it('should have no errors when yes is an option and at least one employment type is specified', () => {
     //Given
     const form = new EmploymentStatus(YesNo.NO, [EmploymentCategory.SELF_EMPLOYED]);
     //When
-    const result = validator.validateSync(form);
+    const errors = validator.validateSync(form);
     //Then
-    expect(result.length).toBe(0);
+    expect(errors.length).toBe(0);
   });
 });
