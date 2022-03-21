@@ -13,8 +13,8 @@ import citizenDisabilityController from './features/response/statementOfMeans/di
 import citizenSevereDisabilityController from './features/response/statementOfMeans/severeDisabilityController';
 import bankAccountsController from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
 import partnerController from './features/response/statementOfMeans/partner/partnerController';
-import partnerSevereDisabilityController
-  from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
+import partnerDisabilityController from './features/response/statementOfMeans/partner/partnerDisabilityController';
+import partnerSevereDisabilityController from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
 
 export default [
   homeController,
@@ -28,6 +28,7 @@ export default [
   responsePostcodeLookupController,
   citizenResponseTypeController,
   citizenPartnerAgeController,
+  partnerDisabilityController,
   citizenDisabilityController,
   citizenSevereDisabilityController,
   bankAccountsController,

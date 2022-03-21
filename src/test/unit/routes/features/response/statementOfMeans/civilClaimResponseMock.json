@@ -27,6 +27,9 @@
       },
       "partnerAge": {
         "option": "yes"
+      },
+      "partnerDisability": {
+        "option": "yes"
       }
     }
   }
