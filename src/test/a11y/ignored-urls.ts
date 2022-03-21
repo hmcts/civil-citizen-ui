@@ -28,5 +28,4 @@ export const IGNORED_URLS =
     urls.CITIZEN_PARTNER_AGE_URL,
     urls.FINANCIAL_DETAILS_URL,
     urls.CLAIM_TASK_LIST,
-    urls.STATEMENT_MEANS_INTRO_URL,
   ];
