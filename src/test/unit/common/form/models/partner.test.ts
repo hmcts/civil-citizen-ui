@@ -1,5 +1,5 @@
 import {Validator} from 'class-validator';
-import {PartnerAge} from '../../../../../main/common/form/models/statementOfMeans/partner';
+import {PartnerAge} from '../../../../../main/common/form/models/statementOfMeans/partner/partnerAge';
 
 describe('Citizen partner age radio validation', () => {
   const validator = new Validator();

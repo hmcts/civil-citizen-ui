@@ -1,19 +1,22 @@
 import {PartnerAge} from '../../../common/form/models/statementOfMeans/partner/partnerAge';
-import {getDraftClaimFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
+import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partnerService');
+const partnerAge = new PartnerAge();
 
 export class PartnerAgeService {
 
   public async getPartnerAge(claimId: string) {
     try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.partner) {
-        return civilClaimResponse.case_data.statementOfMeans.partnerAge;
+      const case_data = await getCaseDataFromStore(claimId);
+      if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.partnerAge) {
+        partnerAge.option = case_data.statementOfMeans.partnerAge.option;
+        return partnerAge;
       }
-      return new PartnerAge('');
+      return new PartnerAge();
     } catch (err: unknown) {
       logger.error(`${err as Error || err}`);
     }
@@ -21,15 +24,15 @@ export class PartnerAgeService {
 
   public async savePartnerAge(claimId: string, partner: PartnerAge) {
     try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {
-        civilClaimResponse.case_data.statementOfMeans.partnerAge = partner;
+      const case_data = await getCaseDataFromStore(claimId) || new Claim();
+      if (case_data && case_data.statementOfMeans) {
+        case_data.statementOfMeans.partnerAge = partner;
       } else {
         const statementOfMeans = new StatementOfMeans();
         statementOfMeans.partnerAge = partner;
-        civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
+        case_data.statementOfMeans = statementOfMeans;
       }
-      await saveDraftClaim(claimId, civilClaimResponse.case_data);
+      await saveDraftClaim(claimId, case_data);
     } catch (err: unknown) {
       logger.error(`${err as Error || err}`);
     }
