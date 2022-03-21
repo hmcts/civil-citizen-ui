@@ -1,6 +1,4 @@
-import {
-  EmploymentStatus,
-} from '../../../../../../../main/common/form/models/statementOfMeans/employment/employmentStatus';
+import {EmploymentForm} from '../../../../../../../main/common/form/models/statementOfMeans/employment/employmentForm';
 import {Validator} from 'class-validator';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {
@@ -11,7 +9,7 @@ describe('Validate employment status', () => {
   const validator = new Validator();
   it('should have errors when no option is specified', () => {
     //Given
-    const form = new EmploymentStatus();
+    const form = new EmploymentForm();
     //When
     const errors = validator.validateSync(form);
     //Then
@@ -20,7 +18,7 @@ describe('Validate employment status', () => {
   });
   it('should have errors when yes is an option but no employment type is specified', () => {
     //Given
-    const form = new EmploymentStatus(YesNo.YES);
+    const form = new EmploymentForm(YesNo.YES);
     //When
     const errors = validator.validateSync(form);
     //Then
@@ -29,7 +27,7 @@ describe('Validate employment status', () => {
   });
   it('should have no errors when no is an option but no employment type is specified', () => {
     //Given
-    const form = new EmploymentStatus(YesNo.NO);
+    const form = new EmploymentForm(YesNo.NO);
     //When
     const errors = validator.validateSync(form);
     //Then
@@ -37,7 +35,7 @@ describe('Validate employment status', () => {
   });
   it('should have no errors when yes is an option and at least one employment type is specified', () => {
     //Given
-    const form = new EmploymentStatus(YesNo.NO, [EmploymentCategory.SELF_EMPLOYED]);
+    const form = new EmploymentForm(YesNo.NO, [EmploymentCategory.SELF_EMPLOYED]);
     //When
     const errors = validator.validateSync(form);
     //Then

@@ -4,7 +4,7 @@ import {IsDefined, ValidateIf} from 'class-validator';
 import {VALID_AT_LEAST_ONE_OPTION, VALID_YES_NO_OPTION} from '../../../validationErrors/errorMessageConstants';
 import {EmploymentCategory} from './employmentCategory';
 
-export class EmploymentStatus extends Form {
+export class EmploymentForm extends Form {
   @IsDefined({message: VALID_YES_NO_OPTION})
     option: YesNo;
   @ValidateIf(o => o.optionYesDefined())

@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {EmploymentStatus} from '../../../../../common/form/models/statementOfMeans/employment/employmentStatus';
+import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans/employment/employmentForm';
 import {EmploymentCategory} from '../../../../../common/form/models/statementOfMeans/employment/employmentCategory';
 import {
   CITIZEN_EMPLOYMENT_URL,
@@ -19,11 +19,11 @@ const logger = Logger.getLogger('cohabitingService');
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
 const router = express.Router();
 
-function renderView(form: EmploymentStatus, res: express.Response): void {
+function renderView(form: EmploymentForm, res: express.Response): void {
   res.render(citizenEmploymentStatusViewPath, {form: form, EmploymentCategory: EmploymentCategory});
 }
 
-function redirectToNextPage(form: EmploymentStatus, claimId: string, res: express.Response) {
+function redirectToNextPage(form: EmploymentForm, claimId: string, res: express.Response) {
   if (form.optionYesDefined()) {
     redirectToEmployersPage(form, claimId, res);
   } else {
@@ -31,7 +31,7 @@ function redirectToNextPage(form: EmploymentStatus, claimId: string, res: expres
   }
 }
 
-function redirectToEmployersPage(form: EmploymentStatus, claimId: string, res: express.Response) {
+function redirectToEmployersPage(form: EmploymentForm, claimId: string, res: express.Response) {
   if (form.isSelfEmployed()) {
     res.redirect(constructResponseUrlWithIdParams(claimId, SELF_EMPLOYED_URL));
   } else {
@@ -49,7 +49,7 @@ router.get(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
 });
 
 router.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
-  const form = new EmploymentStatus(req.body.option, EmploymentStatus.convertToArray(req.body.employmentCategory));
+  const form = new EmploymentForm(req.body.option, EmploymentForm.convertToArray(req.body.employmentCategory));
   try {
     await validateForm(form);
     if (form.hasErrors()) {

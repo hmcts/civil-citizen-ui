@@ -1,15 +1,15 @@
 import {Employment} from '../../../common/models/employment';
-import {EmploymentStatus} from '../../../common/form/models/statementOfMeans/employment/employmentStatus';
+import {EmploymentForm} from '../../../common/form/models/statementOfMeans/employment/employmentForm';
 import {YesNo} from '../../../common/form/models/yesNo';
 
-export const convertToForm = (employmentEntity: Employment): EmploymentStatus => {
+export const convertToForm = (employmentEntity: Employment): EmploymentForm => {
   if (employmentEntity) {
-    return new EmploymentStatus(convertToYesNo(employmentEntity.declared), employmentEntity.employmentType);
+    return new EmploymentForm(convertToYesNo(employmentEntity.declared), employmentEntity.employmentType);
   }
-  return new EmploymentStatus();
+  return new EmploymentForm();
 };
 
-export const convertFromForm = (employmentForm: EmploymentStatus): Employment => {
+export const convertFromForm = (employmentForm: EmploymentForm): Employment => {
   if (employmentForm) {
     return {
       declared: (convertFromYesNo(employmentForm.option)),

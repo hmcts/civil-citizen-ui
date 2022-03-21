@@ -8,7 +8,7 @@ import {StatementOfMeans} from '../../../../../main/common/models/statementOfMea
 import {
   EmploymentCategory,
 } from '../../../../../main/common/form/models/statementOfMeans/employment/employmentCategory';
-import {EmploymentStatus} from '../../../../../main/common/form/models/statementOfMeans/employment/employmentStatus';
+import {EmploymentForm} from '../../../../../main/common/form/models/statementOfMeans/employment/employmentForm';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -48,7 +48,7 @@ describe('employment service', () => {
       //Given
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveEmploymentData('123', new EmploymentStatus(YesNo.YES, [EmploymentCategory.EMPLOYED]));
+      await saveEmploymentData('123', new EmploymentForm(YesNo.YES, [EmploymentCategory.EMPLOYED]));
       //Then
       expect(spySave).toBeCalled();
     });
