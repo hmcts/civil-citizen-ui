@@ -9,9 +9,9 @@ export class OtherDependantsService {
 
   public async getOtherDependants(claimId: string) {
     try {
-
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
       logger.info(civilClaimResponse);
+      console.log('civilClaimResponse',civilClaimResponse);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.otherDependants) {
         return civilClaimResponse.case_data.statementOfMeans.otherDependants;
       }
@@ -22,7 +22,8 @@ export class OtherDependantsService {
   }
 
   public async saveOtherDependants(claimId: string, otherDependants: OtherDependants) {
-    try {
+    console.log(otherDependants)
+    //try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {
         civilClaimResponse.case_data.statementOfMeans.otherDependants = otherDependants;
@@ -32,8 +33,8 @@ export class OtherDependantsService {
         civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
-    } catch (err) {
+    /*} catch (err) {
       logger.error(`${err.stack || err}`);
-    }
+    }*/
   }
 }
