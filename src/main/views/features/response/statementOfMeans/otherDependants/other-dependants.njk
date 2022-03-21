@@ -5,10 +5,13 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("Do you support anyone else financially?") %}
+      {% set id = "option" %}
+      {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% set numberOfPeopleError = form.getTextError(errors, 'numberOfPeople') %}
       {% set detailsError = form.getTextError(errors, 'details') %}
@@ -21,7 +24,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post">
-            {% set financialSupportDetails %}
+            {% set yesHtml %}
             {{ govukInput({
                 id: "numberOfPeople",
                 name: "numberOfPeople",
@@ -44,35 +47,7 @@
                 errorMessage: { text: detailsError.isNotEmpty } if detailsError else ''
               }) }}
             {% endset %}
-            {{ govukRadios({
-              id: 'option',
-              name: 'option',
-              fieldset: {
-                legend: {
-                  text: title,
-                  isPageHeading: true,
-                  classes: "govuk-fieldset__legend--l"
-                }
-              },
-              items: [
-                {
-                  value: 'yes',
-                  checked: true if form.option=="yes" else false,
-                  html: "<span>" + t('Yes') + "</span>",
-                  conditional: {
-                    html: financialSupportDetails
-                  }
-                },
-                {
-                  value: 'no',
-                  checked: true if form.option == "no" else false,
-                  html: "<span>" + t('No') + "</span>"
-                }
-              ],
-                errorMessage: {
-                  html: errors[0].text
-                } if errors and (numberOfPeopleError == 'null' or detailsError == null)
-            }) }}
+            {{ yesNoRadioButton(t,id,name,title,form,'',{yesHtml:yesHtml}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")
