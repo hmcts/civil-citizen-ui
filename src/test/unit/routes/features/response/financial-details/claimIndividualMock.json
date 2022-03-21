@@ -1,0 +1,106 @@
+{
+  "case_data": {
+    "specApplicantCorrespondenceAddressRequired": "No",
+    "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 40 | \n | Interest amount | £ 0 | \n | Total amount | £ 40 |",
+    "claimInterest": "No",
+    "totalClaimAmount": 40,
+    "legacyCaseReference": "000MC009",
+    "submittedDate": "2022-03-09T09:43:18.027029",
+    "respondent1Represented": "No",
+    "applicantSolicitor1ClaimStatementOfTruth": {
+      "role": "Claimant",
+      "name": "John Doe"
+    },
+    "specRespondent1Represented": "No",
+    "applicantSolicitor1UserDetails": {
+      "email": "cmcclaimant23@gmail.com"
+    },
+    "claimAmountBreakupSummaryObject": "| Description | Amount | \n |---|---| \n | Broken window | £ 40.00 |\n  | **Total** | £ 40.00 |",
+    "speclistYourEvidenceList": [
+      {
+        "id": "565c6bbe-ddc2-4527-9657-2fd85c5fdd9b",
+        "value": {
+          "photoEvidence": "Broken window",
+          "evidenceType": "PHOTO_EVIDENCE"
+        }
+      }
+    ],
+    "respondent1": {
+      "individualLastName": "Doe",
+      "partyTypeDisplayValue": "Individual",
+      "partyName": "Jane Doe",
+      "individualFirstName": "Jane",
+      "primaryAddress": {
+        "AddressLine1": "44 Thoday Street",
+        "PostCode": "CB1 3AX"
+      },
+      "type": "INDIVIDUAL"
+    },
+    "applicantSolicitor1PbaAccounts": {
+      "value": {
+        "code": "6976713f-25be-4989-bb35-0d8486031a96",
+        "label": "PBA0078095"
+      },
+      "list_items": [
+        {
+          "code": "034af995-1cf2-468c-bca0-8daa62828d48",
+          "label": "PBA0088192"
+        },
+        {
+          "code": "6976713f-25be-4989-bb35-0d8486031a96",
+          "label": "PBA0078095"
+        }
+      ]
+    },
+    "applicant1": {
+      "individualLastName": "Doe",
+      "partyTypeDisplayValue": "Individual",
+      "partyName": "John Doe",
+      "individualFirstName": "John",
+      "primaryAddress": {
+        "AddressLine1": "22 Thoday Street",
+        "PostCode": "CB1 3AX"
+      },
+      "type": "INDIVIDUAL",
+      "individualDateOfBirth": "1980-02-01"
+    },
+    "timelineOfEvents": [
+      {
+        "id": "43fa4597-91d6-4d6f-84a5-1970f63f4cd1",
+        "value": {
+          "timelineDate": "2021-06-02",
+          "timelineDescription": "Defendant broke my window"
+        }
+      }
+    ],
+    "applicant1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]",
+      "Organisation": {
+        "OrganisationID": "79ZRSOU"
+      }
+    },
+    "claimIssuedPaymentDetails": {
+      "customerReference": "WINDOW",
+      "errorMessage": "Your account is deleted",
+      "errorCode": "CA-E0004",
+      "status": "FAILED"
+    },
+    "totalInterest": 0,
+    "detailsOfClaim": "Defendant broke my window with her football",
+    "claimFee": {
+      "calculatedAmountInPence": "3500",
+      "code": "FEE0202",
+      "version": "4"
+    },
+    "claimAmountBreakup": [
+      {
+        "id": "eae2c1cb-fd8c-4e36-befe-3a7fac4be5a0",
+        "value": {
+          "claimAmount": "4000",
+          "claimReason": "Broken window"
+        }
+      }
+    ],
+    "superClaimType": "SPEC_CLAIM"
+  }
+}

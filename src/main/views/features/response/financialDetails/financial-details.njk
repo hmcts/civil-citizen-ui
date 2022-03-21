@@ -1,0 +1,62 @@
+{% extends "template.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% set heading = 'Your financial details' %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+    {% set claimantType = claim.applicant1.type %}
+      {% if (claimantType == CounterpartyType.INDIVIDUAL) %}
+        {% set individualTitle = claim.applicant1.individualTitle %}
+        {% set applicant1Details =  (individualTitle if individualTitle else '')  + ' ' +  claim.applicant1.individualFirstName + ' ' + claim.applicant1.individualLastName %}
+      {% elseif (claimantType == CounterpartyType.SOLE_TRADER) %}
+        {% set soleTraderTitle = claim.applicant1.soleTraderTitle %}
+        {% set applicant1Details = (soleTraderTitle if soleTraderTitle else '') + ' ' +  claim.applicant1.soleTraderFirstName + ' ' + claim.applicant1.soleTraderLastName %}
+      {% elseif (claimantType == CounterpartyType.ORGANISATION) %}
+        {% set applicant1Details = claim.applicant1.organisationName %}
+      {% elseif (claimantType == CounterpartyType.COMPANY) %}
+        {% set applicant1Details = claim.applicant1.companyName %}
+      {% endif %}
+
+      <h2 class="govuk-heading-l">{{ t('Send ') }}  {{ applicant1Details }} {{ t(' your financial details') }}</h2>
+
+      {% set defendantType = claim.respondent1.type %}
+      {% if (defendantType == CounterpartyType.INDIVIDUAL or defendantType == CounterpartyType.SOLE_TRADER) %}
+        <p class="govuk-body">
+          {{ t('You need to give ') }} {{ applicant1Details }} {{ t(' details of your finances.') }}
+        </p>
+        <p class="govuk-body">
+          {{ t("We'll ask you for the details then we'll send them to ") }} {{ applicant1Details }} {{ t(' to review.') }}
+        </p>
+        <p class="govuk-body">
+          {{ t('They can reject your proposal if they believe you can pay sooner.') }}
+        </p>
+        <p class="govuk-body">
+          {{ t('If they reject your proposal, the court will make a new plan using your financial details.') }}
+        </p>
+      {% elseif (defendantType == CounterpartyType.COMPANY or defendantType == CounterpartyType.ORGANISATION) %}
+        <p class="govuk-body">
+          {{ t('You need to send ') }} {{ applicant1Details }} {{ t(" your company or organisation's most recent statement of accounts.") }}
+        </p>
+        <p class="govuk-body">
+          {{ t("They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.") }}
+        </p>
+        <p class="govuk-body">
+          {{ t('If they reject your plan, the court will make a new plan based on your financial details.') }}
+        </p>
+        <p class="govuk-body">
+          {{ t('Get ') }} {{ applicant1Details }}{{ t("'s contact details.") }}
+        </p>
+      {% endif %}
+      <form method="post">
+        <div class="govuk-form-group">
+          {{ govukButton({
+          text: t('Continue')
+          }) }}
+          {{ contactUsForHelp(t) }}
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
