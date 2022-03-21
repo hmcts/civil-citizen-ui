@@ -1,5 +1,5 @@
 import {Validator} from 'class-validator';
-import {Disability} from '../../../../../main/common/form/models/statementOfMeans/disability';
+import {Disability} from '../../../../../../main/common/form/models/statementOfMeans/disability';
 
 describe('Citizen disability radio validation', () => {
   const validator = new Validator();

@@ -19,6 +19,12 @@
       "partner": {
         "option": "yes"
       },
+      "partnerDisability": {
+        "option": "yes"
+      },
+      "partnerSevereDisability": {
+        "option": "yes"
+      },
       "otherDependants": {
         "option": "yes",
         "numberOfPeople": 1,

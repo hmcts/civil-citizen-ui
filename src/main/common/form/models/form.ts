@@ -22,10 +22,21 @@ export class Form {
     }
   }
 
-  public hasFieldError(field: string) : boolean{
-    if (this.errors){
+  public hasFieldError(field: string): boolean {
+    if (this.errors) {
       return this.errors.some((error) => field == error.property);
     }
+  }
+
+  /**
+   * Get error message associated with first constraint violated for given field name.
+   *
+   * @param fieldName - field name / model property
+   */
+  errorFor(fieldName: string): string {
+    return this.getErrors()
+      .filter((error: FormValidationError) => error.fieldName === fieldName)
+      .map((error: FormValidationError) => error.text)[0];
   }
 
   public getTextError(errors: ValidationError[], property: string) {
