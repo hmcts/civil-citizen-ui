@@ -23,7 +23,6 @@ function renderView(form: OtherDependants, res: express.Response): void {
 router.get(CITIZEN_OTHER_DEPENDANTS_URL.toString(), async (req, res) => {
   try {
     await otherDependantsService.getOtherDependants(req.params.id).then((data) => {
-      console.log('Claim',data);
       const otherDependants = data ? new OtherDependants(data.option,data.numberOfPeople,data.details) : new OtherDependants()
       renderView(otherDependants, res);
     });
