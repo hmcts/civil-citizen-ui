@@ -3,20 +3,16 @@ import {
   CHILDREN_DISABILITY_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../urls';
-import {
-  ChildrenDisability,
-} from 'common/form/models/statementOfMeans/dependants/childrenDisability';
+import {ChildrenDisability} from '../../../../../common/form/models/statementOfMeans/dependants/childrenDisability';
 import {ValidationError, Validator} from 'class-validator';
-import {
-  ChildrenDisabilityService,
-} from 'modules/statementOfMeans/dependants/childrenDisabilityService';
+import {ChildrenDisabilityService} from '../../../../../modules/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const partnerViewPath = 'features/response/statementOfMeans/dependants/children-disability';
 const router = express.Router();
-const childrenLiveWithYouDisabilityService = new ChildrenDisabilityService();
+const childrenDisabilityService = new ChildrenDisabilityService();
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('childrenLiveWithYouDisabilityService');
+const logger = Logger.getLogger('childrenDisabilityService');
 const validator = new Validator();
 
 function renderView(res: express.Response, form: ChildrenDisability): void {
@@ -25,7 +21,7 @@ function renderView(res: express.Response, form: ChildrenDisability): void {
 
 router.get(CHILDREN_DISABILITY_URL, async (req : express.Request, res : express.Response) => {
   try {
-    const partnerSevereDisability = await childrenLiveWithYouDisabilityService.getChildrenLiveWithYouDisability(req.params.id);
+    const partnerSevereDisability = await childrenDisabilityService.getChildrenDisability(req.params.id);
     renderView(res, partnerSevereDisability);
   } catch (error) {
     logger.error(`${(error as Error).stack || error}`);
@@ -34,14 +30,14 @@ router.get(CHILDREN_DISABILITY_URL, async (req : express.Request, res : express.
 });
 
 router.post(CHILDREN_DISABILITY_URL,async (req: express.Request, res : express.Response) => {
-  const childrenLiveWithYouDisability: ChildrenDisability = new ChildrenDisability(req.body.option);
-  const errors: ValidationError[] = validator.validateSync(childrenLiveWithYouDisability);
+  const childrenDisability: ChildrenDisability = new ChildrenDisability(req.body.option);
+  const errors: ValidationError[] = validator.validateSync(childrenDisability);
   if (errors && errors.length > 0) {
-    childrenLiveWithYouDisability.errors = errors;
-    renderView(res, childrenLiveWithYouDisability);
+    childrenDisability.errors = errors;
+    renderView(res, childrenDisability);
   } else {
     try {
-      await childrenLiveWithYouDisabilityService.saveChildrenLiveWithYouDisability(req.params.id, childrenLiveWithYouDisability);
+      await childrenDisabilityService.saveChildrenDisability(req.params.id, childrenDisability);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_OTHER_DEPENDANTS_URL));
     } catch (error) {
       logger.error(`${(error as Error).stack || error}`);

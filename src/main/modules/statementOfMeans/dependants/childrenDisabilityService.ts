@@ -1,15 +1,15 @@
-import {ChildrenDisability} from 'common/form/models/statementOfMeans/dependants/childrenDisability';
+import {ChildrenDisability} from '../../../common/form/models/statementOfMeans/dependants/childrenDisability';
 import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerSevereDisabilityService');
+const logger = Logger.getLogger('childrenDisabilityService');
 const childrenDisability = new ChildrenDisability();
 
 export class ChildrenDisabilityService {
 
-  public async getChildrenLiveWithYouDisability(claimId: string) {
+  public async getChildrenDisability(claimId: string) {
     try {
       const case_data = await getCaseDataFromStore(claimId);
       if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.childrenDisability) {
@@ -22,7 +22,7 @@ export class ChildrenDisabilityService {
     }
   }
 
-  public async saveChildrenLiveWithYouDisability(claimId: string, childrenDisability: ChildrenDisability) {
+  public async saveChildrenDisability(claimId: string, childrenDisability: ChildrenDisability) {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
       if (case_data && case_data.statementOfMeans) {
