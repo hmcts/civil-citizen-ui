@@ -9,10 +9,10 @@ export class DisabilityOption extends Form {
 
 export class Disability extends Form {
   @IsDefined({message: VALID_YES_NO_OPTION})
-    option?: string;
+    disablity?: string;
 
-  constructor(option?: string, errors?: ValidationError[]) {
+  constructor(disablity?: string, errors?: ValidationError[]) {
     super(errors);
-    this.option = option;
+    this.disablity = disablity;
   }
 }

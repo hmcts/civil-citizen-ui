@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CITIZEN_PARTNER_AGE_URL, CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_URL} from '../../../../urls';
+import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_AGE_URL, CITIZEN_PARTNER_URL} from '../../../../urls';
 import {Cohabiting} from '../../../../../common/form/models/statementOfMeans/partner/cohabiting';
 import {ValidationError, Validator} from 'class-validator';
 import {CohabitingService} from '../../../../../modules/statementOfMeans/partner/cohabitingService';
@@ -28,7 +28,7 @@ router.get(CITIZEN_PARTNER_URL, async (req, res) => {
 
 router.post(CITIZEN_PARTNER_URL,
   async (req, res) => {
-    const cohabiting: Cohabiting = new Cohabiting(req.body.cohabiting);
+    const cohabiting: Cohabiting = new Cohabiting(req.body.option);
     const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(cohabiting);
     if (errors && errors.length > 0) {

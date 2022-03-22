@@ -14,7 +14,7 @@ describe('Citizen disability radio validation', () => {
   it('should allow yes option', () => {
     //Given
     const disability = new Disability();
-    disability.option = 'yes';
+    disability.disablity = 'yes';
     //When
     const result = validator.validateSync(disability);
     //Then
@@ -23,7 +23,7 @@ describe('Citizen disability radio validation', () => {
   it('should have error when other option', () => {
     //Given
     const disability = new Disability();
-    disability.option = 'True';
+    disability.disablity = 'True';
     //When
     const result = validator.validateSync(disability);
     //Then
@@ -32,7 +32,7 @@ describe('Citizen disability radio validation', () => {
   it('should allow no option', () => {
     //Given
     const disability = new Disability();
-    disability.option = 'no';
+    disability.disablity = 'no';
     //When
     const result = validator.validateSync(disability);
     //Then

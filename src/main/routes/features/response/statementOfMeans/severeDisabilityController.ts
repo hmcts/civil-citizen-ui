@@ -21,7 +21,7 @@ router.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res) => {
 
 router.post(CITIZEN_SEVERELY_DISABLED_URL,
   (req, res) => {
-    const severeDisability: SevereDisability = new SevereDisability(req.body.severeDisability);
+    const severeDisability: SevereDisability = new SevereDisability(req.body.option);
     const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(severeDisability);
     if (errors && errors.length > 0) {

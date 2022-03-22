@@ -1,9 +1,9 @@
 import * as express from 'express';
 import {
-  CITIZEN_PARTNER_AGE_URL,
-  CITIZEN_PARTNER_PENSION_URL,
-  CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_DEPENDANTS_URL,
+  CITIZEN_PARTNER_AGE_URL,
+  CITIZEN_PARTNER_DISABILITY_URL,
+  CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../urls';
 import {Partner} from '../../../../../common/form/models/statementOfMeans/partner';
 import {ValidationError, Validator} from 'class-validator';
@@ -28,7 +28,7 @@ router.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
 
 router.post(CITIZEN_PARTNER_AGE_URL,
   (req, res) => {
-    const partner: Partner = new Partner(req.body.partnerAge);
+    const partner: Partner = new Partner(req.body.option);
     const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(partner);
     if (errors && errors.length > 0) {
