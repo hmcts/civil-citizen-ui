@@ -16,13 +16,13 @@ describe('Form get error message', () => {
     //Then
     expect(result.length).toBe(1);
   });
-  it('should return undefined when there is no error', () => {
+  it('should return empty array when there is no error', () => {
     //Given
     form.errors = undefined;
     //When
     const result = form.getErrors();
     //Then
-    expect(result).toBeUndefined();
+    expect(result).toEqual([]);
   });
 });
 describe('Form has field errors', () => {

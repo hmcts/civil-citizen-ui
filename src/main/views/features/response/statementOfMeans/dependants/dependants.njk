@@ -11,6 +11,11 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getAllErrors() %}
+      {% set declaredError = form.errorFor('declared') %}
+      {% set numberOfChildrenError = form.errorFor('numberOfChildren') %}
+      {% set under11Error = form.nestedErrorFor('under11') %}
+      {% set between11and15Error = form.nestedErrorFor('between11and15') %}
+      {% set between16and19Error = form.nestedErrorFor('between16and19') %}
       {% if errors.length > 0 %}
         {{ govukErrorSummary({
           "titleText": t('There was a problem'),
@@ -25,91 +30,78 @@
 
             {{ csrfProtection(csrf) }}
 
-            {% set declaredError = form.errorFor('declared') %}
-            <div class="govuk-form-group {% if errors.length > 0 %} govuk-form-group--error {% endif %}">
-
-              {% set numberOfChildrenHtml %}
-                {% set under11Error = form.nestedErrorFor('under11') %}
-                {% set between11and15Error = form.nestedErrorFor('between11and15') %}
-                {% set between16and19Error = form.nestedErrorFor('between16and19') %}
-                {% set numberOfChildrenError = form.errorFor('numberOfChildren') %}
-                {% call govukFieldset({
-                  legend: {
-                    text: 'Enter how many for each age group',
-                    classes: "govuk-fieldset__legend--s",
-                    isPageHeading: true
+            {% set numberOfChildrenHtml %}
+              <div class="govuk-form-group {% if numberOfChildrenError %} govuk-form-group--error {% endif %}">
+                {% if numberOfChildrenError %}
+                <p class="govuk-error-message">
+                  <span class="govuk-visually-hidden">Error:</span> {{ t(numberOfChildrenError) }}
+                </p>
+                {% endif %}
+                {{ govukInput({
+                  id: "under11",
+                  name: "under11",
+                  value: form.model.numberOfChildren.under11,
+                  type: "number",
+                  classes: "govuk-input--width-3",
+                  label: {
+                    text: t('Under 11')
                   },
                   errorMessage: {
-                    text: t(numberOfChildrenError)
-                  } if numberOfChildrenError
-                }) %}
-                  {{ govukInput({
-                    id: "under11",
-                    name: "under11",
-                    value: form.model.under11,
-                    inputmode: "numeric",
-                    classes: "govuk-!-width-two-third",
-                    label: {
-                      text: t('Under 11')
-                    },
-                    errorMessage: {
-                      text: t(under11Error)
-                    } if under11Error
-                  }) }}
-                  {{ govukInput({
-                    id: "between11and15",
-                    name: "between11and15",
-                    value: form.model.between11and15,
-                    inputmode: "numeric",
-                    classes: "govuk-!-width-two-third",
-                    label: {
-                      text: t('11 to 15')
-                    },
-                    errorMessage: {
-                      text: t(between11and15Error)
-                    } if between11and15Error
-                  }) }}
-                  {{ govukInput({
-                    id: "between16and19",
-                    name: "between16and19",
-                    value: form.model.between16and19,
-                    inputmode: "numeric",
-                    pattern: "[0-9]*",
-                    classes: "govuk-!-width-two-third",
-                    label: {
-                      text: t('16 to 19')
-                    },
-                    errorMessage: {
-                      text: t(between16and19Error)
-                    } if between16and19Error
-                  }) }}
-                {% endcall %}
-              {% endset -%}
-
-              {{ govukRadios({
-                idPrefix: "declared",
-                name: "declared",
-                items: [
-                  {
-                    value: YesNo.YES,
-                    text: t('Yes'),
-                    checked: form.model.declared === true,
-                    conditional: {
-                    html: numberOfChildrenHtml
-                  }
+                    text: t(under11Error)
+                  } if under11Error
+                }) }}
+                {{ govukInput({
+                  id: "between11and15",
+                  name: "between11and15",
+                  value: form.model.numberOfChildren.between11and15,
+                  type: "number",
+                  classes: "govuk-input--width-3",
+                  label: {
+                    text: t('11 to 15')
                   },
-                  {
-                    value: YesNo.NO,
-                    text: t('No'),
-                    checked: form.model.declared === false
-                  }
-                ],
-                errorMessage: {
-                  text: declaredError
-                } if declaredError
-              }) }}
+                  errorMessage: {
+                    text: t(between11and15Error)
+                  } if between11and15Error
+                }) }}
+                {{ govukInput({
+                  id: "between16and19",
+                  name: "between16and19",
+                  value: form.model.numberOfChildren.between16and19,
+                  type: "number",
+                  classes: "govuk-input--width-3",
+                  label: {
+                    text: t('16 to 19')
+                  },
+                  errorMessage: {
+                    text: t(between16and19Error)
+                  } if between16and19Error
+                }) }}
+              </div>
+            {% endset -%}
 
-            </div>
+            {{ govukRadios({
+              idPrefix: "declared",
+              name: "declared",
+              items: [
+                {
+                  value: YesNo.YES,
+                  text: t('Yes'),
+                  checked: form.model.declared === true,
+                  conditional: {
+                  html: numberOfChildrenHtml
+                }
+                },
+                {
+                  value: YesNo.NO,
+                  text: t('No'),
+                  checked: form.model.declared === false
+                }
+              ],
+              errorMessage: {
+                text: declaredError
+              } if declaredError
+            }) }}
+
 
             <div class="govuk-form-group">
               {{ govukButton({

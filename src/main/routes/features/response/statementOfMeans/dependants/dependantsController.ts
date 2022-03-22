@@ -26,7 +26,8 @@ dependantsController
   .post(
     CITIZEN_DEPENDANTS_URL,
     async (req: express.Request, res: express.Response) => {
-      const dependants = dependantsService.buildDependants(req.body.declared, req.body.under11);
+      const dependants = dependantsService.buildDependants(req.body.declared, req.body.under11,
+        req.body.between11and15, req.body.between16and19);
       const form: GenericForm<Dependants> = dependantsService.validateDependants(dependants);
 
       if (form.hasErrors() || form.hasNestedErrors()) {

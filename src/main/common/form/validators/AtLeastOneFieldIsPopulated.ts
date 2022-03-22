@@ -7,12 +7,12 @@ import {
 
 @ValidatorConstraint()
 export class AtLeastOneFieldIsPopulatedConstraint implements ValidatorConstraintInterface {
-  validate(value: any): boolean {
+  validate(value: Record<string, unknown>): boolean {
     if (value === undefined) {
       return true;
     }
 
-    return Object.keys(value).some(key => !!value[key]);
+    return Object.keys(value).some((key: string) => !!value[key]);
   }
 }
 

@@ -28,7 +28,7 @@ export class GenericForm<Model> {
   errorFor(fieldName: string): string {
     if (this.hasFieldError(fieldName)) {
       return this.getErrors()
-        .filter((error: FormValidationError) => error.property === fieldName)
+        .filter((error: FormValidationError) => error.constraints && error.property === fieldName)
         .map((error: FormValidationError) => error.text)[0];
     }
   }
