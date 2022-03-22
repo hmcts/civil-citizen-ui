@@ -7,6 +7,9 @@ import {PartnerDisability} from '../form/models/statementOfMeans/partner/partner
 import {PartnerSevereDisability} from '../form/models/statementOfMeans/partner/partnerSevereDisability';
 import {Residence} from '../form/models/statementOfMeans/residence';
 import {Employment} from './employment';
+import {
+  ChildrenDisability
+} from "common/form/models/statementOfMeans/dependants/childrenDisability";
 
 export class StatementOfMeans {
   disability?: Disability;
@@ -18,4 +21,5 @@ export class StatementOfMeans {
   partnerDisability?: PartnerDisability;
   partnerSevereDisability?: PartnerSevereDisability;
   residence?: Residence;
+  childrenDisability?: ChildrenDisability;
 }

@@ -18,6 +18,8 @@ import partnerDisability from './features/response/statementOfMeans/partner/part
 import partnerSevereDisability from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
 import residenceController from './features/response/statementOfMeans/residenceController';
 import financialDetailsRoute from './features/response/financialDetails/financialDetailsController';
+import childrenDisabilityController from './features/response/statementOfMeans/dependants/childrenDisabilityController';
+
 
 export default [
   homeRoute,
@@ -40,4 +42,5 @@ export default [
   partnerSevereDisability,
   residenceController,
   financialDetailsRoute,
+  childrenDisabilityController,
 ];
