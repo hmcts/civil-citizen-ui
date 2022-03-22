@@ -3,33 +3,42 @@ import {CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../url
 import {SevereDisability} from '../../../../common/form/models/statementOfMeans/severeDisability';
 import {ValidationError, Validator} from 'class-validator';
 import {SevereDisabilityService} from '../../../../modules/statementOfMeans/severeDisabilityService';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 const citizenSevereDisabilityViewPath = 'features/response/statementOfMeans/are-you-severely-disabled';
 const router = express.Router();
-const severeDisability = new SevereDisability();
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('disabilityService');
 const severeDisabilityService = new SevereDisabilityService();
+const validator = new Validator();
 
 function renderView(form: SevereDisability, res: express.Response): void {
   res.render(citizenSevereDisabilityViewPath, {form});
 }
 
 router.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res) => {
-  severeDisabilityService.getSevereDisability(req.params.id).then(() => {
+  try {
+    const severeDisability = await severeDisabilityService.getSevereDisability(req.params.id);
     renderView(severeDisability, res);
-  });
+  } catch (err: unknown) {
+    logger.error(`${err as Error || err}`);
+  }
 });
 
 router.post(CITIZEN_SEVERELY_DISABLED_URL,
-  (req, res) => {
+  async (req, res) => {
     const severeDisability: SevereDisability = new SevereDisability(req.body.severeDisability);
-    const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(severeDisability);
     if (errors && errors.length > 0) {
       severeDisability.errors = errors;
       renderView(severeDisability, res);
     } else {
-      severeDisabilityService.saveSevereDisability(req.params.id, severeDisability);
-      res.redirect(CITIZEN_RESIDENCE_URL);
+      try {
+        await severeDisabilityService.saveSevereDisability(req.params.id, severeDisability);
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_RESIDENCE_URL));
+      } catch (err: unknown) {
+        logger.error(`${err as Error || err}`);
+      }
     }
   });
 
