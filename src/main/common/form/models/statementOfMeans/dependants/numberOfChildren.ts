@@ -1,6 +1,5 @@
 import {IsInt, Min, ValidateIf} from 'class-validator';
 import {INTEGER_REQUIRED, NON_NEGATIVE_NUMBER_REQUIRED} from '../../../validationErrors/errorMessageConstants';
-import {parseInt} from 'lodash';
 
 export class NumberOfChildren {
 
@@ -41,6 +40,6 @@ function toNumberOrUndefined(value: string): number {
   }
 
   const strVal: string = value && value.toString().trim();
-  const numberVal: number = parseInt(strVal);
+  const numberVal: number = parseFloat(strVal);
   return !numberVal || isNaN(numberVal) ? undefined : numberVal;
 }
