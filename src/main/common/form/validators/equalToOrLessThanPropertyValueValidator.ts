@@ -6,8 +6,8 @@ import {Form} from '../../form/models/form';
  * Validates a number against a value of a object property. Returns true if the number is equal to or less than the property value number.
  * Will not validate (return true) if the property value is not numeric or is not defined
  */
-@ValidatorConstraint({name: 'customAccountBalanceValidator'})
-export class NumberEqualToPropertyValueOrLessValidator implements ValidatorConstraintInterface {
+@ValidatorConstraint({name: 'equalOrLessToPropertyValue'})
+export class EqualToOrLessThanPropertyValueValidator implements ValidatorConstraintInterface {
   defaultMessage(): string {
     return VALID_NUMBER_FOR_PREVIOUS_PAGE;
   }
