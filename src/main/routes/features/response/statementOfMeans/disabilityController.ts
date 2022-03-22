@@ -21,7 +21,7 @@ router.get(CITIZEN_DISABILITY_URL, async (req, res) => {
 
 router.post(CITIZEN_DISABILITY_URL,
   (req, res) => {
-    const disability: Disability = new Disability(req.body.disability);
+    const disability: Disability = new Disability(req.body.option);
     const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(disability);
     if (errors && errors.length > 0) {
@@ -29,7 +29,7 @@ router.post(CITIZEN_DISABILITY_URL,
       renderView(disability, res);
     } else {
       disabilityService.saveDisability(req.params.id, disability);
-      if (disability.disablity == 'yes') {
+      if (disability.option == 'yes') {
         res.redirect(CITIZEN_SEVERELY_DISABLED_URL);
       } else {
         res.redirect(CITIZEN_RESIDENCE_URL);

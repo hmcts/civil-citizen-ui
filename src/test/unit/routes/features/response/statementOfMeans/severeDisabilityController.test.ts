@@ -47,6 +47,7 @@ describe('SevereDisability', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Choose option: Yes or No');
+        expect(res.text).toContain('govuk-error-message');
       });
   });
 
