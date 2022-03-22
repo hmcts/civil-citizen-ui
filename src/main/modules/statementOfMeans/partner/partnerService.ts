@@ -1,6 +1,7 @@
 import {Partner} from '../../../common/form/models/statementOfMeans/partner';
 import {getDraftClaimFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
+import { get } from 'lodash';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partnerService');
@@ -12,7 +13,7 @@ export class PartnerService {
 
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
       logger.info(civilClaimResponse);
-      if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.partnerAge) {
+      if (get(civilClaimResponse, 'case_data.statementOfMeans.partnerAge')) {
         return civilClaimResponse.case_data.statementOfMeans.partnerAge;
       }
       return new Partner('');
@@ -25,7 +26,7 @@ export class PartnerService {
   public async savePartnerAge(claimId: string, partner: Partner) {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {
+      if (get(civilClaimResponse, 'case_data.statementOfMeans.partnerAge')) {
         civilClaimResponse.case_data.statementOfMeans.partnerAge = partner;
       } else {
         const statementOfMeans = new StatementOfMeans();
