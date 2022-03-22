@@ -3,10 +3,10 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  CITIZEN_PARTNER_AGE_URL,
-  CITIZEN_PARTNER_PENSION_URL,
-  CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_DEPENDANTS_URL,
+  CITIZEN_PARTNER_AGE_URL,
+  CITIZEN_PARTNER_DISABILITY_URL,
+  CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../../../main/routes/urls';
 
 const civilClaimResponseMock = require('./civilClaimResponseMock.json');
@@ -59,7 +59,7 @@ describe('Partner Age', () => {
     app.locals.draftStoreClient = mockDraftStore;
     await request(app)
       .post(CITIZEN_PARTNER_AGE_URL)
-      .send('partnerAge=yes')
+      .send('option=yes')
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CITIZEN_PARTNER_PENSION_URL);
@@ -71,7 +71,7 @@ describe('Partner Age', () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
-        .send('partnerAge=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
@@ -90,7 +90,7 @@ describe('Partner Age', () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
-        .send('partnerAge=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
