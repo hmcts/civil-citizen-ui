@@ -1,6 +1,6 @@
 import {IsDefined, ValidateIf, ValidateNested} from 'class-validator';
 
-import {boolean} from 'boolean';
+import {boolean, isBooleanable} from 'boolean';
 import {ENTER_AT_LEAST_ONE, YES_NO_REQUIRED} from '../../../validationErrors/errorMessageConstants';
 import {NumberOfChildren} from './numberOfChildren';
 import {AtLeastOneFieldIsPopulated} from '../../../../../common/form/validators/AtLeastOneFieldIsPopulated';
@@ -20,16 +20,12 @@ export class Dependants {
     this.numberOfChildren = numberOfChildren;
   }
 
-  static fromObject(value?: any): Dependants {
-    if (!value) {
-      return value;
-    }
-
-    const declared: boolean = value.declared !== undefined ? boolean(value.declared) : undefined;
+  static fromObject(_declared: unknown, under11?: string, between11and15?: string, between16and19?: string): Dependants {
+    const declared: boolean = isBooleanable(_declared) ? boolean(_declared) : undefined;
 
     return new Dependants(
       declared,
-      declared ? NumberOfChildren.fromObject(value.numberOfChildren) : undefined,
+      declared ? NumberOfChildren.fromObject(under11, between11and15, between16and19) : undefined,
     );
   }
 }

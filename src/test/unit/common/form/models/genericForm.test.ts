@@ -73,6 +73,57 @@ describe('Get error message for field', () => {
   });
 });
 
+describe('Form has nested error', () => {
+  const form = new GenericForm(model);
+  form.errors = [
+    {
+      target: {
+        declared: true,
+        numberOfChildren: {
+          under11: -1,
+        },
+      },
+      value: {
+        under11: -1,
+      },
+      property: 'numberOfChildren',
+      children: [
+        {
+          target: {
+            under11: -1,
+          },
+          value: -1,
+          property: 'under11',
+          children: [],
+          constraints: {
+            min: 'Don\'t enter a negative number',
+          },
+        },
+      ],
+    },
+  ];
+
+  test('hasNestedErrors should return true', () => {
+    expect(form.hasNestedErrors()).toBe(true);
+  });
+
+  test('hasNestedFieldError(\'under11\') should return true', () => {
+    expect(form.hasNestedFieldError('under11')).toBe(true);
+  });
+
+  test('getNestedErrors() should not be empty', () => {
+    expect(form.getNestedErrors().length).toBe(1);
+  });
+
+  test('There should be a nested error for property \'under11\'', () => {
+    expect(form.getNestedErrors()[0].property).toBe('under11');
+  });
+
+  test('Nested error for property \'under11\' should have the expected wording', () => {
+    expect(form.nestedErrorFor('under11')).toBe('Don\'t enter a negative number');
+  });
+});
+
 function createValidationError() {
   const validationError = new ValidationError();
   validationError.property = PROPERTY;

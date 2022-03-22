@@ -29,7 +29,7 @@ dependantsController
       const dependants = dependantsService.buildDependants(req.body.declared, req.body.under11);
       const form: GenericForm<Dependants> = dependantsService.validateDependants(dependants);
 
-      if (form.hasErrors()) {
+      if (form.hasErrors() || form.hasNestedErrors()) {
         res.render(residenceViewPath, {
           form: form,
         });

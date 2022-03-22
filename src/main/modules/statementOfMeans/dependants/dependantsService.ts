@@ -1,10 +1,7 @@
-import {boolean} from 'boolean';
-import {parseInt} from 'lodash';
 import {getDraftClaimFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Validator} from 'class-validator';
 import {Dependants} from '../../../common/form/models/statementOfMeans/dependants/dependants';
-import {NumberOfChildren} from '../../../common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {GenericForm} from '../../../common/form/models/genericForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -42,10 +39,7 @@ class DependantsService {
   }
 
   public buildDependants(_declared: unknown, under11?: string, between11and15?: string, between16and19?: string): Dependants {
-    const numberOfChildren: NumberOfChildren = new NumberOfChildren(parseInt(under11), parseInt(between11and15), parseInt(between16and19));
-    const declared: boolean = _declared == null ? undefined : boolean(_declared);
-    const dependants = new Dependants(declared, numberOfChildren);
-    return dependants;
+    return Dependants.fromObject(_declared, under11, between11and15, between16and19);
   }
 
   public validateDependants(dependants: Dependants): GenericForm<Dependants> {
