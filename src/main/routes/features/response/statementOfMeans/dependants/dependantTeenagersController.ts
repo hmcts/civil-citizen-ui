@@ -13,15 +13,19 @@ function renderView(form: DependantTeenagers, res: express.Response): void {
   res.render(dependantTeenagersViewPath, {form: form});
 }
 
+function convertToForm(req: express.Request) {
+  const value = req.body.value ? Number(req.body.value) : undefined;
+  const maxValue = req.body.maxValue ? Number(req.body.maxValue) : undefined;
+  return new DependantTeenagers(value, maxValue);
+}
+
 router.get(DEPENDANT_TEENAGERS_URL, (req, res) => {
   const form = new DependantTeenagers(undefined, 3);
   renderView(form, res);
 });
 
 router.post(DEPENDANT_TEENAGERS_URL, async (req, res) => {
-  console.log(req.body.value);
-  console.log(req.body.maxValue);
-  const form = new DependantTeenagers(req.body.value, req.body.maxValue);
+  const form = convertToForm(req);
   try {
     await validateForm(form);
     if (form.hasErrors()) {
