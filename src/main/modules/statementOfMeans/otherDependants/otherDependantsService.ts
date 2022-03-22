@@ -11,7 +11,6 @@ export class OtherDependantsService {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
       logger.info(civilClaimResponse);
-      console.log('civilClaimResponse',civilClaimResponse);
       if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.otherDependants) {
         return civilClaimResponse.case_data.statementOfMeans.otherDependants;
       }

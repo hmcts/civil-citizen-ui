@@ -18,6 +18,7 @@ export class PartnerService {
       return new Partner('');
     } catch (err) {
       logger.error(`${err.stack || err}`);
+      throw new Error(err);
     }
   }
 

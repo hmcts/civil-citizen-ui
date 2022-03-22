@@ -43,6 +43,18 @@ describe('Partner Age', () => {
           expect(res.text).toContain('Is your partner aged 18 or over?');
         });
     });
+    test('should return error when cannot read age option of undefined', async () => {
+      const mockDraftStore = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => {throw new Error('Redis DraftStore failure.');})};
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .get(CITIZEN_PARTNER_AGE_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toEqual({error: 'Error: Redis DraftStore failure.'});
+        });
+    });
   });
   test('should return error on incorrect input', async () => {
     app.locals.draftStoreClient = mockDraftStore;

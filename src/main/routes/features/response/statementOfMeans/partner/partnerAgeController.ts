@@ -11,9 +11,12 @@ import {PartnerService} from '../../../../../modules/statementOfMeans/partner/pa
 import {DisabilityService} from '../../../../../modules/statementOfMeans/disabilityService';
 import { constructResponseUrlWithIdParams } from '../../../../../common/utils/urlFormatter';
 
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('otherDependantsController');
+
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
 const router = express.Router();
-const partner = new Partner();
+//const partner = new Partner();
 const partnerService = new PartnerService();
 const disabilityService = new DisabilityService();
 
@@ -22,9 +25,15 @@ function renderView(form: Partner, res: express.Response): void {
 }
 
 router.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
-  partnerService.getPartnerAge(req.params.id).then(() => {
-    renderView(partner, res);
-  });
+  try {
+    await partnerService.getPartnerAge(req.params.id).then((data) => {
+      const partner = data ? new Partner(data.option) : new Partner()
+      renderView(partner, res);
+    });
+  } catch (error) {
+    logger.error(`${error.stack || error}`);
+    res.status(500).send({error: error.message});
+  }
 });
 
 router.post(CITIZEN_PARTNER_AGE_URL,
