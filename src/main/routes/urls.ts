@@ -29,3 +29,4 @@ export const CITIZEN_EMPLOYMENT_URL = `${STATEMENT_OF_MEANS_URL}/employment`;
 export const WHO_EMPLOYS_YOU_URL = `${CITIZEN_EMPLOYMENT_URL}/employers`;
 export const UNEMPLOYED_URL = `${STATEMENT_OF_MEANS_URL}/unemployment`;
 export const SELF_EMPLOYED_URL = `${CITIZEN_EMPLOYMENT_URL}/self-employment`;
+export const DEPENDANT_TEENAGERS_URL = `${STATEMENT_OF_MEANS_URL}/dependants/education`;

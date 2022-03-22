@@ -1,9 +1,8 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
-
+{% from "govuk/components/input/macro.njk" import govukInput %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -16,8 +15,31 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('Children aged 16 to 19 living with you') }}</h1>
+          <p class="govuk-body">
+            {{ t('How many are both') }}:
+          </p>
+          <ul class="govuk-body govuk-list--bullet">
+            <li>{{ t('in full-time education or training') }}</li>
+            <li>{{ t('single (unmarried and not in a civil partnership)') }}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
           <form method="post">
-           
+            <input type="hidden" name="maxValue" value="{{ form.maxValue | default(0) }}"/>
+            {{ govukInput({
+              label: {
+                text: t('Enter number')
+              },
+              classes: "govuk-input--width-5",
+              id: "value",
+              name: "value",
+              value: form.value,
+              inputmode: "numeric",
+              spellcheck: false
+            }) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")

@@ -30,4 +30,5 @@ export const IGNORED_URLS =
     urls.UNEMPLOYED_URL,
     urls.CITIZEN_EMPLOYMENT_URL,
     urls.SELF_EMPLOYED_URL,
+    urls.DEPENDANT_TEENAGERS_URL,
   ];
