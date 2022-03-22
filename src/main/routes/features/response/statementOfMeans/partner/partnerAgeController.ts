@@ -16,7 +16,6 @@ const logger = Logger.getLogger('otherDependantsController');
 
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
 const router = express.Router();
-//const partner = new Partner();
 const partnerService = new PartnerService();
 const disabilityService = new DisabilityService();
 
