@@ -1,35 +1,35 @@
-import {Cohabiting} from '../../../common/form/models/statementOfMeans/partner/cohabiting';
+import {PartnerAge} from '../../../common/form/models/statementOfMeans/partner/partnerAge';
 import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('cohabitingService');
-const cohabiting = new Cohabiting();
+const logger = Logger.getLogger('partnerService');
+const partnerAge = new PartnerAge();
 
-export class CohabitingService {
+export class PartnerAgeService {
 
-  public async getCohabiting(claimId: string) {
+  public async getPartnerAge(claimId: string) {
     try {
       const case_data = await getCaseDataFromStore(claimId);
-      if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.cohabiting) {
-        cohabiting.option = case_data.statementOfMeans.cohabiting.option;
-        return cohabiting;
+      if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.partnerAge) {
+        partnerAge.option = case_data.statementOfMeans.partnerAge.option;
+        return partnerAge;
       }
-      return new Cohabiting();
+      return new PartnerAge();
     } catch (err: unknown) {
       logger.error(`${err as Error || err}`);
     }
   }
 
-  public async saveCohabiting(claimId: string, cohabiting: Cohabiting) {
+  public async savePartnerAge(claimId: string, partner: PartnerAge) {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
       if (case_data && case_data.statementOfMeans) {
-        case_data.statementOfMeans.cohabiting = cohabiting;
+        case_data.statementOfMeans.partnerAge = partner;
       } else {
         const statementOfMeans = new StatementOfMeans();
-        statementOfMeans.cohabiting = cohabiting;
+        statementOfMeans.partnerAge = partner;
         case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, case_data);

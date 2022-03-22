@@ -20,7 +20,7 @@ function renderView(form: PartnerSevereDisability, res: express.Response): void 
   res.render(partnerViewPath, {form});
 }
 
-router.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL.toString(), async (req, res) => {
+router.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, async (req, res) => {
   try {
     const partnerSevereDisability = await partnerSevereDisabilityService.getPartnerSevereDisability(req.params.id);
     renderView(partnerSevereDisability, res);
@@ -29,7 +29,7 @@ router.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL.toString(), async (req, res) =>
   }
 });
 
-router.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL.toString(),
+router.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
   async (req, res) => {
     const partnerSevereDisability: PartnerSevereDisability = new PartnerSevereDisability(req.body.partnerSevereDisability);
     const errors: ValidationError[] = validator.validateSync(partnerSevereDisability);
