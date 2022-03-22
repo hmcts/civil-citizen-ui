@@ -4,17 +4,6 @@ import {app} from '../../main/app';
 import * as urls from '../../main/routes/urls';
 import {IGNORED_URLS} from './ignored-urls';
 
-jest.mock('ioredis', () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      set: jest.fn(async () => {
-        return;
-      }),
-    };
-  });
-});
-
-
 const pa11y = require('pa11y');
 
 const agent = supertest.agent(app);

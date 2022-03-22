@@ -20,3 +20,7 @@ export const NUMBER_REQUIRED = 'Enter a valid number';
 export const VALID_TWO_DECIMAL_NUMBER = 'Enter a valid ammount, maximum two decimal places';
 export const SELECT_AN_OPTION = 'Select an option';
 export const VALID_AT_LEAST_ONE_OPTION = 'You must select at least one option';
+export const VALID_HOUSING = 'Describe your housing';
+export const VALID_TEXT_LENGTH = 'You’ve entered too many characters';
+export const VALID_OPTION_SELECTION = 'Select an option';
+

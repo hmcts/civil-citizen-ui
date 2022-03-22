@@ -24,6 +24,13 @@
       },
       "partnerSevereDisability": {
         "option": "yes"
+      },
+      "residence": {
+        "type": {
+          "value": "PRIVATE_RENTAL",
+          "displayValue": "Private rental"
+        },
+        "housingDetails": ""
       }
     }
   }
