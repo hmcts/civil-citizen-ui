@@ -34,6 +34,7 @@ export class OtherDependantsService {
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
     } catch (err) {
       logger.error(`${err.stack || err}`);
+      throw new Error(err);
     }
   }
 }

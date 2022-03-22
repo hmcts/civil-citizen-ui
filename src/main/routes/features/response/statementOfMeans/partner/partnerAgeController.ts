@@ -26,7 +26,7 @@ function renderView(form: Partner, res: express.Response): void {
 router.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
   try {
     await partnerService.getPartnerAge(req.params.id).then((data) => {
-      const partner = data ? new Partner(data.option) : new Partner()
+      const partner = data ? new Partner(data.option) : new Partner();
       renderView(partner, res);
     });
   } catch (error) {
