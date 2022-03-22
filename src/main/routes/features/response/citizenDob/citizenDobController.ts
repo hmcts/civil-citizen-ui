@@ -7,6 +7,7 @@ import {Claim} from '../../../../common/models/claim';
 import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilityVerification';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {get} from 'lodash';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDobController');
@@ -19,9 +20,9 @@ function renderView(res: express.Response, form: CitizenDob): void {
 
 function redirectToNextPage(req: express.Request, res: express.Response, dob: Date) {
   if (AgeEligibilityVerification.isOverEighteen(dob)) {
-    res.redirect(constructResponseUrlWithIdParams(req.params.id,CITIZEN_PHONE_NUMBER_URL));
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
   } else {
-    res.redirect(constructResponseUrlWithIdParams(req.params.id,AGE_ELIGIBILITY_URL));
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, AGE_ELIGIBILITY_URL));
   }
 }
 
@@ -29,13 +30,12 @@ router.get(DOB_URL, async (req: express.Request, res: express.Response) => {
   try {
     const citizenDob = new CitizenDob();
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
-    if (responseDataRedis && responseDataRedis.respondent1.dateOfBirth) {
+    if (get(responseDataRedis,'respondent1.dateOfBirth')) {
       const dateOfBirth =  new Date(responseDataRedis.respondent1.dateOfBirth);
       citizenDob.day = dateOfBirth.getDate();
       citizenDob.month = (dateOfBirth.getMonth() + 1);
       citizenDob.year = dateOfBirth.getFullYear();
     }
-    renderView(res, citizenDob);
   } catch (error) {
     logger.error(error);
     res.status(500).send({error: error.message});

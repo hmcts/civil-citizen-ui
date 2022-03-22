@@ -150,7 +150,7 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     }
     claim.respondent1 = respondent;
     await saveDraftClaim(req.params.id, claim);
-    res.redirect(constructResponseUrlWithIdParams(req.params.id,DOB_URL));
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   }
 });
 

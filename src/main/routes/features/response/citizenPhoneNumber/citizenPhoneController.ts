@@ -5,6 +5,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {get} from 'lodash';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 
@@ -19,7 +20,9 @@ function renderView(form: CitizenTelephoneNumber, res: express.Response): void {
 router.get(CITIZEN_PHONE_NUMBER_URL, async (req, res) => {
   try {
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
-    const citizenTelephoneNumber = !(responseDataRedis && responseDataRedis.respondent1.telephoneNumber) ? new CitizenTelephoneNumber() : new CitizenTelephoneNumber(responseDataRedis.respondent1.telephoneNumber);
+    const citizenTelephoneNumber = !(get(responseDataRedis,'respondent1.telephoneNumber'))
+      ? new CitizenTelephoneNumber()
+      : new CitizenTelephoneNumber(responseDataRedis.respondent1.telephoneNumber);
     renderView(citizenTelephoneNumber, res);
   } catch (error) {
     logger.error(error);
