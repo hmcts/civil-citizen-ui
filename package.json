@@ -8,7 +8,7 @@
   "scripts": {
     "start": "NODE_ENV=production ./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
     "start:dev": "nodemon --config nodemon.json",
-    "lint": "sass-lint -v -q && eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "build": "yarn webpack --config webpack.config.js",
     "build:prod": "NODE_ENV=production yarn webpack --mode production --config webpack.config.js",
     "test": "jest -c jest.config.js",
@@ -95,7 +95,6 @@
     "playwright": "^1.19.2",
     "request": "^2.88.0",
     "sass": "^1.49.9",
-    "sass-lint": "^1.13.1",
     "sass-loader": "^12.4.0",
     "sinon": "^13.0.1",
     "sonar-scanner": "^3.1.0",
@@ -119,6 +118,7 @@
     "**/**/follow-redirects": "^1.14.8",
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
-    "postcss": "^8.2.13"
+    "postcss": "^8.2.13",
+    "gonzales-pe-sl": "^4.2.3"
   }
 }
