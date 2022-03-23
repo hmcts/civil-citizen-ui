@@ -11,6 +11,26 @@
       "code": "FEE0204",
       "version": "4",
       "calculatedAmountInPence": "7000"
+    },
+    "statementOfMeans": {
+      "disability": {
+        "option": "no"
+      },
+      "severeDisability": {
+        "option": "yes"
+      },
+      "cohabiting": {
+        "option": "yes"
+      },
+      "partnerSevereDisability": {
+        "option": "yes"
+      },
+      "partnerAge": {
+        "option": "yes"
+      },
+      "partnerDisability": {
+        "option": "yes"
+      }
     }
   }
 }

@@ -12,7 +12,7 @@
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": "There was a problem",
+          "titleText": t("There was a problem"),
           "errorList": errors
         }) }}
       {% endif %}

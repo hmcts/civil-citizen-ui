@@ -16,10 +16,10 @@
       "disability": {
         "option": "yes"
       },
-      "partner": {
+      "severeDisability": {
         "option": "yes"
       },
-      "partnerDisability": {
+      "cohabiting": {
         "option": "yes"
       },
       "partnerSevereDisability": {
@@ -29,6 +29,12 @@
         "option": "yes",
         "numberOfPeople": 1,
         "details": "Test details"
+      },
+      "partnerAge": {
+        "option": "yes"
+      },
+      "partnerDisability": {
+        "option": "yes"
       },
       "residence": {
         "type": {
