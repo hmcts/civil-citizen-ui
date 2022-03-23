@@ -48,6 +48,7 @@ describe('dependent teenagers service test', () => {
     });
     it('should get form with maxValue and value set from data when data exists', async () => {
       //Given
+      const spy = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
       mockGetCaseData.mockImplementation(async () => {
         return createClaim(4, 3);
@@ -57,6 +58,20 @@ describe('dependent teenagers service test', () => {
       //Then
       expect(form.value).toBe(3);
       expect(form.maxValue).toBe(4);
+      expect(spy).toBeCalled();
+    });
+    it('should return undefined when error occurs', async () => {
+      //Given
+      const spy = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error();
+      });
+      //When
+      const form = await getForm('123');
+      //Then
+      expect(form).toBeUndefined();
+      expect(spy).toBeCalled();
     });
   });
 });

@@ -20,6 +20,7 @@ export const getForm = async (claimId: string): Promise<DependantTeenagers> => {
     return new DependantTeenagers(value, maxValue);
   } catch (error) {
     logger.error(`${error.stack || error}`);
+    return undefined;
   }
 };
 
