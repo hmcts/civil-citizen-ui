@@ -7,7 +7,7 @@ export class NumberOfPeopleValidator implements ValidatorConstraintInterface {
 
   validate(value: number) {
     this.numericValue = value;
-    if (value !== undefined && value !== null && value == 0) {
+    if (!value || value == 0) {
       return false;
     }
     return true;
