@@ -19,8 +19,9 @@ dependantsController
         res.render(residenceViewPath, {
           form: new GenericForm(dependants),
         });
-      } catch (err: unknown) {
-        logger.error(`${err as Error || err}`);
+      } catch (error) {
+        logger.error(`${error.stack || error}`);
+        res.status(500).send({error: error.stack});
       }
     })
   .post(
@@ -38,8 +39,9 @@ dependantsController
         try {
           await dependantsService.saveDependants(req.params.id, dependants);
           res.redirect(CITIZEN_PARTNER_URL.replace(':id', req.params.id));
-        } catch (err: unknown) {
-          logger.error(`${err as Error || err}`);
+        } catch (error) {
+          logger.error(`${error.stack || error}`);
+          res.status(500).send({error: error.stack});
         }
       }
     });
