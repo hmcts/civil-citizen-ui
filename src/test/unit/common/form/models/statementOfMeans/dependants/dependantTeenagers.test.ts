@@ -34,7 +34,7 @@ describe('Dependant Teenagers form validation', () => {
     //Then
     expect(errors.length).toBe(1);
     expect(errors[0].constraints).not.toBeUndefined();
-    expect(errors[0].constraints?.isInt).not.toBeUndefined();
+    expect(errors[0].constraints?.isNumber).not.toBeUndefined();
   });
   it('should have errors when value is negative', () => {
     //Given
