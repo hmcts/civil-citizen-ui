@@ -17,9 +17,8 @@ export class PartnerAgeService {
         return partnerAge;
       }
       return new PartnerAge();
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error(`${err as Error || err}`);
-      throw new Error(err);
     }
   }
 

@@ -25,12 +25,10 @@ function renderView(form: PartnerAge, res: express.Response): void {
 
 router.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
   try {
-    const response = await partnerAgeService.getPartnerAge(req.params.id);
-    const partner = response ? new PartnerAge(response.option) : new PartnerAge();
-    renderView(partner, res);
-  } catch (error) {
-    logger.error(`${error.stack || error}`);
-    res.status(500).send({ error: error.message });
+    const partnerAge = await partnerAgeService.getPartnerAge(req.params.id);
+    renderView(partnerAge, res);
+  } catch (err: unknown) {
+    logger.error(`${err as Error || err}`);
   }
 });
 

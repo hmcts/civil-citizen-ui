@@ -6,9 +6,9 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = "Is your partner aged 18 or over?" %}
-      {% set id = "option" %}
-      {% set name = "option" %}
+      {% set title = t("Is your partner aged 18 or over?") %}
+      {% set id = "partnerAge" %}
+      {% set name = "partnerAge" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
@@ -18,7 +18,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <form method="post" novalidate>
+          <form method="post">
             {{ yesNoRadioButton(t,id,name,title,form) }}
             <div class="govuk-form-group">
               {{ govukButton({
