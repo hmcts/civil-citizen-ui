@@ -12,7 +12,7 @@
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getAllErrors() %}
       {% set declaredError = form.errorFor('declared') %}
-      {% set numberOfChildrenError = form.errorFor('numberOfChildren') %}
+      {% set atLeastOneNumberShouldBeEnteredError = form.errorFor('numberOfChildren') %}
       {% set under11Error = form.nestedErrorFor('under11') %}
       {% set between11and15Error = form.nestedErrorFor('between11and15') %}
       {% set between16and19Error = form.nestedErrorFor('between16and19') %}
@@ -31,11 +31,14 @@
             {{ csrfProtection(csrf) }}
 
             {% set numberOfChildrenHtml %}
-              <div class="govuk-form-group {% if numberOfChildrenError %} govuk-form-group--error {% endif %}">
-                {% if numberOfChildrenError %}
-                <p class="govuk-error-message">
-                  <span class="govuk-visually-hidden">Error:</span> {{ t(numberOfChildrenError) }}
-                </p>
+              <div
+                class="govuk-form-group {% if atLeastOneNumberShouldBeEnteredError %} govuk-form-group--error {% endif %}">
+                {% if atLeastOneNumberShouldBeEnteredError %}
+                  <p class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> {{ t(atLeastOneNumberShouldBeEnteredError) }}
+                  </p>
+                {% else %}
+                  <p class="govuk-body-m">{{ t('Enter how many for each age group.') }}</p>
                 {% endif %}
                 {{ govukInput({
                   id: "under11",
@@ -101,7 +104,6 @@
                 text: declaredError
               } if declaredError
             }) }}
-
 
             <div class="govuk-form-group">
               {{ govukButton({
