@@ -11,6 +11,7 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+const redisFailureError = 'Redis DraftStore failure.';
 
 describe('Citizen date of birth', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,21 +23,17 @@ describe('Citizen date of birth', () => {
   });
   describe('on Exception', () => {
     test('should return http 500 when has error in the get method', async () => {
-      const dateOfBirthError  ='Cannot read property \'dateOfBirth\' of undefined';
       mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = undefined;
-        return claim;
+        throw new Error(redisFailureError);
       });
       await request(app)
         .get(DOB_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: dateOfBirthError});
+          expect(res.body).toEqual({error: redisFailureError});
         });
     });
     test('should return http 500 when has error in the post method', async () => {
-      const redisFailureError = 'Redis DraftStore failure.';
       mockGetCaseData.mockImplementation(async () => {
         throw new Error(redisFailureError);
       });
@@ -56,7 +53,6 @@ describe('Citizen date of birth', () => {
   describe('on GET', () => {
     test('should return citizen date of birth page empty when dont have information on redis ', async () => {
       mockGetCaseData.mockImplementation(async () => undefined);
-
       await request(app)
         .get(DOB_URL)
         .expect((res) => {

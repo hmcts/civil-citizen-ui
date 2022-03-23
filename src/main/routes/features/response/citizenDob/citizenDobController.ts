@@ -13,6 +13,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDobController');
 
 const router = express.Router();
+const validator = new Validator();
 
 function renderView(res: express.Response, form: CitizenDob): void {
   res.render('features/response/citizenDob/citizen-dob', {form: form});
@@ -36,6 +37,7 @@ router.get(DOB_URL, async (req: express.Request, res: express.Response) => {
       citizenDob.month = (dateOfBirth.getMonth() + 1);
       citizenDob.year = dateOfBirth.getFullYear();
     }
+    renderView(res, citizenDob);
   } catch (error) {
     logger.error(error);
     res.status(500).send({error: error.message});
@@ -45,7 +47,6 @@ router.get(DOB_URL, async (req: express.Request, res: express.Response) => {
 router.post(DOB_URL, async (req, res) => {
   try {
     const citizenDob = new CitizenDob(req.body.year, req.body.month, req.body.day);
-    const validator = new Validator();
     citizenDob.errors = validator.validateSync(citizenDob);
     if (citizenDob.errors && citizenDob.errors.length > 0) {
       renderView(res, citizenDob);

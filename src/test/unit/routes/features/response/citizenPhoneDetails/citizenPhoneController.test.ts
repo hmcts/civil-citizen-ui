@@ -14,6 +14,7 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+const redisFailureError = 'Redis DraftStore failure.';
 
 describe('Citizen phone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -26,23 +27,19 @@ describe('Citizen phone number', () => {
   describe('on Exception', () => {
 
     test('should return http 500 when has error in the get method', async () => {
-      const telephoneNumberError = 'Cannot read property \'telephoneNumber\' of undefined';
       mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = undefined;
-        return claim;
+        throw new Error(redisFailureError);
       });
       await request(app)
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: telephoneNumberError});
+          expect(res.body).toEqual({error: redisFailureError});
         });
     });
   });
 
   test('should return http 500 when has error in the post method', async () => {
-    const redisFailureError = 'Redis DraftStore failure.';
     mockGetCaseData.mockImplementation(async () => {
       throw new Error(redisFailureError);
     });

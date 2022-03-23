@@ -22,17 +22,15 @@ describe('Citizen response type', () => {
   });
   describe('on Exception', () => {
     test('should return http 500 when has error in the get method', async () => {
-      const responseTypeError = 'Cannot read property \'responseType\' of undefined';
+      const redisFailureError = 'Redis DraftStore failure.';
       mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = undefined;
-        return claim;
+        throw new Error(redisFailureError);
       });
       await request(app)
         .get(CITIZEN_RESPONSE_TYPE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: responseTypeError});
+          expect(res.body).toEqual({error: redisFailureError});
         });
     });
   });

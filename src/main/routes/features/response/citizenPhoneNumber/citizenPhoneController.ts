@@ -12,6 +12,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenPhoneController');
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
 const router = express.Router();
+const validator = new Validator();
 
 function renderView(form: CitizenTelephoneNumber, res: express.Response): void {
   res.render(citizenPhoneViewPath, {form: form});
@@ -33,7 +34,6 @@ router.post(CITIZEN_PHONE_NUMBER_URL,
   async (req, res) => {
     try {
       const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
-      const validator = new Validator();
       const errors: ValidationError[] = validator.validateSync(model);
       if (errors && errors.length > 0) {
         model.errors = errors;

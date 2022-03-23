@@ -7,7 +7,7 @@ import ageEligibilityRoute from './features/response/ageEligibility/ageEligibili
 import responseDetailsRoute from './features/response/citizenDetails/citizenDetailsController';
 import claimDetailsRoute from './features/response/claimDetails/claimDetailsController';
 import responsePostcodeLookupRoute from './features/response/citizenDetails/postcodeLookupController';
-import citizenResponseType from './features/response/responseType/citizenResponseType';
+import citizenResponseType from './features/response/responseType/citizenResponseTypeController';
 import citizenPartnerAgeController from './features/response/statementOfMeans/partner/partnerAgeController';
 import citizenDisability from './features/response/statementOfMeans/disabilityController';
 import citizenSevereDisability from './features/response/statementOfMeans/severeDisabilityController';

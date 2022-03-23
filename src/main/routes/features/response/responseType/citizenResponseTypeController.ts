@@ -15,6 +15,7 @@ const logger = Logger.getLogger('citizenPhoneController');
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const router = express.Router();
 const DEADLINE = new Claim().formattedResponseDeadline();
+const validator = new Validator();
 
 const componentDetailItemsList: ComponentDetailItems[] = [
   {title: 'Admit all of the claim', content: ['You have until 4pm on ' + DEADLINE + ' to admit the claim.']},
@@ -49,7 +50,6 @@ router.post(CITIZEN_RESPONSE_TYPE_URL,
   async (req, res) => {
     try {
       const model: CitizenResponseType = new CitizenResponseType(req.body.responseType);
-      const validator = new Validator();
       const errors: ValidationError[] = validator.validateSync(model);
       if (errors && errors.length > 0) {
         model.errors = errors;
