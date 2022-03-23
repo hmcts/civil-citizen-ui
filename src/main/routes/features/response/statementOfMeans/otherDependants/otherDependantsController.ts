@@ -32,17 +32,22 @@ router.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res) => {
 });
 
 router.post(CITIZEN_OTHER_DEPENDANTS_URL,
-  (req, res) => {
-    const otherDependants: OtherDependants = new OtherDependants(
-      req.body.option, req.body.numberOfPeople, req.body.details);
-    const validator = new Validator();
-    const errors: ValidationError[] = validator.validateSync(otherDependants);
-    if (errors && errors.length > 0) {
-      otherDependants.errors = errors;
-      renderView(otherDependants, res);
-    } else {
-      otherDependantsService.saveOtherDependants(req.params.id, otherDependants);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EMPLOYMENT_URL));
+  async (req, res) => {
+    try{
+      const otherDependants: OtherDependants = new OtherDependants(
+        req.body.option, req.body.numberOfPeople, req.body.details);
+      const validator = new Validator();
+      const errors: ValidationError[] = validator.validateSync(otherDependants);
+      if (errors && errors.length > 0) {
+        otherDependants.errors = errors;
+        renderView(otherDependants, res);
+      } else {
+        await otherDependantsService.saveOtherDependants(req.params.id, otherDependants);
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EMPLOYMENT_URL));
+      }
+    } catch (error) {
+      logger.error(`${error.stack || error}`);
+      res.status(500).send({error: error.message});
     }
   });
 

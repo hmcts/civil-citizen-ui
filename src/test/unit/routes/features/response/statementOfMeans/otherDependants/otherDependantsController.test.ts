@@ -9,14 +9,21 @@ import {
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const noDisabilityMock = require('../noDisabilityMock.json');
+const withoutOtherDependentJson = require('./withoutOtherDependantsMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
+const civilClaimResponseWithoutDisability: string = JSON.stringify(noDisabilityMock);
+const civilClaimResponseWithoutOtherDependent: string = JSON.stringify(withoutOtherDependentJson);
 const mockDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponse)),
 };
 const mockNoDisabilityDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(noDisabilityMock)),
+  get: jest.fn(() => Promise.resolve(civilClaimResponseWithoutDisability)),
+};
+const mockWithoutOtherDependents = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(civilClaimResponseWithoutOtherDependent)),
 };
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -65,6 +72,16 @@ describe('on GET', () => {
       .expect((res) => {
         expect(res.status).toBe(500);
         expect(res.body).toEqual({error: 'Error: Redis DraftStore failure.'});
+      });
+  });
+
+  test('should return empty OtherDependants object', async () => {
+    app.locals.draftStoreClient = mockWithoutOtherDependents;
+    await request(app)
+      .get(CITIZEN_OTHER_DEPENDANTS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Do you support anyone else financially?');
       });
   });
 });
@@ -157,6 +174,29 @@ describe('on POST', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter a number higher than 0');
         expect(res.text).toContain('Enter details');
+      });
+  });
+  test('should save when we dont have information on redis', async () => {
+    app.locals.draftStoreClient = mockWithoutOtherDependents;
+    await request(app)
+      .post(CITIZEN_OTHER_DEPENDANTS_URL)
+      .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
+      .expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
+      });
+  });
+  test('should throw an error when call redis', async () => {
+    const mockDraftStore = {
+      set: jest.fn(() => Promise.resolve({})),
+      get: jest.fn(() => {throw new Error('Redis DraftStore failure.');})};
+    app.locals.draftStoreClient = mockDraftStore;
+    await request(app)
+      .post(CITIZEN_OTHER_DEPENDANTS_URL)
+      .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
+      .expect((res) => {
+        expect(res.status).toBe(500);
+        expect(res.body).toEqual({error: 'Error: Redis DraftStore failure.'});
       });
   });
 });
