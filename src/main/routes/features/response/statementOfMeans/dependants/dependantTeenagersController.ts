@@ -2,7 +2,7 @@ import * as express from 'express';
 import {DEPENDANT_TEENAGERS_URL} from '../../../../../routes/urls';
 import {DependantTeenagers} from '../../../../../common/form/models/statementOfMeans/dependants/dependantTeenagers';
 import {validateForm} from '../../../../../common/form/validators/formValidator';
-import {saveToDraftStore} from 'modules/statementOfMeans/dependants/dependantTeenagersService';
+import {saveToDraftStore} from '../../../../../modules/statementOfMeans/dependants/dependantTeenagersService';
 
 
 const {Logger} = require('@hmcts/nodejs-logging');

@@ -1,5 +1,5 @@
-import {DependantTeenagers} from 'common/form/models/statementOfMeans/dependants/dependantTeenagers';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {DependantTeenagers} from '../../../common/form/models/statementOfMeans/dependants/dependantTeenagers';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
