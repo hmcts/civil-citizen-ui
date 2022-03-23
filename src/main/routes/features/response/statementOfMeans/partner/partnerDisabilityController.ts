@@ -32,7 +32,7 @@ router.get(CITIZEN_PARTNER_DISABILITY_URL, async (req, res) => {
 
 router.post(CITIZEN_PARTNER_DISABILITY_URL,
   async (req, res) => {
-    const partnerDisability: PartnerDisability = new PartnerDisability(req.body.partnerDisability);
+    const partnerDisability: PartnerDisability = new PartnerDisability(req.body.option);
 
     const errors: ValidationError[] = validator.validateSync(partnerDisability);
     if (errors && errors.length > 0) {

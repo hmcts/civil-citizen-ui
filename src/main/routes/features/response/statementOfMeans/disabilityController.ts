@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CITIZEN_DISABILITY_URL, CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
+import {CITIZEN_DISABILITY_URL, CITIZEN_SEVERELY_DISABLED_URL, CITIZEN_RESIDENCE_URL} from '../../../urls';
 import {Disability} from '../../../../common/form/models/statementOfMeans/disability';
 import {ValidationError, Validator} from 'class-validator';
 import {DisabilityService} from '../../../../modules/statementOfMeans/disabilityService';
@@ -27,7 +27,7 @@ router.get(CITIZEN_DISABILITY_URL, async (req, res) => {
 
 router.post(CITIZEN_DISABILITY_URL,
   async (req, res) => {
-    const disability: Disability = new Disability(req.body.disability);
+    const disability: Disability = new Disability(req.body.option);
     const errors: ValidationError[] = validator.validateSync(disability);
     if (errors && errors.length > 0) {
       disability.errors = errors;

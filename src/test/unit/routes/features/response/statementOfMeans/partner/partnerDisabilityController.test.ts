@@ -58,7 +58,7 @@ describe('Partner disability', () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(CITIZEN_PARTNER_DISABILITY_URL)
-        .send('partnerDisability=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
@@ -68,7 +68,7 @@ describe('Partner disability', () => {
       app.locals.draftStoreClient = mockNoPartnerDraftStore;
       await request(app)
         .post(CITIZEN_PARTNER_DISABILITY_URL)
-        .send('partnerDisability=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
@@ -88,7 +88,7 @@ describe('Partner disability', () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(CITIZEN_PARTNER_DISABILITY_URL)
-        .send('partnerDisability=yes')
+        .send('option=yes')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_PARTNER_SEVERE_DISABILITY_URL);
