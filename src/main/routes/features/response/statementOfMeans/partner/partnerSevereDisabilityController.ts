@@ -31,7 +31,7 @@ router.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, async (req, res) => {
 
 router.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
   async (req, res) => {
-    const partnerSevereDisability: PartnerSevereDisability = new PartnerSevereDisability(req.body.partnerSevereDisability);
+    const partnerSevereDisability: PartnerSevereDisability = new PartnerSevereDisability(req.body.option);
     const errors: ValidationError[] = validator.validateSync(partnerSevereDisability);
     if (errors && errors.length > 0) {
       partnerSevereDisability.errors = errors;
