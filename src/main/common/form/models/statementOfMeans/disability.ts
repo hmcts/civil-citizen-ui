@@ -6,8 +6,8 @@ export class Disability extends Form {
   @IsDefined({message: VALID_YES_NO_OPTION})
     option?: string;
 
-  constructor(option?: string, errors?: ValidationError[]) {
+  constructor(disablity?: string, errors?: ValidationError[]) {
     super(errors);
-    this.option = option;
+    this.option = disablity;
   }
 }
