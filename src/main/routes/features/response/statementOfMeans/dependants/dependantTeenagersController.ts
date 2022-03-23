@@ -2,7 +2,7 @@ import * as express from 'express';
 import {DEPENDANT_TEENAGERS_URL, OTHER_DEPENDANTS_URL} from '../../../../../routes/urls';
 import {DependantTeenagers} from '../../../../../common/form/models/statementOfMeans/dependants/dependantTeenagers';
 import {validateForm} from '../../../../../common/form/validators/formValidator';
-import {saveToDraftStore} from '../../../../../modules/statementOfMeans/dependants/dependantTeenagersService';
+import {saveFormToDraftStore} from '../../../../../modules/statementOfMeans/dependants/dependantTeenagersService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 
@@ -33,7 +33,7 @@ router.post(DEPENDANT_TEENAGERS_URL, async (req, res) => {
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveToDraftStore(req.params.id, form);
+      await saveFormToDraftStore(req.params.id, form);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, OTHER_DEPENDANTS_URL));
     }
   } catch (error) {
