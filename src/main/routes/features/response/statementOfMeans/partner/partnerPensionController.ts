@@ -22,8 +22,9 @@ router.get(CITIZEN_PARTNER_PENSION_URL, async (req, res) => {
   try {
     const partnerPension = await partnerPensionService.getPartnerPension(req.params.id);
     renderView(partnerPension, res);
-  } catch (err: unknown) {
-    logger.error(`${err as Error || err}`);
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send({error: error.message});
   }
 });
 
@@ -43,8 +44,9 @@ router.post(CITIZEN_PARTNER_PENSION_URL,
         } else {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DISABILITY_URL));
         }
-      } catch (err: unknown) {
-        logger.error(`${err as Error || err}`);
+      } catch (error) {
+        logger.error(error);
+        res.status(500).send({error: error.message});
       }
     }
   });

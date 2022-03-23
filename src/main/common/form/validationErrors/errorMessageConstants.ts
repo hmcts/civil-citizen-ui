@@ -12,8 +12,8 @@ export const VALID_CORRESPONDENCE_POSTCODE = 'Enter correspondence address postc
 export const VALID_CHOOSE = 'Choose your response';
 export const POSTCODE_NOT_VALID = 'Postcode must be in United Kingdom';
 export const DEFENDANT_POSTCODE_NOT_VALID = 'Postcode must be in England or Wales';
-export const CLAIM_NUMBER= 'testCaseReference';
-export const CLAIM_DETAILS= 'Claim details';
+export const CLAIM_NUMBER = 'testCaseReference';
+export const CLAIM_DETAILS = 'Claim details';
 export const VALID_YES_NO_OPTION = 'Choose option: Yes or No';
 export const TYPE_OF_ACCOUNT_REQUIRED = 'Select a type of account';
 export const NUMBER_REQUIRED = 'Enter a valid number';
@@ -23,4 +23,4 @@ export const VALID_AT_LEAST_ONE_OPTION = 'You must select at least one option';
 export const VALID_HOUSING = 'Describe your housing';
 export const VALID_TEXT_LENGTH = 'You’ve entered too many characters';
 export const VALID_OPTION_SELECTION = 'Select an option';
-
+export const REDIS_FAILURE = 'Redis DraftStore failure.';

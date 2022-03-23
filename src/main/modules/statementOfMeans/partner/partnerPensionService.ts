@@ -17,8 +17,9 @@ export class PartnerPensionService {
         return partnerPension;
       }
       return new PartnerPension();
-    } catch (err: unknown) {
-      logger.error(`${err as Error || err}`);
+    } catch (error: unknown) {
+      logger.error(`${error as Error || error}`);
+      throw error;
     }
   }
 
@@ -33,8 +34,9 @@ export class PartnerPensionService {
         case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, case_data);
-    } catch (err: unknown) {
-      logger.error(`${err as Error || err}`);
+    } catch (error: unknown) {
+      logger.error(`${error as Error || error}`);
+      throw error;
     }
   }
 }
