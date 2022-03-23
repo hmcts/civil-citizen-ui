@@ -8,10 +8,15 @@ import {
 } from '../../../../../../../main/routes/urls';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
+const noDisabilityMock = require('../noDisabilityMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
 const mockDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponse)),
+};
+const mockNoDisabilityDraftStore = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(noDisabilityMock)),
 };
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -66,7 +71,7 @@ describe('on GET', () => {
 
 describe('on POST', () => {
   test('should return error when radio box is not selected', async () => {
-    app.locals.draftStoreClient = mockDraftStore;
+    app.locals.draftStoreClient = mockNoDisabilityDraftStore;
     await request(app)
       .post(CITIZEN_OTHER_DEPENDANTS_URL)
       .send('')
