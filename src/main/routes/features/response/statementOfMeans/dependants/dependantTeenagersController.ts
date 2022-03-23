@@ -2,7 +2,10 @@ import * as express from 'express';
 import {DEPENDANT_TEENAGERS_URL, OTHER_DEPENDANTS_URL} from '../../../../../routes/urls';
 import {DependantTeenagers} from '../../../../../common/form/models/statementOfMeans/dependants/dependantTeenagers';
 import {validateForm} from '../../../../../common/form/validators/formValidator';
-import {saveFormToDraftStore} from '../../../../../modules/statementOfMeans/dependants/dependantTeenagersService';
+import {
+  getForm,
+  saveFormToDraftStore,
+} from '../../../../../modules/statementOfMeans/dependants/dependantTeenagersService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 
@@ -21,9 +24,14 @@ function convertToForm(req: express.Request) {
   return new DependantTeenagers(value, maxValue);
 }
 
-router.get(DEPENDANT_TEENAGERS_URL, (req, res) => {
-  const form = new DependantTeenagers(undefined, 3);
-  renderView(form, res);
+router.get(DEPENDANT_TEENAGERS_URL, async (req, res) => {
+  try {
+    const form = await getForm(req.params.id);
+    renderView(form, res);
+  } catch (error) {
+    logger.error(`${(error as Error).stack || error}`);
+    res.status(500).send({error: error.message});
+  }
 });
 
 router.post(DEPENDANT_TEENAGERS_URL, async (req, res) => {
