@@ -41,6 +41,7 @@ describe('Employment status', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_YES_NO_OPTION);
+          expect(res.text).toContain('govuk-error-message');
         });
     });
     it('should return error message when option yes is selected but no employment type is selected', async () => {
