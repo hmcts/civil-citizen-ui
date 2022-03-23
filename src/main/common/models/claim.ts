@@ -21,13 +21,6 @@ export class Claim {
   formattedTotalClaimAmount(): string {
     return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
   }
-
-  public getStatementOfMeans(): StatementOfMeans {
-    if (!this.statementOfMeans) {
-      this.statementOfMeans = new StatementOfMeans();
-    }
-    return this.statementOfMeans;
-  }
 }
 
 export class Individual {
