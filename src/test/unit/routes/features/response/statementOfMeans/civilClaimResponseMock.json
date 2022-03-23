@@ -16,14 +16,27 @@
       "disability": {
         "option": "yes"
       },
-      "partner": {
+      "severeDisability": {
+        "option": "yes"
+      },
+      "cohabiting": {
+        "option": "yes"
+      },
+      "partnerSevereDisability": {
+        "option": "yes"
+      },
+      "partnerAge": {
         "option": "yes"
       },
       "partnerDisability": {
         "option": "yes"
       },
-      "partnerSevereDisability": {
-        "option": "yes"
+      "residence": {
+        "type": {
+          "value": "PRIVATE_RENTAL",
+          "displayValue": "Private rental"
+        },
+        "housingDetails": ""
       }
     }
   }

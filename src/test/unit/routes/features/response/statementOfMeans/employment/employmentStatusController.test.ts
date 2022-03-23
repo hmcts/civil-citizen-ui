@@ -42,6 +42,7 @@ describe('Employment status', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_YES_NO_OPTION);
         });
+      1;
     });
     it('should return error message when option yes is selected but no employment type is selected', async () => {
       await request(app).post(CITIZEN_EMPLOYMENT_URL)
