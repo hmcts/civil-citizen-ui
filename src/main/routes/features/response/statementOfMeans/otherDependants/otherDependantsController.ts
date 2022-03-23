@@ -20,20 +20,18 @@ function renderView(form: OtherDependants, res: express.Response): void {
   res.render(citizenOtherDependantsViewPath, {form});
 }
 
-router.get(CITIZEN_OTHER_DEPENDANTS_URL.toString(), async (req, res) => {
+router.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res) => {
   try {
     const response = await otherDependantsService.getOtherDependants(req.params.id);
     const otherDependants = response ? new OtherDependants(response.option, response.numberOfPeople, response.details) : new OtherDependants();
     renderView(otherDependants, res);
-
   } catch (error) {
     logger.error(`${error.stack || error}`);
     res.status(500).send({error: error.message});
   }
 });
 
-
-router.post(CITIZEN_OTHER_DEPENDANTS_URL.toString(),
+router.post(CITIZEN_OTHER_DEPENDANTS_URL,
   (req, res) => {
     const otherDependants: OtherDependants = new OtherDependants(
       req.body.option, req.body.numberOfPeople, req.body.details);

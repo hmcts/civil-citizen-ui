@@ -82,7 +82,6 @@ describe('Form has field text error', () => {
     form.errors = createValidationError();
     //When
     const textError = form.getTextError(_errors, 'primaryAddressLine1');
-    console.log(textError);
     //Then
     expect(textError).toEqual({'isNotEmpty': 'Enter first address line'});
   });

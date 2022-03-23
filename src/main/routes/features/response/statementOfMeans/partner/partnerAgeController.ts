@@ -30,7 +30,7 @@ router.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
     renderView(partner, res);
   } catch (error) {
     logger.error(`${error.stack || error}`);
-    res.status(500).send({error: error.message});
+    res.status(500).send({ error: error.message });
   }
 });
 
