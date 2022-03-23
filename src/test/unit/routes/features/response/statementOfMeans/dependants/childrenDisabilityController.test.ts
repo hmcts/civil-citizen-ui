@@ -7,6 +7,7 @@ import {
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../../main/routes/urls';
 import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const noStatementOfMeansMock = require('../noStatementOfMeansMock.json');
@@ -21,8 +22,12 @@ const mockNoChildrenDisabilityDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(noChildrenDisabilityResponse)),
 };
+
+
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
+const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+const redisFailureError = 'Redis DraftStore failure.';
 
 describe('Children Disability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -31,6 +36,34 @@ describe('Children Disability', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+  });
+
+  describe('on Exception', () => {
+    test('should return http 500 when has error in the get method', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(redisFailureError);
+      });
+      await request(app)
+        .get(CHILDREN_DISABILITY_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toEqual({error: redisFailureError});
+        });
+    });
+
+
+    test('should return http 500 when has error in the post method', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(redisFailureError);
+      });
+      await request(app)
+        .post(CHILDREN_DISABILITY_URL)
+        .send('option=no')
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toEqual({error: redisFailureError});
+        });
+    });
   });
 
   describe('on GET', () => {
