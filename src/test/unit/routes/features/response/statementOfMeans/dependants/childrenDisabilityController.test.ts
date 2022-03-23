@@ -55,11 +55,21 @@ describe('Children Disability', () => {
   });
 
   describe('on POST', () => {
+    test('should redirect page when "no" and no statement of means', async () => {
+      app.locals.draftStoreClient = mockNoChildrenDisabilityDraftStore;
+      await request(app)
+        .post(CHILDREN_DISABILITY_URL)
+        .send('option=no')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_OTHER_DEPENDANTS_URL);
+        });
+    });
     test('should redirect page when "no"', async () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(CHILDREN_DISABILITY_URL)
-        .send('childrenDisability=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_OTHER_DEPENDANTS_URL);
@@ -69,7 +79,7 @@ describe('Children Disability', () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(CHILDREN_DISABILITY_URL)
-        .send('childrenDisability=yes')
+        .send('option=yes')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_OTHER_DEPENDANTS_URL);
