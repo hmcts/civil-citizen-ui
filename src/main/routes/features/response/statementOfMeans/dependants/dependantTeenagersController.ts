@@ -2,6 +2,7 @@ import * as express from 'express';
 import {DEPENDANT_TEENAGERS_URL} from '../../../../../routes/urls';
 import {DependantTeenagers} from '../../../../../common/form/models/statementOfMeans/dependants/dependantTeenagers';
 import {validateForm} from '../../../../../common/form/validators/formValidator';
+import {saveToDraftStore} from 'modules/statementOfMeans/dependants/dependantTeenagersService';
 
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -30,6 +31,8 @@ router.post(DEPENDANT_TEENAGERS_URL, async (req, res) => {
     await validateForm(form);
     if (form.hasErrors()) {
       renderView(form, res);
+    } else {
+      await saveToDraftStore(req.params.id, form);
     }
   } catch (error) {
     logger.error(`${(error as Error).stack || error}`);
