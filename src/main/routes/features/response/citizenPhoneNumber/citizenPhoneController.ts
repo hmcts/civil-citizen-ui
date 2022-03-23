@@ -4,36 +4,55 @@ import {CITIZEN_PHONE_NUMBER_URL, DASHBOARD_URL} from '../../../urls';
 import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {get} from 'lodash';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+
+const logger = Logger.getLogger('citizenPhoneController');
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
 const router = express.Router();
-const citizenTelephoneNumber = new CitizenTelephoneNumber();
+const validator = new Validator();
 
 function renderView(form: CitizenTelephoneNumber, res: express.Response): void {
   res.render(citizenPhoneViewPath, {form: form});
 }
 
-router.get(CITIZEN_PHONE_NUMBER_URL, (req, res) => {
-  renderView(citizenTelephoneNumber, res);
+router.get(CITIZEN_PHONE_NUMBER_URL, async (req, res) => {
+  try {
+    const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
+    const citizenTelephoneNumber = !(get(responseDataRedis,'respondent1.telephoneNumber'))
+      ? new CitizenTelephoneNumber()
+      : new CitizenTelephoneNumber(responseDataRedis.respondent1.telephoneNumber);
+    renderView(citizenTelephoneNumber, res);
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send({error: error.message});
+  }
 });
 router.post(CITIZEN_PHONE_NUMBER_URL,
-  (req, res) => {
-    const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
-    const validator = new Validator();
-    const errors: ValidationError[] = validator.validateSync(model);
-    if (errors && errors.length > 0) {
-      model.errors = errors;
-      renderView(model, res);
-    } else {
-      const respondent = new Respondent();
-      respondent.telephoneNumber = model.telephoneNumber;
-      const claim = new Claim();
-      claim.respondent1 = respondent;
-      claim.legacyCaseReference = 'phone-number';
-      const draftStoreClient = req.app.locals.draftStoreClient;
-      draftStoreClient.set(claim.legacyCaseReference, JSON.stringify(claim)).then(() => {
+  async (req, res) => {
+    try {
+      const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
+      const errors: ValidationError[] = validator.validateSync(model);
+      if (errors && errors.length > 0) {
+        model.errors = errors;
+        renderView(model, res);
+      } else {
+        const claim = await getCaseDataFromStore(req.params.id) || new Claim();
+        if (claim.respondent1) {
+          claim.respondent1.telephoneNumber = model.telephoneNumber;
+        } else {
+          const respondent = new Respondent();
+          respondent.telephoneNumber = model.telephoneNumber;
+          claim.respondent1 = respondent;
+        }
+        await saveDraftClaim(req.params.id, claim);
         res.redirect(DASHBOARD_URL);
-      });
+      }
+    } catch (error) {
+      logger.error(error);
+      res.status(500).send({error: error.message});
     }
   });
 

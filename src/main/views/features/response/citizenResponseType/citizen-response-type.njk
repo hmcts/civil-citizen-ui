@@ -31,6 +31,7 @@
               items: [
                 {
                   value: ResponseType.FULL_ADMISSION,
+                  checked: true if form.responseType === ResponseType.FULL_ADMISSION,
                   html: "<span class=\"govuk-!-font-weight-bold\">" + t('I admit all of the claim') + "</span>" ,
                   hint: {
                     text: t('You agree you owe the full amount claimed.')
@@ -38,6 +39,7 @@
                 },
                 {
                   value: ResponseType.PART_ADMISSION,
+                  checked: true if form.responseType  === ResponseType.PART_ADMISSION,
                   html: "<span class=\"govuk-!-font-weight-bold\">" + t('I admit part of the claim') + "</span>" ,
                   hint: {
                     text: t('You agree you owe some money but not the full amount claimed.')
@@ -45,6 +47,7 @@
                 },
                 {
                   value: ResponseType.FULL_DEFENCE,
+                  checked: true if form.responseType === ResponseType.FULL_DEFENCE,
                   html: "<span class=\"govuk-!-font-weight-bold\">" + t('I reject all of the claim') + "</span>" ,
                   hint: {
                     text: t("You've either paid what you believe you owe or you reject the claim.")
