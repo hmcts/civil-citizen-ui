@@ -6,13 +6,13 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = "Is your partner aged 18 or over?" %}
+      {% set title = t("Is your partner aged 18 or over?") %}
       {% set id = "partnerAge" %}
       {% set name = "partnerAge" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": "There was a problem",
+          "titleText": t("There was a problem"),
           "errorList": errors
         }) }}
       {% endif %}

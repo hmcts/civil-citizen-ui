@@ -7,13 +7,13 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = "Are you severely disabled?" %}
+      {% set title = t("Are you severely disabled?") %}
       {% set id = "severeDisability" %}
       {% set name = "severeDisability" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": "There was a problem",
+          "titleText": t("There was a problem"),
           "errorList": errors
         }) }}
       {% endif %}
