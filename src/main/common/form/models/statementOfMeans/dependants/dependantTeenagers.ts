@@ -1,5 +1,5 @@
 import {Form} from '../../form';
-import {IsDefined, IsNumber, IsPositive, Validate} from 'class-validator';
+import {IsDefined, IsNumber, Min, Validate} from 'class-validator';
 import {NUMBER_REQUIRED, VALID_INTEGER, VALID_POSITIVE_NUMBER} from '../../../validationErrors/errorMessageConstants';
 import {EqualToOrLessThanPropertyValueValidator} from '../../../validators/equalToOrLessThanPropertyValueValidator';
 
@@ -7,7 +7,7 @@ export class DependantTeenagers extends Form {
   @IsDefined({message: NUMBER_REQUIRED})
   @IsNumber({allowNaN: false, maxDecimalPlaces: 0}, {message: VALID_INTEGER})
   @Validate(EqualToOrLessThanPropertyValueValidator, ['maxValue'])
-  @IsPositive({message: VALID_POSITIVE_NUMBER})
+  @Min(0, {message: VALID_POSITIVE_NUMBER})
     value: number;
   maxValue: number;
 
@@ -15,9 +15,6 @@ export class DependantTeenagers extends Form {
     super();
     this.value = value;
     this.maxValue = maxValue;
-    console.log('constructor');
-    console.log(value);
-    console.log(maxValue);
   }
 
   getMaxValue(): number {

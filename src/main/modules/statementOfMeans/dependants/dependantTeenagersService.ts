@@ -18,11 +18,14 @@ export const saveToDraftStore = async (claimId: string, form: DependantTeenagers
 };
 
 const getClaim = async (claimId: string): Promise<Claim> => {
-  let claim = new Claim();
+  let claim;
   try {
     claim = await getCaseDataFromStore(claimId);
   } catch (error) {
     logger.error(`${error.stack || error}`);
+  }
+  if (!claim) {
+    claim = new Claim();
   }
   return claim;
 };

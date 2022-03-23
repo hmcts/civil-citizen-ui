@@ -2,7 +2,7 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../../main/app';
-import {DEPENDANT_TEENAGERS_URL} from '../../../../../../../main/routes/urls';
+import {DEPENDANT_TEENAGERS_URL, OTHER_DEPENDANTS_URL} from '../../../../../../../main/routes/urls';
 import {
   NUMBER_REQUIRED,
   VALID_INTEGER,
@@ -67,6 +67,15 @@ describe('Dependant Teenagers', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_NUMBER_FOR_PREVIOUS_PAGE);
+        });
+    });
+    test('should redirect when no errors', async () => {
+      await request(app)
+        .post(DEPENDANT_TEENAGERS_URL)
+        .send({value: 1, maxValue: 3})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(OTHER_DEPENDANTS_URL);
         });
     });
   });
