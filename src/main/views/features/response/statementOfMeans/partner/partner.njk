@@ -6,14 +6,14 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = "Do you live with a partner?" %}
-      {% set description = "For example, a boyfriend, girlfriend, husband, wife or civil partner." %}
+      {% set title = t("Do you live with a partner?") %}
+      {% set description = t("For example, a boyfriend, girlfriend, husband, wife or civil partner.") %}
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": "There was a problem",
+          "titleText": t("There was a problem"),
           "errorList": errors
         }) }}
       {% endif %}

@@ -3,6 +3,7 @@ import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_SEVERE_DISABILITY_URL} from '../../../../../../../main/routes/urls';
+import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const noPartnerMock = require('../noStatementOfMeansMock.json');
@@ -38,30 +39,16 @@ describe('Partner severe disability', () => {
           expect(res.text).toContain('Is your partner severely disabled?');
         });
     });
+    test('should show partner page when haven´t statementOfMeans', async () => {
+      app.locals.draftStoreClient = mockNoPartnerDraftStore;
+      await request(app)
+        .get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL)
+        .send('')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
   });
-  test('should return error on incorrect input', async () => {
-    app.locals.draftStoreClient = mockDraftStore;
-    await request(app)
-      .post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL)
-      .send('')
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Choose option: Yes or No');
-        expect(res.text).toContain('govuk-error-message');
-      });
-  });
-
-  test('should redirect page when "yes"', async () => {
-    app.locals.draftStoreClient = mockDraftStore;
-    await request(app)
-      .post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL)
-      .send('option=yes')
-      .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
-      });
-  });
-
   describe('on POST', () => {
     test('should redirect page when "no"', async () => {
       app.locals.draftStoreClient = mockDraftStore;
@@ -73,9 +60,26 @@ describe('Partner severe disability', () => {
           expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
         });
     });
-  });
-
-  describe('on POST', () => {
+    test('should return error on incorrect input', async () => {
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL)
+        .send('')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(VALID_YES_NO_OPTION);
+        });
+    });
+    test('should redirect page when "yes"', async () => {
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL)
+        .send('option=yes')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
+        });
+    });
     test('should redirect page when "no" and haven´t statementOfMeans', async () => {
       app.locals.draftStoreClient = mockNoPartnerDraftStore;
       await request(app)
@@ -88,15 +92,4 @@ describe('Partner severe disability', () => {
     });
   });
 
-  describe('on GET', () => {
-    test('should show partner page when haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockNoPartnerDraftStore;
-      await request(app)
-        .get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
-    });
-  });
 });

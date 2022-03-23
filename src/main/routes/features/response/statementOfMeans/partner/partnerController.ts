@@ -7,10 +7,10 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner';
 const router = express.Router();
-const cohabiting = new Cohabiting();
 const cohabitingService = new CohabitingService();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('cohabitingService');
+const validator = new Validator();
 
 function renderView(form: Cohabiting, res: express.Response): void {
   res.render(partnerViewPath, {form});
@@ -18,8 +18,7 @@ function renderView(form: Cohabiting, res: express.Response): void {
 
 router.get(CITIZEN_PARTNER_URL, async (req, res) => {
   try {
-    const currentCohabing = await cohabitingService.getCohabiting(req.params.id);
-    cohabiting.option = currentCohabing.option;
+    const cohabiting = await cohabitingService.getCohabiting(req.params.id);
     renderView(cohabiting, res);
   } catch (err: unknown) {
     logger.error(`${err as Error || err}`);
@@ -29,7 +28,6 @@ router.get(CITIZEN_PARTNER_URL, async (req, res) => {
 router.post(CITIZEN_PARTNER_URL,
   async (req, res) => {
     const cohabiting: Cohabiting = new Cohabiting(req.body.option);
-    const validator = new Validator();
     const errors: ValidationError[] = validator.validateSync(cohabiting);
     if (errors && errors.length > 0) {
       cohabiting.errors = errors;

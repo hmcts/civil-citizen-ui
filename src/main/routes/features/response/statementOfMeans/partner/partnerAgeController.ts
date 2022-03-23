@@ -5,47 +5,55 @@ import {
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../urls';
-import {Partner} from '../../../../../common/form/models/statementOfMeans/partner';
+import {PartnerAge} from '../../../../../common/form/models/statementOfMeans/partner/partnerAge';
 import {ValidationError, Validator} from 'class-validator';
-import {PartnerService} from '../../../../../modules/statementOfMeans/partner/partnerService';
+import {PartnerAgeService} from '../../../../../modules/statementOfMeans/partner/partnerAgeService';
 import {DisabilityService} from '../../../../../modules/statementOfMeans/disabilityService';
+import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
 const router = express.Router();
-const partner = new Partner();
-const partnerService = new PartnerService();
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('partnerAgeService');
+const partnerAgeService = new PartnerAgeService();
 const disabilityService = new DisabilityService();
+const validator = new Validator();
 
-function renderView(form: Partner, res: express.Response): void {
+function renderView(form: PartnerAge, res: express.Response): void {
   res.render(citizenPartnerAgeViewPath, {form});
 }
 
 router.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
-  partnerService.getPartnerAge(req.params.id).then(() => {
-    renderView(partner, res);
-  });
+  try {
+    const partnerAge = await partnerAgeService.getPartnerAge(req.params.id);
+    renderView(partnerAge, res);
+  } catch (err: unknown) {
+    logger.error(`${err as Error || err}`);
+  }
 });
 
 router.post(CITIZEN_PARTNER_AGE_URL,
-  (req, res) => {
-    const partner: Partner = new Partner(req.body.option);
-    const validator = new Validator();
-    const errors: ValidationError[] = validator.validateSync(partner);
+  async (req, res) => {
+    const partnerAge: PartnerAge = new PartnerAge(req.body.option);
+    const errors: ValidationError[] = validator.validateSync(partnerAge);
     if (errors && errors.length > 0) {
-      partner.errors = errors;
-      renderView(partner, res);
+      partnerAge.errors = errors;
+      renderView(partnerAge, res);
     } else {
-      partnerService.savePartnerAge(req.params.id, partner);
-      if (partner.option == 'yes') {
-        res.redirect(CITIZEN_PARTNER_PENSION_URL);
-      } else {
-        disabilityService.getDisability(req.params.id).then((response) => {
-          if (response && response.option == 'yes') {
-            res.redirect(CITIZEN_PARTNER_DISABILITY_URL);
+      try {
+        await partnerAgeService.savePartnerAge(req.params.id, partnerAge);
+        if (partnerAge.option == 'yes') {
+          res.redirect(CITIZEN_PARTNER_PENSION_URL);
+        } else {
+          const disability = await disabilityService.getDisability(req.params.id);
+          if (disability.option == 'yes') {
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DISABILITY_URL));
           } else {
-            res.redirect(CITIZEN_DEPENDANTS_URL);
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
           }
-        });
+        }
+      } catch (err: unknown) {
+        logger.error(`${err as Error || err}`);
       }
     }
   });
