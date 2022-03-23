@@ -22,7 +22,7 @@ export class Claim {
     return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
   }
 
-  getStatementOfMeans(): StatementOfMeans {
+  public getStatementOfMeans(): StatementOfMeans {
     if (!this.statementOfMeans) {
       this.statementOfMeans = new StatementOfMeans();
     }

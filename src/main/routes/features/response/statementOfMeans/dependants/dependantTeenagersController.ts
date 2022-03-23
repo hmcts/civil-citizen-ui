@@ -15,6 +15,8 @@ function renderView(form: DependantTeenagers, res: express.Response): void {
 }
 
 function convertToForm(req: express.Request) {
+  console.log(req.body.value);
+  console.log(req.body.maxValue);
   const value = req.body.value ? Number(req.body.value) : undefined;
   const maxValue = req.body.maxValue ? Number(req.body.maxValue) : undefined;
   return new DependantTeenagers(value, maxValue);

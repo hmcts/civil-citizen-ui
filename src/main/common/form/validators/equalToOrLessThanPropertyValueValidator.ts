@@ -22,10 +22,10 @@ export class EqualToOrLessThanPropertyValueValidator implements ValidatorConstra
     if (validationArguments.constraints && validationArguments.constraints.length > 0) {
       const property = validationArguments.constraints[0];
       const propertyValue = (validationArguments.object as any | Form)[property];
-      if (propertyValue === undefined || isNaN(propertyValue)) {
+      if (propertyValue === undefined || isNaN(propertyValue) || !value || isNaN(value)) {
         return true;
       }
-      return value <= propertyValue;
+      return Number(value) <= propertyValue;
     }
     return true;
   }
