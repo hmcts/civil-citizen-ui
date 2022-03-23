@@ -41,5 +41,5 @@ export default [
   residenceController,
   employmentStatusController,
   financialDetailsController,
-  otherDependantsController
+  otherDependantsController,
 ];
