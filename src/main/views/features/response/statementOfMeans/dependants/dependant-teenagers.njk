@@ -39,7 +39,10 @@
               value: form.value,
               type: "number",
               inputmode: "numeric",
-              spellcheck: false
+              spellcheck: false,
+              errorMessage: {
+                text:t(form.errorFor('value'))
+              } if form.hasFieldError('value')
             }) }}
             <div class="govuk-form-group">
               {{ govukButton({
