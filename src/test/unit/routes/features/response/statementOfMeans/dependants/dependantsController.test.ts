@@ -14,6 +14,7 @@ import {
 
 const respondentDependantsUrl = CITIZEN_DEPENDANTS_URL.replace(':id', 'aaa');
 
+jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 
 const DRAFT_STORE_EXCEPTION = 'Draft store exception';

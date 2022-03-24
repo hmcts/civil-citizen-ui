@@ -7,24 +7,13 @@ import {
   NON_NEGATIVE_NUMBER_REQUIRED,
 } from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
-const mockDraftResponse = require('../../../routes/features/response/statementOfMeans/civilClaimResponseMock.json');
-
-jest.mock('ioredis', () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      get: jest.fn(async () => {
-        return JSON.stringify(mockDraftResponse);
-      }),
-      set: jest.fn(async () => {
-        return;
-      }),
-    };
-  });
-});
-
+jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getDraftClaimFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+
+const DRAFT_STORE_GET_ERROR = 'draft store get error';
+const DRAFT_STORE_SAVE_ERROR = 'draft store save error';
 
 describe('Dependants service', () => {
   describe('Serialisation', () => {
@@ -151,38 +140,26 @@ describe('Dependants service', () => {
     });
 
     test('should throw error when retrieving data from draft store fails', async () => {
-      //Given
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        throw new Error('get from draft store error');
-      });
       //When
-      try {
-        await dependantsService.getDependants('claimId');
-      }
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        throw new Error(DRAFT_STORE_GET_ERROR);
+      });
       //Then
-      catch (error) {
-        expect(error.message).toBe('get from draft store error');
-      }
-      expect.assertions(1);
+      await expect(
+        dependantsService.getDependants('claimId')).rejects.toThrow(DRAFT_STORE_GET_ERROR);
     });
 
     test('should throw error when saving data to draft store fails', async () => {
-      //Given
+      //When
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return mockDraftResponse;
+        return {case_data: {statementOfMeans: {}}};
       });
       mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error('save to draft store error');
+        throw new Error(DRAFT_STORE_SAVE_ERROR);
       });
-      //When
-      try {
-        await dependantsService.saveDependants('claimId', new Dependants());
-      }
       //Then
-      catch (error) {
-        expect(error.message).toBe('save to draft store error');
-      }
-      expect.assertions(1);
+      await expect(
+        dependantsService.saveDependants('claimId', new Dependants())).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
     });
   });
 });
