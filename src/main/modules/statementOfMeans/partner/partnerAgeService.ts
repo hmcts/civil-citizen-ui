@@ -17,8 +17,9 @@ export class PartnerAgeService {
         return partnerAge;
       }
       return new PartnerAge();
-    } catch (err: unknown) {
-      logger.error(`${err as Error || err}`);
+    } catch (error) {
+      logger.error(`${error as Error || error}`);
+      throw Error(error);
     }
   }
 
@@ -33,8 +34,9 @@ export class PartnerAgeService {
         case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, case_data);
-    } catch (err: unknown) {
-      logger.error(`${err as Error || err}`);
+    } catch (error) {
+      logger.error(`${error as Error || error}`);
+      throw Error(error);
     }
   }
 }

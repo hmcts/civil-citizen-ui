@@ -27,7 +27,7 @@
       },
       "otherDependants": {
         "option": "yes",
-        "numberOfPeople": 1,
+        "numberOfPeople": "1",
         "details": "Test details"
       },
       "partnerAge": {

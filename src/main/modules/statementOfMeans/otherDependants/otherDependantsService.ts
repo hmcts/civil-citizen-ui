@@ -15,10 +15,10 @@ export class OtherDependantsService {
       if (get(civilClaimResponse, 'case_data.statementOfMeans.otherDependants')) {
         return civilClaimResponse.case_data.statementOfMeans.otherDependants;
       }
-      return new OtherDependants('');
-    } catch (err) {
-      logger.error(`${err.stack || err}`);
-      throw new Error(err);
+      return new OtherDependants();
+    } catch (error) {
+      logger.error(`${error.stack || error}`);
+      throw Error(error);
     }
   }
 
@@ -33,9 +33,9 @@ export class OtherDependantsService {
         civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
-    } catch (err) {
-      logger.error(`${err.stack || err}`);
-      throw new Error(err);
+    } catch (error) {
+      logger.error(`${error.stack || error}`);
+      throw Error(error);
     }
   }
 }

@@ -5,12 +5,6 @@ import {
   DETAILS_REQUIRED,
 } from '../../../form/validationErrors/errorMessageConstants';
 import {NumberOfPeopleValidator} from '../../../form/validators/numberOfPeopleValidator';
-
-export class OtherDependantsOption extends Form {
-  static readonly YES = 'yes';
-  static readonly NO = 'no';
-}
-
 export class OtherDependants extends Form {
   @IsDefined({message: VALID_YES_NO_OPTION})
     option?: string;
