@@ -17,8 +17,9 @@ class DependantsService {
         return civilClaimResponse.case_data.statementOfMeans.dependants;
       }
       return new Dependants();
-    } catch (err) {
-      logger.error(`${(err as Error).stack || err}`);
+    } catch (error) {
+      logger.error(`${(error as Error).stack || error}`);
+      throw (error as Error);
     }
   }
 
@@ -33,8 +34,9 @@ class DependantsService {
         civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
-    } catch (err) {
-      logger.error(`${(err as Error).stack || err}`);
+    } catch (error) {
+      logger.error(`${(error as Error).stack || error}`);
+      throw (error as Error);
     }
   }
 

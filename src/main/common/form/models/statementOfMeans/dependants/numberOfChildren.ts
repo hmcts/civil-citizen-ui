@@ -35,11 +35,6 @@ export class NumberOfChildren {
 }
 
 function toNumberOrUndefined(value: string): number {
-  if ([undefined, NaN, '', null, false].indexOf(value) !== -1) {
-    return undefined;
-  }
-
-  const strVal: string = value && value.toString().trim();
-  const numberVal: number = parseFloat(strVal);
-  return !numberVal || isNaN(numberVal) ? undefined : numberVal;
+  const numberValue: number = parseFloat(value);
+  return isNaN(numberValue) ? undefined : numberValue;
 }

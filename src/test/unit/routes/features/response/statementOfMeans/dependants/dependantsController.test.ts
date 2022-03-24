@@ -1,4 +1,5 @@
 import express from 'express';
+
 const request = require('supertest');
 const {app} = require('../../../../../../../main/app');
 import nock from 'nock';
@@ -10,33 +11,23 @@ import {
   CITIZEN_DEPENDANTS_URL,
   CITIZEN_PARTNER_URL,
 } from '../../../../../../../main/routes/urls';
-// import {FREE_TEXT_MAX_LENGTH} from '../../../../../../../main/common/form/validators/validationConstraints';
 
-const agent = request.agent(app);
 const respondentDependantsUrl = CITIZEN_DEPENDANTS_URL.replace(':id', 'aaa');
-const mockDraftResponse = require('../../statementOfMeans/civilClaimResponseMock.json');
 
-jest.mock('ioredis', () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      get: jest.fn(async () => {
-        return JSON.stringify(mockDraftResponse);
-      }),
-      set: jest.fn(async () => {
-        return;
-      }),
-    };
-  });
-});
+jest.mock('../../../../../../../main/modules/draft-store');
 
-function authenticate() {
-  return () =>
-    agent.get('/oauth2/callback')
-      .query('code=ABC')
-      .then((res: express.Response) => {
-        expect(res.status).toBe(302);
-      });
-}
+const DRAFT_STORE_EXCEPTION = 'Draft store exception';
+const mockDraftStore = {
+  get: jest.fn(() => Promise.resolve('{"id": "id", "case_data": {"statementOfMeans": {}}}')),
+  set: jest.fn(() => Promise.resolve()),
+};
+
+const mockGetExceptionDraftStore = {
+  get: jest.fn(() => {
+    throw new Error(DRAFT_STORE_EXCEPTION);
+  }),
+  set: jest.fn(() => Promise.resolve()),
+};
 
 describe('Citizen dependants', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -49,20 +40,35 @@ describe('Citizen dependants', () => {
   });
 
   describe('on GET', () => {
-    test('Authenticate Callback', authenticate());
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockDraftStore;
+    });
+
     test('should return dependants page', async () => {
-      await agent
+      await request(app)
         .get(respondentDependantsUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Do any children live with you?');
         });
     });
+    test('should return status 500 when error thrown', async () => {
+      app.locals.draftStoreClient = mockGetExceptionDraftStore;
+      await request(app)
+        .get(respondentDependantsUrl)
+        .expect((res: Response) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({errorMessage: DRAFT_STORE_EXCEPTION});
+        });
+    });
   });
   describe('on POST', () => {
-    test('Authenticate Callback', authenticate());
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockDraftStore;
+    });
+
     test('should redirect when Yes option and one field filled in', async () => {
-      await agent
+      await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
         .send('under11=1')
@@ -72,7 +78,7 @@ describe('Citizen dependants', () => {
         });
     });
     test('should show error when Yes option and no number is filled in', async () => {
-      await agent
+      await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
         .send('under11=')
@@ -82,7 +88,7 @@ describe('Citizen dependants', () => {
         });
     });
     test('should show error when Yes option and invalid under11 input', async () => {
-      await agent
+      await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
         .send('under11=-1')
@@ -92,7 +98,7 @@ describe('Citizen dependants', () => {
         });
     });
     test('should show error when Yes option and invalid between11and15 input', async () => {
-      await agent
+      await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
         .send('between11and15=-1')
@@ -102,7 +108,7 @@ describe('Citizen dependants', () => {
         });
     });
     test('should show error when Yes option and invalid between16and19 input', async () => {
-      await agent
+      await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
         .send('between16and19=1.5')
@@ -111,5 +117,17 @@ describe('Citizen dependants', () => {
           expect(res.text).toMatch(INTEGER_REQUIRED);
         });
     });
+    test('should status 500 when error thrown', async () => {
+      app.locals.draftStoreClient = mockGetExceptionDraftStore;
+      await request(app)
+        .post(respondentDependantsUrl)
+        .send('declared=yes')
+        .send('under11=1')
+        .expect((res: Response) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({errorMessage: DRAFT_STORE_EXCEPTION});
+        });
+    });
+
   });
 });

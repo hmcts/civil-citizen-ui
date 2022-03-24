@@ -1,4 +1,5 @@
 import dependantsService from '../../../../../main/modules/statementOfMeans/dependants/dependantsService';
+import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Dependants} from '../../../../../main/common/form/models/statementOfMeans/dependants/dependants';
 import {NumberOfChildren} from '../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {
@@ -21,6 +22,9 @@ jest.mock('ioredis', () => {
   });
 });
 
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+const mockGetCaseDataFromDraftStore = draftStoreService.getDraftClaimFromStore as jest.Mock;
+const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
 describe('Dependants service', () => {
   describe('Serialisation', () => {
@@ -47,6 +51,24 @@ describe('Dependants service', () => {
       const dependants = dependantsService.buildDependants(declared);
       //Then
       expect(dependants.declared).toBe(undefined);
+    });
+    test('should keep the form input values unchanged after validation', async () => {
+      //Given
+      const dependants = dependantsService.buildDependants('yes', '0', '0', '0');
+      //Then
+      expect(dependants.declared).toBe(true);
+      expect(dependants.numberOfChildren?.under11).toBe(0);
+      expect(dependants.numberOfChildren?.between11and15).toBe(0);
+      expect(dependants.numberOfChildren?.between16and19).toBe(0);
+    });
+    test('should keep the form input values unchanged after validation', async () => {
+      //Given
+      const dependants = dependantsService.buildDependants('yes', '--', '-', '+');
+      //Then
+      expect(dependants.declared).toBe(true);
+      expect(dependants.numberOfChildren?.under11).toBeUndefined();
+      expect(dependants.numberOfChildren?.between11and15).toBeUndefined();
+      expect(dependants.numberOfChildren?.between16and19).toBeUndefined();
     });
   });
   describe('Validation', () => {
@@ -121,6 +143,46 @@ describe('Dependants service', () => {
       expect(form.getNestedErrors()[1].constraints).toEqual({isInt: INTEGER_REQUIRED});
       expect(form.getNestedErrors()[2].property).toBe('between16and19');
       expect(form.getNestedErrors()[2].constraints).toEqual({min: NON_NEGATIVE_NUMBER_REQUIRED});
+    });
+  });
+  describe('Exception Handling', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('should throw error when retrieving data from draft store fails', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        throw new Error('get from draft store error');
+      });
+      //When
+      try {
+        await dependantsService.getDependants('claimId');
+      }
+      //Then
+      catch (error) {
+        expect(error.message).toBe('get from draft store error');
+      }
+      expect.assertions(1);
+    });
+
+    test('should throw error when saving data to draft store fails', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockDraftResponse;
+      });
+      mockSaveDraftClaim.mockImplementation(async () => {
+        throw new Error('save to draft store error');
+      });
+      //When
+      try {
+        await dependantsService.saveDependants('claimId', new Dependants());
+      }
+      //Then
+      catch (error) {
+        expect(error.message).toBe('save to draft store error');
+      }
+      expect.assertions(1);
     });
   });
 });
