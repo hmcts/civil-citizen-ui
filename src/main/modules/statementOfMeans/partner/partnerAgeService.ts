@@ -19,7 +19,7 @@ export class PartnerAgeService {
       return new PartnerAge();
     } catch (error) {
       logger.error(`${error as Error || error}`);
-      throw Error(error);
+      throw error;
     }
   }
 
@@ -36,7 +36,7 @@ export class PartnerAgeService {
       await saveDraftClaim(claimId, case_data);
     } catch (error) {
       logger.error(`${error as Error || error}`);
-      throw Error(error);
+      throw error;
     }
   }
 }

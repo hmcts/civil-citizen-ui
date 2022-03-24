@@ -18,7 +18,7 @@ export class OtherDependantsService {
       return new OtherDependants();
     } catch (error) {
       logger.error(`${error.stack || error}`);
-      throw Error(error);
+      throw error;
     }
   }
 
@@ -35,7 +35,7 @@ export class OtherDependantsService {
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
     } catch (error) {
       logger.error(`${error.stack || error}`);
-      throw Error(error);
+      throw error;
     }
   }
 }

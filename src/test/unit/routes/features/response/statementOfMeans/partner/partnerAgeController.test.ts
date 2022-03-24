@@ -8,7 +8,7 @@ import {
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../../../../main/routes/urls';
-import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {VALID_YES_NO_OPTION, REDIS_FAILURE} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const noPartnerAgeMock = require('../noStatementOfMeansMock.json');
@@ -58,6 +58,18 @@ describe('Partner Age', () => {
           expect(res.status).toBe(200);
         });
     });
+    test('should return error when cannot read property \'partner age option\' of undefined', () => {
+      const mockRedisException = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => {throw new Error(REDIS_FAILURE);})};
+      app.locals.draftStoreClient = mockRedisException;
+      request(app)
+        .get(CITIZEN_PARTNER_AGE_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toEqual({error: 'Error: ' + REDIS_FAILURE});
+        });
+    });
   });
   describe('on POST', () => {
     test('should redirect page when "no" and defendant disabled = YES', async () => {
@@ -98,6 +110,19 @@ describe('Partner Age', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
+        });
+    });
+    test('should throw an error when call redis', () => {
+      const mockRedisException = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => {throw new Error(REDIS_FAILURE);})};
+      app.locals.draftStoreClient = mockRedisException;
+      request(app)
+        .post(CITIZEN_PARTNER_AGE_URL)
+        .send({ option: 'no'})
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toEqual({error: 'Error: ' + REDIS_FAILURE});
         });
     });
   });

@@ -72,13 +72,14 @@ describe('on GET', () => {
   test('should return error when Cannot read property \'numberOfPeople\' and \'details\' of undefined', async () => {
     const mockRedisException = {
       set: jest.fn(() => Promise.resolve({})),
-      get: jest.fn(() => {throw new Error(REDIS_FAILURE);})};
+      get: jest.fn(() => { throw new Error(REDIS_FAILURE);})
+    };
     app.locals.draftStoreClient = mockRedisException;
     await request(app)
       .get(CITIZEN_OTHER_DEPENDANTS_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: 'Error: ' + REDIS_FAILURE});
+        expect(res.body).toEqual({error: REDIS_FAILURE});
       });
   });
 
@@ -203,7 +204,7 @@ describe('on POST', () => {
       .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: 'Error: ' + REDIS_FAILURE});
+        expect(res.body).toEqual({error: REDIS_FAILURE});
       });
   });
 });
