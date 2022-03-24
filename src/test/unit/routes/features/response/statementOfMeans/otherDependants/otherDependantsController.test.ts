@@ -11,7 +11,7 @@ import {
   VALID_YES_NO_OPTION,
   NUMBER_OF_PEOPLE_REQUIRED,
   DETAILS_REQUIRED,
-  VALID_NUMBER_OF_PEOPLE
+  VALID_NUMBER_OF_PEOPLE,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
