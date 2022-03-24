@@ -8,7 +8,8 @@ import {
 } from '../../../../../../../main/routes/urls';
 import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {LoggerInstance} from 'winston';
-import {ChildrenDisabilityService} from '../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
+// import {ChildrenDisabilityService} from '../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
+import {setChildrenDisabilityControllerLogger} from '../../../../../../../main/routes/features/response/statementOfMeans/dependants/childrenDisabilityController';
 
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
@@ -26,10 +27,7 @@ const mockNoChildrenDisabilityDraftStore = {
 };
 const mockErrorDraftStore = {
   set: jest.fn(() => {throw new Error('Redis DraftStore failure.');}),
-  get: jest.fn(() => {
-    console.log('Calling mockErrorDraftStore get');
-    throw new Error('Redis DraftStore failure.');
-  }),
+  get: jest.fn(() => {throw new Error('Redis DraftStore failure.');}),
 };
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
@@ -50,7 +48,7 @@ describe('Children Disability', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    ChildrenDisabilityService.logger = mockLogger;
+    setChildrenDisabilityControllerLogger(mockLogger);
   });
 
   describe('on Exception', () => {
@@ -61,6 +59,7 @@ describe('Children Disability', () => {
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body).toEqual({error: redisFailureError});
+          expect(mockLogger.error).toHaveBeenCalledWith(expect.stringMatching(redisFailureError));
         });
     });
 
@@ -73,6 +72,7 @@ describe('Children Disability', () => {
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body).toEqual({error: redisFailureError});
+          expect(mockLogger.error).toHaveBeenCalledWith(expect.stringMatching(redisFailureError));
         });
     });
   });

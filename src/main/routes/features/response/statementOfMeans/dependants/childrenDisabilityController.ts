@@ -7,12 +7,17 @@ import {ChildrenDisability} from '../../../../../common/form/models/statementOfM
 import {ChildrenDisabilityService} from '../../../../../modules/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {validateForm} from '../../../../../common/form/validators/formValidator';
+import * as winston from 'winston';
 
 const partnerViewPath = 'features/response/statementOfMeans/dependants/children-disability';
 const router = express.Router();
 const childrenDisabilityService = new ChildrenDisabilityService();
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('childrenDisabilityController');
+let logger = Logger.getLogger('childrenDisabilityController');
+
+export function setChildrenDisabilityControllerLogger(winstonLogger : winston.LoggerInstance){
+  logger = winstonLogger;
+}
 
 function renderView(res: express.Response, form: ChildrenDisability): void {
   res.render(partnerViewPath, {form: form});
