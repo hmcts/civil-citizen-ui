@@ -32,6 +32,9 @@ const mockWithoutOtherDependents = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseWithoutOtherDependent)),
 };
+const mockRedisFailure = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => {throw new Error(REDIS_FAILURE);})};
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 
@@ -70,10 +73,7 @@ describe('on GET', () => {
   });
 
   test('should return error when Cannot read property \'numberOfPeople\' and \'details\' of undefined', async () => {
-    const mockRedisException = {
-      set: jest.fn(() => Promise.resolve({})),
-      get: jest.fn(() => {throw new Error(REDIS_FAILURE);})};
-    app.locals.draftStoreClient = mockRedisException;
+    app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
       .get(CITIZEN_OTHER_DEPENDANTS_URL)
       .expect((res) => {
