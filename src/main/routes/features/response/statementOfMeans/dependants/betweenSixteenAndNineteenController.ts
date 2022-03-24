@@ -1,27 +1,29 @@
 import * as express from 'express';
 import {DEPENDANT_TEENAGERS_URL, OTHER_DEPENDANTS_URL} from '../../../../../routes/urls';
-import {DependantTeenagers} from '../../../../../common/form/models/statementOfMeans/dependants/dependantTeenagers';
+import {
+  BetweenSixteenAndNineteenDependants,
+} from '../../../../../common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
 import {validateForm} from '../../../../../common/form/validators/formValidator';
 import {
   getForm,
   saveFormToDraftStore,
-} from '../../../../../modules/statementOfMeans/dependants/dependantTeenagersService';
+} from '../../../../../modules/statementOfMeans/dependants/betweenSixteenAndNineteenService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dependantTeenagersController');
-const dependantTeenagersViewPath = 'features/response/statementOfMeans/dependants/dependant-teenagers';
+const dependantTeenagersViewPath = 'features/response/statementOfMeans/dependants/between_16_and_19';
 const router = express.Router();
 
-function renderView(form: DependantTeenagers, res: express.Response): void {
+function renderView(form: BetweenSixteenAndNineteenDependants, res: express.Response): void {
   res.render(dependantTeenagersViewPath, {form: form});
 }
 
 function convertToForm(req: express.Request) {
   const value = req.body.value ? Number(req.body.value) : undefined;
   const maxValue = req.body.maxValue ? Number(req.body.maxValue) : undefined;
-  return new DependantTeenagers(value, maxValue);
+  return new BetweenSixteenAndNineteenDependants(value, maxValue);
 }
 
 router.get(DEPENDANT_TEENAGERS_URL, async (req, res) => {

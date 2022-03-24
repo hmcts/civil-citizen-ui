@@ -1,11 +1,11 @@
 import {
   getForm,
   saveFormToDraftStore,
-} from '../../../../../main/modules/statementOfMeans/dependants/dependantTeenagersService';
+} from '../../../../../main/modules/statementOfMeans/dependants/betweenSixteenAndNineteenService';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {
-  DependantTeenagers,
-} from '../../../../../main/common/form/models/statementOfMeans/dependants/dependantTeenagers';
+  BetweenSixteenAndNineteenDependants,
+} from '../../../../../main/common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
 import {Claim} from '../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
 import {NumberOfChildren} from '../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
@@ -21,7 +21,7 @@ describe('dependent teenagers service test', () => {
       //Given
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveFormToDraftStore('123', new DependantTeenagers(3, 4));
+      await saveFormToDraftStore('123', new BetweenSixteenAndNineteenDependants(3, 4));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -34,7 +34,7 @@ describe('dependent teenagers service test', () => {
       expect.assertions(1);
       //When
       try {
-        await saveFormToDraftStore('123', new DependantTeenagers(3, 4));
+        await saveFormToDraftStore('123', new BetweenSixteenAndNineteenDependants(3, 4));
       } catch (error) {
         //Then
         expect(error.message).toBe('Error: error with redis');

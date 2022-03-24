@@ -1,4 +1,6 @@
-import {DependantTeenagers} from '../../../common/form/models/statementOfMeans/dependants/dependantTeenagers';
+import {
+  BetweenSixteenAndNineteenDependants,
+} from '../../../common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../common/models/claim';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
@@ -8,7 +10,7 @@ import {get} from 'lodash';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dependantTeenagersService');
 
-export const getForm = async (claimId: string): Promise<DependantTeenagers> => {
+export const getForm = async (claimId: string): Promise<BetweenSixteenAndNineteenDependants> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     let maxValue = 0;
@@ -17,14 +19,14 @@ export const getForm = async (claimId: string): Promise<DependantTeenagers> => {
       maxValue = getMaxValue(claim);
       value = getNumberOfChildrenLivingWithYou(claim);
     }
-    return new DependantTeenagers(value, maxValue);
+    return new BetweenSixteenAndNineteenDependants(value, maxValue);
   } catch (error) {
     logger.error(`${error.stack || error}`);
     throw new Error(error);
   }
 };
 
-export const saveFormToDraftStore = async (claimId: string, form: DependantTeenagers) => {
+export const saveFormToDraftStore = async (claimId: string, form: BetweenSixteenAndNineteenDependants) => {
   try {
     const claim = await getClaim(claimId);
     const statementOfMeans = claim.statementOfMeans ? claim.statementOfMeans : new StatementOfMeans();

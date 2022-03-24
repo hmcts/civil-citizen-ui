@@ -3,7 +3,7 @@ import {IsDefined, IsNumber, Min, Validate} from 'class-validator';
 import {NUMBER_REQUIRED, VALID_INTEGER, VALID_POSITIVE_NUMBER} from '../../../validationErrors/errorMessageConstants';
 import {EqualToOrLessThanPropertyValueValidator} from '../../../validators/equalToOrLessThanPropertyValueValidator';
 
-export class DependantTeenagers extends Form {
+export class BetweenSixteenAndNineteenDependants extends Form {
   @IsDefined({message: NUMBER_REQUIRED})
   @IsNumber({allowNaN: false, maxDecimalPlaces: 0}, {message: VALID_INTEGER})
   @Validate(EqualToOrLessThanPropertyValueValidator, ['maxValue'])
