@@ -1,6 +1,10 @@
 import express from 'express';
 import {Dependants} from '../../../../../common/form/models/statementOfMeans/dependants/dependants';
-import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_URL} from '../../../../urls';
+import {
+  CITIZEN_DEPENDANTS_URL,
+  CITIZEN_DEPENDANTS_EDUCATION_URL,
+  CITIZEN_OTHER_DEPENDANTS_URL,
+} from '../../../../urls';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import dependantsService from '../../../../../modules/statementOfMeans/dependants/dependantsService';
 
@@ -38,7 +42,11 @@ dependantsController
       } else {
         try {
           await dependantsService.saveDependants(req.params.id, dependants);
-          res.redirect(CITIZEN_PARTNER_URL.replace(':id', req.params.id));
+          if (dependantsService.shouldRedirectToDependantsEducationScreen(dependants)) {
+            res.redirect(CITIZEN_DEPENDANTS_EDUCATION_URL.replace(':id', req.params.id));
+          } else {
+            res.redirect(CITIZEN_OTHER_DEPENDANTS_URL.replace(':id', req.params.id));
+          }
         } catch (error) {
           logger.error(`${error.stack || error}`);
           res.status(500).send({errorMessage: error.message, errorStack: error.stack});

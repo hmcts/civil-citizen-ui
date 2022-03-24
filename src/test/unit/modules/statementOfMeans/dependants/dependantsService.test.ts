@@ -162,4 +162,32 @@ describe('Dependants service', () => {
         dependantsService.saveDependants('claimId', new Dependants())).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
     });
   });
+  describe('Redirection Logic', () => {
+    test('should redirect to other dependants screen', async () => {
+      //Given
+      const dependants = new Dependants(true);
+      //When
+      const shouldRedirectToDependantsEducationScreen = dependantsService.shouldRedirectToDependantsEducationScreen(dependants);
+      //Then
+      expect(shouldRedirectToDependantsEducationScreen).toBe(false);
+    });
+    test('should redirect to dependants education screen when number of children between 16 and 19 is  0', async () => {
+      //Given
+      const numberOfChildren = new NumberOfChildren(undefined, undefined, 0);
+      const dependants = new Dependants(true, numberOfChildren);
+      //When
+      const shouldRedirectToDependantsEducationScreen = dependantsService.shouldRedirectToDependantsEducationScreen(dependants);
+      //Then
+      expect(shouldRedirectToDependantsEducationScreen).toBe(false);
+    });
+    test('should redirect to dependants education screen when number of children between 16 and 19 is greater than 0', async () => {
+      //Given
+      const numberOfChildren = new NumberOfChildren(undefined, undefined, 1);
+      const dependants = new Dependants(true, numberOfChildren);
+      //When
+      const shouldRedirectToDependantsEducationScreen = dependantsService.shouldRedirectToDependantsEducationScreen(dependants);
+      //Then
+      expect(shouldRedirectToDependantsEducationScreen).toBe(true);
+    });
+  });
 });

@@ -9,7 +9,8 @@ import {
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   CITIZEN_DEPENDANTS_URL,
-  CITIZEN_PARTNER_URL,
+  CITIZEN_DEPENDANTS_EDUCATION_URL,
+  CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../../main/routes/urls';
 
 const respondentDependantsUrl = CITIZEN_DEPENDANTS_URL.replace(':id', 'aaa');
@@ -68,14 +69,24 @@ describe('Citizen dependants', () => {
       app.locals.draftStoreClient = mockDraftStore;
     });
 
-    test('should redirect when Yes option and one field filled in', async () => {
+    test('when Yes option and under11 field filled in should redirect to Other Dependants screen', async () => {
       await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
         .send('under11=1')
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CITIZEN_PARTNER_URL.replace(':id', 'aaa'));
+          expect(res.get('location')).toBe(CITIZEN_OTHER_DEPENDANTS_URL.replace(':id', 'aaa'));
+        });
+    });
+    test('when Yes option and between16and19 field filled in should redirect to Dependants Education screen', async () => {
+      await request(app)
+        .post(respondentDependantsUrl)
+        .send('declared=yes')
+        .send('between16and19=1')
+        .expect((res: express.Response) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(CITIZEN_DEPENDANTS_EDUCATION_URL.replace(':id', 'aaa'));
         });
     });
     test('should show error when Yes option and no number is filled in', async () => {

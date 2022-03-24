@@ -49,6 +49,10 @@ class DependantsService {
     form.errors = validator.validateSync(form.model);
     return form;
   }
+
+  public shouldRedirectToDependantsEducationScreen(dependants: Dependants): boolean {
+    return dependants?.numberOfChildren?.between16and19 > 0;
+  }
 }
 
 const dependantsService = new DependantsService();
