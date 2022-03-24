@@ -26,7 +26,7 @@ export class PartnerDisabilityService {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
       if (case_data && case_data.statementOfMeans) {
-        case_data.statementOfMeans.partnerDisability.option = partnerDisability.option;
+        case_data.statementOfMeans.partnerDisability = partnerDisability;
       } else {
         const statementOfMeans = new StatementOfMeans();
         statementOfMeans.partnerDisability = partnerDisability;
