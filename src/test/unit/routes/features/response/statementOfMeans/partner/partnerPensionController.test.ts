@@ -65,7 +65,7 @@ describe('Partner Pension', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
-        .send('partnerPension=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body).toEqual({error: REDIS_FAILURE});
@@ -98,7 +98,7 @@ describe('on POST', () => {
     app.locals.draftStoreClient = mockDraftStore;
     await request(app)
       .post(CITIZEN_PARTNER_PENSION_URL)
-      .send('partnerPension=no')
+      .send('option=no')
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
@@ -108,7 +108,7 @@ describe('on POST', () => {
     app.locals.draftStoreClient = mockNoDisabilityDraftStore;
     await request(app)
       .post(CITIZEN_PARTNER_PENSION_URL)
-      .send('partnerPension=no')
+      .send('option=no')
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
@@ -118,7 +118,7 @@ describe('on POST', () => {
     app.locals.draftStoreClient = mockNoDisabilityDraftStore;
     await request(app)
       .post(CITIZEN_PARTNER_PENSION_URL)
-      .send('partnerPension=yes')
+      .send('option=yes')
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
@@ -128,7 +128,7 @@ describe('on POST', () => {
     app.locals.draftStoreClient = mockDraftStore;
     await request(app)
       .post(CITIZEN_PARTNER_PENSION_URL)
-      .send('partnerPension=yes')
+      .send('option=yes')
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
@@ -148,7 +148,7 @@ describe('on POST', () => {
     app.locals.draftStoreClient = mockNoPartnerPensionDraftStore;
     await request(app)
       .post(CITIZEN_PARTNER_PENSION_URL)
-      .send('partnerPension=no')
+      .send('option=no')
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
