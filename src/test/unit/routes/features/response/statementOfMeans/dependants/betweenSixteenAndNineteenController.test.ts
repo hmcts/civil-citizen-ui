@@ -21,6 +21,15 @@ const mockDraftStore = {
   get: jest.fn(() => Promise.resolve({})),
 };
 
+const mockErrorDraftStore = {
+  set: jest.fn(() => {
+    throw new Error(REDIS_ERROR);
+  }),
+  get: jest.fn(() => {
+    throw new Error(REDIS_ERROR);
+  }),
+};
+
 describe('Dependant Teenagers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -40,14 +49,6 @@ describe('Dependant Teenagers', () => {
         });
     });
     test('should return 500 error code when there is an error', async () => {
-      const mockErrorDraftStore = {
-        set: jest.fn(() => {
-          throw new Error(REDIS_ERROR);
-        }),
-        get: jest.fn(() => {
-          throw new Error(REDIS_ERROR);
-        }),
-      };
       app.locals.draftStoreClient = mockErrorDraftStore;
       await request(app)
         .get(DEPENDANT_TEENAGERS_URL)
@@ -106,14 +107,6 @@ describe('Dependant Teenagers', () => {
         });
     });
     test('should return 500 code when there is an error', async () => {
-      const mockErrorDraftStore = {
-        set: jest.fn(() => {
-          throw new Error(REDIS_ERROR);
-        }),
-        get: jest.fn(() => {
-          throw new Error(REDIS_ERROR);
-        }),
-      };
       app.locals.draftStoreClient = mockErrorDraftStore;
       await request(app)
         .post(DEPENDANT_TEENAGERS_URL)
