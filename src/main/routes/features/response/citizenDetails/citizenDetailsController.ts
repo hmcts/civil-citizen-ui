@@ -16,8 +16,13 @@ import _ from 'lodash';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDetailsController');
 const router = express.Router();
+<<<<<<< HEAD
 import { getDraftClaimFromStore, saveDraftClaim } from '../../../../modules/draft-store/draftStoreService';
 import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFormatter';
+=======
+import {getDraftClaimFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+>>>>>>> master
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
