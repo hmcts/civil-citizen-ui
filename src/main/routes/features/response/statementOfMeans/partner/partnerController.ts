@@ -1,27 +1,28 @@
 import * as express from 'express';
-import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_AGE_URL, CITIZEN_PARTNER_URL} from '../../../../urls';
-import {Cohabiting} from '../../../../../common/form/models/statementOfMeans/partner/cohabiting';
-import {ValidationError, Validator} from 'class-validator';
-import {CohabitingService} from '../../../../../modules/statementOfMeans/partner/cohabitingService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import { CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_AGE_URL, CITIZEN_PARTNER_URL } from '../../../../urls';
+import { Cohabiting } from '../../../../../common/form/models/statementOfMeans/partner/cohabiting';
+import { ValidationError, Validator } from 'class-validator';
+import { CohabitingService } from '../../../../../modules/statementOfMeans/partner/cohabitingService';
+import { constructResponseUrlWithIdParams } from '../../../../../common/utils/urlFormatter';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner';
 const router = express.Router();
 const cohabitingService = new CohabitingService();
-const {Logger} = require('@hmcts/nodejs-logging');
+const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('cohabitingService');
 const validator = new Validator();
 
 function renderView(form: Cohabiting, res: express.Response): void {
-  res.render(partnerViewPath, {form});
+  res.render(partnerViewPath, { form });
 }
 
 router.get(CITIZEN_PARTNER_URL, async (req, res) => {
   try {
     const cohabiting = await cohabitingService.getCohabiting(req.params.id);
     renderView(cohabiting, res);
-  } catch (err: unknown) {
-    logger.error(`${err as Error || err}`);
+  } catch (error) {
+    logger.error(`${error as Error || error}`);
+    res.status(500).send({ error: error.message });
   }
 });
 
@@ -40,8 +41,9 @@ router.post(CITIZEN_PARTNER_URL,
         } else {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
         }
-      } catch (err: unknown) {
-        logger.error(`${err as Error || err}`);
+      } catch (error) {
+        logger.error(`${error as Error || error}`);
+        res.status(500).send({ error: error.message });
       }
     }
   });

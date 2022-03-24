@@ -1,27 +1,28 @@
 import * as express from 'express';
-import {CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
-import {SevereDisability} from '../../../../common/form/models/statementOfMeans/severeDisability';
-import {ValidationError, Validator} from 'class-validator';
-import {SevereDisabilityService} from '../../../../modules/statementOfMeans/severeDisabilityService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import { CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL } from '../../../urls';
+import { SevereDisability } from '../../../../common/form/models/statementOfMeans/severeDisability';
+import { ValidationError, Validator } from 'class-validator';
+import { SevereDisabilityService } from '../../../../modules/statementOfMeans/severeDisabilityService';
+import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFormatter';
 
 const citizenSevereDisabilityViewPath = 'features/response/statementOfMeans/are-you-severely-disabled';
 const router = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
+const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('disabilityService');
 const severeDisabilityService = new SevereDisabilityService();
 const validator = new Validator();
 
 function renderView(form: SevereDisability, res: express.Response): void {
-  res.render(citizenSevereDisabilityViewPath, {form});
+  res.render(citizenSevereDisabilityViewPath, { form });
 }
 
 router.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res) => {
   try {
     const severeDisability = await severeDisabilityService.getSevereDisability(req.params.id);
     renderView(severeDisability, res);
-  } catch (err: unknown) {
-    logger.error(`${err as Error || err}`);
+  } catch (error) {
+    logger.error(`${error as Error || error}`);
+    res.status(500).send({ error: error.message });
   }
 });
 
@@ -36,8 +37,9 @@ router.post(CITIZEN_SEVERELY_DISABLED_URL,
       try {
         await severeDisabilityService.saveSevereDisability(req.params.id, severeDisability);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_RESIDENCE_URL));
-      } catch (err: unknown) {
-        logger.error(`${err as Error || err}`);
+      } catch (error) {
+        logger.error(`${error as Error || error}`);
+        res.status(500).send({ error: error.message });
       }
     }
   });

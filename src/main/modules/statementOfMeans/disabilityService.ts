@@ -1,9 +1,9 @@
-import {Disability} from '../../common/form/models/statementOfMeans/disability';
-import {getCaseDataFromStore, saveDraftClaim} from '../../modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../common/models/statementOfMeans';
-import {Claim} from '../../common/models/claim';
+import { Disability } from '../../common/form/models/statementOfMeans/disability';
+import { getCaseDataFromStore, saveDraftClaim } from '../../modules/draft-store/draftStoreService';
+import { StatementOfMeans } from '../../common/models/statementOfMeans';
+import { Claim } from '../../common/models/claim';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('disabilityService');
 const disability = new Disability();
 
@@ -17,8 +17,9 @@ export class DisabilityService {
         return disability;
       }
       return new Disability();
-    } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
+    } catch (error: unknown) {
+      logger.error(`${(error as Error).stack || error}`);
+      throw error;
     }
   }
 
@@ -33,8 +34,9 @@ export class DisabilityService {
         case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, case_data);
-    } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
+    } catch (error: unknown) {
+      logger.error(`${(error as Error).stack || error}`);
+      throw error;
     }
   }
 }

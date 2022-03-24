@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../../../main/app';
+import { app } from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
@@ -8,25 +8,9 @@ import {
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../../../../main/routes/urls';
-import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import { VALID_YES_NO_OPTION, REDIS_FAILURE } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import { mockCivilClaim, mockNoStatementOfMeans, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
-const civilClaimResponseMock = require('../civilClaimResponseMock.json');
-const noPartnerAgeMock = require('../noStatementOfMeansMock.json');
-const noDisabilityMock = require('../noDisabilityMock.json');
-const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
-const noPartnerAgeCivilClaimResponse: string = JSON.stringify(noPartnerAgeMock);
-const mockDraftStore = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponse)),
-};
-const mockNoPartnerAgeDraftStore = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(noPartnerAgeCivilClaimResponse)),
-};
-const mockNoDisabilityDraftStore = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(noDisabilityMock)),
-};
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 
@@ -36,12 +20,12 @@ describe('Partner Age', () => {
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
   });
 
   describe('on GET', () => {
     test('should return citizen partner age page', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_PARTNER_AGE_URL)
         .expect((res) => {
@@ -50,7 +34,7 @@ describe('Partner Age', () => {
         });
     });
     test('should show partner age page when haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockNoPartnerAgeDraftStore;
+      app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .get(CITIZEN_PARTNER_AGE_URL)
         .send('')
@@ -58,10 +42,19 @@ describe('Partner Age', () => {
           expect(res.status).toBe(200);
         });
     });
+    test('should return http 500 when has error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get(CITIZEN_PARTNER_AGE_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toEqual({ error: REDIS_FAILURE });
+        });
+    });
   });
   describe('on POST', () => {
     test('should redirect page when "no" and defendant disabled = YES', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
         .send('partnerAge=no')
@@ -71,7 +64,7 @@ describe('Partner Age', () => {
         });
     });
     test('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
         .send('')
@@ -81,7 +74,7 @@ describe('Partner Age', () => {
         });
     });
     test('should redirect page when "yes"', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
         .send('partnerAge=yes')
@@ -91,13 +84,23 @@ describe('Partner Age', () => {
         });
     });
     test('should redirect page when "no" and defendant disabled = NO', async () => {
-      app.locals.draftStoreClient = mockNoDisabilityDraftStore;
+      app.locals.draftStoreClient = mockCivilClaimOptionNo;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
         .send('partnerAge=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
+        });
+    });
+    test('should return http 500 when has error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(CITIZEN_PARTNER_AGE_URL)
+        .send('partnerAge=no')
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toEqual({ error: REDIS_FAILURE });
         });
     });
   });
