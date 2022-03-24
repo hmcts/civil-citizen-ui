@@ -27,7 +27,7 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <form method="post">
+          <form method="post" novalidate>
             <input type="hidden" name="maxValue" value="{{ form.maxValue | default(0) }}"/>
             {{ govukInput({
               label: {
