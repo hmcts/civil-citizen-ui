@@ -33,6 +33,7 @@ export const saveFormToDraftStore = async (claimId: string, form: DependantTeena
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(`${error.stack || error}`);
+    throw new Error(error);
   }
 };
 

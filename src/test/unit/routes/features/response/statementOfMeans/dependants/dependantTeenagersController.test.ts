@@ -12,7 +12,11 @@ import {
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+
+const mockDraftStore = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve({})),
+};
 
 describe('Dependant Teenagers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -23,6 +27,7 @@ describe('Dependant Teenagers', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on GET', () => {
+    app.locals.draftStoreClient = mockDraftStore;
     test('should return dependent teenagers page', async () => {
       await request(app)
         .get(DEPENDANT_TEENAGERS_URL)
@@ -33,6 +38,7 @@ describe('Dependant Teenagers', () => {
     });
   });
   describe('on POST', () => {
+    app.locals.draftStoreClient = mockDraftStore;
     test('should show error when no number is added', async () => {
       await request(app)
         .post(DEPENDANT_TEENAGERS_URL)
@@ -76,6 +82,24 @@ describe('Dependant Teenagers', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(OTHER_DEPENDANTS_URL);
+        });
+    });
+    test('should return 500 code when there is an error', async () => {
+      const mockErrorDraftStore = {
+        set: jest.fn(() => {
+          throw new Error('Redis DraftStore failure.');
+        }),
+        get: jest.fn(() => {
+          throw new Error('Redis DraftStore failure.');
+        }),
+      };
+      app.locals.draftStoreClient = mockErrorDraftStore;
+      await request(app)
+        .post(DEPENDANT_TEENAGERS_URL)
+        .send({value: 1, maxValue: 3})
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toEqual({error: 'Error: Redis DraftStore failure.'});
         });
     });
   });
