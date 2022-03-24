@@ -12,7 +12,9 @@ import {
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-
+const REDIS_ERROR = 'Redis DraftStore failure.';
+const EXPECTED_ERROR_ON_GET = 'Error: Redis DraftStore failure.';
+const EXPECTED_ERROR_ON_POST = 'Error: Error: Redis DraftStore failure.';
 const mockDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve({})),
@@ -39,10 +41,10 @@ describe('Dependant Teenagers', () => {
     test('should return 500 error code when there is an error', async () => {
       const mockErrorDraftStore = {
         set: jest.fn(() => {
-          throw new Error('Redis DraftStore failure.');
+          throw new Error(REDIS_ERROR);
         }),
         get: jest.fn(() => {
-          throw new Error('Redis DraftStore failure.');
+          throw new Error(REDIS_ERROR);
         }),
       };
       app.locals.draftStoreClient = mockErrorDraftStore;
@@ -50,7 +52,7 @@ describe('Dependant Teenagers', () => {
         .get(DEPENDANT_TEENAGERS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: 'Error: Redis DraftStore failure.'});
+          expect(res.body).toEqual({error: EXPECTED_ERROR_ON_GET});
         });
     });
   });
@@ -117,7 +119,7 @@ describe('Dependant Teenagers', () => {
         .send({value: 1, maxValue: 3})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: 'Error: Redis DraftStore failure.'});
+          expect(res.body).toEqual({error: EXPECTED_ERROR_ON_POST});
         });
     });
   });

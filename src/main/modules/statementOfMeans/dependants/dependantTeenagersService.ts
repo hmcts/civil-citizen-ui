@@ -55,6 +55,7 @@ const getClaim = async (claimId: string): Promise<Claim> => {
     claim = await getCaseDataFromStore(claimId);
   } catch (error) {
     logger.error(`${error.stack || error}`);
+    throw Error(error);
   }
   if (!claim) {
     claim = new Claim();
