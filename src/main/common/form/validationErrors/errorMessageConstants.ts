@@ -25,3 +25,4 @@ export const VALID_OPTION_SELECTION = 'Select an option';
 export const VALID_INTEGER = 'Enter a numeric, for example 3';
 export const VALID_POSITIVE_NUMBER = 'Don’t enter a negative number';
 export const VALID_NUMBER_FOR_PREVIOUS_PAGE = 'Number can’t be higher than on previous page';
+export const REDIS_ERROR_MESSAGE = 'Redis DraftStore failure.';

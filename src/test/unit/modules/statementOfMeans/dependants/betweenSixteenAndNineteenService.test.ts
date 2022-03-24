@@ -10,12 +10,12 @@ import {Claim} from '../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
 import {NumberOfChildren} from '../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {Dependants} from '../../../../../main/common/form/models/statementOfMeans/dependants/dependants';
+import {REDIS_ERROR_MESSAGE} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 describe('dependent teenagers service test', () => {
-  const ERROR_MESSAGE = 'error with redis';
-  const EXPECTED_ERROR_MESSAGE = 'Error: error with redis';
+
   describe('saveFormToDraftStore', () => {
     it('should save data successfully', async () => {
       //Given
@@ -29,7 +29,7 @@ describe('dependent teenagers service test', () => {
       //Given
       const mockGetCaseData = draftStoreService.saveDraftClaim as jest.Mock;
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error(ERROR_MESSAGE);
+        throw new Error(REDIS_ERROR_MESSAGE);
       });
       expect.assertions(1);
       //When
@@ -37,7 +37,7 @@ describe('dependent teenagers service test', () => {
         await saveFormToDraftStore('123', new BetweenSixteenAndNineteenDependants(3, 4));
       } catch (error) {
         //Then
-        expect(error.message).toBe('Error: error with redis');
+        expect(error.message).toBe(REDIS_ERROR_MESSAGE);
       }
     });
   });
@@ -82,14 +82,14 @@ describe('dependent teenagers service test', () => {
       expect.assertions(1);
       const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error('error with redis');
+        throw new Error(REDIS_ERROR_MESSAGE);
       });
       //When
       try {
         await getForm('123');
       } catch (error) {
         //Then
-        expect(error.message).toBe(EXPECTED_ERROR_MESSAGE);
+        expect(error.message).toBe(REDIS_ERROR_MESSAGE);
       }
     });
   });

@@ -5,6 +5,7 @@ import {app} from '../../../../../../../main/app';
 import {DEPENDANT_TEENAGERS_URL, OTHER_DEPENDANTS_URL} from '../../../../../../../main/routes/urls';
 import {
   NUMBER_REQUIRED,
+  REDIS_ERROR_MESSAGE,
   VALID_INTEGER,
   VALID_NUMBER_FOR_PREVIOUS_PAGE,
   VALID_POSITIVE_NUMBER,
@@ -12,9 +13,7 @@ import {
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-const REDIS_ERROR = 'Redis DraftStore failure.';
-const EXPECTED_ERROR_ON_GET = 'Error: Redis DraftStore failure.';
-const EXPECTED_ERROR_ON_POST = 'Error: Error: Redis DraftStore failure.';
+
 const EXPECTED_TEXT = 'Children aged 16 to 19 living with you';
 const mockDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
@@ -23,10 +22,10 @@ const mockDraftStore = {
 
 const mockErrorDraftStore = {
   set: jest.fn(() => {
-    throw new Error(REDIS_ERROR);
+    throw new Error(REDIS_ERROR_MESSAGE);
   }),
   get: jest.fn(() => {
-    throw new Error(REDIS_ERROR);
+    throw new Error(REDIS_ERROR_MESSAGE);
   }),
 };
 
@@ -54,7 +53,7 @@ describe('Dependant Teenagers', () => {
         .get(DEPENDANT_TEENAGERS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: EXPECTED_ERROR_ON_GET});
+          expect(res.body).toEqual({error: REDIS_ERROR_MESSAGE});
         });
     });
   });
@@ -113,7 +112,7 @@ describe('Dependant Teenagers', () => {
         .send({value: 1, maxValue: 3})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: EXPECTED_ERROR_ON_POST});
+          expect(res.body).toEqual({error: REDIS_ERROR_MESSAGE});
         });
     });
   });

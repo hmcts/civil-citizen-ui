@@ -22,7 +22,7 @@ export const getForm = async (claimId: string): Promise<BetweenSixteenAndNinetee
     return new BetweenSixteenAndNineteenDependants(value, maxValue);
   } catch (error) {
     logger.error(`${error.stack || error}`);
-    throw new Error(error);
+    throw error;
   }
 };
 
@@ -35,7 +35,7 @@ export const saveFormToDraftStore = async (claimId: string, form: BetweenSixteen
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(`${error.stack || error}`);
-    throw new Error(error);
+    throw error;
   }
 };
 
@@ -57,7 +57,7 @@ const getClaim = async (claimId: string): Promise<Claim> => {
     claim = await getCaseDataFromStore(claimId);
   } catch (error) {
     logger.error(`${error.stack || error}`);
-    throw Error(error);
+    throw error;
   }
   if (!claim) {
     claim = new Claim();
