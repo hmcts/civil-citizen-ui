@@ -23,6 +23,21 @@ describe('dependent teenagers service test', () => {
       //Then
       expect(spySave).toBeCalled();
     });
+    it('should throw error when error occurs', async () => {
+      //Given
+      const mockGetCaseData = draftStoreService.saveDraftClaim as jest.Mock;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error('error with redis');
+      });
+      expect.assertions(1);
+      //When
+      try {
+        await saveFormToDraftStore('123', new DependantTeenagers(3, 4));
+      } catch (error) {
+        //Then
+        expect(error.message).toBe('Error: error with redis');
+      }
+    });
   });
   describe('getForm', () => {
     it('should get empty form when no data exists', async () => {
@@ -60,18 +75,20 @@ describe('dependent teenagers service test', () => {
       expect(form.maxValue).toBe(4);
       expect(spy).toBeCalled();
     });
-    it('should return undefined when error occurs', async () => {
+    it('should rethrow error when error occurs', async () => {
       //Given
-      const spy = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      expect.assertions(1);
       const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error();
+        throw new Error('error with redis');
       });
       //When
-      const form = await getForm('123');
-      //Then
-      expect(form).toBeUndefined();
-      expect(spy).toBeCalled();
+      try {
+        await getForm('123');
+      } catch (error) {
+        //Then
+        expect(error.message).toBe('Error: error with redis');
+      }
     });
   });
 });

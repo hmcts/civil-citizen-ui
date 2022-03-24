@@ -36,6 +36,23 @@ describe('Dependant Teenagers', () => {
           expect(res.text).toContain('Children aged 16 to 19 living with you');
         });
     });
+    test('should return 500 error code when there is an error', async () => {
+      const mockErrorDraftStore = {
+        set: jest.fn(() => {
+          throw new Error('Redis DraftStore failure.');
+        }),
+        get: jest.fn(() => {
+          throw new Error('Redis DraftStore failure.');
+        }),
+      };
+      app.locals.draftStoreClient = mockErrorDraftStore;
+      await request(app)
+        .get(DEPENDANT_TEENAGERS_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toEqual({error: 'Error: Redis DraftStore failure.'});
+        });
+    });
   });
   describe('on POST', () => {
     app.locals.draftStoreClient = mockDraftStore;
@@ -76,6 +93,7 @@ describe('Dependant Teenagers', () => {
         });
     });
     test('should redirect when no errors', async () => {
+      app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(DEPENDANT_TEENAGERS_URL)
         .send({value: 1, maxValue: 3})
