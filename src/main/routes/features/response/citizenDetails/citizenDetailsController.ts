@@ -1,93 +1,55 @@
 import * as express from 'express';
 import {Validator} from 'class-validator';
-import config from 'config';
 import {Form} from '../../../../common/form/models/form';
 import {CITIZEN_DETAILS_URL, DOB_URL} from '../../../urls';
-import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
-import {Claim} from '../../../../common/models/claim';
 import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
-import {AppRequest} from 'models/AppRequest';
-import {CivilClaimResponse} from '../../../../common/models/civilClaimResponse';
 import {Respondent} from '../../../../common/models/respondent';
-import {PrimaryAddress} from '../../../../common/models/primaryAddress';
-import {CorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
-import _ from 'lodash';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {CitizenDetailsService} from 'modules/citizenDetails/citizenDetailsService';
+import {YesNo} from '../../../../common/form/models/yesNo';
+
+const router = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDetailsController');
-const router = express.Router();
-import {getDraftClaimFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 let citizenFullName: object;
-let claim: Claim = new Claim();
-// -- GET Citizen Details
+const citizenDetailsService = new CitizenDetailsService();
+const CITIZEN_DETAILS_VIEW_PATH = 'features/response/citizenDetails/citizen-details';
+
 router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   try {
     let formAddressModel;
     let formCorrespondenceModel;
-    // -- Retrive from redis
-    await getDraftClaimFromStore(req.params.id).then((data: CivilClaimResponse) => {
-      if (!_.isEmpty(data)) {
-        formAddressModel = new CitizenAddress(
-          data.case_data.respondent1.primaryAddress.AddressLine1,
-          data.case_data.respondent1.primaryAddress.AddressLine2,
-          data.case_data.respondent1.primaryAddress.AddressLine3,
-          data.case_data.respondent1.primaryAddress.PostTown,
-          data.case_data.respondent1.primaryAddress.PostCode);
-        formCorrespondenceModel = new CitizenCorrespondenceAddress(
-          data.case_data.respondent1.correspondenceAddress.AddressLine1,
-          data.case_data.respondent1.correspondenceAddress.AddressLine2,
-          data.case_data.respondent1.correspondenceAddress.AddressLine3,
-          data.case_data.respondent1.correspondenceAddress.PostTown,
-          data.case_data.respondent1.correspondenceAddress.PostCode);
-        claim = data.case_data;
-      }
-    }).catch((err: unknown) => {
-      logger.error(`${(err as Error).stack || err}`);
-    });
-    if (!claim.legacyCaseReference) {
-      // -- Retrive from civil-service
-      claim = await civilServiceClient.retrieveClaimDetails(req.params.id, <AppRequest>req);
-      if (claim) {
-        if (claim.respondent1.primaryAddress) {
-          //TODO create a new method
-          formAddressModel = new CitizenAddress(
-            claim.respondent1.primaryAddress.AddressLine1,
-            claim.respondent1.primaryAddress.AddressLine2,
-            claim.respondent1.primaryAddress.AddressLine3,
-            claim.respondent1.primaryAddress.PostTown,
-            claim.respondent1.primaryAddress.PostCode);
-        }
-        if (claim.respondent1.correspondenceAddress) {
-          formCorrespondenceModel = new CitizenCorrespondenceAddress(
-            claim.respondent1.correspondenceAddress.AddressLine1,
-            claim.respondent1.correspondenceAddress.AddressLine2,
-            claim.respondent1.correspondenceAddress.AddressLine3,
-            claim.respondent1.correspondenceAddress.PostTown,
-            claim.respondent1.correspondenceAddress.PostCode);
-        } else {
-          formCorrespondenceModel = new CitizenCorrespondenceAddress();
-        }
-      } else {
-        claim = new Claim();
-      }
+    const responseDataRedis: Respondent = await citizenDetailsService.getRespondentInformation(req.params.id);
+    if(!responseDataRedis){
+      formAddressModel = new CitizenAddress(
+        responseDataRedis.primaryAddress.AddressLine1,
+        responseDataRedis.primaryAddress.AddressLine2,
+        responseDataRedis.primaryAddress.AddressLine3,
+        responseDataRedis.primaryAddress.PostTown,
+        responseDataRedis.primaryAddress.PostCode);
+      formCorrespondenceModel = new CitizenCorrespondenceAddress(
+        responseDataRedis.correspondenceAddress.AddressLine1,
+        responseDataRedis.correspondenceAddress.AddressLine2,
+        responseDataRedis.correspondenceAddress.AddressLine3,
+        responseDataRedis.correspondenceAddress.PostTown,
+        responseDataRedis.correspondenceAddress.PostCode);
     }
     citizenFullName = {
-      individualTitle: claim?.respondent1?.individualTitle || 'individualTitle Test',
-      individualFirstName: claim?.respondent1?.individualFirstName || 'individualFirstName test',
-      individualLastName: claim?.respondent1?.individualLastName || 'individualLastName test',
+      individualTitle: responseDataRedis?.individualTitle || 'individualTitle Test',
+      individualFirstName: responseDataRedis?.individualFirstName || 'individualFirstName test',
+      individualLastName: responseDataRedis?.individualLastName || 'individualLastName test',
     };
-    res.render('features/response/citizenDetails/citizen-details', {
+    res.render(CITIZEN_DETAILS_VIEW_PATH, {
       citizenFullName: citizenFullName,
       citizenAddress: formAddressModel,
       citizenCorrespondenceAddress: formCorrespondenceModel,
-      postToThisAddress: formCorrespondenceModel ? 'yes' : 'no',
+      postToThisAddress: formCorrespondenceModel ? YesNo.YES : YesNo.NO,
     });
-  } catch (err: unknown) {
-    logger.error(`${(err as Error).stack || err}`);
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send({error: error.message});
   }
 });
 
@@ -119,21 +81,10 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
   }
   if ((citizenAddress.errors && citizenAddress.errors.length > 0)
     || (citizenCorrespondenceAddress.errors && citizenCorrespondenceAddress.errors.length > 0)) {
-    res.render('features/response/citizenDetails/citizen-details', {
-      citizenFullName: citizenFullName,
-      citizenAddress: citizenAddress,
-      citizenCorrespondenceAddress: citizenCorrespondenceAddress,
-      errorList: errorList.getErrors(),
-      addressLine1Error: errorList.getTextError(citizenAddress.getErrors(), 'primaryAddressLine1'),
-      addressCityError: errorList.getTextError(citizenAddress.getErrors(), 'primaryCity'),
-      addressPostCodeError: errorList.getTextError(citizenAddress.getErrors(), 'primaryPostCode'),
-      correspondenceAddressLine1Error: req.body.postToThisAddress == 'yes' ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceAddressLine1') : '',
-      correspondenceCityError: req.body.postToThisAddress == 'yes' ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceCity') : '',
-      correspondencePostCodeError: req.body.postToThisAddress == 'yes' ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondencePostCode') : '',
-      postToThisAddress: req.body.postToThisAddress,
-    });
+    renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req);
   } else {
-    const respondent = new Respondent();
+
+    /*const respondent = new Respondent();
     respondent.primaryAddress = new PrimaryAddress();
     respondent.primaryAddress.AddressLine1 = citizenAddress.primaryAddressLine1;
     respondent.primaryAddress.AddressLine2 = citizenAddress.primaryAddressLine2;
@@ -148,10 +99,26 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
       respondent.correspondenceAddress.PostTown = req.body.correspondenceCity;
       respondent.correspondenceAddress.PostCode = req.body.correspondencePostCode;
     }
-    claim.respondent1 = respondent;
-    await saveDraftClaim(req.params.id, claim);
+    //claim.respondent1 = respondent;
+    //await saveDraftClaim(req.params.id, claim);*/
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   }
 });
+
+function renderPageWithError(res: express.Response, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, errorList: Form, req: express.Request) {
+  res.render(CITIZEN_DETAILS_VIEW_PATH, {
+    citizenFullName: citizenFullName,
+    citizenAddress: citizenAddress,
+    citizenCorrespondenceAddress: citizenCorrespondenceAddress,
+    errorList: errorList.getErrors(),
+    addressLine1Error: errorList.getTextError(citizenAddress.getErrors(), 'primaryAddressLine1'),
+    addressCityError: errorList.getTextError(citizenAddress.getErrors(), 'primaryCity'),
+    addressPostCodeError: errorList.getTextError(citizenAddress.getErrors(), 'primaryPostCode'),
+    correspondenceAddressLine1Error: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceAddressLine1') : '',
+    correspondenceCityError: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceCity') : '',
+    correspondencePostCodeError: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondencePostCode') : '',
+    postToThisAddress: req.body.postToThisAddress,
+  });
+}
 
 export default router;
