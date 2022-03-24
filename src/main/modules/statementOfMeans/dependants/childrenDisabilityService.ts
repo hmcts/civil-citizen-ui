@@ -2,12 +2,14 @@ import {ChildrenDisability} from '../../../common/form/models/statementOfMeans/d
 import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Claim} from '../../../common/models/claim';
+import * as winston from 'winston';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('childrenDisabilityService');
+
 const childrenDisability = new ChildrenDisability();
 
 export class ChildrenDisabilityService {
+  static logger : winston.LoggerInstance = Logger.getLogger('childrenDisabilityService');
 
   public async getChildrenDisability(claimId: string) {
     try {
@@ -18,7 +20,8 @@ export class ChildrenDisabilityService {
       }
       return new ChildrenDisability();
     } catch (error) {
-      logger.error(`${(error as Error).stack || error}`);
+      ChildrenDisabilityService.logger.error(`${(error as Error).stack || error}`);
+      throw new Error(error);
     }
   }
 
@@ -34,7 +37,8 @@ export class ChildrenDisabilityService {
       }
       await saveDraftClaim(claimId, case_data);
     } catch (error) {
-      logger.error(`${(error as Error).stack || error}`);
+      ChildrenDisabilityService.logger.error(`${(error as Error).stack || error}`);
+      throw new Error(error);
     }
   }
 }

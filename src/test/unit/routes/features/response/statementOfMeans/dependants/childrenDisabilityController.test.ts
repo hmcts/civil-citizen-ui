@@ -7,7 +7,9 @@ import {
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../../main/routes/urls';
 import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
+import {LoggerInstance} from 'winston';
+import {ChildrenDisabilityService} from '../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
+
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const noStatementOfMeansMock = require('../noStatementOfMeansMock.json');
@@ -22,12 +24,24 @@ const mockNoChildrenDisabilityDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(noChildrenDisabilityResponse)),
 };
+const mockErrorDraftStore = {
+  set: jest.fn(() => {throw new Error('Redis DraftStore failure.');}),
+  get: jest.fn(() => {
+    console.log('Calling mockErrorDraftStore get');
+    throw new Error('Redis DraftStore failure.');
+  }),
+};
+const mockLogger = {
+  error: jest.fn().mockImplementation((message: string) => message),
+  info: jest.fn().mockImplementation((message: string) => message),
+} as unknown as LoggerInstance;
+
 
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-const redisFailureError = 'Redis DraftStore failure.';
+
+const redisFailureError = 'Error: Redis DraftStore failure.';
 
 describe('Children Disability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -36,13 +50,12 @@ describe('Children Disability', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    ChildrenDisabilityService.logger = mockLogger;
   });
 
   describe('on Exception', () => {
     test('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(redisFailureError);
-      });
+      app.locals.draftStoreClient = mockErrorDraftStore;
       await request(app)
         .get(CHILDREN_DISABILITY_URL)
         .expect((res) => {
@@ -53,9 +66,7 @@ describe('Children Disability', () => {
 
 
     test('should return http 500 when has error in the post method', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(redisFailureError);
-      });
+      app.locals.draftStoreClient = mockErrorDraftStore;
       await request(app)
         .post(CHILDREN_DISABILITY_URL)
         .send('option=no')
