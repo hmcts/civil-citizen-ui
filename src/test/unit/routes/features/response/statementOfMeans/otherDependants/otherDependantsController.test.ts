@@ -72,8 +72,7 @@ describe('on GET', () => {
   test('should return error when Cannot read property \'numberOfPeople\' and \'details\' of undefined', async () => {
     const mockRedisException = {
       set: jest.fn(() => Promise.resolve({})),
-      get: jest.fn(() => { throw new Error(REDIS_FAILURE);})
-    };
+      get: jest.fn(() => {throw new Error(REDIS_FAILURE);})};
     app.locals.draftStoreClient = mockRedisException;
     await request(app)
       .get(CITIZEN_OTHER_DEPENDANTS_URL)
