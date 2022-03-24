@@ -15,6 +15,7 @@ jest.mock('../../../../../../../main/modules/draft-store');
 const REDIS_ERROR = 'Redis DraftStore failure.';
 const EXPECTED_ERROR_ON_GET = 'Error: Redis DraftStore failure.';
 const EXPECTED_ERROR_ON_POST = 'Error: Error: Redis DraftStore failure.';
+const EXPECTED_TEXT = 'Children aged 16 to 19 living with you';
 const mockDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve({})),
@@ -35,7 +36,7 @@ describe('Dependant Teenagers', () => {
         .get(DEPENDANT_TEENAGERS_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Children aged 16 to 19 living with you');
+          expect(res.text).toContain(EXPECTED_TEXT);
         });
     });
     test('should return 500 error code when there is an error', async () => {
@@ -107,10 +108,10 @@ describe('Dependant Teenagers', () => {
     test('should return 500 code when there is an error', async () => {
       const mockErrorDraftStore = {
         set: jest.fn(() => {
-          throw new Error('Redis DraftStore failure.');
+          throw new Error(REDIS_ERROR);
         }),
         get: jest.fn(() => {
-          throw new Error('Redis DraftStore failure.');
+          throw new Error(REDIS_ERROR);
         }),
       };
       app.locals.draftStoreClient = mockErrorDraftStore;
