@@ -21,7 +21,7 @@ router.get(CITIZEN_PARTNER_URL, async (req, res) => {
     const cohabiting = await cohabitingService.getCohabiting(req.params.id);
     renderView(cohabiting, res);
   } catch (error) {
-    logger.error(`${error as Error || error}`);
+    logger.error(error);
     res.status(500).send({ error: error.message });
   }
 });
@@ -42,7 +42,7 @@ router.post(CITIZEN_PARTNER_URL,
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
         }
       } catch (error) {
-        logger.error(`${error as Error || error}`);
+        logger.error(error);
         res.status(500).send({ error: error.message });
       }
     }

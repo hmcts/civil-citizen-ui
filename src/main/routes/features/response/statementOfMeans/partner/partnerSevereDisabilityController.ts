@@ -25,7 +25,7 @@ router.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, async (req, res) => {
     const partnerSevereDisability = await partnerSevereDisabilityService.getPartnerSevereDisability(req.params.id);
     renderView(partnerSevereDisability, res);
   } catch (error) {
-    logger.error(`${error as Error || error}`);
+    logger.error(error);
     res.status(500).send({ error: error.message });
   }
 });
@@ -42,7 +42,7 @@ router.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
         await partnerSevereDisabilityService.savePartnerSevereDisability(req.params.id, partnerSevereDisability);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
       } catch (error) {
-        logger.error(`${error as Error || error}`);
+        logger.error(error);
         res.status(500).send({ error: error.message });
       }
     }

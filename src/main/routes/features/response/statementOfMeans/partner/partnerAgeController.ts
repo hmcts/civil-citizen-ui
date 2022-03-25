@@ -28,7 +28,7 @@ router.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
     const partnerAge = await partnerAgeService.getPartnerAge(req.params.id);
     renderView(partnerAge, res);
   } catch (error) {
-    logger.error(`${error as Error || error}`);
+    logger.error(error);
     res.status(500).send({ error: error.message });
   }
 });
@@ -54,7 +54,7 @@ router.post(CITIZEN_PARTNER_AGE_URL,
           }
         }
       } catch (error) {
-        logger.error(`${error as Error || error}`);
+        logger.error(error);
         res.status(500).send({ error: error.message });
       }
     }

@@ -21,7 +21,7 @@ router.get(CITIZEN_DISABILITY_URL, async (req, res) => {
     const disability = await disabilityService.getDisability(req.params.id);
     renderView(disability, res);
   } catch (error) {
-    logger.error(`${error as Error || error}`);
+    logger.error(error);
     res.status(500).send({ error: error.message });
   }
 });
@@ -42,7 +42,7 @@ router.post(CITIZEN_DISABILITY_URL,
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_RESIDENCE_URL));
         }
       } catch (error) {
-        logger.error(`${error as Error || error}`);
+        logger.error(error);
         res.status(500).send({ error: error.message });
       }
     }
