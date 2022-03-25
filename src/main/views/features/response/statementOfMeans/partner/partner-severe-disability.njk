@@ -8,7 +8,7 @@
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("Is your partner severely disabled?") %}
       {% set id = "partnerSevereDisability" %}
-      {% set name = "partnerSevereDisability" %}
+      {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({

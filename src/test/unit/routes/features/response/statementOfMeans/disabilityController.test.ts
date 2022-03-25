@@ -58,7 +58,7 @@ describe('Disability', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
-        .send('disability=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
@@ -78,7 +78,7 @@ describe('Disability', () => {
       app.locals.draftStoreClient = mockCivilClaimOptionNo;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
-        .send('disability=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
@@ -88,7 +88,7 @@ describe('Disability', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
-        .send('disability=yes')
+        .send('option=yes')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_SEVERELY_DISABLED_URL);
@@ -105,5 +105,4 @@ describe('Disability', () => {
         });
     });
   });
-
 });

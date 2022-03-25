@@ -58,7 +58,7 @@ describe('Partner Age', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
-        .send('partnerAge=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
@@ -78,7 +78,7 @@ describe('Partner Age', () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
-        .send('partnerAge=yes')
+        .send('option=yes')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_PARTNER_PENSION_URL);
@@ -88,7 +88,7 @@ describe('Partner Age', () => {
       app.locals.draftStoreClient = mockCivilClaimOptionNo;
       await request(app)
         .post(CITIZEN_PARTNER_AGE_URL)
-        .send('partnerAge=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);

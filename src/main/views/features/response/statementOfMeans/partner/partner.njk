@@ -8,8 +8,8 @@
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("Do you live with a partner?") %}
       {% set description = t("For example, a boyfriend, girlfriend, husband, wife or civil partner.") %}
-      {% set id = "cohabiting" %}
-      {% set name = "cohabiting" %}
+      {% set id = "option" %}
+      {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
@@ -20,7 +20,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post">
-            {{ yesNoRadioButton(t,id,name,title,form,description)  }}
+            {{ yesNoRadioButton(t,id,name,title,form,description) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")

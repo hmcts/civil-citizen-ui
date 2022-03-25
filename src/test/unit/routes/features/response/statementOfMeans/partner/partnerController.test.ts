@@ -58,7 +58,7 @@ describe('Partner', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_URL)
-        .send('cohabiting=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
@@ -71,7 +71,7 @@ describe('Partner', () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .post(CITIZEN_PARTNER_URL)
-        .send('cohabiting=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
@@ -92,7 +92,7 @@ describe('Partner', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_URL)
-        .send('cohabiting=yes')
+        .send('option=yes')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_PARTNER_AGE_URL);
@@ -109,5 +109,4 @@ describe('Partner', () => {
         });
     });
   });
-
 });
