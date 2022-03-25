@@ -1,10 +1,8 @@
-import {PartnerPension} from '../../../common/form/models/statementOfMeans/partner/partnerPension';
-import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../common/models/statementOfMeans';
-import {Claim} from '../../../common/models/claim';
+import { PartnerPension } from '../../../common/form/models/statementOfMeans/partner/partnerPension';
+import { getCaseDataFromStore, saveDraftClaim } from '../../draft-store/draftStoreService';
+import { StatementOfMeans } from '../../../common/models/statementOfMeans';
+import { Claim } from '../../../common/models/claim';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerPensionService');
 const partnerPension = new PartnerPension();
 
 export class PartnerPensionService {
@@ -17,9 +15,8 @@ export class PartnerPensionService {
         return partnerPension;
       }
       return new PartnerPension();
-    } catch (error: unknown) {
-      logger.error(`${error as Error || error}`);
-      throw error;
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 
@@ -34,9 +31,8 @@ export class PartnerPensionService {
         case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, case_data);
-    } catch (error: unknown) {
-      logger.error(`${error as Error || error}`);
-      throw error;
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 }

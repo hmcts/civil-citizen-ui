@@ -3,8 +3,6 @@ import { getCaseDataFromStore, saveDraftClaim } from '../../draft-store/draftSto
 import { StatementOfMeans } from '../../../common/models/statementOfMeans';
 import { Claim } from '../../../common/models/claim';
 
-const { Logger } = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerDisabilityService');
 const partnerDisability = new PartnerDisability();
 
 export class PartnerDisabilityService {
@@ -17,9 +15,8 @@ export class PartnerDisabilityService {
         return partnerDisability;
       }
       return new PartnerDisability();
-    } catch (error: unknown) {
-      logger.error(`${error as Error || error}`);
-      throw error;
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 
@@ -34,9 +31,8 @@ export class PartnerDisabilityService {
         case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, case_data);
-    } catch (error: unknown) {
-      logger.error(`${error as Error || error}`);
-      throw error;
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 }
