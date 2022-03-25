@@ -29,7 +29,7 @@ router.get(CHILDREN_DISABILITY_URL, async (req : express.Request, res : express.
     renderView(res, childrenDisability);
   } catch (error) {
     logger.error(`${(error as Error).stack || error}`);
-    res.status(500).send({error: error.message});
+    res.status(500).send({errorMessage: error.message, errorStack : error.stack});
   }
 });
 
@@ -45,7 +45,7 @@ router.post(CHILDREN_DISABILITY_URL,async (req: express.Request, res : express.R
     }
   } catch (error) {
     logger.error(`${(error as Error).stack || error}`);
-    res.status(500).send({error: error.message});
+    res.status(500).send({errorMessage: error.message, errorStack : error.stack});
   }
 });
 

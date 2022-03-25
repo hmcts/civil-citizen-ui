@@ -58,7 +58,7 @@ describe('Children Disability', () => {
         .get(CHILDREN_DISABILITY_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: redisFailureError});
+          expect(res.body.errorMessage).toEqual(redisFailureError);
           expect(mockLogger.error).toHaveBeenCalledWith(expect.stringMatching(redisFailureError));
         });
     });
@@ -71,7 +71,7 @@ describe('Children Disability', () => {
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: redisFailureError});
+          expect(res.body.errorMessage).toEqual(redisFailureError);
           expect(mockLogger.error).toHaveBeenCalledWith(expect.stringMatching(redisFailureError));
         });
     });
