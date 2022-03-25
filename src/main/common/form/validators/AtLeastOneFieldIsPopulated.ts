@@ -9,7 +9,7 @@ import {
 export class AtLeastOneFieldIsPopulatedConstraint implements ValidatorConstraintInterface {
   validate(value: Record<string, unknown>): boolean {
     if (value === undefined) {
-      return true;
+      return false;
     }
 
     return Object.keys(value).some((key: string) => !!value[key]);

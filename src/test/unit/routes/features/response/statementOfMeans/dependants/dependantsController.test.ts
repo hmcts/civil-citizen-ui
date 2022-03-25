@@ -13,11 +13,10 @@ import {
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../../main/routes/urls';
 
-const respondentDependantsUrl = CITIZEN_DEPENDANTS_URL.replace(':id', 'aaa');
-
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 
+const respondentDependantsUrl = CITIZEN_DEPENDANTS_URL.replace(':id', 'aaa');
 const DRAFT_STORE_EXCEPTION = 'Draft store exception';
 const mockDraftStore = {
   get: jest.fn(() => Promise.resolve('{"id": "id", "case_data": {"statementOfMeans": {}}}')),
@@ -140,6 +139,5 @@ describe('Citizen dependants', () => {
           expect(res.body).toMatchObject({errorMessage: DRAFT_STORE_EXCEPTION});
         });
     });
-
   });
 });

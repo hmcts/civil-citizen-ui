@@ -22,7 +22,7 @@ residenceController
         });
       } catch (error) {
         logger.error(`${error.stack || error}`);
-        res.status(500).send({error: error.stack});
+        res.status(500).send({errorMessage: error.message, errorStack: error.stack});
       }
     })
   .post(
@@ -41,7 +41,7 @@ residenceController
           res.redirect(CITIZEN_PARTNER_URL.replace(':id', req.params.id));
         } catch (error) {
           logger.error(`${error.stack || error}`);
-          res.status(500).send({error: error.stack});
+          res.status(500).send({errorMessage: error.message, errorStack: error.stack});
         }
       }
     });

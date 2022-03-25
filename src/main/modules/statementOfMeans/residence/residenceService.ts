@@ -18,8 +18,9 @@ class ResidenceService {
         return civilClaimResponse.case_data.statementOfMeans.residence;
       }
       return new Residence();
-    } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
+    } catch (error) {
+      logger.error(`${(error as Error).stack || error}`);
+      throw error;
     }
   }
 
@@ -34,8 +35,9 @@ class ResidenceService {
         civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
-    } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
+    } catch (error) {
+      logger.error(`${(error as Error).stack || error}`);
+      throw error;
     }
   }
 

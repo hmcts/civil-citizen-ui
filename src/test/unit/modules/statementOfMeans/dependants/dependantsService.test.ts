@@ -69,6 +69,14 @@ describe('Dependants service', () => {
       //Then
       expect(form.getErrors().length).toBe(0);
     });
+    test('should raise any error if declared is true and number of children unspecified', async () => {
+      //Given
+      const dependants = new Dependants(true, undefined);
+      //When
+      const form = dependantsService.validateDependants(dependants);
+      //Then
+      expect(form.getErrors().length).toBe(1);
+    });
     test('should raise an error if declared is true and none of the age ranges is specified', async () => {
       //Given
       const numberOfChildren = new NumberOfChildren(undefined, undefined, undefined);
