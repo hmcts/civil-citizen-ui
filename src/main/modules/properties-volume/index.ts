@@ -12,11 +12,15 @@ export class PropertiesVolume {
       this.setSecret('secrets.civil.AppInsightsInstrumentationKey', 'appInsights.instrumentationKey');
       this.setSecret('secrets.civil.redis-access-key', 'services.draftStore.redis.key');
       this.setSecret('secrets.civil.ordnance-survey-api-key', 'services.postcodeLookup.ordnanceSurveyApiKey');
+      console.log('-------------------------setting idam-secret ----------------------------------');
+      this.setSecret('secrets.civil.idam-secret', 'services.idam.idam-secret');
     }
   }
 
   private setSecret(fromPath: string, toPath: string): void {
+    console.log('---------------fromPath-------------------' + fromPath);
     if (config.has(fromPath)) {
+      console.log('---------------value-------------------' + get(config, fromPath));
       set(config, toPath, get(config, fromPath));
     }
   }
