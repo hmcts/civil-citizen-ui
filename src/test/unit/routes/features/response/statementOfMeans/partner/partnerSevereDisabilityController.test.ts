@@ -3,7 +3,8 @@ import { app } from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import { CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_SEVERE_DISABILITY_URL } from '../../../../../../../main/routes/urls';
-import { VALID_YES_NO_OPTION, REDIS_FAILURE } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import { VALID_YES_NO_OPTION } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import { REDIS_FAILURE } from '../../../../../../utils/testConstants';
 import { mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');

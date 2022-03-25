@@ -1,5 +1,4 @@
-import { REDIS_FAILURE } from '../../main/common/form/validationErrors/errorMessageConstants';
-
+import { REDIS_FAILURE } from './testConstants';
 import civilClaimResponseMock from './mocks/civilClaimResponseMock.json';
 import noStatementOfMeansMock from './mocks/noStatementOfMeansMock.json';
 import civilClaimResponseOptionNoMock from './mocks/civilClaimResponseOptionNoMock.json';

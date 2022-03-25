@@ -7,7 +7,8 @@ import {
   CITIZEN_RESIDENCE_URL,
   CITIZEN_SEVERELY_DISABLED_URL,
 } from '../../../../../../main/routes/urls';
-import { REDIS_FAILURE, VALID_YES_NO_OPTION } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import { VALID_YES_NO_OPTION } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import { REDIS_FAILURE } from '../../../../../utils/testConstants';
 import { mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
