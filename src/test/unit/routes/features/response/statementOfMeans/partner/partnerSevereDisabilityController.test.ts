@@ -93,7 +93,7 @@ describe('Partner severe disability', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL)
-        .send('partnerSevereDisability=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body).toMatchObject({ error: REDIS_FAILURE });

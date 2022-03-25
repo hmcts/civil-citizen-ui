@@ -58,7 +58,7 @@ describe('on POST', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_PARTNER_PENSION_URL)
-      .send('partnerPension=no')
+      .send('option=no')
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
@@ -68,7 +68,7 @@ describe('on POST', () => {
     app.locals.draftStoreClient = mockCivilClaimOptionNo;
     await request(app)
       .post(CITIZEN_PARTNER_PENSION_URL)
-      .send('partnerPension=no')
+      .send('option=no')
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
@@ -78,7 +78,7 @@ describe('on POST', () => {
     app.locals.draftStoreClient = mockCivilClaimOptionNo;
     await request(app)
       .post(CITIZEN_PARTNER_PENSION_URL)
-      .send('partnerPension=yes')
+      .send('option=yes')
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
@@ -88,7 +88,7 @@ describe('on POST', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_PARTNER_PENSION_URL)
-      .send('partnerPension=yes')
+      .send('option=yes')
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
@@ -108,7 +108,7 @@ describe('on POST', () => {
     app.locals.draftStoreClient = mockNoStatementOfMeans;
     await request(app)
       .post(CITIZEN_PARTNER_PENSION_URL)
-      .send('partnerPension=no')
+      .send('option=no')
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
@@ -118,7 +118,7 @@ describe('on POST', () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
       .post(CITIZEN_PARTNER_PENSION_URL)
-      .send('partnerPension=no')
+      .send('option=no')
       .expect((res) => {
         expect(res.status).toBe(500);
         expect(res.body).toMatchObject({ error: REDIS_FAILURE });

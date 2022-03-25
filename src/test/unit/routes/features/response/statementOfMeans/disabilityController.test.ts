@@ -98,7 +98,7 @@ describe('Disability', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
-        .send('disability=no')
+        .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body).toMatchObject({ error: REDIS_FAILURE });

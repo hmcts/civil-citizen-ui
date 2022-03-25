@@ -30,7 +30,7 @@ router.get(CITIZEN_PARTNER_PENSION_URL, async (req, res) => {
 
 router.post(CITIZEN_PARTNER_PENSION_URL,
   async (req, res) => {
-    const partnerPension: PartnerPension = new PartnerPension(req.body.partnerPension);
+    const partnerPension: PartnerPension = new PartnerPension(req.body.option);
     const errors: ValidationError[] = validator.validateSync(partnerPension);
     if (errors && errors.length > 0) {
       partnerPension.errors = errors;
