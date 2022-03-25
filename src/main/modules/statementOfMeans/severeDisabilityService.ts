@@ -1,8 +1,10 @@
-import { SevereDisability } from '../../common/form/models/statementOfMeans/severeDisability';
-import { getCaseDataFromStore, saveDraftClaim } from '../../modules/draft-store/draftStoreService';
-import { StatementOfMeans } from '../../common/models/statementOfMeans';
-import { Claim } from '../../common/models/claim';
+import {SevereDisability} from '../../common/form/models/statementOfMeans/severeDisability';
+import {getCaseDataFromStore, saveDraftClaim} from '../../modules/draft-store/draftStoreService';
+import {StatementOfMeans} from '../../common/models/statementOfMeans';
+import {Claim} from '../../common/models/claim';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('dependantsService');
 const severeDisability = new SevereDisability();
 
 export class SevereDisabilityService {
@@ -16,7 +18,8 @@ export class SevereDisabilityService {
       }
       return new SevereDisability();
     } catch (error) {
-      throw new Error(error.message);
+      logger.error(error);
+      throw error;
     }
   }
 
@@ -32,7 +35,8 @@ export class SevereDisabilityService {
       }
       await saveDraftClaim(claimId, case_data);
     } catch (error) {
-      throw new Error(error.message);
+      logger.error(error);
+      throw error;
     }
   }
 }

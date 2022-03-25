@@ -1,8 +1,10 @@
-import { PartnerPension } from '../../../common/form/models/statementOfMeans/partner/partnerPension';
-import { getCaseDataFromStore, saveDraftClaim } from '../../draft-store/draftStoreService';
-import { StatementOfMeans } from '../../../common/models/statementOfMeans';
-import { Claim } from '../../../common/models/claim';
+import {PartnerPension} from '../../../common/form/models/statementOfMeans/partner/partnerPension';
+import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
+import {StatementOfMeans} from '../../../common/models/statementOfMeans';
+import {Claim} from '../../../common/models/claim';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('dependantsService');
 const partnerPension = new PartnerPension();
 
 export class PartnerPensionService {
@@ -16,7 +18,8 @@ export class PartnerPensionService {
       }
       return new PartnerPension();
     } catch (error) {
-      throw new Error(error.message);
+      logger.error(error);
+      throw error;
     }
   }
 
@@ -32,7 +35,8 @@ export class PartnerPensionService {
       }
       await saveDraftClaim(claimId, case_data);
     } catch (error) {
-      throw new Error(error.message);
+      logger.error(error);
+      throw error;
     }
   }
 }

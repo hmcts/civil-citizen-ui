@@ -1,8 +1,10 @@
-import { PartnerAge } from '../../../common/form/models/statementOfMeans/partner/partnerAge';
-import { getCaseDataFromStore, saveDraftClaim } from '../../draft-store/draftStoreService';
-import { StatementOfMeans } from '../../../common/models/statementOfMeans';
-import { Claim } from '../../../common/models/claim';
+import {PartnerAge} from '../../../common/form/models/statementOfMeans/partner/partnerAge';
+import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
+import {StatementOfMeans} from '../../../common/models/statementOfMeans';
+import {Claim} from '../../../common/models/claim';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('dependantsService');
 const partnerAge = new PartnerAge();
 
 export class PartnerAgeService {
@@ -16,7 +18,8 @@ export class PartnerAgeService {
       }
       return new PartnerAge();
     } catch (error) {
-      throw new Error(error.message);
+      logger.error(error);
+      throw error;
     }
   }
 
@@ -32,7 +35,8 @@ export class PartnerAgeService {
       }
       await saveDraftClaim(claimId, case_data);
     } catch (error) {
-      throw new Error(error.message);
+      logger.error(error);
+      throw error;
     }
   }
 }

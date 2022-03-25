@@ -1,8 +1,10 @@
-import { Cohabiting } from '../../../common/form/models/statementOfMeans/partner/cohabiting';
-import { getCaseDataFromStore, saveDraftClaim } from '../../draft-store/draftStoreService';
-import { StatementOfMeans } from '../../../common/models/statementOfMeans';
-import { Claim } from '../../../common/models/claim';
+import {Cohabiting} from '../../../common/form/models/statementOfMeans/partner/cohabiting';
+import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
+import {StatementOfMeans} from '../../../common/models/statementOfMeans';
+import {Claim} from '../../../common/models/claim';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('dependantsService');
 const cohabiting = new Cohabiting();
 
 export class CohabitingService {
@@ -16,7 +18,8 @@ export class CohabitingService {
       }
       return new Cohabiting();
     } catch (error) {
-      throw new Error(error.message);
+      logger.error(error);
+      throw error;
     }
   }
 
@@ -32,7 +35,8 @@ export class CohabitingService {
       }
       await saveDraftClaim(claimId, case_data);
     } catch (error) {
-      throw new Error(error.message);
+      logger.error(error);
+      throw error;
     }
   }
 }
