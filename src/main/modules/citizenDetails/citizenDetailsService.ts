@@ -7,19 +7,18 @@ import {Respondent} from '../../common/models/respondent';
 import {Claim} from '../../common/models/claim';
 import {PrimaryAddress} from '../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../common/models/correspondenceAddress';
-import {ResidenceType} from "common/form/models/statementOfMeans/residenceType";
-import {Residence} from "common/form/models/statementOfMeans/residence";
-import {CitizenAddress} from "common/form/models/citizenAddress";
+import {CitizenAddress} from '../../common/form/models/citizenAddress';
+import {CitizenCorrespondenceAddress} from '../../common/form/models/citizenCorrespondenceAddress';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('residenceService');
+const logger = Logger.getLogger('CitizenDetailsService');
 
-export class CitizenDetailsService {
+export const CitizenDetailsService  = new class {
 
-  async getRespondentInformation(claimId: string): Promise<Respondent> {
+  public async getRespondentInformation(claimId: string): Promise<Respondent> {
     try {
       const responseData = await getCaseDataFromStore(claimId);
-      if (get(responseData, ['respondent1.primaryAddress', 'respondent1.correspondenceAddress'])) {
+      if (get(responseData, 'respondent1')) {
         return responseData.respondent1;
       }
       return new Respondent();
@@ -29,86 +28,41 @@ export class CitizenDetailsService {
     }
   }
 
-  async saveRespondent(claimId: string, primaryAddress: PrimaryAddress, correspondenceAddress : CorrespondenceAddress) {
-    try {
-      const caseData = await getCaseDataFromStore(claimId) || new Claim();
-      if (get(caseData,'respondent1.primaryAddress')) {
-        caseData.respondent1.primaryAddress = primaryAddress;
-      } else if (get(caseData,'respondent1.correspondenceAddress')) {
-        caseData.respondent1.correspondenceAddress = correspondenceAddress ;
-      } else {
-        const respondent = new Respondent();
-        respondent.primaryAddress = primaryAddress;
-        respondent.correspondenceAddress = correspondenceAddress;
-        caseData.respondent1 = respondent;
-      }
-      await saveDraftClaim(claimId, caseData);
-    } catch (error) {
-      logger.error(error);
-      throw Error(error);
+  public async saveRespondent(claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress) : Promise<void> {
+    const responseData = await getCaseDataFromStore(claimId) || new Claim();
+    if (get(responseData, 'respondent1.primaryAddress')) {
+      responseData.respondent1.primaryAddress = this.buildPrimaryAddress(citizenAddress);
     }
+    if (get(responseData, 'respondent1.correspondenceAddress')) {
+      responseData.respondent1.correspondenceAddress = this.buildCorrespondenceAddress(citizenCorrespondenceAddress);
+    }
+    if (!(get(responseData, 'respondent1.primaryAddress') && get(responseData, 'respondent1.correspondenceAddress'))) {
+      const respondent = new Respondent();
+      respondent.primaryAddress = this.buildPrimaryAddress(citizenAddress);
+      respondent.correspondenceAddress = this.buildCorrespondenceAddress(citizenCorrespondenceAddress);
+      responseData.respondent1 = respondent;
+    }
+    await saveDraftClaim(claimId, responseData);
   }
 
-  buildPrimaryAddress = (citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress): PrimaryAddress => {
-/*    county: string;
-    country: string;
-    postCode: string;
-    postTown: string;
-    addressLine1: string;
-    addressLine2: string;
-    addressLine3: string;
-    respondent.primaryAddress.AddressLine1 = citizenAddress.primaryAddressLine1;
-    respondent.primaryAddress.AddressLine2 = citizenAddress.primaryAddressLine2;
-    respondent.primaryAddress.AddressLine3 = citizenAddress.primaryAddressLine3;
-    respondent.primaryAddress.PostTown = citizenAddress.primaryCity;
-    respondent.primaryAddress.PostCode = citizenAddress.primaryPostCode;*/
-
-    return {addressLine1: citizenAddress.primaryAddressLine1, addressLine2: citizenAddress.primaryAddressLine2, addressLine3: citizenAddress.primaryAddressLine3, country: "", county: "", postTown: citizenAddress.primaryCity, postCode: citizenAddress.primaryPostCode};
+  private buildPrimaryAddress = (citizenAddress: CitizenAddress): PrimaryAddress => {
+    return {
+      addressLine1: citizenAddress.primaryAddressLine1,
+      addressLine2: citizenAddress.primaryAddressLine2,
+      addressLine3: citizenAddress.primaryAddressLine3,
+      postTown: citizenAddress.primaryCity,
+      postCode: citizenAddress.primaryPostCode,
+    };
   };
 
-}
+  private buildCorrespondenceAddress = (citizenCorrespondenceAddress: CitizenCorrespondenceAddress): CorrespondenceAddress => {
+    return {
+      addressLine1: citizenCorrespondenceAddress.correspondenceAddressLine1,
+      addressLine2: citizenCorrespondenceAddress.correspondenceAddressLine2,
+      addressLine3: citizenCorrespondenceAddress.correspondenceAddressLine3,
+      postTown: citizenCorrespondenceAddress.correspondenceCity,
+      postCode: citizenCorrespondenceAddress.correspondencePostCode,
+    };
+  };
 
-/*  async getClaimDetails(claimId: string): Promise<Residence> {
-    try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.residence) {
-        return civilClaimResponse.case_data.statementOfMeans.residence;
-      }
-      return new Residence();
-    } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
-    }
-  }
-
-  public async saveResidence(claimId: string, residence: Residence) {
-    try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {
-        civilClaimResponse.case_data.statementOfMeans.residence = residence;
-      } else {
-        const statementOfMeans = new StatementOfMeans();
-        statementOfMeans.residence = residence;
-        civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
-      }
-      await saveDraftClaim(claimId, civilClaimResponse.case_data);
-    } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
-    }
-  }
-
-  public buildResidence(type: ResidenceType, housingDetails: string): Residence {
-    const residence = new Residence(type, housingDetails);
-    if (residence.type !== ResidenceType.OTHER) {
-      residence.housingDetails = '';
-    }
-    return residence;
-  }
-
-  public validateResidence(residence: Residence): GenericForm<Residence> {
-    const form: GenericForm<Residence> = new GenericForm(residence);
-    form.errors = validator.validateSync(form.model);
-    return form;
-  }
-}
-
-const residenceService = new ResidenceService();*/
+};
