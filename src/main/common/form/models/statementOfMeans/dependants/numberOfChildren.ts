@@ -1,21 +1,21 @@
 import {IsInt, Min, ValidateIf} from 'class-validator';
-import {INTEGER_REQUIRED, NON_NEGATIVE_NUMBER_REQUIRED} from '../../../validationErrors/errorMessageConstants';
+import {VALID_INTEGER_REQUIRED, VALID_POSITIVE_NUMBER_REQUIRED} from '../../../validationErrors/errorMessageConstants';
 
 export class NumberOfChildren {
 
   @ValidateIf((o: NumberOfChildren) => o.under11 !== undefined)
-  @IsInt({message: INTEGER_REQUIRED})
-  @Min(0, {message: NON_NEGATIVE_NUMBER_REQUIRED})
+  @IsInt({message: VALID_INTEGER_REQUIRED})
+  @Min(0, {message: VALID_POSITIVE_NUMBER_REQUIRED})
     under11?: number;
 
   @ValidateIf((o: NumberOfChildren) => o.between11and15 !== undefined)
-  @IsInt({message: INTEGER_REQUIRED})
-  @Min(0, {message: NON_NEGATIVE_NUMBER_REQUIRED})
+  @IsInt({message: VALID_INTEGER_REQUIRED})
+  @Min(0, {message: VALID_POSITIVE_NUMBER_REQUIRED})
     between11and15?: number;
 
   @ValidateIf((o: NumberOfChildren) => o.between16and19 !== undefined)
-  @IsInt({message: INTEGER_REQUIRED})
-  @Min(0, {message: NON_NEGATIVE_NUMBER_REQUIRED})
+  @IsInt({message: VALID_INTEGER_REQUIRED})
+  @Min(0, {message: VALID_POSITIVE_NUMBER_REQUIRED})
     between16and19?: number;
 
   constructor(under11?: number, between11and15?: number, between16and19?: number) {

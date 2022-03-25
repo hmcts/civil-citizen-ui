@@ -23,8 +23,7 @@ export const VALID_AT_LEAST_ONE_OPTION = 'You must select at least one option';
 export const VALID_HOUSING = 'Describe your housing';
 export const VALID_TEXT_LENGTH = 'You’ve entered too many characters';
 export const VALID_OPTION_SELECTION = 'Select an option';
-
-export const YES_NO_REQUIRED = 'Please select yes or no';
-export const NON_NEGATIVE_NUMBER_REQUIRED = 'Don’t enter a negative number';
-export const INTEGER_REQUIRED = 'Enter a numeric, for example 3';
-export const ENTER_AT_LEAST_ONE = 'Enter a number for at least one field';
+export const VALID_YES_NO_SELECTION = 'Please select yes or no';
+export const VALID_POSITIVE_NUMBER_REQUIRED = 'Don’t enter a negative number';
+export const VALID_INTEGER_REQUIRED = 'Enter a numeric, for example 3';
+export const VALID_ENTER_AT_LEAST_ONE_NUMBER = 'Enter a number for at least one field';
