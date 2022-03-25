@@ -8,7 +8,7 @@ import {
   CITIZEN_SEVERELY_DISABLED_URL,
 } from '../../../../../../main/routes/urls';
 import { VALID_YES_NO_OPTION } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { REDIS_FAILURE } from '../../../../../utils/testConstants';
+import { REDIS_FAILURE } from '../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -48,7 +48,7 @@ describe('Disability', () => {
         .get(CITIZEN_DISABILITY_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
         });
     });
   });
@@ -101,7 +101,7 @@ describe('Disability', () => {
         .send('disability=no')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
         });
     });
   });

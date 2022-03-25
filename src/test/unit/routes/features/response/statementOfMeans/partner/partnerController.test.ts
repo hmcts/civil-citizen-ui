@@ -8,7 +8,7 @@ import {
   CITIZEN_PARTNER_URL,
 } from '../../../../../../../main/routes/urls';
 import { VALID_YES_NO_OPTION } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { REDIS_FAILURE } from '../../../../../../utils/testConstants';
+import { REDIS_FAILURE } from '../../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
@@ -49,7 +49,7 @@ describe('Partner', () => {
         .get(CITIZEN_PARTNER_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
         });
     });
   });
@@ -105,7 +105,7 @@ describe('Partner', () => {
         .send('cohabiting=no')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
         });
     });
   });

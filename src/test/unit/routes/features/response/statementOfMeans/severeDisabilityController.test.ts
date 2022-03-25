@@ -4,7 +4,7 @@ import nock from 'nock';
 import config from 'config';
 import { CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL } from '../../../../../../main/routes/urls';
 import { VALID_YES_NO_OPTION } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { REDIS_FAILURE } from '../../../../../utils/testConstants';
+import { REDIS_FAILURE } from '../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -45,7 +45,7 @@ describe('SevereDisability', () => {
         .get(CITIZEN_SEVERELY_DISABLED_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
         });
     });
   });
@@ -99,7 +99,7 @@ describe('SevereDisability', () => {
         .send('severeDisability=yes')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
         });
     });
   });

@@ -8,7 +8,7 @@ import {
   CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../../../../main/routes/urls';
 import { VALID_YES_NO_OPTION } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { REDIS_FAILURE } from '../../../../../../utils/testConstants';
+import { REDIS_FAILURE } from '../../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockNoStatementOfMeans, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
@@ -49,7 +49,7 @@ describe('on GET', () => {
       .get(CITIZEN_PARTNER_PENSION_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({ error: REDIS_FAILURE });
+        expect(res.body).toMatchObject({ error: REDIS_FAILURE });
       });
   });
 });
@@ -121,7 +121,7 @@ describe('on POST', () => {
       .send('partnerPension=no')
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({ error: REDIS_FAILURE });
+        expect(res.body).toMatchObject({ error: REDIS_FAILURE });
       });
   });
 });

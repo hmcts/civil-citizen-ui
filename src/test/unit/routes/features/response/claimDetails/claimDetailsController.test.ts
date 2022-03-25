@@ -2,7 +2,7 @@ import request from 'supertest';
 import { app } from '../../../../../../main/app';
 import config from 'config';
 import { CLAIM_DETAILS } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { CLAIM_NUMBER } from '../../../../../utils/testConstants';
+import { CLAIM_NUMBER } from '../../../../../utils/errorMessageTestConstants';
 import { mockClaim as mockResponse } from '../../../../../utils/mockClaim';
 
 jest.mock('../../../../../../main/modules/oidc');
