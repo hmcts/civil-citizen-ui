@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {DEPENDANT_TEENAGERS_URL, OTHER_DEPENDANTS_URL} from '../../../../../routes/urls';
+import {CITIZEN_DEPENDANTS_EDUCATION_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../../routes/urls';
 import {
   BetweenSixteenAndNineteenDependants,
 } from '../../../../../common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
@@ -26,7 +26,7 @@ function convertToForm(req: express.Request) {
   return new BetweenSixteenAndNineteenDependants(value, maxValue);
 }
 
-router.get(DEPENDANT_TEENAGERS_URL, async (req, res) => {
+router.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res) => {
   try {
     const form = await getForm(req.params.id);
     renderView(form, res);
@@ -36,7 +36,7 @@ router.get(DEPENDANT_TEENAGERS_URL, async (req, res) => {
   }
 });
 
-router.post(DEPENDANT_TEENAGERS_URL, async (req, res) => {
+router.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res) => {
   const form = convertToForm(req);
   try {
     await validateForm(form);
@@ -44,7 +44,7 @@ router.post(DEPENDANT_TEENAGERS_URL, async (req, res) => {
       renderView(form, res);
     } else {
       await saveFormToDraftStore(req.params.id, form);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, OTHER_DEPENDANTS_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_OTHER_DEPENDANTS_URL));
     }
   } catch (error) {
     logger.error(`${(error as Error).stack || error}`);

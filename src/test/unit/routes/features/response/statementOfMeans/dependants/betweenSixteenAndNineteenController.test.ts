@@ -2,7 +2,7 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../../main/app';
-import {DEPENDANT_TEENAGERS_URL, OTHER_DEPENDANTS_URL} from '../../../../../../../main/routes/urls';
+import {CITIZEN_DEPENDANTS_EDUCATION_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../../../../main/routes/urls';
 import {
   NUMBER_REQUIRED,
   REDIS_ERROR_MESSAGE,
@@ -41,7 +41,7 @@ describe('Dependant Teenagers', () => {
     app.locals.draftStoreClient = mockDraftStore;
     test('should return dependent teenagers page', async () => {
       await request(app)
-        .get(DEPENDANT_TEENAGERS_URL)
+        .get(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(EXPECTED_TEXT);
@@ -50,7 +50,7 @@ describe('Dependant Teenagers', () => {
     test('should return 500 error code when there is an error', async () => {
       app.locals.draftStoreClient = mockErrorDraftStore;
       await request(app)
-        .get(DEPENDANT_TEENAGERS_URL)
+        .get(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body).toEqual({error: REDIS_ERROR_MESSAGE});
@@ -61,7 +61,7 @@ describe('Dependant Teenagers', () => {
     app.locals.draftStoreClient = mockDraftStore;
     test('should show error when no number is added', async () => {
       await request(app)
-        .post(DEPENDANT_TEENAGERS_URL)
+        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -70,7 +70,7 @@ describe('Dependant Teenagers', () => {
     });
     test('should show error when number is negative', async () => {
       await request(app)
-        .post(DEPENDANT_TEENAGERS_URL)
+        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: -1, maxValue: 3})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -79,7 +79,7 @@ describe('Dependant Teenagers', () => {
     });
     test('should show error when number is decimal', async () => {
       await request(app)
-        .post(DEPENDANT_TEENAGERS_URL)
+        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: 1.3, maxValue: 3})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -88,7 +88,7 @@ describe('Dependant Teenagers', () => {
     });
     test('should show error when number is greater than maxValue', async () => {
       await request(app)
-        .post(DEPENDANT_TEENAGERS_URL)
+        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: 4, maxValue: 3})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -98,17 +98,17 @@ describe('Dependant Teenagers', () => {
     test('should redirect when no errors', async () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
-        .post(DEPENDANT_TEENAGERS_URL)
+        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: 1, maxValue: 3})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(OTHER_DEPENDANTS_URL);
+          expect(res.header.location).toEqual(CITIZEN_OTHER_DEPENDANTS_URL);
         });
     });
     test('should return 500 code when there is an error', async () => {
       app.locals.draftStoreClient = mockErrorDraftStore;
       await request(app)
-        .post(DEPENDANT_TEENAGERS_URL)
+        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: 1, maxValue: 3})
         .expect((res) => {
           expect(res.status).toBe(500);

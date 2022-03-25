@@ -31,5 +31,5 @@ export const UNEMPLOYED_URL = `${STATEMENT_OF_MEANS_URL}/unemployment`;
 export const SELF_EMPLOYED_URL = `${CITIZEN_EMPLOYMENT_URL}/self-employment`;
 export const FINANCIAL_DETAILS_URL = `${STATEMENT_OF_MEANS_URL}/intro`;
 export const CLAIM_TASK_LIST = `${BASE_CASE_RESPONSE_URL}/claim-task-list`;
-export const DEPENDANT_TEENAGERS_URL = `${STATEMENT_OF_MEANS_URL}/dependants/education`;
-export const OTHER_DEPENDANTS_URL = `${STATEMENT_OF_MEANS_URL}/other-dependants`;
+export const CITIZEN_DEPENDANTS_EDUCATION_URL = `${STATEMENT_OF_MEANS_URL}/dependants/education`;
+export const CITIZEN_OTHER_DEPENDANTS_URL = `${STATEMENT_OF_MEANS_URL}/other-dependants`;
