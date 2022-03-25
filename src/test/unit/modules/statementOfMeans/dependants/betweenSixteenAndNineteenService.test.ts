@@ -26,19 +26,13 @@ describe('dependent teenagers service test', () => {
       expect(spySave).toBeCalled();
     });
     it('should throw error when error occurs', async () => {
-      //Given
+      //When
       const mockGetCaseData = draftStoreService.saveDraftClaim as jest.Mock;
       mockGetCaseData.mockImplementation(async () => {
         throw new Error(REDIS_ERROR_MESSAGE);
       });
-      expect.assertions(1);
-      //When
-      try {
-        await saveFormToDraftStore('123', new BetweenSixteenAndNineteenDependants(3, 4));
-      } catch (error) {
-        //Then
-        expect(error.message).toBe(REDIS_ERROR_MESSAGE);
-      }
+      //Then
+      await expect(saveFormToDraftStore('123', new BetweenSixteenAndNineteenDependants(3, 4))).rejects.toThrow(REDIS_ERROR_MESSAGE);
     });
   });
   describe('getForm', () => {
@@ -78,19 +72,13 @@ describe('dependent teenagers service test', () => {
       expect(spy).toBeCalled();
     });
     it('should rethrow error when error occurs', async () => {
-      //Given
-      expect.assertions(1);
+      //When
       const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
       mockGetCaseData.mockImplementation(async () => {
         throw new Error(REDIS_ERROR_MESSAGE);
       });
-      //When
-      try {
-        await getForm('123');
-      } catch (error) {
-        //Then
-        expect(error.message).toBe(REDIS_ERROR_MESSAGE);
-      }
+      //Then
+      await expect(getForm('123')).rejects.toThrow(REDIS_ERROR_MESSAGE);
     });
   });
 });
