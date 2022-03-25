@@ -58,8 +58,8 @@ export class GenericForm<Model> {
   public getNestedErrors(): FormValidationError[] {
     const validators: FormValidationError[] = [];
     this.getErrors()
-      .map(error => error.children
-        .forEach(item => validators.push(new FormValidationError(item))));
+      .forEach(error => error.children
+        .forEach(childError => validators.push(new FormValidationError(childError))));
     return validators;
   }
 

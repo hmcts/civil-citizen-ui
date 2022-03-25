@@ -19,7 +19,7 @@ class DependantsService {
       return new Dependants();
     } catch (error) {
       logger.error(`${(error as Error).stack || error}`);
-      throw (error as Error);
+      throw error;
     }
   }
 
@@ -36,7 +36,7 @@ class DependantsService {
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
     } catch (error) {
       logger.error(`${(error as Error).stack || error}`);
-      throw (error as Error);
+      throw error;
     }
   }
 
