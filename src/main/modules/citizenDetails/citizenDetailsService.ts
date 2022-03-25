@@ -1,15 +1,18 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../modules/draft-store/draftStoreService';
-
+import {
+  getCaseDataFromStore,
+  saveDraftClaim,
+} from '../../modules/draft-store/draftStoreService';
 import {get} from 'lodash';
 import {Respondent} from '../../common/models/respondent';
-import {Disability} from "common/form/models/statementOfMeans/disability";
-import {Claim} from "models/claim";
-import {StatementOfMeans} from "models/statementOfMeans";
-
+import {Claim} from '../../common/models/claim';
+import {PrimaryAddress} from '../../common/models/primaryAddress';
+import {CorrespondenceAddress} from '../../common/models/correspondenceAddress';
+import {ResidenceType} from "common/form/models/statementOfMeans/residenceType";
+import {Residence} from "common/form/models/statementOfMeans/residence";
+import {CitizenAddress} from "common/form/models/citizenAddress";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('residenceService');
-
 
 export class CitizenDetailsService {
 
@@ -22,25 +25,47 @@ export class CitizenDetailsService {
       return new Respondent();
     } catch (error) {
       logger.error(error);
-      throw new Error(error);
+      throw Error(error);
     }
   }
 
-  async saveRespondent(claimId: string, respondent: Respondent) {
+  async saveRespondent(claimId: string, primaryAddress: PrimaryAddress, correspondenceAddress : CorrespondenceAddress) {
     try {
-      const case_data = await getCaseDataFromStore(claimId) || new Claim();
-      if (case_data && case_data.respondent1) {
-        case_data.respondent1 = respondent;
+      const caseData = await getCaseDataFromStore(claimId) || new Claim();
+      if (get(caseData,'respondent1.primaryAddress')) {
+        caseData.respondent1.primaryAddress = primaryAddress;
+      } else if (get(caseData,'respondent1.correspondenceAddress')) {
+        caseData.respondent1.correspondenceAddress = correspondenceAddress ;
       } else {
         const respondent = new Respondent();
-        respondent. = respondent;
-        case_data.respondent1 = statementOfMeans;
+        respondent.primaryAddress = primaryAddress;
+        respondent.correspondenceAddress = correspondenceAddress;
+        caseData.respondent1 = respondent;
       }
-      await saveDraftClaim(claimId, case_data);
-    } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
+      await saveDraftClaim(claimId, caseData);
+    } catch (error) {
+      logger.error(error);
+      throw Error(error);
     }
   }
+
+  buildPrimaryAddress = (citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress): PrimaryAddress => {
+/*    county: string;
+    country: string;
+    postCode: string;
+    postTown: string;
+    addressLine1: string;
+    addressLine2: string;
+    addressLine3: string;
+    respondent.primaryAddress.AddressLine1 = citizenAddress.primaryAddressLine1;
+    respondent.primaryAddress.AddressLine2 = citizenAddress.primaryAddressLine2;
+    respondent.primaryAddress.AddressLine3 = citizenAddress.primaryAddressLine3;
+    respondent.primaryAddress.PostTown = citizenAddress.primaryCity;
+    respondent.primaryAddress.PostCode = citizenAddress.primaryPostCode;*/
+
+    return {addressLine1: citizenAddress.primaryAddressLine1, addressLine2: citizenAddress.primaryAddressLine2, addressLine3: citizenAddress.primaryAddressLine3, country: "", county: "", postTown: citizenAddress.primaryCity, postCode: citizenAddress.primaryPostCode};
+  };
+
 }
 
 /*  async getClaimDetails(claimId: string): Promise<Residence> {

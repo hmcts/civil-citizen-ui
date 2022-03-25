@@ -24,11 +24,11 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
     const responseDataRedis: Respondent = await citizenDetailsService.getRespondentInformation(req.params.id);
     if(!responseDataRedis){
       formAddressModel = new CitizenAddress(
-        responseDataRedis.primaryAddress.AddressLine1,
-        responseDataRedis.primaryAddress.AddressLine2,
-        responseDataRedis.primaryAddress.AddressLine3,
-        responseDataRedis.primaryAddress.PostTown,
-        responseDataRedis.primaryAddress.PostCode);
+        responseDataRedis.primaryAddress.addressLine1,
+        responseDataRedis.primaryAddress.addressLine2,
+        responseDataRedis.primaryAddress.addressLine3,
+        responseDataRedis.primaryAddress.postTown,
+        responseDataRedis.primaryAddress.postCode);
       formCorrespondenceModel = new CitizenCorrespondenceAddress(
         responseDataRedis.correspondenceAddress.AddressLine1,
         responseDataRedis.correspondenceAddress.AddressLine2,
@@ -101,6 +101,7 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     }
     //claim.respondent1 = respondent;
     //await saveDraftClaim(req.params.id, claim);*/
+    await  saveRespondent(citizenAddress,citizenCorrespondenceAddress);
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   }
 });
