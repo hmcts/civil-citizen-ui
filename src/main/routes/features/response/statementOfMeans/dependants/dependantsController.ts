@@ -42,7 +42,7 @@ dependantsController
       } else {
         try {
           await dependantsService.saveDependants(req.params.id, dependants);
-          if (dependantsService.shouldRedirectToDependantsEducationScreen(dependants)) {
+          if (dependants.hasChildrenBetween16and19()) {
             res.redirect(CITIZEN_DEPENDANTS_EDUCATION_URL.replace(':id', req.params.id));
           } else {
             res.redirect(CITIZEN_OTHER_DEPENDANTS_URL.replace(':id', req.params.id));

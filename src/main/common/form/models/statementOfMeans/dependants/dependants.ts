@@ -28,4 +28,8 @@ export class Dependants {
       declared ? NumberOfChildren.fromObject(under11, between11and15, between16and19) : undefined,
     );
   }
+
+  public hasChildrenBetween16and19(): boolean {
+    return this?.numberOfChildren?.between16and19 > 0;
+  }
 }
