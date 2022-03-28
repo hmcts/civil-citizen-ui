@@ -4,7 +4,6 @@ import nock from 'nock';
 import {app} from '../../../../../../../main/app';
 import {CITIZEN_DEPENDANTS_EDUCATION_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../../../../main/routes/urls';
 import {
-  NUMBER_REQUIRED,
   REDIS_ERROR_MESSAGE,
   VALID_INTEGER,
   VALID_NUMBER_FOR_PREVIOUS_PAGE,
@@ -65,7 +64,7 @@ describe('Dependant Teenagers', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NUMBER_REQUIRED);
+          expect(res.text).toContain(VALID_INTEGER);
         });
     });
     test('should show error when number is negative', async () => {
