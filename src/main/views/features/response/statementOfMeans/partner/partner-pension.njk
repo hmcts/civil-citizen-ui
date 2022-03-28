@@ -8,7 +8,7 @@
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("Does your partner receive a pension?") %}
       {% set id = "partnerPension" %}
-      {% set name = "partnerPension" %}
+      {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
