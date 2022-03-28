@@ -2,10 +2,19 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
+      {% set hintPayImmediatly %}
+        <div
+          class='govuk-hint'>{{ t('The claimant can request a County Court Judgment (CCJ) against you if you don’t pay immediately.') }}</div>
+      {% endset -%}
+
+      {% set hintPayLater %}
+        <div
+          class='govuk-hint'>{{ t('The claimant can request a County Court Judgment (CCJ) against you if you don’t pay immediately.') }}</div>
+      {% endset -%}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
@@ -21,7 +30,7 @@
               name: "paymentType",
               fieldset: {
                 legend: {
-                  text: "When do you want to pay??",
+                  text: t("When do you want to pay?"),
                   isPageHeading: true,
                   classes: "govuk-fieldset__legend--l"
                 },
@@ -35,7 +44,7 @@
                   text: t("Immediatly"),
                   checked: true if form.paymentType == PaymentOptionType.IMMEDIATELY,
                   conditional: {
-                  html: t('You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account.')
+                  html: hintPayImmediatly
                 }
                 },
                 {
@@ -43,7 +52,7 @@
                   text: t("By set date"),
                   checked: true if form.paymentType == PaymentOptionType.BY_SET_DATE,
                   conditional: {
-                  html: t('The claimant can request a County Court Judgment (CCJ) against you if you don’t pay immediately.')
+                  html: hintPayLater
                 }
                 },
                 {
@@ -51,7 +60,7 @@
                   text: t("I'll suggest a repayment plan"),
                   checked: true if form.paymentType == PaymentOptionType.INSTALMENTS,
                   conditional: {
-                  html: t('The claimant can request a County Court Judgment (CCJ) against you if you don’t pay immediately.')
+                  html: hintPayLater
                 }
                 }
               ]
