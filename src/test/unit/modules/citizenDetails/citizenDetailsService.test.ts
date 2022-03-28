@@ -81,10 +81,27 @@ describe('Citizen details service', () => {
       });
       //when
       await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress());
-
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, mockClaim);
+    });
+
+    it('should save a respondent when in redis is undefined on redis', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const resultClaim = new Claim();
+      const respondentResult = new Respondent();
+      resultClaim.respondent1 =  respondentResult;
+      resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
+      mockGetCaseData.mockImplementation(async () => {
+        return undefined;
+      });
+      //when
+      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
     });
   });
 });
