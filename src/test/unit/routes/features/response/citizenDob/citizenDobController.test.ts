@@ -5,7 +5,7 @@ import request from 'supertest';
 import {VALID_DATE, VALID_DAY, VALID_MONTH, VALID_YEAR} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {AGE_ELIGIBILITY_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
-import {REDIS_FAILURE} from '../../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -26,7 +26,7 @@ describe('Citizen date of birth', () => {
         .get(DOB_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter your date of birth');
+          expect(res.text).toContain(TestMessages.ENTER_DATE_OF_BIRTH);
         });
     });
     test('should return citizen date of birth page with all information from redis', async () => {
@@ -35,7 +35,7 @@ describe('Citizen date of birth', () => {
         .get(DOB_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter your date of birth');
+          expect(res.text).toContain(TestMessages.ENTER_DATE_OF_BIRTH);
         });
     });
     test('should return http 500 when has error in the get method', async () => {
@@ -44,7 +44,7 @@ describe('Citizen date of birth', () => {
         .get(DOB_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
@@ -162,7 +162,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });

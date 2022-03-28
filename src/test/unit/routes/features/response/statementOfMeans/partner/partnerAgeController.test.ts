@@ -9,7 +9,7 @@ import {
   CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../../../../main/routes/urls';
 import { VALID_YES_NO_OPTION } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { REDIS_FAILURE } from '../../../../../../utils/errorMessageTestConstants';
+import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockNoStatementOfMeans, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
@@ -31,7 +31,7 @@ describe('Partner Age', () => {
         .get(CITIZEN_PARTNER_AGE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Is your partner aged 18 or over?');
+          expect(res.text).toContain(TestMessages.IS_YOUR_PARTNER_OVER_18);
         });
     });
     test('should show partner age page when haven´t statementOfMeans', async () => {
@@ -49,7 +49,7 @@ describe('Partner Age', () => {
         .get(CITIZEN_PARTNER_AGE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
@@ -101,7 +101,7 @@ describe('Partner Age', () => {
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });

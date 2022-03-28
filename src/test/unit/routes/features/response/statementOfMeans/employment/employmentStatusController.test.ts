@@ -12,8 +12,8 @@ import {
   VALID_AT_LEAST_ONE_OPTION,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {REDIS_FAILURE} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -32,7 +32,7 @@ describe('Employment status', () => {
       await request(app).get(CITIZEN_EMPLOYMENT_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Do you have a job?');
+          expect(res.text).toContain(TestMessages.DO_YOU_HAVE_JOB);
         });
     });
     it('should return http 500 when has error', async () => {
@@ -41,7 +41,7 @@ describe('Employment status', () => {
         .get(CITIZEN_EMPLOYMENT_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
@@ -53,7 +53,7 @@ describe('Employment status', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_YES_NO_OPTION);
-          expect(res.text).toContain('govuk-error-message');
+          expect(res.text).toContain(TestMessages.GOVUK_ERROR_MESSAGE);
         });
     });
     it('should return error message when option yes is selected but no employment type is selected', async () => {
@@ -103,7 +103,7 @@ describe('Employment status', () => {
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });

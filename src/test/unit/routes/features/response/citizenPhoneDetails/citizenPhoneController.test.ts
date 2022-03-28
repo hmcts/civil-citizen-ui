@@ -7,7 +7,7 @@ import {
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
-import {REDIS_FAILURE} from '../../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -27,7 +27,7 @@ describe('Citizen phone number', () => {
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter a phone number (optional)');
+          expect(res.text).toContain(TestMessages.ENTER_PHONE_NUMBER_OPTIONAL);
         });
     });
     test('should return empty citizen phone number page', async () => {
@@ -36,7 +36,7 @@ describe('Citizen phone number', () => {
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter a phone number (optional)');
+          expect(res.text).toContain(TestMessages.ENTER_PHONE_NUMBER_OPTIONAL);
         });
     });
     test('should return http 500 when has error in the get method', async () => {
@@ -45,7 +45,7 @@ describe('Citizen phone number', () => {
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
@@ -100,7 +100,7 @@ describe('Citizen phone number', () => {
         .post(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
