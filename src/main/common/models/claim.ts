@@ -12,6 +12,7 @@ export class Claim {
   detailsOfClaim: string;
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
+  paymentOption?: string;
 
 
   formattedResponseDeadline(): string {
@@ -20,6 +21,10 @@ export class Claim {
 
   formattedTotalClaimAmount(): string {
     return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
+  }
+
+  paymentOptionExists(): boolean {
+    return this.paymentOption && this.paymentOption.length > 0;
   }
 }
 

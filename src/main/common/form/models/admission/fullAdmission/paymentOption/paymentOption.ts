@@ -11,4 +11,8 @@ export default class PaymentOption extends Form {
     super();
     this.paymentType = paymentType;
   }
+
+  paymentOptionBySetDateSelected() {
+    return this.paymentType && this.paymentType === PaymentOptionType.BY_SET_DATE;
+  }
 }
