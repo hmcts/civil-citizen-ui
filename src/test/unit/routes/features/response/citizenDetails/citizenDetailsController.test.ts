@@ -16,8 +16,7 @@ import {
 } from '../../../../../../main/modules/citizenDetails/citizenDetailsService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {Respondent} from '../../../../../../main/common/models/respondent';
-import {PrimaryAddress} from '../../../../../../main/common/models/primaryAddress';
-import {CorrespondenceAddress} from '../../../../../../main/common/models/correspondenceAddress';
+import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -29,15 +28,6 @@ const mockSaveRespondent = saveRespondent as jest.Mock;
 
 const claim = new Claim();
 
-const buildPrimaryAddress = (): PrimaryAddress => {
-  return {
-    AddressLine1: 'Flat 3A Middle Road',
-    AddressLine2: '',
-    AddressLine3: '',
-    PostTown: 'Test',
-    PostCode: 'SW1H 9AJ',
-  };
-};
 
 const buildClaimOfRespondent = (): Respondent => {
   claim.respondent1 = new Respondent();
@@ -49,18 +39,8 @@ const buildClaimOfRespondent = (): Respondent => {
   return claim.respondent1;
 };
 
-const buildCorrespondenceAddress = (): CorrespondenceAddress => {
-  return {
-    AddressLine1: 'Flat 3A Middle Road',
-    AddressLine2: '',
-    AddressLine3: '',
-    PostTown: 'Test',
-    PostCode: 'SW1H 9AJ',
-  };
-};
 const nock = require('nock');
 const redisFailureError = 'Redis DraftStore failure.';
-
 
 const validDataForPost = {
   primaryAddressLine1: 'Flat 3A Middle Road',
