@@ -20,8 +20,8 @@ export class ChildrenDisabilityService {
       }
       return new ChildrenDisability();
     } catch (error) {
-      ChildrenDisabilityService.logger.error(`${(error as Error).stack || error}`);
-      throw new Error(error);
+      ChildrenDisabilityService.logger.error(error);
+      throw error;
     }
   }
 
@@ -37,8 +37,8 @@ export class ChildrenDisabilityService {
       }
       await saveDraftClaim(claimId, case_data);
     } catch (error) {
-      ChildrenDisabilityService.logger.error(`${(error as Error).stack || error}`);
-      throw new Error(error);
+      ChildrenDisabilityService.logger.error(error);
+      throw error;
     }
   }
 }

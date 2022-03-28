@@ -39,7 +39,7 @@ const mockLogger = {
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 
-const redisFailureError = 'Error: Redis DraftStore failure.';
+const redisFailureError = 'Redis DraftStore failure.';
 
 describe('Children Disability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
