@@ -7,7 +7,7 @@ import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citiz
 import {Respondent} from '../../../../common/models/respondent';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {YesNo} from '../../../../common/form/models/yesNo';
-import {CitizenDetailsService} from '../../../../modules/citizenDetails/citizenDetailsService';
+import {getRespondentInformation, saveRespondent} from '../../../../modules/citizenDetails/citizenDetailsService';
 import _ from 'lodash';
 
 
@@ -39,20 +39,20 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
   try {
     let formAddressModel;
     let formCorrespondenceModel;
-    const responseDataRedis: Respondent = await CitizenDetailsService.getRespondentInformation(req.params.id);
+    const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
     if (!_.isEmpty(responseDataRedis)) {
       formAddressModel = new CitizenAddress(
-        responseDataRedis.primaryAddress.addressLine1,
-        responseDataRedis.primaryAddress.addressLine2,
-        responseDataRedis.primaryAddress.addressLine3,
-        responseDataRedis.primaryAddress.postTown,
-        responseDataRedis.primaryAddress.postCode);
+        responseDataRedis.primaryAddress.AddressLine1,
+        responseDataRedis.primaryAddress.AddressLine2,
+        responseDataRedis.primaryAddress.AddressLine3,
+        responseDataRedis.primaryAddress.PostTown,
+        responseDataRedis.primaryAddress.PostCode);
       formCorrespondenceModel = new CitizenCorrespondenceAddress(
-        responseDataRedis.correspondenceAddress.addressLine1,
-        responseDataRedis.correspondenceAddress.addressLine2,
-        responseDataRedis.correspondenceAddress.addressLine3,
-        responseDataRedis.correspondenceAddress.postTown,
-        responseDataRedis.correspondenceAddress.postCode);
+        responseDataRedis.correspondenceAddress.AddressLine1,
+        responseDataRedis.correspondenceAddress.AddressLine2,
+        responseDataRedis.correspondenceAddress.AddressLine3,
+        responseDataRedis.correspondenceAddress.PostTown,
+        responseDataRedis.correspondenceAddress.PostCode);
     }
     citizenFullName = {
       individualTitle: responseDataRedis?.individualTitle || 'individualTitle Test',
@@ -101,7 +101,7 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
       || (citizenCorrespondenceAddress.errors && citizenCorrespondenceAddress.errors.length > 0)) {
       renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req);
     } else {
-      await CitizenDetailsService.saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress);
+      await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
     }
   } catch (error) {
