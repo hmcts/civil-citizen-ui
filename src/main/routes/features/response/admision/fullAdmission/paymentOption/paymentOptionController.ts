@@ -30,7 +30,7 @@ router.get(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
     const form = await getPaymentOptionForm(req.params.id);
     renderView(form, res);
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).send({error: error.message});
   }
 });
 
@@ -45,7 +45,7 @@ router.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
       redirectToNextPage(req.params.id, form, res);
     }
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).send({error: error.message});
   }
 
 });
