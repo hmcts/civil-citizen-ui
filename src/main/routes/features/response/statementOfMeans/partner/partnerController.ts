@@ -8,8 +8,8 @@ import { constructResponseUrlWithIdParams } from '../../../../../common/utils/ur
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner';
 const router = express.Router();
 const cohabitingService = new CohabitingService();
-const { Logger } = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('cohabitingService');
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('partnerController');
 const validator = new Validator();
 
 function renderView(form: Cohabiting, res: express.Response): void {

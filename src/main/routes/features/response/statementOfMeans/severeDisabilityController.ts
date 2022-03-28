@@ -1,14 +1,14 @@
 import * as express from 'express';
-import { CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL } from '../../../urls';
-import { SevereDisability } from '../../../../common/form/models/statementOfMeans/severeDisability';
-import { ValidationError, Validator } from 'class-validator';
-import { SevereDisabilityService } from '../../../../modules/statementOfMeans/severeDisabilityService';
-import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFormatter';
+import {CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
+import {SevereDisability} from '../../../../common/form/models/statementOfMeans/severeDisability';
+import {ValidationError, Validator} from 'class-validator';
+import {SevereDisabilityService} from '../../../../modules/statementOfMeans/severeDisabilityService';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 const citizenSevereDisabilityViewPath = 'features/response/statementOfMeans/are-you-severely-disabled';
 const router = express.Router();
-const { Logger } = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('disabilityService');
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('severeDisabilityController');
 const severeDisabilityService = new SevereDisabilityService();
 const validator = new Validator();
 

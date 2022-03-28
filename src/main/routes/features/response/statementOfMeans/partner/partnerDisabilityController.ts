@@ -4,17 +4,17 @@ import {
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
 } from '../../../../urls';
-import { PartnerDisability } from '../../../../../common/form/models/statementOfMeans/partner/partnerDisability';
-import { ValidationError, Validator } from 'class-validator';
-import { PartnerDisabilityService } from '../../../../../modules/statementOfMeans/partner/partnerDisabilityService';
-import { constructResponseUrlWithIdParams } from '../../../../../common/utils/urlFormatter';
+import {PartnerDisability} from '../../../../../common/form/models/statementOfMeans/partner/partnerDisability';
+import {ValidationError,Validator} from 'class-validator';
+import {PartnerDisabilityService} from '../../../../../modules/statementOfMeans/partner/partnerDisabilityService';
+import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner-disability';
 const router = express.Router();
 
 const partnerDisabilityService = new PartnerDisabilityService();
 const { Logger } = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerDisabilityService');
+const logger = Logger.getLogger('partnerDisabilityController');
 const validator = new Validator();
 
 function renderView(form: PartnerDisability, res: express.Response): void {

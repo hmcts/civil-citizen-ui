@@ -4,7 +4,7 @@ import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('dependantsService');
+const logger = Logger.getLogger('cohabitingService');
 const cohabiting = new Cohabiting();
 
 export class CohabitingService {

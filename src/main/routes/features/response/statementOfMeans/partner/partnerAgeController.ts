@@ -13,8 +13,8 @@ import { constructResponseUrlWithIdParams } from '../../../../../common/utils/ur
 
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
 const router = express.Router();
-const { Logger } = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerAgeService');
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('partnerAgeController');
 const partnerAgeService = new PartnerAgeService();
 const disabilityService = new DisabilityService();
 const validator = new Validator();
