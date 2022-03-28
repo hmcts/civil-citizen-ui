@@ -21,6 +21,7 @@ import {CorrespondenceAddress} from '../../../../../../main/common/models/corres
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/modules/citizenDetails/citizenDetailsService');
 
 const mockGetRespondentInformation = getRespondentInformation as jest.Mock;
@@ -82,6 +83,7 @@ describe('Confirm Details page', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.resetAllMocks();
 
   });
   describe('on Exception', () => {
@@ -114,7 +116,7 @@ describe('Confirm Details page', () => {
   test('should return your details page with empty information', async () => {
 
     mockGetRespondentInformation.mockImplementation(async () => {
-      new Respondent();
+      return new Respondent();
     });
     await request(app)
       .get(CITIZEN_DETAILS_URL)
@@ -126,7 +128,7 @@ describe('Confirm Details page', () => {
   test('should return your details page with information', async () => {
 
     mockGetRespondentInformation.mockImplementation(async () => {
-      buildClaimOfRespondent();
+      return buildClaimOfRespondent();
     });
     await request(app)
       .get(CITIZEN_DETAILS_URL)

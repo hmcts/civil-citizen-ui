@@ -37,9 +37,11 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
 
 router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   try {
+    console.log('gettt');
     let formAddressModel;
     let formCorrespondenceModel;
     const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
+    console.log(responseDataRedis);
     if (!_.isEmpty(responseDataRedis)) {
       formAddressModel = new CitizenAddress(
         responseDataRedis.primaryAddress.AddressLine1,
