@@ -22,10 +22,6 @@ export class Claim {
   formattedTotalClaimAmount(): string {
     return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
   }
-
-  paymentOptionExists(): boolean {
-    return this.paymentOption && this.paymentOption.length > 0;
-  }
 }
 
 export class Individual {

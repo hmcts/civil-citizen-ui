@@ -1,14 +1,14 @@
 import PaymentOption from '../../../../common/form/models/admission/fullAdmission/paymentOption/paymentOption';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import PaymentOptionType from '../../../../common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
-import {Claim} from 'models/claim';
+import {Claim} from '../../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentOptionService');
 
 const getPaymentOptionForm = async (claimId: string): Promise<PaymentOption> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getCaseDataFromStore(claimId);
     if (paymentOptionExists(claim)) {
       return new PaymentOption(PaymentOptionType[claim.paymentOption as keyof typeof PaymentOptionType]);
     }
@@ -34,7 +34,7 @@ const savePaymentOptionData = async (claimId: string, form: PaymentOption) => {
 };
 
 const paymentOptionExists = (claim: Claim): boolean => {
-  return claim && claim.paymentOptionExists();
+  return claim && claim.paymentOption && claim.paymentOption.length > 0;
 };
 
 export {

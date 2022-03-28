@@ -24,3 +24,4 @@ export const VALID_HOUSING = 'Describe your housing';
 export const VALID_TEXT_LENGTH = 'You’ve entered too many characters';
 export const VALID_OPTION_SELECTION = 'Select an option';
 export const VALID_PAYMENT_OPTION = 'Choose a payment option';
+export const REDIS_ERROR_MESSAGE = 'Redis DraftStore failure.';
