@@ -15,7 +15,7 @@ import {
 } from '../../../../../modules/statementOfMeans/employment/employmentService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('cohabitingService');
+const logger = Logger.getLogger('employmentStatusController');
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
 const router = express.Router();
 
@@ -44,7 +44,7 @@ router.get(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
     const form = await getEmploymentForm(req.params.id);
     renderView(form, res);
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
+    logger.error(error);
     res.status(500).send({error: error.message});
   }
 });
@@ -60,7 +60,7 @@ router.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
       redirectToNextPage(form, req.params.id, res);
     }
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
+    logger.error(error);
     res.status(500).send({error: error.message});
   }
 });

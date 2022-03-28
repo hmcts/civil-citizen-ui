@@ -12,10 +12,11 @@ import {
   VALID_AT_LEAST_ONE_OPTION,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {REDIS_FAILURE} from '../../../../../../utils/errorMessageTestConstants';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Employment status', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -27,15 +28,26 @@ describe('Employment status', () => {
   });
   describe('on Get', () => {
     it('should return employment status page successfully', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(CITIZEN_EMPLOYMENT_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Do you have a job?');
         });
     });
+    it('should return http 500 when has error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get(CITIZEN_EMPLOYMENT_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+        });
+    });
   });
   describe('on Post', () => {
     it('should return error message when no option is selected', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_EMPLOYMENT_URL)
         .send('')
         .expect((res) => {
@@ -82,6 +94,16 @@ describe('Employment status', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(UNEMPLOYED_URL);
+        });
+    });
+    it('should return http 500 when has error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(CITIZEN_EMPLOYMENT_URL)
+        .send('option=no')
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
         });
     });
   });
