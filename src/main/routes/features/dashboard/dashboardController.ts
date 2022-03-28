@@ -25,6 +25,7 @@ function renderPage(res: express.Response, claimsAsClaimant: Claim[], claimDraft
 const router = express.Router();
 
 router.get(DASHBOARD_URL, async function (req, res) {
+  console.log('civilServiceApiBaseUrl-->' + civilServiceApiBaseUrl);
   const claimsAsClaimant : Claim[] = [];
   const claimsAsDefendant : Claim[]  = await civilServiceClient.retrieveByDefendantId(<AppRequest>req);
   const claimDraftSaved = false;

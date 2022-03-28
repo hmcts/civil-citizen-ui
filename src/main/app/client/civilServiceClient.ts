@@ -11,12 +11,15 @@ export class CivilServiceClient {
   client: AxiosInstance;
 
   constructor(baseURL: string) {
+    console.log('in constructor');
     this.client = Axios.create({
       baseURL,
     });
+    console.log('constructor ended');
   }
 
   getConfig(req : AppRequest) {
+    console.log('getConfig');
     return {
       headers: {
         'Content-Type': 'application/json',
@@ -26,6 +29,7 @@ export class CivilServiceClient {
   }
 
   async retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
+    console.log('in retrieveByDefendantId');
     const config = this.getConfig(req);
     let claims : Claim[] = [];
     console.log('going to call civil service');
@@ -40,6 +44,7 @@ export class CivilServiceClient {
   }
 
   async retrieveClaimDetails(claimId: string, req: AppRequest): Promise<Claim> {
+    console.log('in retrieveClaimDetails');
     const config = this.getConfig(req);
 
     try {
