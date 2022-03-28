@@ -27,6 +27,8 @@ jest.mock('../../../../../../main/modules/citizenDetails/citizenDetailsService')
 const mockGetRespondentInformation = getRespondentInformation as jest.Mock;
 const mockSaveRespondent = saveRespondent as jest.Mock;
 
+const claim = new Claim();
+
 const buildPrimaryAddress = (): PrimaryAddress => {
   return {
     AddressLine1: 'Flat 3A Middle Road',
@@ -38,7 +40,6 @@ const buildPrimaryAddress = (): PrimaryAddress => {
 };
 
 const buildClaimOfRespondent = (): Respondent => {
-  const claim = new Claim();
   claim.respondent1 = new Respondent();
   claim.respondent1.individualTitle = 'individualTitle';
   claim.respondent1.individualFirstName = 'individualFirstName';
@@ -137,7 +138,25 @@ describe('Confirm Details page', () => {
         expect(res.text).toContain('Confirm your details');
       });
   });
-
+  test('should return your details page with information without correspondent address', async () => {
+    const buildClaimOfRespondentWithoutCorrespondent = (): Respondent => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.individualTitle = 'individualTitle';
+      claim.respondent1.individualFirstName = 'individualFirstName';
+      claim.respondent1.individualLastName = 'individualLastName';
+      claim.respondent1.primaryAddress = buildPrimaryAddress();
+      return claim.respondent1;
+    };
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentWithoutCorrespondent();
+    });
+    await request(app)
+      .get(CITIZEN_DETAILS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Confirm your details');
+      });
+  });
   test('POST/Citizen details - should redirect on correct primary address', async () => {
 
     await request(app)

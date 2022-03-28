@@ -37,11 +37,9 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
 
 router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   try {
-    console.log('gettt');
     let formAddressModel;
     let formCorrespondenceModel;
     const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
-    console.log(responseDataRedis);
     if (!_.isEmpty(responseDataRedis)) {
       formAddressModel = new CitizenAddress(
         responseDataRedis.primaryAddress.AddressLine1,
@@ -49,12 +47,12 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
         responseDataRedis.primaryAddress.AddressLine3,
         responseDataRedis.primaryAddress.PostTown,
         responseDataRedis.primaryAddress.PostCode);
-      formCorrespondenceModel = new CitizenCorrespondenceAddress(
+      formCorrespondenceModel = responseDataRedis.correspondenceAddress ? new CitizenCorrespondenceAddress(
         responseDataRedis.correspondenceAddress.AddressLine1,
         responseDataRedis.correspondenceAddress.AddressLine2,
         responseDataRedis.correspondenceAddress.AddressLine3,
         responseDataRedis.correspondenceAddress.PostTown,
-        responseDataRedis.correspondenceAddress.PostCode);
+        responseDataRedis.correspondenceAddress.PostCode) : '';
     }
     citizenFullName = {
       individualTitle: responseDataRedis?.individualTitle || 'individualTitle Test',
