@@ -10,6 +10,7 @@
     "strictNullChecks": true,
     "types": ["codeceptjs", "jest"],
     "baseUrl": "src",
+    "resolveJsonModule": true,
     "paths": {
       "common/*": [
         "main/common/*"

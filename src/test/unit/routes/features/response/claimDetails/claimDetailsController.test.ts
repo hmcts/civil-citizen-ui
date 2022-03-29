@@ -1,11 +1,9 @@
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import { app } from '../../../../../../main/app';
 import config from 'config';
-import {
-  CLAIM_DETAILS,
-  CLAIM_NUMBER,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {mockClaim as mockResponse} from '../../../../../utils/mockClaim';
+import { CLAIM_DETAILS } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import { CLAIM_NUMBER } from '../../../../../utils/errorMessageTestConstants';
+import { mockClaim as mockResponse } from '../../../../../utils/mockClaim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -18,14 +16,14 @@ describe('Confirm Details page', () => {
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
   });
 
   describe('on Get', () => {
     test('should return your claim details page with default values', async () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
-        .reply(400 );
+        .reply(400);
 
       await request(app)
         .get('/case/1111/response/claim-details')
@@ -38,7 +36,7 @@ describe('Confirm Details page', () => {
     test('should return your claim details page with values from civil-service', async () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
-        .reply(200, mockResponse );
+        .reply(200, mockResponse);
 
       await request(app)
         .get('/case/1111/response/claim-details')
