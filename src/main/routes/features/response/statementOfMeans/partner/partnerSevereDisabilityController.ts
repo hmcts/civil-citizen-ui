@@ -10,17 +10,17 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner-severe-disability';
-const router = express.Router();
+const partnerSevereDisabilityController = express.Router();
 const partnerSevereDisabilityService = new PartnerSevereDisabilityService();
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerSevereDisabilityService');
+const logger = Logger.getLogger('partnerSevereDisabilityController');
 const validator = new Validator();
 
 function renderView(form: PartnerSevereDisability, res: express.Response): void {
   res.render(partnerViewPath, {form});
 }
 
-router.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, async (req, res) => {
+partnerSevereDisabilityController.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, async (req, res) => {
   try {
     const partnerSevereDisability = await partnerSevereDisabilityService.getPartnerSevereDisability(req.params.id);
     renderView(partnerSevereDisability, res);
@@ -29,7 +29,7 @@ router.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, async (req, res) => {
   }
 });
 
-router.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
+partnerSevereDisabilityController.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
   async (req, res) => {
     const partnerSevereDisability: PartnerSevereDisability = new PartnerSevereDisability(req.body.option);
     const errors: ValidationError[] = validator.validateSync(partnerSevereDisability);
@@ -46,4 +46,4 @@ router.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
     }
   });
 
-export default router;
+export default partnerSevereDisabilityController;

@@ -22,9 +22,9 @@ function renderPage(res: express.Response, claimsAsClaimant: Claim[], claimDraft
   });
 }
 
-const router = express.Router();
+const dashboardController = express.Router();
 
-router.get(DASHBOARD_URL, async function (req, res) {
+dashboardController.get(DASHBOARD_URL, async function (req, res) {
   const claimsAsClaimant : Claim[] = [];
   const claimsAsDefendant : Claim[]  = await civilServiceClient.retrieveByDefendantId(<AppRequest>req);
   const claimDraftSaved = false;
@@ -34,4 +34,4 @@ router.get(DASHBOARD_URL, async function (req, res) {
   renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant,responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
 });
 
-export default router;
+export default dashboardController;

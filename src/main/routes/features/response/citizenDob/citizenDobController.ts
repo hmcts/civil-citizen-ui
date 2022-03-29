@@ -12,7 +12,7 @@ import {get} from 'lodash';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDobController');
 
-const router = express.Router();
+const citizenDobController = express.Router();
 const validator = new Validator();
 
 function renderView(res: express.Response, form: CitizenDob): void {
@@ -27,7 +27,7 @@ function redirectToNextPage(req: express.Request, res: express.Response, dob: Da
   }
 }
 
-router.get(DOB_URL, async (req: express.Request, res: express.Response) => {
+citizenDobController.get(DOB_URL, async (req: express.Request, res: express.Response) => {
   try {
     const citizenDob = new CitizenDob();
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
@@ -44,7 +44,7 @@ router.get(DOB_URL, async (req: express.Request, res: express.Response) => {
   }
 });
 
-router.post(DOB_URL, async (req, res) => {
+citizenDobController.post(DOB_URL, async (req, res) => {
   try {
     const citizenDob = new CitizenDob(req.body.year, req.body.month, req.body.day);
     citizenDob.errors = validator.validateSync(citizenDob);
@@ -68,4 +68,4 @@ router.post(DOB_URL, async (req, res) => {
   }
 });
 
-export default router;
+export default citizenDobController;

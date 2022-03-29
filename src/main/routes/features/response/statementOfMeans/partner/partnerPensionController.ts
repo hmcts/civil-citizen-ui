@@ -7,9 +7,9 @@ import {DisabilityService} from '../../../../../modules/statementOfMeans/disabil
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const citizenPartnerPensionViewPath = 'features/response/statementOfMeans/partner/partner-pension';
-const router = express.Router();
+const partnerPensionController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerPensionService');
+const logger = Logger.getLogger('partnerPensionController');
 const partnerPensionService = new PartnerPensionService();
 const disabilityService = new DisabilityService();
 const validator = new Validator();
@@ -18,7 +18,7 @@ function renderView(form: PartnerPension, res: express.Response): void {
   res.render(citizenPartnerPensionViewPath, {form});
 }
 
-router.get(CITIZEN_PARTNER_PENSION_URL, async (req, res) => {
+partnerPensionController.get(CITIZEN_PARTNER_PENSION_URL, async (req, res) => {
   try {
     const partnerPension = await partnerPensionService.getPartnerPension(req.params.id);
     renderView(partnerPension, res);
@@ -28,7 +28,7 @@ router.get(CITIZEN_PARTNER_PENSION_URL, async (req, res) => {
   }
 });
 
-router.post(CITIZEN_PARTNER_PENSION_URL,
+partnerPensionController.post(CITIZEN_PARTNER_PENSION_URL,
   async (req, res) => {
     const partnerPension: PartnerPension = new PartnerPension(req.body.option);
     const errors: ValidationError[] = validator.validateSync(partnerPension);
@@ -51,4 +51,4 @@ router.post(CITIZEN_PARTNER_PENSION_URL,
     }
   });
 
-export default router;
+export default partnerPensionController;

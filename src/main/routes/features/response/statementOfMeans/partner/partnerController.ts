@@ -6,17 +6,17 @@ import {CohabitingService} from '../../../../../modules/statementOfMeans/partner
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner';
-const router = express.Router();
+const partnerController = express.Router();
 const cohabitingService = new CohabitingService();
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('cohabitingService');
+const logger = Logger.getLogger('partnerController');
 const validator = new Validator();
 
 function renderView(form: Cohabiting, res: express.Response): void {
   res.render(partnerViewPath, {form});
 }
 
-router.get(CITIZEN_PARTNER_URL, async (req, res) => {
+partnerController.get(CITIZEN_PARTNER_URL, async (req, res) => {
   try {
     const cohabiting = await cohabitingService.getCohabiting(req.params.id);
     renderView(cohabiting, res);
@@ -25,7 +25,7 @@ router.get(CITIZEN_PARTNER_URL, async (req, res) => {
   }
 });
 
-router.post(CITIZEN_PARTNER_URL,
+partnerController.post(CITIZEN_PARTNER_URL,
   async (req, res) => {
     const cohabiting: Cohabiting = new Cohabiting(req.body.option);
     const errors: ValidationError[] = validator.validateSync(cohabiting);
@@ -46,4 +46,4 @@ router.post(CITIZEN_PARTNER_URL,
     }
   });
 
-export default router;
+export default partnerController;

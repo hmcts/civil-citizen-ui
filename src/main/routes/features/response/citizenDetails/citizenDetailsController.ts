@@ -15,7 +15,7 @@ import {CorrespondenceAddress} from '../../../../common/models/correspondenceAdd
 import _ from 'lodash';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDetailsController');
-const router = express.Router();
+const citizenDetailsController = express.Router();
 import {getDraftClaimFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
@@ -24,7 +24,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 let citizenFullName: object;
 let claim: Claim = new Claim();
 // -- GET Citizen Details
-router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   try {
     let formAddressModel;
     let formCorrespondenceModel;
@@ -92,7 +92,7 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
 });
 
 // -- POST Citizen Address
-router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   const citizenAddress = new CitizenAddress(
     req.body.primaryAddressLine1,
     req.body.primaryAddressLine2,
@@ -154,4 +154,4 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
   }
 });
 
-export default router;
+export default citizenDetailsController;

@@ -12,9 +12,9 @@ import {DisabilityService} from '../../../../../modules/statementOfMeans/disabil
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
-const router = express.Router();
+const partnerAgeController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerAgeService');
+const logger = Logger.getLogger('partnerAgeController');
 const partnerAgeService = new PartnerAgeService();
 const disabilityService = new DisabilityService();
 const validator = new Validator();
@@ -23,7 +23,7 @@ function renderView(form: PartnerAge, res: express.Response): void {
   res.render(citizenPartnerAgeViewPath, {form});
 }
 
-router.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
+partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
   try {
     const partnerAge = await partnerAgeService.getPartnerAge(req.params.id);
     renderView(partnerAge, res);
@@ -32,7 +32,7 @@ router.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
   }
 });
 
-router.post(CITIZEN_PARTNER_AGE_URL,
+partnerAgeController.post(CITIZEN_PARTNER_AGE_URL,
   async (req, res) => {
     const partnerAge: PartnerAge = new PartnerAge(req.body.option);
     const errors: ValidationError[] = validator.validateSync(partnerAge);
@@ -58,4 +58,4 @@ router.post(CITIZEN_PARTNER_AGE_URL,
     }
   });
 
-export default router;
+export default partnerAgeController;
