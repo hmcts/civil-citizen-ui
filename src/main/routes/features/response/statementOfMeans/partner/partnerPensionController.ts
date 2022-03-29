@@ -9,7 +9,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 const citizenPartnerPensionViewPath = 'features/response/statementOfMeans/partner/partner-pension';
 const router = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerPensionService');
+const logger = Logger.getLogger('partnerPensionController');
 const partnerPensionService = new PartnerPensionService();
 const disabilityService = new DisabilityService();
 const validator = new Validator();

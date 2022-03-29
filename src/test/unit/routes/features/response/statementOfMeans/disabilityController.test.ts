@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import { app } from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
@@ -7,20 +7,10 @@ import {
   CITIZEN_RESIDENCE_URL,
   CITIZEN_SEVERELY_DISABLED_URL,
 } from '../../../../../../main/routes/urls';
-import {VALID_YES_NO_OPTION} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import { VALID_YES_NO_OPTION } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import { REDIS_FAILURE } from '../../../../../utils/errorMessageTestConstants';
+import { mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../utils/mockDraftStore';
 
-const civilClaimResponseMock = require('./civilClaimResponseMock.json');
-const noDisabilityMock = require('./noStatementOfMeansMock.json');
-const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
-const noDisabilityCivilClaimResponse: string = JSON.stringify(noDisabilityMock);
-const mockDraftStore = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponse)),
-};
-const mockNoDisabilityDraftStore = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(noDisabilityCivilClaimResponse)),
-};
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
@@ -30,12 +20,12 @@ describe('Disability', () => {
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
   });
 
   describe('on GET', () => {
     test('should return citizen disability page', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_DISABILITY_URL)
         .expect((res) => {
@@ -44,7 +34,7 @@ describe('Disability', () => {
         });
     });
     test('should show disability page when haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockNoDisabilityDraftStore;
+      app.locals.draftStoreClient = mockCivilClaimOptionNo;
       await request(app)
         .get(CITIZEN_DISABILITY_URL)
         .send('')
@@ -52,11 +42,20 @@ describe('Disability', () => {
           expect(res.status).toBe(200);
         });
     });
+    test('should return http 500 when has error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get(CITIZEN_DISABILITY_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+        });
+    });
   });
 
   describe('on POST', () => {
     test('should redirect page when "no"', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('option=no')
@@ -66,7 +65,7 @@ describe('Disability', () => {
         });
     });
     test('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('')
@@ -76,7 +75,7 @@ describe('Disability', () => {
         });
     });
     test('should redirect page when "no" and haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockNoDisabilityDraftStore;
+      app.locals.draftStoreClient = mockCivilClaimOptionNo;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('option=no')
@@ -86,13 +85,23 @@ describe('Disability', () => {
         });
     });
     test('should redirect page when "yes"', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('option=yes')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_SEVERELY_DISABLED_URL);
+        });
+    });
+    test('should return http 500 when has error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(CITIZEN_DISABILITY_URL)
+        .send('option=no')
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
         });
     });
   });
