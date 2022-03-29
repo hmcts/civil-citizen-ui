@@ -10,7 +10,7 @@ import {validateForm} from '../../../../../common/form/validators/formValidator'
 import * as winston from 'winston';
 
 const partnerViewPath = 'features/response/statementOfMeans/dependants/children-disability';
-const router = express.Router();
+const childrenDisabilityController = express.Router();
 const childrenDisabilityService = new ChildrenDisabilityService();
 const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('childrenDisabilityController');
@@ -23,7 +23,7 @@ function renderView(res: express.Response, form: ChildrenDisability): void {
   res.render(partnerViewPath, {form: form});
 }
 
-router.get(CHILDREN_DISABILITY_URL, async (req : express.Request, res : express.Response) => {
+childrenDisabilityController.get(CHILDREN_DISABILITY_URL, async (req : express.Request, res : express.Response) => {
   try {
     const childrenDisability = await childrenDisabilityService.getChildrenDisability(req.params.id);
     renderView(res, childrenDisability);
@@ -33,7 +33,7 @@ router.get(CHILDREN_DISABILITY_URL, async (req : express.Request, res : express.
   }
 });
 
-router.post(CHILDREN_DISABILITY_URL,async (req: express.Request, res : express.Response) => {
+childrenDisabilityController.post(CHILDREN_DISABILITY_URL,async (req: express.Request, res : express.Response) => {
   const childrenDisability: ChildrenDisability = new ChildrenDisability(req.body.option);
   try {
     await validateForm(childrenDisability);
@@ -49,4 +49,4 @@ router.post(CHILDREN_DISABILITY_URL,async (req: express.Request, res : express.R
   }
 });
 
-export default router;
+export default childrenDisabilityController;

@@ -6,7 +6,7 @@ import * as winston from 'winston';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 
-const childrenDisability = new ChildrenDisability();
+
 
 export class ChildrenDisabilityService {
   static logger : winston.LoggerInstance = Logger.getLogger('childrenDisabilityService');
@@ -15,6 +15,7 @@ export class ChildrenDisabilityService {
     try {
       const case_data = await getCaseDataFromStore(claimId);
       if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.childrenDisability) {
+        const childrenDisability = new ChildrenDisability();
         childrenDisability.option = case_data.statementOfMeans.childrenDisability.option;
         return childrenDisability;
       }
