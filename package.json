@@ -80,7 +80,7 @@
     "@babel/preset-env": "^7.16.11",
     "@types/copy-webpack-plugin": "^10.1.0",
     "@types/jest": "^27.4.1",
-    "@types/supertest": "^2.0.8",
+    "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/eslint-plugin-tslint": "^5.16.0",
     "@typescript-eslint/parser": "^5.13.0",
