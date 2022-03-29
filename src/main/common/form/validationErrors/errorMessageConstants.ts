@@ -29,6 +29,4 @@ export const VALID_POSITIVE_NUMBER = 'Don’t enter a negative number';
 export const VALID_NUMBER_FOR_PREVIOUS_PAGE = 'Number can’t be higher than on previous page';
 export const REDIS_ERROR_MESSAGE = 'Redis DraftStore failure.';
 export const VALID_YES_NO_SELECTION = 'Please select yes or no';
-export const VALID_POSITIVE_NUMBER_REQUIRED = 'Don’t enter a negative number';
-export const VALID_INTEGER_REQUIRED = 'Enter a numeric, for example 3';
 export const VALID_ENTER_AT_LEAST_ONE_NUMBER = 'Enter a number for at least one field';

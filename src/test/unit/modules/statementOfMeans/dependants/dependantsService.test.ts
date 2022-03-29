@@ -4,8 +4,8 @@ import {Dependants} from '../../../../../main/common/form/models/statementOfMean
 import {NumberOfChildren} from '../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {
   VALID_ENTER_AT_LEAST_ONE_NUMBER,
-  VALID_INTEGER_REQUIRED,
-  VALID_POSITIVE_NUMBER_REQUIRED,
+  VALID_INTEGER,
+  VALID_POSITIVE_NUMBER,
 } from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -109,7 +109,7 @@ describe('Dependants service', () => {
       expect(form.getErrors()[0].property).toBe('numberOfChildren');
       expect(form.getErrors()[0].constraints).toBeUndefined();
       expect(form.getNestedErrors()[0].property).toBe('under11');
-      expect(form.getNestedErrors()[0].constraints).toEqual({min: VALID_POSITIVE_NUMBER_REQUIRED});
+      expect(form.getNestedErrors()[0].constraints).toEqual({min: VALID_POSITIVE_NUMBER});
     });
     test('should raise an error if declared true and one age range has a decimal value', async () => {
       //Given
@@ -122,7 +122,7 @@ describe('Dependants service', () => {
       expect(form.getErrors()[0].property).toBe('numberOfChildren');
       expect(form.getErrors()[0].constraints).toBeUndefined();
       expect(form.getNestedErrors()[0].property).toBe('between11and15');
-      expect(form.getNestedErrors()[0].constraints).toEqual({isInt: VALID_INTEGER_REQUIRED});
+      expect(form.getNestedErrors()[0].constraints).toEqual({isInt: VALID_INTEGER});
     });
     test('should raise 3 errors if declared true and 3 age ranges aren\'t valid', async () => {
       //Given
@@ -136,11 +136,11 @@ describe('Dependants service', () => {
       expect(form.getErrors()[0].constraints).toBeUndefined();
       expect(form.getNestedErrors().length).toBe(3);
       expect(form.getNestedErrors()[0].property).toBe('under11');
-      expect(form.getNestedErrors()[0].constraints).toEqual({min: VALID_POSITIVE_NUMBER_REQUIRED});
+      expect(form.getNestedErrors()[0].constraints).toEqual({min: VALID_POSITIVE_NUMBER});
       expect(form.getNestedErrors()[1].property).toBe('between11and15');
-      expect(form.getNestedErrors()[1].constraints).toEqual({isInt: VALID_INTEGER_REQUIRED});
+      expect(form.getNestedErrors()[1].constraints).toEqual({isInt: VALID_INTEGER});
       expect(form.getNestedErrors()[2].property).toBe('between16and19');
-      expect(form.getNestedErrors()[2].constraints).toEqual({min: VALID_POSITIVE_NUMBER_REQUIRED});
+      expect(form.getNestedErrors()[2].constraints).toEqual({min: VALID_POSITIVE_NUMBER});
     });
   });
   describe('Exception Handling', () => {

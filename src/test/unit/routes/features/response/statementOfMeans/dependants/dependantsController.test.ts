@@ -6,8 +6,8 @@ import nock from 'nock';
 import config from 'config';
 import {
   VALID_ENTER_AT_LEAST_ONE_NUMBER,
-  VALID_INTEGER_REQUIRED,
-  VALID_POSITIVE_NUMBER_REQUIRED,
+  VALID_INTEGER,
+  VALID_POSITIVE_NUMBER,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   CITIZEN_DEPENDANTS_URL,
@@ -107,7 +107,7 @@ describe('Citizen dependants', () => {
         .send('under11=-1')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_POSITIVE_NUMBER_REQUIRED);
+          expect(res.text).toMatch(VALID_POSITIVE_NUMBER);
         });
     });
     test('should show error when Yes option and invalid between11and15 input', async () => {
@@ -117,7 +117,7 @@ describe('Citizen dependants', () => {
         .send('between11and15=-1')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_POSITIVE_NUMBER_REQUIRED);
+          expect(res.text).toMatch(VALID_POSITIVE_NUMBER);
         });
     });
     test('should show error when Yes option and invalid between16and19 input', async () => {
@@ -127,7 +127,7 @@ describe('Citizen dependants', () => {
         .send('between16and19=1.5')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_INTEGER_REQUIRED);
+          expect(res.text).toMatch(VALID_INTEGER);
         });
     });
     test('should status 500 when error thrown', async () => {
