@@ -14,11 +14,11 @@ import citizenSevereDisabilityController from './features/response/statementOfMe
 import bankAccountsController from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
 import partnerController from './features/response/statementOfMeans/partner/partnerController';
 import partnerDisabilityController from './features/response/statementOfMeans/partner/partnerDisabilityController';
-import partnerSevereDisabilityController
-  from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
+import partnerSevereDisabilityController from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
 import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
 import residenceController from './features/response/statementOfMeans/residenceController';
 import financialDetailsController from './features/response/financialDetails/financialDetailsController';
+import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
 import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
 
 export default [
@@ -42,6 +42,7 @@ export default [
   residenceController,
   employmentStatusController,
   financialDetailsController,
+  partnerPensionController,
   paymentOptionController,
 ];
 
