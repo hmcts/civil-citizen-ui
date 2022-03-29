@@ -10,7 +10,7 @@ import {
 } from '../../../../../../modules/admission/fullAdmission/paymentOption/paymentOptionService';
 import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
 
-const router = express.Router();
+const paymentOptionController = express.Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/fullAdmission/paymentOption/payment-option';
 
 function renderView(form: PaymentOption, res: express.Response) {
@@ -25,7 +25,7 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: express.R
   }
 }
 
-router.get(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
+paymentOptionController.get(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
   try {
     const form = await getPaymentOptionForm(req.params.id);
     renderView(form, res);
@@ -34,7 +34,7 @@ router.get(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
   }
 });
 
-router.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
+paymentOptionController.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
   const form = new PaymentOption(req.body.paymentType);
   try {
     await validateForm(form);
@@ -50,4 +50,4 @@ router.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
 
 });
 
-export default router;
+export default paymentOptionController;
