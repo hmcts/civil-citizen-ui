@@ -30,7 +30,7 @@ router.get(DOB_URL, async (req: express.Request, res: express.Response) => {
   try {
     const citizenDob = new CitizenDob();
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
-    if (responseDataRedis?.respondent1.dateOfBirth) {
+    if (responseDataRedis?.respondent1?.dateOfBirth) {
       const dateOfBirth =  new Date(responseDataRedis.respondent1.dateOfBirth);
       citizenDob.day = dateOfBirth.getDate();
       citizenDob.month = (dateOfBirth.getMonth() + 1);
@@ -48,7 +48,7 @@ router.post(DOB_URL, async (req, res) => {
   try {
     const citizenDob = new CitizenDob(year, month, day);
     citizenDob.errors = validator.validateSync(citizenDob);
-    if (citizenDob?.errors.length > 0) {
+    if (citizenDob?.errors?.length > 0) {
       renderView(res, citizenDob);
     } else {
       const claim = await getCaseDataFromStore(req.params.id) || new Claim();

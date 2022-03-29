@@ -36,7 +36,7 @@ router.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) => {
   try {
     const citizenResponseType = new CitizenResponseType();
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
-    if (responseDataRedis?.respondent1.responseType){
+    if (responseDataRedis?.respondent1?.responseType){
       citizenResponseType.responseType = responseDataRedis.respondent1.responseType;
     }
     renderView(citizenResponseType, res);
