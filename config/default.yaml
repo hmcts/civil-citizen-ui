@@ -18,6 +18,7 @@ services:
     callbackURL: 'http://localhost:3001/oauth2/callback'
     citizenRole: 'citizen'
     scope: '&scope=profile%20openid%20roles%20manage-user%20create-user%20search-user'
+    idam-secret:
   draftStore:
     redis:
       host: 'localhost'

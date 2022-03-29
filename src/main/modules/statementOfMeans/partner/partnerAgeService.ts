@@ -4,7 +4,7 @@ import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerService');
+const logger = Logger.getLogger('partnerAgeService');
 const partnerAge = new PartnerAge();
 
 export class PartnerAgeService {
@@ -18,7 +18,7 @@ export class PartnerAgeService {
       }
       return new PartnerAge();
     } catch (error) {
-      logger.error(`${error as Error || error}`);
+      logger.error(error);
       throw error;
     }
   }
@@ -35,7 +35,7 @@ export class PartnerAgeService {
       }
       await saveDraftClaim(claimId, case_data);
     } catch (error) {
-      logger.error(`${error as Error || error}`);
+      logger.error(error);
       throw error;
     }
   }

@@ -1,9 +1,10 @@
+import {Validator} from 'class-validator';
+import {get} from 'lodash';
 import {getDraftClaimFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Residence} from '../../../common/form/models/statementOfMeans/residence';
 import {ResidenceType} from '../../../common/form/models/statementOfMeans/residenceType';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {Validator} from 'class-validator';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('residenceService');
@@ -14,19 +15,20 @@ class ResidenceService {
   public async getResidence(claimId: string): Promise<Residence> {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans && civilClaimResponse.case_data.statementOfMeans.residence) {
+      if (get(civilClaimResponse, 'case_data.statementOfMeans.residence')) {
         return civilClaimResponse.case_data.statementOfMeans.residence;
       }
       return new Residence();
-    } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
+    } catch (error) {
+      logger.error(`${(error as Error).stack || error}`);
+      throw error;
     }
   }
 
   public async saveResidence(claimId: string, residence: Residence) {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse && civilClaimResponse.case_data && civilClaimResponse.case_data.statementOfMeans) {
+      if (get(civilClaimResponse, 'case_data.statementOfMeans')) {
         civilClaimResponse.case_data.statementOfMeans.residence = residence;
       } else {
         const statementOfMeans = new StatementOfMeans();
@@ -34,8 +36,9 @@ class ResidenceService {
         civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
-    } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
+    } catch (error) {
+      logger.error(`${(error as Error).stack || error}`);
+      throw error;
     }
   }
 

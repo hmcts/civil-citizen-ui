@@ -12,6 +12,7 @@ export class Claim {
   detailsOfClaim: string;
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
+  paymentOption?: string;
 
 
   formattedResponseDeadline(): string {

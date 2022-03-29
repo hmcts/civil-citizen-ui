@@ -8,53 +8,43 @@ import {
   VALID_OPTION_SELECTION,
   VALID_TEXT_LENGTH,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {CIVIL_SERVICE_CASES_URL} from '../../../../../../main/app/client/civilServiceUrls';
 import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../../../../main/routes/urls';
 import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
+
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 const agent = request.agent(app);
 const tooLongHousingDetails: string = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');
 const respondentResidenceUrl = CITIZEN_RESIDENCE_URL.replace(':id', 'aaa');
-const mockDraftResponse = require('./civilClaimResponseMock.json');
+const DRAFT_STORE_EXCEPTION = 'Draft store exception';
+const mockDraftStore = {
+  get: jest.fn(() => Promise.resolve('{"id": "id", "case_data": {"statementOfMeans": {}}}')),
+  set: jest.fn(() => Promise.resolve()),
+};
 
-jest.mock('ioredis', () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      get: jest.fn(async () => {
-        return JSON.stringify(mockDraftResponse);
-      }),
-      set: jest.fn(async () => {
-        return;
-      }),
-    };
-  });
-});
-
-function authenticate() {
-  return () =>
-    agent.get('/oauth2/callback')
-      .query('code=ABC')
-      .then((res: express.Response) => {
-        expect(res.status).toBe(302);
-      });
-}
+const mockGetExceptionDraftStore = {
+  get: jest.fn(() => {
+    throw new Error(DRAFT_STORE_EXCEPTION);
+  }),
+  set: jest.fn(() => Promise.resolve()),
+};
 
 describe('Citizen residence', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
-  const civilServiceUrl: string = config.get('services.civilService.url');
 
   beforeEach(() => {
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL)
-      .reply(200, {});
     nock(idamServiceUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
   });
 
   describe('on GET', () => {
-    test('Authenticate Callback', authenticate());
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockDraftStore;
+    });
+
     test('should return residence page', async () => {
       await agent
         .get(respondentResidenceUrl)
@@ -63,9 +53,21 @@ describe('Citizen residence', () => {
           expect(res.text).toContain('Where do you live?');
         });
     });
+    test('should return status 500 when error thrown', async () => {
+      app.locals.draftStoreClient = mockGetExceptionDraftStore;
+      await agent
+        .get(respondentResidenceUrl)
+        .expect((res: Response) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({errorMessage: DRAFT_STORE_EXCEPTION});
+        });
+    });
   });
   describe('on POST', () => {
-    test('Authenticate Callback', authenticate());
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockDraftStore;
+    });
+
     test('should redirect when OWN_HOME option selected', async () => {
       await agent
         .post(respondentResidenceUrl)
@@ -112,6 +114,17 @@ describe('Citizen residence', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_TEXT_LENGTH);
+        });
+    });
+    test('should status 500 when error thrown', async () => {
+      app.locals.draftStoreClient = mockGetExceptionDraftStore;
+      await agent
+        .post(respondentResidenceUrl)
+        .send('type=OTHER')
+        .send('housingDetails=Palace')
+        .expect((res: Response) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({errorMessage: DRAFT_STORE_EXCEPTION});
         });
     });
   });
