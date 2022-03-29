@@ -17,7 +17,6 @@ export class CivilServiceClient {
   }
 
   getConfig(req : AppRequest) {
-    console.log('getConfig');
     return {
       headers: {
         'Content-Type': 'application/json',
