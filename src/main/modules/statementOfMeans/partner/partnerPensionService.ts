@@ -1,37 +1,36 @@
-import {PartnerDisability} from '../../../common/form/models/statementOfMeans/partner/partnerDisability';
+import {PartnerPension} from '../../../common/form/models/statementOfMeans/partner/partnerPension';
 import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerDisabilityService');
-const partnerDisability = new PartnerDisability();
+const logger = Logger.getLogger('partnerPensionService');
+const partnerPension = new PartnerPension();
 
-export class PartnerDisabilityService {
+export class PartnerPensionService {
 
-  public async getPartnerDisability(claimId: string) {
+  public async getPartnerPension(claimId: string) {
     try {
       const case_data = await getCaseDataFromStore(claimId);
-      if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.partnerDisability) {
-        partnerDisability.option = case_data.statementOfMeans.partnerDisability.option;
-        return partnerDisability;
+      if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.partnerPension) {
+        partnerPension.option = case_data.statementOfMeans.partnerPension.option;
+        return partnerPension;
       }
-      return new PartnerDisability();
+      return new PartnerPension();
     } catch (error) {
       logger.error(error);
       throw error;
-
     }
   }
 
-  public async savePartnerDisability(claimId: string, partnerDisability: PartnerDisability) {
+  public async savePartnerPension(claimId: string, partnerPension: PartnerPension) {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
       if (case_data && case_data.statementOfMeans) {
-        case_data.statementOfMeans.partnerDisability = partnerDisability;
+        case_data.statementOfMeans.partnerPension = partnerPension;
       } else {
         const statementOfMeans = new StatementOfMeans();
-        statementOfMeans.partnerDisability = partnerDisability;
+        statementOfMeans.partnerPension = partnerPension;
         case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, case_data);

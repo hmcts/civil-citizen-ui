@@ -5,6 +5,7 @@ import {CitizenBankAccount} from './citizenBankAccount';
 import {Cohabiting} from '../form/models/statementOfMeans/partner/cohabiting';
 import {PartnerSevereDisability} from '../form/models/statementOfMeans/partner/partnerSevereDisability';
 import {PartnerDisability} from '../form/models/statementOfMeans/partner/partnerDisability';
+import {PartnerPension} from '../form/models/statementOfMeans/partner/partnerPension';
 import {Residence} from '../form/models/statementOfMeans/residence';
 import {Employment} from './employment';
 import {ChildrenDisability} from '../form/models/statementOfMeans/dependants/childrenDisability';
@@ -19,5 +20,6 @@ export class StatementOfMeans {
   partnerDisability?: PartnerDisability;
   partnerSevereDisability?: PartnerSevereDisability;
   residence?: Residence;
+  partnerPension?: PartnerPension;
   childrenDisability?: ChildrenDisability;
 }

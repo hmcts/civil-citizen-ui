@@ -14,7 +14,7 @@
     },
     "statementOfMeans": {
       "disability": {
-        "option": "no"
+        "option": "yes"
       },
       "severeDisability": {
         "option": "yes"
@@ -22,15 +22,31 @@
       "cohabiting": {
         "option": "yes"
       },
-      "partnerSevereDisability": {
-        "option": "yes"
-      },
       "partnerAge": {
         "option": "yes"
       },
       "partnerDisability": {
         "option": "yes"
+      },
+      "partnerSevereDisability": {
+        "option": "yes"
+      },
+      "partnerPension": {
+        "option": "yes"
+      },
+      "childrenDisability": {
+        "option": "yes"
+      },
+      "residence": {
+        "type": {
+          "value": "PRIVATE_RENTAL",
+          "displayValue": "Private rental"
+        },
+        "housingDetails": ""
       }
+    },
+    "respondent1": {
+      "dateOfBirth": "2022-03-01T13:29:24.971"
     }
   }
 }
