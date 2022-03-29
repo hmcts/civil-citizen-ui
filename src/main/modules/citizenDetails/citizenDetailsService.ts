@@ -21,22 +21,20 @@ export const getRespondentInformation = async (claimId: string): Promise<Respond
 
 export const saveRespondent = async(claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress) : Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId) || new Claim();
-  if (get(responseData, 'respondent1.primaryAddress')) {
-    responseData.respondent1.primaryAddress = buildPrimaryAddress(citizenAddress);
-  }
-  if (get(responseData, 'respondent1.correspondenceAddress')) {
-    responseData.respondent1.correspondenceAddress = buildCorrespondenceAddress(citizenCorrespondenceAddress);
-  }
-  if (!get(responseData, ['respondent1.primaryAddress', 'respondent1.correspondenceAddress'])) {
+  if (!get(responseData, 'respondent1')) {
     const respondent = new Respondent();
     respondent.primaryAddress = buildPrimaryAddress(citizenAddress);
     respondent.correspondenceAddress = buildCorrespondenceAddress(citizenCorrespondenceAddress);
     responseData.respondent1 = respondent;
+  } else {
+    responseData.respondent1.primaryAddress = buildPrimaryAddress(citizenAddress);
+    responseData.respondent1.correspondenceAddress = buildCorrespondenceAddress(citizenCorrespondenceAddress);
   }
   await saveDraftClaim(claimId, responseData);
 };
 
 const buildPrimaryAddress = (citizenAddress: CitizenAddress): PrimaryAddress => {
+
   return {
     AddressLine1: citizenAddress.primaryAddressLine1,
     AddressLine2: citizenAddress.primaryAddressLine2,
