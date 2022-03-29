@@ -13,7 +13,7 @@ export class PropertiesVolume {
       this.setSecret('secrets.civil.redis-access-key', 'services.draftStore.redis.key');
       this.setSecret('secrets.civil.ordnance-survey-api-key', 'services.postcodeLookup.ordnanceSurveyApiKey');
       console.log('-------------------------setting idam-secret --');
-      this.setSecret('secrets.civil.idam-secret', 'services.idam.idam-secret');
+      this.setSecret('secrets.civil.idam-secret', 'services.idam.clientSecret');
     }
   }
 
