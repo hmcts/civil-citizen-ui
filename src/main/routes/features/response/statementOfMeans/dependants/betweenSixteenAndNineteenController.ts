@@ -1,5 +1,9 @@
 import * as express from 'express';
-import {CITIZEN_DEPENDANTS_EDUCATION_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../../routes/urls';
+import {
+  CHILDREN_DISABILITY_URL,
+  CITIZEN_DEPENDANTS_EDUCATION_URL,
+  CITIZEN_OTHER_DEPENDANTS_URL
+} from '../../../../../routes/urls';
 import {
   BetweenSixteenAndNineteenDependants,
 } from '../../../../../common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
@@ -43,8 +47,12 @@ betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveFormToDraftStore(req.params.id, form);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_OTHER_DEPENDANTS_URL));
+      const askIfChildrenDisabled : boolean = await saveFormToDraftStore(req.params.id, form);
+      if (askIfChildrenDisabled) {
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CHILDREN_DISABILITY_URL));
+      } else {
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_OTHER_DEPENDANTS_URL));
+      }
     }
   } catch (error) {
     logger.error(`${(error as Error).stack || error}`);

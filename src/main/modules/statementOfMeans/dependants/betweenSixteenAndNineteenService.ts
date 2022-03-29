@@ -5,6 +5,7 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store
 import {Claim} from '../../../common/models/claim';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {get} from 'lodash';
+import {isCheckChildrenDisabled} from '../../../modules/statementOfMeans/dependants/childrenDisabilityService';
 
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -26,18 +27,21 @@ export const getForm = async (claimId: string): Promise<BetweenSixteenAndNinetee
   }
 };
 
-export const saveFormToDraftStore = async (claimId: string, form: BetweenSixteenAndNineteenDependants) => {
+export const saveFormToDraftStore = async (claimId: string, form: BetweenSixteenAndNineteenDependants) : Promise<boolean> => {
   try {
     const claim = await getClaim(claimId);
     const statementOfMeans = claim.statementOfMeans ? claim.statementOfMeans : new StatementOfMeans();
     statementOfMeans.numberOfChildrenLivingWithYou = form.value;
     claim.statementOfMeans = statementOfMeans;
     await saveDraftClaim(claimId, claim);
+    return isCheckChildrenDisabled(claim);
   } catch (error) {
     logger.error(`${error.stack || error}`);
     throw error;
   }
 };
+
+
 
 const getMaxValue = (claim: Claim): number | undefined => {
   if (get(claim, 'statementOfMeans.dependants.numberOfChildren')) {

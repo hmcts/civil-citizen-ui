@@ -3,10 +3,40 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStore
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Claim} from '../../../common/models/claim';
 import * as winston from 'winston';
+import {YesNo} from '../../../common/form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('childrenDisabilityService');
 
-
+export const isCheckChildrenDisabled = (claim : Claim) : boolean => {
+  try {
+    let result = false;
+    const statementOfMeans = claim.statementOfMeans;
+    if (statementOfMeans && statementOfMeans.dependants && statementOfMeans.dependants.numberOfChildren && statementOfMeans.dependants.numberOfChildren > 0){
+      if (statementOfMeans.disability && statementOfMeans.disability.option && statementOfMeans.disability.option == YesNo.NO) {
+        result = true;
+      } else if (statementOfMeans.disability && statementOfMeans.disability.option && statementOfMeans.disability.option == YesNo.YES){
+        if (statementOfMeans.severeDisability && statementOfMeans.severeDisability.option && statementOfMeans.severeDisability.option == YesNo.NO) {
+          if (!statementOfMeans.cohabiting || (statementOfMeans.cohabiting && !statementOfMeans.cohabiting.option)) {
+            result = true;
+          } else if (statementOfMeans.cohabiting && statementOfMeans.cohabiting.option) {
+            if (statementOfMeans.cohabiting.option == YesNo.NO){
+              result = true;
+            } else if (statementOfMeans.cohabiting.option == YesNo.YES) {
+              if (statementOfMeans.partnerDisability && statementOfMeans.partnerDisability.option && statementOfMeans.partnerDisability.option == YesNo.NO){
+                result = true;
+              }
+            }
+          }
+        }
+      }
+    }
+    return result;
+  } catch (error) {
+    logger.error(`${error.stack || error}`);
+    throw error;
+  }
+}
 
 export class ChildrenDisabilityService {
   static logger : winston.LoggerInstance = Logger.getLogger('childrenDisabilityService');
