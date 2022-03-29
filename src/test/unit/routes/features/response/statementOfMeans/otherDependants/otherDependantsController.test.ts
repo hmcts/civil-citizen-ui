@@ -7,15 +7,16 @@ import {
   CITIZEN_EMPLOYMENT_URL,
 } from '../../../../../../../main/routes/urls';
 import {
-  REDIS_FAILURE,
   VALID_YES_NO_OPTION,
   NUMBER_OF_PEOPLE_REQUIRED,
   DETAILS_REQUIRED,
   VALID_NUMBER_OF_PEOPLE,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
-const civilClaimResponseMock = require('../civilClaimResponseMock.json');
-const noDisabilityMock = require('../noDisabilityMock.json');
+import { REDIS_FAILURE } from '../../../../../../../test/utils/errorMessageTestConstants'
+
+const civilClaimResponseMock = require('../../../../../../utils/mocks/civilClaimResponseMock.json');
+const noDisabilityMock = require('../../../../../../utils/mocks/civilClaimResponseOptionNoMock.json');
 const withoutOtherDependentJson = require('./withoutOtherDependantsMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
 const civilClaimResponseWithoutDisability: string = JSON.stringify(noDisabilityMock);
