@@ -17,18 +17,24 @@ export const getUserDetails = async (
   const headers = { Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' };
   console.log('calling axios with tokenurl:' + tokenUrl);
   console.log('calling axios with data:' + data);
-  const response: AxiosResponse<OidcResponse> = await Axios.post(tokenUrl, data, { headers });
-  const jwt = jwt_decode(response.data.id_token) as IdTokenJwtPayload;
-  console.log('AxiosResponse received');
+  try {
 
-  return {
-    accessToken: response.data.access_token,
-    id: jwt.uid,
-    email: jwt.sub,
-    givenName: jwt.given_name,
-    familyName: jwt.family_name,
-    roles: jwt.roles,
-  };
+
+    const response: AxiosResponse<OidcResponse> = await Axios.post(tokenUrl, data, {headers});
+    const jwt = jwt_decode(response.data.id_token) as IdTokenJwtPayload;
+    console.log('AxiosResponse received');
+
+    return {
+      accessToken: response.data.access_token,
+      id: jwt.uid,
+      email: jwt.sub,
+      givenName: jwt.given_name,
+      familyName: jwt.family_name,
+      roles: jwt.roles,
+    };
+  } catch (err: unknown) {
+    console.log(err);
+  }
 };
 
 interface IdTokenJwtPayload {
