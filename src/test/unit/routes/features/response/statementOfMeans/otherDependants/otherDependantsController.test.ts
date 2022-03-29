@@ -13,7 +13,7 @@ import {
   VALID_NUMBER_OF_PEOPLE,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
-import { REDIS_FAILURE } from '../../../../../../../test/utils/errorMessageTestConstants'
+import { REDIS_FAILURE } from '../../../../../../../test/utils/errorMessageTestConstants';
 
 const civilClaimResponseMock = require('../../../../../../utils/mocks/civilClaimResponseMock.json');
 const noDisabilityMock = require('../../../../../../utils/mocks/civilClaimResponseOptionNoMock.json');
