@@ -18,6 +18,7 @@ import partnerSevereDisabilityController from './features/response/statementOfMe
 import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
 import residenceController from './features/response/statementOfMeans/residenceController';
 import financialDetailsController from './features/response/financialDetails/financialDetailsController';
+import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
 
 export default [
@@ -41,5 +42,6 @@ export default [
   residenceController,
   employmentStatusController,
   financialDetailsController,
+  partnerPensionController,
   dependantsController,
 ];
