@@ -27,7 +27,7 @@ export const saveRespondent = async(claimId: string, citizenAddress: CitizenAddr
   if (get(responseData, 'respondent1.correspondenceAddress')) {
     responseData.respondent1.correspondenceAddress = buildCorrespondenceAddress(citizenCorrespondenceAddress);
   }
-  if (!(get(responseData, 'respondent1.primaryAddress') && get(responseData, 'respondent1.correspondenceAddress'))) {
+  if (!get(responseData, ['respondent1.primaryAddress', 'respondent1.correspondenceAddress'])) {
     const respondent = new Respondent();
     respondent.primaryAddress = buildPrimaryAddress(citizenAddress);
     respondent.correspondenceAddress = buildCorrespondenceAddress(citizenCorrespondenceAddress);

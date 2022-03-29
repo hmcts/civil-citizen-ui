@@ -37,17 +37,17 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
 
 router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   try {
-    let formAddressModel;
-    let formCorrespondenceModel;
+    let citizenAddressModel;
+    let citizenCorrespondenceAddressModel;
     const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
     if (!_.isEmpty(responseDataRedis)) {
-      formAddressModel = new CitizenAddress(
+      citizenAddressModel = new CitizenAddress(
         responseDataRedis.primaryAddress.AddressLine1,
         responseDataRedis.primaryAddress.AddressLine2,
         responseDataRedis.primaryAddress.AddressLine3,
         responseDataRedis.primaryAddress.PostTown,
         responseDataRedis.primaryAddress.PostCode);
-      formCorrespondenceModel = responseDataRedis.correspondenceAddress ? new CitizenCorrespondenceAddress(
+      citizenCorrespondenceAddressModel = responseDataRedis.correspondenceAddress ? new CitizenCorrespondenceAddress(
         responseDataRedis.correspondenceAddress.AddressLine1,
         responseDataRedis.correspondenceAddress.AddressLine2,
         responseDataRedis.correspondenceAddress.AddressLine3,
@@ -61,9 +61,9 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
     };
     res.render(CITIZEN_DETAILS_VIEW_PATH, {
       citizenFullName: citizenFullName,
-      citizenAddress: formAddressModel,
-      citizenCorrespondenceAddress: formCorrespondenceModel,
-      postToThisAddress: formCorrespondenceModel ? YesNo.YES : YesNo.NO,
+      citizenAddress: citizenAddressModel,
+      citizenCorrespondenceAddress: citizenCorrespondenceAddressModel,
+      postToThisAddress: citizenCorrespondenceAddressModel ? YesNo.YES : YesNo.NO,
     });
   } catch (error) {
     logger.error(error);
