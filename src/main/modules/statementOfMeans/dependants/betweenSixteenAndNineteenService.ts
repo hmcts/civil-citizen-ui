@@ -4,8 +4,6 @@ import {
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../common/models/claim';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
-import {get} from 'lodash';
-
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dependantTeenagersService');
@@ -40,13 +38,13 @@ export const saveFormToDraftStore = async (claimId: string, form: BetweenSixteen
 };
 
 const getMaxValue = (claim: Claim): number | undefined => {
-  if (get(claim, 'statementOfMeans.dependants.numberOfChildren')) {
+  if (claim?.statementOfMeans.dependants.numberOfChildren) {
     return Number(claim.statementOfMeans.dependants.numberOfChildren.between16and19);
   }
   return undefined;
 };
 const getNumberOfChildrenLivingWithYou = (claim: Claim): number | undefined => {
-  if (get(claim, 'statementOfMeans.numberOfChildrenLivingWithYou')) {
+  if (claim?.statementOfMeans.numberOfChildrenLivingWithYou) {
     return claim.statementOfMeans.numberOfChildrenLivingWithYou;
   }
   return undefined;

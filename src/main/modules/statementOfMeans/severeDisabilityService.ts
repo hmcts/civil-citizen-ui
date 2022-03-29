@@ -26,7 +26,7 @@ export class SevereDisabilityService {
   public async saveSevereDisability(claimId: string, severeDisability: SevereDisability) {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
-      if (scase_data?.statementOfMeans) {
+      if (case_data?.statementOfMeans) {
         case_data.statementOfMeans.severeDisability = severeDisability;
       } else {
         const statementOfMeans = new StatementOfMeans();

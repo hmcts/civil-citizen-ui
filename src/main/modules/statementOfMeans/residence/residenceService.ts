@@ -1,5 +1,4 @@
 import {Validator} from 'class-validator';
-import {get} from 'lodash';
 import {getDraftClaimFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Residence} from '../../../common/form/models/statementOfMeans/residence';
