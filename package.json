@@ -97,7 +97,7 @@
     "nock": "^13.2.3",
     "nodemon": "^2.0.15",
     "pa11y": "^6.0.1",
-    "playwright": "^1.19.2",
+    "playwright": "^1.20.1",
     "request": "^2.88.0",
     "sass": "^1.49.9",
     "sass-lint": "^1.13.1",
