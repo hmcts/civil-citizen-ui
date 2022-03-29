@@ -7,6 +7,10 @@ const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
 };
+const mockCivilClaimUndefined = {
+  set: jest.fn(() => Promise.resolve(undefined)),
+  get: jest.fn(() => Promise.resolve(undefined)),
+};
 const mockNoStatementOfMeans = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(noStatementOfMeansMock))),
@@ -20,4 +24,4 @@ const mockRedisFailure = {
   get: jest.fn(() => { throw new Error(TestMessages.REDIS_FAILURE); }),
 };
 
-export { mockCivilClaim, mockNoStatementOfMeans, mockCivilClaimOptionNo, mockRedisFailure };
+export { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockCivilClaimOptionNo, mockRedisFailure };

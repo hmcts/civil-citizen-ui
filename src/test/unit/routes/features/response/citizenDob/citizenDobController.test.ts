@@ -4,7 +4,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {VALID_DATE, VALID_DAY, VALID_MONTH, VALID_YEAR} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {AGE_ELIGIBILITY_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -50,6 +50,17 @@ describe('Citizen date of birth', () => {
   });
 
   describe('on POST', () => {
+    test('should create a new claim if redis gives undefined', async () => {
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      await request(app)
+        .post(DOB_URL)
+        .send('year=2000')
+        .send('month=1')
+        .send('day=1')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
     test('should return errors on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)

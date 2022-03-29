@@ -5,7 +5,7 @@ import config from 'config';
 import { CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_SEVERE_DISABILITY_URL } from '../../../../../../../main/routes/urls';
 import { VALID_YES_NO_OPTION } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import { mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
+import { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -49,6 +49,15 @@ describe('Partner severe disability', () => {
     });
   });
   describe('on POST', () => {
+    test('should create a new claim if redis gives undefined', async () => {
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      await request(app)
+        .post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL)
+        .send('option=no')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
     test('should redirect page when "no"', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)

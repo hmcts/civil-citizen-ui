@@ -6,7 +6,7 @@ import {
   VALID_PHONE_NUMBER,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -50,6 +50,15 @@ describe('Citizen phone number', () => {
     });
   });
   describe('on POST', () => {
+    test('should create a new claim if redis gives undefined', async () => {
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      await request(app)
+        .post(CITIZEN_PHONE_NUMBER_URL)
+        .send('telephoneNumber= 123')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
     test('should return error on incorrect input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
