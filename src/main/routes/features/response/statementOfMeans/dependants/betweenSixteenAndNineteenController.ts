@@ -14,7 +14,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dependantTeenagersController');
 const dependantTeenagersViewPath = 'features/response/statementOfMeans/dependants/between_16_and_19';
-const router = express.Router();
+const betweenSixteenAndNineteenController = express.Router();
 
 function renderView(form: BetweenSixteenAndNineteenDependants, res: express.Response): void {
   res.render(dependantTeenagersViewPath, {form: form});
@@ -26,7 +26,7 @@ function convertToForm(req: express.Request) {
   return new BetweenSixteenAndNineteenDependants(value, maxValue);
 }
 
-router.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res) => {
+betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res) => {
   try {
     const form = await getForm(req.params.id);
     renderView(form, res);
@@ -36,7 +36,7 @@ router.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res) => {
   }
 });
 
-router.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res) => {
+betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res) => {
   const form = convertToForm(req);
   try {
     await validateForm(form);
@@ -51,4 +51,4 @@ router.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res) => {
     res.status(500).send({error: error.message});
   }
 });
-export default router;
+export default betweenSixteenAndNineteenController;
