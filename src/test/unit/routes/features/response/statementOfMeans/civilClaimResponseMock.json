@@ -40,6 +40,11 @@
           "displayValue": "Private rental"
         },
         "housingDetails": ""
+      },
+      "otherDependants": {
+        "option": "yes",
+        "numberOfPeople": 1,
+        "details": "Test details"
       }
     },
     "respondent1": {

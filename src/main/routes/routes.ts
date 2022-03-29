@@ -16,9 +16,10 @@ import partnerController from './features/response/statementOfMeans/partner/part
 import partnerDisabilityController from './features/response/statementOfMeans/partner/partnerDisabilityController';
 import partnerSevereDisabilityController from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
 import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
-import residenceController from './features/response/statementOfMeans/residenceController';
-import financialDetailsController from './features/response/financialDetails/financialDetailsController';
-import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
+import partnerController from './features/response/statementOfMeans/partner/partnerController';
+import partnerDisabilityController from './features/response/statementOfMeans/partner/partnerDisabilityController';
+import partnerSevereDisabilityController from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
+import otherDependantsRoute from './features/response/statementOfMeans/otherDependants/otherDependantsController';
 
 export default [
   homeController,
@@ -42,6 +43,7 @@ export default [
   employmentStatusController,
   financialDetailsController,
   partnerPensionController,
+  otherDependantsController,
 ];
 
 
