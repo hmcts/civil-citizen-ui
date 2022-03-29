@@ -1,6 +1,8 @@
 import {ValidationError} from 'class-validator';
 
-import {Form} from '../../../../../main/common/form/models/form';
+import { Form } from '../../../../../main/common/form/models/form';
+import { DEFENDANT_POSTCODE_NOT_VALID, VALID_ADDRESS_LINE_1 } from '../../../../../main/common/form/validationErrors/errorMessageConstants';
+
 
 const ERROR_MESSAGE = 'Error message';
 const PROPERTY = 'property';
@@ -31,7 +33,7 @@ const _correspondenceAddressErrors = [
     },
     value: 'SW1H 9AJJJ',
     property: 'correspondencePostCode',
-    constraints: { customInt: 'Postcode must be in England or Wales' },
+    constraints: { customInt: DEFENDANT_POSTCODE_NOT_VALID },
   },
 ];
 
@@ -83,7 +85,7 @@ describe('Form has field text error', () => {
     //When
     const textError = form.getTextError(_errors, 'primaryAddressLine1');
     //Then
-    expect(textError).toContain('Enter first address line');
+    expect(textError).toEqual({'isNotEmpty': VALID_ADDRESS_LINE_1});
   });
 });
 
@@ -95,7 +97,7 @@ describe('Form has postcode error on correspondence address form', () => {
     //When
     const textError = form.getTextError(_correspondenceAddressErrors, 'correspondencePostCode');
     //Then
-    expect(textError).toContain('Postcode must be in England or Wales');
+    expect(textError).toEqual({'customInt': DEFENDANT_POSTCODE_NOT_VALID});
   });
 });
 
