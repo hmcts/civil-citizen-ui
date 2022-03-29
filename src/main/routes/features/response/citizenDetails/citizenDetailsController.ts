@@ -117,8 +117,8 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     citizenAddress.errors = validator.validateSync(citizenAddress);
     errorList.errors = citizenAddress.errors;
   }
-  if ((citizenAddress.errors && citizenAddress.errors.length > 0)
-    || (citizenCorrespondenceAddress.errors && citizenCorrespondenceAddress.errors.length > 0)) {
+  if ((citizenAddress?.errors.length > 0)
+    || (citizenCorrespondenceAddress?.errors?.length > 0)) {
     res.render('features/response/citizenDetails/citizen-details', {
       citizenFullName: citizenFullName,
       citizenAddress: citizenAddress,
