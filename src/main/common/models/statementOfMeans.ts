@@ -22,4 +22,5 @@ export class StatementOfMeans {
   residence?: Residence;
   partnerPension?: PartnerPension;
   dependants?: Dependants;
+  numberOfChildrenLivingWithYou?: number;
 }
