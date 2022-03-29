@@ -22,6 +22,7 @@ import partnerPensionController from './features/response/statementOfMeans/partn
 import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
+import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
 
 export default [
   homeController,
@@ -47,6 +48,5 @@ export default [
   partnerPensionController,
   paymentOptionController,
   betweenSixteenAndNineteenController,
+  dependantsController,
 ];
-
-

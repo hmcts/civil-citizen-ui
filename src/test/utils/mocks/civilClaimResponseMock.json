@@ -40,6 +40,12 @@
           "displayValue": "Private rental"
         },
         "housingDetails": ""
+      },
+      "dependants": {
+        "declared": true,
+        "numberOfChildren": {
+          "under11": 2
+        }
       }
     },
     "respondent1": {
