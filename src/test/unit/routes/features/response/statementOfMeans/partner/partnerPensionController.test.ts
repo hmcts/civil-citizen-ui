@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app } from '../../../../../../../main/app';
+import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
@@ -7,9 +7,14 @@ import {
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../../../../main/routes/urls';
-import { VALID_YES_NO_OPTION } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { REDIS_FAILURE } from '../../../../../../utils/errorMessageTestConstants';
-import { mockCivilClaim, mockNoStatementOfMeans, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
+import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {REDIS_FAILURE} from '../../../../../../utils/errorMessageTestConstants';
+import {
+  mockCivilClaim,
+  mockCivilClaimOptionNo,
+  mockNoStatementOfMeans,
+  mockRedisFailure,
+} from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -20,7 +25,7 @@ describe('Partner Pension', () => {
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
   });
 });
 
@@ -49,7 +54,7 @@ describe('on GET', () => {
       .get(CITIZEN_PARTNER_PENSION_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+        expect(res.body).toMatchObject({error: REDIS_FAILURE});
       });
   });
 });
@@ -121,7 +126,7 @@ describe('on POST', () => {
       .send('option=no')
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+        expect(res.body).toMatchObject({error: REDIS_FAILURE});
       });
   });
 });

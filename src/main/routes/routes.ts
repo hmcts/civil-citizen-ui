@@ -19,6 +19,10 @@ import employmentStatusController from './features/response/statementOfMeans/emp
 import residenceController from './features/response/statementOfMeans/residenceController';
 import financialDetailsController from './features/response/financialDetails/financialDetailsController';
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
+import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
+import betweenSixteenAndNineteenController
+  from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
+import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
 
 export default [
   homeController,
@@ -42,6 +46,7 @@ export default [
   employmentStatusController,
   financialDetailsController,
   partnerPensionController,
+  paymentOptionController,
+  betweenSixteenAndNineteenController,
+  dependantsController,
 ];
-
-
