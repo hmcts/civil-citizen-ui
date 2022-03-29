@@ -8,7 +8,7 @@ import {
   CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../../../../main/routes/urls';
 import {
-  REDIS_FAILURE,
+  REDIS_ERROR_MESSAGE,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
@@ -33,10 +33,10 @@ const mockNoDisabilityDraftStore = {
 };
 const mockRedisFailure = {
   set: jest.fn(() => {
-    throw new Error(REDIS_FAILURE);
+    throw new Error(REDIS_ERROR_MESSAGE);
   }),
   get: jest.fn(() => {
-    throw new Error(REDIS_FAILURE);
+    throw new Error(REDIS_ERROR_MESSAGE);
   }),
 };
 
@@ -58,7 +58,7 @@ describe('Partner Pension', () => {
         .get(CITIZEN_PARTNER_PENSION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: REDIS_FAILURE});
+          expect(res.body).toEqual({error: REDIS_ERROR_MESSAGE});
         });
     });
     test('should return http 500 when has error in the post method', async () => {
@@ -68,7 +68,7 @@ describe('Partner Pension', () => {
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: REDIS_FAILURE});
+          expect(res.body).toEqual({error: REDIS_ERROR_MESSAGE});
         });
     });
   });
