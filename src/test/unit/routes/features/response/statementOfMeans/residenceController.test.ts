@@ -1,6 +1,6 @@
 import express from 'express';
 const request = require('supertest');
-const {app} = require('../../../../../../main/app');
+const { app } = require('../../../../../../main/app');
 import nock from 'nock';
 import config from 'config';
 import {
@@ -8,14 +8,14 @@ import {
   VALID_OPTION_SELECTION,
   VALID_TEXT_LENGTH,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {CIVIL_SERVICE_CASES_URL} from '../../../../../../main/app/client/civilServiceUrls';
-import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../../../../main/routes/urls';
-import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
+import { CIVIL_SERVICE_CASES_URL } from '../../../../../../main/app/client/civilServiceUrls';
+import { CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL } from '../../../../../../main/routes/urls';
+import { FREE_TEXT_MAX_LENGTH } from '../../../../../../main/common/form/validators/validationConstraints';
 
 const agent = request.agent(app);
 const tooLongHousingDetails: string = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');
 const respondentResidenceUrl = CITIZEN_RESIDENCE_URL.replace(':id', 'aaa');
-const mockDraftResponse = require('./civilClaimResponseMock.json');
+const mockDraftResponse = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
@@ -50,7 +50,7 @@ describe('Citizen residence', () => {
       .reply(200, {});
     nock(idamServiceUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
   });
 
   describe('on GET', () => {
