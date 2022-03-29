@@ -13,15 +13,16 @@ const severeDisabilityService = new SevereDisabilityService();
 const validator = new Validator();
 
 function renderView(form: SevereDisability, res: express.Response): void {
-  res.render(citizenSevereDisabilityViewPath, {form});
+  res.render(citizenSevereDisabilityViewPath, { form });
 }
 
 severeDisabilityController.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res) => {
   try {
     const severeDisability = await severeDisabilityService.getSevereDisability(req.params.id);
     renderView(severeDisability, res);
-  } catch (err: unknown) {
-    logger.error(`${err as Error || err}`);
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send({ error: error.message });
   }
 });
 
@@ -36,8 +37,9 @@ severeDisabilityController.post(CITIZEN_SEVERELY_DISABLED_URL,
       try {
         await severeDisabilityService.saveSevereDisability(req.params.id, severeDisability);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_RESIDENCE_URL));
-      } catch (err: unknown) {
-        logger.error(`${err as Error || err}`);
+      } catch (error) {
+        logger.error(error);
+        res.status(500).send({ error: error.message });
       }
     }
   });
