@@ -5,7 +5,6 @@ import {Claim} from '../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('severeDisabilityService');
-const severeDisability = new SevereDisability();
 
 export class SevereDisabilityService {
 
@@ -13,6 +12,7 @@ export class SevereDisabilityService {
     try {
       const case_data = await getCaseDataFromStore(claimId);
       if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.severeDisability) {
+        const severeDisability = new SevereDisability();
         severeDisability.option = case_data.statementOfMeans.severeDisability.option;
         return severeDisability;
       }
