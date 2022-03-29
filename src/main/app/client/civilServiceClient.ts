@@ -11,11 +11,9 @@ export class CivilServiceClient {
   client: AxiosInstance;
 
   constructor(baseURL: string) {
-    console.log('in constructor');
     this.client = Axios.create({
       baseURL,
     });
-    console.log('constructor ended');
   }
 
   getConfig(req : AppRequest) {
@@ -29,22 +27,18 @@ export class CivilServiceClient {
   }
 
   async retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
-    console.log('in retrieveByDefendantId');
     const config = this.getConfig(req);
     let claims : Claim[] = [];
-    console.log('going to call civil service');
     await this.client.post(CIVIL_SERVICE_CASES_URL,{ match_all: {} }, config)
       .then(response => {
         claims = response.data.cases.map((claim: CivilClaimResponse) => Object.assign(new Claim(), claim.case_data));
       }).catch(error => {
-        console.log('I am here');
         console.log(error.message);
       });
     return claims;
   }
 
   async retrieveClaimDetails(claimId: string, req: AppRequest): Promise<Claim> {
-    console.log('in retrieveClaimDetails');
     const config = this.getConfig(req);
 
     try {
