@@ -34,7 +34,7 @@ const savePaymentOptionData = async (claimId: string, form: PaymentOption) => {
 };
 
 const paymentOptionExists = (claim: Claim): boolean => {
-  return claim && claim.paymentOption && claim.paymentOption.length > 0;
+  return claim?.paymentOption?.length > 0;
 };
 
 export {
