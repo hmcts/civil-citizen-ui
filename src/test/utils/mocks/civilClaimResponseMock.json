@@ -45,6 +45,12 @@
         "option": "yes",
         "numberOfPeople": 1,
         "details": "Test details"
+      },
+      "dependants": {
+        "declared": true,
+        "numberOfChildren": {
+          "under11": 2
+        }
       }
     },
     "respondent1": {

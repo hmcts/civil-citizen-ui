@@ -17,8 +17,9 @@ export class CohabitingService {
         return cohabiting;
       }
       return new Cohabiting();
-    } catch (err: unknown) {
-      logger.error(`${err as Error || err}`);
+    } catch (error) {
+      logger.error(error);
+      throw error;
     }
   }
 
@@ -33,8 +34,9 @@ export class CohabitingService {
         case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, case_data);
-    } catch (err: unknown) {
-      logger.error(`${err as Error || err}`);
+    } catch (error) {
+      logger.error(error);
+      throw error;
     }
   }
 }

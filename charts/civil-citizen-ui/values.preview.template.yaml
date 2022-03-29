@@ -9,6 +9,7 @@ nodejs:
         - AppInsightsInstrumentationKey
         - redis-access-key
         - ordnance-survey-api-key
+        - idam-secret
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
 

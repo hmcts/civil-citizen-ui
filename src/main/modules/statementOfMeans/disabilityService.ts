@@ -17,8 +17,9 @@ export class DisabilityService {
         return disability;
       }
       return new Disability();
-    } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
+    } catch (error) {
+      logger.error(error);
+      throw error;
     }
   }
 
@@ -33,8 +34,9 @@ export class DisabilityService {
         case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, case_data);
-    } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
+    } catch (error) {
+      logger.error(error);
+      throw error;
     }
   }
 }

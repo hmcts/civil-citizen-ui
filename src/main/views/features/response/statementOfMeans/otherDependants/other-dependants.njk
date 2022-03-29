@@ -23,7 +23,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <form method="post">
+          <form method="post" novalidate>
             {% set yesHtml %}
             {{ govukInput({
                 id: "numberOfPeople",
@@ -35,7 +35,7 @@
                   text: t('Number of people')
                 },
                 value: form.numberOfPeople,
-                errorMessage: { text: numberOfPeopleError.customInt } if numberOfPeopleError else ''
+                errorMessage: { text: numberOfPeopleError.customZeroOrMinOnePerson } if numberOfPeopleError else ''
               }) }}
             {{ govukTextarea({
                 name: "details",

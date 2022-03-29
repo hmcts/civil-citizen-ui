@@ -13,15 +13,18 @@ import partnerAgeController from './features/response/statementOfMeans/partner/p
 import citizenDisabilityController from './features/response/statementOfMeans/disabilityController';
 import citizenSevereDisabilityController from './features/response/statementOfMeans/severeDisabilityController';
 import bankAccountsController from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
-import partnerDisabilityController from './features/response/statementOfMeans/partner/partnerDisabilityController';
-import partnerSevereDisabilityController
-  from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
-import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
 import partnerController from './features/response/statementOfMeans/partner/partnerController';
+import partnerDisabilityController from './features/response/statementOfMeans/partner/partnerDisabilityController';
+import partnerSevereDisabilityController from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
+import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
 import residenceController from './features/response/statementOfMeans/residenceController';
 import financialDetailsController from './features/response/financialDetails/financialDetailsController';
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
 import otherDependantsController from './features/response/statementOfMeans/otherDependants/otherDependantsController';
+import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
+import betweenSixteenAndNineteenController
+  from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
+import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
 
 export default [
   homeController,
@@ -47,6 +50,9 @@ export default [
   financialDetailsController,
   partnerPensionController,
   otherDependantsController,
+  paymentOptionController,
+  betweenSixteenAndNineteenController,
+  dependantsController,
 ];
 
 
