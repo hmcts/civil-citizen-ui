@@ -15,7 +15,7 @@ import {
 } from '../../../../../modules/statementOfMeans/employment/employmentService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('cohabitingService');
+const logger = Logger.getLogger('employmentStatusController');
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
 const router = express.Router();
 
