@@ -1,6 +1,6 @@
-export class CorrespondenceAddress {
-  County: string;
-  Country: string;
+export interface CorrespondenceAddress {
+  County?: string;
+  Country?: string;
   PostCode: string;
   PostTown: string;
   AddressLine1: string;

@@ -17,24 +17,19 @@
         "option": "no"
       },
       "severeDisability": {
-        "option": "no"
+        "option": "yes"
       },
       "cohabiting": {
-        "option": "no"
+        "option": "yes"
       },
       "partnerSevereDisability": {
-        "option": "no"
+        "option": "yes"
       },
       "partnerAge": {
-        "option": "no"
+        "option": "yes"
       },
       "partnerDisability": {
         "option": "yes"
-      },
-      "otherDependants": {
-        "option": "no",
-        "numberOfPeople": "",
-        "details": ""
       }
     }
   }
