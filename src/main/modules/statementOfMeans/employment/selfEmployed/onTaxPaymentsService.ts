@@ -1,4 +1,4 @@
-import {getDraftClaimFromStore, saveDraftClaim} from '../../../draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../draft-store/draftStoreService';
 import {OnTaxPayments} from '../../../../common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
 import {convertFromYesNo, convertToYesNo} from '../../../../common/utils/convertYesNoOption';
 import {Claim} from '../../../../common/models/claim';
@@ -9,8 +9,9 @@ const logger = Logger.getLogger('onTaxPaymentsService');
 
 const getOnTaxPaymentsForm = async (claimId: string): Promise<OnTaxPayments> => {
   try {
-    const claim = await getDraftClaimFromStore(claimId);
+    const claim = await getCaseDataFromStore(claimId);
     if (claim?.statementOfMeans?.taxPayments) {
+      console.log('claim exists');
       const taxPayments = claim.statementOfMeans.taxPayments;
       return new OnTaxPayments(convertToYesNo(taxPayments.owed), taxPayments.amountOwed, taxPayments.reason);
     }
@@ -37,7 +38,7 @@ const saveTaxPaymentsData = async (claimId: string, form: OnTaxPayments) => {
 };
 
 const getClaim = async (claimId: string): Promise<Claim> => {
-  let claim = await getDraftClaimFromStore(claimId);
+  let claim = await getCaseDataFromStore(claimId);
   if (!claim) {
     claim = new Claim();
   }

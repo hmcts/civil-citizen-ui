@@ -2,12 +2,13 @@ import * as express from 'express';
 import {
   OnTaxPayments,
 } from '../../../../../../common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
-import {ON_TAX_PAYMENTS_URL} from 'routes/urls';
+import {CITIZEN_COURT_ORDER_URL, ON_TAX_PAYMENTS_URL} from 'routes/urls';
 import {validateForm} from '../../../../../../common/form/validators/formValidator';
 import {
   getOnTaxPaymentsForm,
   saveTaxPaymentsData,
 } from '../../../../../../modules/statementOfMeans/employment/selfEmployed/onTaxPaymentsService';
+import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
 
 const citizenOnTaxPaymentsViewPath = 'features/response/statementOfMeans/employment/selfEmployed/on-tax-payments';
 const onTaxPaymentsController = express.Router();
@@ -34,6 +35,7 @@ onTaxPaymentsController.post(ON_TAX_PAYMENTS_URL, async (req, res) => {
       renderView(form, res);
     } else {
       await saveTaxPaymentsData(req.params.id, form);
+      res.redirect(constructResponseUrlWithIdParams(req.params.id,CITIZEN_COURT_ORDER_URL));
     }
   } catch (error) {
     res.status(500).send({error: error.message});
