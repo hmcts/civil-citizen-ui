@@ -29,6 +29,7 @@ export const CITIZEN_EMPLOYMENT_URL = `${STATEMENT_OF_MEANS_URL}/employment`;
 export const WHO_EMPLOYS_YOU_URL = `${CITIZEN_EMPLOYMENT_URL}/employers`;
 export const UNEMPLOYED_URL = `${STATEMENT_OF_MEANS_URL}/unemployment`;
 export const SELF_EMPLOYED_URL = `${CITIZEN_EMPLOYMENT_URL}/self-employment`;
+export const ON_TAX_PAYMENTS_URL = `${SELF_EMPLOYED_URL}/on-tax-payments`;
 export const FINANCIAL_DETAILS_URL = `${STATEMENT_OF_MEANS_URL}/intro`;
 export const CLAIM_TASK_LIST_URL = `${BASE_CASE_RESPONSE_URL}/claim-task-list`;
 export const CITIZEN_PAYMENT_OPTION_URL = `${BASE_CASE_RESPONSE_URL}/full-admission/payment-option`;
