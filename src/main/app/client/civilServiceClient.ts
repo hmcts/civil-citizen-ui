@@ -28,12 +28,10 @@ export class CivilServiceClient {
   async retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
     const config = this.getConfig(req);
     let claims : Claim[] = [];
-    console.log('going to call civil service');
     await this.client.post(CIVIL_SERVICE_CASES_URL,{ match_all: {} }, config)
       .then(response => {
         claims = response.data.cases.map((claim: CivilClaimResponse) => Object.assign(new Claim(), claim.case_data));
       }).catch(error => {
-        console.log('I am here');
         console.log(error.message);
       });
     return claims;

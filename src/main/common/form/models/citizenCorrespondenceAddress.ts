@@ -33,4 +33,8 @@ export class CitizenCorrespondenceAddress extends Form {
     this.correspondenceCity = correspondenceCity;
     this.correspondencePostCode = correspondencePostCode;
   }
+
+  isEmpty() {
+    return Object.values(this).every(value => value === undefined || value === '' );
+  }
 }
