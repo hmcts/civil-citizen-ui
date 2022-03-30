@@ -7,9 +7,8 @@ import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {get} from 'lodash';
 
 
-
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('dependantTeenagersService');
+const logger = Logger.getLogger('betweenSixteenAndNineteenService');
 
 export const getForm = async (claimId: string): Promise<BetweenSixteenAndNineteenDependants> => {
   try {
@@ -27,7 +26,7 @@ export const getForm = async (claimId: string): Promise<BetweenSixteenAndNinetee
   }
 };
 
-export const saveFormToDraftStore = async (claimId: string, form: BetweenSixteenAndNineteenDependants) : Promise<Claim> => {
+export const saveFormToDraftStore = async (claimId: string, form: BetweenSixteenAndNineteenDependants): Promise<Claim> => {
   try {
     const claim = await getClaim(claimId);
     const statementOfMeans = claim.statementOfMeans ? claim.statementOfMeans : new StatementOfMeans();
@@ -40,7 +39,6 @@ export const saveFormToDraftStore = async (claimId: string, form: BetweenSixteen
     throw error;
   }
 };
-
 
 
 const getMaxValue = (claim: Claim): number | undefined => {
