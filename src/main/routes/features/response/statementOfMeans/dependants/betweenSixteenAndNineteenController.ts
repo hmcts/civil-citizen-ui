@@ -2,7 +2,7 @@ import * as express from 'express';
 import {
   CHILDREN_DISABILITY_URL,
   CITIZEN_DEPENDANTS_EDUCATION_URL,
-  CITIZEN_OTHER_DEPENDANTS_URL
+  CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../routes/urls';
 import {
   BetweenSixteenAndNineteenDependants,
