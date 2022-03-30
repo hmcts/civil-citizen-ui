@@ -34,7 +34,21 @@ export class NumberOfChildren {
   }
 }
 
+export function totalNumberOfChildren(numberOfChildren: NumberOfChildren) {
+  let total = 0;
+  if (!Number.isNaN(numberOfChildren.under11)){
+    total += numberOfChildren.under11;
+  }
+  if (!Number.isNaN(numberOfChildren.between11and15)){
+    total += numberOfChildren.between11and15;
+  }
+  if (!Number.isNaN(numberOfChildren.between16and19)) {
+    total += numberOfChildren.between16and19;
+  }
+  return total;
+}
+
 function toNumberOrUndefined(value: string): number {
   const numberValue: number = parseFloat(value);
-  return isNaN(numberValue) ? undefined : numberValue;
+  return Number.isNaN(numberValue) ? undefined : numberValue;
 }

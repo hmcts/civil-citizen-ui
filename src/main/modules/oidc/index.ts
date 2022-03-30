@@ -5,6 +5,10 @@ import {getUserDetails} from '../../app/auth/user/oidc';
 
 import {SIGN_IN_URL, SIGN_OUT_URL, CALLBACK_URL, DASHBOARD_URL, UNAUTHORISED_URL} from '../../routes/urls';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('oidcIndex');
+require( 'trace-unhandled/register' );
+
 /**
  * Adds the oidc middleware to add oauth authentication
  */
@@ -23,14 +27,18 @@ export class OidcMiddleware {
     });
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
-      if (typeof req.query.code === 'string') {
-        req.session.user = await getUserDetails(redirectUri, req.query.code);
-        if (req.session.user?.roles?.includes(citizenRole)) {
-          return res.redirect(DASHBOARD_URL);
+      try {
+        if (typeof req.query.code === 'string') {
+          req.session.user = await getUserDetails(redirectUri, req.query.code);
+          if (req.session.user?.roles?.includes(citizenRole)) {
+            return res.redirect(DASHBOARD_URL);
+          }
+          return res.redirect(UNAUTHORISED_URL);
+        } else {
+          res.redirect(DASHBOARD_URL);
         }
-        return res.redirect(UNAUTHORISED_URL);
-      } else {
-        res.redirect(DASHBOARD_URL);
+      } catch (error) {
+        logger.error(`${error.stack || error}`);
       }
     });
 

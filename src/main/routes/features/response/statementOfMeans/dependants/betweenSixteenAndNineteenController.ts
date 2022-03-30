@@ -13,6 +13,7 @@ import {
   saveFormToDraftStore,
 } from '../../../../../modules/statementOfMeans/dependants/betweenSixteenAndNineteenService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {isCheckChildrenDisabled} from '../../../../../modules/statementOfMeans/dependants/childrenDisabilityService';
 
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -47,7 +48,8 @@ betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      const askIfChildrenDisabled : boolean = await saveFormToDraftStore(req.params.id, form);
+      const claim = await saveFormToDraftStore(req.params.id, form);
+      const askIfChildrenDisabled = isCheckChildrenDisabled(claim);
       if (askIfChildrenDisabled) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CHILDREN_DISABILITY_URL));
       } else {
