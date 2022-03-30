@@ -2,7 +2,7 @@ import {
   getCaseDataFromStore,
   saveDraftClaim,
 } from '../../modules/draft-store/draftStoreService';
-import {get} from 'lodash';
+import _, {get} from 'lodash';
 import {Respondent} from '../../common/models/respondent';
 import {Claim} from '../../common/models/claim';
 import {PrimaryAddress} from '../../common/models/primaryAddress';
@@ -24,11 +24,11 @@ export const saveRespondent = async(claimId: string, citizenAddress: CitizenAddr
   if (!get(responseData, 'respondent1')) {
     const respondent = new Respondent();
     respondent.primaryAddress = buildPrimaryAddress(citizenAddress);
-    respondent.correspondenceAddress = buildCorrespondenceAddress(citizenCorrespondenceAddress);
+    respondent.correspondenceAddress = _.isEmpty(citizenCorrespondenceAddress) ?  buildCorrespondenceAddress(citizenCorrespondenceAddress) : undefined;
     responseData.respondent1 = respondent;
   } else {
     responseData.respondent1.primaryAddress = buildPrimaryAddress(citizenAddress);
-    responseData.respondent1.correspondenceAddress = buildCorrespondenceAddress(citizenCorrespondenceAddress);
+    responseData.respondent1.correspondenceAddress = _.isEmpty(citizenCorrespondenceAddress) ? buildCorrespondenceAddress(citizenCorrespondenceAddress) : undefined;
   }
   await saveDraftClaim(claimId, responseData);
 };
