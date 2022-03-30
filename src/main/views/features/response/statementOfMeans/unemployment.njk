@@ -1,0 +1,58 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% set heading = 'Are you unemployed or retired?' %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getErrors() %}
+      {% if errors %}
+        {{ govukErrorSummary({
+          "titleText": 'There was a problem',
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
+          <form method="post">
+            {{ govukRadios({
+              idPrefix: "unemployment",
+              name: "option",
+              items: [
+                {
+                  value: UnemploymentCategory.UNEMPLOYED,
+                  checked: true if form.option === UnemploymentCategory.UNEMPLOYED,
+                  html:t(UnemploymentCategory.UNEMPLOYED)
+                },
+                {
+                  value: UnemploymentCategory.RETIRED,
+                  checked: true if form.option  === UnemploymentCategory.RETIRED,
+                  html: t(UnemploymentCategory.RETIRED)
+                },
+                {
+                  value: UnemploymentCategory.OTHER,
+                  checked: true if form.option === UnemploymentCategory.OTHER,
+                  html: t(UnemploymentCategory.OTHER)
+                }
+              ],
+              errorMessage: {
+                html: t(errors[0].text)
+              } if errors
+            }) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

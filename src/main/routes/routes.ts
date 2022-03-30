@@ -14,7 +14,8 @@ import citizenSevereDisabilityController from './features/response/statementOfMe
 import bankAccountsController from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
 import partnerController from './features/response/statementOfMeans/partner/partnerController';
 import partnerDisabilityController from './features/response/statementOfMeans/partner/partnerDisabilityController';
-import partnerSevereDisabilityController from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
+import partnerSevereDisabilityController
+  from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
 import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
 import residenceController from './features/response/statementOfMeans/residenceController';
 import financialDetailsController from './features/response/financialDetails/financialDetailsController';
@@ -24,6 +25,8 @@ import paymentOptionController from './features/response/admision/fullAdmission/
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
+import unemploymentController from './features/response/statementOfMeans/unemployment/unemploymentController';
+
 
 export default [
   homeController,
@@ -51,4 +54,5 @@ export default [
   paymentOptionController,
   betweenSixteenAndNineteenController,
   dependantsController,
+  unemploymentController,
 ];

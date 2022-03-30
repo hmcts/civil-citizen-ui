@@ -1,5 +1,5 @@
 export enum UnemploymentCategory {
-  UNEMPLOYED = 'UNEMPLOYED',
-  RETIRED = 'RETIRED',
-  OTHER = 'OTHER'
+  UNEMPLOYED = 'Unemployed',
+  RETIRED = 'Retired',
+  OTHER = 'Other'
 }
