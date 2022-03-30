@@ -1,0 +1,65 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set title = t("Are you behind on tax payments?") %}
+      {% set id = "option" %}
+      {% set name = "option" %}
+      {% set errors = form.getErrors() %}
+      {% if errors %}
+        {{ govukErrorSummary({
+          "titleText": t("There was a problem"),
+          "errorList": errors
+        }) }}
+      {% endif %}
+      {% set yesHtml %}
+        {{ govukInput({
+          id: "amountYouOwe",
+          name: "amountYouOwe",
+          label: {
+            text: t("Amount you owe")
+          },
+          prefix: {
+            text: "£"
+          },
+          classes: "govuk-input--width-5 govuk-input--error" if form.hasFieldError('amountYouOwe') else "govuk-input--width-5",
+          spellcheck: false,
+          errorMessage: {
+            text:t(form.errorFor('amountYouOwe'))
+          } if form.hasFieldError('amountYouOwe')
+        }) }}
+        {{ govukTextarea({
+          name: "reason",
+          id: "reason",
+          label: {
+            text: t("Reason")
+          },
+          errorMessage: {
+            text:t(form.errorFor('reason'))
+          } if form.hasFieldError('reason')
+        }) }}
+      {% endset -%}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form
+            method="POST" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ yesNoRadioButton(t,id,name,title,form,'',{yesHtml:yesHtml}) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
