@@ -6,17 +6,17 @@ export class NumberOfChildren {
   @ValidateIf((o: NumberOfChildren) => o.under11 !== undefined)
   @IsInt({message: VALID_INTEGER})
   @Min(0, {message: VALID_POSITIVE_NUMBER})
-    under11?: number;
+  under11?: number;
 
   @ValidateIf((o: NumberOfChildren) => o.between11and15 !== undefined)
   @IsInt({message: VALID_INTEGER})
   @Min(0, {message: VALID_POSITIVE_NUMBER})
-    between11and15?: number;
+  between11and15?: number;
 
   @ValidateIf((o: NumberOfChildren) => o.between16and19 !== undefined)
   @IsInt({message: VALID_INTEGER})
   @Min(0, {message: VALID_POSITIVE_NUMBER})
-    between16and19?: number;
+  between16and19?: number;
 
   constructor(under11?: number, between11and15?: number, between16and19?: number) {
     this.under11 = under11;
@@ -36,13 +36,13 @@ export class NumberOfChildren {
 
 export function totalNumberOfChildren(numberOfChildren: NumberOfChildren) {
   let total = 0;
-  if (!Number.isNaN(numberOfChildren.under11)){
+  if (Number.isInteger(numberOfChildren?.under11)) {
     total += numberOfChildren.under11;
   }
-  if (!Number.isNaN(numberOfChildren.between11and15)){
+  if (Number.isInteger(numberOfChildren?.between11and15)) {
     total += numberOfChildren.between11and15;
   }
-  if (!Number.isNaN(numberOfChildren.between16and19)) {
+  if (Number.isInteger(numberOfChildren?.between16and19)) {
     total += numberOfChildren.between16and19;
   }
   return total;
