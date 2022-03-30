@@ -1,13 +1,13 @@
-import {Application, NextFunction,Response} from 'express';
+import {Application, NextFunction, Response} from 'express';
 import config from 'config';
 import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 
-import {SIGN_IN_URL, SIGN_OUT_URL, CALLBACK_URL, DASHBOARD_URL, UNAUTHORISED_URL} from '../../routes/urls';
+import {CALLBACK_URL, DASHBOARD_URL, SIGN_IN_URL, SIGN_OUT_URL, UNAUTHORISED_URL} from '../../routes/urls';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('oidcIndex');
-require( 'trace-unhandled/register' );
+
 
 /**
  * Adds the oidc middleware to add oauth authentication
@@ -20,7 +20,7 @@ export class OidcMiddleware {
     const redirectUri: string = config.get('services.idam.callbackURL');
     const citizenRole: string = config.get('services.idam.citizenRole');
     const scope: string = config.get('services.idam.scope');
-    const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri)+scope;
+    const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri) + scope;
 
     app.get(SIGN_IN_URL, (req: AppRequest, res: Response) => {
       res.redirect(idamUrlLogin);

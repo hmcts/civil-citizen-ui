@@ -2,14 +2,12 @@ import request from 'supertest';
 import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {
-  CHILDREN_DISABILITY_URL,
-  CITIZEN_OTHER_DEPENDANTS_URL,
-} from '../../../../../../../main/routes/urls';
+import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../../../../main/routes/urls';
 import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {LoggerInstance} from 'winston';
-// import {ChildrenDisabilityService} from '../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
-import {setChildrenDisabilityControllerLogger} from '../../../../../../../main/routes/features/response/statementOfMeans/dependants/childrenDisabilityController';
+import {
+  setChildrenDisabilityControllerLogger,
+} from '../../../../../../../main/routes/features/response/statementOfMeans/dependants/childrenDisabilityController';
 
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
@@ -26,14 +24,17 @@ const mockNoChildrenDisabilityDraftStore = {
   get: jest.fn(() => Promise.resolve(noChildrenDisabilityResponse)),
 };
 const mockErrorDraftStore = {
-  set: jest.fn(() => {throw new Error('Redis DraftStore failure.');}),
-  get: jest.fn(() => {throw new Error('Redis DraftStore failure.');}),
+  set: jest.fn(() => {
+    throw new Error('Redis DraftStore failure.');
+  }),
+  get: jest.fn(() => {
+    throw new Error('Redis DraftStore failure.');
+  }),
 };
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
 } as unknown as LoggerInstance;
-
 
 
 jest.mock('../../../../../../../main/modules/oidc');
