@@ -24,11 +24,11 @@ export const saveRespondent = async(claimId: string, citizenAddress: CitizenAddr
   if (!get(responseData, 'respondent1')) {
     const respondent = new Respondent();
     respondent.primaryAddress = buildPrimaryAddress(citizenAddress);
-    respondent.correspondenceAddress = _.isEmpty(citizenCorrespondenceAddress) ?  buildCorrespondenceAddress(citizenCorrespondenceAddress) : undefined;
+    respondent.correspondenceAddress = citizenCorrespondenceAddress.isEmpty() ? undefined :  buildCorrespondenceAddress(citizenCorrespondenceAddress);
     responseData.respondent1 = respondent;
   } else {
     responseData.respondent1.primaryAddress = buildPrimaryAddress(citizenAddress);
-    responseData.respondent1.correspondenceAddress = _.isEmpty(citizenCorrespondenceAddress) ? buildCorrespondenceAddress(citizenCorrespondenceAddress) : undefined;
+    responseData.respondent1.correspondenceAddress = citizenCorrespondenceAddress.isEmpty() ?  undefined :  buildCorrespondenceAddress(citizenCorrespondenceAddress);
   }
   await saveDraftClaim(claimId, responseData);
 };

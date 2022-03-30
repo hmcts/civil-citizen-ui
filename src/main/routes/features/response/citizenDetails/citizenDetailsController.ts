@@ -52,7 +52,7 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
         responseDataRedis.correspondenceAddress.AddressLine2,
         responseDataRedis.correspondenceAddress.AddressLine3,
         responseDataRedis.correspondenceAddress.PostTown,
-        responseDataRedis.correspondenceAddress.PostCode) : '';
+        responseDataRedis.correspondenceAddress.PostCode) : undefined;
     }
     citizenFullName = {
       individualTitle: responseDataRedis?.individualTitle || 'individualTitle Test',
@@ -80,6 +80,7 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
       req.body.primaryCity,
       req.body.primaryPostCode,
     );
+
     const citizenCorrespondenceAddress = new CitizenCorrespondenceAddress(
       req.body.correspondenceAddressLine1,
       req.body.correspondenceAddressLine2,
@@ -109,5 +110,7 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
     res.status(500).send({error: error.message});
   }
 });
+
+
 
 export default router;

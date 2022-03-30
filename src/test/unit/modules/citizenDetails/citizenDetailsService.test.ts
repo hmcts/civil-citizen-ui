@@ -2,9 +2,9 @@ import * as draftStoreService from '../../../../main/modules/draft-store/draftSt
 import {getRespondentInformation, saveRespondent} from '../../../../main/modules/citizenDetails/citizenDetailsService';
 import {Respondent} from '../../../../main/common/models/respondent';
 import {buildCorrespondenceAddress, buildPrimaryAddress, mockClaim} from '../../../utils/mockClaim';
-
 import {buildCitizenAddress, buildCitizenCorrespondenceAddress} from '../../../utils/mockForm';
 import {Claim} from '../../../../main/common/models/claim';
+import {CitizenCorrespondenceAddress} from '../../../../main/common/form/models/citizenCorrespondenceAddress';
 
 jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -86,7 +86,7 @@ describe('Citizen details service', () => {
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, mockClaim);
     });
 
-    it('should save a respondent when in redis is undefined on redis', async () => {
+    it('should save a respondent when in redis is undefined', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
@@ -103,5 +103,71 @@ describe('Citizen details service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
     });
+
+    it('should save a respondent when in redis correspondentAddress is undefined or empty and the citizenAddress without information', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const resultClaim = new Claim();
+      const respondentResult = new Respondent();
+      respondentResult.primaryAddress = buildPrimaryAddress();
+      resultClaim.respondent1 =  respondentResult;
+      resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = mockClaim;
+        const respondent = new Respondent();
+        respondent.primaryAddress =  buildPrimaryAddress();
+        claim.respondent1 = respondent;
+        claim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
+        return mockClaim;
+      });
+      //when
+      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new CitizenCorrespondenceAddress());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
+    });
+    it('should save a respondent when in redis respondent is undefined or empty and the citizenAddress with information', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const resultClaim = new Claim();
+      const respondentResult = new Respondent();
+      respondentResult.primaryAddress = buildPrimaryAddress();
+      respondentResult.correspondenceAddress =  buildCorrespondenceAddress();
+      resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = mockClaim;
+        claim.respondent1 = undefined;
+        claim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
+        return claim;
+      });
+      //when
+      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
+    });
+    it('should save a respondent when in redis respondent is undefined or empty and the citizenAddress without information', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const resultClaim = new Claim();
+      const respondentResult = new Respondent();
+      respondentResult.primaryAddress = buildPrimaryAddress();
+      resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = mockClaim;
+        claim.respondent1 = undefined;
+        claim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
+        return claim;
+      });
+      //when
+      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new CitizenCorrespondenceAddress());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
+    });
   });
+
 });
