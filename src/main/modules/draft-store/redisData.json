@@ -7,13 +7,6 @@
   "state": "PENDING_CASE_ISSUED",
   "security_classification": "PUBLIC",
   "case_data": {
-    "statementOfMeans": {
-      "dependants": {
-        "numberOfChildren": {
-          "between16and19": "4"
-        }
-      }
-    },
     "claimFee": {
       "code": "FEE0204",
       "version": "4",
