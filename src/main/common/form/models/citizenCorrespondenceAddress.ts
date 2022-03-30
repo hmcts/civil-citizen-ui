@@ -35,8 +35,6 @@ export class CitizenCorrespondenceAddress extends Form {
   }
 
   isEmpty() {
-    return Object.values(this).some(value => value === undefined || value === '' );
-
+    return Object.values(this).every(value => value === undefined || value === '' );
   }
-
 }
