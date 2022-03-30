@@ -12,7 +12,8 @@ export const isCheckChildrenDisabled = (claim: Claim): boolean => {
   try {
     const statementOfMeans = claim.statementOfMeans;
     if (statementOfMeans?.dependants?.numberOfChildren && totalNumberOfChildren(statementOfMeans.dependants.numberOfChildren) > 0) {
-      if ((statementOfMeans?.disability?.option == YesNo.NO) || (statementOfMeans?.disability?.option == YesNo.YES && statementOfMeans?.severeDisability?.option == YesNo.NO && statementOfMeans?.partnerDisability?.option != YesNo.YES)){
+      if ((statementOfMeans?.disability?.option == YesNo.NO) || (statementOfMeans?.disability?.option == YesNo.YES &&
+        statementOfMeans?.severeDisability?.option == YesNo.NO && statementOfMeans?.partnerDisability?.option != YesNo.YES)){
         return true;
       }
     }
