@@ -10,16 +10,13 @@ const logger = Logger.getLogger('childrenDisabilityService');
 
 export const isCheckChildrenDisabled = (claim: Claim): boolean => {
   try {
-    let result = false;
     const statementOfMeans = claim.statementOfMeans;
     if (statementOfMeans?.dependants?.numberOfChildren && totalNumberOfChildren(statementOfMeans.dependants.numberOfChildren) > 0) {
-      if (statementOfMeans?.disability?.option == YesNo.NO) {
-        result = true;
-      } else if (statementOfMeans?.disability?.option == YesNo.YES && statementOfMeans?.severeDisability?.option == YesNo.NO && statementOfMeans?.partnerDisability?.option != YesNo.YES) {
-        result = true;
+      if ((statementOfMeans?.disability?.option == YesNo.NO) || (statementOfMeans?.disability?.option == YesNo.YES && statementOfMeans?.severeDisability?.option == YesNo.NO && statementOfMeans?.partnerDisability?.option != YesNo.YES)){
+        return true;
       }
     }
-    return result;
+    return false;
   } catch (error) {
     logger.error(`${error.stack || error}`);
     throw error;
