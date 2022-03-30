@@ -17,7 +17,7 @@ export class OnTaxPayments extends Form {
 
   @ValidateIf(o => o.isOptionYesSelected())
   @IsDefined({message: VALID_OWED_AMOUNT_REQUIRED})
-  @Min(0, {message: VALID_OWED_AMOUNT_REQUIRED})
+  @Min(0.01, {message: VALID_OWED_AMOUNT_REQUIRED})
   @Max(MAX_AMOUNT_VALUE, {message: VALID_VALUE})
   @IsNumber({allowNaN: false, maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
     amountYouOwe: number;
