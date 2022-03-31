@@ -33,6 +33,32 @@ describe('on tax payment model', () => {
       expect(result).toBeFalsy();
     });
   });
+  describe('getAmountYouOweAsString', () => {
+    it('should return string 0 when amount you owe is 0', () => {
+      //Given
+      const form = new OnTaxPayments(YesNo.YES, 0);
+      //When
+      const result = form.getAmountYouOweAsString();
+      //Then
+      expect(result).toBe('0');
+    });
+    it('should return empty string when amount you owe is undefined', () => {
+      //Given
+      const form = new OnTaxPayments();
+      //When
+      const result = form.getAmountYouOweAsString();
+      //Then
+      expect(result).toBe('');
+    });
+    it('should return string 1.22 when amount you owe is 1.22', () => {
+      //Given
+      const form = new OnTaxPayments(YesNo.YES, 1.22);
+      //When
+      const result = form.getAmountYouOweAsString();
+      //Then
+      expect(result).toBe('1.22');
+    });
+  });
   describe('validation', () => {
     it('should return errors when yes or no option is not selected', () => {
       //Given

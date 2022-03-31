@@ -31,7 +31,7 @@
           },
           classes: "govuk-input--width-5 govuk-input--error" if form.hasFieldError('amountYouOwe') else "govuk-input--width-5",
           spellcheck: false,
-          value: form.amountYouOwe,
+          value: form.getAmountYouOweAsString(),
           errorMessage: {
             text:t(form.errorFor('amountYouOwe'))
           } if form.hasFieldError('amountYouOwe')

@@ -35,6 +35,10 @@ export class OnTaxPayments extends Form {
     this.reason = reason;
   }
 
+  getAmountYouOweAsString(): string {
+    return this.amountYouOwe === undefined ? '' : String(this.amountYouOwe);
+  }
+
   isOptionYesSelected(): boolean {
     return this.option === YesNo.YES;
   }
