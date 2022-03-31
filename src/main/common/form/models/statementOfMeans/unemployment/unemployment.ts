@@ -1,21 +1,21 @@
 import {Form} from 'common/form/models/form';
 import {IsDefined, ValidateIf, ValidationError} from 'class-validator';
-import {VALID_AT_LEAST_ONE_OPTION, VALID_YES_NO_OPTION} from '../../../validationErrors/errorMessageConstants';
+import {SELECT_AN_OPTION} from '../../../validationErrors/errorMessageConstants';
 import {UnemploymentCategory} from './unemploymentCategory';
 import {UnemploymentDetails} from './unemploymentDetails';
 import {OtherDetails} from './otherDetails';
 
 export class Unemployment extends Form {
 
-  @IsDefined({message: VALID_YES_NO_OPTION})
+  @IsDefined({message: SELECT_AN_OPTION})
     option: UnemploymentCategory;
 
   @ValidateIf(o => o.option === UnemploymentCategory.UNEMPLOYED)
-  @IsDefined({message: VALID_AT_LEAST_ONE_OPTION})
+  @IsDefined({message: SELECT_AN_OPTION})
     unemploymentDetails: UnemploymentDetails;
 
   @ValidateIf(o => o.option === UnemploymentCategory.OTHER)
-  @IsDefined({message: VALID_AT_LEAST_ONE_OPTION})
+  @IsDefined({message: SELECT_AN_OPTION})
     otherDetails: OtherDetails;
 
   constructor(option?: UnemploymentCategory, unemploymentDetails?: UnemploymentDetails, otherDetails?: OtherDetails, errors?: ValidationError[]) {

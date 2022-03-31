@@ -3,8 +3,6 @@ import {Claim} from '../../../common/models/claim';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Unemployment} from '../../../common/form/models/statementOfMeans/unemployment/unemployment';
 
-//import {convertFromForm, convertToForm} from './employmentConverter';
-
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentService');
 
