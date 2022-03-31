@@ -9,7 +9,7 @@ import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {
   OnTaxPayments,
 } from '../../../../../../main/common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
-import {REDIS_ERROR_MESSAGE} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {REDIS_FAILURE} from '../../../../../utils/errorMessageTestConstants';
 
 
 jest.mock('../../../../../../main/modules/draft-store');
@@ -73,10 +73,10 @@ describe('On Tax Payments Service', () => {
     it('should rethrow error when error occurs', async () => {
       //When
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error(REDIS_ERROR_MESSAGE);
+        throw new Error(REDIS_FAILURE);
       });
       //Then
-      await expect(getOnTaxPaymentsForm('123')).rejects.toThrow(REDIS_ERROR_MESSAGE);
+      await expect(getOnTaxPaymentsForm('123')).rejects.toThrow(REDIS_FAILURE);
     });
   });
   describe('saveTaxPaymentsData', () => {
@@ -105,19 +105,19 @@ describe('On Tax Payments Service', () => {
     it('should rethrow error when error occurs on get claim', async () => {
       //When
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error(REDIS_ERROR_MESSAGE);
+        throw new Error(REDIS_FAILURE);
       });
       //Then
-      await expect(saveTaxPaymentsData('123', new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON))).rejects.toThrow(REDIS_ERROR_MESSAGE);
+      await expect(saveTaxPaymentsData('123', new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON))).rejects.toThrow(REDIS_FAILURE);
     });
     it('should rethrow error when error occurs on save claim', async () => {
       //Given
       const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
       mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(REDIS_ERROR_MESSAGE);
+        throw new Error(REDIS_FAILURE);
       });
       //Then
-      await expect(saveTaxPaymentsData('123', new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON))).rejects.toThrow(REDIS_ERROR_MESSAGE);
+      await expect(saveTaxPaymentsData('123', new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON))).rejects.toThrow(REDIS_FAILURE);
     });
   });
 });
