@@ -21,14 +21,25 @@ export const hasDisabledChildren = (claim: Claim): boolean => {
     const statementOfMeans = claim.statementOfMeans;
     const numberOfChildren : NumberOfChildren = new NumberOfChildren(statementOfMeans?.dependants?.numberOfChildren?.under11, statementOfMeans?.dependants?.numberOfChildren?.between11and15, statementOfMeans?.dependants?.numberOfChildren?.between16and19);
     return (statementOfMeans?.dependants?.numberOfChildren && numberOfChildren.totalNumberOfChildren() > 0 &&
-      (statementOfMeans?.disability?.option === YesNo.NO) || (statementOfMeans?.disability?.option === YesNo.YES &&
-        statementOfMeans?.severeDisability?.option === YesNo.NO && statementOfMeans?.partnerDisability?.option === YesNo.NO));
+      (isDefendantDisabled(statementOfMeans)) || (isDefendantDisabledButNotSeverely(statementOfMeans) && isDefendantPartnerDisabled(statementOfMeans)));
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
+const isDefendantDisabled = (statementOfMeans : StatementOfMeans) : boolean => {
+  return statementOfMeans?.disability?.option === YesNo.NO;
+};
+
+const isDefendantDisabledButNotSeverely = (statementOfMeans : StatementOfMeans) : boolean => {
+  return statementOfMeans?.disability?.option === YesNo.YES &&
+    statementOfMeans?.severeDisability?.option === YesNo.NO;
+};
+
+const isDefendantPartnerDisabled = (statementOfMeans : StatementOfMeans) : boolean => {
+  return statementOfMeans?.partnerDisability?.option === YesNo.NO;
+};
 
 
 export const getChildrenDisability = async (claimId: string) : Promise<ChildrenDisability> => {
