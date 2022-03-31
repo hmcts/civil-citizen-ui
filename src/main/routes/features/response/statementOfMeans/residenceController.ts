@@ -21,8 +21,8 @@ residenceController
         const residenceDetails = new GenericForm(residence);
         const errors = residenceDetails.getErrors().length && residenceDetails.getErrors().length;
         res.render(residenceViewPath, {
-          form: new GenericForm(residence), errors
-        })
+          form: new GenericForm(residence), errors,
+        });
       } catch (error) {
         logger.error(`${error.stack || error}`);
         res.status(500).send({errorMessage: error.message, errorStack: error.stack});
