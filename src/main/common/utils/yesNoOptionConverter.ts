@@ -10,7 +10,7 @@ const convertToYesNo = (declared?: boolean): YesNo => {
   return convertedYesNoValue;
 };
 
-const convertFromYesNo = (option: YesNo): boolean => {
+const convertFromYesNo = (option?: YesNo): boolean => {
   if (option) {
     switch (option) {
       case YesNo.YES:
