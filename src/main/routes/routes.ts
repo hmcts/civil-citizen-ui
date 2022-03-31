@@ -18,6 +18,7 @@ import partnerSevereDisabilityController from './features/response/statementOfMe
 import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
 import residenceController from './features/response/statementOfMeans/residenceController';
 import financialDetailsController from './features/response/financialDetails/financialDetailsController';
+import whoEmploysYouController from './features/response/statementOfMeans/employment/whoEmploysYouController';
 import otherDependantsController from './features/response/statementOfMeans/otherDependants/otherDependantsController';
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
 import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
@@ -46,6 +47,7 @@ export default [
   residenceController,
   employmentStatusController,
   financialDetailsController,
+  whoEmploysYouController,
   otherDependantsController,
   partnerPensionController,
   paymentOptionController,

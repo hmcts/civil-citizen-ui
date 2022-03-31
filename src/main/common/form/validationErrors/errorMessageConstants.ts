@@ -33,3 +33,7 @@ export const VALID_NUMBER_FOR_PREVIOUS_PAGE = 'Number can’t be higher than on 
 export const REDIS_ERROR_MESSAGE = 'Redis DraftStore failure.';
 export const VALID_YES_NO_SELECTION = 'Please select yes or no';
 export const VALID_ENTER_AT_LEAST_ONE_NUMBER = 'Enter a number for at least one field';
+
+export const VALID_ENTER_AN_EMPLOYER_NAME = 'Enter an employer name';
+export const VALID_ENTER_A_JOB_TITLE = 'Enter a job title';
+export const VALID_ENTER_AT_LEAST_ONE_EMPLOYER = 'Enter at least one employer';

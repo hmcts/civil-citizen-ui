@@ -1,0 +1,33 @@
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% macro addressForm(t,citizenAddress = '', addressLine1Error, addressCityError, addressPostCodeError, addressType) %}
+  {% set fieldSetLabel = t('Your address') %}
+  {% set fieldSetText = t('If your address is not correct you can change it here. Any changes will be shared with the claimant when you submit your response.') %}
+  {% set textInputLabel = t('Building and street') %}
+  {% set govukFormGroupError = 'govuk-form-group govuk-form-group--error' if addressLine1Error else '' %}
+  {% call govukFieldset({
+  legend: {
+    text: fieldSetLabel,
+    classes: "govuk-fieldset__legend--m" if addressType == 'primary' else "govuk-fieldset__legend--m govuk-visually-hidden" ,
+    isPageHeading: true
+  }
+  }) %}
+
+  <div class="{{ govukFormGroupError }}">
+
+    {{ govukInput({
+        label: {
+        text: t('Postcode')
+        },
+        classes: "govuk-input--width-10",
+        id: addressType + "PostCode",
+        name: addressType + "PostCode",
+        autocomplete: addressType + "postal-code",
+        value: citizenAddress.primaryPostCode if addressType == 'primary' else citizenAddress.correspondencePostCode,
+        errorMessage: { text: addressPostCodeError.isNotEmpty or  addressPostCodeError.customInt} if addressPostCodeError else ''
+    }) }}
+
+  </div>
+
+  {% endcall %}
+{% endmacro %}
