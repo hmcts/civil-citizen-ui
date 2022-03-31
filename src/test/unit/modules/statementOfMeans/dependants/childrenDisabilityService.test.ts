@@ -13,7 +13,7 @@ import {
 import {CivilClaimResponse} from '../../../../../main/common/models/civilClaimResponse';
 import {LoggerInstance} from 'winston';
 import {NumberOfChildren} from '../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
-import {GenericForm} from "../../../../../main/common/form/models/genericForm";
+import {GenericForm} from '../../../../../main/common/form/models/genericForm';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
