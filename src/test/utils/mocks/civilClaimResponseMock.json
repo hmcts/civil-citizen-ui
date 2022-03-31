@@ -22,6 +22,11 @@
       "cohabiting": {
         "option": "yes"
       },
+      "otherDependants": {
+        "option": "yes",
+        "numberOfPeople": "1",
+        "details": "Test details"
+      },
       "partnerAge": {
         "option": "yes"
       },
@@ -40,6 +45,12 @@
           "displayValue": "Private rental"
         },
         "housingDetails": ""
+      },
+      "dependants": {
+        "declared": true,
+        "numberOfChildren": {
+          "under11": 2
+        }
       }
     },
     "respondent1": {

@@ -29,7 +29,12 @@
         "option": "no"
       },
       "partnerDisability": {
-        "option": "no"
+        "option": "yes"
+      },
+      "otherDependants": {
+        "option": "no",
+        "numberOfPeople": "",
+        "details": ""
       }
     }
   }

@@ -14,11 +14,10 @@ services:
     authorizationURL: 'http://localhost:3501/login'
     tokenURL: 'http://localhost:5000/o/token'
     clientID: 'civil_citizen_ui'
-    clientSecret: 'citizen-ui-secret'
+    clientSecret:
     callbackURL: 'http://localhost:3001/oauth2/callback'
     citizenRole: 'citizen'
     scope: '&scope=profile%20openid%20roles%20manage-user%20create-user%20search-user'
-    idam-secret:
   draftStore:
     redis:
       host: 'localhost'
