@@ -3,32 +3,38 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStore
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Claim} from '../../../common/models/claim';
 import {YesNo} from '../../../common/form/models/yesNo';
-import {totalNumberOfChildren} from '../../../common/form/models/statementOfMeans/dependants/numberOfChildren';
+import {GenericForm} from '../../../common/form/models/genericForm';
+import {Validator} from 'class-validator';
+import * as winston from 'winston';
+import {NumberOfChildren} from '../../../common/form/models/statementOfMeans/dependants/numberOfChildren';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('childrenDisabilityService');
+let logger = Logger.getLogger('childrenDisabilityService');
+const validator = new Validator();
 
-export const isCheckChildrenDisabled = (claim: Claim): boolean => {
+export function setChildrenDisabilityServiceLogger(winstonLogger: winston.LoggerInstance) {
+  logger = winstonLogger;
+}
+
+export const hasDisabledChildren = (claim: Claim): boolean => {
   try {
     const statementOfMeans = claim.statementOfMeans;
-    if (statementOfMeans?.dependants?.numberOfChildren && totalNumberOfChildren(statementOfMeans.dependants.numberOfChildren) > 0) {
-      if ((statementOfMeans?.disability?.option == YesNo.NO) || (statementOfMeans?.disability?.option == YesNo.YES &&
-        statementOfMeans?.severeDisability?.option == YesNo.NO && statementOfMeans?.partnerDisability?.option != YesNo.YES)){
-        return true;
-      }
-    }
-    return false;
+    const numberOfChildren : NumberOfChildren = new NumberOfChildren(statementOfMeans?.dependants?.numberOfChildren?.under11, statementOfMeans?.dependants?.numberOfChildren?.between11and15, statementOfMeans?.dependants?.numberOfChildren?.between16and19);
+    return (statementOfMeans?.dependants?.numberOfChildren && numberOfChildren.totalNumberOfChildren() > 0 &&
+      (statementOfMeans?.disability?.option === YesNo.NO) || (statementOfMeans?.disability?.option === YesNo.YES &&
+        statementOfMeans?.severeDisability?.option === YesNo.NO && statementOfMeans?.partnerDisability?.option === YesNo.NO));
   } catch (error) {
-    logger.error(`${error.stack || error}`);
+    logger.error(error);
     throw error;
   }
 };
 
 
-export const getChildrenDisability = async (claimId: string) => {
+
+export const getChildrenDisability = async (claimId: string) : Promise<ChildrenDisability> => {
   try {
     const case_data = await getCaseDataFromStore(claimId);
-    if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.childrenDisability) {
+    if (case_data?.statementOfMeans?.childrenDisability) {
       const childrenDisability = new ChildrenDisability();
       childrenDisability.option = case_data.statementOfMeans.childrenDisability.option;
       return childrenDisability;
@@ -43,7 +49,7 @@ export const getChildrenDisability = async (claimId: string) => {
 export const saveChildrenDisability = async (claimId: string, childrenDisability: ChildrenDisability) => {
   try {
     const case_data = await getCaseDataFromStore(claimId) || new Claim();
-    if (case_data && case_data.statementOfMeans) {
+    if (case_data?.statementOfMeans) {
       case_data.statementOfMeans.childrenDisability = childrenDisability;
     } else {
       const statementOfMeans = new StatementOfMeans();
@@ -56,4 +62,17 @@ export const saveChildrenDisability = async (claimId: string, childrenDisability
     throw error;
   }
 };
+
+export const validateChildrenDisability = (childrenDisability: ChildrenDisability): GenericForm<ChildrenDisability> => {
+  try {
+    const form: GenericForm<ChildrenDisability> = new GenericForm(childrenDisability);
+    form.errors = validator.validateSync(form.model);
+    return form;
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+
 

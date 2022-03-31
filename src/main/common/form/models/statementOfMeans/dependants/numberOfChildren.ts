@@ -32,21 +32,23 @@ export class NumberOfChildren {
       toNumberOrUndefined(between16and19),
     );
   }
+
+  public totalNumberOfChildren() : number {
+    let total = 0;
+    if (Number.isInteger(this?.under11)) {
+      total += this?.under11;
+    }
+    if (Number.isInteger(this?.between11and15)) {
+      total += this?.between11and15;
+    }
+    if (Number.isInteger(this?.between16and19)) {
+      total += this?.between16and19;
+    }
+    return total;
+  }
 }
 
-export function totalNumberOfChildren(numberOfChildren: NumberOfChildren) {
-  let total = 0;
-  if (Number.isInteger(numberOfChildren?.under11)) {
-    total += numberOfChildren.under11;
-  }
-  if (Number.isInteger(numberOfChildren?.between11and15)) {
-    total += numberOfChildren.between11and15;
-  }
-  if (Number.isInteger(numberOfChildren?.between16and19)) {
-    total += numberOfChildren.between16and19;
-  }
-  return total;
-}
+
 
 function toNumberOrUndefined(value: string): number {
   const numberValue: number = parseFloat(value);

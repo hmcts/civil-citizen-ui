@@ -60,7 +60,7 @@ describe('Children Disability', () => {
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body.errorMessage).toEqual(redisFailureError);
-          expect(mockLogger.error).toHaveBeenCalledWith(expect.stringMatching(redisFailureError));
+          expect(mockLogger.error).toHaveBeenCalled();
         });
     });
 
@@ -73,7 +73,7 @@ describe('Children Disability', () => {
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body.errorMessage).toEqual(redisFailureError);
-          expect(mockLogger.error).toHaveBeenCalledWith(expect.stringMatching(redisFailureError));
+          expect(mockLogger.error).toHaveBeenCalled();
         });
     });
   });
