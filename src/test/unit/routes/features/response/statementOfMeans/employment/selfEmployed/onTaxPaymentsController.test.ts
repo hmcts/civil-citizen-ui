@@ -3,7 +3,7 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {CITIZEN_COURT_ORDER_URL, ON_TAX_PAYMENTS_URL} from '../../../../../../../../main/routes/urls';
-import {REDIS_FAILURE} from '../../../../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
 import {
   VALID_OWED_AMOUNT_REQUIRED,
@@ -39,7 +39,7 @@ describe('on tax payments', () => {
         .get(ON_TAX_PAYMENTS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: REDIS_FAILURE});
+          expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
         });
     });
   });
@@ -125,7 +125,7 @@ describe('on tax payments', () => {
         .send({option: YesNo.YES, amountYouOwe: 44.4, reason: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: REDIS_FAILURE});
+          expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
         });
     });
   });
