@@ -10,7 +10,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% if form.hasErrors() %}
         {{ govukErrorSummary({
           "titleText": t('There was a problem'),
           "errorList": errors
