@@ -1,4 +1,4 @@
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo} from '../form/models/yesNo';
 
 const convertToYesNo = (declared: boolean): YesNo => {
   let convertedYesNoValue = undefined;

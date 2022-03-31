@@ -11,7 +11,6 @@ const getOnTaxPaymentsForm = async (claimId: string): Promise<OnTaxPayments> => 
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (claim?.statementOfMeans?.taxPayments) {
-      console.log('claim exists');
       const taxPayments = claim.statementOfMeans.taxPayments;
       return new OnTaxPayments(convertToYesNo(taxPayments.owed), taxPayments.amountOwed, taxPayments.reason);
     }
