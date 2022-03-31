@@ -16,7 +16,7 @@
       {% set under11Error = form.nestedErrorFor('under11') %}
       {% set between11and15Error = form.nestedErrorFor('between11and15') %}
       {% set between16and19Error = form.nestedErrorFor('between16and19') %}
-      {% if errors.length > 0 %}
+      {% if form.hasErrors() %}
         {{ govukErrorSummary({
           "titleText": t('There was a problem'),
           "errorList": errors
