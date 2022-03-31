@@ -19,10 +19,10 @@ residenceController
         const residence: Residence = await residenceService.getResidence(req.params.id);
         // Jira/CIV-1711 : prevent displaying unnecessary error message on view
         const residenceDetails = new GenericForm(residence);
-        const errors = residenceDetails.getErrors().length;
+        const errors = residenceDetails.getErrors().length && residenceDetails.getErrors().length;
         res.render(residenceViewPath, {
-          form: new GenericForm(residence),
-        }), { errors };
+          form: new GenericForm(residence), errors
+        })
       } catch (error) {
         logger.error(`${error.stack || error}`);
         res.status(500).send({errorMessage: error.message, errorStack: error.stack});
