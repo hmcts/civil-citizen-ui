@@ -1,6 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../draft-store/draftStoreService';
 import {OnTaxPayments} from '../../../../common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
-import {convertFromYesNo, convertToYesNo} from '../../../../common/utils/convertYesNoOption';
+import {convertFromYesNo, convertToYesNo} from 'common/utils/yesNoOptionConverter';
 import {Claim} from '../../../../common/models/claim';
 import {StatementOfMeans} from '../../../../common/models/statementOfMeans';
 

@@ -1,6 +1,6 @@
 import {YesNo} from '../form/models/yesNo';
 
-const convertToYesNo = (declared: boolean): YesNo => {
+const convertToYesNo = (declared?: boolean): YesNo => {
   let convertedYesNoValue = undefined;
   if (declared === true) {
     convertedYesNoValue = YesNo.YES;

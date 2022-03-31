@@ -1,6 +1,6 @@
 import {Employment} from '../../../common/models/employment';
 import {EmploymentForm} from '../../../common/form/models/statementOfMeans/employment/employmentForm';
-import {convertFromYesNo, convertToYesNo} from '../../../common/utils/convertYesNoOption';
+import {convertFromYesNo, convertToYesNo} from 'common/utils/yesNoOptionConverter';
 
 export const convertToForm = (employmentEntity: Employment): EmploymentForm => {
   if (employmentEntity) {
