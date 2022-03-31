@@ -35,7 +35,7 @@ describe('yes no option converter', () => {
       //Then
       expect(result).toBeFalsy();
     });
-    it('should return false when option is undefined', () => {
+    it('should return undefined when option is undefined', () => {
       //When
       const result = convertFromYesNo(undefined);
       //Then
