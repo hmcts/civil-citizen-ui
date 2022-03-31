@@ -8,8 +8,8 @@ import {
   CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
 } from '../../../../../../../main/routes/urls';
 import { VALID_YES_NO_OPTION } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { REDIS_FAILURE } from '../../../../../../utils/errorMessageTestConstants';
-import { mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
+import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
+import { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -30,7 +30,7 @@ describe('Partner disability', () => {
         .get(CITIZEN_PARTNER_DISABILITY_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Is your partner disabled?');
+          expect(res.text).toContain(TestMessages.IS_YOUR_PARTNER_DISABLED);
         });
     });
     test('should show partner page when haven´t statementOfMeans', async () => {
@@ -48,11 +48,20 @@ describe('Partner disability', () => {
         .get(CITIZEN_PARTNER_DISABILITY_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
   describe('on POST', () => {
+    test('should create a new claim if redis gives undefined', async () => {
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      await request(app)
+        .post(CITIZEN_PARTNER_DISABILITY_URL)
+        .send('option=no')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
     test('should redirect page when "no"', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
@@ -100,7 +109,7 @@ describe('Partner disability', () => {
         .send('option=yes')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
