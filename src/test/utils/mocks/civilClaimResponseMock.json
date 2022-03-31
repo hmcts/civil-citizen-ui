@@ -22,6 +22,11 @@
       "cohabiting": {
         "option": "yes"
       },
+      "otherDependants": {
+        "option": "yes",
+        "numberOfPeople": "1",
+        "details": "Test details"
+      },
       "partnerAge": {
         "option": "yes"
       },
@@ -41,11 +46,6 @@
         },
         "housingDetails": ""
       },
-      "otherDependants": {
-        "option": "yes",
-        "numberOfPeople": 1,
-        "details": "Test details"
-      },
       "dependants": {
         "declared": true,
         "numberOfChildren": {
@@ -54,7 +54,8 @@
       }
     },
     "respondent1": {
-      "dateOfBirth": "2022-03-01T13:29:24.971"
+      "dateOfBirth": "2022-03-01T13:29:24.971",
+      "telephoneNumber": "111"
     }
   }
 }

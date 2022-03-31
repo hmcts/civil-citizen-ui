@@ -19,11 +19,10 @@ import partnerSevereDisabilityController from './features/response/statementOfMe
 import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
 import residenceController from './features/response/statementOfMeans/residenceController';
 import financialDetailsController from './features/response/financialDetails/financialDetailsController';
-import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
 import otherDependantsController from './features/response/statementOfMeans/otherDependants/otherDependantsController';
+import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
 import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
-import betweenSixteenAndNineteenController
-  from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
+import betweenSixteenAndNineteenController from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
 
 export default [
@@ -48,11 +47,9 @@ export default [
   residenceController,
   employmentStatusController,
   financialDetailsController,
-  partnerPensionController,
   otherDependantsController,
+  partnerPensionController,
   paymentOptionController,
   betweenSixteenAndNineteenController,
   dependantsController,
 ];
-
-

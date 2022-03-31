@@ -1,7 +1,7 @@
 import { app } from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
-import { CITIZEN_DETAILS_URL } from '../../../../../../main/routes/urls';
+import {CITIZEN_DETAILS_URL} from '../../../../../../main/routes/urls';
 import {
   VALID_ADDRESS_LINE_1,
   VALID_CITY,
@@ -10,12 +10,51 @@ import {
   VALID_CORRESPONDENCE_CITY,
   VALID_CORRESPONDENCE_POSTCODE,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { mockClaim as mockResponse } from '../../../../../../test/utils/mockClaim';
-import {CivilClaimResponse} from '../../../../../../main/common/models/civilClaimResponse';
+import {
+  getRespondentInformation,
+  saveRespondent,
+} from '../../../../../../main/modules/citizenDetails/citizenDetailsService';
+import {Claim} from '../../../../../../main/common/models/claim';
+import {Respondent} from '../../../../../../main/common/models/respondent';
+import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/citizenDetails/citizenDetailsService');
+
+const mockGetRespondentInformation = getRespondentInformation as jest.Mock;
+const mockSaveRespondent = saveRespondent as jest.Mock;
+
+const claim = new Claim();
+
+
+const buildClaimOfRespondent = (): Respondent => {
+  claim.respondent1 = new Respondent();
+  claim.respondent1.individualTitle = 'individualTitle';
+  claim.respondent1.individualFirstName = 'individualFirstName';
+  claim.respondent1.individualLastName = 'individualLastName';
+  claim.respondent1.primaryAddress = buildPrimaryAddress();
+  claim.respondent1.correspondenceAddress = buildCorrespondenceAddress();
+  return claim.respondent1;
+};
+
 const nock = require('nock');
+const redisFailureError = 'Redis DraftStore failure.';
+
+const validDataForPost = {
+  primaryAddressLine1: 'Flat 3A Middle Road',
+  primaryAddressLine2: '',
+  primaryAddressLine3: '',
+  primaryCity: 'London',
+  primaryPostCode: 'SW1H 9AJ',
+  postToThisAddress: 'no',
+  correspondenceAddressLine1: '',
+  correspondenceAddressLine2: '',
+  correspondenceAddressLine3: '',
+  correspondenceCity: '',
+  correspondencePostCode: '',
+};
 
 describe('Confirm Details page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -24,22 +63,42 @@ describe('Confirm Details page', () => {
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-    nock('http://localhost:8765')
-      .get('/cases/1643033241924739')
-      .reply(200, mockResponse);
-    nock('http://localhost:4000')
-      .get('/cases/1643033241924739')
-      .reply(200, mockResponse);
+      .reply(200, {id_token: citizenRoleToken});
+    jest.resetAllMocks();
+
+  });
+  describe('on Exception', () => {
+    test('should return http 500 when has error in the get method', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        throw new Error(redisFailureError);
+      });
+      await request(app)
+        .get(CITIZEN_DETAILS_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toEqual({error: redisFailureError});
+        });
+    });
   });
 
-  test('should return your details page', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-      get: jest.fn(() => Promise.resolve({ data: mockResponse })),
+  test('should return http 500 when has error in the post method', async () => {
+    const redisFailureError = 'Redis DraftStore failure.';
+    mockSaveRespondent.mockImplementation(async () => {
+      throw new Error(redisFailureError);
+    });
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send(validDataForPost)
+      .expect((res) => {
+        expect(res.status).toBe(500);
+        expect(res.body).toEqual({error: redisFailureError});
+      });
+  });
+  test('should return your details page with empty information', async () => {
 
-    };
-    app.locals.draftStoreClient = mockDraftStore;
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return new Respondent();
+    });
     await request(app)
       .get(CITIZEN_DETAILS_URL)
       .expect((res) => {
@@ -47,14 +106,39 @@ describe('Confirm Details page', () => {
         expect(res.text).toContain('Confirm your details');
       });
   });
+  test('should return your details page with information', async () => {
 
-  test('POST/Citizen details - should redirect on correct primary address', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-      get: jest.fn(() => Promise.resolve({ data: JSON.stringify(mockResponse) })),
-
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondent();
+    });
+    await request(app)
+      .get(CITIZEN_DETAILS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Confirm your details');
+      });
+  });
+  test('should return your details page with information without correspondent address', async () => {
+    const buildClaimOfRespondentWithoutCorrespondent = (): Respondent => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.individualTitle = 'individualTitle';
+      claim.respondent1.individualFirstName = 'individualFirstName';
+      claim.respondent1.individualLastName = 'individualLastName';
+      claim.respondent1.primaryAddress = buildPrimaryAddress();
+      return claim.respondent1;
     };
-    app.locals.draftStoreClient = mockDraftStore;
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentWithoutCorrespondent();
+    });
+    await request(app)
+      .get(CITIZEN_DETAILS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Confirm your details');
+      });
+  });
+  test('POST/Citizen details - should redirect on correct primary address', async () => {
+
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -76,11 +160,7 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should redirect on correct correspondence address', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-      get: jest.fn(() => Promise.resolve({ data: JSON.stringify(mockResponse) })),
-    };
-    app.locals.draftStoreClient = mockDraftStore;
+
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -102,12 +182,7 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on empty primary address line', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-      get: jest.fn(() => Promise.resolve({ data: JSON.stringify(mockResponse) })),
 
-    };
-    app.locals.draftStoreClient = mockDraftStore;
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -130,12 +205,7 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on empty primary city', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-      get: jest.fn(() => Promise.resolve({ data: JSON.stringify(mockResponse) })),
 
-    };
-    app.locals.draftStoreClient = mockDraftStore;
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -158,12 +228,7 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on empty primary postcode', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-      get: jest.fn(() => Promise.resolve({ data: JSON.stringify(mockResponse) })),
 
-    };
-    app.locals.draftStoreClient = mockDraftStore;
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -186,12 +251,7 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on empty correspondence address line', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-      get: jest.fn(() => Promise.resolve({ data: JSON.stringify(mockResponse) })),
 
-    };
-    app.locals.draftStoreClient = mockDraftStore;
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -214,10 +274,7 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on empty correspondence city', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-    };
-    app.locals.draftStoreClient = mockDraftStore;
+
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -240,10 +297,7 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on empty correspondence postcode', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-    };
-    app.locals.draftStoreClient = mockDraftStore;
+
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -266,10 +320,7 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on no input', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-    };
-    app.locals.draftStoreClient = mockDraftStore;
+
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -297,10 +348,7 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on input for primary address when postToThisAddress is set to NO', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-    };
-    app.locals.draftStoreClient = mockDraftStore;
+
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -325,10 +373,7 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on input for correspondence address when postToThisAddress is set to YES', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-    };
-    app.locals.draftStoreClient = mockDraftStore;
+
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -353,14 +398,7 @@ describe('Confirm Details page', () => {
   });
 
   test('get/Citizen details - should return test variable when there is no data on redis and civil-service', async () => {
-    const mockDraftStore = {
-      set: jest.fn(() => Promise.resolve({ data: {} })),
-      get: jest.fn(() => Promise.resolve(JSON.stringify(new CivilClaimResponse()))),
-    };
-    nock('http://localhost:4000')
-      .get('/cases/1111')
-      .reply(400);
-    app.locals.draftStoreClient = mockDraftStore;
+
     await request(app)
       .get('/case/1111/response/your-details')
       .expect((res) => {
@@ -369,5 +407,4 @@ describe('Confirm Details page', () => {
         expect(res.text).toContain('individualTitle Test');
       });
   });
-
 });

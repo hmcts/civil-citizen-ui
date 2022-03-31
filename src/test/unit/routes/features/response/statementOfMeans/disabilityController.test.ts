@@ -8,7 +8,7 @@ import {
   CITIZEN_SEVERELY_DISABLED_URL,
 } from '../../../../../../main/routes/urls';
 import { VALID_YES_NO_OPTION } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { REDIS_FAILURE } from '../../../../../utils/errorMessageTestConstants';
+import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -30,7 +30,7 @@ describe('Disability', () => {
         .get(CITIZEN_DISABILITY_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Are you disabled?');
+          expect(res.text).toContain(TestMessages.ARE_YOU_DISABLED);
         });
     });
     test('should show disability page when haven´t statementOfMeans', async () => {
@@ -48,7 +48,7 @@ describe('Disability', () => {
         .get(CITIZEN_DISABILITY_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
@@ -101,7 +101,7 @@ describe('Disability', () => {
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
