@@ -50,6 +50,14 @@ describe('on tax payment model', () => {
       //Then
       expect(result).toBe('');
     });
+    it('should return empty string when amount you owe is NAN', () => {
+      //Given
+      const form = new OnTaxPayments(YesNo.YES, Number('abc'));
+      //When
+      const result = form.getAmountYouOweAsString();
+      //Then
+      expect(result).toBe('');
+    });
     it('should return string 1.22 when amount you owe is 1.22', () => {
       //Given
       const form = new OnTaxPayments(YesNo.YES, 1.22);

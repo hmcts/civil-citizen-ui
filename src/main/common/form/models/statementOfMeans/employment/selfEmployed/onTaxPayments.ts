@@ -36,7 +36,7 @@ export class OnTaxPayments extends Form {
   }
 
   getAmountYouOweAsString(): string {
-    return this.amountYouOwe === undefined ? '' : String(this.amountYouOwe);
+    return this.amountYouOwe === undefined || isNaN(this.amountYouOwe) ? '' : String(this.amountYouOwe);
   }
 
   isOptionYesSelected(): boolean {
