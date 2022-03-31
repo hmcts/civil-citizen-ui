@@ -4,7 +4,6 @@ import {ChildrenDisability} from '../../../../../common/form/models/statementOfM
 import {
   getChildrenDisability,
   saveChildrenDisability,
-  validateChildrenDisability,
 } from '../../../../../modules/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import * as winston from 'winston';
@@ -38,7 +37,8 @@ childrenDisabilityController
     CHILDREN_DISABILITY_URL,
     async (req: express.Request, res: express.Response) => {
       const childrenDisability: ChildrenDisability = new ChildrenDisability(req.body.option);
-      const form: GenericForm<ChildrenDisability> = validateChildrenDisability(childrenDisability);
+      const form: GenericForm<ChildrenDisability> = new GenericForm(childrenDisability);
+      await form.validate();
 
       if (form.hasErrors()) {
         res.render(childrenDisabilityViewPath, {

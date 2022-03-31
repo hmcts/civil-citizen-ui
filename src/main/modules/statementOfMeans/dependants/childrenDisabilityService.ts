@@ -3,14 +3,12 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStore
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Claim} from '../../../common/models/claim';
 import {YesNo} from '../../../common/form/models/yesNo';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {Validator} from 'class-validator';
 import * as winston from 'winston';
 import {NumberOfChildren} from '../../../common/form/models/statementOfMeans/dependants/numberOfChildren';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('childrenDisabilityService');
-const validator = new Validator();
+
 
 export function setChildrenDisabilityServiceLogger(winstonLogger: winston.LoggerInstance) {
   logger = winstonLogger;
@@ -74,16 +72,7 @@ export const saveChildrenDisability = async (claimId: string, childrenDisability
   }
 };
 
-export const validateChildrenDisability = (childrenDisability: ChildrenDisability): GenericForm<ChildrenDisability> => {
-  try {
-    const form: GenericForm<ChildrenDisability> = new GenericForm(childrenDisability);
-    form.errors = validator.validateSync(form.model);
-    return form;
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
+
 
 
 

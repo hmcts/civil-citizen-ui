@@ -9,11 +9,11 @@ import {
   hasDisabledChildren,
   saveChildrenDisability,
   setChildrenDisabilityServiceLogger,
-  validateChildrenDisability,
 } from '../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
 import {CivilClaimResponse} from '../../../../../main/common/models/civilClaimResponse';
 import {LoggerInstance} from 'winston';
 import {NumberOfChildren} from '../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
+import {GenericForm} from "../../../../../main/common/form/models/genericForm";
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
@@ -37,7 +37,8 @@ describe('Children Disability service', () => {
       //Given
       const childrenDisability = new ChildrenDisability(YesNo.YES);
       //When
-      const form = validateChildrenDisability(childrenDisability);
+      const form: GenericForm<ChildrenDisability> = new GenericForm(childrenDisability);
+      await form.validate();
       //Then
       expect(form.getErrors().length).toBe(0);
     });
@@ -45,7 +46,8 @@ describe('Children Disability service', () => {
       //Given
       const childrenDisability = new ChildrenDisability(YesNo.NO);
       //When
-      const form = validateChildrenDisability(childrenDisability);
+      const form: GenericForm<ChildrenDisability> = new GenericForm(childrenDisability);
+      await form.validate();
       //Then
       expect(form.getErrors().length).toBe(0);
     });
@@ -53,7 +55,8 @@ describe('Children Disability service', () => {
       //Given
       const childrenDisability = new ChildrenDisability(undefined);
       //When
-      const form = validateChildrenDisability(childrenDisability);
+      const form: GenericForm<ChildrenDisability> = new GenericForm(childrenDisability);
+      await form.validate();
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('option');
