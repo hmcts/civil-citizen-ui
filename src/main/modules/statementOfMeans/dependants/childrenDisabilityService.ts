@@ -21,7 +21,7 @@ export const hasDisabledChildren = (claim: Claim): boolean => {
     const statementOfMeans = claim.statementOfMeans;
     const numberOfChildren : NumberOfChildren = new NumberOfChildren(statementOfMeans?.dependants?.numberOfChildren?.under11, statementOfMeans?.dependants?.numberOfChildren?.between11and15, statementOfMeans?.dependants?.numberOfChildren?.between16and19);
     return (numberOfChildren?.totalNumberOfChildren() > 0 &&
-      (isDefendantDisabled(statementOfMeans)) || (isDefendantDisabledButNotSeverely(statementOfMeans) && isDefendantPartnerDisabled(statementOfMeans)));
+      (isDefendantDisabled(statementOfMeans)) || (isDefendantDisabledButNotSeverely(statementOfMeans) && !isDefendantPartnerDisabled(statementOfMeans)));
   } catch (error) {
     logger.error(error);
     throw error;
@@ -38,7 +38,7 @@ const isDefendantDisabledButNotSeverely = (statementOfMeans : StatementOfMeans) 
 };
 
 const isDefendantPartnerDisabled = (statementOfMeans : StatementOfMeans) : boolean => {
-  return statementOfMeans?.partnerDisability?.option === YesNo.NO;
+  return statementOfMeans?.cohabiting?.option === YesNo.YES && statementOfMeans?.partnerDisability?.option === YesNo.YES;
 };
 
 

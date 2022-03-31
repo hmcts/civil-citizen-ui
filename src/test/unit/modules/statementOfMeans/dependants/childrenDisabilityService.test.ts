@@ -124,8 +124,21 @@ describe('Children Disability service', () => {
       //Given
       claim.case_data.statementOfMeans.disability.option = YesNo.YES;
       claim.case_data.statementOfMeans.severeDisability.option = YesNo.NO;
+      claim.case_data.statementOfMeans.cohabiting.option = YesNo.YES;
       claim.case_data.statementOfMeans.partnerDisability.option = YesNo.NO;
       claim.case_data.statementOfMeans.partnerSevereDisability.option = YesNo.NO;
+      //Then
+      expect(hasDisabledChildren(claim.case_data)).toBe(true);
+    });
+    test('should return true if defendant disabled, not severely, and no partner, even if disabled flags set', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
+      //Given
+      claim.case_data.statementOfMeans.disability.option = YesNo.YES;
+      claim.case_data.statementOfMeans.severeDisability.option = YesNo.NO;
+      claim.case_data.statementOfMeans.cohabiting.option = YesNo.NO;
+      claim.case_data.statementOfMeans.partnerDisability.option = YesNo.YES;
+      claim.case_data.statementOfMeans.partnerSevereDisability.option = YesNo.YES;
       //Then
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
@@ -135,6 +148,7 @@ describe('Children Disability service', () => {
       //Given
       claim.case_data.statementOfMeans.disability.option = YesNo.YES;
       claim.case_data.statementOfMeans.severeDisability.option = YesNo.NO;
+      claim.case_data.statementOfMeans.cohabiting.option = YesNo.YES;
       claim.case_data.statementOfMeans.partnerDisability.option = YesNo.YES;
       claim.case_data.statementOfMeans.partnerSevereDisability.option = YesNo.NO;
       //Then
@@ -146,6 +160,7 @@ describe('Children Disability service', () => {
       //Given
       claim.case_data.statementOfMeans.disability.option = YesNo.YES;
       claim.case_data.statementOfMeans.severeDisability.option = YesNo.NO;
+      claim.case_data.statementOfMeans.cohabiting.option = YesNo.YES;
       claim.case_data.statementOfMeans.partnerDisability.option = YesNo.YES;
       claim.case_data.statementOfMeans.partnerSevereDisability.option = YesNo.YES;
       //Then
@@ -157,6 +172,7 @@ describe('Children Disability service', () => {
       //Given
       claim.case_data.statementOfMeans.disability.option = YesNo.YES;
       claim.case_data.statementOfMeans.severeDisability.option = YesNo.YES;
+      claim.case_data.statementOfMeans.cohabiting.option = YesNo.YES;
       claim.case_data.statementOfMeans.partnerDisability.option = YesNo.NO;
       claim.case_data.statementOfMeans.partnerSevereDisability.option = YesNo.NO;
       //Then
