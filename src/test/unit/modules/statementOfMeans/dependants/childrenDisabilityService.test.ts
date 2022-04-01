@@ -20,6 +20,10 @@ const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
 const noStatementOfMeansMock = require('../noStatementOfMeansMock.json');
 const noStatementOfMeans: string = JSON.stringify(noStatementOfMeansMock);
+const civilClaimResponseNoPartnerMock = require('../civilClaimResponseNoPartnerMock.json');
+const noPartner: string = JSON.stringify(civilClaimResponseNoPartnerMock);
+const civilClaimResponseNoPartnerOrDisabilityMock = require('../civilClaimResponseNoPartnerOrDisabilityMock.json');
+const noPartnerOrDisability: string = JSON.stringify(civilClaimResponseNoPartnerOrDisabilityMock);
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -166,6 +170,33 @@ describe('Children Disability service', () => {
       //Then
       expect(claim.case_data.statementOfMeans).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
+    });
+    test('should return true if defendant disability NO, severe disability undefined', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartnerOrDisability));
+      const numberOfChildren = new NumberOfChildren(2, undefined, 2);
+      //Given
+      claim.case_data.statementOfMeans.dependants.numberOfChildren = numberOfChildren;
+      //Then
+      expect(numberOfChildren.totalNumberOfChildren()).toBe(4);
+      expect(claim.case_data.statementOfMeans.disability.option).toBe(YesNo.NO);
+      expect(claim.case_data.statementOfMeans.severeDisability).toBe(undefined);
+      expect(claim.case_data.statementOfMeans.cohabiting).toBe(undefined);
+      expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
+      expect(hasDisabledChildren(claim.case_data)).toBe(true);
+    });
+    test('should return true if defendant not disabled, no partner', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartner));
+      const numberOfChildren = new NumberOfChildren(2, undefined, 2);
+      //Given
+      claim.case_data.statementOfMeans.disability.option = YesNo.NO;
+      claim.case_data.statementOfMeans.dependants.numberOfChildren = numberOfChildren;
+      //Then
+      expect(numberOfChildren.totalNumberOfChildren()).toBe(4);
+      expect(claim.case_data.statementOfMeans.cohabiting).toBe(undefined);
+      expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
+      expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
     test('should return true if defendant not disabled', async () => {
       //When
