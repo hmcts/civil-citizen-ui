@@ -1,4 +1,16 @@
-const REDIS_FAILURE = 'Redis DraftStore failure.';
-const CLAIM_NUMBER = 'testCaseReference';
-
-export { REDIS_FAILURE, CLAIM_NUMBER };
+export const enum TestMessages {
+    REDIS_FAILURE = 'Redis DraftStore failure.',
+    CLAIM_NUMBER = 'testCaseReference',
+    DO_YOU_HAVE_JOB = 'Do you have a job?',
+    GOVUK_ERROR_MESSAGE = 'govuk-error-message',
+    ENTER_PHONE_NUMBER_OPTIONAL = 'Enter a phone number (optional)',
+    ENTER_DATE_OF_BIRTH = 'Enter your date of birth',
+    ARE_YOU_DISABLED = 'Are you disabled?',
+    ARE_YOU_SEVERELY_DISABLED = 'Are you severely disabled?',
+    IS_YOUR_PARTNER_OVER_18 = 'Is your partner aged 18 or over?',
+    DO_YOU_LIVE_WITH_PARTNER = 'Do you live with a partner?',
+    EXAMPLE_LIVE_WITH_PARTNER = 'For example, a boyfriend, girlfriend, husband, wife or civil partner.',
+    IS_YOUR_PARTNER_DISABLED = 'Is your partner disabled?',
+    DOES_YOUR_PARTNER_RECEIVE_PENSION = 'Does your partner receive a pension?',
+    IS_YOUR_PARTNER_SEVERELY_DISABLED = 'Is your partner severely disabled?'
+}

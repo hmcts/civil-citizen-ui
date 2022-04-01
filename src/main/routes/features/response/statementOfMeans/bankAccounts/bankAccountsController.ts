@@ -10,7 +10,7 @@ import {validateForm, validateFormArray} from '../../../../../common/form/valida
 import { constructResponseUrlWithIdParams } from '../../../../../common/utils/urlFormatter';
 
 const citizenBankAccountsViewPath = 'features/response/statementOfMeans/citizenBankAndSavings/citizen-bank-accounts';
-const router = express.Router();
+const bankAccountsController = express.Router();
 const bankAccountService = new BankAccountService();
 
 function renderView(form: BankAccounts, bankAccountDropDownItems: BankAccountTypes,  res: express.Response): void {
@@ -23,13 +23,13 @@ function transformToAccounts(req: express.Request){
   });
 }
 
-router.get(CITIZEN_BANK_ACCOUNT_URL, (req, res) => {
+bankAccountsController.get(CITIZEN_BANK_ACCOUNT_URL, (req, res) => {
   bankAccountService.getBankAccounts(req.params.id).then((form:BankAccounts)=>{
     renderView(form,  new BankAccountTypes(), res);
   });
 });
 
-router.post(CITIZEN_BANK_ACCOUNT_URL,  async(req, res) => {
+bankAccountsController.post(CITIZEN_BANK_ACCOUNT_URL,  async(req, res) => {
   const form: BankAccounts = new BankAccounts(transformToAccounts(req));
   await renderErrorsIfExist(form, res, req.params.id);
 });
@@ -45,4 +45,4 @@ async function renderErrorsIfExist(form: BankAccounts, res: express.Response, cl
   }
 }
 
-export default router;
+export default bankAccountsController;
