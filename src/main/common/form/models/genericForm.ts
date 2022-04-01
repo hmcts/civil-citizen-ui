@@ -1,5 +1,7 @@
-import {ValidateNested, ValidationError} from 'class-validator';
+import {ValidateNested, ValidationError, Validator} from 'class-validator';
 import {FormValidationError} from '../validationErrors/formValidationError';
+
+const validator = new Validator();
 
 export class GenericForm<Model> {
   @ValidateNested()
@@ -63,7 +65,6 @@ export class GenericForm<Model> {
     return validators;
   }
 
-
   public hasFieldError(field: string): boolean {
     if (this.errors) {
       return this.errors.some((error) => field == error.property);
@@ -76,5 +77,9 @@ export class GenericForm<Model> {
         .some((error) => error.children
           .some((nestedError) => field == nestedError.property));
     }
+  }
+
+  public async validate() {
+    this.errors = await validator.validate(this.model as unknown as object);
   }
 }

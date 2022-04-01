@@ -1,0 +1,3 @@
+enum ExpenseType {
+  OTHER = 'Other',
+}
