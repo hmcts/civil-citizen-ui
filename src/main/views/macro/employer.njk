@@ -1,33 +1,45 @@
-{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
-{% macro addressForm(t,citizenAddress = '', addressLine1Error, addressCityError, addressPostCodeError, addressType) %}
-  {% set fieldSetLabel = t('Your address') %}
-  {% set fieldSetText = t('If your address is not correct you can change it here. Any changes will be shared with the claimant when you submit your response.') %}
-  {% set textInputLabel = t('Building and street') %}
-  {% set govukFormGroupError = 'govuk-form-group govuk-form-group--error' if addressLine1Error else '' %}
-  {% call govukFieldset({
-  legend: {
-    text: fieldSetLabel,
-    classes: "govuk-fieldset__legend--m" if addressType == 'primary' else "govuk-fieldset__legend--m govuk-visually-hidden" ,
-    isPageHeading: true
-  }
-  }) %}
+{% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 
-  <div class="{{ govukFormGroupError }}">
+{% macro employerRow(employer, index) %}
+  <div id="row-container govuk-grid-column-two-thirds">
+    <div class="multiple-row">
+      {% set errors = employer.getErrors() %}
+      <div class="govuk-form-group {%- if errors.length>0 %} govuk-form-group--error{% endif %}">
+        {% if errors %}
+          {% for error in errors %}
+            {{ govukErrorMessage({
+              text:t(error.text)
+            })| indent(2) | trim  }}
+          {% endfor %}
+        {% endif %}
 
-    {{ govukInput({
-        label: {
-        text: t('Postcode')
-        },
-        classes: "govuk-input--width-10",
-        id: addressType + "PostCode",
-        name: addressType + "PostCode",
-        autocomplete: addressType + "postal-code",
-        value: citizenAddress.primaryPostCode if addressType == 'primary' else citizenAddress.correspondencePostCode,
-        errorMessage: { text: addressPostCodeError.isNotEmpty or  addressPostCodeError.customInt} if addressPostCodeError else ''
-    }) }}
-
+        <div class="govuk-grid-column-one-third govuk-!-display-inline">
+          {{ govukInput({
+              id: "employers["+index+"][employerName]",
+              name: "employers["+index+"][employerName]",
+              value: employer.employerName,
+              hint: {
+                text: "Employer name"
+              },
+              errorMessage: {
+                html: t(errors[0].text)
+              } if errors
+            }) }}
+          {{ govukInput({
+              id: "employers["+index+"][jobTitle]",
+              name: "employers["+index+"][jobTitle]",
+              value: employer.jobTitle,
+              hint: {
+                text: "Job title"
+              },
+              errorMessage: {
+                html: t(errors[0].text)
+              } if errors
+            }) }}
+        </div>
+      </div>
+    </div>
   </div>
 
-  {% endcall %}
 {% endmacro %}

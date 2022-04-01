@@ -1,39 +1,32 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "../../../../macro/employer.njk" import employerRow %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% block content %}
 
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      <h1 class="govuk-heading-l">{{ t('Who employs you?') }}</h1>
-      <h1 class="govuk-heading-l">EMPLOYERS: {{ employers | dump }}</h1>
+      {% set errors = employers.getFormErrors() %}
+      {% if errors %}
+        {{ govukErrorSummary({
+          "titleText": t("There was a problem"),
+          "errorList": errors
+        }) }}
+      {% endif %}
 
-      <form method="post">
-        {# {% set errors = form.getErrors() %} #}
-        <div class="govuk-form-group {% if error %} govuk-form-group--error{% endif %}">
-          {{ govukInput({
-            id: "name",
-            name: "name",
-            value: form.name,
-            hint: {
-              text: "Employer name"
-            },
-            errorMessage: {
-              html: t(errors[0].text)
-            } if errors
-          }) }}
-          {{ govukInput({
-            id: "job",
-            name: "job",
-            value: form.job,
-            hint: {
-              text: "Job title"
-            },
-            errorMessage: {
-              html: t(errors[0].text)
-            } if errors
+      <h1 class="govuk-heading-l">{{ t('Who employs you?') }}</h1>
+
+      <form method="post" name="employers" novalidate>
+        {% for employer in employers.rows %}
+          {{employerRow(employer, loop.index0)}}
+        {% endfor %}
+        <div class="govuk-form-group">
+          {{ govukButton({
+            text: t("Add another job"),
+            classes: "govuk-button--secondary append-row"
           }) }}
         </div>
         <div class="govuk-form-group">

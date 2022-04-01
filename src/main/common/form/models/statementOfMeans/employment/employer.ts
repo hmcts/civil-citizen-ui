@@ -1,17 +1,18 @@
-import { IsDefined } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 import { VALID_ENTER_A_JOB_TITLE, VALID_ENTER_AN_EMPLOYER_NAME } from '../../../validationErrors/errorMessageConstants';
+import { Form } from '../../form';
 
-export class EmployerForm {
+export class Employer extends Form{
 
-  @IsDefined({message: VALID_ENTER_AN_EMPLOYER_NAME})
+  @IsNotEmpty({message: VALID_ENTER_AN_EMPLOYER_NAME})
   employerName: string;
 
-  @IsDefined({message: VALID_ENTER_A_JOB_TITLE})
+  @IsNotEmpty({message: VALID_ENTER_A_JOB_TITLE})
   jobTitle: string;
 
   constructor(employerName?: string, jobTitle?: string) {
+    super();
     this.employerName = employerName;
     this.jobTitle = jobTitle;
   }
-
 }
