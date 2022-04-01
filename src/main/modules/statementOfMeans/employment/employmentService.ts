@@ -2,7 +2,6 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store
 import {Claim} from '../../../common/models/claim';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {EmploymentForm} from '../../../common/form/models/statementOfMeans/employment/employmentForm';
-
 import {convertFromForm, convertToForm} from './employmentConverter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -16,7 +15,8 @@ export const getEmploymentForm = async (claimId: string): Promise<EmploymentForm
     }
     return new EmploymentForm();
   } catch (error) {
-    logger.error(`${error.stack || error}`);
+    logger.error(error);
+    throw error;
   }
 };
 
@@ -26,7 +26,8 @@ export const saveEmploymentData = async (claimId: string, form: EmploymentForm) 
     updateEmployment(claim, form);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
-    logger.error(`${error.stack || error}`);
+    logger.error(error);
+    throw error;
   }
 };
 

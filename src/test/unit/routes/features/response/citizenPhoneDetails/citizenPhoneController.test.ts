@@ -6,15 +6,11 @@ import {
   VALID_PHONE_NUMBER,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../main/common/models/claim';
-import {Respondent} from '../../../../../../main/common/models/respondent';
+import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-const redisFailureError = 'Redis DraftStore failure.';
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Citizen phone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,63 +18,49 @@ describe('Citizen phone number', () => {
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
   });
-  describe('on Exception', () => {
-
+  describe('on GET', () => {
+    test('should return citizen phone number page with all information from redis', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .get(CITIZEN_PHONE_NUMBER_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_PHONE_NUMBER_OPTIONAL);
+        });
+    });
+    test('should return empty citizen phone number page', async () => {
+      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      await request(app)
+        .get(CITIZEN_PHONE_NUMBER_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_PHONE_NUMBER_OPTIONAL);
+        });
+    });
     test('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(redisFailureError);
-      });
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: redisFailureError});
-        });
-    });
-  });
-
-  test('should return http 500 when has error in the post method', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      throw new Error(redisFailureError);
-    });
-    await request(app)
-      .post(CITIZEN_PHONE_NUMBER_URL)
-      .expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: redisFailureError});
-      });
-  });
-
-  describe('on GET', () => {
-    test('should return citizen phone number page with all information from redis', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        const respondent1 = new Respondent();
-        respondent1.telephoneNumber = '111';
-        claim.respondent1 = respondent1;
-        return claim;
-      });
-      await request(app)
-        .get(CITIZEN_PHONE_NUMBER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter a phone number (optional)');
-        });
-    });
-    test('should return empty citizen phone number page', async () => {
-      mockGetCaseData.mockImplementation(async () => undefined);
-      await request(app)
-        .get(CITIZEN_PHONE_NUMBER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter a phone number (optional)');
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
   describe('on POST', () => {
+    test('should create a new claim if redis gives undefined', async () => {
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      await request(app)
+        .post(CITIZEN_PHONE_NUMBER_URL)
+        .send('telephoneNumber= 123')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
     test('should return error on incorrect input', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=abc')
@@ -88,10 +70,6 @@ describe('Citizen phone number', () => {
         });
     });
     test('should return error on input with interior spaces', async () => {
-      const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
-      };
-      app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=123 456')
@@ -101,10 +79,6 @@ describe('Citizen phone number', () => {
         });
     });
     test('should accept input with trailing whitespaces', async () => {
-      const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
-      };
-      app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber= 123 ')
@@ -112,11 +86,7 @@ describe('Citizen phone number', () => {
           expect(res.status).toBe(302);
         });
     });
-    test('should redirect on correct input', async () => {
-      const mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
-      };
-      app.locals.draftStoreClient = mockDraftStore;
+    test('should redirect on correct input when has information on redis', async () => {
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=123')
@@ -124,21 +94,23 @@ describe('Citizen phone number', () => {
           expect(res.status).toBe(302);
         });
     });
-    test('should redirect on correct input when has information on redis', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        const respondent1 = new Respondent();
-        respondent1.telephoneNumber = '111';
-        claim.respondent1 = respondent1;
-        return claim;
-      });
+    test('should redirect on correct input', async () => {
+      app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=123')
         .expect((res) => {
           expect(res.status).toBe(302);
+        });
+    });
+    test('should return http 500 when has error in the post method', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(CITIZEN_PHONE_NUMBER_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
-})
-;
+});
