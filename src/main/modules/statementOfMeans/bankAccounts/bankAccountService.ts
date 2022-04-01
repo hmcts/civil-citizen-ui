@@ -8,7 +8,7 @@ import {convertFormToCitizenBankAccount, convertCitizenBankAccountsToForm} from 
 export class BankAccountService {
   public async getBankAccounts(claimId: string): Promise<BankAccounts>{
     const claim = await getCaseDataFromStore(claimId);
-    if (claim && claim.statementOfMeans && claim.statementOfMeans.bankAccounts) {
+    if (claim?.statementOfMeans?.bankAccounts) {
       return convertCitizenBankAccountsToForm(claim.statementOfMeans.bankAccounts);
     }
     return new BankAccounts([new BankAccount(), new BankAccount()]);

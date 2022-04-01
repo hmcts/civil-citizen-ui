@@ -5,37 +5,35 @@ import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {get} from 'lodash';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 
 const logger = Logger.getLogger('citizenPhoneController');
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
-const router = express.Router();
+const citizenPhoneController = express.Router();
 const validator = new Validator();
 
 function renderView(form: CitizenTelephoneNumber, res: express.Response): void {
   res.render(citizenPhoneViewPath, {form: form});
 }
 
-router.get(CITIZEN_PHONE_NUMBER_URL, async (req, res) => {
+citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res) => {
   try {
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
-    const citizenTelephoneNumber = !(get(responseDataRedis,'respondent1.telephoneNumber'))
-      ? new CitizenTelephoneNumber()
-      : new CitizenTelephoneNumber(responseDataRedis.respondent1.telephoneNumber);
+    const citizenTelephoneNumber = responseDataRedis?.respondent1?.telephoneNumber
+      ? new CitizenTelephoneNumber(responseDataRedis.respondent1.telephoneNumber) : new CitizenTelephoneNumber(); 
     renderView(citizenTelephoneNumber, res);
   } catch (error) {
     logger.error(error);
     res.status(500).send({error: error.message});
   }
 });
-router.post(CITIZEN_PHONE_NUMBER_URL,
+citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
   async (req, res) => {
     try {
       const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
       const errors: ValidationError[] = validator.validateSync(model);
-      if (errors && errors.length > 0) {
+      if (errors?.length > 0) {
         model.errors = errors;
         renderView(model, res);
       } else {
@@ -56,4 +54,4 @@ router.post(CITIZEN_PHONE_NUMBER_URL,
     }
   });
 
-export default router;
+export default citizenPhoneController;

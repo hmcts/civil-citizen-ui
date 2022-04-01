@@ -5,7 +5,7 @@ import { CivilServiceClient } from '../../../../app/client/civilServiceClient';
 import {Claim} from '../../../../common/models/claim';
 import {AppRequest} from 'models/AppRequest';
 
-const router = express.Router();
+const claimDetailsController = express.Router();
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -19,7 +19,7 @@ function renderPage(res: express.Response, claimDetails: Claim): void {
 }
 
 // -- GET Claim Details
-router.get(CLAIM_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   claim = await civilServiceClient.retrieveClaimDetails(req.params.id, <AppRequest>req);
   if(!claim){
     claim = new Claim();
@@ -30,4 +30,4 @@ router.get(CLAIM_DETAILS_URL, async (req: express.Request, res: express.Response
   renderPage(res, claim);
 });
 
-export default router;
+export default claimDetailsController;

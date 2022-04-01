@@ -5,14 +5,14 @@ import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partnerSevereDisabilityService');
-const partnerSevereDisability = new PartnerSevereDisability();
 
 export class PartnerSevereDisabilityService {
 
   public async getPartnerSevereDisability(claimId: string) {
     try {
       const case_data = await getCaseDataFromStore(claimId);
-      if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.partnerSevereDisability) {
+      if (case_data?.statementOfMeans?.partnerSevereDisability) {
+        const partnerSevereDisability = new PartnerSevereDisability();
         partnerSevereDisability.option = case_data.statementOfMeans.partnerSevereDisability.option;
         return partnerSevereDisability;
       }
@@ -26,7 +26,7 @@ export class PartnerSevereDisabilityService {
   public async savePartnerSevereDisability(claimId: string, partnerSevereDisability: PartnerSevereDisability) {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
-      if (case_data && case_data.statementOfMeans) {
+      if (case_data?.statementOfMeans) {
         case_data.statementOfMeans.partnerSevereDisability = partnerSevereDisability;
       } else {
         const statementOfMeans = new StatementOfMeans();
