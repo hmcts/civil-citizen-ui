@@ -44,7 +44,7 @@ employmentStatusController.get(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
     const form = await getEmploymentForm(req.params.id);
     renderView(form, res);
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
+    logger.error(error);
     res.status(500).send({error: error.message});
   }
 });
@@ -60,7 +60,7 @@ employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
       redirectToNextPage(form, req.params.id, res);
     }
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
+    logger.error(error);
     res.status(500).send({error: error.message});
   }
 });

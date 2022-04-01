@@ -11,7 +11,7 @@ export class PartnerPensionService {
   public async getPartnerPension(claimId: string) {
     try {
       const case_data = await getCaseDataFromStore(claimId);
-      if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.partnerPension) {
+      if (case_data?.statementOfMeans?.partnerPension) {
         const partnerPension = new PartnerPension();
         partnerPension.option = case_data.statementOfMeans.partnerPension.option;
         return partnerPension;
@@ -26,7 +26,7 @@ export class PartnerPensionService {
   public async savePartnerPension(claimId: string, partnerPension: PartnerPension) {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
-      if (case_data && case_data.statementOfMeans) {
+      if (case_data?.statementOfMeans) {
         case_data.statementOfMeans.partnerPension = partnerPension;
       } else {
         const statementOfMeans = new StatementOfMeans();

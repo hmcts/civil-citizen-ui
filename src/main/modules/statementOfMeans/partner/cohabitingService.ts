@@ -11,7 +11,7 @@ export class CohabitingService {
   public async getCohabiting(claimId: string) {
     try {
       const case_data = await getCaseDataFromStore(claimId);
-      if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.cohabiting) {
+      if (case_data?.statementOfMeans?.cohabiting) {
         const cohabiting = new Cohabiting();
         cohabiting.option = case_data.statementOfMeans.cohabiting.option;
         return cohabiting;
@@ -26,7 +26,7 @@ export class CohabitingService {
   public async saveCohabiting(claimId: string, cohabiting: Cohabiting) {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
-      if (case_data && case_data.statementOfMeans) {
+      if (case_data?.statementOfMeans) {
         case_data.statementOfMeans.cohabiting = cohabiting;
       } else {
         const statementOfMeans = new StatementOfMeans();

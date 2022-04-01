@@ -37,7 +37,7 @@ partnerAgeController.post(CITIZEN_PARTNER_AGE_URL,
   async (req, res) => {
     const partnerAge: PartnerAge = new PartnerAge(req.body.option);
     const errors: ValidationError[] = validator.validateSync(partnerAge);
-    if (errors && errors.length > 0) {
+    if (errors?.length > 0) {
       partnerAge.errors = errors;
       renderView(partnerAge, res);
     } else {

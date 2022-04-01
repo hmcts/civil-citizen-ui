@@ -21,6 +21,7 @@ npm-debug.log.*
 
 .project
 .settings/
+.history/
 dist/
 coverage/
 public/

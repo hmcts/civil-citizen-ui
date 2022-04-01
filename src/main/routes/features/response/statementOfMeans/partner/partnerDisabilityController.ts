@@ -36,7 +36,7 @@ partnerDisabilityController.post(CITIZEN_PARTNER_DISABILITY_URL,
     const partnerDisability: PartnerDisability = new PartnerDisability(req.body.option);
 
     const errors: ValidationError[] = validator.validateSync(partnerDisability);
-    if (errors && errors.length > 0) {
+    if (errors?.length > 0) {
       partnerDisability.errors = errors;
       renderView(partnerDisability, res);
     } else {

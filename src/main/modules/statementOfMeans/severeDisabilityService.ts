@@ -11,7 +11,7 @@ export class SevereDisabilityService {
   public async getSevereDisability(claimId: string) {
     try {
       const case_data = await getCaseDataFromStore(claimId);
-      if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.severeDisability) {
+      if (case_data?.statementOfMeans?.severeDisability) {
         const severeDisability = new SevereDisability();
         severeDisability.option = case_data.statementOfMeans.severeDisability.option;
         return severeDisability;
@@ -26,7 +26,7 @@ export class SevereDisabilityService {
   public async saveSevereDisability(claimId: string, severeDisability: SevereDisability) {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
-      if (case_data && case_data.statementOfMeans) {
+      if (case_data?.statementOfMeans) {
         case_data.statementOfMeans.severeDisability = severeDisability;
       } else {
         const statementOfMeans = new StatementOfMeans();
