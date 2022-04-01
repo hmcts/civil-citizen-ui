@@ -40,7 +40,7 @@ describe('on tax payment model', () => {
       //When
       const result = form.getAmountYouOweAsString();
       //Then
-      expect(result).toBe('0');
+      expect(result).toBe('');
     });
     it('should return empty string when amount you owe is undefined', () => {
       //Given

@@ -9,7 +9,7 @@ import {
 } from '../../../../validationErrors/errorMessageConstants';
 import {YesNo} from '../../../yesNo';
 import {Form} from '../../../form';
-import {FREE_TEXT_MAX_LENGTH, MAX_AMOUNT_VALUE} from '../../../../validators/validationConstraints';
+import {FREE_TEXT_MAX_LENGTH, MAX_AMOUNT_VALUE, MIN_AMOUNT_VALUE} from '../../../../validators/validationConstraints';
 
 export class OnTaxPayments extends Form {
   @IsDefined({message: YES_NO_REQUIRED})
@@ -17,7 +17,7 @@ export class OnTaxPayments extends Form {
 
   @ValidateIf(o => o.isOptionYesSelected())
   @IsDefined({message: VALID_OWED_AMOUNT_REQUIRED})
-  @Min(0.01, {message: VALID_OWED_AMOUNT_REQUIRED})
+  @Min(MIN_AMOUNT_VALUE, {message: VALID_OWED_AMOUNT_REQUIRED})
   @Max(MAX_AMOUNT_VALUE, {message: VALID_VALUE})
   @IsNumber({allowNaN: false, maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
     amountYouOwe: number;
@@ -36,7 +36,7 @@ export class OnTaxPayments extends Form {
   }
 
   getAmountYouOweAsString(): string {
-    return this.amountYouOwe === undefined || isNaN(this.amountYouOwe) ? '' : String(this.amountYouOwe);
+    return !this.amountYouOwe || isNaN(this.amountYouOwe) ? '' : String(this.amountYouOwe);
   }
 
   isOptionYesSelected(): boolean {
