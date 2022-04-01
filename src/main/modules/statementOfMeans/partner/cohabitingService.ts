@@ -5,7 +5,6 @@ import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('cohabitingService');
-const cohabiting = new Cohabiting();
 
 export class CohabitingService {
 
@@ -13,6 +12,7 @@ export class CohabitingService {
     try {
       const case_data = await getCaseDataFromStore(claimId);
       if (case_data?.statementOfMeans?.cohabiting) {
+        const cohabiting = new Cohabiting();
         cohabiting.option = case_data.statementOfMeans.cohabiting.option;
         return cohabiting;
       }
