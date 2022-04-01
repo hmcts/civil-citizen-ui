@@ -52,5 +52,5 @@ export class NumberOfChildren {
 
 function toNumberOrUndefined(value: string): number {
   const numberValue: number = parseFloat(value);
-  return Number.isNaN(numberValue) ? undefined : numberValue;
+  return isNaN(numberValue) ? undefined : numberValue;
 }
