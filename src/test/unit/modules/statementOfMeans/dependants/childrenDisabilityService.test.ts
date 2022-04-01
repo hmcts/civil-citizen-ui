@@ -14,6 +14,7 @@ import {CivilClaimResponse} from '../../../../../main/common/models/civilClaimRe
 import {LoggerInstance} from 'winston';
 import {NumberOfChildren} from '../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {GenericForm} from '../../../../../main/common/form/models/genericForm';
+import {mockClaim} from '../../../../utils/mockClaim';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
@@ -65,6 +66,67 @@ describe('Children Disability service', () => {
       expect(form.getErrors()[0].constraints).toEqual({isDefined: VALID_YES_NO_OPTION});
     });
   });
+
+  describe('get and save ChildrenDisability', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should return empty ChildrenDisability when no data retrieved', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return new ChildrenDisability();
+      });
+      //When
+      const childrenDisability = await (getChildrenDisability('claimId'));
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(childrenDisability).not.toBeNull();
+      expect(childrenDisability).toEqual(new ChildrenDisability());
+    });
+
+    test('should return ChildrenDisability when data retrieved', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockClaim;
+      });
+      //When
+      const childrenDisability = await (getChildrenDisability('claimId'));
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(childrenDisability).not.toBeNull();
+      expect(childrenDisability).toEqual(mockClaim?.statementOfMeans?.childrenDisability);
+    });
+
+    test('should save childrenDisability when claim in Redis draft store', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockClaim;
+      });
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveChildrenDisability('claimId', new ChildrenDisability());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
+    });
+    test('should save childrenDisability when none in draft store', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return {case_data: {}};
+      });
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveChildrenDisability('claimId', new ChildrenDisability());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
+    });
+  });
+
   describe('Exception Handling', () => {
     afterEach(() => {
       jest.clearAllMocks();
@@ -84,7 +146,7 @@ describe('Children Disability service', () => {
     test('should throw error when saving data to draft store fails', async () => {
       //When
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return {case_data: {statementOfMeans: {}}};
+        return mockClaim;
       });
       mockSaveDraftClaim.mockImplementation(async () => {
         throw new Error(DRAFT_STORE_SAVE_ERROR);
