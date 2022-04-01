@@ -17,6 +17,8 @@ import {GenericForm} from '../../../../../main/common/form/models/genericForm';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
+const noStatementOfMeansMock = require('../noStatementOfMeansMock.json');
+const noStatementOfMeans: string = JSON.stringify(noStatementOfMeansMock);
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -95,6 +97,13 @@ describe('Children Disability service', () => {
   });
 
   describe('isCheckChildrenDisabled', () => {
+    test('should return false if no statement of means', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noStatementOfMeans));
+      //Given
+      //Then
+      expect(hasDisabledChildren(claim.case_data)).toBe(false);
+    });
     test('should return true if defendant not disabled', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
