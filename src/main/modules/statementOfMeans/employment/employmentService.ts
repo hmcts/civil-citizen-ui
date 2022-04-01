@@ -10,7 +10,7 @@ const logger = Logger.getLogger('employmentService');
 export const getEmploymentForm = async (claimId: string): Promise<EmploymentForm> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    if (claim && claim.statementOfMeans && claim.statementOfMeans.employment) {
+    if (claim?.statementOfMeans?.employment) {
       return convertToForm(claim.statementOfMeans.employment);
     }
     return new EmploymentForm();

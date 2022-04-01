@@ -30,7 +30,7 @@ router.post(CITIZEN_DISABILITY_URL,
   async (req, res) => {
     const disability: Disability = new Disability(req.body.option);
     const errors: ValidationError[] = validator.validateSync(disability);
-    if (errors && errors.length > 0) {
+    if (errors?.length > 0) {
       disability.errors = errors;
       renderView(disability, res);
     } else {

@@ -9,8 +9,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set errors = form.getErrors() %}
-      {% if form.hasErrors() %}
+      {% if errors %}
         {{ govukErrorSummary({
           "titleText": t('There was a problem'),
           "errorList": errors

@@ -11,7 +11,7 @@ export class Residence {
   @IsIn(ResidenceType.all(), {message: VALID_OPTION_SELECTION})
     type?: ResidenceType;
 
-  @ValidateIf((o: Residence) => o.type && o.type.value === ResidenceType.OTHER.value)
+  @ValidateIf((o: Residence) => o.type?.value === ResidenceType.OTHER.value)
   @IsNotEmpty({message: VALID_HOUSING})
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: VALID_TEXT_LENGTH})
     housingDetails?: string;

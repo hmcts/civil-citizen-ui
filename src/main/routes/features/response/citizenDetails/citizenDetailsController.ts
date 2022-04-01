@@ -98,8 +98,8 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
       citizenAddress.errors = validator.validateSync(citizenAddress);
       errorList.errors = citizenAddress.errors;
     }
-    if ((citizenAddress.errors && citizenAddress.errors.length > 0)
-      || (citizenCorrespondenceAddress.errors && citizenCorrespondenceAddress.errors.length > 0)) {
+    if ((citizenAddress?.errors?.length > 0)
+      || (citizenCorrespondenceAddress?.errors?.length > 0)) {
       renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req);
     } else {
       await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress);
