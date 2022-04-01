@@ -7,7 +7,7 @@ import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
 import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {get} from 'lodash';
+
 const {Logger} = require('@hmcts/nodejs-logging');
 
 const logger = Logger.getLogger('citizenPhoneController');
@@ -36,7 +36,7 @@ router.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) => {
   try {
     const citizenResponseType = new CitizenResponseType();
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
-    if (get(responseDataRedis,'respondent1.responseType')){
+    if (responseDataRedis?.respondent1?.responseType){
       citizenResponseType.responseType = responseDataRedis.respondent1.responseType;
     }
     renderView(citizenResponseType, res);
@@ -51,7 +51,7 @@ router.post(CITIZEN_RESPONSE_TYPE_URL,
     try {
       const model: CitizenResponseType = new CitizenResponseType(req.body.responseType);
       const errors: ValidationError[] = validator.validateSync(model);
-      if (errors && errors.length > 0) {
+      if (errors?.length > 0) {
         model.errors = errors;
         renderView(model, res);
       } else {

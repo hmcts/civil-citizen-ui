@@ -30,7 +30,7 @@ router.post(CITIZEN_PARTNER_URL,
   async (req, res) => {
     const cohabiting: Cohabiting = new Cohabiting(req.body.option);
     const errors: ValidationError[] = validator.validateSync(cohabiting);
-    if (errors && errors.length > 0) {
+    if (errors?.length > 0) {
       cohabiting.errors = errors;
       renderView(cohabiting, res);
     } else {
