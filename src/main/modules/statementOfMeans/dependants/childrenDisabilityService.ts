@@ -15,15 +15,10 @@ export function setChildrenDisabilityServiceLogger(winstonLogger: winston.Logger
 }
 
 export const hasDisabledChildren = (claim: Claim): boolean => {
-  try {
-    const statementOfMeans = claim.statementOfMeans;
-    const numberOfChildren : NumberOfChildren = new NumberOfChildren(statementOfMeans?.dependants?.numberOfChildren?.under11, statementOfMeans?.dependants?.numberOfChildren?.between11and15, statementOfMeans?.dependants?.numberOfChildren?.between16and19);
-    return (numberOfChildren?.totalNumberOfChildren() > 0 &&
+  const statementOfMeans = claim.statementOfMeans;
+  const numberOfChildren : NumberOfChildren = new NumberOfChildren(statementOfMeans?.dependants?.numberOfChildren?.under11, statementOfMeans?.dependants?.numberOfChildren?.between11and15, statementOfMeans?.dependants?.numberOfChildren?.between16and19);
+  return (numberOfChildren?.totalNumberOfChildren() > 0 &&
       ((isDefendantNotDisabled(statementOfMeans)) || (isDefendantDisabledButNotSeverely(statementOfMeans) && !isDefendantPartnerDisabled(statementOfMeans))));
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
 };
 
 const isDefendantNotDisabled = (statementOfMeans : StatementOfMeans) : boolean => {
