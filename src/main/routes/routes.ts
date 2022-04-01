@@ -1,5 +1,5 @@
-import homeController from './home';
-import unauthorisedController from './unauthorised';
+import homeController from './homeController';
+import unauthorisedController from './unauthorisedController';
 import dashboardController from './features/dashboard/dashboardController';
 import phoneDetailsController from './features/response/citizenPhoneNumber/citizenPhoneController';
 import responseDobController from './features/response/citizenDob/citizenDobController';

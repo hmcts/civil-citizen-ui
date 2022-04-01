@@ -7,7 +7,7 @@ import * as winston from 'winston';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
-const router = express.Router();
+const financialDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 let logger: winston.LoggerInstance = Logger.getLogger('financialDetailsController');
 
@@ -21,7 +21,7 @@ function renderView(res: express.Response, claim: Claim): void {
 }
 
 
-router.get(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+financialDetailsController.get(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   let claim: Claim = new Claim();
   await getDraftClaimFromStore(req.params.id)
     .then(claimResponse => {
@@ -32,7 +32,7 @@ router.get(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Resp
   renderView(res, claim);
 });
 
-router.post(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+financialDetailsController.post(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   let counterpartyType: CounterpartyType;
   let claim: Claim = new Claim();
   await getDraftClaimFromStore(req.params.id)
@@ -54,4 +54,4 @@ router.post(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Res
   }
 });
 
-export default router;
+export default financialDetailsController;

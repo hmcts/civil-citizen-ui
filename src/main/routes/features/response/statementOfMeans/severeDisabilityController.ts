@@ -6,7 +6,7 @@ import {SevereDisabilityService} from '../../../../modules/statementOfMeans/seve
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 const citizenSevereDisabilityViewPath = 'features/response/statementOfMeans/are-you-severely-disabled';
-const router = express.Router();
+const severeDisabilityController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('severeDisabilityController');
 const severeDisabilityService = new SevereDisabilityService();
@@ -16,7 +16,7 @@ function renderView(form: SevereDisability, res: express.Response): void {
   res.render(citizenSevereDisabilityViewPath, { form });
 }
 
-router.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res) => {
+severeDisabilityController.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res) => {
   try {
     const severeDisability = await severeDisabilityService.getSevereDisability(req.params.id);
     renderView(severeDisability, res);
@@ -26,7 +26,7 @@ router.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res) => {
   }
 });
 
-router.post(CITIZEN_SEVERELY_DISABLED_URL,
+severeDisabilityController.post(CITIZEN_SEVERELY_DISABLED_URL,
   async (req, res) => {
     const severeDisability: SevereDisability = new SevereDisability(req.body.option);
     const errors: ValidationError[] = validator.validateSync(severeDisability);
@@ -44,4 +44,4 @@ router.post(CITIZEN_SEVERELY_DISABLED_URL,
     }
   });
 
-export default router;
+export default severeDisabilityController;

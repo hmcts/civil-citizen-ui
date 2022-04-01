@@ -10,10 +10,10 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-st
 
 const {Logger} = require('@hmcts/nodejs-logging');
 
-const logger = Logger.getLogger('citizenPhoneController');
+const logger = Logger.getLogger('citizenResponseTypeController');
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
-const router = express.Router();
+const citizenResponseTypeController = express.Router();
 const DEADLINE = new Claim().formattedResponseDeadline();
 const validator = new Validator();
 
@@ -32,7 +32,7 @@ function renderView(form: CitizenResponseType, res: express.Response): void {
   res.render(citizenResponseTypeViewPath, {form: form, componentDetailItemsList: componentDetailItemsList});
 }
 
-router.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) => {
+citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) => {
   try {
     const citizenResponseType = new CitizenResponseType();
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
@@ -46,7 +46,7 @@ router.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) => {
   }
 });
 
-router.post(CITIZEN_RESPONSE_TYPE_URL,
+citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
   async (req, res) => {
     try {
       const model: CitizenResponseType = new CitizenResponseType(req.body.responseType);
@@ -72,4 +72,4 @@ router.post(CITIZEN_RESPONSE_TYPE_URL,
     }
   });
 
-export default router;
+export default citizenResponseTypeController;

@@ -10,14 +10,14 @@ const {Logger} = require('@hmcts/nodejs-logging');
 
 const logger = Logger.getLogger('citizenPhoneController');
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
-const router = express.Router();
+const citizenPhoneController = express.Router();
 const validator = new Validator();
 
 function renderView(form: CitizenTelephoneNumber, res: express.Response): void {
   res.render(citizenPhoneViewPath, {form: form});
 }
 
-router.get(CITIZEN_PHONE_NUMBER_URL, async (req, res) => {
+citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res) => {
   try {
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
     const citizenTelephoneNumber = responseDataRedis?.respondent1?.telephoneNumber
@@ -28,7 +28,7 @@ router.get(CITIZEN_PHONE_NUMBER_URL, async (req, res) => {
     res.status(500).send({error: error.message});
   }
 });
-router.post(CITIZEN_PHONE_NUMBER_URL,
+citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
   async (req, res) => {
     try {
       const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
@@ -54,4 +54,4 @@ router.post(CITIZEN_PHONE_NUMBER_URL,
     }
   });
 
-export default router;
+export default citizenPhoneController;
