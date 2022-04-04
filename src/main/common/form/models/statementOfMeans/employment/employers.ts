@@ -1,14 +1,14 @@
-import { ValidateNested } from 'class-validator';
-// import { FormValidationError } from 'common/form/validationErrors/formValidationError';
-// import { Employer } from 'common/models/employer';
+import { Validate, ValidateNested } from 'class-validator';
 import { VALID_ENTER_AT_LEAST_ONE_EMPLOYER } from '../../../validationErrors/errorMessageConstants';
 import { Form } from '../../form';
 import { Employer } from './employer';
 import { FormValidationError } from 'common/form/validationErrors/formValidationError';
+import { AtLeastOneEmployerValidator } from 'common/form/validators/atLeastOneEmployerValidator';
 
 export class Employers extends Form {
 
-  @ValidateNested({ message: VALID_ENTER_AT_LEAST_ONE_EMPLOYER })
+  @Validate(AtLeastOneEmployerValidator, {message: VALID_ENTER_AT_LEAST_ONE_EMPLOYER})
+  @ValidateNested()
   rows: Employer[];
 
   constructor(rows?: Employer[]) {
@@ -26,11 +26,11 @@ export class Employers extends Form {
     return formErrors;
   }
 
-  public getOnlyCompletedAccounts(): Employer[] {
-    if (this.hasEmployers()) {
-      return this.rows.filter(employer => employer.employerName !== '' && employer.jobTitle !== '');
-    }
-  }
+  // public getOnlyCompletedEmployers(): Employer[] {
+  //   if (this.hasEmployers()) {
+  //     return this.rows.filter(employer => employer.employerName !== '' && employer.jobTitle !== '');
+  //   }
+  // }
 
   private hasEmployers() {
     return this.rows && this.rows.length > 0;

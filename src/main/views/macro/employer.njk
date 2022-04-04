@@ -5,37 +5,33 @@
   <div id="row-container govuk-grid-column-two-thirds">
     <div class="multiple-row">
       {% set errors = employer.getErrors() %}
-      <div class="govuk-form-group {%- if errors.length>0 %} govuk-form-group--error{% endif %}">
-        {% if errors %}
-          {% for error in errors %}
-            {{ govukErrorMessage({
+      {% if errors %}
+        {% for error in errors %}
+          {{ govukErrorMessage({
               text:t(error.text)
             })| indent(2) | trim  }}
-          {% endfor %}
-        {% endif %}
+        {% endfor %}
+      {% endif %}
 
+      <div class="govuk-form-group {%- if errors.length>0 %} govuk-form-group--error{% endif %}">
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
           {{ govukInput({
               id: "employers["+index+"][employerName]",
               name: "employers["+index+"][employerName]",
               value: employer.employerName,
               hint: {
-                text: "Employer name"
+                text: t('Employer name')
               },
-              errorMessage: {
-                html: t(errors[0].text)
-              } if errors
+               errorMessage: { text: employer.errorFor('employerName') } if employer.hasFieldError('employerName') else ''
             }) }}
           {{ govukInput({
               id: "employers["+index+"][jobTitle]",
               name: "employers["+index+"][jobTitle]",
               value: employer.jobTitle,
               hint: {
-                text: "Job title"
+                text: t('Job title')
               },
-              errorMessage: {
-                html: t(errors[0].text)
-              } if errors
+               errorMessage: { text: employer.errorFor('jobTitle') } if employer.hasFieldError('jobTitle') else ''
             }) }}
         </div>
       </div>
