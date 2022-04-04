@@ -10,6 +10,7 @@ import {PartnerPension} from '../form/models/statementOfMeans/partner/partnerPen
 import {Residence} from '../form/models/statementOfMeans/residence';
 import {Employment} from './employment';
 import {Dependants} from '../form/models/statementOfMeans/dependants/dependants';
+import {SelfEmployedAs} from '../form/models/statementOfMeans/employment/selfEmployed/selfEmployedAs';
 
 export class StatementOfMeans {
   disability?: Disability;
@@ -25,4 +26,5 @@ export class StatementOfMeans {
   partnerPension?: PartnerPension;
   dependants?: Dependants;
   numberOfChildrenLivingWithYou?: number;
+  selfEmployedAs?: SelfEmployedAs;
 }
