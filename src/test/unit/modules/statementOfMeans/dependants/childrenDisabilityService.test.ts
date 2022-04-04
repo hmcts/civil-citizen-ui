@@ -302,6 +302,22 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
+    test('should return false if defendant disability YES, severe disability undefined', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartnerOrDisability));
+      const numberOfChildren = new NumberOfChildren(2, undefined, 2);
+      //Given
+      claim.case_data.statementOfMeans.dependants.numberOfChildren = numberOfChildren;
+      claim.case_data.statementOfMeans.disability.option = YesNo.YES;
+      //Then
+      expect(numberOfChildren.totalNumberOfChildren()).toBe(4);
+      expect(claim.case_data.statementOfMeans.disability.option).not.toBe(undefined);
+      expect(claim.case_data.statementOfMeans.disability.option).toBe(YesNo.YES);
+      expect(claim.case_data.statementOfMeans.severeDisability).toBe(undefined);
+      expect(claim.case_data.statementOfMeans.cohabiting).toBe(undefined);
+      expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
+      expect(hasDisabledChildren(claim.case_data)).toBe(false);
+    });
     test('should return true if defendant not disabled, no partner', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartner));
