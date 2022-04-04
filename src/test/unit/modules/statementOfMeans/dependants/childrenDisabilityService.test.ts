@@ -280,7 +280,7 @@ describe('Children Disability service', () => {
       //Given
       //Then
       expect(claim.case_data.statementOfMeans).toBe(undefined);
-      expect(isDefendantNotDisabled(claim.case_data)).toBe(false);
+      expect(isDefendantNotDisabled(claim.case_data.statementOfMeans)).toBe(false);
     });
     test('should return false if no statement of means', async () => {
       //When
@@ -288,7 +288,7 @@ describe('Children Disability service', () => {
       //Given
       //Then
       expect(claim.case_data.statementOfMeans).toBe(undefined);
-      expect(isDefendantDisabledButNotSeverely(claim.case_data)).toBe(false);
+      expect(isDefendantDisabledButNotSeverely(claim.case_data.statementOfMeans)).toBe(false);
     });
     test('should return false if no statement of means', async () => {
       //When
@@ -296,7 +296,7 @@ describe('Children Disability service', () => {
       //Given
       //Then
       expect(claim.case_data.statementOfMeans).toBe(undefined);
-      expect(isDefendantPartnerDisabled(claim.case_data)).toBe(false);
+      expect(isDefendantPartnerDisabled(claim.case_data.statementOfMeans)).toBe(false);
     });
     test('should return false if no statement of means', async () => {
       //When
