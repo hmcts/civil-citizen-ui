@@ -28,6 +28,8 @@ const civilClaimResponseNoPartnerMock = require('../civilClaimResponseNoPartnerM
 const noPartner: string = JSON.stringify(civilClaimResponseNoPartnerMock);
 const civilClaimResponseNoPartnerDisabilityMock = require('../civilClaimResponseNoPartnerDisabilityMock.json');
 const noPartnerDisability: string = JSON.stringify(civilClaimResponseNoPartnerDisabilityMock);
+const civilClaimResponseNoCohabitingMock = require('../civilClaimResponseNoCohabitingMock.json');
+const noCohabiting: string = JSON.stringify(civilClaimResponseNoCohabitingMock);
 const civilClaimResponseNoPartnerOrDisabilityMock = require('../civilClaimResponseNoPartnerOrDefendantSevereDisabilityMock.json');
 const noPartnerOrDisability: string = JSON.stringify(civilClaimResponseNoPartnerOrDisabilityMock);
 
@@ -353,6 +355,22 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.cohabiting.option).not.toBe(undefined);
       expect(claim.case_data.statementOfMeans.cohabiting.option).toBe(YesNo.YES);
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
+      expect(hasDisabledChildren(claim.case_data)).toBe(true);
+    });
+    test('should return true if defendant disabled, not severely, partnerDisability but no cohabiting', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noCohabiting));
+      const numberOfChildren = new NumberOfChildren(2, undefined, 2);
+      //Given
+      claim.case_data.statementOfMeans.disability.option = YesNo.YES;
+      claim.case_data.statementOfMeans.severeDisability.option = YesNo.NO;
+      claim.case_data.statementOfMeans.dependants.numberOfChildren = numberOfChildren;
+      //Then
+      expect(numberOfChildren.totalNumberOfChildren()).toBe(4);
+      expect(claim.case_data.statementOfMeans.partnerDisability).not.toBe(undefined);
+      expect(claim.case_data.statementOfMeans.partnerDisability.option).not.toBe(undefined);
+      expect(claim.case_data.statementOfMeans.partnerDisability.option).toBe(YesNo.YES);
+      expect(claim.case_data.statementOfMeans.cohabiting).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
     test('should return true if defendant not disabled', async () => {
