@@ -377,6 +377,23 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
+    test('should return true if defendant disabled, not severely, partner NO, no partnerDisability', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartnerDisability));
+      const numberOfChildren = new NumberOfChildren(2, undefined, 2);
+      //Given
+      claim.case_data.statementOfMeans.disability.option = YesNo.YES;
+      claim.case_data.statementOfMeans.severeDisability.option = YesNo.NO;
+      claim.case_data.statementOfMeans.dependants.numberOfChildren = numberOfChildren;
+      claim.case_data.statementOfMeans.cohabiting.option = YesNo.NO;
+      //Then
+      expect(numberOfChildren.totalNumberOfChildren()).toBe(4);
+      expect(claim.case_data.statementOfMeans.cohabiting).not.toBe(undefined);
+      expect(claim.case_data.statementOfMeans.cohabiting.option).not.toBe(undefined);
+      expect(claim.case_data.statementOfMeans.cohabiting.option).toBe(YesNo.NO);
+      expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
+      expect(hasDisabledChildren(claim.case_data)).toBe(true);
+    });
     test('should return true if defendant disabled, not severely, partner but no partnerDisability', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartnerDisabilityCohabitingNoOption));
@@ -390,6 +407,23 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.cohabiting).not.toBe(undefined);
       expect(claim.case_data.statementOfMeans.cohabiting.option).toBe(undefined);
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
+      expect(hasDisabledChildren(claim.case_data)).toBe(true);
+    });
+    test('should return true if defendant disabled, not severely, partnerDisability NO, no cohabiting', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noCohabiting));
+      const numberOfChildren = new NumberOfChildren(2, undefined, 2);
+      //Given
+      claim.case_data.statementOfMeans.disability.option = YesNo.YES;
+      claim.case_data.statementOfMeans.severeDisability.option = YesNo.NO;
+      claim.case_data.statementOfMeans.dependants.numberOfChildren = numberOfChildren;
+      claim.case_data.statementOfMeans.partnerDisability.option = YesNo.NO;
+      //Then
+      expect(numberOfChildren.totalNumberOfChildren()).toBe(4);
+      expect(claim.case_data.statementOfMeans.partnerDisability).not.toBe(undefined);
+      expect(claim.case_data.statementOfMeans.partnerDisability.option).not.toBe(undefined);
+      expect(claim.case_data.statementOfMeans.partnerDisability.option).toBe(YesNo.NO);
+      expect(claim.case_data.statementOfMeans.cohabiting).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
     test('should return true if defendant disabled, not severely, partnerDisability but no cohabiting', async () => {
