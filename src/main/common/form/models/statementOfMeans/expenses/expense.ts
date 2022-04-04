@@ -10,7 +10,6 @@ export default class Expense {
 
   constructor(declared?: boolean, expenseSource?: ExpenseSource) {
     this.declared = declared;
-    console.log(declared);
     this.expenseSource = expenseSource;
   }
 }

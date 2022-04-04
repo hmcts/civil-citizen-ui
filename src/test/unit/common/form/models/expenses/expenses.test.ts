@@ -1,6 +1,7 @@
 import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
 import {Expenses} from '../../../../../../main/common/form/models/statementOfMeans/expenses/expenses';
 import Expense from '../../../../../../main/common/form/models/statementOfMeans/expenses/expense';
+import ExpenseSource from '../../../../../../main/common/form/models/statementOfMeans/expenses/expenseSource';
 
 describe('Expenses', () => {
   describe('Validate', () => {
@@ -19,7 +20,7 @@ describe('Expenses', () => {
     it('should have errors for mortgage when mortgage declared is true', async () => {
       //Given
       const form = new GenericForm(new Expenses({
-        mortgage: new Expense(true),
+        mortgage: new Expense(true, new ExpenseSource('mortgage')),
         rent: new Expense(),
         tvAndBroadband: new Expense(),
       }));
@@ -27,6 +28,7 @@ describe('Expenses', () => {
       await form.validate();
       //Then
       expect(form.hasErrors()).toBeTruthy();
+      expect(form.getNestedErrors().length).toBe(3);
     });
   });
 });

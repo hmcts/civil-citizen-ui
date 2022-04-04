@@ -58,10 +58,12 @@ export class GenericForm<Model> {
   }
 
   public getNestedErrors(): FormValidationError[] {
-    const validators: FormValidationError[] = [];
-    this.getErrors()
-      .forEach(error => error.children
-        .forEach(childError => validators.push(new FormValidationError(childError))));
+    let validators: FormValidationError[] = [];
+    this.errors
+      .forEach(error => {
+        validators = validators.concat(this.getAllChildrenErrors(error));
+        console.log(validators);
+      });
     return validators;
   }
 
@@ -81,5 +83,18 @@ export class GenericForm<Model> {
 
   public async validate() {
     this.errors = await validator.validate(this.model as unknown as object);
+  }
+
+  private getAllChildrenErrors(error: ValidationError): FormValidationError[] {
+    let formErrors: FormValidationError[] = [];
+    if (error.children?.length > 0) {
+      error.children.forEach(childError => {
+        formErrors.push(new FormValidationError(childError));
+        if (childError.children?.length > 0) {
+          formErrors = formErrors.concat(this.getAllChildrenErrors(childError));
+        }
+      });
+      return formErrors;
+    }
   }
 }
