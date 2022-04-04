@@ -20,9 +20,13 @@ const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
 const noStatementOfMeansMock = require('../noStatementOfMeansMock.json');
 const noStatementOfMeans: string = JSON.stringify(noStatementOfMeansMock);
+const civilClaimResponseNoDefendantDisabilityOrSevereDisabilityMock = require('../civilClaimResponseNoDefendantDisabilityOrSevereDisabilityMock.json');
+const noDefendantDisabilityOrSevereDisability: string = JSON.stringify(civilClaimResponseNoDefendantDisabilityOrSevereDisabilityMock);
+const civilClaimResponseNoDefendantDisabilityOrSevereDisabilityOptionsMock = require('../civilClaimResponseNoDefendantDisabilityOrSevereDisabilityOptionsMock.json');
+const noDefendantDisabilityOrSevereDisabilityOptions: string = JSON.stringify(civilClaimResponseNoDefendantDisabilityOrSevereDisabilityOptionsMock);
 const civilClaimResponseNoPartnerMock = require('../civilClaimResponseNoPartnerMock.json');
 const noPartner: string = JSON.stringify(civilClaimResponseNoPartnerMock);
-const civilClaimResponseNoPartnerOrDisabilityMock = require('../civilClaimResponseNoPartnerOrDisabilityMock.json');
+const civilClaimResponseNoPartnerOrDisabilityMock = require('../civilClaimResponseNoPartnerOrDefendantSevereDisabilityMock.json');
 const noPartnerOrDisability: string = JSON.stringify(civilClaimResponseNoPartnerOrDisabilityMock);
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -251,6 +255,28 @@ describe('Children Disability service', () => {
       //Given
       //Then
       expect(claim.case_data.statementOfMeans).toBe(undefined);
+      expect(hasDisabledChildren(claim.case_data)).toBe(false);
+    });
+    test('should return false if no disability', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noDefendantDisabilityOrSevereDisability));
+      //Given
+      //Then
+      expect(claim.case_data.statementOfMeans).not.toBe(undefined);
+      expect(claim.case_data.statementOfMeans.disability).toBe(undefined);
+      expect(claim.case_data.statementOfMeans.severeDisability).toBe(undefined);
+      expect(hasDisabledChildren(claim.case_data)).toBe(false);
+    });
+    test('should return false if disability and severeDisability but no options', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noDefendantDisabilityOrSevereDisabilityOptions));
+      //Given
+      //Then
+      expect(claim.case_data.statementOfMeans).not.toBe(undefined);
+      expect(claim.case_data.statementOfMeans.disability).not.toBe(undefined);
+      expect(claim.case_data.statementOfMeans.disability.option).toBe(undefined);
+      expect(claim.case_data.statementOfMeans.severeDisability).not.toBe(undefined);
+      expect(claim.case_data.statementOfMeans.severeDisability.option).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
     test('should return true if defendant disability NO, severe disability undefined', async () => {
