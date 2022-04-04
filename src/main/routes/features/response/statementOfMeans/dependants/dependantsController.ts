@@ -10,7 +10,7 @@ import dependantsService from '../../../../../modules/statementOfMeans/dependant
 
 const {Logger} = require('@hmcts/nodejs-logging');
 
-const logger = Logger.getLogger('residenceController');
+const logger = Logger.getLogger('dependantsController');
 const residenceViewPath = 'features/response/statementOfMeans/dependants/dependants';
 
 const dependantsController = express.Router();

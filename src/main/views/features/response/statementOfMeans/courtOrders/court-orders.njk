@@ -1,0 +1,149 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../../macro/csrf.njk" import csrfProtection %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getAllErrors() %}
+      {% set declaredError = form.errorFor('declared') %}
+      {% set atLeastOneNumberShouldBeEnteredError = form.errorFor('numberOfChildren') %}
+      {% set under11Error = form.nestedErrorFor('under11') %}
+      {% set between11and15Error = form.nestedErrorFor('between11and15') %}
+      {% set between16and19Error = form.nestedErrorFor('between16and19') %}
+      {% if errors.length > 0 %}
+        {{ govukErrorSummary({
+          "titleText": t('There was a problem'),
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('Are you paying money as a result of any court orders?') }}</h1>
+          <form
+            method="POST" novalidate>
+
+            {{ csrfProtection(csrfToken) }}
+
+            {% set courtOrdersHtml %}
+              <div data-module="moj-add-another">
+                {% call govukFieldset({
+                  classes: 'moj-add-another__item',
+                  legend: {
+                    classes: 'moj-add-another__title govuk-fieldset__legend--m',
+                    isPageHeading: false
+                  }
+                }) %}
+
+
+                    {{ govukInput({
+                      id: 'rows[0][claimNumber]',
+                      name: 'rows[0][claimNumber]',
+                      type: 'text',
+                      classes: 'govuk-!-width-one-third',
+                      label: {
+                        text: t('Claim number')
+                      },
+                      attributes: {
+                        'data-name': 'rows[%index%][claimNumber]',
+                        'data-id': 'rows[%index%][claimNumber]'
+                      },
+                      errorMessage: {
+                        text: t(claimNumberError)
+                      } if claimNumberError
+                    }) }}
+                    {{ govukInput({
+                      id: 'rows[0][amount]',
+                      name: 'rows[0][amount]',
+                      type: 'number',
+                      classes: 'govuk-!-width-one-third',
+                      prefix: {
+                        text: "£"
+                      },
+                      label: {
+                        text: t('Amount you owe')
+                      },
+                      attributes: {
+                        'data-name': 'rows[%index%][amount]',
+                        'data-id': 'rows[%index%][amount]'
+                      },
+                      errorMessage: {
+                        text: t(amountError)
+                      } if amountError
+                    }) }}
+                    {{ govukInput({
+                      id: 'rows[0][instalmentAmount]',
+                      name: 'rows[0][instalmentAmount]',
+                      type: 'number',
+                      classes: 'govuk-!-width-one-third',
+                      prefix: {
+                        text: "£"
+                      },
+                      label: {
+                        text: t('Monthly instalment amount')
+                      },
+                      attributes: {
+                        'data-name': 'rows[%index%][instalmentAmount]',
+                        'data-id': 'rows[%index%][instalmentAmount]'
+                      },
+                      errorMessage: {
+                        text: t(instalmentAmountError)
+                      } if instalmentAmountError
+                    }) }}
+
+                {% endcall %}
+                <div class="moj-button-action">
+                  {{ govukButton({
+                    text: t('Add another court order'),
+                    classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4 govuk-!-margin-top-6'
+                  }) }}
+                </div>
+              </div>
+            {% endset -%}
+
+            {{ govukRadios({
+              idPrefix: "declared",
+              name: "declared",
+              items: [
+                {
+                  value: YesNo.YES,
+                  text: t('Yes'),
+                  checked: form.model.declared === true,
+                  conditional: {
+                  html: courtOrdersHtml
+                }
+                },
+                {
+                  value: YesNo.NO,
+                  text: t('No'),
+                  checked: form.model.declared === false
+                }
+              ],
+              errorMessage: {
+                text: declaredError
+              } if declaredError
+            }) }}
+
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-thirds">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

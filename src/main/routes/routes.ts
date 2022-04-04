@@ -24,6 +24,7 @@ import paymentOptionController from './features/response/admision/fullAdmission/
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
+import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
 
 export default [
   homeController,
@@ -51,4 +52,5 @@ export default [
   paymentOptionController,
   betweenSixteenAndNineteenController,
   dependantsController,
+  courtOrdersController,
 ];
