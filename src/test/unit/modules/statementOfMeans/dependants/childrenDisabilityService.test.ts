@@ -210,6 +210,20 @@ describe('Children Disability service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
 
+    test('should save childrenDisability when case_data and statementOfMeans and childrenDisability, option blank, in Redis draft store', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return {case_data: {statementOfMeans : {childrenDisability:{option : {}}}}};
+      });
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveChildrenDisability('claimId', new ChildrenDisability());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
+    });
+
     test('should save childrenDisability when claim in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
