@@ -23,8 +23,11 @@ export class DraftStoreClient {
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
 
-    client.set('1645882162449409', JSON.stringify(REDIS_DATA, null, 4)).then(() =>
-      this.logger.info('Mock data saved to Redis'),
+    client.set('1645882162449409', JSON.stringify(REDIS_DATA[0], null, 4)).then(() =>
+      this.logger.info('Mock data 1645882162449409 saved to Redis'),
+    );
+    client.set('1645882162449408', JSON.stringify(REDIS_DATA[1], null, 4)).then(() =>
+      this.logger.info('Mock data 1645882162449408 saved to Redis'),
     );
   }
 }
