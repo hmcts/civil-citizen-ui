@@ -3,6 +3,8 @@ import {CITIZEN_COURT_ORDERS_PAGE_URL, CITIZEN_UNEMPLOYED_URL} from '../../../..
 import {validateForm} from '../../../../../common/form/validators/formValidator';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {Unemployment} from '../../../../../common/form/models/statementOfMeans/unemployment/unemployment';
+import {UnemploymentDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentDetails';
+import {OtherDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/otherDetails';
 import {
   getUnemployment,
   saveUnemployment,
@@ -11,28 +13,24 @@ import {
   UnemploymentCategory,
 } from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 
-
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('unemploymentController');
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/unemployment';
-const router = express.Router();
+const unemploymentController = express.Router();
 
 function renderView(form: Unemployment, res: express.Response): void {
   res.render(citizenEmploymentStatusViewPath, {form: form, UnemploymentCategory: UnemploymentCategory});
 }
 
-router.get(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
+unemploymentController.get(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
   try {
-    const form = await getUnemployment(req.params.id);
-    renderView(form, res);
+    const unemployment = await getUnemployment(req.params.id);
+    renderView(unemployment, res);
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
     res.status(500).send({error: error.message});
   }
 });
 
-router.post(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
-  const form = new Unemployment(req.body.option, req.body.employmentCategory);
+unemploymentController.post(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
+  const form = new Unemployment(req.body.option, new UnemploymentDetails(req.body.years, req.body.months), new OtherDetails(req.body.details));
   try {
     await validateForm(form);
     if (form.hasErrors()) {
@@ -42,9 +40,8 @@ router.post(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_COURT_ORDERS_PAGE_URL));
     }
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
     res.status(500).send({error: error.message});
   }
 });
 
-export default router;
+export default unemploymentController;

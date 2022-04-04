@@ -28,7 +28,7 @@
                 id: "details",
                 name: "details",
                 type: "text",
-                classes: "govuk-!-width-three-third",
+                classes:  "govuk-input--width-5 govuk-input--error" if form.hasFieldError('otherDetails') else "govuk-input--width-5",
                 label: {
                   text: t('Give details')
                 },
@@ -42,7 +42,7 @@
                 name: "years",
                 type: "number",
                 autocomplete: "number",
-                classes: "govuk-!-width-one-third",
+                classes: "govuk-input--width-5 govuk-input--error" if form.hasFieldError('unemploymentDetails') else "govuk-input--width-5",
                 label: {
                   text: t('Years')
                 },
@@ -79,7 +79,7 @@
                 },
                 {
                   value: UnemploymentCategory.OTHER,
-                  checked: true,
+                  checked: true if form.option  === UnemploymentCategory.OTHER,
                   html:UnemploymentCategory.OTHER,
                   conditional:{html: ifOther}
                 }
