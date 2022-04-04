@@ -62,7 +62,6 @@ export class GenericForm<Model> {
     this.errors
       .forEach(error => {
         validators = validators.concat(this.getAllChildrenErrors(error));
-        console.log(validators);
       });
     return validators;
   }

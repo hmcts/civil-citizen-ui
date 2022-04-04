@@ -1,5 +1,6 @@
 import {IsDefined, IsNotEmpty, IsNumber, Min} from 'class-validator';
 import {ScheduledExpenses} from './scheduledExpenses';
+import {ExpenseType} from './expenseType';
 
 export class ValidationErrors {
   static readonly NAME_REQUIRED = 'Enter other expense source';

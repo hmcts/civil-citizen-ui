@@ -1,0 +1,48 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% macro expenseDetails(hintAmount, property, amountValue, scheduleValue, errors) %}
+  {{ govukInput({
+    id: property + "[amount]",
+    name: property + "[amount]",
+    label: {
+      text: t("Amount paid")
+    },
+    prefix: {
+      text: "£"
+    },
+    type: "number",
+    value: amountValue,
+    classes: "govuk-input--width-5",
+    hint: {
+      text: t(hintAmount)
+    },
+    spellcheck: false
+  }) }}
+  {{ govukRadios({
+    idPrefix: property + "[schedule]" ,
+    name: property + "[schedule]",
+    fieldset: {
+      legend: {
+        text: t("Paid every")
+      }
+    },
+    items: [
+      {
+        value: ScheduledExpenses.WEEK,
+        text: t("Week")
+      },
+      {
+        value: ScheduledExpenses.TWO_WEEKS,
+        text: t("Two weeks")
+      },
+      {
+        value: ScheduledExpenses.FOUR_WEEKS,
+        text: "Four weeks"
+      },
+      {
+        value: ScheduledExpenses.MONTH,
+        text: t("Month")
+      }
+    ]
+  }) }}
+{% endmacro %}
