@@ -75,11 +75,37 @@ describe('Children Disability service', () => {
     afterEach(() => {
       jest.clearAllMocks();
     });
+    test('should return empty ChildrenDisability when case_data, but no statementOfMeans, retrieved', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return {case_data: {}};
+      });
+      //When
+      const childrenDisability = await (getChildrenDisability('claimId'));
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(childrenDisability).not.toBeNull();
+      expect(childrenDisability).toEqual(new ChildrenDisability());
+    });
+    test('should return empty ChildrenDisability when case_data and statementOfMeans, but no disability, retrieved', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return {case_data: {statementOfMeans : {}}};
+      });
+      //When
+      const childrenDisability = await (getChildrenDisability('claimId'));
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(childrenDisability).not.toBeNull();
+      expect(childrenDisability).toEqual(new ChildrenDisability());
+    });
     test('should return empty ChildrenDisability when no data retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return new ChildrenDisability();
+        return {case_data: {statementOfMeans : {childrenDisability : {}}}};
       });
       //When
       const childrenDisability = await (getChildrenDisability('claimId'));
