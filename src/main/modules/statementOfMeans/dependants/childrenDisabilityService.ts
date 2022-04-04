@@ -21,16 +21,16 @@ export const hasDisabledChildren = (claim: Claim): boolean => {
       ((isDefendantNotDisabled(statementOfMeans)) || (isDefendantDisabledButNotSeverely(statementOfMeans) && !isDefendantPartnerDisabled(statementOfMeans))));
 };
 
-const isDefendantNotDisabled = (statementOfMeans : StatementOfMeans) : boolean => {
+export const isDefendantNotDisabled = (statementOfMeans : StatementOfMeans) : boolean => {
   return statementOfMeans?.disability?.option === YesNo.NO;
 };
 
-const isDefendantDisabledButNotSeverely = (statementOfMeans : StatementOfMeans) : boolean => {
+export const isDefendantDisabledButNotSeverely = (statementOfMeans : StatementOfMeans) : boolean => {
   return statementOfMeans?.disability?.option === YesNo.YES &&
     statementOfMeans?.severeDisability?.option === YesNo.NO;
 };
 
-const isDefendantPartnerDisabled = (statementOfMeans : StatementOfMeans) : boolean => {
+export const isDefendantPartnerDisabled = (statementOfMeans : StatementOfMeans) : boolean => {
   return statementOfMeans?.cohabiting?.option === YesNo.YES && statementOfMeans?.partnerDisability?.option === YesNo.YES;
 };
 

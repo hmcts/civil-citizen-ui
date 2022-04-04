@@ -7,6 +7,9 @@ import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {
   getChildrenDisability,
   hasDisabledChildren,
+  isDefendantDisabledButNotSeverely,
+  isDefendantNotDisabled,
+  isDefendantPartnerDisabled,
   saveChildrenDisability,
   setChildrenDisabilityServiceLogger,
 } from '../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
@@ -271,6 +274,30 @@ describe('Children Disability service', () => {
   });
 
   describe('isCheckChildrenDisabled', () => {
+    test('should return false if no statement of means', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noStatementOfMeans));
+      //Given
+      //Then
+      expect(claim.case_data.statementOfMeans).toBe(undefined);
+      expect(isDefendantNotDisabled(claim.case_data)).toBe(false);
+    });
+    test('should return false if no statement of means', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noStatementOfMeans));
+      //Given
+      //Then
+      expect(claim.case_data.statementOfMeans).toBe(undefined);
+      expect(isDefendantDisabledButNotSeverely(claim.case_data)).toBe(false);
+    });
+    test('should return false if no statement of means', async () => {
+      //When
+      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noStatementOfMeans));
+      //Given
+      //Then
+      expect(claim.case_data.statementOfMeans).toBe(undefined);
+      expect(isDefendantPartnerDisabled(claim.case_data)).toBe(false);
+    });
     test('should return false if no statement of means', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noStatementOfMeans));
