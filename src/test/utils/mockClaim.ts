@@ -3,6 +3,7 @@ import {Claim} from '../../main/common/models/claim';
 import {CounterpartyType} from '../../main/common/models/counterpartyType';
 import {PrimaryAddress} from '../../main/common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddress';
+import {NumberOfDays} from '../../main/common/form/models/numberOfDays';
 
 export const buildPrimaryAddress = (): PrimaryAddress => {
   return {
@@ -63,5 +64,7 @@ export const mockClaim: Claim = {
   formattedTotalClaimAmount: function (): string {
     throw new Error('Function not implemented.');
   },
+  responseInDays: function (): NumberOfDays {
+    throw new Error('Function not implemented.');
+  },
 };
-
