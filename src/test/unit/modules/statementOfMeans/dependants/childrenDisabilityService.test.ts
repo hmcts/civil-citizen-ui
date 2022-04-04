@@ -75,6 +75,19 @@ describe('Children Disability service', () => {
     afterEach(() => {
       jest.clearAllMocks();
     });
+    test('should return empty ChildrenDisability when nothing retrieved', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return undefined;
+      });
+      //When
+      const childrenDisability = await (getChildrenDisability('claimId'));
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(childrenDisability).not.toBeNull();
+      expect(childrenDisability).toEqual(new ChildrenDisability());
+    });
     test('should return empty ChildrenDisability when case_data, but no statementOfMeans, retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
@@ -129,10 +142,24 @@ describe('Children Disability service', () => {
       expect(childrenDisability).toEqual(mockClaim?.statementOfMeans?.childrenDisability);
     });
 
-    test('should save childrenDisability when claim in Redis draft store', async () => {
+    test('should save childrenDisability when nothing in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return undefined;
+      });
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveChildrenDisability('claimId', new ChildrenDisability());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
+    });
+
+    test('should save childrenDisability when case_data, but no statementOfMeans, in Redis draft store', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return {case_data: {}};
       });
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
