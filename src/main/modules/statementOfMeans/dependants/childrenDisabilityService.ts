@@ -27,11 +27,11 @@ export const isDefendantNotDisabled = (statementOfMeans : StatementOfMeans) : bo
 
 export const isDefendantDisabledButNotSeverely = (statementOfMeans : StatementOfMeans) : boolean => {
   return statementOfMeans?.disability?.option === YesNo.YES &&
-    statementOfMeans?.severeDisability?.option === YesNo.NO;
+    statementOfMeans.severeDisability?.option === YesNo.NO;
 };
 
 export const isDefendantPartnerDisabled = (statementOfMeans : StatementOfMeans) : boolean => {
-  return statementOfMeans?.cohabiting?.option === YesNo.YES && statementOfMeans?.partnerDisability?.option === YesNo.YES;
+  return statementOfMeans?.cohabiting?.option === YesNo.YES && statementOfMeans.partnerDisability?.option === YesNo.YES;
 };
 
 
