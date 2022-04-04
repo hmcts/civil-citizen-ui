@@ -5,19 +5,24 @@
 {% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t('Do you have loans or credit card debts?') %}
       {% set errors = form.getErrors() %}
+
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
+          "titleText": t('There was a problem'),
           "errorList": errors
         }) }}
       {% endif %}
+      <h1>{{ errors }}</h1>
+
       {% set yesHtml %}
+
 
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
@@ -35,8 +40,8 @@
           <div class="govuk-grid-row govuk-!-padding-top-3">
             <div class="govuk-grid-column-one-third govuk-!-display-inline">
               {{ govukInput({
-                id: "debtsItems["+loop.index+"][debt]",
-                name: "debtsItems["+loop.index+"][debt]",
+                id: "debtsItems["+loop.index0+"][debt]",
+                name: "debtsItems["+loop.index0+"][debt]",
                 value: debtsItem.loanCreditCar,
                 classes: "govuk-grid-column-full govuk-input--error" if false else "govuk-grid-column-full",
                 spellcheck: false
@@ -45,8 +50,8 @@
             </div>
             <div class="govuk-grid-column-one-third govuk-!-display-inline">
               {{ govukInput({
-                id: "debtsItems["+loop.index+"][totalOwed]",
-                name: "debtsItems["+loop.index+"][totalOwed]",
+                id: "debtsItems["+loop.index0+"][totalOwed]",
+                name: "debtsItems["+loop.index0+"][totalOwed]",
                 value: item.totalOwed,
                 prefix: {
                   text: "£"
@@ -58,8 +63,8 @@
             </div>
             <div class="govuk-grid-column-one-third govuk-!-display-inline">
               {{ govukInput({
-                id: "debtsItems["+loop.index+"][monthlyPayments]",
-                name: "debtsItems["+loop.index+"][monthlyPayments]",
+                id: "debtsItems["+loop.index0+"][monthlyPayments]",
+                name: "debtsItems["+loop.index0+"][monthlyPayments]",
                 value: item.monthlyPayments,
                 prefix: {
                   text: "£"
@@ -79,7 +84,7 @@
 
             {{ csrfProtection(csrf) }}
 
-            {{ yesNoRadioButton(t,'debtsRadio','debtsRadio',title, form,'',{yesHtml:yesHtml}) }}
+            {{ yesNoRadioButton(t,'debtsRadio','option',title, form,'',{yesHtml:yesHtml}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({

@@ -1,21 +1,21 @@
-import {IsNotEmpty,  Validate, ValidateIf} from 'class-validator';
+import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
 import {
   SELECT_AN_OPTION,
-  NUMBER_REQUIRED, ENTER_AT_LEAST_ONE_ROW,
+  NUMBER_REQUIRED,
 } from '../../../../form/validationErrors/errorMessageConstants';
-import {AccountBalanceValidator} from '../../../../form/validators/accountBalanceValidator';
-import {AtLeastOnePopulatedRow} from '../../../../../common/form/validators/atLeastOnePopulatedRow';
+import {AccountBalanceValidator} from '../../../../../common/form/validators/accountBalanceValidator';
 
-export class DebtItems {
+export class DebtItems  {
 
-  @ValidateIf(o => o.AtLeastOnePopulatedRow())
+  @ValidateIf(o => o.isAtLeastOneFieldPopulated())
+  @IsNotEmpty({message: SELECT_AN_OPTION})
     debt: string;
 
-  @ValidateIf(o => o.AtLeastOnePopulatedRow())
+  @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: SELECT_AN_OPTION})
     totalOwed: string;
 
-  @AtLeastOnePopulatedRow({message: ENTER_AT_LEAST_ONE_ROW})
+  @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: NUMBER_REQUIRED})
   @Validate(AccountBalanceValidator)
     monthlyPayments: string;

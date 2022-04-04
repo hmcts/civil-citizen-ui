@@ -15,11 +15,25 @@ export class Form {
     return this.errors !== undefined && this.errors.length > 0;
   }
 
-  public getErrors(parentProperty?: string): FormValidationError[] {
+  hasChildren(item : ValidationError): boolean{
+    return item?.children.length > 0;
+  }
+
+  getNestedErrors(item : ValidationError, validators: FormValidationError[]): void {
+    item.children
+      .forEach(error => error.children
+        .forEach(childError => validators.push(new FormValidationError(childError, `${item.property}[${error.property}]`))));
+    //return validators;
+  }
+  public getErrors(parentProperty?: string ): FormValidationError[] {
     if (this.hasErrors()) {
       const validators: FormValidationError[] = [];
       for (const item of this.errors) {
-        validators.push(new FormValidationError(item, parentProperty));
+        if(this.hasChildren(item)){
+          this.getNestedErrors(item, validators);
+        }else{
+          validators.push(new FormValidationError(item, parentProperty));
+        }
       }
       return validators;
     }

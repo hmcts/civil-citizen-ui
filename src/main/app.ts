@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
@@ -14,6 +15,7 @@ import { HealthCheck } from './modules/health';
 import { OidcMiddleware } from './modules/oidc';
 import {DraftStoreClient} from './modules/draft-store';
 import routes from './routes/routes';
+
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
