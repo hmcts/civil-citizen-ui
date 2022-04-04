@@ -9,7 +9,7 @@ export async function validateForm(form: Form) {
 }
 
 export async function validateFormArray(forms: Form[]) {
-  if (forms && forms.length > 0) {
+  if (forms?.length > 0) {
     for (const form of forms) {
       await validateForm(form);
     }

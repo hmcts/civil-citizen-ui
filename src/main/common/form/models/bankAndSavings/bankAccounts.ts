@@ -31,7 +31,7 @@ export class BankAccounts extends Form{
   }
 
   private hasAccounts(){
-    return this.accounts && this.accounts.length > 0;
+    return this.accounts?.length > 0;
   }
 
   public addEmptyRowsIfNotEnough(){

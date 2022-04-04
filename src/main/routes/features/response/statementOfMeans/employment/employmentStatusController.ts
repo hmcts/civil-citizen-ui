@@ -17,7 +17,7 @@ import {
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentStatusController');
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
-const router = express.Router();
+const employmentStatusController = express.Router();
 
 function renderView(form: EmploymentForm, res: express.Response): void {
   res.render(citizenEmploymentStatusViewPath, {form: form, EmploymentCategory: EmploymentCategory});
@@ -39,17 +39,17 @@ function redirectToEmployersPage(form: EmploymentForm, claimId: string, res: exp
   }
 }
 
-router.get(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
+employmentStatusController.get(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
   try {
     const form = await getEmploymentForm(req.params.id);
     renderView(form, res);
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
+    logger.error(error);
     res.status(500).send({error: error.message});
   }
 });
 
-router.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
+employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
   const form = new EmploymentForm(req.body.option, EmploymentForm.convertToArray(req.body.employmentCategory));
   try {
     await validateForm(form);
@@ -60,9 +60,9 @@ router.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
       redirectToNextPage(form, req.params.id, res);
     }
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
+    logger.error(error);
     res.status(500).send({error: error.message});
   }
 });
 
-export default router;
+export default employmentStatusController;
