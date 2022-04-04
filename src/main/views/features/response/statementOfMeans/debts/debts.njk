@@ -2,28 +2,84 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
 
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set errors = form.getAllErrors() %}
-
-      {% if errors.length > 0 %}
+      {% set title = t('Do you have loans or credit card debts?') %}
+      {% set errors = form.getErrors() %}
+      {% if errors %}
         {{ govukErrorSummary({
-          "titleText": t('There was a problem'),
+          "titleText": t("There was a problem"),
           "errorList": errors
         }) }}
       {% endif %}
+      {% set yesHtml %}
+
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+            <label id="account-balance-label"
+                   class="govuk-label--s">{{ t('List each loan or credit card debt') }}</label>
+          </div>
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+            <label id="account-balance-label" class="govuk-label--s">{{ t('Total owed') }}</label>
+          </div>
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+            <label id="account-balance-label" class="govuk-label--s">{{ t('Monthly payments') }}</label>
+          </div>
+        </div>
+        {% for debtsItem in form.debtsItems %}
+          <div class="govuk-grid-row govuk-!-padding-top-3">
+            <div class="govuk-grid-column-one-third govuk-!-display-inline">
+              {{ govukInput({
+                id: "debtsItems["+loop.index+"][debt]",
+                name: "debtsItems["+loop.index+"][debt]",
+                value: debtsItem.loanCreditCar,
+                classes: "govuk-grid-column-full govuk-input--error" if false else "govuk-grid-column-full",
+                spellcheck: false
+
+              }) }}
+            </div>
+            <div class="govuk-grid-column-one-third govuk-!-display-inline">
+              {{ govukInput({
+                id: "debtsItems["+loop.index+"][totalOwed]",
+                name: "debtsItems["+loop.index+"][totalOwed]",
+                value: item.totalOwed,
+                prefix: {
+                  text: "£"
+                },
+                classes: "govuk-grid-column-full govuk-input--error" if false else "govuk-grid-column-full",
+                spellcheck: false
+
+              }) }}
+            </div>
+            <div class="govuk-grid-column-one-third govuk-!-display-inline">
+              {{ govukInput({
+                id: "debtsItems["+loop.index+"][monthlyPayments]",
+                name: "debtsItems["+loop.index+"][monthlyPayments]",
+                value: item.monthlyPayments,
+                prefix: {
+                  text: "£"
+                },
+                classes: "govuk-grid-column-full govuk-input--error" if false else "govuk-grid-column-full",
+                spellcheck: false
+
+              }) }}
+            </div>
+          </div>
+        {% endfor %}
+
+      {% endset -%}
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('Do any children live with you?') }}</h1>
           <form
             method="POST" novalidate>
 
             {{ csrfProtection(csrf) }}
 
-
-            {{ yesNoRadioButton(t,id,name,title,form) }}
+            {{ yesNoRadioButton(t,'debtsRadio','debtsRadio',title, form,'',{yesHtml:yesHtml}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({
@@ -34,7 +90,6 @@
           </form>
 
         </div>
-      </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-three-thirds">
           {{ contactUsForHelp(t) }}

@@ -1,18 +1,32 @@
 import {IsDefined, ValidateIf, ValidateNested} from 'class-validator';
-import {VALID_YES_NO_OPTION} from 'common/form/validationErrors/errorMessageConstants';
-import {DebtItems} from 'common/form/models/statementOfMeans/debts/debtItems';
+import {VALID_YES_NO_OPTION} from '../../../../../common/form/validationErrors/errorMessageConstants';
+import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debts/debtItems';
+import {Form} from '../../../../../common/form/models/form';
+import {YesNo} from '../../../../../common/form/models/yesNo';
 
-export class Debts {
+export const INIT_ROW_COUNT = 2;
+
+export class Debts extends Form {
   @IsDefined({message: VALID_YES_NO_OPTION})
-    declared: boolean;
+    option?: string;
 
-  @ValidateIf((o: Debts) => o.declared === true)
+  @ValidateIf((o: Debts) => o.option === YesNo.YES)
   @ValidateNested()
     debtsItems?: DebtItems[];
 
-
-  constructor(declared: boolean, debtsItems?: DebtItems[]) {
-    this.declared = declared;
-    this.debtsItems = debtsItems;
+  constructor(option?: string, debtsItems?: DebtItems[]) {
+    super();
+    this.option = option;
+    this.debtsItems = debtsItems || this.getInitialRows();
   }
+
+  getInitialRows() : DebtItems[]{
+    const items: DebtItems[] = [];
+    for (let i = 0; i < INIT_ROW_COUNT; i++) {
+      items.push(new DebtItems('test','test', 'test'));
+    }
+    return items;
+  }
+
+
 }

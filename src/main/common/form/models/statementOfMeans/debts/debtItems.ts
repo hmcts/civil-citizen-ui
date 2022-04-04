@@ -9,7 +9,7 @@ import {AtLeastOnePopulatedRow} from '../../../../../common/form/validators/atLe
 export class DebtItems {
 
   @ValidateIf(o => o.AtLeastOnePopulatedRow())
-    loanCreditCar: string;
+    debt: string;
 
   @ValidateIf(o => o.AtLeastOnePopulatedRow())
   @IsNotEmpty({message: SELECT_AN_OPTION})
@@ -22,7 +22,7 @@ export class DebtItems {
 
 
   constructor(loanCreditCar: string, totalOwed: string, monthlyPayments: string) {
-    this.loanCreditCar = loanCreditCar;
+    this.debt = loanCreditCar;
     this.totalOwed = totalOwed;
     this.monthlyPayments = monthlyPayments;
   }
@@ -34,4 +34,5 @@ export class DebtItems {
   isAtLeastOneFieldPopulated (): boolean {
     return !this.isEmpty();
   }
+
 }
