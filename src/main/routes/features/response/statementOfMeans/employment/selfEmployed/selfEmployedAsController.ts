@@ -7,7 +7,7 @@ import {
   saveSelfEmployedAsData,
 } from '../../../../../../modules/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
 import {
-  SELF_EMPLOYED_URL,
+  SELF_EMPLOYED_AS_URL,
   ON_TAX_PAYMENTS_URL,
 } from '../../../../../urls';
 
@@ -18,7 +18,7 @@ function renderView(form: SelfEmployedAs, res: express.Response): void {
   res.render(selfEmployedAsViewPath, {form});
 }
 
-router.get(SELF_EMPLOYED_URL, async (req, res) => {
+router.get(SELF_EMPLOYED_AS_URL, async (req, res) => {
   try {
     const form = await getSelfEmployedAsForm(req.params.id);
     renderView(form, res);
@@ -27,7 +27,7 @@ router.get(SELF_EMPLOYED_URL, async (req, res) => {
   }
 });
 
-router.post(SELF_EMPLOYED_URL,
+router.post(SELF_EMPLOYED_AS_URL,
   async (req, res) => {
     try{
       const annualTurnover = req.body.annualTurnover ? Number(req.body.annualTurnover) : undefined;

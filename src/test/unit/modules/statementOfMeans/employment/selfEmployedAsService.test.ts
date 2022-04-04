@@ -1,9 +1,9 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {getSelfEmployedAsForm, saveSelfEmployedAsData} from '../../../../../main/modules/statementOfMeans/employment/selfEmployed/selfEmployedAsService'; // saveSelfEmployedAsData
+import {getSelfEmployedAsForm, saveSelfEmployedAsData} from '../../../../../main/modules/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
 import { SelfEmployedAs } from '../../../../../main/common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAs';
-import {REDIS_FAILURE} from '../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../test/utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -62,10 +62,10 @@ describe('Self Employed Service', () => {
     it('should rethrow error when error occurs', async () => {
       //When
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error(REDIS_FAILURE);
+        throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(getSelfEmployedAsForm('123')).rejects.toThrow(REDIS_FAILURE);
+      await expect(getSelfEmployedAsForm('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
@@ -95,19 +95,19 @@ describe('Self Employed Service', () => {
     it('should rethrow error when error occurs on get claim', async () => {
       //When
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error(REDIS_FAILURE);
+        throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveSelfEmployedAsData('123', new SelfEmployedAs(JOB_TITLE, ANNUAL_TURNOVER))).rejects.toThrow(REDIS_FAILURE);
+      await expect(saveSelfEmployedAsData('123', new SelfEmployedAs(JOB_TITLE, ANNUAL_TURNOVER))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
     it('should rethrow error when error occurs on save claim', async () => {
       //Given
       const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
       mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(REDIS_FAILURE);
+        throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveSelfEmployedAsData('123', new SelfEmployedAs(JOB_TITLE, ANNUAL_TURNOVER))).rejects.toThrow(REDIS_FAILURE);
+      await expect(saveSelfEmployedAsData('123', new SelfEmployedAs(JOB_TITLE, ANNUAL_TURNOVER))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
