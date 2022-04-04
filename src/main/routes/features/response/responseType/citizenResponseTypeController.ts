@@ -7,14 +7,13 @@ import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
 import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {get} from 'lodash';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 
-const logger = Logger.getLogger('citizenPhoneController');
+const logger = Logger.getLogger('citizenResponseTypeController');
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
-const router = express.Router();
+const citizenResponseTypeController = express.Router();
 let claim = new Claim();
 const validator = new Validator();
 
@@ -22,11 +21,11 @@ function renderView(form: CitizenResponseType, res: express.Response, componentD
   res.render(citizenResponseTypeViewPath, {form: form, componentDetailItemsList: componentDetailItemsList});
 }
 
-router.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) => {
+citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) => {
   try {
     const citizenResponseType = new CitizenResponseType();
     claim = await getCaseDataFromStore(req.params.id);
-    if (get(claim, 'respondent1.responseType')) {
+    if (claim?.respondent1?.responseType) {
       citizenResponseType.responseType = claim.respondent1.responseType;
     }
     const componentDetailItemsList = getDetailItemsList();
@@ -37,12 +36,12 @@ router.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) => {
   }
 });
 
-router.post(CITIZEN_RESPONSE_TYPE_URL,
+citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
   async (req, res) => {
     try {
       const model: CitizenResponseType = new CitizenResponseType(req.body.responseType);
       const errors: ValidationError[] = validator.validateSync(model);
-      if (errors && errors.length > 0) {
+      if (errors?.length > 0) {
         model.errors = errors;
         renderView(model, res);
       } else {
@@ -101,4 +100,4 @@ function getDetailItemsList(): ComponentDetailItems[] {
   return componentDetailItemsList;
 }
 
-export default router;
+export default citizenResponseTypeController;

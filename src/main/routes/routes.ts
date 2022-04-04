@@ -1,5 +1,5 @@
-import homeController from './home';
-import unauthorisedController from './unauthorised';
+import homeController from './homeController';
+import unauthorisedController from './unauthorisedController';
 import dashboardController from './features/dashboard/dashboardController';
 import phoneDetailsController from './features/response/citizenPhoneNumber/citizenPhoneController';
 import responseDobController from './features/response/citizenDob/citizenDobController';
@@ -15,7 +15,8 @@ import citizenSevereDisabilityController from './features/response/statementOfMe
 import bankAccountsController from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
 import partnerController from './features/response/statementOfMeans/partner/partnerController';
 import partnerDisabilityController from './features/response/statementOfMeans/partner/partnerDisabilityController';
-import partnerSevereDisabilityController from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
+import partnerSevereDisabilityController
+  from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
 import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
 import residenceController from './features/response/statementOfMeans/residenceController';
 import financialDetailsController from './features/response/financialDetails/financialDetailsController';
@@ -24,6 +25,8 @@ import partnerPensionController from './features/response/statementOfMeans/partn
 import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
 import betweenSixteenAndNineteenController from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
+import onTaxPaymentsController
+  from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
 
 export default [
   homeController,
@@ -52,4 +55,5 @@ export default [
   paymentOptionController,
   betweenSixteenAndNineteenController,
   dependantsController,
+  onTaxPaymentsController,
 ];

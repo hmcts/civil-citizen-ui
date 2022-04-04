@@ -11,7 +11,7 @@ import {getRespondentInformation, saveRespondent} from '../../../../modules/citi
 import _ from 'lodash';
 
 
-const router = express.Router();
+const citizenDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDetailsController');
 
@@ -35,7 +35,7 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
   });
 }
 
-router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   try {
     let citizenAddressModel;
     let citizenCorrespondenceAddressModel;
@@ -71,7 +71,7 @@ router.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respon
   }
 });
 
-router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   try {
     const citizenAddress = new CitizenAddress(
       req.body.primaryAddressLine1,
@@ -98,8 +98,8 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
       citizenAddress.errors = validator.validateSync(citizenAddress);
       errorList.errors = citizenAddress.errors;
     }
-    if ((citizenAddress.errors && citizenAddress.errors.length > 0)
-      || (citizenCorrespondenceAddress.errors && citizenCorrespondenceAddress.errors.length > 0)) {
+    if ((citizenAddress?.errors?.length > 0)
+      || (citizenCorrespondenceAddress?.errors?.length > 0)) {
       renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req);
     } else {
       await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress);
@@ -111,6 +111,4 @@ router.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Respo
   }
 });
 
-
-
-export default router;
+export default citizenDetailsController;

@@ -1,5 +1,7 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../modules/draft-store/draftStoreService';
-import {get} from 'lodash';
+import {
+  getCaseDataFromStore,
+  saveDraftClaim,
+} from '../../modules/draft-store/draftStoreService';
 import {Respondent} from '../../common/models/respondent';
 import {Claim} from '../../common/models/claim';
 import {PrimaryAddress} from '../../common/models/primaryAddress';
@@ -10,22 +12,22 @@ import {CitizenCorrespondenceAddress} from '../../common/form/models/citizenCorr
 
 export const getRespondentInformation = async (claimId: string): Promise<Respondent> => {
   const responseData = await getCaseDataFromStore(claimId);
-  if (get(responseData, 'respondent1')) {
+  if (responseData?.respondent1) {
     return responseData.respondent1;
   }
   return new Respondent();
 };
 
-export const saveRespondent = async (claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress): Promise<void> => {
+export const saveRespondent = async(claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress) : Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId) || new Claim();
-  if (!get(responseData, 'respondent1')) {
+  if (!responseData?.respondent1) {
     const respondent = new Respondent();
     respondent.primaryAddress = buildPrimaryAddress(citizenAddress);
-    respondent.correspondenceAddress = citizenCorrespondenceAddress.isEmpty() ? undefined : buildCorrespondenceAddress(citizenCorrespondenceAddress);
+    respondent.correspondenceAddress = citizenCorrespondenceAddress.isEmpty() ? undefined :  buildCorrespondenceAddress(citizenCorrespondenceAddress);
     responseData.respondent1 = respondent;
   } else {
     responseData.respondent1.primaryAddress = buildPrimaryAddress(citizenAddress);
-    responseData.respondent1.correspondenceAddress = citizenCorrespondenceAddress.isEmpty() ? undefined : buildCorrespondenceAddress(citizenCorrespondenceAddress);
+    responseData.respondent1.correspondenceAddress = citizenCorrespondenceAddress.isEmpty() ?  undefined :  buildCorrespondenceAddress(citizenCorrespondenceAddress);
   }
   await saveDraftClaim(claimId, responseData);
 };
