@@ -22,8 +22,13 @@ export const getEmployers = async (claimId: string): Promise<Employers> => {
 
 export const saveEmployers = async (claimId: string, employers: Employers) => {
   let claim = await getCaseDataFromStore(claimId);
-  const employersConverted: Employers = new Employers(employers.rows.map(employer => new Employer(employer.employerName, employer.jobTitle)));
-  employersConverted.getOnlyCompletedAccounts();
+  let employersConverted: Employers = new Employers(
+    employers.rows
+      .filter(employer => employer.employerName !== '' && employer.jobTitle !== '')
+      .map(employer => new Employer(employer.employerName, employer.jobTitle))
+  );
+  // employersConverted.getOnlyCompletedAccounts();
+
   if (claim === undefined) {
     claim = new Claim();
   }
