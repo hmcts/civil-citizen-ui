@@ -26,11 +26,13 @@ export const isDefendantNotDisabled = (statementOfMeans : StatementOfMeans) : bo
 };
 
 export const isDefendantDisabledButNotSeverely = (statementOfMeans : StatementOfMeans) : boolean => {
+  // Note that no ? needed on statementOfMeans in 2nd condition, as false && means it's never evaluated
   return statementOfMeans?.disability?.option === YesNo.YES &&
     statementOfMeans.severeDisability?.option === YesNo.NO;
 };
 
 export const isDefendantPartnerDisabled = (statementOfMeans : StatementOfMeans) : boolean => {
+  // Note that no ? needed on statementOfMeans in 2nd condition, as false && means it's never evaluated
   return statementOfMeans?.cohabiting?.option === YesNo.YES && statementOfMeans.partnerDisability?.option === YesNo.YES;
 };
 

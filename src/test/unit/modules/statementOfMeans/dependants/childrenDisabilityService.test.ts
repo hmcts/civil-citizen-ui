@@ -290,16 +290,6 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans).toBe(undefined);
       expect(isDefendantDisabledButNotSeverely(claim.case_data.statementOfMeans)).toBe(false);
     });
-    test('should return false if no severeDisability', async () => {
-      //When
-      const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noDefendantDisabilityOrSevereDisability));
-      //Given
-      //Then
-      expect(claim.case_data.statementOfMeans).not.toBe(undefined);
-      expect(claim.case_data.statementOfMeans.disability).toBe(undefined);
-      expect(claim.case_data.statementOfMeans.severeDisability).toBe(undefined);
-      expect(isDefendantDisabledButNotSeverely(claim.case_data.statementOfMeans)).toBe(false);
-    });
     test('should return false if no statement of means', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noStatementOfMeans));
