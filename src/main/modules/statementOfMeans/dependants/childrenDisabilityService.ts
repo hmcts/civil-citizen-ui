@@ -53,7 +53,7 @@ export const getChildrenDisability = async (claimId: string) : Promise<ChildrenD
 export const saveChildrenDisability = async (claimId: string, childrenDisability: ChildrenDisability) => {
   try {
     const case_data = await getCaseDataFromStore(claimId) || new Claim();
-    if (case_data?.statementOfMeans) {
+    if (case_data.statementOfMeans) {
       case_data.statementOfMeans.childrenDisability = childrenDisability;
     } else {
       const statementOfMeans = new StatementOfMeans();
