@@ -287,6 +287,7 @@ describe('Children Disability service', () => {
       claim.case_data.statementOfMeans.dependants.numberOfChildren = numberOfChildren;
       //Then
       expect(numberOfChildren.totalNumberOfChildren()).toBe(4);
+      expect(claim.case_data.statementOfMeans.disability.option).not.toBe(undefined);
       expect(claim.case_data.statementOfMeans.disability.option).toBe(YesNo.NO);
       expect(claim.case_data.statementOfMeans.severeDisability).toBe(undefined);
       expect(claim.case_data.statementOfMeans.cohabiting).toBe(undefined);
@@ -302,6 +303,8 @@ describe('Children Disability service', () => {
       claim.case_data.statementOfMeans.dependants.numberOfChildren = numberOfChildren;
       //Then
       expect(numberOfChildren.totalNumberOfChildren()).toBe(4);
+      // Expect severeDisability to still be YES unless you explicitly change it
+      expect(claim.case_data.statementOfMeans.severeDisability.option).toBe(YesNo.YES);
       expect(claim.case_data.statementOfMeans.cohabiting).toBe(undefined);
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
@@ -315,6 +318,7 @@ describe('Children Disability service', () => {
       claim.case_data.statementOfMeans.severeDisability.option = YesNo.NO;
       claim.case_data.statementOfMeans.dependants.numberOfChildren = numberOfChildren;
       //Then
+      expect(claim.case_data.statementOfMeans.severeDisability.option).not.toBe(undefined);
       expect(numberOfChildren.totalNumberOfChildren()).toBe(4);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
