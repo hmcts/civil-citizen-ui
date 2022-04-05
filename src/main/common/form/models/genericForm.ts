@@ -27,9 +27,9 @@ export class GenericForm<Model> {
    *
    * @param fieldName - field name / model property
    */
-  errorFor(fieldName: string): string {
-    if (this.hasFieldError(fieldName)) {
-      return this.getErrors()
+  errorFor(fieldName: string, parentProperty?: string): string {
+    if (this.hasFieldError(fieldName, parentProperty)) {
+      return this.getAllErrors(parentProperty)
         .filter((error: FormValidationError) => error.constraints && error.property === fieldName)
         .map((error: FormValidationError) => error.text)[0];
     }
@@ -43,33 +43,31 @@ export class GenericForm<Model> {
     }
   }
 
-  public getErrors(): FormValidationError[] {
+  public getErrors(property?: string): FormValidationError[] {
     const validators: FormValidationError[] = [];
     if (this.hasErrors()) {
       for (const item of this.errors) {
-        validators.push(new FormValidationError(item));
+        validators.push(new FormValidationError(item, property));
       }
     }
     return validators;
   }
 
-  public getAllErrors(): FormValidationError[] {
-    return this.getErrors().concat(this.getNestedErrors());
+  public getAllErrors(property?: string): FormValidationError[] {
+    return this.getErrors(property).concat(this.getNestedErrors(property));
   }
 
-  public getNestedErrors(): FormValidationError[] {
+  public getNestedErrors(property?: string): FormValidationError[] {
     let validators: FormValidationError[] = [];
     this.getErrors()
       .forEach(error => {
-        validators = validators.concat(this.getAllChildrenErrors(error));
+        validators = validators.concat(this.getAllChildrenErrors(error, property));
       });
     return validators;
   }
 
-  public hasFieldError(field: string): boolean {
-    if (this.errors) {
-      return this.errors.some((error) => field == error.property);
-    }
+  public hasFieldError(field: string, parentProperty?: string): boolean {
+    return this.getAllErrors(parentProperty)?.some((error) => field == error.property);
   }
 
   public hasNestedFieldError(field: string): boolean {
@@ -84,13 +82,14 @@ export class GenericForm<Model> {
     this.errors = await validator.validate(this.model as unknown as object);
   }
 
-  private getAllChildrenErrors(error: ValidationError): FormValidationError[] {
+  private getAllChildrenErrors(error: ValidationError, parentProperty?: string): FormValidationError[] {
     let formErrors: FormValidationError[] = [];
     if (error.children?.length > 0) {
       error.children.forEach(childError => {
-        formErrors.push(new FormValidationError(childError));
+        const errorProperty = parentProperty ? `${parentProperty}[${error.property}]` : error.property;
+        formErrors.push(new FormValidationError(childError, errorProperty));
         if (childError.children?.length > 0) {
-          formErrors = formErrors.concat(this.getAllChildrenErrors(childError));
+          formErrors = formErrors.concat(this.getAllChildrenErrors(childError, errorProperty));
         }
       });
       return formErrors;

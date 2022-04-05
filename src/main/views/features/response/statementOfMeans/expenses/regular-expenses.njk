@@ -7,7 +7,7 @@
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/expense-details.njk" import expenseDetails %}
 {% block content %}
-  {% set errors = form.getErrors() %}
+  {% set errors = form.getNestedErrors('model') %}
   {% if form.hasErrors() %}
     {{ govukErrorSummary({
       "titleText": t("There was a problem"),
@@ -15,43 +15,43 @@
     }) }}
   {% endif %}
   {% set checkedMortgageHtml %}
-    {{ expenseDetails('Include all mortgages', 'model[mortgage]',  form.model.mortgage.expenseSource) }}
+    {{ expenseDetails('Include all mortgages', 'model[mortgage]',  form.model.mortgage.expenseSource, form) }}
   {% endset -%}
   {% set checkedRentHtml %}
-    {{ expenseDetails('', 'model[rent]',  form.model.rent.expenseSource) }}
+    {{ expenseDetails('', 'model[rent]',  form.model.rent.expenseSource, form) }}
   {% endset -%}
   {% set checkedCouncilTaxHtml %}
-    {{ expenseDetails('', 'model[councilTax]',  form.model.councilTax.expenseSource) }}
+    {{ expenseDetails('', 'model[councilTax]',  form.model.councilTax.expenseSource, form) }}
   {% endset -%}
   {% set checkedGasHtml %}
-    {{ expenseDetails('', 'model[gas]', form.model.gas.expenseSource) }}
+    {{ expenseDetails('', 'model[gas]', form.model.gas.expenseSource, form) }}
   {% endset -%}
   {% set checkedElectricityHtml %}
-    {{ expenseDetails('', 'model[electricity]', form.model.electricity.expenseSource) }}
+    {{ expenseDetails('', 'model[electricity]', form.model.electricity.expenseSource, form) }}
   {% endset -%}
   {% set checkedWaterHtml %}
-    {{ expenseDetails('Include sewerage payments', 'model[water]', form.model.water.expenseSource) }}
+    {{ expenseDetails('Include sewerage payments', 'model[water]', form.model.water.expenseSource, form) }}
   {% endset -%}
   {% set checkedTravelHtml %}
-    {{ expenseDetails('', 'model[travel]', form.model.travel.expenseSource) }}
+    {{ expenseDetails('', 'model[travel]', form.model.travel.expenseSource, form) }}
   {% endset -%}
   {% set checkedSchoolHtml %}
-    {{ expenseDetails('', 'model[schoolCosts]', form.model.expenseSource.schoolCosts.expenseSource) }}
+    {{ expenseDetails('', 'model[schoolCosts]', form.model.expenseSource.schoolCosts.expenseSource, form) }}
   {% endset -%}
   {% set checkedFoodHtml %}
-    {{ expenseDetails('', 'model[foodAndHousekeeping]',  form.model.foodAndHousekeeping.expenseSource) }}
+    {{ expenseDetails('', 'model[foodAndHousekeeping]',  form.model.foodAndHousekeeping.expenseSource, form) }}
   {% endset -%}
   {% set checkedTvHtml %}
-    {{ expenseDetails('', 'model[tvAndBroadband]',  form.model.tvAndBroadband.expenseSource) }}
+    {{ expenseDetails('', 'model[tvAndBroadband]',  form.model.tvAndBroadband.expenseSource, form) }}
   {% endset -%}
   {% set checkedHirePurchaseHtml %}
-    {{ expenseDetails('', 'model[hirePurchase]',  form.model.hirePurchase.expenseSource.amount) }}
+    {{ expenseDetails('', 'model[hirePurchase]',  form.model.hirePurchase.expenseSource, form) }}
   {% endset -%}
   {% set checkedMobileHtml %}
-    {{ expenseDetails('', 'model[mobilePhone]', form.model.mobilePhone.expenseSource) }}
+    {{ expenseDetails('', 'model[mobilePhone]', form.model.mobilePhone.expenseSource, form) }}
   {% endset -%}
   {% set checkedMaintenanceHtml %}
-    {{ expenseDetails('', 'model[maintenance]', form.model.maintenance.expenseSource) }}
+    {{ expenseDetails('', 'model[maintenance]', form.model.maintenance.expenseSource, form) }}
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -79,91 +79,104 @@
                   text: t("Mortgage"),
                   conditional: {
                   html: checkedMortgageHtml
-                }
+                },
+                  checked: true if form.model.mortgage.declared
                 },
                 {
                   value: "rent",
                   text: t("Rent"),
                   conditional: {
                   html: checkedRentHtml
-                }
+                },
+                  checked: true if form.model.rent.declared
                 },
                 {
                   value: "councilTax",
                   text: t("Council Tax"),
                   conditional: {
                   html: checkedCouncilTaxHtml
-                }
+                },
+                  checked: true if form.model.councilTax.declared
                 },
                 {
                   value: "gas",
                   text: t("Gas"),
                   conditional: {
                   html: checkedGasHtml
-                }
+                },
+                  checked: true if form.model.gas.declared
                 },
                 {
                   value: "electricity",
                   text: t("Electricity"),
                   conditional: {
                   html: checkedElectricityHtml
-                }
+                },
+                  checked: true if form.model.electricity.declared
                 },
                 {
                   value: "water",
                   text: t("Water"),
                   conditional: {
                   html: checkedWaterHtml
-                }
+                },
+                  checked: true if form.model.water.declared
                 },
                 {
                   value: "travel",
                   text: t("Travel"),
                   conditional: {
                   html: checkedTravelHtml
-                }
+                },
+                  checked: true if form.model.travel.declared
                 },
                 {
                   value: "schoolCosts",
                   text: t("School costs (include clothing)"),
                   conditional: {
                   html: checkedSchoolHtml
-                }
+                },
+                  checked: true if form.model.schoolCosts.declared
                 },
                 {
                   value: "foodAndHousekeeping",
                   text: t("Food and housekeeping"),
                   conditional: {
                   html: checkedFoodHtml
-                }
+                },
+                  checked: true if form.model.foodAndHousekeeping.declared
                 },
                 {
                   value: "tvAndBroadband",
                   text: t("TV and broadband"),
                   conditional: {
                   html: checkedTvHtml
-                }
+                },
+                  checked: true if form.model.tvAndBroadband.declared
                 },
                 {
                   value: "hirePurchase",
                   text: t("Hire purchase"),
                   conditional: {
                   html: checkedHirePurchaseHtml
-                }
+                },
+                  checked: true if form.model.hirePurchase.declared
                 },
                 {
                   value: "mobilePhone",
                   text: t("Mobile phone"),
                   conditional: {
                   html: checkedMobileHtml
-                }
+                },
+                  checked: true if form.model.mobilePhone.declared
                 },
                 {
                   value: "maintenance",
                   text: t("Maintenance payments"),
                   conditional: {
                   html: checkedMaintenanceHtml
-                }
+                },
+                  checked: true if form.model.maintenance.declared
                 }
               ]
             }) }}

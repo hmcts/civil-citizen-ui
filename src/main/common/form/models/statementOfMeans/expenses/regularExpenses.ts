@@ -98,11 +98,6 @@ export class RegularExpenses {
     return new RegularExpenses(params);
   }
 
-  public static getKey(keyName: string): string {
-    return Object.keys(RegularExpenses).find((key) => key === keyName);
-  }
-
-
   private static buildExpense(type: ExpenseType): Expense {
     return Expense.buildEmptyForm(type);
   }
