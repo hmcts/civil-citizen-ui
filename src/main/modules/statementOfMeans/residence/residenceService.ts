@@ -1,5 +1,4 @@
 import {Validator} from 'class-validator';
-import {get} from 'lodash';
 import {getDraftClaimFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Residence} from '../../../common/form/models/statementOfMeans/residence';
@@ -15,7 +14,7 @@ class ResidenceService {
   public async getResidence(claimId: string): Promise<Residence> {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (get(civilClaimResponse, 'case_data.statementOfMeans.residence')) {
+      if (civilClaimResponse?.case_data?.statementOfMeans?.residence) {
         return civilClaimResponse.case_data.statementOfMeans.residence;
       }
       return new Residence();
@@ -28,7 +27,7 @@ class ResidenceService {
   public async saveResidence(claimId: string, residence: Residence) {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (get(civilClaimResponse, 'case_data.statementOfMeans')) {
+      if (civilClaimResponse?.case_data?.statementOfMeans) {
         civilClaimResponse.case_data.statementOfMeans.residence = residence;
       } else {
         const statementOfMeans = new StatementOfMeans();

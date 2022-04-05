@@ -1,5 +1,5 @@
-import homeController from './home';
-import unauthorisedController from './unauthorised';
+import homeController from './homeController';
+import unauthorisedController from './unauthorisedController';
 import dashboardController from './features/dashboard/dashboardController';
 import phoneDetailsController from './features/response/citizenPhoneNumber/citizenPhoneController';
 import responseDobController from './features/response/citizenDob/citizenDobController';
@@ -22,9 +22,10 @@ import financialDetailsController from './features/response/financialDetails/fin
 import otherDependantsController from './features/response/statementOfMeans/otherDependants/otherDependantsController';
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
 import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
-import betweenSixteenAndNineteenController
-  from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
+import betweenSixteenAndNineteenController from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
+import onTaxPaymentsController
+  from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
 import unemploymentController from './features/response/statementOfMeans/unemployment/unemploymentController';
 
 
@@ -54,5 +55,6 @@ export default [
   paymentOptionController,
   betweenSixteenAndNineteenController,
   dependantsController,
+  onTaxPaymentsController,
   unemploymentController,
 ];

@@ -8,8 +8,8 @@ import {
   CITIZEN_PARTNER_URL,
 } from '../../../../../../../main/routes/urls';
 import { VALID_YES_NO_OPTION } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { REDIS_FAILURE } from '../../../../../../utils/errorMessageTestConstants';
-import { mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
+import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
+import { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -30,8 +30,8 @@ describe('Partner', () => {
         .get(CITIZEN_PARTNER_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Do you live with a partner?');
-          expect(res.text).toContain('For example, a boyfriend, girlfriend, husband, wife or civil partner.');
+          expect(res.text).toContain(TestMessages.DO_YOU_LIVE_WITH_PARTNER);
+          expect(res.text).toContain(TestMessages.EXAMPLE_LIVE_WITH_PARTNER);
         });
     });
     test('should show partner page when haven´t statementOfMeans', async () => {
@@ -49,11 +49,20 @@ describe('Partner', () => {
         .get(CITIZEN_PARTNER_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
   describe('on POST', () => {
+    test('should create a new claim if redis gives undefined', async () => {
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      await request(app)
+        .post(CITIZEN_PARTNER_URL)
+        .send('option=no')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
     test('should redirect page when "no"', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
@@ -105,7 +114,7 @@ describe('Partner', () => {
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: REDIS_FAILURE });
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
