@@ -2,7 +2,7 @@ import {
   getCaseDataFromStore,
   saveDraftClaim,
 } from '../../modules/draft-store/draftStoreService';
-import _, {get} from 'lodash';
+import {get} from 'lodash';
 import {Respondent} from '../../common/models/respondent';
 import {Claim} from '../../common/models/claim';
 import {PrimaryAddress} from '../../common/models/primaryAddress';
