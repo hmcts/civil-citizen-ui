@@ -64,7 +64,6 @@ withPipeline(type, product, component) {
   enableAksStagingDeployment()
   enableSlackNotifications('#civil_notifications')
   syncBranchesWithMaster(['demo'])
-  enableHighLevelDataSetup()
   loadVaultSecrets(secrets)
   disableLegacyDeployment()
 
