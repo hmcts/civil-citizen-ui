@@ -5,7 +5,7 @@ import nock from 'nock';
 import {CITIZEN_UNEMPLOYED_URL} from '../../../../../../../main/routes/urls';
 import {SELECT_AN_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import {REDIS_FAILURE} from '../../../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -33,7 +33,7 @@ describe('Unemployment', () => {
         .get(CITIZEN_UNEMPLOYED_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: REDIS_FAILURE});
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
         });
     });
   });
@@ -54,7 +54,7 @@ describe('Unemployment', () => {
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: REDIS_FAILURE});
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
         });
     });
   });

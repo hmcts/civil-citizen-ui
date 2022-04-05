@@ -10,9 +10,10 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set errors = form.getErrors() %}
-      {% set unemploymentDetailsError = form.getTextError(errors, 'unemploymentDetails') %}
-      {% set otherDetailsError = form.getTextError(errors, 'otherDetails') %}
+      {% set errors = form.getAllErrors() %}
+      {% set otherDetailsNestedError = form.nestedErrorFor('details') %}
+      {% set yearNestedError = form.nestedErrorFor('years') %}
+      {% set monthsNestedError = form.nestedErrorFor('months') %}
       {% if errors %}
         {{ govukErrorSummary({
           "titleText": 'There was a problem',
@@ -28,12 +29,12 @@
                 id: "details",
                 name: "details",
                 type: "text",
-                classes:  "govuk-input--width-5 govuk-input--error" if form.hasFieldError('otherDetails') else "govuk-input--width-5",
+                classes:  "govuk-input--width-5 govuk-input--error" if form.hasFieldError('details') else "govuk-input--width-5",
                 label: {
                   text: t('Give details')
                 },
-                value: form.otherDetails.details,
-                errorMessage: { text: otherDetailsError.IsNotEmpty } if otherDetailsError else ''
+                value: form.model.otherDetails.details,
+                errorMessage: { text: otherDetailsNestedError } if otherDetailsNestedError else ''
               }) }}
             {% endset -%}
             {% set ifUnemployed %}
@@ -42,24 +43,24 @@
                 name: "years",
                 type: "number",
                 autocomplete: "number",
-                classes: "govuk-input--width-5 govuk-input--error" if form.hasFieldError('unemploymentDetails') else "govuk-input--width-5",
+                classes: "govuk-input--width-5 govuk-input--error" if form.hasFieldError('years') else "govuk-input--width-5",
                 label: {
                   text: t('Years')
                 },
-                value: form.UnemploymentDetails.years,
-                errorMessage: { text: unemploymentDetailsError } if unemploymentDetailsError else ''
+                value: form.model.unemploymentDetails.years,
+                errorMessage: { text: yearNestedError } if yearNestedError else ''
               }) }}
               {{ govukInput({
                 id: "UnemploymentDetails",
                 name: "months",
                 type: "number",
                 autocomplete: "number",
-                classes: "govuk-!-width-one-third",
+                classes: "govuk-input--width-5 govuk-input--error" if form.hasFieldError('months') else "govuk-input--width-5",
                 label: {
                   text: t('Months')
                 },
-                value: form.UnemploymentDetails.months,
-                errorMessage: { text: unemploymentDetailsError } if unemploymentDetailsError else ''
+                value: form.model.unemploymentDetails.months,
+                errorMessage: { text: monthsNestedError } if monthsNestedError else ''
               }) }}
             {% endset -%}
             {{ govukRadios({
@@ -68,18 +69,18 @@
               items: [
                 {
                   value: UnemploymentCategory.UNEMPLOYED,
-                  checked: true if form.option === UnemploymentCategory.UNEMPLOYED,
+                  checked: true if form.model.option === UnemploymentCategory.UNEMPLOYED,
                   html:UnemploymentCategory.UNEMPLOYED,
                   conditional:{html: ifUnemployed}
                 },
                 {
                   value: UnemploymentCategory.RETIRED,
-                  checked: true if form.option  === UnemploymentCategory.RETIRED,
+                  checked: true if form.model.option  === UnemploymentCategory.RETIRED,
                   html: UnemploymentCategory.RETIRED
                 },
                 {
                   value: UnemploymentCategory.OTHER,
-                  checked: true if form.option  === UnemploymentCategory.OTHER,
+                  checked: true if form.model.option  === UnemploymentCategory.OTHER,
                   html:UnemploymentCategory.OTHER,
                   conditional:{html: ifOther}
                 }
