@@ -9,21 +9,24 @@ import claimDetailsController from './features/response/claimDetails/claimDetail
 import responsePostcodeLookupController from './features/response/citizenDetails/postcodeLookupController';
 import citizenResponseTypeController from './features/response/responseType/citizenResponseTypeController';
 import citizenPartnerAgeController from './features/response/statementOfMeans/partner/partnerAgeController';
+import partnerAgeController from './features/response/statementOfMeans/partner/partnerAgeController';
 import citizenDisabilityController from './features/response/statementOfMeans/disabilityController';
 import citizenSevereDisabilityController from './features/response/statementOfMeans/severeDisabilityController';
 import bankAccountsController from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
 import partnerController from './features/response/statementOfMeans/partner/partnerController';
 import partnerDisabilityController from './features/response/statementOfMeans/partner/partnerDisabilityController';
-import partnerSevereDisabilityController from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
+import partnerSevereDisabilityController
+  from './features/response/statementOfMeans/partner/partnerSevereDisabilityController';
 import employmentStatusController from './features/response/statementOfMeans/employment/employmentStatusController';
 import residenceController from './features/response/statementOfMeans/residenceController';
 import financialDetailsController from './features/response/financialDetails/financialDetailsController';
 import otherDependantsController from './features/response/statementOfMeans/otherDependants/otherDependantsController';
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
 import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
-import betweenSixteenAndNineteenController
-  from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
+import betweenSixteenAndNineteenController from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
+import onTaxPaymentsController
+  from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
 
 export default [
   homeController,
@@ -42,6 +45,7 @@ export default [
   citizenSevereDisabilityController,
   bankAccountsController,
   partnerController,
+  partnerAgeController,
   partnerSevereDisabilityController,
   residenceController,
   employmentStatusController,
@@ -51,4 +55,5 @@ export default [
   paymentOptionController,
   betweenSixteenAndNineteenController,
   dependantsController,
+  onTaxPaymentsController,
 ];

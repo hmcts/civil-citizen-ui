@@ -6,7 +6,7 @@ import {Claim} from '../../../common/models/claim';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('dependantTeenagersService');
+const logger = Logger.getLogger('betweenSixteenAndNineteenService');
 
 export const getForm = async (claimId: string): Promise<BetweenSixteenAndNineteenDependants> => {
   try {

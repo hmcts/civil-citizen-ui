@@ -50,7 +50,7 @@ describe('Citizen response type', () => {
   });
   describe('on GET', () => {
     test('should return empty citizen response type page', async () => {
-      mockGetCaseData.mockImplementation(async () => undefined);
+      mockGetCaseData.mockImplementation(async () => new Claim());
       await request(app)
         .get(CITIZEN_RESPONSE_TYPE_URL)
         .expect((res) => {
