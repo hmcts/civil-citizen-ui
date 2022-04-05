@@ -16,13 +16,14 @@
           "errorList": errors
         }) }}
       {% endif %}
-
       <h1 class="govuk-heading-l">{{ t('Who employs you?') }}</h1>
-
       <form method="post" name="employers" novalidate>
-        {% for employer in employers.rows %}
-          {{employerRow(employer, loop.index0)}}
-        {% endfor %}
+        <div class="govuk-form-group {%- if errors[0].text %} govuk-form-group--error{% endif %}">
+          <span class="govuk-error-message">{{ t(errors[0].text) }}</span>
+          {% for employer in employers.rows %}
+            {{employerRow(employer, loop.index0)}}
+          {% endfor %}
+        </div>
         <div class="govuk-form-group">
           {{ govukButton({
             text: t("Add another job"),
