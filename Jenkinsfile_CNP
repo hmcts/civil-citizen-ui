@@ -1,10 +1,14 @@
 #!groovy
 
 @Library("Infrastructure")
+import uk.gov.hmcts.contino.AppPipelineConfig
+import uk.gov.hmcts.contino.GithubAPI
 
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
+def camundaBranch = "master"
+AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
   [$class     : 'AzureKeyVaultSecret',
@@ -15,27 +19,182 @@ static Map<String, Object> secret(String secretName, String envVariable) {
 }
 
 def secrets = [
-        'civil-${env}'    :[
-                secret('idam-secret', 'IDAM_SECRET')
-        ]
+  's2s-${env}': [
+  secret('microservicekey-ccd-gw', 'CCD_API_GATEWAY_S2S_SECRET'),
+  secret('microservicekey-ccd-data', 'CCD_DATA_STORE_S2S_SECRET'),
+  secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET')
+  ],
+'ccd-${env}': [
+  secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET'),
+  secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET'),
+  secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
+  secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
+  secret('idam-data-store-client-secret','IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET'),
+  secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
+  secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD'),
+  secret('microservicekey-ccd-gw', 'CCD_API_GATEWAY_S2S_KEY'),
+  secret('idam-data-store-system-user-username','ROLE_ASSIGNMENT_USER_EMAIL')
+],
+'civil-${env}'    :[
+  secret('microservicekey-civil-service', 'S2S_SECRET'),
+  secret('ccd-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
+  secret('ccd-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
+  secret('ccd-importer-username', 'DEFINITION_IMPORTER_USERNAME'),
+  secret('ccd-importer-password', 'DEFINITION_IMPORTER_PASSWORD'),
+  secret('postgres-user', 'POSTGRES_USER'),
+  secret('postgres-password', 'POSTGRES_PASSWORD'),
+  secret('idam-secret', 'IDAM_SECRET')
+  ]
 ]
 
-def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+def createGithubRelease() {
+  sh """
+    ./bin/create-github-release.sh
+  """
+}
+
+def archiveCoreCaseDataDefinitions() {
+  if ( env.ENVIRONMENT == 'aat') {
+    echo "current environment is ${env.ENVIRONMENT}"
+    for(PROD_ENV in ["aat","prod"]){
+      echo "environment is ${PROD_ENV}"
+      dir("${WORKSPACE}/bin") {
+        sh """
+          eval \$(./variables/load-${PROD_ENV}-environment-variables.sh)
+          ./build-release-ccd-definition.sh ${PROD_ENV}
+        """
+      }
+
+      dir("${WORKSPACE}/build") {
+        steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-${PROD_ENV}.xlsx"
+      }
+    }
+
+  } else if ( env.ENVIRONMENT == 'preview') {
+    dir("${WORKSPACE}/bin") {
+      sh """
+          eval \$(./variables/load-${env.ENVIRONMENT}-environment-variables.sh ${CHANGE_ID})
+          ./build-release-ccd-definition.sh ${env.ENVIRONMENT}
+      """
+    }
+
+    dir("${WORKSPACE}/build") {
+      steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-${env.ENVIRONMENT}.xlsx"
+    }
+  } else {
+    dir("${WORKSPACE}/bin") {
+      sh """
+          eval \$(./variables/load-${env.ENVIRONMENT}-environment-variables.sh)
+          ./build-release-ccd-definition.sh ${env.ENVIRONMENT}
+        """
+    }
+
+    dir("${WORKSPACE}/build") {
+      steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-${env.ENVIRONMENT}.xlsx"
+    }
+  }
+}
+
+def uploadCoreCaseDataDefinitions(env) {
+  dir("${WORKSPACE}/bin"){
+    ccdDefinitionFilePath="${WORKSPACE}/build/ccd-release-config/civil-ccd-${env}.xlsx"
+    sh """
+      eval \$(./variables/load-${env}-environment-variables.sh)
+      ./utils/ccd-import-definition.sh ${ccdDefinitionFilePath}
+    """
+  }
+}
+
+def checkForEnableHelmLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
+}
 
 withPipeline(type, product, component) {
+  pipelineConf = config
+  disableLegacyDeployment()
   enableAksStagingDeployment()
+  enableSlackNotifications('#civil_notifications')
+  syncBranchesWithMaster(['demo'])
+  enableHighLevelDataSetup()
+  loadVaultSecrets(secrets)
   disableLegacyDeployment()
 
-  after('build') {
-    yarnBuilder.yarn('build')
+  onPR {
+    env.ENVIRONMENT = "preview"
+    env.DEFINITION_STORE_URL_BASE = "https://ccd-definition-store-civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    if (!checkForEnableHelmLabel(env.BRANCH_NAME)) {
+      enableCleanupOfHelmReleaseOnSuccess();
+    }
+  }
+  onMaster {
+    env.ENVIRONMENT="aat"
+  }
+  onDemo {
+    env.ENVIRONMENT = "demo"
+  }
+  onPerftest{
+    env.ENVIRONMENT = "perftest"
+  }
+
+  before('highleveldatasetup') {
+    archiveCoreCaseDataDefinitions()
+  }
+
+  before('smoketest:preview') {
+    env.DEFINITION_STORE_URL_BASE = "https://ccd-definition-store-civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    sh """
+      eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
+      ./gradlew highLevelDataSetup --args="PREVIEW"
+
+      ./bin/pull-latest-camunda-files.sh ${camundaBranch}
+    """
+    env.URL="https://xui-civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CIVIL_SERVICE_URL="http://civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
   }
 
   after('smoketest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
   }
 
+  before('functionalTest:preview') {
+    env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
+    env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
+    env.CIVIL_SERVICE_URL="http://civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+  }
+
+  after('functionalTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  }
+
+  before('smoketest:aat') {
+    sh """
+      eval \$(./bin/variables/load-staging-environment-variables.sh)
+      ./bin/add-roles.sh
+      ./bin/build-release-ccd-definition.sh staging
+      ./bin/pull-latest-release-asset.sh civil-camunda-bpmn-definition civil-camunda-bpmn-definition.zip
+      ./bin/import-bpmn-diagram.sh .
+    """
+    env.URL="https://civil-ccd-xui-staging.aat.platform.hmcts.net"
+    env.CIVIL_SERVICE_URL="http://civil-ccd-staging.service.core-compute-aat.internal"
+
+    dir("${WORKSPACE}/build") {
+      steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-staging.xlsx"
+    }
+    uploadCoreCaseDataDefinitions('staging')
+  }
+
   after('smoketest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
+  }
+
+  before('functionalTest:aat') {
+    env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
+    env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.CCD_DATA_STORE_URL = "http://civil-ccd-data-store-staging-aat.service.core-compute-aat.internal"
+    env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
+    env.CIVIL_SERVICE_URL="http://civil-ccd-staging.service.core-compute-aat.internal"
   }
 
   after('functionalTest:preview') {
