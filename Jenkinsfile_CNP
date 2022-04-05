@@ -25,7 +25,7 @@ def secrets = [
   secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET')
   ],
 'ccd-${env}': [
-  secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET'),
+  secret('ccd-api-gateway-idam-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET'),
   secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET'),
   secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
   secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
@@ -44,6 +44,9 @@ def secrets = [
   secret('postgres-user', 'POSTGRES_USER'),
   secret('postgres-password', 'POSTGRES_PASSWORD'),
   secret('idam-secret', 'IDAM_SECRET')
+  ],
+  'civil-prod': [
+    secret('microservicekey-civil-service', 'S2S_SECRET_PROD')
   ]
 ]
 
@@ -63,9 +66,6 @@ withPipeline(type, product, component) {
   disableLegacyDeployment()
   enableAksStagingDeployment()
   enableSlackNotifications('#civil_notifications')
-  syncBranchesWithMaster(['demo'])
-  loadVaultSecrets(secrets)
-  disableLegacyDeployment()
 
   onPR {
       loadVaultSecrets(secrets)
@@ -98,7 +98,6 @@ withPipeline(type, product, component) {
   }
 
   before('smoketest:preview') {
-    env.DEFINITION_STORE_URL_BASE = "https://ccd-definition-store-civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     sh """
       eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
       ./bin/add-roles.sh
@@ -107,8 +106,9 @@ withPipeline(type, product, component) {
       ./bin/import-ccd-definition.sh "-e *-nonprod.json,*GAspec.json,*LRspec.json"
       ./bin/import-bpmn-diagram.sh .
     """
+
     env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CIVIL_SERVICE_URL="http://civil-service-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CIVIL_SERVICE_URL="http://civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
   }
 
   after('smoketest:preview') {
@@ -120,7 +120,7 @@ withPipeline(type, product, component) {
     env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
     env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
-    env.CIVIL_SERVICE_URL="http://civil-service-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CIVIL_SERVICE_URL="http://civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
   }
 
   after('functionalTest:preview') {
