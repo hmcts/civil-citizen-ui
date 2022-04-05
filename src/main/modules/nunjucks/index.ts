@@ -8,7 +8,7 @@ import {ResponseType} from '../../common/form/models/responseType';
 import {YesNo} from '../../common/form/models/yesNo';
 import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
 import {CounterpartyType} from '../../common/models/counterpartyType';
-import {UnemploymentCategory} from 'common/form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 
 const packageDotJson = require('../../../../package.json');
 

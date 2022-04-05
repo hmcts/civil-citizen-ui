@@ -23,9 +23,9 @@ export const getUnemployment = async (claimId: string): Promise<Unemployment> =>
       return unemployment;
     }
     return new Unemployment();
-  } catch
-  (error) {
+  } catch (error) {
     logger.error(`${error.stack || error}`);
+    throw error;
   }
 }
 ;
@@ -48,5 +48,6 @@ export const saveUnemployment = async (claimId: string, unemployment: Unemployme
     await saveDraftClaim(claimId, case_data);
   } catch (error) {
     logger.error(`${error.stack || error}`);
+    throw error;
   }
 };

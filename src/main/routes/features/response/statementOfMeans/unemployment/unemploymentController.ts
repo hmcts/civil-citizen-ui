@@ -30,8 +30,8 @@ unemploymentController.get(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
 });
 
 unemploymentController.post(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
-  const form = new Unemployment(req.body.option, new UnemploymentDetails(req.body.years, req.body.months), new OtherDetails(req.body.details));
   try {
+    const form = new Unemployment(req.body.option, new UnemploymentDetails(req.body.years, req.body.months), new OtherDetails(req.body.details));
     await validateForm(form);
     if (form.hasErrors()) {
       renderView(form, res);
