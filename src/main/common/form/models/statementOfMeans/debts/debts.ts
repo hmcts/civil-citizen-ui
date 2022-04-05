@@ -1,8 +1,9 @@
 import {IsDefined, ValidateIf, ValidateNested} from 'class-validator';
 import {VALID_YES_NO_OPTION} from '../../../../../common/form/validationErrors/errorMessageConstants';
 import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debts/debtItems';
-import {Form} from '../../../../../common/form/models/form';
 import {YesNo} from '../../../../../common/form/models/yesNo';
+import {Form} from '../../../../../common/form/models/form';
+
 export const INIT_ROW_COUNT = 2;
 
 export class Debts extends Form {
@@ -10,7 +11,7 @@ export class Debts extends Form {
     option?: string;
 
   @ValidateIf((o: Debts) => o.option === YesNo.YES)
-  @ValidateNested()
+  @ValidateNested({ each: true })
     debtsItems?: DebtItems[];
 
   constructor(option?: string, debtsItems?: DebtItems[]) {

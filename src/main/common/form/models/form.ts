@@ -15,8 +15,9 @@ export class Form {
     return this.errors !== undefined && this.errors.length > 0;
   }
 
-  hasChildren(item : ValidationError): boolean{
-    return item?.children.length > 0;
+  hasChildren(): boolean{
+    return this.hasErrors() ? this.errors
+      .some((error) => error.children.length > 0) : false;
   }
 
   getNestedErrors(item : ValidationError, validators: FormValidationError[]): void {
@@ -29,7 +30,7 @@ export class Form {
     if (this.hasErrors()) {
       const validators: FormValidationError[] = [];
       for (const item of this.errors) {
-        if(this.hasChildren(item)){
+        if(this.hasChildren()){
           this.getNestedErrors(item, validators);
         }else{
           validators.push(new FormValidationError(item, parentProperty));

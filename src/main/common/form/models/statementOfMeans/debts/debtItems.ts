@@ -4,8 +4,9 @@ import {
   NUMBER_REQUIRED,
 } from '../../../../form/validationErrors/errorMessageConstants';
 import {AccountBalanceValidator} from '../../../../../common/form/validators/accountBalanceValidator';
+import {Form} from '../../../../../common/form/models/form';
 
-export class DebtItems  {
+export class DebtItems extends Form{
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: SELECT_AN_OPTION})
@@ -21,8 +22,9 @@ export class DebtItems  {
     monthlyPayments: string;
 
 
-  constructor(loanCreditCar: string, totalOwed: string, monthlyPayments: string) {
-    this.debt = loanCreditCar;
+  constructor(debt: string, totalOwed: string, monthlyPayments: string) {
+    super();
+    this.debt = debt;
     this.totalOwed = totalOwed;
     this.monthlyPayments = monthlyPayments;
   }

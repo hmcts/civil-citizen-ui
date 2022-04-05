@@ -2,17 +2,20 @@ import * as express from 'express';
 
 import {DEBTS_URL} from '../../../../urls';
 import {Debts} from '../../../../../common/form/models/statementOfMeans/debts/debts';
-import {validateForm} from '../../../../../common/form/validators/formValidator';
 import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debts/debtItems';
+import {Validator} from 'class-validator';
+
 
 const debtsViewPath = 'features/response/statementOfMeans/debts/debts';
 const debtsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('debtsController');
-
+const validator = new Validator();
 
 function renderView(form: Debts, res: express.Response): void {
-  res.render(debtsViewPath, {form});
+  res.render(debtsViewPath, {
+    form,
+  });
 }
 
 debtsController.get(DEBTS_URL, async (req, res) => {
@@ -31,11 +34,9 @@ debtsController.post(DEBTS_URL,
       console.log(req.body);
       const items = transformToAccounts(req);
       const form: Debts = new Debts(req.body.option, items);
-
-      await validateForm(form);
-      //await validateFormArray(form.debtsItems);
+      //const form: GenericForm<Debts> = new GenericForm(new Debts(req.body.option, items));
+      form.errors = validator.validateSync(form);
       if (form.hasErrors()) {
-        console.log(form.getErrors()[0]);
         renderView(form, res);
       }
     } catch (error) {
