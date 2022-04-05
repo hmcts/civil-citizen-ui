@@ -1,8 +1,6 @@
 import { getCaseDataFromStore, saveDraftClaim } from '../../draft-store/draftStoreService';
 import { Employer } from '../../../common/form/models/statementOfMeans/employment/employer';
 import { Employers } from '../../../common/form/models/statementOfMeans/employment/employers';
-import { Claim } from 'common/models/claim';
-import { StatementOfMeans } from 'common/models/statementOfMeans';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentService');
@@ -21,23 +19,20 @@ export const getEmployers = async (claimId: string): Promise<Employers> => {
 };
 
 export const saveEmployers = async (claimId: string, employers: Employers) => {
-  let claim = await getCaseDataFromStore(claimId);
-  let employersConverted: Employers = new Employers(
+  try {
+    let claim = await getCaseDataFromStore(claimId);
+    const filteredEmployers: Employers = filterEmptyEmployers(employers);
+    claim.statementOfMeans.employers = filteredEmployers;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+  }
+}
+
+const filterEmptyEmployers = (employers: Employers) => {
+  return new Employers(
     employers.rows
       .filter(employer => employer.employerName !== '' && employer.jobTitle !== '')
       .map(employer => new Employer(employer.employerName, employer.jobTitle))
   );
-  // employersConverted.getOnlyCompletedAccounts();
-
-  if (claim === undefined) {
-    claim = new Claim();
-  }
-  if (claim.statementOfMeans) {
-    claim.statementOfMeans.employers = employersConverted;
-  } else {
-    const statementOfMeans = new StatementOfMeans();
-    statementOfMeans.employers = employersConverted;
-    claim.statementOfMeans = statementOfMeans;
-  }
-  await saveDraftClaim(claimId, claim);
-}
+};

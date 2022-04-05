@@ -1,15 +1,15 @@
-import { Validate, ValidateNested } from 'class-validator';
-import { VALID_ENTER_AT_LEAST_ONE_EMPLOYER } from '../../../validationErrors/errorMessageConstants';
-import { Form } from '../../form';
-import { Employer } from './employer';
-import { FormValidationError } from 'common/form/validationErrors/formValidationError';
-import { AtLeastOneEmployerValidator } from 'common/form/validators/atLeastOneEmployerValidator';
+import {Validate, ValidateNested} from 'class-validator';
+import {VALID_ENTER_AT_LEAST_ONE_EMPLOYER} from '../../../validationErrors/errorMessageConstants';
+import {Form} from '../../form';
+import {Employer} from './employer';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
+import {AtLeastOneEmployerValidator} from '../../../../../common/form/validators/atLeastOneEmployerValidator';
 
 export class Employers extends Form {
 
-  @Validate(AtLeastOneEmployerValidator, {message: VALID_ENTER_AT_LEAST_ONE_EMPLOYER})
+  @Validate(AtLeastOneEmployerValidator, { message: VALID_ENTER_AT_LEAST_ONE_EMPLOYER })
   @ValidateNested()
-  rows: Employer[];
+    rows: Employer[];
 
   constructor(rows?: Employer[]) {
     super();

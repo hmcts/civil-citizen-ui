@@ -35,6 +35,14 @@ export class EmploymentForm extends Form {
   }
 
   isSelfEmployed() {
-    return this.employmentCategory.length == 1 && this.employmentCategory[0] === EmploymentCategory.SELF_EMPLOYED;
+    return this.employmentCategory?.length == 1 && this.employmentCategory[0] === EmploymentCategory.SELF_EMPLOYED;
+  }
+
+  isEmployed() {
+    return this.employmentCategory?.length == 1 && this.employmentCategory[0] === EmploymentCategory.EMPLOYED;
+  }
+
+  isEmployedAndSelfEmployed() {
+    return this.employmentCategory?.length && this.employmentCategory.includes(EmploymentCategory.EMPLOYED) && this.employmentCategory.includes(EmploymentCategory.SELF_EMPLOYED);
   }
 }

@@ -1,10 +1,12 @@
 import * as express from 'express';
-import { WHO_EMPLOYS_YOU_URL } from '../../../../urls';
+import { SELF_EMPLOYED_URL, COURT_ORDERS_URL, WHO_EMPLOYS_YOU_URL } from '../../../../urls';
 import { getEmployers, saveEmployers } from '../../../../../modules/statementOfMeans/employment/employerService';
 import { Employers } from '../../../../../common/form/models/statementOfMeans/employment/employers';
-import { Employer } from 'common/form/models/statementOfMeans/employment/employer';
+import { Employer } from '../../../../../common/form/models/statementOfMeans/employment/employer';
 import { validateForm, validateFormArray } from '../../../../../common/form/validators/formValidator';
-// import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { constructResponseUrlWithIdParams } from '../../../../../common/utils/urlFormatter';
+import { getEmploymentForm } from '../../../../../modules/statementOfMeans/employment/employmentService';
+import { EmploymentForm } from '../../../../../common/form/models/statementOfMeans/employment/employmentForm';
 
 const whoEmploysYouViewPath = 'features/response/statementOfMeans/employment/who-employs-you';
 const router = express.Router();
@@ -20,33 +22,28 @@ router.get(WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Respon
 
 router.post(WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Response) => {
     try {
+        const claimId = req.params.id;
         const employers: Employers = new Employers(req.body.employers.map((employer: Employer) => new Employer(employer.employerName, employer.jobTitle)));
         await validateForm(employers);
         await validateFormArray(employers.rows);
         if (employers.hasErrors()) {
             res.render(whoEmploysYouViewPath, { employers });
         } else {
-            await saveEmployers(req.params.id, employers);
-            res.status(200).send({ message: "REDIRECT TO NEXT PAGE" });
-            //  res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DISABILITY_URL));
+            await saveEmployers(claimId, employers);
+            const employment: EmploymentForm = await getEmploymentForm(claimId);
+            if (employment.isEmployed()) {
+                res.redirect(constructResponseUrlWithIdParams(claimId, COURT_ORDERS_URL));
+            } else if (employment.isEmployedAndSelfEmployed()) {
+                res.redirect(constructResponseUrlWithIdParams(claimId, SELF_EMPLOYED_URL));
+            } else {
+                // TODO: midleware handler
+                res.status(404);
+                res.render('not-found');
+            }
         }
-        // res.status(200).send({ message: "REDIRECT TO NEXT PAGE" }); // TODO: redirect to the correct page
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
 });
-
-// async function renderErrorsIfExist(employers: Employers, res: express.Response, claimId: string) {
-//     await validateForm(employers);
-//     await validateFormArray(employers.rows);
-//     if (employers.hasErrors()) {
-//         res.render(whoEmploysYouViewPath, { employers });
-//     } else {
-//         await saveEmployers(claimId, employers);
-//         res.status(200).send({ message: "REDIRECT TO NEXT PAGE" });
-//         //   res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DISABILITY_URL));
-//     }
-// }
-
 
 export default router;
