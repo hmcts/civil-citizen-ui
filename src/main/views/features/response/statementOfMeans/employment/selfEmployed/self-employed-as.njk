@@ -19,7 +19,7 @@
         }) }}
       {% endif %}
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-one-half">
+        <div class="govuk-grid-column-full">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {% call govukFieldset({
@@ -29,7 +29,7 @@
                 isPageHeading: true
               }
             }) %}
-            <div class="govuk-grid-column-two-thirds govuk-!-padding-0">
+            <div class="govuk-grid-column-one-third govuk-!-padding-0">
               {{ govukInput({
               label: {
                 text: t("Job title"),
