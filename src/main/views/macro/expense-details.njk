@@ -1,9 +1,10 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% macro expenseDetails(hintAmount, property, amountValue, scheduleValue, errors) %}
+{% macro expenseDetails(hintAmount, property, expenseSource, errors) %}
+  <input type="hidden" name="{{ property }}[expenseSource][name]" value="{{ expenseSource.name }}"/>
   {{ govukInput({
-    id: property + "[amount]",
-    name: property + "[amount]",
+    id: property + "[expenseSource][amount]",
+    name: property + "[expenseSource][amount]",
     label: {
       text: t("Amount paid")
     },
@@ -19,8 +20,8 @@
     spellcheck: false
   }) }}
   {{ govukRadios({
-    idPrefix: property + "[schedule]" ,
-    name: property + "[schedule]",
+    idPrefix: property + "[expenseSource][schedule]" ,
+    name: property + "[expenseSource][schedule]",
     fieldset: {
       legend: {
         text: t("Paid every")

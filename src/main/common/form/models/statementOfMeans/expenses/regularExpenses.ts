@@ -18,6 +18,11 @@ export interface ExpenseParams {
   maintenance?: Expense;
 }
 
+export interface ResponseExpenseParams {
+  declared: string[];
+  model: ExpenseParams;
+}
+
 export class RegularExpenses {
   @ValidateNested()
     mortgage?: Expense;
@@ -58,18 +63,20 @@ export class RegularExpenses {
   @ValidateNested()
     maintenance?: Expense;
 
-  constructor(expenseParams: ExpenseParams) {
-    this.mortgage = expenseParams.mortgage;
-    this.rent = expenseParams.rent;
-    this.gas = expenseParams.gas;
-    this.councilTax = expenseParams.councilTax;
-    this.electricity = expenseParams.electricity;
-    this.water = expenseParams.water;
-    this.schoolCosts = expenseParams.schoolCosts;
-    this.foodAndHousekeeping = expenseParams.foodAndHousekeeping;
-    this.hirePurchase = expenseParams.hirePurchase;
-    this.mobilePhone = expenseParams.mobilePhone;
-    this.maintenance = expenseParams.maintenance;
+  [key: string]: Expense;
+
+  constructor(expenseParams?: ExpenseParams) {
+    this.mortgage = expenseParams?.mortgage;
+    this.rent = expenseParams?.rent;
+    this.gas = expenseParams?.gas;
+    this.councilTax = expenseParams?.councilTax;
+    this.electricity = expenseParams?.electricity;
+    this.water = expenseParams?.water;
+    this.schoolCosts = expenseParams?.schoolCosts;
+    this.foodAndHousekeeping = expenseParams?.foodAndHousekeeping;
+    this.hirePurchase = expenseParams?.hirePurchase;
+    this.mobilePhone = expenseParams?.mobilePhone;
+    this.maintenance = expenseParams?.maintenance;
   }
 
   public static buildEmptyForm(): RegularExpenses {
@@ -90,6 +97,11 @@ export class RegularExpenses {
     };
     return new RegularExpenses(params);
   }
+
+  public static getKey(keyName: string): string {
+    return Object.keys(RegularExpenses).find((key) => key === keyName);
+  }
+
 
   private static buildExpense(type: ExpenseType): Expense {
     return Expense.buildEmptyForm(type);

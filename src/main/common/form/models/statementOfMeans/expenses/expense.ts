@@ -1,6 +1,7 @@
 import ExpenseSource from './expenseSource';
 import {ValidateIf, ValidateNested} from 'class-validator';
 import {ExpenseType} from './expenseType';
+import {ScheduledExpenses} from 'common/form/models/statementOfMeans/expenses/scheduledExpenses';
 
 export default class Expense {
   declared: boolean;
@@ -16,5 +17,9 @@ export default class Expense {
 
   public static buildEmptyForm(type: ExpenseType): Expense {
     return new Expense(undefined, new ExpenseSource(type));
+  }
+
+  public static buildPopulatedForm(name: string, amount: string, schedule: ScheduledExpenses): Expense {
+    return new Expense(true, new ExpenseSource(name, Number(amount), schedule));
   }
 }

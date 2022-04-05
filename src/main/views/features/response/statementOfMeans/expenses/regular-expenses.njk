@@ -15,7 +15,43 @@
     }) }}
   {% endif %}
   {% set checkedMortgageHtml %}
-    {{ expenseDetails('Include all mortgages', 'mortgage', form.mortgage.expenseSource.amount) }}
+    {{ expenseDetails('Include all mortgages', 'model[mortgage]',  form.model.mortgage.expenseSource) }}
+  {% endset -%}
+  {% set checkedRentHtml %}
+    {{ expenseDetails('', 'model[rent]',  form.model.rent.expenseSource) }}
+  {% endset -%}
+  {% set checkedCouncilTaxHtml %}
+    {{ expenseDetails('', 'model[councilTax]',  form.model.councilTax.expenseSource) }}
+  {% endset -%}
+  {% set checkedGasHtml %}
+    {{ expenseDetails('', 'model[gas]', form.model.gas.expenseSource) }}
+  {% endset -%}
+  {% set checkedElectricityHtml %}
+    {{ expenseDetails('', 'model[electricity]', form.model.electricity.expenseSource) }}
+  {% endset -%}
+  {% set checkedWaterHtml %}
+    {{ expenseDetails('Include sewerage payments', 'model[water]', form.model.water.expenseSource) }}
+  {% endset -%}
+  {% set checkedTravelHtml %}
+    {{ expenseDetails('', 'model[travel]', form.model.travel.expenseSource) }}
+  {% endset -%}
+  {% set checkedSchoolHtml %}
+    {{ expenseDetails('', 'model[schoolCosts]', form.model.expenseSource.schoolCosts.expenseSource) }}
+  {% endset -%}
+  {% set checkedFoodHtml %}
+    {{ expenseDetails('', 'model[foodAndHousekeeping]',  form.model.foodAndHousekeeping.expenseSource) }}
+  {% endset -%}
+  {% set checkedTvHtml %}
+    {{ expenseDetails('', 'model[tvAndBroadband]',  form.model.tvAndBroadband.expenseSource) }}
+  {% endset -%}
+  {% set checkedHirePurchaseHtml %}
+    {{ expenseDetails('', 'model[hirePurchase]',  form.model.hirePurchase.expenseSource.amount) }}
+  {% endset -%}
+  {% set checkedMobileHtml %}
+    {{ expenseDetails('', 'model[mobilePhone]', form.model.mobilePhone.expenseSource) }}
+  {% endset -%}
+  {% set checkedMaintenanceHtml %}
+    {{ expenseDetails('', 'model[maintenance]', form.model.maintenance.expenseSource) }}
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -25,8 +61,8 @@
             {{ csrfProtection(csrf) }}
 
             {{ govukCheckboxes({
-              idPrefix: "model",
-              name: "model",
+              idPrefix: "declared",
+              name: "declared",
               fieldset: {
                 legend: {
                   text: t("What are your regular expenses?"),
@@ -47,55 +83,87 @@
                 },
                 {
                   value: "rent",
-                  text: t("Rent")
+                  text: t("Rent"),
+                  conditional: {
+                  html: checkedRentHtml
+                }
                 },
                 {
                   value: "councilTax",
-                  text: t("Council Tax")
+                  text: t("Council Tax"),
+                  conditional: {
+                  html: checkedCouncilTaxHtml
+                }
                 },
                 {
                   value: "gas",
-                  text: t("Gas")
+                  text: t("Gas"),
+                  conditional: {
+                  html: checkedGasHtml
+                }
                 },
                 {
                   value: "electricity",
-                  text: t("Electricity")
-                },
-                {
-                  value: "electricity",
-                  text: t("Electricity")
+                  text: t("Electricity"),
+                  conditional: {
+                  html: checkedElectricityHtml
+                }
                 },
                 {
                   value: "water",
-                  text: t("Water")
+                  text: t("Water"),
+                  conditional: {
+                  html: checkedWaterHtml
+                }
                 },
                 {
                   value: "travel",
-                  text: t("Travel")
+                  text: t("Travel"),
+                  conditional: {
+                  html: checkedTravelHtml
+                }
                 },
                 {
                   value: "schoolCosts",
-                  text: t("School costs (include clothing)")
+                  text: t("School costs (include clothing)"),
+                  conditional: {
+                  html: checkedSchoolHtml
+                }
                 },
                 {
                   value: "foodAndHousekeeping",
-                  text: t("Food and housekeeping")
+                  text: t("Food and housekeeping"),
+                  conditional: {
+                  html: checkedFoodHtml
+                }
                 },
                 {
                   value: "tvAndBroadband",
-                  text: t("TV and broadband")
+                  text: t("TV and broadband"),
+                  conditional: {
+                  html: checkedTvHtml
+                }
                 },
                 {
                   value: "hirePurchase",
-                  text: t("Hire purchase")
+                  text: t("Hire purchase"),
+                  conditional: {
+                  html: checkedHirePurchaseHtml
+                }
                 },
                 {
                   value: "mobilePhone",
-                  text: t("Mobile phone")
+                  text: t("Mobile phone"),
+                  conditional: {
+                  html: checkedMobileHtml
+                }
                 },
                 {
                   value: "maintenance",
-                  text: t("Maintenance payments")
+                  text: t("Maintenance payments"),
+                  conditional: {
+                  html: checkedMaintenanceHtml
+                }
                 }
               ]
             }) }}
