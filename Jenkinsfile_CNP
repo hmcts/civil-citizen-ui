@@ -47,67 +47,16 @@ def secrets = [
   ]
 ]
 
-def createGithubRelease() {
-  sh """
-    ./bin/create-github-release.sh
-  """
-}
 
-def archiveCoreCaseDataDefinitions() {
-  if ( env.ENVIRONMENT == 'aat') {
-    echo "current environment is ${env.ENVIRONMENT}"
-    for(PROD_ENV in ["aat","prod"]){
-      echo "environment is ${PROD_ENV}"
-      dir("${WORKSPACE}/bin") {
-        sh """
-          eval \$(./variables/load-${PROD_ENV}-environment-variables.sh)
-          ./build-release-ccd-definition.sh ${PROD_ENV}
-        """
-      }
 
-      dir("${WORKSPACE}/build") {
-        steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-${PROD_ENV}.xlsx"
-      }
-    }
 
-  } else if ( env.ENVIRONMENT == 'preview') {
-    dir("${WORKSPACE}/bin") {
-      sh """
-          eval \$(./variables/load-${env.ENVIRONMENT}-environment-variables.sh ${CHANGE_ID})
-          ./build-release-ccd-definition.sh ${env.ENVIRONMENT}
-      """
-    }
 
-    dir("${WORKSPACE}/build") {
-      steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-${env.ENVIRONMENT}.xlsx"
-    }
-  } else {
-    dir("${WORKSPACE}/bin") {
-      sh """
-          eval \$(./variables/load-${env.ENVIRONMENT}-environment-variables.sh)
-          ./build-release-ccd-definition.sh ${env.ENVIRONMENT}
-        """
-    }
 
-    dir("${WORKSPACE}/build") {
-      steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-${env.ENVIRONMENT}.xlsx"
-    }
-  }
-}
 
-def uploadCoreCaseDataDefinitions(env) {
-  dir("${WORKSPACE}/bin"){
-    ccdDefinitionFilePath="${WORKSPACE}/build/ccd-release-config/civil-ccd-${env}.xlsx"
-    sh """
-      eval \$(./variables/load-${env}-environment-variables.sh)
-      ./utils/ccd-import-definition.sh ${ccdDefinitionFilePath}
-    """
-  }
-}
 
-def checkForEnableHelmLabel(branch_name) {
-  return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
-}
+
+
+
 
 withPipeline(type, product, component) {
   pipelineConf = config
@@ -120,36 +69,47 @@ withPipeline(type, product, component) {
   disableLegacyDeployment()
 
   onPR {
-    env.ENVIRONMENT = "preview"
-    env.DEFINITION_STORE_URL_BASE = "https://ccd-definition-store-civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    if (!checkForEnableHelmLabel(env.BRANCH_NAME)) {
-      enableCleanupOfHelmReleaseOnSuccess();
-    }
+      loadVaultSecrets(secrets)
+      enableCleanupOfHelmReleaseOnSuccess()
   }
   onMaster {
-    env.ENVIRONMENT="aat"
+    loadVaultSecrets(secrets)
   }
   onDemo {
-    env.ENVIRONMENT = "demo"
-  }
-  onPerftest{
-    env.ENVIRONMENT = "perftest"
+    loadVaultSecrets(secrets)
   }
 
-  before('highleveldatasetup') {
-    archiveCoreCaseDataDefinitions()
+  after('checkout') {
+    onMaster {
+      withCredentials([usernamePassword(credentialsId: 'jenkins-github-hmcts-api-token', usernameVariable: 'USERNAME', passwordVariable: 'BEARER_TOKEN')]) {
+        try {
+          sh '''
+            set -e
+
+            git remote set-url origin $(git config remote.origin.url | sed "s/github.com/${BEARER_TOKEN}@github.com/g")
+
+            git fetch origin demo:demo
+            git push --force origin HEAD:demo
+          '''
+        } catch (err) {
+          notifyBuildEvent channel: '#civil_notifications', color: 'warning', message: 'Failed to update demo branch'
+        }
+      }
+    }
   }
 
   before('smoketest:preview') {
     env.DEFINITION_STORE_URL_BASE = "https://ccd-definition-store-civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     sh """
       eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
-      ./gradlew highLevelDataSetup --args="PREVIEW"
-
-      ./bin/pull-latest-camunda-files.sh ${camundaBranch}
+      ./bin/add-roles.sh
+      ./bin/pull-latest-release-asset.sh civil-ccd-definition civil-ccd-definition.zip
+      ./bin/pull-latest-release-asset.sh civil-camunda-bpmn-definition civil-camunda-bpmn-definition.zip
+      ./bin/import-ccd-definition.sh "-e *-nonprod.json,*GAspec.json,*LRspec.json"
+      ./bin/import-bpmn-diagram.sh .
     """
-    env.URL="https://xui-civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CIVIL_SERVICE_URL="http://civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CIVIL_SERVICE_URL="http://civil-service-pr-${CHANGE_ID}.service.core-compute-preview.internal"
   }
 
   after('smoketest:preview') {
@@ -159,49 +119,17 @@ withPipeline(type, product, component) {
   before('functionalTest:preview') {
     env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
     env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-    env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
-    env.CIVIL_SERVICE_URL="http://civil-ccd-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CIVIL_SERVICE_URL="http://civil-service-pr-${CHANGE_ID}.service.core-compute-preview.internal"
   }
 
   after('functionalTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
   }
 
-  before('smoketest:aat') {
-    sh """
-      eval \$(./bin/variables/load-staging-environment-variables.sh)
-      ./bin/add-roles.sh
-      ./bin/build-release-ccd-definition.sh staging
-      ./bin/pull-latest-release-asset.sh civil-camunda-bpmn-definition civil-camunda-bpmn-definition.zip
-      ./bin/import-bpmn-diagram.sh .
-    """
-    env.URL="https://civil-ccd-xui-staging.aat.platform.hmcts.net"
-    env.CIVIL_SERVICE_URL="http://civil-ccd-staging.service.core-compute-aat.internal"
-
-    dir("${WORKSPACE}/build") {
-      steps.archiveArtifacts artifacts: "ccd-release-config/civil-ccd-staging.xlsx"
-    }
-    uploadCoreCaseDataDefinitions('staging')
-  }
-
-  after('smoketest:aat') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
-  }
-
-  before('functionalTest:aat') {
-    env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
-    env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-    env.CCD_DATA_STORE_URL = "http://civil-ccd-data-store-staging-aat.service.core-compute-aat.internal"
-    env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
-    env.CIVIL_SERVICE_URL="http://civil-ccd-staging.service.core-compute-aat.internal"
-  }
 
   after('functionalTest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-  }
-
-  after('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
   }
 
