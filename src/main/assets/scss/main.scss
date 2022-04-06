@@ -1,1 +1,7 @@
 @import '~govuk-frontend';
+
+.moj-add-another {
+  &__remove-button {
+    display: none;
+  }
+}
