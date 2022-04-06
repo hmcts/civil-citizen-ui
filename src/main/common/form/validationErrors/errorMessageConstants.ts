@@ -1,8 +1,10 @@
 export const VALID_PHONE_NUMBER = 'Enter a phone number in the correct format';
 export const VALID_DATE = 'Please enter a valid date';
+export const VALID_DATE_NOT_IN_PAST = 'Enter a date that is today or in the future';
 export const VALID_DAY = 'Enter a valid day';
 export const VALID_MONTH = 'Enter a valid month';
 export const VALID_YEAR = 'Enter a valid year';
+export const VALID_FOUR_DIGIT_YEAR = 'Enter a 4 digit year';
 export const VALID_ADDRESS_LINE_1 = 'Enter first address line';
 export const VALID_CITY = 'Enter a valid town/city';
 export const VALID_POSTCODE = 'Enter address postcode';
