@@ -14,6 +14,7 @@ export class DebtItems extends Form{
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: SELECT_AN_OPTION})
+  @Validate(AccountBalanceValidator)
     totalOwed: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())

@@ -38,8 +38,7 @@
         </div>
         {% for debtsItem in form.debtsItems %}
           {% set hasNestedErrors = form.hasChildren() %}
-
-
+          {% set errors = debtsItem.getErrors() %}
         <div class="govuk-grid-row govuk-!-padding-top-3 {%if hasNestedErrors %} govuk-form-group--error{% endif %} ">
           {%if hasNestedErrors %}
             {% for error in errors %}
@@ -55,7 +54,7 @@
               name: "debtsItems["+loop.index0+"][debt]",
               value: debtsItem.debt,
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-select--error" if form.hasFieldError('debt') else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-select--error" if debtsItem.hasFieldError('debt') else "govuk-grid-column-full"
             }) }}
           </div>
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
@@ -67,7 +66,7 @@
                 text: "£"
               },
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-input--error" if form.hasFieldError('totalOwed') else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-input--error" if debtsItem.hasFieldError('totalOwed') else "govuk-grid-column-full"
             }) }}
           </div>
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
@@ -79,7 +78,7 @@
                 text: "£"
               },
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-input--error" if form.hasFieldError('totalOwed') else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-input--error" if debtsItem.hasFieldError('monthlyPayments') else "govuk-grid-column-full"
             }) }}
           </div>
         </div>

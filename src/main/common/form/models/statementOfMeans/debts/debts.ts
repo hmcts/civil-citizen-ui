@@ -12,7 +12,7 @@ export class Debts extends Form {
 
   @ValidateIf((o: Debts) => o.option === YesNo.YES)
   @ValidateNested({ each: true })
-    debtsItems?: DebtItems[];
+    debtsItems?: DebtItems[] ;//= [new DebtItems('test','test', 'test'), new DebtItems('test','test', 'test')];
 
   constructor(option?: string, debtsItems?: DebtItems[]) {
     super();
@@ -23,10 +23,9 @@ export class Debts extends Form {
   getInitialRows() : DebtItems[]{
     const items: DebtItems[] = [];
     for (let i = 0; i < INIT_ROW_COUNT; i++) {
-      items.push(new DebtItems('test','test', 'test'));
+      items.push(new DebtItems('','', ''));
     }
     return items;
   }
-
 
 }
