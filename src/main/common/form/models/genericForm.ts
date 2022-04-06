@@ -54,28 +54,28 @@ export class GenericForm<Model> {
   }
 
   public getAllErrors(property?: string): FormValidationError[] {
-    return this.getErrors(property).concat(this.getNestedErrors(property));
+    const nestedErrors = this.getNestedErrors(property).filter(error => error !== undefined);
+    return nestedErrors && nestedErrors.length > 0 ? this.getErrors(property).concat(nestedErrors) : this.getErrors(property);
   }
 
   public getNestedErrors(property?: string): FormValidationError[] {
     let validators: FormValidationError[] = [];
     this.getErrors()
       .forEach(error => {
-        validators = validators.concat(this.getAllChildrenErrors(error, property));
+        const childErrors = this.getAllChildrenErrors(error, property);
+        if (childErrors) {
+          validators = validators.concat(childErrors);
+        }
       });
     return validators;
   }
 
   public hasFieldError(field: string, parentProperty?: string): boolean {
-    return this.getAllErrors(parentProperty)?.some((error) => field == error.property);
+    return this.getAllErrors(parentProperty)?.some((error) => field == error?.property);
   }
 
   public hasNestedFieldError(field: string): boolean {
-    if (this.hasNestedErrors()) {
-      return this.errors
-        .some((error) => error.children
-          .some((nestedError) => field == nestedError.property));
-    }
+    return this.getNestedErrors()?.some((error) => field == error.property);
   }
 
   public async validate() {

@@ -108,7 +108,7 @@ describe('Form has nested error', () => {
   });
 
   test('hasNestedFieldError(\'under11\') should return true', () => {
-    expect(form.hasNestedFieldError('under11')).toBe(true);
+    expect(form.hasNestedFieldError('numberOfChildren[under11]')).toBe(true);
   });
 
   test('getNestedErrors() should not be empty', () => {
@@ -116,11 +116,11 @@ describe('Form has nested error', () => {
   });
 
   test('There should be a nested error for property \'under11\'', () => {
-    expect(form.getNestedErrors()[0].property).toBe('under11');
+    expect(form.getNestedErrors()[0].property).toBe('numberOfChildren[under11]');
   });
 
   test('Nested error for property \'under11\' should have the expected wording', () => {
-    expect(form.nestedErrorFor('under11')).toBe('Don\'t enter a negative number');
+    expect(form.nestedErrorFor('numberOfChildren[under11]')).toBe('Don\'t enter a negative number');
   });
 });
 

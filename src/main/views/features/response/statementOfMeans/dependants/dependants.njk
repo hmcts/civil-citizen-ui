@@ -13,9 +13,9 @@
       {% set errors = form.getAllErrors() %}
       {% set declaredError = form.errorFor('declared') %}
       {% set atLeastOneNumberShouldBeEnteredError = form.errorFor('numberOfChildren') %}
-      {% set under11Error = form.nestedErrorFor('under11') %}
-      {% set between11and15Error = form.nestedErrorFor('between11and15') %}
-      {% set between16and19Error = form.nestedErrorFor('between16and19') %}
+      {% set under11Error = form.nestedErrorFor('numberOfChildren[under11]') %}
+      {% set between11and15Error = form.nestedErrorFor('numberOfChildren[between11and15]') %}
+      {% set between16and19Error = form.nestedErrorFor('numberOfChildren[between16and19]') %}
       {% if errors.length > 0 %}
         {{ govukErrorSummary({
           "titleText": t('There was a problem'),
