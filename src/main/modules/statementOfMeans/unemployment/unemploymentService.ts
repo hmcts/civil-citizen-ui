@@ -17,7 +17,7 @@ export class UnemploymentService {
       if (claim?.statementOfMeans?.unemployment) {
         unemployment.option = claim.statementOfMeans.unemployment.option;
         if (claim?.statementOfMeans?.unemployment?.unemploymentDetails) {
-          unemployment.unemploymentDetails = new UnemploymentDetails(claim.statementOfMeans.unemployment.unemploymentDetails.years, claim.statementOfMeans.unemployment.unemploymentDetails.months);
+          unemployment.unemploymentDetails = new UnemploymentDetails(claim.statementOfMeans.unemployment.unemploymentDetails.years.toString(), claim.statementOfMeans.unemployment.unemploymentDetails.months.toString());
         }
         if (claim?.statementOfMeans?.unemployment?.otherDetails) {
           unemployment.otherDetails = new OtherDetails(claim.statementOfMeans.unemployment.otherDetails.details);
@@ -35,8 +35,7 @@ export class UnemploymentService {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
       if (!case_data?.statementOfMeans?.unemployment) {
-        const statementOfMeans = new StatementOfMeans();
-        case_data.statementOfMeans = statementOfMeans;
+        case_data.statementOfMeans = new StatementOfMeans();
         case_data.statementOfMeans.unemployment = new Unemployment();
       }
       case_data.statementOfMeans.unemployment = unemployment;

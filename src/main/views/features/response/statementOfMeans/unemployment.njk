@@ -5,16 +5,20 @@
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+
 {% set heading = 'Are you unemployed or retired?' %}
+{% set subtitle = 'How long have you been unemployed?' %}
 
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getAllErrors() %}
+      {% set optionError = form.errorFor("option","model") %}
       {% set otherDetailsNestedError = form.nestedErrorFor('details') %}
       {% set yearNestedError = form.nestedErrorFor('years') %}
       {% set monthsNestedError = form.nestedErrorFor('months') %}
-      {% if errors %}
+      {% if form.hasErrors() %}
         {{ govukErrorSummary({
           "titleText": 'There was a problem',
           "errorList": errors
@@ -24,6 +28,7 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
           <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
             {% set ifOther %}
               {{ govukInput({
                 id: "details",
@@ -43,7 +48,7 @@
                 name: "years",
                 type: "number",
                 autocomplete: "number",
-                classes: "govuk-input--width-5 govuk-input--error" if form.hasFieldError('years') else "govuk-input--width-5",
+                classes: "govuk-input--width-3",
                 label: {
                   text: t('Years')
                 },
@@ -55,12 +60,13 @@
                 name: "months",
                 type: "number",
                 autocomplete: "number",
-                classes: "govuk-input--width-5 govuk-input--error" if form.hasFieldError('months') else "govuk-input--width-5",
+                classes: "govuk-input--width-3",
                 label: {
                   text: t('Months')
                 },
                 value: form.model.unemploymentDetails.months,
                 errorMessage: { text: monthsNestedError } if monthsNestedError else ''
+
               }) }}
             {% endset -%}
             {{ govukRadios({
@@ -71,6 +77,7 @@
                   value: UnemploymentCategory.UNEMPLOYED,
                   checked: true if form.model.option === UnemploymentCategory.UNEMPLOYED,
                   html:UnemploymentCategory.UNEMPLOYED,
+                  hint: {text: t(subtitle)},
                   conditional:{html: ifUnemployed}
                 },
                 {
@@ -85,11 +92,9 @@
                   conditional:{html: ifOther}
                 }
               ],
-              errorMessage: {
-                html: t(errors[0].text)
-              } if errors
-            }) }}
-
+              errorMessage: { text: optionError } if optionError else ''
+            })
+            }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")

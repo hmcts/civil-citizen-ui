@@ -11,7 +11,6 @@ import {
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {Validator} from 'class-validator';
 
-
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/unemployment';
 const unemploymentController = express.Router();
 const validator = new Validator();
