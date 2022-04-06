@@ -10,8 +10,8 @@ import {PartnerPension} from '../form/models/statementOfMeans/partner/partnerPen
 import {Residence} from '../form/models/statementOfMeans/residence';
 import {Employment} from './employment';
 import {Dependants} from '../form/models/statementOfMeans/dependants/dependants';
-import {SelfEmployedAs} from '../form/models/statementOfMeans/employment/selfEmployed/selfEmployedAs';
-import {TaxPayments} from './taxPayments';
+import {SelfEmployedAs} from './selfEmployedAs';
+import { TaxPayments } from './taxPayments';
 
 export class StatementOfMeans {
   disability?: Disability;

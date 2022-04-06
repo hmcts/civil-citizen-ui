@@ -1,5 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../draft-store/draftStoreService';
-import {SelfEmployedAs} from '../../../../common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAs';
+import {SelfEmployedAsForm} from '../../../../common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
 import {Claim} from '../../../../common/models/claim';
 import {StatementOfMeans} from '../../../../common/models/statementOfMeans';
 
@@ -11,16 +11,16 @@ const getSelfEmployedAsForm = async (claimId: string) => {
     const claim = await getCaseDataFromStore(claimId);
     if (claim?.statementOfMeans?.selfEmployedAs) {
       const selfEmployedAs = claim.statementOfMeans.selfEmployedAs;
-      return new SelfEmployedAs(selfEmployedAs.jobTitle, selfEmployedAs.annualTurnover);
+      return new SelfEmployedAsForm(selfEmployedAs.jobTitle, selfEmployedAs.annualTurnover);
     }
-    return new SelfEmployedAs();
+    return new SelfEmployedAsForm();
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-const saveSelfEmployedAsData = async (claimId: string, form: SelfEmployedAs) => {
+const saveSelfEmployedAsData = async (claimId: string, form: SelfEmployedAsForm) => {
   try {
     const claim = await getClaim(claimId);
     claim.statementOfMeans.selfEmployedAs = form;

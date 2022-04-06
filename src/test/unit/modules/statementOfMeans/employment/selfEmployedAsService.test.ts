@@ -2,7 +2,7 @@ import * as draftStoreService from '../../../../../main/modules/draft-store/draf
 import {getSelfEmployedAsForm, saveSelfEmployedAsData} from '../../../../../main/modules/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
-import { SelfEmployedAs } from '../../../../../main/common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAs';
+import { SelfEmployedAsForm } from '../../../../../main/common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
 import {TestMessages} from '../../../../../test/utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -77,7 +77,7 @@ describe('Self Employed Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveSelfEmployedAsData('123', new SelfEmployedAs(JOB_TITLE, ANNUAL_TURNOVER));
+      await saveSelfEmployedAsData('123', new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -88,7 +88,7 @@ describe('Self Employed Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveSelfEmployedAsData('123', new SelfEmployedAs(JOB_TITLE, ANNUAL_TURNOVER));
+      await saveSelfEmployedAsData('123', new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -98,7 +98,7 @@ describe('Self Employed Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveSelfEmployedAsData('123', new SelfEmployedAs(JOB_TITLE, ANNUAL_TURNOVER))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveSelfEmployedAsData('123', new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
     it('should rethrow error when error occurs on save claim', async () => {
       //Given
@@ -107,7 +107,7 @@ describe('Self Employed Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveSelfEmployedAsData('123', new SelfEmployedAs(JOB_TITLE, ANNUAL_TURNOVER))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveSelfEmployedAsData('123', new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
@@ -116,7 +116,7 @@ describe('Self Employed Service', () => {
 function createClaimWithTaxPayments(): Claim {
   const claim = new Claim();
   const statementOfMeans = new StatementOfMeans();
-  statementOfMeans.selfEmployedAs = new SelfEmployedAs(JOB_TITLE, ANNUAL_TURNOVER);
+  statementOfMeans.selfEmployedAs = new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER);
   claim.statementOfMeans = statementOfMeans;
   return claim;
 }

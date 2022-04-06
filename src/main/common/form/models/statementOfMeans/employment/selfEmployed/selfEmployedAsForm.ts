@@ -8,7 +8,7 @@ import {
 } from '../../../../validationErrors/errorMessageConstants';
 import { MAX_AMOUNT_VALUE } from '../../../../validators/validationConstraints';
 
-export class SelfEmployedAs extends Form {
+export class SelfEmployedAsForm extends Form {
 
   @IsNotEmpty({message: JOB_TITLE_REQUIRED})
     jobTitle?: string;
