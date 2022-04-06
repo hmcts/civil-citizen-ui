@@ -90,31 +90,22 @@
       </div>
 
 
-          <form method="post" novalidate>
+      <form method="post" novalidate>
 
-            <div class="govuk-grid-row">
-              <div class="govuk-grid-column-full">
-                {{ yesNoRadioButton(t,'debtsRadio','option','', form,'',{yesHtml:yesHtml}) }}
-              </div>
-            </div>
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            {{ yesNoRadioButton(t,'debtsRadio','option','', form,'',{yesHtml:yesHtml}) }}
+          </div>
+        </div>
 
-            <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-              {{ govukButton({
-                text: t("Save and continue")
-              }) }}
-            </div>
-            </div>
-          </form>
-
-
-
-
-
-
-
-
-
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            {{ govukButton({
+              text: t("Save and continue")
+            }) }}
+          </div>
+        </div>
+      </form>
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
