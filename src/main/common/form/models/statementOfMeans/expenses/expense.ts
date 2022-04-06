@@ -1,8 +1,8 @@
 import ExpenseSource from './expenseSource';
 import {ValidateIf, ValidateNested} from 'class-validator';
 import {ExpenseType} from './expenseType';
-import {ScheduledExpenses} from 'common/form/models/statementOfMeans/expenses/scheduledExpenses';
-import {toNumberOrUndefined} from 'common/utils/numberConverter';
+import {ScheduledExpenses} from './scheduledExpenses';
+import {toNumberOrUndefined} from '../../../../utils/numberConverter';
 
 export default class Expense {
   declared: boolean;

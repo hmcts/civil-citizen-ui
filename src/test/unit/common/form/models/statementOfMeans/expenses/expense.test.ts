@@ -1,7 +1,9 @@
 import {Validator} from 'class-validator';
-import Expense from '../../../../../../main/common/form/models/statementOfMeans/expenses/expense';
-import ExpenseSource from '../../../../../../main/common/form/models/statementOfMeans/expenses/expenseSource';
-import {ScheduledExpenses} from '../../../../../../main/common/form/models/statementOfMeans/expenses/scheduledExpenses';
+import Expense from '../../../../../../../main/common/form/models/statementOfMeans/expenses/expense';
+import ExpenseSource from '../../../../../../../main/common/form/models/statementOfMeans/expenses/expenseSource';
+import {
+  ScheduledExpenses,
+} from '../../../../../../../main/common/form/models/statementOfMeans/expenses/scheduledExpenses';
 
 const validator = new Validator();
 describe('Expense', () => {

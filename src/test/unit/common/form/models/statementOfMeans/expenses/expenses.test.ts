@@ -1,7 +1,7 @@
-import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
-import {RegularExpenses} from '../../../../../../main/common/form/models/statementOfMeans/expenses/regularExpenses';
-import Expense from '../../../../../../main/common/form/models/statementOfMeans/expenses/expense';
-import ExpenseSource from '../../../../../../main/common/form/models/statementOfMeans/expenses/expenseSource';
+import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
+import {RegularExpenses} from '../../../../../../../main/common/form/models/statementOfMeans/expenses/regularExpenses';
+import Expense from '../../../../../../../main/common/form/models/statementOfMeans/expenses/expense';
+import ExpenseSource from '../../../../../../../main/common/form/models/statementOfMeans/expenses/expenseSource';
 
 describe('Expenses', () => {
   describe('Validate', () => {
