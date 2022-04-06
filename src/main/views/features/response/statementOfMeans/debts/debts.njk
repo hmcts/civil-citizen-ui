@@ -11,7 +11,7 @@
 
 {% block content %}
   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+    <main class="govuk-main-wrapper--auto-spacing" role="main">
       {% set title = t('Do you have loans or credit card debts?') %}
       {% set errors = form.getErrors() %}
 
@@ -25,14 +25,14 @@
       {% set yesHtml %}
 
         <div class="govuk-grid-row">
-          <div class="govuk-grid-column-one-half govuk-!-display-inline">
+          <div class="govuk-grid-column-one-half ">
             <label id="account-balance-label"
                    class="govuk-label--s">{{ t('List each loan or credit card debt') }}</label>
           </div>
-          <div class="govuk-grid-column-one-quarter govuk-!-display-inline">
+          <div class="govuk-grid-column-one-quarter">
             <label id="account-balance-label" class="govuk-label--s">{{ t('Total owed') }}</label>
           </div>
-          <div class="govuk-grid-column-one-quarter govuk-!-display-inline">
+          <div class="govuk-grid-column-one-quarter">
             <label id="account-balance-label" class="govuk-label--s">{{ t('Monthly payments') }}</label>
           </div>
         </div>
