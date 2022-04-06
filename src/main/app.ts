@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import * as bodyParser from 'body-parser';
 import config = require('config');
 import cookieParser from 'cookie-parser';
