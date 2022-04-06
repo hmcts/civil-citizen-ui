@@ -20,7 +20,7 @@ export async function validateFormArray(forms: Form[]) {
 export async function validateFormNested(form: any) {
   const errors = await validator.validate(form);
   form.errors = errors;
-  if(errors.length > 0){
+  if(errors.length){
     const keys = Object.keys(form);
     for (const key of keys) {
       if (key !== ERROR_FIELD && form[key] instanceof Array){

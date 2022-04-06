@@ -32,20 +32,8 @@ debtsController.get(DEBTS_URL, async (req, res) => {
 debtsController.post(DEBTS_URL,
   async (req, res) => {
     try {
-      console.log(req.body);
-      const items = transformToAccounts(req);
-      const form: Debts = new Debts(req.body.option, items);
-      //const form: GenericForm<Debts> = new GenericForm(new Debts(req.body.option, items));
-      //form.errors = validator.validateSync(form.debtsItems[]);
-
-
+      const form: Debts = new Debts(req.body.option, transformToAccounts(req));
       await validateFormNested(form);
-
-      //await validateFormArray(form.debtsItems);
-      //form.errors = validator.validateSync(form);
-      //form.getErrors();
-      //form.debtsItems[0].errors = validator.validateSync(form.debtsItems[0]);
-      //form.debtsItems[0].errors
       if (form.hasErrors()) {
         renderView(form, res);
       }
@@ -54,6 +42,7 @@ debtsController.post(DEBTS_URL,
       res.status(500).send({ error: error.message });
     }
   });
+
 function transformToAccounts(req: express.Request){
   return req.body.debtsItems.map((account:DebtItems) =>{
     return new DebtItems(account.debt, account.totalOwed, account.monthlyPayments);

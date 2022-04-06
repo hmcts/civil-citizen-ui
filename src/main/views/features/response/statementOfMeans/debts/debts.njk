@@ -24,31 +24,27 @@
 
       {% set yesHtml %}
 
-        <div class="govuk-grid-row ">
-          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-one-half govuk-!-display-inline">
             <label id="account-balance-label"
                    class="govuk-label--s">{{ t('List each loan or credit card debt') }}</label>
           </div>
-          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+          <div class="govuk-grid-column-one-quarter govuk-!-display-inline">
             <label id="account-balance-label" class="govuk-label--s">{{ t('Total owed') }}</label>
           </div>
-          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+          <div class="govuk-grid-column-one-quarter govuk-!-display-inline">
             <label id="account-balance-label" class="govuk-label--s">{{ t('Monthly payments') }}</label>
           </div>
         </div>
         {% for debtsItem in form.debtsItems %}
-          {% set hasNestedErrors = form.hasChildren() %}
           {% set errors = debtsItem.getErrors() %}
-        <div class="govuk-grid-row govuk-!-padding-top-3 {%if hasNestedErrors %} govuk-form-group--error{% endif %} ">
-          {%if hasNestedErrors %}
+        <div class="govuk-grid-row govuk-!-padding-top-3 {%if errors %} govuk-form-group--error{% endif %} ">
             {% for error in errors %}
               {{ govukErrorMessage({
                 text:t(error.text)
               })}}
             {% endfor %}
-          {% endif %}
-
-          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+          <div class="govuk-grid-column-one-half govuk-!-display-inline">
             {{ govukInput({
               id: "debtsItems["+loop.index0+"][debt]",
               name: "debtsItems["+loop.index0+"][debt]",
@@ -57,7 +53,7 @@
               classes: "govuk-grid-column-full govuk-select--error" if debtsItem.hasFieldError('debt') else "govuk-grid-column-full"
             }) }}
           </div>
-          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+          <div class="govuk-grid-column-one-quarter govuk-!-display-inline">
             {{ govukInput({
               id: "debtsItems["+loop.index0+"][totalOwed]",
               name: "debtsItems["+loop.index0+"][totalOwed]",
@@ -69,7 +65,7 @@
               classes: "govuk-grid-column-full govuk-input--error" if debtsItem.hasFieldError('totalOwed') else "govuk-grid-column-full"
             }) }}
           </div>
-          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+          <div class="govuk-grid-column-one-quarter govuk-!-display-inline">
             {{ govukInput({
               id: "debtsItems["+loop.index0+"][monthlyPayments]",
               name: "debtsItems["+loop.index0+"][monthlyPayments]",
@@ -90,12 +86,14 @@
 
 
       <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
           <form
             method="POST" novalidate>
 
             {{ csrfProtection(csrf) }}
+            <h1 class="govuk-heading-l">{{ title }}</h1>
 
-            {{ yesNoRadioButton(t,'debtsRadio','option',title, form,'',{yesHtml:yesHtml}) }}
+            {{ yesNoRadioButton(t,'debtsRadio','option','', form,'',{yesHtml:yesHtml}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({
@@ -106,11 +104,13 @@
           </form>
 
         </div>
-      <div class="govuk-grid-row">
+      </div>
+        <div class="govuk-grid-row">
         <div class="govuk-grid-column-three-thirds">
           {{ contactUsForHelp(t) }}
         </div>
-      </div>
+        </div>
+
     </main>
   </div>
 {% endblock %}
