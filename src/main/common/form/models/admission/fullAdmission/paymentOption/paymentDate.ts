@@ -12,11 +12,12 @@ import {DateConverter} from '../../../../../../common/utils/dateConverter';
 export class PaymentDate {
 
   @ValidateIf(o => (o.day <32 && o.month<13))
+  @ValidateIf(o => (o.year < 1000), {message:VALID_FOUR_DIGIT_YEAR})
   @IsDate({message: VALID_DATE})
   @Validate(OptionalDateNotInPastValidator, {message: VALID_DATE})
     paymentDate?: Date;
 
-  @ValidateIf(o => (o.year < 1000), {message:VALID_FOUR_DIGIT_YEAR})
+
   @Min(new Date().getFullYear(),{message:VALID_YEAR })
   @Max(9999,{message:VALID_YEAR })
     year: number;

@@ -8,6 +8,7 @@ import {
   VALID_DAY,
   VALID_FOUR_DIGIT_YEAR,
   VALID_MONTH,
+  VALID_YEAR,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 
@@ -46,8 +47,8 @@ describe('Payment Date service', () => {
       const form = paymentDateService.validatePaymentDate(paymentDate);
       //Then
       expect(form.getErrors().length).toBe(3);
-      expect(form.getErrors()[0].property).toBe('paymentDate');
-      expect(form.getErrors()[0].constraints).toEqual({IsDate: VALID_DATE});
+      expect(form.getErrors()[0].property).toBe('year');
+      expect(form.getErrors()[0].constraints).toEqual({min: VALID_YEAR, max:VALID_YEAR});
     });
     test('should raise an error if no year', async () => {
       //Given
