@@ -41,13 +41,13 @@
                   {% endif %}
 
                   {% for courtOrder in form.model.rows %}
-                      {{  courtOrderMacro(loop.index0, courtOrder) }}
+                    {{ courtOrderMacro(loop.index0, courtOrder) }}
                   {% endfor %}
 
                   <div class="moj-button-action">
                     {{ govukButton({
                       text: t('Add another court order'),
-                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4 govuk-!-margin-top-6',
+                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                       type: 'button'
                     }) }}
                   </div>
@@ -99,9 +99,8 @@
 
 {% macro courtOrderMacro(courtOrderIndex, courtOrderValue) %}
   {% call govukFieldset({
-    classes: 'moj-add-another__item govuk-!-margin-bottom-4',
+    classes: 'moj-add-another__item govuk-!-margin-bottom-6',
     legend: {
-      text: 'Court order',
       classes: 'moj-add-another__title govuk-fieldset__legend--m',
       isPageHeading: false
     }
