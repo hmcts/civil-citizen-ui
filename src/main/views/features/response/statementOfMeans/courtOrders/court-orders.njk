@@ -42,6 +42,10 @@
 
                   {% for courtOrder in form.model.rows %}
                     {{ courtOrderMacro(loop.index0, courtOrder) }}
+                  {% else %}
+                    {% call govukFieldset({ classes: 'moj-add-another__item' }) %}
+                      {{  courtOrderMacro(0, '') }}
+                    {% endcall %}
                   {% endfor %}
 
                   <div class="moj-button-action">
