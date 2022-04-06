@@ -6,7 +6,7 @@ import Expense from '../../../../../common/form/models/statementOfMeans/expenses
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {
   getRegularExpenses,
-  saveRegularExpenses
+  saveRegularExpenses,
 } from '../../../../../modules/statementOfMeans/expenses/regularExpensesService';
 
 const regularExpensesController = express.Router();
@@ -35,10 +35,10 @@ function updateFormWithResponseData(key: string, req: express.Request, regularEx
 }
 
 regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res) => {
-  try{
+  try {
     const model = await getRegularExpenses(req.params.id);
     renderForm(new GenericForm<RegularExpenses>(model), res);
-  }catch (error) {
+  } catch (error) {
     res.status(500).send({error: error.message});
   }
 });
