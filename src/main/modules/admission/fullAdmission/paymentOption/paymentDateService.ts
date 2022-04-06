@@ -1,7 +1,7 @@
 import {getDraftClaimFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {Validator} from 'class-validator';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {PaymentDate} from 'common/form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {PaymentDate} from '../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentDateService');

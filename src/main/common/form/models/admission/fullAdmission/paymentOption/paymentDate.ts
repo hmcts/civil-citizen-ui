@@ -5,9 +5,9 @@ import {
   VALID_FOUR_DIGIT_YEAR,
   VALID_MONTH,
   VALID_YEAR,
-} from 'common/form/validationErrors/errorMessageConstants';
-import {OptionalDateNotInPastValidator} from 'common/form/validators/optionalDateNotInPastValidator';
-import {DateConverter} from 'common/utils/dateConverter';
+} from '../../../../../../common/form/validationErrors/errorMessageConstants';
+import {OptionalDateNotInPastValidator} from '../../../../../../common/form/validators/optionalDateNotInPastValidator';
+import {DateConverter} from '../../../../../../common/utils/dateConverter';
 
 export class PaymentDate {
 
