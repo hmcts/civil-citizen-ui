@@ -39,72 +39,11 @@
                       <span class="govuk-visually-hidden">Error:</span> {{ t(atLeastOneCourtOrderError) }}
                     </p>
                   {% endif %}
-                  {% call govukFieldset({
-                    classes: 'moj-add-another__item',
-                    legend: {
-                      text: t('Court order'),
-                      classes: 'moj-add-another__title govuk-fieldset__legend--m',
-                      isPageHeading: false
-                    }
-                  }) %}
 
+                  {% for courtOrder in form.model.rows %}
+                      {{  courtOrderMacro(loop.index0, courtOrder) }}
+                  {% endfor %}
 
-                    {{ govukInput({
-                      id: 'rows[0][claimNumber]',
-                      name: 'rows[0][claimNumber]',
-                      type: 'text',
-                      classes: 'govuk-!-width-one-third',
-                      label: {
-                        text: t('Claim number')
-                      },
-                      attributes: {
-                        'data-name': 'rows[%index%][claimNumber]',
-                        'data-id': 'rows[%index%][claimNumber]'
-                      },
-                      errorMessage: {
-                        text: t(claimNumberError)
-                      } if claimNumberError
-                    }) }}
-                    {{ govukInput({
-                      id: 'rows[0][amount]',
-                      name: 'rows[0][amount]',
-                      type: 'number',
-                      classes: 'govuk-!-width-one-third',
-                      prefix: {
-                        text: "£"
-                      },
-                      label: {
-                        text: t('Amount you owe')
-                      },
-                      attributes: {
-                        'data-name': 'rows[%index%][amount]',
-                        'data-id': 'rows[%index%][amount]'
-                      },
-                      errorMessage: {
-                        text: t(amountError)
-                      } if amountError
-                    }) }}
-                    {{ govukInput({
-                      id: 'rows[0][instalmentAmount]',
-                      name: 'rows[0][instalmentAmount]',
-                      type: 'number',
-                      classes: 'govuk-!-width-one-third',
-                      prefix: {
-                        text: "£"
-                      },
-                      label: {
-                        text: t('Monthly instalment amount')
-                      },
-                      attributes: {
-                        'data-name': 'rows[%index%][instalmentAmount]',
-                        'data-id': 'rows[%index%][instalmentAmount]'
-                      },
-                      errorMessage: {
-                        text: t(instalmentAmountError)
-                      } if instalmentAmountError
-                    }) }}
-
-                  {% endcall %}
                   <div class="moj-button-action">
                     {{ govukButton({
                       text: t('Add another court order'),
@@ -157,3 +96,75 @@
     </main>
   </div>
 {% endblock %}
+
+{% macro courtOrderMacro(courtOrderIndex, courtOrderValue) %}
+  {% call govukFieldset({
+    classes: 'moj-add-another__item govuk-!-margin-bottom-4',
+    legend: {
+      text: 'Court order',
+      classes: 'moj-add-another__title govuk-fieldset__legend--m',
+      isPageHeading: false
+    }
+  }) %}
+
+    {{ govukInput({
+      id: 'rows[' + courtOrderIndex + '][claimNumber]',
+      name: 'rows[' + courtOrderIndex + '][claimNumber]',
+      value: courtOrderValue.claimNumber,
+      type: 'text',
+      classes: 'govuk-!-width-one-third',
+      label: {
+        text: t('Claim number')
+      },
+      attributes: {
+        'data-name': 'rows[%index%][claimNumber]',
+        'data-id': 'rows[%index%][claimNumber]'
+      },
+      errorMessage: {
+        text: t(claimNumberErrors[courtOrderIndex])
+      } if claimNumberErrors[courtOrderIndex]
+    }) }}
+
+    {{ govukInput({
+      id: 'rows[' + courtOrderIndex + '][amount]',
+      name: 'rows[' + courtOrderIndex + '][amount]',
+      value: courtOrderValue.amount,
+      type: 'number',
+      classes: 'govuk-!-width-one-third',
+      prefix: {
+        text: "£"
+      },
+      label: {
+        text: t('Amount you owe')
+      },
+      attributes: {
+        'data-name': 'rows[%index%][amount]',
+        'data-id': 'rows[%index%][amount]'
+      },
+      errorMessage: {
+        text: t(amountErrors[courtOrderIndex])
+      } if amountErrors[courtOrderIndex]
+    }) }}
+    {{ govukInput({
+      id: 'rows[' + courtOrderIndex + '][instalmentAmount]',
+      name: 'rows[' + courtOrderIndex + '][instalmentAmount]',
+      value: courtOrderValue.instalmentAmount,
+      type: 'number',
+      classes: 'govuk-!-width-one-third',
+      prefix: {
+        text: "£"
+      },
+      label: {
+        text: t('Monthly instalment amount')
+      },
+      attributes: {
+        'data-name': 'rows[%index%][instalmentAmount]',
+        'data-id': 'rows[%index%][instalmentAmount]'
+      },
+      errorMessage: {
+        text: t(instalmentAmountErrors[courtOrderIndex])
+      } if instalmentAmountErrors[courtOrderIndex]
+    }) }}
+
+  {% endcall %}
+{% endmacro %}
