@@ -3,7 +3,7 @@ import {CITIZEN_SELF_EMPLOYED_URL, CITIZEN_COURT_ORDER_URL, CITIZEN_WHO_EMPLOYS_
 import {getEmployers, saveEmployers} from '../../../../../modules/statementOfMeans/employment/employerService';
 import {Employers} from '../../../../../common/form/models/statementOfMeans/employment/employers';
 import {Employer} from '../../../../../common/form/models/statementOfMeans/employment/employer';
-import {validateForm, validateFormArray} from '../../../../../common/form/validators/formValidator';
+import {validateFormNested} from '../../../../../common/form/validators/formValidator';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {getEmploymentForm} from '../../../../../modules/statementOfMeans/employment/employmentService';
 import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans/employment/employmentForm';
@@ -24,8 +24,7 @@ router.post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: expre
   try {
     const claimId = req.params.id;
     const employers: Employers = new Employers(req.body.employers.map((employer: Employer) => new Employer(employer.employerName, employer.jobTitle)));
-    await validateForm(employers);
-    await validateFormArray(employers.rows);
+    await validateFormNested(employers);
     if (employers.hasErrors()) {
       res.render(whoEmploysYouViewPath, { employers });
     } else {
@@ -36,7 +35,6 @@ router.post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: expre
       } else if (employment.isEmployedAndSelfEmployed()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
       } else {
-        // TODO: midleware handler
         res.status(404);
         res.render('not-found');
       }

@@ -6,14 +6,14 @@
       <div class="govuk-form-group {%- if errors.length>0 %} govuk-form-group--error{% endif %}">
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
           {{ govukInput({
-              id: "employers["+index+"][employerName]",
+              id: "rows["+index+"][employerName]",
               name: "employers["+index+"][employerName]",
               value: employer.employerName,
               hint: { text: t('Employer name') },
               errorMessage: { text: employer.errorFor('employerName') } if employer.hasFieldError('employerName') else ''
             }) }}
           {{ govukInput({
-              id: "employers["+index+"][jobTitle]",
+              id: "rows["+index+"][jobTitle]",
               name: "employers["+index+"][jobTitle]",
               value: employer.jobTitle,
               hint: { text: t('Job title') },

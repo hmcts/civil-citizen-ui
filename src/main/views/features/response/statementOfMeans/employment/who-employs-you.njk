@@ -20,8 +20,8 @@
       <h1 class="govuk-heading-l">{{ t('Who employs you?') }}</h1>
       <form method="post" name="employers" novalidate>
         <div class="govuk-form-group-!-margin-9 {%- if errors[0].text %} govuk-form-group--error{% endif %}">
-          {{ govukErrorMessage({ text:t(errors[0].text) })  }}
           {% for employer in employers.rows %}
+          {{ govukErrorMessage({ text:t(errors[loop.index0].text) })  }}
             {{employerRow(employer, loop.index0)}}
           {% endfor %}
         </div>
