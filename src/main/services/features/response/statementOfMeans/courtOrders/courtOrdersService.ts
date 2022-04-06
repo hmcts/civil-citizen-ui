@@ -44,6 +44,10 @@ class CourtOrdersService {
     return CourtOrders.fromObject(value);
   }
 
+  public removeEmptyCourtOrders(courtOrders: CourtOrders): void {
+    courtOrders.rows = courtOrders.rows.filter(item => !item.isEmpty());
+  }
+
   public validateCourtOrders(courtOrders: CourtOrders): GenericForm<CourtOrders> {
     const form: GenericForm<CourtOrders> = new GenericForm(courtOrders);
     form.errors = validator.validateSync(form.model);

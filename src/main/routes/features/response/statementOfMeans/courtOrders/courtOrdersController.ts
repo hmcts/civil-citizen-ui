@@ -31,6 +31,7 @@ courtOrdersController
     CITIZEN_COURT_ORDERS_URL,
     async (req: express.Request, res: express.Response) => {
       const courtOrders = courtOrdersService.buildCourtOrders(req.body);
+      courtOrdersService.removeEmptyCourtOrders(courtOrders);
       const form: GenericForm<CourtOrders> = courtOrdersService.validateCourtOrders(courtOrders);
 
       if (form.hasErrors() || form.hasNestedErrors()) {
