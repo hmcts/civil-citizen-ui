@@ -1,6 +1,6 @@
 import {Employment} from '../../../common/models/employment';
 import {EmploymentForm} from '../../../common/form/models/statementOfMeans/employment/employmentForm';
-import {YesNo} from '../../../common/form/models/yesNo';
+import {convertFromYesNo, convertToYesNo} from '../../../common/utils/yesNoOptionConverter';
 
 export const convertToForm = (employmentEntity: Employment): EmploymentForm => {
   if (employmentEntity) {
@@ -18,24 +18,5 @@ export const convertFromForm = (employmentForm: EmploymentForm): Employment => {
   }
 };
 
-const convertToYesNo = (declared: boolean): YesNo => {
-  let convertedYesNoValue = undefined;
-  if (declared === true) {
-    convertedYesNoValue = YesNo.YES;
-  } else if (declared === false) {
-    convertedYesNoValue = YesNo.NO;
-  }
-  return convertedYesNoValue;
-};
 
-const convertFromYesNo = (option: YesNo): boolean => {
-  if (option) {
-    switch (option) {
-      case YesNo.YES:
-        return true;
-      case YesNo.NO:
-        return false;
-    }
-  }
-};
 

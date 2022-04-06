@@ -1,6 +1,7 @@
 import {app} from '../../app';
 import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {Claim} from '../../common/models/claim';
+import {isUndefined} from 'lodash';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -34,7 +35,7 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
  */
 export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
   const civilClaimResponse = await getDraftClaimFromStore(claimId);
-  return civilClaimResponse?.case_data;
+  return Object.assign(new Claim(), civilClaimResponse?.case_data);
 };
 
 /**
@@ -47,7 +48,7 @@ export const getCaseDataFromStore = async (claimId: string): Promise<Claim> => {
  */
 export const saveDraftClaim = async (claimId: string, claim: Claim) => {
   let storedClaimResponse = await getDraftClaimFromStore(claimId);
-  if (!storedClaimResponse) {
+  if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
   storedClaimResponse.case_data = claim;

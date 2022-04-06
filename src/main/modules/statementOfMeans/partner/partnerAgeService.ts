@@ -12,7 +12,7 @@ export class PartnerAgeService {
   public async getPartnerAge(claimId: string) {
     try {
       const case_data = await getCaseDataFromStore(claimId);
-      if (case_data && case_data.statementOfMeans && case_data.statementOfMeans.partnerAge) {
+      if (case_data?.statementOfMeans?.partnerAge) {
         partnerAge.option = case_data.statementOfMeans.partnerAge.option;
         return partnerAge;
       }
@@ -26,7 +26,7 @@ export class PartnerAgeService {
   public async savePartnerAge(claimId: string, partner: PartnerAge) {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
-      if (case_data && case_data.statementOfMeans) {
+      if (case_data?.statementOfMeans) {
         case_data.statementOfMeans.partnerAge = partner;
       } else {
         const statementOfMeans = new StatementOfMeans();

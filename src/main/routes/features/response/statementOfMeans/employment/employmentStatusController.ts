@@ -3,9 +3,9 @@ import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans
 import {EmploymentCategory} from '../../../../../common/form/models/statementOfMeans/employment/employmentCategory';
 import {
   CITIZEN_EMPLOYMENT_URL,
-  SELF_EMPLOYED_URL,
+  CITIZEN_SELF_EMPLOYED_URL,
   UNEMPLOYED_URL,
-  WHO_EMPLOYS_YOU_URL,
+  CITIZEN_WHO_EMPLOYS_YOU_URL,
 } from '../../../../../routes/urls';
 import {validateForm} from '../../../../../common/form/validators/formValidator';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
@@ -17,7 +17,7 @@ import {
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentStatusController');
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
-const router = express.Router();
+const employmentStatusController = express.Router();
 
 function renderView(form: EmploymentForm, res: express.Response): void {
   res.render(citizenEmploymentStatusViewPath, {form: form, EmploymentCategory: EmploymentCategory});
@@ -33,23 +33,23 @@ function redirectToNextPage(form: EmploymentForm, claimId: string, res: express.
 
 function redirectToEmployersPage(form: EmploymentForm, claimId: string, res: express.Response) {
   if (form.isSelfEmployed()) {
-    res.redirect(constructResponseUrlWithIdParams(claimId, SELF_EMPLOYED_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
   } else {
-    res.redirect(constructResponseUrlWithIdParams(claimId, WHO_EMPLOYS_YOU_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_WHO_EMPLOYS_YOU_URL));
   }
 }
 
-router.get(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
+employmentStatusController.get(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
   try {
     const form = await getEmploymentForm(req.params.id);
     renderView(form, res);
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
+    logger.error(error);
     res.status(500).send({error: error.message});
   }
 });
 
-router.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
+employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
   const form = new EmploymentForm(req.body.option, EmploymentForm.convertToArray(req.body.employmentCategory));
   try {
     await validateForm(form);
@@ -60,9 +60,9 @@ router.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
       redirectToNextPage(form, req.params.id, res);
     }
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
+    logger.error(error);
     res.status(500).send({error: error.message});
   }
 });
 
-export default router;
+export default employmentStatusController;

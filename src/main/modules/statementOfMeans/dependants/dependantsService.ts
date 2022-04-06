@@ -1,4 +1,3 @@
-import {get} from 'lodash';
 import {getDraftClaimFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Validator} from 'class-validator';
@@ -14,7 +13,7 @@ class DependantsService {
   public async getDependants(claimId: string): Promise<Dependants> {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (get(civilClaimResponse, 'case_data.statementOfMeans.dependants')) {
+      if (civilClaimResponse?.case_data?.statementOfMeans?.dependants) {
         return civilClaimResponse.case_data.statementOfMeans.dependants;
       }
       return new Dependants();
@@ -27,7 +26,7 @@ class DependantsService {
   public async saveDependants(claimId: string, dependants: Dependants) {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (get(civilClaimResponse, 'case_data.statementOfMeans')) {
+      if (civilClaimResponse?.case_data?.statementOfMeans) {
         civilClaimResponse.case_data.statementOfMeans.dependants = dependants;
       } else {
         const statementOfMeans = new StatementOfMeans();

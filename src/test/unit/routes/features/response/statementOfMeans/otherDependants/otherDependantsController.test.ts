@@ -13,7 +13,7 @@ import {
   VALID_NUMBER_OF_PEOPLE,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
-import { REDIS_FAILURE } from '../../../../../../../test/utils/errorMessageTestConstants';
+import { TestMessages } from '../../../../../../../test/utils/errorMessageTestConstants';
 
 const civilClaimResponseMock = require('../../../../../../utils/mocks/civilClaimResponseMock.json');
 const noDisabilityMock = require('../../../../../../utils/mocks/civilClaimResponseOptionNoMock.json');
@@ -35,7 +35,7 @@ const mockWithoutOtherDependents = {
 };
 const mockRedisFailure = {
   set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => {throw new Error(REDIS_FAILURE);})};
+  get: jest.fn(() => {throw new Error(TestMessages.REDIS_FAILURE);})};
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 
@@ -79,7 +79,7 @@ describe('on GET', () => {
       .get(CITIZEN_OTHER_DEPENDANTS_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: REDIS_FAILURE});
+        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
       });
   });
 
@@ -197,14 +197,14 @@ describe('on POST', () => {
   test('should throw an error when call redis', async () => {
     const mockRedisException = {
       set: jest.fn(() => Promise.resolve({})),
-      get: jest.fn(() => {throw new Error(REDIS_FAILURE);})};
+      get: jest.fn(() => {throw new Error(TestMessages.REDIS_FAILURE);})};
     app.locals.draftStoreClient = mockRedisException;
     await request(app)
       .post(CITIZEN_OTHER_DEPENDANTS_URL)
       .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: REDIS_FAILURE});
+        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
       });
   });
 });

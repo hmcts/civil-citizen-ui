@@ -7,12 +7,11 @@ import {Claim} from '../../../../common/models/claim';
 import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilityVerification';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {get} from 'lodash';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenDobController');
 
-const router = express.Router();
+const citizenDobController = express.Router();
 const validator = new Validator();
 
 function renderView(res: express.Response, form: CitizenDob): void {
@@ -27,11 +26,11 @@ function redirectToNextPage(req: express.Request, res: express.Response, dob: Da
   }
 }
 
-router.get(DOB_URL, async (req: express.Request, res: express.Response) => {
+citizenDobController.get(DOB_URL, async (req: express.Request, res: express.Response) => {
   try {
     const citizenDob = new CitizenDob();
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
-    if (get(responseDataRedis,'respondent1.dateOfBirth')) {
+    if (responseDataRedis?.respondent1?.dateOfBirth) {
       const dateOfBirth =  new Date(responseDataRedis.respondent1.dateOfBirth);
       citizenDob.day = dateOfBirth.getDate();
       citizenDob.month = (dateOfBirth.getMonth() + 1);
@@ -44,11 +43,12 @@ router.get(DOB_URL, async (req: express.Request, res: express.Response) => {
   }
 });
 
-router.post(DOB_URL, async (req, res) => {
+citizenDobController.post(DOB_URL, async (req, res) => {
+  const { year, month, day } = req.body;
   try {
-    const citizenDob = new CitizenDob(req.body.year, req.body.month, req.body.day);
+    const citizenDob = new CitizenDob(year, month, day);
     citizenDob.errors = validator.validateSync(citizenDob);
-    if (citizenDob.errors && citizenDob.errors.length > 0) {
+    if (citizenDob?.errors?.length > 0) {
       renderView(res, citizenDob);
     } else {
       const claim = await getCaseDataFromStore(req.params.id) || new Claim();
@@ -68,4 +68,4 @@ router.post(DOB_URL, async (req, res) => {
   }
 });
 
-export default router;
+export default citizenDobController;

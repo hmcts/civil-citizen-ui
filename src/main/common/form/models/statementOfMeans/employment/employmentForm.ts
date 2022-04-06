@@ -27,7 +27,7 @@ export class EmploymentForm extends Form {
   }
 
   hasEmploymentCategory(value: EmploymentCategory) {
-    return this.employmentCategory && this.employmentCategory.includes(value);
+    return this.employmentCategory?.includes(value);
   }
 
   optionYesDefined(): boolean {

@@ -67,6 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function elementExists(element){
-    return element && element.length > 0;
+    return element?.length > 0;
   }
 });

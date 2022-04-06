@@ -6,7 +6,7 @@ import {DisabilityService} from '../../../../modules/statementOfMeans/disability
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 const citizenDisabilityViewPath = 'features/response/statementOfMeans/disability';
-const router = express.Router();
+const disabilityController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('disabilityController');
 const disabilityService = new DisabilityService();
@@ -16,7 +16,7 @@ function renderView(form: Disability, res: express.Response): void {
   res.render(citizenDisabilityViewPath, { form });
 }
 
-router.get(CITIZEN_DISABILITY_URL, async (req, res) => {
+disabilityController.get(CITIZEN_DISABILITY_URL, async (req, res) => {
   try {
     const disability = await disabilityService.getDisability(req.params.id);
     renderView(disability, res);
@@ -26,11 +26,11 @@ router.get(CITIZEN_DISABILITY_URL, async (req, res) => {
   }
 });
 
-router.post(CITIZEN_DISABILITY_URL,
+disabilityController.post(CITIZEN_DISABILITY_URL,
   async (req, res) => {
     const disability: Disability = new Disability(req.body.option);
     const errors: ValidationError[] = validator.validateSync(disability);
-    if (errors && errors.length > 0) {
+    if (errors?.length > 0) {
       disability.errors = errors;
       renderView(disability, res);
     } else {
@@ -48,4 +48,4 @@ router.post(CITIZEN_DISABILITY_URL,
     }
   });
 
-export default router;
+export default disabilityController;

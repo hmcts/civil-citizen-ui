@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {SELF_EMPLOYED_URL, COURT_ORDERS_URL, WHO_EMPLOYS_YOU_URL} from '../../../../urls';
+import {CITIZEN_SELF_EMPLOYED_URL, CITIZEN_COURT_ORDER_URL, CITIZEN_WHO_EMPLOYS_YOU_URL} from '../../../../urls';
 import {getEmployers, saveEmployers} from '../../../../../modules/statementOfMeans/employment/employerService';
 import {Employers} from '../../../../../common/form/models/statementOfMeans/employment/employers';
 import {Employer} from '../../../../../common/form/models/statementOfMeans/employment/employer';
@@ -11,7 +11,7 @@ import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans
 const whoEmploysYouViewPath = 'features/response/statementOfMeans/employment/who-employs-you';
 const router = express.Router();
 
-router.get(WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Response) => {
+router.get(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Response) => {
   try {
     const employers: Employers = await getEmployers(req.params.id);
     res.render(whoEmploysYouViewPath, { employers });
@@ -20,7 +20,7 @@ router.get(WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Respon
   }
 });
 
-router.post(WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Response) => {
+router.post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Response) => {
   try {
     const claimId = req.params.id;
     const employers: Employers = new Employers(req.body.employers.map((employer: Employer) => new Employer(employer.employerName, employer.jobTitle)));
@@ -32,9 +32,9 @@ router.post(WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Respo
       await saveEmployers(claimId, employers);
       const employment: EmploymentForm = await getEmploymentForm(claimId);
       if (employment.isEmployed()) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, COURT_ORDERS_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDER_URL));
       } else if (employment.isEmployedAndSelfEmployed()) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, SELF_EMPLOYED_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
       } else {
         // TODO: midleware handler
         res.status(404);
