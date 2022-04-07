@@ -13,9 +13,6 @@
       {% set errors = form.getAllErrors() %}
       {% set declaredError = form.errorFor('declared') %}
       {% set atLeastOneCourtOrderError = form.errorFor('rows') %}
-      {% set under11Error = form.nestedErrorFor('under11') %}
-      {% set between11and15Error = form.nestedErrorFor('between11and15') %}
-      {% set between16and19Error = form.nestedErrorFor('between16and19') %}
       {% if errors.length > 0 %}
         {{ govukErrorSummary({
           "titleText": t('There was a problem'),
@@ -41,10 +38,10 @@
                   {% endif %}
 
                   {% for courtOrder in form.model.rows %}
-                    {{ courtOrderMacro(loop.index0, courtOrder) }}
+                    {{ courtOrderMacro(loop.index0, courtOrder, form.errorFor) }}
                   {% else %}
                     {% call govukFieldset({ classes: 'moj-add-another__item' }) %}
-                      {{ courtOrderMacro(0, '') }}
+                      {{ courtOrderMacro(0, '', form.errorFor) }}
                     {% endcall %}
                   {% endfor %}
 
@@ -101,7 +98,7 @@
   </div>
 {% endblock %}
 
-{% macro courtOrderMacro(courtOrderIndex, courtOrderValue) %}
+{% macro courtOrderMacro(courtOrderIndex, courtOrderValue, errorFor) %}
   {% call govukFieldset({
     classes: 'moj-add-another__item govuk-!-margin-bottom-6',
     legend: {
@@ -124,8 +121,8 @@
         'data-id': 'rows[%index%][claimNumber]'
       },
       errorMessage: {
-        text: t(claimNumberErrors[courtOrderIndex])
-      } if claimNumberErrors[courtOrderIndex]
+        text: t(errorFor('rows['+courtOrderIndex+'][claimNumber]'))
+      } if errorFor('rows['+courtOrderIndex+'][claimNumber]')
     }) }}
 
     {{ govukInput({
@@ -145,8 +142,8 @@
         'data-id': 'rows[%index%][amount]'
       },
       errorMessage: {
-        text: t(amountErrors[courtOrderIndex])
-      } if amountErrors[courtOrderIndex]
+        text: t(errorFor('rows['+courtOrderIndex+'][amount]'))
+      } if errorFor('rows['+courtOrderIndex+'][amount]')
     }) }}
     {{ govukInput({
       id: 'rows[' + courtOrderIndex + '][instalmentAmount]',
@@ -165,8 +162,8 @@
         'data-id': 'rows[%index%][instalmentAmount]'
       },
       errorMessage: {
-        text: t(instalmentAmountErrors[courtOrderIndex])
-      } if instalmentAmountErrors[courtOrderIndex]
+        text: t(errorFor('rows['+courtOrderIndex+'][instalmentAmount]'))
+      } if errorFor('rows['+courtOrderIndex+'][instalmentAmount]')
     }) }}
 
   {% endcall %}
