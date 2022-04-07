@@ -2,10 +2,61 @@ import { app } from '../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import { CITIZEN_WHO_EMPLOYS_YOU_URL } from '../../../../../../../main/routes/urls';
+import { CITIZEN_WHO_EMPLOYS_YOU_URL, CITIZEN_COURT_ORDER_URL, CITIZEN_SELF_EMPLOYED_URL } from '../../../../../../../main/routes/urls';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import { mockCivilClaim, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
+import { mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 import { VALID_ENTER_AT_LEAST_ONE_EMPLOYER, VALID_ENTER_AN_EMPLOYER_NAME, VALID_ENTER_A_JOB_TITLE } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+
+const mockRedisEmployed = {
+  "id": 1645882162449409,
+  "case_data": {
+    "statementOfMeans": {
+      "employment": {
+        "declared": true,
+        "employmentType": ["EMPLOYED"]
+      }
+    }
+  }
+}
+
+const mockRedisEmployedAndSelfEmployed = {
+  "id": 1645882162449409,
+  "case_data": {
+    "statementOfMeans": {
+      "employment": {
+        "declared": true,
+        "employmentType": ["EMPLOYED", "SELF-EMPLOYED"]
+      }
+    }
+  }
+}
+
+const mockRedisSelfEmployed = {
+  "id": 1645882162449409,
+  "case_data": {
+    "statementOfMeans": {
+      "employment": {
+        "declared": true,
+        "employmentType": ["SELF-EMPLOYED"]
+      }
+    }
+  }
+}
+
+const mockEmployed = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisEmployed))),
+};
+
+const mockEmployedAndSelfEmployed = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisEmployedAndSelfEmployed))),
+};
+
+const mockSelfEmployed = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisSelfEmployed))),
+};
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -20,11 +71,20 @@ describe('Who employs you', () => {
   });
   describe('on Get', () => {
     it('should return who employs you page successfully', async () => {
+      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      await request(app).get(CITIZEN_WHO_EMPLOYS_YOU_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Who employs you?');
+        });
+    });
+    it('should return who employs you page with data from redis', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Who employs you?');
+          expect(res.text).toContain('Felipe');
         });
     });
     it('should return http 500 when has error', async () => {
@@ -68,45 +128,41 @@ describe('Who employs you', () => {
           expect(res.text).toContain('govuk-error-message');
         });
     });
-    // it('should return error message when option yes is selected but no employment type is selected', async () => {
-    //   await request(app).post(CITIZEN_EMPLOYMENT_URL)
-    //     .send('option=yes')
-    //     .expect((res) => {
-    //       expect(res.status).toBe(200);
-    //       expect(res.text).toContain(VALID_AT_LEAST_ONE_OPTION);
-    //     });
-    // });
-    // it('should redirect to employers page when option is yes and employment type is self-employed', async () => {
-    //   await request(app).post(CITIZEN_EMPLOYMENT_URL)
-    //     .send({option: 'yes', employmentCategory: 'SELF-EMPLOYED'})
-    //     .expect((res) => {
-    //       expect(res.status).toBe(302);
-    //       expect(res.header.location).toEqual(SELF_EMPLOYED_URL);
-    //     });
-    // });
-    // it('should redirect to employers page when option is yes and employment type is employed', async () => {
-    //   await request(app).post(CITIZEN_EMPLOYMENT_URL)
-    //     .send({option: 'yes', employmentCategory: 'EMPLOYED'})
-    //     .expect((res) => {
-    //       expect(res.status).toBe(302);
-    //       expect(res.header.location).toEqual(CITIZEN_WHO_EMPLOYS_YOU_URL);
-    //     });
-    // });
-    // it('should redirect to employers page when option is yes and employment type is self-employed and employed', async () => {
-    //   await request(app).post(CITIZEN_EMPLOYMENT_URL)
-    //     .send({option: 'yes', employmentCategory: ['EMPLOYED', 'SELF-EMPLOYED']})
-    //     .expect((res) => {
-    //       expect(res.status).toBe(302);
-    //       expect(res.header.location).toEqual(CITIZEN_WHO_EMPLOYS_YOU_URL);
-    //     });
-    // });
-    // it('should redirect to unemployed page when option is no', async () => {
-    //   await request(app).post(CITIZEN_EMPLOYMENT_URL)
-    //     .send('option=no')
-    //     .expect((res) => {
-    //       expect(res.status).toBe(302);
-    //       expect(res.header.location).toEqual(UNEMPLOYED_URL);
-    //     });
-    // });
+    it('should redirect to self-employment page when employment type is employed and self-employed', async () => {
+      app.locals.draftStoreClient = mockEmployedAndSelfEmployed;
+      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
+        .send({ employers:[{employerName:"Felipe", jobTitle:"Developer"}] })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_SELF_EMPLOYED_URL);
+        });
+    });
+    it('should redirect to courts order page when employment type is employed', async () => {
+      app.locals.draftStoreClient = mockEmployed;
+      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
+        .send({ employers:[{employerName:"Felipe", jobTitle:"Developer"}] })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_COURT_ORDER_URL);
+        });
+    });
+    it('should redirect to 404 page when employment type is self-employed and user is on this page', async () => {
+      app.locals.draftStoreClient = mockSelfEmployed;
+      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
+        .send({ employers:[{employerName:"Felipe", jobTitle:"Developer"}] })
+        .expect((res) => {
+          expect(res.status).toBe(404);
+        });
+    });
+    test('should return http 500 when has error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(CITIZEN_WHO_EMPLOYS_YOU_URL)
+        .send({ employers:[{employerName:"Felipe", jobTitle:"Developer"}] })
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
+        });
+    });
   });
 });

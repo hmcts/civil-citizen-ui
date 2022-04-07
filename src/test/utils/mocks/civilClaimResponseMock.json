@@ -51,6 +51,18 @@
         "numberOfChildren": {
           "under11": 2
         }
+      },
+      "employers":{
+        "rows":[
+          {
+            "employerName": "Felipe",
+            "jobTitle": "Developer"
+          },
+          {
+            "employerName": "Tim",
+            "jobTitle": "Manager"
+          }
+        ]
       }
     },
     "respondent1": {

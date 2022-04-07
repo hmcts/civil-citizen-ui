@@ -15,6 +15,7 @@ export const getEmployers = async (claimId: string): Promise<Employers> => {
     return new Employers([new Employer()]);
   } catch (error) {
     logger.error(error);
+    throw error;
   }
 };
 
@@ -26,6 +27,7 @@ export const saveEmployers = async (claimId: string, employers: Employers) => {
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
+    throw error;
   }
 };
 
