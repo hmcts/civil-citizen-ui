@@ -32,14 +32,14 @@ unemploymentController.get(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
 
 unemploymentController.post(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
   try {
-    const unemployment = new Unemployment(req.body.option, new UnemploymentDetails(req.body.years, req.body.months), new OtherDetails(req.body.details));
-    const unemploymentForm: GenericForm<Unemployment> = new GenericForm(unemployment);
+    const unemploymentToSave = new Unemployment(req.body.option, new UnemploymentDetails(req.body.years, req.body.months), new OtherDetails(req.body.details));
+    const unemploymentForm: GenericForm<Unemployment> = new GenericForm(unemploymentToSave);
     unemploymentForm.errors = validator.validateSync(unemploymentForm.model);
 
     if (unemploymentForm.hasErrors() || unemploymentForm.hasNestedErrors()) {
       renderView(unemploymentForm, res);
     } else {
-      await unemploymentService.saveUnemployment(req.params.id, unemployment);
+      await unemploymentService.saveUnemployment(req.params.id, unemploymentToSave);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_COURT_ORDER_URL));
     }
   } catch (error) {
