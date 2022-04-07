@@ -1,6 +1,5 @@
 import {RegularExpenses} from '../../../common/form/models/statementOfMeans/expenses/regularExpenses';
 import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
-import {Claim} from '../../../common/models/claim';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -8,7 +7,7 @@ const logger = Logger.getLogger('regularExpensesService');
 const getRegularExpenses = async (claimId: string): Promise<RegularExpenses> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    if (claim?.statementOfMeans?.regularExpenses) {
+    if (claim.statementOfMeans?.regularExpenses) {
       return claim.statementOfMeans.regularExpenses;
     }
     return RegularExpenses.buildEmptyForm();
@@ -20,7 +19,7 @@ const getRegularExpenses = async (claimId: string): Promise<RegularExpenses> => 
 
 const saveRegularExpenses = async (claimId: string, regularExpenses: RegularExpenses) => {
   try {
-    const claim = await getCaseDataFromStore(claimId) || new Claim();
+    const claim = await getCaseDataFromStore(claimId);
     if (!claim.statementOfMeans) {
       claim.statementOfMeans = new StatementOfMeans();
     }
