@@ -36,7 +36,7 @@ router.post(
   CITIZEN_PRIORITY_DEBTS_URL,
   async (req: express.Request, res: express.Response) => {
     const convertedDebtValues = convertRequestBodyToForm(req.body);
-
+    
     try {
       await validateForm(convertedDebtValues);
 
@@ -57,7 +57,7 @@ router.post(
       }
     } catch (error) {
       logger.error(`${(error as Error).stack || error}`);
-      res.status(500).send({error: error});
+      res.status(500).send({error: error.message});
     }
   },
 );

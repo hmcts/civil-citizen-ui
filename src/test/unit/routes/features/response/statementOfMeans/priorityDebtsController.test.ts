@@ -141,7 +141,11 @@ describe('Priority Debts Controller', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
-        .send({})
+        .send({
+          mortgage: 'mortgage',
+          'mortgage-payment-amount': '85.92',
+          'mortgage-payment-schedule': 'month',
+        })
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
