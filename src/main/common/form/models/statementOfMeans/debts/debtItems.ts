@@ -1,25 +1,24 @@
 import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
 import {
-  SELECT_AN_OPTION,
-  NUMBER_REQUIRED,
+  ENTER_A_DEBT, VALID_NUMBER_OF_PEOPLE,
 } from '../../../../form/validationErrors/errorMessageConstants';
-import {AccountBalanceValidator} from '../../../../../common/form/validators/accountBalanceValidator';
 import {Form} from '../../../../../common/form/models/form';
+import {CurrencyValidator} from '../../../../../common/form/validators/currencyValidator';
 
 export class DebtItems extends Form{
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({message: SELECT_AN_OPTION})
+  @IsNotEmpty({message: ENTER_A_DEBT})
     debt: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({message: SELECT_AN_OPTION})
-  @Validate(AccountBalanceValidator)
+  @IsNotEmpty({message: VALID_NUMBER_OF_PEOPLE})
+  @Validate(CurrencyValidator)
     totalOwed: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({message: NUMBER_REQUIRED})
-  @Validate(AccountBalanceValidator)
+  @IsNotEmpty({message: VALID_NUMBER_OF_PEOPLE})
+  @Validate(CurrencyValidator)
     monthlyPayments: string;
 
 
