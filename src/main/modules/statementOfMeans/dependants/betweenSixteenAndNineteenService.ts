@@ -24,18 +24,20 @@ export const getForm = async (claimId: string): Promise<BetweenSixteenAndNinetee
   }
 };
 
-export const saveFormToDraftStore = async (claimId: string, form: BetweenSixteenAndNineteenDependants) => {
+export const saveFormToDraftStore = async (claimId: string, form: BetweenSixteenAndNineteenDependants): Promise<Claim> => {
   try {
     const claim = await getClaim(claimId);
     const statementOfMeans = claim.statementOfMeans ? claim.statementOfMeans : new StatementOfMeans();
     statementOfMeans.numberOfChildrenLivingWithYou = form.value;
     claim.statementOfMeans = statementOfMeans;
     await saveDraftClaim(claimId, claim);
+    return claim;
   } catch (error) {
     logger.error(`${error.stack || error}`);
     throw error;
   }
 };
+
 
 const getMaxValue = (claim: Claim): number | undefined => {
   if (claim?.statementOfMeans?.dependants?.numberOfChildren) {
