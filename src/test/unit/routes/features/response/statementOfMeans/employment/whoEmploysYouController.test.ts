@@ -1,47 +1,50 @@
-import { app } from '../../../../../../../main/app';
+import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import { CITIZEN_WHO_EMPLOYS_YOU_URL, CITIZEN_COURT_ORDER_URL, CITIZEN_SELF_EMPLOYED_URL } from '../../../../../../../main/routes/urls';
-import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import { mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
-import { VALID_ENTER_AT_LEAST_ONE_EMPLOYER, VALID_ENTER_AN_EMPLOYER_NAME, VALID_ENTER_A_JOB_TITLE } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {CITIZEN_WHO_EMPLOYS_YOU_URL, CITIZEN_COURT_ORDER_URL, CITIZEN_SELF_EMPLOYED_URL} from '../../../../../../../main/routes/urls';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {VALID_ENTER_AT_LEAST_ONE_EMPLOYER, VALID_ENTER_AN_EMPLOYER_NAME, VALID_ENTER_A_JOB_TITLE} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+
+const mockEmployer = { employers: [{ employerName: 'Felipe', jobTitle: 'Developer' }] };
 
 const mockRedisEmployed = {
-  "id": 1645882162449409,
-  "case_data": {
-    "statementOfMeans": {
-      "employment": {
-        "declared": true,
-        "employmentType": ["EMPLOYED"]
-      }
-    }
-  }
-}
+  'id': 1645882162449409,
+  'case_data': {
+    'statementOfMeans': {
+      'employment': {
+        'declared': true,
+        'employmentType': ['EMPLOYED'],
+      },
+    },
+  },
+};
 
 const mockRedisEmployedAndSelfEmployed = {
-  "id": 1645882162449409,
-  "case_data": {
-    "statementOfMeans": {
-      "employment": {
-        "declared": true,
-        "employmentType": ["EMPLOYED", "SELF-EMPLOYED"]
-      }
-    }
-  }
-}
+  'id': 1645882162449409,
+  'case_data': {
+    'statementOfMeans': {
+      'employment': {
+        'declared': true,
+        'employmentType': ['EMPLOYED', 'SELF-EMPLOYED'],
+      },
+    },
+  },
+};
 
 const mockRedisSelfEmployed = {
-  "id": 1645882162449409,
-  "case_data": {
-    "statementOfMeans": {
-      "employment": {
-        "declared": true,
-        "employmentType": ["SELF-EMPLOYED"]
-      }
-    }
-  }
-}
+  'id': 1645882162449409,
+  'case_data': {
+    'statementOfMeans': {
+      'employment': {
+        'declared': true,
+        'employmentType': ['SELF-EMPLOYED'],
+      },
+    },
+  },
+};
+
 
 const mockEmployed = {
   set: jest.fn(() => Promise.resolve({})),
@@ -75,7 +78,7 @@ describe('Who employs you', () => {
       await request(app).get(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Who employs you?');
+          expect(res.text).toContain(TestMessages.WHO_EMPLOYS_YOU);
         });
     });
     it('should return who employs you page with data from redis', async () => {
@@ -83,7 +86,7 @@ describe('Who employs you', () => {
       await request(app).get(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Who employs you?');
+          expect(res.text).toContain(TestMessages.WHO_EMPLOYS_YOU);
           expect(res.text).toContain('Felipe');
         });
     });
@@ -128,10 +131,19 @@ describe('Who employs you', () => {
           expect(res.text).toContain('govuk-error-message');
         });
     });
+    it('should create statementOfMeans if empty', async () => {
+      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
+        .send(mockEmployer)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
     it('should redirect to self-employment page when employment type is employed and self-employed', async () => {
       app.locals.draftStoreClient = mockEmployedAndSelfEmployed;
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({ employers:[{employerName:"Felipe", jobTitle:"Developer"}] })
+        .send(mockEmployer)
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_SELF_EMPLOYED_URL);
@@ -140,25 +152,26 @@ describe('Who employs you', () => {
     it('should redirect to courts order page when employment type is employed', async () => {
       app.locals.draftStoreClient = mockEmployed;
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({ employers:[{employerName:"Felipe", jobTitle:"Developer"}] })
+        .send(mockEmployer)
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_COURT_ORDER_URL);
         });
     });
-    it('should redirect to 404 page when employment type is self-employed and user is on this page', async () => {
+    it('should redirect to error page when employment type is self-employed and user is on this page', async () => {
       app.locals.draftStoreClient = mockSelfEmployed;
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({ employers:[{employerName:"Felipe", jobTitle:"Developer"}] })
+        .send(mockEmployer)
         .expect((res) => {
-          expect(res.status).toBe(404);
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
     test('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({ employers:[{employerName:"Felipe", jobTitle:"Developer"}] })
+        .send(mockEmployer)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });

@@ -1,6 +1,8 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {Employer} from '../../../common/form/models/statementOfMeans/employment/employer';
 import {Employers} from '../../../common/form/models/statementOfMeans/employment/employers';
+import {Claim} from '../../../common/models/claim';
+import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentService');
@@ -21,8 +23,11 @@ export const getEmployers = async (claimId: string): Promise<Employers> => {
 
 export const saveEmployers = async (claimId: string, employers: Employers) => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const claim = await getCaseDataFromStore(claimId) || new Claim();
     const filteredEmployers: Employers = filterEmptyEmployers(employers);
+    if (!claim.statementOfMeans) {
+      claim.statementOfMeans = new StatementOfMeans();
+    }
     claim.statementOfMeans.employers = filteredEmployers;
     await saveDraftClaim(claimId, claim);
   } catch (error) {

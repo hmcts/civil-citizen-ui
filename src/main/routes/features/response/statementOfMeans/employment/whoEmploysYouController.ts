@@ -35,8 +35,8 @@ router.post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: expre
       } else if (employment.isEmployedAndSelfEmployed()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
       } else {
-        res.status(404);
-        res.render('not-found');
+        res.status(500);
+        res.render('error');
       }
     }
   } catch (error) {
