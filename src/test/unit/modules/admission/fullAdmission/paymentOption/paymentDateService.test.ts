@@ -45,7 +45,8 @@ describe('Payment Date service', () => {
       //Given
       const paymentDate = new PaymentDate(undefined, undefined, undefined);
       //When
-      const form = paymentDateService.validatePaymentDate(paymentDate);
+      const form = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
       //Then
       expect(form.getErrors().length).toBe(3);
       expect(form.getErrors()[0].property).toBe('year');
@@ -55,7 +56,8 @@ describe('Payment Date service', () => {
       //Given
       const paymentDate = new PaymentDate(undefined, '12', '1');
       //When
-      const form = paymentDateService.validatePaymentDate(paymentDate);
+      const form = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('year');
