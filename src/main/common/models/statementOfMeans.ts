@@ -12,6 +12,7 @@ import {Employment} from './employment';
 import {Dependants} from '../form/models/statementOfMeans/dependants/dependants';
 import {TaxPayments} from './taxPayments';
 import {Unemployment} from '../form/models/statementOfMeans/unemployment/unemployment';
+import {ChildrenDisability} from '../form/models/statementOfMeans/dependants/childrenDisability';
 
 export class StatementOfMeans {
   disability?: Disability;
@@ -29,4 +30,5 @@ export class StatementOfMeans {
   dependants?: Dependants;
   numberOfChildrenLivingWithYou?: number;
   unemployment?: Unemployment;
+  childrenDisability?: ChildrenDisability;
 }

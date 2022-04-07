@@ -1,7 +1,4 @@
 import express from 'express';
-
-const request = require('supertest');
-const {app} = require('../../../../../../../main/app');
 import nock from 'nock';
 import config from 'config';
 import {
@@ -10,13 +7,21 @@ import {
   VALID_POSITIVE_NUMBER,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
-  CITIZEN_DEPENDANTS_URL,
+  CHILDREN_DISABILITY_URL,
   CITIZEN_DEPENDANTS_EDUCATION_URL,
+  CITIZEN_DEPENDANTS_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../../main/routes/urls';
+import * as childrenDisabilityService
+  from '../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
+
+const request = require('supertest');
+const {app} = require('../../../../../../../main/app');
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService');
+const mockHasDisabledChildren = childrenDisabilityService.hasDisabledChildren as jest.Mock;
 
 const respondentDependantsUrl = CITIZEN_DEPENDANTS_URL.replace(':id', 'aaa');
 const DRAFT_STORE_EXCEPTION = 'Draft store exception';
@@ -70,7 +75,10 @@ describe('Citizen dependants', () => {
       app.locals.draftStoreClient = mockDraftStore;
     });
 
-    test('when Yes option and under11 field filled in should redirect to Other Dependants screen', async () => {
+    test('when Yes option,under11 field filled in, hasDisabledChildren returns false, should redirect to Other Dependants screen', async () => {
+      mockHasDisabledChildren.mockImplementation( () => {
+        return false;
+      });
       await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
@@ -78,6 +86,20 @@ describe('Citizen dependants', () => {
         .expect((res: express.Response) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(CITIZEN_OTHER_DEPENDANTS_URL.replace(':id', 'aaa'));
+        });
+    });
+
+    test('when Yes option and under11 field filled in, hasDisabledChildren returns true, should redirect to Other Dependants screen', async () => {
+      mockHasDisabledChildren.mockImplementation(() => {
+        return true;
+      });
+      await request(app)
+        .post(respondentDependantsUrl)
+        .send('declared=yes')
+        .send('under11=1')
+        .expect((res: express.Response) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(CHILDREN_DISABILITY_URL.replace(':id', 'aaa'));
         });
     });
     test('when Yes option and between16and19 field filled in should redirect to Dependants Education screen', async () => {
