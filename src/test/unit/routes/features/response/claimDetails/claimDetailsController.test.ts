@@ -2,7 +2,7 @@ import request from 'supertest';
 import { app } from '../../../../../../main/app';
 import config from 'config';
 import { CLAIM_DETAILS } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { CLAIM_NUMBER } from '../../../../../utils/errorMessageTestConstants';
+import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 import { mockClaim as mockResponse } from '../../../../../utils/mockClaim';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -30,7 +30,7 @@ describe('Confirm Details page', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(CLAIM_DETAILS);
-          expect(res.text).toContain(CLAIM_NUMBER);
+          expect(res.text).toContain(TestMessages.CLAIM_NUMBER);
         });
     });
     test('should return your claim details page with values from civil-service', async () => {

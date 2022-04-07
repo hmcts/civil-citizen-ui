@@ -19,3 +19,4 @@ export const enum TestMessages {
   RENT_SCHEDULE_ERROR = 'Select how often you pay for Rent',
   MORTGAGE_CORRECT_AMOUNT_ERROR = 'Enter a valid Mortgage amount, maximum two decimal places'
 }
+  
