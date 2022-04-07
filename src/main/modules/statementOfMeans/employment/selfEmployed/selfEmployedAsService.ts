@@ -32,7 +32,7 @@ const saveSelfEmployedAsData = async (claimId: string, form: SelfEmployedAsForm)
 };
 
 const getClaim = async (claimId: string): Promise<Claim> => {
-  let claim = await getCaseDataFromStore(claimId) || new Claim();
+  const claim = await getCaseDataFromStore(claimId) || new Claim();
   if (!claim.statementOfMeans) {
     claim.statementOfMeans = new StatementOfMeans();
   }
