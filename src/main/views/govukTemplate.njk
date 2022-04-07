@@ -132,7 +132,9 @@
 
   <script src="{{ asset_paths['js_vendor'] }}/govuk-template.js?{{ govuk_template_version }}"></script>
 
-  {% block body_end %}{% endblock %}
+  {% block body_end %}
+    {% block additional_scripts %}{% endblock %}  
+  {% endblock %}
 
   <script>if (typeof window.GOVUK === 'undefined') document.body.className = document.body.className.replace('js-enabled', '');</script>
 </body>
