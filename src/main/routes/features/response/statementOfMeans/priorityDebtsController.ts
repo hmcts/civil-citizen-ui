@@ -10,13 +10,13 @@ import {
   formatFormErrors,
   listFormErrors,
 } from '../../../../modules/statementOfMeans/priorityDebtsService';
-const router = express.Router();
+const priorityDebtsRrouter = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('debtsController');
 
 const debtsViewPath = 'features/response/statementOfMeans/priority-debts';
 
-router.get(
+priorityDebtsRrouter.get(
   CITIZEN_PRIORITY_DEBTS_URL,
   async (req: express.Request, res: express.Response) => {
     try {
@@ -32,7 +32,7 @@ router.get(
   },
 );
 
-router.post(
+priorityDebtsRrouter.post(
   CITIZEN_PRIORITY_DEBTS_URL,
   async (req: express.Request, res: express.Response) => {
     const convertedDebtValues = convertRequestBodyToForm(req.body);
@@ -62,4 +62,4 @@ router.post(
   },
 );
 
-export default router;
+export default priorityDebtsRrouter;

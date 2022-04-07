@@ -39,3 +39,4 @@ export const CITIZEN_DEPENDANTS_EDUCATION_URL = `${STATEMENT_OF_MEANS_URL}/depen
 export const CHILDREN_DISABILITY_URL = `${CITIZEN_DEPENDANTS_URL}/children-disability`;
 export const CITIZEN_COURT_ORDER_URL = `${STATEMENT_OF_MEANS_URL}/court-orders`;
 export const CITIZEN_PRIORITY_DEBTS_URL = `${STATEMENT_OF_MEANS_URL}/priority-debts`;
+export const CITIZEN_DEBTS_URL = `${STATEMENT_OF_MEANS_URL}/debts`;
