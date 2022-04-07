@@ -36,6 +36,7 @@ export const CLAIM_TASK_LIST_URL = `${BASE_CASE_RESPONSE_URL}/claim-task-list`;
 export const CITIZEN_PAYMENT_OPTION_URL = `${BASE_CASE_RESPONSE_URL}/full-admission/payment-option`;
 export const CITIZEN_PAYMENT_DATE_URL = `${BASE_CASE_RESPONSE_URL}/full-admission/payment-date`;
 export const CITIZEN_DEPENDANTS_EDUCATION_URL = `${STATEMENT_OF_MEANS_URL}/dependants/education`;
+export const CHILDREN_DISABILITY_URL = `${CITIZEN_DEPENDANTS_URL}/children-disability`;
 export const CITIZEN_COURT_ORDER_URL = `${STATEMENT_OF_MEANS_URL}/court-orders`;
 export const CITIZEN_MONTHLY_EXPENSES_URL = `${STATEMENT_OF_MEANS_URL}/monthly-expenses`;
 export const CITIZEN_MONTHLY_INCOME_URL = `${STATEMENT_OF_MEANS_URL}/monthly-income`;

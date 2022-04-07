@@ -2,10 +2,10 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
+import {constructResponseUrlWithIdParams,} from '../../../../../../main/common/utils/urlFormatter';
 import {
-  constructResponseUrlWithIdParams,
-} from '../../../../../../main/common/utils/urlFormatter';
-import {setLogger} from '../../../../../../main/routes/features/response/financialDetails/financialDetailsController';
+  setFinancialDetailsControllerLogger
+} from '../../../../../../main/routes/features/response/financialDetails/financialDetailsController';
 import {LoggerInstance} from 'winston';
 import {FINANCIAL_DETAILS_URL} from '../../../../../../main/routes/urls';
 
@@ -36,7 +36,7 @@ describe('Citizen financial details', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    setLogger(mockLogger);
+    setFinancialDetailsControllerLogger(mockLogger);
   });
 
   describe('on GET', () => {
