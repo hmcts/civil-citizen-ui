@@ -83,7 +83,7 @@ describe('regularExpenses service', () => {
       //Then
       expect(spySave).toBeCalled();
     });
-    it('should save succesfuly when statement of means  does not exist', async () => {
+    it('should save successfully when statement of means  does not exist', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
