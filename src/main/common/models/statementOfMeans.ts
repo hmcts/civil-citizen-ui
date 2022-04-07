@@ -1,6 +1,6 @@
 import {Disability} from '../form/models/statementOfMeans/disability';
 import {SevereDisability} from '../form/models/statementOfMeans/severeDisability';
-import { OtherDependants } from '../form/models/statementOfMeans/otherDependants';
+import {OtherDependants} from '../form/models/statementOfMeans/otherDependants';
 import {PartnerAge} from '../form/models/statementOfMeans/partner/partnerAge';
 import {CitizenBankAccount} from './citizenBankAccount';
 import {Cohabiting} from '../form/models/statementOfMeans/partner/cohabiting';
@@ -10,6 +10,7 @@ import {PartnerPension} from '../form/models/statementOfMeans/partner/partnerPen
 import {Residence} from '../form/models/statementOfMeans/residence';
 import {Employment} from './employment';
 import {Dependants} from '../form/models/statementOfMeans/dependants/dependants';
+import {PriorityDebts} from '../form/models/statementOfMeans/priorityDebts';
 
 export class StatementOfMeans {
   disability?: Disability;
@@ -25,4 +26,5 @@ export class StatementOfMeans {
   partnerPension?: PartnerPension;
   dependants?: Dependants;
   numberOfChildrenLivingWithYou?: number;
+  priorityDebts?: PriorityDebts;
 }
