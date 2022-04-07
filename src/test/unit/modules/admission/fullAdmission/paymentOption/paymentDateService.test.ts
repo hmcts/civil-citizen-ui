@@ -57,8 +57,18 @@ describe('Payment Date service', () => {
       const form = paymentDateService.validatePaymentDate(paymentDate);
       //Then
       expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('paymentDate');
-      expect(form.getErrors()[0].constraints).toEqual({ValidateIf: VALID_FOUR_DIGIT_YEAR});
+      expect(form.getErrors()[0].property).toBe('year');
+      expect(form.getErrors()[0].constraints).toEqual({min: VALID_YEAR, max: VALID_YEAR});
+    });
+    test('should raise an error if year is only 2 digits', async () => {
+      //Given
+      const paymentDate = new PaymentDate('23', '12', '1');
+      //When
+      const form = paymentDateService.validatePaymentDate(paymentDate);
+      //Then
+      expect(form.getErrors().length).toBe(1);
+      expect(form.getErrors()[0].property).toBe('year');
+      expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: VALID_FOUR_DIGIT_YEAR});
     });
     test('should raise an error if date in the past', async () => {
       //Given
@@ -68,7 +78,7 @@ describe('Payment Date service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('paymentDate');
-      expect(form.getErrors()[0].constraints).toEqual({OptionalDateNotInPastValidator: VALID_DATE_NOT_IN_PAST});
+      expect(form.getErrors()[0].constraints).toEqual({customDate: VALID_DATE_NOT_IN_PAST});
     });
     test('should raise an error if month greater than 12', async () => {
       //Given
@@ -77,7 +87,7 @@ describe('Payment Date service', () => {
       const form = paymentDateService.validatePaymentDate(paymentDate);
       //Then
       expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('paymentDate');
+      expect(form.getErrors()[0].property).toBe('month');
       expect(form.getErrors()[0].constraints).toEqual({max: VALID_MONTH});
     });
     test('should raise an error if month less than 1', async () => {
@@ -87,7 +97,7 @@ describe('Payment Date service', () => {
       const form = paymentDateService.validatePaymentDate(paymentDate);
       //Then
       expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('paymentDate');
+      expect(form.getErrors()[0].property).toBe('month');
       expect(form.getErrors()[0].constraints).toEqual({min: VALID_MONTH});
     });
     test('should raise an error if day greater than 31', async () => {
@@ -97,7 +107,7 @@ describe('Payment Date service', () => {
       const form = paymentDateService.validatePaymentDate(paymentDate);
       //Then
       expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('paymentDate');
+      expect(form.getErrors()[0].property).toBe('day');
       expect(form.getErrors()[0].constraints).toEqual({max: VALID_DAY});
     });
     test('should raise an error if day less than 1', async () => {
@@ -107,7 +117,7 @@ describe('Payment Date service', () => {
       const form = paymentDateService.validatePaymentDate(paymentDate);
       //Then
       expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('paymentDate');
+      expect(form.getErrors()[0].property).toBe('day');
       expect(form.getErrors()[0].constraints).toEqual({min: VALID_DAY});
     });
     test('should raise an error if decimal specified for date', async () => {
@@ -118,7 +128,7 @@ describe('Payment Date service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('paymentDate');
-      expect(form.getErrors()[0].constraints).toEqual({IsDate: VALID_DATE});
+      expect(form.getErrors()[0].constraints).toEqual({isDate: VALID_DATE});
     });
   });
   describe('Exception Handling', () => {

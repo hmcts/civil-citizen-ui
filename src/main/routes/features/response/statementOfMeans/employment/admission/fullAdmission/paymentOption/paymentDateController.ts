@@ -20,12 +20,12 @@ paymentDateController
       try {
         const paymentDate: PaymentDate = await paymentDateService.getPaymentDate(req.params.id);
         const paymentDateForm = new GenericForm(paymentDate);
-        const errors = paymentDateForm.getErrors().length ? paymentDateForm.getErrors() :null;
+        const errors = paymentDateForm.getErrors().length ? paymentDateForm.getErrors() : null;
         res.render(paymentDatePath, {
           form: new GenericForm(paymentDate), errors,
         });
       } catch (error) {
-        logger.error(`${error.stack || error}`);
+        logger.error(error);
         res.status(500).send({errorMessage: error.message, errorStack: error.stack});
       }
     })
@@ -43,7 +43,7 @@ paymentDateController
           await paymentDateService.savePaymentDate(req.params.id, paymentDate);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
         } catch (error) {
-          logger.error(`${error.stack || error}`);
+          logger.error(error);
           res.status(500).send({errorMessage: error.message, errorStack: error.stack});
         }
       }
