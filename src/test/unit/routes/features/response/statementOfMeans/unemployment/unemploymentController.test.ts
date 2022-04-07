@@ -10,7 +10,13 @@ import {
   VALID_BETWEEN_NUMBERS_0_80,
   VALID_INTEGER,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {
+  mockCivilClaim,
+  mockCivilClaimOptionNo,
+  mockCivilClaimUndefined,
+  mockNoStatementOfMeans,
+  mockRedisFailure,
+} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../../main/modules/oidc');
@@ -35,6 +41,22 @@ describe('Unemployment', () => {
     });
     test('should return unemployment page successfully without statementofmeans', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
+      await request(app).get(CITIZEN_UNEMPLOYED_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Are you unemployed or retired?');
+        });
+    });
+    test('should return unemployment page successfully without claim', async () => {
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      await request(app).get(CITIZEN_UNEMPLOYED_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Are you unemployed or retired?');
+        });
+    });
+    test('should return unemployment page successfully without unempoyment', async () => {
+      app.locals.draftStoreClient = mockCivilClaimOptionNo;
       await request(app).get(CITIZEN_UNEMPLOYED_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -73,6 +95,15 @@ describe('Unemployment', () => {
     });
     test('should redirect to court page option Retired is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).post(CITIZEN_UNEMPLOYED_URL)
+        .send({option: 'Retired'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_COURT_ORDER_URL);
+        });
+    });
+    test('should redirect to court page option Retired is selected without claim data in redis', async () => {
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app).post(CITIZEN_UNEMPLOYED_URL)
         .send({option: 'Retired'})
         .expect((res) => {

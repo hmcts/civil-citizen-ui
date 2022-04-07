@@ -16,17 +16,13 @@ export class UnemploymentService {
       const claim = await getCaseDataFromStore(claimId);
       if (claim?.statementOfMeans?.unemployment) {
         unemployment.option = claim.statementOfMeans.unemployment.option;
-        if (claim?.statementOfMeans?.unemployment?.unemploymentDetails) {
-          unemployment.unemploymentDetails = new UnemploymentDetails(claim.statementOfMeans.unemployment.unemploymentDetails.years.toString(), claim.statementOfMeans.unemployment.unemploymentDetails.months.toString());
-        }
-        if (claim?.statementOfMeans?.unemployment?.otherDetails) {
-          unemployment.otherDetails = new OtherDetails(claim.statementOfMeans.unemployment.otherDetails.details);
-        }
+        unemployment.unemploymentDetails = new UnemploymentDetails(claim.statementOfMeans.unemployment.unemploymentDetails.years.toString(), claim.statementOfMeans.unemployment.unemploymentDetails.months.toString());
+        unemployment.otherDetails = new OtherDetails(claim.statementOfMeans.unemployment.otherDetails.details);
         return unemployment;
       }
       return new Unemployment();
     } catch (error) {
-      logger.error(`${error.stack || error}`);
+      logger.error(error);
       throw error;
     }
   }
@@ -41,7 +37,7 @@ export class UnemploymentService {
       case_data.statementOfMeans.unemployment = unemployment;
       await saveDraftClaim(claimId, case_data);
     } catch (error) {
-      logger.error(`${error.stack || error}`);
+      logger.error(error);
       throw error;
     }
   }
