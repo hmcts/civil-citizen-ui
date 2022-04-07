@@ -34,7 +34,7 @@ export class UnemploymentService {
   public async saveUnemployment(claimId: string, unemployment: Unemployment) {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
-      if (!case_data?.statementOfMeans?.unemployment) {
+      if (!case_data?.statementOfMeans) {
         case_data.statementOfMeans = new StatementOfMeans();
         case_data.statementOfMeans.unemployment = new Unemployment();
       }
