@@ -7,20 +7,22 @@ import {
   VALID_MONTH,
   VALID_YEAR,
 } from '../../../../../../common/form/validationErrors/errorMessageConstants';
-import {OptionalDateNotInPastValidator} from '../../../../../../common/form/validators/optionalDateNotInPastValidator';
 import {OptionalDateFourDigitValidator} from '../../../../../../common/form/validators/optionalDateFourDigitValidator';
+import {OptionalDateNotInPastValidator} from '../../../../../../common/form/validators/optionalDateNotInPastValidator';
 import {DateConverter} from '../../../../../../common/utils/dateConverter';
+
+
+// const yesterday : Date = new Date(Date.now() - 1000*60*60*24);
 
 export class PaymentDate {
 
-  @ValidateIf(o => (o.day > 0 && o.day <32 && o.month > 0 && o.month<13 && o.year > 0))
-  @ValidateIf(o => (new OptionalDateFourDigitValidator().validate(o.year)), {message: VALID_FOUR_DIGIT_YEAR})
+  @ValidateIf(o => (o.day > 0 && o.day <32 && o.month > 0 && o.month < 13 && o.year > 99))
   @IsDate({message: VALID_DATE})
   @Validate(OptionalDateNotInPastValidator, {message: VALID_DATE_NOT_IN_PAST})
     paymentDate?: Date;
 
 
-  @Min(new Date().getFullYear(),{message:VALID_YEAR })
+  @Validate(OptionalDateFourDigitValidator, {message: VALID_FOUR_DIGIT_YEAR})
   @Max(9999,{message:VALID_YEAR })
     year: number;
 
