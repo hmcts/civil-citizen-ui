@@ -2,7 +2,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {PriorityDebtDetails} from '../../../../../../../main/common/form/models/statementOfMeans/priorityDebtDetails';
 
 const validator = new Validator();
-describe('Expense', () => {
+describe('Priority debt details', () => {
   describe('Validation', () => {
     it('should have errors when the declared is true', async () => {
       //Given

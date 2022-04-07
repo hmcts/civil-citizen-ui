@@ -62,7 +62,6 @@ export const savePriorityDebts = async (
     updatePriorityDebts(claim, form);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
-    console.error('500 eror---', error)
     logger.error(`${error.stack || error}`);
     throw error;
   }

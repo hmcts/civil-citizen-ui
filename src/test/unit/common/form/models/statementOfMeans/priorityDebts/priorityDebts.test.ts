@@ -3,7 +3,7 @@ import {PriorityDebtDetails} from '../../../../../../../main/common/form/models/
 import {validateForm} from '../../../../../../../main/common/form/validators/formValidator';
 import {formatFormErrors} from '../../../../../../../main/modules/statementOfMeans/priorityDebtsService';
 
-describe('Expenses', () => {
+describe('Priority debts', () => {
   describe('Validate', () => {
     it('should have no errors when empty form with save and continue', async () => {
       //Given
