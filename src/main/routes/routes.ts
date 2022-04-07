@@ -28,6 +28,8 @@ import dependantsController from './features/response/statementOfMeans/dependant
 import priorityDebtsController from './features/response/statementOfMeans/priorityDebtsController';
 import onTaxPaymentsController
   from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
+import childrenDisabilityController from './features/response/statementOfMeans/dependants/childrenDisabilityController';
+
 
 export default [
   homeController,
@@ -58,4 +60,5 @@ export default [
   dependantsController,
   priorityDebtsController,
   onTaxPaymentsController,
+  childrenDisabilityController,
 ];
