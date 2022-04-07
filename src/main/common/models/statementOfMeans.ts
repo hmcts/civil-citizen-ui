@@ -13,6 +13,7 @@ import {Employment} from './employment';
 import { Employers } from 'common/form/models/statementOfMeans/employment/employers';
 import {Dependants} from '../form/models/statementOfMeans/dependants/dependants';
 import {TaxPayments} from './taxPayments';
+import {ChildrenDisability} from '../form/models/statementOfMeans/dependants/childrenDisability';
 
 export class StatementOfMeans {
   disability?: Disability;
@@ -30,4 +31,5 @@ export class StatementOfMeans {
   partnerPension?: PartnerPension;
   dependants?: Dependants;
   numberOfChildrenLivingWithYou?: number;
+  childrenDisability?: ChildrenDisability;
 }
