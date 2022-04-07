@@ -12,7 +12,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 let logger: winston.LoggerInstance = Logger.getLogger('financialDetailsController');
 
 
-export function setLogger(winstonLogger: winston.LoggerInstance) {
+export function setFinancialDetailsControllerLogger(winstonLogger: winston.LoggerInstance) {
   logger = winstonLogger;
 }
 

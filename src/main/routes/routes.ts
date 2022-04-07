@@ -27,6 +27,8 @@ import betweenSixteenAndNineteenController from './features/response/statementOf
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
 import onTaxPaymentsController
   from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
+import childrenDisabilityController from './features/response/statementOfMeans/dependants/childrenDisabilityController';
+
 
 export default [
   homeController,
@@ -56,4 +58,5 @@ export default [
   betweenSixteenAndNineteenController,
   dependantsController,
   onTaxPaymentsController,
+  childrenDisabilityController,
 ];
