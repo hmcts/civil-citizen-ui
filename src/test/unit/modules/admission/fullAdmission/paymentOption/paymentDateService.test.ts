@@ -180,7 +180,7 @@ describe('Payment Date service', () => {
     });
     test('should not raise an error if today specified for date', async () => {
       //Given
-      const today : Date = new Date();
+      const today : Date = new Date(Date.now());
       paymentDate = new PaymentDate(today.getFullYear().toString(), (today.getMonth() + 1).toString(), today.getDate().toString());
       //When
       form = new GenericForm<PaymentDate>(paymentDate);

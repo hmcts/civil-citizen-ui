@@ -2,10 +2,10 @@ import {app} from '../../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
-import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL,} from '../../../../../../../../main/routes/urls';
+import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../../main/routes/urls';
 import {LoggerInstance} from 'winston';
 import {
-  setPaymentDateControllerLogger,
+  setPaymentDateControllerLogger
 } from '../../../../../../../../main/routes/features/response/statementOfMeans/employment/admission/fullAdmission/paymentOption/paymentDateController';
 import {
   VALID_DATE_NOT_IN_PAST,
@@ -14,7 +14,7 @@ import {
   VALID_MONTH,
 } from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
-import {TestMessages} from "../../../../../../../utils/errorMessageTestConstants";
+import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 
 
 jest.mock('../../../../../../../../main/modules/oidc');

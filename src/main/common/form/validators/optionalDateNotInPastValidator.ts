@@ -8,8 +8,10 @@ import {VALID_DATE_NOT_IN_PAST} from '../validationErrors/errorMessageConstants'
 export class OptionalDateNotInPastValidator implements ValidatorConstraintInterface {
 
   validate(inputDate: Date) {
-    // Only checking whether the date is the same day of the month as today, time is too strict
-    if (inputDate !== null && (inputDate.getDate() < (new Date(Date.now()).getDate()))) {
+    const today = new Date(Date.now());
+    // Need to compare dates discarding hours, minutes etc.
+    today.setHours(0,0,0,0);
+    if (inputDate !== null && (inputDate < today)) {
       return false;
     }
     return true;

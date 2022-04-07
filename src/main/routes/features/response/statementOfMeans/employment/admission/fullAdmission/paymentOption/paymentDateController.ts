@@ -7,7 +7,7 @@ import {GenericForm} from '../../../../../../../../common/form/models/genericFor
 import {constructResponseUrlWithIdParams} from '../../../../../../../../common/utils/urlFormatter';
 import paymentDateService
   from '../../../../../../../../modules/admission/fullAdmission/paymentOption/paymentDateService';
-import * as winston from "winston";
+import * as winston from 'winston';
 
 
 const {Logger} = require('@hmcts/nodejs-logging');
