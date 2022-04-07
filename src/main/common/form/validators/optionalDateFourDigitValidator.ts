@@ -4,7 +4,7 @@ import {VALID_FOUR_DIGIT_YEAR} from '../validationErrors/errorMessageConstants';
 /**
  * Validates that the input value is not a date in the past
  */
-@ValidatorConstraint({name: 'customDate', async: false})
+@ValidatorConstraint({name: 'OptionalDateFourDigitValidator', async: false})
 export class OptionalDateFourDigitValidator implements ValidatorConstraintInterface {
 
   validate(year: number) {

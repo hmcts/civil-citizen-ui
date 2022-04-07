@@ -19,10 +19,8 @@ paymentDateController
     CITIZEN_PAYMENT_DATE_URL, async (req: express.Request, res: express.Response) => {
       try {
         const paymentDate: PaymentDate = await paymentDateService.getPaymentDate(req.params.id);
-        const paymentDateForm = new GenericForm(paymentDate);
-        const errors = paymentDateForm.getErrors().length ? paymentDateForm.getErrors() : null;
         res.render(paymentDatePath, {
-          form: new GenericForm(paymentDate), errors,
+          form: new GenericForm(paymentDate),
         });
       } catch (error) {
         logger.error(error);
@@ -32,9 +30,10 @@ paymentDateController
   .post(
     CITIZEN_PAYMENT_DATE_URL, async (req, res) => {
       const paymentDate = paymentDateService.buildPaymentDate(req.body.year, req.body.month, req.body.day);
-      const form: GenericForm<PaymentDate> = paymentDateService.validatePaymentDate(paymentDate);
+      const form: GenericForm<PaymentDate> = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
 
-      if (form.hasErrors() || form.hasNestedErrors()) {
+      if (form.hasErrors()) {
         res.render(paymentDatePath, {
           form: form,
         });

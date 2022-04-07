@@ -10,6 +10,7 @@ import {
   VALID_MONTH,
   VALID_YEAR,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {GenericForm} from "../../../../../../main/common/form/models/genericForm";
 
 
 jest.mock('../../../../../../main/modules/draft-store');
@@ -64,7 +65,8 @@ describe('Payment Date service', () => {
       //Given
       const paymentDate = new PaymentDate('23', '12', '1');
       //When
-      const form = paymentDateService.validatePaymentDate(paymentDate);
+      const form = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('year');
@@ -74,7 +76,8 @@ describe('Payment Date service', () => {
       //Given
       const paymentDate = new PaymentDate('1990', '12', '1');
       //When
-      const form = paymentDateService.validatePaymentDate(paymentDate);
+      const form = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('paymentDate');
@@ -84,7 +87,8 @@ describe('Payment Date service', () => {
       //Given
       const paymentDate = new PaymentDate('2040', '13', '1');
       //When
-      const form = paymentDateService.validatePaymentDate(paymentDate);
+      const form = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('month');
@@ -94,7 +98,8 @@ describe('Payment Date service', () => {
       //Given
       const paymentDate = new PaymentDate('2040', '0', '1');
       //When
-      const form = paymentDateService.validatePaymentDate(paymentDate);
+      const form = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('month');
@@ -104,7 +109,8 @@ describe('Payment Date service', () => {
       //Given
       const paymentDate = new PaymentDate('2040', '12', '32');
       //When
-      const form = paymentDateService.validatePaymentDate(paymentDate);
+      const form = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('day');
@@ -114,7 +120,8 @@ describe('Payment Date service', () => {
       //Given
       const paymentDate = new PaymentDate('2040', '12', '-1');
       //When
-      const form = paymentDateService.validatePaymentDate(paymentDate);
+      const form = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('day');
@@ -124,7 +131,8 @@ describe('Payment Date service', () => {
       //Given
       const paymentDate = new PaymentDate('2020.45', '12', '1');
       //When
-      const form = paymentDateService.validatePaymentDate(paymentDate);
+      const form = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('paymentDate');
