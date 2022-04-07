@@ -26,12 +26,6 @@ export class Employers extends Form {
     return formErrors;
   }
 
-  // public getOnlyCompletedEmployers(): Employer[] {
-  //   if (this.hasEmployers()) {
-  //     return this.rows.filter(employer => employer.employerName !== '' && employer.jobTitle !== '');
-  //   }
-  // }
-
   private hasEmployers() {
     return this.rows && this.rows.length > 0;
   }
