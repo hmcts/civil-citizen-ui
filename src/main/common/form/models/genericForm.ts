@@ -26,6 +26,7 @@ export class GenericForm<Model> {
    * Get error message associated with first constraint violated for given field name.
    *
    * @param fieldName - field name / model property
+   * @param parentProperty - optional parameter, parent property if exists to specify the path to the field
    */
   errorFor(fieldName: string, parentProperty?: string): string {
     if (this.hasFieldError(fieldName, parentProperty)) {
@@ -35,6 +36,9 @@ export class GenericForm<Model> {
     }
   }
 
+  /**
+   * @deprecated use errorFor instead. It should include all errors
+   */
   nestedErrorFor(fieldName: string): string {
     if (this.hasNestedFieldError(fieldName)) {
       return this.getNestedErrors()
@@ -53,11 +57,19 @@ export class GenericForm<Model> {
     return validators;
   }
 
+  /**
+   * Gets parent and child errors in one array
+   * @param property - optional parameter (parent field name) to define the path to field errors
+   */
   public getAllErrors(property?: string): FormValidationError[] {
     const nestedErrors = this.getNestedErrors(property).filter(error => error !== undefined);
     return nestedErrors && nestedErrors.length > 0 ? this.getErrors(property).concat(nestedErrors) : this.getErrors(property);
   }
 
+  /**
+   * Gets all child errors
+   * @param property - optional parameter. usually a parent error property to define the path to the field with error
+   */
   public getNestedErrors(property?: string): FormValidationError[] {
     let validators: FormValidationError[] = [];
     this.getErrors()
