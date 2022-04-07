@@ -8,25 +8,25 @@ const logger = Logger.getLogger('regularExpensesService');
 const getRegularExpenses = async (claimId: string): Promise<RegularExpenses> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    if(claim?.statementOfMeans?.regularExpenses){
+    if (claim?.statementOfMeans?.regularExpenses) {
       return claim.statementOfMeans.regularExpenses;
     }
     return RegularExpenses.buildEmptyForm();
-  }catch(error) {
+  } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-const saveRegularExpenses = async (claimId: string, regularExpenses: RegularExpenses) =>{
+const saveRegularExpenses = async (claimId: string, regularExpenses: RegularExpenses) => {
   try {
     const claim = await getCaseDataFromStore(claimId) || new Claim();
-    if(!claim.statementOfMeans){
+    if (!claim.statementOfMeans) {
       claim.statementOfMeans = new StatementOfMeans();
     }
     claim.statementOfMeans.regularExpenses = regularExpenses;
     await saveDraftClaim(claimId, claim);
-  }catch(error) {
+  } catch (error) {
     logger.error(error);
     throw error;
   }
