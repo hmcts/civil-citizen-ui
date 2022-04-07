@@ -20,9 +20,9 @@ describe('OptionalDateNotInPastValidator validate', () => {
     //Then
     expect(result).toBeTruthy();
   });
-  it('should return true when date is not in the past', () => {
+  it('should return true when date is in the future', () => {
     //Given
-    const date = new Date(2400, 1, 1);
+    const date = new Date(9999, 12, 31);
     //When
     const result = validator.validate(date);
     //Then

@@ -7,12 +7,17 @@ import {GenericForm} from '../../../../../../../../common/form/models/genericFor
 import {constructResponseUrlWithIdParams} from '../../../../../../../../common/utils/urlFormatter';
 import paymentDateService
   from '../../../../../../../../modules/admission/fullAdmission/paymentOption/paymentDateService';
+import * as winston from "winston";
 
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('paymentDateController');
+let logger = Logger.getLogger('paymentDateController');
 const paymentDatePath = 'features/response/admission/fullAdmission/paymentOption/payment-date';
 const paymentDateController = express.Router();
+
+export function setPaymentDateControllerLogger(winstonLogger: winston.LoggerInstance) {
+  logger = winstonLogger;
+}
 
 paymentDateController
   .get(
@@ -24,7 +29,7 @@ paymentDateController
         });
       } catch (error) {
         logger.error(error);
-        res.status(500).send({errorMessage: error.message, errorStack: error.stack});
+        res.status(500).send({error: error.message});
       }
     })
   .post(
@@ -43,7 +48,7 @@ paymentDateController
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
         } catch (error) {
           logger.error(error);
-          res.status(500).send({errorMessage: error.message, errorStack: error.stack});
+          res.status(500).send({error: error.message});
         }
       }
     });

@@ -35,11 +35,11 @@ describe('Payment Date service', () => {
     });
     test('should keep the form input values unchanged after validation', async () => {
       //Given
-      const paymentDate = paymentDateService.buildPaymentDate('--', '-', '+');
+      const paymentDate = paymentDateService.buildPaymentDate('--', '-', '&');
       //Then
-      expect(paymentDate.day).toBeUndefined();
-      expect(paymentDate.month).toBeUndefined();
-      expect(paymentDate.year).toBeUndefined();
+      expect(isNaN(paymentDate.day)).toBeTruthy();
+      expect(isNaN(paymentDate.month)).toBeTruthy();
+      expect(isNaN(paymentDate.year)).toBeTruthy();
     });
   });
   describe('Validation', () => {
@@ -156,6 +156,15 @@ describe('Payment Date service', () => {
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('day');
       expect(form.getErrors()[0].constraints).toEqual({min: VALID_DAY});
+    });
+    test('should not raise an error if date in future', async () => {
+      //Given
+      paymentDate = new PaymentDate('9999', '12', '31');
+      //When
+      form = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
+      //Then
+      expect(form.getErrors().length).toBe(0);
     });
     test('should raise an error if yesterday specified for date', async () => {
       //Given
