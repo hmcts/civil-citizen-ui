@@ -4,6 +4,7 @@ import {Respondent} from './respondent';
 import {StatementOfMeans} from './statementOfMeans';
 import {CounterpartyType} from './counterpartyType';
 import {NumberOfDays} from '../form/models/numberOfDays';
+import {PaymentDate} from '../form/models/admission/fullAdmission/paymentOption/paymentDate';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -16,7 +17,7 @@ export class Claim {
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
   paymentOption?: string;
-  paymentDate?:Date;
+  paymentDate?:PaymentDate;
 
 
   formattedResponseDeadline(): string {

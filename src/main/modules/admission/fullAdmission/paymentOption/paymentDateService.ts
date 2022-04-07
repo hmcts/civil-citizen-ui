@@ -1,5 +1,6 @@
-import {getDraftClaimFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {PaymentDate} from '../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {Claim} from '../../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentDateService');
@@ -9,9 +10,9 @@ class PaymentDateService {
 
   public async getPaymentDate(claimId: string): Promise<PaymentDate> {
     try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse?.case_data?.paymentDate) {
-        return civilClaimResponse.case_data.paymentDate;
+      const case_data = await getCaseDataFromStore(claimId);
+      if (case_data?.paymentDate) {
+        return case_data.paymentDate;
       }
       return new PaymentDate();
     } catch (error) {
@@ -22,14 +23,14 @@ class PaymentDateService {
 
   public async savePaymentDate(claimId: string, paymentDate: PaymentDate) {
     try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse?.case_data?.paymentDate) {
-        civilClaimResponse.case_data.paymentDate = paymentDate;
+      const case_data = await getCaseDataFromStore(claimId) || new Claim();
+      if (case_data.paymentDate) {
+        case_data.paymentDate = paymentDate;
       } else {
         const paymentDate = new PaymentDate();
-        civilClaimResponse.case_data.paymentDate = paymentDate;
+        case_data.paymentDate = paymentDate;
       }
-      await saveDraftClaim(claimId, civilClaimResponse.case_data);
+      await saveDraftClaim(claimId, case_data);
     } catch (error) {
       logger.error(error);
       throw error;
