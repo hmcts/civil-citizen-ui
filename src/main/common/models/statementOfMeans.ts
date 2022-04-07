@@ -11,7 +11,8 @@ import {Residence} from '../form/models/statementOfMeans/residence';
 import {Employment} from './employment';
 import {Dependants} from '../form/models/statementOfMeans/dependants/dependants';
 import {SelfEmployedAs} from './selfEmployedAs';
-import { TaxPayments } from './taxPayments';
+import {TaxPayments} from './taxPayments';
+import {ChildrenDisability} from '../form/models/statementOfMeans/dependants/childrenDisability';
 
 export class StatementOfMeans {
   disability?: Disability;
@@ -29,4 +30,5 @@ export class StatementOfMeans {
   dependants?: Dependants;
   numberOfChildrenLivingWithYou?: number;
   selfEmployedAs?: SelfEmployedAs;
+  childrenDisability?: ChildrenDisability;
 }
