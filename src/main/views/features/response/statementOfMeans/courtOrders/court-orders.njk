@@ -44,7 +44,7 @@
                     {{ courtOrderMacro(loop.index0, courtOrder) }}
                   {% else %}
                     {% call govukFieldset({ classes: 'moj-add-another__item' }) %}
-                      {{  courtOrderMacro(0, '') }}
+                      {{ courtOrderMacro(0, '') }}
                     {% endcall %}
                   {% endfor %}
 
