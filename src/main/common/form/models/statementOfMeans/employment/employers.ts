@@ -26,8 +26,8 @@ export class Employers extends Form {
     return formErrors;
   }
 
-  private hasEmployers() {
-    return this.rows && this.rows.length > 0;
+  private hasEmployers(): number {
+    return this.rows?.length;
   }
 
   public addEmptyRowsIfNotEnough() {
