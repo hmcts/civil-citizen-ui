@@ -51,6 +51,9 @@
         "numberOfChildren": {
           "under11": 2
         }
+      },
+      "priorityDebts":{
+        "mortgage": { "amount" : 100.00, "schedule": "week"}
       }
     },
     "respondent1": {
