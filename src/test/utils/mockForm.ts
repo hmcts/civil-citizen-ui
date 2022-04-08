@@ -29,6 +29,29 @@ export const buildDebtFormYes = () : Debts => {
   return debts;
 };
 
+export const buildDebtFormNo = () : Debts => {
+  const debts = new Debts(YesNo.NO, buildDebtItems(0));
+  return debts;
+};
+
+export const buildDebtFormUndefined = () : Debts => {
+  const debts = new Debts(undefined,undefined);
+  return debts;
+};
+
+export const buildDebtFormYesWithoutItems = () : Debts => {
+  const debts = new Debts(YesNo.YES,buildDebtItems(0));
+  return debts;
+};
+
+export const buildDebtFormYesWithEmptyItems = () : Debts => {
+  const items : DebtItems[] = [];
+  items.push(new DebtItems('test', '1.00', '1.00'));
+  items.push(new DebtItems('', '', ''));
+  items.push(new DebtItems('test', '1.00', '1.00'));
+  const debts = new Debts(YesNo.YES,items);
+  return debts;
+};
 
 export const buildDebtItems = (totalOfRows: number) :  DebtItems[] =>{
   const items : DebtItems[] = [];

@@ -36,3 +36,4 @@ export const CITIZEN_PAYMENT_DATE_URL = `${BASE_CASE_RESPONSE_URL}/full-admissio
 export const CITIZEN_DEPENDANTS_EDUCATION_URL = `${STATEMENT_OF_MEANS_URL}/dependants/education`;
 export const CITIZEN_OTHER_DEPENDANTS_URL = `${STATEMENT_OF_MEANS_URL}/other-dependants`;
 export const DEBTS_URL = `${STATEMENT_OF_MEANS_URL}/debts`;
+export const CITIZEN_MONTHLY_EXPENSES_URL = `${STATEMENT_OF_MEANS_URL}/monthly-expenses`;

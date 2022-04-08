@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {DEBTS_URL, ROOT_URL} from '../../../../urls';
+import {CITIZEN_MONTHLY_EXPENSES_URL, DEBTS_URL} from '../../../../urls';
 import {Debts} from '../../../../../common/form/models/statementOfMeans/debts/debts';
 import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debts/debtItems';
 import {validateFormNested} from '../../../../../common/form/validators/formValidator';
@@ -7,8 +7,7 @@ import {Claim} from '../../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {YesNo} from '../../../../../common/form/models/yesNo';
-
-
+import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const debtsViewPath = 'features/response/statementOfMeans/debts/debts';
 const debtsRouter = express.Router();
@@ -47,7 +46,7 @@ debtsRouter.post(DEBTS_URL,
         renderView(form, res);
       } else {
         const claim = await getCaseDataFromStore(req.params.id) || new Claim();
-        if (claim?.statementOfMeans) {
+        if (claim.statementOfMeans) {
           claim.statementOfMeans.debts.option = form.option;
           claim.statementOfMeans.debts.debtsItems = removeEmptyValueToDebts(req);
         } else {
@@ -56,7 +55,7 @@ debtsRouter.post(DEBTS_URL,
           claim.statementOfMeans = statementOfMeans;
         }
         await saveDraftClaim(req.params.id, claim);
-        res.redirect(ROOT_URL);
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_MONTHLY_EXPENSES_URL));
       }
     } catch (error) {
       logger.error(error);

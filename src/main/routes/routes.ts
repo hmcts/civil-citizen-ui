@@ -24,7 +24,7 @@ import paymentOptionController from './features/response/admision/fullAdmission/
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
-import debtsRouter from 'routes/features/response/statementOfMeans/debts/debtsRouter';
+import debtsRouter from './features/response/statementOfMeans/debts/debtsRouter';
 
 export default [
   homeController,
