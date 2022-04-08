@@ -38,11 +38,11 @@ priorityDebtsController.get(
 priorityDebtsController.post(
   CITIZEN_PRIORITY_DEBTS_URL,
   async (req: express.Request, res: express.Response) => {
-    const convertedDebtValues = convertRequestBodyToForm(req.body);
+    const convertedDebtValues = convertRequestBodyToForm(req);
     
     try {
       await validateForm(convertedDebtValues);
-
+      
       if (convertedDebtValues.hasErrors()) {
         const priorityDebtErrors = formatFormErrors(convertedDebtValues.errors);
         const errorList = listFormErrors(priorityDebtErrors);
