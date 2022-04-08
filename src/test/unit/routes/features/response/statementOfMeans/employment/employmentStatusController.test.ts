@@ -4,9 +4,9 @@ import config from 'config';
 import nock from 'nock';
 import {
   CITIZEN_EMPLOYMENT_URL,
+  CITIZEN_SELF_EMPLOYED_URL,
   CITIZEN_UNEMPLOYED_URL,
-  SELF_EMPLOYED_URL,
-  WHO_EMPLOYS_YOU_URL,
+  CITIZEN_WHO_EMPLOYS_YOU_URL,
 } from '../../../../../../../main/routes/urls';
 import {
   VALID_AT_LEAST_ONE_OPTION,
@@ -69,7 +69,7 @@ describe('Employment status', () => {
         .send({option: 'yes', employmentCategory: 'SELF-EMPLOYED'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(SELF_EMPLOYED_URL);
+          expect(res.header.location).toEqual(CITIZEN_SELF_EMPLOYED_URL);
         });
     });
     it('should redirect to employers page when option is yes and employment type is employed', async () => {
@@ -77,7 +77,7 @@ describe('Employment status', () => {
         .send({option: 'yes', employmentCategory: 'EMPLOYED'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(WHO_EMPLOYS_YOU_URL);
+          expect(res.header.location).toEqual(CITIZEN_WHO_EMPLOYS_YOU_URL);
         });
     });
     it('should redirect to employers page when option is yes and employment type is self-employed and employed', async () => {
@@ -85,7 +85,7 @@ describe('Employment status', () => {
         .send({option: 'yes', employmentCategory: ['EMPLOYED', 'SELF-EMPLOYED']})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(WHO_EMPLOYS_YOU_URL);
+          expect(res.header.location).toEqual(CITIZEN_WHO_EMPLOYS_YOU_URL);
         });
     });
     it('should redirect to unemployed page when option is no', async () => {

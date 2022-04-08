@@ -13,11 +13,11 @@ export const enum TestMessages {
   IS_YOUR_PARTNER_DISABLED = 'Is your partner disabled?',
   DOES_YOUR_PARTNER_RECEIVE_PENSION = 'Does your partner receive a pension?',
   IS_YOUR_PARTNER_SEVERELY_DISABLED = 'Is your partner severely disabled?',
+  WHO_EMPLOYS_YOU = 'Who employs you?',
+  SOMETHING_WENT_WRONG = 'Something went wrong',
   MORTGAGE_AMOUNT_ERROR = 'Enter how much you pay for Mortgage',
   MORTGAGE_SCHEDULE_ERROR = 'Select how often you pay for Mortgage',
   RENT_AMOUNT_ERROR = 'Enter how much you pay for Rent',
   RENT_SCHEDULE_ERROR = 'Select how often you pay for Rent',
   MORTGAGE_CORRECT_AMOUNT_ERROR = 'Enter a valid Mortgage amount, maximum two decimal places'
 }
-
-  
