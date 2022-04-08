@@ -1,6 +1,7 @@
-import {IsDefined, IsNotEmpty, IsNumber, Min} from 'class-validator';
+import {IsDefined, IsNumber, Max, Min} from 'class-validator';
 import {ScheduledExpenses} from './scheduledExpenses';
 import {ExpenseType} from './expenseType';
+import {MAX_AMOUNT_VALUE} from '../../../validators/validationConstraints';
 
 export class ValidationErrors {
   static readonly NAME_REQUIRED = 'Enter other expense source';
@@ -18,10 +19,10 @@ export class ValidationErrors {
 }
 
 export default class ExpenseSource {
-  @IsNotEmpty({message: ValidationErrors.NAME_REQUIRED})
-    name: string;
+  name: string;
   @IsDefined({message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_REQUIRED)})
   @Min(0, {message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED)})
+  @Max(MAX_AMOUNT_VALUE, {message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED)})
   @IsNumber({
     allowNaN: false,
     maxDecimalPlaces: 2,
