@@ -30,9 +30,4 @@ export class Employers extends Form {
     return this.rows?.length;
   }
 
-  public addEmptyRowsIfNotEnough() {
-    if (this.rows.length) {
-      this.rows.push(new Employer());
-    }
-  }
 }
