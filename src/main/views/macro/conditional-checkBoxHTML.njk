@@ -20,7 +20,7 @@
     text: t("Only include the amount you're paying to clear previously missed regular")
   },
   errorMessage: {
-  text: t(debtErrors.amount[0].text)
+  text: t(debtErrors.amount.text)
   } if debtErrors.amount
 }) }}
 {{ govukRadios({
@@ -59,7 +59,7 @@
     }
   ],
   errorMessage: {
-  text: t(debtErrors.schedule[0].text)
+  text: t(debtErrors.schedule.text)
   } if debtErrors.schedule
 }) }}
 
