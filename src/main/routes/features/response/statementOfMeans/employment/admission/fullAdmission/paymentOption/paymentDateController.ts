@@ -14,6 +14,8 @@ const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('paymentDateController');
 const paymentDatePath = 'features/response/admission/fullAdmission/paymentOption/payment-date';
 const paymentDateController = express.Router();
+const nextMonth = new Date();
+nextMonth.setMonth(nextMonth.getMonth() + 1);
 
 export function setPaymentDateControllerLogger(winstonLogger: winston.LoggerInstance) {
   logger = winstonLogger;
@@ -33,7 +35,7 @@ paymentDateController
           paymentDate.day = dateOfPayment.getDate();
         }
         res.render(paymentDatePath, {
-          form: new GenericForm(paymentDate),
+          form: new GenericForm(paymentDate), nextMonth : nextMonth,
         });
       } catch (error) {
         logger.error(error);
@@ -48,7 +50,7 @@ paymentDateController
 
       if (form.hasErrors()) {
         res.render(paymentDatePath, {
-          form: form,
+          form: form, nextMonth : nextMonth,
         });
       } else {
         try {

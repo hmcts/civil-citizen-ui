@@ -1,5 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
-{% set heading = t('Confirm your details') %}
+{% set heading = t('What date will you pay on?') %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -46,7 +46,7 @@
                   }
                 },
                 hint: {
-                  text: "For example, 5 5 2022"
+                  text: t("For example, " + nextMonth.getDate() + " " + (nextMonth.getMonth() + 1) + " " + nextMonth.getFullYear())
                 },
                 errorMessage: {
                   html: errorMessage
@@ -57,7 +57,7 @@
                     id: "day",
                     label: "Day",
                     name: "day",
-                    value: form.day,
+                    value: form.model.day,
                     max: 31
                   },
                   {
@@ -65,7 +65,7 @@
                     id: "month",
                     label: "Month",
                     name: "month",
-                    value: form.month,
+                    value: form.model.month,
                     max: 12
                   },
                   {
@@ -73,7 +73,7 @@
                     id: "year",
                     label: "Year",
                     name: "year",
-                    value: form.year,
+                    value: form.model.year,
                     max: 9999
                   }
                 ]

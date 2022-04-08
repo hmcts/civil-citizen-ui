@@ -1,5 +1,5 @@
 import {
-  OptionalDateFourDigitValidator
+  OptionalDateFourDigitValidator,
 } from '../../../../../main/common/form/validators/optionalDateFourDigitValidator';
 
 describe('OptionalDateFourDigitValidator validate', () => {
