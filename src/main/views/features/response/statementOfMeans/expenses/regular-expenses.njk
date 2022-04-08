@@ -36,7 +36,7 @@
     {{ expenseDetails('', 'model[travel]', form.model.travel.expenseSource, form) }}
   {% endset -%}
   {% set checkedSchoolHtml %}
-    {{ expenseDetails('', 'model[schoolCosts]', form.model.expenseSource, form) }}
+    {{ expenseDetails('', 'model[schoolCosts]', form.model.schoolCosts.expenseSource, form) }}
   {% endset -%}
   {% set checkedFoodHtml %}
     {{ expenseDetails('', 'model[foodAndHousekeeping]',  form.model.foodAndHousekeeping.expenseSource, form) }}
