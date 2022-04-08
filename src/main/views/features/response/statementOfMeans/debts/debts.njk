@@ -18,69 +18,73 @@
       }) }}
     {% endif %}
 
-    <div class="{% if form.getTextError(form.getErrors(),'debtsItems') %} govuk-form-group--error  {% endif %}">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-one-half">
-        <label id="account-balance-label"
-               class="govuk-label--s">{{ t('List each loan or credit card debt') }}</label>
+    <div class="govuk-form-group {% if form.getTextError(form.getErrors(),'debtsItems') %} govuk-form-group--error  {% endif %}">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-half">
+          <label id="account-balance-label"
+                 class="govuk-label--s">{{ t('List each loan or credit card debt') }}</label>
+        </div>
+        <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
+          <label id="account-balance-label" class="govuk-label--s ">{{ t('Total owed') }}</label>
+        </div>
+        <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
+          <label id="account-balance-label" class="govuk-label--s">{{ t('Monthly payments') }}</label>
+        </div>
       </div>
-      <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
-        <label id="account-balance-label" class="govuk-label--s ">{{ t('Total owed') }}</label>
-      </div>
-      <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
-        <label id="account-balance-label" class="govuk-label--s">{{ t('Monthly payments') }}</label>
-      </div>
-    </div>
-    {% for debtsItem in form.debtsItems %}
-      {% set debtsErrors = debtsItem.getErrors() %}
+      {% for debtsItem in form.debtsItems %}
+        {% set debtsErrors = debtsItem.getErrors() %}
       <div class="multiple-row">
         <div class="govuk-grid-row govuk-!-padding-top-3 {% if debtsErrors %} govuk-form-group--error{% endif %} ">
-        {% for error in debtsErrors %}
-          {{ govukErrorMessage({
-            text:t(error.text)
-          }) }}
-        {% endfor %}
-        <div class="govuk-grid-column-one-half ">
-          {{ govukInput({
-            id: "debtsItems["+loop.index0+"][debt]",
-            name: "debtsItems["+loop.index0+"][debt]",
-            value: debtsItem.debt,
-            spellcheck: false,
-            classes: "govuk-grid-column-full govuk-select--error" if debtsItem.hasFieldError('debt') else "govuk-grid-column-full"
-          }) }}
-        </div>
-        <div class="govuk-grid-column-one-quarter">
-          {{ govukInput({
-            id: "debtsItems["+loop.index0+"][totalOwed]",
-            name: "debtsItems["+loop.index0+"][totalOwed]",
-            value: debtsItem.totalOwed,
-            prefix: {
-              text: "£"
-            },
-            spellcheck: false,
-            classes: "govuk-grid-column-full govuk-input--error" if debtsItem.hasFieldError('totalOwed') else "govuk-grid-column-full"
-          }) }}
-        </div>
-        <div class="govuk-grid-column-one-quarter">
-          {{ govukInput({
-            id: "debtsItems["+loop.index0+"][monthlyPayments]",
-            name: "debtsItems["+loop.index0+"][monthlyPayments]",
-            value: debtsItem.monthlyPayments,
-            prefix: {
-              text: "£"
-            },
-            spellcheck: false,
-            classes: "govuk-grid-column-full govuk-input--error" if debtsItem.hasFieldError('monthlyPayments') else "govuk-grid-column-full"
-          }) }}
-        </div>
-      </div>
-      </div>
 
-    {% endfor %}
-      {{ govukButton({
-        text: t("Add another account"),
-        classes: "govuk-button--secondary append-row"
-      }) }}
+          {% for error in debtsErrors %}
+            {{ govukErrorMessage({
+              text:t(error.text)
+            }) }}
+          {% endfor %}
+          <div class="govuk-grid-column-one-half ">
+            {{ govukInput({
+              id: "debtsItems["+loop.index0+"][debt]",
+              name: "debtsItems["+loop.index0+"][debt]",
+              value: debtsItem.debt,
+              spellcheck: false,
+              classes: "govuk-grid-column-full govuk-select--error" if debtsItem.hasFieldError('debt') else "govuk-grid-column-full"
+            }) }}
+          </div>
+          <div class="govuk-grid-column-one-quarter">
+            {{ govukInput({
+              id: "debtsItems["+loop.index0+"][totalOwed]",
+              name: "debtsItems["+loop.index0+"][totalOwed]",
+              value: debtsItem.totalOwed,
+              prefix: {
+                text: "£"
+              },
+              spellcheck: false,
+              classes: "govuk-grid-column-full govuk-input--error" if debtsItem.hasFieldError('totalOwed') else "govuk-grid-column-full"
+            }) }}
+          </div>
+          <div class="govuk-grid-column-one-quarter">
+            {{ govukInput({
+              id: "debtsItems["+loop.index0+"][monthlyPayments]",
+              name: "debtsItems["+loop.index0+"][monthlyPayments]",
+              value: debtsItem.monthlyPayments,
+              prefix: {
+                text: "£"
+              },
+              spellcheck: false,
+              classes: "govuk-grid-column-full govuk-input--error" if debtsItem.hasFieldError('monthlyPayments') else "govuk-grid-column-full"
+            }) }}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        {{ govukButton({
+          text: t("Add a debt"),
+          classes: "govuk-button--secondary append-row"
+        }) }}
+      </div>
     </div>
   {% endset %}
 {% block content %}
