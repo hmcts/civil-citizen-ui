@@ -9,9 +9,9 @@ import {getEmploymentForm} from '../../../../../modules/statementOfMeans/employm
 import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans/employment/employmentForm';
 
 const whoEmploysYouViewPath = 'features/response/statementOfMeans/employment/who-employs-you';
-const router = express.Router();
+const whoEmploysYouController  = express.Router();
 
-router.get(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Response) => {
+whoEmploysYouController .get(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Response) => {
   try {
     const employers: Employers = await getEmployers(req.params.id);
     res.render(whoEmploysYouViewPath, { employers });
@@ -20,7 +20,7 @@ router.get(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: expres
   }
 });
 
-router.post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Response) => {
+whoEmploysYouController .post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Response) => {
   try {
     const claimId = req.params.id;
     const employers: Employers = new Employers(req.body.employers.map((employer: Employer) => new Employer(employer.employerName, employer.jobTitle)));
@@ -44,4 +44,4 @@ router.post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: expre
   }
 });
 
-export default router;
+export default whoEmploysYouController ;
