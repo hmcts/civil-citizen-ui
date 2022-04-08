@@ -10,6 +10,7 @@ import {
   VALID_YEAR,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
+import {mockClaim} from '../../../../../utils/mockClaim';
 
 
 jest.mock('../../../../../../main/modules/draft-store');
@@ -40,6 +41,97 @@ describe('Payment Date service', () => {
       expect(isNaN(paymentDate.day)).toBeTruthy();
       expect(isNaN(paymentDate.month)).toBeTruthy();
       expect(isNaN(paymentDate.year)).toBeTruthy();
+    });
+  });
+
+  describe('get and save PaymentDate', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should return empty ChildrenDisability when nothing retrieved', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return undefined;
+      });
+      //When
+      const paymentDate = await (paymentDateService.getPaymentDate('claimId'));
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(paymentDate).not.toBeNull();
+      expect(paymentDate.getFullYear()).toEqual(new Date().getFullYear());
+      expect(paymentDate.getMonth()).toEqual(new Date().getMonth());
+      expect(paymentDate.getDate()).toEqual(new Date().getDate());
+    });
+    test('should return empty PaymentDAte when case_data, but no payemntDate, retrieved', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return {case_data: {}};
+      });
+      //When
+      const paymentDate = await (paymentDateService.getPaymentDate('claimId'));
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(paymentDate).not.toBeNull();
+      expect(paymentDate.getFullYear()).toEqual(new Date().getFullYear());
+      expect(paymentDate.getMonth()).toEqual(new Date().getMonth());
+      expect(paymentDate.getDate()).toEqual(new Date().getDate());
+    });
+    test('should return ChildrenDisability when date retrieved', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockClaim;
+      });
+      //When
+      const paymentDate = await (paymentDateService.getPaymentDate('claimId'));
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(paymentDate).not.toBeNull();
+      expect(paymentDate).toEqual(mockClaim?.paymentDate);
+    });
+
+    test('should save paymentDate when nothing in Redis draft store', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return undefined;
+      });
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await paymentDateService.savePaymentDate('claimId', new Date());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
+    });
+
+    test('should save paymentDate when case_data, but no paymentDate, in Redis draft store', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return {case_data: {}};
+      });
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await paymentDateService.savePaymentDate('claimId', new Date());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
+    });
+
+    test('should save paymentDate when claim in Redis draft store', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockClaim;
+      });
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await paymentDateService.savePaymentDate('claimId', new Date());
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
     });
   });
   describe('Validation', () => {
@@ -110,7 +202,7 @@ describe('Payment Date service', () => {
       await form.validate();
       //Then
       expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('paymentDate');
+      expect(form.getErrors()[0].property).toBe('date');
       expect(form.getErrors()[0].constraints).toEqual({customDate: VALID_DATE_NOT_IN_PAST});
     });
     test('should raise an error if month greater than 12', async () => {
@@ -175,7 +267,7 @@ describe('Payment Date service', () => {
       await form.validate();
       //Then
       expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('paymentDate');
+      expect(form.getErrors()[0].property).toBe('date');
       expect(form.getErrors()[0].constraints).toEqual({customDate: VALID_DATE_NOT_IN_PAST});
     });
     test('should not raise an error if today specified for date', async () => {
@@ -214,7 +306,7 @@ describe('Payment Date service', () => {
       });
       //Then
       await expect(
-        paymentDateService.savePaymentDate('claimId', new PaymentDate(String(new Date().getFullYear()), '12', '1'))).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
+        paymentDateService.savePaymentDate('claimId', new Date())).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
     });
   });
 });

@@ -19,7 +19,7 @@ export class PaymentDate {
   @ValidateIf(o => (o.day > 0 && o.day <32 && o.month > 0 && o.month < 13 && o.year > 99))
   @IsDate({message: VALID_DATE})
   @Validate(OptionalDateNotInPastValidator, {message: VALID_DATE_NOT_IN_PAST})
-    paymentDate?: Date;
+    date?: Date;
 
 
   @Validate(OptionalDateFourDigitValidator, {message: VALID_FOUR_DIGIT_YEAR})
@@ -35,7 +35,7 @@ export class PaymentDate {
     day: number;
 
   constructor(year?: string, month?: string, day?: string) {
-    this.paymentDate = DateConverter.convertToDate(year, month, day);
+    this.date = DateConverter.convertToDate(year, month, day);
     this.year = Number(year);
     this.month = Number(month);
     this.day = Number(day);

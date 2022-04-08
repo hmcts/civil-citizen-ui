@@ -23,7 +23,15 @@ paymentDateController
   .get(
     CITIZEN_PAYMENT_DATE_URL, async (req: express.Request, res: express.Response) => {
       try {
-        const paymentDate: PaymentDate = await paymentDateService.getPaymentDate(req.params.id);
+        const paymentDate = new PaymentDate();
+        const date: Date = await paymentDateService.getPaymentDate(req.params.id);
+        if (date) {
+          const dateOfPayment = new Date(date);
+          paymentDate.date = dateOfPayment;
+          paymentDate.year = dateOfPayment.getFullYear();
+          paymentDate.month = dateOfPayment.getMonth() + 1;
+          paymentDate.day = dateOfPayment.getDate();
+        }
         res.render(paymentDatePath, {
           form: new GenericForm(paymentDate),
         });
@@ -44,7 +52,7 @@ paymentDateController
         });
       } else {
         try {
-          await paymentDateService.savePaymentDate(req.params.id, paymentDate);
+          await paymentDateService.savePaymentDate(req.params.id, paymentDate.date);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
         } catch (error) {
           logger.error(error);

@@ -28,4 +28,12 @@ describe('OptionalDateNotInPastValidator validate', () => {
     //Then
     expect(result).toBeTruthy();
   });
+  it('should return specific text for defaultMessage', () => {
+    //Given
+    const defaultMessage = 'Enter a date that is today or in the future';
+    //When
+    const result = validator.defaultMessage();
+    //Then
+    expect(result).toEqual(defaultMessage);
+  });
 });

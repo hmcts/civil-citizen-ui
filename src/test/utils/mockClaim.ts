@@ -67,4 +67,5 @@ export const mockClaim: Claim = {
   responseInDays: function (): NumberOfDays {
     throw new Error('Function not implemented.');
   },
+  paymentDate: new Date('2022-06-01T00:00:00'),
 };
