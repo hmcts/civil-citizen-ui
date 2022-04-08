@@ -28,7 +28,7 @@ import dependantsController from './features/response/statementOfMeans/dependant
 import onTaxPaymentsController
   from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
 import childrenDisabilityController from './features/response/statementOfMeans/dependants/childrenDisabilityController';
-import debtsRouter from './features/response/statementOfMeans/debts/debtsRouter';
+import debtsController from './features/response/statementOfMeans/debts/debtsController';
 
 
 export default [
@@ -60,5 +60,5 @@ export default [
   dependantsController,
   onTaxPaymentsController,
   childrenDisabilityController,
-  debtsRouter,
+  debtsController,
 ];

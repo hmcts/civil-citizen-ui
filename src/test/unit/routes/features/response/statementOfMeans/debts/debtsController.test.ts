@@ -19,12 +19,11 @@ import {Claim} from '../../../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
 import {
   ENTER_A_DEBT,
-  ENTER_AT_LEAST_ONE_DEBT, VALID_NUMBER_OF_PEOPLE, VALID_TWO_DECIMAL_NUMBER,
+  ENTER_AT_LEAST_ONE_DEBT, REDIS_FAILURE, VALID_NUMBER_OF_PEOPLE, VALID_TWO_DECIMAL_NUMBER,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
@@ -39,30 +38,28 @@ describe('Debts', () => {
   });
   describe('on Exception', () => {
     test('should return http 500 when has error in the get method', async () => {
-      const redisFailureError = 'Redis DraftStore failure.';
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error(redisFailureError);
+        throw new Error(REDIS_FAILURE);
       });
       await request(app)
         .get(DEBTS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: redisFailureError});
+          expect(res.body).toEqual({error: REDIS_FAILURE});
         });
     });
   });
 
   test('should return http 500 when has error in the post method', async () => {
-    const redisFailureError = 'Redis DraftStore failure.';
     mockGetCaseData.mockImplementation(async () => {
-      throw new Error(redisFailureError);
+      throw new Error(REDIS_FAILURE);
     });
     await request(app)
       .post(DEBTS_URL)
       .send(buildDebtFormYes())
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: redisFailureError});
+        expect(res.body).toEqual({error: REDIS_FAILURE});
       });
   });
   describe('on GET', () => {
@@ -250,7 +247,7 @@ describe('Debts', () => {
         });
     });
     test('should should redirect to monthly expenses when option is yes but claim is undefined', async () => {
-      mockGetCaseData.mockImplementation(async () => undefined);
+      mockGetCaseData.mockImplementation(async () => new Claim());
       await request(app)
         .post(DEBTS_URL)
         .send(buildDebtFormYesWithEmptyItems())

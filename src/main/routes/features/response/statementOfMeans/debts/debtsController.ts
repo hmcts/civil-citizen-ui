@@ -10,9 +10,9 @@ import {YesNo} from '../../../../../common/form/models/yesNo';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const debtsViewPath = 'features/response/statementOfMeans/debts/debts';
-const debtsRouter = express.Router();
+const debtsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('debtsRouter');
+const logger = Logger.getLogger('debtsController');
 
 function renderView(form: Debts, res: express.Response): void {
   res.render(debtsViewPath, {
@@ -20,7 +20,7 @@ function renderView(form: Debts, res: express.Response): void {
   });
 }
 
-debtsRouter.get(DEBTS_URL, async (req, res) => {
+debtsController.get(DEBTS_URL, async (req, res) => {
   try {
     const form: Debts = new Debts();
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
@@ -37,7 +37,7 @@ debtsRouter.get(DEBTS_URL, async (req, res) => {
   }
 });
 
-debtsRouter.post(DEBTS_URL,
+debtsController.post(DEBTS_URL,
   async (req, res) => {
     try {
       const form: Debts = new Debts(req.body.option, transformToDebts(req));
@@ -45,7 +45,7 @@ debtsRouter.post(DEBTS_URL,
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        const claim = await getCaseDataFromStore(req.params.id) || new Claim();
+        const claim = await getCaseDataFromStore(req.params.id);
         if (claim.statementOfMeans) {
           claim.statementOfMeans.debts.option = form.option;
           claim.statementOfMeans.debts.debtsItems = removeEmptyValueToDebts(req);
@@ -78,4 +78,4 @@ function removeEmptyValueToDebts(req: express.Request) : DebtItems[]{
     });
 }
 
-export default debtsRouter;
+export default debtsController;
