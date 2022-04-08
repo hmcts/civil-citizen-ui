@@ -18,6 +18,5 @@ describe('calculate monthly income expenses', () => {
     const total = calculateTotalAmount(RegularExpenses.convertToScheduledAmount(regularExpenses));
     //Then
     expect(total).toBe('63');
-
   });
 });
