@@ -48,7 +48,7 @@ describe('Payment Date service', () => {
     afterEach(() => {
       jest.clearAllMocks();
     });
-    test('should return empty ChildrenDisability when nothing retrieved', async () => {
+    test('should return empty PaymentDate when nothing retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -63,7 +63,7 @@ describe('Payment Date service', () => {
       expect(paymentDate.getMonth()).toEqual(new Date().getMonth());
       expect(paymentDate.getDate()).toEqual(new Date().getDate());
     });
-    test('should return empty PaymentDAte when case_data, but no payemntDate, retrieved', async () => {
+    test('should return empty PaymentDate when case_data, but no payemntDate, retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -78,7 +78,7 @@ describe('Payment Date service', () => {
       expect(paymentDate.getMonth()).toEqual(new Date().getMonth());
       expect(paymentDate.getDate()).toEqual(new Date().getDate());
     });
-    test('should return ChildrenDisability when date retrieved', async () => {
+    test('should return PaymentDate when date retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
