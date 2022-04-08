@@ -74,6 +74,7 @@ export class RegularExpenses {
     this.water = expenseParams?.water;
     this.schoolCosts = expenseParams?.schoolCosts;
     this.foodAndHousekeeping = expenseParams?.foodAndHousekeeping;
+    this.tvAndBroadband = expenseParams?.tvAndBroadband;
     this.hirePurchase = expenseParams?.hirePurchase;
     this.mobilePhone = expenseParams?.mobilePhone;
     this.maintenance = expenseParams?.maintenance;
