@@ -111,9 +111,17 @@ describe('Form has children test', () => {
     //Then
     expect(result).toEqual(true);
   });
-  it('should return true when form has children', () => {
+  it('should return false when form has no children', () => {
     //Given
     form.errors = createValidationError();
+    //When
+    const result = form.hasChildren();
+    //Then
+    expect(result).toEqual(false);
+  });
+  it('should return false when form has no children and no error', () => {
+    //Given
+    form.errors = undefined;
     //When
     const result = form.hasChildren();
     //Then
