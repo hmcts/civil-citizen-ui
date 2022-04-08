@@ -101,9 +101,39 @@ describe('Form has postcode error on correspondence address form', () => {
   });
 });
 
+describe('Form has children test', () => {
+  const form = new Form();
+  it('should return true when form has children', () => {
+    //Given
+    form.errors = createValidationErrorWithChildren();
+    //When
+    const result = form.hasChildren();
+    //Then
+    expect(result).toEqual(true);
+  });
+  it('should return true when form has children', () => {
+    //Given
+    form.errors = createValidationError();
+    //When
+    const result = form.hasChildren();
+    //Then
+    expect(result).toEqual(false);
+  });
+});
+
 function createValidationError() {
   const validationError = new ValidationError();
   validationError.property = PROPERTY;
   validationError.constraints = {'constraint': ERROR_MESSAGE};
+  return [validationError];
+}
+
+function createValidationErrorWithChildren() {
+  const childrenError : ValidationError[] = [];
+  const validationError = new ValidationError();
+  validationError.property = PROPERTY;
+  validationError.constraints = {'constraint': ERROR_MESSAGE};
+  childrenError.push(validationError);
+  validationError.children = childrenError;
   return [validationError];
 }
