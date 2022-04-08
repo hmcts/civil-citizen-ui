@@ -15,7 +15,7 @@ export const enum TestMessages {
   IS_YOUR_PARTNER_SEVERELY_DISABLED = 'Is your partner severely disabled?',
   MORTGAGE_AMOUNT_ERROR = 'Enter how much you pay for mortgage',
   MORTGAGE_SCHEDULE_ERROR = 'Select how often you pay for mortgage',
-  RENT_AMOUNT_ERROR = 'Enter how much you pay for mortgage',
-  RENT_SCHEDULE_ERROR = 'Select how often you pay for mortgage',
+  RENT_AMOUNT_ERROR = 'Enter how much you pay for rent',
+  RENT_SCHEDULE_ERROR = 'Select how often you pay for rent',
   MORTGAGE_CORRECT_AMOUNT_ERROR = 'Enter a valid mortgage amount, maximum two decimal places'
 }

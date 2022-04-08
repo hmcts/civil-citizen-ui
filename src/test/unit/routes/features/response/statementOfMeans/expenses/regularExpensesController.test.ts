@@ -73,7 +73,7 @@ describe('Regular Expenses Controller', () => {
             rent: {
               expenseSource:
                 {
-                  name: 'mortgage', amount: '', schedule: undefined,
+                  name: 'rent', amount: '', schedule: undefined,
                 },
             },
           },

@@ -4,6 +4,8 @@ import ExpenseSource from '../../../../../../../main/common/form/models/statemen
 import {
   ScheduledExpenses,
 } from '../../../../../../../main/common/form/models/statementOfMeans/expenses/scheduledExpenses';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {ExpenseType} from '../../../../../../../main/common/form/models/statementOfMeans/expenses/expenseType';
 
 const validator = new Validator();
 describe('Expense', () => {
@@ -16,6 +18,8 @@ describe('Expense', () => {
       //Then
       expect(errors.length).toBe(1);
       expect(errors[0].children?.length).toBe(2);
+      expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.RENT_AMOUNT_ERROR);
+      expect(errors[0].children[1].constraints?.isDefined).toBe(TestMessages.RENT_SCHEDULE_ERROR);
     });
     it('should not have errors when declared is false', async () => {
       //Given
@@ -33,6 +37,7 @@ describe('Expense', () => {
       //Then
       expect(errors.length).toBe(1);
       expect(errors[0].children?.length).toBe(1);
+      expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.RENT_SCHEDULE_ERROR);
     });
     it('should have one nested error when declared is true and schedule  is not set', async () => {
       //Given
@@ -42,6 +47,33 @@ describe('Expense', () => {
       //Then
       expect(errors.length).toBe(1);
       expect(errors[0].children?.length).toBe(1);
+      expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.RENT_AMOUNT_ERROR);
+    });
+  });
+  describe('Build form', () => {
+    it('should build empty form successfully', () => {
+      //Given
+      const expenseType = ExpenseType.RENT;
+      //When
+      const form = Expense.buildEmptyForm(expenseType);
+      //Then
+      expect(form.expenseSource?.name).toBe('rent');
+      expect(form.expenseSource?.amount).toBeUndefined();
+      expect(form.expenseSource?.schedule).toBeUndefined();
+      expect(form.declared).toBeUndefined();
+    });
+    it('should build populated form successfully', () => {
+      //Given
+      const name = 'rent';
+      const amount = '1000';
+      const schedule = ScheduledExpenses.MONTH;
+      //When
+      const form = Expense.buildPopulatedForm(name, amount, schedule);
+      //Then
+      expect(form.declared).toBeTruthy();
+      expect(form.expenseSource.name).toBe(name);
+      expect(form.expenseSource.schedule).toBe(schedule);
+      expect((form.expenseSource.amount)).toBe(Number(amount));
     });
   });
 });

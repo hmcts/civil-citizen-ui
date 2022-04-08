@@ -2,6 +2,7 @@ import {GenericForm} from '../../../../../../../main/common/form/models/genericF
 import {RegularExpenses} from '../../../../../../../main/common/form/models/statementOfMeans/expenses/regularExpenses';
 import Expense from '../../../../../../../main/common/form/models/statementOfMeans/expenses/expense';
 import ExpenseSource from '../../../../../../../main/common/form/models/statementOfMeans/expenses/expenseSource';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 describe('Expenses', () => {
   describe('Validate', () => {
@@ -29,6 +30,8 @@ describe('Expenses', () => {
       //Then
       expect(form.hasErrors()).toBeTruthy();
       expect(form.getNestedErrors().length).toBe(3);
+      expect(form.errorFor('mortgage[expenseSource][amount]')).toBe(TestMessages.MORTGAGE_AMOUNT_ERROR);
+      expect(form.errorFor('mortgage[expenseSource][schedule]')).toBe(TestMessages.MORTGAGE_SCHEDULE_ERROR);
     });
   });
 });
