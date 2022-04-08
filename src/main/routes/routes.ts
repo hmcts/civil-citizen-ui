@@ -9,7 +9,6 @@ import claimDetailsController from './features/response/claimDetails/claimDetail
 import responsePostcodeLookupController from './features/response/citizenDetails/postcodeLookupController';
 import citizenResponseTypeController from './features/response/responseType/citizenResponseTypeController';
 import citizenPartnerAgeController from './features/response/statementOfMeans/partner/partnerAgeController';
-import partnerAgeController from './features/response/statementOfMeans/partner/partnerAgeController';
 import citizenDisabilityController from './features/response/statementOfMeans/disabilityController';
 import citizenSevereDisabilityController from './features/response/statementOfMeans/severeDisabilityController';
 import bankAccountsController from './features/response/statementOfMeans/bankAccounts/bankAccountsController';
@@ -27,6 +26,8 @@ import betweenSixteenAndNineteenController from './features/response/statementOf
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
 import onTaxPaymentsController
   from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
+import unemploymentController from './features/response/statementOfMeans/unemployment/unemploymentController';
+
 import childrenDisabilityController from './features/response/statementOfMeans/dependants/childrenDisabilityController';
 
 
@@ -47,7 +48,6 @@ export default [
   citizenSevereDisabilityController,
   bankAccountsController,
   partnerController,
-  partnerAgeController,
   partnerSevereDisabilityController,
   residenceController,
   employmentStatusController,
@@ -58,5 +58,6 @@ export default [
   betweenSixteenAndNineteenController,
   dependantsController,
   onTaxPaymentsController,
+  unemploymentController,
   childrenDisabilityController,
 ];
