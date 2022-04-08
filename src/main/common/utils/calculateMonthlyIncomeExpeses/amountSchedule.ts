@@ -1,4 +1,4 @@
-import {ScheduledExpenses} from '../../../../../main/common/form/models/statementOfMeans/expenses/scheduledExpenses';
+import {ScheduledExpenses} from '../../form/models/statementOfMeans/expenses/scheduledExpenses';
 
 export class AmountSchedule {
   static readonly WEEK = new AmountSchedule(ScheduledExpenses.WEEK, 52 / 12);

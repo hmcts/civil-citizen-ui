@@ -1,6 +1,7 @@
 import {IsDefined, IsNotEmpty, IsNumber, Min} from 'class-validator';
 import {ScheduledExpenses} from './scheduledExpenses';
 import {ExpenseType} from './expenseType';
+import {ScheduledAmount} from 'common/utils/calculateMonthlyIncomeExpeses/monthlyIncomeExpensesCalculator';
 
 export class ValidationErrors {
   static readonly NAME_REQUIRED = 'Enter other expense source';
@@ -34,6 +35,13 @@ export default class ExpenseSource {
     this.name = name;
     this.amount = amount;
     this.schedule = schedule;
+  }
+
+  convertToScheduledAmount(): ScheduledAmount {
+    return {
+      amount: this.amount,
+      schedule: this.schedule,
+    };
   }
 
 }
