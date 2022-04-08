@@ -55,8 +55,9 @@
           "under11": 2
         }
       },
-      "priorityDebts":{
-        "mortgage": { "amount" : 100.00, "schedule": "week"}
+      "priorityDebts": {
+        "mortgage": { "amount": 100.0, 
+        "schedule": "week" }
       },
       "unemployment": {
         "option": "Unemployed",
@@ -67,6 +68,7 @@
         "otherDetails": {
           "details": ""
         }
+      }
     },
     "respondent1": {
       "dateOfBirth": "2022-03-01T13:29:24.971",
