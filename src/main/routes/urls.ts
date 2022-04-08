@@ -40,3 +40,4 @@ export const CHILDREN_DISABILITY_URL = `${CITIZEN_DEPENDANTS_URL}/children-disab
 export const CITIZEN_COURT_ORDER_URL = `${STATEMENT_OF_MEANS_URL}/court-orders`;
 export const CITIZEN_MONTHLY_EXPENSES_URL = `${STATEMENT_OF_MEANS_URL}/monthly-expenses`;
 export const CITIZEN_MONTHLY_INCOME_URL = `${STATEMENT_OF_MEANS_URL}/monthly-income`;
+export const TOTAL_AMOUNT_CALCULATION_URL = '/total-income-expense-calculation';
