@@ -1,0 +1,109 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+
+{% set heading = 'Are you unemployed or retired?' %}
+{% set subtitle = 'How long have you been unemployed?' %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getAllErrors() %}
+      {% set optionError = form.errorFor("option","model") %}
+      {% set otherDetailsNestedError = form.nestedErrorFor('details') %}
+      {% set yearNestedError = form.nestedErrorFor('years') %}
+      {% set monthsNestedError = form.nestedErrorFor('months') %}
+      {% if form.hasErrors() %}
+        {{ govukErrorSummary({
+          "titleText": 'There was a problem',
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% set ifOther %}
+              {{ govukInput({
+                id: "details",
+                name: "details",
+                type: "text",
+                classes:  "govuk-input--width-5 govuk-input--error" if form.hasFieldError('details') else "govuk-input--width-5",
+                label: {
+                  text: t('Give details')
+                },
+                value: form.model.otherDetails.details,
+                errorMessage: { text: otherDetailsNestedError } if otherDetailsNestedError else ''
+              }) }}
+            {% endset -%}
+            {% set ifUnemployed %}
+              <p class="govuk-body-m">{{ t(subtitle) }}</p>
+              {{ govukInput({
+                id: "UnemploymentDetails",
+                name: "years",
+                type: "number",
+                autocomplete: "number",
+                classes: "govuk-input--width-3",
+                label: {
+                  text: t('Years')
+                },
+                value: form.model.unemploymentDetails.years,
+                errorMessage: { text: yearNestedError } if yearNestedError else ''
+              }) }}
+              {{ govukInput({
+                id: "UnemploymentDetails",
+                name: "months",
+                type: "number",
+                autocomplete: "number",
+                classes: "govuk-input--width-3",
+                label: {
+                  text: t('Months')
+                },
+                value: form.model.unemploymentDetails.months,
+                errorMessage: { text: monthsNestedError } if monthsNestedError else ''
+
+              }) }}
+            {% endset -%}
+            {{ govukRadios({
+              idPrefix: "unemployment",
+              name: "option",
+              items: [
+                {
+                  value: UnemploymentCategory.UNEMPLOYED,
+                  checked: true if form.model.option === UnemploymentCategory.UNEMPLOYED,
+                  html:UnemploymentCategory.UNEMPLOYED,
+                  conditional:{html: ifUnemployed}
+                },
+                {
+                  value: UnemploymentCategory.RETIRED,
+                  checked: true if form.model.option  === UnemploymentCategory.RETIRED,
+                  html: UnemploymentCategory.RETIRED
+                },
+                {
+                  value: UnemploymentCategory.OTHER,
+                  checked: true if form.model.option  === UnemploymentCategory.OTHER,
+                  html:UnemploymentCategory.OTHER,
+                  conditional:{html: ifOther}
+                }
+              ],
+              errorMessage: { text: optionError } if optionError else ''
+            })
+            }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
