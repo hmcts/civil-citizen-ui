@@ -10,15 +10,7 @@ import {
 @ValidatorConstraint()
 export class AtLeastOnePopulatedRowConstraint implements ValidatorConstraintInterface {
 
-  validate (value: any): boolean {
-    if (value === undefined) {
-      return true;
-    }
-
-    if (!(value instanceof Array)) {
-      return false;
-    }
-
+  validate (value: Array<any>): boolean {
     return value.filter(item => !item.isEmpty()).length >= 1;
   }
 }
