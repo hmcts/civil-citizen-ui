@@ -7,14 +7,19 @@ import * as draftStoreService from '../../../../../../../main/modules/draft-stor
 import {
   buildDebtFormNo,
   buildDebtFormUndefined,
-  buildDebtFormYes, buildDebtFormYesWithDebtEmpty, buildDebtFormYesWithEmptyItems,
-  buildDebtFormYesWithoutItems, buildDebtFormYesWithTotalOwnedInvalid,
+  buildDebtFormYes,
+  buildDebtFormYesWithDebtEmpty,
+  buildDebtFormYesWithEmptyItems,
+  buildDebtFormYesWithoutItems,
+  buildDebtFormYesWithTotalOwnedEmpty,
+  buildDebtFormYesWithTotalOwnedInvalid,
+  buildDebtFormYesWithTotalOwnedZero,
 } from '../../../../../../utils/mockForm';
 import {Claim} from '../../../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
 import {
   ENTER_A_DEBT,
-  ENTER_AT_LEAST_ONE_DEBT, VALID_TWO_DECIMAL_NUMBER,
+  ENTER_AT_LEAST_ONE_DEBT, VALID_NUMBER_OF_PEOPLE, VALID_TWO_DECIMAL_NUMBER,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
@@ -137,6 +142,25 @@ describe('Debts', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toMatch(VALID_TWO_DECIMAL_NUMBER);
+        });
+    });
+
+    test('should validate when has option is yes but Total owned is zero ', async () => {
+      await request(app)
+        .post(DEBTS_URL)
+        .send(buildDebtFormYesWithTotalOwnedZero())
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toMatch(VALID_TWO_DECIMAL_NUMBER);
+        });
+    });
+    test('should validate when has option is yes but Total owned is empty ', async () => {
+      await request(app)
+        .post(DEBTS_URL)
+        .send(buildDebtFormYesWithTotalOwnedEmpty())
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toMatch(VALID_NUMBER_OF_PEOPLE);
         });
     });
 

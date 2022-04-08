@@ -52,14 +52,14 @@
           </div>
           <div class="govuk-grid-column-one-quarter">
             {{ govukInput({
-              id: "debtsItems["+loop.index0+"][totalOwed]",
-              name: "debtsItems["+loop.index0+"][totalOwed]",
-              value: debtsItem.totalOwed,
+              id: "debtsItems["+loop.index0+"][totalOwned]",
+              name: "debtsItems["+loop.index0+"][totalOwned]",
+              value: debtsItem.totalOwned,
               prefix: {
                 text: "£"
               },
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-input--error" if debtsItem.hasFieldError('totalOwed') else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-input--error" if debtsItem.hasFieldError('totalOwned') else "govuk-grid-column-full"
             }) }}
           </div>
           <div class="govuk-grid-column-one-quarter">
