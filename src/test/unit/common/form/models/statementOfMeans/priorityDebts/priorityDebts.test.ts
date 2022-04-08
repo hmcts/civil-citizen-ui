@@ -1,7 +1,7 @@
 import {PriorityDebts, DebtsError} from '../../../../../../../main/common/form/models/statementOfMeans/priorityDebts';
 import {PriorityDebtDetails} from '../../../../../../../main/common/form/models/statementOfMeans/priorityDebtDetails';
 import {validateForm} from '../../../../../../../main/common/form/validators/formValidator';
-import {formatFormErrors} from '../../../../../../../main/modules/statementOfMeans/priorityDebtsService';
+import {formatFormErrors} from '../../../../../../../main/common/utils/priorityDebts/priorityDebtsConvertors';
 
 describe('Priority debts', () => {
   describe('Validate', () => {

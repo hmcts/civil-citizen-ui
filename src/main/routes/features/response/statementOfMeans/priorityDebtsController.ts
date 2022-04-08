@@ -2,21 +2,24 @@ import * as express from 'express';
 import {validateForm} from '../../../../common/form/validators/formValidator';
 import {CITIZEN_DEBTS_URL, CITIZEN_PRIORITY_DEBTS_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {checkBoxFields} from '../../../../../main/common/utils/priorityDebtsConstants';
+import {checkBoxFields} from '../../../../common/utils/priorityDebts/priorityDebtsConstants';
 import {
   getPriorityDebts,
   savePriorityDebts,
+} from '../../../../modules/statementOfMeans/priorityDebtsService';
+import {
   convertRequestBodyToForm,
   formatFormErrors,
   listFormErrors,
-} from '../../../../modules/statementOfMeans/priorityDebtsService';
-const priorityDebtsRrouter = express.Router();
+} from '../../../../common/utils/priorityDebts/priorityDebtsConvertors';
+
+const priorityDebtsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('debtsController');
 
 const debtsViewPath = 'features/response/statementOfMeans/priority-debts';
 
-priorityDebtsRrouter.get(
+priorityDebtsController.get(
   CITIZEN_PRIORITY_DEBTS_URL,
   async (req: express.Request, res: express.Response) => {
     try {
@@ -32,7 +35,7 @@ priorityDebtsRrouter.get(
   },
 );
 
-priorityDebtsRrouter.post(
+priorityDebtsController.post(
   CITIZEN_PRIORITY_DEBTS_URL,
   async (req: express.Request, res: express.Response) => {
     const convertedDebtValues = convertRequestBodyToForm(req.body);
@@ -62,4 +65,4 @@ priorityDebtsRrouter.post(
   },
 );
 
-export default priorityDebtsRrouter;
+export default priorityDebtsController;
