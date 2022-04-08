@@ -24,6 +24,7 @@ import partnerPensionController from './features/response/statementOfMeans/partn
 import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
 import betweenSixteenAndNineteenController from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
+import selfEmployedAsController from './features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
 import onTaxPaymentsController
   from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
 import unemploymentController from './features/response/statementOfMeans/unemployment/unemploymentController';
@@ -57,6 +58,7 @@ export default [
   paymentOptionController,
   betweenSixteenAndNineteenController,
   dependantsController,
+  selfEmployedAsController,
   onTaxPaymentsController,
   unemploymentController,
   childrenDisabilityController,
