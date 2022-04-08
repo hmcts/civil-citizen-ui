@@ -57,7 +57,16 @@
       },
       "priorityDebts":{
         "mortgage": { "amount" : 100.00, "schedule": "week"}
-      }
+      },
+      "unemployment": {
+        "option": "Unemployed",
+        "unemploymentDetails": {
+          "years": "10",
+          "months": "1"
+        },
+        "otherDetails": {
+          "details": ""
+        }
     },
     "respondent1": {
       "dateOfBirth": "2022-03-01T13:29:24.971",
