@@ -2,16 +2,24 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../../main/app';
-import {CITIZEN_DEPENDANTS_EDUCATION_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../../../../main/routes/urls';
+import {
+  CHILDREN_DISABILITY_URL,
+  CITIZEN_DEPENDANTS_EDUCATION_URL,
+  CITIZEN_OTHER_DEPENDANTS_URL,
+} from '../../../../../../../main/routes/urls';
 import {
   REDIS_ERROR_MESSAGE,
   VALID_INTEGER,
   VALID_NUMBER_FOR_PREVIOUS_PAGE,
   VALID_POSITIVE_NUMBER,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import * as childrenDisabilityService
+  from '../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService');
+const mockHasDisabledChildren = childrenDisabilityService.hasDisabledChildren as jest.Mock;
 
 const EXPECTED_TEXT = 'Children aged 16 to 19 living with you';
 const mockDraftStore = {
@@ -94,7 +102,10 @@ describe('Dependant Teenagers', () => {
           expect(res.text).toContain(VALID_NUMBER_FOR_PREVIOUS_PAGE);
         });
     });
-    test('should redirect when no errors', async () => {
+    test('should redirect to other dependants when hasDisabledChildren returns false and no errors', async () => {
+      mockHasDisabledChildren.mockImplementation( () => {
+        return false;
+      });
       app.locals.draftStoreClient = mockDraftStore;
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
@@ -102,6 +113,19 @@ describe('Dependant Teenagers', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_OTHER_DEPENDANTS_URL);
+        });
+    });
+    test('should redirect to other dependants when hasDisabledChildren returns true and no errors', async () => {
+      mockHasDisabledChildren.mockImplementation( () => {
+        return true;
+      });
+      app.locals.draftStoreClient = mockDraftStore;
+      await request(app)
+        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
+        .send({value: 1, maxValue: 3})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CHILDREN_DISABILITY_URL);
         });
     });
     test('should return 500 code when there is an error', async () => {

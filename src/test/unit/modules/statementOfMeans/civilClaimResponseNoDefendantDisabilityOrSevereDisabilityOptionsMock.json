@@ -1,0 +1,55 @@
+{
+  "id": 1645882162449409,
+  "jurisdiction": "CIVIL",
+  "case_type_id": "CIVIL",
+  "created_date": "2022-03-01T13:29:22.447",
+  "last_modified": "2022-03-01T13:29:24.971",
+  "state": "PENDING_CASE_ISSUED",
+  "security_classification": "PUBLIC",
+  "case_data": {
+    "claimFee": {
+      "code": "FEE0204",
+      "version": "4",
+      "calculatedAmountInPence": "7000"
+    },
+    "statementOfMeans": {
+      "disability": {
+      },
+      "severeDisability": {
+      },
+      "dependants": {
+        "declared":true,
+        "numberOfChildren": {
+          "under11":2,
+          "between16and19":2
+        }
+      },
+      "numberOfChildrenLivingWithYou": 1,
+      "cohabiting": {
+        "option": "yes"
+      },
+      "partnerSevereDisability": {
+        "option": "yes"
+      },
+      "partnerAge": {
+        "option": "yes"
+      },
+      "partnerDisability": {
+        "option": "yes"
+      },
+      "childrenDisability": {
+        "option": "yes"
+      },
+      "residence": {
+        "type": {
+          "value": "PRIVATE_RENTAL",
+          "displayValue": "Private rental"
+        },
+        "housingDetails": ""
+      }
+    },
+    "respondent1": {
+      "dateOfBirth": "2022-03-01T13:29:24.971"
+    }
+  }
+}
