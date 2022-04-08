@@ -41,4 +41,5 @@ export const IGNORED_URLS = [
   urls.ON_TAX_PAYMENTS_URL,
   urls.CITIZEN_COURT_ORDER_URL,
   urls.CHILDREN_DISABILITY_URL,
+  urls.DEBTS_URL,
 ];

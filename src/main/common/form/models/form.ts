@@ -17,7 +17,7 @@ export class Form {
 
   hasChildren(): boolean{
     return this.hasErrors() ? this.errors
-      .some((error) => error.children.length > 0) : false;
+      .some((error) => error.children?.length > 0) : false;
   }
 
   getNestedErrors(item : ValidationError, validators: FormValidationError[]): void {
