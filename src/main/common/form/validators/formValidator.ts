@@ -5,7 +5,6 @@ const validator = new Validator();
 const ERROR_FIELD = 'errors';
 export async function validateForm(form: Form) {
   const errors = await validator.validate(form);
-  Object.keys(form);
   form.errors = errors;
 }
 
