@@ -5,7 +5,7 @@ import nock from 'nock';
 import {
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_SELF_EMPLOYED_URL,
-  UNEMPLOYED_URL,
+  CITIZEN_UNEMPLOYED_URL,
   CITIZEN_WHO_EMPLOYS_YOU_URL,
 } from '../../../../../../../main/routes/urls';
 import {
@@ -93,7 +93,7 @@ describe('Employment status', () => {
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(UNEMPLOYED_URL);
+          expect(res.header.location).toEqual(CITIZEN_UNEMPLOYED_URL);
         });
     });
     it('should return http 500 when has error', async () => {

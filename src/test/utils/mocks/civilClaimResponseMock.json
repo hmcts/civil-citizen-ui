@@ -66,6 +66,16 @@
             "jobTitle": "Manager"
           }
         ]
+      },
+      "unemployment": {
+        "option": "Unemployed",
+        "unemploymentDetails": {
+          "years": "10",
+          "months": "1"
+        },
+        "otherDetails": {
+          "details": ""
+        }
       }
     },
     "respondent1": {
