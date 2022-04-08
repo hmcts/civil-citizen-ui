@@ -1,6 +1,5 @@
 import {
   registerDecorator,
-  ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
@@ -11,7 +10,7 @@ import {
 @ValidatorConstraint()
 export class AtLeastOnePopulatedRowConstraint implements ValidatorConstraintInterface {
 
-  validate (value: any, args?: ValidationArguments): boolean {
+  validate (value: any): boolean {
     if (value === undefined) {
       return true;
     }

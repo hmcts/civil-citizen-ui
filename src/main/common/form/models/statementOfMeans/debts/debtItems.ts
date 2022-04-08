@@ -14,7 +14,7 @@ export class DebtItems extends Form{
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: VALID_NUMBER_OF_PEOPLE})
   @Validate(CurrencyValidator)
-    totalOwed: string;
+    totalOwned: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: VALID_NUMBER_OF_PEOPLE})
@@ -22,10 +22,10 @@ export class DebtItems extends Form{
     monthlyPayments: string;
 
 
-  constructor(debt: string, totalOwed: string, monthlyPayments: string) {
+  constructor(debt: string, totalOwned: string, monthlyPayments: string) {
     super();
     this.debt = debt;
-    this.totalOwed = totalOwed;
+    this.totalOwned = totalOwned;
     this.monthlyPayments = monthlyPayments;
   }
 

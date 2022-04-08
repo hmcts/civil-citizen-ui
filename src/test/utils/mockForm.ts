@@ -52,6 +52,19 @@ export const buildDebtFormYesWithEmptyItems = () : Debts => {
   const debts = new Debts(YesNo.YES,items);
   return debts;
 };
+export const buildDebtFormYesWithDebtEmpty = () : Debts => {
+  const items : DebtItems[] = [];
+  items.push(new DebtItems('', '1.00', '1.00'));
+  const debts = new Debts(YesNo.YES,items);
+  return debts;  return debts;
+};
+
+export const buildDebtFormYesWithTotalOwnedInvalid = () : Debts => {
+  const items : DebtItems[] = [];
+  items.push(new DebtItems('test', '-10', '1.00'));
+  const debts = new Debts(YesNo.YES,items);
+  return debts;  return debts;
+};
 
 export const buildDebtItems = (totalOfRows: number) :  DebtItems[] =>{
   const items : DebtItems[] = [];

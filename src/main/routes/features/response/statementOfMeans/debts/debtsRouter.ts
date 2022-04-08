@@ -27,7 +27,7 @@ debtsRouter.get(DEBTS_URL, async (req, res) => {
     if (responseDataRedis?.statementOfMeans?.debts){
       form.option = responseDataRedis.statementOfMeans.debts.option;
       if(form.option === YesNo.YES){
-        form.debtsItems = responseDataRedis.statementOfMeans.debts.debtsItems.map(item => new DebtItems(item.debt, item.totalOwed, item.monthlyPayments));
+        form.debtsItems = responseDataRedis.statementOfMeans.debts.debtsItems.map(item => new DebtItems(item.debt, item.totalOwned, item.monthlyPayments));
       }
     }
     renderView(form, res);
@@ -66,15 +66,15 @@ debtsRouter.post(DEBTS_URL,
 function transformToDebts(req: express.Request) : DebtItems[]{
   return req.body.debtsItems
     .map((item: DebtItems) => {
-      return new DebtItems(item.debt, item.totalOwed, item.monthlyPayments);
+      return new DebtItems(item.debt, item.totalOwned, item.monthlyPayments);
     });
 }
 
 function removeEmptyValueToDebts(req: express.Request) : DebtItems[]{
   return req.body.debtsItems
-    .filter((item: DebtItems) => item.debt && item.totalOwed && item.monthlyPayments)
+    .filter((item: DebtItems) => item.debt && item.totalOwned && item.monthlyPayments)
     .map((item: DebtItems) => {
-      return new DebtItems(item.debt, item.totalOwed, item.monthlyPayments);
+      return new DebtItems(item.debt, item.totalOwned, item.monthlyPayments);
     });
 }
 

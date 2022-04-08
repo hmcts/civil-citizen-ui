@@ -7,13 +7,14 @@ import * as draftStoreService from '../../../../../../../main/modules/draft-stor
 import {
   buildDebtFormNo,
   buildDebtFormUndefined,
-  buildDebtFormYes, buildDebtFormYesWithEmptyItems,
-  buildDebtFormYesWithoutItems,
+  buildDebtFormYes, buildDebtFormYesWithDebtEmpty, buildDebtFormYesWithEmptyItems,
+  buildDebtFormYesWithoutItems, buildDebtFormYesWithTotalOwnedInvalid,
 } from '../../../../../../utils/mockForm';
 import {Claim} from '../../../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
 import {
-  ENTER_AT_LEAST_ONE_DEBT,
+  ENTER_A_DEBT,
+  ENTER_AT_LEAST_ONE_DEBT, VALID_TWO_DECIMAL_NUMBER,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
@@ -120,6 +121,24 @@ describe('Debts', () => {
           expect(res.text).toMatch(ENTER_AT_LEAST_ONE_DEBT);
         });
     });
+    test('should validate when has option is yes but debt is empty ', async () => {
+      await request(app)
+        .post(DEBTS_URL)
+        .send(buildDebtFormYesWithDebtEmpty())
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toMatch(ENTER_A_DEBT);
+        });
+    });
+    test('should validate when has option is yes but Total owned is invalid ', async () => {
+      await request(app)
+        .post(DEBTS_URL)
+        .send(buildDebtFormYesWithTotalOwnedInvalid())
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toMatch(VALID_TWO_DECIMAL_NUMBER);
+        });
+    });
 
     test('should should redirect to when option is no when there is no data on redis', async () => {
       await request(app)
@@ -157,6 +176,7 @@ describe('Debts', () => {
           expect(res.header.location).toEqual(CITIZEN_MONTHLY_EXPENSES_URL);
         });
     });
+
     test('should should redirect to when option is no when has data on redis', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
