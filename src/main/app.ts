@@ -15,7 +15,6 @@ import { OidcMiddleware } from './modules/oidc';
 import {DraftStoreClient} from './modules/draft-store';
 import routes from './routes/routes';
 
-
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
 
