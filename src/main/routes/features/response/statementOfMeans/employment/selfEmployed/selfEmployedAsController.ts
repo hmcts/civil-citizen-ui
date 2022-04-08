@@ -12,13 +12,13 @@ import {
 } from '../../../../../urls';
 
 const selfEmployedAsViewPath = 'features/response/statementOfMeans/employment/selfEmployed/self-employed-as';
-const router = express.Router();
+const selfEmployedAsController = express.Router();
 
 function renderView(form: SelfEmployedAsForm, res: express.Response): void {
   res.render(selfEmployedAsViewPath, {form});
 }
 
-router.get(SELF_EMPLOYED_URL, async (req, res) => {
+selfEmployedAsController.get(SELF_EMPLOYED_URL, async (req, res) => {
   try {
     const form = await getSelfEmployedAsForm(req.params.id);
     renderView(form, res);
@@ -27,7 +27,7 @@ router.get(SELF_EMPLOYED_URL, async (req, res) => {
   }
 });
 
-router.post(SELF_EMPLOYED_URL,
+selfEmployedAsController.post(SELF_EMPLOYED_URL,
   async (req, res) => {
     try{
       const annualTurnover = req.body.annualTurnover ? Number(req.body.annualTurnover) : undefined;
@@ -46,4 +46,4 @@ router.post(SELF_EMPLOYED_URL,
     }
   });
 
-export default router;
+export default selfEmployedAsController;
