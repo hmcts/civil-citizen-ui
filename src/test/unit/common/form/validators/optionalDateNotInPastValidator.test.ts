@@ -1,5 +1,5 @@
 import {
-  OptionalDateNotInPastValidator
+  OptionalDateNotInPastValidator,
 } from '../../../../../main/common/form/validators/optionalDateNotInPastValidator';
 
 describe('OptionalDateNotInPastValidator validate', () => {
