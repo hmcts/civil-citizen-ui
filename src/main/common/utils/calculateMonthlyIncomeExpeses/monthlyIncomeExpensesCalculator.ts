@@ -5,7 +5,7 @@ export interface ScheduledAmount {
   schedule: string;
 }
 
-const calculateTotalAmount = (amountsPerSchedule: ScheduledAmount[]): string => {
+const calculateTotalAmount = (amountsPerSchedule?: ScheduledAmount[]): string => {
   let totalAmount = 0;
   if (amountsPerSchedule?.length > 0) {
     amountsPerSchedule.forEach(scheduledAmount => {

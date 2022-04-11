@@ -19,4 +19,10 @@ describe('calculate monthly income expenses', () => {
     //Then
     expect(total).toBe('63');
   });
+  it('should not calculate when there is no data', () => {
+    //When
+    const total = calculateTotalAmount(undefined);
+    //Then
+    expect(total).toBe('0');
+  });
 });
