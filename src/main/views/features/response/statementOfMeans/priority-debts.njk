@@ -44,8 +44,8 @@
       }) }}
         {% endfor %}
         <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
-          {{ t('Total monthly expenditure') }}: £ <span class="total-monthly-income-expense">
-            {{ totalMonthlyExpense | default('0.00') }}
+          {{ t('Total monthly repayments') }}: £ <span class="total-monthly-income-expense">
+            {{ totalMonthlyExpense | default('0') }}
           </span>
         </p>
         {{ saveAndContinueButton() }}
