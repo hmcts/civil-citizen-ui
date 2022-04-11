@@ -20,4 +20,12 @@ describe('OptionalDateFourDigitValidator validate', () => {
     //Then
     expect(result).toBeFalsy();
   });
+  it('should return specific text for defaultMessage', () => {
+    //Given
+    const defaultMessage = 'Enter a 4 digit year';
+    //When
+    const result = validator.defaultMessage();
+    //Then
+    expect(result).toEqual(defaultMessage);
+  });
 });
