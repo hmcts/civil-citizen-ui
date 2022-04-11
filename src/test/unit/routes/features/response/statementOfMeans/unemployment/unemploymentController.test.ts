@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_COURT_ORDER_URL, CITIZEN_UNEMPLOYED_URL} from '../../../../../../../main/routes/urls';
+import {CITIZEN_COURT_ORDERS_URL, CITIZEN_UNEMPLOYED_URL} from '../../../../../../../main/routes/urls';
 import {
   DETAILS_REQUIRED,
   SELECT_AN_OPTION,
@@ -90,7 +90,7 @@ describe('Unemployment', () => {
         .send({option: 'Retired'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_COURT_ORDER_URL);
+          expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
         });
     });
     test('should redirect to court page option Retired is selected', async () => {
@@ -99,7 +99,7 @@ describe('Unemployment', () => {
         .send({option: 'Retired'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_COURT_ORDER_URL);
+          expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
         });
     });
     test('should redirect to court page option Retired is selected without claim data in redis', async () => {
@@ -108,7 +108,7 @@ describe('Unemployment', () => {
         .send({option: 'Retired'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_COURT_ORDER_URL);
+          expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
         });
     });
     test('should return error message when option Other is selected and detail is empty', async () => {
@@ -127,7 +127,7 @@ describe('Unemployment', () => {
         .send({option: 'Other', details: 'Test'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_COURT_ORDER_URL);
+          expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
         });
     });
     test('should return error message when option Unemployed is selected and has year and month', async () => {
@@ -136,7 +136,7 @@ describe('Unemployment', () => {
         .send({option: 'Unemployed', years: '5', months: '1'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_COURT_ORDER_URL);
+          expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
         });
     });
     test('should return error message when option Unemployed is selected and year and month are empty', async () => {

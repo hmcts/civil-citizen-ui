@@ -2,7 +2,7 @@ import {app} from '../../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_COURT_ORDER_URL, ON_TAX_PAYMENTS_URL} from '../../../../../../../../main/routes/urls';
+import {CITIZEN_COURT_ORDERS_URL, ON_TAX_PAYMENTS_URL} from '../../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
 import {
@@ -115,7 +115,7 @@ describe('on tax payments', () => {
         .send({option: YesNo.YES, amountYouOwe: 44.4, reason: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_COURT_ORDER_URL);
+          expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
         });
     });
     test('should return status 500 when there is error', async () => {
