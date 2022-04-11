@@ -72,6 +72,7 @@ export class RegularExpenses {
     this.councilTax = expenseParams?.councilTax;
     this.electricity = expenseParams?.electricity;
     this.water = expenseParams?.water;
+    this.travel = expenseParams?.travel;
     this.schoolCosts = expenseParams?.schoolCosts;
     this.foodAndHousekeeping = expenseParams?.foodAndHousekeeping;
     this.tvAndBroadband = expenseParams?.tvAndBroadband;
@@ -88,7 +89,7 @@ export class RegularExpenses {
       gas: RegularExpenses.buildExpense(ExpenseType.GAS),
       electricity: RegularExpenses.buildExpense(ExpenseType.ELECTRICITY),
       water: RegularExpenses.buildExpense(ExpenseType.WATER),
-      travel: RegularExpenses.buildExpense(ExpenseType.WATER),
+      travel: RegularExpenses.buildExpense(ExpenseType.TRAVEL),
       schoolCosts: RegularExpenses.buildExpense(ExpenseType.SCHOOL_COSTS),
       foodAndHousekeeping: RegularExpenses.buildExpense(ExpenseType.FOOD_HOUSEKEEPING),
       tvAndBroadband: RegularExpenses.buildExpense(ExpenseType.TV_AND_BROADBAND),
