@@ -5,7 +5,8 @@ import {calculateTotalAmount} from '../../common/utils/calculateMonthlyIncomeExp
 const monthlyExpenseIncomeCalculatorController = express.Router();
 
 monthlyExpenseIncomeCalculatorController.post(TOTAL_AMOUNT_CALCULATION_URL, (req, res) => {
-  const scheduledAmounts = req.body.data;
+  const scheduledAmounts = req.body;
+  console.log(req.body);
   const totalAmount = calculateTotalAmount(scheduledAmounts);
   console.log(totalAmount);
   res.send(totalAmount);

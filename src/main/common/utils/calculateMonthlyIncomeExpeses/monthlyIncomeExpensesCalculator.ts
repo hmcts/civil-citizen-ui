@@ -15,7 +15,7 @@ const calculateTotalAmount = (amountsPerSchedule: ScheduledAmount[]): string => 
       }
     });
   }
-  return totalAmount.toPrecision(2);
+  return String(Math.round(totalAmount));
 };
 
 export {
