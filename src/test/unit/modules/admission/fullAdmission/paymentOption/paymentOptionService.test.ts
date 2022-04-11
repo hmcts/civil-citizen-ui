@@ -9,6 +9,7 @@ import PaymentOptionType
 import {REDIS_ERROR_MESSAGE} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import PaymentOption
   from '../../../../../../main/common/form/models/admission/fullAdmission/paymentOption/paymentOption';
+import {mockClaim} from "../../../../../utils/mockClaim";
 
 
 jest.mock('../../../../../../main/modules/draft-store');
@@ -92,6 +93,30 @@ describe('payment option service', () => {
       await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.BY_SET_DATE));
       //Then
       expect(spy).toBeCalled();
+    });
+    it('should reset payment date successfully if PaymentOptionType is not BY_SET_DATE', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return mockClaim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.IMMEDIATELY));
+      //Then
+      expect(spy).toBeCalled();
+      expect(mockClaim.paymentDate).toBeUndefined();
+    });
+    it('should not reset payment date if PaymentOptionType is BY_SET_DATE', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return mockClaim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.BY_SET_DATE));
+      //Then
+      expect(spy).toBeCalled();
+      expect(mockClaim.paymentDate).toEqual(new Date('2022-06-01T00:00:00'));
     });
     it('should throw error when draft store throws error', async () => {
       //Given
