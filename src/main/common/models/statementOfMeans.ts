@@ -15,6 +15,7 @@ import {SelfEmployedAs} from './selfEmployedAs';
 import {TaxPayments} from './taxPayments';
 import {Unemployment} from '../form/models/statementOfMeans/unemployment/unemployment';
 import {ChildrenDisability} from '../form/models/statementOfMeans/dependants/childrenDisability';
+import {RegularExpenses} from '../form/models/statementOfMeans/expenses/regularExpenses';
 import {CourtOrders} from '../form/models/statementOfMeans/courtOrders/courtOrders';
 
 export class StatementOfMeans {
@@ -36,5 +37,6 @@ export class StatementOfMeans {
   selfEmployedAs?: SelfEmployedAs;
   unemployment?: Unemployment;
   childrenDisability?: ChildrenDisability;
+  regularExpenses?: RegularExpenses;
   courtOrders?: CourtOrders;
 }

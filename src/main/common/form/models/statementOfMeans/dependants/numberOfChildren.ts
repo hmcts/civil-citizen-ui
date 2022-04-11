@@ -1,6 +1,6 @@
 import {IsInt, Min, ValidateIf} from 'class-validator';
 import {VALID_INTEGER, VALID_POSITIVE_NUMBER} from '../../../validationErrors/errorMessageConstants';
-import {toNumberOrUndefined} from '../../../../../common/utils/numberUtils';
+import {toNumberOrUndefined} from '../../../../utils/numberConverter';
 
 export class NumberOfChildren {
 

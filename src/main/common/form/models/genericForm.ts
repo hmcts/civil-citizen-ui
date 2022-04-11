@@ -63,7 +63,7 @@ export class GenericForm<Model> {
    */
   public getAllErrors(property?: string): FormValidationError[] {
     const nestedErrors = this.getNestedErrors(property).filter(error => error !== undefined);
-    return nestedErrors && nestedErrors.length > 0 ? this.getErrors(property).concat(nestedErrors) : this.getErrors(property);
+    return nestedErrors?.length > 0 ? this.getErrors(property).concat(nestedErrors) : this.getErrors(property);
   }
 
   /**
@@ -107,5 +107,4 @@ export class GenericForm<Model> {
       return formErrors;
     }
   }
-
 }
