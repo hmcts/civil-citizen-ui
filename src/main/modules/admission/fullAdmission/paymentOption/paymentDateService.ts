@@ -10,11 +10,11 @@ class PaymentDateService {
 
   public async getPaymentDate(claimId: string): Promise<Date> {
     try {
-      const case_data = await getCaseDataFromStore(claimId);
-      if (case_data?.paymentDate) {
-        return case_data.paymentDate;
+      const claim = await getCaseDataFromStore(claimId);
+      if (claim?.paymentDate) {
+        return claim.paymentDate;
       }
-      return new Date();
+      return undefined;
     } catch (error) {
       logger.error(error);
       throw error;
