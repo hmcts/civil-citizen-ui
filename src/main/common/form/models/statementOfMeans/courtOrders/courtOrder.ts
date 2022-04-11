@@ -6,7 +6,7 @@ import {
   VALID_STRICTLY_POSITIVE_NUMBER,
   VALID_TWO_DECIMAL_NUMBER,
 } from '../../../../../common/form/validationErrors/errorMessageConstants';
-import {toNumberOrUndefined} from '../../../../../common/utils/numberUtils';
+import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 
 export class CourtOrder {
 
