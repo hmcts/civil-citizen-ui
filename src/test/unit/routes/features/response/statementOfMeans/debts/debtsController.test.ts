@@ -148,7 +148,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithTotalOwnedZero())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_TWO_DECIMAL_NUMBER);
+          expect(res.text).toMatch(VALID_NUMBER_OF_PEOPLE);
         });
     });
     test('should validate when has option is yes but Total owned is empty ', async () => {

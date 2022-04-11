@@ -18,6 +18,7 @@ export class CurrencyValidator implements ValidatorConstraintInterface {  numeri
       return true;
     }
     if (value === '0') {
+      this.validNumber = false;
       return false;
     }
     const decimalPattern = /^\d*\.?\d{0,2}$/;
