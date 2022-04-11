@@ -1,5 +1,6 @@
 import {IsInt, Min, ValidateIf} from 'class-validator';
 import {VALID_INTEGER, VALID_POSITIVE_NUMBER} from '../../../validationErrors/errorMessageConstants';
+import {toNumberOrUndefined} from '../../../../utils/numberConverter';
 
 export class NumberOfChildren {
 
@@ -50,7 +51,4 @@ export class NumberOfChildren {
 
 
 
-function toNumberOrUndefined(value: string): number {
-  const numberValue: number = parseFloat(value);
-  return isNaN(numberValue) ? undefined : numberValue;
-}
+

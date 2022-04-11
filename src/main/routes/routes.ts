@@ -36,6 +36,7 @@ import unemploymentController from './features/response/statementOfMeans/unemplo
 
 import childrenDisabilityController from './features/response/statementOfMeans/dependants/childrenDisabilityController';
 
+import regularExpensesController from './features/response/statementOfMeans/expenses/regularExpensesController';
 
 export default [
   homeController,
@@ -69,4 +70,5 @@ export default [
   onTaxPaymentsController,
   unemploymentController,
   childrenDisabilityController,
+  regularExpensesController,
 ];
