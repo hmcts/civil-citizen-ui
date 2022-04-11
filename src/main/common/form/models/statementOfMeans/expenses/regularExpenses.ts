@@ -73,9 +73,10 @@ export class RegularExpenses {
     this.councilTax = expenseParams?.councilTax;
     this.electricity = expenseParams?.electricity;
     this.water = expenseParams?.water;
+    this.travel = expenseParams?.travel;
     this.schoolCosts = expenseParams?.schoolCosts;
-    this.tvAndBroadband = expenseParams?.tvAndBroadband;
     this.foodAndHousekeeping = expenseParams?.foodAndHousekeeping;
+    this.tvAndBroadband = expenseParams?.tvAndBroadband;
     this.hirePurchase = expenseParams?.hirePurchase;
     this.mobilePhone = expenseParams?.mobilePhone;
     this.maintenance = expenseParams?.maintenance;
@@ -89,7 +90,7 @@ export class RegularExpenses {
       gas: RegularExpenses.buildExpense(ExpenseType.GAS),
       electricity: RegularExpenses.buildExpense(ExpenseType.ELECTRICITY),
       water: RegularExpenses.buildExpense(ExpenseType.WATER),
-      travel: RegularExpenses.buildExpense(ExpenseType.WATER),
+      travel: RegularExpenses.buildExpense(ExpenseType.TRAVEL),
       schoolCosts: RegularExpenses.buildExpense(ExpenseType.SCHOOL_COSTS),
       foodAndHousekeeping: RegularExpenses.buildExpense(ExpenseType.FOOD_HOUSEKEEPING),
       tvAndBroadband: RegularExpenses.buildExpense(ExpenseType.TV_AND_BROADBAND),
@@ -100,17 +101,16 @@ export class RegularExpenses {
     return new RegularExpenses(params);
   }
 
+  private static buildExpense(type: ExpenseType): Expense {
+    return Expense.buildEmptyForm(type);
+  }
+
   public static convertToScheduledAmount(regularExpenses: RegularExpenses): ScheduledAmount[] {
     const keys = Object.keys(regularExpenses);
     const scheduledAmounts: ScheduledAmount[] = [];
     keys.forEach(key => {
       scheduledAmounts.push(regularExpenses[key]?.expenseSource.convertToScheduledAmount());
     });
-
     return scheduledAmounts;
-  }
-
-  private static buildExpense(type: ExpenseType): Expense {
-    return Expense.buildEmptyForm(type);
   }
 }

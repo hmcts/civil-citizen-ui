@@ -44,5 +44,3 @@ export class Organisation {
   individualFirstName: string;
   type: CounterpartyType;
 }
-
-

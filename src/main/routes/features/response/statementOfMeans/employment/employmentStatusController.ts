@@ -3,9 +3,9 @@ import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans
 import {EmploymentCategory} from '../../../../../common/form/models/statementOfMeans/employment/employmentCategory';
 import {
   CITIZEN_EMPLOYMENT_URL,
-  SELF_EMPLOYED_URL,
-  UNEMPLOYED_URL,
-  WHO_EMPLOYS_YOU_URL,
+  CITIZEN_SELF_EMPLOYED_URL,
+  CITIZEN_WHO_EMPLOYS_YOU_URL,
+  CITIZEN_UNEMPLOYED_URL,
 } from '../../../../../routes/urls';
 import {validateForm} from '../../../../../common/form/validators/formValidator';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
@@ -27,15 +27,15 @@ function redirectToNextPage(form: EmploymentForm, claimId: string, res: express.
   if (form.optionYesDefined()) {
     redirectToEmployersPage(form, claimId, res);
   } else {
-    res.redirect(constructResponseUrlWithIdParams(claimId, UNEMPLOYED_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_UNEMPLOYED_URL));
   }
 }
 
 function redirectToEmployersPage(form: EmploymentForm, claimId: string, res: express.Response) {
   if (form.isSelfEmployed()) {
-    res.redirect(constructResponseUrlWithIdParams(claimId, SELF_EMPLOYED_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
   } else {
-    res.redirect(constructResponseUrlWithIdParams(claimId, WHO_EMPLOYS_YOU_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_WHO_EMPLOYS_YOU_URL));
   }
 }
 
