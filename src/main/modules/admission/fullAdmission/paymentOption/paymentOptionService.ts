@@ -26,7 +26,7 @@ const savePaymentOptionData = async (claimId: string, form: PaymentOption) => {
       claim = new Claim();
     }
     claim.paymentOption = form.paymentType;
-    if (form.paymentType !== PaymentOptionType.BY_SET_DATE) {
+    if (!form.paymentOptionBySetDateSelected()) {
       logger.info('Resetting paymentDate to empty if paymentOptionType not BY_SET_DATE');
       claim.paymentDate = undefined;
     }

@@ -28,17 +28,12 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post">
             {{ csrfProtection(csrf) }}
-            <div class="govuk-form-group {% if errors %} govuk-form-group--error{% endif %}">
-              {% if errors %}
-                {% for error in errors %}
-                  <span class="govuk-error-message">{{ t(error.text) }}</span>
-                {% endfor %}
-              {% endif %}
+            <div class="govuk-form-group">
               {{ govukDateInput({
-                id: "paymentDate",
+                id: "date",
                 type: "number",
                 inputmode: "numeric",
-                name: "paymentDate",
+                name: "date",
                 fieldset: {
                   legend: {
                     isPageHeading: false,
@@ -49,8 +44,8 @@
                   text: t("For example, " + nextMonth.getDate() + " " + (nextMonth.getMonth() + 1) + " " + nextMonth.getFullYear())
                 },
                 errorMessage: {
-                  html: errorMessage
-                } if errors,
+                  html: form.errorFor('date')
+                } if form.hasErrors(),
                 items: [
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
