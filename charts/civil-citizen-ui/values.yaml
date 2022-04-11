@@ -28,3 +28,35 @@ nodejs:
 
 idam-pr:
   enabled: false
+
+tags:
+  civil-ccd-stack: false
+
+postgresql:
+  enabled: false
+
+xui-webapp:
+  enabled: false
+
+camunda-bpm:
+  enabled: false
+
+java:
+  applicationPort: 4000
+  image: 'hmctspublic.azurecr.io/civil/service:latest'
+  aadIdentityName: civil
+  keyVaults:
+    civil:
+      resourceGroup: civil
+      secrets:
+        - civil-idam-client-secret
+        - microservicekey-civil-service
+        - system-update-user-username
+        - system-update-user-password
+        - AppInsightsInstrumentationKey
+        - docmosis-api-key
+        - gov-notify-api-key
+        - sendgrid-api-key
+        - robotics-notification-sender
+        - robotics-notification-recipient
+        - launch-darkly-sdk-key
