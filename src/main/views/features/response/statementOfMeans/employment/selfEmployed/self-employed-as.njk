@@ -1,0 +1,76 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set title = t("What are you self-employed as?") %}
+      {% set errors = form.getErrors() %}
+      {% set jobTitleError = form.getTextError(errors, 'jobTitle') %}
+      {% set annualTurnoverError = form.getTextError(errors, 'annualTurnover') %}
+      {% if errors %}
+        {{ govukErrorSummary({
+          "titleText": "There was a problem",
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% call govukFieldset({
+              legend: {
+                text: title,
+                classes: "govuk-fieldset__legend--l",
+                isPageHeading: true
+              }
+            }) %}
+            <div class="govuk-grid-column-one-third govuk-!-padding-0">
+              {{ govukInput({
+              label: {
+                text: t("Job title"),
+                isPageHeading: true
+              },
+              id: "jobTitle",
+              name: "jobTitle",
+              type: "text",
+              value: form.jobTitle,
+              autocomplete: "text",
+              errorMessage: { text: jobTitleError.isNotEmpty } if jobTitleError else ''
+            }) }}
+              {{ govukInput({
+              label: {
+                text: t("Annual turnover"),
+                isPageHeading: true
+              },
+              id: "annualTurnover",
+              name: "annualTurnover",
+              type: "number",
+              autocomplete: "number",
+              prefix: {
+                text: "£"
+              },
+              spellcheck: false,
+              value: form.getAnnualTurnoverAsString(),
+              errorMessage: {
+                text:t(form.errorFor('annualTurnover'))
+              } if form.hasFieldError('annualTurnover')
+            }) }}
+            </div>
+            {% endcall %}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

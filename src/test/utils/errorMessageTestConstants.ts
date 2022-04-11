@@ -12,5 +12,7 @@ export const enum TestMessages {
     EXAMPLE_LIVE_WITH_PARTNER = 'For example, a boyfriend, girlfriend, husband, wife or civil partner.',
     IS_YOUR_PARTNER_DISABLED = 'Is your partner disabled?',
     DOES_YOUR_PARTNER_RECEIVE_PENSION = 'Does your partner receive a pension?',
-    IS_YOUR_PARTNER_SEVERELY_DISABLED = 'Is your partner severely disabled?'
+    IS_YOUR_PARTNER_SEVERELY_DISABLED = 'Is your partner severely disabled?',
+    WHO_EMPLOYS_YOU = 'Who employs you?',
+    SOMETHING_WENT_WRONG = 'Something went wrong'
 }
