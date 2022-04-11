@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
   if (document.getElementsByClassName('amountRow')) {
-    document.querySelector('.amountRow .amount')?.addEventListener('change', getCalculation);
-    document.querySelector('.amountRow .schedule')?.addEventListener('change', getCalculation);
+    document.querySelectorAll('.amountRow .amount')?.forEach(element => element.addEventListener('change', getCalculation));
+    document.querySelectorAll('.amountRow .schedule')?.forEach(element => element.addEventListener('change', getCalculation));
+    getCalculation();
   }
 
   function getSelectedInput(inputs) {
@@ -27,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
       if (amount?.length && selectedSchedule && amount[0].value && selectedSchedule.value) {
         data.push({amount: amount[0].value, schedule: selectedSchedule.value});
       }
-      console.log(data);
     });
     const options = {
       method: 'POST',
@@ -37,7 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
       body: JSON.stringify(data),
     };
     if (data.length > 0) {
-      fetch('/total-income-expense-calculation', options).then((response) => console.log(response));
+      fetch('/total-income-expense-calculation', options).then((response) => {
+        return response.json();
+      }).then(data => {
+        document.getElementsByClassName('total-monthly-income-expense')[0].innerHTML = data;
+      });
     }
   }
 });

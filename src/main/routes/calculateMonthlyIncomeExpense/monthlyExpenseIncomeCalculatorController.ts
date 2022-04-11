@@ -6,10 +6,8 @@ const monthlyExpenseIncomeCalculatorController = express.Router();
 
 monthlyExpenseIncomeCalculatorController.post(TOTAL_AMOUNT_CALCULATION_URL, (req, res) => {
   const scheduledAmounts = req.body;
-  console.log(req.body);
   const totalAmount = calculateTotalAmount(scheduledAmounts);
-  console.log(totalAmount);
-  res.send(totalAmount);
+  res.status(200).send(totalAmount);
 });
 
 export default monthlyExpenseIncomeCalculatorController;
