@@ -58,12 +58,9 @@ describe('Payment Date service', () => {
       const paymentDate = await (paymentDateService.getPaymentDate('claimId'));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(paymentDate).not.toBeNull();
-      expect(paymentDate.getFullYear()).toEqual(new Date().getFullYear());
-      expect(paymentDate.getMonth()).toEqual(new Date().getMonth());
-      expect(paymentDate.getDate()).toEqual(new Date().getDate());
+      expect(paymentDate).toBeUndefined();
     });
-    test('should return empty PaymentDate when case_data, but no payemntDate, retrieved', async () => {
+    test('should return undefined when case_data, but no paymentDate, retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -73,10 +70,7 @@ describe('Payment Date service', () => {
       const paymentDate = await (paymentDateService.getPaymentDate('claimId'));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(paymentDate).not.toBeNull();
-      expect(paymentDate.getFullYear()).toEqual(new Date().getFullYear());
-      expect(paymentDate.getMonth()).toEqual(new Date().getMonth());
-      expect(paymentDate.getDate()).toEqual(new Date().getDate());
+      expect(paymentDate).toBeUndefined();
     });
     test('should return PaymentDate when date retrieved', async () => {
       //Given
