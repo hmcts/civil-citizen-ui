@@ -23,16 +23,16 @@ import whoEmploysYouController from './features/response/statementOfMeans/employ
 import otherDependantsController from './features/response/statementOfMeans/otherDependants/otherDependantsController';
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
 import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
-import betweenSixteenAndNineteenController from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
+import betweenSixteenAndNineteenController
+  from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
 import selfEmployedAsController from './features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
 import onTaxPaymentsController
   from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
 import unemploymentController from './features/response/statementOfMeans/unemployment/unemploymentController';
-
 import childrenDisabilityController from './features/response/statementOfMeans/dependants/childrenDisabilityController';
+import regularExpensesController from './features/response/statementOfMeans/expenses/regularExpensesController';
 import debtsController from './features/response/statementOfMeans/debts/debtsController';
-
 
 export default [
   homeController,
@@ -65,5 +65,6 @@ export default [
   onTaxPaymentsController,
   unemploymentController,
   childrenDisabilityController,
+  regularExpensesController,
   debtsController,
 ];
