@@ -23,7 +23,8 @@ import whoEmploysYouController from './features/response/statementOfMeans/employ
 import otherDependantsController from './features/response/statementOfMeans/otherDependants/otherDependantsController';
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
 import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
-import betweenSixteenAndNineteenController from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
+import betweenSixteenAndNineteenController
+  from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
 import priorityDebtsController from './features/response/statementOfMeans/priorityDebtsController';
 import selfEmployedAsController from './features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
@@ -33,6 +34,7 @@ import unemploymentController from './features/response/statementOfMeans/unemplo
 
 import childrenDisabilityController from './features/response/statementOfMeans/dependants/childrenDisabilityController';
 
+import regularExpensesController from './features/response/statementOfMeans/expenses/regularExpensesController';
 
 export default [
   homeController,
@@ -66,4 +68,5 @@ export default [
   onTaxPaymentsController,
   unemploymentController,
   childrenDisabilityController,
+  regularExpensesController,
 ];
