@@ -40,76 +40,76 @@ describe('Priority Debts Controller', () => {
     });
   });
   describe('on POST', () => {
-    test('it should show errors when mortgage is selected but no amount or schedule selected', async () => {
+    test('it should show errors when gas is selected but no amount or schedule selected', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          mortgage: 'mortgage',
-          'mortgage-payment-amount': '',
-          'mortgage-payment-schedule': '',
+          gas: 'gas',
+          'gas-payment-amount': '',
+          'gas-payment-schedule': '',
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MORTGAGE_AMOUNT_ERROR);
-          expect(res.text).toContain(TestMessages.MORTGAGE_SCHEDULE_ERROR);
+          expect(res.text).toContain(TestMessages.GAS_AMOUNT_ERROR);
+          expect(res.text).toContain(TestMessages.GAS_SCHEDULE_ERROR);
         });
     });
-    test('it should show errors when mortgage and rent are selected but no amount or schedule selected', async () => {
+    test('it should show errors when gas and water are selected but no amount or schedule selected', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          mortgage: 'mortgage',
-          'mortgage-payment-amount': '',
-          'mortgage-payment-schedule': '',
-          rent: 'rent',
-          'rent-payment-amount': '',
-          'rent-payment-schedule': '',
+          gas: 'gas',
+          'gas-payment-amount': '',
+          'gas-payment-schedule': '',
+          water: 'water',
+          'water-payment-amount': '',
+          'water-payment-schedule': '',
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MORTGAGE_AMOUNT_ERROR);
-          expect(res.text).toContain(TestMessages.MORTGAGE_SCHEDULE_ERROR);
-          expect(res.text).toContain(TestMessages.RENT_AMOUNT_ERROR);
-          expect(res.text).toContain(TestMessages.RENT_SCHEDULE_ERROR);
+          expect(res.text).toContain(TestMessages.GAS_AMOUNT_ERROR);
+          expect(res.text).toContain(TestMessages.GAS_SCHEDULE_ERROR);
+          expect(res.text).toContain(TestMessages.WATER_AMOUNT_ERROR);
+          expect(res.text).toContain(TestMessages.WATER_AMOUNT_ERROR);
         });
     });
-    test('it should show errors when mortgage is selected but no schedule selected', async () => {
+    test('it should show errors when gas is selected but no schedule selected', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          mortgage: 'mortgage',
-          'mortgage-payment-amount': '5129',
-          'mortgage-payment-schedule': '',
+          gas: 'gas',
+          'gas-payment-amount': '5129',
+          'gas-payment-schedule': '',
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MORTGAGE_SCHEDULE_ERROR);
+          expect(res.text).toContain(TestMessages.GAS_SCHEDULE_ERROR);
         });
     });
-    test('it should show errors when mortgage is selected and amount is negative', async () => {
+    test('it should show errors when gas is selected and amount is negative', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          mortgage: 'mortgage',
-          'mortgage-payment-amount': '-5129',
-          'mortgage-payment-schedule': '',
+          gas: 'gas',
+          'gas-payment-amount': '-5129',
+          'gas-payment-schedule': '',
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MORTGAGE_CORRECT_AMOUNT_ERROR);
+          expect(res.text).toContain(TestMessages.GAS_CORRECT_AMOUNT_ERROR);
         });
     });
-    test('it should show errors when mortgage is selected and amount has three decimal places', async () => {
+    test('it should show errors when gas is selected and amount has three decimal places', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          mortgage: 'mortgage',
-          'mortgage-payment-amount': '2000.859',
-          'mortgage-payment-schedule': '',
+          gas: 'gas',
+          'gas-payment-amount': '2000.859',
+          'gas-payment-schedule': '',
         })
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MORTGAGE_CORRECT_AMOUNT_ERROR);
+          expect(res.text).toContain(TestMessages.GAS_CORRECT_AMOUNT_ERROR);
         });
     });
     test('it should redirect when no data is selected', async () => {
@@ -127,9 +127,9 @@ describe('Priority Debts Controller', () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          mortgage: 'mortgage',
-          'mortgage-payment-amount': '85.92',
-          'mortgage-payment-schedule': 'month',
+          gas: 'gas',
+          'gas-payment-amount': '85.92',
+          'gas-payment-schedule': 'month',
         })
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -142,9 +142,9 @@ describe('Priority Debts Controller', () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
-          mortgage: 'mortgage',
-          'mortgage-payment-amount': '85.92',
-          'mortgage-payment-schedule': 'month',
+          gas: 'gas',
+          'gas-payment-amount': '85.92',
+          'gas-payment-schedule': 'month',
         })
         .expect((res) => {
           expect(res.status).toBe(500);

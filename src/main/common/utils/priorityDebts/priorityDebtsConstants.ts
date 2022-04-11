@@ -8,7 +8,7 @@ export const checkBoxFields = [
     text: 'Electricity',
   },
   {name: 'water', text: 'Water'},
-  {name: 'maintenance', text: 'Maintenance'},
+  {name: 'maintenance', text: 'Maintenance Payments'},
 ];
 
 
