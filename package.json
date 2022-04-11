@@ -45,7 +45,7 @@
     "@types/require-directory": "^2.1.1",
     "@types/serve-favicon": "^2.5.1",
     "@wdio/sauce-service": "^7.16.13",
-    "applicationinsights": "^2.2.2",
+    "applicationinsights": "^2.3.1",
     "axios": "^0.26.1",
     "boolean": "^3.2.0",
     "class-validator": "^0.13.2",
