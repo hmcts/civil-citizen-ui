@@ -107,4 +107,8 @@ export class GenericForm<Model> {
       return formErrors;
     }
   }
+
+  public async validate() {
+    this.errors = await validator.validate(this.model as unknown as object);
+  }
 }

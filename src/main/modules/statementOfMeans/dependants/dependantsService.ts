@@ -3,6 +3,7 @@ import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Validator} from 'class-validator';
 import {Dependants} from '../../../common/form/models/statementOfMeans/dependants/dependants';
 import {GenericForm} from '../../../common/form/models/genericForm';
+import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dependantsService');
@@ -23,7 +24,7 @@ class DependantsService {
     }
   }
 
-  public async saveDependants(claimId: string, dependants: Dependants) {
+  public async saveDependants(claimId: string, dependants: Dependants) : Promise<Claim> {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
       if (civilClaimResponse?.case_data?.statementOfMeans) {
@@ -34,6 +35,7 @@ class DependantsService {
         civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
       }
       await saveDraftClaim(claimId, civilClaimResponse.case_data);
+      return civilClaimResponse.case_data;
     } catch (error) {
       logger.error(`${(error as Error).stack || error}`);
       throw error;

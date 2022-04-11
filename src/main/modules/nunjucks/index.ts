@@ -8,6 +8,7 @@ import {ResponseType} from '../../common/form/models/responseType';
 import {YesNo} from '../../common/form/models/yesNo';
 import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
 import {CounterpartyType} from '../../common/models/counterpartyType';
+import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -66,6 +67,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('YesNo', YesNo);
     nunjucksEnv.addGlobal('ResidenceType', ResidenceType);
     nunjucksEnv.addGlobal('CounterpartyType', CounterpartyType);
+    nunjucksEnv.addGlobal('UnemploymentCategory', UnemploymentCategory);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

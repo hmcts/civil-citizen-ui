@@ -1,12 +1,15 @@
 import express from 'express';
 import {Dependants} from '../../../../../common/form/models/statementOfMeans/dependants/dependants';
 import {
-  CITIZEN_DEPENDANTS_URL,
+  CHILDREN_DISABILITY_URL,
   CITIZEN_DEPENDANTS_EDUCATION_URL,
+  CITIZEN_DEPENDANTS_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../urls';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import dependantsService from '../../../../../modules/statementOfMeans/dependants/dependantsService';
+import {hasDisabledChildren} from '../../../../../modules/statementOfMeans/dependants/childrenDisabilityService';
+import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 
@@ -41,11 +44,13 @@ dependantsController
         });
       } else {
         try {
-          await dependantsService.saveDependants(req.params.id, dependants);
+          const claim = await dependantsService.saveDependants(req.params.id, dependants);
           if (dependants.hasChildrenBetween16and19()) {
-            res.redirect(CITIZEN_DEPENDANTS_EDUCATION_URL.replace(':id', req.params.id));
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_EDUCATION_URL));
+          } else if (hasDisabledChildren(claim)) {
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CHILDREN_DISABILITY_URL));
           } else {
-            res.redirect(CITIZEN_OTHER_DEPENDANTS_URL.replace(':id', req.params.id));
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_OTHER_DEPENDANTS_URL));
           }
         } catch (error) {
           logger.error(`${error.stack || error}`);
