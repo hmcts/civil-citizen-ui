@@ -13,13 +13,11 @@ export class DebtItems extends Form{
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: VALID_NUMBER_OF_PEOPLE})
-  //@IsCurrency({maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
   @Validate(CurrencyValidator)
     totalOwned: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: VALID_NUMBER_OF_PEOPLE})
-  //@IsCurrency({maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
   @Validate(CurrencyValidator)
     monthlyPayments: string;
 
