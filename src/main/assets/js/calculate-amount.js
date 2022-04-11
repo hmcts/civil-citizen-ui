@@ -21,14 +21,14 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   async function getCalculation() {
-    const data = [];
+    const amountToCalculate = [];
     const amountRows = Array.from(document.getElementsByClassName('amountRow'));
     amountRows.forEach(element => {
       const amount = element.getElementsByClassName('amount');
       const schedules = element.querySelectorAll('.schedule input');
       const selectedSchedule = getSelectedInput(schedules);
       if (inputsHaveValues(amount, selectedSchedule)) {
-        data.push({amount: amount[0].value, schedule: selectedSchedule.value});
+        amountToCalculate.push({amount: amount[0].value, schedule: selectedSchedule.value});
       }
     });
     const options = {
@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', async function () {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(amountToCalculate),
     };
-    if (data.length > 0) {
+    if (amountToCalculate.length > 0) {
       const response = await fetch('/total-income-expense-calculation', options);
       const data = await response.json();
       document.getElementsByClassName('total-monthly-income-expense')[0].innerHTML = data;
