@@ -2,7 +2,7 @@ import {IsDefined, IsNumber, Max, Min} from 'class-validator';
 import {ScheduledExpenses} from './scheduledExpenses';
 import {ExpenseType} from './expenseType';
 import {MAX_AMOUNT_VALUE} from '../../../validators/validationConstraints';
-import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpeses/monthlyIncomeExpensesCalculator';
+import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 
 export class ValidationErrors {
   static readonly NAME_REQUIRED = 'Enter other expense source';

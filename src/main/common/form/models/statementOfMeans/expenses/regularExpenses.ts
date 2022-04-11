@@ -1,7 +1,7 @@
 import Expense from './expense';
 import {ValidateNested} from 'class-validator';
 import {ExpenseType} from './expenseType';
-import {ScheduledAmount} from 'common/utils/calculateMonthlyIncomeExpeses/monthlyIncomeExpensesCalculator';
+import {ScheduledAmount} from 'common/utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 
 export interface ExpenseParams {
   mortgage?: Expense;
@@ -101,10 +101,6 @@ export class RegularExpenses {
     return new RegularExpenses(params);
   }
 
-  private static buildExpense(type: ExpenseType): Expense {
-    return Expense.buildEmptyForm(type);
-  }
-
   public static convertToScheduledAmount(regularExpenses: RegularExpenses): ScheduledAmount[] {
     const keys = Object.keys(regularExpenses);
     const scheduledAmounts: ScheduledAmount[] = [];
@@ -112,5 +108,9 @@ export class RegularExpenses {
       scheduledAmounts.push(regularExpenses[key]?.expenseSource.convertToScheduledAmount());
     });
     return scheduledAmounts;
+  }
+
+  private static buildExpense(type: ExpenseType): Expense {
+    return Expense.buildEmptyForm(type);
   }
 }

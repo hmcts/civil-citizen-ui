@@ -4,7 +4,7 @@ import {ScheduledExpenses} from '../../../../../main/common/form/models/statemen
 import {ExpenseType} from '../../../../../main/common/form/models/statementOfMeans/expenses/expenseType';
 import {
   calculateTotalAmount,
-} from '../../../../../main/common/utils/calculateMonthlyIncomeExpeses/monthlyIncomeExpensesCalculator';
+} from '../../../../../main/common/utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 
 describe('calculate monthly income expenses', () => {
   it('should calculate monthly income expenses successfully', () => {
