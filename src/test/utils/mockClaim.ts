@@ -48,6 +48,12 @@ export const mockClaim: Claim = {
       individualFirstName: 'Jane',
       type: CounterpartyType.INDIVIDUAL,
     },
+  statementOfMeans:
+    {
+      childrenDisability: {
+        option: 'yes',
+      },
+    },
   totalClaimAmount: 110,
   respondent1ResponseDeadline: new Date('2022-01-24T15:59:59'),
   detailsOfClaim: 'the reason i have given',
