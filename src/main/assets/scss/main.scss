@@ -1,7 +1,12 @@
 @import '~govuk-frontend';
 
 .moj-add-another {
+  // sass-lint:disable class-name-format
   &__remove-button {
     display: none;
   }
+}
+
+.hide {
+  display: none;
 }

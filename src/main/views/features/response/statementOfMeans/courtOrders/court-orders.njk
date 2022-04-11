@@ -49,7 +49,10 @@
                     {{ govukButton({
                       text: t('Add another court order'),
                       classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                      type: 'button'
+                      type: 'button',
+                      attributes: {
+                        'id': 'add-another-court-order'
+                      }
                     }) }}
                   </div>
                 </div>

@@ -9,3 +9,5 @@ coverage/*
 # custom definition files
 /src/main/types/
 jest.*config.js
+/src/main/assets/js/jquery.js
+/src/main/assets/js/mojAll.js
