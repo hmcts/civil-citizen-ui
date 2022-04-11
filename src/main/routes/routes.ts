@@ -31,6 +31,8 @@ import onTaxPaymentsController
 import childrenDisabilityController from './features/response/statementOfMeans/dependants/childrenDisabilityController';
 
 import regularExpensesController from './features/response/statementOfMeans/expenses/regularExpensesController';
+import monthlyExpenseIncomeCalculatorController
+  from './calculateMonthlyIncomeExpense/monthlyExpenseIncomeCalculatorController';
 
 export default [
   homeController,
@@ -62,4 +64,5 @@ export default [
   onTaxPaymentsController,
   childrenDisabilityController,
   regularExpensesController,
+  monthlyExpenseIncomeCalculatorController,
 ];
