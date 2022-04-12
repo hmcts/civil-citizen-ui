@@ -44,7 +44,7 @@
                   text: t("For example, " + nextMonth.getDate() + " " + (nextMonth.getMonth() + 1) + " " + nextMonth.getFullYear())
                 },
                 errorMessage: {
-                  html: form.errorFor('date')
+                  html: form.getErrors()[0].text
                 } if form.hasErrors(),
                 items: [
                   {
