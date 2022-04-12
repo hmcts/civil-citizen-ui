@@ -11,6 +11,7 @@ import {Residence} from '../form/models/statementOfMeans/residence';
 import {Employment} from './employment';
 import {Employers} from 'common/form/models/statementOfMeans/employment/employers';
 import {Dependants} from '../form/models/statementOfMeans/dependants/dependants';
+import {PriorityDebts} from '../form/models/statementOfMeans/priorityDebts';
 import {SelfEmployedAs} from './selfEmployedAs';
 import {TaxPayments} from './taxPayments';
 import {Unemployment} from '../form/models/statementOfMeans/unemployment/unemployment';
@@ -36,5 +37,6 @@ export class StatementOfMeans {
   selfEmployedAs?: SelfEmployedAs;
   unemployment?: Unemployment;
   childrenDisability?: ChildrenDisability;
+  priorityDebts?: PriorityDebts;
   regularExpenses?: RegularExpenses;
 }
