@@ -41,7 +41,7 @@ java:
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
     civil:
-      resourceGroup: civil
+      resourceGroup: civil-service
       secrets:
         - civil-idam-client-secret
         - microservicekey-civil-service
