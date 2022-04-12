@@ -1,16 +1,7 @@
-import {
-  IsDefined,
-  IsNotEmpty,
-  IsNumber,
-  Max,
-  Min,
-} from 'class-validator';
-import {
-  MAX_AMOUNT_VALUE,
-  MIN_AMOUNT_VALUE,
-} from '../../validators/validationConstraints';
+import {IsDefined, IsNotEmpty, IsNumber, Max, Min} from 'class-validator';
+import {MAX_AMOUNT_VALUE, MIN_AMOUNT_VALUE} from '../../validators/validationConstraints';
 
-export type ScheduleOptions = 'week' | 'twoWeeks' | 'fourWeeks' | 'month';
+export type ScheduleOptions = 'WEEK' | 'TWO_WEEKS' | 'FOUR_WEEKS' | 'MONTH';
 
 export interface DisplayValuesForDebt {
   mortgage: 'Mortgage';
@@ -48,7 +39,7 @@ const withMessage = (buildErrorFn: (name: string) => string) => {
 
 export class PriorityDebtDetails {
   name?: string;
-  isDeclared?: boolean ;
+  isDeclared?: boolean;
 
   @IsDefined({
     message: withMessage(generateErrorMessageForValidPaymentAmount),
