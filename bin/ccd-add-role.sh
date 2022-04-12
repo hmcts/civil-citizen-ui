@@ -21,3 +21,4 @@ curl --insecure --fail --show-error --silent --output /dev/null -X PUT \
     "role": "'${role}'",
     "security_classification": "PUBLIC"
   }'
+
