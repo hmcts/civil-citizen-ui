@@ -170,8 +170,22 @@ civil-service-pr:
     applicationPort: 4000
     image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
-    releaseNameOverride: ${SERVICE_NAME}-xui-webapp
+    releaseNameOverride: ${SERVICE_NAME}-civil-service
     ingressHost: civil-service-${SERVICE_FQDN}
+    keyVaults:
+      civil:
+        resourceGroup: civil
+        secrets:
+          - civil-idam-client-secret
+          - microservicekey-civil-service
+          - system-update-user-username
+          - system-update-user-password
+          - cross-access-user-username
+          - cross-access-user-password
+          - prd-admin-user-username
+          - prd-admin-user-password
+          - AppInsightsInstrumentationKey
+          - docmosis-api-key
     environment:
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
@@ -188,3 +202,4 @@ civil-service-pr:
       POLLING_EVENT_EMITTER_ENABLED: false
       CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
       DOCUMENT_MANAGEMENT_SECURED: true
+      RD_PROFESSIONAL_API_URL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
