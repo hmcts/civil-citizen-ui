@@ -14,7 +14,7 @@ nodejs:
         - ordnance-survey-api-key
         - idam-secret
   environment:
-    OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
+    OAUTH_CLIENT_REDIRECT: http://${SERVICE_FQDN}/oauth2/callback
 
 postgresql:
   enabled: true
