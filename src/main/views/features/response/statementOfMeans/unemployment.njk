@@ -14,10 +14,10 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getAllErrors() %}
-      {% set optionError = form.errorFor("option","model") %}
-      {% set otherDetailsNestedError = form.nestedErrorFor('details') %}
-      {% set yearNestedError = form.nestedErrorFor('years') %}
-      {% set monthsNestedError = form.nestedErrorFor('months') %}
+      {% set optionError = form.errorFor("option") %}
+      {% set otherDetailsNestedError = form.errorFor('otherDetails[details]') %}
+      {% set yearNestedError = form.errorFor('unemploymentDetails[years]') %}
+      {% set monthsNestedError = form.nestedErrorFor('unemploymentDetails[months]') %}
       {% if form.hasErrors() %}
         {{ govukErrorSummary({
           "titleText": 'There was a problem',
@@ -45,7 +45,7 @@
             {% set ifUnemployed %}
               <p class="govuk-body-m">{{ t(subtitle) }}</p>
               {{ govukInput({
-                id: "UnemploymentDetails",
+                id: "unemploymentDetails[years]",
                 name: "years",
                 type: "number",
                 autocomplete: "number",
@@ -71,7 +71,7 @@
               }) }}
             {% endset -%}
             {{ govukRadios({
-              idPrefix: "unemployment",
+              idPrefix: "option",
               name: "option",
               items: [
                 {
@@ -93,8 +93,7 @@
                 }
               ],
               errorMessage: { text: optionError } if optionError else ''
-            })
-            }}
+            }) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")

@@ -26,15 +26,19 @@ export class GenericForm<Model> {
    * Get error message associated with first constraint violated for given field name.
    *
    * @param fieldName - field name / model property
+   * @param parentProperty - optional parameter, parent property if exists to specify the path to the field
    */
-  errorFor(fieldName: string): string {
-    if (this.hasFieldError(fieldName)) {
-      return this.getErrors()
+  errorFor(fieldName: string, parentProperty?: string): string {
+    if (this.hasFieldError(fieldName, parentProperty)) {
+      return this.getAllErrors(parentProperty)
         .filter((error: FormValidationError) => error.constraints && error.property === fieldName)
         .map((error: FormValidationError) => error.text)[0];
     }
   }
 
+  /**
+   * @deprecated use errorFor instead. It should include all errors
+   */
   nestedErrorFor(fieldName: string): string {
     if (this.hasNestedFieldError(fieldName)) {
       return this.getNestedErrors()
@@ -43,44 +47,64 @@ export class GenericForm<Model> {
     }
   }
 
-  public getErrors(): FormValidationError[] {
+  public getErrors(property?: string): FormValidationError[] {
     const validators: FormValidationError[] = [];
     if (this.hasErrors()) {
       for (const item of this.errors) {
-        validators.push(new FormValidationError(item));
+        validators.push(new FormValidationError(item, property));
       }
     }
     return validators;
   }
 
-  public getAllErrors(): FormValidationError[] {
-    return this.getErrors().concat(this.getNestedErrors());
+  /**
+   * Gets parent and child errors in one array
+   * @param property - optional parameter (parent field name) to define the path to field errors
+   */
+  public getAllErrors(property?: string): FormValidationError[] {
+    const nestedErrors = this.getNestedErrors(property).filter(error => error !== undefined);
+    return nestedErrors?.length > 0 ? this.getErrors(property).concat(nestedErrors) : this.getErrors(property);
   }
 
-  public getNestedErrors(): FormValidationError[] {
-    const validators: FormValidationError[] = [];
+  /**
+   * Gets all child errors
+   * @param property - optional parameter. usually a parent error property to define the path to the field with error
+   */
+  public getNestedErrors(property?: string): FormValidationError[] {
+    let validators: FormValidationError[] = [];
     this.getErrors()
-      .forEach(error => error.children
-        .forEach(childError => validators.push(new FormValidationError(childError))));
+      .forEach(error => {
+        const childErrors = this.getAllChildrenErrors(error, property);
+        if (childErrors) {
+          validators = validators.concat(childErrors);
+        }
+      });
     return validators;
   }
 
-
-  public hasFieldError(field: string): boolean {
-    if (this.errors) {
-      return this.errors.some((error) => field == error.property);
-    }
+  public hasFieldError(field: string, parentProperty?: string): boolean {
+    return this.getAllErrors(parentProperty)?.some((error) => field == error?.property);
   }
 
   public hasNestedFieldError(field: string): boolean {
-    if (this.hasNestedErrors()) {
-      return this.errors
-        .some((error) => error.children
-          .some((nestedError) => field == nestedError.property));
-    }
+    return this.getNestedErrors()?.some((error) => field == error.property);
   }
 
   public async validate() {
     this.errors = await validator.validate(this.model as unknown as object);
+  }
+
+  private getAllChildrenErrors(error: ValidationError, parentProperty?: string): FormValidationError[] {
+    let formErrors: FormValidationError[] = [];
+    if (error.children?.length > 0) {
+      error.children.forEach(childError => {
+        const errorProperty = parentProperty ? `${parentProperty}[${error.property}]` : error.property;
+        formErrors.push(new FormValidationError(childError, errorProperty));
+        if (childError.children?.length > 0) {
+          formErrors = formErrors.concat(this.getAllChildrenErrors(childError, errorProperty));
+        }
+      });
+      return formErrors;
+    }
   }
 }
