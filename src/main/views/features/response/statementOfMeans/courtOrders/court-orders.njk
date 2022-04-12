@@ -41,9 +41,7 @@
                   {% for row in form.model.rows %}
                     {{ courtOrder(loop.index0, row, form.errorFor) }}
                   {% else %}
-                    {% call govukFieldset({ classes: 'moj-add-another__item' }) %}
-                      {{ courtOrder(0, '', form.errorFor) }}
-                    {% endcall %}
+                    {{ courtOrder(0, '', form.errorFor) }}
                   {% endfor %}
 
                   <div class="moj-button-action">
