@@ -26,6 +26,7 @@ import paymentOptionController from './features/response/admision/fullAdmission/
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
+import priorityDebtsController from './features/response/statementOfMeans/priorityDebtsController';
 import selfEmployedAsController from './features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
 import onTaxPaymentsController
   from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
@@ -61,6 +62,7 @@ export default [
   paymentOptionController,
   betweenSixteenAndNineteenController,
   dependantsController,
+  priorityDebtsController,
   selfEmployedAsController,
   onTaxPaymentsController,
   unemploymentController,
