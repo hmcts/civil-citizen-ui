@@ -33,6 +33,7 @@ import onTaxPaymentsController
 import unemploymentController from './features/response/statementOfMeans/unemployment/unemploymentController';
 import childrenDisabilityController from './features/response/statementOfMeans/dependants/childrenDisabilityController';
 import regularExpensesController from './features/response/statementOfMeans/expenses/regularExpensesController';
+import debtsController from './features/response/statementOfMeans/debts/debtsController';
 import monthlyExpenseIncomeCalculatorController
   from './calculateMonthlyIncomeExpense/monthlyExpenseIncomeCalculatorController';
 
@@ -69,5 +70,6 @@ export default [
   unemploymentController,
   childrenDisabilityController,
   regularExpensesController,
+  debtsController,
   monthlyExpenseIncomeCalculatorController,
 ];
