@@ -180,7 +180,14 @@
                 }
               ]
             }) }}
+
             <div class="govuk-form-group">
+              <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
+                {{ t('Total monthly expenditure') }}: £
+                <span class="total-monthly-income-expense">
+                  0
+               </span>
+              </p>
               {{ govukButton({
                 text: t("Save and continue")
               }) }}
