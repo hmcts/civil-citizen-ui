@@ -2,65 +2,67 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
 {% macro conditionalCheckBoxHTML(debtType, debtDetails, debtErrors ) %}
-{{ govukInput({
-  id: debtType+"-payment-amount",
-  name: debtType+"-payment-amount",
-  value: debtDetails.amount,
-  type: "number",
-  autocomplete: "number",
-  spellcheck: false,
-   prefix: {
-      text: "£"
+  <div class="civil-amountRow">
+    {{ govukInput({
+      id: debtType+"-payment-amount",
+      name: debtType+"-payment-amount",
+      value: debtDetails.amount,
+      type: "number",
+      autocomplete: "number",
+      spellcheck: false,
+      prefix: {
+        text: "£"
       },
-  classes: "govuk-!-width-one-third",
-  label: {
-    text: t("Repayment amount")
-  },
-   hint: {
-    text: t("Only include the amount you're paying to clear previously missed regular")
-  },
-  errorMessage: {
-  text: t(debtErrors.amount.text)
-  } if debtErrors.amount
-}) }}
-{{ govukRadios({
-  idPrefix: debtType+"-payment-schedule",
-  name: debtType+"-payment-schedule",
-  fieldset: {
-    legend: {
-      text: t("priority debts"),
-      isPageHeading: false,
-      classes: "govuk-!-width-one-third"
-    }
-  },
-  items: [
-    {
-      value: "week",
-      text: t("Week"),
-      checked:debtDetails.schedule === "week"
-    },
-    {
-      value: "twoWeeks",
-      text: t("2 weeks"),
-      checked:debtDetails.schedule === "twoWeeks"
-      
-    },
-    {
-      value: "fourWeeks",
-      text: t("4 weeks"),
-      checked:debtDetails.schedule === "fourWeeks"
-     
-    },
-    {
-      value: "month",
-      text: t("Month"),
-      checked:debtDetails.schedule === "month"
-      
-    }
-  ],
-  errorMessage: {
-  text: t(debtErrors.schedule.text)
-  } if debtErrors.schedule
-}) }}
+      classes: "govuk-!-width-one-third civil-amount",
+      label: {
+        text: t("Repayment amount")
+      },
+      hint: {
+        text: t("Only include the amount you're paying to clear previously missed regular")
+      },
+      errorMessage: {
+        text: t(debtErrors.amount.text)
+      } if debtErrors.amount
+    }) }}
+    {{ govukRadios({
+      idPrefix: debtType+"-payment-schedule",
+      name: debtType+"-payment-schedule",
+      classes: 'civil-schedule',
+      fieldset: {
+        legend: {
+          text: t("priority debts"),
+          isPageHeading: false,
+          classes: "govuk-!-width-one-third"
+        }
+      },
+      items: [
+        {
+          value: "WEEK",
+          text: t("Week"),
+          checked:debtDetails.schedule === "WEEK"
+        },
+        {
+          value: "TWO_WEEKS",
+          text: t("2 weeks"),
+          checked:debtDetails.schedule === "TWO_WEEKS"
 
+        },
+        {
+          value: "FOUR_WEEKS",
+          text: t("4 weeks"),
+          checked:debtDetails.schedule === "FOUR_WEEKS"
+
+        },
+        {
+          value: "MONTH",
+          text: t("Month"),
+          checked:debtDetails.schedule === "MONTH"
+
+        }
+      ],
+      errorMessage: {
+        text: t(debtErrors.schedule.text)
+      } if debtErrors.schedule
+    }) }}
+  </div>
 {% endmacro %}

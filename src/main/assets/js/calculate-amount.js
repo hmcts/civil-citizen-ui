@@ -1,8 +1,24 @@
+/**
+ * This is used for calculating a total amount paid  based on the amount and schedule when the amount is paid. The calculation happens on the server side
+ * To use this functionality in the template please add the following classes: div class civil-amountRow which will containt the amount and the schedule inputs.
+ * For amount input please add civil-amount class, for schedule radiobuttons please add civil-schedule class.
+ * To display the total in your page please add total-monthly-income-expense class where you want the total to be displayed
+ */
 document.addEventListener('DOMContentLoaded', async function () {
-  if (document.getElementsByClassName('amountRow')) {
-    document.querySelectorAll('.amountRow .amount')?.forEach(element => element.addEventListener('change', getCalculation));
-    document.querySelectorAll('.amountRow .schedule')?.forEach(element => element.addEventListener('change', getCalculation));
+  if (document.getElementsByClassName('civil-amountRow')) {
+    document.querySelectorAll('.civil-amountRow .civil-amount')?.forEach(element => element.addEventListener('keyup', debounce(getCalculation, 1000)));
+    document.querySelectorAll('.civil-amountRow .civil-schedule')?.forEach(element => element.addEventListener('change', getCalculation));
     await getCalculation();
+  }
+
+  function debounce(func, delay) {
+    let debounceTimer;
+    return function () {
+      const context = this;
+      const args = arguments;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    };
   }
 
   function getSelectedInput(inputs) {
@@ -22,10 +38,10 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   async function getCalculation() {
     const amountToCalculate = [];
-    const amountRows = Array.from(document.getElementsByClassName('amountRow'));
+    const amountRows = Array.from(document.getElementsByClassName('civil-amountRow'));
     amountRows.forEach(element => {
-      const amount = element.getElementsByClassName('amount');
-      const schedules = element.querySelectorAll('.schedule input');
+      const amount = element.getElementsByClassName('civil-amount');
+      const schedules = element.querySelectorAll('.civil-schedule input');
       const selectedSchedule = getSelectedInput(schedules);
       if (inputsHaveValues(amount, selectedSchedule)) {
         amountToCalculate.push({amount: amount[0].value, schedule: selectedSchedule.value});

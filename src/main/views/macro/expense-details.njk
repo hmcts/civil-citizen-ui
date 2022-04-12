@@ -1,7 +1,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% macro expenseDetails(hintAmount, property, expenseSource, form) %}
-  <div class="amountRow">
+  <div class="civil-amountRow">
     <input type="hidden" name="{{ property }}[expenseSource][name]" value="{{ expenseSource.name }}"/>
     {{ govukInput({
       id: property + "[expenseSource][amount]",
@@ -14,7 +14,7 @@
       },
       type: "number",
       value: expenseSource.amount,
-      classes: "govuk-input--width-5 amount",
+      classes: "govuk-input--width-5 civil-amount",
       hint: {
         text: t(hintAmount)
       },
@@ -26,7 +26,7 @@
     {{ govukRadios({
       idPrefix: property + "[expenseSource][schedule]" ,
       name: property + "[expenseSource][schedule]",
-      classes: "schedule",
+      classes: "civil-schedule",
       fieldset: {
         legend: {
           text: t("Paid every")
