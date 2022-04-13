@@ -18,6 +18,13 @@
           "titleText": 'There was a problem',
           "errorList": errors
         }) }}
+        {% set errorMessages %}
+          {% if errors %}
+            {% for error in errors %}
+              <span class="govuk-error-message">{{ t(error.text) }}</span>
+            {% endfor %}
+          {% endif %}
+        {% endset -%}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -44,7 +51,7 @@
                   text: t("For example, " + nextMonth.getDate() + " " + (nextMonth.getMonth() + 1) + " " + nextMonth.getFullYear())
                 },
                 errorMessage: {
-                  html: form.getErrors()[0].text
+                  html: errorMessages
                 } if form.hasErrors(),
                 items: [
                   {
