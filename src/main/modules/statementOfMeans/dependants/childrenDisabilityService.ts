@@ -3,12 +3,16 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStore
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 import {Claim} from '../../../common/models/claim';
 import {YesNo} from '../../../common/form/models/yesNo';
+import * as winston from 'winston';
 import {NumberOfChildren} from '../../../common/form/models/statementOfMeans/dependants/numberOfChildren';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('childrenDisabilityService');
+let logger = Logger.getLogger('childrenDisabilityService');
 
 
+export function setChildrenDisabilityServiceLogger(winstonLogger: winston.Logger) {
+  logger = winstonLogger;
+}
 
 export const hasDisabledChildren = (claim: Claim): boolean => {
   const statementOfMeans = claim.statementOfMeans;
