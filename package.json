@@ -26,7 +26,7 @@
   "dependencies": {
     "@hmcts/info-provider": "^1.0.0",
     "@hmcts/nodejs-healthcheck": "^1.7.0",
-    "@hmcts/nodejs-logging": "^3.2.2",
+    "@hmcts/nodejs-logging": "^3.0.4",
     "@hmcts/os-places-client": "^1.1.7",
     "@hmcts/properties-volume": "^0.0.13",
     "@types/config": "^0.0.41",
@@ -128,6 +128,7 @@
     "**/**/ansi-regex": "^5.0.1",
     "**/**/json-schema": "^0.4.0",
     "**/**/follow-redirects": "^1.14.8",
+    "**/**/winston": "^3.7.2",
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
     "postcss": "^8.2.13"
