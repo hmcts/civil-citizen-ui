@@ -3,16 +3,16 @@ import {ValidateNested} from 'class-validator';
 import {IncomeType} from './incomeType';
 
 export interface IncomeParams {
-  job: Transaction;
-  universalCredit: Transaction;
-  jobseekerAllowanceIncome: Transaction;
-  jobseekerAllowanceContribution: Transaction;
-  incomeSupport: Transaction;
-  workingTaxCredit: Transaction;
-  childTaxCredit: Transaction;
-  childBenefit: Transaction;
-  councilTaxSupport: Transaction;
-  pension: Transaction;
+  job?: Transaction;
+  universalCredit?: Transaction;
+  jobseekerAllowanceIncome?: Transaction;
+  jobseekerAllowanceContribution?: Transaction;
+  incomeSupport?: Transaction;
+  workingTaxCredit?: Transaction;
+  childTaxCredit?: Transaction;
+  childBenefit?: Transaction;
+  councilTaxSupport?: Transaction;
+  pension?: Transaction;
 }
 
 export default class RegularIncome {

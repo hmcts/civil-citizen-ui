@@ -54,8 +54,8 @@ describe('regularExpenses service', () => {
       const form = await getRegularExpenses('123');
       //Then
       expect(form.mortgage?.declared).toBeTruthy();
-      expect(form.mortgage?.expenseSource?.amount).toBe(2000);
-      expect(form.mortgage?.expenseSource?.schedule).toBe(TransactionSchedule.MONTH);
+      expect(form.mortgage?.transactionSource?.amount).toBe(2000);
+      expect(form.mortgage?.transactionSource?.schedule).toBe(TransactionSchedule.MONTH);
     });
     it('should throw error when error is thrown from redis', async () => {
       //When

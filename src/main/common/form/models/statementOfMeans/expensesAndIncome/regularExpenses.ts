@@ -105,7 +105,7 @@ export class RegularExpenses {
     const keys = Object.keys(regularExpenses);
     const scheduledAmounts: ScheduledAmount[] = [];
     keys.forEach(key => {
-      scheduledAmounts.push(regularExpenses[key]?.expenseSource.convertToScheduledAmount());
+      scheduledAmounts.push(regularExpenses[key]?.transactionSource.convertToScheduledAmount());
     });
     return scheduledAmounts;
   }

@@ -9,7 +9,7 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 describe('Expenses', () => {
   describe('Validate', () => {
-    it('should return errors when empty form', async () => {
+    it('should return no errors when empty form', async () => {
       //Given
       const form = new GenericForm(new RegularExpenses({
         mortgage: new Transaction(),
@@ -33,8 +33,8 @@ describe('Expenses', () => {
       //Then
       expect(form.hasErrors()).toBeTruthy();
       expect(form.getNestedErrors().length).toBe(3);
-      expect(form.errorFor('mortgage[expenseSource][amount]')).toBe(TestMessages.MORTGAGE_AMOUNT_ERROR);
-      expect(form.errorFor('mortgage[expenseSource][schedule]')).toBe(TestMessages.MORTGAGE_SCHEDULE_ERROR);
+      expect(form.errorFor('mortgage[transactionSource][amount]')).toBe(TestMessages.MORTGAGE_AMOUNT_ERROR);
+      expect(form.errorFor('mortgage[transactionSource][schedule]')).toBe(TestMessages.MORTGAGE_SCHEDULE_ERROR);
     });
   });
 });

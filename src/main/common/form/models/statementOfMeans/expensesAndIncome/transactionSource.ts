@@ -3,6 +3,7 @@ import {TransactionSchedule} from './transactionSchedule';
 import {ExpenseType} from './expenseType';
 import {MAX_AMOUNT_VALUE} from '../../../validators/validationConstraints';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
+import {IncomeType} from './incomeType';
 
 export class ValidationErrors {
   static readonly NAME_REQUIRED = 'Enter other expense source';

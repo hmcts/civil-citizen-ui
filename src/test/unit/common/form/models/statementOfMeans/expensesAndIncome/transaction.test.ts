@@ -64,9 +64,9 @@ describe('Transaction', () => {
       //When
       const form = Transaction.buildEmptyForm(expenseType);
       //Then
-      expect(form.expenseSource?.name).toBe('rent');
-      expect(form.expenseSource?.amount).toBeUndefined();
-      expect(form.expenseSource?.schedule).toBeUndefined();
+      expect(form.transactionSource?.name).toBe('rent');
+      expect(form.transactionSource?.amount).toBeUndefined();
+      expect(form.transactionSource?.schedule).toBeUndefined();
       expect(form.declared).toBeUndefined();
     });
     it('should build populated form successfully', () => {
@@ -78,9 +78,9 @@ describe('Transaction', () => {
       const form = Transaction.buildPopulatedForm(name, amount, schedule);
       //Then
       expect(form.declared).toBeTruthy();
-      expect(form.expenseSource.name).toBe(name);
-      expect(form.expenseSource.schedule).toBe(schedule);
-      expect((form.expenseSource.amount)).toBe(Number(amount));
+      expect(form.transactionSource.name).toBe(name);
+      expect(form.transactionSource.schedule).toBe(schedule);
+      expect((form.transactionSource.amount)).toBe(Number(amount));
     });
   });
 });

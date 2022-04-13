@@ -1,11 +1,11 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% macro transactionDetails(hintAmount, property, expenseSource, form) %}
+{% macro transactionDetails(hintAmount, property, transactionSource, form) %}
   <div class="civil-amountRow">
-    <input type="hidden" name="{{ property }}[expenseSource][name]" value="{{ expenseSource.name }}"/>
+    <input type="hidden" name="{{ property }}[transactionSource][name]" value="{{ transactionSource.name }}"/>
     {{ govukInput({
-      id: property + "[expenseSource][amount]",
-      name: property + "[expenseSource][amount]",
+      id: property + "[transactionSource][amount]",
+      name: property + "[transactionSource][amount]",
       label: {
         text: t("Amount paid")
       },
@@ -20,12 +20,12 @@
       },
       spellcheck: false,
       errorMessage: {
-        text: form.errorFor(property + "[expenseSource][amount]", "model")
-      } if(form.errorFor(property + "[expenseSource][amount]", "model"))
+        text: form.errorFor(property + "[transactionSource][amount]", "model")
+      } if(form.errorFor(property + "[transactionSource][amount]", "model"))
     }) }}
     {{ govukRadios({
-      idPrefix: property + "[expenseSource][schedule]" ,
-      name: property + "[expenseSource][schedule]",
+      idPrefix: property + "[transactionSource][schedule]" ,
+      name: property + "[transactionSource][schedule]",
       classes: "civil-schedule",
       fieldset: {
         legend: {
@@ -55,8 +55,8 @@
         }
       ],
       errorMessage: {
-        text: form.errorFor(property + "[expenseSource][schedule]", "model")
-      } if(form.hasFieldError(property + "[expenseSource][schedule]", "model"))
+        text: form.errorFor(property + "[transactionSource][schedule]", "model")
+      } if(form.hasFieldError(property + "[transactionSource][schedule]", "model"))
     }) }}
   </div>
 {% endmacro %}
