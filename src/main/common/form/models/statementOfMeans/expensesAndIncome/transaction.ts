@@ -15,11 +15,11 @@ export default class Transaction {
     this.expenseSource = expenseSource;
   }
 
-  public static buildEmptyForm(type: string): Transaction {
-    return new Transaction(undefined, new TransactionSource(type));
+  public static buildEmptyForm(type: string, income?: boolean): Transaction {
+    return new Transaction(undefined, new TransactionSource(type, undefined, undefined, income));
   }
 
-  public static buildPopulatedForm(name: string, amount: string, schedule: TransactionSchedule): Transaction {
-    return new Transaction(true, new TransactionSource(name, toNumberOrUndefined(amount), schedule));
+  public static buildPopulatedForm(name: string, amount: string, schedule: TransactionSchedule, income?: boolean): Transaction {
+    return new Transaction(true, new TransactionSource(name, toNumberOrUndefined(amount), schedule, income));
   }
 }
