@@ -18,6 +18,7 @@ import {Unemployment} from '../form/models/statementOfMeans/unemployment/unemplo
 import {ChildrenDisability} from '../form/models/statementOfMeans/dependants/childrenDisability';
 import {RegularExpenses} from '../form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {Debts} from '../form/models/statementOfMeans/debts/debts';
+import RegularIncome from 'common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
 
 export class StatementOfMeans {
   disability?: Disability;
@@ -41,4 +42,5 @@ export class StatementOfMeans {
   priorityDebts?: PriorityDebts;
   regularExpenses?: RegularExpenses;
   debts?: Debts;
+  regularIncome?: RegularIncome;
 }

@@ -2,7 +2,8 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {CITIZEN_MONTHLY_INCOME_URL} from '../../../../../../../main/routes/urls';
-import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 const {app} = require('../../../../../../../main/app');
 
@@ -26,6 +27,15 @@ describe('Regular Income Controller', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('What regular income do you receive?');
+        });
+    });
+    test('it should return status 500 when error occurs', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get(CITIZEN_MONTHLY_INCOME_URL)
+        .expect((res: Response) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
         });
     });
   });
