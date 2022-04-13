@@ -8,14 +8,15 @@ dependencies:
   - name: nodejs
     version: 2.4.1
     repository: '@hmctspublic'
+
   - name: civil-service
-      version: 0.0.9
-      repository: '@hmctspublic'
-      condition: civil-service.enabled
+    version: 0.0.9
+    repository: '@hmctspublic'
+    condition: civil-service.enabled
   - name: ccd
-      version: 6.0.0
-      repository: '@hmctspublic'
-      condition: ccd.enabled
+    version: 6.0.0
+    repository: '@hmctspublic'
+    condition: ccd.enabled
   - name: xui-webapp
     version: ~0.2.16
     repository: '@hmctspublic'
