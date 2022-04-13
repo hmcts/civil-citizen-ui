@@ -9,10 +9,10 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const financialDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
-let logger: winston.LoggerInstance = Logger.getLogger('financialDetailsController');
+let logger: winston.Logger = Logger.getLogger('financialDetailsController');
 
 
-export function setFinancialDetailsControllerLogger(winstonLogger: winston.LoggerInstance) {
+export function setFinancialDetailsControllerLogger(winstonLogger: winston.Logger) {
   logger = winstonLogger;
 }
 

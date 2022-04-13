@@ -15,7 +15,7 @@ const childrenDisabilityController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('childrenDisabilityController');
 
-export function setChildrenDisabilityControllerLogger(winstonLogger: winston.LoggerInstance) {
+export function setChildrenDisabilityControllerLogger(winstonLogger: winston.Logger) {
   logger = winstonLogger;
 }
 
