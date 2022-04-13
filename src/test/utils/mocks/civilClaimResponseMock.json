@@ -67,6 +67,11 @@
           }
         ]
       },
+      "priorityDebts": {
+        "mortgage": { 
+          "amount": 100.0, 
+          "schedule": "week" }
+      },
       "unemployment": {
         "option": "Unemployed",
         "unemploymentDetails": {

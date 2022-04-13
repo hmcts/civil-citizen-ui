@@ -26,12 +26,16 @@ import paymentOptionController from './features/response/admision/fullAdmission/
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
+import priorityDebtsController from './features/response/statementOfMeans/priorityDebtsController';
 import selfEmployedAsController from './features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
 import onTaxPaymentsController
   from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
 import unemploymentController from './features/response/statementOfMeans/unemployment/unemploymentController';
 import childrenDisabilityController from './features/response/statementOfMeans/dependants/childrenDisabilityController';
 import regularExpensesController from './features/response/statementOfMeans/expenses/regularExpensesController';
+import debtsController from './features/response/statementOfMeans/debts/debtsController';
+import monthlyExpenseIncomeCalculatorController
+  from './calculateMonthlyIncomeExpense/monthlyExpenseIncomeCalculatorController';
 import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
 
 export default [
@@ -61,10 +65,13 @@ export default [
   paymentOptionController,
   betweenSixteenAndNineteenController,
   dependantsController,
+  priorityDebtsController,
   selfEmployedAsController,
   onTaxPaymentsController,
   unemploymentController,
   childrenDisabilityController,
   regularExpensesController,
+  debtsController,
+  monthlyExpenseIncomeCalculatorController,
   courtOrdersController,
 ];

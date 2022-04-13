@@ -18,8 +18,10 @@ describe('Expense', () => {
       //Then
       expect(errors.length).toBe(1);
       expect(errors[0].children?.length).toBe(2);
-      expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.RENT_AMOUNT_ERROR);
-      expect(errors[0].children[1].constraints?.isDefined).toBe(TestMessages.RENT_SCHEDULE_ERROR);
+      if (errors[0].children) {
+        expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.RENT_AMOUNT_ERROR);
+        expect(errors[0].children[1].constraints?.isDefined).toBe(TestMessages.RENT_SCHEDULE_ERROR);
+      }
     });
     it('should not have errors when declared is false', async () => {
       //Given
@@ -37,7 +39,9 @@ describe('Expense', () => {
       //Then
       expect(errors.length).toBe(1);
       expect(errors[0].children?.length).toBe(1);
-      expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.RENT_SCHEDULE_ERROR);
+      if (errors[0].children) {
+        expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.RENT_SCHEDULE_ERROR);
+      }
     });
     it('should have one nested error when declared is true and schedule  is not set', async () => {
       //Given
@@ -47,7 +51,9 @@ describe('Expense', () => {
       //Then
       expect(errors.length).toBe(1);
       expect(errors[0].children?.length).toBe(1);
-      expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.RENT_AMOUNT_ERROR);
+      if (errors[0].children) {
+        expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.RENT_AMOUNT_ERROR);
+      }
     });
   });
   describe('Build form', () => {
