@@ -13,10 +13,10 @@ function requestBodyToForm(req: express.Request, transactionModel: RegularExpens
   if (req.body.declared) {
     if (Array.isArray(req.body.declared)) {
       req.body.declared.forEach((expenseName: string) => {
-        updateFormWithResponseData(expenseName, req, transactionModel);
+        updateFormWithResponseData(expenseName, req, transactionModel, transactionModel instanceof RegularIncome);
       });
     } else {
-      updateFormWithResponseData(req.body.declared, req, transactionModel);
+      updateFormWithResponseData(req.body.declared, req, transactionModel, transactionModel instanceof RegularIncome);
     }
   }
 }
@@ -27,8 +27,8 @@ function toRegularIncomeForm(req: express.Request): RegularIncome {
   return regularIncome;
 }
 
-function updateFormWithResponseData(key: string, req: express.Request, transactionModel: RegularExpenses | RegularIncome) {
-  transactionModel[key] = Transaction.buildPopulatedForm(req.body.model[key].transactionSource.name, req.body.model[key].transactionSource.amount, req.body.model[key].transactionSource.schedule);
+function updateFormWithResponseData(key: string, req: express.Request, transactionModel: RegularExpenses | RegularIncome, income: boolean) {
+  transactionModel[key] = Transaction.buildPopulatedForm(req.body.model[key].transactionSource.name, req.body.model[key].transactionSource.amount, req.body.model[key].transactionSource.schedule, income);
 }
 
 export {

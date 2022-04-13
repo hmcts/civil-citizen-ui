@@ -4,7 +4,7 @@ import RegularIncome from '../../../../../common/form/models/statementOfMeans/ex
 import {CITIZEN_MONTHLY_INCOME_URL, EXPLANATION_URL} from '../../../../urls';
 import {getRegularIncome, saveRegularIncome} from '../../../../../modules/statementOfMeans/income/regularIncomeService';
 import {toRegularIncomeForm} from '../../../../../common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const regularIncomeController = express.Router();
 
@@ -16,8 +16,8 @@ function renderView(form: GenericForm<RegularIncome>, res: express.Response) {
 
 regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL, async (req, res) => {
   try {
-    const form = await getRegularIncome(req.params.id);
-    renderView(new GenericForm<RegularIncome>(form), res);
+    const model = await getRegularIncome(req.params.id);
+    renderView(new GenericForm<RegularIncome>(model), res);
   } catch (error) {
     res.status(500).send({error: error.message});
   }
@@ -26,6 +26,7 @@ regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL, async (req, res) => {
 regularIncomeController.post(CITIZEN_MONTHLY_INCOME_URL, async (req, res) => {
   try {
     const form = new GenericForm(toRegularIncomeForm(req));
+    await form.validate();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {

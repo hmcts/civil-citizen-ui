@@ -51,11 +51,11 @@ export default class RegularIncome {
   constructor(params: IncomeParams) {
     this.job = params.job;
     this.universalCredit = params.universalCredit;
-    this.childBenefit = params.childBenefit;
     this.incomeSupport = params.incomeSupport;
     this.pension = params.pension;
     this.councilTaxSupport = params.councilTaxSupport;
     this.childTaxCredit = params.childTaxCredit;
+    this.childBenefit = params.childBenefit;
     this.jobseekerAllowanceIncome = params.jobseekerAllowanceIncome;
     this.jobseekerAllowanceContribution = params.jobseekerAllowanceContribution;
     this.incomeSupport = params.incomeSupport;

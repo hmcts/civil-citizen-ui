@@ -10,9 +10,9 @@ export default class Transaction {
   @ValidateNested()
     transactionSource: TransactionSource;
 
-  constructor(declared?: boolean, expenseSource?: TransactionSource) {
+  constructor(declared?: boolean, transactionSource?: TransactionSource) {
     this.declared = declared;
-    this.transactionSource = expenseSource;
+    this.transactionSource = transactionSource;
   }
 
   public static buildEmptyForm(type: string, income?: boolean): Transaction {

@@ -26,4 +26,6 @@ export const enum TestMessages {
   WATER_SCHEDULE_ERROR = 'Select how often you pay for Water',
   GAS_CORRECT_AMOUNT_ERROR = 'Enter a valid Gas amount, maximum two decimal places',
   JOB_AMOUNT_ERROR = 'Enter how much income from your job you receive',
+  JOB_SCHEDULE_ERROR = 'Select how often you receive income from your job',
+  JOB_CORRECT_AMOUNT = 'Enter a valid income from your job amount, maximum two decimal places'
 }
