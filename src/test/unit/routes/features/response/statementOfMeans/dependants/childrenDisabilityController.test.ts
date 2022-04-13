@@ -4,7 +4,7 @@ import nock from 'nock';
 import config from 'config';
 import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../../../../main/routes/urls';
 import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {LoggerInstance} from 'winston';
+import {Logger} from 'winston';
 import {
   setChildrenDisabilityControllerLogger,
 } from '../../../../../../../main/routes/features/response/statementOfMeans/dependants/childrenDisabilityController';
@@ -34,7 +34,7 @@ const mockErrorDraftStore = {
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
-} as unknown as LoggerInstance;
+} as unknown as Logger;
 
 
 jest.mock('../../../../../../../main/modules/oidc');
