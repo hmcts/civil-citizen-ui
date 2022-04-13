@@ -8,7 +8,7 @@ describe('Priority debt details', () => {
       //Given
       const form = new PriorityDebtDetails(true, 'Rent');
       //When
-      const errors : ValidationError[] = await validator.validate(form);
+      const errors: ValidationError[] = await validator.validate(form);
 
       //Then
       // one error block for amount field, one error block for schedule field
@@ -18,7 +18,7 @@ describe('Priority debt details', () => {
       // four validation error methods on amount is triggering these errors
       expect(Object.keys(errorList).length).toBe(4);
     });
-    
+
     it('should have one nested error when declared is true and schedule is not set', async () => {
       //Given
       const form = new PriorityDebtDetails(true, 'Rent', 500);
@@ -31,7 +31,7 @@ describe('Priority debt details', () => {
     });
     it('should have one nested error when declared is true and schedule  is not set', async () => {
       //Given
-      const form = new PriorityDebtDetails(true, 'Rent', undefined, 'week');
+      const form = new PriorityDebtDetails(true, 'Rent', undefined, 'WEEK');
       //When
       const errors = await validator.validate(form);
       const errorList = errors[0].constraints;
