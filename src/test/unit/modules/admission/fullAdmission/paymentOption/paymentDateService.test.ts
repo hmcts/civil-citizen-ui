@@ -177,9 +177,32 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('day');
       expect(form.getErrors()[0].constraints).toEqual({min:VALID_DAY, max: VALID_DAY});
     });
+    test('should raise an error asking for 4 digits, if year is only 1 digit', async () => {
+      //Given
+      paymentDate = new PaymentDate('2', '12', '1');
+      //When
+      form = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
+      //Then
+      expect(form.getErrors().length).toBe(1);
+      expect(form.getErrors()[0].property).toBe('year');
+      expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: VALID_FOUR_DIGIT_YEAR});
+    });
+    test
     test('should raise an error asking for 4 digits, if year is only 2 digits', async () => {
       //Given
       paymentDate = new PaymentDate('23', '12', '1');
+      //When
+      form = new GenericForm<PaymentDate>(paymentDate);
+      await form.validate();
+      //Then
+      expect(form.getErrors().length).toBe(1);
+      expect(form.getErrors()[0].property).toBe('year');
+      expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: VALID_FOUR_DIGIT_YEAR});
+    });
+    test('should raise an error asking for 4 digits, if year is only 3 digits', async () => {
+      //Given
+      paymentDate = new PaymentDate('202', '12', '1');
       //When
       form = new GenericForm<PaymentDate>(paymentDate);
       await form.validate();

@@ -13,7 +13,7 @@ import {DateConverter} from '../../../../../../common/utils/dateConverter';
 
 export class PaymentDate {
 
-  @ValidateIf(o => (o.day > 0 && o.day <32 && o.month > 0 && o.month < 13 && o.year > 99))
+  @ValidateIf(o => (o.day > 0 && o.day <32 && o.month > 0 && o.month < 13 && o.year > 999))
   @IsDate({message: VALID_DATE})
   @Validate(OptionalDateNotInPastValidator, {message: VALID_DATE_NOT_IN_PAST})
     date?: Date;
