@@ -8,10 +8,10 @@ dependencies:
   - name: nodejs
     version: 2.4.1
     repository: '@hmctspublic'
-  - name: civil-service-pr
+  - name: civil-service
       version: 0.0.9
       repository: '@hmctspublic'
-      condition: civil-service-pr.enabled
+      condition: civil-service.enabled
   - name: ccd
       version: 6.0.0
       repository: '@hmctspublic'

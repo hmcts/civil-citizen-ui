@@ -40,7 +40,7 @@ postgresql:
   persistence:
     enabled: false
 
-civil-service-pr:
+civil-service:
   enabled: true
   java:
     applicationPort: 4000
