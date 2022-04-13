@@ -46,6 +46,8 @@ export default class RegularIncome {
   @ValidateNested()
     pension: Transaction;
 
+  [key: string]: Transaction;
+
   constructor(params: IncomeParams) {
     this.job = params.job;
     this.universalCredit = params.universalCredit;

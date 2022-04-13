@@ -46,7 +46,7 @@ describe('Regular Expenses Controller', () => {
         .send({
           declared: 'mortgage', model: {
             mortgage: {
-              expenseSource:
+              transactionSource:
                 {
                   name: 'mortgage', amount: '', schedule: undefined,
                 },
@@ -65,13 +65,13 @@ describe('Regular Expenses Controller', () => {
         .send({
           declared: ['mortgage', 'rent'], model: {
             mortgage: {
-              expenseSource:
+              transactionSource:
                 {
                   name: 'mortgage', amount: '', schedule: undefined,
                 },
             },
             rent: {
-              expenseSource:
+              transactionSource:
                 {
                   name: 'rent', amount: '', schedule: undefined,
                 },
@@ -92,7 +92,7 @@ describe('Regular Expenses Controller', () => {
         .send({
           declared: 'mortgage', model: {
             mortgage: {
-              expenseSource:
+              transactionSource:
                 {
                   name: 'mortgage', amount: '123', schedule: undefined,
                 },
@@ -110,7 +110,7 @@ describe('Regular Expenses Controller', () => {
         .send({
           declared: 'mortgage', model: {
             mortgage: {
-              expenseSource:
+              transactionSource:
                 {
                   name: 'mortgage', amount: '-123', schedule: 'WEEK',
                 },
@@ -128,7 +128,7 @@ describe('Regular Expenses Controller', () => {
         .send({
           declared: 'mortgage', model: {
             mortgage: {
-              expenseSource:
+              transactionSource:
                 {
                   name: 'mortgage', amount: '123.333', schedule: 'WEEK',
                 },
@@ -157,7 +157,7 @@ describe('Regular Expenses Controller', () => {
         .send({
           declared: 'mortgage', model: {
             mortgage: {
-              expenseSource:
+              transactionSource:
                 {
                   name: 'mortgage', amount: '123.33', schedule: 'WEEK',
                 },
