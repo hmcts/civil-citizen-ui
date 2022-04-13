@@ -6,18 +6,15 @@ import {
   saveChildrenDisability,
 } from '../../../../../modules/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import * as winston from 'winston';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 
 const childrenDisabilityViewPath = 'features/response/statementOfMeans/dependants/children-disability';
 const childrenDisabilityController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
-let logger = Logger.getLogger('childrenDisabilityController');
+const logger = Logger.getLogger('childrenDisabilityController');
 
-export function setChildrenDisabilityControllerLogger(winstonLogger: winston.LoggerInstance) {
-  logger = winstonLogger;
-}
+
 
 
 childrenDisabilityController

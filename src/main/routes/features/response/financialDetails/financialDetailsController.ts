@@ -3,18 +3,12 @@ import {CITIZEN_BANK_ACCOUNT_URL, CLAIM_TASK_LIST_URL, FINANCIAL_DETAILS_URL} fr
 import {Claim} from '../../../../common/models/claim';
 import {getDraftClaimFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
-import * as winston from 'winston';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const financialDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
-let logger: winston.LoggerInstance = Logger.getLogger('financialDetailsController');
-
-
-export function setFinancialDetailsControllerLogger(winstonLogger: winston.LoggerInstance) {
-  logger = winstonLogger;
-}
+const logger = Logger.getLogger('financialDetailsController');
 
 function renderView(res: express.Response, claim: Claim): void {
   res.render(financialDetailsViewPath, {claim: claim});
