@@ -137,12 +137,13 @@ describe('Payment Date service', () => {
       await form.validate();
       //Then
       expect(form.getErrors().length).toBe(3);
-      expect(form.getErrors()[0].property).toBe('year');
-      expect(form.getErrors()[0].constraints).toEqual({max:VALID_YEAR});
+      expect(form.getErrors()[0].property).toBe('day');
+      expect(form.getErrors()[0].constraints).toEqual({min:VALID_DAY,max:VALID_DAY});
       expect(form.getErrors()[1].property).toBe('month');
       expect(form.getErrors()[1].constraints).toEqual({min:VALID_MONTH,max:VALID_MONTH});
-      expect(form.getErrors()[2].property).toBe('day');
-      expect(form.getErrors()[2].constraints).toEqual({min:VALID_DAY,max:VALID_DAY});
+      expect(form.getErrors()[2].property).toBe('year');
+      expect(form.getErrors()[2].constraints).toEqual({max:VALID_YEAR});
+
     });
     test('should raise an error if no year', async () => {
       //Given

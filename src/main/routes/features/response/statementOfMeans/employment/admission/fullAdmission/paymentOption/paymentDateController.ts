@@ -17,7 +17,7 @@ const paymentDateController = express.Router();
 const nextMonth = new Date();
 nextMonth.setMonth(nextMonth.getMonth() + 1);
 
-export function setPaymentDateControllerLogger(winstonLogger: winston.LoggerInstance) {
+export function setPaymentDateControllerLogger(winstonLogger: winston.Logger) {
   logger = winstonLogger;
 }
 

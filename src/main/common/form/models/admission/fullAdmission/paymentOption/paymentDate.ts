@@ -18,18 +18,18 @@ export class PaymentDate {
   @Validate(OptionalDateNotInPastValidator, {message: VALID_DATE_NOT_IN_PAST})
     date?: Date;
 
+  @Min(1,{message:VALID_DAY })
+  @Max(31,{message:VALID_DAY })
+    day: number;
 
-  @Validate(OptionalDateFourDigitValidator, {message: VALID_FOUR_DIGIT_YEAR})
-  @Max(9999,{message:VALID_YEAR })
-    year: number;
 
   @Min(1,{message:VALID_MONTH })
   @Max(12,{message:VALID_MONTH })
     month: number;
 
-  @Min(1,{message:VALID_DAY })
-  @Max(31,{message:VALID_DAY })
-    day: number;
+  @Validate(OptionalDateFourDigitValidator, {message: VALID_FOUR_DIGIT_YEAR})
+  @Max(9999,{message:VALID_YEAR })
+    year: number;
 
   constructor(year?: string, month?: string, day?: string) {
     this.date = DateConverter.convertToDate(year, month, day);

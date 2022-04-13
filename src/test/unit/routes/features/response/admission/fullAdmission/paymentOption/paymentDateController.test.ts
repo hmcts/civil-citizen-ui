@@ -3,7 +3,7 @@ import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
 import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../../main/routes/urls';
-import {LoggerInstance} from 'winston';
+import {Logger} from 'winston';
 import {
   setPaymentDateControllerLogger,
 } from '../../../../../../../../main/routes/features/response/statementOfMeans/employment/admission/fullAdmission/paymentOption/paymentDateController';
@@ -29,7 +29,7 @@ const mockDraftStore = {
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
-} as unknown as LoggerInstance;
+} as unknown as Logger;
 
 
 describe('Payment date', () => {
