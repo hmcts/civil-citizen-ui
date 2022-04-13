@@ -1,0 +1,167 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../../macro/transaction-details.njk" import transactionDetails %}
+{% block content %}
+  {% set errors = form.getAllErrors('model') %}
+  {% if form.hasErrors() %}
+    {{ govukErrorSummary({
+      "titleText": t("There was a problem"),
+      "errorList": errors
+    }) }}
+  {% endif %}
+  {% set checkedJobHtml %}
+    {{ transactionDetails('Include wages, overtime, commission, bonuses', 'model[job]',  form.model.job.transactionSource, form) }}
+  {% endset -%}
+  {% set checkedUniversalCreditHtml %}
+    {{ transactionDetails('', 'model[universalCredit]',  form.model.universalCredit.transactionSource, form) }}
+  {% endset -%}
+  {% set checkedJobseekerAllowanceIncomeHtml %}
+    {{ transactionDetails('', 'model[jobseekerAllowanceIncome]',  form.model.jobseekerAllowanceIncome.transactionSource, form) }}
+  {% endset -%}
+  {% set checkedJobseekerAllowanceContributionHtml %}
+    {{ transactionDetails('', 'model[jobseekerAllowanceContribution]', form.model.jobseekerAllowanceContribution.transactionSource, form) }}
+  {% endset -%}
+  {% set checkedIncomeSupportHtml %}
+    {{ transactionDetails('', 'model[incomeSupport]', form.model.incomeSupport.transactionSource, form) }}
+  {% endset -%}
+  {% set checkedWorkingTaxCreditHtml %}
+    {{ transactionDetails('', 'model[workingTaxCredit]', form.model.workingTaxCredit.transactionSource, form) }}
+  {% endset -%}
+  {% set checkedChildTaxCreditHtml %}
+    {{ transactionDetails('', 'model[childTaxCredit]', form.model.childTaxCredit.transactionSource, form) }}
+  {% endset -%}
+  {% set checkedChildBenefitHtml %}
+    {{ transactionDetails('', 'model[childBenefit]', form.model.childBenefit.expenseSource, form) }}
+  {% endset -%}
+  {% set checkedCouncilTaxSupportHtml %}
+    {{ transactionDetails('', 'model[councilTaxSupport]',  form.model.councilTaxSupport.transactionSource, form) }}
+  {% endset -%}
+  {% set checkedPensionHtml %}
+    {{ transactionDetails('', 'model[pension]',  form.model.pension.transactionSource, form) }}
+  {% endset -%}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+
+            {{ govukCheckboxes({
+              idPrefix: "declared",
+              name: "declared",
+              fieldset: {
+                legend: {
+                  text: t("What regular income do you receive?"),
+                  isPageHeading: true,
+                  classes: "govuk-fieldset__legend--l"
+                }
+              },
+              hint: {
+                text: t('Select all that apply. The information you enter must be truthful and accurate.')
+              },
+              items: [
+                {
+                  value: "job",
+                  text: t("Job"),
+                  conditional: {
+                  html: checkedJobHtml
+                },
+                  checked: true if form.model.job.declared
+                },
+                {
+                  value: "universalCredit",
+                  text: t("Universal Credit"),
+                  conditional: {
+                  html: checkedUniversalCreditHtml
+                },
+                  checked: true if form.model.universalCredit.declared
+                },
+                {
+                  value: "jobseekerAllowanceIncome",
+                  text: t("Jobseeker’s Allowance (income based)"),
+                  conditional: {
+                  html: checkedJobseekerAllowanceContributionHtml
+                },
+                  checked: true if form.model.jobseekerAllowanceIncome.declared
+                },
+                {
+                  value: "jobseekerAllowanceContribution",
+                  text: t("Jobseeker’s Allowance (contribution based)"),
+                  conditional: {
+                  html: checkedJobseekerAllowanceIncomeHtml
+                },
+                  checked: true if form.model.jobseekerAllowanceContribution.declared
+                },
+                {
+                  value: "incomeSupport",
+                  text: t("Income Support"),
+                  conditional: {
+                  html: checkedIncomeSupportHtml
+                },
+                  checked: true if form.model.incomeSupport.declared
+                },
+                {
+                  value: "workingTaxCredit",
+                  text: t("Working Tax Credit"),
+                  conditional: {
+                  html: checkedWorkingTaxCreditHtml
+                },
+                  checked: true if form.model.workingTaxCredit.declared
+                },
+                {
+                  value: "childTaxCredit",
+                  text: t("Child Tax Credit"),
+                  conditional: {
+                  html: checkedChildTaxCreditHtml
+                },
+                  checked: true if form.model.childTaxCredit.declared
+                },
+                {
+                  value: "childBenefit",
+                  text: t("Child Benefit"),
+                  conditional: {
+                  html: checkedChildBenefitHtml
+                },
+                  checked: true if form.model.childBenefit.declared
+                },
+                {
+                  value: "councilTaxSupport",
+                  text: t("Council Tax Support"),
+                  conditional: {
+                  html: checkedCouncilTaxSupportHtml
+                },
+                  checked: true if form.model.councilTaxSupport.declared
+                },
+                {
+                  value: "pension",
+                  text: t("Pension"),
+                  conditional: {
+                  html: checkedPensionHtml
+                },
+                  checked: true if form.model.pension.declared
+                }
+              ]
+            }) }}
+
+            <div class="govuk-form-group">
+              <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
+                {{ t('Total monthly expenditure') }}: £
+                <span class="total-monthly-income-expense">
+                  0
+               </span>
+              </p>
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
