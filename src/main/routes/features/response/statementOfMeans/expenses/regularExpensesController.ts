@@ -1,8 +1,8 @@
 import express from 'express';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {RegularExpenses} from '../../../../../common/form/models/statementOfMeans/expenses/regularExpenses';
+import {RegularExpenses} from '../../../../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {CITIZEN_MONTHLY_EXPENSES_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../urls';
-import Expense from '../../../../../common/form/models/statementOfMeans/expenses/expense';
+import Transaction from '../../../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {
   getRegularExpenses,
@@ -31,7 +31,7 @@ function toForm(req: express.Request): RegularExpenses {
 }
 
 function updateFormWithResponseData(key: string, req: express.Request, regularExpenses: RegularExpenses) {
-  regularExpenses[key] = Expense.buildPopulatedForm(req.body.model[key].expenseSource.name, req.body.model[key].expenseSource.amount, req.body.model[key].expenseSource.schedule);
+  regularExpenses[key] = Transaction.buildPopulatedForm(req.body.model[key].expenseSource.name, req.body.model[key].expenseSource.amount, req.body.model[key].expenseSource.schedule);
 }
 
 regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res) => {

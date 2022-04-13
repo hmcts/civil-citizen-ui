@@ -5,9 +5,13 @@ import {
 } from '../../../../../main/modules/statementOfMeans/expenses/regularExpensesService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
-import Expense from '../../../../../main/common/form/models/statementOfMeans/expenses/expense';
-import {ScheduledExpenses} from '../../../../../main/common/form/models/statementOfMeans/expenses/scheduledExpenses';
-import {RegularExpenses} from '../../../../../main/common/form/models/statementOfMeans/expenses/regularExpenses';
+import Transaction from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {
+  TransactionSchedule,
+} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {
+  RegularExpenses,
+} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -43,7 +47,7 @@ describe('regularExpenses service', () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         claim.statementOfMeans = new StatementOfMeans();
-        claim.statementOfMeans.regularExpenses = new RegularExpenses({mortgage: Expense.buildPopulatedForm('mortgage', '2000', ScheduledExpenses.MONTH)});
+        claim.statementOfMeans.regularExpenses = new RegularExpenses({mortgage: Transaction.buildPopulatedForm('mortgage', '2000', TransactionSchedule.MONTH)});
         return claim;
       });
       //When
@@ -51,7 +55,7 @@ describe('regularExpenses service', () => {
       //Then
       expect(form.mortgage?.declared).toBeTruthy();
       expect(form.mortgage?.expenseSource?.amount).toBe(2000);
-      expect(form.mortgage?.expenseSource?.schedule).toBe(ScheduledExpenses.MONTH);
+      expect(form.mortgage?.expenseSource?.schedule).toBe(TransactionSchedule.MONTH);
     });
     it('should throw error when error is thrown from redis', async () => {
       //When
@@ -70,7 +74,7 @@ describe('regularExpenses service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveRegularExpenses('123', new RegularExpenses({mortgage: Expense.buildPopulatedForm('mortgage', '2000', ScheduledExpenses.MONTH)}));
+      await saveRegularExpenses('123', new RegularExpenses({mortgage: Transaction.buildPopulatedForm('mortgage', '2000', TransactionSchedule.MONTH)}));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -83,7 +87,7 @@ describe('regularExpenses service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveRegularExpenses('123', new RegularExpenses({mortgage: Expense.buildPopulatedForm('mortgage', '2000', ScheduledExpenses.MONTH)}));
+      await saveRegularExpenses('123', new RegularExpenses({mortgage: Transaction.buildPopulatedForm('mortgage', '2000', TransactionSchedule.MONTH)}));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -94,7 +98,7 @@ describe('regularExpenses service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveRegularExpenses('123', new RegularExpenses({mortgage: Expense.buildPopulatedForm('mortgage', '2000', ScheduledExpenses.MONTH)}))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveRegularExpenses('123', new RegularExpenses({mortgage: Transaction.buildPopulatedForm('mortgage', '2000', TransactionSchedule.MONTH)}))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

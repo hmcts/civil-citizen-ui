@@ -1,22 +1,22 @@
-import Expense from './expense';
+import Transaction from './transaction';
 import {ValidateNested} from 'class-validator';
 import {ExpenseType} from './expenseType';
 import {ScheduledAmount} from 'common/utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 
 export interface ExpenseParams {
-  mortgage?: Expense;
-  rent?: Expense;
-  councilTax?: Expense;
-  gas?: Expense;
-  electricity?: Expense;
-  water?: Expense;
-  travel?: Expense;
-  schoolCosts?: Expense;
-  foodAndHousekeeping?: Expense;
-  tvAndBroadband?: Expense;
-  hirePurchase?: Expense;
-  mobilePhone?: Expense;
-  maintenance?: Expense;
+  mortgage?: Transaction;
+  rent?: Transaction;
+  councilTax?: Transaction;
+  gas?: Transaction;
+  electricity?: Transaction;
+  water?: Transaction;
+  travel?: Transaction;
+  schoolCosts?: Transaction;
+  foodAndHousekeeping?: Transaction;
+  tvAndBroadband?: Transaction;
+  hirePurchase?: Transaction;
+  mobilePhone?: Transaction;
+  maintenance?: Transaction;
 }
 
 export interface ResponseExpenseParams {
@@ -26,45 +26,45 @@ export interface ResponseExpenseParams {
 
 export class RegularExpenses {
   @ValidateNested()
-    mortgage?: Expense;
+    mortgage?: Transaction;
 
   @ValidateNested()
-    rent?: Expense;
+    rent?: Transaction;
 
   @ValidateNested()
-    councilTax?: Expense;
+    councilTax?: Transaction;
 
   @ValidateNested()
-    gas?: Expense;
+    gas?: Transaction;
 
   @ValidateNested()
-    electricity?: Expense;
+    electricity?: Transaction;
 
   @ValidateNested()
-    water?: Expense;
+    water?: Transaction;
 
   @ValidateNested()
-    travel?: Expense;
+    travel?: Transaction;
 
   @ValidateNested()
-    schoolCosts?: Expense;
+    schoolCosts?: Transaction;
 
   @ValidateNested()
-    foodAndHousekeeping?: Expense;
+    foodAndHousekeeping?: Transaction;
 
   @ValidateNested()
-    tvAndBroadband?: Expense;
+    tvAndBroadband?: Transaction;
 
   @ValidateNested()
-    hirePurchase?: Expense;
+    hirePurchase?: Transaction;
 
   @ValidateNested()
-    mobilePhone?: Expense;
+    mobilePhone?: Transaction;
 
   @ValidateNested()
-    maintenance?: Expense;
+    maintenance?: Transaction;
 
-  [key: string]: Expense;
+  [key: string]: Transaction;
 
   constructor(expenseParams?: ExpenseParams) {
     this.mortgage = expenseParams?.mortgage;
@@ -110,7 +110,7 @@ export class RegularExpenses {
     return scheduledAmounts;
   }
 
-  private static buildExpense(type: ExpenseType): Expense {
-    return Expense.buildEmptyForm(type);
+  private static buildExpense(type: ExpenseType): Transaction {
+    return Transaction.buildEmptyForm(type);
   }
 }

@@ -9,7 +9,7 @@ import {YesNo} from '../../common/form/models/yesNo';
 import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
 import {CounterpartyType} from '../../common/models/counterpartyType';
 import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
-import {ScheduledExpenses} from '../../common/form/models/statementOfMeans/expenses/scheduledExpenses';
+import {TransactionSchedule} from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -59,7 +59,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('ResidenceType', ResidenceType);
     nunjucksEnv.addGlobal('CounterpartyType', CounterpartyType);
     nunjucksEnv.addGlobal('UnemploymentCategory', UnemploymentCategory);
-    nunjucksEnv.addGlobal('ScheduledExpenses', ScheduledExpenses);
+    nunjucksEnv.addGlobal('TransactionSchedule', TransactionSchedule);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

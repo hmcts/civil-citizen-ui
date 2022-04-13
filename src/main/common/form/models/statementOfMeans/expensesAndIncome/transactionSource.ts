@@ -1,5 +1,5 @@
 import {IsDefined, IsNumber, Max, Min} from 'class-validator';
-import {ScheduledExpenses} from './scheduledExpenses';
+import {TransactionSchedule} from './transactionSchedule';
 import {ExpenseType} from './expenseType';
 import {MAX_AMOUNT_VALUE} from '../../../validators/validationConstraints';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
@@ -13,13 +13,13 @@ export class ValidationErrors {
 
   static withMessage(buildErrorFn: (name: string) => string) {
     return (args: any): string => {
-      const object: ExpenseSource = args.object;
+      const object: TransactionSource = args.object;
       return buildErrorFn(object.name);
     };
   }
 }
 
-export default class ExpenseSource {
+export default class TransactionSource {
   name: string;
   @IsDefined({message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_REQUIRED)})
   @Min(0, {message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED)})
@@ -30,9 +30,9 @@ export default class ExpenseSource {
   }, {message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED)})
     amount?: number;
   @IsDefined({message: ValidationErrors.withMessage(ValidationErrors.SCHEDULE_SELECT_AN_OPTION)})
-    schedule: ScheduledExpenses;
+    schedule: TransactionSchedule;
 
-  constructor(name?: string, amount?: number, schedule?: ScheduledExpenses) {
+  constructor(name?: string, amount?: number, schedule?: TransactionSchedule) {
     this.name = name;
     this.amount = amount;
     this.schedule = schedule;

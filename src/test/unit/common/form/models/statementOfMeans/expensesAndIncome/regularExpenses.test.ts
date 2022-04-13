@@ -1,7 +1,10 @@
 import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
-import {RegularExpenses} from '../../../../../../../main/common/form/models/statementOfMeans/expenses/regularExpenses';
-import Expense from '../../../../../../../main/common/form/models/statementOfMeans/expenses/expense';
-import ExpenseSource from '../../../../../../../main/common/form/models/statementOfMeans/expenses/expenseSource';
+import {
+  RegularExpenses,
+} from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import Transaction from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import TransactionSource
+  from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 describe('Expenses', () => {
@@ -9,9 +12,9 @@ describe('Expenses', () => {
     it('should return errors when empty form', async () => {
       //Given
       const form = new GenericForm(new RegularExpenses({
-        mortgage: new Expense(),
-        rent: new Expense(),
-        tvAndBroadband: new Expense(),
+        mortgage: new Transaction(),
+        rent: new Transaction(),
+        tvAndBroadband: new Transaction(),
       }));
       //When
       await form.validate();
@@ -21,9 +24,9 @@ describe('Expenses', () => {
     it('should have errors for mortgage when mortgage declared is true', async () => {
       //Given
       const form = new GenericForm(new RegularExpenses({
-        mortgage: new Expense(true, new ExpenseSource('mortgage')),
-        rent: new Expense(),
-        tvAndBroadband: new Expense(),
+        mortgage: new Transaction(true, new TransactionSource('mortgage')),
+        rent: new Transaction(),
+        tvAndBroadband: new Transaction(),
       }));
       //When
       await form.validate();
