@@ -188,7 +188,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('year');
       expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: VALID_FOUR_DIGIT_YEAR});
     });
-    test
+    test;
     test('should raise an error asking for 4 digits, if year is only 2 digits', async () => {
       //Given
       paymentDate = new PaymentDate('23', '12', '1');
