@@ -84,7 +84,7 @@
                   value: "jobseekerAllowanceIncome",
                   text: t("Jobseeker’s Allowance (income based)"),
                   conditional: {
-                  html: checkedJobseekerAllowanceContributionHtml
+                  html: checkedJobseekerAllowanceIncomeHtml
                 },
                   checked: true if form.model.jobseekerAllowanceIncome.declared
                 },
@@ -92,7 +92,7 @@
                   value: "jobseekerAllowanceContribution",
                   text: t("Jobseeker’s Allowance (contribution based)"),
                   conditional: {
-                  html: checkedJobseekerAllowanceIncomeHtml
+                  html: checkedJobseekerAllowanceContributionHtml
                 },
                   checked: true if form.model.jobseekerAllowanceContribution.declared
                 },
