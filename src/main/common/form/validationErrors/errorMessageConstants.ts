@@ -46,3 +46,5 @@ export const VALID_ENTER_A_JOB_TITLE = 'Enter a job title';
 export const VALID_ENTER_AT_LEAST_ONE_EMPLOYER = 'Enter at least one employer';
 export const ENTER_AT_LEAST_ONE_DEBT = 'Enter at least one debt';
 export const ENTER_A_DEBT = 'Enter a debt';
+export const VALID_AMOUNT = 'Enter a valid amount';
+export const AMOUNT_LESS_THEN_CLAIMED  = 'Enter a value less then the amount claimed';
