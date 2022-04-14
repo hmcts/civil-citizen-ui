@@ -7,10 +7,20 @@ import {IncomeType} from './incomeType';
 
 export class ValidationErrors {
   static readonly NAME_REQUIRED = 'Enter other expense source';
-  static readonly AMOUNT_REQUIRED = (name: string, income: boolean) => income ? `Enter how much ${name} you receive` : `Enter how much you pay for ${name ? name : ExpenseType.OTHER}`;
+  static readonly AMOUNT_REQUIRED = (name: string, income: boolean) => {
+    if (income) {
+      return `Enter how much ${name} you receive`;
+    }
+    return `Enter how much you pay for ${name ? name : ExpenseType.OTHER}`;
+  };
   static readonly AMOUNT_INVALID_DECIMALS = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
   static readonly AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
-  static readonly SCHEDULE_SELECT_AN_OPTION = (name: string, income: boolean) => income ? `Select how often you receive ${name ? name : IncomeType.OTHER}` : `Select how often you pay for ${name ? name : ExpenseType.OTHER}`;
+  static readonly SCHEDULE_SELECT_AN_OPTION = (name: string, income: boolean) => {
+    if (income) {
+      return `Select how often you receive ${name ? name : IncomeType.OTHER}`;
+    }
+    return `Select how often you pay for ${name ? name : ExpenseType.OTHER}`;
+  };
 
   static withMessage(buildErrorFn: (name?: string, expense?: boolean) => string) {
     return (args: any): string => {
