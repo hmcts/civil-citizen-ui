@@ -16,6 +16,7 @@ export class Claim {
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
   paymentOption?: string;
+  // TODO: move into partialAdmission model once CIV-1892 is merged in
   claimAlreadyPaid?: boolean;
 
   formattedResponseDeadline(): string {
