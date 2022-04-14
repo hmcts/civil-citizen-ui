@@ -11,8 +11,6 @@
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("How much money do you admit you owe?") %}
       {% set description = "The total amount claimed is £"+form.totalAmount+". This includes the claim fee and any interest." %}
-      {% set id = "option" %}
-      {% set name = "option" %}
       {% set amountAsString = ''+form.amount %}
       {% set errors = form.getErrors() %}
       {% if errors %}

@@ -5,9 +5,9 @@ import { Validator } from 'class-validator';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 
 const validator = new Validator();
-describe('Partial Admit - How much money do you admit do you owe? model', () => {
+describe('Partial Admit - How much money do you admit you owe? model', () => {
   describe('validation', () => {
-
+    // totalClaimAmount is £110
     it('should return errors when no input is provided', () => {
       //Given
       const form = new HowMuchDoYouOwe(undefined);

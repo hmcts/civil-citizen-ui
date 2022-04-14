@@ -13,7 +13,7 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const AMOUNT = 12.9;
 const TOTAL_AMOUNT = 110;
-describe('How much money do you admit you owe? Service ', () => {
+describe('Partial Admit - How much money do you admit you owe? Service ', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   describe('getHowMuchDoYouOweForm', () => {
     it('should get empty form when partial Admission does not exist', async () => {
@@ -41,7 +41,6 @@ describe('How much money do you admit you owe? Service ', () => {
       expect(form.totalAmount).toBeUndefined();
     });
     it('should return populated form when howMuchDoYouOwe exists', async () => {
-
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();

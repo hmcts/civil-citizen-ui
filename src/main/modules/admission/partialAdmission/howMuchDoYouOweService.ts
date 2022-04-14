@@ -30,7 +30,6 @@ export const saveHowMuchDoYouOweData = async (
       claim.partialAdmission = new PartialAdmission();
     }
     claim.partialAdmission.howMuchDoYouOwe = form;
-
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(`${error.stack || error}`);

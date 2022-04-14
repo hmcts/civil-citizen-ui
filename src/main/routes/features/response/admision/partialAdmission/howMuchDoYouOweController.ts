@@ -35,7 +35,6 @@ howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, async (req:express.Reque
     const form = new HowMuchDoYouOwe(toNumberOrUndefined(req.body.amount), savedValues.totalAmount);
     await validateForm(form);
     if (form.hasErrors()) {
-
       renderView(form, res);
     } else {
       await saveHowMuchDoYouOweData(req.params.id, form);

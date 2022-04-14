@@ -26,7 +26,6 @@ export class EqualToOrLessThanPropertyValueValidator implements ValidatorConstra
       if (propertyValue === undefined || isNaN(propertyValue) || !value || isNaN(value)) {
         return true;
       }
-
       if (strictComparision){
         return Number(value) < propertyValue;
       }
