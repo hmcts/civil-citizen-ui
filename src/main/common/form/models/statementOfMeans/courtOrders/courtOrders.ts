@@ -22,16 +22,16 @@ export class CourtOrders {
     this.rows = rows;
   }
 
-  static fromObject(value?: any): CourtOrders {
+  static fromObject(value?: Record<string, object>): CourtOrders {
     if (!value) {
-      return value;
+      return undefined;
     }
 
     const declared: boolean = isBooleanable(value.declared) ? boolean(value.declared) : undefined;
 
     return new CourtOrders(
       declared,
-      (declared === true && value.rows) ? value.rows.map(CourtOrder.fromObject) : [],
+      (declared === true && value.rows) ? ((value.rows) as Array<Record<string,string>>).map(CourtOrder.fromObject) : [],
     );
   }
 }

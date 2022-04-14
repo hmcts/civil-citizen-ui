@@ -11,7 +11,7 @@ export class AtLeastOneRowIsPopulatedConstraint implements ValidatorConstraintIn
 
   validate(value: any | Array<Record<string, unknown>>, _args?: ValidationArguments): boolean {
     if (value === undefined) {
-      return true;
+      return false;
     }
 
     if (!(value instanceof Array)) {

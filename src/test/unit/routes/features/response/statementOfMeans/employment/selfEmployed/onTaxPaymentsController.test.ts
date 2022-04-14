@@ -9,7 +9,7 @@ import {
   VALID_OWED_AMOUNT_REQUIRED,
   VALID_REASON_REQUIRED,
   VALID_TWO_DECIMAL_NUMBER,
-  YES_NO_REQUIRED,
+  VALID_YES_NO_SELECTION,
 } from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {YesNo} from '../../../../../../../../main/common/form/models/yesNo';
 
@@ -50,7 +50,7 @@ describe('on tax payments', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(YES_NO_REQUIRED);
+          expect(res.text).toContain(VALID_YES_NO_SELECTION);
         });
     });
     test('should return errors when no option yes is selected and amount and reason are not defined', async () => {

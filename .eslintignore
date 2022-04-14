@@ -9,5 +9,9 @@ coverage/*
 # custom definition files
 /src/main/types/
 jest.*config.js
+# MoJ boilerplate code
 /src/main/assets/js/jquery.js
 /src/main/assets/js/mojAll.js
+# Workaround issue with MoJ add-another component
+/src/main/assets/js/conditionally-hide-add-button.js
+/src/main/assets/js/remove-error-content.js

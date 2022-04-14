@@ -38,7 +38,6 @@ export const VALID_ENTER_AT_LEAST_ONE_NUMBER = 'Enter a number for at least one 
 export const AMOUNT_INVALID_DECIMALS = 'Enter a valid amount, maximum two decimal places';
 export const JOB_TITLE_REQUIRED = 'Enter a job title';
 export const ANNUAL_TURNOVER_REQUIRED = 'Are you sure this is a valid value?';
-export const YES_NO_REQUIRED = 'Please select yes or no';
 export const VALID_OWED_AMOUNT_REQUIRED = 'Enter a valid amount owed';
 export const VALID_VALUE = 'Are you sure this is a valid value?';
 export const VALID_REASON_REQUIRED = 'Enter a reason';

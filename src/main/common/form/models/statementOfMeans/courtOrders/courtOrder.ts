@@ -32,10 +32,6 @@ export class CourtOrder {
     this.claimNumber = claimNumber;
   }
 
-  static empty(): CourtOrder {
-    return new CourtOrder(undefined, undefined, undefined);
-  }
-
   static fromObject(value?: any): CourtOrder {
     if (!value) {
       return value;

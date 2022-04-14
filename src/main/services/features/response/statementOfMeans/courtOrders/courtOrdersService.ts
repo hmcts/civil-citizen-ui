@@ -41,7 +41,7 @@ class CourtOrdersService {
   }
 
   public buildCourtOrders(value: unknown): CourtOrders {
-    return CourtOrders.fromObject(value);
+    return CourtOrders.fromObject(value as Record<string, object>);
   }
 
   public removeEmptyCourtOrders(courtOrders: CourtOrders): void {
