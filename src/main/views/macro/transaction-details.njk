@@ -1,6 +1,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% macro transactionDetails(hintAmount, property, transactionSource, form) %}
+  {% set amountValue =  '' + transactionSource.amount %}
   <div class="civil-amountRow">
     <input type="hidden" name="{{ property }}[transactionSource][name]" value="{{ transactionSource.name }}"/>
     {{ govukInput({
@@ -13,7 +14,7 @@
         text: "£"
       },
       type: "number",
-      value: expenseSource.amount,
+      value: amountValue,
       classes: "govuk-input--width-5 civil-amount",
       hint: {
         text: t(hintAmount)
@@ -36,22 +37,22 @@
         {
           value: TransactionSchedule.WEEK,
           text: t("Week"),
-          checked: true if expenseSource.schedule == TransactionSchedule.WEEK
+          checked: true if transactionSource.schedule == TransactionSchedule.WEEK
         },
         {
           value: TransactionSchedule.TWO_WEEKS,
           text: t("Two weeks"),
-          checked: true if expenseSource.schedule == TransactionSchedule.TWO_WEEKS
+          checked: true if transactionSource.schedule == TransactionSchedule.TWO_WEEKS
         },
         {
           value: TransactionSchedule.FOUR_WEEKS,
           text: "Four weeks",
-          checked: true if expenseSource.schedule == TransactionSchedule.FOUR_WEEKS
+          checked: true if transactionSource.schedule == TransactionSchedule.FOUR_WEEKS
         },
         {
           value: TransactionSchedule.MONTH,
           text: t("Month"),
-          checked: true if expenseSource.schedule == TransactionSchedule.MONTH
+          checked: true if transactionSource.schedule == TransactionSchedule.MONTH
         }
       ],
       errorMessage: {
