@@ -32,7 +32,8 @@ courtOrdersController
     async (req: express.Request, res: express.Response) => {
       const courtOrders = courtOrdersService.buildCourtOrders(req.body);
       courtOrdersService.removeEmptyCourtOrders(courtOrders);
-      const form: GenericForm<CourtOrders> = courtOrdersService.validateCourtOrders(courtOrders);
+      const form = new GenericForm(courtOrders);
+      form.validateSync();
 
       if (form.hasErrors()) {
         res.render(residenceViewPath, {

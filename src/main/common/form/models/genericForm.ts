@@ -94,6 +94,10 @@ export class GenericForm<Model> {
     this.errors = await validator.validate(this.model as unknown as object);
   }
 
+  public validateSync() {
+    this.errors = validator.validateSync(this.model as unknown as object);
+  }
+
   private getAllChildrenErrors(error: ValidationError, parentProperty?: string): FormValidationError[] {
     let formErrors: FormValidationError[] = [];
     if (error.children?.length > 0) {

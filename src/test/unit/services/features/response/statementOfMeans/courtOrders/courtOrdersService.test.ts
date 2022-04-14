@@ -6,6 +6,7 @@ import {CourtOrders} from '../../../../../../../main/common/form/models/statemen
 import {CourtOrder} from '../../../../../../../main/common/form/models/statementOfMeans/courtOrders/courtOrder';
 import {Claim} from '../../../../../../../main/common/models/claim';
 import {CivilClaimResponse} from '../../../../../../../main/common/models/civilClaimResponse';
+import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
 import {
   VALID_AMOUNT,
   VALID_AMOUNT_ONE_POUND_OR_MORE,
@@ -71,8 +72,9 @@ describe('Court Orders service', () => {
     test('should raise any error if declared is unspecified', async () => {
       //Given
       const courtOrders = new CourtOrders(undefined);
+      const form = new GenericForm(courtOrders);
       //When
-      const form = courtOrdersService.validateCourtOrders(courtOrders);
+      form.validateSync();
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.errorFor('declared')).toBe(VALID_YES_NO_SELECTION);
@@ -84,29 +86,18 @@ describe('Court Orders service', () => {
     test('should not raise any error if declared is false and rows unspecified', async () => {
       //Given
       const courtOrders = new CourtOrders(false, undefined);
+      const form = new GenericForm(courtOrders);
       //When
-      const form = courtOrdersService.validateCourtOrders(courtOrders);
+      form.validateSync();
       //Then
       expect(form.getErrors().length).toBe(0);
-    });
-    test('should raise an error if declared is true and rows are unspecified', async () => {
-      //Given
-      const courtOrders = new CourtOrders(true);
-      //When
-      const form = courtOrdersService.validateCourtOrders(courtOrders);
-      //Then
-      expect(form.getErrors().length).toBe(1);
-      expect(form.errorFor('declared')).toBeUndefined();
-      expect(form.errorFor('rows')).toBe(VALID_ENTER_AT_LEAST_ONE_COURT_ORDER);
-      expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
-      expect(form.errorFor('rows[0][amount]')).toBeUndefined();
-      expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
     test('should raise an error if declared true and rows are empty', async () => {
       //Given
       const courtOrders = new CourtOrders(true, []);
+      const form = new GenericForm(courtOrders);
       //When
-      const form = courtOrdersService.validateCourtOrders(courtOrders);
+      form.validateSync();
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.errorFor('declared')).toBeUndefined();
@@ -121,8 +112,9 @@ describe('Court Orders service', () => {
         new CourtOrder(120, 10, ''),
       ];
       const courtOrders = new CourtOrders(true, rows);
+      const form = new GenericForm(courtOrders);
       //When
-      const form = courtOrdersService.validateCourtOrders(courtOrders);
+      form.validateSync();
       //Then
       expect(form.errorFor('declared')).toBeUndefined();
       expect(form.errorFor('rows')).toBeUndefined();
@@ -136,8 +128,9 @@ describe('Court Orders service', () => {
         new CourtOrder(.99, undefined, 'abc1'),
       ];
       const courtOrders = new CourtOrders(true, rows);
+      const form = new GenericForm(courtOrders);
       //When
-      const form = courtOrdersService.validateCourtOrders(courtOrders);
+      form.validateSync();
       //Then
       expect(form.errorFor('declared')).toBeUndefined();
       expect(form.errorFor('rows')).toBeUndefined();

@@ -1,12 +1,9 @@
 import {getDraftClaimFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {Validator} from 'class-validator';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {CourtOrders} from '../../../../../common/form/models/statementOfMeans/courtOrders/courtOrders';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('courtOrdersService');
-const validator = new Validator();
 
 class CourtOrdersService {
 
@@ -46,12 +43,6 @@ class CourtOrdersService {
 
   public removeEmptyCourtOrders(courtOrders: CourtOrders): void {
     courtOrders.rows = courtOrders.rows.filter(item => !item.isEmpty());
-  }
-
-  public validateCourtOrders(courtOrders: CourtOrders): GenericForm<CourtOrders> {
-    const form: GenericForm<CourtOrders> = new GenericForm(courtOrders);
-    form.errors = validator.validateSync(form.model);
-    return form;
   }
 }
 
