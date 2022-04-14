@@ -32,10 +32,7 @@ export class CourtOrder {
     this.claimNumber = claimNumber;
   }
 
-  static fromObject(value?: any): CourtOrder {
-    if (!value) {
-      return value;
-    }
+  static fromObject(value?: Record<string,string>): CourtOrder {
 
     const instalmentAmount: number = toNumberOrUndefined(value.instalmentAmount);
     const amount: number = toNumberOrUndefined(value.amount);
