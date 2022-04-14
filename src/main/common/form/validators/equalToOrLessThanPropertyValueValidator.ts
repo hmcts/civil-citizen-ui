@@ -25,6 +25,9 @@ export class EqualToOrLessThanPropertyValueValidator implements ValidatorConstra
       if (propertyValue === undefined || isNaN(propertyValue) || !value || isNaN(value)) {
         return true;
       }
+      if(validationArguments.targetName === 'HowMuchDoYouOwe'){
+        return Number(value) < propertyValue;
+      }
       return Number(value) <= propertyValue;
     }
     return true;

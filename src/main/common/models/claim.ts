@@ -17,7 +17,7 @@ export class Claim {
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
   paymentOption?: string;
-  partialAdmissions?: PartialAdmission;
+  partialAdmission?: PartialAdmission;
 
 
   formattedResponseDeadline(): string {
