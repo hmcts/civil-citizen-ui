@@ -10,8 +10,7 @@ export class HowMuchDoYouOwe extends Form {
   @IsDefined({ message: VALID_AMOUNT })
   @Min(MIN_AMOUNT_VALUE, { message: VALID_AMOUNT })
   @IsNumber({ allowNaN: false, maxDecimalPlaces: 2 }, { message: VALID_TWO_DECIMAL_NUMBER })
-  @Validate(EqualToOrLessThanPropertyValueValidator, ['totalAmount'], { message: AMOUNT_LESS_THEN_CLAIMED })
-
+  @Validate(EqualToOrLessThanPropertyValueValidator, ['totalAmount', 'strictComparision'], { message: AMOUNT_LESS_THEN_CLAIMED })
     amount?: number;
 
   totalAmount?: number;
