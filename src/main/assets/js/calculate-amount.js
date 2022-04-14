@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (document.getElementsByClassName('civil-amountRow')) {
     document.querySelectorAll('.civil-amountRow .civil-amount')?.forEach(element => element.addEventListener('keyup', debounce(getCalculation, 1000)));
     document.querySelectorAll('.civil-amountRow .civil-schedule')?.forEach(element => element.addEventListener('change', getCalculation));
+    document.querySelectorAll('.govuk-checkboxes__input').forEach(element => element.addEventListener('change', getCalculation));
     await getCalculation();
   }
 
@@ -40,10 +41,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     const amountToCalculate = [];
     const amountRows = Array.from(document.getElementsByClassName('civil-amountRow'));
     amountRows.forEach(element => {
+      const parent = element.parentNode;
       const amount = element.getElementsByClassName('civil-amount');
       const schedules = element.querySelectorAll('.civil-schedule input');
       const selectedSchedule = getSelectedInput(schedules);
-      if (inputsHaveValues(amount, selectedSchedule)) {
+      if (inputsHaveValues(amount, selectedSchedule) && !parent.classList.contains('govuk-checkboxes__conditional--hidden')) {
         amountToCalculate.push({amount: amount[0].value, schedule: selectedSchedule.value});
       }
     });
@@ -58,6 +60,8 @@ document.addEventListener('DOMContentLoaded', async function () {
       const response = await fetch('/total-income-expense-calculation', options);
       const data = await response.json();
       document.getElementsByClassName('total-monthly-income-expense')[0].innerHTML = data;
+    } else {
+      document.getElementsByClassName('total-monthly-income-expense')[0].innerHTML = '0';
     }
   }
 });
