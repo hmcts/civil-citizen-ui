@@ -9,7 +9,7 @@ import {
   saveHowMuchDoYouOweData,
 } from '../../../../../modules/admission/partialAdmission/howMuchDoYouOweService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter'
+import { toNumberOrUndefined } from '../../../../../common/utils/numberConverter';
 
 const howMuchDoYouOweViewPath = 'features/response/admission/partialAdmisssion/how-much-do-you-owe';
 const howMuchDoYouOweController = express.Router();
