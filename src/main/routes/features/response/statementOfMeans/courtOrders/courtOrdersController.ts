@@ -34,7 +34,7 @@ courtOrdersController
       courtOrdersService.removeEmptyCourtOrders(courtOrders);
       const form: GenericForm<CourtOrders> = courtOrdersService.validateCourtOrders(courtOrders);
 
-      if (form.hasErrors() || form.hasNestedErrors()) {
+      if (form.hasErrors()) {
         res.render(residenceViewPath, {
           form: form,
         });
