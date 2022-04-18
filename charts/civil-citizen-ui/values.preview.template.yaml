@@ -11,7 +11,19 @@ nodejs:
         - ordnance-survey-api-key
         - idam-secret
   environment:
-    OAUTH_CLIENT_REDIRECT: http://${SERVICE_FQDN}/oauth2/callback
+    IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
+    IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
+    IDAM_CLIENT_ID: civil_citizen_ui
+    OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback
+    REDIS_HOST: 'civil-{{ .Values.global.environment }}.redis.cache.windows.net'
+    REDIS_PORT: 6380
+    REDIS_TLS: true
+    CIVIL_SERVICE_URL: http://civil-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    ALLOW_CONFIG_MUTATIONS: true
+    autoscaling:
+      enabled: false
+      maxReplicas: 16
+      targetCPUUtilizationPercentage: 80
 
 postgresql:
   enabled: true
