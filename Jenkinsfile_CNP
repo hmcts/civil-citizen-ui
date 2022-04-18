@@ -8,6 +8,7 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "master"
+def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
@@ -34,16 +35,13 @@ def secrets = [
     secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD'),
     secret('microservicekey-ccd-gw', 'CCD_API_GATEWAY_S2S_KEY')
 ],
-'civil-${env}'    :[
-    secret('microservicekey-civil-service', 'S2S_SECRET'),
-    secret('ccd-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
-    secret('ccd-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
-    secret('postgres-user', 'POSTGRES_USER'),
-    secret('postgres-password', 'POSTGRES_PASSWORD')
-  ],
-  'civil-prod': [
-    secret('microservicekey-civil-service', 'S2S_SECRET_PROD')
-  ]
+        'civil-${env}': [
+                secret('microservicekey-civil-service', 'S2S_SECRET'),
+                secret('ccd-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
+                secret('ccd-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
+                secret('postgres-user', 'POSTGRES_USER'),
+                secret('postgres-password', 'POSTGRES_PASSWORD')
+        ]
 ]
 
 

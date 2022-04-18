@@ -1,3 +1,21 @@
+ccd:
+  enabled: false
+
+postgresql:
+  enabled: false
+
+idam-pr:
+  enabled: false
+
+xui-webapp:
+  enabled: false
+
+camunda-bpm:
+  enabled: false
+
+civil-service:
+  enabled: false
+
 nodejs:
   applicationPort: 3001
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
@@ -5,7 +23,7 @@ nodejs:
   aadIdentityName: civil
   keyVaults:
     civil:
-      resourceGroup: civil-service
+      resourceGroup: civil
       secrets:
         - AppInsightsInstrumentationKey
         - redis-access-key
@@ -26,20 +44,3 @@ nodejs:
     maxReplicas: 16
     targetCPUUtilizationPercentage: 80
 
-ccd:
-  enabled: false
-
-postgresql:
-  enabled: false
-
-idam-pr:
-  enabled: false
-
-xui-webapp:
-  enabled: false
-
-camunda-bpm:
-  enabled: false
-
-civil-service:
-  enabled: false
