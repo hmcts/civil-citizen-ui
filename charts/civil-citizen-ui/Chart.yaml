@@ -17,6 +17,8 @@ dependencies:
     version: 6.0.0
     repository: '@hmctspublic'
     condition: ccd.enabled
+    tags:
+      - civil-ccd-stack
   - name: xui-webapp
     version: ~0.2.16
     repository: '@hmctspublic'
