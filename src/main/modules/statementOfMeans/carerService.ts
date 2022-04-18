@@ -7,10 +7,10 @@ const logger = Logger.getLogger('carerService');
 
 export const getCarer = async (claimId: string) => {
   try {
-    const case_data = await getCaseDataFromStore(claimId);
-    if (case_data.statementOfMeans?.carer) {
+    const claim = await getCaseDataFromStore(claimId);
+    if (claim.statementOfMeans?.carer) {
       const carer = new Carer();
-      carer.option = case_data.statementOfMeans.carer.option;
+      carer.option = claim.statementOfMeans.carer.option;
       return carer;
     }
     return new Carer();
@@ -22,15 +22,15 @@ export const getCarer = async (claimId: string) => {
 
 export const saveCarer = async (claimId: string, carer: Carer) => {
   try {
-    const case_data = await getCaseDataFromStore(claimId);
-    if (case_data.statementOfMeans) {
-      case_data.statementOfMeans.carer = carer;
+    const claim = await getCaseDataFromStore(claimId);
+    if (claim.statementOfMeans) {
+      claim.statementOfMeans.carer = carer;
     } else {
       const statementOfMeans = new StatementOfMeans();
       statementOfMeans.carer = carer;
-      case_data.statementOfMeans = statementOfMeans;
+      claim.statementOfMeans = statementOfMeans;
     }
-    await saveDraftClaim(claimId, case_data);
+    await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
     throw error;
