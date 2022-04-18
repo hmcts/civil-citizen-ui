@@ -8,9 +8,6 @@ dependencies:
   - name: nodejs
     version: 2.4.1
     repository: '@hmctspublic'
-  - name: java
-    version: 3.7.2
-    repository: '@hmctspublic'
   - name: civil-service
     version: 0.0.9
     repository: '@hmctspublic'
@@ -19,8 +16,6 @@ dependencies:
     version: 6.0.0
     repository: '@hmctspublic'
     condition: ccd.enabled
-    tags:
-      - civil-ccd-stack
   - name: xui-webapp
     version: ~0.2.16
     repository: '@hmctspublic'
