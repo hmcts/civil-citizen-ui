@@ -63,7 +63,6 @@ withPipeline(type, product, component) {
 
   onPR {
       loadVaultSecrets(secrets)
-      enableCleanupOfHelmReleaseOnSuccess()
   }
   onMaster {
     loadVaultSecrets(secrets)
