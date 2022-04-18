@@ -19,6 +19,9 @@ function authenticate() {
 }
 
 describe('Dashboard page', () => {
+  afterAll(() => {
+    app.locals.draftStoreClient.close();
+  });
   const idamUrl: string = config.get('idamUrl');
   const citizenRoleToken: string = config.get('citizenRoleToken');
 
