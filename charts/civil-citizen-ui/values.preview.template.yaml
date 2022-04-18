@@ -18,7 +18,6 @@ nodejs:
 
 postgresql:
   enabled: true
-  releaseNameOverride: ${SERVICE_NAME}-postgresql
   image:
     registry: hmctspublic.azurecr.io
     repository: imported/bitnami/postgresql
