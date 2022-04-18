@@ -8,7 +8,9 @@ dependencies:
   - name: nodejs
     version: 2.4.1
     repository: '@hmctspublic'
-
+  - name: java
+    version: 3.7.2
+    repository: '@hmctspublic'
   - name: civil-service
     version: 0.0.9
     repository: '@hmctspublic'
