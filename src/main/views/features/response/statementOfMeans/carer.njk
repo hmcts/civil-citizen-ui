@@ -20,7 +20,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <form method="post">
+          <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ yesNoRadioButton(t,id,name,title,form) }}
             <div class="govuk-form-group">
