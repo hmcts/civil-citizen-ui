@@ -101,8 +101,8 @@ idam-pr:
   releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
   enabled: true
   redirect_uris:
-    XUI:
-      - https://xui-${SERVICE_FQDN}/oauth2/callback
+    civil-citizen-ui:
+      - https://${SERVICE_FQDN}/oauth2/callback
 
 xui-webapp:
   enabled: true

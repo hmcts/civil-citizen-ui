@@ -39,8 +39,8 @@ nodejs:
     REDIS_TLS: true
     CIVIL_SERVICE_URL: http://civil-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     ALLOW_CONFIG_MUTATIONS: true
-  autoscaling:
-    enabled: false
-    maxReplicas: 16
-    targetCPUUtilizationPercentage: 80
+    autoscaling:
+      enabled: false
+      maxReplicas: 16
+      targetCPUUtilizationPercentage: 80
 
