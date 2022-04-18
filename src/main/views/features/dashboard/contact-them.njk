@@ -1,0 +1,70 @@
+{% extends "../../claim-details-tpl.njk" %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/about-claim-widget.njk" import aboutClaimWidget %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+        {% set otherParty = 'claimant' %}
+        {% set otherPartyName = form.model.case_data.applicant1.partyName %}
+        {% set phone = form.model.case_data.applicant1.phone %}
+        {% set email = form.model.claimantEmail %}
+        {% set address = form.model.case_data.applicant1.primaryAddress %}
+        {% set correspondenceAddress = form.model.case_data.applicant1.correspondenceAddress %}
+        {% set contactPerson = form.model.case_data.applicant1.contactPerson %}
+
+      {% set heading = 'Contact ' + t(otherParty) %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h2 class="heading">
+            <span class="heading-secondary">{{ t(otherParty) }}</span>
+          </h2>
+          <h1 class="heading-large">
+            <span class="heading-secondary">{{ t(otherPartyName) | capitalize }}</span>
+          </h1>
+          <div class="notice">
+            {% if address %}
+              <h2 class="heading-medium">{{ t('Address') }}</h2>
+              {% if address.AddressLine1 %}
+                </p><span>{{ address.AddressLine1 }}</span></p>
+              {% endif %}
+
+              {% if address.AddressLine2 %}
+                <span>{{ address.AddressLine2 }}</span></p>
+              {% endif %}
+
+              {% if address.AddressLine3 %}
+                <span>{{ address.AddressLine3 }}</span></p>
+              {% endif %}
+
+              {% if address.County %}
+                <span>{{ address.County }}</span></p>
+              {% endif %}
+
+              {% if address.PostCode %}
+                <span>{{ address.PostCode }}</span></p>
+              {% endif %}
+
+            {% endif %}
+          </div>
+
+          <div>
+            {% if phone %}
+              </p><span>{{ t('Phone: ' ) + phone }}</span></p>
+            {% endif %}
+
+            {% if email %}
+              <span>{{ t('Email: <a href="mailto:{{ email }}">{{ email }}</a>', { email: email }) | safe }}</span>
+            {% endif %}
+
+          </div>
+
+          {{ contactUsForHelp(t) }}
+          <div class="govuk-grid-column-one-thirds">
+            {{ aboutClaimWidget(otherParty, form.model) }}
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

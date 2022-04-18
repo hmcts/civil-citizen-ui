@@ -1,0 +1,34 @@
+{% macro aboutClaimWidget(otherParty, claim, showResponse = true) %}
+
+  {% if otherParty === 'defendant' %}
+    {% set otherPartyLabel = 'Defendant name:' %}
+    {% set otherPartyName = claim.claimData.defendant.name %}
+    {% set responseLabel = 'Defendant response:' %}
+  {% elseif otherParty === 'claimant' %}
+    {% set otherPartyLabel = 'Claimant name:' %}
+    {% set otherPartyName = claim.claimData.claimant.name %}
+    {% set responseLabel = 'Your response:' %}
+  {% endif %}
+
+  <div class="about-claim-widget">
+    <p class="heading-small">{{ t('About claim') }}</p>
+    <ul class="font-xsmall list">
+      <li>
+        <strong class="bold">{{ t(otherPartyLabel) }}</strong>
+    </li>
+      <li>
+        <strong class="bold">{{ t('Claim amount:') }}</strong>
+        <div>{{ claim.totalAmountTillToday}}</div>
+      </li>
+      <li>
+        <strong class="bold">{{ t('Claim details:') }}</strong>
+    </li>
+      {% if showResponse and claim.response and not (claim.proceedViaPaperResponse or claim.isOconResponse) %}
+        <li>
+          <strong class="bold">{{ t(responseLabel) }}</strong>
+       </li>
+      {% endif %}
+    </ul>
+  </div>
+
+{% endmacro %}

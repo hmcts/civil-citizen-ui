@@ -179,13 +179,15 @@
         "calculatedAmountInPence": "7000"
       },
       "issueDate": "2022-01-08",
+      "phone": "(0)207 127 0000",
+      "claimantEmail": "cmcclaimant23@gmail.com",
       "applicant1": {
         "type": "ORGANISATION",
-        "partyName": "Example applicant1 organisation",
+        "partyName": "Mr. Jan Clark",
         "primaryAddress": {
-          "County": "Kent",
+          "County": "London",
           "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
+          "PostCode": "SW1H 9AJ",
           "PostTown": "Reading",
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
