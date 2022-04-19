@@ -10,7 +10,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('childrenDisabilityService');
 
 
-export function setChildrenDisabilityServiceLogger(winstonLogger: winston.LoggerInstance) {
+export function setChildrenDisabilityServiceLogger(winstonLogger: winston.Logger) {
   logger = winstonLogger;
 }
 
