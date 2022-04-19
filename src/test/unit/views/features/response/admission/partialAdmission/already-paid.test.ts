@@ -15,14 +15,27 @@ const idamUrl: string = config.get('idamUrl');
 let htmlRes: Document;
 
 describe('Already Paid View', () => {
+  beforeAll(() => {
+    nock(idamUrl)
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
+  });
+
   describe('on GET', () => {
+    console.log('citizenRoleToken', citizenRoleToken);
     beforeAll(async () => {
-      nock(idamUrl)
-        .post('/o/token')
-        .reply(200, {id_token: citizenRoleToken});
+      app.request.session['user'] = {
+        accessToken: '1234567890',
+        sub: 'js@test.com',
+        given_name: 'John',
+        family_name: 'Smith',
+        uid: '123',
+        roles: [
+          'citizen',
+        ],
+      };
       await request(app).get(CITIZEN_ALREADY_PAID_URL).then(res => {
         const dom = new JSDOM(res.text);
-        console.log('res.text', res.text);
         htmlRes = dom.window.document;
       });
     });
