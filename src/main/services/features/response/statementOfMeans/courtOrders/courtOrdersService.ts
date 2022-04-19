@@ -13,7 +13,7 @@ class CourtOrdersService {
   public async getCourtOrders(claimId: string): Promise<CourtOrders> {
     try {
       const claim = await getCaseDataFromStore(claimId);
-      if (claim?.statementOfMeans?.courtOrders) {
+      if (claim.statementOfMeans?.courtOrders) {
         return claim.statementOfMeans.courtOrders;
       }
       return new CourtOrders();
