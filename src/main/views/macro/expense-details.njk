@@ -1,11 +1,26 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% macro expenseDetails(hintAmount, property, expenseSource, form) %}
+{% macro expenseDetails(hintAmount, property, expenseSource, form, other) %}
+    {% if other %}
+<div class="civil-amountRow  multiple-row">
+  {{ govukInput({
+    id: property + "[name]",
+    name: property + "[name]",
+    label: {
+      text: t("Source of expense")
+    },
+    value:expenseSource.name,
+    errorMessage: {
+      text: form.errorFor(property + "[name]", "model")
+    } if(form.errorFor(property + "[name]", "model"))
+  }) }}
+  {% else %}
   <div class="civil-amountRow">
-    <input type="hidden" name="{{ property }}[expenseSource][name]" value="{{ expenseSource.name }}"/>
+    <input type="hidden" name="{{ property }}[name]" value="{{ expenseSource.name }}"/>
+    {% endif %}
     {{ govukInput({
-      id: property + "[expenseSource][amount]",
-      name: property + "[expenseSource][amount]",
+      id: property + "[amount]",
+      name: property + "[amount]",
       label: {
         text: t("Amount paid")
       },
@@ -20,12 +35,12 @@
       },
       spellcheck: false,
       errorMessage: {
-        text: form.errorFor(property + "[expenseSource][amount]", "model")
-      } if(form.errorFor(property + "[expenseSource][amount]", "model"))
+        text: form.errorFor(property + "[amount]", "model")
+      } if(form.errorFor(property + "[amount]", "model"))
     }) }}
     {{ govukRadios({
-      idPrefix: property + "[expenseSource][schedule]" ,
-      name: property + "[expenseSource][schedule]",
+      idPrefix: property + "[schedule]" ,
+      name: property + "[schedule]",
       classes: "civil-schedule",
       fieldset: {
         legend: {
@@ -55,8 +70,11 @@
         }
       ],
       errorMessage: {
-        text: form.errorFor(property + "[expenseSource][schedule]", "model")
-      } if(form.hasFieldError(property + "[expenseSource][schedule]", "model"))
+        text: form.errorFor(property + "[schedule]", "model")
+      } if(form.hasFieldError(property + "[schedule]", "model"))
     }) }}
   </div>
-{% endmacro %}
+  {% endmacro %}
+  {% macro otherExpenseDetails(property, index, expenseSource, form) %}
+    {{ expenseDetails('', property +'['+index +']', expenseSource, form, true) }}
+  {% endmacro %}

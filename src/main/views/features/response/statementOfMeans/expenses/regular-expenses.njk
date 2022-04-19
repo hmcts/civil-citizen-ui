@@ -5,7 +5,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
-{% from "../../../../macro/expense-details.njk" import expenseDetails %}
+{% from "../../../../macro/expense-details.njk" import expenseDetails, otherExpenseDetails %}
 {% block content %}
   {% set errors = form.getNestedErrors('model') %}
   {% if form.hasErrors() %}
@@ -15,43 +15,48 @@
     }) }}
   {% endif %}
   {% set checkedMortgageHtml %}
-    {{ expenseDetails('Include all mortgages', 'model[mortgage]',  form.model.mortgage.expenseSource, form) }}
+    {{ expenseDetails('Include all mortgages', 'model[mortgage][expenseSource]',  form.model.mortgage.expenseSource, form) }}
   {% endset -%}
   {% set checkedRentHtml %}
-    {{ expenseDetails('', 'model[rent]',  form.model.rent.expenseSource, form) }}
+    {{ expenseDetails('', 'model[rent][expenseSource]',  form.model.rent.expenseSource, form) }}
   {% endset -%}
   {% set checkedCouncilTaxHtml %}
-    {{ expenseDetails('', 'model[councilTax]',  form.model.councilTax.expenseSource, form) }}
+    {{ expenseDetails('', 'model[councilTax][expenseSource]',  form.model.councilTax.expenseSource, form) }}
   {% endset -%}
   {% set checkedGasHtml %}
-    {{ expenseDetails('', 'model[gas]', form.model.gas.expenseSource, form) }}
+    {{ expenseDetails('', 'model[gas][expenseSource]', form.model.gas.expenseSource, form) }}
   {% endset -%}
   {% set checkedElectricityHtml %}
-    {{ expenseDetails('', 'model[electricity]', form.model.electricity.expenseSource, form) }}
+    {{ expenseDetails('', 'model[electricity][expenseSource]', form.model.electricity.expenseSource, form) }}
   {% endset -%}
   {% set checkedWaterHtml %}
-    {{ expenseDetails('Include sewerage payments', 'model[water]', form.model.water.expenseSource, form) }}
+    {{ expenseDetails('Include sewerage payments', 'model[water][expenseSource]', form.model.water.expenseSource, form) }}
   {% endset -%}
   {% set checkedTravelHtml %}
-    {{ expenseDetails('', 'model[travel]', form.model.travel.expenseSource, form) }}
+    {{ expenseDetails('', 'model[travel][expenseSource]', form.model.travel.expenseSource, form) }}
   {% endset -%}
   {% set checkedSchoolHtml %}
-    {{ expenseDetails('', 'model[schoolCosts]', form.model.schoolCosts.expenseSource, form) }}
+    {{ expenseDetails('', 'model[schoolCosts][expenseSource]', form.model.schoolCosts.expenseSource, form) }}
   {% endset -%}
   {% set checkedFoodHtml %}
-    {{ expenseDetails('', 'model[foodAndHousekeeping]',  form.model.foodAndHousekeeping.expenseSource, form) }}
+    {{ expenseDetails('', 'model[foodAndHousekeeping][expenseSource]',  form.model.foodAndHousekeeping.expenseSource, form) }}
   {% endset -%}
   {% set checkedTvHtml %}
-    {{ expenseDetails('', 'model[tvAndBroadband]',  form.model.tvAndBroadband.expenseSource, form) }}
+    {{ expenseDetails('', 'model[tvAndBroadband][expenseSource]',  form.model.tvAndBroadband.expenseSource, form) }}
   {% endset -%}
   {% set checkedHirePurchaseHtml %}
-    {{ expenseDetails('', 'model[hirePurchase]',  form.model.hirePurchase.expenseSource, form) }}
+    {{ expenseDetails('', 'model[hirePurchase][expenseSource]',  form.model.hirePurchase.expenseSource, form) }}
   {% endset -%}
   {% set checkedMobileHtml %}
-    {{ expenseDetails('', 'model[mobilePhone]', form.model.mobilePhone.expenseSource, form) }}
+    {{ expenseDetails('', 'model[mobilePhone][expenseSource]', form.model.mobilePhone.expenseSource, form) }}
   {% endset -%}
   {% set checkedMaintenanceHtml %}
-    {{ expenseDetails('', 'model[maintenance]', form.model.maintenance.expenseSource, form) }}
+    {{ expenseDetails('', 'model[maintenance][expenseSource]', form.model.maintenance.expenseSource, form) }}
+  {% endset -%}
+  {% set checkedOtherHtml %}
+    {% for transactionSource in form.model.other.transactionSources %}
+      {{ otherExpenseDetails( 'model[other][transactionSources]', loop.index0, transactionSource, form) }}
+    {% endfor %}
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -177,6 +182,14 @@
                   html: checkedMaintenanceHtml
                 },
                   checked: true if form.model.maintenance.declared
+                },
+                {
+                  value: "other",
+                  text: t("Other"),
+                  conditional: {
+                  html: checkedOtherHtml
+                },
+                  checked: true if form.model.other.declared
                 }
               ]
             }) }}
