@@ -1,6 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {HowMuchDoYouOwe} from '../../../common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import {PartialAdmission} from '../../../common/models/PartialAdmission';
+import {PartialAdmission} from '../../../common/models/partialAdmission';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('howMuchDoYouOweService');
@@ -8,12 +8,12 @@ const logger = Logger.getLogger('howMuchDoYouOweService');
 export const getHowMuchDoYouOweForm = async (claimId: string): Promise<HowMuchDoYouOwe> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    const { totalClaimAmount } = claim;
-    if (claim?.partialAdmission?.howMuchDoYouOwe?.amount) {
+    const totalClaimAmount = claim.totalClaimAmount;
+    if (claim.partialAdmission?.howMuchDoYouOwe?.amount) {
       const addmittedAmount = claim.partialAdmission.howMuchDoYouOwe.amount;
       return new HowMuchDoYouOwe(addmittedAmount, totalClaimAmount);
     }
-    return new HowMuchDoYouOwe(null,totalClaimAmount);
+    return new HowMuchDoYouOwe(undefined,totalClaimAmount);
   } catch (error) {
     logger.error(error);
     throw error;

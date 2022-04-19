@@ -4,7 +4,7 @@ import {
   saveHowMuchDoYouOweData,
 } from '../../../../../main/modules/admission/partialAdmission/howMuchDoYouOweService';
 import { Claim } from '../../../../../main/common/models/claim';
-import { PartialAdmission } from '../../../../../main/common/models/PartialAdmission';
+import { PartialAdmission } from '../../../../../main/common/models/partialAdmission';
 import { HowMuchDoYouOwe } from '../../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
 
@@ -24,7 +24,7 @@ describe('Partial Admit - How much money do you admit you owe? Service ', () => 
       //When
       const form = await getHowMuchDoYouOweForm('129');
       //Then
-      expect(form.amount).toBe(null);
+      expect(form.amount).toBe(undefined);
       expect(form.totalAmount).toBeUndefined();
     });
     it('should return an empty form when howMuchDoYouOwe does not exist', async () => {
@@ -37,7 +37,7 @@ describe('Partial Admit - How much money do you admit you owe? Service ', () => 
       //When
       const form = await getHowMuchDoYouOweForm('129');
       //Then
-      expect(form.amount).toBe(null);
+      expect(form.amount).toBe(undefined);
       expect(form.totalAmount).toBeUndefined();
     });
     it('should return populated form when howMuchDoYouOwe exists', async () => {
