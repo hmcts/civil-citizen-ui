@@ -220,11 +220,10 @@ describe('Court Orders service', () => {
   });
 });
 
-function createClaimWithCourtOrders(): CivilClaimResponse {
-  const response = new CivilClaimResponse();
-  response.case_data = new Claim();
+function createClaimWithCourtOrders(): Claim {
+  const claim = new Claim();
   const statementOfMeans = new StatementOfMeans();
   statementOfMeans.courtOrders = new CourtOrders(true, []);
-  response.case_data.statementOfMeans = statementOfMeans;
-  return response;
+  claim.statementOfMeans = statementOfMeans;
+  return claim;
 }

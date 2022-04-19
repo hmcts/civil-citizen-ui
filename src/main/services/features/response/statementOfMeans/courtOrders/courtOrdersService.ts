@@ -9,9 +9,9 @@ class CourtOrdersService {
 
   public async getCourtOrders(claimId: string): Promise<CourtOrders> {
     try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse?.case_data?.statementOfMeans?.courtOrders) {
-        return civilClaimResponse.case_data.statementOfMeans.courtOrders;
+      const claim = await getDraftClaimFromStore(claimId);
+      if (claim?.statementOfMeans?.courtOrders) {
+        return claim.statementOfMeans.courtOrders;
       }
       return new CourtOrders();
     } catch (error) {
@@ -22,15 +22,16 @@ class CourtOrdersService {
 
   public async saveCourtOrders(claimId: string, courtOrders: CourtOrders) {
     try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (civilClaimResponse?.case_data?.statementOfMeans) {
-        civilClaimResponse.case_data.statementOfMeans.courtOrders = courtOrders;
+      const claim = await getDraftClaimFromStore(claimId);
+
+      if (claim?.statementOfMeans) {
+        claim.statementOfMeans.courtOrders = courtOrders;
       } else {
         const statementOfMeans = new StatementOfMeans();
         statementOfMeans.courtOrders = courtOrders;
-        civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
+        claim.statementOfMeans = statementOfMeans;
       }
-      await saveDraftClaim(claimId, civilClaimResponse.case_data);
+      await saveDraftClaim(claimId, claim);
     } catch (error) {
       logger.error(`${(error as Error).stack || error}`);
       throw error;
