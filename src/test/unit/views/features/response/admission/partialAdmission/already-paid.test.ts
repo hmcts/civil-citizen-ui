@@ -11,10 +11,14 @@ const mockDraftStore = {
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
+jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('../../../../../../../main/modules/draft-store');
+
+let htmlRes: Document;
+
 describe('Already Paid View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  let htmlRes: Document;
 
   beforeAll(() => {
     nock(idamUrl)
@@ -64,9 +68,6 @@ describe('Already Paid View', () => {
 
   describe('on POST', () => {
     beforeAll(async () => {
-      nock(idamUrl)
-        .post('/o/token')
-        .reply(200, {id_token: citizenRoleToken});
       await request(app).post(CITIZEN_ALREADY_PAID_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlRes = dom.window.document;
