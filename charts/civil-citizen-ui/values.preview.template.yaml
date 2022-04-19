@@ -12,13 +12,14 @@ nodejs:
         - idam-secret
   environment:
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
+
     IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
     IDAM_CLIENT_ID: civil_citizen_ui
-    OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui-pr-317.service.core-compute-preview.internal/oauth2/callback
+    OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
     REDIS_HOST: 'civil-{{ .Values.global.environment }}.redis.cache.windows.net'
     REDIS_PORT: 6380
     REDIS_TLS: true
-    CIVIL_SERVICE_URL: http://civil-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    CIVIL_SERVICE_URL: civil-service-${SERVICE_FQDN}
     ALLOW_CONFIG_MUTATIONS: true
     autoscaling:
       enabled: false
@@ -112,12 +113,11 @@ civil-service:
 idam-pr:
   releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
   enabled: true
+  debug: true
   redirect_uris:
     civil-citizen-ui:
       - https://${SERVICE_FQDN}/oauth2/callback
-      - https://civil-${SERVICE_FQDN}/oauth2/callback
-      - https://${SERVICE_FQDN}/oauth2/callback-applicant2
-      - https://civil-${SERVICE_FQDN}/oauth2/callback-applicant2
+
 
 xui-webapp:
   enabled: true
