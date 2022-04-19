@@ -25,6 +25,7 @@ describe('Already Paid View', () => {
     beforeAll(async () => {
       await request(app).get(CITIZEN_ALREADY_PAID_URL).then(res => {
         const dom = new JSDOM(res.text);
+        console.log('res.text', res.text);
         htmlRes = dom.window.document;
       });
     });
@@ -34,7 +35,6 @@ describe('Already Paid View', () => {
     });
 
     it('should display header', () => {
-      console.log('html', htmlRes);
       const header = htmlRes.getElementsByClassName('govuk-heading-l');
       expect(header[0].innerHTML).toContain('Have you paid the claimant the amount you admit you owe?');
     });
