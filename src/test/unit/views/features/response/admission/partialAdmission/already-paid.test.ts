@@ -14,28 +14,21 @@ const { JSDOM } = jsdom;
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 
-let htmlRes: Document;
-
 describe('Already Paid View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
+  let htmlRes: Document;
 
   describe('on GET', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
+      nock(idamUrl)
+        .post('/o/token')
+        .reply(200, {id_token: citizenRoleToken});
+      app.locals.draftStoreClient = mockDraftStore;
       await request(app).get(CITIZEN_ALREADY_PAID_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlRes = dom.window.document;
       });
-    });
-
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockDraftStore;
     });
 
     it('should display header', () => {
@@ -67,15 +60,12 @@ describe('Already Paid View', () => {
   });
 
   describe('on POST', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
+      app.locals.draftStoreClient = mockDraftStore;
       await request(app).post(CITIZEN_ALREADY_PAID_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlRes = dom.window.document;
       });
-    });
-
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockDraftStore;
     });
 
     it('should display error summary component', () => {
