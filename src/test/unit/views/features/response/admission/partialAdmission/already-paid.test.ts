@@ -10,11 +10,12 @@ const mockDraftStore = {
 };
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
-const citizenRoleToken: string = config.get('citizenRoleToken');
-const idamUrl: string = config.get('idamUrl');
-let htmlRes: Document;
 
 describe('Already Paid View', () => {
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const idamUrl: string = config.get('idamUrl');
+  let htmlRes: Document;
+
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -22,18 +23,7 @@ describe('Already Paid View', () => {
   });
 
   describe('on GET', () => {
-    console.log('citizenRoleToken', citizenRoleToken);
     beforeAll(async () => {
-      app.request.session['user'] = {
-        accessToken: '1234567890',
-        sub: 'js@test.com',
-        given_name: 'John',
-        family_name: 'Smith',
-        uid: '123',
-        roles: [
-          'citizen',
-        ],
-      };
       await request(app).get(CITIZEN_ALREADY_PAID_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlRes = dom.window.document;
