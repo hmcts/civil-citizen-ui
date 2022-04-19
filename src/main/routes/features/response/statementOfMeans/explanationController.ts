@@ -1,9 +1,9 @@
 import * as express from 'express';
-import {CITIZEN_EXPLANATION_URL} from '../../../urls';
+import {CITIZEN_EXPLANATION_URL, CLAIM_TASK_LIST_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {getExplanation, saveExplanation} from '../../../../modules/statementOfMeans/explanationService';
-import {Explanation} from 'common/form/models/statementOfMeans/explanation';
-import {GenericForm} from 'common/form/models/genericForm';
+import {Explanation} from '../../../../common/form/models/statementOfMeans/explanation';
+import {GenericForm} from '../../../../common/form/models/genericForm';
 
 const explanationViewPath = 'features/response/statementOfMeans/explanation';
 const explanationController = express.Router();
@@ -30,8 +30,7 @@ explanationController.post(CITIZEN_EXPLANATION_URL,
     } else {
       try {
         await saveExplanation(req.params.id, explanation);
-        // TODO: go to 'Claim task list'
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, '/test'));
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
       } catch (error) {
         logger.error(error);
         res.status(500).send({ error: error.message });
