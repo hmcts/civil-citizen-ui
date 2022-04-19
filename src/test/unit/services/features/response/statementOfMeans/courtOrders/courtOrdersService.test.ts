@@ -5,7 +5,6 @@ import {StatementOfMeans} from '../../../../../../../main/common/models/statemen
 import {CourtOrders} from '../../../../../../../main/common/form/models/statementOfMeans/courtOrders/courtOrders';
 import {CourtOrder} from '../../../../../../../main/common/form/models/statementOfMeans/courtOrders/courtOrder';
 import {Claim} from '../../../../../../../main/common/models/claim';
-import {CivilClaimResponse} from '../../../../../../../main/common/models/civilClaimResponse';
 import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
 import {
   VALID_AMOUNT,
@@ -17,7 +16,7 @@ import {
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-const mockGetCaseDataFromDraftStore = draftStoreService.getDraftClaimFromStore as jest.Mock;
+const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
 const DRAFT_STORE_GET_ERROR = 'draft store get error';
@@ -164,7 +163,7 @@ describe('Court Orders service', () => {
 
     test('should return court orders from draft store if present', async () => {
       //Given
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+      mockGetCaseDataFromStore.mockImplementation(async () => {
         return createClaimWithCourtOrders();
       });
       //When
@@ -179,10 +178,8 @@ describe('Court Orders service', () => {
 
     test('should return court orders from draft store if present', async () => {
       //Given
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        const response = new CivilClaimResponse();
-        response.case_data = new Claim();
-        return response;
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        return new Claim();
       });
       const courtOrders = new CourtOrders(true, []);
       //When
@@ -197,7 +194,7 @@ describe('Court Orders service', () => {
 
     test('should throw error when retrieving data from draft store fails', async () => {
       //When
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+      mockGetCaseDataFromStore.mockImplementation(async () => {
         throw new Error(DRAFT_STORE_GET_ERROR);
       });
       //Then
@@ -207,8 +204,8 @@ describe('Court Orders service', () => {
 
     test('should throw error when saving data to draft store fails', async () => {
       //When
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return {case_data: {statementOfMeans: {}}};
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        return {statementOfMeans: {}};
       });
       mockSaveDraftClaim.mockImplementation(async () => {
         throw new Error(DRAFT_STORE_SAVE_ERROR);

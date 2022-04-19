@@ -1,4 +1,7 @@
-import {getDraftClaimFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
+import {
+  getCaseDataFromStore,
+  saveDraftClaim,
+} from '../../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {CourtOrders} from '../../../../../common/form/models/statementOfMeans/courtOrders/courtOrders';
 
@@ -9,7 +12,7 @@ class CourtOrdersService {
 
   public async getCourtOrders(claimId: string): Promise<CourtOrders> {
     try {
-      const claim = await getDraftClaimFromStore(claimId);
+      const claim = await getCaseDataFromStore(claimId);
       if (claim?.statementOfMeans?.courtOrders) {
         return claim.statementOfMeans.courtOrders;
       }
@@ -22,15 +25,12 @@ class CourtOrdersService {
 
   public async saveCourtOrders(claimId: string, courtOrders: CourtOrders) {
     try {
-      const claim = await getDraftClaimFromStore(claimId);
+      const claim = await getCaseDataFromStore(claimId);
 
-      if (claim?.statementOfMeans) {
-        claim.statementOfMeans.courtOrders = courtOrders;
-      } else {
-        const statementOfMeans = new StatementOfMeans();
-        statementOfMeans.courtOrders = courtOrders;
-        claim.statementOfMeans = statementOfMeans;
+      if (!claim.statementOfMeans) {
+        claim.statementOfMeans = new StatementOfMeans();
       }
+      claim.statementOfMeans.courtOrders = courtOrders;
       await saveDraftClaim(claimId, claim);
     } catch (error) {
       logger.error(`${(error as Error).stack || error}`);
