@@ -1,7 +1,7 @@
 import express from 'express';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import RegularIncome from '../../../../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
-import {CITIZEN_MONTHLY_INCOME_URL, EXPLANATION_URL} from '../../../../urls';
+import {CITIZEN_EXPLANATION_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../urls';
 import {getRegularIncome, saveRegularIncome} from '../../../../../modules/statementOfMeans/income/regularIncomeService';
 import {toRegularIncomeForm} from '../../../../../common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
@@ -31,7 +31,7 @@ regularIncomeController.post(CITIZEN_MONTHLY_INCOME_URL, async (req, res) => {
       renderView(form, res);
     } else {
       await saveRegularIncome(req.params.id, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, EXPLANATION_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EXPLANATION_URL));
     }
   } catch (error) {
     res.status(500).send({error: error.message});

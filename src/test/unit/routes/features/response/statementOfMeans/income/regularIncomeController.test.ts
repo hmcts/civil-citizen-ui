@@ -1,7 +1,7 @@
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_MONTHLY_INCOME_URL, EXPLANATION_URL} from '../../../../../../../main/routes/urls';
+import {CITIZEN_EXPLANATION_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
@@ -111,7 +111,7 @@ describe('Regular Income Controller', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(EXPLANATION_URL);
+          expect(res.header.location).toEqual(CITIZEN_EXPLANATION_URL);
         });
     });
     test('it should return 500 status when error occurs', async () => {
