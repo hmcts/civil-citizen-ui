@@ -34,6 +34,7 @@ describe('Already Paid View', () => {
     });
 
     it('should display header', () => {
+      console.log('html', htmlRes);
       const header = htmlRes.getElementsByClassName('govuk-heading-l');
       expect(header[0].innerHTML).toContain('Have you paid the claimant the amount you admit you owe?');
     });
