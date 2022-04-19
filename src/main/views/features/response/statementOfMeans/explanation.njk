@@ -8,9 +8,6 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t("Briefly explain why you can’t pay immediately") %}
-      {% set id = "text" %}
-      {% set name = "text" %}
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ govukErrorSummary({
@@ -27,6 +24,8 @@
               {{ govukTextarea({
               name: "text",
               id: "text",
+              value: form.model.text,
+              classes:"govuk-!-width-three-quarters",
               label: {
                 text: t("Briefly explain why you can’t pay immediately"),
                 classes: "govuk-label--l"
