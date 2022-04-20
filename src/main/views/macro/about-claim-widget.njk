@@ -1,34 +1,26 @@
-{% macro aboutClaimWidget(otherParty, claim, showResponse = true) %}
+{% macro aboutClaimWidget(otherParty, claim) %}
 
-  {% if otherParty === 'defendant' %}
+  {% set header = t('About claim')  %}
+  {% if otherParty === 'Defendant' %}
     {% set otherPartyLabel = 'Defendant name:' %}
-    {% set otherPartyName = claim.claimData.defendant.name %}
+    {% set hrefOtherPartyLabel = 'contact-them' %}
+    {% set otherPartyName = claim.case_data.respondent1.partyName %}
     {% set responseLabel = 'Defendant response:' %}
-  {% elseif otherParty === 'claimant' %}
+  {% elseif otherParty === 'Claimant' %}
     {% set otherPartyLabel = 'Claimant name:' %}
-    {% set otherPartyName = claim.claimData.claimant.name %}
+    {% set hrefOtherPartyLabel = 'contact-them' %}
+    {% set otherPartyName = claim.case_data.applicant1.partyName%}
     {% set responseLabel = 'Your response:' %}
   {% endif %}
 
-  <div class="about-claim-widget">
-    <p class="heading-small">{{ t('About claim') }}</p>
-    <ul class="font-xsmall list">
-      <li>
-        <strong class="bold">{{ t(otherPartyLabel) }}</strong>
-    </li>
-      <li>
-        <strong class="bold">{{ t('Claim amount:') }}</strong>
-        <div>{{ claim.totalAmountTillToday}}</div>
-      </li>
-      <li>
-        <strong class="bold">{{ t('Claim details:') }}</strong>
-    </li>
-      {% if showResponse and claim.response and not (claim.proceedViaPaperResponse or claim.isOconResponse) %}
-        <li>
-          <strong class="bold">{{ t(responseLabel) }}</strong>
-       </li>
-      {% endif %}
-    </ul>
+  <div class="govuk-grid-column-one-third  govuk-!-padding-top-9">
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ header}}</h3>
+      <p class="govuk-body-s govuk-!-margin-bottom-0 govuk-!-font-weight-bold">{{ t(otherPartyLabel) }}</p>
+      <p class="govuk-body-s govuk-!-margin-bottom-0"><a href={{hrefOtherPartyLabel}}>{{ otherPartyName}}</a></p>
+      <p class="govuk-body-s govuk-!-margin-bottom-0 govuk-!-font-weight-bold">{{ t('Claim amount:') }}</p>
+      <p class="govuk-body-s govuk-!-margin-bottom-0">{{'£' }}{{ claim.case_data.totalClaimAmount}}</p>
+      <p class="govuk-body-s govuk-!-margin-bottom-0 govuk-!-font-weight-bold">{{ t('Claim details:') }}</p>
+      <p class="govuk-body-s govuk-!-margin-bottom-0"><a href={{'claim-details'}}>{{ t('View claim') }}</a></p>
   </div>
 
 {% endmacro %}
