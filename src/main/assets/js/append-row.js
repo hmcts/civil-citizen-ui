@@ -38,6 +38,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (elementExists(multipleRowElement)) {
       const lastRow = getLastRow(multipleRowElement);
       let newRow = lastRow.cloneNode(true);
+      const children = newRow.children;
+      Array.from(children).forEach((child) => {
+        let inputs = child.querySelectorAll('input, textarea, select');
+        updateInputs(inputs);
+      });
       lastRow.parentNode.appendChild(newRow);
       updateNewRow(document.getElementsByClassName('multiple-row'));
     }
@@ -50,8 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function updateNewRow(addedRow) {
     let newRow = getLastRow(addedRow);
-    let inputs = newRow.querySelectorAll('input, textarea, select');
-    updateInputs(inputs);
     removeErrors(newRow);
   }
 
@@ -69,7 +72,12 @@ document.addEventListener('DOMContentLoaded', function () {
   function updateInputs(inputs) {
     if (elementExists(inputs)) {
       inputs.forEach(input => {
-        input.value = '';
+        if (input.type !== 'radio' && input.type !== 'checkbox') {
+          input.value = '';
+        }
+        if (input.checked) {
+          input.checked = false;
+        }
         input.classList.remove('govuk-input--error', 'govuk-select--error', 'govuk-textarea--error');
         incrementIndexOnName(input);
       });
@@ -77,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function incrementIndexOnName(input) {
-    let newIndex = document.getElementsByClassName('multiple-row').length - 1;
+    let newIndex = document.getElementsByClassName('multiple-row').length;
     const indexRegex = /\[(\d+)\]/;
     input.name = input.name.replace(indexRegex, '[' + newIndex + ']');
     input.id = input.id.replace(indexRegex, '[' + newIndex + ']');
