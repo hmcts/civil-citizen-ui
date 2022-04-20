@@ -2,6 +2,7 @@ nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  debug: true
   keyVaults:
     civil:
       resourceGroup: civil-service
@@ -16,5 +17,5 @@ nodejs:
 idam-pr:
   enabled: true
   redirect_uris:
-    civil-citizen-ui:
+    Civil Citizen UI:
       - https://${SERVICE_FQDN}/oauth2/callback
