@@ -25,9 +25,9 @@ document.addEventListener('DOMContentLoaded', function () {
     element.addEventListener('click', (event) => {
       event.preventDefault();
       const topParent = element.parentNode.parentNode;
-      topParent.removeChild(element.parentNode);
-      const multipleRows = Array.from(topParent.childNodes).filter(element => element.className === 'multiple-row');
-      if (multipleRows?.length < 2) {
+      topParent?.removeChild(element.parentNode);
+      const multipleRows = document.getElementsByClassName('multiple-row')?.length;
+      if (multipleRows < 2) {
         hideRemoveButton();
       }
     });
