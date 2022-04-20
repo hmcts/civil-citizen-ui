@@ -55,8 +55,12 @@
   {% endset -%}
   {% set checkedOtherHtml %}
     {% for transactionSource in form.model.other.transactionSources %}
-      {{ otherExpenseDetails( 'model[other][transactionSources]', loop.index0, transactionSource, form) }}
+      {{ otherExpenseDetails( 'model[other][transactionSources]', loop.index0, transactionSource, form, 'expense') }}
     {% endfor %}
+    {{ govukButton({
+      text: t("Add another expence"),
+      classes: "govuk-button--secondary append-row"
+    }) }}
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
