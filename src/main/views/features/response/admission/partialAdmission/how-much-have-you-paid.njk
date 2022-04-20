@@ -1,0 +1,139 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set title = t("How much have you paid the claimant?") %}
+      {% set description = "The total amount claimed is £"+form.totalAmount+". This includes the claim fee and any interest." %}
+      {% set amountAsString = ''+form.amount %}
+      {% set errors = form.getErrors() %}
+      {% if errors %}
+        {{ govukErrorSummary({
+          "titleText": t("There was a problem"),
+          "errorList": errors
+        }) }}
+      {% endif %}
+      {% set errorMessages %}
+        {% if errors %}
+          {% for error in errors %}
+            <span class="govuk-error-message">{{ t(error.text) }}</span>
+          {% endfor %}
+        {% endif %}
+      {% endset -%}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form
+            method="POST" novalidate>
+            {{ csrfProtection(csrf) }}
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">{{ title }}</h1>
+            </legend>
+            <div class="govuk-grid-row">
+              <div class="govuk-grid-column-two-thirds">
+                <h2 class="govuk-heading-s">{{ t('How much have you paid?') }}</h2>
+              </div>
+            </div>
+            {{ govukInput({
+              id: "amount",
+              name: "amount",
+              value: amountAsString,
+              type: "number",
+              autocomplete: "number",
+              spellcheck: false,
+              text: title,
+              prefix: {
+                text: "£"
+              },
+              classes: "govuk-!-width-two-thirds",
+              hint : {
+                text: t(description)
+              },
+              errorMessage: {
+                text:t(form.errorFor('amount'))
+              } if form.hasFieldError('amount')
+            }) }}
+            <div class="govuk-grid-row">
+              <div class="govuk-grid-column-two-thirds">
+                <h2 class="govuk-heading-s">{{ t('When did you pay this amount?') }}</h2>
+              </div>
+            </div>
+            <div class="govuk-form-group">
+              {{ govukDateInput({
+                id: "date",
+                type: "number",
+                inputmode: "numeric",
+                name: "date",
+                fieldset: {
+                  legend: {
+                    isPageHeading: false,
+                    classes: 'govuk-fieldset__legend--m'
+                  }
+                },
+                hint: {
+                  text: t("For example, " + nextMonth.getDate() + " " + (nextMonth.getMonth() + 1) + " " + nextMonth.getFullYear())
+                },
+                errorMessage: {
+                  html: errorMessages
+                } if form.hasErrors(),
+                items: [
+                  {
+                    classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+                    id: "day",
+                    label: "Day",
+                    name: "day",
+                    value: form.model.day,
+                    max: 31
+                  },
+                  {
+                    classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+                    id: "month",
+                    label: "Month",
+                    name: "month",
+                    value: form.model.month,
+                    max: 12
+                  },
+                  {
+                    classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+                    id: "year",
+                    label: "Year",
+                    name: "year",
+                    value: form.model.year,
+                    max: 9999
+                  }
+                ]
+              }) }}
+            </div>
+            <div class="govuk-form-group {% if errors.length %} govuk-form-group--error {% endif %}">
+              {{ govukTextarea({
+                name: "text",
+                id: "text",
+                value: form.model.text,
+                classes:"govuk-!-width-three-quarters",
+                label: {
+                  text: t("How did you pay this amount?"),
+                  classes: "govuk-label--l"
+                },
+                errorMessage: {
+                  text: t(form.errorFor('text'))
+                } if form.hasFieldError('text')
+              }) }}
+            </div>
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
