@@ -1,59 +1,62 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% macro expenseDetails(hintAmount, property, expenseSource, form) %}
-  <input type="hidden" name="{{ property }}[expenseSource][name]" value="{{ expenseSource.name }}"/>
-  {{ govukInput({
-    id: property + "[expenseSource][amount]",
-    name: property + "[expenseSource][amount]",
-    label: {
-      text: t("Amount paid")
-    },
-    prefix: {
-      text: "£"
-    },
-    type: "number",
-    value: expenseSource.amount,
-    classes: "govuk-input--width-5",
-    hint: {
-      text: t(hintAmount)
-    },
-    spellcheck: false,
-    errorMessage: {
-      text: form.errorFor(property + "[expenseSource][amount]", "model")
-    } if(form.errorFor(property + "[expenseSource][amount]", "model"))
-  }) }}
-  {{ govukRadios({
-    idPrefix: property + "[expenseSource][schedule]" ,
-    name: property + "[expenseSource][schedule]",
-    fieldset: {
-      legend: {
-        text: t("Paid every")
-      }
-    },
-    items: [
-      {
-        value: ScheduledExpenses.WEEK,
-        text: t("Week"),
-        checked: true if expenseSource.schedule == ScheduledExpenses.WEEK
+  <div class="civil-amountRow">
+    <input type="hidden" name="{{ property }}[expenseSource][name]" value="{{ expenseSource.name }}"/>
+    {{ govukInput({
+      id: property + "[expenseSource][amount]",
+      name: property + "[expenseSource][amount]",
+      label: {
+        text: t("Amount paid")
       },
-      {
-        value: ScheduledExpenses.TWO_WEEKS,
-        text: t("Two weeks"),
-        checked: true if expenseSource.schedule == ScheduledExpenses.TWO_WEEKS
+      prefix: {
+        text: "£"
       },
-      {
-        value: ScheduledExpenses.FOUR_WEEKS,
-        text: "Four weeks",
-        checked: true if expenseSource.schedule == ScheduledExpenses.FOUR_WEEKS
+      type: "number",
+      value: expenseSource.amount,
+      classes: "govuk-input--width-5 civil-amount",
+      hint: {
+        text: t(hintAmount)
       },
-      {
-        value: ScheduledExpenses.MONTH,
-        text: t("Month"),
-        checked: true if expenseSource.schedule == ScheduledExpenses.MONTH
-      }
-    ],
-    errorMessage: {
-      text: form.errorFor(property + "[expenseSource][schedule]", "model")
-    } if(form.hasFieldError(property + "[expenseSource][schedule]", "model"))
-  }) }}
+      spellcheck: false,
+      errorMessage: {
+        text: form.errorFor(property + "[expenseSource][amount]", "model")
+      } if(form.errorFor(property + "[expenseSource][amount]", "model"))
+    }) }}
+    {{ govukRadios({
+      idPrefix: property + "[expenseSource][schedule]" ,
+      name: property + "[expenseSource][schedule]",
+      classes: "civil-schedule",
+      fieldset: {
+        legend: {
+          text: t("Paid every")
+        }
+      },
+      items: [
+        {
+          value: ScheduledExpenses.WEEK,
+          text: t("Week"),
+          checked: true if expenseSource.schedule == ScheduledExpenses.WEEK
+        },
+        {
+          value: ScheduledExpenses.TWO_WEEKS,
+          text: t("Two weeks"),
+          checked: true if expenseSource.schedule == ScheduledExpenses.TWO_WEEKS
+        },
+        {
+          value: ScheduledExpenses.FOUR_WEEKS,
+          text: "Four weeks",
+          checked: true if expenseSource.schedule == ScheduledExpenses.FOUR_WEEKS
+        },
+        {
+          value: ScheduledExpenses.MONTH,
+          text: t("Month"),
+          checked: true if expenseSource.schedule == ScheduledExpenses.MONTH
+        }
+      ],
+      errorMessage: {
+        text: form.errorFor(property + "[expenseSource][schedule]", "model")
+      } if(form.hasFieldError(property + "[expenseSource][schedule]", "model"))
+    }) }}
+  </div>
 {% endmacro %}

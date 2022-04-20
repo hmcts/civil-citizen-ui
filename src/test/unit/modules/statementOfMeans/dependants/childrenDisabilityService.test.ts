@@ -14,7 +14,7 @@ import {
   setChildrenDisabilityServiceLogger,
 } from '../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
 import {CivilClaimResponse} from '../../../../../main/common/models/civilClaimResponse';
-import {LoggerInstance} from 'winston';
+import {Logger} from 'winston';
 import {NumberOfChildren} from '../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {GenericForm} from '../../../../../main/common/form/models/genericForm';
 import {mockClaim} from '../../../../utils/mockClaim';
@@ -51,7 +51,7 @@ const DRAFT_STORE_SAVE_ERROR = 'draft store save error';
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
-} as unknown as LoggerInstance;
+} as unknown as Logger;
 
 describe('Children Disability service', () => {
   describe('Validation', () => {
