@@ -3,7 +3,7 @@ import {ValidateNested} from 'class-validator';
 import {ExpenseType} from './expenseType';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 import OtherTransaction from './otherTransaction';
-import ExpenseSource from 'common/form/models/statementOfMeans/expenses/expenseSource';
+import ExpenseSource from './expenseSource';
 
 export interface ExpenseParams {
   mortgage?: Expense;

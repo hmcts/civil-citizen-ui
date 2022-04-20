@@ -8,7 +8,7 @@ import {
   getRegularExpenses,
   saveRegularExpenses,
 } from '../../../../../modules/statementOfMeans/expenses/regularExpensesService';
-import OtherTransaction from 'common/form/models/statementOfMeans/expenses/otherTransaction';
+import OtherTransaction from '../../../../../common/form/models/statementOfMeans/expenses/otherTransaction';
 
 const regularExpensesController = express.Router();
 const regularExpensesView = 'features/response/statementOfMeans/expenses/regular-expenses';
