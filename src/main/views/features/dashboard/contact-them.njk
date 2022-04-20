@@ -6,12 +6,12 @@
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
         {% set otherParty = 'Claimant' %}
-        {% set otherPartyName = form.model.case_data.applicant1.partyName %}
-        {% set phone = form.model.case_data.phone %}
-        {% set email = form.model.case_data.claimantEmail %}
-        {% set address = form.model.case_data.applicant1.primaryAddress %}
-        {% set correspondenceAddress = form.model.case_data.applicant1.correspondenceAddress %}
-        {% set contactPerson = form.model.case_data.applicant1.contactPerson %}
+        {% set otherPartyName = form.case_data.applicant1.partyName %}
+        {% set phone = form.case_data.phone %}
+        {% set email = form.case_data.claimantEmail %}
+        {% set address = form.case_data.applicant1.primaryAddress %}
+        {% set correspondenceAddress = form.case_data.applicant1.correspondenceAddress %}
+        {% set contactPerson = form.case_data.applicant1.contactPerson %}
         {% set heading = 'Contact ' + t(otherParty) %}
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
@@ -54,7 +54,7 @@
           </div>
           {{ contactUsForHelp(t) }}
         </div>
-        {{ aboutClaimWidget(otherParty, form.model) }}
+        {{ aboutClaimWidget(otherParty, form) }}
       </div>
     </main>
   </div>
