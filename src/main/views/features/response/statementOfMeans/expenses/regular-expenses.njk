@@ -55,7 +55,11 @@
   {% endset -%}
   {% set checkedOtherHtml %}
     {% for transactionSource in form.model.other.transactionSources %}
-      {{ otherExpenseDetails( 'model[other][transactionSources]', loop.index0, transactionSource, form, 'expense') }}
+      {% if form.model.other.transactionSources.length < 2 %}
+        {{ otherExpenseDetails( 'model[other][transactionSources]', loop.index0, transactionSource, form, {text:'Remove this expense source', hidden:true}) }}
+      {% else %}
+        {{ otherExpenseDetails( 'model[other][transactionSources]', loop.index0, transactionSource, form, {text:'Remove this expense source'}) }}
+      {% endif %}
     {% endfor %}
     {{ govukButton({
       text: t("Add another expence"),

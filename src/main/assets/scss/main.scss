@@ -1,1 +1,9 @@
 @import '~govuk-frontend';
+
+.govuk-link-button {
+  background: none;
+  border: 0;
+  color: #005ea5;
+  cursor: pointer;
+  text-decoration: underline;
+}

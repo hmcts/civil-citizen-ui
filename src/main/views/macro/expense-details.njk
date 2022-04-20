@@ -1,7 +1,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% macro expenseDetails(hintAmount, property, expenseSource, form, other, addAnotherButtonName) %}
+{% macro expenseDetails(hintAmount, property, expenseSource, form, other, removeButton) %}
 <div>
   {% if other %}
   <div class="civil-amountRow  multiple-row">
@@ -75,9 +75,16 @@
           text: form.errorFor(property + "[schedule]", "model")
         } if(form.hasFieldError(property + "[schedule]", "model"))
       }) }}
+      {% if removeButton %}
+        {% if removeButton.hidden %}
+          <button class="govuk-link-button remove-row govuk-visually-hidden">{{ t(removeButton.text) }}</button>
+        {% else %}
+          <button class="govuk-link-button remove-row">{{ t(removeButton.text) }}</button>
+        {% endif %}
+      {% endif %}
     </div>
   </div>
   {% endmacro %}
-  {% macro otherExpenseDetails(property, index, expenseSource, form) %}
-    {{ expenseDetails('', property +'['+index +']', expenseSource, form, true) }}
+  {% macro otherExpenseDetails(property, index, expenseSource, form, removeButton) %}
+    {{ expenseDetails('', property +'['+index +']', expenseSource, form, true, removeButton) }}
   {% endmacro %}

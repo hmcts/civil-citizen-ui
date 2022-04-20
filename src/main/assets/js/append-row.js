@@ -4,6 +4,8 @@
  * The input elements would be reset to their original state.
  * To use this functionality create a button with class name append-row, create a div with class name multiple-row.
  * Put all the elements that are needed to be cloned in the div with class name multiple-row
+ * If you have a remove row button in your repeating section add remove-row class to it to enable it to remove rows
+ * If there is only one row then remove button will be hidden
  */
 document.addEventListener('DOMContentLoaded', function () {
   const appendRowButton = document.getElementsByClassName('append-row');
@@ -11,6 +13,23 @@ document.addEventListener('DOMContentLoaded', function () {
     appendRowButton[0].addEventListener('click', (event) => {
       event.preventDefault();
       cloneRow();
+      showRemoveButton();
+      addEventListenerToRemoveButtons();
+    });
+    document.querySelectorAll('.remove-row')?.forEach((element) => {
+      removeRowButtonEventListener(element);
+    });
+  }
+
+  function removeRowButtonEventListener(element) {
+    element.addEventListener('click', (event) => {
+      event.preventDefault();
+      const topParent = element.parentNode.parentNode;
+      topParent.removeChild(element.parentNode);
+      const multipleRows = Array.from(topParent.childNodes).filter(element => element.className === 'multiple-row');
+      if (multipleRows?.length < 2) {
+        hideRemoveButton();
+      }
     });
   }
 
@@ -24,12 +43,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function getLastRow(multipleRowElement){
+  function getLastRow(multipleRowElement) {
     const lastElementIndex = multipleRowElement.length - 1;
     return multipleRowElement[lastElementIndex];
   }
 
-  function updateNewRow(addedRow){
+  function updateNewRow(addedRow) {
     let newRow = getLastRow(addedRow);
     let inputs = newRow.querySelectorAll('input, textarea, select');
     updateInputs(inputs);
@@ -37,20 +56,18 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function removeErrors(newRow) {
-    let errorRow = newRow.getElementsByClassName('govuk-form-group govuk-form-group--error');
-    if(elementExists(errorRow)){
-      const errors = errorRow[0].getElementsByClassName('govuk-error-message');
-      if(elementExists(errors)){
-        while(errors[0]){
-          errors[0].parentNode.removeChild(errors[0]);
-        }
-      }
-      errorRow[0].classList.remove('govuk-form-group--error');
+    const errorRow = newRow.querySelectorAll('.govuk-form-group .govuk-form-group--error .govuk-error-message');
+    if (elementExists(errorRow)) {
+      errorRow.forEach(element => element.parentNode.removeChild(element));
+    }
+    const errorField = newRow.querySelectorAll('.govuk-form-group .govuk-form-group--error');
+    if (elementExists(errorField)) {
+      errorField.forEach(element => element.classList.remove('govuk-form-group--error'));
     }
   }
 
   function updateInputs(inputs) {
-    if(elementExists(inputs)){
+    if (elementExists(inputs)) {
       inputs.forEach(input => {
         input.value = '';
         input.classList.remove('govuk-input--error', 'govuk-select--error', 'govuk-textarea--error');
@@ -66,7 +83,28 @@ document.addEventListener('DOMContentLoaded', function () {
     input.id = input.id.replace(indexRegex, '[' + newIndex + ']');
   }
 
-  function elementExists(element){
+  function showRemoveButton() {
+    const hiddenRemoveButton = document.getElementsByClassName('remove-row govuk-visually-hidden');
+    if (elementExists(hiddenRemoveButton)) {
+      Array.from(hiddenRemoveButton).forEach(element => element.classList.remove('govuk-visually-hidden'));
+    }
+  }
+
+  function hideRemoveButton() {
+    const removeButton = document.getElementsByClassName('remove-row');
+    if (elementExists(removeButton)) {
+      Array.from(removeButton).forEach(element => element.classList.add('govuk-visually-hidden'));
+    }
+  }
+
+  function addEventListenerToRemoveButtons() {
+    const removeButton = document.getElementsByClassName('remove-row');
+    if (elementExists(removeButton)) {
+      Array.from(removeButton).forEach(element => removeRowButtonEventListener(element));
+    }
+  }
+
+  function elementExists(element) {
     return element?.length > 0;
   }
 });
