@@ -17,7 +17,7 @@ jest.mock('../../../../../../../main/modules/draft-store');
 describe('Already Paid View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  let htmlRes: Document;
+  let htmlDocument: Document;
 
   describe('on GET', () => {
     beforeEach(async () => {
@@ -27,34 +27,34 @@ describe('Already Paid View', () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app).get(CITIZEN_ALREADY_PAID_URL).then(res => {
         const dom = new JSDOM(res.text);
-        htmlRes = dom.window.document;
+        htmlDocument = dom.window.document;
       });
     });
 
     it('should display header', () => {
-      const header = htmlRes.getElementsByClassName('govuk-heading-l');
+      const header = htmlDocument.getElementsByClassName('govuk-heading-l');
       expect(header[0].innerHTML).toContain('Have you paid the claimant the amount you admit you owe?');
     });
 
     it('should display 2 radio buttons with yes and no options', () => {
-      const radios = htmlRes.getElementsByClassName('govuk-radios__item');
+      const radios = htmlDocument.getElementsByClassName('govuk-radios__item');
       expect(radios.length).toEqual(2);
       expect(radios[0].innerHTML).toContain('Yes');
       expect(radios[1].innerHTML).toContain('No');
     });
 
     it('should display save and continue button', () => {
-      const buttons = htmlRes.getElementsByClassName('govuk-button');
+      const buttons = htmlDocument.getElementsByClassName('govuk-button');
       expect(buttons[0].innerHTML).toContain('Save and continue');
     });
 
     it('should contain contact us detail component', () => {
-      const contactUs = htmlRes.getElementsByClassName('govuk-details__summary-text');
+      const contactUs = htmlDocument.getElementsByClassName('govuk-details__summary-text');
       expect(contactUs[0].innerHTML).toContain('Contact us for help');
     });
 
     it('should not display error summary component', () => {
-      const errorSummary = htmlRes.getElementsByClassName('govuk-error-summary');
+      const errorSummary = htmlDocument.getElementsByClassName('govuk-error-summary');
       expect(errorSummary.length).toEqual(0);
     });
   });
@@ -64,17 +64,17 @@ describe('Already Paid View', () => {
       app.locals.draftStoreClient = mockDraftStore;
       await request(app).post(CITIZEN_ALREADY_PAID_URL).then(res => {
         const dom = new JSDOM(res.text);
-        htmlRes = dom.window.document;
+        htmlDocument = dom.window.document;
       });
     });
 
     it('should display error summary component', () => {
-      const errorSummary = htmlRes.getElementsByClassName('govuk-error-summary');
+      const errorSummary = htmlDocument.getElementsByClassName('govuk-error-summary');
       expect(errorSummary.length).toEqual(1);
     });
 
     it('should display correct error summary message with correct link', () => {
-      const errorSummaryMessage = htmlRes.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
+      const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
         .getElementsByTagName('li')[0];
       expect(errorSummaryMessage.innerHTML).toContain('Please select yes or no');
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
@@ -82,7 +82,7 @@ describe('Already Paid View', () => {
     });
 
     it('should display correct error message for radios', () => {
-      const errorMessage = htmlRes.getElementsByClassName('govuk-error-message')[0];
+      const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
       expect(errorMessage.innerHTML).toContain('Please select yes or no');
     });
   });
