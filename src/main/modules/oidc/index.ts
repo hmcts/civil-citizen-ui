@@ -44,13 +44,17 @@ export class OidcMiddleware {
     });
 
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
-      if (req.session.user) {
-        if (req.session?.user?.roles?.includes(citizenRole)) {
-          return next();
+      if (process.env.MOCK_SIGN_IN === 'true') {
+        return next();
+      } else {
+        if (req.session.user) {
+          if (req.session?.user?.roles?.includes(citizenRole)) {
+            return next();
+          }
+          return res.redirect(DASHBOARD_URL);
         }
-        return res.redirect(DASHBOARD_URL);
+        res.redirect(SIGN_IN_URL);
       }
-      res.redirect(SIGN_IN_URL);
     });
   }
 }
