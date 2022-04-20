@@ -16,9 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
       showRemoveButton();
       addEventListenerToRemoveButtons();
     });
-    document.querySelectorAll('.remove-row')?.forEach((element) => {
-      removeRowButtonEventListener(element);
-    });
+    addEventListenerToRemoveButtons();
   }
 
   function removeRowButtonEventListener(element) {
