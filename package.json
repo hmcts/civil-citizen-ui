@@ -104,7 +104,7 @@
     "sass": "^1.50.0",
     "sass-lint": "^1.13.1",
     "sass-loader": "^12.4.0",
-    "sinon": "^13.0.1",
+    "sinon": "^13.0.2",
     "sonar-scanner": "^3.1.0",
     "style-loader": "^3.3.1",
     "supertest": "^6.1.6",
