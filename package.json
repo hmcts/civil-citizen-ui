@@ -98,7 +98,7 @@
     "mini-css-extract-plugin": "^2.6.0",
     "nock": "^13.2.3",
     "nodemon": "^2.0.15",
-    "pa11y": "^6.2.2",
+    "pa11y": "^6.2.3",
     "playwright": "^1.20.2",
     "request": "^2.88.0",
     "sass": "^1.50.0",
