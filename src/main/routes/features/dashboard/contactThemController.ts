@@ -1,9 +1,9 @@
 import * as express from 'express';
-import {CITIZEN_CONTACT_THEM} from '../../urls';
+import {CITIZEN_CONTACT_THEM_URL} from '../../urls';
 
-import {getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
-import {GenericForm} from 'common/form/models/genericForm';
-import {Claim} from 'models/claim';
+import {getDraftClaimFromStore} from '../../../modules/draft-store/draftStoreService';
+import {GenericForm} from '../../../common/form/models/genericForm';
+import {Claim} from '../../../common/models/claim';
 
 const citizenEmploymentStatusViewPath = 'features/dashboard/contact-them';
 const contactThemController = express.Router();
@@ -14,7 +14,7 @@ function renderView(form: GenericForm<Claim>, res: express.Response): void {
   res.render(citizenEmploymentStatusViewPath, {form: form});
 }
 
-contactThemController.get(CITIZEN_CONTACT_THEM, async (req, res) => {
+contactThemController.get(CITIZEN_CONTACT_THEM_URL, async (req, res) => {
   try {
     claim = await getDraftClaimFromStore(req.params.id);
     renderView(new GenericForm(claim), res);

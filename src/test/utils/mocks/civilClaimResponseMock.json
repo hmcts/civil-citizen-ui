@@ -12,6 +12,21 @@
       "version": "4",
       "calculatedAmountInPence": "7000"
     },
+    "phone": "(0)207 127 0000",
+    "claimantEmail": "cmcclaimant23@gmail.com",
+    "applicant1": {
+      "type": "ORGANISATION",
+      "partyName": "Mr. Jan Clark",
+      "primaryAddress": {
+        "County": "London",
+        "Country": "United Kingdom",
+        "PostCode": "SW1H 9AJ",
+        "PostTown": "Reading",
+        "AddressLine1": "Flat 2",
+        "AddressLine2": "Caversham House 15-17",
+        "AddressLine3": "Church Road"
+      }
+    },
     "statementOfMeans": {
       "disability": {
         "option": "yes"
@@ -55,8 +70,8 @@
           "under11": 2
         }
       },
-      "employers":{
-        "rows":[
+      "employers": {
+        "rows": [
           {
             "employerName": "Felipe",
             "jobTitle": "Developer"
@@ -68,9 +83,10 @@
         ]
       },
       "priorityDebts": {
-        "mortgage": { 
-          "amount": 100.0, 
-          "schedule": "week" }
+        "mortgage": {
+          "amount": 100.0,
+          "schedule": "week"
+        }
       },
       "unemployment": {
         "option": "Unemployed",
