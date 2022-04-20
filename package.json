@@ -53,7 +53,7 @@
     "cookie-parser": "^1.4.6",
     "cookie-session": "^2.0.0",
     "csurf": "^1.11.0",
-    "dayjs": "^1.11.0",
+    "dayjs": "^1.11.1",
     "express": "^4.17.3",
     "express-nunjucks": "^2.2.5",
     "express-session": "^1.17.2",
