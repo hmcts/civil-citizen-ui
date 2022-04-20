@@ -25,7 +25,8 @@ describe('partial admission service', () => {
       it('should get a boolean value if already paid is set to true', async () => {
         // Given
         const claim = new Claim();
-        claim.claimAlreadyPaid = true;
+        claim.partialAdmission = {};
+        claim.partialAdmission.claimAlreadyPaid = true;
         mockGetCaseData.mockImplementation(async () => {
           return claim;
         });
@@ -38,7 +39,8 @@ describe('partial admission service', () => {
       it('should get a boolean value if already paid is set to false', async () => {
         // Given
         const claim = new Claim();
-        claim.claimAlreadyPaid = false;
+        claim.partialAdmission = {};
+        claim.partialAdmission.claimAlreadyPaid = false;
         mockGetCaseData.mockImplementation(async () => {
           return claim;
         });
@@ -65,7 +67,8 @@ describe('partial admission service', () => {
       it('should save successfully when already paid is previously set', async () => {
         // Given
         const claim = new Claim();
-        claim.claimAlreadyPaid = false;
+        claim.partialAdmission = {};
+        claim.partialAdmission.claimAlreadyPaid = false;
         mockGetCaseData.mockImplementation(async () => {
           return claim;
         });
