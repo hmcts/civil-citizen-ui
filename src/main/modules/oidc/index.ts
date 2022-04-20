@@ -1,4 +1,4 @@
-import {Application, NextFunction,Response} from 'express';
+import {Application, NextFunction,Response, Request} from 'express';
 import config from 'config';
 import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
@@ -18,7 +18,7 @@ export class OidcMiddleware {
     const scope: string = config.get('services.idam.scope');
     const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri)+scope;
 
-    app.get(SIGN_IN_URL, (req: AppRequest, res: Response) => {
+    app.get(SIGN_IN_URL, (_req: AppRequest, res: Response) => {
       res.redirect(idamUrlLogin);
     });
 
