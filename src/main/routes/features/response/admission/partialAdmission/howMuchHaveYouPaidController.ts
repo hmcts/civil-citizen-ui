@@ -8,7 +8,7 @@ import {HowMuchHaveYouPaid} from '../../../../../common/form/models/admission/pa
 
 
 const {Logger} = require('@hmcts/nodejs-logging');
-let logger = Logger.getLogger('paymentDateController');
+let logger = Logger.getLogger('HowMuchHaveYouPaidController');
 const howMuchHaveYouPaidPath = 'features/response/admission/fullAdmission/partialAdmission/how-much-have-you-paid';
 const howMuchHaveYouPaidController = express.Router();
 const nextMonth = new Date();

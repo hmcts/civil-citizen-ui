@@ -4,7 +4,7 @@ import {Claim} from '../../../common/models/claim';
 import {PartialAdmission} from '../../../common/models/partialAdmission';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('paymentDateService');
+const logger = Logger.getLogger('howMuchHaveYouPaidService');
 
 
 class HowMuchHaveYouPaidService {
