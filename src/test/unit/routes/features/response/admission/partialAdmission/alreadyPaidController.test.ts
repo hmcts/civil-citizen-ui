@@ -10,14 +10,10 @@ import {
   CITIZEN_ALREADY_PAID_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../../../../../main/routes/urls';
+import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-
-const mockDraftStore = {
-  get: jest.fn(() => Promise.resolve('{}')),
-  set: jest.fn(() => Promise.resolve()),
-};
 
 const mockGetExceptionDraftStore = {
   get: jest.fn(() => {
@@ -40,7 +36,7 @@ describe('Already Paid Controller', () => {
 
   describe('on GET', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
     });
 
     it('should return already paid page successfully', async () => {
@@ -62,7 +58,7 @@ describe('Already Paid Controller', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
     });
 
     it('should validate form', async () => {
