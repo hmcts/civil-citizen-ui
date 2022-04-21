@@ -46,3 +46,9 @@ export const VALID_ENTER_A_JOB_TITLE = 'Enter a job title';
 export const VALID_ENTER_AT_LEAST_ONE_EMPLOYER = 'Enter at least one employer';
 export const ENTER_AT_LEAST_ONE_DEBT = 'Enter at least one debt';
 export const ENTER_A_DEBT = 'Enter a debt';
+
+export const AMOUNT_REQUIRED = 'Enter an amount of £1 or more';
+export const PAYMENT_FREQUENCY_REQUIRED = 'Choose a payment frequency';
+export const EQUAL_INSTALMENTS_REQUIRED = 'Enter a valid amount for equal instalments';
+export const FIRST_PAYMENT_DATE_IN_THE_FUTURE = 'Enter a first payment date in the future';
+export const FOUR_DIGIT_YEAR_REQUIRED = 'Enter a 4 digit year';
