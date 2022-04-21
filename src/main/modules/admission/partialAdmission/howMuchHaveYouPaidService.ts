@@ -40,8 +40,9 @@ class HowMuchHaveYouPaidService {
     }
   }
 
-  public buildHowMuchHaveYouPaid(amount?: number, totalAmount?: number, year?: string, month?: string, day?: string, text?: string): HowMuchHaveYouPaid {
-    return new HowMuchHaveYouPaid(amount, totalAmount, year, month, day, text);
+  public buildHowMuchHaveYouPaid(amount?: number, totalClaimAmount?: number, year?: string, month?: string, day?: string, text?: string): HowMuchHaveYouPaid {
+    console.log('Total claim amount is ' + totalClaimAmount);
+    return new HowMuchHaveYouPaid(amount, totalClaimAmount, year, month, day, text);
   }
 
 }

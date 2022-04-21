@@ -11,8 +11,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("How much have you paid the claimant?") %}
-      {% set description = "The total amount claimed is £" + form.totalClaimAmount + ". This includes the claim fee and any interest." %}
-      {% set amountAsString = '' + form.amount %}
+      {% set description = "The total amount claimed is £" + form.model.totalClaimAmount + ". This includes the claim fee and any interest." %}
+      {% set amountAsString = '' + form.model.amount %}
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ govukErrorSummary({
