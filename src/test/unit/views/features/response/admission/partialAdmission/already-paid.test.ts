@@ -3,6 +3,7 @@ import nock from 'nock';
 import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import {CITIZEN_ALREADY_PAID_URL} from '../../../../../../../main/routes/urls';
+import {VALID_YES_NO_SELECTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 const mockDraftStore = {
   get: jest.fn(() => Promise.resolve('{}')),
@@ -76,14 +77,14 @@ describe('Already Paid View', () => {
     it('should display correct error summary message with correct link', () => {
       const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
         .getElementsByTagName('li')[0];
-      expect(errorSummaryMessage.innerHTML).toContain('Please select yes or no');
+      expect(errorSummaryMessage.innerHTML).toContain(VALID_YES_NO_SELECTION);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#alreadyPaid');
     });
 
     it('should display correct error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      expect(errorMessage.innerHTML).toContain('Please select yes or no');
+      expect(errorMessage.innerHTML).toContain(VALID_YES_NO_SELECTION);
     });
   });
 });
