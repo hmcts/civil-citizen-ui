@@ -1,4 +1,4 @@
-import {Application, NextFunction,Response, Request} from 'express';
+import {Application, NextFunction,Response} from 'express';
 import config from 'config';
 import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
