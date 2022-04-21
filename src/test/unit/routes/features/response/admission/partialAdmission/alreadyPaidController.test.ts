@@ -10,19 +10,10 @@ import {
   CITIZEN_ALREADY_PAID_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../../../../../main/routes/urls';
-import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-
-const mockGetExceptionDraftStore = {
-  get: jest.fn(() => {
-    throw new Error(REDIS_ERROR_MESSAGE);
-  }),
-  set: jest.fn(() => {
-    throw new Error(REDIS_ERROR_MESSAGE);
-  }),
-};
 
 describe('Already Paid Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -47,7 +38,7 @@ describe('Already Paid Controller', () => {
     });
 
     it('should return status 500 when there is an error', async () => {
-      app.locals.draftStoreClient = mockGetExceptionDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_ALREADY_PAID_URL).expect((res) => {
           expect(res.status).toBe(500);
@@ -92,7 +83,7 @@ describe('Already Paid Controller', () => {
     });
 
     it('should return 500 status when there is error', async () => {
-      app.locals.draftStoreClient = mockGetExceptionDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_ALREADY_PAID_URL)
         .send({alreadyPaid: 'foo'})
