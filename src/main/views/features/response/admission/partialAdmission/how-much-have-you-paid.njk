@@ -35,11 +35,7 @@
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">{{ title }}</h1>
             </legend>
-            <div class="govuk-grid-row">
-              <div class="govuk-grid-column-two-thirds">
-                <h2 class="govuk-heading-s">{{ t('How much have you paid?') }}</h2>
-              </div>
-            </div>
+            <p class="govuk-body-m">{{ t(description) }}</p>
             {{ govukInput({
               id: "amount",
               name: "amount",
@@ -51,10 +47,12 @@
               prefix: {
                 text: "£"
               },
-              classes: "govuk-!-width-two-thirds",
-              hint : {
-                text: t(description)
+              label: {
+                text: t("How much have you paid?"),
+                classes: "govuk-label--s",
+                isPageHeading: true
               },
+              classes: "govuk-!-width-two-thirds",
               errorMessage: {
                 text:t(form.errorFor('amount'))
               } if form.hasFieldError('amount')
