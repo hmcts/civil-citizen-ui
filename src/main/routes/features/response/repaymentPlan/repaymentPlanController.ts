@@ -23,9 +23,9 @@ const getFirstPaymentExampleDate = () => {
   const date = new Date();
   DateFormatter.setMonth(date, 1);
   return DateFormatter.setDateFormat(date, 'en-GB', {
-    day: 'numeric', month: '2-digit', year: 'numeric'
-  })
-}
+    day: 'numeric', month: '2-digit', year: 'numeric',
+  });
+};
 
 repaymentPlanController.get(CITIZEN_REPAYMENT_PLAN, async (req, res) => {
   try {

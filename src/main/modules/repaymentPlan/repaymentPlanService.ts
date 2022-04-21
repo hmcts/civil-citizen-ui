@@ -18,8 +18,8 @@ const getRepaymentPlanForm = async (claimId: string) => {
         repaymentPlan.repaymentFrequency,
         firstRepaymentDate.getFullYear().toString(),
         (firstRepaymentDate.getMonth() + 1).toString(),
-        firstRepaymentDate.getDate().toString()
-      )
+        firstRepaymentDate.getDate().toString(),
+      );
     }
     return new RepaymentPlanForm(totalClaimAmount);
   } catch (error) {
