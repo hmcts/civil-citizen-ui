@@ -16,7 +16,7 @@
       {% set firstPaymentExample = t('For example, ' + paymentExampleDate) %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": "There was a problem",
+          "titleText": t("There was a problem"),
           "errorList": errors
         }) }}
       {% endif %}
