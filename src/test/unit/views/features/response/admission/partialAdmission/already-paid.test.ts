@@ -4,11 +4,8 @@ import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import {CITIZEN_ALREADY_PAID_URL} from '../../../../../../../main/routes/urls';
 import {VALID_YES_NO_SELECTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
 
-const mockDraftStore = {
-  get: jest.fn(() => Promise.resolve('{}')),
-  set: jest.fn(() => Promise.resolve()),
-};
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
@@ -25,8 +22,8 @@ describe('Already Paid View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      app.locals.draftStoreClient = mockDraftStore;
-      request(app).get(CITIZEN_ALREADY_PAID_URL).then(res => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(CITIZEN_ALREADY_PAID_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
       });
@@ -62,8 +59,8 @@ describe('Already Paid View', () => {
 
   describe('on POST', () => {
     beforeEach(async () => {
-      app.locals.draftStoreClient = mockDraftStore;
-      request(app).post(CITIZEN_ALREADY_PAID_URL).then(res => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).post(CITIZEN_ALREADY_PAID_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
       });
