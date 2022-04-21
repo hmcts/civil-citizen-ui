@@ -3,6 +3,7 @@ import {Unemployment} from '../../../common/form/models/statementOfMeans/unemplo
 import {UnemploymentDetails} from '../../../common/form/models/statementOfMeans/unemployment/unemploymentDetails';
 import {OtherDetails} from '../../../common/form/models/statementOfMeans/unemployment/otherDetails';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
+import {UnemploymentCategory} from '../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentService');
@@ -15,8 +16,14 @@ export class UnemploymentService {
       const claim = await getCaseDataFromStore(claimId);
       if (claim.statementOfMeans?.unemployment) {
         unemployment.option = claim.statementOfMeans.unemployment.option;
-        unemployment.unemploymentDetails = new UnemploymentDetails(claim.statementOfMeans.unemployment.unemploymentDetails.years.toString(), claim.statementOfMeans.unemployment.unemploymentDetails.months.toString());
-        unemployment.otherDetails = new OtherDetails(claim.statementOfMeans.unemployment.otherDetails.details);
+        if (unemployment.option === UnemploymentCategory.UNEMPLOYED) {
+          unemployment.unemploymentDetails
+            = new UnemploymentDetails(claim.statementOfMeans.unemployment.unemploymentDetails.years.toString(),
+              claim.statementOfMeans.unemployment.unemploymentDetails.months.toString());
+        }
+        if (unemployment.option === UnemploymentCategory.OTHER) {
+          unemployment.otherDetails = new OtherDetails(claim.statementOfMeans.unemployment.otherDetails.details);
+        }
         return unemployment;
       }
       return new Unemployment();
