@@ -6,7 +6,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../../main/common/ut
 import {
   setFinancialDetailsControllerLogger,
 } from '../../../../../../main/routes/features/response/financialDetails/financialDetailsController';
-import {LoggerInstance} from 'winston';
+import {Logger} from 'winston';
 import {FINANCIAL_DETAILS_URL} from '../../../../../../main/routes/urls';
 
 const claimIndividualMock = require('./claimIndividualMock.json');
@@ -22,7 +22,7 @@ jest.mock('../../../../../../main/modules/draft-store');
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
-} as unknown as LoggerInstance;
+} as unknown as Logger;
 
 let mockDraftStore = {
   set: jest.fn(() => Promise.resolve({data: {}})),
