@@ -7,6 +7,8 @@
  * If you have a remove row button in your repeating section add remove-row class to it to enable it to remove rows
  * If there is only one row then remove button will be hidden
  */
+const {getCalculation, addCalculationEventListener} = require('./calculate-amount');
+
 document.addEventListener('DOMContentLoaded', function () {
   const appendRowButton = document.getElementsByClassName('append-row');
   if (elementExists(appendRowButton)) {
@@ -28,6 +30,11 @@ document.addEventListener('DOMContentLoaded', function () {
       if (multipleRows < 2) {
         hideRemoveButton();
       }
+      if (document.getElementsByClassName('civil-amountRow')) {
+        getCalculation().catch(err => {
+          console.log(err);
+        });
+      }
     });
   }
 
@@ -43,6 +50,9 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       lastRow.parentNode.appendChild(newRow);
       updateNewRow(document.getElementsByClassName('multiple-row'));
+      if (document.getElementsByClassName('civil-amountRow')) {
+        addCalculationEventListener();
+      }
     }
   }
 
