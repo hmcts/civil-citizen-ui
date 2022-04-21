@@ -26,7 +26,7 @@ describe('Already Paid View', () => {
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockDraftStore;
-      await request(app).get(CITIZEN_ALREADY_PAID_URL).then(res => {
+      request(app).get(CITIZEN_ALREADY_PAID_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
       });
@@ -63,7 +63,7 @@ describe('Already Paid View', () => {
   describe('on POST', () => {
     beforeEach(async () => {
       app.locals.draftStoreClient = mockDraftStore;
-      await request(app).post(CITIZEN_ALREADY_PAID_URL).then(res => {
+      request(app).post(CITIZEN_ALREADY_PAID_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
       });
