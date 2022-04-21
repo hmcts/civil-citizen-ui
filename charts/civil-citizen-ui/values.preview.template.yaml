@@ -16,5 +16,5 @@ nodejs:
 idam-pr:
   enabled: true
   redirect_uris:
-    civil_citizen_ui:
+    Civil Citizen UI:
       - https://${SERVICE_FQDN}/oauth2/callback
