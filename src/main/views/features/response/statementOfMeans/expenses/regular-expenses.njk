@@ -61,10 +61,12 @@
         {{ otherExpenseDetails( 'model[other][transactionSources]', loop.index0, transactionSource, form, {text:'Remove this expense source'}) }}
       {% endif %}
     {% endfor %}
-    {{ govukButton({
-      text: t("Add another expence"),
-      classes: "govuk-button--secondary append-row"
-    }) }}
+    <div class="govuk-form-group">
+      {{ govukButton({
+        text: t("Add another expense"),
+        classes: "govuk-button--secondary append-row"
+      }) }}
+    </div>
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
