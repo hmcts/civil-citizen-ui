@@ -16,13 +16,15 @@ export class UnemploymentService {
       const claim = await getCaseDataFromStore(claimId);
       if (claim.statementOfMeans?.unemployment) {
         unemployment.option = claim.statementOfMeans.unemployment.option;
-        if (unemployment.option === UnemploymentCategory.UNEMPLOYED) {
-          unemployment.unemploymentDetails
-            = new UnemploymentDetails(claim.statementOfMeans.unemployment.unemploymentDetails.years.toString(),
-              claim.statementOfMeans.unemployment.unemploymentDetails.months.toString());
-        }
-        if (unemployment.option === UnemploymentCategory.OTHER) {
-          unemployment.otherDetails = new OtherDetails(claim.statementOfMeans.unemployment.otherDetails.details);
+        switch (unemployment.option) {
+          case UnemploymentCategory.UNEMPLOYED:
+            unemployment.unemploymentDetails
+              = new UnemploymentDetails(claim.statementOfMeans.unemployment.unemploymentDetails.years.toString(),
+                claim.statementOfMeans.unemployment.unemploymentDetails.months.toString());
+            break;
+          case UnemploymentCategory.OTHER:
+            unemployment.otherDetails = new OtherDetails(claim.statementOfMeans.unemployment.otherDetails.details);
+            break;
         }
         return unemployment;
       }
