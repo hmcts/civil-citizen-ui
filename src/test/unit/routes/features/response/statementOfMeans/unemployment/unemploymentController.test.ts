@@ -15,7 +15,8 @@ import {
   mockCivilClaimOptionNo,
   mockCivilClaimUndefined,
   mockNoStatementOfMeans,
-  mockCivilClaimRetired,
+  mockCivilClaimUnemploymentRetired,
+  mockCivilClaimUnemploymentOther,
   mockRedisFailure,
 } from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
@@ -65,7 +66,15 @@ describe('Unemployment', () => {
         });
     });
     test('should return unemployment page successfully when retired', async () => {
-      app.locals.draftStoreClient = mockCivilClaimRetired;
+      app.locals.draftStoreClient = mockCivilClaimUnemploymentRetired;
+      await request(app).get(CITIZEN_UNEMPLOYED_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Are you unemployed or retired?');
+        });
+    });
+    test('should return unemployment page successfully when other', async () => {
+      app.locals.draftStoreClient = mockCivilClaimUnemploymentOther;
       await request(app).get(CITIZEN_UNEMPLOYED_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
