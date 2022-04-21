@@ -9,20 +9,17 @@ const getRepaymentPlanForm = async (claimId: string) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     const totalClaimAmount = claim.totalClaimAmount;
-    const repaymentPlanForm = new RepaymentPlanForm(totalClaimAmount);
     if (claim.repaymentPlan) {
       const repaymentPlan = claim.repaymentPlan;
-      const dateOfBirth =  new Date(repaymentPlan.firstRepaymentDate);
-      repaymentPlanForm.day = dateOfBirth.getDate();
-      repaymentPlanForm.month = (dateOfBirth.getMonth() + 1);
-      repaymentPlanForm.year = dateOfBirth.getFullYear();
+      const firstRepaymentDate = new Date(repaymentPlan.firstRepaymentDate);
       return new RepaymentPlanForm(
         totalClaimAmount,
         repaymentPlan.paymentAmount,
         repaymentPlan.repaymentFrequency,
-        repaymentPlanForm.year.toString(),
-        repaymentPlanForm.month.toString(),
-        repaymentPlanForm.day.toString());
+        firstRepaymentDate.getFullYear().toString(),
+        (firstRepaymentDate.getMonth() + 1).toString(),
+        firstRepaymentDate.getDate().toString()
+      )
     }
     return new RepaymentPlanForm(totalClaimAmount);
   } catch (error) {
