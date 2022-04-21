@@ -16,9 +16,9 @@ import {EqualToOrLessThanPropertyValueValidator} from '../../../validators/equal
 import {OptionalDateFourDigitValidator} from '../../../validators/optionalDateFourDigitValidator';
 import {OptionalDateInPastValidator} from '../../../validators/optionalDateInPastValidator';
 import {DateConverter} from '../../../../../common/utils/dateConverter';
-import {Form} from '../../form';
 
-export class HowMuchHaveYouPaid extends Form {
+
+export class HowMuchHaveYouPaid {
 
   @IsDefined({ message: VALID_AMOUNT })
   @Min(MIN_AMOUNT_VALUE, { message: VALID_AMOUNT })
@@ -50,7 +50,6 @@ export class HowMuchHaveYouPaid extends Form {
     text?: string;
 
   constructor(amount?: number, totalAmount?: number, year?: string, month?: string, day?: string, text?: string) {
-    super();
     this.amount = amount;
     this.totalAmount = totalAmount;
     this.date = DateConverter.convertToDate(year, month, day);
