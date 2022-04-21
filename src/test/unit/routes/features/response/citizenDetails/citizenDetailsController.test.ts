@@ -9,6 +9,7 @@ import {
   VALID_CORRESPONDENCE_ADDRESS_LINE_1,
   VALID_CORRESPONDENCE_CITY,
   VALID_CORRESPONDENCE_POSTCODE,
+  REDIS_ERROR_MESSAGE,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   getRespondentInformation,
@@ -28,7 +29,6 @@ const mockSaveRespondent = saveRespondent as jest.Mock;
 
 const claim = new Claim();
 
-
 const buildClaimOfRespondent = (): Respondent => {
   claim.respondent1 = new Respondent();
   claim.respondent1.individualTitle = 'individualTitle';
@@ -40,7 +40,6 @@ const buildClaimOfRespondent = (): Respondent => {
 };
 
 const nock = require('nock');
-const redisFailureError = 'Redis DraftStore failure.';
 
 const validDataForPost = {
   primaryAddressLine1: 'Flat 3A Middle Road',
@@ -70,28 +69,27 @@ describe('Confirm Details page', () => {
   describe('on Exception', () => {
     test('should return http 500 when has error in the get method', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
-        throw new Error(redisFailureError);
+        throw new Error(REDIS_ERROR_MESSAGE);
       });
       await request(app)
         .get(CITIZEN_DETAILS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: redisFailureError});
+          expect(res.body).toEqual({error: REDIS_ERROR_MESSAGE});
         });
     });
   });
 
   test('should return http 500 when has error in the post method', async () => {
-    const redisFailureError = 'Redis DraftStore failure.';
     mockSaveRespondent.mockImplementation(async () => {
-      throw new Error(redisFailureError);
+      throw new Error(REDIS_ERROR_MESSAGE);
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send(validDataForPost)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: redisFailureError});
+        expect(res.body).toEqual({error: REDIS_ERROR_MESSAGE});
       });
   });
   test('should return your details page with empty information', async () => {
