@@ -23,7 +23,7 @@ howMuchHaveYouPaidController
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req: express.Request, res: express.Response) => {
       try {
         const howMuchHaveYouPaid : HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id);
-        if (howMuchHaveYouPaid) {
+        if (howMuchHaveYouPaid.date) {
           const dateWhenYouPaid = new Date(howMuchHaveYouPaid.date);
           howMuchHaveYouPaid.date = dateWhenYouPaid;
           howMuchHaveYouPaid.year = dateWhenYouPaid.getFullYear();
