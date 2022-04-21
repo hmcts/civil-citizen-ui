@@ -12,10 +12,12 @@ class HowMuchHaveYouPaidService {
   public async getHowMuchHaveYouPaid(claimId: string): Promise<HowMuchHaveYouPaid> {
     try {
       const claim = await getCaseDataFromStore(claimId);
+      const totalClaimAmount = claim.totalClaimAmount;
+      console.log(totalClaimAmount);
       if (claim.partialAdmission?.howMuchHaveYouPaid) {
         return claim.partialAdmission.howMuchHaveYouPaid;
       }
-      return new HowMuchHaveYouPaid();
+      return new HowMuchHaveYouPaid(undefined, totalClaimAmount, undefined, undefined, undefined, undefined);
     } catch (error) {
       logger.error(error);
       throw error;

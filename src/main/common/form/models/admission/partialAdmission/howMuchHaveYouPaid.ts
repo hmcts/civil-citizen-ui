@@ -26,7 +26,7 @@ export class HowMuchHaveYouPaid {
   @Validate(EqualToOrLessThanPropertyValueValidator, ['totalAmount', 'strictComparison'], { message: AMOUNT_LESS_THEN_CLAIMED })
     amount?: number;
 
-  totalAmount?: number;
+  totalClaimAmount?: number;
 
   @ValidateIf(o => (o.day > 0 && o.day <32 && o.month > 0 && o.month < 13 && o.year > 999))
   @IsDate({message: VALID_DATE})
@@ -49,9 +49,10 @@ export class HowMuchHaveYouPaid {
   @IsNotEmpty({message: ENTER_PAYMENT_EXPLANATION})
     text?: string;
 
-  constructor(amount?: number, totalAmount?: number, year?: string, month?: string, day?: string, text?: string) {
+  constructor(amount?: number, totalClaimAmount?: number, year?: string, month?: string, day?: string, text?: string) {
     this.amount = amount;
-    this.totalAmount = totalAmount;
+    this.totalClaimAmount = totalClaimAmount;
+    console.log('submitting to form:' + totalClaimAmount);
     this.date = DateConverter.convertToDate(year, month, day);
     this.year = Number(year);
     this.month = Number(month);
