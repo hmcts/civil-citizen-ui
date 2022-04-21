@@ -6,12 +6,10 @@
   const lengthOfRepayment = document.querySelector('#lengthOfRepayment');
 
   if (repaymentFrequency) {
+    const frquency = formRepaymentPlan['repaymentFrequency'].value;
 
     paymentAmount.addEventListener('keyup', () => {
-      const frquency = formRepaymentPlan['repaymentFrequency'].value;
-      if (frquency) {
-        getRepaymentSchedule(frquency);
-      }
+      getRepaymentSchedule(frquency);
     });
 
     repaymentFrequency.addEventListener('click', (event) => {
@@ -41,5 +39,10 @@
       const plural = num < 2 ? '' : 's';
       return ` ${word}${plural}`;
     };
+
+
+    if (frquency) {
+      getRepaymentSchedule(frquency);
+    }
   }
 })();
