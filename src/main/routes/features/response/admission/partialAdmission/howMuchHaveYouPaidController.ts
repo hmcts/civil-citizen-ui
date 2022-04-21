@@ -30,7 +30,6 @@ howMuchHaveYouPaidController
           howMuchHaveYouPaid.month = dateWhenYouPaid.getMonth() + 1;
           howMuchHaveYouPaid.day = dateWhenYouPaid.getDate();
         }
-        console.log('totalClaimAmount is ' + howMuchHaveYouPaid.totalClaimAmount);
         res.render(howMuchHaveYouPaidPath, {
           form: new GenericForm(howMuchHaveYouPaid), nextMonth : nextMonth,
         });

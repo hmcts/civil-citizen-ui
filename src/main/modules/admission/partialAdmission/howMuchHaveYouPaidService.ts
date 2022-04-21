@@ -13,7 +13,6 @@ class HowMuchHaveYouPaidService {
     try {
       const claim = await getCaseDataFromStore(claimId);
       const totalClaimAmount = claim.totalClaimAmount;
-      console.log(totalClaimAmount);
       if (claim.partialAdmission?.howMuchHaveYouPaid) {
         return claim.partialAdmission.howMuchHaveYouPaid;
       }
@@ -41,7 +40,6 @@ class HowMuchHaveYouPaidService {
   }
 
   public buildHowMuchHaveYouPaid(amount?: number, totalClaimAmount?: number, year?: string, month?: string, day?: string, text?: string): HowMuchHaveYouPaid {
-    console.log('Total claim amount is ' + totalClaimAmount);
     return new HowMuchHaveYouPaid(amount, totalClaimAmount, year, month, day, text);
   }
 

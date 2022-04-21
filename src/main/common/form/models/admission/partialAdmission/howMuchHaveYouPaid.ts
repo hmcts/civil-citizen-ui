@@ -52,7 +52,6 @@ export class HowMuchHaveYouPaid {
   constructor(amount?: number, totalClaimAmount?: number, year?: string, month?: string, day?: string, text?: string) {
     this.amount = amount;
     this.totalClaimAmount = totalClaimAmount;
-    console.log('submitting to form:' + totalClaimAmount);
     this.date = DateConverter.convertToDate(year, month, day);
     this.year = Number(year);
     this.month = Number(month);
