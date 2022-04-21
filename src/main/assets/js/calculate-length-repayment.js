@@ -4,12 +4,11 @@
   const paymentAmount = document.querySelector('#paymentAmount');
   const totalClaimAmount = document.querySelector('#totalClaimAmount');
   const lengthOfRepayment = document.querySelector('#lengthOfRepayment');
+  const frequency = formRepaymentPlan ? formRepaymentPlan['repaymentFrequency'] : null;
 
   if (repaymentFrequency) {
-    const frquency = formRepaymentPlan['repaymentFrequency'].value;
-
     paymentAmount.addEventListener('keyup', () => {
-      getRepaymentSchedule(frquency);
+      getRepaymentSchedule(frequency.value);
     });
 
     repaymentFrequency.addEventListener('click', (event) => {
@@ -40,9 +39,8 @@
       return ` ${word}${plural}`;
     };
 
-
-    if (frquency) {
-      getRepaymentSchedule(frquency);
+    if (frequency.value) {
+      getRepaymentSchedule(frequency.value);
     }
   }
 })();
