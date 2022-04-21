@@ -4,8 +4,9 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
-{% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
+
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -13,19 +14,18 @@
       {% set description = "The total amount claimed is £"+form.totalAmount+". This includes the claim fee and any interest." %}
       {% set amountAsString = ''+form.amount %}
       {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% if form.hasErrors() %}
         {{ govukErrorSummary({
           "titleText": t("There was a problem"),
           "errorList": errors
         }) }}
-      {% endif %}
-      {% set errorMessages %}
-        {% if errors %}
-          {% for error in errors %}
-            <span class="govuk-error-message">{{ t(error.text) }}</span>
-          {% endfor %}
-        {% endif %}
-      {% endset -%}
+        {% set errorMessages %}
+          {% if errors %}
+            {% for error in errors %}
+              <span class="govuk-error-message">{{ t(error.text) }}</span>
+            {% endfor %}
+          {% endif %}
+        {% endset -%}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -118,7 +118,7 @@
                 classes:"govuk-!-width-three-quarters",
                 label: {
                   text: t("How did you pay this amount?"),
-                  classes: "govuk-label--l"
+                  classes: "govuk-label--s"
                 },
                 errorMessage: {
                   text: t(form.errorFor('text'))
