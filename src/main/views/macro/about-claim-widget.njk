@@ -1,26 +1,11 @@
-{% macro aboutClaimWidget(otherParty, claim) %}
+{% from "./newLine.njk" import newLine %}
 
-  {% set header = t('About claim')  %}
-  {% if otherParty === 'Defendant' %}
-    {% set otherPartyLabel = 'Defendant name:' %}
-    {% set hrefOtherPartyLabel = 'contact-them' %}
-    {% set otherPartyName = claim.case_data.respondent1.partyName %}
-    {% set responseLabel = 'Defendant response:' %}
-  {% elseif otherParty === 'Claimant' %}
-    {% set otherPartyLabel = 'Claimant name:' %}
-    {% set hrefOtherPartyLabel = 'contact-them' %}
-    {% set otherPartyName = claim.case_data.applicant1.partyName%}
-    {% set responseLabel = 'Your response:' %}
-  {% endif %}
-
+{% macro aboutClaimWidget(header,otherPartyLabel, otherPartyName, reponseLabel, totalClaimAmount) %}
+  {% set hrefOtherPartyLabel = 'contact-them' %}
   <div class="govuk-grid-column-one-third  govuk-!-padding-top-9">
-    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ header}}</h3>
-      <p class="govuk-body-s govuk-!-margin-bottom-0 govuk-!-font-weight-bold">{{ t(otherPartyLabel) }}</p>
-      <p class="govuk-body-s govuk-!-margin-bottom-0"><a href={{hrefOtherPartyLabel}}>{{ otherPartyName}}</a></p>
-      <p class="govuk-body-s govuk-!-margin-bottom-0 govuk-!-font-weight-bold">{{ t('Claim amount:') }}</p>
-      <p class="govuk-body-s govuk-!-margin-bottom-0">{{'£' }}{{ claim.case_data.totalClaimAmount}}</p>
-      <p class="govuk-body-s govuk-!-margin-bottom-0 govuk-!-font-weight-bold">{{ t('Claim details:') }}</p>
-      <p class="govuk-body-s govuk-!-margin-bottom-0"><a href={{'claim-details'}}>{{ t('View claim') }}</a></p>
+  <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{header}}</h3>
+    {{ newLine('','',otherPartyLabel,otherPartyName)}}
+    {{ newLine('Claim amount:',totalClaimAmount,'','')}}
+    {{ newLine('Claim details:','','claim-details','View claim')}}
   </div>
-
 {% endmacro %}

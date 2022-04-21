@@ -6,7 +6,10 @@
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
         {% set otherParty = 'Claimant' %}
+        {% set otherPartyLabel = 'Claimant name:' %}
+        {% set header = t('About claim')  %}
         {% set otherPartyName = form.case_data.applicant1.partyName %}
+        {% set totalClaimAmount ='£'+form.case_data.totalClaimAmount %}
         {% set phone = form.case_data.phone %}
         {% set email = form.case_data.claimantEmail %}
         {% set address = form.case_data.applicant1.primaryAddress %}
@@ -23,25 +26,20 @@
               {% if address.AddressLine1 %}
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine1 }}</p>
               {% endif %}
-
               {% if address.AddressLine2 %}
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine2 }}</p>
               {% endif %}
-
               {% if address.AddressLine3 %}
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine3 }}</p>
               {% endif %}
-
               {% if address.County %}
                 <p class="govuk-body govuk-!-margin-bottom-0" >{{ address.County }}</p>
               {% endif %}
-
               {% if address.PostCode %}
                 <p class="govuk-body govuk-!-margin-bottom-6">{{ address.PostCode }}</p>
               {% endif %}
             {% endif %}
           </div>
-
           <div>
             {% if phone %}
               <div class="govuk-body govuk-!-margin-bottom-0">{{'Phone: '}}{{ phone }}</div>
@@ -54,7 +52,7 @@
           </div>
           {{ contactUsForHelp(t) }}
         </div>
-        {{ aboutClaimWidget(otherParty, form) }}
+        {{ aboutClaimWidget(header,otherPartyLabel, otherPartyName,reponseLabel, totalClaimAmount) }}
       </div>
     </main>
   </div>

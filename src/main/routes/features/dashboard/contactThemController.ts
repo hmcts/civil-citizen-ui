@@ -7,15 +7,13 @@ import {Claim} from '../../../common/models/claim';
 const citizenContactThemViewPath = 'features/dashboard/contact-them';
 const contactThemController = express.Router();
 
-let claim = new Claim();
-
 function renderView(form: Claim, res: express.Response): void {
   res.render(citizenContactThemViewPath, {form: form});
 }
 
 contactThemController.get(CITIZEN_CONTACT_THEM_URL, async (req, res) => {
   try {
-    claim = await getDraftClaimFromStore(req.params.id);
+    const claim = await getDraftClaimFromStore(req.params.id);
     renderView(claim, res);
   } catch (error) {
     res.status(500).send({error: error.message});
