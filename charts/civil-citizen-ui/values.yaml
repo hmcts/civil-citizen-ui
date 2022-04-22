@@ -19,7 +19,7 @@ nodejs:
     REDIS_HOST: 'civil-{{ .Values.global.environment }}.redis.cache.windows.net'
     REDIS_PORT: 6380
     REDIS_TLS: true
-    CIVIL_SERVICE_URL: http://civil-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    CIVIL_SERVICE_URL: http://civil-service-{{ .Values.global.environment }}.platform.hmcts.net
     ALLOW_CONFIG_MUTATIONS: true
   autoscaling:
     enabled: false
