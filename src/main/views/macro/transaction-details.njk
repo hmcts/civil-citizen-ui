@@ -1,6 +1,6 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% macro transactionDetails(hintAmount, property, transactionSource, form) %}
+{% macro transactionDetails(hintAmount, property, transactionSource, amountLabel,form) %}
   {% set amountValue =  '' + transactionSource.amount %}
   <div class="civil-amountRow">
     <input type="hidden" name="{{ property }}[transactionSource][name]" value="{{ transactionSource.name }}"/>
@@ -8,7 +8,7 @@
       id: property + "[transactionSource][amount]",
       name: property + "[transactionSource][amount]",
       label: {
-        text: t("Amount paid")
+        text: t(amountLabel)
       },
       prefix: {
         text: "£"

@@ -13,35 +13,36 @@
       "errorList": errors
     }) }}
   {% endif %}
+  {% set amountLabel = 'Amount recieved' %}
   {% set checkedJobHtml %}
-    {{ transactionDetails('Include wages, overtime, commission, bonuses', 'model[job]',  form.model.job.transactionSource, form) }}
+    {{ transactionDetails('Include wages, overtime, commission, bonuses', 'model[job]',  form.model.job.transactionSource, amountLabel, form) }}
   {% endset -%}
   {% set checkedUniversalCreditHtml %}
-    {{ transactionDetails('', 'model[universalCredit]',  form.model.universalCredit.transactionSource, form) }}
+    {{ transactionDetails('', 'model[universalCredit]',  form.model.universalCredit.transactionSource, amountLabel, form) }}
   {% endset -%}
   {% set checkedJobseekerAllowanceIncomeHtml %}
-    {{ transactionDetails('', 'model[jobseekerAllowanceIncome]',  form.model.jobseekerAllowanceIncome.transactionSource, form) }}
+    {{ transactionDetails('', 'model[jobseekerAllowanceIncome]',  form.model.jobseekerAllowanceIncome.transactionSource, amountLabel, form) }}
   {% endset -%}
   {% set checkedJobseekerAllowanceContributionHtml %}
-    {{ transactionDetails('', 'model[jobseekerAllowanceContribution]', form.model.jobseekerAllowanceContribution.transactionSource, form) }}
+    {{ transactionDetails('', 'model[jobseekerAllowanceContribution]', form.model.jobseekerAllowanceContribution.transactionSource,amountLabel, form) }}
   {% endset -%}
   {% set checkedIncomeSupportHtml %}
-    {{ transactionDetails('', 'model[incomeSupport]', form.model.incomeSupport.transactionSource, form) }}
+    {{ transactionDetails('', 'model[incomeSupport]', form.model.incomeSupport.transactionSource, amountLabel,form) }}
   {% endset -%}
   {% set checkedWorkingTaxCreditHtml %}
-    {{ transactionDetails('', 'model[workingTaxCredit]', form.model.workingTaxCredit.transactionSource, form) }}
+    {{ transactionDetails('', 'model[workingTaxCredit]', form.model.workingTaxCredit.transactionSource, amountLabel,form) }}
   {% endset -%}
   {% set checkedChildTaxCreditHtml %}
-    {{ transactionDetails('', 'model[childTaxCredit]', form.model.childTaxCredit.transactionSource, form) }}
+    {{ transactionDetails('', 'model[childTaxCredit]', form.model.childTaxCredit.transactionSource, amountLabel, form) }}
   {% endset -%}
   {% set checkedChildBenefitHtml %}
-    {{ transactionDetails('', 'model[childBenefit]', form.model.childBenefit.transactionSource, form) }}
+    {{ transactionDetails('', 'model[childBenefit]', form.model.childBenefit.transactionSource, amountLabel, form) }}
   {% endset -%}
   {% set checkedCouncilTaxSupportHtml %}
-    {{ transactionDetails('', 'model[councilTaxSupport]',  form.model.councilTaxSupport.transactionSource, form) }}
+    {{ transactionDetails('', 'model[councilTaxSupport]',  form.model.councilTaxSupport.transactionSource, amountLabel, form) }}
   {% endset -%}
   {% set checkedPensionHtml %}
-    {{ transactionDetails('', 'model[pension]',  form.model.pension.transactionSource, form) }}
+    {{ transactionDetails('', 'model[pension]',  form.model.pension.transactionSource, amountLabel,form) }}
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">

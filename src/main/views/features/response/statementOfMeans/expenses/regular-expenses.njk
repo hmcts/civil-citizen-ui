@@ -14,44 +14,45 @@
       "errorList": errors
     }) }}
   {% endif %}
+  {% set amountLabel = 'Amount paid' %}
   {% set checkedMortgageHtml %}
-    {{ transactionDetails('Include all mortgages', 'model[mortgage]',  form.model.mortgage.transactionSource, form) }}
+    {{ transactionDetails('Include all mortgages', 'model[mortgage]',  form.model.mortgage.transactionSource, amountLabel, form) }}
   {% endset -%}
   {% set checkedRentHtml %}
-    {{ transactionDetails('', 'model[rent]',  form.model.rent.transactionSource, form) }}
+    {{ transactionDetails('', 'model[rent]',  form.model.rent.transactionSource, amountLabel, form) }}
   {% endset -%}
   {% set checkedCouncilTaxHtml %}
-    {{ transactionDetails('', 'model[councilTax]',  form.model.councilTax.transactionSource, form) }}
+    {{ transactionDetails('', 'model[councilTax]',  form.model.councilTax.transactionSource, amountLabel, form) }}
   {% endset -%}
   {% set checkedGasHtml %}
-    {{ transactionDetails('', 'model[gas]', form.model.gas.transactionSource, form) }}
+    {{ transactionDetails('', 'model[gas]', form.model.gas.transactionSource,amountLabel, form) }}
   {% endset -%}
   {% set checkedElectricityHtml %}
-    {{ transactionDetails('', 'model[electricity]', form.model.electricity.transactionSource, form) }}
+    {{ transactionDetails('', 'model[electricity]', form.model.electricity.transactionSource,amountLabel, form) }}
   {% endset -%}
   {% set checkedWaterHtml %}
-    {{ transactionDetails('Include sewerage payments', 'model[water]', form.model.water.transactionSource, form) }}
+    {{ transactionDetails('Include sewerage payments', 'model[water]', form.model.water.transactionSource,amountLabel, form) }}
   {% endset -%}
   {% set checkedTravelHtml %}
-    {{ transactionDetails('', 'model[travel]', form.model.travel.transactionSource, form) }}
+    {{ transactionDetails('', 'model[travel]', form.model.travel.transactionSource,amountLabel, form) }}
   {% endset -%}
   {% set checkedSchoolHtml %}
-    {{ transactionDetails('', 'model[schoolCosts]', form.model.schoolCosts.transactionSource, form) }}
+    {{ transactionDetails('', 'model[schoolCosts]', form.model.schoolCosts.transactionSource,amountLabel, form) }}
   {% endset -%}
   {% set checkedFoodHtml %}
-    {{ transactionDetails('', 'model[foodAndHousekeeping]',  form.model.foodAndHousekeeping.transactionSource, form) }}
+    {{ transactionDetails('', 'model[foodAndHousekeeping]',  form.model.foodAndHousekeeping.transactionSource,amountLabel, form) }}
   {% endset -%}
   {% set checkedTvHtml %}
-    {{ transactionDetails('', 'model[tvAndBroadband]',  form.model.tvAndBroadband.transactionSource, form) }}
+    {{ transactionDetails('', 'model[tvAndBroadband]',  form.model.tvAndBroadband.transactionSource,amountLabel, form) }}
   {% endset -%}
   {% set checkedHirePurchaseHtml %}
-    {{ transactionDetails('', 'model[hirePurchase]',  form.model.hirePurchase.transactionSource, form) }}
+    {{ transactionDetails('', 'model[hirePurchase]',  form.model.hirePurchase.transactionSource,amountLabel, form) }}
   {% endset -%}
   {% set checkedMobileHtml %}
-    {{ transactionDetails('', 'model[mobilePhone]', form.model.mobilePhone.transactionSource, form) }}
+    {{ transactionDetails('', 'model[mobilePhone]', form.model.mobilePhone.transactionSource,amountLabel, form) }}
   {% endset -%}
   {% set checkedMaintenanceHtml %}
-    {{ transactionDetails('', 'model[maintenance]', form.model.maintenance.transactionSource, form) }}
+    {{ transactionDetails('', 'model[maintenance]', form.model.maintenance.transactionSource,amountLabel, form) }}
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
