@@ -61,7 +61,7 @@ export const mockClaim: Claim = {
       day : 1,
       month : 1,
       year : 2040,
-      text : undefined,
+      text : 'text',
     },
   },
   totalClaimAmount: 110,

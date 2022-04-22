@@ -40,7 +40,7 @@ howMuchHaveYouPaidController
     })
   .post(
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req, res) => {
-      const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(req.body.amount, req.body.totalAmount, req.body.year, req.body.month, req.body.day, req.body.text);
+      const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(req.body.amount, req.body.totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
       const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
 
