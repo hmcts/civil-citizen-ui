@@ -8,7 +8,7 @@ import {FIRST_PAYMENT_DATE_IN_THE_FUTURE} from '../validationErrors/errorMessage
 export class OptionalDateNotInPastValidator implements ValidatorConstraintInterface {
 
   validate(inputDate: Date) {
-    if (inputDate !== null && (inputDate < (new Date(Date.now())))) {
+    if (inputDate && (inputDate < (new Date(Date.now())))) {
       return false;
     }
     return true;

@@ -43,7 +43,7 @@ repaymentPlanController.post(CITIZEN_REPAYMENT_PLAN,
       const form: RepaymentPlanForm = new RepaymentPlanForm(savedValues.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day);
       const validator = new Validator();
       const errors: ValidationError[] = validator.validateSync(form);
-      if (errors && errors.length > 0) {
+      if (errors?.length > 0) {
         form.errors = errors;
         renderView(form, res);
       } else {
