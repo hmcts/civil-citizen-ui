@@ -1,4 +1,4 @@
-import { ValidationError, IsNumber, Min, Max, IsDefined, ValidateIf, Validate } from 'class-validator';
+import { IsNumber, Min, Max, IsDefined, ValidateIf, Validate } from 'class-validator';
 import { Form } from '../form';
 import {DateConverter} from '../../../utils/dateConverter';
 import {
@@ -49,10 +49,9 @@ export class RepaymentPlanForm extends Form {
     repaymentFrequency?: string,
     year?: string,
     month?: string,
-    day?: string,
-    errors?: ValidationError[]) {
+    day?: string) {
 
-    super(errors);
+    super();
     this.totalClaimAmount = totalClaimAmount;
     this.paymentAmount = paymentAmount ? Number(paymentAmount) : undefined;
     this.repaymentFrequency = repaymentFrequency;
