@@ -15,44 +15,45 @@
     }) }}
   {% endif %}
   {% set amountLabel = 'Amount paid' %}
+  {% set scheduleLabel = 'Paid every' %}
   {% set checkedMortgageHtml %}
-    {{ transactionDetails('Include all mortgages', 'model[mortgage]',  form.model.mortgage.transactionSource, amountLabel, form) }}
+    {{ transactionDetails('Include all mortgages', 'model[mortgage]',  form.model.mortgage.transactionSource, amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedRentHtml %}
-    {{ transactionDetails('', 'model[rent]',  form.model.rent.transactionSource, amountLabel, form) }}
+    {{ transactionDetails('', 'model[rent]',  form.model.rent.transactionSource, amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedCouncilTaxHtml %}
-    {{ transactionDetails('', 'model[councilTax]',  form.model.councilTax.transactionSource, amountLabel, form) }}
+    {{ transactionDetails('', 'model[councilTax]',  form.model.councilTax.transactionSource, amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedGasHtml %}
-    {{ transactionDetails('', 'model[gas]', form.model.gas.transactionSource,amountLabel, form) }}
+    {{ transactionDetails('', 'model[gas]', form.model.gas.transactionSource,amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedElectricityHtml %}
-    {{ transactionDetails('', 'model[electricity]', form.model.electricity.transactionSource,amountLabel, form) }}
+    {{ transactionDetails('', 'model[electricity]', form.model.electricity.transactionSource,amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedWaterHtml %}
-    {{ transactionDetails('Include sewerage payments', 'model[water]', form.model.water.transactionSource,amountLabel, form) }}
+    {{ transactionDetails('Include sewerage payments', 'model[water]', form.model.water.transactionSource,amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedTravelHtml %}
-    {{ transactionDetails('', 'model[travel]', form.model.travel.transactionSource,amountLabel, form) }}
+    {{ transactionDetails('', 'model[travel]', form.model.travel.transactionSource,amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedSchoolHtml %}
-    {{ transactionDetails('', 'model[schoolCosts]', form.model.schoolCosts.transactionSource,amountLabel, form) }}
+    {{ transactionDetails('', 'model[schoolCosts]', form.model.schoolCosts.transactionSource,amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedFoodHtml %}
-    {{ transactionDetails('', 'model[foodAndHousekeeping]',  form.model.foodAndHousekeeping.transactionSource,amountLabel, form) }}
+    {{ transactionDetails('', 'model[foodAndHousekeeping]',  form.model.foodAndHousekeeping.transactionSource,amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedTvHtml %}
-    {{ transactionDetails('', 'model[tvAndBroadband]',  form.model.tvAndBroadband.transactionSource,amountLabel, form) }}
+    {{ transactionDetails('', 'model[tvAndBroadband]',  form.model.tvAndBroadband.transactionSource,amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedHirePurchaseHtml %}
-    {{ transactionDetails('', 'model[hirePurchase]',  form.model.hirePurchase.transactionSource,amountLabel, form) }}
+    {{ transactionDetails('', 'model[hirePurchase]',  form.model.hirePurchase.transactionSource,amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedMobileHtml %}
-    {{ transactionDetails('', 'model[mobilePhone]', form.model.mobilePhone.transactionSource,amountLabel, form) }}
+    {{ transactionDetails('', 'model[mobilePhone]', form.model.mobilePhone.transactionSource,amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedMaintenanceHtml %}
-    {{ transactionDetails('', 'model[maintenance]', form.model.maintenance.transactionSource,amountLabel, form) }}
+    {{ transactionDetails('', 'model[maintenance]', form.model.maintenance.transactionSource,amountLabel, scheduleLabel, form) }}
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
