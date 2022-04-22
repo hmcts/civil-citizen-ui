@@ -11,7 +11,7 @@ const partialAdmissionService = new PartialAdmissionService();
 
 function renderView(form: GenericForm<AlreadyPaid>, res: express.Response): void {
   const alreadyPaid = Object.assign(form);
-  alreadyPaid.option = form.model.alreadyPaid;
+  alreadyPaid.option = form.model.option;
   res.render(citizenAlreadyPaidViewPath, {form});
 }
 
@@ -26,13 +26,13 @@ alreadyPaidController.get(CITIZEN_ALREADY_PAID_URL, async (req, res) => {
 
 alreadyPaidController.post(CITIZEN_ALREADY_PAID_URL, async (req, res) => {
   try {
-    const alreadyPaidForm = new GenericForm(new AlreadyPaid(req.body.alreadyPaid));
+    const alreadyPaidForm = new GenericForm(new AlreadyPaid(req.body.option));
     await alreadyPaidForm.validate();
 
     if (alreadyPaidForm.hasErrors()) {
       renderView(alreadyPaidForm, res);
     } else {
-      await partialAdmissionService.saveClaimAlreadyPaid(req.params.id, alreadyPaidForm.model.alreadyPaid);
+      await partialAdmissionService.saveClaimAlreadyPaid(req.params.id, alreadyPaidForm.model.option);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {

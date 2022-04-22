@@ -22,11 +22,13 @@ describe('partial admission service', () => {
         expect(alreadyPaid).toBeUndefined();
       });
 
-      it('should get a boolean value if already paid is set to true', async () => {
+      it('should get a value if already paid is set to true', async () => {
         // Given
         const claim = new Claim();
         claim.partialAdmission = {
-          claimAlreadyPaid: true,
+          claimAlreadyPaid: {
+            option: 'Yes',
+          },
         };
         mockGetCaseData.mockImplementation(async () => {
           return claim;
@@ -34,14 +36,16 @@ describe('partial admission service', () => {
         // When
         const alreadyPaid = await partialAdmissionService.getClaimAlreadyPaid('validClaimId');
         // Then
-        expect(alreadyPaid).toBe(true);
+        expect(alreadyPaid).toBe('Yes');
       });
 
-      it('should get a boolean value if already paid is set to false', async () => {
+      it('should get a value if already paid is set to false', async () => {
         // Given
         const claim = new Claim();
         claim.partialAdmission = {
-          claimAlreadyPaid: false,
+          claimAlreadyPaid: {
+            option: 'No',
+          },
         };
         mockGetCaseData.mockImplementation(async () => {
           return claim;
@@ -49,7 +53,7 @@ describe('partial admission service', () => {
         // When
         const alreadyPaid = await partialAdmissionService.getClaimAlreadyPaid('validClaimId');
         // Then
-        expect(alreadyPaid).toBe(false);
+        expect(alreadyPaid).toBe('No');
       });
     });
 
@@ -61,7 +65,7 @@ describe('partial admission service', () => {
         });
         const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
         // When
-        await partialAdmissionService.saveClaimAlreadyPaid('validClaimId', true);
+        await partialAdmissionService.saveClaimAlreadyPaid('validClaimId', 'Yes');
         // Then
         expect(spySave).toBeCalled();
       });
@@ -70,14 +74,16 @@ describe('partial admission service', () => {
         // Given
         const claim = new Claim();
         claim.partialAdmission = {
-          claimAlreadyPaid: false,
+          claimAlreadyPaid: {
+            option: 'No',
+          },
         };
         mockGetCaseData.mockImplementation(async () => {
           return claim;
         });
         const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
         // When
-        await partialAdmissionService.saveClaimAlreadyPaid('validClaimId', true);
+        await partialAdmissionService.saveClaimAlreadyPaid('validClaimId', 'Yes');
         // Then
         expect(spySave).toBeCalled();
       });
@@ -92,7 +98,7 @@ describe('partial admission service', () => {
           throw new Error(TestMessages.REDIS_FAILURE);
         });
         // Then
-        await expect(partialAdmissionService.saveClaimAlreadyPaid('validClaimId', false)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+        await expect(partialAdmissionService.saveClaimAlreadyPaid('validClaimId', 'Yes')).rejects.toThrow(TestMessages.REDIS_FAILURE);
       });
     });
   });

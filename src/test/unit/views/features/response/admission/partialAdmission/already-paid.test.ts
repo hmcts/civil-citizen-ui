@@ -7,7 +7,7 @@ import {VALID_YES_NO_SELECTION} from '../../../../../../../main/common/form/vali
 import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
-const { JSDOM } = jsdom;
+const {JSDOM} = jsdom;
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -15,19 +15,19 @@ jest.mock('../../../../../../../main/modules/draft-store');
 describe('Already Paid View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  let htmlDocument: Document;
 
   describe('on GET', () => {
+    let htmlDocument: Document;
     beforeEach(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CITIZEN_ALREADY_PAID_URL).then(res => {
-        const dom = new JSDOM(res.text);
-        htmlDocument = dom.window.document;
-      });
+      const response = await request(app).get(CITIZEN_ALREADY_PAID_URL);
+      const dom = new JSDOM(response.text);
+      htmlDocument = dom.window.document;
     });
+
 
     it('should display header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
@@ -55,15 +55,16 @@ describe('Already Paid View', () => {
       const errorSummary = htmlDocument.getElementsByClassName('govuk-error-summary');
       expect(errorSummary.length).toEqual(0);
     });
+
   });
 
   describe('on POST', () => {
+    let htmlDocument: Document;
     beforeEach(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).post(CITIZEN_ALREADY_PAID_URL).then(res => {
-        const dom = new JSDOM(res.text);
-        htmlDocument = dom.window.document;
-      });
+      const response = await request(app).post(CITIZEN_ALREADY_PAID_URL);
+      const dom = new JSDOM(response.text);
+      htmlDocument = dom.window.document;
     });
 
     it('should display error summary component', () => {
@@ -76,11 +77,12 @@ describe('Already Paid View', () => {
         .getElementsByTagName('li')[0];
       expect(errorSummaryMessage.innerHTML).toContain(VALID_YES_NO_SELECTION);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#alreadyPaid');
+        .toContain('#option');
     });
 
     it('should display correct error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
+      console.log('error', errorMessage);
       expect(errorMessage.innerHTML).toContain(VALID_YES_NO_SELECTION);
     });
   });

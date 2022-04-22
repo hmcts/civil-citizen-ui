@@ -22,7 +22,7 @@
           <h1 class="govuk-heading-l">{{t('Have you paid the claimant the amount you admit you owe?')}}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t, 'alreadyPaid', 'alreadyPaid', '', form, '', {classes: 'govuk-radios--inline'}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline'}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")

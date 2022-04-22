@@ -3,9 +3,9 @@ import {VALID_YES_NO_SELECTION} from '../../../../../common/form/validationError
 
 export class AlreadyPaid {
   @IsDefined({message: VALID_YES_NO_SELECTION})
-    alreadyPaid?: boolean;
+    option?: string;
 
-  constructor(alreadyPaid: boolean) {
-    this.alreadyPaid = alreadyPaid;
+  constructor(alreadyPaid: string) {
+    this.option = alreadyPaid;
   }
 }

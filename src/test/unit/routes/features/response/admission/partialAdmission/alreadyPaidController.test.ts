@@ -65,7 +65,7 @@ describe('Already Paid Controller', () => {
     it('should redirect to claim task list if selected option is no', async () => {
       await request(app)
         .post(CITIZEN_ALREADY_PAID_URL)
-        .send({alreadyPaid: false})
+        .send({option: 'No'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -75,21 +75,10 @@ describe('Already Paid Controller', () => {
     it('should redirect to claim task list if selected option is yes', async () => {
       await request(app)
         .post(CITIZEN_ALREADY_PAID_URL)
-        .send({alreadyPaid: true})
+        .send({option: 'Yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
-        });
-    });
-
-    it('should return 500 status when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_ALREADY_PAID_URL)
-        .send({alreadyPaid: 'foo'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: REDIS_ERROR_MESSAGE});
         });
     });
   });
