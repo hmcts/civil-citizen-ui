@@ -19,7 +19,7 @@ const needMoreTimeTask = {
 export const getneedMoreTimeTask = (claim: Claim): Task => {
 
   if (claim.statementOfMeans?.cohabiting?.option === 'yes') {
-    needMoreTimeTask.status === TaskStatus.COMPLETE;
+    needMoreTimeTask.status = TaskStatus.COMPLETE;
   }
 
   return needMoreTimeTask;

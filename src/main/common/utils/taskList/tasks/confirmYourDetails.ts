@@ -19,7 +19,7 @@ const confirmYourDetailsTask = {
 export const getConfirmYourDetailsTask = (claim: Claim): Task => {
 
   if (claim.statementOfMeans?.cohabiting?.option === 'yes') {
-    confirmYourDetailsTask.status === TaskStatus.COMPLETE;
+    confirmYourDetailsTask.status = TaskStatus.COMPLETE;
   }
 
   return confirmYourDetailsTask;
