@@ -10,7 +10,7 @@ import {
   VALID_MONTH,
   VALID_DAY,
   FOUR_DIGIT_YEAR_REQUIRED,
-  FIRST_PAYMENT_DATE_IN_THE_FUTURE
+  FIRST_PAYMENT_DATE_IN_THE_FUTURE,
 } from '../../validationErrors/errorMessageConstants';
 import { OptionalDateNotInPastValidator } from '../../validators/optionalDateNotInPastValidator';
 import { EqualToOrLessThanPropertyValueValidator } from '../../validators/equalToOrLessThanPropertyValueValidator';
