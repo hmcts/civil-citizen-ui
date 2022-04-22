@@ -31,7 +31,7 @@
     {{ govukInput({
       id: 'rows[' + courtOrderIndex + '][amount]',
       name: 'rows[' + courtOrderIndex + '][amount]',
-      value: courtOrderValue.amount,
+      value: '' + courtOrderValue.amount,
       type: 'number',
       prefix: {
         text: "£"
@@ -50,7 +50,7 @@
     {{ govukInput({
       id: 'rows[' + courtOrderIndex + '][instalmentAmount]',
       name: 'rows[' + courtOrderIndex + '][instalmentAmount]',
-      value: courtOrderValue.instalmentAmount,
+      value: '' + courtOrderValue.instalmentAmount,
       type: 'number',
       prefix: {
         text: "£"
