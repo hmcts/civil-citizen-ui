@@ -1,12 +1,12 @@
-import {TaskStatus} from "../common/models/taskList/TaskStatus";
-import {TaskList} from "../common/models/taskList/taskList";
-import {Claim} from "../common/models/claim";
+import {TaskStatus} from '../common/models/taskList/TaskStatus';
+import {TaskList} from '../common/models/taskList/taskList';
+import {Claim} from '../common/models/claim';
 import {
   buildPrepareYourResponseSection,
   buildRespondeToClaimSection,
   buildTryToResolveClaimSection,
-  buildYourHearingRequirementsSection
-} from "../common/utils/taskList/taskListBuilder";
+  buildYourHearingRequirementsSection,
+} from '../common/utils/taskList/taskListBuilder';
 
 /**
  * THIS FILE IS A CONCEPT
@@ -36,7 +36,7 @@ const getTaskLists = async (claim: Claim) => {
   );
   taskLists = taskLists.filter(item => item.tasks.length !== 0);
   return taskLists;
-}
+};
 
 const calculateTotalAndCompleted = (taskLists: TaskList[]) => {
   completed = 0;
@@ -45,20 +45,20 @@ const calculateTotalAndCompleted = (taskLists: TaskList[]) => {
     total += taskList.tasks.length;
     completed += countCompletedTasks(taskList);
   });
-}
+};
 
 const getTitle = (taskLists: TaskList[]) => {
   calculateTotalAndCompleted(taskLists);
   return completed < total ? 'Application incomplete' : 'Application complete';
-}
+};
 
 const getDescription = (taskLists: TaskList[]) => {
   calculateTotalAndCompleted(taskLists);
   return `You have completed ${completed} of ${total} sections`;
-}
+};
 
 const countCompletedTasks = (taskList: TaskList) => {
   return taskList.tasks.filter(task => task.status === TaskStatus.COMPLETE).length;
-}
+};
 
 export { getTaskLists, getTitle, getDescription };

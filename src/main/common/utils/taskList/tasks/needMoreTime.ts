@@ -1,6 +1,6 @@
-import {Task} from "../../../models/taskList/task";
-import {Claim} from "../../../models/claim";
-import {TaskStatus} from "../../../models/taskList/TaskStatus";
+import {Task} from '../../../models/taskList/task';
+import {Claim} from '../../../models/claim';
+import {TaskStatus} from '../../../models/taskList/TaskStatus';
 
 /**
  * THIS FILE IS A CONCEPT AND DOESN'T WORK
@@ -11,17 +11,17 @@ import {TaskStatus} from "../../../models/taskList/TaskStatus";
  */
 
 const needMoreTimeTask = {
-  description: "Decide if you need more time to respond",
-  url: "/more-time",
-  status: TaskStatus.INCOMPLETE
+  description: 'Decide if you need more time to respond',
+  url: '/more-time',
+  status: TaskStatus.INCOMPLETE,
 };
 
 export const getneedMoreTimeTask = (claim: Claim): Task => {
 
   if (claim.statementOfMeans?.cohabiting?.option === 'yes') {
-    needMoreTimeTask.status === TaskStatus.COMPLETE
+    needMoreTimeTask.status === TaskStatus.COMPLETE;
   }
 
   return needMoreTimeTask;
-}
+};
 
