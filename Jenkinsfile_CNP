@@ -43,26 +43,12 @@ def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 withPipeline(type, product, component) {
   pipelineConf = config
-  //enableAksStagingDeployment()
+  enableAksStagingDeployment()
   //disableLegacyDeployment()
 
   onPR {
       loadVaultSecrets(secrets)
-              stage('Approval') {
-                  // no agent, so executors are not used up when waiting for approvals
-                  agent none
-                  steps {
-                      script {
-                          def deploymentDelay = input id: 'Deploy', message: 'Deploy to AKS?', submitter: 'rkivisto,admin', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
-                          sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
-                      def deployment = input message: 'Deploy to Production', ok: 'Continue',
-                                                      parameters: [choice(name: 'APPROVE_PROD', choices: 'YES\nNO', description: 'Deploy from STAGING to PRODUCTION?')]
-                                                  if (deployment == 'YES'){
-                                                        enableAksStagingDeployment()
-                                                  }
-                      }
-                  }
-              }
+
   }
   onMaster {
     loadVaultSecrets(secrets)
