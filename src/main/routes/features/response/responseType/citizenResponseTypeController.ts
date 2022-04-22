@@ -24,7 +24,7 @@ citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) =>
   try {
     const citizenResponseType = new CitizenResponseType();
     const claim = await getCaseDataFromStore(req.params.id);
-    if (claim?.respondent1?.responseType) {
+    if (claim.respondent1?.responseType) {
       citizenResponseType.responseType = claim.respondent1.responseType;
     }
     const componentDetailItemsList = getDetailItemsList(claim);
