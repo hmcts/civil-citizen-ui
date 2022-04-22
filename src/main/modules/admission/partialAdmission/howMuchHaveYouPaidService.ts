@@ -12,8 +12,8 @@ class HowMuchHaveYouPaidService {
   public async getHowMuchHaveYouPaid(claimId: string): Promise<HowMuchHaveYouPaid> {
     try {
       const claim = await getCaseDataFromStore(claimId);
-      const totalClaimAmount = claim.totalClaimAmount;
-      if (claim.partialAdmission?.howMuchHaveYouPaid) {
+      const totalClaimAmount = claim?.totalClaimAmount;
+      if (claim?.partialAdmission?.howMuchHaveYouPaid) {
         return claim.partialAdmission.howMuchHaveYouPaid;
       }
       return new HowMuchHaveYouPaid(undefined, totalClaimAmount, undefined, undefined, undefined, undefined);
@@ -26,6 +26,9 @@ class HowMuchHaveYouPaidService {
   public async saveHowMuchHaveYouPaid(claimId: string, howMuchHaveYouPaid: HowMuchHaveYouPaid) {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
+      if (case_data.totalClaimAmount) {
+        howMuchHaveYouPaid.totalClaimAmount = case_data.totalClaimAmount;
+      }
       if (case_data.partialAdmission) {
         case_data.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
       } else {
