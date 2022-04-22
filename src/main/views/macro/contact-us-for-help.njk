@@ -10,7 +10,14 @@
 {% set callCharges = t('Find out about call charges (opens in a new window)') %}
 {% set openingHours = t('Monday to Friday, 8.30am to 5pm.') %}
 
-{% macro _widget(spanContent, name, href, hrefContact, hrefContent, phoneNumber) %}
+{% macro _widget(spanContent, name, href, hrefContact, hrefContent, phoneNumber, linkTarget) %}
+  {% if linkTarget %}
+    {% set hrefTarget= linkTarget %}
+  {% else %}
+    {# setting default behaviour to open the link in the same frame if not provided as parameter #}
+    {% set hrefTarget= "_self" %}
+  {% endif %}
+  
   <h3 class="govuk-heading-m">{{ name }}</h3>
   {% if phoneNumber %}
     {{ phoneNumber }}
@@ -19,7 +26,7 @@
     <p><span class="block">{{ spanContent }}</span></p>
   {% endif %}
   {% if href %}
-    <a href={{ href }}>{% if hrefContact!=='' %}{{ hrefContact }}</a>
+    <a target={{ hrefTarget }} href={{ href }} rel="noopener noreferrer">{% if hrefContact!=='' %}{{ hrefContact }}</a>
     {% endif %}{{ hrefContent }}</a></p>
   {% endif %}
 {% endmacro %}
@@ -32,7 +39,7 @@
       + _widget(webChatClosed,webChat,'','','','') %}
   {% endif %}
   {% set content = content + _widget('','Email','mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk','','')
-    + _widget(openingHours,'Telephone','https://www.gov.uk/call-charges','',callCharges,'0300 123 7050') %}
+    + _widget(openingHours,'Telephone','https://www.gov.uk/call-charges','',callCharges,'0300 123 7050', '_blank') %}
 
   {{ govukDetails({
     summaryText: ContactUs,
