@@ -44,3 +44,5 @@ export const CITIZEN_MONTHLY_EXPENSES_URL = `${STATEMENT_OF_MEANS_URL}/monthly-e
 export const CITIZEN_MONTHLY_INCOME_URL = `${STATEMENT_OF_MEANS_URL}/monthly-income`;
 export const DEBTS_URL = `${STATEMENT_OF_MEANS_URL}/debts`;
 export const TOTAL_AMOUNT_CALCULATION_URL = '/total-income-expense-calculation';
+export const PARTIAL_ADMISSION_URL = `${BASE_CASE_RESPONSE_URL}/partial-admission`;
+export const CITIZEN_WHY_DO_YOU_DISAGREE_URL = `${PARTIAL_ADMISSION_URL}/why-do-you-disagree`;
