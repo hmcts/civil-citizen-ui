@@ -87,24 +87,6 @@ describe('Replayment Plan Service', () => {
   });
 
   describe('saveRepaymentPlanData', () => {
-    it('should save saveRepaymentPlanData data successfully when claim does not exist', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return undefined;
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await saveRepaymentPlanData('123', new RepaymentPlanForm(
-        TOTAL_CLAIM_AMOUNT,
-        PAYMENT_AMOUNT,
-        REPAYMENT_FREQUENCY,
-        YEAR,
-        MONTH,
-        DAY,
-      ));
-      //Then
-      expect(spySave).toBeCalled();
-    });
     it('should save selfEmployedAs data successfully when claim exists', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
