@@ -1,4 +1,4 @@
-import { IsNumber, Min, Max, IsDefined, ValidateIf, Validate } from 'class-validator';
+import { IsNumber, Min, Max, IsDefined, ValidateIf, Validate, IsDate } from 'class-validator';
 import { Form } from '../form';
 import {DateConverter} from '../../../utils/dateConverter';
 import {
@@ -10,6 +10,7 @@ import {
   VALID_MONTH,
   VALID_DAY,
   FOUR_DIGIT_YEAR_REQUIRED,
+  FIRST_PAYMENT_DATE_IN_THE_FUTURE
 } from '../../validationErrors/errorMessageConstants';
 import { OptionalDateNotInPastValidator } from '../../validators/optionalDateNotInPastValidator';
 import { EqualToOrLessThanPropertyValueValidator } from '../../validators/equalToOrLessThanPropertyValueValidator';
@@ -21,7 +22,8 @@ export class RepaymentPlanForm extends Form {
   @Validate(EqualToOrLessThanPropertyValueValidator, ['totalClaimAmount', 'strictComparision'], { message: EQUAL_INSTALMENTS_REQUIRED })
     paymentAmount?: number;
 
-  @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year>999))
+  @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
+  @IsDate({message: FIRST_PAYMENT_DATE_IN_THE_FUTURE})
   @Validate(OptionalDateNotInPastValidator)
     firstRepaymentDate?: Date;
 
