@@ -1,6 +1,5 @@
-import {IsDefined, IsNotEmpty, IsNumber, Min, ValidateIf} from 'class-validator';
+import {IsNotEmpty, IsNumber, Min, ValidateIf} from 'class-validator';
 import {
-  VALID_AMOUNT,
   VALID_AMOUNT_ONE_POUND_OR_MORE,
   VALID_CLAIM_NUMBER,
   VALID_STRICTLY_POSITIVE_NUMBER,
@@ -11,13 +10,11 @@ import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 export class CourtOrder {
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsDefined({message: VALID_AMOUNT})
   @IsNumber({maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
   @Min(0, {message: VALID_STRICTLY_POSITIVE_NUMBER})
     instalmentAmount?: number;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsDefined({message: VALID_AMOUNT})
   @IsNumber({maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
   @Min(1.00, {message: VALID_AMOUNT_ONE_POUND_OR_MORE})
     amount?: number;

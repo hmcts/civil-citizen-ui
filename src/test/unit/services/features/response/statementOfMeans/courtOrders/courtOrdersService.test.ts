@@ -7,10 +7,11 @@ import {CourtOrder} from '../../../../../../../main/common/form/models/statement
 import {Claim} from '../../../../../../../main/common/models/claim';
 import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
 import {
-  VALID_AMOUNT,
   VALID_AMOUNT_ONE_POUND_OR_MORE,
   VALID_CLAIM_NUMBER,
   VALID_ENTER_AT_LEAST_ONE_COURT_ORDER,
+  VALID_STRICTLY_POSITIVE_NUMBER,
+  VALID_TWO_DECIMAL_NUMBER,
   VALID_YES_NO_SELECTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
@@ -121,10 +122,10 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
-    test('should raise an error if declared true and an amount is null or less than 1', async () => {
+    test('should raise an error if declared true and the amount is unspecified', async () => {
       //Given
       const rows = [
-        new CourtOrder(.99, undefined, 'abc1'),
+        new CourtOrder(undefined, 1, 'abc1'),
       ];
       const courtOrders = new CourtOrders(true, rows);
       const form = new GenericForm(courtOrders);
@@ -135,7 +136,103 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows')).toBeUndefined();
       expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
       expect(form.errorFor('rows[0][amount]')).toBe(VALID_AMOUNT_ONE_POUND_OR_MORE);
-      expect(form.errorFor('rows[0][instalmentAmount]')).toBe(VALID_AMOUNT);
+      expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
+    });
+    test('should raise an error if declared true and the amount is less than 1', async () => {
+      //Given
+      const rows = [
+        new CourtOrder(.99, 1, 'abc1'),
+      ];
+      const courtOrders = new CourtOrders(true, rows);
+      const form = new GenericForm(courtOrders);
+      //When
+      form.validateSync();
+      //Then
+      expect(form.errorFor('declared')).toBeUndefined();
+      expect(form.errorFor('rows')).toBeUndefined();
+      expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
+      expect(form.errorFor('rows[0][amount]')).toBe(VALID_AMOUNT_ONE_POUND_OR_MORE);
+      expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
+    });
+    test('should raise an error if declared true and the amount has more than 2 decimals', async () => {
+      //Given
+      const rows = [
+        new CourtOrder(1.001, 1, 'abc1'),
+      ];
+      const courtOrders = new CourtOrders(true, rows);
+      const form = new GenericForm(courtOrders);
+      //When
+      form.validateSync();
+      //Then
+      expect(form.errorFor('declared')).toBeUndefined();
+      expect(form.errorFor('rows')).toBeUndefined();
+      expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
+      expect(form.errorFor('rows[0][amount]')).toBe(VALID_TWO_DECIMAL_NUMBER);
+      expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
+    });
+    test('should raise an error if declared true and the instalment amount is unspecified', async () => {
+      //Given
+      const rows = [
+        new CourtOrder(1, undefined, 'abc1'),
+      ];
+      const courtOrders = new CourtOrders(true, rows);
+      const form = new GenericForm(courtOrders);
+      //When
+      form.validateSync();
+      //Then
+      expect(form.errorFor('declared')).toBeUndefined();
+      expect(form.errorFor('rows')).toBeUndefined();
+      expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
+      expect(form.errorFor('rows[0][amount]')).toBeUndefined();
+      expect(form.errorFor('rows[0][instalmentAmount]')).toBe(VALID_STRICTLY_POSITIVE_NUMBER);
+    });
+    test('should not raise an error if declared true and the instalment amount is 0', async () => {
+      //Given
+      const rows = [
+        new CourtOrder(1, 0, 'abc1'),
+      ];
+      const courtOrders = new CourtOrders(true, rows);
+      const form = new GenericForm(courtOrders);
+      //When
+      form.validateSync();
+      //Then
+      expect(form.errorFor('declared')).toBeUndefined();
+      expect(form.errorFor('rows')).toBeUndefined();
+      expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
+      expect(form.errorFor('rows[0][amount]')).toBeUndefined();
+      expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
+    });
+    test('should raise an error if declared true and the instalment amount has more than 2 decimals', async () => {
+      //Given
+      const rows = [
+        new CourtOrder(1, 0.001, 'abc1'),
+      ];
+      const courtOrders = new CourtOrders(true, rows);
+      const form = new GenericForm(courtOrders);
+      //When
+      form.validateSync();
+      //Then
+      expect(form.errorFor('declared')).toBeUndefined();
+      expect(form.errorFor('rows')).toBeUndefined();
+      expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
+      expect(form.errorFor('rows[0][amount]')).toBeUndefined();
+      expect(form.errorFor('rows[0][instalmentAmount]')).toBe(VALID_TWO_DECIMAL_NUMBER);
+    });
+    test('should raise an error if declared true and none of the total and instalment amounts aren\'t specified', async () => {
+      //Given
+      const rows = [
+        new CourtOrder(undefined, undefined, 'abc1'),
+      ];
+      const courtOrders = new CourtOrders(true, rows);
+      const form = new GenericForm(courtOrders);
+      //When
+      form.validateSync();
+      //Then
+      expect(form.errorFor('declared')).toBeUndefined();
+      expect(form.errorFor('rows')).toBeUndefined();
+      expect(form.errorFor('rows[0][claimNumber]')).toBeUndefined();
+      expect(form.errorFor('rows[0][amount]')).toBe(VALID_AMOUNT_ONE_POUND_OR_MORE);
+      expect(form.errorFor('rows[0][instalmentAmount]')).toBe(VALID_STRICTLY_POSITIVE_NUMBER);
     });
   });
   describe('Remove Empty Court Orders', () => {

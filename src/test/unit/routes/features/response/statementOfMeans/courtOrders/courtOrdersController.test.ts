@@ -9,6 +9,7 @@ import {
   VALID_AMOUNT,
   VALID_CLAIM_NUMBER,
   VALID_ENTER_AT_LEAST_ONE_COURT_ORDER,
+  VALID_STRICTLY_POSITIVE_NUMBER,
   VALID_YES_NO_SELECTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
@@ -141,7 +142,7 @@ describe('Citizen court orders', () => {
         .send('rows[0][instalmentAmount]=')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_AMOUNT);
+          expect(res.text).toContain(VALID_STRICTLY_POSITIVE_NUMBER);
         });
     });
 
