@@ -1,7 +1,7 @@
-import {TaskStatus} from "../../common/form/models/TaskStatus";
-import {Task} from "../../common/form/models/task";
-import {TaskList} from "../../common/form/models/taskList";
-import {Claim} from "../../common/models/claim";
+import {TaskStatus} from "../../models/taskList/TaskStatus";
+import {Task} from "../../models/taskList/task";
+import {TaskList} from "../../models/taskList/taskList";
+import {Claim} from "../../models/claim";
 import {getConfirmYourDetailsTask} from "./tasks/confirmYourDetails";
 import {getneedMoreTimeTask} from "./tasks/needMoreTime";
 
@@ -13,7 +13,7 @@ import {getneedMoreTimeTask} from "./tasks/needMoreTime";
  * 
  */
 
-const choseAResponseTask = {
+const chooseAResponseTask = {
   description: "Choose a response",
   url: "/chose-a-response",
   status: TaskStatus.COMPLETE
@@ -40,7 +40,7 @@ const buildPrepareYourResponseSection = async (claim: Claim): Promise<TaskList> 
 const buildRespondeToClaimSection = async (claim: Claim): Promise<TaskList> => {
   let tasks: Task[] = [];
 
-  tasks.push(choseAResponseTask);
+  tasks.push(chooseAResponseTask);
   if (!claim.paymentOption) {
     tasks.push(howMuchYouHavePaidTask);
   }

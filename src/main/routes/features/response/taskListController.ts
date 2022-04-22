@@ -1,4 +1,4 @@
-import {TaskList} from '../../../common/form/models/taskList';
+import {TaskList} from '../../../common/models/taskList/taskList';
 import * as express from 'express';
 import {CLAIM_TASK_LIST_URL} from '../../urls';
 import {getTitle, getDescription} from '../../../modules/taskListService';
@@ -7,7 +7,7 @@ import {
   buildRespondeToClaimSection,
   buildTryToResolveClaimSection,
   buildYourHearingRequirementsSection,
-} from '../../../common/utils/taskListBuilder';
+} from '../../../common/utils/taskList/taskListBuilder';
 import {Claim} from '../../../common/models/claim';
 import {getDraftClaimFromStore} from '../../../modules/draft-store/draftStoreService';
 

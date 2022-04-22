@@ -1,5 +1,5 @@
-import {TaskStatus} from "../common/form/models/TaskStatus";
-import {TaskList} from "../common/form/models/taskList";
+import {TaskStatus} from "../common/models/taskList/TaskStatus";
+import {TaskList} from "../common/models/taskList/taskList";
 
 /**
  * THIS FILE IS A CONCEPT

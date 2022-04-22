@@ -1,6 +1,6 @@
-import {Task} from "../../form/models/task";
-import {Claim} from "../../models/claim";
-import {TaskStatus} from "../../form/models/TaskStatus";
+import {Task} from "../../../models/taskList/task";
+import {Claim} from "../../../models/claim";
+import {TaskStatus} from "../../../models/taskList/TaskStatus";
 
 /**
  * THIS FILE IS A CONCEPT AND DOESN'T WORK
