@@ -9,5 +9,3 @@ coverage/*
 # custom definition files
 /src/main/types/
 jest.*config.js
-# task list page scss
-src/main/assets/scss/*
