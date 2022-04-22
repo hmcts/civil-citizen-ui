@@ -1,4 +1,10 @@
 {% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{# 
+  THIS FILE IS A CONCEPT
+  This code is only a concept of what we should do.  
+  #}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -33,6 +39,19 @@
               </ol>
             </div>
           {% endfor %}
+
+          <h2 class="app-task-list__section">
+            {{ data.length + 1 }}. Submit
+          </h2>
+          <ol class="app-task-list app-task-list__items">
+            <form method="post">
+              <div class="govuk-form-group">
+                {{ govukButton({
+                text: t("Check and submit your response")
+              }) }}
+              </div>
+            </form>
+          </ol>
 
         </div>
       </div>

@@ -1,5 +1,12 @@
-import { TaskStatus } from "../common/form/models/TaskStatus";
-import { TaskList } from "../common/form/models/taskList";
+import {TaskStatus} from "../common/form/models/TaskStatus";
+import {TaskList} from "../common/form/models/taskList";
+
+/**
+ * THIS FILE IS A CONCEPT
+ * 
+ * This code is only a concept of what we should do. 
+ * 
+ */
 
 let data: TaskList[] = [];
 let completed = 0;
