@@ -45,11 +45,8 @@ withPipeline(type, product, component) {
   pipelineConf = config
   enableAksStagingDeployment()
   //disableLegacyDeployment()
+  loadVaultSecrets(secrets)
 
-  onPR {
-      loadVaultSecrets(secrets)
-
-  }
   onMaster {
     loadVaultSecrets(secrets)
   }
