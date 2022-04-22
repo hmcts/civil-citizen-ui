@@ -5,13 +5,11 @@ import {StatementOfMeans} from '../../common/models/statementOfMeans';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('explanationService');
 
-export const getExplanation = async (claimId: string) => {
+export const getExplanation = async (claimId: string): Promise<Explanation> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (claim.statementOfMeans?.explanation) {
-      const explanation = new Explanation();
-      explanation.text = claim.statementOfMeans.explanation.text;
-      return explanation;
+      return claim.statementOfMeans.explanation;
     }
     return new Explanation();
   } catch (error) {
