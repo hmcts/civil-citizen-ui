@@ -1,4 +1,4 @@
-import {OptionalDateInPastValidator,} from '../../../../../main/common/form/validators/optionalDateInPastValidator';
+import {OptionalDateInPastValidator} from '../../../../../main/common/form/validators/optionalDateInPastValidator';
 
 describe('OptionalDateInPastValidator validate', () => {
   const validator = new OptionalDateInPastValidator();
