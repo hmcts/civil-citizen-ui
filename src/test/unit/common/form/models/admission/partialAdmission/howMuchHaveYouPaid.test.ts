@@ -63,5 +63,13 @@ describe('Partial Admit - How much have you paid? model', () => {
       expect(errors?.length).toBe(1);
       expect(errors[0].constraints?.equalOrLessToPropertyValue).toBe(TestMessages.AMOUNT_LESS_THEN_CLAIMED);
     });
+    it('should return no errors when provided amount is less than Claim amount', () => {
+      //Given
+      const form = new HowMuchHaveYouPaid(50, 110, '2022', '1', '31', 'text');
+      //When
+      const errors = validator.validateSync(form);
+      //Then
+      expect(errors?.length).toBe(0);
+    });
   });
 });

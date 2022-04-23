@@ -8,10 +8,13 @@ import {
   setHowMuchHaveYouPaidControllerLogger,
 } from '../../../../../../../main/routes/features/response/admission/partialAdmission/howMuchHaveYouPaidController';
 import {
+  ENTER_PAYMENT_EXPLANATION,
+  VALID_AMOUNT,
   VALID_DATE_IN_PAST,
   VALID_DAY,
   VALID_FOUR_DIGIT_YEAR,
   VALID_MONTH,
+  VALID_YEAR,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
@@ -59,12 +62,7 @@ describe('How Much Have You Paid', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
-        .send('amount=50.00')
-        .send('totalClaimAmount=100.00')
-        .send('year=2022')
-        .send('month=1')
-        .send('day=31')
-        .send('text=text')
+        .send({ amount: 50, totalClaimAmount: 110, year: '2022', month: '1', day: '31', text: 'text' })
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
@@ -83,13 +81,14 @@ describe('How Much Have You Paid', () => {
           expect(res.text).toContain('How much have you paid the claimant?');
         });
     });
-    test('should return payment date page with payment date loaded from Redis', async () => {
+    test('should return how much have you paid with payment amount loaded from Redis', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_AMOUNT_YOU_PAID_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('How much have you paid the claimant?');
+          expect(res.text).toContain('name="amount" type="number" spellcheck="false" value="20"');
           expect(res.text).toContain('name="year" type="text" value="2022" pattern="[0-9]*');
           expect(res.text).toContain('name="month" type="text" value="1" pattern="[0-9]*');
           expect(res.text).toContain('name="day" type="text" value="1" pattern="[0-9]*');
@@ -101,12 +100,7 @@ describe('How Much Have You Paid', () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
-        .send('amount=50')
-        .send('totalClaimAmount=100')
-        .send('year=2022')
-        .send('month=1')
-        .send('day=31')
-        .send('text=text')
+        .send({ amount: 50, totalClaimAmount: 110, year: '2022', month: '1', day: '31', text: 'text' })
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -116,14 +110,14 @@ describe('How Much Have You Paid', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
-        .send('year=')
-        .send('month=')
-        .send('day=')
+        .send({ amount: undefined, totalClaimAmount: undefined, year: undefined, month: undefined, day: undefined, text: undefined })
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain(VALID_AMOUNT);
           expect(res.text).toContain(VALID_DAY);
           expect(res.text).toContain(VALID_MONTH);
-          expect(res.text).toContain(VALID_FOUR_DIGIT_YEAR);
+          expect(res.text).toContain(VALID_YEAR);
+          expect(res.text).toContain(ENTER_PAYMENT_EXPLANATION);
         });
     });
     test('should return error on date in the past', async () => {
