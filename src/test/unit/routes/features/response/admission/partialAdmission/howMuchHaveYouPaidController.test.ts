@@ -120,44 +120,31 @@ describe('How Much Have You Paid', () => {
           expect(res.text).toContain(ENTER_PAYMENT_EXPLANATION);
         });
     });
-    test('should return error on date in the past', async () => {
+    test('should return error on date in future', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
-        .send('year=1999')
-        .send('month=1')
-        .send('day=1')
+        .send({ amount: 20, totalClaimAmount: 110, year: '2040', month: '1', day: '1', text: 'text' })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_DATE_IN_PAST);
         });
     });
-    test('should return error on incorrect input', async () => {
+    test('should return error for a 2 digit year', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
-        .send('year=')
-        .send('month=1')
-        .send('day=1')
+        .send({ amount: 20, totalClaimAmount: 110, year: '22', month: '1', day: '1', text: 'text' })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_FOUR_DIGIT_YEAR);
         });
     });
-    test('should accept a future date', async () => {
+    test('should redirect to claim task list page on valid amount, date in past, text', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
-        .send('year=9999')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });
-    test('should redirect to claim task list page on valid payment date', async () => {
-      await request(app)
-        .post(CITIZEN_AMOUNT_YOU_PAID_URL)
-        .send('year=9999')
-        .send('month=1')
-        .send('day=1')
+        .send({ amount: 20, totalClaimAmount: 110, year: '2022', month: '1', day: '1', text: 'text' })
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.text).toContain(`Redirecting to ${CLAIM_TASK_LIST_URL}`);
