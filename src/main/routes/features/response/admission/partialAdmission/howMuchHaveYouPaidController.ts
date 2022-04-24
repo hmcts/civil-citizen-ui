@@ -13,6 +13,7 @@ const howMuchHaveYouPaidPath = 'features/response/admission/partialAdmission/how
 const howMuchHaveYouPaidController = express.Router();
 const nextMonth = new Date();
 nextMonth.setMonth(nextMonth.getMonth() + 1);
+let totalClaimAmount = 0;
 
 export function setHowMuchHaveYouPaidControllerLogger(winstonLogger: winston.Logger) {
   logger = winstonLogger;
@@ -23,7 +24,7 @@ howMuchHaveYouPaidController
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req: express.Request, res: express.Response) => {
       try {
         const howMuchHaveYouPaid : HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id);
-        const totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
+        totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
         if (howMuchHaveYouPaid.date) {
           const dateWhenYouPaid = new Date(howMuchHaveYouPaid.date);
           howMuchHaveYouPaid.date = dateWhenYouPaid;
@@ -41,7 +42,6 @@ howMuchHaveYouPaidController
     })
   .post(
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req, res) => {
-      const totalClaimAmount = await howMuchHaveYouPaidService.getTotalClaimAmount(req.params.id);
       const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(req.body.amount, req.body.totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
       const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
