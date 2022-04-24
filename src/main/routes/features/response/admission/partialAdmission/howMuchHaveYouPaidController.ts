@@ -11,8 +11,8 @@ const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('HowMuchHaveYouPaidController');
 const howMuchHaveYouPaidPath = 'features/response/admission/partialAdmission/how-much-have-you-paid';
 const howMuchHaveYouPaidController = express.Router();
-const nextMonth = new Date();
-nextMonth.setMonth(nextMonth.getMonth() + 1);
+const lastMonth = new Date();
+lastMonth.setMonth(lastMonth.getMonth() - 1);
 let totalClaimAmount = 0;
 
 export function setHowMuchHaveYouPaidControllerLogger(winstonLogger: winston.Logger) {
@@ -33,7 +33,7 @@ howMuchHaveYouPaidController
           howMuchHaveYouPaid.day = dateWhenYouPaid.getDate();
         }
         res.render(howMuchHaveYouPaidPath, {
-          form: new GenericForm(howMuchHaveYouPaid), nextMonth : nextMonth, totalClaimAmount : totalClaimAmount,
+          form: new GenericForm(howMuchHaveYouPaid), lastMonth : lastMonth, totalClaimAmount : totalClaimAmount,
         });
       } catch (error) {
         logger.error(error);
@@ -48,7 +48,7 @@ howMuchHaveYouPaidController
 
       if (form.hasErrors()) {
         res.render(howMuchHaveYouPaidPath, {
-          form: form, nextMonth : nextMonth, totalClaimAmount : totalClaimAmount,
+          form: form, lastMonth : lastMonth, totalClaimAmount : totalClaimAmount,
         });
       } else {
         try {
