@@ -5,7 +5,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import howMuchHaveYouPaidService from '../../../../../modules/admission/partialAdmission/howMuchHaveYouPaidService';
 import * as winston from 'winston';
 import {HowMuchHaveYouPaid} from '../../../../../common/form/models/admission/partialAdmission/howMuchHaveYouPaid';
-
+import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('HowMuchHaveYouPaidController');
@@ -42,7 +42,7 @@ howMuchHaveYouPaidController
     })
   .post(
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req, res) => {
-      const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(req.body.amount, req.body.totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
+      const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), req.body.totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
       const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
 
