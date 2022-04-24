@@ -46,6 +46,16 @@ class HowMuchHaveYouPaidService {
     return new HowMuchHaveYouPaid(amount, totalClaimAmount, year, month, day, text);
   }
 
+  public async getTotalClaimAmount(claimId: string) : Promise<number> {
+    try {
+      const claim = await getCaseDataFromStore(claimId);
+      return claim?.totalClaimAmount;
+    } catch (error) {
+      logger.error(error);
+      throw error;
+    }
+  }
+
 }
 
 const howMuchHaveYouPaidService = new HowMuchHaveYouPaidService();

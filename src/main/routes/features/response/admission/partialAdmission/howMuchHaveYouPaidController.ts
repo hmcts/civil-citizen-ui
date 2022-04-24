@@ -23,6 +23,7 @@ howMuchHaveYouPaidController
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req: express.Request, res: express.Response) => {
       try {
         const howMuchHaveYouPaid : HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id);
+        const totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
         if (howMuchHaveYouPaid.date) {
           const dateWhenYouPaid = new Date(howMuchHaveYouPaid.date);
           howMuchHaveYouPaid.date = dateWhenYouPaid;
@@ -31,7 +32,7 @@ howMuchHaveYouPaidController
           howMuchHaveYouPaid.day = dateWhenYouPaid.getDate();
         }
         res.render(howMuchHaveYouPaidPath, {
-          form: new GenericForm(howMuchHaveYouPaid), nextMonth : nextMonth,
+          form: new GenericForm(howMuchHaveYouPaid), nextMonth : nextMonth, totalClaimAmount : totalClaimAmount,
         });
       } catch (error) {
         logger.error(error);
@@ -40,13 +41,14 @@ howMuchHaveYouPaidController
     })
   .post(
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req, res) => {
+      const totalClaimAmount = await howMuchHaveYouPaidService.getTotalClaimAmount(req.params.id);
       const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(req.body.amount, req.body.totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
       const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
 
       if (form.hasErrors()) {
         res.render(howMuchHaveYouPaidPath, {
-          form: form, nextMonth : nextMonth,
+          form: form, nextMonth : nextMonth, totalClaimAmount : totalClaimAmount,
         });
       } else {
         try {
