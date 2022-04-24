@@ -15,7 +15,7 @@ import {
   VALID_YEAR,
   VALID_MONTH,
   VALID_DAY,
-  FIRST_PAYMENT_DATE_IN_THE_FUTURE,
+  FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED,
   FOUR_DIGIT_YEAR_REQUIRED,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
@@ -134,7 +134,7 @@ describe('on Post', () => {
       .send({ paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973' })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(FIRST_PAYMENT_DATE_IN_THE_FUTURE);
+        expect(res.text).toContain(FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED);
       });
   });
 

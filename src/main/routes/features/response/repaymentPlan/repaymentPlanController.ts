@@ -1,5 +1,4 @@
 import * as express from 'express';
-import { ValidationError, Validator } from 'class-validator';
 import { RepaymentPlanForm } from '../../../../common/form/models/repaymentPlan/repaymentPlanForm';
 import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFormatter';
 import { DateFormatter } from '../../../../common/utils/dateFormatter';
@@ -11,6 +10,7 @@ import {
   CITIZEN_REPAYMENT_PLAN,
   CLAIM_TASK_LIST_URL,
 } from '../../../urls';
+import {validateForm} from '../../../../common/form/validators/formValidator';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
 const repaymentPlanController = express.Router();
@@ -41,10 +41,8 @@ repaymentPlanController.post(CITIZEN_REPAYMENT_PLAN,
     try {
       const savedValues = await getRepaymentPlanForm(req.params.id);
       const form: RepaymentPlanForm = new RepaymentPlanForm(savedValues.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day);
-      const validator = new Validator();
-      const errors: ValidationError[] = validator.validateSync(form);
-      if (errors?.length > 0) {
-        form.errors = errors;
+      await validateForm(form);
+      if (form.hasErrors()) {
         renderView(form, res);
       } else {
         await saveRepaymentPlanData(req.params.id, form);

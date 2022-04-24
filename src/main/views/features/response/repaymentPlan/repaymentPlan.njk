@@ -23,7 +23,7 @@
     </main>
   </div>
   <form method="post" novalidate name="repaymentPlan">
-    {{ csrfProtection(csrf) }} <input type="hidden" id="totalClaimAmount" value="{{ form.totalClaimAmount }}"/>
+    {{ csrfProtection(csrf) }} <input type="hidden" class="repayment-amount" value="{{ form.totalClaimAmount }}"/>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         {% call govukFieldset({
@@ -45,6 +45,7 @@
             hint: {
               text: t('For example') + ', £200'
             },
+            classes: "repayment-instalments",
             id: "paymentAmount",
             name: "paymentAmount",
             type: "number",
@@ -94,7 +95,7 @@
           <p class="govuk-body">
             <strong>{{ t('Length of repayment plan') }}</strong>
           </p>
-          <p class="govuk-body" id="lengthOfRepayment"></p>
+          <p class="govuk-body repayment-length"></p>
         </div>
       </div>
     </div>

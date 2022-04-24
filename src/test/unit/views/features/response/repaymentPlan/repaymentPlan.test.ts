@@ -12,7 +12,7 @@ import {
   VALID_YEAR,
   VALID_MONTH,
   VALID_DAY,
-  FIRST_PAYMENT_DATE_IN_THE_FUTURE,
+  FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED,
   FOUR_DIGIT_YEAR_REQUIRED,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import { DateFormatter } from '../../../../../../main/common/utils/dateFormatter';
@@ -222,7 +222,7 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(FIRST_PAYMENT_DATE_IN_THE_FUTURE);
+      expect(errorSummaryMessage.innerHTML).toContain(FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#firstRepaymentDate');
     });
