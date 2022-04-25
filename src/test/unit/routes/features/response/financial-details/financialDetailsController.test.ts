@@ -9,7 +9,7 @@ import {
 import {Logger} from 'winston';
 import {FINANCIAL_DETAILS_URL} from '../../../../../../main/routes/urls';
 import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {REDIS_FAILURE} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 const claimIndividualMock = require('./claimIndividualMock.json');
 const claimIndividualMockNoType = require('./claimIndividualMockNoType.json');
@@ -75,7 +75,7 @@ describe('Citizen financial details', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).not.toContain('your company or organisation&#39;s most recent statement of accounts');
-          expect(mockLogger.error).toHaveBeenCalledWith(REDIS_FAILURE);
+          expect(mockLogger.error).toHaveBeenCalledWith(TestMessages.REDIS_FAILURE);
         });
     });
   });
@@ -111,7 +111,7 @@ describe('Citizen financial details', () => {
         .post(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(mockLogger.error).toHaveBeenCalledWith(REDIS_FAILURE);
+          expect(mockLogger.error).toHaveBeenCalledWith(TestMessages.REDIS_FAILURE);
         });
     });
     test('should be 404 for no caseId in path', async () => {

@@ -7,11 +7,9 @@ import {
   CITIZEN_PAYMENT_OPTION_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../../../../../../main/routes/urls';
-import {
-  REDIS_FAILURE,
-  VALID_PAYMENT_OPTION,
-} from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {VALID_PAYMENT_OPTION} from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../../main/modules/draft-store');
@@ -42,7 +40,7 @@ describe('Payment Option Controller', () => {
         .get(CITIZEN_PAYMENT_OPTION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: REDIS_FAILURE});
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
         });
     });
   });
@@ -93,7 +91,7 @@ describe('Payment Option Controller', () => {
         .send('paymentType=BY_SET_DATE')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: REDIS_FAILURE});
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
         });
     });
   });
