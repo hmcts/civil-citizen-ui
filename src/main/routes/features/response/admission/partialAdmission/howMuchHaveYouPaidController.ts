@@ -13,7 +13,7 @@ const howMuchHaveYouPaidPath = 'features/response/admission/partialAdmission/how
 const howMuchHaveYouPaidController = express.Router();
 const lastMonth = new Date();
 lastMonth.setMonth(lastMonth.getMonth() - 1);
-let totalClaimAmount = 0;
+let totalClaimAmount : number;
 
 export function setHowMuchHaveYouPaidControllerLogger(winstonLogger: winston.Logger) {
   logger = winstonLogger;
