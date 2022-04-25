@@ -31,7 +31,11 @@ const getRepaymentPlanForm = async (claimId: string) => {
 const saveRepaymentPlanData = async (claimId: string, form: RepaymentPlanForm) => {
   try {
     const claim = await getClaim(claimId);
-    claim.repaymentPlan = form;
+    claim.repaymentPlan = {
+      paymentAmount: form.paymentAmount,
+      firstRepaymentDate: form.firstRepaymentDate,
+      repaymentFrequency: form.repaymentFrequency,
+    };
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
