@@ -37,6 +37,7 @@ import regularExpensesController from './features/response/statementOfMeans/expe
 import debtsController from './features/response/statementOfMeans/debts/debtsController';
 import monthlyExpenseIncomeCalculatorController
   from './calculateMonthlyIncomeExpense/monthlyExpenseIncomeCalculatorController';
+import taskListController from './features/response/taskListController';
 import whyDoYouDisagreeController from './features/response/admision/partialAdmision/whyDoYouDisagreeController';
 
 
@@ -76,4 +77,5 @@ export default [
   debtsController,
   monthlyExpenseIncomeCalculatorController,
   whyDoYouDisagreeController,
+  taskListController,
 ];

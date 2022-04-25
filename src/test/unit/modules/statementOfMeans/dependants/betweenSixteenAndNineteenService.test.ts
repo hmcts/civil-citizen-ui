@@ -10,12 +10,12 @@ import {Claim} from '../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
 import {NumberOfChildren} from '../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {Dependants} from '../../../../../main/common/form/models/statementOfMeans/dependants/dependants';
-import {REDIS_ERROR_MESSAGE} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-describe('dependent teenagers service test', () => {
 
+describe('dependent teenagers service test', () => {
   describe('saveFormToDraftStore', () => {
     it('should save data successfully', async () => {
       //Given
@@ -29,10 +29,10 @@ describe('dependent teenagers service test', () => {
       //When
       const mockGetCaseData = draftStoreService.saveDraftClaim as jest.Mock;
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error(REDIS_ERROR_MESSAGE);
+        throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveFormToDraftStore('123', new BetweenSixteenAndNineteenDependants(3, 4))).rejects.toThrow(REDIS_ERROR_MESSAGE);
+      await expect(saveFormToDraftStore('123', new BetweenSixteenAndNineteenDependants(3, 4))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
   describe('getForm', () => {
@@ -75,10 +75,10 @@ describe('dependent teenagers service test', () => {
       //When
       const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error(REDIS_ERROR_MESSAGE);
+        throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(getForm('123')).rejects.toThrow(REDIS_ERROR_MESSAGE);
+      await expect(getForm('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
