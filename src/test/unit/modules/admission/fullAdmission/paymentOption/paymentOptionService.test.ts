@@ -6,14 +6,14 @@ import {
 } from '../../../../../../main/modules/admission/fullAdmission/paymentOption/paymentOptionService';
 import PaymentOptionType
   from '../../../../../../main/common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
-import {REDIS_ERROR_MESSAGE} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import PaymentOption
   from '../../../../../../main/common/form/models/admission/fullAdmission/paymentOption/paymentOption';
-
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+
 describe('payment option service', () => {
   describe('get payment option form', () => {
     it('should get populated form when data exists', async () => {
@@ -64,10 +64,10 @@ describe('payment option service', () => {
     it('should throw an error when error is thrown from draft store', async () => {
       //When
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error(REDIS_ERROR_MESSAGE);
+        throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(getPaymentOptionForm('123')).rejects.toThrow(REDIS_ERROR_MESSAGE);
+      await expect(getPaymentOptionForm('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
   describe('save payment option', () => {
@@ -98,10 +98,10 @@ describe('payment option service', () => {
       const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
       //When
       mockSaveClaim.mockImplementation(async () => {
-        throw new Error(REDIS_ERROR_MESSAGE);
+        throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(savePaymentOptionData('123', new PaymentOption(PaymentOptionType.BY_SET_DATE))).rejects.toThrow(REDIS_ERROR_MESSAGE);
+      await expect(savePaymentOptionData('123', new PaymentOption(PaymentOptionType.BY_SET_DATE))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

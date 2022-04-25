@@ -18,7 +18,7 @@ export class OidcMiddleware {
     const scope: string = config.get('services.idam.scope');
     const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri)+scope;
 
-    app.get(SIGN_IN_URL, (req: AppRequest, res: Response) => {
+    app.get(SIGN_IN_URL, (_req: AppRequest, res: Response) => {
       res.redirect(idamUrlLogin);
     });
 
@@ -39,7 +39,7 @@ export class OidcMiddleware {
       res.redirect(SIGN_IN_URL);
     });
 
-    app.get('/', (req: AppRequest, res: Response) => {
+    app.get('/', (_req: AppRequest, res: Response) => {
       res.redirect(DASHBOARD_URL);
     });
 
