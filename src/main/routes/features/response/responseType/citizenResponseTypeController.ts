@@ -14,7 +14,6 @@ const logger = Logger.getLogger('citizenResponseTypeController');
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const citizenResponseTypeController = express.Router();
-let claim = new Claim();
 const validator = new Validator();
 
 function renderView(form: CitizenResponseType, res: express.Response, componentDetailItemsList?: ComponentDetailItems[]): void {
@@ -24,11 +23,11 @@ function renderView(form: CitizenResponseType, res: express.Response, componentD
 citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) => {
   try {
     const citizenResponseType = new CitizenResponseType();
-    claim = await getCaseDataFromStore(req.params.id);
-    if (claim?.respondent1?.responseType) {
+    const claim = await getCaseDataFromStore(req.params.id);
+    if (claim.respondent1?.responseType) {
       citizenResponseType.responseType = claim.respondent1.responseType;
     }
-    const componentDetailItemsList = getDetailItemsList();
+    const componentDetailItemsList = getDetailItemsList(claim);
     renderView(citizenResponseType, res, componentDetailItemsList);
   } catch (error) {
     logger.error(error);
@@ -62,7 +61,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
     }
   });
 
-function getDetailItemsList(): ComponentDetailItems[] {
+function getDetailItemsList(claim: Claim): ComponentDetailItems[] {
   const componentDetailItemsList: ComponentDetailItems[] = [
     {
       title: 'Admit all of the claim',
