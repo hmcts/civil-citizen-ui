@@ -70,21 +70,37 @@ civil-service:
           - robotics-notification-multipartyrecipient
           - ordnance-survey-api-key
     environment:
-      CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
+      IDAM_CLIENT_ID: civil-service
+      IDAM_CLIENT_REDIRECT_URI: https://civil-ccd-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/oauth2/callback
+      IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+      IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net
+      IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      MANAGE_CASE_UI_BASE_URL: https://manage-case.{{ .Values.global.environment }}.platform.hmcts.net
+      SPRING_SECURITY_ENABLED: true
+      CMC_DB_PORT: 5432
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: https://forgerock-am.service.core-compute-idam-{{ .Values.global.environment }}.internal:8443/openam/oauth2/hmcts
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/jwks
+      AUTH_IDAM_CLIENT_BASEURL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
+      TESTING_SUPPORT_ENABLED: true
+      FEES_API_URL: http://fees-register-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      PAYMENTS_API_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      DOCMOSIS_TORNADO_URL: https://docmosis.aat.platform.hmcts.net
+      DOCUMENT_MANAGEMENT_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      SPRING_CLOUD_BOOTSTRAP_ENABLED: true
+      RD_PROFESSIONAL_API_URL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
+      CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
+      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
       CMC_DB_HOST: ${SERVICE_NAME}-postgresql
+      CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
       CMC_DB_USERNAME: ${POSTGRES_USER}
       CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
-      CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
       REFERENCE_DATABASE_MIGRATION: true
       FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://camunda-${SERVICE_FQDN}/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://camunda-${SERVICE_FQDN}/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://camunda-${SERVICE_FQDN}/engine-rest/
-      LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
-      TESTING_SUPPORT_ENABLED: true
-      POLLING_EVENT_EMITTER_ENABLED: false
-      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
-      DOCUMENT_MANAGEMENT_SECURED: true
 
 idam-pr:
   releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
@@ -113,6 +129,7 @@ xui-webapp:
       LAUNCH_DARKLY_CLIENT_ID: ~
 
 ccd:
+  enabled: true
   ccd:
     adminWeb:
       enabled: false
@@ -166,14 +183,12 @@ ccd:
         IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: ${IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET}
         IDAM_DATA_STORE_SYSTEM_USER_USERNAME: ${IDAM_DATA_STORE_SYSTEM_USER_USERNAME}
         IDAM_DATA_STORE_SYSTEM_USER_PASSWORD: ${IDAM_DATA_STORE_SYSTEM_USER_PASSWORD}
-        CCD_MULTIPARTY_FIX_ENABLED: true
-        CCD_MULTIPARTY_LOG_LEVEL: DEBUG
-        CCD_MULTIPARTY_CASE_TYPES: CIVIL
-        CCD_MULTIPARTY_EVENTS: DEFENDANT_RESPONSE,ACKNOWLEDGE_CLAIM,CLAIMANT_RESPONSE
+        ROLE_ASSIGNMENT_URL: http://role-am-${SERVICE_FQDN}
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
   am-role-assignment-service:
     java:
+      ingressHost: role-am-${SERVICE_FQDN}
       keyVaults:
         am:
           secrets:
