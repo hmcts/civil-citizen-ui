@@ -27,7 +27,6 @@ jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
-
 describe('Debts', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -36,6 +35,7 @@ describe('Debts', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+
   describe('on Exception', () => {
     test('should return http 500 when has error in the get method', async () => {
       mockGetCaseData.mockImplementation(async () => {
