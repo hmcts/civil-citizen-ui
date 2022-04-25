@@ -84,7 +84,7 @@
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/eslint-plugin-tslint": "^5.18.0",
-    "@typescript-eslint/parser": "^5.19.0",
+    "@typescript-eslint/parser": "^5.20.0",
     "babel-loader": "^8.2.4",
     "codeceptjs": "^3.3.0",
     "copy-webpack-plugin": "^10.2.1",
