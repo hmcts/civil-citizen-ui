@@ -41,6 +41,7 @@ def secrets = [
     secret('ccd-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
     secret('postgres-user', 'POSTGRES_USER'),
     secret('postgres-password', 'POSTGRES_PASSWORD')
+    secret('civil-idam-client-secret', 'IDAM_CLIENT_SECRET')
    ]
 ]
 
