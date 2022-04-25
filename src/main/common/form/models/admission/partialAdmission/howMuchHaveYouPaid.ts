@@ -1,6 +1,6 @@
 import {IsDate, IsDefined, IsNotEmpty, IsNumber, Max, Min, Validate, ValidateIf} from 'class-validator';
 import {
-  AMOUNT_LESS_THEN_CLAIMED,
+  AMOUNT_LESS_THAN_CLAIMED,
   ENTER_PAYMENT_EXPLANATION,
   VALID_AMOUNT,
   VALID_DATE,
@@ -26,7 +26,7 @@ export class HowMuchHaveYouPaid {
   @IsDefined({ message: VALID_AMOUNT })
   @Min(MIN_AMOUNT_VALUE, { message: VALID_AMOUNT })
   @IsNumber({ allowNaN: false, maxDecimalPlaces: 2 }, { message: VALID_TWO_DECIMAL_NUMBER })
-  @Validate(EqualToOrLessThanPropertyValueValidator, ['totalClaimAmount', 'strictComparison'], { message: AMOUNT_LESS_THEN_CLAIMED })
+  @Validate(EqualToOrLessThanPropertyValueValidator, ['totalClaimAmount', 'strictComparison'], { message: AMOUNT_LESS_THAN_CLAIMED })
     amount?: number;
 
   totalClaimAmount?: number;

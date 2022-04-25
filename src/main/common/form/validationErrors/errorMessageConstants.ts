@@ -50,4 +50,4 @@ export const ENTER_AT_LEAST_ONE_DEBT = 'Enter at least one debt';
 export const ENTER_PAYMENT_EXPLANATION = 'Enter text explaining how you paid';
 export const ENTER_A_DEBT = 'Enter a debt';
 export const VALID_AMOUNT = 'Enter a valid amount';
-export const AMOUNT_LESS_THEN_CLAIMED  = 'Enter a value less then the amount claimed';
+export const AMOUNT_LESS_THAN_CLAIMED  = 'Enter a value less than the amount claimed';
