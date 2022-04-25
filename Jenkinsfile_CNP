@@ -43,12 +43,12 @@ def secrets = [
 
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+def pipelineConf = new AppPipelineConfig()
+pipelineConf.vaultSecrets = secrets
 
 withPipeline(type, product, component) {
-  pipelineConf = config
-  enableAksStagingDeployment()
-  disableLegacyDeployment()
-  loadVaultSecrets(secrets)
+   disableLegacyDeployment()
+   loadVaultSecrets(secrets)
 
   onMaster {
     loadVaultSecrets(secrets)

@@ -1,3 +1,6 @@
+tags:
+  civil-ccd-stack: true
+
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
