@@ -13,6 +13,9 @@ import {
 } from '../../../../../../../main/routes/features/response/statementOfMeans/dependants/childrenDisabilityController';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
+const jsdom = require('jsdom');
+const {JSDOM} = jsdom;
+
 const noStatementOfMeansMock = require('../noStatementOfMeansMock.json');
 const noChildrenDisabilityResponse: string = JSON.stringify(noStatementOfMeansMock);
 
@@ -82,6 +85,18 @@ describe('Children Disability', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
         });
+    });
+    test('should reflect data from draft store on disability page', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      const response = await request(app).get(CHILDREN_DISABILITY_URL);
+      const dom = new JSDOM(response.text);
+      const htmlDocument = dom.window.document;
+      const radios = htmlDocument.getElementsByClassName('govuk-radios__input');
+      expect(radios.length).toBe(2);
+      expect(radios[0].getAttribute('value')).toBe('yes');
+      expect(radios[0].getAttribute('checked')).toBe('');
+      expect(radios[1].getAttribute('value')).toBe('no');
+      expect(radios[1].getAttribute('checked')).toBeNull();
     });
   });
 
