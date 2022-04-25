@@ -26,6 +26,7 @@
             {% endfor %}
           {% endif %}
         {% endset -%}
+        {% set dateError = form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year') %}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -79,7 +80,7 @@
                 },
                 errorMessage: {
                   html: errorMessages
-                } if form.hasErrors(),
+                } if dateError,
                 items: [
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",

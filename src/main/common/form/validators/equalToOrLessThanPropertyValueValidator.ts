@@ -3,7 +3,7 @@ import {VALID_NUMBER_FOR_PREVIOUS_PAGE} from '../validationErrors/errorMessageCo
 import {Form} from '../../form/models/form';
 
 /**
- * Validates a number against a value of a object property. Returns true if the number is equal to or less than the property value number.
+ * Validates a number against a value of an object property. Returns true if the number is equal to or less than the property value number.
  * Will not validate (return true) if the property value is not numeric or is not defined
  */
 @ValidatorConstraint({name: 'equalOrLessToPropertyValue'})
