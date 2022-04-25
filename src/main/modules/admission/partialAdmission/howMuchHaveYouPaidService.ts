@@ -49,7 +49,7 @@ class HowMuchHaveYouPaidService {
   public async getTotalClaimAmount(claimId: string) : Promise<number> {
     try {
       const claim = await getCaseDataFromStore(claimId);
-      return claim?.totalClaimAmount;
+      return claim.totalClaimAmount;
     } catch (error) {
       logger.error(error);
       throw error;
