@@ -25,17 +25,15 @@ class HowMuchHaveYouPaidService {
 
   public async saveHowMuchHaveYouPaid(claimId: string, howMuchHaveYouPaid: HowMuchHaveYouPaid) {
     try {
-      const case_data = await getCaseDataFromStore(claimId) || new Claim();
-      if (case_data.totalClaimAmount) {
-        howMuchHaveYouPaid.totalClaimAmount = case_data.totalClaimAmount;
-      }
-      if (case_data.partialAdmission) {
-        case_data.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
+      const claim = await getCaseDataFromStore(claimId) || new Claim();
+      howMuchHaveYouPaid.totalClaimAmount = claim.totalClaimAmount;
+      if (claim.partialAdmission) {
+        claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
       } else {
-        case_data.partialAdmission = new PartialAdmission();
-        case_data.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
+        claim.partialAdmission = new PartialAdmission();
+        claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
       }
-      await saveDraftClaim(claimId, case_data);
+      await saveDraftClaim(claimId, claim);
     } catch (error) {
       logger.error(error);
       throw error;
