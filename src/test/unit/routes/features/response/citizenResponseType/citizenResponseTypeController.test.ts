@@ -6,11 +6,11 @@ import {CITIZEN_RESPONSE_TYPE_URL} from '../../../../../../main/routes/urls';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {Respondent} from '../../../../../../main/common/models/respondent';
+import {REDIS_FAILURE} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-
 
 describe('Citizen response type', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,30 +22,28 @@ describe('Citizen response type', () => {
   });
   describe('on Exception', () => {
     test('should return http 500 when has error in the get method', async () => {
-      const redisFailureError = 'Redis DraftStore failure.';
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error(redisFailureError);
+        throw new Error(REDIS_FAILURE);
       });
       await request(app)
         .get(CITIZEN_RESPONSE_TYPE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: redisFailureError});
+          expect(res.body).toEqual({error: REDIS_FAILURE});
         });
     });
   });
 
   test('should return http 500 when has error in the post method', async () => {
-    const redisFailureError = 'Redis DraftStore failure.';
     mockGetCaseData.mockImplementation(async () => {
-      throw new Error(redisFailureError);
+      throw new Error(REDIS_FAILURE);
     });
     await request(app)
       .post(CITIZEN_RESPONSE_TYPE_URL)
       .send('responseType=test')
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: redisFailureError});
+        expect(res.body).toEqual({error: REDIS_FAILURE});
       });
   });
   describe('on GET', () => {
