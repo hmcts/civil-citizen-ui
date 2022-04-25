@@ -6,7 +6,7 @@ import uk.gov.hmcts.contino.AppPipelineConfig
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-AppPipelineConfig pipelineConf
+
 
 static Map<String, Object> secret(String secretName, String envVariable) {
   [$class     : 'AzureKeyVaultSecret',
