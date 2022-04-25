@@ -3,46 +3,33 @@ import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../../../../main/routes/urls';
-import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {
+  REDIS_FAILURE,
+  VALID_YES_NO_OPTION,
+} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {Logger} from 'winston';
 import {
   setChildrenDisabilityControllerLogger,
 } from '../../../../../../../main/routes/features/response/statementOfMeans/dependants/childrenDisabilityController';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
-const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const noStatementOfMeansMock = require('../noStatementOfMeansMock.json');
-const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
 const noChildrenDisabilityResponse: string = JSON.stringify(noStatementOfMeansMock);
 
-const mockDraftStore = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponse)),
-};
 const mockNoChildrenDisabilityDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(noChildrenDisabilityResponse)),
-};
-const mockErrorDraftStore = {
-  set: jest.fn(() => {
-    throw new Error('Redis DraftStore failure.');
-  }),
-  get: jest.fn(() => {
-    throw new Error('Redis DraftStore failure.');
-  }),
 };
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
 } as unknown as Logger;
 
-
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-
-const redisFailureError = 'Redis DraftStore failure.';
 
 describe('Children Disability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -56,25 +43,25 @@ describe('Children Disability', () => {
 
   describe('on Exception', () => {
     test('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockErrorDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CHILDREN_DISABILITY_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body.errorMessage).toEqual(redisFailureError);
+          expect(res.body.errorMessage).toEqual(REDIS_FAILURE);
           expect(mockLogger.error).toHaveBeenCalled();
         });
     });
 
 
     test('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockErrorDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CHILDREN_DISABILITY_URL)
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body.errorMessage).toEqual(redisFailureError);
+          expect(res.body.errorMessage).toEqual(REDIS_FAILURE);
           expect(mockLogger.error).toHaveBeenCalled();
         });
     });
@@ -82,7 +69,7 @@ describe('Children Disability', () => {
 
   describe('on GET', () => {
     test('should return children disability page', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CHILDREN_DISABILITY_URL)
         .expect((res) => {
@@ -100,7 +87,7 @@ describe('Children Disability', () => {
         });
     });
     test('should reflect data from draft store on disability page', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       const response = await request(app).get(CHILDREN_DISABILITY_URL);
       const dom = new JSDOM(response.text);
       const htmlDocument = dom.window.document;
@@ -125,7 +112,7 @@ describe('Children Disability', () => {
         });
     });
     test('should redirect page when "no"', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CHILDREN_DISABILITY_URL)
         .send('option=no')
@@ -135,7 +122,7 @@ describe('Children Disability', () => {
         });
     });
     test('should redirect page when "yes"', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CHILDREN_DISABILITY_URL)
         .send('option=yes')
@@ -145,7 +132,7 @@ describe('Children Disability', () => {
         });
     });
     test('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CHILDREN_DISABILITY_URL)
         .send('')
@@ -155,5 +142,4 @@ describe('Children Disability', () => {
         });
     });
   });
-
 });
