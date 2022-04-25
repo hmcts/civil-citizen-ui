@@ -1,10 +1,12 @@
 #!groovy
 
 @Library("Infrastructure")
+import uk.gov.hmcts.contino.AppPipelineConfig
 
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
+AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
   [$class     : 'AzureKeyVaultSecret',
@@ -45,7 +47,7 @@ def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 withPipeline(type, product, component) {
   pipelineConf = config
   enableAksStagingDeployment()
-  //disableLegacyDeployment()
+  disableLegacyDeployment()
   loadVaultSecrets(secrets)
 
   onMaster {
@@ -54,6 +56,11 @@ withPipeline(type, product, component) {
   onDemo {
     loadVaultSecrets(secrets)
   }
+  onPR {
+      //env.ENVIRONMENT = "preview"
+      loadVaultSecrets(secrets)
+      //enableCleanupOfHelmReleaseOnSuccess()
+   }
   after('build') {
     yarnBuilder.yarn('build')
   }
