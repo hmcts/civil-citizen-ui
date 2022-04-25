@@ -16,22 +16,18 @@ import {
 import {TestMessages} from '../../../../../../../test/utils/errorMessageTestConstants';
 import {mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
+const civilClaimResponseMock = require('../../../../../../utils/mocks/civilClaimResponseMock.json');
 const withoutOtherDependentJson = require('./withoutOtherDependantsMock.json');
 const option1ToRedirectToCarerJson = require('./option1ToRedirectToCarerMock.json');
 const option2ToRedirectToCarerJson = require('./option2ToRedirectToCarerMock.json');
 
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
-const civilClaimResponseWithoutDisability: string = JSON.stringify(noDisabilityMock);
 const civilClaimResponseWithoutOtherDependent: string = JSON.stringify(withoutOtherDependentJson);
 const civilClaimResponseOption1ToRedirectToCarer: string = JSON.stringify(option1ToRedirectToCarerJson);
 const civilClaimResponseOption2ToRedirectToCarer: string = JSON.stringify(option2ToRedirectToCarerJson);
 const mockRedisException = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponse)),
-};
-const mockNoDisabilityDraftStore = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseWithoutDisability)),
 };
 const mockWithoutOtherDependents = {
   set: jest.fn(() => Promise.resolve({})),
@@ -45,9 +41,7 @@ const mockWithOption2ToRedirectToCarer = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseOption2ToRedirectToCarer)),
 };
-const mockRedisFailure = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => {throw new Error(TestMessages.REDIS_FAILURE);})};
+
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 
@@ -57,7 +51,7 @@ describe('Other Dependants', () => {
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
   });
 
   describe('on GET', () => {
@@ -89,7 +83,7 @@ describe('Other Dependants', () => {
         .get(CITIZEN_OTHER_DEPENDANTS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+          expect(res.body).toEqual({ error: TestMessages.REDIS_FAILURE });
         });
     });
 
@@ -120,7 +114,7 @@ describe('Other Dependants', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({option: 'no', numberOfPeople: '', details: ''})
+        .send({ option: 'no', numberOfPeople: '', details: '' })
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
@@ -131,52 +125,52 @@ describe('Other Dependants', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({option: 'no', numberOfPeople: '1', details: 'Test details'})
+        .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
         });
     });
 
-  
-  test('should redirect when disability, cohabiting and childrenDisability are "no"', async () => {
-    app.locals.draftStoreClient = mockWithOption1ToRedirectToCarer;
-    await request(app)
-      .post(CITIZEN_OTHER_DEPENDANTS_URL)
-      .send({ option: 'no', numberOfPeople: '', details: '' })
-      .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CITIZEN_CARER_URL);
-      });
-  });
 
-  test('should redirect when disability, cohabiting are "no" and partnerDisability is "yes"', async () => {
-    app.locals.draftStoreClient = mockWithOption2ToRedirectToCarer;
-    await request(app)
-      .post(CITIZEN_OTHER_DEPENDANTS_URL)
-      .send({ option: 'no', numberOfPeople: '', details: '' })
-      .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CITIZEN_CARER_URL);
-      });
-  });
+    test('should redirect when disability, cohabiting and childrenDisability are "no"', async () => {
+      app.locals.draftStoreClient = mockWithOption1ToRedirectToCarer;
+      await request(app)
+        .post(CITIZEN_OTHER_DEPENDANTS_URL)
+        .send({ option: 'no', numberOfPeople: '', details: '' })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_CARER_URL);
+        });
+    });
 
-  test('should return error when number of people is undefined', async () => {
-    app.locals.draftStoreClient = mockRedisException;
-    await request(app)
-      .post(CITIZEN_OTHER_DEPENDANTS_URL)
-      .send({ option: 'yes', numberOfPeople: '', details: '' })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(NUMBER_OF_PEOPLE_REQUIRED);
-      });
-  });
+    test('should redirect when disability, cohabiting are "no" and partnerDisability is "yes"', async () => {
+      app.locals.draftStoreClient = mockWithOption2ToRedirectToCarer;
+      await request(app)
+        .post(CITIZEN_OTHER_DEPENDANTS_URL)
+        .send({ option: 'no', numberOfPeople: '', details: '' })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_CARER_URL);
+        });
+    });
+
+    test('should return error when number of people is undefined', async () => {
+      app.locals.draftStoreClient = mockRedisException;
+      await request(app)
+        .post(CITIZEN_OTHER_DEPENDANTS_URL)
+        .send({ option: 'yes', numberOfPeople: '', details: '' })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(NUMBER_OF_PEOPLE_REQUIRED);
+        });
+    });
 
     test('should return error when number of people is 0', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({option: 'yes', numberOfPeople: '0', details: ''})
+        .send({ option: 'yes', numberOfPeople: '0', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_NUMBER_OF_PEOPLE);
@@ -187,7 +181,7 @@ describe('Other Dependants', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({option: 'yes', numberOfPeople: '1', details: ''})
+        .send({ option: 'yes', numberOfPeople: '1', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(DETAILS_REQUIRED);
@@ -198,7 +192,7 @@ describe('Other Dependants', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({option: 'yes', numberOfPeople: '', details: ''})
+        .send({ option: 'yes', numberOfPeople: '', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(NUMBER_OF_PEOPLE_REQUIRED);
@@ -210,7 +204,7 @@ describe('Other Dependants', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({option: 'yes', numberOfPeople: '0', details: ''})
+        .send({ option: 'yes', numberOfPeople: '0', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_NUMBER_OF_PEOPLE);
@@ -222,7 +216,7 @@ describe('Other Dependants', () => {
       app.locals.draftStoreClient = mockWithoutOtherDependents;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({option: 'no', numberOfPeople: '1', details: 'Test details'})
+        .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
@@ -233,10 +227,10 @@ describe('Other Dependants', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({option: 'no', numberOfPeople: '1', details: 'Test details'})
+        .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+          expect(res.body).toEqual({ error: TestMessages.REDIS_FAILURE });
         });
     });
   });
