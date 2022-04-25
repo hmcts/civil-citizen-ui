@@ -9,7 +9,7 @@ import {
   VALID_CORRESPONDENCE_ADDRESS_LINE_1,
   VALID_CORRESPONDENCE_CITY,
   VALID_CORRESPONDENCE_POSTCODE,
-  REDIS_ERROR_MESSAGE,
+  REDIS_FAILURE,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   getRespondentInformation,
@@ -69,27 +69,27 @@ describe('Confirm Details page', () => {
   describe('on Exception', () => {
     test('should return http 500 when has error in the get method', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
-        throw new Error(REDIS_ERROR_MESSAGE);
+        throw new Error(REDIS_FAILURE);
       });
       await request(app)
         .get(CITIZEN_DETAILS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: REDIS_ERROR_MESSAGE});
+          expect(res.body).toEqual({error: REDIS_FAILURE});
         });
     });
   });
 
   test('should return http 500 when has error in the post method', async () => {
     mockSaveRespondent.mockImplementation(async () => {
-      throw new Error(REDIS_ERROR_MESSAGE);
+      throw new Error(REDIS_FAILURE);
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send(validDataForPost)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: REDIS_ERROR_MESSAGE});
+        expect(res.body).toEqual({error: REDIS_FAILURE});
       });
   });
 

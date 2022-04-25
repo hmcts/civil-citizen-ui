@@ -8,7 +8,7 @@ import {
   CLAIM_TASK_LIST_URL,
 } from '../../../../../../../../main/routes/urls';
 import {
-  REDIS_ERROR_MESSAGE,
+  REDIS_FAILURE,
   VALID_PAYMENT_OPTION,
 } from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
@@ -42,7 +42,7 @@ describe('Payment Option Controller', () => {
         .get(CITIZEN_PAYMENT_OPTION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: REDIS_ERROR_MESSAGE});
+          expect(res.body).toMatchObject({error: REDIS_FAILURE});
         });
     });
   });
@@ -93,7 +93,7 @@ describe('Payment Option Controller', () => {
         .send('paymentType=BY_SET_DATE')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: REDIS_ERROR_MESSAGE});
+          expect(res.body).toMatchObject({error: REDIS_FAILURE});
         });
     });
   });
