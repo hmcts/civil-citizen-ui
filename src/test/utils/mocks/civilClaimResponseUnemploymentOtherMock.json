@@ -1,0 +1,32 @@
+{
+  "id": 1645882162449409,
+  "jurisdiction": "CIVIL",
+  "case_type_id": "CIVIL",
+  "created_date": "2022-03-01T13:29:22.447",
+  "last_modified": "2022-03-01T13:29:24.971",
+  "state": "PENDING_CASE_ISSUED",
+  "security_classification": "PUBLIC",
+  "case_data": {
+    "claimFee": {
+      "code": "FEE0204",
+      "version": "4",
+      "calculatedAmountInPence": "7000"
+    },
+    "statementOfMeans": {
+      "unemployment": {
+        "option": "Other",
+        "unemploymentDetails": {
+          "years": null,
+          "months": null
+        },
+        "otherDetails": {
+          "details": "Student"
+        }
+      }
+    },
+    "respondent1": {
+      "dateOfBirth": "2022-03-01T13:29:24.971",
+      "telephoneNumber": "111"
+    }
+  }
+}
