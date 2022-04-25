@@ -83,7 +83,7 @@
                 } if dateError,
                 items: [
                   {
-                    classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+                    classes: "govuk-input--width-2 govuk-input--error" if (form.hasFieldError('day') or form.hasFieldError('date')) else "govuk-input--width-2",
                     id: "day",
                     label: "Day",
                     name: "day",
@@ -91,7 +91,7 @@
                     max: 31
                   },
                   {
-                    classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+                    classes:"govuk-input--width-2 govuk-input--error" if (form.hasFieldError('month') or form.hasFieldError('date')) else "govuk-input--width-2",
                     id: "month",
                     label: "Month",
                     name: "month",
@@ -99,7 +99,7 @@
                     max: 12
                   },
                   {
-                    classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+                    classes: "govuk-input--width-4 govuk-input--error" if (form.hasFieldError('year') or form.hasFieldError('date')) else "govuk-input--width-4",
                     id: "year",
                     label: "Year",
                     name: "year",
