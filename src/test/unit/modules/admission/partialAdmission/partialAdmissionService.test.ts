@@ -26,7 +26,7 @@ describe('partial admission service', () => {
         // Given
         const claim = new Claim();
         claim.partialAdmission = {
-          claimAlreadyPaid: {
+          alreadyPaid: {
             option: 'Yes',
           },
         };
@@ -43,7 +43,7 @@ describe('partial admission service', () => {
         // Given
         const claim = new Claim();
         claim.partialAdmission = {
-          claimAlreadyPaid: {
+          alreadyPaid: {
             option: 'No',
           },
         };
@@ -74,7 +74,7 @@ describe('partial admission service', () => {
         // Given
         const claim = new Claim();
         claim.partialAdmission = {
-          claimAlreadyPaid: {
+          alreadyPaid: {
             option: 'No',
           },
         };

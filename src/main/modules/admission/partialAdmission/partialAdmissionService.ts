@@ -9,7 +9,7 @@ export class PartialAdmissionService {
   public async getClaimAlreadyPaid(claimId: string) {
     try {
       const claim = await getCaseDataFromStore(claimId);
-      return claim.partialAdmission?.claimAlreadyPaid.option;
+      return claim.partialAdmission?.alreadyPaid.option;
     } catch (error) {
       logger.error(error);
       throw error;
@@ -19,11 +19,11 @@ export class PartialAdmissionService {
   public async saveClaimAlreadyPaid(claimId: string, alreadyPaid: string): Promise<void> {
     try {
       const claim = await getCaseDataFromStore(claimId);
-      if (claim.partialAdmission?.claimAlreadyPaid) {
-        claim.partialAdmission.claimAlreadyPaid.option = alreadyPaid;
+      if (claim.partialAdmission?.alreadyPaid) {
+        claim.partialAdmission.alreadyPaid.option = alreadyPaid;
       } else {
         claim.partialAdmission = new PartialAdmission();
-        claim.partialAdmission.claimAlreadyPaid = new AlreadyPaid(alreadyPaid);
+        claim.partialAdmission.alreadyPaid = new AlreadyPaid(alreadyPaid);
       }
       await saveDraftClaim(claimId, claim);
     } catch (error) {
