@@ -54,11 +54,11 @@ describe('HowMuchHaveYouPaid service', () => {
     });
   });
 
-  describe('get and save PaymentDate', () => {
+  describe('get and save HowMuchHaveYouPaid', () => {
     afterEach(() => {
       jest.clearAllMocks();
     });
-    test('should return empty PaymentDate when nothing retrieved', async () => {
+    test('should return empty HowMuchHaveYouPaid when nothing retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -94,7 +94,7 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(howMuchHaveYouPaid.date).toBeNull();
       expect(howMuchHaveYouPaid.text).toBeUndefined();
     });
-    test('should return PaymentDate when date retrieved', async () => {
+    test('should return HowMuchHaveYouPaid when HowMuchHaveYouPaid retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {

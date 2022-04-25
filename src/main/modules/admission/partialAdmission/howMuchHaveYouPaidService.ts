@@ -26,13 +26,15 @@ class HowMuchHaveYouPaidService {
 
   public async saveHowMuchHaveYouPaid(claimId: string, howMuchHaveYouPaid: HowMuchHaveYouPaid) {
     try {
-      const claim = await getCaseDataFromStore(claimId) || new Claim();
-      howMuchHaveYouPaid.totalClaimAmount = claim.totalClaimAmount;
-      if (claim.partialAdmission) {
-        claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
-      } else {
-        claim.partialAdmission = new PartialAdmission();
-        claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
+      const claim = await getCaseDataFromStore(claimId);
+      if (claim) {
+        howMuchHaveYouPaid.totalClaimAmount = claim.totalClaimAmount;
+        if (claim.partialAdmission) {
+          claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
+        } else {
+          claim.partialAdmission = new PartialAdmission();
+          claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
+        }
       }
       await saveDraftClaim(claimId, claim);
     } catch (error) {
