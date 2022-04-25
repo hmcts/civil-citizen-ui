@@ -15,7 +15,7 @@ const childrenDisabilityController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('childrenDisabilityController');
 
-export function setChildrenDisabilityControllerLogger(winstonLogger: winston.LoggerInstance) {
+export function setChildrenDisabilityControllerLogger(winstonLogger: winston.Logger) {
   logger = winstonLogger;
 }
 
@@ -25,8 +25,13 @@ childrenDisabilityController
     async (req: express.Request, res: express.Response) => {
       try {
         const childrenDisability : ChildrenDisability = await getChildrenDisability(req.params.id);
+        const form = new GenericForm(childrenDisability);
+        // This is a workaround as the YesNo macro used in the view assumes Form but controller assumes GenericForm
+        // TODO: Discard the workaround once the decision Form Vs. GenericForm is made and YesNo macro is adjusted accordingly
+        const _form = Object.assign(form);
+        _form.option = childrenDisability.option;
         res.render(childrenDisabilityViewPath,{
-          form: new GenericForm(childrenDisability),
+          form: _form,
         });
       } catch (error) {
         logger.error(error);
