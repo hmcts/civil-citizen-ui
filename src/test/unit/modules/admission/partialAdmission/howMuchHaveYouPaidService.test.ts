@@ -327,6 +327,8 @@ describe('HowMuchHaveYouPaid service', () => {
     test('should raise an error if today specified for date', async () => {
       //Given
       const today : Date = new Date(Date.now());
+      const todayFormatted = today.toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'long', year: 'numeric'});
       howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100, today.getFullYear().toString(), (today.getMonth() + 1).toString(), today.getDate().toString(), 'text');
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
@@ -334,7 +336,7 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('date');
-      expect(form.getErrors()[0].constraints).toEqual({customDate: VALID_DATE_IN_PAST});
+      expect(form.getErrors()[0].constraints).toEqual({customDate: VALID_DATE_IN_PAST + todayFormatted});
     });
     test('should not raise an error if yesterday specified for date', async () => {
       //Given

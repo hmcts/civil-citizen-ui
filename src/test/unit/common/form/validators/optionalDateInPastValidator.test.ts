@@ -28,7 +28,7 @@ describe('OptionalDateInPastValidator validate', () => {
   });
   it('should return specific text for defaultMessage', () => {
     //Given
-    const defaultMessage = 'Enter date before';
+    const defaultMessage = 'Enter date before ';
     //When
     const result = validator.defaultMessage();
     //Then
