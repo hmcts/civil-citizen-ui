@@ -109,7 +109,7 @@
                 ]
               }) }}
             </div>
-            <div class="govuk-form-group {% if errors.length %} govuk-form-group--error {% endif %}">
+            <div class="govuk-form-group {% if form.hasFieldError('text') %} govuk-form-group--error {% endif %}">
               {{ govukTextarea({
                 name: "text",
                 id: "text",
