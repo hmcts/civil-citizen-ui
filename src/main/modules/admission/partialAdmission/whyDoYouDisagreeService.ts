@@ -1,17 +1,22 @@
 import {WhyDoYouDisagree} from '../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../common/models/claim';
+import {PartialAdmission} from '../../../common/models/partialAdmission';
+import {WhyDoYouDisagreeForm} from '../../../common/models/whyDoYouDisagreeForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentOptionService');
 
-const getWhyDoYouDisagreeForm = async (claimId: string): Promise<WhyDoYouDisagree> => {
+const getWhyDoYouDisagreeForm = async (claimId: string): Promise<WhyDoYouDisagreeForm> => {
   try {
-    const claim: Claim = await getCaseDataFromStore(claimId);
-    if (paymentOptionExists(claim)) {
-      return new WhyDoYouDisagree();
+    const claim = await getCaseDataFromStore(claimId);
+    const whyDoYouDisagreeForm = new WhyDoYouDisagreeForm();
+    whyDoYouDisagreeForm.claimAmount = claim.totalClaimAmount;
+    if (claim.partialAdmission?.whyDoYouDisagree) {
+      whyDoYouDisagreeForm.whyDoYouDisagree = claim.partialAdmission.whyDoYouDisagree;
+      return whyDoYouDisagreeForm;
     }
-    return new WhyDoYouDisagree();
+    whyDoYouDisagreeForm.whyDoYouDisagree = new WhyDoYouDisagree();
+    return whyDoYouDisagreeForm;
   } catch (error) {
     logger.error(`${error.stack || error}`);
     throw error;
@@ -20,20 +25,16 @@ const getWhyDoYouDisagreeForm = async (claimId: string): Promise<WhyDoYouDisagre
 
 const saveWhyDoYouDisagreeData = async (claimId: string, form: WhyDoYouDisagree) => {
   try {
-    let claim: Claim = await getCaseDataFromStore(claimId);
-    if (!claim) {
-      claim = new Claim();
+    const claim = await getCaseDataFromStore(claimId);
+    if (!claim.partialAdmission) {
+      claim.partialAdmission = new PartialAdmission();
     }
-    claim.partialAdmission.whyDoYouDisagree.text = form.text;
+    claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree(form.text);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(`${error.stack || error}`);
     throw error;
   }
-};
-
-const paymentOptionExists = (claim: Claim): boolean => {
-  return claim?.paymentOption?.length > 0;
 };
 
 export {

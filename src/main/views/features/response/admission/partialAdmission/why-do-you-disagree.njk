@@ -1,17 +1,16 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "../../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
-{% from "../../../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-
-{% set heading = 'Why do you disagree with the claim amount?' %}
 
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% set header = 'Why do you disagree with the claim amount?' %}
+      {% set errors = form.getAllErrors()%}
+      {% if form.hasErrors() %}
       {{ govukErrorSummary({
         "titleText": t("There was a problem"),
         "errorList": errors
@@ -19,26 +18,27 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l govuk-!-margin-bottom-1">{{header}}</h1>
           <form novalidate method="post">
             {{ csrfProtection(csrf) }}
 
-            <p>{{ t('The total amount claimed is {{ totalAmount }}. This includes the claim fee.',
-                { totalAmount: form.model.totalAmount | numeral }) }}</p>
+            <p>{{ t('The total amount claimed is £{{ totalAmount }}. This includes the claim fee.',
+                { totalAmount: claimAmount }) }}</p>
 
             {{ govukTextarea({
-              name: "reason",
-              id: "reason",
-              label: {
-                text: t("Reason")
-              },
-              value: form.reason,
+              name: "text",
+              id: "text",
+              value: form.model.text,
               errorMessage: {
-                text:t(form.errorFor('reason'))
-              } if form.hasFieldError('reason')
+                text:t(form.errorFor('text'))
+              } if form.errorFor('text')
             }) }}
-
-            {{ saveAndContinueButton() }}
+            <div class="govuk-form-group">
+            {{ govukButton({
+              text: t("Save and continue")
+            }) }}
             {{ contactUsForHelp(t) }}
+            </div>
           </form>
         </div>
       </div>

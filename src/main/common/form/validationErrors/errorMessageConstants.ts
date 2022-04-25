@@ -41,6 +41,7 @@ export const YES_NO_REQUIRED = 'Please select yes or no';
 export const VALID_OWED_AMOUNT_REQUIRED = 'Enter a valid amount owed';
 export const VALID_VALUE = 'Are you sure this is a valid value?';
 export const VALID_REASON_REQUIRED = 'Enter a reason';
+export const VALID_DISAGREE_REASON_REQUIRED = 'Enter text explaining why do you disagree';
 export const VALID_ENTER_AN_EMPLOYER_NAME = 'Enter an employer name';
 export const VALID_ENTER_A_JOB_TITLE = 'Enter a job title';
 export const VALID_ENTER_AT_LEAST_ONE_EMPLOYER = 'Enter at least one employer';
