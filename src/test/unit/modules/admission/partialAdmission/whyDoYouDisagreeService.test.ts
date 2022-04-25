@@ -5,7 +5,7 @@ import {
   saveWhyDoYouDisagreeData,
 } from '../../../../../main/modules/admission/partialAdmission/whyDoYouDisagreeService';
 
-import {REDIS_ERROR_MESSAGE} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {REDIS_FAILURE} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {WhyDoYouDisagree} from '../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {PartialAdmission} from '../../../../../main/common/models/partialAdmission';
 
@@ -64,10 +64,10 @@ describe('why do you disagree service', () => {
     it('should throw an error when error is thrown from draft store', async () => {
       //When
       mockGetCaseData.mockImplementation(async () => {
-        throw new Error(REDIS_ERROR_MESSAGE);
+        throw new Error(REDIS_FAILURE);
       });
       //Then
-      await expect(getWhyDoYouDisagreeForm('123')).rejects.toThrow(REDIS_ERROR_MESSAGE);
+      await expect(getWhyDoYouDisagreeForm('123')).rejects.toThrow(REDIS_FAILURE);
     });
   });
   describe('save text', () => {
@@ -104,10 +104,10 @@ describe('why do you disagree service', () => {
       const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
       //When
       mockSaveClaim.mockImplementation(async () => {
-        throw new Error(REDIS_ERROR_MESSAGE);
+        throw new Error(REDIS_FAILURE);
       });
       //Then
-      await expect(saveWhyDoYouDisagreeData('123', new WhyDoYouDisagree())).rejects.toThrow(REDIS_ERROR_MESSAGE);
+      await expect(saveWhyDoYouDisagreeData('123', new WhyDoYouDisagree())).rejects.toThrow(REDIS_FAILURE);
     });
   });
 });
