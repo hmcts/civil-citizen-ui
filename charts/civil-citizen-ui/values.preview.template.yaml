@@ -115,7 +115,7 @@ idam-pr:
   enabled: true
   debug: true
   redirect_uris:
-    civil-citizen-ui:
+    Civil Citizen UI:
       - https://${SERVICE_FQDN}/oauth2/callback
 
 
