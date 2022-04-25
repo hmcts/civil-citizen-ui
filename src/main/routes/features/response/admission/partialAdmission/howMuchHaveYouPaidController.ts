@@ -23,8 +23,8 @@ howMuchHaveYouPaidController
   .get(
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req: express.Request, res: express.Response) => {
       try {
+        totalClaimAmount = await howMuchHaveYouPaidService.getTotalClaimAmount(req.params.id);
         const howMuchHaveYouPaid : HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id);
-        totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
         if (howMuchHaveYouPaid.date) {
           const dateWhenYouPaid = new Date(howMuchHaveYouPaid.date);
           howMuchHaveYouPaid.date = dateWhenYouPaid;

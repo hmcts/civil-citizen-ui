@@ -52,7 +52,7 @@ describe('Partial Admit - How much have you paid? model', () => {
       const errors = validator.validateSync(form);
       //Then
       expect(errors?.length).toBe(1);
-      expect(errors[0].constraints?.equalOrLessToPropertyValue).toBe(TestMessages.AMOUNT_LESS_THEN_CLAIMED);
+      expect(errors[0].constraints?.equalOrLessToPropertyValue).toBe(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
     });
     it('should return errors when provided amount is equal to Claim amount', () => {
       //Given
@@ -61,7 +61,7 @@ describe('Partial Admit - How much have you paid? model', () => {
       const errors = validator.validateSync(form);
       //Then
       expect(errors?.length).toBe(1);
-      expect(errors[0].constraints?.equalOrLessToPropertyValue).toBe(TestMessages.AMOUNT_LESS_THEN_CLAIMED);
+      expect(errors[0].constraints?.equalOrLessToPropertyValue).toBe(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
     });
     it('should return no errors when provided amount is less than Claim amount', () => {
       //Given

@@ -27,5 +27,5 @@ export const enum TestMessages {
   GAS_CORRECT_AMOUNT_ERROR = 'Enter a valid Gas amount, maximum two decimal places',
   VALID_TWO_DECIMAL_NUMBER = 'Enter a valid amount, maximum two decimal places',
   VALID_AMOUNT = 'Enter a valid amount',
-  AMOUNT_LESS_THEN_CLAIMED = 'Enter a value less then the amount claimed',
+  AMOUNT_LESS_THAN_CLAIMED = 'Enter a value less than the amount claimed',
 }
