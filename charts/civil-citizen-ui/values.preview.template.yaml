@@ -19,7 +19,7 @@ nodejs:
     REDIS_HOST: 'civil-{{ .Values.global.environment }}.redis.cache.windows.net'
     REDIS_PORT: 6380
     REDIS_TLS: true
-    CIVIL_SERVICE_URL: civil-service-${SERVICE_FQDN}:4000
+    CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
     ALLOW_CONFIG_MUTATIONS: true
     autoscaling:
       enabled: false
@@ -52,63 +52,47 @@ postgresql:
 civil-service:
   enabled: true
   java:
-    applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
     image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
     ingressHost: civil-service-${SERVICE_FQDN}
     keyVaults:
-      civil:
-        resourceGroup: civil
-        secrets:
-          - civil-idam-client-secret
-          - microservicekey-civil-service
-          - system-update-user-username
-          - system-update-user-password
-          - cross-access-user-username
-          - cross-access-user-password
-          - prd-admin-user-username
-          - prd-admin-user-password
-          #- AppInsightsInstrumentationKey needs to be replaced with GA specific key
-          - docmosis-api-key
-          - gov-notify-api-key
-          - sendgrid-api-key
-          - robotics-notification-sender
-          - robotics-notification-recipient
-          - launch-darkly-sdk-key
-          - ordnance-survey-api-key
-    environment:
-      IDAM_CLIENT_ID: civil-service
-      IDAM_CLIENT_REDIRECT_URI: https://civil-ccd-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/oauth2/callback
-      IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
-      IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net
-      IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      MANAGE_CASE_UI_BASE_URL: https://manage-case.{{ .Values.global.environment }}.platform.hmcts.net
-      SPRING_SECURITY_ENABLED: true
-      CMC_DB_PORT: 5432
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: https://forgerock-am.service.core-compute-idam-{{ .Values.global.environment }}.internal:8443/openam/oauth2/hmcts
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/jwks
-      AUTH_IDAM_CLIENT_BASEURL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
-      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
-      TESTING_SUPPORT_ENABLED: true
-      FEES_API_URL: http://fees-register-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      PAYMENTS_API_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      DOCMOSIS_TORNADO_URL: https://docmosis.aat.platform.hmcts.net
-      DOCUMENT_MANAGEMENT_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      SPRING_CLOUD_BOOTSTRAP_ENABLED: true
-      RD_PROFESSIONAL_API_URL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
-      CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
-      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
-      CMC_DB_HOST: ${SERVICE_NAME}-postgresql
-      CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
-      CMC_DB_USERNAME: ${POSTGRES_USER}
-      CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
-      REFERENCE_DATABASE_MIGRATION: true
-      FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://camunda-${SERVICE_FQDN}/engine-rest/
-      FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://camunda-${SERVICE_FQDN}/engine-rest/
-      FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://camunda-${SERVICE_FQDN}/engine-rest/
+    civil:
+      resourceGroup: civil
+      secrets:
+        - civil-idam-client-secret
+        - microservicekey-civil-service
+        - system-update-user-username
+        - system-update-user-password
+        - cross-access-user-username
+        - cross-access-user-password
+        - prd-admin-user-username
+        - prd-admin-user-password
+        - AppInsightsInstrumentationKey
+        - docmosis-api-key
+        - gov-notify-api-key
+        - sendgrid-api-key
+        - robotics-notification-sender
+        - robotics-notification-recipient
+        - launch-darkly-sdk-key
+        - robotics-notification-multipartyrecipient
+        - ordnance-survey-api-key
+  environment:
+    CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
+    OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
+    CMC_DB_HOST: ${SERVICE_NAME}-postgresql
+    CMC_DB_USERNAME: ${POSTGRES_USER}
+    CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+    CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
+    REFERENCE_DATABASE_MIGRATION: true
+    FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://camunda-${SERVICE_FQDN}/engine-rest/
+    FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://camunda-${SERVICE_FQDN}/engine-rest/
+    FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://camunda-${SERVICE_FQDN}/engine-rest/
+    LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
+    TESTING_SUPPORT_ENABLED: true
+    POLLING_EVENT_EMITTER_ENABLED: false
+    CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
+    DOCUMENT_MANAGEMENT_SECURED: true
 
 idam-pr:
   releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
