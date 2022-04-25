@@ -17,6 +17,10 @@ import {OptionalDateFourDigitValidator} from '../../../validators/optionalDateFo
 import {OptionalDateInPastValidator} from '../../../validators/optionalDateInPastValidator';
 import {DateConverter} from '../../../../../common/utils/dateConverter';
 
+const date = new Date();
+const today = date.toLocaleDateString('en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric'});
+
 
 export class HowMuchHaveYouPaid {
 
@@ -30,7 +34,7 @@ export class HowMuchHaveYouPaid {
 
   @ValidateIf(o => (o.day > 0 && o.day <32 && o.month > 0 && o.month < 13 && o.year > 999))
   @IsDate({message: VALID_DATE})
-  @Validate(OptionalDateInPastValidator, {message: VALID_DATE_IN_PAST})
+  @Validate(OptionalDateInPastValidator, {message: VALID_DATE_IN_PAST + today})
     date?: Date;
 
   @Min(1,{message:VALID_DAY })
