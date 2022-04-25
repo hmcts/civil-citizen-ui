@@ -2,7 +2,7 @@ import {Router} from 'express';
 
 const unauthorisedController = Router();
 
-unauthorisedController.get('/unauthorised', (req, res) => {
+unauthorisedController.get('/unauthorised', (_req, res) => {
   res.render('unauthorised');
 });
 
