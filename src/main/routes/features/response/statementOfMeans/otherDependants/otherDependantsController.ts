@@ -13,7 +13,7 @@ import {getCaseDataFromStore} from '../../../../../modules/draft-store/draftStor
 import {YesNo} from '../../../../../common/form/models/yesNo';
 
 const citizenOtherDependantsViewPath = 'features/response/statementOfMeans/otherDependants/other-dependants';
-const router = express.Router();
+const otherDependantsController = express.Router();
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('otherDependantsController');
@@ -24,7 +24,7 @@ function renderView(form: OtherDependants, res: express.Response): void {
   res.render(citizenOtherDependantsViewPath, {form});
 }
 
-router.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res) => {
+otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res) => {
   try {
     const response = await otherDependantsService.getOtherDependants(req.params.id);
     const otherDependants = response ? new OtherDependants(response.option, response.numberOfPeople, response.details) : new OtherDependants();
@@ -35,7 +35,7 @@ router.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res) => {
   }
 });
 
-router.post(CITIZEN_OTHER_DEPENDANTS_URL,
+otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
   async (req, res) => {
     try{
       const otherDependants: OtherDependants = new OtherDependants(
@@ -68,4 +68,4 @@ router.post(CITIZEN_OTHER_DEPENDANTS_URL,
     }
   });
 
-export default router;
+export default otherDependantsController;
