@@ -11,6 +11,9 @@ jest.mock('ioredis', () => {
 });
 
 describe('Draft Store Health Check - UP', () => {
+  afterAll(() => {
+    app.locals.draftStoreClient.close();
+  });
   test('When draft store responding, health check should return UP', async () => {
     await request(app)
       .get('/health')

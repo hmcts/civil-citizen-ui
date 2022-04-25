@@ -28,7 +28,9 @@ function authenticate() {
 }
 
 describe('i18n test - Dashboard', () => {
-
+  afterAll(() => {
+    app.locals.draftStoreClient.close();
+  });
   const citizenRoleToken: string = config.get('citizenRoleToken');
 
   beforeEach(() => {

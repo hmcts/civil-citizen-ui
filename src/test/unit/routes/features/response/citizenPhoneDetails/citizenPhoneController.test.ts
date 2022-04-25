@@ -20,6 +20,9 @@ describe('Citizen phone number', () => {
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
   });
+  afterAll(() => {
+    app.locals.draftStoreClient.close();
+  });
   describe('on GET', () => {
     test('should return citizen phone number page with all information from redis', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
