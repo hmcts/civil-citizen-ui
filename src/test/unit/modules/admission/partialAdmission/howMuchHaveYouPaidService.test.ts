@@ -70,9 +70,9 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(howMuchHaveYouPaid.amount).toBeUndefined();
       expect(howMuchHaveYouPaid.totalClaimAmount).toBeUndefined();
-      expect(howMuchHaveYouPaid.year).toBeNaN();
-      expect(howMuchHaveYouPaid.month).toBeNaN();
-      expect(howMuchHaveYouPaid.day).toBeNaN();
+      expect(howMuchHaveYouPaid.year).toBeUndefined();
+      expect(howMuchHaveYouPaid.month).toBeUndefined();
+      expect(howMuchHaveYouPaid.day).toBeUndefined();
       expect(howMuchHaveYouPaid.date).toBeNull();
       expect(howMuchHaveYouPaid.text).toBeUndefined();
     });
@@ -88,9 +88,9 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(howMuchHaveYouPaid.amount).toBeUndefined();
       expect(howMuchHaveYouPaid.totalClaimAmount).toBeUndefined();
-      expect(howMuchHaveYouPaid.year).toBeNaN();
-      expect(howMuchHaveYouPaid.month).toBeNaN();
-      expect(howMuchHaveYouPaid.day).toBeNaN();
+      expect(howMuchHaveYouPaid.year).toBeUndefined();
+      expect(howMuchHaveYouPaid.month).toBeUndefined();
+      expect(howMuchHaveYouPaid.day).toBeUndefined();
       expect(howMuchHaveYouPaid.date).toBeNull();
       expect(howMuchHaveYouPaid.text).toBeUndefined();
     });

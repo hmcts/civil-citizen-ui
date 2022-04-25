@@ -16,6 +16,7 @@ import {EqualToOrLessThanPropertyValueValidator} from '../../../validators/equal
 import {OptionalDateFourDigitValidator} from '../../../validators/optionalDateFourDigitValidator';
 import {OptionalDateInPastValidator} from '../../../validators/optionalDateInPastValidator';
 import {DateConverter} from '../../../../../common/utils/dateConverter';
+import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 
 const today = new Date().toLocaleDateString('en-GB', {
   day: 'numeric', month: 'long', year: 'numeric'});
@@ -56,9 +57,9 @@ export class HowMuchHaveYouPaid {
     this.amount = amount;
     this.totalClaimAmount = totalClaimAmount;
     this.date = DateConverter.convertToDate(year, month, day);
-    this.year = Number(year);
-    this.month = Number(month);
-    this.day = Number(day);
+    this.year = toNumberOrUndefined(year);
+    this.month = toNumberOrUndefined(month);
+    this.day = toNumberOrUndefined(day);
     this.text = text;
   }
 }
