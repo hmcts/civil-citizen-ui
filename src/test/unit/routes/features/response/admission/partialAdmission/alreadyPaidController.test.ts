@@ -3,7 +3,7 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../../main/app';
 import {
-  REDIS_ERROR_MESSAGE,
+  REDIS_FAILURE,
   VALID_YES_NO_SELECTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
@@ -42,7 +42,7 @@ describe('Already Paid Controller', () => {
       await request(app)
         .get(CITIZEN_ALREADY_PAID_URL).expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: REDIS_ERROR_MESSAGE});
+          expect(res.body).toMatchObject({error: REDIS_FAILURE});
         });
     });
   });
