@@ -41,7 +41,6 @@ def secrets = [
   ]
 ]
 
-
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def pipelineConf = new AppPipelineConfig()
 pipelineConf.vaultSecrets = secrets
