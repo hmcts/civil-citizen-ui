@@ -17,8 +17,7 @@ import {OptionalDateFourDigitValidator} from '../../../validators/optionalDateFo
 import {OptionalDateInPastValidator} from '../../../validators/optionalDateInPastValidator';
 import {DateConverter} from '../../../../../common/utils/dateConverter';
 
-const date = new Date();
-const today = date.toLocaleDateString('en-GB', {
+const today = new Date().toLocaleDateString('en-GB', {
   day: 'numeric', month: 'long', year: 'numeric'});
 
 
