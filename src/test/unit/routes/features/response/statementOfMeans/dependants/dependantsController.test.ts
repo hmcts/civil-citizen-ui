@@ -2,6 +2,7 @@ import express from 'express';
 import nock from 'nock';
 import config from 'config';
 import {
+  REDIS_FAILURE,
   VALID_ENTER_AT_LEAST_ONE_NUMBER,
   VALID_INTEGER,
   VALID_POSITIVE_NUMBER,
@@ -14,6 +15,7 @@ import {
 } from '../../../../../../../main/routes/urls';
 import * as childrenDisabilityService
   from '../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
 const request = require('supertest');
 const {app} = require('../../../../../../../main/app');
@@ -24,18 +26,6 @@ jest.mock('../../../../../../../main/modules/statementOfMeans/dependants/childre
 const mockHasDisabledChildren = childrenDisabilityService.hasDisabledChildren as jest.Mock;
 
 const respondentDependantsUrl = CITIZEN_DEPENDANTS_URL.replace(':id', 'aaa');
-const DRAFT_STORE_EXCEPTION = 'Draft store exception';
-const mockDraftStore = {
-  get: jest.fn(() => Promise.resolve('{"id": "id", "case_data": {"statementOfMeans": {}}}')),
-  set: jest.fn(() => Promise.resolve()),
-};
-
-const mockGetExceptionDraftStore = {
-  get: jest.fn(() => {
-    throw new Error(DRAFT_STORE_EXCEPTION);
-  }),
-  set: jest.fn(() => Promise.resolve()),
-};
 
 describe('Citizen dependants', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -49,7 +39,7 @@ describe('Citizen dependants', () => {
 
   describe('on GET', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
     });
 
     test('should return dependants page', async () => {
@@ -61,18 +51,18 @@ describe('Citizen dependants', () => {
         });
     });
     test('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockGetExceptionDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(respondentDependantsUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({errorMessage: DRAFT_STORE_EXCEPTION});
+          expect(res.body).toMatchObject({errorMessage: REDIS_FAILURE});
         });
     });
   });
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
     });
 
     test('when Yes option,under11 field filled in, hasDisabledChildren returns false, should redirect to Other Dependants screen', async () => {
@@ -153,14 +143,14 @@ describe('Citizen dependants', () => {
         });
     });
     test('should status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockGetExceptionDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
         .send('under11=1')
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({errorMessage: DRAFT_STORE_EXCEPTION});
+          expect(res.body).toMatchObject({errorMessage: REDIS_FAILURE});
         });
     });
   });

@@ -53,7 +53,7 @@
                 label: {
                   text: t('Years')
                 },
-                value: form.model.unemploymentDetails.years,
+                value: '' + form.model.unemploymentDetails.years,
                 errorMessage: { text: yearNestedError } if yearNestedError else ''
               }) }}
               {{ govukInput({
@@ -65,7 +65,7 @@
                 label: {
                   text: t('Months')
                 },
-                value: form.model.unemploymentDetails.months,
+                value: '' + form.model.unemploymentDetails.months,
                 errorMessage: { text: monthsNestedError } if monthsNestedError else ''
 
               }) }}
