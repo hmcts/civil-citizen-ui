@@ -9,6 +9,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set header = 'Why do you disagree with the claim amount?' %}
+      {% set subTitle = t('The total amount claimed is £{{ claimAmount }}. This includes the claim fee.', { claimAmount: claimAmount }) %}
       {% set errors = form.getAllErrors()%}
       {% if form.hasErrors() %}
       {{ govukErrorSummary({
@@ -20,11 +21,8 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l govuk-!-margin-bottom-1">{{header}}</h1>
           <form novalidate method="post">
-            {{ csrfProtection(csrf) }}
-
-            <p>{{ t('The total amount claimed is £{{ totalAmount }}. This includes the claim fee.',
-                { totalAmount: claimAmount }) }}</p>
-
+           {{ csrfProtection(csrf) }}
+            <p class="govuk-body">{{ subTitle }}</p>
             {{ govukTextarea({
               name: "text",
               id: "text",
