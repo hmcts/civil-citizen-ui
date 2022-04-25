@@ -23,8 +23,8 @@ howMuchHaveYouPaidController
   .get(
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req: express.Request, res: express.Response) => {
       try {
-        totalClaimAmount = await howMuchHaveYouPaidService.getTotalClaimAmount(req.params.id);
         const howMuchHaveYouPaid : HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id);
+        totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
         if (howMuchHaveYouPaid.date) {
           const dateWhenYouPaid = new Date(howMuchHaveYouPaid.date);
           howMuchHaveYouPaid.date = dateWhenYouPaid;
@@ -42,23 +42,22 @@ howMuchHaveYouPaidController
     })
   .post(
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req, res) => {
-      try {
-        totalClaimAmount = await howMuchHaveYouPaidService.getTotalClaimAmount(req.params.id);
-        const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
-        const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
-        await form.validate();
+      const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
+      const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
+      await form.validate();
 
-        if (form.hasErrors()) {
-          res.render(howMuchHaveYouPaidPath, {
-            form: form, lastMonth : lastMonth, totalClaimAmount : totalClaimAmount,
-          });
-        } else {
+      if (form.hasErrors()) {
+        res.render(howMuchHaveYouPaidPath, {
+          form: form, lastMonth : lastMonth, totalClaimAmount : howMuchHaveYouPaid.totalClaimAmount,
+        });
+      } else {
+        try {
           await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(req.params.id, howMuchHaveYouPaid);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+        } catch (error) {
+          logger.error(error);
+          res.status(500).send({error: error.message});
         }
-      } catch (error) {
-        logger.error(error);
-        res.status(500).send({error: error.message});
       }
     });
 
