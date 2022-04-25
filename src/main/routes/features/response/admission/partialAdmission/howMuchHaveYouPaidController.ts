@@ -42,23 +42,23 @@ howMuchHaveYouPaidController
     })
   .post(
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req, res) => {
-      totalClaimAmount = await howMuchHaveYouPaidService.getTotalClaimAmount(req.params.id);
-      const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
-      const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
-      await form.validate();
+      try {
+        totalClaimAmount = await howMuchHaveYouPaidService.getTotalClaimAmount(req.params.id);
+        const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
+        const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
+        await form.validate();
 
-      if (form.hasErrors()) {
-        res.render(howMuchHaveYouPaidPath, {
-          form: form, lastMonth : lastMonth, totalClaimAmount : totalClaimAmount,
-        });
-      } else {
-        try {
+        if (form.hasErrors()) {
+          res.render(howMuchHaveYouPaidPath, {
+            form: form, lastMonth : lastMonth, totalClaimAmount : totalClaimAmount,
+          });
+        } else {
           await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(req.params.id, howMuchHaveYouPaid);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
-        } catch (error) {
-          logger.error(error);
-          res.status(500).send({error: error.message});
         }
+      } catch (error) {
+        logger.error(error);
+        res.status(500).send({error: error.message});
       }
     });
 
