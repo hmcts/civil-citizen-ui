@@ -5,6 +5,7 @@ import {HowMuchHaveYouPaid} from '../../../../../main/common/form/models/admissi
 import {
   ENTER_PAYMENT_EXPLANATION,
   VALID_AMOUNT,
+  VALID_DATE,
   VALID_DATE_IN_PAST,
   VALID_DAY,
   VALID_FOUR_DIGIT_YEAR,
@@ -302,6 +303,17 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('day');
       expect(form.getErrors()[0].constraints).toEqual({min: VALID_DAY});
+    });
+    test('should raise an error if date is invalid', async () => {
+      //Given
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100, '2022', '2', '31', 'text');
+      //When
+      form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
+      await form.validate();
+      //Then
+      expect(form.getErrors().length).toBe(1);
+      expect(form.getErrors()[0].property).toBe('date');
+      expect(form.getErrors()[0].constraints).toEqual({isDate: VALID_DATE});
     });
     test('should not raise an error if date in past', async () => {
       //Given

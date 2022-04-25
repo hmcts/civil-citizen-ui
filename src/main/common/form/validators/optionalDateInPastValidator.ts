@@ -8,13 +8,14 @@ import {VALID_DATE_IN_PAST} from '../validationErrors/errorMessageConstants';
 export class OptionalDateInPastValidator implements ValidatorConstraintInterface {
 
   validate(inputDate: Date) {
+    // Don't check if inputDate is null i.e. invalid, @IsDate check should catch this
+    if (inputDate == null) {
+      return true;
+    }
     const today = new Date(Date.now());
     // Need to compare dates discarding hours, minutes etc.
     today.setHours(0,0,0,0);
-    if (inputDate !== null && (inputDate < today)) {
-      return true;
-    }
-    return false;
+    return inputDate < today;
   }
 
   defaultMessage() {
