@@ -7,7 +7,7 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {CITIZEN_AMOUNT_YOU_PAID_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../../../../urls';
 import {WhyDoYouDisagreeForm} from '../../../../../common/models/whyDoYouDisagreeForm';
-import {GenericForm} from 'common/form/models/genericForm';
+import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {Validator} from 'class-validator';
 
 const whyDoYouDisagreeController = express.Router();
