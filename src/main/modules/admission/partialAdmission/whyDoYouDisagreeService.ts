@@ -18,7 +18,7 @@ const getWhyDoYouDisagreeForm = async (claimId: string): Promise<WhyDoYouDisagre
     whyDoYouDisagreeForm.whyDoYouDisagree = new WhyDoYouDisagree();
     return whyDoYouDisagreeForm;
   } catch (error) {
-    logger.error(`${error.stack || error}`);
+    logger.error(error);
     throw error;
   }
 };
@@ -32,7 +32,7 @@ const saveWhyDoYouDisagreeData = async (claimId: string, form: WhyDoYouDisagree)
     claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree(form.text);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
-    logger.error(`${error.stack || error}`);
+    logger.error(error);
     throw error;
   }
 };
