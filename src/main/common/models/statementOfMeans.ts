@@ -20,6 +20,7 @@ import {RegularExpenses} from '../form/models/statementOfMeans/expenses/regularE
 import {Debts} from '../form/models/statementOfMeans/debts/debts';
 import {CourtOrders} from '../form/models/statementOfMeans/courtOrders/courtOrders';
 import {Carer} from 'common/form/models/statementOfMeans/carer';
+import {Explanation} from 'common/form/models/statementOfMeans/explanation';
 
 export class StatementOfMeans {
   disability?: Disability;
@@ -45,4 +46,5 @@ export class StatementOfMeans {
   debts?: Debts;
   courtOrders?: CourtOrders;
   carer?: Carer;
+  explanation?: Explanation;
 }
