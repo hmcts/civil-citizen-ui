@@ -1,0 +1,99 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../../macro/csrf.njk" import csrfProtection %}
+{% from "./court-order.njk" import courtOrder %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getAllErrors() %}
+      {% set declaredError = form.errorFor('declared') %}
+      {% set atLeastOneCourtOrderError = form.errorFor('rows') %}
+      {% if errors.length > 0 %}
+        {{ govukErrorSummary({
+          "titleText": t('There was a problem'),
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('Are you paying money as a result of any court orders?') }}</h1>
+          <div data-module="moj-add-another">
+            <form
+              method="POST" novalidate>
+
+              {{ csrfProtection(csrfToken) }}
+
+              {% set courtOrdersHtml %}
+                <div
+                  class="govuk-form-group {% if atLeastOneCourtOrderError %} govuk-form-group--error {% endif %}">
+                  {% if atLeastOneCourtOrderError %}
+                    <p class="govuk-error-message">
+                      <span class="govuk-visually-hidden">Error:</span> {{ t(atLeastOneCourtOrderError) }}
+                    </p>
+                  {% endif %}
+
+                  {% for row in form.model.rows %}
+                    {{ courtOrder(loop.index0, row, form.errorFor) }}
+                  {% else %}
+                    {{ courtOrder(0, '', form.errorFor) }}
+                  {% endfor %}
+
+                  <div class="moj-button-action">
+                    {{ govukButton({
+                      text: t('Add another court order'),
+                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                      type: 'button',
+                      attributes: {
+                        'id': 'add-another-court-order'
+                      }
+                    }) }}
+                  </div>
+                </div>
+              {% endset -%}
+
+              {{ govukRadios({
+                idPrefix: "declared",
+                name: "declared",
+                classes: 'govuk-!-width-two-thirds',
+                items: [
+                  {
+                    value: YesNo.YES,
+                    text: t('Yes'),
+                    checked: form.model.declared === true,
+                    conditional: {
+                    html: courtOrdersHtml
+                  }
+                  },
+                  {
+                    value: YesNo.NO,
+                    text: t('No'),
+                    checked: form.model.declared === false
+                  }
+                ],
+                errorMessage: {
+                  text: declaredError
+                } if declaredError
+              }) }}
+
+              <div class="govuk-form-group">
+                {{ govukButton({
+                  text: t("Save and continue")
+                }) }}
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-thirds">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

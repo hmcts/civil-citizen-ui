@@ -2,14 +2,14 @@ import {app} from '../../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_COURT_ORDER_URL, ON_TAX_PAYMENTS_URL} from '../../../../../../../../main/routes/urls';
+import {CITIZEN_COURT_ORDERS_URL, ON_TAX_PAYMENTS_URL} from '../../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
 import {
   VALID_OWED_AMOUNT_REQUIRED,
   VALID_REASON_REQUIRED,
   VALID_TWO_DECIMAL_NUMBER,
-  YES_NO_REQUIRED,
+  VALID_YES_NO_SELECTION,
 } from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {YesNo} from '../../../../../../../../main/common/form/models/yesNo';
 
@@ -50,7 +50,7 @@ describe('on tax payments', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(YES_NO_REQUIRED);
+          expect(res.text).toContain(VALID_YES_NO_SELECTION);
         });
     });
     test('should return errors when no option yes is selected and amount and reason are not defined', async () => {
@@ -115,7 +115,7 @@ describe('on tax payments', () => {
         .send({option: YesNo.YES, amountYouOwe: 44.4, reason: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_COURT_ORDER_URL);
+          expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
         });
     });
     test('should return status 500 when there is error', async () => {

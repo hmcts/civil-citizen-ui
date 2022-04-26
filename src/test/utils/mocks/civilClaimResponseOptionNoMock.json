@@ -35,6 +35,9 @@
         "option": "no",
         "numberOfPeople": "",
         "details": ""
+      },
+      "carer": {
+        "option": "no"
       }
     }
   }
