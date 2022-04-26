@@ -30,6 +30,6 @@ export const enum TestMessages {
   GAS_CORRECT_AMOUNT_ERROR = 'Enter a valid Gas amount, maximum two decimal places',
   CLAIM_CARER = 'Do you claim Carer’s Allowance or Carer’s Credit?',
   VALID_TWO_DECIMAL_NUMBER = 'Enter a valid amount, maximum two decimal places',
-  CLAIM_VALID_AMOUNT = 'Enter a valid amount',
+  ENTER_VALID_AMOUNT = 'Enter a valid amount',
   AMOUNT_LESS_THEN_CLAIMED = 'Enter a value less then the amount claimed',
 }
