@@ -19,6 +19,7 @@ import {ChildrenDisability} from '../form/models/statementOfMeans/dependants/chi
 import {RegularExpenses} from '../form/models/statementOfMeans/expenses/regularExpenses';
 import {Debts} from '../form/models/statementOfMeans/debts/debts';
 import {CourtOrders} from '../form/models/statementOfMeans/courtOrders/courtOrders';
+import {Carer} from 'common/form/models/statementOfMeans/carer';
 
 export class StatementOfMeans {
   disability?: Disability;
@@ -43,4 +44,5 @@ export class StatementOfMeans {
   regularExpenses?: RegularExpenses;
   debts?: Debts;
   courtOrders?: CourtOrders;
+  carer?: Carer;
 }
