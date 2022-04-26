@@ -1,4 +1,5 @@
 import {AmountSchedule} from './amountSchedule';
+import _ from 'lodash';
 
 export interface ScheduledAmount {
   amount: number;
@@ -15,7 +16,7 @@ const calculateTotalAmount = (amountsPerSchedule?: ScheduledAmount[]): string =>
       }
     });
   }
-  return String(Math.round(totalAmount));
+  return String(_.round(totalAmount, 2));
 };
 
 export {
