@@ -54,3 +54,4 @@ export const VALID_ENTER_AT_LEAST_ONE_COURT_ORDER = 'Enter at least one court or
 export const VALID_AMOUNT = 'Enter an amount';
 export const VALID_AMOUNT_ONE_POUND_OR_MORE = 'Enter an amount of £1 or more';
 export const VALID_CLAIM_NUMBER = 'Enter a claim number';
+export const ENTER_AN_EXPLANATION = 'Enter an explanation of why you can’t pay now';
