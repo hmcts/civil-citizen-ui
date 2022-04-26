@@ -1,0 +1,60 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{# 
+  THIS FILE IS A CONCEPT
+  This code is only a concept of what we should do.  
+  #}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{title}}</h2>
+          <p class="govuk-body">{{description}}</p>
+          <p class="govuk-body govuk-!-margin-bottom-7">
+            {{ t('After you have completed all the actions you will be taken to a page where you can check your answers before submitting.') }}
+          </p>
+
+          {% for taskList in taskLists %}
+            <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
+              <h2 class="app-task-list__section">
+                <span class="app-task-list__section-number">
+                  {{loop.index}} . </span>
+                {{taskList.title}}
+              </h2>
+              <ol class="app-task-list app-task-list__items">
+                {% for task in taskList.tasks %}
+                  <li class="app-task-list__item">
+                    <span class="app-task-list__task-name">
+                      <a href={{task.url}}>{{task.description}}</a>
+                    </span>
+                    <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}">
+                      {{ task.status }}
+                    </strong>
+                  </li>
+                {% endfor %}
+              </ol>
+            </div>
+          {% endfor %}
+
+          <h2 class="app-task-list__section">
+            {{ taskLists.length + 1 }}. Submit
+          </h2>
+          <ol class="app-task-list app-task-list__items">
+            <form method="post">
+              <div class="govuk-form-group">
+                {{ govukButton({
+                text: t("Check and submit your response")
+              }) }}
+              </div>
+            </form>
+          </ol>
+
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
