@@ -6,8 +6,10 @@ import {constructResponseUrlWithIdParams} from '../../../../../../main/common/ut
 import {
   setFinancialDetailsControllerLogger,
 } from '../../../../../../main/routes/features/response/financialDetails/financialDetailsController';
-import {LoggerInstance} from 'winston';
+import {Logger} from 'winston';
 import {FINANCIAL_DETAILS_URL} from '../../../../../../main/routes/urls';
+import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 const claimIndividualMock = require('./claimIndividualMock.json');
 const claimIndividualMockNoType = require('./claimIndividualMockNoType.json');
@@ -22,7 +24,7 @@ jest.mock('../../../../../../main/modules/draft-store');
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
-} as unknown as LoggerInstance;
+} as unknown as Logger;
 
 let mockDraftStore = {
   set: jest.fn(() => Promise.resolve({data: {}})),
@@ -67,23 +69,16 @@ describe('Citizen financial details', () => {
         });
     });
     test('should not match expected string, and log error, if draft store fails to return anything', async () => {
-      mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
-        get: jest.fn(() => {
-          throw new Error('Redis DraftStore failure.');
-        }),
-      };
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).not.toContain('your company or organisation&#39;s most recent statement of accounts');
-          expect(mockLogger.error).toHaveBeenCalledWith('Redis DraftStore failure.');
+          expect(mockLogger.error).toHaveBeenCalledWith(TestMessages.REDIS_FAILURE);
         });
     });
   });
-
 
   describe('on POST', () => {
     test('should redirect for individual', async () => {
@@ -111,18 +106,12 @@ describe('Citizen financial details', () => {
         });
     });
     test('should not redirect, and log error, if draft store fails to return anything', async () => {
-      mockDraftStore = {
-        set: jest.fn(() => Promise.resolve({data: {}})),
-        get: jest.fn(() => {
-          throw new Error('Redis DraftStore failure.');
-        }),
-      };
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(mockLogger.error).toHaveBeenCalledWith('Redis DraftStore failure.');
+          expect(mockLogger.error).toHaveBeenCalledWith(TestMessages.REDIS_FAILURE);
         });
     });
     test('should be 404 for no caseId in path', async () => {

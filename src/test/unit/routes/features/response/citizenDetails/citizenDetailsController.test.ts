@@ -17,6 +17,7 @@ import {
 import {Claim} from '../../../../../../main/common/models/claim';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -27,7 +28,6 @@ const mockGetRespondentInformation = getRespondentInformation as jest.Mock;
 const mockSaveRespondent = saveRespondent as jest.Mock;
 
 const claim = new Claim();
-
 
 const buildClaimOfRespondent = (): Respondent => {
   claim.respondent1 = new Respondent();
@@ -40,7 +40,6 @@ const buildClaimOfRespondent = (): Respondent => {
 };
 
 const nock = require('nock');
-const redisFailureError = 'Redis DraftStore failure.';
 
 const validDataForPost = {
   primaryAddressLine1: 'Flat 3A Middle Road',
@@ -70,32 +69,31 @@ describe('Confirm Details page', () => {
   describe('on Exception', () => {
     test('should return http 500 when has error in the get method', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
-        throw new Error(redisFailureError);
+        throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
         .get(CITIZEN_DETAILS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: redisFailureError});
+          expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
         });
     });
   });
 
   test('should return http 500 when has error in the post method', async () => {
-    const redisFailureError = 'Redis DraftStore failure.';
     mockSaveRespondent.mockImplementation(async () => {
-      throw new Error(redisFailureError);
+      throw new Error(TestMessages.REDIS_FAILURE);
     });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send(validDataForPost)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: redisFailureError});
+        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
       });
   });
-  test('should return your details page with empty information', async () => {
 
+  test('should return your details page with empty information', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return new Respondent();
     });
@@ -106,8 +104,8 @@ describe('Confirm Details page', () => {
         expect(res.text).toContain('Confirm your details');
       });
   });
-  test('should return your details page with information', async () => {
 
+  test('should return your details page with information', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondent();
     });
@@ -118,6 +116,7 @@ describe('Confirm Details page', () => {
         expect(res.text).toContain('Confirm your details');
       });
   });
+
   test('should return your details page with information without correspondent address', async () => {
     const buildClaimOfRespondentWithoutCorrespondent = (): Respondent => {
       claim.respondent1 = new Respondent();
@@ -137,8 +136,8 @@ describe('Confirm Details page', () => {
         expect(res.text).toContain('Confirm your details');
       });
   });
-  test('POST/Citizen details - should redirect on correct primary address', async () => {
 
+  test('POST/Citizen details - should redirect on correct primary address', async () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -160,7 +159,6 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should redirect on correct correspondence address', async () => {
-
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -182,7 +180,6 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on empty primary address line', async () => {
-
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -205,7 +202,6 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on empty primary city', async () => {
-
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -228,7 +224,6 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on empty primary postcode', async () => {
-
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -251,7 +246,6 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on empty correspondence address line', async () => {
-
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -274,7 +268,6 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on empty correspondence city', async () => {
-
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -297,7 +290,6 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on empty correspondence postcode', async () => {
-
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -320,7 +312,6 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on no input', async () => {
-
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -348,7 +339,6 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on input for primary address when postToThisAddress is set to NO', async () => {
-
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -373,7 +363,6 @@ describe('Confirm Details page', () => {
   });
 
   test('POST/Citizen details - should return error on input for correspondence address when postToThisAddress is set to YES', async () => {
-
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -398,7 +387,6 @@ describe('Confirm Details page', () => {
   });
 
   test('get/Citizen details - should return test variable when there is no data on redis and civil-service', async () => {
-
     await request(app)
       .get('/case/1111/response/your-details')
       .expect((res) => {

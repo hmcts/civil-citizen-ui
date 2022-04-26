@@ -14,8 +14,7 @@ const logger = Logger.getLogger('draftStoreService');
  */
 export const getDraftClaimFromStore = async (claimId: string) => {
   const dataFromRedis = await app.locals.draftStoreClient.get(claimId);
-  const claim = convertRedisDataToCivilClaimResponse(dataFromRedis);
-  return claim;
+  return convertRedisDataToCivilClaimResponse(dataFromRedis);
 };
 
 const convertRedisDataToCivilClaimResponse = (data: string) => {

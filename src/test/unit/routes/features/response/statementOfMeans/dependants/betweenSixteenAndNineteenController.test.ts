@@ -8,13 +8,14 @@ import {
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../../main/routes/urls';
 import {
-  REDIS_ERROR_MESSAGE,
+  REDIS_FAILURE,
   VALID_INTEGER,
   VALID_NUMBER_FOR_PREVIOUS_PAGE,
   VALID_POSITIVE_NUMBER,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import * as childrenDisabilityService
   from '../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -22,19 +23,6 @@ jest.mock('../../../../../../../main/modules/statementOfMeans/dependants/childre
 const mockHasDisabledChildren = childrenDisabilityService.hasDisabledChildren as jest.Mock;
 
 const EXPECTED_TEXT = 'Children aged 16 to 19 living with you';
-const mockDraftStore = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve({})),
-};
-
-const mockErrorDraftStore = {
-  set: jest.fn(() => {
-    throw new Error(REDIS_ERROR_MESSAGE);
-  }),
-  get: jest.fn(() => {
-    throw new Error(REDIS_ERROR_MESSAGE);
-  }),
-};
 
 describe('Dependant Teenagers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -45,7 +33,7 @@ describe('Dependant Teenagers', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on GET', () => {
-    app.locals.draftStoreClient = mockDraftStore;
+    app.locals.draftStoreClient = mockCivilClaim;
     test('should return dependent teenagers page', async () => {
       await request(app)
         .get(CITIZEN_DEPENDANTS_EDUCATION_URL)
@@ -55,17 +43,17 @@ describe('Dependant Teenagers', () => {
         });
     });
     test('should return 500 error code when there is an error', async () => {
-      app.locals.draftStoreClient = mockErrorDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: REDIS_ERROR_MESSAGE});
+          expect(res.body).toEqual({error: REDIS_FAILURE});
         });
     });
   });
   describe('on POST', () => {
-    app.locals.draftStoreClient = mockDraftStore;
+    app.locals.draftStoreClient = mockCivilClaim;
     test('should show error when no number is added', async () => {
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
@@ -106,7 +94,7 @@ describe('Dependant Teenagers', () => {
       mockHasDisabledChildren.mockImplementation( () => {
         return false;
       });
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: 1, maxValue: 3})
@@ -119,7 +107,7 @@ describe('Dependant Teenagers', () => {
       mockHasDisabledChildren.mockImplementation( () => {
         return true;
       });
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: 1, maxValue: 3})
@@ -129,13 +117,13 @@ describe('Dependant Teenagers', () => {
         });
     });
     test('should return 500 code when there is an error', async () => {
-      app.locals.draftStoreClient = mockErrorDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: 1, maxValue: 3})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: REDIS_ERROR_MESSAGE});
+          expect(res.body).toEqual({error: REDIS_FAILURE});
         });
     });
   });
