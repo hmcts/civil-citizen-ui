@@ -25,13 +25,7 @@ howMuchHaveYouPaidController
       try {
         const howMuchHaveYouPaid : HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id);
         totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
-        if (howMuchHaveYouPaid.date) {
-          const dateWhenYouPaid = new Date(howMuchHaveYouPaid.date);
-          howMuchHaveYouPaid.date = dateWhenYouPaid;
-          howMuchHaveYouPaid.year = dateWhenYouPaid.getFullYear();
-          howMuchHaveYouPaid.month = dateWhenYouPaid.getMonth() + 1;
-          howMuchHaveYouPaid.day = dateWhenYouPaid.getDate();
-        }
+
         res.render(howMuchHaveYouPaidPath, {
           form: new GenericForm(howMuchHaveYouPaid), lastMonth : lastMonth, totalClaimAmount : totalClaimAmount,
         });
