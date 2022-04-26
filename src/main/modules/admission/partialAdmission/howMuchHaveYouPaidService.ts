@@ -28,12 +28,10 @@ class HowMuchHaveYouPaidService {
       const claim = await getCaseDataFromStore(claimId);
       if (claim) {
         howMuchHaveYouPaid.totalClaimAmount = claim.totalClaimAmount;
-        if (claim.partialAdmission) {
-          claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
-        } else {
+        if (!claim.partialAdmission) {
           claim.partialAdmission = new PartialAdmission();
-          claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
         }
+        claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
       }
       await saveDraftClaim(claimId, claim);
     } catch (error) {
