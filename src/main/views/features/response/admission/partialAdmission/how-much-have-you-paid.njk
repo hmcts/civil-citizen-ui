@@ -21,11 +21,18 @@
         }) }}
         {% set dateErrorMessages %}
           {% if errors %}
-            {% for error in errors %}
-              {% if (error.property === 'date' or error.property === 'day' or error.property === 'month' or error.property === 'year') %}
-                <span class="govuk-error-message">{{ t(error.text) }}</span>
-              {% endif %}
-            {% endfor %}
+           {% if form.hasFieldError('date') %}
+             <span class="govuk-error-message">{{ t(form.errorFor('date')) }}</span>
+           {% endif %}
+            {% if form.hasFieldError('day') %}
+              <span class="govuk-error-message">{{ t(form.errorFor('day')) }}</span>
+            {% endif %}
+            {% if form.hasFieldError('month') %}
+              <span class="govuk-error-message">{{ t(form.errorFor('month')) }}</span>
+            {% endif %}
+            {% if form.hasFieldError('year') %}
+              <span class="govuk-error-message">{{ t(form.errorFor('year')) }}</span>
+            {% endif %}
           {% endif %}
         {% endset -%}
         {% set isDateError = form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year') %}
