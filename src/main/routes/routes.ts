@@ -43,6 +43,7 @@ import monthlyExpenseIncomeCalculatorController
 import carerController from './features/response/statementOfMeans/carerController';
 import explanationController from './features/response/statementOfMeans/explanationController';
 import taskListController from './features/response/taskListController';
+import howMuchDoYouOweController from './features/response/admision/partialAdmission/howMuchDoYouOweController';
 import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
 import whyDoYouDisagreeController
   from './features/response/statementOfMeans/employment/admission/partialAdmision/whyDoYouDisagreeController';
@@ -88,5 +89,6 @@ export default [
   carerController,
   explanationController,
   taskListController,
+  howMuchDoYouOweController,
   courtOrdersController,
 ];

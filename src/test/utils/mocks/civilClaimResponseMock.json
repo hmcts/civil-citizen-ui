@@ -87,6 +87,7 @@
       "dateOfBirth": "2022-03-01T13:29:24.971",
       "telephoneNumber": "111"
     },
+    "totalClaimAmount": 110,
     "paymentOption":"BY_SET_DATE",
     "paymentDate":"2025-06-01T00:00:00.000Z"
   }
