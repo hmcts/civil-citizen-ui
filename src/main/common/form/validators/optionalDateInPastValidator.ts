@@ -7,6 +7,9 @@ import {VALID_DATE_IN_PAST} from '../validationErrors/errorMessageConstants';
 @ValidatorConstraint({name: 'customDate', async: false})
 export class OptionalDateInPastValidator implements ValidatorConstraintInterface {
 
+  today = new Date(Date.now()).toLocaleDateString('en-GB', {
+    day: 'numeric', month: 'long', year: 'numeric'});
+
   validate(inputDate: Date) {
     // Don't check if inputDate is null i.e. invalid, @IsDate check should catch this
     if (inputDate == null) {
@@ -19,6 +22,6 @@ export class OptionalDateInPastValidator implements ValidatorConstraintInterface
   }
 
   defaultMessage() {
-    return VALID_DATE_IN_PAST;
+    return VALID_DATE_IN_PAST + this.today;
   }
 }
