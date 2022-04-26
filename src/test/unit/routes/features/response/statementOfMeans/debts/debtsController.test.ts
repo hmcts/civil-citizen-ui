@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_MONTHLY_EXPENSES_URL, DEBTS_URL} from '../../../../../../../main/routes/urls';
+import {CITIZEN_MONTHLY_EXPENSES_URL, CITIZEN_DEBTS_URL} from '../../../../../../../main/routes/urls';
 import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
 import {
   buildDebtFormNo,
@@ -42,7 +42,7 @@ describe('Debts', () => {
         throw new Error(REDIS_FAILURE);
       });
       await request(app)
-        .get(DEBTS_URL)
+        .get(CITIZEN_DEBTS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body).toEqual({error: REDIS_FAILURE});
@@ -55,7 +55,7 @@ describe('Debts', () => {
       throw new Error(REDIS_FAILURE);
     });
     await request(app)
-      .post(DEBTS_URL)
+      .post(CITIZEN_DEBTS_URL)
       .send(buildDebtFormYes())
       .expect((res) => {
         expect(res.status).toBe(500);
@@ -66,7 +66,7 @@ describe('Debts', () => {
     test('should open the debts page when in redis has no data ', async () => {
       mockGetCaseData.mockImplementation(async () => undefined);
       await request(app)
-        .get(DEBTS_URL)
+        .get(CITIZEN_DEBTS_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Do you have loans or credit card debts?');
@@ -81,7 +81,7 @@ describe('Debts', () => {
         return claim;
       });
       await request(app)
-        .get(DEBTS_URL)
+        .get(CITIZEN_DEBTS_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Do you have loans or credit card debts?');
@@ -96,7 +96,7 @@ describe('Debts', () => {
         return claim;
       });
       await request(app)
-        .get(DEBTS_URL)
+        .get(CITIZEN_DEBTS_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Do you have loans or credit card debts?');
@@ -107,7 +107,7 @@ describe('Debts', () => {
   describe('on POST', () => {
     test('should validate when has no option selected', async () => {
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormUndefined())
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -116,7 +116,7 @@ describe('Debts', () => {
     });
     test('should validate when has option is yes but there is no fields selected ', async () => {
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormYesWithoutItems())
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -125,7 +125,7 @@ describe('Debts', () => {
     });
     test('should validate when has option is yes but debt is empty ', async () => {
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormYesWithDebtEmpty())
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -134,7 +134,7 @@ describe('Debts', () => {
     });
     test('should validate when has option is yes but Total owned is invalid ', async () => {
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormYesWithTotalOwnedInvalid())
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -144,7 +144,7 @@ describe('Debts', () => {
 
     test('should validate when has option is yes but Total owned is zero ', async () => {
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormYesWithTotalOwnedZero())
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -153,7 +153,7 @@ describe('Debts', () => {
     });
     test('should validate when has option is yes but Total owned is empty ', async () => {
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormYesWithTotalOwnedEmpty())
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -163,7 +163,7 @@ describe('Debts', () => {
 
     test('should should redirect to when option is no when there is no data on redis', async () => {
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormNo())
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -173,7 +173,7 @@ describe('Debts', () => {
 
     test('should should redirect to when option is yes when there is no data on redis', async () => {
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormYes())
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -190,7 +190,7 @@ describe('Debts', () => {
         return claim;
       });
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormYes())
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -207,7 +207,7 @@ describe('Debts', () => {
         return claim;
       });
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormNo())
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -224,7 +224,7 @@ describe('Debts', () => {
         return claim;
       });
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormYesWithEmptyItems())
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -239,7 +239,7 @@ describe('Debts', () => {
         return claim;
       });
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormYesWithEmptyItems())
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -249,7 +249,7 @@ describe('Debts', () => {
     test('should should redirect to monthly expenses when option is yes but claim is undefined', async () => {
       mockGetCaseData.mockImplementation(async () => new Claim());
       await request(app)
-        .post(DEBTS_URL)
+        .post(CITIZEN_DEBTS_URL)
         .send(buildDebtFormYesWithEmptyItems())
         .expect((res) => {
           expect(res.status).toBe(302);
