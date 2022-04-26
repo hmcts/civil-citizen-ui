@@ -46,7 +46,7 @@ export class OidcMiddleware {
       res.redirect(SIGN_IN_URL);
     });
 
-    app.get('/', (req: AppRequest, res: Response) => {
+    app.get('/', (_req: AppRequest, res: Response) => {
       res.redirect(DASHBOARD_URL);
     });
 

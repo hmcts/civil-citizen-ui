@@ -25,23 +25,19 @@ export const buildCitizenCorrespondenceAddress = () : CitizenCorrespondenceAddre
 };
 
 export const buildDebtFormYes = () : Debts => {
-  const debts = new Debts(YesNo.YES, buildDebtItems(1));
-  return debts;
+  return new Debts(YesNo.YES, buildDebtItems(1));
 };
 
 export const buildDebtFormNo = () : Debts => {
-  const debts = new Debts(YesNo.NO, buildDebtItems(0));
-  return debts;
+  return new Debts(YesNo.NO, buildDebtItems(0));
 };
 
 export const buildDebtFormUndefined = () : Debts => {
-  const debts = new Debts(undefined,undefined);
-  return debts;
+  return new Debts(undefined,undefined);
 };
 
 export const buildDebtFormYesWithoutItems = () : Debts => {
-  const debts = new Debts(YesNo.YES,buildDebtItems(0));
-  return debts;
+  return new Debts(YesNo.YES,buildDebtItems(0));
 };
 
 export const buildDebtFormYesWithEmptyItems = () : Debts => {
@@ -49,34 +45,30 @@ export const buildDebtFormYesWithEmptyItems = () : Debts => {
   items.push(new DebtItems('test', '1.00', '1.00'));
   items.push(new DebtItems('', '', ''));
   items.push(new DebtItems('test', '1.00', '1.00'));
-  const debts = new Debts(YesNo.YES,items);
-  return debts;
+  return new Debts(YesNo.YES,items);
 };
 export const buildDebtFormYesWithDebtEmpty = () : Debts => {
   const items : DebtItems[] = [];
   items.push(new DebtItems('', '1.00', '1.00'));
-  const debts = new Debts(YesNo.YES,items);
-  return debts;  return debts;
+  return new Debts(YesNo.YES,items);
 };
 
 export const buildDebtFormYesWithTotalOwnedInvalid = () : Debts => {
   const items : DebtItems[] = [];
   items.push(new DebtItems('test', '-10', '1.00'));
-  const debts = new Debts(YesNo.YES,items);
-  return debts;  return debts;
+  return new Debts(YesNo.YES,items); 
 };
 
 export const buildDebtFormYesWithTotalOwnedZero = () : Debts => {
   const items : DebtItems[] = [];
   items.push(new DebtItems('test', '0', '1.00'));
-  const debts = new Debts(YesNo.YES,items);
-  return debts;  return debts;
+  return new Debts(YesNo.YES,items);
+  
 };
 export const buildDebtFormYesWithTotalOwnedEmpty = () : Debts => {
   const items : DebtItems[] = [];
   items.push(new DebtItems('test', '', '1.00'));
-  const debts = new Debts(YesNo.YES,items);
-  return debts;  return debts;
+  return new Debts(YesNo.YES,items);
 };
 
 export const buildDebtItems = (totalOfRows: number) :  DebtItems[] =>{

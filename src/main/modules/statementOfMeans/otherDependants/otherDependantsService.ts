@@ -1,7 +1,7 @@
 import {OtherDependants} from '../../../common/form/models/statementOfMeans/otherDependants';
-import {getDraftClaimFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
+import {getCaseDataFromStore, getDraftClaimFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
-import { get } from 'lodash';
+import {get} from 'lodash';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('otherDependantsService');
@@ -24,15 +24,12 @@ export class OtherDependantsService {
 
   public async saveOtherDependants(claimId: string, otherDependants: OtherDependants) {
     try {
-      const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      if (get(civilClaimResponse, 'case_data.statementOfMeans.otherDependants')) {
-        civilClaimResponse.case_data.statementOfMeans.otherDependants = otherDependants;
-      } else {
-        const statementOfMeans = new StatementOfMeans();
-        statementOfMeans.otherDependants = otherDependants;
-        civilClaimResponse.case_data.statementOfMeans = statementOfMeans;
+      const claim = await getCaseDataFromStore(claimId);
+      if (!claim.statementOfMeans) {
+        claim.statementOfMeans = new StatementOfMeans();
       }
-      await saveDraftClaim(claimId, civilClaimResponse.case_data);
+      claim.statementOfMeans.otherDependants = otherDependants;
+      await saveDraftClaim(claimId, claim);
     } catch (error) {
       logger.error(`${error.stack || error}`);
       throw error;
