@@ -27,11 +27,13 @@ export class CivilServiceClient {
 
   async retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
     const config = this.getConfig(req);
+    console.log('Config variables' + config.headers);
     let claims : Claim[] = [];
     await this.client.post(CIVIL_SERVICE_CASES_URL,{ match_all: {} }, config)
       .then(response => {
         claims = response.data.cases.map((claim: CivilClaimResponse) => Object.assign(new Claim(), claim.case_data));
       }).catch(error => {
+        console.log('catch' + error.stack);
         console.log(error.message);
       });
     return claims;
