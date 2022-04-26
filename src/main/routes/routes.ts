@@ -22,12 +22,15 @@ import financialDetailsController from './features/response/financialDetails/fin
 import whoEmploysYouController from './features/response/statementOfMeans/employment/whoEmploysYouController';
 import otherDependantsController from './features/response/statementOfMeans/otherDependants/otherDependantsController';
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
-import paymentOptionController from './features/response/admission/fullAdmission/paymentOption/paymentOptionController';
+import paymentOptionController
+  from './features/response/statementOfMeans/employment/admission/fullAdmission/paymentOption/paymentOptionController';
+import paymentDateController from './features/response/admission/fullAdmission/paymentOption/paymentDateController';
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
 import priorityDebtsController from './features/response/statementOfMeans/priorityDebtsController';
-import selfEmployedAsController from './features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
+import selfEmployedAsController
+  from './features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
 import onTaxPaymentsController
   from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
 import unemploymentController from './features/response/statementOfMeans/unemployment/unemploymentController';
@@ -64,6 +67,7 @@ export default [
   otherDependantsController,
   partnerPensionController,
   paymentOptionController,
+  paymentDateController,
   betweenSixteenAndNineteenController,
   dependantsController,
   priorityDebtsController,

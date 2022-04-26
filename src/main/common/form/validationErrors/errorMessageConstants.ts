@@ -1,5 +1,6 @@
 export const VALID_PHONE_NUMBER = 'Enter a phone number in the correct format';
 export const VALID_DATE = 'Please enter a valid date';
+export const VALID_DATE_NOT_IN_PAST = 'Enter a date that is today or in the future';
 export const VALID_DATE_IN_PAST = 'Enter date before ';
 export const VALID_DAY = 'Enter a valid day';
 export const VALID_MONTH = 'Enter a valid month';
