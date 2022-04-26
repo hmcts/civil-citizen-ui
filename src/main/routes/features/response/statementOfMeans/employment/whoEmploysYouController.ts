@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CITIZEN_SELF_EMPLOYED_URL, CITIZEN_COURT_ORDER_URL, CITIZEN_WHO_EMPLOYS_YOU_URL} from '../../../../urls';
+import {CITIZEN_SELF_EMPLOYED_URL, CITIZEN_COURT_ORDERS_URL, CITIZEN_WHO_EMPLOYS_YOU_URL} from '../../../../urls';
 import {getEmployers, saveEmployers} from '../../../../../modules/statementOfMeans/employment/employerService';
 import {Employers} from '../../../../../common/form/models/statementOfMeans/employment/employers';
 import {Employer} from '../../../../../common/form/models/statementOfMeans/employment/employer';
@@ -31,7 +31,7 @@ whoEmploysYouController .post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.R
       await saveEmployers(claimId, employers);
       const employment: EmploymentForm = await getEmploymentForm(claimId);
       if (employment.isEmployed()) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDER_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
       } else if (employment.isEmployedAndSelfEmployed()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
       } else {

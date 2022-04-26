@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CITIZEN_MONTHLY_EXPENSES_URL, DEBTS_URL} from '../../../../urls';
+import {CITIZEN_MONTHLY_EXPENSES_URL, CITIZEN_DEBTS_URL} from '../../../../urls';
 import {Debts} from '../../../../../common/form/models/statementOfMeans/debts/debts';
 import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debts/debtItems';
 import {validateFormNested} from '../../../../../common/form/validators/formValidator';
@@ -20,7 +20,7 @@ function renderView(form: Debts, res: express.Response): void {
   });
 }
 
-debtsController.get(DEBTS_URL, async (req, res) => {
+debtsController.get(CITIZEN_DEBTS_URL, async (req, res) => {
   try {
     const form: Debts = new Debts();
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
@@ -37,7 +37,7 @@ debtsController.get(DEBTS_URL, async (req, res) => {
   }
 });
 
-debtsController.post(DEBTS_URL,
+debtsController.post(CITIZEN_DEBTS_URL,
   async (req, res) => {
     try {
       const form: Debts = new Debts(req.body.option, transformToDebts(req));

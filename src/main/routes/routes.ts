@@ -40,6 +40,7 @@ import debtsController from './features/response/statementOfMeans/debts/debtsCon
 import monthlyExpenseIncomeCalculatorController
   from './calculateMonthlyIncomeExpense/monthlyExpenseIncomeCalculatorController';
 import taskListController from './features/response/taskListController';
+import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
 
 export default [
@@ -79,5 +80,6 @@ export default [
   debtsController,
   monthlyExpenseIncomeCalculatorController,
   taskListController,
+  courtOrdersController,
   howMuchHaveYouPaidController,
 ];

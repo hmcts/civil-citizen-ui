@@ -5,14 +5,14 @@ import {
   VALID_TEXT_LENGTH,
   VALID_TWO_DECIMAL_NUMBER,
   VALID_VALUE,
-  YES_NO_REQUIRED,
+  VALID_YES_NO_SELECTION,
 } from '../../../../validationErrors/errorMessageConstants';
 import {YesNo} from '../../../yesNo';
 import {Form} from '../../../form';
 import {FREE_TEXT_MAX_LENGTH, MAX_AMOUNT_VALUE, MIN_AMOUNT_VALUE} from '../../../../validators/validationConstraints';
 
 export class OnTaxPayments extends Form {
-  @IsDefined({message: YES_NO_REQUIRED})
+  @IsDefined({message: VALID_YES_NO_SELECTION})
     option: YesNo;
 
   @ValidateIf(o => o.isOptionYesSelected())
