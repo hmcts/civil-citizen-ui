@@ -47,7 +47,7 @@ describe('Repayment Plan View', () => {
 
     it('should display total amount claimed text', async () => {
       const paragraph = htmlDocument.getElementsByClassName('govuk-body-m');
-      expect(paragraph[0].innerHTML).toContain('The total amount claimed is £1000. This includes the claim fee and any interest.');
+      expect(paragraph[0].innerHTML).toContain('The total amount claimed is £110. This includes the claim fee and any interest.');
     });
 
     it('should display save and continue button', () => {
@@ -216,7 +216,7 @@ describe('Repayment Plan View', () => {
     it('should display correct error summary message with correct link for First Repayment Date', async () => {
       await request(app)
         .post(CITIZEN_REPAYMENT_PLAN)
-        .send({ paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973' })
+        .send({ paymentAmount: '100', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973' })
         .then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -230,7 +230,7 @@ describe('Repayment Plan View', () => {
     it('should display correct error summary message with correct link for Year less than 4 digits', async () => {
       await request(app)
         .post(CITIZEN_REPAYMENT_PLAN)
-        .send({ paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '01', month: '01', year: '0' })
+        .send({ paymentAmount: '100', repaymentFrequency: 'WEEK', day: '01', month: '01', year: '0' })
         .then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
