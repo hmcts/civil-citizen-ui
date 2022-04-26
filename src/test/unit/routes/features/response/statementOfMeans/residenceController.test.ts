@@ -10,6 +10,8 @@ import {
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../../../../main/routes/urls';
 import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -17,18 +19,6 @@ jest.mock('../../../../../../main/modules/draft-store');
 const agent = request.agent(app);
 const tooLongHousingDetails: string = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');
 const respondentResidenceUrl = CITIZEN_RESIDENCE_URL.replace(':id', 'aaa');
-const DRAFT_STORE_EXCEPTION = 'Draft store exception';
-const mockDraftStore = {
-  get: jest.fn(() => Promise.resolve('{"id": "id", "case_data": {"statementOfMeans": {}}}')),
-  set: jest.fn(() => Promise.resolve()),
-};
-
-const mockGetExceptionDraftStore = {
-  get: jest.fn(() => {
-    throw new Error(DRAFT_STORE_EXCEPTION);
-  }),
-  set: jest.fn(() => Promise.resolve()),
-};
 
 describe('Citizen residence', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -42,7 +32,7 @@ describe('Citizen residence', () => {
 
   describe('on GET', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
     });
 
     test('should return residence page', async () => {
@@ -53,19 +43,20 @@ describe('Citizen residence', () => {
           expect(res.text).toContain('Where do you live?');
         });
     });
+
     test('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockGetExceptionDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await agent
         .get(respondentResidenceUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({errorMessage: DRAFT_STORE_EXCEPTION});
+          expect(res.body).toMatchObject({errorMessage: TestMessages.REDIS_FAILURE});
         });
     });
   });
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockCivilClaim;
     });
 
     test('should redirect when OWN_HOME option selected', async () => {
@@ -77,6 +68,7 @@ describe('Citizen residence', () => {
           expect(res.get('location')).toBe(CITIZEN_PARTNER_URL.replace(':id', 'aaa'));
         });
     });
+
     test('should return error when no option selected', async () => {
       await agent
         .post(respondentResidenceUrl)
@@ -86,6 +78,7 @@ describe('Citizen residence', () => {
           expect(res.text).toContain(VALID_OPTION_SELECTION);
         });
     });
+
     test('should return error when type is \'Other\' and housing details not provided', async () => {
       await agent
         .post(respondentResidenceUrl)
@@ -96,6 +89,7 @@ describe('Citizen residence', () => {
           expect(res.text).toContain(VALID_HOUSING);
         });
     });
+
     test('should redirect when type is \'Other\' and housing details are provided', async () => {
       await agent
         .post(respondentResidenceUrl)
@@ -106,6 +100,7 @@ describe('Citizen residence', () => {
           expect(res.get('location')).toBe(CITIZEN_PARTNER_URL.replace(':id', 'aaa'));
         });
     });
+
     test('should return error when type is \'Other\' and housing details are too long', async () => {
       await agent
         .post(respondentResidenceUrl)
@@ -116,15 +111,16 @@ describe('Citizen residence', () => {
           expect(res.text).toContain(VALID_TEXT_LENGTH);
         });
     });
+
     test('should status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockGetExceptionDraftStore;
+      app.locals.draftStoreClient = mockRedisFailure;
       await agent
         .post(respondentResidenceUrl)
         .send('type=OTHER')
         .send('housingDetails=Palace')
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({errorMessage: DRAFT_STORE_EXCEPTION});
+          expect(res.body).toMatchObject({errorMessage: TestMessages.REDIS_FAILURE});
         });
     });
   });
