@@ -41,7 +41,17 @@ export class Nunjucks {
       'node_modules',
       'govuk-frontend',
     );
-    const nunjucksEnv = configure([path.join(__dirname, '..', '..', 'views'), govUkFrontendPath], {
+    const mojFrontendPath = join(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      '..',
+      'node_modules',
+      '@ministryofjustice',
+      'frontend',
+    );
+    const nunjucksEnv = configure([path.join(__dirname, '..', '..', 'views'), govUkFrontendPath, mojFrontendPath], {
       autoescape: true,
       watch: this.developmentMode,
       express: app,
