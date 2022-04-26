@@ -9,7 +9,7 @@ import {
   VALID_YEAR,
   VALID_MONTH,
   VALID_DAY,
-  FOUR_DIGIT_YEAR_REQUIRED,
+  VALID_FOUR_DIGIT_YEAR,
   FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED,
 } from '../../validationErrors/errorMessageConstants';
 import { EqualToOrLessThanPropertyValueValidator } from '../../validators/equalToOrLessThanPropertyValueValidator';
@@ -27,7 +27,7 @@ export class RepaymentPlanForm extends Form {
     firstRepaymentDate?: Date;
 
   @IsDefined({ message: VALID_YEAR })
-  @Min(1000, { message: FOUR_DIGIT_YEAR_REQUIRED })
+  @Min(1000, { message: VALID_FOUR_DIGIT_YEAR })
   @Max(9999,{message:VALID_YEAR})
     year?: number;
 

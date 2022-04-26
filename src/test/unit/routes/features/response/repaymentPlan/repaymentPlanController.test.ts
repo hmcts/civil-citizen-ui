@@ -16,7 +16,7 @@ import {
   VALID_MONTH,
   VALID_DAY,
   FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED,
-  FOUR_DIGIT_YEAR_REQUIRED,
+  VALID_FOUR_DIGIT_YEAR,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -123,7 +123,7 @@ describe('on Post', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(VALID_DAY);
         expect(res.text).toContain(VALID_MONTH);
-        expect(res.text).toContain(FOUR_DIGIT_YEAR_REQUIRED);
+        expect(res.text).toContain(VALID_FOUR_DIGIT_YEAR);
       });
   });
 

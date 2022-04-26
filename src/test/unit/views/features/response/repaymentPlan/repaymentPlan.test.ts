@@ -13,7 +13,7 @@ import {
   VALID_MONTH,
   VALID_DAY,
   FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED,
-  FOUR_DIGIT_YEAR_REQUIRED,
+  VALID_FOUR_DIGIT_YEAR,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import { DateFormatter } from '../../../../../../main/common/utils/dateFormatter';
 
@@ -236,7 +236,7 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(FOUR_DIGIT_YEAR_REQUIRED);
+      expect(errorSummaryMessage.innerHTML).toContain(VALID_FOUR_DIGIT_YEAR);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#year');
     });
