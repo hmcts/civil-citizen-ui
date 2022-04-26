@@ -3,7 +3,6 @@ import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
 import {CITIZEN_AMOUNT_YOU_PAID_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
-import {Logger} from 'winston';
 import {
   setHowMuchHaveYouPaidControllerLogger,
 } from '../../../../../../../main/routes/features/response/admission/partialAdmission/howMuchHaveYouPaidController';
@@ -16,7 +15,13 @@ import {
   VALID_MONTH,
   VALID_YEAR,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {
+  mockCivilClaim,
+  mockCivilClaimUndefined,
+  mockLogger,
+  mockNoStatementOfMeans,
+  mockRedisFailure,
+} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 
@@ -24,15 +29,6 @@ jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 
 
-const mockDraftStore = {
-  get: jest.fn(() => Promise.resolve('{"id": "id", "case_data": {"statementOfMeans": {}}}')),
-  set: jest.fn(() => Promise.resolve()),
-};
-
-const mockLogger = {
-  error: jest.fn().mockImplementation((message: string) => message),
-  info: jest.fn().mockImplementation((message: string) => message),
-} as unknown as Logger;
 
 
 describe('How Much Have You Paid', () => {
@@ -73,7 +69,7 @@ describe('How Much Have You Paid', () => {
 
   describe('on GET', () => {
     test('should return how much have you paid page', async () => {
-      app.locals.draftStoreClient = mockDraftStore;
+      app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .get(CITIZEN_AMOUNT_YOU_PAID_URL)
         .expect((res) => {
