@@ -60,11 +60,6 @@
                 text:t(form.errorFor('amount'))
               } if form.hasFieldError('amount')
             }) }}
-            <div class="govuk-grid-row">
-              <div class="govuk-grid-column-two-thirds">
-                <h2 class="govuk-heading-s">{{ t('When did you pay this amount?') }}</h2>
-              </div>
-            </div>
             <div class="govuk-form-group">
               {{ govukDateInput({
                 id: "date",
@@ -73,8 +68,9 @@
                 name: "date",
                 fieldset: {
                   legend: {
+                    text: t("When did you pay this amount?"),
                     isPageHeading: false,
-                    classes: 'govuk-fieldset__legend--m'
+                    classes: 'govuk-fieldset__legend--s'
                   }
                 },
                 hint: {
@@ -111,7 +107,7 @@
                 ]
               }) }}
             </div>
-            <div class="govuk-form-group {% if form.hasFieldError('text') %} govuk-form-group--error {% endif %}">
+            <div class="govuk-form-group">
               {{ govukTextarea({
                 name: "text",
                 id: "text",
