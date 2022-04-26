@@ -16,34 +16,34 @@
   {% set amountLabel = 'Amount recieved' %}
   {% set scheduleLabel = 'Recieved every' %}
   {% set checkedJobHtml %}
-    {{ transactionDetails('Include wages, overtime, commission, bonuses', 'model[job]',  form.model.job.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('Include wages, overtime, commission, bonuses', 'model[job][transactionSource]',  form.model.job.transactionSource, amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedUniversalCreditHtml %}
-    {{ transactionDetails('', 'model[universalCredit]',  form.model.universalCredit.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[universalCredit][transactionSource]',  form.model.universalCredit.transactionSource, amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedJobseekerAllowanceIncomeHtml %}
-    {{ transactionDetails('', 'model[jobseekerAllowanceIncome]',  form.model.jobseekerAllowanceIncome.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[jobseekerAllowanceIncome][transactionSource]',  form.model.jobseekerAllowanceIncome.transactionSource, amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedJobseekerAllowanceContributionHtml %}
-    {{ transactionDetails('', 'model[jobseekerAllowanceContribution]', form.model.jobseekerAllowanceContribution.transactionSource,amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[jobseekerAllowanceContribution][transactionSource]', form.model.jobseekerAllowanceContribution.transactionSource,amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedIncomeSupportHtml %}
-    {{ transactionDetails('', 'model[incomeSupport]', form.model.incomeSupport.transactionSource, amountLabel,scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[incomeSupport][transactionSource]', form.model.incomeSupport.transactionSource, amountLabel,scheduleLabel, form) }}
   {% endset -%}
   {% set checkedWorkingTaxCreditHtml %}
-    {{ transactionDetails('', 'model[workingTaxCredit]', form.model.workingTaxCredit.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[workingTaxCredit][transactionSource]', form.model.workingTaxCredit.transactionSource, amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedChildTaxCreditHtml %}
-    {{ transactionDetails('', 'model[childTaxCredit]', form.model.childTaxCredit.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[childTaxCredit][transactionSource]', form.model.childTaxCredit.transactionSource, amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedChildBenefitHtml %}
-    {{ transactionDetails('', 'model[childBenefit]', form.model.childBenefit.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[childBenefit][transactionSource]', form.model.childBenefit.transactionSource, amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedCouncilTaxSupportHtml %}
-    {{ transactionDetails('', 'model[councilTaxSupport]',  form.model.councilTaxSupport.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[councilTaxSupport][transactionSource]',  form.model.councilTaxSupport.transactionSource, amountLabel, scheduleLabel, form) }}
   {% endset -%}
   {% set checkedPensionHtml %}
-    {{ transactionDetails('', 'model[pension]',  form.model.pension.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[pension][transactionSource]',  form.model.pension.transactionSource, amountLabel, scheduleLabel, form) }}
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">

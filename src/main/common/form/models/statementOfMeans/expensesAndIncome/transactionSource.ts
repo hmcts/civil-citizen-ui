@@ -1,4 +1,4 @@
-import {IsDefined, IsNumber, Max, Min} from 'class-validator';
+import {IsDefined, IsNotEmpty, IsNumber, Max, Min, ValidateIf} from 'class-validator';
 import {TransactionSchedule} from './transactionSchedule';
 import {ExpenseType} from './expenseType';
 import {MAX_AMOUNT_VALUE} from '../../../validators/validationConstraints';
@@ -32,6 +32,9 @@ export class ValidationErrors {
 
 export default class TransactionSource {
   income: boolean;
+  nameRequired: boolean;
+  @ValidateIf(o => o.nameRequired)
+  @IsNotEmpty({message: ValidationErrors.NAME_REQUIRED})
   name: string;
   @IsDefined({message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_REQUIRED)})
   @Min(0, {message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED)})
@@ -44,11 +47,12 @@ export default class TransactionSource {
   @IsDefined({message: ValidationErrors.withMessage(ValidationErrors.SCHEDULE_SELECT_AN_OPTION)})
     schedule: TransactionSchedule;
 
-  constructor(name?: string, amount?: number, schedule?: TransactionSchedule, income?: boolean) {
+  constructor(name?: string, amount?: number, schedule?: TransactionSchedule, income?: boolean, nameRequired?: boolean) {
     this.name = name;
     this.amount = amount;
     this.schedule = schedule;
     this.income = income;
+    this.nameRequired = nameRequired;
   }
 
   convertToScheduledAmount(): ScheduledAmount {

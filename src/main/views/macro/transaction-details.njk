@@ -1,12 +1,27 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% macro transactionDetails(hintAmount, property, transactionSource, amountLabel, scheduleLabel, form) %}
+{% macro transactionDetails(hintAmount, property, transactionSource, amountLabel, scheduleLabel, form, other, removeButton) %}
   {% set amountValue =  '' + transactionSource.amount %}
+  {% if other %}
+<div class="govuk-form-group civil-amountRow  multiple-row">
+  {{ govukInput({
+    id: property + "[name]",
+    name: property + "[name]",
+    label: {
+      text: t("Source of expense")
+    },
+    value:expenseSource.name,
+    errorMessage: {
+      text: form.errorFor(property + "[name]", "model")
+    } if(form.errorFor(property + "[name]", "model"))
+  }) }}
+  {% else %}
   <div class="civil-amountRow">
-    <input type="hidden" name="{{ property }}[transactionSource][name]" value="{{ transactionSource.name }}"/>
+    <input type="hidden" name="{{ property }}[name]" value="{{ transactionSource.name }}"/>
+    {% endif %}
     {{ govukInput({
-      id: property + "[transactionSource][amount]",
-      name: property + "[transactionSource][amount]",
+      id: property + "[amount]",
+      name: property + "[amount]",
       label: {
         text: t(amountLabel)
       },
@@ -21,12 +36,12 @@
       },
       spellcheck: false,
       errorMessage: {
-        text: form.errorFor(property + "[transactionSource][amount]", "model")
-      } if(form.errorFor(property + "[transactionSource][amount]", "model"))
+        text: form.errorFor(property + "[amount]", "model")
+      } if(form.errorFor(property + "[amount]", "model"))
     }) }}
     {{ govukRadios({
-      idPrefix: property + "[transactionSource][schedule]" ,
-      name: property + "[transactionSource][schedule]",
+      idPrefix: property + "[schedule]" ,
+      name: property + "[schedule]",
       classes: "civil-schedule",
       fieldset: {
         legend: {
@@ -56,8 +71,19 @@
         }
       ],
       errorMessage: {
-        text: form.errorFor(property + "[transactionSource][schedule]", "model")
-      } if(form.hasFieldError(property + "[transactionSource][schedule]", "model"))
+        text: form.errorFor(property + "[schedule]", "model")
+      } if(form.hasFieldError(property + "[schedule]", "model"))
     }) }}
+    {% if removeButton %}
+      {% if removeButton.hidden %}
+        <button class="govuk-link-button remove-row govuk-visually-hidden">{{ t(removeButton.text) }}</button>
+      {% else %}
+        <button class="govuk-link-button remove-row">{{ t(removeButton.text) }}</button>
+      {% endif %}
+    {% endif %}
   </div>
-{% endmacro %}
+
+  {% endmacro %}
+  {% macro otherTransactionDetails(property, index, transactionSource, amountLabel, scheduleLabel, form, removeButton) %}
+    {{ transactionDetails('', property +'['+index +']', expenseSource, amountLabel, scheduleLabel, form, true, removeButton) }}
+  {% endmacro %}

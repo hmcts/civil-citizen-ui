@@ -9,6 +9,7 @@ import {
 } from '../../../../../modules/statementOfMeans/expenses/regularExpensesService';
 import {toRegularExpenseForm} from '../../../../../common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 
+
 const regularExpensesController = express.Router();
 const regularExpensesView = 'features/response/statementOfMeans/expenses/regular-expenses';
 

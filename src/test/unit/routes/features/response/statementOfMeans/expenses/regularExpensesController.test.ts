@@ -140,6 +140,33 @@ describe('Regular Expenses Controller', () => {
           expect(res.text).toContain(TestMessages.MORTGAGE_CORRECT_AMOUNT_ERROR);
         });
     });
+    test('it should show errors when other is selected and data for other is not correctly selected', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: 'other', model: {
+            other: {
+              transactionSources: [
+                {
+                  name: undefined, amount: '123.33', schedule: 'WEEK',
+                },
+                {
+                  name: 'Dog groomers', amount: '123.33', schedule: undefined,
+                },
+                {
+                  name: 'Livery', amount: '123.333', schedule: 'MONTH',
+                },
+              ],
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.OTHER_EXPENSE_NAME_REQUIRED_ERROR);
+          expect(res.text).toContain(TestMessages.OTHER_EXPENSE_LIVERY_CORRECT_AMOUNT);
+          expect(res.text).toContain(TestMessages.OTHER_EXPENCE_DOG_SCHEDULE_ERROR);
+        });
+    });
     test('it should redirect when no data is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
@@ -161,6 +188,29 @@ describe('Regular Expenses Controller', () => {
                 {
                   name: 'mortgage', amount: '123.33', schedule: 'WEEK',
                 },
+            },
+          },
+        })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_MONTHLY_INCOME_URL);
+        });
+    });
+    test('it should redirect when correct data for other expenses', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .post(CITIZEN_MONTHLY_EXPENSES_URL)
+        .send({
+          declared: 'other', model: {
+            other: {
+              transactionSources: [
+                {
+                  name: 'other things', amount: '123.33', schedule: 'WEEK',
+                },
+                {
+                  name: 'and some more other things', amount: '123.33', schedule: 'MONTH',
+                },
+              ],
             },
           },
         })
