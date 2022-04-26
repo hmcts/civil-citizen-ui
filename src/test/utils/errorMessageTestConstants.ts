@@ -32,6 +32,6 @@ export const enum TestMessages {
   EXPLANATION_TITLE = 'Briefly explain why you can’t pay immediately',
   EXPLANATION_ERROR = 'Enter an explanation of why you can’t pay now',
   VALID_TWO_DECIMAL_NUMBER = 'Enter a valid amount, maximum two decimal places',
-  VALID_AMOUNT = 'Enter a valid amount',
-  AMOUNT_LESS_THAN_CLAIMED = 'Enter a value less than the amount claimed',
+  ENTER_VALID_AMOUNT = 'Enter a valid amount',
+  AMOUNT_LESS_THEN_CLAIMED = 'Enter a value less then the amount claimed',
 }
