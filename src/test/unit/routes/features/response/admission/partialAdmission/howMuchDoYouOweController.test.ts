@@ -49,7 +49,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
         .send({ amount: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_AMOUNT);
+          expect(res.text).toContain(TestMessages.CLAIM_VALID_AMOUNT);
         });
     });
     test('it should show errors when amount 0 is provided', async () => {
@@ -59,7 +59,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
         .send({ amount: 0 })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_AMOUNT);
+          expect(res.text).toContain(TestMessages.CLAIM_VALID_AMOUNT);
         });
     });
     test('it should show errors when more than 2 decimals provided', async () => {
@@ -69,7 +69,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
         .send({ amount: 10.123 })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_AMOUNT);
+          expect(res.text).toContain(TestMessages.CLAIM_VALID_AMOUNT);
         });
     });
     test('it should show errors when negative amount is provided', async () => {
@@ -79,7 +79,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
         .send({ amount: -110 })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_AMOUNT);
+          expect(res.text).toContain(TestMessages.CLAIM_VALID_AMOUNT);
         });
     });
     test('it should show errors when non-numeric amount is provided', async () => {
@@ -89,7 +89,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
         .send({ amount: 'abc' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_AMOUNT);
+          expect(res.text).toContain(TestMessages.CLAIM_VALID_AMOUNT);
         });
     });
     test('it should show errors when provided amount is bigger than Claim amount', async () => {
