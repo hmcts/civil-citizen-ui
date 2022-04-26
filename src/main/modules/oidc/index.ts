@@ -20,6 +20,7 @@ export class OidcMiddleware {
     console.log('loginUrl' + loginUrl);
     console.log('clientId' + clientId);
     console.log('redirectUri' + redirectUri);
+    console.log('citizenRole' + citizenRole);
     console.log('scope' + scope);
     console.log('idamUrlLogin' + idamUrlLogin);
     app.get(SIGN_IN_URL, (req: AppRequest, res: Response) => {
