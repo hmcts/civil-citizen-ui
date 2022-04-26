@@ -51,7 +51,6 @@ export const ENTER_AT_LEAST_ONE_DEBT = 'Enter at least one debt';
 export const ENTER_PAYMENT_EXPLANATION = 'Enter text explaining how you paid';
 export const ENTER_A_DEBT = 'Enter a debt';
 export const CLAIM_VALID_AMOUNT = 'Enter a valid amount';
-export const AMOUNT_LESS_THEN_CLAIMED  = 'Enter a value less then the amount claimed';
 export const VALID_ENTER_AT_LEAST_ONE_COURT_ORDER = 'Enter at least one court order';
 export const VALID_AMOUNT_ONE_POUND_OR_MORE = 'Enter an amount of £1 or more';
 export const VALID_CLAIM_NUMBER = 'Enter a claim number';

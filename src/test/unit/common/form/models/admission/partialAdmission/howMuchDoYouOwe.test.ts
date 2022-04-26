@@ -1,8 +1,8 @@
 import {
   HowMuchDoYouOwe,
 } from '../../../../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import { Validator } from 'class-validator';
-import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
+import {Validator} from 'class-validator';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 const validator = new Validator();
 describe('Partial Admit - How much money do you admit you owe? model', () => {
@@ -44,14 +44,14 @@ describe('Partial Admit - How much money do you admit you owe? model', () => {
       expect(errors?.length).toBe(1);
       expect(errors[0].constraints?.min).toBe(TestMessages.ENTER_VALID_AMOUNT);
     });
-    it('should return errors wheisLEssn provided amount is bigger than Claim amount', () => {
+    it('should return errors when provided amount is bigger than Claim amount', () => {
       //Given
       const form = new HowMuchDoYouOwe(9999999999999, 110);
       //When
       const errors = validator.validateSync(form);
       //Then
       expect(errors?.length).toBe(1);
-      expect(errors[0].constraints?.equalOrLessToPropertyValue).toBe(TestMessages.AMOUNT_LESS_THEN_CLAIMED);
+      expect(errors[0].constraints?.equalOrLessToPropertyValue).toBe(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
     });
     it('should return errors when provided amount is equal to Claim amount', () => {
       //Given
@@ -60,7 +60,7 @@ describe('Partial Admit - How much money do you admit you owe? model', () => {
       const errors = validator.validateSync(form);
       //Then
       expect(errors?.length).toBe(1);
-      expect(errors[0].constraints?.equalOrLessToPropertyValue).toBe(TestMessages.AMOUNT_LESS_THEN_CLAIMED);
+      expect(errors[0].constraints?.equalOrLessToPropertyValue).toBe(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
     });
   });
 });
