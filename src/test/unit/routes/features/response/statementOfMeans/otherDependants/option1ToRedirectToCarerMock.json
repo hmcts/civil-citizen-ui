@@ -16,27 +16,10 @@
       "disability": {
         "option": "no"
       },
-      "severeDisability": {
-        "option": "no"
-      },
       "cohabiting": {
         "option": "no"
       },
-      "partnerSevereDisability": {
-        "option": "no"
-      },
-      "partnerAge": {
-        "option": "no"
-      },
-      "partnerDisability": {
-        "option": "yes"
-      },
-      "otherDependants": {
-        "option": "no",
-        "numberOfPeople": "",
-        "details": ""
-      },
-      "carer": {
+      "childrenDisability": {
         "option": "no"
       }
     }

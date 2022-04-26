@@ -6,6 +6,7 @@ import {CounterpartyType} from './counterpartyType';
 import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
 
+import {PartialAdmission} from './partialAdmission';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -20,6 +21,7 @@ export class Claim {
   paymentOption?: string;
   repaymentPlan?: RepaymentPlan;
   paymentDate?:Date;
+  partialAdmission?: PartialAdmission;
 
 
   formattedResponseDeadline(): string {
