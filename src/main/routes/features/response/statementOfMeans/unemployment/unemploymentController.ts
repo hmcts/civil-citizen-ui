@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CITIZEN_COURT_ORDER_URL, CITIZEN_UNEMPLOYED_URL} from '../../../../../routes/urls';
+import {CITIZEN_COURT_ORDERS_URL, CITIZEN_UNEMPLOYED_URL} from '../../../../../routes/urls';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {Unemployment} from '../../../../../common/form/models/statementOfMeans/unemployment/unemployment';
 import {UnemploymentDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentDetails';
@@ -40,7 +40,7 @@ unemploymentController.post(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
       renderView(unemploymentForm, res);
     } else {
       await unemploymentService.saveUnemployment(req.params.id, unemploymentToSave);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_COURT_ORDER_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_COURT_ORDERS_URL));
     }
   } catch (error) {
     res.status(500).send({error: error.message});

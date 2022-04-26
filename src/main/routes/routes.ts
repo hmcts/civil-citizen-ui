@@ -22,7 +22,10 @@ import financialDetailsController from './features/response/financialDetails/fin
 import whoEmploysYouController from './features/response/statementOfMeans/employment/whoEmploysYouController';
 import otherDependantsController from './features/response/statementOfMeans/otherDependants/otherDependantsController';
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
-import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
+import paymentOptionController
+  from './features/response/statementOfMeans/employment/admission/fullAdmission/paymentOption/paymentOptionController';
+import paymentDateController
+  from './features/response/statementOfMeans/employment/admission/fullAdmission/paymentOption/paymentDateController';
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
@@ -38,6 +41,7 @@ import monthlyExpenseIncomeCalculatorController
   from './calculateMonthlyIncomeExpense/monthlyExpenseIncomeCalculatorController';
 import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
 import taskListController from './features/response/taskListController';
+import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
 
 export default [
   homeController,
@@ -64,6 +68,7 @@ export default [
   otherDependantsController,
   partnerPensionController,
   paymentOptionController,
+  paymentDateController,
   betweenSixteenAndNineteenController,
   dependantsController,
   priorityDebtsController,
@@ -76,4 +81,5 @@ export default [
   monthlyExpenseIncomeCalculatorController,
   repaymentPlanController,
   taskListController,
+  courtOrdersController,
 ];

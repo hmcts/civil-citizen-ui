@@ -8,6 +8,7 @@ import {
   getRegularExpenses,
   saveRegularExpenses,
 } from '../../../../../modules/statementOfMeans/expenses/regularExpensesService';
+import OtherTransaction from '../../../../../common/form/models/statementOfMeans/expenses/otherTransaction';
 
 const regularExpensesController = express.Router();
 const regularExpensesView = 'features/response/statementOfMeans/expenses/regular-expenses';
@@ -31,7 +32,14 @@ function toForm(req: express.Request): RegularExpenses {
 }
 
 function updateFormWithResponseData(key: string, req: express.Request, regularExpenses: RegularExpenses) {
-  regularExpenses[key] = Expense.buildPopulatedForm(req.body.model[key].expenseSource.name, req.body.model[key].expenseSource.amount, req.body.model[key].expenseSource.schedule);
+  regularExpenses[key as keyof RegularExpenses] = getValueFromRequest(key, req);
+}
+
+function getValueFromRequest(key: string, req: express.Request): Expense | OtherTransaction {
+  if (key === 'other') {
+    return OtherTransaction.buildPopulatedForm(req.body.model[key].transactionSources);
+  }
+  return Expense.buildPopulatedForm(req.body.model[key].expenseSource.name, req.body.model[key].expenseSource.amount, req.body.model[key].expenseSource.schedule);
 }
 
 regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res) => {
