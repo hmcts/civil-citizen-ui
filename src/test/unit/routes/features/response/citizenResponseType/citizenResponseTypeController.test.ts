@@ -2,7 +2,10 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_RESPONSE_TYPE_URL} from '../../../../../../main/routes/urls';
+import {
+  CITIZEN_ALREADY_PAID_URL,
+  CITIZEN_RESPONSE_TYPE_URL,
+} from '../../../../../../main/routes/urls';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {Respondent} from '../../../../../../main/common/models/respondent';
@@ -119,6 +122,23 @@ describe('Citizen response type', () => {
         .send('responseType=test')
         .expect((res) => {
           expect(res.status).toBe(302);
+        });
+    });
+
+    test('should redirect page when user selects I admit part of the claim ', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        const respondent1 = new Respondent();
+        respondent1.responseType = 'test';
+        claim.respondent1 = respondent1;
+        return claim;
+      });
+      await request(app)
+        .post(CITIZEN_RESPONSE_TYPE_URL)
+        .send('responseType=PART_ADMISSION')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_ALREADY_PAID_URL);
         });
     });
   });
