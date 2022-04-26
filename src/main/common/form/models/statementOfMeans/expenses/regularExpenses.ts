@@ -1,7 +1,9 @@
 import Expense from './expense';
 import {ValidateNested} from 'class-validator';
 import {ExpenseType} from './expenseType';
-import {ScheduledAmount} from 'common/utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
+import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
+import OtherTransaction from './otherTransaction';
+import ExpenseSource from './expenseSource';
 
 export interface ExpenseParams {
   mortgage?: Expense;
@@ -17,6 +19,7 @@ export interface ExpenseParams {
   hirePurchase?: Expense;
   mobilePhone?: Expense;
   maintenance?: Expense;
+  other?: OtherTransaction;
 }
 
 export interface ResponseExpenseParams {
@@ -64,7 +67,10 @@ export class RegularExpenses {
   @ValidateNested()
     maintenance?: Expense;
 
-  [key: string]: Expense;
+  @ValidateNested()
+    other?: OtherTransaction;
+
+  [key: string]: Expense | OtherTransaction;
 
   constructor(expenseParams?: ExpenseParams) {
     this.mortgage = expenseParams?.mortgage;
@@ -80,6 +86,7 @@ export class RegularExpenses {
     this.hirePurchase = expenseParams?.hirePurchase;
     this.mobilePhone = expenseParams?.mobilePhone;
     this.maintenance = expenseParams?.maintenance;
+    this.other = expenseParams.other;
   }
 
   public static buildEmptyForm(): RegularExpenses {
@@ -97,6 +104,7 @@ export class RegularExpenses {
       hirePurchase: RegularExpenses.buildExpense(ExpenseType.HIRE_PURCHASES),
       mobilePhone: RegularExpenses.buildExpense(ExpenseType.MOBILE_PHONE),
       maintenance: RegularExpenses.buildExpense(ExpenseType.MAINTENANCE_PAYMENTS),
+      other: new OtherTransaction(false, [new ExpenseSource()]),
     };
     return new RegularExpenses(params);
   }
@@ -105,7 +113,14 @@ export class RegularExpenses {
     const keys = Object.keys(regularExpenses);
     const scheduledAmounts: ScheduledAmount[] = [];
     keys.forEach(key => {
-      scheduledAmounts.push(regularExpenses[key]?.expenseSource.convertToScheduledAmount());
+      if (regularExpenses[key as keyof RegularExpenses]) {
+        const expense = regularExpenses[key as keyof RegularExpenses];
+        if (expense instanceof Expense) {
+          scheduledAmounts.push(expense?.expenseSource.convertToScheduledAmount());
+        } else {
+          expense.transactionSources.forEach(transactionSource => scheduledAmounts.push(transactionSource?.convertToScheduledAmount()));
+        }
+      }
     });
     return scheduledAmounts;
   }

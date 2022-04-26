@@ -11,3 +11,12 @@
 .hide {
   display: none;
 }
+
+.govuk-link-button {
+  background: none;
+  border: 0;
+  color: $govuk-link-colour;
+  cursor: pointer;
+  margin-bottom: 1em;
+  text-decoration: underline;
+}
