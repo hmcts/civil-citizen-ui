@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CITIZEN_SELF_EMPLOYED_URL, CITIZEN_COURT_ORDERS_URL, CITIZEN_WHO_EMPLOYS_YOU_URL} from '../../../../urls';
+import {CITIZEN_COURT_ORDERS_URL, CITIZEN_SELF_EMPLOYED_URL, CITIZEN_WHO_EMPLOYS_YOU_URL} from '../../../../urls';
 import {getEmployers, saveEmployers} from '../../../../../modules/statementOfMeans/employment/employerService';
 import {Employers} from '../../../../../common/form/models/statementOfMeans/employment/employers';
 import {Employer} from '../../../../../common/form/models/statementOfMeans/employment/employer';
@@ -9,7 +9,7 @@ import {getEmploymentForm} from '../../../../../modules/statementOfMeans/employm
 import {EmploymentForm} from '../../../../../common/form/models/statementOfMeans/employment/employmentForm';
 
 const whoEmploysYouViewPath = 'features/response/statementOfMeans/employment/who-employs-you';
-const whoEmploysYouController  = express.Router();
+const whoEmploysYouController = express.Router();
 
 whoEmploysYouController .get(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Request, res: express.Response) => {
   try {
@@ -44,4 +44,4 @@ whoEmploysYouController .post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.R
   }
 });
 
-export default whoEmploysYouController ;
+export default whoEmploysYouController;
