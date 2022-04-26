@@ -30,7 +30,8 @@ import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
 import priorityDebtsController from './features/response/statementOfMeans/priorityDebtsController';
-import selfEmployedAsController from './features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
+import selfEmployedAsController
+  from './features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
 import onTaxPaymentsController
   from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
 import unemploymentController from './features/response/statementOfMeans/unemployment/unemploymentController';
@@ -41,6 +42,9 @@ import monthlyExpenseIncomeCalculatorController
   from './calculateMonthlyIncomeExpense/monthlyExpenseIncomeCalculatorController';
 import taskListController from './features/response/taskListController';
 import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
+import whyDoYouDisagreeController
+  from './features/response/statementOfMeans/employment/admission/partialAdmision/whyDoYouDisagreeController';
+
 
 export default [
   homeController,
@@ -78,6 +82,7 @@ export default [
   regularExpensesController,
   debtsController,
   monthlyExpenseIncomeCalculatorController,
+  whyDoYouDisagreeController,
   taskListController,
   courtOrdersController,
 ];
