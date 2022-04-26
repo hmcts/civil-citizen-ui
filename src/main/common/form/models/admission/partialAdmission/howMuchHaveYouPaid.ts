@@ -18,9 +18,18 @@ import {OptionalDateInPastValidator} from '../../../validators/optionalDateInPas
 import {DateConverter} from '../../../../../common/utils/dateConverter';
 import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 
-const today = new Date().toLocaleDateString('en-GB', {
+const today = new Date(Date.now()).toLocaleDateString('en-GB', {
   day: 'numeric', month: 'long', year: 'numeric'});
 
+
+export interface HowMuchHaveYouPaidParams {
+  amount?: number;
+  totalClaimAmount?: number;
+  year?: string;
+  month?: string;
+  day?: string;
+  text?: string;
+}
 
 export class HowMuchHaveYouPaid {
 
@@ -53,14 +62,14 @@ export class HowMuchHaveYouPaid {
   @IsNotEmpty({message: ENTER_PAYMENT_EXPLANATION})
     text?: string;
 
-  constructor(amount?: number, totalClaimAmount?: number, year?: string, month?: string, day?: string, text?: string) {
-    this.amount = amount;
-    this.totalClaimAmount = totalClaimAmount;
-    this.date = DateConverter.convertToDate(year, month, day);
-    this.year = toNumberOrUndefined(year);
-    this.month = toNumberOrUndefined(month);
-    this.day = toNumberOrUndefined(day);
-    this.text = text;
+  constructor(howMuchHaveYouPaidParams? : HowMuchHaveYouPaidParams) {
+    this.amount = howMuchHaveYouPaidParams?.amount;
+    this.totalClaimAmount = howMuchHaveYouPaidParams?.totalClaimAmount;
+    this.date = DateConverter.convertToDate(howMuchHaveYouPaidParams?.year, howMuchHaveYouPaidParams?.month, howMuchHaveYouPaidParams?.day);
+    this.year = toNumberOrUndefined(howMuchHaveYouPaidParams?.year);
+    this.month = toNumberOrUndefined(howMuchHaveYouPaidParams?.month);
+    this.day = toNumberOrUndefined(howMuchHaveYouPaidParams?.day);
+    this.text = howMuchHaveYouPaidParams?.text;
   }
 }
 

@@ -22,7 +22,7 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-let howMuchHaveYouPaid = new HowMuchHaveYouPaid(undefined, undefined, undefined, undefined, undefined, undefined);
+let howMuchHaveYouPaid = new HowMuchHaveYouPaid();
 let form = new GenericForm<HowMuchHaveYouPaid>(new HowMuchHaveYouPaid());
 
 const DRAFT_STORE_GET_ERROR = 'draft store get error';
@@ -153,7 +153,7 @@ describe('HowMuchHaveYouPaid service', () => {
   describe('Validation', () => {
     test('should raise an error if nothing specified for date', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(undefined, undefined, undefined, undefined, undefined, undefined);
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid();
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -173,7 +173,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
     test('should raise an error if no text', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,'2021', '12', '1', undefined);
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year: '2021', month: '12', day: '1', text: undefined});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -184,7 +184,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
     test('should raise an error if no year', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,undefined, '12', '1', 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100,year: undefined, month: '12', day: '1', text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -195,7 +195,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
     test('should raise an error if no month', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,'9999', undefined, '1', 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100,year: '9999', month: undefined, day: '1', text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -206,7 +206,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
     test('should raise an error if no day', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,'9999', '12', undefined, 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100,year: '9999', month: '12', day: undefined, text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -217,7 +217,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
     test('should raise an error asking for 4 digits, if year is only 1 digit', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,'2', '12', '1', 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year: '2', month: '12', day: '1', text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -229,7 +229,7 @@ describe('HowMuchHaveYouPaid service', () => {
     test;
     test('should raise an error asking for 4 digits, if year is only 2 digits', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,'23', '12', '1', 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year: '23', month: '12', day: '1', text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -240,7 +240,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
     test('should raise an error asking for 4 digits, if year is only 3 digits', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,'202', '12', '1', 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year: '202', month: '12', day: '1', text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -253,7 +253,7 @@ describe('HowMuchHaveYouPaid service', () => {
       //Given
       const todayFormatted = new Date().toLocaleDateString('en-GB', {
         day: 'numeric', month: 'long', year: 'numeric'});
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,'2099', '12', '1', 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year: '2999', month: '12', day: '1', text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -264,7 +264,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
     test('should raise an error if month greater than 12', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,'2040', '13', '1', 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year: '2020', month: '13', day: '1', text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -275,7 +275,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
     test('should raise an error if month less than 1', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,'2040', '0', '1', 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year: '2020', month: '0', day: '1', text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -286,7 +286,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
     test('should raise an error if day greater than 31', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,'2040', '12', '32', 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year:'2020',month: '12', day: '32', text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -297,7 +297,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
     test('should raise an error if day less than 1', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,'2040', '12', '-1', 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year: '2020', month: '12', day: '-1', text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -308,7 +308,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
     test('should raise an error if date is invalid', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100, '2022', '2', '31', 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year: '2022', month: '2', day: '31', text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -319,7 +319,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
     test('should not raise an error if date in past', async () => {
       //Given
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100,'2022', '1', '31', 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year: '2022', month: '1', day: '31', text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -331,7 +331,7 @@ describe('HowMuchHaveYouPaid service', () => {
       const today : Date = new Date(Date.now());
       const todayFormatted = today.toLocaleDateString('en-GB', {
         day: 'numeric', month: 'long', year: 'numeric'});
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100, today.getFullYear().toString(), (today.getMonth() + 1).toString(), today.getDate().toString(), 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year: today.getFullYear().toString(), month: (today.getMonth() + 1).toString(), day: today.getDate().toString(), text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -343,7 +343,7 @@ describe('HowMuchHaveYouPaid service', () => {
     test('should not raise an error if yesterday specified for date', async () => {
       //Given
       const yesterday : Date = new Date(Date.now() - 1000*60*60*24);
-      howMuchHaveYouPaid = new HowMuchHaveYouPaid(50, 100, yesterday.getFullYear().toString(), (yesterday.getMonth() + 1).toString(), yesterday.getDate().toString(), 'text');
+      howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 50, totalClaimAmount: 100, year: yesterday.getFullYear().toString(), month: (yesterday.getMonth() + 1).toString(), day: yesterday.getDate().toString(), text: 'text'});
       //When
       form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();

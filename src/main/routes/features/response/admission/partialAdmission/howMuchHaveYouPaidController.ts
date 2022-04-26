@@ -11,7 +11,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('HowMuchHaveYouPaidController');
 const howMuchHaveYouPaidPath = 'features/response/admission/partialAdmission/how-much-have-you-paid';
 const howMuchHaveYouPaidController = express.Router();
-const lastMonth = new Date();
+const lastMonth = new Date(Date.now());
 lastMonth.setMonth(lastMonth.getMonth() - 1);
 let totalClaimAmount : number;
 

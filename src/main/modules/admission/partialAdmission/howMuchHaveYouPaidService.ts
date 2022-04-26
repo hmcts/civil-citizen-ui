@@ -17,7 +17,7 @@ class HowMuchHaveYouPaidService {
         claim.partialAdmission.howMuchHaveYouPaid.totalClaimAmount = totalClaimAmount;
         return claim.partialAdmission.howMuchHaveYouPaid;
       }
-      return new HowMuchHaveYouPaid(undefined, totalClaimAmount, undefined, undefined, undefined, undefined);
+      return new HowMuchHaveYouPaid({totalClaimAmount : totalClaimAmount});
     } catch (error) {
       logger.error(error);
       throw error;
@@ -44,7 +44,7 @@ class HowMuchHaveYouPaidService {
   }
 
   public buildHowMuchHaveYouPaid(amount?: number, totalClaimAmount?: number, year?: string, month?: string, day?: string, text?: string): HowMuchHaveYouPaid {
-    return new HowMuchHaveYouPaid(amount, totalClaimAmount, year, month, day, text);
+    return new HowMuchHaveYouPaid({amount: amount, totalClaimAmount: totalClaimAmount, year : year, month: month, day: day, text: text});
   }
 }
 
