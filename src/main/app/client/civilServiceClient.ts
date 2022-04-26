@@ -14,6 +14,7 @@ export class CivilServiceClient {
     this.client = Axios.create({
       baseURL,
     });
+    console.log(baseURL);
   }
 
   getConfig(req : AppRequest) {
@@ -27,7 +28,7 @@ export class CivilServiceClient {
 
   async retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
     const config = this.getConfig(req);
-    console.log('Config variables' + config.headers);
+    console.log('Config variables' + config.headers.Authorization);
     let claims : Claim[] = [];
     await this.client.post(CIVIL_SERVICE_CASES_URL,{ match_all: {} }, config)
       .then(response => {
