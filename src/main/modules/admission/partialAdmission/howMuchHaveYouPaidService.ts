@@ -1,6 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {HowMuchHaveYouPaid} from '../../../common/form/models/admission/partialAdmission/howMuchHaveYouPaid';
-import {Claim} from '../../../common/models/claim';
 import {PartialAdmission} from '../../../common/models/partialAdmission';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -11,9 +10,9 @@ class HowMuchHaveYouPaidService {
 
   public async getHowMuchHaveYouPaid(claimId: string): Promise<HowMuchHaveYouPaid> {
     try {
-      const claim = await getCaseDataFromStore(claimId) || new Claim();
-      const totalClaimAmount = claim.totalClaimAmount;
-      if (claim.partialAdmission?.howMuchHaveYouPaid) {
+      const claim = await getCaseDataFromStore(claimId);
+      const totalClaimAmount = claim?.totalClaimAmount;
+      if (claim?.partialAdmission?.howMuchHaveYouPaid) {
         claim.partialAdmission.howMuchHaveYouPaid.totalClaimAmount = totalClaimAmount;
         return claim.partialAdmission.howMuchHaveYouPaid;
       }
