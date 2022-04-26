@@ -21,7 +21,7 @@
           <form
             method="POST">
 
-            {{ csrfProtection(csrf) }}
+            {{ csrfProtection(csrfToken) }}
 
             {% set typeError = form.errorFor('type') %}
             <div class="govuk-form-group {% if errors %} govuk-form-group--error {% endif %}">

@@ -1,2 +1,13 @@
 @import '~govuk-frontend';
 @import './task-list';
+
+.moj-add-another {
+  // sass-lint:disable class-name-format
+  &__remove-button {
+    display: none;
+  }
+}
+
+.hide {
+  display: none;
+}

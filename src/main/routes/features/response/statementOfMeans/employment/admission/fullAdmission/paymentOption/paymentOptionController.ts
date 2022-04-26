@@ -1,14 +1,15 @@
 import * as express from 'express';
-import {CITIZEN_PAYMENT_DATE_URL, CITIZEN_PAYMENT_OPTION_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
-import PaymentOption from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentOption';
+import {CITIZEN_PAYMENT_DATE_URL, CITIZEN_PAYMENT_OPTION_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../urls';
+import PaymentOption
+  from '../../../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentOption';
 import PaymentOptionType
-  from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
-import {validateForm} from '../../../../../../common/form/validators/formValidator';
+  from '../../../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
+import {validateForm} from '../../../../../../../../common/form/validators/formValidator';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
-} from '../../../../../../modules/admission/fullAdmission/paymentOption/paymentOptionService';
-import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
+} from '../../../../../../../../modules/admission/fullAdmission/paymentOption/paymentOptionService';
+import {constructResponseUrlWithIdParams} from '../../../../../../../../common/utils/urlFormatter';
 
 const paymentOptionController = express.Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/fullAdmission/paymentOption/payment-option';
