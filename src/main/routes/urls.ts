@@ -47,3 +47,4 @@ export const TOTAL_AMOUNT_CALCULATION_URL = '/total-income-expense-calculation';
 export const PARTIAL_ADMISSION_URL = `${BASE_CASE_RESPONSE_URL}/partial-admission`;
 export const CITIZEN_WHY_DO_YOU_DISAGREE_URL = `${PARTIAL_ADMISSION_URL}/why-do-you-disagree`;
 export const CITIZEN_AMOUNT_YOU_PAID_URL = `${BASE_CASE_RESPONSE_URL}/partial-admission/how-much-have-you-paid`;
+export const CITIZEN_TIMELINE_URL = `${BASE_CASE_RESPONSE_URL}/timeline`;

@@ -5,7 +5,7 @@ import {
   saveWhyDoYouDisagreeData,
 } from '../../../../../modules/admission/partialAdmission/whyDoYouDisagreeService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {CITIZEN_AMOUNT_YOU_PAID_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../../../../urls';
+import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../../../../urls';
 import {WhyDoYouDisagreeForm} from '../../../../../common/models/whyDoYouDisagreeForm';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 
@@ -39,7 +39,7 @@ whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res
       renderView(form, whyDoYouDisagreeForm.claimAmount, res);
     } else {
       await saveWhyDoYouDisagreeData(req.params.id, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_AMOUNT_YOU_PAID_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_TIMELINE_URL));
     }
   } catch (error) {
     res.status(500).send({error: error.message});

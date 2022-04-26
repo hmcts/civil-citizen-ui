@@ -2,7 +2,7 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../../main/app';
-import {CITIZEN_AMOUNT_YOU_PAID_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../../../../../../../main/routes/urls';
+import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
@@ -55,7 +55,7 @@ describe('Why do you disagree Controller', () => {
         .send('text=Test')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_AMOUNT_YOU_PAID_URL);
+          expect(res.header.location).toEqual(CITIZEN_TIMELINE_URL);
         });
     });
     test('should return 500 status when there is error', async () => {
