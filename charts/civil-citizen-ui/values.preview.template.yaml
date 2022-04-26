@@ -13,6 +13,7 @@ nodejs:
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
 
+
 idam-pr:
   enabled: true
   redirect_uris:
