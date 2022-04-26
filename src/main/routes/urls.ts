@@ -50,3 +50,4 @@ export const CITIZEN_TIMELINE_URL = `${BASE_CASE_RESPONSE_URL}/timeline`;
 export const CITIZEN_CARER_URL = `${STATEMENT_OF_MEANS_URL}/carer`;
 export const CITIZEN_EXPLANATION_URL = `${STATEMENT_OF_MEANS_URL}/explanation`;
 export const CITIZEN_OWED_AMOUNT_URL = `${BASE_CASE_RESPONSE_URL}/partial-admission/how-much-do-you-owe`;
+export const CITIZEN_ALREADY_PAID_URL = `${BASE_CASE_RESPONSE_URL}/partial-admission/already-paid`;
