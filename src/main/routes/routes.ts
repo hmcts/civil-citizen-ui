@@ -42,7 +42,8 @@ import monthlyExpenseIncomeCalculatorController
   from './calculateMonthlyIncomeExpense/monthlyExpenseIncomeCalculatorController';
 import taskListController from './features/response/taskListController';
 import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
-import whyDoYouDisagreeController from './features/response/admision/partialAdmision/whyDoYouDisagreeController';
+import whyDoYouDisagreeController
+  from './features/response/statementOfMeans/employment/admission/partialAdmision/whyDoYouDisagreeController';
 
 
 export default [
