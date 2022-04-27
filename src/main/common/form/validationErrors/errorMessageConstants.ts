@@ -59,3 +59,6 @@ export const VALID_AMOUNT = 'Enter an amount';
 export const VALID_AMOUNT_ONE_POUND_OR_MORE = 'Enter an amount of £1 or more';
 export const VALID_CLAIM_NUMBER = 'Enter a claim number';
 export const ENTER_AN_EXPLANATION = 'Enter an explanation of why you can’t pay now';
+export const TEXT_TOO_LONG = 'You’ve entered too many characters';
+export const PHONE_NUMBER_REQUIRED = 'Please enter a phone number';
+export const NAME_REQUIRED = 'Please enter a name';
