@@ -10,7 +10,7 @@
     label: {
       text: t("Source of expense")
     },
-    value:expenseSource.name,
+    value:transactionSource.name,
     errorMessage: {
       text: form.errorFor(property + "[name]", "model")
     } if(form.errorFor(property + "[name]", "model"))
@@ -85,5 +85,5 @@
 
   {% endmacro %}
   {% macro otherTransactionDetails(property, index, transactionSource, amountLabel, scheduleLabel, form, removeButton) %}
-    {{ transactionDetails('', property +'['+index +']', expenseSource, amountLabel, scheduleLabel, form, true, removeButton) }}
+    {{ transactionDetails('', property +'['+index +']', transactionSource, amountLabel, scheduleLabel, form, true, removeButton) }}
   {% endmacro %}

@@ -7,7 +7,6 @@ import OtherTransaction from '../../form/models/statementOfMeans/expensesAndInco
 function toRegularExpenseForm(req: express.Request): RegularExpenses {
   const regularExpenses = RegularExpenses.buildEmptyForm();
   requestBodyToForm(req, regularExpenses);
-  console.log(regularExpenses);
   return regularExpenses;
 }
 

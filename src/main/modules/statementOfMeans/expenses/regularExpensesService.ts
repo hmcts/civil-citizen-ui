@@ -8,7 +8,6 @@ const getRegularExpenses = async (claimId: string): Promise<RegularExpenses> => 
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (claim.statementOfMeans?.regularExpenses) {
-      console.log(claim.statementOfMeans.regularExpenses);
       return claim.statementOfMeans.regularExpenses;
     }
     return RegularExpenses.buildEmptyForm();
