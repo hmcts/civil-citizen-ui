@@ -83,18 +83,15 @@ withPipeline(type, product, component) {
           eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
           ./bin/add-roles.sh
           ./bin/pull-latest-release-asset.sh civil-ccd-definition civil-ccd-definition.zip
-          ./bin/pull-latest-general-app-ccd-files.sh ${generalappCCDBranch}
           ./bin/pull-latest-release-asset.sh civil-camunda-bpmn-definition civil-camunda-bpmn-definition.zip
-          ./bin/import-ccd-definition.sh "-e *-prod.json,*-nonprod.json,*LRspec.json,*DJspec.json"
-          ./bin/import-general-apps-ccd-definition.sh "-e *-prod.json,*-nonprod.json,*LRspec.json"
+          ./bin/import-ccd-definition.sh "-e *-nonprod.json,*GAspec.json,*DJspec.json,*DJ.json"
           ./bin/import-bpmn-diagram.sh .
         """
         env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
-        env.URL="https://xui-civil-general-applications-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-        env.CIVIL_GENERAL_APPLICATIONS_URL="http://civil-general-applications-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-        env.CIVIL_SERVICE_URL="http://civil-service-civil-general-applications-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+        env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+        env.CIVIL_SERVICE_URL="http://civil-service-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
         env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-        env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-civil-general-applications-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+        env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
         env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
     }
 
@@ -104,11 +101,10 @@ withPipeline(type, product, component) {
 
     before('functionalTest:preview') {
       env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
-      env.URL="https://xui-civil-general-applications-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-      env.CIVIL_GENERAL_APPLICATIONS_URL="http://civil-general-applications-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-      env.CIVIL_SERVICE_URL="http://civil-service-civil-general-applications-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+      env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+      env.CIVIL_SERVICE_URL="http://civil-service-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-      env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-civil-general-applications-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+      env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
     }
 
