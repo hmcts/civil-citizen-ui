@@ -42,7 +42,7 @@ def secrets = [
         ]
 ]
 
-
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 withPipeline(type, product, component) {
     pipelineConf = config
