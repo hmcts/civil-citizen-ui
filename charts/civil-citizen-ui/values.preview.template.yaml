@@ -1,3 +1,5 @@
+tags:
+  civil-ccd-stack: true
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
@@ -51,32 +53,33 @@ postgresql:
 
 civil-service:
   enabled: true
+  debug: true
   java:
     releaseNameOverride: ${SERVICE_NAME}-civil-service
     image: 'hmctspublic.azurecr.io/civil/service:latest'
     imagePullPolicy: Always
     ingressHost: civil-service-${SERVICE_FQDN}
     keyVaults:
-    civil:
-      resourceGroup: civil
-      secrets:
-        - civil-idam-client-secret
-        - microservicekey-civil-service
-        - system-update-user-username
-        - system-update-user-password
-        - cross-access-user-username
-        - cross-access-user-password
-        - prd-admin-user-username
-        - prd-admin-user-password
-        - AppInsightsInstrumentationKey
-        - docmosis-api-key
-        - gov-notify-api-key
-        - sendgrid-api-key
-        - robotics-notification-sender
-        - robotics-notification-recipient
-        - launch-darkly-sdk-key
-        - robotics-notification-multipartyrecipient
-        - ordnance-survey-api-key
+      civil:
+        resourceGroup: civil
+        secrets:
+          - civil-idam-client-secret
+          - microservicekey-civil-service
+          - system-update-user-username
+          - system-update-user-password
+          - cross-access-user-username
+          - cross-access-user-password
+          - prd-admin-user-username
+          - prd-admin-user-password
+          - AppInsightsInstrumentationKey
+          - docmosis-api-key
+          - gov-notify-api-key
+          - sendgrid-api-key
+          - robotics-notification-sender
+          - robotics-notification-recipient
+          - launch-darkly-sdk-key
+          - robotics-notification-multipartyrecipient
+          - ordnance-survey-api-key
   environment:
     CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
     OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
@@ -144,7 +147,6 @@ xui-webapp:
       LAUNCH_DARKLY_CLIENT_ID: ~
 
 ccd:
-  enabled: true
   ccd:
     adminWeb:
       enabled: false
