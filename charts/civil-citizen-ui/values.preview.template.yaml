@@ -55,8 +55,9 @@ civil-service:
   enabled: true
   debug: true
   java:
+    aadIdentityName: civil
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:latest'
+    image: hmctspublic.azurecr.io/civil/service:latest
     imagePullPolicy: Always
     ingressHost: civil-service-${SERVICE_FQDN}
     keyVaults:
