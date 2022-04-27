@@ -28,6 +28,12 @@ export const enum TestMessages {
   WATER_AMOUNT_ERROR = 'Enter how much you pay for Water',
   WATER_SCHEDULE_ERROR = 'Select how often you pay for Water',
   GAS_CORRECT_AMOUNT_ERROR = 'Enter a valid Gas amount, maximum two decimal places',
+  CLAIM_CARER = 'Do you claim Carer’s Allowance or Carer’s Credit?',
+  EXPLANATION_TITLE = 'Briefly explain why you can’t pay immediately',
+  EXPLANATION_ERROR = 'Enter an explanation of why you can’t pay now',
+  VALID_TWO_DECIMAL_NUMBER = 'Enter a valid amount, maximum two decimal places',
+  ENTER_VALID_AMOUNT = 'Enter a valid amount',
+  AMOUNT_LESS_THEN_CLAIMED = 'Enter a value less then the amount claimed',
   JOB_AMOUNT_ERROR = 'Enter how much income from your job you receive',
   JOB_SCHEDULE_ERROR = 'Select how often you receive income from your job',
   JOB_CORRECT_AMOUNT = 'Enter a valid income from your job amount, maximum two decimal places'
