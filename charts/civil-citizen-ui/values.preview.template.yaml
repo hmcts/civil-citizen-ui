@@ -1,3 +1,26 @@
+postgresql:
+  enabled: true
+  image:
+    registry: hmctspublic.azurecr.io
+    repository: imported/bitnami/postgresql
+    tag: '11.3.0'
+    pullPolicy: Always
+  resources:
+    requests:
+      cpu: 25m
+  initdbScripts:
+    init.sql: |-
+      CREATE DATABASE cmc WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "camunda" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+  postgresqlUsername: ${POSTGRES_USER}
+  postgresqlPassword: ${POSTGRES_PASSWORD}
+  persistence:
+    enabled: false
+
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
