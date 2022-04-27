@@ -30,8 +30,7 @@ function toRegularIncomeForm(req: express.Request): RegularIncome {
 
 function getValueFromRequest(key: string, req: express.Request, income: boolean): Transaction | OtherTransaction {
   if (key === 'other') {
-    console.log(req.body.model[key].transactionSources);
-    return OtherTransaction.buildPopulatedForm(req.body.model[key].transactionSources);
+    return OtherTransaction.buildPopulatedForm(req.body.model[key].transactionSources, income);
   }
   return Transaction.buildPopulatedForm(req.body.model[key].transactionSource.name, req.body.model[key].transactionSource.amount, req.body.model[key].transactionSource.schedule, income);
 }

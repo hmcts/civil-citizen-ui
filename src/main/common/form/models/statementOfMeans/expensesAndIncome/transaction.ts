@@ -16,10 +16,15 @@ export default class Transaction {
   }
 
   public static buildEmptyForm(type: string, income?: boolean): Transaction {
-    return new Transaction(undefined, new TransactionSource(type, undefined, undefined, income));
+    return new Transaction(undefined, new TransactionSource({name: type, income: income}));
   }
 
   public static buildPopulatedForm(name: string, amount?: string, schedule?: TransactionSchedule, income?: boolean): Transaction {
-    return new Transaction(true, new TransactionSource(name, toNumberOrUndefined(amount), schedule, income));
+    return new Transaction(true, new TransactionSource({
+      name: name,
+      amount: toNumberOrUndefined(amount),
+      schedule: schedule,
+      income: income,
+    }));
   }
 }
