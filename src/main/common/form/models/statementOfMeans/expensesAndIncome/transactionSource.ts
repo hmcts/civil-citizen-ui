@@ -35,7 +35,7 @@ export default class TransactionSource {
   nameRequired: boolean;
   @ValidateIf(o => o.nameRequired)
   @IsNotEmpty({message: ValidationErrors.NAME_REQUIRED})
-  name: string;
+    name: string;
   @IsDefined({message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_REQUIRED)})
   @Min(0, {message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED)})
   @Max(MAX_AMOUNT_VALUE, {message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED)})
