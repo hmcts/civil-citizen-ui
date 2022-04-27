@@ -144,6 +144,7 @@ xui-webapp:
       LAUNCH_DARKLY_CLIENT_ID: ~
 
 ccd:
+  enabled: true
   ccd:
     adminWeb:
       enabled: false
