@@ -36,5 +36,10 @@ export const enum TestMessages {
   AMOUNT_LESS_THEN_CLAIMED = 'Enter a value less then the amount claimed',
   JOB_AMOUNT_ERROR = 'Enter how much income from your job you receive',
   JOB_SCHEDULE_ERROR = 'Select how often you receive income from your job',
-  JOB_CORRECT_AMOUNT = 'Enter a valid income from your job amount, maximum two decimal places'
+  JOB_CORRECT_AMOUNT = 'Enter a valid income from your job amount, maximum two decimal places',
+  VALID_YES_NO_OPTION = 'Choose option: Yes or No',
+  PHONE_NUMBER_REQUIRED = 'Please enter a phone number',
+  NAME_REQUIRED = 'Please enter a name',
+  TEXT_TOO_LONG = 'You’ve entered too many characters',
+
 }

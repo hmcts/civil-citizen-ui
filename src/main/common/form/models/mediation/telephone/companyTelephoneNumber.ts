@@ -1,4 +1,4 @@
-import { IsDefined, MaxLength, ValidateIf } from 'class-validator'
+import { IsDefined, MaxLength, ValidateIf } from 'class-validator';
 import { TEXT_TOO_LONG, PHONE_NUMBER_REQUIRED, NAME_REQUIRED, VALID_YES_NO_OPTION } from '../../../validationErrors/errorMessageConstants';
 import { YesNo } from '../../yesNo';
 
