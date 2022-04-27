@@ -1,5 +1,5 @@
 apiVersion: v2
-appVersion: "1.0"
+appVersion: "1.1"
 description: Helm chart for the HMCTS Civil Citizen Frontend service
 name: civil-citizen-ui
 home: https://github.com/hmcts/civil-citizen-ui
