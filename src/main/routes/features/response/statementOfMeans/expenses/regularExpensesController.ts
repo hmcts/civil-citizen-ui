@@ -1,45 +1,20 @@
 import express from 'express';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {RegularExpenses} from '../../../../../common/form/models/statementOfMeans/expenses/regularExpenses';
+import {RegularExpenses} from '../../../../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {CITIZEN_MONTHLY_EXPENSES_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../urls';
-import Expense from '../../../../../common/form/models/statementOfMeans/expenses/expense';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {
   getRegularExpenses,
   saveRegularExpenses,
 } from '../../../../../modules/statementOfMeans/expenses/regularExpensesService';
-import OtherTransaction from '../../../../../common/form/models/statementOfMeans/expenses/otherTransaction';
+import {toRegularExpenseForm} from '../../../../../common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
+
 
 const regularExpensesController = express.Router();
 const regularExpensesView = 'features/response/statementOfMeans/expenses/regular-expenses';
 
 function renderForm(form: GenericForm<RegularExpenses>, res: express.Response) {
   res.render(regularExpensesView, {form: form});
-}
-
-function toForm(req: express.Request): RegularExpenses {
-  const regularExpenses = RegularExpenses.buildEmptyForm();
-  if (req.body.declared) {
-    if (Array.isArray(req.body.declared)) {
-      req.body.declared.forEach((expenseName: string) => {
-        updateFormWithResponseData(expenseName, req, regularExpenses);
-      });
-    } else {
-      updateFormWithResponseData(req.body.declared, req, regularExpenses);
-    }
-  }
-  return regularExpenses;
-}
-
-function updateFormWithResponseData(key: string, req: express.Request, regularExpenses: RegularExpenses) {
-  regularExpenses[key as keyof RegularExpenses] = getValueFromRequest(key, req);
-}
-
-function getValueFromRequest(key: string, req: express.Request): Expense | OtherTransaction {
-  if (key === 'other') {
-    return OtherTransaction.buildPopulatedForm(req.body.model[key].transactionSources);
-  }
-  return Expense.buildPopulatedForm(req.body.model[key].expenseSource.name, req.body.model[key].expenseSource.amount, req.body.model[key].expenseSource.schedule);
 }
 
 regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res) => {
@@ -52,7 +27,7 @@ regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res) => 
 });
 
 regularExpensesController.post(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res) => {
-  const form = new GenericForm(toForm(req));
+  const form = new GenericForm(toRegularExpenseForm(req));
   try {
     await form.validate();
     if (form.hasErrors()) {

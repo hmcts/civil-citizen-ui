@@ -16,11 +16,12 @@ import {SelfEmployedAs} from './selfEmployedAs';
 import {TaxPayments} from './taxPayments';
 import {Unemployment} from '../form/models/statementOfMeans/unemployment/unemployment';
 import {ChildrenDisability} from '../form/models/statementOfMeans/dependants/childrenDisability';
-import {RegularExpenses} from '../form/models/statementOfMeans/expenses/regularExpenses';
+import {RegularExpenses} from '../form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {Debts} from '../form/models/statementOfMeans/debts/debts';
 import {CourtOrders} from '../form/models/statementOfMeans/courtOrders/courtOrders';
 import {Carer} from 'common/form/models/statementOfMeans/carer';
 import {Explanation} from 'common/form/models/statementOfMeans/explanation';
+import RegularIncome from 'common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
 
 export class StatementOfMeans {
   disability?: Disability;
@@ -47,4 +48,5 @@ export class StatementOfMeans {
   courtOrders?: CourtOrders;
   carer?: Carer;
   explanation?: Explanation;
+  regularIncome?: RegularIncome;
 }

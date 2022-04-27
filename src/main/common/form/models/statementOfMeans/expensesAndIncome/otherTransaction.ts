@@ -1,30 +1,31 @@
 import {ValidateIf, ValidateNested} from 'class-validator';
-import ExpenseSource from './expenseSource';
-import {ScheduledExpenses} from './scheduledExpenses';
+import TransactionSource from './transactionSource';
+import {TransactionSchedule} from './transactionSchedule';
 import {toNumberOrUndefined} from '../../../../utils/numberConverter';
 
 export interface OtherTransactionRequestParams {
   name?: string;
   amount?: string;
-  schedule?: ScheduledExpenses;
+  schedule?: TransactionSchedule;
 }
 
 export default class OtherTransaction {
   declared: boolean;
   @ValidateIf((o: OtherTransaction) => o.declared === true)
   @ValidateNested({each: true})
-    transactionSources: ExpenseSource[];
+    transactionSources: TransactionSource[];
 
-  constructor(declared?: boolean, transactionSources?: ExpenseSource[]) {
+  constructor(declared?: boolean, transactionSources?: TransactionSource[]) {
     this.declared = declared;
     this.transactionSources = transactionSources;
   }
 
   static buildPopulatedForm(otherTransactions: OtherTransactionRequestParams[]): OtherTransaction {
-    const otherTransactionSources: ExpenseSource[] = [];
+    const otherTransactionSources: TransactionSource[] = [];
     if (otherTransactions?.length) {
-      otherTransactions.forEach(transaction => otherTransactionSources.push(new ExpenseSource(transaction.name, toNumberOrUndefined(transaction.amount), transaction.schedule, true)));
+      otherTransactions.forEach(transaction => otherTransactionSources.push(new TransactionSource(transaction.name, toNumberOrUndefined(transaction.amount), transaction.schedule, false, true)));
     }
+
     return new OtherTransaction(true, otherTransactionSources);
   }
 }
