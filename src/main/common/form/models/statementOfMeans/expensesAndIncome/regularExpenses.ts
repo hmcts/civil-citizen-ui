@@ -1,24 +1,24 @@
-import Expense from './expense';
+import Transaction from './transaction';
 import {ValidateNested} from 'class-validator';
 import {ExpenseType} from './expenseType';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 import OtherTransaction from './otherTransaction';
-import ExpenseSource from './expenseSource';
+import TransactionSource from './transactionSource';
 
 export interface ExpenseParams {
-  mortgage?: Expense;
-  rent?: Expense;
-  councilTax?: Expense;
-  gas?: Expense;
-  electricity?: Expense;
-  water?: Expense;
-  travel?: Expense;
-  schoolCosts?: Expense;
-  foodAndHousekeeping?: Expense;
-  tvAndBroadband?: Expense;
-  hirePurchase?: Expense;
-  mobilePhone?: Expense;
-  maintenance?: Expense;
+  mortgage?: Transaction;
+  rent?: Transaction;
+  councilTax?: Transaction;
+  gas?: Transaction;
+  electricity?: Transaction;
+  water?: Transaction;
+  travel?: Transaction;
+  schoolCosts?: Transaction;
+  foodAndHousekeeping?: Transaction;
+  tvAndBroadband?: Transaction;
+  hirePurchase?: Transaction;
+  mobilePhone?: Transaction;
+  maintenance?: Transaction;
   other?: OtherTransaction;
 }
 
@@ -29,48 +29,49 @@ export interface ResponseExpenseParams {
 
 export class RegularExpenses {
   @ValidateNested()
-    mortgage?: Expense;
+    mortgage?: Transaction;
 
   @ValidateNested()
-    rent?: Expense;
+    rent?: Transaction;
 
   @ValidateNested()
-    councilTax?: Expense;
+    councilTax?: Transaction;
 
   @ValidateNested()
-    gas?: Expense;
+    gas?: Transaction;
 
   @ValidateNested()
-    electricity?: Expense;
+    electricity?: Transaction;
 
   @ValidateNested()
-    water?: Expense;
+    water?: Transaction;
 
   @ValidateNested()
-    travel?: Expense;
+    travel?: Transaction;
 
   @ValidateNested()
-    schoolCosts?: Expense;
+    schoolCosts?: Transaction;
 
   @ValidateNested()
-    foodAndHousekeeping?: Expense;
+    foodAndHousekeeping?: Transaction;
 
   @ValidateNested()
-    tvAndBroadband?: Expense;
+    tvAndBroadband?: Transaction;
 
   @ValidateNested()
-    hirePurchase?: Expense;
+    hirePurchase?: Transaction;
 
   @ValidateNested()
-    mobilePhone?: Expense;
+    mobilePhone?: Transaction;
 
   @ValidateNested()
-    maintenance?: Expense;
+    maintenance?: Transaction;
 
   @ValidateNested()
     other?: OtherTransaction;
 
-  [key: string]: Expense | OtherTransaction;
+  [key: string]: Transaction | OtherTransaction;
+
 
   constructor(expenseParams?: ExpenseParams) {
     this.mortgage = expenseParams?.mortgage;
@@ -104,7 +105,7 @@ export class RegularExpenses {
       hirePurchase: RegularExpenses.buildExpense(ExpenseType.HIRE_PURCHASES),
       mobilePhone: RegularExpenses.buildExpense(ExpenseType.MOBILE_PHONE),
       maintenance: RegularExpenses.buildExpense(ExpenseType.MAINTENANCE_PAYMENTS),
-      other: new OtherTransaction(false, [new ExpenseSource()]),
+      other: new OtherTransaction(false, [new TransactionSource()]),
     };
     return new RegularExpenses(params);
   }
@@ -115,8 +116,8 @@ export class RegularExpenses {
     keys.forEach(key => {
       if (regularExpenses[key as keyof RegularExpenses]) {
         const expense = regularExpenses[key as keyof RegularExpenses];
-        if (expense instanceof Expense) {
-          scheduledAmounts.push(expense?.expenseSource.convertToScheduledAmount());
+        if (expense instanceof Transaction) {
+          scheduledAmounts.push(expense?.transactionSource.convertToScheduledAmount());
         } else {
           expense.transactionSources.forEach(transactionSource => scheduledAmounts.push(transactionSource?.convertToScheduledAmount()));
         }
@@ -125,7 +126,7 @@ export class RegularExpenses {
     return scheduledAmounts;
   }
 
-  private static buildExpense(type: ExpenseType): Expense {
-    return Expense.buildEmptyForm(type);
+  private static buildExpense(type: ExpenseType): Transaction {
+    return Transaction.buildEmptyForm(type);
   }
 }

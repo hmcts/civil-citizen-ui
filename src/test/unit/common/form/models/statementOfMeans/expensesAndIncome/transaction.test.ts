@@ -1,18 +1,19 @@
 import {Validator} from 'class-validator';
-import Expense from '../../../../../../../main/common/form/models/statementOfMeans/expenses/expense';
-import ExpenseSource from '../../../../../../../main/common/form/models/statementOfMeans/expenses/expenseSource';
+import Transaction from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import TransactionSource
+  from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSource';
 import {
-  ScheduledExpenses,
-} from '../../../../../../../main/common/form/models/statementOfMeans/expenses/scheduledExpenses';
+  TransactionSchedule,
+} from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {ExpenseType} from '../../../../../../../main/common/form/models/statementOfMeans/expenses/expenseType';
+import {ExpenseType} from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/expenseType';
 
 const validator = new Validator();
-describe('Expense', () => {
+describe('Transaction', () => {
   describe('Validation', () => {
     it('should have errors when the declared is true', async () => {
       //Given
-      const form = new Expense(true, new ExpenseSource('rent'));
+      const form = new Transaction(true, new TransactionSource('rent'));
       //When
       const errors = await validator.validate(form);
       //Then
@@ -25,7 +26,7 @@ describe('Expense', () => {
     });
     it('should not have errors when declared is false', async () => {
       //Given
-      const form = new Expense(false, new ExpenseSource('rent'));
+      const form = new Transaction(false, new TransactionSource('rent'));
       //When
       const errors = await validator.validate(form);
       //Then
@@ -33,7 +34,7 @@ describe('Expense', () => {
     });
     it('should have one nested error when declared is true and schedule  is not set', async () => {
       //Given
-      const form = new Expense(true, new ExpenseSource('rent', 1));
+      const form = new Transaction(true, new TransactionSource('rent', 1));
       //When
       const errors = await validator.validate(form);
       //Then
@@ -45,7 +46,7 @@ describe('Expense', () => {
     });
     it('should have one nested error when declared is true and schedule  is not set', async () => {
       //Given
-      const form = new Expense(true, new ExpenseSource('rent', undefined, ScheduledExpenses.MONTH));
+      const form = new Transaction(true, new TransactionSource('rent', undefined, TransactionSchedule.MONTH));
       //When
       const errors = await validator.validate(form);
       //Then
@@ -61,25 +62,25 @@ describe('Expense', () => {
       //Given
       const expenseType = ExpenseType.RENT;
       //When
-      const form = Expense.buildEmptyForm(expenseType);
+      const form = Transaction.buildEmptyForm(expenseType);
       //Then
-      expect(form.expenseSource?.name).toBe('rent');
-      expect(form.expenseSource?.amount).toBeUndefined();
-      expect(form.expenseSource?.schedule).toBeUndefined();
+      expect(form.transactionSource?.name).toBe('rent');
+      expect(form.transactionSource?.amount).toBeUndefined();
+      expect(form.transactionSource?.schedule).toBeUndefined();
       expect(form.declared).toBeUndefined();
     });
     it('should build populated form successfully', () => {
       //Given
       const name = 'rent';
       const amount = '1000';
-      const schedule = ScheduledExpenses.MONTH;
+      const schedule = TransactionSchedule.MONTH;
       //When
-      const form = Expense.buildPopulatedForm(name, amount, schedule);
+      const form = Transaction.buildPopulatedForm(name, amount, schedule);
       //Then
       expect(form.declared).toBeTruthy();
-      expect(form.expenseSource.name).toBe(name);
-      expect(form.expenseSource.schedule).toBe(schedule);
-      expect((form.expenseSource.amount)).toBe(Number(amount));
+      expect(form.transactionSource.name).toBe(name);
+      expect(form.transactionSource.schedule).toBe(schedule);
+      expect((form.transactionSource.amount)).toBe(Number(amount));
     });
   });
 });

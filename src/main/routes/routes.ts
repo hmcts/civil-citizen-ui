@@ -49,6 +49,7 @@ import courtOrdersController from './features/response/statementOfMeans/courtOrd
 import whyDoYouDisagreeController
   from './features/response/statementOfMeans/employment/admission/partialAdmision/whyDoYouDisagreeController';
 import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
+import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
 
 export default [
   homeController,
@@ -94,4 +95,5 @@ export default [
   howMuchDoYouOweController,
   courtOrdersController,
   repaymentPlanController,
+  regularIncomeController,
 ];

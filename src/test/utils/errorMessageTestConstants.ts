@@ -34,4 +34,7 @@ export const enum TestMessages {
   VALID_TWO_DECIMAL_NUMBER = 'Enter a valid amount, maximum two decimal places',
   ENTER_VALID_AMOUNT = 'Enter a valid amount',
   AMOUNT_LESS_THEN_CLAIMED = 'Enter a value less then the amount claimed',
+  JOB_AMOUNT_ERROR = 'Enter how much income from your job you receive',
+  JOB_SCHEDULE_ERROR = 'Select how often you receive income from your job',
+  JOB_CORRECT_AMOUNT = 'Enter a valid income from your job amount, maximum two decimal places'
 }
