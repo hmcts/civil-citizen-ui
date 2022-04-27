@@ -8,7 +8,27 @@ dependencies:
   - name: nodejs
     version: 2.4.1
     repository: '@hmctspublic'
+  - name: civil-service
+    version: 0.0.9
+    repository: '@hmctspublic'
+    condition: civil-service.enabled
+  - name: ccd
+    version: 6.0.0
+    repository: '@hmctspublic'
+    condition: ccd.enabled
+  - name: xui-webapp
+    version: ~0.2.16
+    repository: '@hmctspublic'
+    condition: xui-webapp.enabled
   - name: idam-pr
-    version: 2.2.6
+    version: ~2.2.3
     repository: '@hmctspublic'
     condition: idam-pr.enabled
+  - name: postgresql
+    version: ~8.9.8
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: camunda-bpm
+    version: 0.0.23
+    repository: '@hmctspublic'
+    condition: camunda-bpm.enabled
