@@ -163,8 +163,8 @@ describe('Regular Expenses Controller', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.OTHER_EXPENSE_NAME_REQUIRED_ERROR);
-          expect(res.text).toContain(TestMessages.OTHER_EXPENSE_LIVERY_CORRECT_AMOUNT);
-          expect(res.text).toContain(TestMessages.OTHER_EXPENCE_DOG_SCHEDULE_ERROR);
+          expect(res.text).toContain(TestMessages.OTHER_LIVERY_CORRECT_AMOUNT);
+          expect(res.text).toContain(TestMessages.OTHER_EXPENSE_DOG_SCHEDULE_ERROR);
         });
     });
     test('it should redirect when no data is selected', async () => {
