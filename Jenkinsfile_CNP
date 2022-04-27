@@ -4,9 +4,9 @@
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.AppPipelineDsl
 
-def type = "java"
+def type = "nodejs"
 def product = "civil"
-def component = "general-applications"
+def component = "citizen-ui"
 def generalappCCDBranch = "master"
 
 AppPipelineConfig pipelineConf
