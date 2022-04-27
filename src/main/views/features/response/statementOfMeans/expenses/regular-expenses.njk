@@ -14,6 +14,7 @@
       "errorList": errors
     }) }}
   {% endif %}
+  {% set rowNumberToShowRemoveButton = 2 %}
   {% set amountLabel = 'Amount paid' %}
   {% set scheduleLabel = 'Paid every' %}
   {% set expenseSourceLabel = 'Source of expense' %}
@@ -59,7 +60,7 @@
   {% set checkedOtherHtml %}
     <div class="govuk-form-group">
       {% for transactionSource in form.model.other.transactionSources %}
-        {% if form.model.other.transactionSources.length < 2 %}
+        {% if form.model.other.transactionSources.length < rowNumberToShowRemoveButton %}
           {{ otherTransactionDetails( 'model[other][transactionSources]', loop.index0, transactionSource,  {name:expenseSourceLabel, amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form, {text:'Remove this expense source', hidden:true}) }}
         {% else %}
           {{ otherTransactionDetails( 'model[other][transactionSources]', loop.index0, transactionSource,  {name:expenseSourceLabel, amountLabel: amountLabel, scheduleLabel:scheduleLabel}, form, {text:'Remove this expense source'}) }}
