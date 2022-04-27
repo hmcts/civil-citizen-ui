@@ -25,6 +25,12 @@ const howMuchYouHavePaidTask = {
   status: TaskStatus.INCOMPLETE,
 };
 
+const freeTelephoneMediation =  {
+  description: 'Free telephone mediation',
+  url: './mediation/free-telephone-mediation',
+  status: TaskStatus.INCOMPLETE,
+};
+
 const buildPrepareYourResponseSection = async (claim: Claim): Promise<TaskList> => {
   const tasks: Task[] = [];
   const confirmYourDetailsTask = getConfirmYourDetailsTask(claim);
@@ -52,6 +58,7 @@ const buildTryToResolveClaimSection = async (claim: Claim): Promise<TaskList> =>
 
   if (!claim.paymentOption) {
     tasks.push(howMuchYouHavePaidTask);
+    tasks.push(freeTelephoneMediation);
   }
   return { title: 'Try to resolve the Claim', tasks };
 };
