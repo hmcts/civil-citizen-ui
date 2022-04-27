@@ -9,12 +9,12 @@ export interface TransactionSourceParams {
   name?: string;
   amount?: number;
   schedule?: TransactionSchedule;
-  income?: boolean;
+  isIncome?: boolean;
   nameRequired?: boolean;
 }
 
 export class ValidationErrors {
-  static readonly NAME_REQUIRED = (name: string, income: boolean) => {
+  static readonly NAME_REQUIRED = (_name: string, income: boolean) => {
     if (income) {
       return 'Enter other income source';
     }
@@ -38,13 +38,13 @@ export class ValidationErrors {
   static withMessage(buildErrorFn: (name?: string, income?: boolean) => string) {
     return (args: any): string => {
       const object: TransactionSource = args.object;
-      return buildErrorFn(object.name, object.income);
+      return buildErrorFn(object.name, object.isIncome);
     };
   }
 }
 
 export default class TransactionSource {
-  income: boolean;
+  isIncome: boolean;
   nameRequired: boolean;
   @ValidateIf(o => o.nameRequired)
   @IsNotEmpty({message: ValidationErrors.withMessage(ValidationErrors.NAME_REQUIRED)})
@@ -64,7 +64,7 @@ export default class TransactionSource {
     this.name = params.name;
     this.amount = params.amount;
     this.schedule = params.schedule;
-    this.income = params.income;
+    this.isIncome = params.isIncome;
     this.nameRequired = params.nameRequired;
   }
 

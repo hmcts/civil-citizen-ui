@@ -20,8 +20,8 @@ export default class OtherTransaction {
     this.transactionSources = transactionSources;
   }
 
-  static buildEmptyForm(income: boolean): OtherTransaction {
-    return new OtherTransaction(false, [new TransactionSource({income: income})]);
+  static buildEmptyForm(isIncome: boolean): OtherTransaction {
+    return new OtherTransaction(false, [new TransactionSource({isIncome: isIncome})]);
   }
 
   static buildPopulatedForm(otherTransactions: OtherTransactionRequestParams[], income: boolean): OtherTransaction {
@@ -31,7 +31,7 @@ export default class OtherTransaction {
         name: transaction.name,
         amount: toNumberOrUndefined(transaction.amount),
         schedule: transaction.schedule,
-        income: income,
+        isIncome: income,
         nameRequired: true,
       })));
     }
