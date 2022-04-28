@@ -43,6 +43,10 @@ def secrets = [
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
+def checkForEnableHelmLabel(branch_name) {
+    return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
+}
+
 withPipeline(type, product, component) {
     pipelineConf = config
     disableLegacyDeployment()
@@ -51,7 +55,9 @@ withPipeline(type, product, component) {
 
     onPR {
         loadVaultSecrets(secrets)
-        //enableCleanupOfHelmReleaseOnSuccess()
+        if (!checkForEnableHelmLabel(env.BRANCH_NAME)) {
+          enableCleanupOfHelmReleaseOnSuccess();
+        }
     }
     onMaster {
         loadVaultSecrets(secrets)
