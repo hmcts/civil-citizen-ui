@@ -56,24 +56,21 @@ withPipeline(type, product, component) {
     enableAksStagingDeployment()
     enableSlackNotifications('#civil_notifications')
     before('AKS deploy - preview') {
-    onPR {
-            input(
-              message: 'Do you want deploy the application?', parameters: [
-                [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
-              ])
-      }
+        onPR {
+                input(
+                  id: 'Proceed1', message: 'Do you want deploy the application?', parameters: [
+                    [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+                  ])
+        }
 
     }
-
     onPR {
         loadVaultSecrets(secrets)
         input(
-          message: 'Do you want to remove helm?', parameters: [
-          [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+                  id: 'Proceed2', message: 'Do you want deploy the application?', parameters: [
+                    [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
         ])
-        enableCleanupOfHelmReleaseOnSuccess();
     }
-
     onMaster {
         loadVaultSecrets(secrets)
     }
