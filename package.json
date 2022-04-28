@@ -16,7 +16,7 @@
     "test:routes": "jest -c jest.routes.config.js",
     "test:a11y": "jest -c jest.a11y.config.js --maxWorkers 15",
     "sonar-scan": "sonar-scanner",
-    "test:smoke": "jest -c jest.smoketest.config.js",
+    "test:smoke": "jest -c jest.smoketest.config.js --detectOpenHandles",
     "test:functional": "NODE_TLS_REJECT_UNAUTHORIZED=0 codeceptjs --config ./src/test/functional/codecept.conf.js run-workers 2 parallel",
     "test:crossbrowser": "SAUCE='true' yarn test:crossbrowser:codeceptjs run",
     "test:crossbrowser:playwright": "yarn test:crossbrowser:codeceptjs run-multiple crossBrowser",
