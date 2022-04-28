@@ -22,10 +22,8 @@ import financialDetailsController from './features/response/financialDetails/fin
 import whoEmploysYouController from './features/response/statementOfMeans/employment/whoEmploysYouController';
 import otherDependantsController from './features/response/statementOfMeans/otherDependants/otherDependantsController';
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
-import paymentOptionController
-  from './features/response/statementOfMeans/employment/admission/fullAdmission/paymentOption/paymentOptionController';
-import paymentDateController
-  from './features/response/statementOfMeans/employment/admission/fullAdmission/paymentOption/paymentDateController';
+import paymentOptionController from './features/response/admission/fullAdmission/paymentOption/paymentOptionController';
+import paymentDateController from './features/response/admission/fullAdmission/paymentOption/paymentDateController';
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
@@ -50,6 +48,7 @@ import whyDoYouDisagreeController
   from './features/response/statementOfMeans/employment/admission/partialAdmision/whyDoYouDisagreeController';
 import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
+import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
 
 export default [
   homeController,
@@ -96,4 +95,5 @@ export default [
   courtOrdersController,
   repaymentPlanController,
   regularIncomeController,
+  howMuchHaveYouPaidController,
 ];
