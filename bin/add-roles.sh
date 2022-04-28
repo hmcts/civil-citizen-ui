@@ -5,6 +5,7 @@
 ./bin/utils/ccd-add-role.sh "caseworker-caa"
 ./bin/utils/ccd-add-role.sh "caseworker-approver"
 ./bin/utils/ccd-add-role.sh "prd-admin"
+./bin/utils/ccd-add-role.sh "citizen"
 
 roles=("solicitor" "systemupdate" "admin" "staff" "judge")
 for role in "${roles[@]}"
