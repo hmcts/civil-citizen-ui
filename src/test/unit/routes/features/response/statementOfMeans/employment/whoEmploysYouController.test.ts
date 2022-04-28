@@ -135,11 +135,18 @@ describe('Who employs you', () => {
       const dom = new JSDOM(response.text);
       const htmlDocument = dom.window.document;
 
-      // ul XPath: "//ul[@class='govuk-list govuk-error-summary__list']"
-      const aList = getElementsByXPath("//a[@href='#rows[0][employerName]']", htmlDocument);
+      const summaryErrors = getElementsByXPath("//a[@href='#rows[0][employerName]']", htmlDocument);
+      const formGroupErrors = getElementsByXPath("//div[contains(@class,'govuk-form-group--error') and not(input)]/p", htmlDocument);
+      const employerNameInputErrors = getElementsByXPath("//input[contains(@id,'rows[0][employerName]')]/preceding-sibling::p[@class='govuk-error-message']", htmlDocument);
+      const jobTitleInputErrors = getElementsByXPath("//input[contains(@id,'rows[0][jobTitle]')]/preceding-sibling::p[@class='govuk-error-message']", htmlDocument);
 
-      expect(aList.length).toBe(1);
-      expect(aList[0].textContent).toBe(VALID_ENTER_AN_EMPLOYER_NAME);
+      expect(summaryErrors.length).toBe(1);
+      expect(summaryErrors[0].textContent).toBe(VALID_ENTER_AN_EMPLOYER_NAME);
+      expect(formGroupErrors.length).toBe(0);
+      expect(formGroupErrors[0].textContent).not.toContain(VALID_ENTER_AN_EMPLOYER_NAME);
+      expect(employerNameInputErrors.length).toBe(1);
+      expect(employerNameInputErrors[0].textContent).toContain(VALID_ENTER_AN_EMPLOYER_NAME);
+      expect(jobTitleInputErrors).toEqual([]);
     });
     it('should return error message when jobTitle is empty', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
@@ -201,7 +208,7 @@ describe('Who employs you', () => {
 });
 
 
-function getElementsByXPath(xpath: string, htmlDocument: Document) : Node[] {
+function getElementsByXPath(xpath: string, htmlDocument: Document): Node[] {
   const results: (Node | null)[] = [];
   const query: XPathResult = htmlDocument.evaluate(xpath, htmlDocument,
     null, ORDERED_NODE_SNAPSHOT_TYPE, null);
