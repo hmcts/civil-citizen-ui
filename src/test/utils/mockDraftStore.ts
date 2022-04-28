@@ -4,6 +4,7 @@ import noStatementOfMeansMock from './mocks/noStatementOfMeansMock.json';
 import civilClaimResponseOptionNoMock from './mocks/civilClaimResponseOptionNoMock.json';
 import civilClaimResponseUnemploymentRetired from './mocks/civilClaimResponseUnemploymentRetiredMock.json';
 import civilClaimResponseUnemploymentOther from './mocks/civilClaimResponseUnemploymentOtherMock.json';
+import civilClaimResponseApplicantCompany from './mocks/civilClaimResponseApplicantCompanyMock.json';
 
 const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
@@ -34,5 +35,10 @@ const mockRedisFailure = {
   get: jest.fn(() => { throw new Error(TestMessages.REDIS_FAILURE); }),
 };
 
+const mockCivilClaimApplicantCompanyType =  {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantCompany))),
+};
+
 export { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockCivilClaimOptionNo,
-  mockCivilClaimUnemploymentRetired, mockCivilClaimUnemploymentOther, mockRedisFailure };
+  mockCivilClaimUnemploymentRetired, mockCivilClaimUnemploymentOther, mockRedisFailure, mockCivilClaimApplicantCompanyType };
