@@ -15,7 +15,7 @@
   {% endif %}
   {% set rowNumberToShowRemoveButton = 2 %}
   {% set amountLabel = 'Amount received' %}
-  {% set scheduleLabel = 'Recieved every' %}
+  {% set scheduleLabel = 'Received every' %}
   {% set incomeSourceLabel = 'Source of income' %}
   {% set checkedJobHtml %}
     {{ transactionDetails('Include wages, overtime, commission, bonuses', 'model[job][transactionSource]',  form.model.job.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}

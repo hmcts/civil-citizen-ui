@@ -14,28 +14,28 @@ export interface TransactionSourceParams {
 }
 
 export class ValidationErrors {
-  static readonly NAME_REQUIRED = (_name: string, income: boolean) => {
-    if (income) {
+  static readonly NAME_REQUIRED = (_name: string, isIncome: boolean) => {
+    if (isIncome) {
       return 'Enter other income source';
     }
     return 'Enter other expense source';
   };
-  static readonly AMOUNT_REQUIRED = (name: string, income: boolean) => {
-    if (income) {
+  static readonly AMOUNT_REQUIRED = (name: string, isIncome: boolean) => {
+    if (isIncome) {
       return `Enter how much ${name ? name : IncomeType.OTHER} you receive`;
     }
     return `Enter how much you pay for ${name ? name : ExpenseType.OTHER}`;
   };
   static readonly AMOUNT_INVALID_DECIMALS = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
   static readonly AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
-  static readonly SCHEDULE_SELECT_AN_OPTION = (name: string, income: boolean) => {
-    if (income) {
+  static readonly SCHEDULE_SELECT_AN_OPTION = (name: string, isIncome: boolean) => {
+    if (isIncome) {
       return `Select how often you receive ${name ? name : IncomeType.OTHER}`;
     }
     return `Select how often you pay for ${name ? name : ExpenseType.OTHER}`;
   };
 
-  static withMessage(buildErrorFn: (name?: string, income?: boolean) => string) {
+  static withMessage(buildErrorFn: (name?: string, isIncome?: boolean) => string) {
     return (args: any): string => {
       const object: TransactionSource = args.object;
       return buildErrorFn(object.name, object.isIncome);
