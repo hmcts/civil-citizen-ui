@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {getElementsByXPath} from '../../../../../../../main/common/utils/xpathExtractor';
+import {getElementsByXPath} from '../../../../../../utils/xpathExtractor';
 import {
   CITIZEN_WHO_EMPLOYS_YOU_URL,
   CITIZEN_COURT_ORDERS_URL,
