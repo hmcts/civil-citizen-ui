@@ -15,12 +15,17 @@ jest.mock('ioredis', () => {
   });
 });
 
-function authenticate() {
-  agent.get('/oauth2/callback')
-    .query('code=ABC')
-    .then((res: Response) => {
-      expect(res.status).toBe(302);
-    });
+async function authenticate() {
+  try {
+    await agent.get('/oauth2/callback')
+      .query('code=ABC')
+      .then((res: Response) => {
+        expect(res.status).toBe(302);
+      });
+  } catch (e) {
+    console.log('error' + e);
+  }
+
 }
 
 // TODO: replace this sample test with proper smoke tests later
