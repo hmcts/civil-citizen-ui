@@ -9,7 +9,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
   const inValidPhoneNumber = '0123456789012345678901234567890';
   const validName = 'David';
   const inValidName = 'Daviddaviddaviddaviddaviddavido';
-  it('should have errors when no option is selected', () => {
+  it('should have errors when option is not selected', () => {
     //Given
     const form = new CompanyTelephoneNumber();
     //When
