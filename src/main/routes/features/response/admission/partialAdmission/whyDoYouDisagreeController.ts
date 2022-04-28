@@ -1,13 +1,13 @@
 import * as express from 'express';
-import {WhyDoYouDisagree} from '../../../../../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {WhyDoYouDisagree} from '../../../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {
   getWhyDoYouDisagreeForm,
   saveWhyDoYouDisagreeData,
-} from '../../../../../../../modules/admission/partialAdmission/whyDoYouDisagreeService';
-import {constructResponseUrlWithIdParams} from '../../../../../../../common/utils/urlFormatter';
-import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../../../../../../urls';
-import {WhyDoYouDisagreeForm} from '../../../../../../../common/models/whyDoYouDisagreeForm';
-import {GenericForm} from '../../../../../../../common/form/models/genericForm';
+} from '../../../../../modules/admission/partialAdmission/whyDoYouDisagreeService';
+import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../../../../urls';
+import {WhyDoYouDisagreeForm} from '../../../../../common/models/whyDoYouDisagreeForm';
+import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const whyDoYouDisagreeController = express.Router();
 const whyDoYouDisagreeViewPath = 'features/response/admission/partialAdmission/why-do-you-disagree';
