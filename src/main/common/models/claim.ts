@@ -5,8 +5,8 @@ import {StatementOfMeans} from './statementOfMeans';
 import {CounterpartyType} from './counterpartyType';
 import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
-
 import {PartialAdmission} from './partialAdmission';
+import {Mediation} from './mediation';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -22,6 +22,7 @@ export class Claim {
   repaymentPlan?: RepaymentPlan;
   paymentDate?:Date;
   partialAdmission?: PartialAdmission;
+  mediation?: Mediation;
 
 
   formattedResponseDeadline(): string {

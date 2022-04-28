@@ -50,6 +50,7 @@ import whyDoYouDisagreeController
   from './features/response/statementOfMeans/employment/admission/partialAdmision/whyDoYouDisagreeController';
 import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
+import mediationDisagreementController from './features/mediation/mediationDisagreementController';
 
 export default [
   homeController,
@@ -96,4 +97,5 @@ export default [
   courtOrdersController,
   repaymentPlanController,
   regularIncomeController,
+  mediationDisagreementController,
 ];
