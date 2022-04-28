@@ -1,12 +1,9 @@
 import express from 'express';
 import nock from 'nock';
 import config from 'config';
+import {CITIZEN_COURT_ORDERS_URL, CITIZEN_DEBTS_URL} from '../../../../../../../main/routes/urls';
 import {
-  CITIZEN_COURT_ORDERS_URL,
-  CITIZEN_DEBTS_URL,
-} from '../../../../../../../main/routes/urls';
-import {
-  VALID_AMOUNT,
+  VALID_AMOUNT_ONE_POUND_OR_MORE,
   VALID_CLAIM_NUMBER,
   VALID_ENTER_AT_LEAST_ONE_COURT_ORDER,
   VALID_STRICTLY_POSITIVE_NUMBER,
@@ -129,7 +126,7 @@ describe('Citizen court orders', () => {
         .send('rows[0][instalmentAmount]=10')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_AMOUNT);
+          expect(res.text).toContain(VALID_AMOUNT_ONE_POUND_OR_MORE);
         });
     });
 
