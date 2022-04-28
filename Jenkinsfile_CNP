@@ -45,7 +45,7 @@ def secrets = [
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 def checkForEnableHelmLabel(branch_name) {
-    return new GithubAPI(this).getLabelsbyPattern(branch_name, "removeHelm").contains("removeHelm")
+    return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
 }
 
 
@@ -55,21 +55,19 @@ withPipeline(type, product, component) {
     disableLegacyDeployment()
     enableAksStagingDeployment()
     enableSlackNotifications('#civil_notifications')
-    before('aksdeploy:preview') {
-        onPR {
-                input(
-                  id: 'Proceed1', message: 'Do you want deploy the application?', parameters: [
-                    [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
-                  ])
-        }
+after('build') {
+    userInput = input(
+        id: 'Proceed1', message: 'Was this successful?', parameters: {
+        [booleanParam(defaultValue: true, description: 'Please confirm you agree with this', name: 'Please confirm you agree with this')]
+        })
 
-    }
+}
     onPR {
         loadVaultSecrets(secrets)
-        input(
-                  id: 'Proceed2', message: 'Do you want deploy the application?', parameters: [
-                    [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
-        ])
+        if (params.DEPLOY) {
+                enableCleanupOfHelmReleaseOnSuccess();
+        }
+
     }
     onMaster {
         loadVaultSecrets(secrets)
