@@ -56,12 +56,10 @@ withPipeline(type, product, component) {
     enableAksStagingDeployment()
     enableSlackNotifications('#civil_notifications')
 stage('Checkout') {
-    input {
-        message: 'Build Docker image'
-        parameters: [
-                            [booleanParam', defaultValue: true, description: '', name: 'Please confirm you agree with this']
-                            ])
-    }
+    userInput = input(
+        id: 'Proceed1', message: 'Was this successful?', parameters: [
+        [booleanParam(defaultValue: true, description: '', name: 'Please confirm you agree with this')]
+        ])
 
 }
     onPR {
