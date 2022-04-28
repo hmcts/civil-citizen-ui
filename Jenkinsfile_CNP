@@ -55,14 +55,6 @@ withPipeline(type, product, component) {
     disableLegacyDeployment()
     enableAksStagingDeployment()
     enableSlackNotifications('#civil_notifications')
-    before('akschartsinstall:preview') {
-       timeout(time: 3, unit: "MINUTES") {
-        input(
-          message: 'Do you want to deploy?', parameters: [
-            [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
-          ])
-       }
-    }
 
     onPR {
         loadVaultSecrets(secrets)
@@ -123,15 +115,24 @@ withPipeline(type, product, component) {
       env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
     }
 
-    after('functionalTest:preview') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
-        input(
-          id: 'removeHelm',
-          message: 'Do you want to remove helm?', parameters: [
+  after('functionalTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+      input(
+        id: 'removeHelm',
+        message: 'Do you want to remove helm?', parameters: [
           [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
         ])
-        enableCleanupOfHelmReleaseOnSuccess();
+      enableCleanupOfHelmReleaseOnSuccess();
     }
+
+  before('akschartsinstall') {
+    onPR() {
+      input(
+        message: 'Do you want to deploy?', parameters: [
+          [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+        ])
+      }
+  }
 
   after('smoketest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
