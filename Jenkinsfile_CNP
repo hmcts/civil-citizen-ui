@@ -56,10 +56,10 @@ withPipeline(type, product, component) {
     enableAksStagingDeployment()
     enableSlackNotifications('#civil_notifications')
 after('build') {
-    userInput = input(
-        id: 'Proceed1', message: 'Was this successful?', parameters: {
-        [booleanParam(defaultValue: true, description: 'Please confirm you agree with this', name: 'Please confirm you agree with this')]
-        })
+ input(
+          message: 'Do you want to remove helm?', parameters: [
+          [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+        ])
 
 }
     onPR {
