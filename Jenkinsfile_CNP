@@ -51,9 +51,9 @@ def checkForEnableHelmLabel(branch_name) {
 def userInput
 try {
     userInput = input(
-        id: 'Proceed1', message: 'Was this successful?', parameters: [
-        [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
-        ])
+        id: 'DEPLOY', message: 'do you want deploy?', parameters {
+                                                                     booleanParam(name: 'DEPLOY', defaultValue: true, description: 'Uncheck to skip creation of Docker image.')
+                                                                 })
 } catch(err) { // input false
     def user = err.getCauses()[0].getUser()
     userInput = false
@@ -68,7 +68,7 @@ withPipeline(type, product, component) {
 
     onPR {
         loadVaultSecrets(secrets)
-        if (userInput == true) {
+        if (params.DEPLOY) {
                 enableCleanupOfHelmReleaseOnSuccess();
         }
 
