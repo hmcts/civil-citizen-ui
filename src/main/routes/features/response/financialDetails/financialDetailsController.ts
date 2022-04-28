@@ -1,5 +1,10 @@
 import * as express from 'express';
-import {CITIZEN_BANK_ACCOUNT_URL, CLAIM_TASK_LIST_URL, FINANCIAL_DETAILS_URL} from '../../../urls';
+import {
+  CITIZEN_BANK_ACCOUNT_URL,
+  CLAIM_TASK_LIST_URL,
+  CLAIMANT_DETAILS_URL,
+  FINANCIAL_DETAILS_URL
+} from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
@@ -16,8 +21,8 @@ export function setFinancialDetailsControllerLogger(winstonLogger: winston.Logge
   logger = winstonLogger;
 }
 
-function renderView(res: express.Response, claim: Claim): void {
-  res.render(financialDetailsViewPath, {claim: claim});
+function renderView(res: express.Response, claim: Claim, claimantDetailsUrl : string): void {
+  res.render(financialDetailsViewPath, {claim: claim, claimantDetailsUrl : claimantDetailsUrl});
 }
 
 
@@ -26,8 +31,9 @@ financialDetailsController
     FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
       try {
         const claim: Claim =  await getCaseDataFromStore(req.params.id);
-        console.log(claim);
-        renderView(res, claim);
+        const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CLAIMANT_DETAILS_URL);
+        console.log(claimantDetailsUrl);
+        renderView(res, claim, claimantDetailsUrl);
       } catch (error) {
         logger.error(error);
         res.status(500).send({error: error.message});
@@ -35,6 +41,7 @@ financialDetailsController
     })
   .post(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
     try {
+      const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CLAIMANT_DETAILS_URL);
       const claim: Claim = await getCaseDataFromStore(req.params.id);
       const counterpartyType : CounterpartyType = claim.respondent1.type;
       if (counterpartyType) {
@@ -45,7 +52,7 @@ financialDetailsController
         }
       } else {
         logger.error('No counterpartyType found.');
-        renderView(res, claim);
+        renderView(res, claim, claimantDetailsUrl);
       }
     } catch (error) {
       logger.error(error);
