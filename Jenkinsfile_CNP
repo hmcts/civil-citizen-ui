@@ -57,7 +57,7 @@ withPipeline(type, product, component) {
     enableSlackNotifications('#civil_notifications')
 stage('Checkout') {
     userInput = input(
-        id: 'Proceed1', message: 'Was this successful?', parameters: [
+        id: 'Proceed1', message: 'do you want continue?', parameters: [
                 [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
                 ])
 
