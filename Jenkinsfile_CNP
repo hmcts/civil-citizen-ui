@@ -48,24 +48,22 @@ def checkForEnableHelmLabel(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
 }
 
-def userInput
-try {
-    userInput = input(
-        id: 'DEPLOY', message: 'do you want deploy?', parameters {
-                                                                     booleanParam(name: 'DEPLOY', defaultValue: true, description: 'Uncheck to skip creation of Docker image.')
-                                                                 })
-} catch(err) { // input false
-    def user = err.getCauses()[0].getUser()
-    userInput = false
-    echo "Aborted by: [${user}]"
-}
+
 
 withPipeline(type, product, component) {
     pipelineConf = config
     disableLegacyDeployment()
     enableAksStagingDeployment()
     enableSlackNotifications('#civil_notifications')
+stage('Checkout') {
+    input {
+        message 'Build Docker image'
+        parameters {
+            booleanParam(name: 'BUILD_DOCKER_IMAGE', defaultValue: true, description: 'Uncheck to skip creation of Docker image.')
+        }
+    }
 
+}
     onPR {
         loadVaultSecrets(secrets)
         if (params.DEPLOY) {
