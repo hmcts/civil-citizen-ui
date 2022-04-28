@@ -57,10 +57,10 @@ withPipeline(type, product, component) {
     enableSlackNotifications('#civil_notifications')
 stage('Checkout') {
     input {
-        message 'Build Docker image'
-        parameters {
-            booleanParam(name: 'BUILD_DOCKER_IMAGE', defaultValue: true, description: 'Uncheck to skip creation of Docker image.')
-        }
+        message: 'Build Docker image'
+        parameters: [
+                            [booleanParam', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+                            ])
     }
 
 }
