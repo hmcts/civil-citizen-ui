@@ -2,6 +2,7 @@ import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
+import {getElementsByXPath} from '../../../../../../../main/common/utils/xpathExtractor';
 import {
   CITIZEN_WHO_EMPLOYS_YOU_URL,
   CITIZEN_COURT_ORDERS_URL,
@@ -71,9 +72,6 @@ const mockSelfEmployed = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisSelfEmployed))),
 };
-
-//https://developer.mozilla.org/en-US/docs/Web/API/XPathResult
-const ORDERED_NODE_SNAPSHOT_TYPE = 7;
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -205,14 +203,3 @@ describe('Who employs you', () => {
     });
   });
 });
-
-
-function getElementsByXPath(xpath: string, htmlDocument: Document): Node[] {
-  const results: (Node | null)[] = [];
-  const query: XPathResult = htmlDocument.evaluate(xpath, htmlDocument,
-    null, ORDERED_NODE_SNAPSHOT_TYPE, null);
-  for (let i = 0, length = query.snapshotLength; i < length; ++i) {
-    results.push(query.snapshotItem(i));
-  }
-  return results as Node[];
-}
