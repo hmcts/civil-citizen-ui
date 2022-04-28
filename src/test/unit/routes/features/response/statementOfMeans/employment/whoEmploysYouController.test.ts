@@ -18,7 +18,7 @@ import {
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
-const mockEmployer = {employers: [{employerName: 'Felipe', jobTitle: 'Developer'}]};
+const mockEmployer = {rows: [{employerName: 'Felipe', jobTitle: 'Developer'}]};
 
 const mockRedisEmployed = {
   'id': 1645882162449409,
@@ -118,7 +118,7 @@ describe('Who employs you', () => {
     it('should return error message when form is empty', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({employers: [{employerName: '', jobTitle: ''}]})
+        .send({rows: [{employerName: '', jobTitle: ''}]})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_ENTER_AT_LEAST_ONE_EMPLOYER);
@@ -128,7 +128,7 @@ describe('Who employs you', () => {
     it('should return error message when employerName is empty', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const response = await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({employers: [{employerName: '', jobTitle: 'Test'}]});
+        .send({rows: [{employerName: '', jobTitle: 'Test'}]});
 
       expect(response.status).toBe(200);
 
@@ -143,7 +143,6 @@ describe('Who employs you', () => {
       expect(summaryErrors.length).toBe(1);
       expect(summaryErrors[0].textContent).toBe(VALID_ENTER_AN_EMPLOYER_NAME);
       expect(formGroupErrors.length).toBe(0);
-      expect(formGroupErrors[0].textContent).not.toContain(VALID_ENTER_AN_EMPLOYER_NAME);
       expect(employerNameInputErrors.length).toBe(1);
       expect(employerNameInputErrors[0].textContent).toContain(VALID_ENTER_AN_EMPLOYER_NAME);
       expect(jobTitleInputErrors).toEqual([]);
@@ -151,7 +150,7 @@ describe('Who employs you', () => {
     it('should return error message when jobTitle is empty', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({employers: [{employerName: 'Test', jobTitle: ''}]})
+        .send({rows: [{employerName: 'Test', jobTitle: ''}]})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_ENTER_A_JOB_TITLE);

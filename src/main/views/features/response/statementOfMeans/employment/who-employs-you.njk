@@ -11,20 +11,20 @@
 
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set errors = employers.getFormErrors() %}
-      {% if errors %}
+      {% set errors = form.getAllErrors() %}
+      {% if errors.length > 0 %}
         {{ govukErrorSummary({
           "titleText": t("There was a problem"),
           "errorList": errors
         }) }}
       {% endif %}
       <h1 class="govuk-heading-l">{{ t('Who employs you?') }}</h1>
-      <form method="post" name="employers" novalidate>
+      <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
         <div class="govuk-form-group-!-margin-9 {%- if errors[0].text %} govuk-form-group--error{% endif %}">
           {{ govukErrorMessage({ text:t(errors[0].text) })  }}
-          {% for employer in employers.rows %}
-            {{employerRow(employer, loop.index0)}}
+          {% for employer in form.model.rows %}
+            {{employerRow(employer, loop.index0, form.errorFor)}}
           {% endfor %}
         </div>
         <div class="govuk-form-group">
