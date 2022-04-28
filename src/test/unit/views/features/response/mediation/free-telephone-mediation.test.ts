@@ -3,6 +3,7 @@ import nock from 'nock';
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../../../main/routes/urls';
+import {mockCivilClaimApplicantCompanyType} from '../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -15,14 +16,16 @@ jest.mock('../../../../../../main/modules/draft-store');
 describe('Free Telephone Mediation View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  let paragraphs: HTMLCollection;
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let paragraphs: HTMLCollection;
+
     beforeEach(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
+      app.locals.draftStoreClient = mockCivilClaimApplicantCompanyType;
       const response = await request(app).get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
@@ -104,7 +107,7 @@ describe('Free Telephone Mediation View', () => {
     it('should display continue button with correct path', () => {
       const continueButton = htmlDocument.getElementsByClassName('govuk-button')[0];
       expect(continueButton.innerHTML).toContain('Continue');
-      expect(continueButton.getAttribute('href')).toContain('/confirm-your-telephone');
+      expect(continueButton.getAttribute('href')).toContain('/can-we-use-company');
     });
 
     it('should display do not agree to free mediation link with correct path', () => {
