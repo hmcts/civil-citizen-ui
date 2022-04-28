@@ -115,6 +115,7 @@ withPipeline(type, product, component) {
     after('smoketest:preview') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
         input(
+          id: 'Proceed1'
           message: 'Do you want to remove helm?', parameters: [
           [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
         ])
