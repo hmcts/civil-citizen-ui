@@ -6,7 +6,7 @@ import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../../.
 import {Logger} from 'winston';
 import {
   setPaymentDateControllerLogger,
-} from '../../../../../../../../main/routes/features/response/statementOfMeans/employment/admission/fullAdmission/paymentOption/paymentDateController';
+} from '../../../../../../../../main/routes/features/response/admission/fullAdmission/paymentOption/paymentDateController';
 import {
   VALID_DATE_NOT_IN_PAST,
   VALID_DAY,
@@ -50,7 +50,7 @@ describe('Payment date', () => {
         .get(CITIZEN_PAYMENT_DATE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
           expect(mockLogger.error).toHaveBeenCalled();
         });
     });
@@ -64,7 +64,7 @@ describe('Payment date', () => {
         .send('day=31')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
           expect(mockLogger.error).toHaveBeenCalled();
         });
     });
