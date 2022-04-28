@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {CITIZEN_BANK_ACCOUNT_URL, CLAIM_TASK_LIST_URL, FINANCIAL_DETAILS_URL} from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
-import {getDraftClaimFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
 import * as winston from 'winston';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
@@ -21,37 +21,36 @@ function renderView(res: express.Response, claim: Claim): void {
 }
 
 
-financialDetailsController.get(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
-  let claim: Claim = new Claim();
-  await getDraftClaimFromStore(req.params.id)
-    .then(claimResponse => {
-      claim = claimResponse.case_data;
-    }).catch(error => {
-      logger.error(error.message);
-    });
-  renderView(res, claim);
-});
-
-financialDetailsController.post(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
-  let counterpartyType: CounterpartyType;
-  let claim: Claim = new Claim();
-  await getDraftClaimFromStore(req.params.id)
-    .then(claimResponse => {
-      counterpartyType = claimResponse.case_data.respondent1.type;
-      claim = claimResponse.case_data;
-    }).catch(error => {
-      logger.error(error.message);
-    });
-  if (counterpartyType) {
-    if (counterpartyType == CounterpartyType.INDIVIDUAL || counterpartyType == CounterpartyType.SOLE_TRADER) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));
-    } else if (counterpartyType == CounterpartyType.COMPANY || counterpartyType == CounterpartyType.ORGANISATION) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+financialDetailsController
+  .get(
+    FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+      try {
+        const claim: Claim =  await getCaseDataFromStore(req.params.id);
+        console.log(claim);
+        renderView(res, claim);
+      } catch (error) {
+        logger.error(error);
+        res.status(500).send({error: error.message});
+      }
+    })
+  .post(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+    try {
+      const claim: Claim = await getCaseDataFromStore(req.params.id);
+      const counterpartyType : CounterpartyType = claim.respondent1.type;
+      if (counterpartyType) {
+        if (counterpartyType == CounterpartyType.INDIVIDUAL || counterpartyType == CounterpartyType.SOLE_TRADER) {
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));
+        } else if (counterpartyType == CounterpartyType.COMPANY || counterpartyType == CounterpartyType.ORGANISATION) {
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+        }
+      } else {
+        logger.error('No counterpartyType found.');
+        renderView(res, claim);
+      }
+    } catch (error) {
+      logger.error(error);
+      res.status(500).send({error: error.message});
     }
-  } else {
-    logger.error('No counterpartyType found.');
-    renderView(res, claim);
-  }
-});
+  });
 
 export default financialDetailsController;
