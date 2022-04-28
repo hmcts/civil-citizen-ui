@@ -15,7 +15,7 @@ jest.mock('ioredis', () => {
   });
 });
 
-async function authenticate() {
+/*async function authenticate() {
   try {
     await agent.get('/oauth2/callback')
       .query('code=ABC')
@@ -26,7 +26,7 @@ async function authenticate() {
     console.log('error' + e);
   }
 
-}
+}*/
 
 // TODO: replace this sample test with proper smoke tests later
 describe('Dummy Smoke test - Dashboard page', () => {
@@ -36,7 +36,7 @@ describe('Dummy Smoke test - Dashboard page', () => {
       nock('http://localhost:5000')
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      authenticate();
+      //authenticate();
     });
 
     test('should redirect to dashboard page', async () => {
