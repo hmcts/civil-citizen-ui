@@ -55,7 +55,7 @@ withPipeline(type, product, component) {
     disableLegacyDeployment()
     enableAksStagingDeployment()
     enableSlackNotifications('#civil_notifications')
-    stage('AKS deploy - preview') {
+    before('AKS deploy - preview') {
         input(
           message: 'Do you want deploy the application?', parameters: [
             [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
