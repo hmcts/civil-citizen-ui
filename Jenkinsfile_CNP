@@ -55,19 +55,17 @@ withPipeline(type, product, component) {
     disableLegacyDeployment()
     enableAksStagingDeployment()
     enableSlackNotifications('#civil_notifications')
-    before('akschartsinstall') {
-       input(
-        message: 'Do you want to remove helm?', parameters: [
-          [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
-         ])
+    before('akschartsinstall:preview') {
+       timeout(time: 3, unit: "MINUTES") {
+        input(
+          message: 'Do you want to deploy?', parameters: [
+            [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+          ])
+       }
     }
 
     onPR {
         loadVaultSecrets(secrets)
-        if (params.DEPLOY) {
-                enableCleanupOfHelmReleaseOnSuccess();
-        }
-
     }
     onMaster {
         loadVaultSecrets(secrets)
@@ -114,12 +112,6 @@ withPipeline(type, product, component) {
 
     after('smoketest:preview') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
-        input(
-          id: 'Proceed1',
-          message: 'Do you want to remove helm?', parameters: [
-          [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
-        ])
-        enableCleanupOfHelmReleaseOnSuccess();
     }
 
     before('functionalTest:preview') {
@@ -133,6 +125,12 @@ withPipeline(type, product, component) {
 
     after('functionalTest:preview') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+        input(
+          id: 'removeHelm',
+          message: 'Do you want to remove helm?', parameters: [
+          [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+        ])
+        enableCleanupOfHelmReleaseOnSuccess();
     }
 
   after('smoketest:aat') {
