@@ -11,6 +11,7 @@
 {% block content %}
   {% set insetText1 = t('Mediation can be quicker, cheaper and less stressful than going to court.') %}
   {% set insetText2 = t('You will not have to wait longer for a court hearing if you choose mediation.') %}
+  {% set redirectPath = './can-we-use-company' if isBusiness else './confirm-your-telephone' %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
@@ -55,7 +56,7 @@
           <div class="form-group">
             {{ govukButton({
               text: t('Continue'),
-              href: './confirm-your-telephone'
+              href: redirectPath
             }) }}
           </div>
           <p class="govuk-body">
