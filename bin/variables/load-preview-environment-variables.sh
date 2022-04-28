@@ -15,4 +15,4 @@ echo "export CAMUNDA_BASE_URL=https://camunda-civil-citizen-ui-pr-${pr}.service.
 
 # definition placeholders
 echo "export CCD_DEF_CASE_SERVICE_BASE_URL=http://civil-service-civil-citizen-ui-pr-${pr}.service.core-compute-preview.internal"
-echo "export CCD_DEF_GEN_APP_SERVICE_BASE_URL=http://civil-service-civil-citizen-ui-pr-${pr}.service.core-compute-preview.internal"
+#echo "export CCD_DEF_GEN_APP_SERVICE_BASE_URL=http://civil-service-civil-citizen-ui-pr-${pr}.service.core-compute-preview.internal"
