@@ -1,5 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../draft-store/draftStoreService';
-import {Mediation} from 'common/models/mediation';
+import {Mediation} from '../../common/models/mediation';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('freeMediationService');
@@ -17,7 +17,7 @@ const getMediation = async (claimId: string): Promise<Mediation> => {
     logger.error(error);
     throw error;
   }
-}
+};
 
 const saveMediation = async (claimId: string, value: any, mediationPropertyName: string): Promise<void> => {
   try {
@@ -34,6 +34,6 @@ const saveMediation = async (claimId: string, value: any, mediationPropertyName:
     logger.error(error);
     throw error;
   }
-}
+};
 
 export { getMediation, saveMediation };
