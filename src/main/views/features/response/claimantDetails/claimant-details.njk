@@ -37,7 +37,7 @@
         </header>
 
         <h1 class="govuk-heading-l">
-          <span class="govuk-caption-l">Claimant</span>
+          <span class="govuk-caption-l">{{ t('Claimant') }}</span>
           {{ applicant1Details }}
         </h1>
 
@@ -72,7 +72,7 @@
           {% set emailAddress = claim.applicantSolicitor1UserDetails.email %}
           {% if emailAddress %}
             <p class="govuk-body">
-              <span class="govuk-body">Email: <a class="govuk-link" href="{{emailAddress}}">{{emailAddress}}</a></span>
+              <span class="govuk-body">{{t('Email')}}: <a class="govuk-link" href="{{emailAddress}}">{{emailAddress}}</a></span>
             </p>
           {% endif %}
         </div>
