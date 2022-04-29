@@ -114,53 +114,26 @@
         </div>
     </div>
     <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-heading-s">About claim</h2>
-      {{ govukSummaryList({
-        rows: [
-          {
-            key: {
-            text: "Claimant name:"
-          },
-            value: {
-            text:  applicant1Details
-          },
-            actions: {
-            items: [
-              {
-                href: "",
-                text: applicant1Details,
-                visuallyHiddenText: "Claimant name"
-              }
-            ]
-          }
-          },
-          {
-            key: {
-            text: "Claim amount:"
-          },
-            value: {
-            text: totalClaimAmount
-          }
-          },
-          {
-            key: {
-              text: "Claim details:"
-            },
-            value: {
-              text: ""
-            },
-            actions: {
-              items: [
-                {
-                  href: claimDetailsUrl,
-                  text: "View claim",
-                  visuallyHiddenText: "View claim"
-                }
-              ]
-            }
-          }
-        ]
-      }) }}
+      <h2 class="govuk-heading-s">{{t('About claim')}}</h2>
+      <p class="govuk-body">
+              <span>
+                <strong>{{ t('Claimant name') }}:</strong>
+              </span>
+        <a class="govuk-link" href="">{{applicant1Details}}</a>
+      </p>
+      <p class="govuk-body">
+            <span>
+              <strong>{{ t('Claim amount') }}:</strong>
+            </span>
+        {{ totalClaimAmount }}
+      </p>
+      <p class="govuk-body">
+            <span>
+              <strong>{{ t('Claim details') }}:</strong>
+            </span>
+        <a class="govuk-link" href="{{ claimDetailsUrl }}">{{ t('View claim') }}</a>
+      </p>
+
     </div>
   </div>
 
