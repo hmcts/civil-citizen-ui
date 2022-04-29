@@ -73,9 +73,11 @@
           <form
             method="POST" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ contactPerson }}
             <input type="hidden" name="contactPerson" value="{{contactPerson}}">
-            {{ yesNoRadioButton(t,id,name,t(title),form,'',{yesHtml:yesHtml, noHtml:noHtml}) }}
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">{{ t(title) }}</h1>
+            </legend>
+            {{ yesNoRadioButton(t,id,name,'',form,'',{yesHtml:yesHtml, noHtml:noHtml}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")
