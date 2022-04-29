@@ -84,26 +84,33 @@
         </div>
     </div>
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-one-third">
+      <div class="govuk-grid-column-one-third govuk-!-display-inline" >
         <h2 class="govuk-heading-s">{{t('About claim')}}</h2>
-        <p class="govuk-body">
+      </div>
+      <div class="govuk-grid-column-one-third govuk-!-display-inline" >
+        <p class="govuk-body-s">
               <span>
                 <strong>{{ t('Claimant name') }}:</strong>
               </span>
         <a class="govuk-link" href="">{{applicant1Details}}</a>
         </p>
-        <p class="govuk-body">
+      </div>
+      <div class="govuk-grid-column-one-third govuk-!-display-inline" >
+        <p class="govuk-body-s">
             <span>
               <strong>{{ t('Claim amount') }}:</strong>
             </span>
         {{ totalClaimAmount }}
         </p>
-        <p class="govuk-body">
+      </div>
+      <div class="govuk-grid-column-one-third govuk-!-display-inline" >
+        <p class="govuk-body-s">
             <span>
               <strong>{{ t('Claim details') }}:</strong>
             </span>
         <a class="govuk-link" href="{{ claimDetailsUrl }}">{{ t('View claim') }}</a>
         </p>
+      </div>
       </div>
     </div>
   </div>
