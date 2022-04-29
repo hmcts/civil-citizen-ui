@@ -1,14 +1,8 @@
 #!/usr/bin/env bash
 
 # User used during the CCD import and ccd-role creation
-./bin/utils/ccd-add-role.sh "caseworker-civil"
-./bin/utils/ccd-add-role.sh "caseworker-caa"
-./bin/utils/ccd-add-role.sh "caseworker-approver"
-./bin/utils/ccd-add-role.sh "prd-admin"
-./bin/utils/ccd-add-role.sh "citizen"
-
-roles=("solicitor" "systemupdate" "admin" "staff" "judge")
+roles=("caseworker-civil-solicitor" "caseworker-civil-systemupdate" "caseworker-civil-admin" "caseworker-civil-staff" "caseworker-civil-judge" "caseworker-civil" "caseworker-caa" "caseworker-approver" "prd-admin" "citizen")
 for role in "${roles[@]}"
 do
-  ./bin/utils/ccd-add-role.sh "caseworker-civil-${role}"
+  ./bin/utils/ccd-add-role.sh "${role}"
 done
