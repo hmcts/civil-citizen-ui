@@ -32,7 +32,7 @@ paymentDateController
           paymentDate.day = dateOfPayment.getDate();
         }
         res.render(paymentDatePath, {
-          form: new GenericForm(paymentDate), nextMonth : nextMonth,
+          form: new GenericForm(paymentDate), nextMonth: nextMonth,
         });
       } catch (error) {
         logger.error(error);
@@ -47,7 +47,7 @@ paymentDateController
 
       if (form.hasErrors()) {
         res.render(paymentDatePath, {
-          form: form, nextMonth : nextMonth,
+          form: form, nextMonth: nextMonth,
         });
       } else {
         try {

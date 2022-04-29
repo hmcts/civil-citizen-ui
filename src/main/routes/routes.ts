@@ -40,12 +40,11 @@ import monthlyExpenseIncomeCalculatorController
   from './calculateMonthlyIncomeExpense/monthlyExpenseIncomeCalculatorController';
 import carerController from './features/response/statementOfMeans/carerController';
 import explanationController from './features/response/statementOfMeans/explanationController';
-import alreadyPaidController from './features/response/admision/partialAdmission/alreadyPaidController';
+import alreadyPaidController from './features/response/admission/partialAdmission/alreadyPaidController';
 import taskListController from './features/response/taskListController';
-import howMuchDoYouOweController from './features/response/admision/partialAdmission/howMuchDoYouOweController';
+import howMuchDoYouOweController from './features/response/admission/partialAdmission/howMuchDoYouOweController';
 import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
-import whyDoYouDisagreeController
-  from './features/response/statementOfMeans/employment/admission/partialAdmision/whyDoYouDisagreeController';
+import whyDoYouDisagreeController from './features/response/admission/partialAdmission/whyDoYouDisagreeController';
 import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
