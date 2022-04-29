@@ -121,7 +121,7 @@ describe('Free Telephone Mediation View', () => {
     it('should display continue button with correct path for the business', () => {
       const continueButton = htmlDocument.getElementsByClassName('govuk-button')[0];
       expect(continueButton.innerHTML).toContain('Continue');
-      expect(continueButton.getAttribute('href')).toContain('/can-we-use-company');
+      expect(continueButton.getAttribute('href')).toContain('/company-telephone-number');
     });
 
     it('should display continue button with correct path for the individual', async () => {
