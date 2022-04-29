@@ -9,11 +9,11 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t("Is David the right person for the mediation service to call?") %}
+      {% set title = "Is "+contactPerson+" the right person for the mediation service to call?" %}
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% if errors.length > 0 %}
         {{ govukErrorSummary({
           "titleText": t("There was a problem"),
           "errorList": errors
@@ -23,6 +23,7 @@
         {{ govukInput({
           id: "mediationPhoneNumberConfirmation",
           name: "mediationPhoneNumberConfirmation",
+          classes: "govuk-!-width-two-thirds",
           label: {
             text: t("Confirm telephone number")
           },
@@ -36,23 +37,28 @@
       {% endset -%}
       {% set noHtml %}
         {{ govukInput({
-          id: "mediationContactName",
-          name: "mediationContactName",
+          id: "mediationContactPerson",
+          name: "mediationContactPerson",
+          classes: "govuk-!-width-two-thirds",
           label: {
             text: t("Who should the mediation service call?")
           },
           type: "text",
           spellcheck: false,
-          value: form.model.mediationContactName,
+          value: form.model.mediationContactPerson,
           errorMessage: {
-            text:t(form.errorFor('mediationContactName'))
-          } if form.hasFieldError('mediationContactName')
+            text:t(form.errorFor('mediationContactPerson'))
+          } if form.hasFieldError('mediationContactPerson')
         }) }}
          {{ govukInput({
           id: "mediationPhoneNumber",
           name: "mediationPhoneNumber",
+          classes: "govuk-!-width-two-thirds",
           label: {
-            text: t("Enter this person’s phone number, including extension if required. For example, 02012346788 ext. 153" )
+            text: t("Enter this person’s phone number, including extension if required." )
+          },
+          hint:{
+             text: t("For example, 02012346788 ext. 153" )
           },
           type: "text",
           spellcheck: false,
@@ -67,7 +73,9 @@
           <form
             method="POST" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t,id,name,title,form,'',{yesHtml:yesHtml, noHtml:noHtml}) }}
+            {{ contactPerson }}
+            <input type="hidden" name="contactPerson" value="{{contactPerson}}">
+            {{ yesNoRadioButton(t,id,name,t(title),form,'',{yesHtml:yesHtml, noHtml:noHtml}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")
