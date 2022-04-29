@@ -3,7 +3,10 @@ import nock from 'nock';
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../../../main/routes/urls';
-import {mockCivilClaimApplicantCompanyType} from '../../../../../utils/mockDraftStore';
+import {
+  mockCivilClaimApplicantCompanyType,
+  mockCivilClaimApplicantIndividualType,
+} from '../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -104,12 +107,6 @@ describe('Free Telephone Mediation View', () => {
         'happened during the mediation appointment cannot be mentioned in court.');
     });
 
-    it('should display continue button with correct path', () => {
-      const continueButton = htmlDocument.getElementsByClassName('govuk-button')[0];
-      expect(continueButton.innerHTML).toContain('Continue');
-      expect(continueButton.getAttribute('href')).toContain('/can-we-use-company');
-    });
-
     it('should display do not agree to free mediation link with correct path', () => {
       const link = paragraphs[9].querySelectorAll('a.govuk-link')[0];
       expect(link.innerHTML).toContain('I do not agree to free mediation');
@@ -119,6 +116,22 @@ describe('Free Telephone Mediation View', () => {
     it('should display contact us for help details component', () => {
       const detailsSummary = htmlDocument.getElementsByClassName('govuk-details__summary-text')[0];
       expect(detailsSummary.innerHTML).toContain('Contact us for help');
+    });
+
+    it('should display continue button with correct path for the business', () => {
+      const continueButton = htmlDocument.getElementsByClassName('govuk-button')[0];
+      expect(continueButton.innerHTML).toContain('Continue');
+      expect(continueButton.getAttribute('href')).toContain('/can-we-use-company');
+    });
+
+    it('should display continue button with correct path for the individual', async () => {
+      app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
+      const response = await request(app).get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
+      const dom = new JSDOM(response.text);
+      htmlDocument = dom.window.document;
+      const continueButton = htmlDocument.getElementsByClassName('govuk-button')[0];
+      expect(continueButton.innerHTML).toContain('Continue');
+      expect(continueButton.getAttribute('href')).toContain('/confirm-your-telephone');
     });
   });
 });
