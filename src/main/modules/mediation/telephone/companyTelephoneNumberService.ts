@@ -5,15 +5,15 @@ import { Mediation } from '../../../common/models/mediation';
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('onTaxPaymentsService');
 
-export const getCompanyTelephoneNumberForm = async (claimId: string): Promise<CompanyTelephoneNumber> => {
+export const getCompanyTelephoneNumberData = async (claimId: string):Promise<[string, CompanyTelephoneNumber]> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
+    const contactPerson = claim.respondent1?.organisationName;
+    let telephoneNumberData = new CompanyTelephoneNumber();
     if (claim.mediation?.companyTelephoneNumber) {
-      const companyTelephoneNumber = claim.mediation.companyTelephoneNumber;
-      const { option, mediationPhoneNumberConfirmation, mediationContactPerson, mediationPhoneNumber } = companyTelephoneNumber;
-      return new CompanyTelephoneNumber(option, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
+      telephoneNumberData = claim.mediation.companyTelephoneNumber;
     }
-    return new CompanyTelephoneNumber();
+    return [contactPerson, telephoneNumberData];
   } catch (error) {
     logger.error(error);
     throw error;

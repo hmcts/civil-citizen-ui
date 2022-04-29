@@ -12,4 +12,5 @@ export class Respondent {
   dateOfBirth: Date;
   responseType: string;
   type: CounterpartyType;
+  organisationName:string;
 }
