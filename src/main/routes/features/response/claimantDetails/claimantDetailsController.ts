@@ -15,8 +15,13 @@ export function setClaimantDetailsControllerLogger(winstonLogger: winston.Logger
   logger = winstonLogger;
 }
 
-function renderView(res: express.Response, claim: Claim, claimantDetailsUrl : string, claimDetailsUrl : string, financialDetailsUrl : string): void {
-  res.render(claimantDetailsViewPath, {claim: claim, claimantDetailsUrl : claimantDetailsUrl, claimDetailsUrl : claimDetailsUrl, financialDetailsUrl : financialDetailsUrl});
+function renderView(res: express.Response, claim: Claim, claimantDetailsUrl: string, claimDetailsUrl: string, financialDetailsUrl: string): void {
+  res.render(claimantDetailsViewPath, {
+    claim: claim,
+    claimantDetailsUrl: claimantDetailsUrl,
+    claimDetailsUrl: claimDetailsUrl,
+    financialDetailsUrl: financialDetailsUrl,
+  });
 }
 
 
@@ -24,7 +29,7 @@ claimantDetailsController
   .get(
     CLAIMANT_DETAILS_URL, async (req: express.Request, res: express.Response) => {
       try {
-        const claim: Claim =  await getCaseDataFromStore(req.params.id);
+        const claim: Claim = await getCaseDataFromStore(req.params.id);
         const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CLAIMANT_DETAILS_URL);
         const claimDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CLAIM_DETAILS_URL);
         const financialDetailsUrl = constructResponseUrlWithIdParams(req.params.id, FINANCIAL_DETAILS_URL);
@@ -33,7 +38,7 @@ claimantDetailsController
         logger.error(error);
         res.status(500).send({error: error.message});
       }
-    })
+    });
 
 
 export default claimantDetailsController;
