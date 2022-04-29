@@ -143,7 +143,7 @@ describe('Who employs you', () => {
       expect(formGroupErrors.length).toBe(0);
       expect(employerNameInputErrors.length).toBe(1);
       expect(employerNameInputErrors[0].textContent).toContain(VALID_ENTER_AN_EMPLOYER_NAME);
-      expect(jobTitleInputErrors).toEqual([]);
+      expect(jobTitleInputErrors.length).toBe(0);
     });
     it('should return error message when jobTitle is empty', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
