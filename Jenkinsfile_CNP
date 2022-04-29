@@ -44,8 +44,8 @@ def secrets = [
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
-def checkForEnableHelmLabel(branch_name) {
-    return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
+def checkForFullDeployLabel(branch_name) {
+    return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
 }
 
 
@@ -83,15 +83,12 @@ withPipeline(type, product, component) {
                 }
             }
         }
-    onPR() {
-      timeout(time:30, unit:'SECONDS') {
-      input(
-        id: 'build',
-        message: 'Do you want to deploy?', parameters: [
-          [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
-        ])
+      onPR() {
+
+          if (!checkForFullDeployLabel(env.BRANCH_NAME)) {
+             error("Build failed because there is no label full deploy.")
+          }
       }
-    }
     }
 
     before('smoketest:preview') {
