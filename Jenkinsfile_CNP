@@ -83,6 +83,15 @@ withPipeline(type, product, component) {
                 }
             }
         }
+    onPR() {
+      timeout(time:30, unit:'SECONDS') {
+      input(
+        id: 'build',
+        message: 'Do you want to deploy?', parameters: [
+          [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+        ])
+      }
+    }
     }
 
     before('smoketest:preview') {
