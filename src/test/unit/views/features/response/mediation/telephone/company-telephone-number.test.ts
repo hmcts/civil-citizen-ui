@@ -4,7 +4,7 @@ import { app } from '../../../../../../../main/app';
 import request from 'supertest';
 import { COMPANY_TELEPHONE_NUMBER_URL } from '../../../../../../../main/routes/urls';
 import { mockCivilClaim } from '../../../../../../utils/mockDraftStore';
-import civilClaimResponseMock from '../../../../../../utils/mocks/civilClaimResponseMock.json'
+import civilClaimResponseMock from '../../../../../../utils/mocks/civilClaimResponseMock.json';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import { YesNo } from '../../../../../../../main/common/form/models/yesNo';
 
