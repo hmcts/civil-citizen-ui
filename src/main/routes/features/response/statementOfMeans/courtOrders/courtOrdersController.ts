@@ -1,10 +1,8 @@
 import express from 'express';
-import {
-  CITIZEN_COURT_ORDERS_URL,
-  CITIZEN_DEBTS_URL,
-} from '../../../../urls';
+import {CITIZEN_COURT_ORDERS_URL, CITIZEN_PRIORITY_DEBTS_URL} from '../../../../urls';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
-import courtOrdersService from '../../../../../services/features/response/statementOfMeans/courtOrders/courtOrdersService';
+import courtOrdersService
+  from '../../../../../services/features/response/statementOfMeans/courtOrders/courtOrdersService';
 import {CourtOrders} from '../../../../../common/form/models/statementOfMeans/courtOrders/courtOrders';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -42,7 +40,7 @@ courtOrdersController
       } else {
         try {
           await courtOrdersService.saveCourtOrders(req.params.id, courtOrders);
-          res.redirect(CITIZEN_DEBTS_URL.replace(':id', req.params.id));
+          res.redirect(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', req.params.id));
         } catch (error) {
           logger.error(`${error.stack || error}`);
           res.status(500).send({errorMessage: error.message, errorStack: error.stack});
