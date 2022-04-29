@@ -6,16 +6,10 @@ import { COMPANY_TELEPHONE_NUMBER_URL } from '../../../../../../../main/routes/u
 import { mockCivilClaim } from '../../../../../../utils/mockDraftStore';
 import civilClaimResponseMock from '../../../../../../utils/mocks/civilClaimResponseMock.json'
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import {
- 
-  AMOUNT_REQUIRED,
-  
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { DateFormatter } from '../../../../../../../main/common/utils/dateFormatter';
+import { YesNo } from '../../../../../../../main/common/form/models/yesNo';
 
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
-console.log(TestMessages.AMOUNT_LESS_THEN_CLAIMED, AMOUNT_REQUIRED, DateFormatter)
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -38,7 +32,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     it('should display header', async () => {
       const header = htmlDocument.getElementsByClassName('govuk-fieldset__heading');
-      expect(header[0].innerHTML).toContain('Is '+ civilClaimResponseMock.case_data.respondent1.organisationName +' the right person for the mediation service to call?');
+      expect(header[0].innerHTML).toContain('Is ' + civilClaimResponseMock.case_data.respondent1.organisationName + ' the right person for the mediation service to call?');
     });
 
     it('should display 2 radio buttons with yes and no options', () => {
@@ -65,8 +59,6 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
 
     describe('Yes Section', () => {
-      
-
       it('should display "Confirm telephone number" text', async () => {
         const paragraph = htmlDocument.getElementsByClassName('govuk-label');
         expect(paragraph[1].innerHTML).toContain('Confirm telephone number');
@@ -86,7 +78,6 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         const input = htmlDocument.getElementById('ediationContactPerson');
         expect(input).toBeDefined();
       });
-
       it('should display "Enter this person’s phone number" text', async () => {
         const paragraph = htmlDocument.getElementsByClassName('govuk-label');
         expect(paragraph[4].innerHTML).toContain('Enter this person’s phone number, including extension if required.');
@@ -105,6 +96,11 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
 
   describe('on POST', () => {
+    const validPhoneNumber = '012345678901234567890123456789';
+    const inValidPhoneNumber = '0123456789012345678901234567890';
+    const validName = 'David';
+    const inValidName = 'Daviddaviddaviddaviddaviddavido';
+    console.log('silll', validPhoneNumber, validName, inValidName);
 
     const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
 
@@ -120,12 +116,117 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
       expect(errorSummary.length).toEqual(1);
     });
 
-    it('should display correct error summary message with correct link for Payment Amount', () => {
+    it('should display correct error summary message with correct link for Yes/No selection ', () => {
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_SELECTION);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_OPTION);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#option');
     });
-  });
 
+    it('should display correct error summary message with correct link for confirm telephone number when yes is an option', async () => {
+      await request(app)
+        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .send({ option: YesNo.YES })
+        .then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      const errorSummaryMessage = getErrorSummaryListElement(0);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.PHONE_NUMBER_REQUIRED);
+      expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
+        .toContain('#mediationPhoneNumberConfirmation');
+    });
+
+    it('should display correct error summary message with correct link for long telephone number when yes is an option', async () => {
+      await request(app)
+        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .send({ option: YesNo.YES, mediationPhoneNumberConfirmation : inValidPhoneNumber })
+        .then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      const errorSummaryMessage = getErrorSummaryListElement(0);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.TEXT_TOO_LONG);
+      expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
+        .toContain('#mediationPhoneNumberConfirmation');
+    });
+
+    it('should display no errors when yes is an option and confirmation phone number is provided', async () => {
+      await request(app)
+        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .send({ option: YesNo.YES, mediationPhoneNumberConfirmation: validPhoneNumber })
+        .then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      expect(htmlDocument).not.toContain('There was a problem');
+    });
+
+    it('should display correct error summary message with correct link for contact name when no is an option but nothing provided', async () => {
+      await request(app)
+        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .send({ option: YesNo.NO })
+        .then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      const errorSummaryMessage = getErrorSummaryListElement(0);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.NAME_REQUIRED);
+      expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
+        .toContain('#mediationContactPerson');
+    });
+
+    it('should display correct error summary message with correct link for contact number when no is an option but nothing provided', async () => {
+      await request(app)
+        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .send({ option: YesNo.NO })
+        .then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      const errorSummaryMessage = getErrorSummaryListElement(1);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.PHONE_NUMBER_REQUIRED);
+      expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
+        .toContain('#mediationPhoneNumber');
+    });
+
+    it('should display correct error summary message with correct link for contact name when no is an option but too long name is provided', async () => {
+      await request(app)
+        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .send({ option: YesNo.NO, mediationContactPerson: inValidName })
+        .then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      const errorSummaryMessage = getErrorSummaryListElement(0);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.TEXT_TOO_LONG);
+      expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
+        .toContain('#mediationContactPerson');
+    });
+
+    it('should display correct error summary message with correct link for contact number when no is an option but too long phone number is provided', async () => {
+      await request(app)
+        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .send({ option: YesNo.NO, mediationPhoneNumber: inValidPhoneNumber })
+        .then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      const errorSummaryMessage = getErrorSummaryListElement(1);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.TEXT_TOO_LONG);
+      expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
+        .toContain('#mediationPhoneNumber');
+    });
+
+    it('should display no error summary message when both contact name and number is provided as valid', async () => {
+      await request(app)
+        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .send({ option: YesNo.NO, mediationContactPerson: validName, mediationPhoneNumber : validPhoneNumber })
+        .then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      expect(htmlDocument).not.toContain('There was a problem');
+    });
+  });
 });
