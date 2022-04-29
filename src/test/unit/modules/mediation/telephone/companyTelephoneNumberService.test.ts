@@ -1,6 +1,6 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {
-  getCompanyTelephoneNumberForm,
+  getCompanyTelephoneNumberData,
   saveCompanyTelephoneNumberData,
 } from '../../../../../main/modules/mediation/telephone/companyTelephoneNumberService';
 import { Claim } from '../../../../../main/common/models/claim';
@@ -24,9 +24,11 @@ describe('Mediation - Company or Organisation - Confirm telephone number Service
         return new Claim();
       });
       //When
-      const form = await getCompanyTelephoneNumberForm('129');
+      const response = await getCompanyTelephoneNumberData('129');
+      const [contactPerson, form] = response;
       //Then
       expect(form.option).toBeUndefined();
+      expect(contactPerson).toBeUndefined();
     });
     it('should return an empty form when companyTelephoneNumber does not exist', async () => {
       //Given
@@ -36,9 +38,11 @@ describe('Mediation - Company or Organisation - Confirm telephone number Service
         return claim;
       });
       //When
-      const form = await getCompanyTelephoneNumberForm('129');
+      const response = await getCompanyTelephoneNumberData('129');
+      const [contactPerson, form] = response;
       //Then
       expect(form.option).toBeUndefined();
+      expect(contactPerson).toBeUndefined();
     });
     it('should return populated form when companyTelephoneNumber exists', async () => {
       //Given
@@ -49,7 +53,8 @@ describe('Mediation - Company or Organisation - Confirm telephone number Service
         return claim;
       });
       //When
-      const form = await getCompanyTelephoneNumberForm('123');
+      const response = await getCompanyTelephoneNumberData('123');
+      const form = response[1];
       //Then
       expect(form.option).toBeTruthy();
       expect(form.mediationPhoneNumberConfirmation).toBe(telephoneNumber);
@@ -60,7 +65,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number Service
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(getCompanyTelephoneNumberForm('129')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getCompanyTelephoneNumberData('129')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
   describe('saveCompanyTelephoneNumberData', () => {

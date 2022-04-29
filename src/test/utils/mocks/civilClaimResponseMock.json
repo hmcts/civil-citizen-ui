@@ -85,7 +85,8 @@
     },
     "respondent1": {
       "dateOfBirth": "2022-03-01T13:29:24.971",
-      "telephoneNumber": "111"
+      "telephoneNumber": "111",
+      "organisationName": "def two"
     },
     "totalClaimAmount": 110,
     "paymentOption":"BY_SET_DATE",

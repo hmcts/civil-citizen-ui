@@ -41,5 +41,6 @@ export const enum TestMessages {
   PHONE_NUMBER_REQUIRED = 'Please enter a phone number',
   NAME_REQUIRED = 'Please enter a name',
   TEXT_TOO_LONG = 'You’ve entered too many characters',
+  VALID_YES_NO_SELECTION ='Please select yes or no',
 
 }
