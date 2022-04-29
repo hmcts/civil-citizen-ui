@@ -91,9 +91,9 @@ withPipeline(type, product, component) {
       onPR() {
 
           if (!checkForFullDeployLabel(env.BRANCH_NAME)) {
-             //error("Build failed because there is no label full deploy.")
-                 currentBuild.result = 'SUCCESS'
-                 return
+             error("Build failed because there is no label full deploy.")
+                 //currentBuild.result = 'SUCCESS'
+                 //return
           }
       }
     }
