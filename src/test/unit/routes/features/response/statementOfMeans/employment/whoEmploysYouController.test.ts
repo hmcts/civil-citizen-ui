@@ -2,12 +2,24 @@ import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_WHO_EMPLOYS_YOU_URL, CITIZEN_COURT_ORDERS_URL, CITIZEN_SELF_EMPLOYED_URL} from '../../../../../../../main/routes/urls';
+import {getElementsByXPath} from '../../../../../../utils/xpathExtractor';
+import {
+  CITIZEN_WHO_EMPLOYS_YOU_URL,
+  CITIZEN_COURT_ORDERS_URL,
+  CITIZEN_SELF_EMPLOYED_URL,
+} from '../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import {VALID_ENTER_AT_LEAST_ONE_EMPLOYER, VALID_ENTER_AN_EMPLOYER_NAME, VALID_ENTER_A_JOB_TITLE} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {
+  VALID_ENTER_AT_LEAST_ONE_EMPLOYER,
+  VALID_ENTER_AN_EMPLOYER_NAME,
+  VALID_ENTER_A_JOB_TITLE,
+} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
-const mockEmployer = { employers: [{ employerName: 'Felipe', jobTitle: 'Developer' }] };
+const jsdom = require('jsdom');
+const {JSDOM} = jsdom;
+
+const mockEmployer = {rows: [{employerName: 'Felipe', jobTitle: 'Developer'}]};
 
 const mockRedisEmployed = {
   'id': 1645882162449409,
@@ -70,7 +82,7 @@ describe('Who employs you', () => {
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
   });
   describe('on Get', () => {
     it('should return who employs you page successfully', async () => {
@@ -96,7 +108,7 @@ describe('Who employs you', () => {
         .get(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
         });
     });
   });
@@ -104,7 +116,7 @@ describe('Who employs you', () => {
     it('should return error message when form is empty', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({ employers: [{ employerName: '', jobTitle: '' }] })
+        .send({rows: [{employerName: '', jobTitle: ''}]})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_ENTER_AT_LEAST_ONE_EMPLOYER);
@@ -113,18 +125,30 @@ describe('Who employs you', () => {
     });
     it('should return error message when employerName is empty', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({ employers: [{ employerName: '', jobTitle: 'Test' }] })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_ENTER_AN_EMPLOYER_NAME);
-          expect(res.text).toContain('govuk-error-message');
-        });
+      const response = await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
+        .send({rows: [{employerName: '', jobTitle: 'Test'}]});
+
+      expect(response.status).toBe(200);
+
+      const dom = new JSDOM(response.text);
+      const htmlDocument = dom.window.document;
+
+      const summaryErrors = getElementsByXPath("//a[@href='#rows[0][employerName]']", htmlDocument);
+      const formGroupErrors = getElementsByXPath("//div[contains(@class,'govuk-form-group--error') and not(input)]/p", htmlDocument);
+      const employerNameInputErrors = getElementsByXPath("//input[contains(@id,'rows[0][employerName]')]/preceding-sibling::p[@class='govuk-error-message']", htmlDocument);
+      const jobTitleInputErrors = getElementsByXPath("//input[contains(@id,'rows[0][jobTitle]')]/preceding-sibling::p[@class='govuk-error-message']", htmlDocument);
+
+      expect(summaryErrors.length).toBe(1);
+      expect(summaryErrors[0].textContent).toBe(VALID_ENTER_AN_EMPLOYER_NAME);
+      expect(formGroupErrors.length).toBe(0);
+      expect(employerNameInputErrors.length).toBe(1);
+      expect(employerNameInputErrors[0].textContent).toContain(VALID_ENTER_AN_EMPLOYER_NAME);
+      expect(jobTitleInputErrors.length).toBe(0);
     });
     it('should return error message when jobTitle is empty', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({ employers: [{ employerName: 'Test', jobTitle: '' }] })
+        .send({rows: [{employerName: 'Test', jobTitle: ''}]})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_ENTER_A_JOB_TITLE);
@@ -174,7 +198,7 @@ describe('Who employs you', () => {
         .send(mockEmployer)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
         });
     });
   });
