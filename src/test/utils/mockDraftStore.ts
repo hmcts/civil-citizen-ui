@@ -5,6 +5,7 @@ import civilClaimResponseOptionNoMock from './mocks/civilClaimResponseOptionNoMo
 import civilClaimResponseUnemploymentRetired from './mocks/civilClaimResponseUnemploymentRetiredMock.json';
 import civilClaimResponseUnemploymentOther from './mocks/civilClaimResponseUnemploymentOtherMock.json';
 import civilClaimResponseApplicantCompany from './mocks/civilClaimResponseApplicantCompanyMock.json';
+import civilClaimResponseApplicantIndividual from './mocks/civilClaimResponseApplicanIndividualMock.json';
 
 const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
@@ -40,5 +41,11 @@ const mockCivilClaimApplicantCompanyType =  {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantCompany))),
 };
 
+const mockCivilClaimApplicantIndividualType = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantIndividual))),
+};
+
 export { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockCivilClaimOptionNo,
-  mockCivilClaimUnemploymentRetired, mockCivilClaimUnemploymentOther, mockRedisFailure, mockCivilClaimApplicantCompanyType };
+  mockCivilClaimUnemploymentRetired, mockCivilClaimUnemploymentOther, mockRedisFailure, mockCivilClaimApplicantCompanyType,
+  mockCivilClaimApplicantIndividualType};
