@@ -4,10 +4,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% set heading = 'Claimant details' %}
-
-{% block content %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
     {% set applicant1 = claim.applicant1 %}
     {% set claimantType = applicant1.type %}
       {% if (claimantType == CounterpartyType.INDIVIDUAL) %}
@@ -28,37 +24,11 @@
 
       {% set totalClaimAmount = claim.totalClaimAmount | currencyFormat(totalClaimAmount) %}
 
-
-      {% set claimantAddress %}
-          <p class="govuk-body">
-            <span class="govuk-body">{{ applicant1.primaryAddress.AddressLine1 }}</span>
-          </p>
-        {% set addressLine2 = applicant1.primaryAddress.AddressLine2 %}
-        {% if addressLine2 %}
-          <p class="govuk-body">
-            <span class="govuk-body">{{ addressLine2 }}</span>
-          </p>
-        {% endif %}
-        {% set addressLine3 = applicant1.primaryAddress.AddressLine3 %}
-        {% if addressLine3 %}
-          <p class="govuk-body">
-            <span class="govuk-body">{{ addressLine3 }}</span>
-          <p>
-        {% endif %}
-        {% set postTown = applicant1.primaryAddress.PostTown %}
-        {% if postTown %}
-          <p class="govuk-body">
-            <span class="govuk-body">{{ postTown }}</span>
-          </p>
-        {% endif %}
-        {% set postCode = applicant1.primaryAddress.PostCode %}
-        {% if postCode %}
-          <p class="govuk-body">
-            <span class="govuk-body">{{ postCode }}</span>
-          </p>
-        {% endif %}
-      {% endset -%}
-
+{% block content %}
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper" role="main">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
       <header class="govuk-accordion__section-heading">
       {{ govukBackLink({
         text: "Back",
@@ -113,30 +83,32 @@
            {{ contactUsForHelp(t) }}
         </div>
     </div>
-    <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-heading-s">{{t('About claim')}}</h2>
-      <p class="govuk-body">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third">
+        <h2 class="govuk-heading-s">{{t('About claim')}}</h2>
+        <p class="govuk-body">
               <span>
                 <strong>{{ t('Claimant name') }}:</strong>
               </span>
         <a class="govuk-link" href="">{{applicant1Details}}</a>
-      </p>
-      <p class="govuk-body">
+        </p>
+        <p class="govuk-body">
             <span>
               <strong>{{ t('Claim amount') }}:</strong>
             </span>
         {{ totalClaimAmount }}
-      </p>
-      <p class="govuk-body">
+        </p>
+        <p class="govuk-body">
             <span>
               <strong>{{ t('Claim details') }}:</strong>
             </span>
         <a class="govuk-link" href="{{ claimDetailsUrl }}">{{ t('View claim') }}</a>
-      </p>
-
+        </p>
+      </div>
     </div>
   </div>
-
+  </main>
+</div>
 
 
 {% endblock %}
