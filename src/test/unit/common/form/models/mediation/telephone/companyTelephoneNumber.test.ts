@@ -16,7 +16,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const errors = validator.validateSync(form);
     //Then
     expect(errors.length).toBe(1);
-    expect(errors[0].constraints?.isDefined).toBe(TestMessages.VALID_YES_NO_SELECTION);
+    expect(errors[0].constraints?.isDefined).toBe(TestMessages.VALID_YES_NO_OPTION);
   });
   it('should have errors when yes is an option, but no telephone number is provided', () => {
     //Given

@@ -6,10 +6,10 @@ import { COMPANY_TELEPHONE_NUMBER_URL, CLAIM_TASK_LIST_URL } from '../../../../.
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 import {
-  VALID_YES_NO_SELECTION,
   PHONE_NUMBER_REQUIRED,
   NAME_REQUIRED,
   TEXT_TOO_LONG,
+  VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import { YesNo } from '../../../../../../../main/common/form/models/yesNo';
 import civilClaimResponseMock from '../../../../../../../test/utils/mocks/civilClaimResponseMock.json';
@@ -26,7 +26,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
       .reply(200, { id_token: citizenRoleToken });
   });
   describe('on Get', () => {
-    test('should return on compant telephone number page successfully', async () => {
+    test('should return on company telephone number page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(COMPANY_TELEPHONE_NUMBER_URL)
         .expect((res) => {
@@ -56,7 +56,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_SELECTION);
+          expect(res.text).toContain(VALID_YES_NO_OPTION);
         });
     });
     test('should have errors when yes is an option, but no telephone number is provided', async () => {

@@ -1,10 +1,10 @@
 import { IsDefined, MaxLength, ValidateIf, IsNotEmpty } from 'class-validator';
-import { TEXT_TOO_LONG, PHONE_NUMBER_REQUIRED, NAME_REQUIRED, VALID_YES_NO_SELECTION } from '../../../validationErrors/errorMessageConstants';
+import { TEXT_TOO_LONG, PHONE_NUMBER_REQUIRED, NAME_REQUIRED, VALID_YES_NO_OPTION } from '../../../validationErrors/errorMessageConstants';
 import { YesNo } from '../../yesNo';
 
 export class CompanyTelephoneNumber  {
 
-  @IsDefined({ message: VALID_YES_NO_SELECTION })
+  @IsDefined({ message: VALID_YES_NO_OPTION })
     option?: YesNo;
 
   @ValidateIf(o => o.option === YesNo.YES)
