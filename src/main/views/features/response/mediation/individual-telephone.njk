@@ -1,0 +1,65 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set title = t("Confirm your telephone number") %}
+      {% set pText = t("Can the mediation service use " + respondentTelNumber  + " to call you?") %}
+      {% set radioNote = t("Enter the number for a direct line the mediation service can use. We won't give the number to anyone else.") %}
+      {% set id = "option" %}
+      {% set name = "option" %}
+      {% set errors = form.getErrors() %}
+      {% if errors.length > 0 %}
+        {{ govukErrorSummary({
+          "titleText": t("There was a problem"),
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          {% call govukFieldset({
+            legend: {
+              html: title + '<p class="govuk-body-m">' + pText + '</p>',
+              classes: "govuk-fieldset__legend--l",
+              isPageHeading: true
+            }
+          }) %}
+        </div>
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% set noHtml %}
+            {{ govukInput({
+                id: "telephoneNumber",
+                name: "telephoneNumber",
+                type: "number",
+                autocomplete: "number",
+                classes: "govuk-!-width-two-thirds",
+                label: {
+                  text: radioNote
+                },
+                value: form.model.telephoneNumber if form.model.option == 'no' else '',
+                errorMessage: { text: form.errorFor('telephoneNumber') } if form.errorFor('telephoneNumber') else ''
+              }) }}
+            {% endset %}
+            {{ yesNoRadioButton(t,id,name,'',form,'',{noHtml:noHtml}) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+        {% endcall %}
+      </div>
+    </main>
+  </div>
+{% endblock %}
