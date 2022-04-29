@@ -93,6 +93,8 @@ withPipeline(type, product, component) {
           if (!checkForFullDeployLabel(env.BRANCH_NAME)) {
              error("Build failed because there is no label full deploy.")
                  currentBuild.result = 'SUCCESS'
+                  currentBuild.rawBuild.result = 'SUCCESS'
+
                  return
           }
       }
