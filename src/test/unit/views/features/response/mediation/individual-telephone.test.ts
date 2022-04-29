@@ -46,7 +46,7 @@ describe('Repayment Plan View', () => {
     });
 
     it('should display header', async () => {
-      const header = htmlDocument.getElementsByClassName('govuk-fieldset__legend--l');
+      const header = htmlDocument.getElementsByClassName('govuk-heading-l');
       expect(header[0].innerHTML).toContain('Confirm your telephone number');
     });
 
