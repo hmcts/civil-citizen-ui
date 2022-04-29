@@ -1,6 +1,6 @@
 import { IsDefined, MaxLength, ValidateIf, IsNotEmpty } from 'class-validator';
-import { TEXT_TOO_LONG, PHONE_NUMBER_REQUIRED, NAME_REQUIRED, VALID_YES_NO_OPTION } from '../../../validationErrors/errorMessageConstants';
-import { YesNo } from '../../yesNo';
+import { TEXT_TOO_LONG, PHONE_NUMBER_REQUIRED, NAME_REQUIRED, VALID_YES_NO_OPTION } from '../../validationErrors/errorMessageConstants';
+import { YesNo } from '../yesNo';
 
 export class CompanyTelephoneNumber  {
 
@@ -32,6 +32,4 @@ export class CompanyTelephoneNumber  {
     this.mediationContactPerson = mediationContactPerson;
     this.mediationPhoneNumberConfirmation = mediationPhoneNumberConfirmation;
   }
-
-  
 }

@@ -1,7 +1,7 @@
-import { getCaseDataFromStore, saveDraftClaim } from '../../draft-store/draftStoreService';
-import { CompanyTelephoneNumber } from '../../../common/form/models/mediation/telephone/companyTelephoneNumber';
-import { Mediation } from '../../../common/models/mediation';
-import { YesNo } from '../../../common/form/models/yesNo';
+import { getCaseDataFromStore, saveDraftClaim } from '../draft-store/draftStoreService';
+import { CompanyTelephoneNumber } from '../../common/form/models/mediation/companyTelephoneNumber';
+import { Mediation } from '../../common/models/mediation';
+import { YesNo } from '../../common/form/models/yesNo';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('onTaxPaymentsService');
@@ -38,7 +38,6 @@ export const saveCompanyTelephoneNumberData = async (claimId: string, form: Comp
       claim.mediation = new Mediation();
     }
     const updatedForm = filterFormWithSelection(form);
-    
     claim.mediation.companyTelephoneNumber = updatedForm;
     await saveDraftClaim(claimId, claim);
   } catch (error) {

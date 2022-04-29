@@ -1,18 +1,18 @@
 import config from 'config';
 import nock from 'nock';
-import { app } from '../../../../../../../main/app';
+import { app } from '../../../../../../main/app';
 import request from 'supertest';
-import { COMPANY_TELEPHONE_NUMBER_URL } from '../../../../../../../main/routes/urls';
-import { mockCivilClaim } from '../../../../../../utils/mockDraftStore';
-import civilClaimResponseMock from '../../../../../../utils/mocks/civilClaimResponseMock.json';
-import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import { YesNo } from '../../../../../../../main/common/form/models/yesNo';
+import { COMPANY_TELEPHONE_NUMBER_URL } from '../../../../../../main/routes/urls';
+import { mockCivilClaim } from '../../../../../utils/mockDraftStore';
+import civilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
+import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
+import { YesNo } from '../../../../../../main/common/form/models/yesNo';
 
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Mediation - Company or Organisation - Confirm telephone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -93,7 +93,6 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
       });
     });
   });
-
 
   describe('on POST', () => {
     const validPhoneNumber = '012345678901234567890123456789';

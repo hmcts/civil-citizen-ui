@@ -50,7 +50,7 @@ import whyDoYouDisagreeController
   from './features/response/statementOfMeans/employment/admission/partialAdmision/whyDoYouDisagreeController';
 import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
-import companyTelephoneNumberController from './features/response/mediation/telephone/companyTelephoneNumberController';
+import companyTelephoneNumberController from './features/response/mediation/companyTelephoneNumberController';
 
 export default [
   homeController,

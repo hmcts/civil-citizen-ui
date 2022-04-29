@@ -1,7 +1,7 @@
-import { CompanyTelephoneNumber } from '../../../../../../../main/common/form/models/mediation/telephone/companyTelephoneNumber';
+import { CompanyTelephoneNumber } from '../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
 import { Validator } from 'class-validator';
-import { YesNo } from '../../../../../../../main/common/form/models/yesNo';
-import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
+import { YesNo } from '../../../../../../main/common/form/models/yesNo';
+import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 
 describe('Mediation - Company or Organisation - Confirm telephone number', () => {
   const validator = new Validator();
@@ -62,7 +62,6 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     form.mediationPhoneNumber = validPhoneNumber;
     //When
     const errors = validator.validateSync(form);
-    
     //Then
     expect(errors.length).toBe(1);
     expect(errors[0].constraints?.isDefined).toBe(TestMessages.NAME_REQUIRED);
