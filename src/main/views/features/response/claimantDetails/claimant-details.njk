@@ -1,0 +1,127 @@
+{% extends "template.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% set heading = 'Claimant details' %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+    {% set applicant1 = claim.applicant1 %}
+    {% set claimantType = applicant1.type %}
+      {% if (claimantType == CounterpartyType.INDIVIDUAL) %}
+        {% set individualTitle = applicant1.individualTitle %}
+        {% set applicant1Details =  (individualTitle if individualTitle else '')  + ' ' +  applicant1.individualFirstName + ' ' + applicant1.individualLastName %}
+      {% elseif (claimantType == CounterpartyType.SOLE_TRADER) %}
+        {% set soleTraderTitle = applicant1.soleTraderTitle %}
+        {% set applicant1Details = (soleTraderTitle if soleTraderTitle else '') + ' ' +  applicant1.soleTraderFirstName + ' ' + applicant1.soleTraderLastName %}
+      {% elseif (claimantType == CounterpartyType.ORGANISATION) %}
+        {% set applicant1Details = applicant1.organisationName %}
+      {% elseif (claimantType == CounterpartyType.COMPANY) %}
+        {% set applicant1Details = applicant1.companyName %}
+      {% endif %}
+
+      {% set claimantDetailsLink %}
+        <a href="{{claimantDetailsUrl}}">{{ applicant1Details }}</a>
+      {% endset -%}
+
+      {% set totalClaimAmount = claim.totalClaimAmount | currencyFormat(totalClaimAmount) %}
+
+
+      {% set claimantAddress %}
+        <p class="govuk-body">{{ applicant1.primaryAddress.AddressLine1 }}</p>
+        {% set addressLine2 = applicant1.primaryAddress.AddressLine2 %}
+        {% if addressLine2 %}
+          <p class="govuk-body">{{ addressLine2 }}</p>
+        {% endif %}
+        {% set addressLine3 = applicant1.primaryAddress.AddressLine3 %}
+        {% if addressLine3 %}
+          <p class="govuk-body">{{ addressLine3 }}<p>
+        {% endif %}
+        {% set postTown = applicant1.primaryAddress.PostTown %}
+        {% if postTown %}
+          <p class="govuk-body">{{ postTown }}</p>
+        {% endif %}
+        {% set postCode = applicant1.primaryAddress.PostCode %}
+        {% if postCode %}
+          <p class="govuk-body">{{ postCode }}</p>
+        {% endif %}
+      {% endset -%}
+
+      <header class="govuk-accordion__section-heading">
+      {{ govukBackLink({
+        text: "Back",
+        href: "statement-of-means/intro"
+      }) }}
+      </header>
+
+      <h1 class="govuk-heading-l">
+        <span class="govuk-caption-l">Claimant</span>
+        {{ applicant1Details }}
+      </h1>
+
+
+        <div class="govuk-body">
+          {{ claimantAddress }}
+        </div>
+
+
+        <div class="govuk-form-group">
+           {{ contactUsForHelp(t) }}
+        </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <h2 class="govuk-heading-s">About claim</h2>
+      {{ govukSummaryList({
+        rows: [
+          {
+            key: {
+            text: "Claimant name:"
+          },
+            value: {
+            text:  applicant1Details
+          },
+            actions: {
+            items: [
+              {
+                href: "",
+                text: applicant1Details,
+                visuallyHiddenText: "Claimant name"
+              }
+            ]
+          }
+          },
+          {
+            key: {
+            text: "Claim amount:"
+          },
+            value: {
+            text: totalClaimAmount
+          }
+          },
+          {
+            key: {
+              text: "Claim details:"
+            },
+            value: {
+              text: ""
+            },
+            actions: {
+              items: [
+                {
+                  href: claimDetailsUrl,
+                  text: "View claim",
+                  visuallyHiddenText: "View claim"
+                }
+              ]
+            }
+          }
+        ]
+      }) }}
+    </div>
+  </div>
+
+
+
+{% endblock %}
