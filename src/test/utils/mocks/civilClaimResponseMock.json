@@ -12,11 +12,11 @@
       "version": "4",
       "calculatedAmountInPence": "7000"
     },
-    "phone": "(0)207 127 0000",
     "claimantEmail": "cmcclaimant23@gmail.com",
     "applicant1": {
       "type": "ORGANISATION",
       "partyName": "Mr. Jan Clark",
+      "telephoneNumber": "(0)207 127 0000",
       "primaryAddress": {
         "County": "London",
         "Country": "United Kingdom",
@@ -31,7 +31,7 @@
       "howMuchHaveYouPaid": {
         "amount": 20,
         "totalClaimAmount": 110,
-        "date":"2022-01-01T00:00:00.000Z",
+        "date": "2022-01-01T00:00:00.000Z",
         "day": "1",
         "month": "1",
         "year": "2022",
@@ -115,7 +115,7 @@
       "telephoneNumber": "111"
     },
     "totalClaimAmount": 110,
-    "paymentOption":"BY_SET_DATE",
-    "paymentDate":"2025-06-01T00:00:00.000Z"
+    "paymentOption": "BY_SET_DATE",
+    "paymentDate": "2025-06-01T00:00:00.000Z"
   }
 }
