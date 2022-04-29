@@ -1,4 +1,4 @@
-import {RegularExpenses} from '../../../common/form/models/statementOfMeans/expenses/regularExpenses';
+import {RegularExpenses} from '../../../common/form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {getCaseDataFromStore, saveDraftClaim} from '../../draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../common/models/statementOfMeans';
 

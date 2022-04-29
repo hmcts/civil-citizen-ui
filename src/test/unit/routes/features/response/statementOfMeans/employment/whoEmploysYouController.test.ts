@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_WHO_EMPLOYS_YOU_URL, CITIZEN_COURT_ORDER_URL, CITIZEN_SELF_EMPLOYED_URL} from '../../../../../../../main/routes/urls';
+import {CITIZEN_WHO_EMPLOYS_YOU_URL, CITIZEN_COURT_ORDERS_URL, CITIZEN_SELF_EMPLOYED_URL} from '../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {VALID_ENTER_AT_LEAST_ONE_EMPLOYER, VALID_ENTER_AN_EMPLOYER_NAME, VALID_ENTER_A_JOB_TITLE} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
@@ -155,7 +155,7 @@ describe('Who employs you', () => {
         .send(mockEmployer)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_COURT_ORDER_URL);
+          expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
         });
     });
     it('should redirect to error page when employment type is self-employed and user is on this page', async () => {

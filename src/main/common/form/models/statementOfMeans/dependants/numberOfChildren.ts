@@ -48,7 +48,3 @@ export class NumberOfChildren {
     return total;
   }
 }
-
-
-
-

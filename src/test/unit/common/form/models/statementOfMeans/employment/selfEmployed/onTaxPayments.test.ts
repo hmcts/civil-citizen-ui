@@ -2,7 +2,7 @@ import {
   OnTaxPayments,
 } from '../../../../../../../../main/common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
 import {Validator} from 'class-validator';
-import {YES_NO_REQUIRED} from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {VALID_YES_NO_SELECTION} from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {YesNo} from '../../../../../../../../main/common/form/models/yesNo';
 
 const validator = new Validator();
@@ -75,7 +75,7 @@ describe('on tax payment model', () => {
       const errors = validator.validateSync(form);
       //Then
       expect(errors?.length).toBe(1);
-      expect(errors[0].constraints?.isDefined).toBe(YES_NO_REQUIRED);
+      expect(errors[0].constraints?.isDefined).toBe(VALID_YES_NO_SELECTION);
     });
     it('should not have errors when option no is selected', () => {
       //Given

@@ -1,0 +1,89 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% macro transactionDetails(hintAmount, property, transactionSource, amountLabel, scheduleLabel, form, other, removeButton) %}
+  {% set amountValue =  '' + transactionSource.amount %}
+  {% if other %}
+<div class="govuk-form-group civil-amountRow  multiple-row">
+  {{ govukInput({
+    id: property + "[name]",
+    name: property + "[name]",
+    label: {
+      text: t("Source of expense")
+    },
+    value:transactionSource.name,
+    errorMessage: {
+      text: form.errorFor(property + "[name]", "model")
+    } if(form.errorFor(property + "[name]", "model"))
+  }) }}
+  {% else %}
+  <div class="civil-amountRow">
+    <input type="hidden" name="{{ property }}[name]" value="{{ transactionSource.name }}"/>
+    {% endif %}
+    {{ govukInput({
+      id: property + "[amount]",
+      name: property + "[amount]",
+      label: {
+        text: t(amountLabel)
+      },
+      prefix: {
+        text: "£"
+      },
+      type: "number",
+      value: amountValue,
+      classes: "govuk-input--width-5 civil-amount",
+      hint: {
+        text: t(hintAmount)
+      },
+      spellcheck: false,
+      errorMessage: {
+        text: form.errorFor(property + "[amount]", "model")
+      } if(form.errorFor(property + "[amount]", "model"))
+    }) }}
+    {{ govukRadios({
+      idPrefix: property + "[schedule]" ,
+      name: property + "[schedule]",
+      classes: "civil-schedule",
+      fieldset: {
+        legend: {
+          text: t(scheduleLabel)
+        }
+      },
+      items: [
+        {
+          value: TransactionSchedule.WEEK,
+          text: t("Week"),
+          checked: true if transactionSource.schedule == TransactionSchedule.WEEK
+        },
+        {
+          value: TransactionSchedule.TWO_WEEKS,
+          text: t("Two weeks"),
+          checked: true if transactionSource.schedule == TransactionSchedule.TWO_WEEKS
+        },
+        {
+          value: TransactionSchedule.FOUR_WEEKS,
+          text: "Four weeks",
+          checked: true if transactionSource.schedule == TransactionSchedule.FOUR_WEEKS
+        },
+        {
+          value: TransactionSchedule.MONTH,
+          text: t("Month"),
+          checked: true if transactionSource.schedule == TransactionSchedule.MONTH
+        }
+      ],
+      errorMessage: {
+        text: form.errorFor(property + "[schedule]", "model")
+      } if(form.hasFieldError(property + "[schedule]", "model"))
+    }) }}
+    {% if removeButton %}
+      {% if removeButton.hidden %}
+        <button class="govuk-link-button remove-row govuk-visually-hidden">{{ t(removeButton.text) }}</button>
+      {% else %}
+        <button class="govuk-link-button remove-row">{{ t(removeButton.text) }}</button>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  {% endmacro %}
+  {% macro otherTransactionDetails(property, index, transactionSource, amountLabel, scheduleLabel, form, removeButton) %}
+    {{ transactionDetails('', property +'['+index +']', transactionSource, amountLabel, scheduleLabel, form, true, removeButton) }}
+  {% endmacro %}

@@ -27,6 +27,17 @@
         "AddressLine3": "Church Road"
       }
     },
+    "partialAdmission": {
+      "howMuchHaveYouPaid": {
+        "amount": 20,
+        "totalClaimAmount": 110,
+        "date":"2022-01-01T00:00:00.000Z",
+        "day": "1",
+        "month": "1",
+        "year": "2022",
+        "text": "text"
+      }
+    },
     "statementOfMeans": {
       "disability": {
         "option": "yes"
@@ -102,6 +113,9 @@
     "respondent1": {
       "dateOfBirth": "2022-03-01T13:29:24.971",
       "telephoneNumber": "111"
-    }
+    },
+    "totalClaimAmount": 110,
+    "paymentOption":"BY_SET_DATE",
+    "paymentDate":"2025-06-01T00:00:00.000Z"
   }
 }
