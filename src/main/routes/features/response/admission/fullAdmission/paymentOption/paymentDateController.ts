@@ -1,12 +1,9 @@
 import express from 'express';
-import {
-  PaymentDate,
-} from '../../../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
-import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../../routes/urls';
-import {GenericForm} from '../../../../../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../../../../../common/utils/urlFormatter';
-import paymentDateService
-  from '../../../../../../../../modules/admission/fullAdmission/paymentOption/paymentDateService';
+import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
+import {GenericForm} from '../../../../../../common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
+import paymentDateService from '../../../../../../modules/admission/fullAdmission/paymentOption/paymentDateService';
 import * as winston from 'winston';
 
 
@@ -35,7 +32,7 @@ paymentDateController
           paymentDate.day = dateOfPayment.getDate();
         }
         res.render(paymentDatePath, {
-          form: new GenericForm(paymentDate), nextMonth : nextMonth,
+          form: new GenericForm(paymentDate), nextMonth: nextMonth,
         });
       } catch (error) {
         logger.error(error);
@@ -50,7 +47,7 @@ paymentDateController
 
       if (form.hasErrors()) {
         res.render(paymentDatePath, {
-          form: form, nextMonth : nextMonth,
+          form: form, nextMonth: nextMonth,
         });
       } else {
         try {

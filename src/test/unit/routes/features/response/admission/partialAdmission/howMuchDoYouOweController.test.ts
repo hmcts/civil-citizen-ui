@@ -1,11 +1,11 @@
 import request from 'supertest';
-import { app } from '../../../../../../../main/app';
+import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import { CITIZEN_OWED_AMOUNT_URL, CLAIM_TASK_LIST_URL } from '../../../../../../../main/routes/urls';
+import {CITIZEN_OWED_AMOUNT_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
 // import { CITIZEN_OWED_AMOUNT_URL} from '../../../../../../../main/routes/urls';
-import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import { mockCivilClaim, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -99,7 +99,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
         .send({ amount: 9999999999999 })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.AMOUNT_LESS_THEN_CLAIMED);
+          expect(res.text).toContain(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
         });
     });
     test('it should show errors when provided amount is equal to Claim amount', async () => {
@@ -109,7 +109,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
         .send({ amount: 110 })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.AMOUNT_LESS_THEN_CLAIMED);
+          expect(res.text).toContain(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
         });
     });
     test('should redirect page when proper amount provided', async () => {

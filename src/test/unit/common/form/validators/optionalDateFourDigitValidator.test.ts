@@ -2,19 +2,43 @@ import {
   OptionalDateFourDigitValidator,
 } from '../../../../../main/common/form/validators/optionalDateFourDigitValidator';
 
-describe('OptionalDateFourDigitValidator validate', () => {
+describe('OptionalDateNotInFutureValidator validate', () => {
   const validator = new OptionalDateFourDigitValidator();
-  it('should return true when date year has at least 4 digits ', () => {
+  it('should return true when a 4 digit year', () => {
     //Given
-    const year = 2040;
+    const year = 2020;
     //When
     const result = validator.validate(year);
     //Then
     expect(result).toBeTruthy();
   });
-  it('should return false when date is less than 4 digits', () => {
+  it('should return false when negative number', () => {
     //Given
-    const year = 30;
+    const year = -1;
+    //When
+    const result = validator.validate(year);
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false when a 3 digit year', () => {
+    //Given
+    const year = 201;
+    //When
+    const result = validator.validate(year);
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false when a 2 digit year', () => {
+    //Given
+    const year = 20;
+    //When
+    const result = validator.validate(year);
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false when a 1 digit year', () => {
+    //Given
+    const year = 2;
     //When
     const result = validator.validate(year);
     //Then

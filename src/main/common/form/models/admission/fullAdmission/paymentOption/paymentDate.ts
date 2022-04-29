@@ -10,6 +10,7 @@ import {
 import {OptionalDateFourDigitValidator} from '../../../../../../common/form/validators/optionalDateFourDigitValidator';
 import {OptionalDateNotInPastValidator} from '../../../../../../common/form/validators/optionalDateNotInPastValidator';
 import {DateConverter} from '../../../../../../common/utils/dateConverter';
+import {toNumberOrUndefined} from '../../../../../../common/utils/numberConverter';
 
 export class PaymentDate {
 
@@ -33,8 +34,8 @@ export class PaymentDate {
 
   constructor(year?: string, month?: string, day?: string) {
     this.date = DateConverter.convertToDate(year, month, day);
-    this.year = Number(year);
-    this.month = Number(month);
-    this.day = Number(day);
+    this.year = toNumberOrUndefined(year);
+    this.month = toNumberOrUndefined(month);
+    this.day = toNumberOrUndefined(day);
   }
 }

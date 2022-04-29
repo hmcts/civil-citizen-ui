@@ -22,10 +22,8 @@ import financialDetailsController from './features/response/financialDetails/fin
 import whoEmploysYouController from './features/response/statementOfMeans/employment/whoEmploysYouController';
 import otherDependantsController from './features/response/statementOfMeans/otherDependants/otherDependantsController';
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
-import paymentOptionController
-  from './features/response/statementOfMeans/employment/admission/fullAdmission/paymentOption/paymentOptionController';
-import paymentDateController
-  from './features/response/statementOfMeans/employment/admission/fullAdmission/paymentOption/paymentDateController';
+import paymentOptionController from './features/response/admission/fullAdmission/paymentOption/paymentOptionController';
+import paymentDateController from './features/response/admission/fullAdmission/paymentOption/paymentDateController';
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
@@ -42,15 +40,15 @@ import monthlyExpenseIncomeCalculatorController
   from './calculateMonthlyIncomeExpense/monthlyExpenseIncomeCalculatorController';
 import carerController from './features/response/statementOfMeans/carerController';
 import explanationController from './features/response/statementOfMeans/explanationController';
-import alreadyPaidController from './features/response/admision/partialAdmission/alreadyPaidController';
+import alreadyPaidController from './features/response/admission/partialAdmission/alreadyPaidController';
 import taskListController from './features/response/taskListController';
-import howMuchDoYouOweController from './features/response/admision/partialAdmission/howMuchDoYouOweController';
+import howMuchDoYouOweController from './features/response/admission/partialAdmission/howMuchDoYouOweController';
 import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
-import whyDoYouDisagreeController
-  from './features/response/statementOfMeans/employment/admission/partialAdmision/whyDoYouDisagreeController';
+import whyDoYouDisagreeController from './features/response/admission/partialAdmission/whyDoYouDisagreeController';
 import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
 import individualTelephoneController from './features/response/mediation/individualTelephoneController';
+import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
 
 export default [
   homeController,
@@ -98,4 +96,5 @@ export default [
   repaymentPlanController,
   regularIncomeController,
   individualTelephoneController,
+  howMuchHaveYouPaidController,
 ];
