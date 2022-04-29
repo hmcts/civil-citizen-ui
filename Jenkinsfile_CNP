@@ -48,7 +48,9 @@ def checkForFullDeployLabel(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
 }
 
-
+def checkForEnableHelmLabel(branch_name) {
+    return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
+}
 
 withPipeline(type, product, component) {
     pipelineConf = config
@@ -58,6 +60,9 @@ withPipeline(type, product, component) {
 
     onPR {
         loadVaultSecrets(secrets)
+        if (!checkForEnableHelmLabel(env.BRANCH_NAME)) {
+          enableCleanupOfHelmReleaseOnSuccess();
+        }
     }
     onMaster {
         loadVaultSecrets(secrets)
