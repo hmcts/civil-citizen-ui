@@ -43,6 +43,7 @@ def secrets = [
 ]
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+def branchesToSync = ['demo', 'perftest']
 
 def checkForFullDeployLabel(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
@@ -57,6 +58,7 @@ withPipeline(type, product, component) {
     disableLegacyDeployment()
     enableAksStagingDeployment()
     enableSlackNotifications('#civil_notifications')
+    syncBranchesWithMaster(branchesToSync)
 
     onPR {
         loadVaultSecrets(secrets)
@@ -69,26 +71,6 @@ withPipeline(type, product, component) {
     }
     onDemo {
         loadVaultSecrets(secrets)
-    }
-
-    after('checkout') {
-        onMaster {
-            withCredentials([usernamePassword(credentialsId: 'jenkins-github-hmcts-api-token', usernameVariable: 'USERNAME', passwordVariable: 'BEARER_TOKEN')]) {
-                try {
-                    sh '''
-            set -e
-
-            git remote set-url origin $(git config remote.origin.url | sed "s/github.com/${BEARER_TOKEN}@github.com/g")
-
-            git fetch origin demo:demo
-            git push --force origin HEAD:demo
-          '''
-                } catch (err) {
-                    notifyBuildEvent channel: '#civil_notifications', color: 'warning', message: 'Failed to update demo branch'
-                }
-            }
-        }
-
     }
 
     before('smoketest:preview') {
