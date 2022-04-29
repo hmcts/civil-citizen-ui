@@ -90,13 +90,10 @@ withPipeline(type, product, component) {
         }
       onPR() {
 
-      timeout(time:30, unit:'SECONDS') {
-        input(
-          id: 'removeHelm',
-          message: 'Do you want to remove helm?', parameters: [
-            [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
-          ])
-       }
+          if (!checkForFullDeployLabel(env.BRANCH_NAME)) {
+             //error("Build failed because there is no label full deploy.")
+                 currentBuild.result = 'SUCCESS'
+          }
       }
     }
 
