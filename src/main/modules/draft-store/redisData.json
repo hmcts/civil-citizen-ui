@@ -179,10 +179,10 @@
         "calculatedAmountInPence": "7000"
       },
       "issueDate": "2022-01-08",
-      "phone": "(0)207 127 0000",
       "claimantEmail": "cmcclaimant23@gmail.com",
       "applicant1": {
         "type": "ORGANISATION",
+        "telephoneNumber": "(0)207 127 0000",
         "partyName": "Mr. Jan Clark",
         "primaryAddress": {
           "County": "London",

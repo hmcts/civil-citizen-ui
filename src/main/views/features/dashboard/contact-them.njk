@@ -6,11 +6,11 @@
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
         {% set otherParty = 'Claimant' %}
-        {% set otherPartyLabel = 'Claimant name:' %}
+        {% set otherPartyLabel = 'contact-them' %}
         {% set header = t('About claim')  %}
         {% set otherPartyName = form.case_data.applicant1.partyName %}
         {% set totalClaimAmount ='£'+form.case_data.totalClaimAmount %}
-        {% set phone = form.case_data.phone %}
+        {% set phone = form.case_data.applicant1.telephoneNumber %}
         {% set email = form.case_data.claimantEmail %}
         {% set address = form.case_data.applicant1.primaryAddress %}
         {% set correspondenceAddress = form.case_data.applicant1.correspondenceAddress %}
