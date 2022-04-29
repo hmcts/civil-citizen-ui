@@ -21,7 +21,7 @@ companyTelephoneNumberController.get(COMPANY_TELEPHONE_NUMBER_URL, async (req, r
     
     const response = await getCompanyTelephoneNumberData(req.params.id);
     const [contactPerson, telephoneNumberData] = response;
-    const form = new GenericForm<CompanyTelephoneNumber>(telephoneNumberData);
+    const form = new GenericForm(telephoneNumberData);
     renderForm(form, res, contactPerson);
   } catch (error) {
     res.status(500).send({ error: error.message });
