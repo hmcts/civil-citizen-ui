@@ -28,9 +28,6 @@ claimantDetailsController
         const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CLAIMANT_DETAILS_URL);
         const claimDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CLAIM_DETAILS_URL);
         const financialDetailsUrl = constructResponseUrlWithIdParams(req.params.id, FINANCIAL_DETAILS_URL);
-        console.log(claimantDetailsUrl);
-        console.log(claimDetailsUrl);
-        console.log(financialDetailsUrl);
         renderView(res, claim, claimantDetailsUrl, claimDetailsUrl, financialDetailsUrl);
       } catch (error) {
         logger.error(error);
