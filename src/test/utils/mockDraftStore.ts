@@ -1,9 +1,10 @@
-import { TestMessages } from './errorMessageTestConstants';
+import {TestMessages} from './errorMessageTestConstants';
 import civilClaimResponseMock from './mocks/civilClaimResponseMock.json';
 import noStatementOfMeansMock from './mocks/noStatementOfMeansMock.json';
 import civilClaimResponseOptionNoMock from './mocks/civilClaimResponseOptionNoMock.json';
 import civilClaimResponseUnemploymentRetired from './mocks/civilClaimResponseUnemploymentRetiredMock.json';
 import civilClaimResponseUnemploymentOther from './mocks/civilClaimResponseUnemploymentOtherMock.json';
+import {Logger} from 'winston';
 
 const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
@@ -34,5 +35,10 @@ const mockRedisFailure = {
   get: jest.fn(() => { throw new Error(TestMessages.REDIS_FAILURE); }),
 };
 
+const mockLogger = {
+  error: jest.fn().mockImplementation((message: string) => message),
+  info: jest.fn().mockImplementation((message: string) => message),
+} as unknown as Logger;
+
 export { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockCivilClaimOptionNo,
-  mockCivilClaimUnemploymentRetired, mockCivilClaimUnemploymentOther, mockRedisFailure };
+  mockCivilClaimUnemploymentRetired, mockCivilClaimUnemploymentOther, mockRedisFailure, mockLogger };
