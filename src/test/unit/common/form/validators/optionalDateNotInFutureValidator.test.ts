@@ -1,4 +1,6 @@
-import {OptionalDateNotInFutureValidator} from '../../../../../main/common/form/validators/optionalDateNotInFutureValidator';
+import {
+  OptionalDateNotInFutureValidator,
+} from '../../../../../main/common/form/validators/optionalDateNotInFutureValidator';
 
 describe('OptionalDateNotInFutureValidator validate', () => {
   const validator = new OptionalDateNotInFutureValidator();
@@ -17,5 +19,13 @@ describe('OptionalDateNotInFutureValidator validate', () => {
     const result = validator.validate(date);
     //Then
     expect(result).toBeFalsy();
+  });
+  it('should return specific text for defaultMessage', () => {
+    //Given
+    const defaultMessage = 'Please enter a valid date';
+    //When
+    const result = validator.defaultMessage();
+    //Then
+    expect(result).toEqual(defaultMessage);
   });
 });

@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_MONTHLY_EXPENSES_URL, CITIZEN_DEBTS_URL} from '../../../../../../../main/routes/urls';
+import {CITIZEN_DEBTS_URL, CITIZEN_MONTHLY_EXPENSES_URL} from '../../../../../../../main/routes/urls';
 import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
 import {
   buildDebtFormNo,
@@ -19,7 +19,10 @@ import {Claim} from '../../../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
 import {
   ENTER_A_DEBT,
-  ENTER_AT_LEAST_ONE_DEBT, REDIS_FAILURE, VALID_NUMBER_OF_PEOPLE, VALID_TWO_DECIMAL_NUMBER,
+  ENTER_AT_LEAST_ONE_DEBT,
+  REDIS_FAILURE,
+  VALID_NUMBER_OF_PEOPLE,
+  VALID_TWO_DECIMAL_NUMBER,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
@@ -64,7 +67,10 @@ describe('Debts', () => {
   });
   describe('on GET', () => {
     test('should open the debts page when in redis has no data ', async () => {
-      mockGetCaseData.mockImplementation(async () => undefined);
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        return claim;
+      });
       await request(app)
         .get(CITIZEN_DEBTS_URL)
         .expect((res) => {

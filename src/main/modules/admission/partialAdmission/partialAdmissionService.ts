@@ -9,7 +9,7 @@ export class PartialAdmissionService {
   public async getClaimAlreadyPaid(claimId: string) {
     try {
       const claim = await getCaseDataFromStore(claimId);
-      return claim.partialAdmission?.alreadyPaid.option;
+      return claim.partialAdmission?.alreadyPaid?.option;
     } catch (error) {
       logger.error(error);
       throw error;

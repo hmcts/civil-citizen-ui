@@ -1,4 +1,4 @@
-import { TestMessages } from './errorMessageTestConstants';
+import {TestMessages} from './errorMessageTestConstants';
 import civilClaimResponseMock from './mocks/civilClaimResponseMock.json';
 import noStatementOfMeansMock from './mocks/noStatementOfMeansMock.json';
 import civilClaimResponseOptionNoMock from './mocks/civilClaimResponseOptionNoMock.json';
@@ -6,6 +6,7 @@ import civilClaimResponseUnemploymentRetired from './mocks/civilClaimResponseUne
 import civilClaimResponseUnemploymentOther from './mocks/civilClaimResponseUnemploymentOtherMock.json';
 import civilClaimResponseApplicantCompany from './mocks/civilClaimResponseApplicantCompanyMock.json';
 import civilClaimResponseApplicantIndividual from './mocks/civilClaimResponseApplicanIndividualMock.json';
+import {Logger} from 'winston';
 
 const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
@@ -36,6 +37,11 @@ const mockRedisFailure = {
   get: jest.fn(() => { throw new Error(TestMessages.REDIS_FAILURE); }),
 };
 
+const mockLogger = {
+  error: jest.fn().mockImplementation((message: string) => message),
+  info: jest.fn().mockImplementation((message: string) => message),
+} as unknown as Logger;
+
 const mockCivilClaimApplicantCompanyType =  {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantCompany))),
@@ -48,4 +54,4 @@ const mockCivilClaimApplicantIndividualType = {
 
 export { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockCivilClaimOptionNo,
   mockCivilClaimUnemploymentRetired, mockCivilClaimUnemploymentOther, mockRedisFailure, mockCivilClaimApplicantCompanyType,
-  mockCivilClaimApplicantIndividualType};
+  mockCivilClaimApplicantIndividualType, mockLogger };
