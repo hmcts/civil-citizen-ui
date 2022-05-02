@@ -20,7 +20,7 @@ const individualTelephoneController = express.Router();
 
 async function renderView(form: GenericForm<IndividualTelephoneNumber>, res: express.Response, claimId: string): Promise<void> {
   const claim: Claim = await getCaseDataFromStore(claimId);
-  res.render(individualTelephoneViewPath, { form, respondentTelNumber: claim.respondent1.telephoneNumber });
+  res.render(individualTelephoneViewPath, { form, respondentTelNumber: claim.respondent1?.telephoneNumber });
 }
 
 const getGenericForm = (IndividualTelephoneNumber:IndividualTelephoneNumber) => {
