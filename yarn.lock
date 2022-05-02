@@ -8105,10 +8105,10 @@ minimalistic-assert@^1.0.1:
   resolved "https://registry.yarnpkg.com/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz#2e194de044626d4a10e7f7fbc00ce73e83e4d5c7"
   integrity sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A==
 
-"minimatch@2 || 3":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.1.1.tgz#879ad447200773912898b46cd516a7abbb5e50b0"
-  integrity sha512-reLxBcKUPNBnc/sVtAbxgRVFSegoGeLaSjmphNhcwcolhYLRgtJscn5mRl6YRZNQv40Y7P6JM2YhSIsbL9OB5A==
+"minimatch@2 || 3", minimatch@^3.0.4:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.1.2.tgz#19cd194bfd3e428f049a70817c038d89ab4be35b"
+  integrity sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==
   dependencies:
     brace-expansion "^1.1.7"
 
@@ -8116,13 +8116,6 @@ minimatch@3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
   integrity sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA==
-  dependencies:
-    brace-expansion "^1.1.7"
-
-minimatch@^3.0.4:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.1.2.tgz#19cd194bfd3e428f049a70817c038d89ab4be35b"
-  integrity sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==
   dependencies:
     brace-expansion "^1.1.7"
 
@@ -8398,10 +8391,10 @@ node.extend@~2.0.2:
     has "^1.0.3"
     is "^3.2.1"
 
-nodemon@^2.0.15:
-  version "2.0.15"
-  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-2.0.15.tgz#504516ce3b43d9dc9a955ccd9ec57550a31a8d4e"
-  integrity sha512-gdHMNx47Gw7b3kWxJV64NI+Q5nfl0y5DgDbiVtShiwa7Z0IZ07Ll4RLFo6AjrhzMtoEZn5PDE3/c2AbVsiCkpA==
+nodemon@^2.0.16:
+  version "2.0.16"
+  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-2.0.16.tgz#d71b31bfdb226c25de34afea53486c8ef225fdef"
+  integrity sha512-zsrcaOfTWRuUzBn3P44RDliLlp263Z/76FPoHFr3cFFkOz0lTPAcIw8dCzfdVIx/t3AtDYCZRCDkoCojJqaG3w==
   dependencies:
     chokidar "^3.5.2"
     debug "^3.2.7"
