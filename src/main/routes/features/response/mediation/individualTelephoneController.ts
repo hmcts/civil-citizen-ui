@@ -23,13 +23,13 @@ async function renderView(form: GenericForm<IndividualTelephoneNumber>, res: exp
   res.render(individualTelephoneViewPath, { form, respondentTelNumber: claim.respondent1?.telephoneNumber });
 }
 
-const getGenericForm = (IndividualTelephoneNumber:IndividualTelephoneNumber) => {
-  if (IndividualTelephoneNumber) {
-    const form = Object.assign(new GenericForm<IndividualTelephoneNumber>(IndividualTelephoneNumber));
+const getGenericForm = (individualTelephoneNumber:IndividualTelephoneNumber) => {
+  if (individualTelephoneNumber) {
+    const form = Object.assign(new GenericForm<IndividualTelephoneNumber>(individualTelephoneNumber));
     form.option = form.model.option;
     return form;
   }
-  return new GenericForm<IndividualTelephoneNumber>(IndividualTelephoneNumber);
+  return new GenericForm<IndividualTelephoneNumber>(individualTelephoneNumber);
 };
 
 // -- GET
