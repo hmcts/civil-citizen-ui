@@ -180,7 +180,7 @@
       },
       "issueDate": "2022-01-08",
       "applicant1": {
-        "type": "ORGANISATION",
+        "type": "INDIVIDUAL",
         "partyName": "Example applicant1 organisation",
         "primaryAddress": {
           "County": "Kent",
