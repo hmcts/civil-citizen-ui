@@ -4,7 +4,7 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
-{% from "../../../../macro/transaction-details.njk" import transactionDetails %}
+{% from "../../../../macro/transaction-details.njk" import transactionDetails, otherTransactionDetails %}
 {% block content %}
   {% set errors = form.getAllErrors('model') %}
   {% if form.hasErrors() %}
@@ -13,37 +13,56 @@
       "errorList": errors
     }) }}
   {% endif %}
-  {% set amountLabel = 'Amount recieved' %}
-  {% set scheduleLabel = 'Recieved every' %}
+  {% set rowNumberToShowRemoveButton = 2 %}
+  {% set amountLabel = 'Amount received' %}
+  {% set scheduleLabel = 'Received every' %}
+  {% set incomeSourceLabel = 'Source of income' %}
   {% set checkedJobHtml %}
-    {{ transactionDetails('Include wages, overtime, commission, bonuses', 'model[job][transactionSource]',  form.model.job.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('Include wages, overtime, commission, bonuses', 'model[job][transactionSource]',  form.model.job.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedUniversalCreditHtml %}
-    {{ transactionDetails('', 'model[universalCredit][transactionSource]',  form.model.universalCredit.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[universalCredit][transactionSource]',  form.model.universalCredit.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedJobseekerAllowanceIncomeHtml %}
-    {{ transactionDetails('', 'model[jobseekerAllowanceIncome][transactionSource]',  form.model.jobseekerAllowanceIncome.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[jobseekerAllowanceIncome][transactionSource]',  form.model.jobseekerAllowanceIncome.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedJobseekerAllowanceContributionHtml %}
-    {{ transactionDetails('', 'model[jobseekerAllowanceContribution][transactionSource]', form.model.jobseekerAllowanceContribution.transactionSource,amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[jobseekerAllowanceContribution][transactionSource]', form.model.jobseekerAllowanceContribution.transactionSource,{amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedIncomeSupportHtml %}
-    {{ transactionDetails('', 'model[incomeSupport][transactionSource]', form.model.incomeSupport.transactionSource, amountLabel,scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[incomeSupport][transactionSource]', form.model.incomeSupport.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedWorkingTaxCreditHtml %}
-    {{ transactionDetails('', 'model[workingTaxCredit][transactionSource]', form.model.workingTaxCredit.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[workingTaxCredit][transactionSource]', form.model.workingTaxCredit.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedChildTaxCreditHtml %}
-    {{ transactionDetails('', 'model[childTaxCredit][transactionSource]', form.model.childTaxCredit.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[childTaxCredit][transactionSource]', form.model.childTaxCredit.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedChildBenefitHtml %}
-    {{ transactionDetails('', 'model[childBenefit][transactionSource]', form.model.childBenefit.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[childBenefit][transactionSource]', form.model.childBenefit.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedCouncilTaxSupportHtml %}
-    {{ transactionDetails('', 'model[councilTaxSupport][transactionSource]',  form.model.councilTaxSupport.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[councilTaxSupport][transactionSource]',  form.model.councilTaxSupport.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedPensionHtml %}
-    {{ transactionDetails('', 'model[pension][transactionSource]',  form.model.pension.transactionSource, amountLabel, scheduleLabel, form) }}
+    {{ transactionDetails('', 'model[pension][transactionSource]',  form.model.pension.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
+  {% endset -%}
+  {% set checkedOtherHtml %}
+    <div class="govuk-form-group">
+      {% for transactionSource in form.model.other.transactionSources %}
+        {% if form.model.other.transactionSources.length < rowNumberToShowRemoveButton %}
+          {{ otherTransactionDetails( 'model[other][transactionSources]', loop.index0, transactionSource, {name: incomeSourceLabel, amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form, {text:'Remove this income source', hidden:true}) }}
+        {% else %}
+          {{ otherTransactionDetails( 'model[other][transactionSources]', loop.index0, transactionSource, {name: incomeSourceLabel, amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form, {text:'Remove this income source'}) }}
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="govuk-form-group">
+      {{ govukButton({
+        text: t("Add another source of income"),
+        classes: "govuk-button--secondary append-row"
+      }) }}
+    </div>
   {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -145,6 +164,14 @@
                   html: checkedPensionHtml
                 },
                   checked: true if form.model.pension.declared
+                },
+                {
+                  value: "other",
+                  text: t("Other"),
+                  conditional: {
+                  html: checkedOtherHtml
+                },
+                  checked: true if form.model.other.declared
                 }
               ]
             }) }}

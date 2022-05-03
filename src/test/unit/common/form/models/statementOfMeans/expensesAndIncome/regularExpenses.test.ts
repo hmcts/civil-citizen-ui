@@ -24,7 +24,7 @@ describe('Expenses', () => {
     it('should have errors for mortgage when mortgage declared is true', async () => {
       //Given
       const form = new GenericForm(new RegularExpenses({
-        mortgage: new Transaction(true, new TransactionSource('mortgage')),
+        mortgage: new Transaction(true, new TransactionSource({name: 'mortgage'})),
         rent: new Transaction(),
         tvAndBroadband: new Transaction(),
       }));

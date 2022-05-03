@@ -13,7 +13,7 @@ describe('Transaction', () => {
   describe('Validation', () => {
     it('should have errors when the declared is true', async () => {
       //Given
-      const form = new Transaction(true, new TransactionSource('rent'));
+      const form = new Transaction(true, new TransactionSource({name: 'rent'}));
       //When
       const errors = await validator.validate(form);
       //Then
@@ -26,7 +26,7 @@ describe('Transaction', () => {
     });
     it('should not have errors when declared is false', async () => {
       //Given
-      const form = new Transaction(false, new TransactionSource('rent'));
+      const form = new Transaction(false, new TransactionSource({name: 'rent'}));
       //When
       const errors = await validator.validate(form);
       //Then
@@ -34,7 +34,7 @@ describe('Transaction', () => {
     });
     it('should have one nested error when declared is true and schedule  is not set', async () => {
       //Given
-      const form = new Transaction(true, new TransactionSource('rent', 1));
+      const form = new Transaction(true, new TransactionSource({name: 'rent', amount: 1}));
       //When
       const errors = await validator.validate(form);
       //Then
@@ -46,7 +46,7 @@ describe('Transaction', () => {
     });
     it('should have one nested error when declared is true and schedule  is not set', async () => {
       //Given
-      const form = new Transaction(true, new TransactionSource('rent', undefined, TransactionSchedule.MONTH));
+      const form = new Transaction(true, new TransactionSource({name: 'rent', schedule: TransactionSchedule.MONTH}));
       //When
       const errors = await validator.validate(form);
       //Then

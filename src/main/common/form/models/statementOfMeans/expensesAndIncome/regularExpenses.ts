@@ -3,7 +3,6 @@ import {ValidateNested} from 'class-validator';
 import {ExpenseType} from './expenseType';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 import OtherTransaction from './otherTransaction';
-import TransactionSource from './transactionSource';
 
 export interface ExpenseParams {
   mortgage?: Transaction;
@@ -105,7 +104,7 @@ export class RegularExpenses {
       hirePurchase: RegularExpenses.buildExpense(ExpenseType.HIRE_PURCHASES),
       mobilePhone: RegularExpenses.buildExpense(ExpenseType.MOBILE_PHONE),
       maintenance: RegularExpenses.buildExpense(ExpenseType.MAINTENANCE_PAYMENTS),
-      other: new OtherTransaction(false, [new TransactionSource()]),
+      other: OtherTransaction.buildEmptyForm(false),
     };
     return new RegularExpenses(params);
   }
