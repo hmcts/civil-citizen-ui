@@ -6,7 +6,7 @@ import {
   CAN_WE_USE_COMPANY_URL,
 } from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {FreeMediation} from '../../../common/form/models/mediation/FreeMediation';
+import {FreeMediation} from '../../../common/models/mediation/freeMediation';
 import {getMediation, saveMediation} from '../../../modules/mediation/mediationService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {YesNo} from '../../../common/form/models/yesNo';

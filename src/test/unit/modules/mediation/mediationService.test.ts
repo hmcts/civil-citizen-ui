@@ -2,7 +2,7 @@ import * as draftStoreService from '../../../../main/modules/draft-store/draftSt
 import {Claim} from '../../../../main/common/models/claim';
 import {YesNo} from '../../../../main/common/form/models/yesNo';
 import {getMediation, saveMediation} from '../../../../main/modules/mediation/mediationService';
-import {Mediation} from '../../../../main/common/models/mediation';
+import {Mediation} from '../../../../main/common/models/mediation/mediation';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
