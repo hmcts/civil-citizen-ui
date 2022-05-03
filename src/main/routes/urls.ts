@@ -1,6 +1,6 @@
 const BASE_CASE_RESPONSE_URL = '/case/:id/response';
 const STATEMENT_OF_MEANS_URL = `${BASE_CASE_RESPONSE_URL}/statement-of-means`;
-const MEDIATION_URL = `${BASE_CASE_RESPONSE_URL}/mediation`;
+const MEDIATION_URL = '/case/:id/mediation';
 export const CALLBACK_URL = '/oauth2/callback';
 export const SIGN_IN_URL = '/login';
 export const SIGN_OUT_URL = '/logout';
