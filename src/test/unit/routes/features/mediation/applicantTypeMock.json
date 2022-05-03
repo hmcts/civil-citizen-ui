@@ -7,7 +7,7 @@
   "state": "PENDING_CASE_ISSUED",
   "security_classification": "PUBLIC",
   "case_data": {
-    "applicant1": {
+    "respondent1": {
       "type": "INDIVIDUAL"
     },
     "mediation":{}

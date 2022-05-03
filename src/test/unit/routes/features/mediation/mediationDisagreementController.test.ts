@@ -76,7 +76,7 @@ describe('Mediation Disagreement', () => {
         });
     });
     test('should redirect page when YES and applicant type is INDIVIDUAL', async () => {
-      applicantTypeMock.case_data.applicant1.type = CounterpartyType.INDIVIDUAL;
+      applicantTypeMock.case_data.respondent1.type = CounterpartyType.INDIVIDUAL;
       const individualTypeMock: string = JSON.stringify(applicantTypeMock);
       const mockRedisIndividual = {
         set: jest.fn(() => Promise.resolve({})),
@@ -93,7 +93,7 @@ describe('Mediation Disagreement', () => {
         });
     });
     test('should redirect page when YES and applicant type is SOLE TRADER', async () => {
-      applicantTypeMock.case_data.applicant1.type = CounterpartyType.SOLE_TRADER;
+      applicantTypeMock.case_data.respondent1.type = CounterpartyType.SOLE_TRADER;
       const soleTraderTypeMock: string = JSON.stringify(applicantTypeMock);
       const mockRedisSoleTrader = {
         set: jest.fn(() => Promise.resolve({})),
@@ -109,7 +109,7 @@ describe('Mediation Disagreement', () => {
         });
     });
     test('should redirect page when YES and applicant type is ORGANISATION', async () => {
-      applicantTypeMock.case_data.applicant1.type = CounterpartyType.ORGANISATION;
+      applicantTypeMock.case_data.respondent1.type = CounterpartyType.ORGANISATION;
       const organisationTypeMock: string = JSON.stringify(applicantTypeMock);
       const mockRedisOrganisation = {
         set: jest.fn(() => Promise.resolve({})),
@@ -125,7 +125,7 @@ describe('Mediation Disagreement', () => {
         });
     });
     test('should redirect page when YES and applicant type is COMPANY', async () => {
-      applicantTypeMock.case_data.applicant1.type = CounterpartyType.COMPANY;
+      applicantTypeMock.case_data.respondent1.type = CounterpartyType.COMPANY;
       const companyTypeMock: string = JSON.stringify(applicantTypeMock);
       const mockRedisCompany = {
         set: jest.fn(() => Promise.resolve({})),

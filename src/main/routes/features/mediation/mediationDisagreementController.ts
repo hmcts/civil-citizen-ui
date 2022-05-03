@@ -50,7 +50,7 @@ mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res
       if (req.body.option === YesNo.NO) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, DONT_WANT_FREE_MEDIATION_URL));
       } else {
-        if (claim.applicant1.type === CounterpartyType.INDIVIDUAL || claim.applicant1.type === CounterpartyType.SOLE_TRADER) {
+        if (claim.respondent1.type === CounterpartyType.INDIVIDUAL || claim.respondent1.type === CounterpartyType.SOLE_TRADER) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CAN_WE_USE_URL));
         } else {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CAN_WE_USE_COMPANY_URL));
