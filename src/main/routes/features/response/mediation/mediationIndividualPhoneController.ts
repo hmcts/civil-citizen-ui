@@ -47,15 +47,15 @@ mediationIndividualPhoneController.post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
   async (req:express.Request, res:express.Response) => {
     try {
       const claim: Claim = await getCaseDataFromStore(req.params.id);
-      const individualTelNumberForm: GenericForm<MediationIndividualPhoneNumber> = getGenericForm(new MediationIndividualPhoneNumber(req.body.option, req.body.telephoneNumber));
-      await individualTelNumberForm.validate();
-      if (individualTelNumberForm.hasErrors()) {
-        renderView(individualTelNumberForm, res, req.params.id);
+      const mediationIndividualPhoneForm: GenericForm<MediationIndividualPhoneNumber> = getGenericForm(new MediationIndividualPhoneNumber(req.body.option, req.body.telephoneNumber));
+      await mediationIndividualPhoneForm.validate();
+      if (mediationIndividualPhoneForm.hasErrors()) {
+        renderView(mediationIndividualPhoneForm, res, req.params.id);
       } else {
         if (req.body.option == YesNo.YES) {
-          individualTelNumberForm.model.telephoneNumber = claim.respondent1.telephoneNumber;
+          mediationIndividualPhoneForm.model.telephoneNumber = claim.respondent1.telephoneNumber;
         }
-        await saveMediation(req.params.id, individualTelNumberForm.model, 'individualTelephone');
+        await saveMediation(req.params.id, mediationIndividualPhoneForm.model, 'individualTelephone');
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
       }
     } catch (error) {
