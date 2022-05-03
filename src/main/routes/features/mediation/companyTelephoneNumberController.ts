@@ -1,8 +1,8 @@
 import express from 'express';
-import { GenericForm } from '../../../common/form/models/genericForm';
-import { CompanyTelephoneNumber } from '../../../common/form/models/mediation/companyTelephoneNumber';
-import { COMPANY_TELEPHONE_NUMBER_URL, CLAIM_TASK_LIST_URL } from '../../urls';
-import { constructResponseUrlWithIdParams } from '../../../common/utils/urlFormatter';
+import {GenericForm} from '../../../common/form/models/genericForm';
+import {CompanyTelephoneNumber} from '../../../common/form/models/mediation/companyTelephoneNumber';
+import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from '../../urls';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {
   getCompanyTelephoneNumberData, saveCompanyTelephoneNumberData,
 } from '../../../modules/mediation/companyTelephoneNumberService';
@@ -16,7 +16,7 @@ function renderForm(form: GenericForm<CompanyTelephoneNumber>, res: express.Resp
   res.render(companyTelephoneNumberView, { form: form, contactPerson });
 }
 
-companyTelephoneNumberController.get(COMPANY_TELEPHONE_NUMBER_URL, async (req, res) => {
+companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, async (req, res) => {
   try {
     const [contactPerson, telephoneNumberData] = await getCompanyTelephoneNumberData(req.params.id);
     const form = new GenericForm(telephoneNumberData);
@@ -26,7 +26,7 @@ companyTelephoneNumberController.get(COMPANY_TELEPHONE_NUMBER_URL, async (req, r
   }
 });
 
-companyTelephoneNumberController.post(COMPANY_TELEPHONE_NUMBER_URL, async (req, res) => {
+companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res) => {
   const { option, mediationContactPerson, mediationPhoneNumber, mediationPhoneNumberConfirmation, contactPerson } = req.body;
   const companyTelephoneNumber = new CompanyTelephoneNumber(option, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
   const form = new GenericForm(companyTelephoneNumber);

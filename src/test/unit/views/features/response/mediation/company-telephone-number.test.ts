@@ -1,15 +1,15 @@
 import config from 'config';
 import nock from 'nock';
-import { app } from '../../../../../../main/app';
+import {app} from '../../../../../../main/app';
 import request from 'supertest';
-import { COMPANY_TELEPHONE_NUMBER_URL } from '../../../../../../main/routes/urls';
-import { mockCivilClaim } from '../../../../../utils/mockDraftStore';
+import {CAN_WE_USE_COMPANY_URL} from '../../../../../../main/routes/urls';
+import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import civilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
-import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
-import { YesNo } from '../../../../../../main/common/form/models/yesNo';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 
 const jsdom = require('jsdom');
-const { JSDOM } = jsdom;
+const {JSDOM} = jsdom;
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -25,7 +25,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .post('/o/token')
         .reply(200, { id_token: citizenRoleToken });
       app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).get(COMPANY_TELEPHONE_NUMBER_URL);
+      const res = await request(app).get(CAN_WE_USE_COMPANY_URL);
       const dom = new JSDOM(res.text);
       htmlDocument = dom.window.document;
     });
@@ -104,7 +104,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     beforeEach(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).post(COMPANY_TELEPHONE_NUMBER_URL);
+      const res = await request(app).post(CAN_WE_USE_COMPANY_URL);
       const dom = new JSDOM(res.text);
       htmlDocument = dom.window.document;
     });
@@ -123,7 +123,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     it('should display correct error summary message with correct link for confirm telephone number when yes is an option', async () => {
       await request(app)
-        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.YES })
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -137,7 +137,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     it('should display correct error summary message with correct link for long telephone number when yes is an option', async () => {
       await request(app)
-        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.YES, mediationPhoneNumberConfirmation : inValidPhoneNumber })
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -151,7 +151,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     it('should display no errors when yes is an option and confirmation phone number is provided', async () => {
       await request(app)
-        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.YES, mediationPhoneNumberConfirmation: validPhoneNumber })
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -162,7 +162,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     it('should display correct error summary message with correct link for contact name when no is an option but nothing provided', async () => {
       await request(app)
-        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.NO })
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -176,7 +176,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     it('should display correct error summary message with correct link for contact number when no is an option but nothing provided', async () => {
       await request(app)
-        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.NO })
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -190,7 +190,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     it('should display correct error summary message with correct link for contact name when no is an option but too long name is provided', async () => {
       await request(app)
-        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.NO, mediationContactPerson: inValidName })
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -204,7 +204,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     it('should display correct error summary message with correct link for contact number when no is an option but too long phone number is provided', async () => {
       await request(app)
-        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.NO, mediationPhoneNumber: inValidPhoneNumber })
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -218,7 +218,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     it('should display no error summary message when both contact name and number is provided as valid', async () => {
       await request(app)
-        .post(COMPANY_TELEPHONE_NUMBER_URL)
+        .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.NO, mediationContactPerson: validName, mediationPhoneNumber : validPhoneNumber })
         .then(res => {
           const dom = new JSDOM(res.text);
