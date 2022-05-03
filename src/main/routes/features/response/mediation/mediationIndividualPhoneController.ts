@@ -15,12 +15,12 @@ import {
   CLAIM_TASK_LIST_URL,
 } from '../../../urls';
 
-const individualTelephoneViewPath = 'features/response/mediation/mediation-individual-phone';
+const mediationIndividualPhoneViewPath = 'features/response/mediation/mediation-individual-phone';
 const mediationIndividualPhoneController = express.Router();
 
 async function renderView(form: GenericForm<MediationIndividualPhoneNumber>, res: express.Response, claimId: string): Promise<void> {
   const claim: Claim = await getCaseDataFromStore(claimId);
-  res.render(individualTelephoneViewPath, { form, respondentTelNumber: claim.respondent1?.telephoneNumber });
+  res.render(mediationIndividualPhoneViewPath, { form, respondentTelNumber: claim.respondent1?.telephoneNumber });
 }
 
 const getGenericForm = (mediationIndividualPhoneNumber:MediationIndividualPhoneNumber) => {
