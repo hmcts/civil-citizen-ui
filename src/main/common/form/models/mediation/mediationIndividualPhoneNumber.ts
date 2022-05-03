@@ -7,7 +7,7 @@ import {
 } from '../../validationErrors/errorMessageConstants';
 import {YesNo} from '../yesNo';
 
-export class IndividualTelephoneNumber {
+export class MediationIndividualPhoneNumber {
 
   @IsDefined({message: VALID_YES_NO_OPTION})
     option?: YesNo;

@@ -1,7 +1,7 @@
 import * as express from 'express';
-import {IndividualTelephoneNumber} from '../../../../common/form/models/mediation/individualTelephoneNumber';
+import {MediationIndividualPhoneNumber} from '../../../../common/form/models/mediation/mediationIndividualPhoneNumber';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {Mediation} from '../../../../common/models/mediation';
+import {Mediation} from '../../../../common/models/mediation/mediation';
 import { Claim } from '../../../../common/models/claim';
 import { YesNo } from '../../../../common/form/models/yesNo';
 import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFormatter';
@@ -15,25 +15,25 @@ import {
   CLAIM_TASK_LIST_URL,
 } from '../../../urls';
 
-const individualTelephoneViewPath = 'features/response/mediation/individual-telephone';
-const individualTelephoneController = express.Router();
+const individualTelephoneViewPath = 'features/response/mediation/mediation-individual-phone';
+const mediationIndividualPhoneController = express.Router();
 
-async function renderView(form: GenericForm<IndividualTelephoneNumber>, res: express.Response, claimId: string): Promise<void> {
+async function renderView(form: GenericForm<MediationIndividualPhoneNumber>, res: express.Response, claimId: string): Promise<void> {
   const claim: Claim = await getCaseDataFromStore(claimId);
   res.render(individualTelephoneViewPath, { form, respondentTelNumber: claim.respondent1?.telephoneNumber });
 }
 
-const getGenericForm = (individualTelephoneNumber:IndividualTelephoneNumber) => {
-  if (individualTelephoneNumber) {
-    const form = Object.assign(new GenericForm<IndividualTelephoneNumber>(individualTelephoneNumber));
+const getGenericForm = (mediationIndividualPhoneNumber:MediationIndividualPhoneNumber) => {
+  if (mediationIndividualPhoneNumber) {
+    const form = Object.assign(new GenericForm<MediationIndividualPhoneNumber>(mediationIndividualPhoneNumber));
     form.option = form.model.option;
     return form;
   }
-  return new GenericForm<IndividualTelephoneNumber>(individualTelephoneNumber);
+  return new GenericForm<MediationIndividualPhoneNumber>(mediationIndividualPhoneNumber);
 };
 
 // -- GET
-individualTelephoneController.get(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL, async (req, res) => {
+mediationIndividualPhoneController.get(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL, async (req, res) => {
   try {
     const mediation: Mediation = await getMediation(req.params.id);
     renderView(getGenericForm(mediation.individualTelephone), res, req.params.id);
@@ -43,11 +43,11 @@ individualTelephoneController.get(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL, async
 });
 
 // -- POST
-individualTelephoneController.post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
+mediationIndividualPhoneController.post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
   async (req:express.Request, res:express.Response) => {
     try {
       const claim: Claim = await getCaseDataFromStore(req.params.id);
-      const individualTelNumberForm: GenericForm<IndividualTelephoneNumber> = getGenericForm(new IndividualTelephoneNumber(req.body.option, req.body.telephoneNumber));
+      const individualTelNumberForm: GenericForm<MediationIndividualPhoneNumber> = getGenericForm(new MediationIndividualPhoneNumber(req.body.option, req.body.telephoneNumber));
       await individualTelNumberForm.validate();
       if (individualTelNumberForm.hasErrors()) {
         renderView(individualTelNumberForm, res, req.params.id);
@@ -64,4 +64,4 @@ individualTelephoneController.post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
   });
 
 
-export default individualTelephoneController;
+export default mediationIndividualPhoneController;
