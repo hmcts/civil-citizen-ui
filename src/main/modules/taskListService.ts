@@ -3,16 +3,16 @@ import {TaskList} from '../common/models/taskList/taskList';
 import {Claim} from '../common/models/claim';
 import {
   buildPrepareYourResponseSection,
-  buildRespondeToClaimSection,
+  buildRespondToClaimSection,
   buildTryToResolveClaimSection,
   buildYourHearingRequirementsSection,
 } from '../common/utils/taskList/taskListBuilder';
 
 /**
  * THIS FILE IS A CONCEPT
- * 
- * This code is only a concept of what we should do. 
- * 
+ *
+ * This code is only a concept of what we should do.
+ *
  */
 
 let completed = 0;
@@ -22,7 +22,7 @@ const getTaskLists = async (claim: Claim) => {
 
   // TASK BUILDER
   const taskListPrepareYourResponse: TaskList = await buildPrepareYourResponseSection(claim);
-  const taskListRespondeToClaim: TaskList = await buildRespondeToClaimSection(claim);
+  const taskListRespondeToClaim: TaskList = await buildRespondToClaimSection(claim);
   const taskListTryToResolveClaim: TaskList = await buildTryToResolveClaimSection(claim);
   const taskListYourHearingRequirements: TaskList = await buildYourHearingRequirementsSection(claim);
 
