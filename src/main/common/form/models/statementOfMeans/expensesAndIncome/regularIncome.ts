@@ -1,6 +1,7 @@
 import Transaction from './transaction';
 import {ValidateNested} from 'class-validator';
 import {IncomeType} from './incomeType';
+import OtherTransaction from './otherTransaction';
 
 export interface IncomeParams {
   job?: Transaction;
@@ -13,6 +14,7 @@ export interface IncomeParams {
   childBenefit?: Transaction;
   councilTaxSupport?: Transaction;
   pension?: Transaction;
+  other?: OtherTransaction;
 }
 
 export default class RegularIncome {
@@ -46,7 +48,10 @@ export default class RegularIncome {
   @ValidateNested()
     pension: Transaction;
 
-  [key: string]: Transaction;
+  @ValidateNested()
+    other: OtherTransaction;
+
+  [key: string]: Transaction | OtherTransaction;
 
   constructor(params: IncomeParams) {
     this.job = params.job;
@@ -60,6 +65,7 @@ export default class RegularIncome {
     this.jobseekerAllowanceContribution = params.jobseekerAllowanceContribution;
     this.incomeSupport = params.incomeSupport;
     this.workingTaxCredit = params.workingTaxCredit;
+    this.other = params.other;
   }
 
   public static buildEmptyForm() {
@@ -74,6 +80,7 @@ export default class RegularIncome {
       childBenefit: RegularIncome.buildIncome(IncomeType.CHILD_BENEFIT),
       councilTaxSupport: RegularIncome.buildIncome(IncomeType.COUNCIL_TAX_SUPPORT),
       pension: RegularIncome.buildIncome(IncomeType.PENSION),
+      other: OtherTransaction.buildEmptyForm(true),
     };
     return new RegularIncome(params);
   }

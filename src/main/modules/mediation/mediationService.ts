@@ -4,12 +4,14 @@ import {Mediation} from '../../common/models/mediation/mediation';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('freeMediationService');
 
+
 const getMediation = async (claimId: string): Promise<Mediation> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (!claim.mediation) return new Mediation();
     return new Mediation(
       claim.mediation.individualTelephone,
+      claim.mediation.mediationDisagreement,
     );
   } catch (error) {
     logger.error(error);

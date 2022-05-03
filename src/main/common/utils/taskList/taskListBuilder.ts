@@ -7,10 +7,10 @@ import {getneedMoreTimeTask} from './tasks/needMoreTime';
 
 /**
  * THIS FILE IS A CONCEPT AND DOESN'T WORK
- * 
+ *
  * The logic on this file is not the real business logic.
- * This code is only a concept of what we should do. 
- * 
+ * This code is only a concept of what we should do.
+ *
  */
 
 const chooseAResponseTask = {
@@ -22,6 +22,12 @@ const chooseAResponseTask = {
 const howMuchYouHavePaidTask = {
   description: 'Tell us how much you’ve paid',
   url: '/how-much-paid',
+  status: TaskStatus.INCOMPLETE,
+};
+
+const freeTelephoneMediation =  {
+  description: 'Free telephone mediation',
+  url: './mediation/free-telephone-mediation',
   status: TaskStatus.INCOMPLETE,
 };
 
@@ -37,14 +43,14 @@ const buildPrepareYourResponseSection = async (claim: Claim): Promise<TaskList> 
   return { title: 'Prepare your response', tasks };
 };
 
-const buildRespondeToClaimSection = async (claim: Claim): Promise<TaskList> => {
+const buildRespondToClaimSection = async (claim: Claim): Promise<TaskList> => {
   const tasks: Task[] = [];
 
   tasks.push(chooseAResponseTask);
   if (!claim.paymentOption) {
     tasks.push(howMuchYouHavePaidTask);
   }
-  return { title: 'Responde to Claim', tasks };
+  return { title: 'Respond to Claim', tasks };
 };
 
 const buildTryToResolveClaimSection = async (claim: Claim): Promise<TaskList> => {
@@ -52,6 +58,7 @@ const buildTryToResolveClaimSection = async (claim: Claim): Promise<TaskList> =>
 
   if (!claim.paymentOption) {
     tasks.push(howMuchYouHavePaidTask);
+    tasks.push(freeTelephoneMediation);
   }
   return { title: 'Try to resolve the Claim', tasks };
 };
@@ -67,7 +74,7 @@ const buildYourHearingRequirementsSection = async (claim: Claim): Promise<TaskLi
 
 export {
   buildPrepareYourResponseSection,
-  buildRespondeToClaimSection,
+  buildRespondToClaimSection,
   buildTryToResolveClaimSection,
   buildYourHearingRequirementsSection,
 };

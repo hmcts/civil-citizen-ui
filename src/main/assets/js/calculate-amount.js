@@ -5,7 +5,7 @@
  * To display the total in your page please add total-monthly-income-expense class where you want the total to be displayed
  */
 document.addEventListener('DOMContentLoaded', async function () {
-  if (document.getElementsByClassName('civil-amountRow')) {
+  if (document.getElementsByClassName('civil-amountRow')?.length) {
     addCalculationEventListener();
     await getCalculation();
   }

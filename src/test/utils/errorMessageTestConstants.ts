@@ -19,7 +19,9 @@ export const enum TestMessages {
   RENT_SCHEDULE_ERROR = 'Select how often you pay for rent',
   MORTGAGE_CORRECT_AMOUNT_ERROR = 'Enter a valid mortgage amount, maximum two decimal places',
   OTHER_EXPENSE_NAME_REQUIRED_ERROR = 'Enter other expense source',
-  OTHER_EXPENSE_LIVERY_CORRECT_AMOUNT = 'Enter a valid Livery amount, maximum two decimal places',
+  OTHER_INCOME_NAME_REQUIRED_ERROR = 'Enter other income source',
+  OTHER_LIVERY_CORRECT_AMOUNT = 'Enter a valid Livery amount, maximum two decimal places',
+  OTHER_INCOME_RENTAL_SCHEDULE_ERROR = 'Select how often you receive Rental',
   OTHER_EXPENSE_DOG_SCHEDULE_ERROR = 'Select how often you pay for Dog groomers',
   WHO_EMPLOYS_YOU = 'Who employs you?',
   SOMETHING_WENT_WRONG = 'Something went wrong',
@@ -37,4 +39,5 @@ export const enum TestMessages {
   JOB_SCHEDULE_ERROR = 'Select how often you receive income from your job',
   JOB_CORRECT_AMOUNT = 'Enter a valid income from your job amount, maximum two decimal places',
   AMOUNT_LESS_THAN_CLAIMED = 'Enter a value less than the amount claimed',
+  MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
 }

@@ -20,10 +20,20 @@ export default class OtherTransaction {
     this.transactionSources = transactionSources;
   }
 
-  static buildPopulatedForm(otherTransactions: OtherTransactionRequestParams[]): OtherTransaction {
+  static buildEmptyForm(isIncome: boolean): OtherTransaction {
+    return new OtherTransaction(false, [new TransactionSource({isIncome: isIncome})]);
+  }
+
+  static buildPopulatedForm(otherTransactions: OtherTransactionRequestParams[], income: boolean): OtherTransaction {
     const otherTransactionSources: TransactionSource[] = [];
     if (otherTransactions?.length) {
-      otherTransactions.forEach(transaction => otherTransactionSources.push(new TransactionSource(transaction.name, toNumberOrUndefined(transaction.amount), transaction.schedule, false, true)));
+      otherTransactions.forEach(transaction => otherTransactionSources.push(new TransactionSource({
+        name: transaction.name,
+        amount: toNumberOrUndefined(transaction.amount),
+        schedule: transaction.schedule,
+        isIncome: income,
+        nameRequired: true,
+      })));
     }
 
     return new OtherTransaction(true, otherTransactionSources);
