@@ -9,10 +9,9 @@ freeTelephoneMediationController.get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL, async
   try {
     const civilClaim = await getDraftClaimFromStore(req.params.id);
     res.render(citizenFreeTelephoneMediationViewPath,
-      { isBusiness: (civilClaim.case_data.applicant1.type === 'ORGANISATION' || civilClaim.case_data.applicant1.type === 'COMPANY') },
+      {isBusiness: (civilClaim.case_data.respondent1.type === 'ORGANISATION' || civilClaim.case_data.respondent1.type === 'COMPANY')},
     );
-  }
-  catch (error) {
+  } catch (error) {
     res.status(500).send({error: error.message});
   }
 
