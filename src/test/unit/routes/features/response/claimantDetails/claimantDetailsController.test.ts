@@ -27,11 +27,11 @@ describe('Claimant details', () => {
         .get(CLAIMANT_DETAILS_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(claim.applicant1.partyName);
-          expect(res.text).toContain(claim.applicant1.primaryAddress.AddressLine1);
-          expect(res.text).toContain(claim.applicant1.primaryAddress.AddressLine2);
-          expect(res.text).toContain(claim.applicant1.primaryAddress.AddressLine3);
-          expect(res.text).toContain(claim.applicant1.primaryAddress.PostCode);
+          expect(res.text).toContain(claim.case_data.applicant1.partyName);
+          expect(res.text).toContain(claim.case_data.applicant1.primaryAddress.AddressLine1);
+          expect(res.text).toContain(claim.case_data.applicant1.primaryAddress.AddressLine2);
+          expect(res.text).toContain(claim.case_data.applicant1.primaryAddress.AddressLine3);
+          expect(res.text).toContain(claim.case_data.applicant1.primaryAddress.PostCode);
         });
     });
 
