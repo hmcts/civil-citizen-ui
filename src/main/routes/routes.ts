@@ -48,6 +48,7 @@ import whyDoYouDisagreeController from './features/response/admission/partialAdm
 import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
+import freeTelephoneMediationController from './features/response/mediation/freeTelephoneMediationController';
 import claimantDetailsController from './features/response/claimantDetails/claimantDetailsController';
 
 export default [
@@ -96,5 +97,6 @@ export default [
   repaymentPlanController,
   regularIncomeController,
   howMuchHaveYouPaidController,
+  freeTelephoneMediationController,
   claimantDetailsController,
 ];
