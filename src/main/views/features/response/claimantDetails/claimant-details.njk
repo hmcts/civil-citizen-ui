@@ -6,6 +6,8 @@
 {% set heading = 'Claimant details' %}
     {% set claimant = claim.applicant1 %}
     {% set claimantCorrespondenceAddress = claim.specApplicantCorrespondenceAddressdetails %}
+    {% set phoneNumber = claim.applicant1.phoneNumber %}
+    {% set emailAddress = claim.applicantSolicitor1UserDetails.email %}
     {% set claimantType = claimant.type %}
       {% if (claimantType == CounterpartyType.INDIVIDUAL) %}
         {% set individualTitle = claimant.individualTitle %}
@@ -36,6 +38,10 @@
             <span class="govuk-caption-l">{{ t('Claimant') }}</span>
             {{ applicant1Details }}
           </h1>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
           <h2 class="govuk-heading-m">Address</h2>
           <div class="govuk-grid-row govuk-body">
            <span class="govuk-grid-column-full">
@@ -66,15 +72,19 @@
             </span>
             {% endif %}
           </div>
-          {% set emailAddress = claim.applicantSolicitor1UserDetails.email %}
-          {% if emailAddress %}
-            <div class="govuk-grid-row govuk-body">
+          <div class="govuk-grid-row govuk-body">
+            {% if phoneNumber %}
+              <span class="govuk-grid-column-full">
+                {{ t('Phone') }}:{{ phoneNumber }}
+              </span>
+            {% endif %}
+            {% if emailAddress %}
               <span class="govuk-grid-column-full">
                 {{ t('Email') }}: <a class="govuk-link"
                                      href="{{ emailAddress }}">{{ emailAddress }}</a>
               </span>
-            </div>
-          {% endif %}
+            {% endif %}
+          </div>
           <div class="govuk-form-group">
             {{ contactUsForHelp(t) }}
           </div>
@@ -85,7 +95,7 @@
           </div>
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
           <span class="govuk-body-s">
-            <strong>{{ t('Claimant name') }}:</strong>
+            <strong>{{ t('Party name') }}:</strong>
           </span>
             <br>
             <span class="govuk-body-s">
