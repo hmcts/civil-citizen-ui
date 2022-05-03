@@ -14,7 +14,7 @@ export const MAX_CLAIM_AMOUNT = 10000;
 export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
-  specApplicantCorrespondenceAddressdetails: CorrespondenceAddress;
+  specApplicantCorrespondenceAddressdetails?: CorrespondenceAddress;
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
   detailsOfClaim: string;
