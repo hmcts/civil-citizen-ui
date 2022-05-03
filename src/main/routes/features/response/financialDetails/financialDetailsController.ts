@@ -3,7 +3,7 @@ import {
   CITIZEN_BANK_ACCOUNT_URL,
   CLAIM_TASK_LIST_URL,
   CLAIMANT_DETAILS_URL,
-  FINANCIAL_DETAILS_URL
+  FINANCIAL_DETAILS_URL,
 } from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
@@ -21,8 +21,8 @@ export function setFinancialDetailsControllerLogger(winstonLogger: winston.Logge
   logger = winstonLogger;
 }
 
-function renderView(res: express.Response, claim: Claim, claimantDetailsUrl : string): void {
-  res.render(financialDetailsViewPath, {claim: claim, claimantDetailsUrl : claimantDetailsUrl});
+function renderView(res: express.Response, claim: Claim, claimantDetailsUrl: string): void {
+  res.render(financialDetailsViewPath, {claim: claim, claimantDetailsUrl: claimantDetailsUrl});
 }
 
 
@@ -30,9 +30,8 @@ financialDetailsController
   .get(
     FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
       try {
-        const claim: Claim =  await getCaseDataFromStore(req.params.id);
+        const claim: Claim = await getCaseDataFromStore(req.params.id);
         const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CLAIMANT_DETAILS_URL);
-        console.log(claimantDetailsUrl);
         renderView(res, claim, claimantDetailsUrl);
       } catch (error) {
         logger.error(error);
@@ -43,7 +42,7 @@ financialDetailsController
     try {
       const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CLAIMANT_DETAILS_URL);
       const claim: Claim = await getCaseDataFromStore(req.params.id);
-      const counterpartyType : CounterpartyType = claim.respondent1.type;
+      const counterpartyType: CounterpartyType = claim.respondent1.type;
       if (counterpartyType) {
         if (counterpartyType == CounterpartyType.INDIVIDUAL || counterpartyType == CounterpartyType.SOLE_TRADER) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));

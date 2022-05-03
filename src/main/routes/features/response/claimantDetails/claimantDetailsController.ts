@@ -4,6 +4,8 @@ import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import * as winston from 'winston';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {getAddress} from '../../../../modules/claimantDetails/claimantDetailsService';
+import {CorrespondenceAddress} from '../../../../common/models/correspondenceAddress';
 
 const claimantDetailsViewPath = 'features/response/claimantDetails/claimant-details';
 const claimantDetailsController = express.Router();
@@ -15,12 +17,13 @@ export function setClaimantDetailsControllerLogger(winstonLogger: winston.Logger
   logger = winstonLogger;
 }
 
-function renderView(res: express.Response, claim: Claim, claimantDetailsUrl: string, claimDetailsUrl: string, financialDetailsUrl: string): void {
+function renderView(res: express.Response, claim: Claim, address: CorrespondenceAddress, claimantDetailsUrl: string, claimDetailsUrl: string, financialDetailsUrl: string): void {
   res.render(claimantDetailsViewPath, {
     claim: claim,
     claimantDetailsUrl: claimantDetailsUrl,
     claimDetailsUrl: claimDetailsUrl,
-    financialDetailsUrl: financialDetailsUrl,
+    backUrl: financialDetailsUrl,
+    address: address,
   });
 }
 
@@ -30,10 +33,11 @@ claimantDetailsController
     CLAIMANT_DETAILS_URL, async (req: express.Request, res: express.Response) => {
       try {
         const claim: Claim = await getCaseDataFromStore(req.params.id);
+        const correspondentAddress = getAddress(claim);
         const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CLAIMANT_DETAILS_URL);
         const claimDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CLAIM_DETAILS_URL);
         const financialDetailsUrl = constructResponseUrlWithIdParams(req.params.id, FINANCIAL_DETAILS_URL);
-        renderView(res, claim, claimantDetailsUrl, claimDetailsUrl, financialDetailsUrl);
+        renderView(res, claim, correspondentAddress, claimantDetailsUrl, claimDetailsUrl, financialDetailsUrl);
       } catch (error) {
         logger.error(error);
         res.status(500).send({error: error.message});

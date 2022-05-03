@@ -7,12 +7,14 @@ import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
 
 import {PartialAdmission} from './partialAdmission';
+import {CorrespondenceAddress} from './correspondenceAddress';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
 export class Claim {
   legacyCaseReference: string;
-  applicant1?: Individual | Organisation;
+  applicant1?: Claimant;
+  specApplicantCorrespondenceAddressdetails: CorrespondenceAddress;
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
   detailsOfClaim: string;
@@ -20,7 +22,7 @@ export class Claim {
   statementOfMeans?: StatementOfMeans;
   paymentOption?: string;
   repaymentPlan?: RepaymentPlan;
-  paymentDate?:Date;
+  paymentDate?: Date;
   partialAdmission?: PartialAdmission;
 
 
@@ -37,16 +39,14 @@ export class Claim {
   }
 }
 
-export class Individual {
+export class Claimant {
   individualTitle: string;
   individualLastName: string;
   individualFirstName: string;
   type: CounterpartyType;
+  primaryAddress: CorrespondenceAddress;
 }
 
-export class Organisation {
-  individualTitle: string;
-  individualLastName: string;
-  individualFirstName: string;
-  type: CounterpartyType;
-}
+
+
+

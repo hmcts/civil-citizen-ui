@@ -4,30 +4,29 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% set heading = 'Claimant details' %}
-    {% set applicant1 = claim.applicant1 %}
-    {% set claimantType = applicant1.type %}
+    {% set claimant = claim.applicant1 %}
+    {% set claimantCorrespondenceAddress = claim.specApplicantCorrespondenceAddressdetails %}
+    {% set claimantType = claimant.type %}
       {% if (claimantType == CounterpartyType.INDIVIDUAL) %}
-        {% set individualTitle = applicant1.individualTitle %}
-        {% set applicant1Details =  (individualTitle if individualTitle else '')  + ' ' +  applicant1.individualFirstName + ' ' + applicant1.individualLastName %}
+        {% set individualTitle = claimant.individualTitle %}
+        {% set applicant1Details =  (individualTitle if individualTitle else '')  + ' ' +  claimant.individualFirstName + ' ' + claimant.individualLastName %}
       {% elseif (claimantType == CounterpartyType.SOLE_TRADER) %}
-        {% set soleTraderTitle = applicant1.soleTraderTitle %}
-        {% set applicant1Details = (soleTraderTitle if soleTraderTitle else '') + ' ' +  applicant1.soleTraderFirstName + ' ' + applicant1.soleTraderLastName %}
+        {% set soleTraderTitle = claimant.soleTraderTitle %}
+        {% set applicant1Details = (soleTraderTitle if soleTraderTitle else '') + ' ' +  claimant.soleTraderFirstName + ' ' + claimant.soleTraderLastName %}
       {% elseif (claimantType == CounterpartyType.ORGANISATION) %}
-        {% set applicant1Details = applicant1.organisationName %}
+        {% set applicant1Details = claimant.organisationName %}
       {% elseif (claimantType == CounterpartyType.COMPANY) %}
-        {% set applicant1Details = applicant1.companyName %}
+        {% set applicant1Details = claimant.companyName %}
       {% endif %}
-
       {% set claimantDetailsLink %}
         <a href="{{ claimantDetailsUrl }}">{{ applicant1Details }}</a>
       {% endset -%}
-
       {% set totalClaimAmount = claim.totalClaimAmount | currencyFormat(totalClaimAmount) %}
 
 {% block content %}
   {{ govukBackLink({
     text: "Back",
-    href: "statement-of-means/intro"
+    href: backUrl
   }) }}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -40,27 +39,27 @@
           <h2 class="govuk-heading-m">Address</h2>
           <div class="govuk-grid-row govuk-body">
            <span class="govuk-grid-column-full">
-            {{ applicant1.primaryAddress.AddressLine1 }}
+            {{ address.AddressLine1 }}
             </span>
-            {% set addressLine2 = applicant1.primaryAddress.AddressLine2 %}
+            {% set addressLine2 = address.AddressLine2 %}
             {% if addressLine2 %}
               <span class="govuk-grid-column-full">
               {{ addressLine2 }}
             </span>
             {% endif %}
-            {% set addressLine3 = applicant1.primaryAddress.AddressLine3 %}
+            {% set addressLine3 = address.AddressLine3 %}
             {% if addressLine3 %}
               <span class="govuk-grid-column-full">
               {{ addressLine3 }}
             </span>
             {% endif %}
-            {% set postTown = applicant1.primaryAddress.PostTown %}
+            {% set postTown = address.PostTown %}
             {% if postTown %}
               <span class="govuk-grid-column-full">
               {{ postTown }}
             </span>
             {% endif %}
-            {% set postCode = applicant1.primaryAddress.PostCode %}
+            {% set postCode = address.PostCode %}
             {% if postCode %}
               <span class="govuk-grid-column-full">
               {{ postCode }}
