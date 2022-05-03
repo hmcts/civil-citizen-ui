@@ -19,104 +19,102 @@
       {% endif %}
 
       {% set claimantDetailsLink %}
-        <a href="{{claimantDetailsUrl}}">{{ applicant1Details }}</a>
+        <a href="{{ claimantDetailsUrl }}">{{ applicant1Details }}</a>
       {% endset -%}
 
       {% set totalClaimAmount = claim.totalClaimAmount | currencyFormat(totalClaimAmount) %}
 
 {% block content %}
-<div class="govuk-width-container">
-  <main class="govuk-main-wrapper" role="main">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <header class="govuk-accordion__section-heading">
-        {{ govukBackLink({
-          text: "Back",
-          href: "statement-of-means/intro"
-        }) }}
-        </header>
-
-        <h1 class="govuk-heading-l">
-          <span class="govuk-caption-l">{{ t('Claimant') }}</span>
-          {{ applicant1Details }}
-        </h1>
-
-        <div class="govuk-body">
-          <p class="govuk-body">
-            <span class="govuk-body">{{ applicant1.primaryAddress.AddressLine1 }}</span>
-          </p>
-          {% set addressLine2 = applicant1.primaryAddress.AddressLine2 %}
-          {% if addressLine2 %}
-            <p class="govuk-body">
-              <span class="govuk-body">{{ addressLine2 }}</span>
-            </p>
-          {% endif %}
-          {% set addressLine3 = applicant1.primaryAddress.AddressLine3 %}
-          {% if addressLine3 %}
-          <p class="govuk-body">
-            <span class="govuk-body">{{ addressLine3 }}</span>
-          <p>
-            {% endif %}
-            {% set postTown = applicant1.primaryAddress.PostTown %}
-            {% if postTown %}
-          <p class="govuk-body">
-            <span class="govuk-body">{{ postTown }}</span>
-          </p>
-          {% endif %}
-          {% set postCode = applicant1.primaryAddress.PostCode %}
-          {% if postCode %}
-            <p class="govuk-body">
-              <span class="govuk-body">{{ postCode }}</span>
-            </p>
-          {% endif %}
-          {% set emailAddress = claim.applicantSolicitor1UserDetails.email %}
-          {% if emailAddress %}
-            <p class="govuk-body">
-              <span class="govuk-body">{{t('Email')}}: <a class="govuk-link" href="{{emailAddress}}">{{emailAddress}}</a></span>
-            </p>
-          {% endif %}
-        </div>
-
-
-        <div class="govuk-form-group">
-           {{ contactUsForHelp(t) }}
-        </div>
-      </div>
+  {{ govukBackLink({
+    text: "Back",
+    href: "statement-of-means/intro"
+  }) }}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-one-third govuk-!-display-inline" >
-          <h3 class="govuk-heading-s">{{t('About claim')}}</h3>
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">
+            <span class="govuk-caption-l">{{ t('Claimant') }}</span>
+            {{ applicant1Details }}
+          </h1>
+
+          <div class="govuk-body">
+            <p class="govuk-body">
+              <span class="govuk-body">{{ applicant1.primaryAddress.AddressLine1 }}</span>
+            </p>
+            {% set addressLine2 = applicant1.primaryAddress.AddressLine2 %}
+            {% if addressLine2 %}
+              <p class="govuk-body">
+                <span class="govuk-body">{{ addressLine2 }}</span>
+              </p>
+            {% endif %}
+            {% set addressLine3 = applicant1.primaryAddress.AddressLine3 %}
+            {% if addressLine3 %}
+            <p class="govuk-body">
+              <span class="govuk-body">{{ addressLine3 }}</span>
+            <p>
+              {% endif %}
+              {% set postTown = applicant1.primaryAddress.PostTown %}
+              {% if postTown %}
+            <p class="govuk-body">
+              <span class="govuk-body">{{ postTown }}</span>
+            </p>
+            {% endif %}
+            {% set postCode = applicant1.primaryAddress.PostCode %}
+            {% if postCode %}
+              <p class="govuk-body">
+                <span class="govuk-body">{{ postCode }}</span>
+              </p>
+            {% endif %}
+            {% set emailAddress = claim.applicantSolicitor1UserDetails.email %}
+            {% if emailAddress %}
+              <p class="govuk-body">
+                <span class="govuk-body">{{ t('Email') }}: <a class="govuk-link"
+                                                              href="{{ emailAddress }}">{{ emailAddress }}</a></span>
+              </p>
+            {% endif %}
+          </div>
+
+
+          <div class="govuk-form-group">
+            {{ contactUsForHelp(t) }}
+          </div>
         </div>
-        <div class="govuk-grid-column-one-third govuk-!-display-inline" >
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
+            <h3 class="govuk-heading-s">{{ t('About claim') }}</h3>
+          </div>
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
           <span class="govuk-body-s">
             <strong>{{ t('Claimant name') }}:</strong>
           </span>
-          <br>
-          <span class="govuk-body-s">
-            <a class="govuk-link" href="">{{applicant1Details}}</a>
+            <br>
+            <span class="govuk-body-s">
+            <a class="govuk-link" href="">{{ applicant1Details }}</a>
           </span>
-        </div>
-        <div class="govuk-grid-column-one-third govuk-!-display-inline" >
+          </div>
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
           <span class="govuk-body-s">
             <strong>{{ t('Claim amount') }}:</strong>
           </span>
-          <br>
-          <span class="govuk-body-s">
+            <br>
+            <span class="govuk-body-s">
             {{ totalClaimAmount }}
           </span>
-        </div>
-        <div class="govuk-grid-column-one-third govuk-!-display-inline" >
+          </div>
+          <div class="govuk-grid-column-one-third govuk-!-display-inline">
           <span class="govuk-body-s">
             <strong>{{ t('Claim details') }}:</strong>
           </span>
-          <br>
-          <span class="govuk-body-s">
+            <br>
+            <span class="govuk-body-s">
             <a class="govuk-link" href="{{ claimDetailsUrl }}">{{ t('View claim') }}</a>
           </span>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
 
 
 {% endblock %}

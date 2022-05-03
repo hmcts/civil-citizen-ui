@@ -52,4 +52,4 @@ export const CITIZEN_EXPLANATION_URL = `${STATEMENT_OF_MEANS_URL}/explanation`;
 export const CITIZEN_OWED_AMOUNT_URL = `${BASE_CASE_RESPONSE_URL}/partial-admission/how-much-do-you-owe`;
 export const CITIZEN_ALREADY_PAID_URL = `${BASE_CASE_RESPONSE_URL}/partial-admission/already-paid`;
 export const CITIZEN_AMOUNT_YOU_PAID_URL = `${BASE_CASE_RESPONSE_URL}/partial-admission/how-much-have-you-paid`;
-export const CLAIMANT_DETAILS_URL = `${BASE_CASE_RESPONSE_URL}/claimant-details`;
+export const CLAIMANT_DETAILS_URL = `${DASHBOARD_URL}/:id/contact-them`;
