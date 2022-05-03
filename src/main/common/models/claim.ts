@@ -39,13 +39,14 @@ export class Claim {
   }
 }
 
-export class Party {
-  individualTitle: string;
-  individualLastName: string;
-  individualFirstName: string;
+export interface Party {
+  individualTitle?: string;
+  individualLastName?: string;
+  individualFirstName?: string;
+  companyName?: string;
   type: CounterpartyType;
-  primaryAddress: CorrespondenceAddress;
-  phoneNumber: string;
+  primaryAddress?: CorrespondenceAddress;
+  phoneNumber?: string;
 }
 
 

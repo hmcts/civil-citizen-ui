@@ -3,7 +3,7 @@ export interface CorrespondenceAddress {
   Country?: string;
   PostCode: string;
   PostTown: string;
-  AddressLine1: string;
-  AddressLine2: string;
-  AddressLine3: string;
+  AddressLine1?: string;
+  AddressLine2?: string;
+  AddressLine3?: string;
 }
