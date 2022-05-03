@@ -48,7 +48,7 @@ import whyDoYouDisagreeController from './features/response/admission/partialAdm
 import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
-import companyTelephoneNumberController from './features/response/mediation/companyTelephoneNumberController';
+import companyTelephoneNumberController from './features/mediation/companyTelephoneNumberController';
 
 export default [
   homeController,

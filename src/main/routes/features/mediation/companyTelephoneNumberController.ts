@@ -1,11 +1,11 @@
 import express from 'express';
-import { GenericForm } from '../../../../common/form/models/genericForm';
-import { CompanyTelephoneNumber } from '../../../../common/form/models/mediation/companyTelephoneNumber';
-import { COMPANY_TELEPHONE_NUMBER_URL, CLAIM_TASK_LIST_URL } from '../../../urls';
-import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFormatter';
+import { GenericForm } from '../../../common/form/models/genericForm';
+import { CompanyTelephoneNumber } from '../../../common/form/models/mediation/companyTelephoneNumber';
+import { COMPANY_TELEPHONE_NUMBER_URL, CLAIM_TASK_LIST_URL } from '../../urls';
+import { constructResponseUrlWithIdParams } from '../../../common/utils/urlFormatter';
 import {
   getCompanyTelephoneNumberData, saveCompanyTelephoneNumberData,
-} from '../../../../modules/mediation/companyTelephoneNumberService';
+} from '../../../modules/mediation/companyTelephoneNumberService';
 
 const companyTelephoneNumberController = express.Router();
 const companyTelephoneNumberView = 'features/response/mediation/company-telephone-number';
