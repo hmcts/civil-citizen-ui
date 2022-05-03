@@ -31,6 +31,15 @@ describe('Claimant details service getAddress', () => {
     //Then
     expect(address).toMatchObject(primaryAddress);
   });
+  it('should return primary address when correspondence address is empty', () => {
+    //Given
+    const primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
+    const claim = buildClaimWithAddress(primaryAddress, {});
+    //When
+    const address = getAddress(claim);
+    //Then
+    expect(address).toMatchObject(primaryAddress);
+  });
 });
 
 function buildClaimWithAddress(address: CorrespondenceAddress, correspondenceAddress?: CorrespondenceAddress): Claim {
