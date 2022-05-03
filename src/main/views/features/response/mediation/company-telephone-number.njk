@@ -9,7 +9,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = "Is "+contactPerson+" the right person for the mediation service to call?" %}
+      {% set title = t("Is CONTACTPERSON the right person for the mediation service to call?") | replace ("CONTACTPERSON", contactPerson) %}
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}

@@ -1,4 +1,4 @@
-import { CompanyTelephoneNumber } from '../form/models/mediation/companyTelephoneNumber';
+import { CompanyTelephoneNumber } from '../../form/models/mediation/companyTelephoneNumber';
 export class Mediation {
   companyTelephoneNumber: CompanyTelephoneNumber;
 

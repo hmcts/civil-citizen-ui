@@ -4,7 +4,7 @@ import {
   saveCompanyTelephoneNumberData,
 } from '../../../../main/modules/mediation/companyTelephoneNumberService';
 import { Claim } from '../../../../main/common/models/claim';
-import { Mediation } from '../../../../main/common/models/mediation';
+import { Mediation } from '../../../../main/common/models/mediation/mediation';
 import { YesNo } from '../../../../main/common/form/models/yesNo';
 import { TestMessages } from '../../../utils/errorMessageTestConstants';
 import { CompanyTelephoneNumber } from '../../../../main/common/form/models/mediation/companyTelephoneNumber';

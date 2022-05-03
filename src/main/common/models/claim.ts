@@ -6,7 +6,7 @@ import {CounterpartyType} from './counterpartyType';
 import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
-import {Mediation} from './mediation';
+import {Mediation} from './mediation/mediation';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 

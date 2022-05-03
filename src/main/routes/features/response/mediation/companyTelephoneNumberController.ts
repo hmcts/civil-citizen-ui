@@ -18,8 +18,7 @@ function renderForm(form: GenericForm<CompanyTelephoneNumber>, res: express.Resp
 
 companyTelephoneNumberController.get(COMPANY_TELEPHONE_NUMBER_URL, async (req, res) => {
   try {
-    const response = await getCompanyTelephoneNumberData(req.params.id);
-    const [contactPerson, telephoneNumberData] = response;
+    const [contactPerson, telephoneNumberData] = await getCompanyTelephoneNumberData(req.params.id);
     const form = new GenericForm(telephoneNumberData);
     renderForm(form, res, contactPerson);
   } catch (error) {
