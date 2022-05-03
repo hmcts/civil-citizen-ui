@@ -1,5 +1,5 @@
-import {FreeMediation} from "../../../common/form/models/mediation/freeMediation";
-import {MediationIndividualTelephoneNumber} from "./mediationIndividualTelephoneNumber";
+import {FreeMediation} from '../../../common/form/models/mediation/freeMediation';
+import {MediationIndividualTelephoneNumber} from './mediationIndividualTelephoneNumber';
 
 export class Mediation {
   individualTelephone?: MediationIndividualTelephoneNumber;
