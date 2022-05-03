@@ -3,6 +3,7 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/about-claim.njk" import aboutClaim %}
 {% set heading = 'Claimant details' %}
     {% set claimant = claim.applicant1 %}
     {% set claimantCorrespondenceAddress = claim.specApplicantCorrespondenceAddressdetails %}
@@ -89,38 +90,7 @@
             {{ contactUsForHelp(t) }}
           </div>
         </div>
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-one-third govuk-!-display-inline">
-            <h3 class="govuk-heading-s">{{ t('About claim') }}</h3>
-          </div>
-          <div class="govuk-grid-column-one-third govuk-!-display-inline">
-          <span class="govuk-body-s">
-            <strong>{{ t('Claimant name') }}:</strong>
-          </span>
-            <br>
-            <span class="govuk-body-s">
-            <a class="govuk-link" href="">{{ applicant1Details }}</a>
-          </span>
-          </div>
-          <div class="govuk-grid-column-one-third govuk-!-display-inline">
-          <span class="govuk-body-s">
-            <strong>{{ t('Claim amount') }}:</strong>
-          </span>
-            <br>
-            <span class="govuk-body-s">
-            {{ totalClaimAmount }}
-          </span>
-          </div>
-          <div class="govuk-grid-column-one-third govuk-!-display-inline">
-          <span class="govuk-body-s">
-            <strong>{{ t('Claim details') }}:</strong>
-          </span>
-            <br>
-            <span class="govuk-body-s">
-            <a class="govuk-link" href="{{ claimDetailsUrl }}">{{ t('View claim') }}</a>
-          </span>
-          </div>
-        </div>
+        {{ aboutClaim(totalClaimAmount, applicant1Details, claimDetailsUrl) }}
       </div>
     </main>
   </div>
