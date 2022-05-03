@@ -1,6 +1,6 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% macro transactionDetails(hintAmount, property, transactionSource, amountLabel, scheduleLabel, form, other, removeButton) %}
+{% macro transactionDetails(hintAmount, property, transactionSource, labels, form, other, removeButton) %}
   {% set amountValue =  '' + transactionSource.amount %}
   {% if other %}
 <div class="govuk-form-group civil-amountRow  multiple-row">
@@ -8,7 +8,7 @@
     id: property + "[name]",
     name: property + "[name]",
     label: {
-      text: t("Source of expense")
+      text: t(labels.name)
     },
     value:transactionSource.name,
     errorMessage: {
@@ -23,7 +23,7 @@
       id: property + "[amount]",
       name: property + "[amount]",
       label: {
-        text: t(amountLabel)
+        text: t(labels.amountLabel)
       },
       prefix: {
         text: "£"
@@ -45,7 +45,7 @@
       classes: "civil-schedule",
       fieldset: {
         legend: {
-          text: t(scheduleLabel)
+          text: t(labels.scheduleLabel)
         }
       },
       items: [
@@ -84,6 +84,6 @@
   </div>
 
   {% endmacro %}
-  {% macro otherTransactionDetails(property, index, transactionSource, amountLabel, scheduleLabel, form, removeButton) %}
-    {{ transactionDetails('', property +'['+index +']', transactionSource, amountLabel, scheduleLabel, form, true, removeButton) }}
+  {% macro otherTransactionDetails(property, index, transactionSource, labels, form, removeButton) %}
+    {{ transactionDetails('', property +'['+index +']', transactionSource, labels, form, true, removeButton) }}
   {% endmacro %}

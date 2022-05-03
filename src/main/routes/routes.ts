@@ -49,6 +49,8 @@ import repaymentPlanController from './features/response/repaymentPlan/repayment
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
 import companyTelephoneNumberController from './features/mediation/companyTelephoneNumberController';
+import mediationDisagreementController from './features/mediation/mediationDisagreementController';
+import freeTelephoneMediationController from './features/response/mediation/freeTelephoneMediationController';
 
 export default [
   homeController,
@@ -97,4 +99,6 @@ export default [
   regularIncomeController,
   howMuchHaveYouPaidController,
   companyTelephoneNumberController,
+  mediationDisagreementController,
+  freeTelephoneMediationController,
 ];

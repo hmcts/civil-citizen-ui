@@ -39,6 +39,11 @@
       "carer": {
         "option": "no"
       }
+    },
+    "mediation":{
+      "mediationDisagreement":{
+        "option": "no"
+      }
     }
   }
 }
