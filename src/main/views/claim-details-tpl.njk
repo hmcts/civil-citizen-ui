@@ -4,6 +4,7 @@
 {% from "govuk/components/header/macro.njk" import govukHeader %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
+{% from "./macro/page-title.njk" import setPageTitle %}
 {% set htmlClasses = "app-html-class" %}
 {% set htmlLang = "en" %}
 {% set assetPath = "" %}
@@ -14,7 +15,9 @@
 {% block head %}
   {% include "webpack/css.njk" %}
 {% endblock %}
-{% block pageTitle %}Your money claims account - Money Claims{% endblock %}
+{% block pageTitle %}
+  {{setPageTitle()}}
+{% endblock %}
 {% block skipLink %}
   {{ govukSkipLink({
     href: "#main-content",

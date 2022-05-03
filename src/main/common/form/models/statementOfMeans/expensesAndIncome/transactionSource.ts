@@ -5,36 +5,49 @@ import {MAX_AMOUNT_VALUE} from '../../../validators/validationConstraints';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 import {IncomeType} from './incomeType';
 
+export interface TransactionSourceParams {
+  name?: string;
+  amount?: number;
+  schedule?: TransactionSchedule;
+  isIncome?: boolean;
+  nameRequired?: boolean;
+}
+
 export class ValidationErrors {
-  static readonly NAME_REQUIRED = 'Enter other expense source';
-  static readonly AMOUNT_REQUIRED = (name: string, income: boolean) => {
-    if (income) {
-      return `Enter how much ${name} you receive`;
+  static readonly NAME_REQUIRED = (_name: string, isIncome: boolean) => {
+    if (isIncome) {
+      return 'Enter other income source';
+    }
+    return 'Enter other expense source';
+  };
+  static readonly AMOUNT_REQUIRED = (name: string, isIncome: boolean) => {
+    if (isIncome) {
+      return `Enter how much ${name ? name : IncomeType.OTHER} you receive`;
     }
     return `Enter how much you pay for ${name ? name : ExpenseType.OTHER}`;
   };
   static readonly AMOUNT_INVALID_DECIMALS = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
   static readonly AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
-  static readonly SCHEDULE_SELECT_AN_OPTION = (name: string, income: boolean) => {
-    if (income) {
+  static readonly SCHEDULE_SELECT_AN_OPTION = (name: string, isIncome: boolean) => {
+    if (isIncome) {
       return `Select how often you receive ${name ? name : IncomeType.OTHER}`;
     }
     return `Select how often you pay for ${name ? name : ExpenseType.OTHER}`;
   };
 
-  static withMessage(buildErrorFn: (name?: string, expense?: boolean) => string) {
+  static withMessage(buildErrorFn: (name?: string, isIncome?: boolean) => string) {
     return (args: any): string => {
       const object: TransactionSource = args.object;
-      return buildErrorFn(object.name, object.income);
+      return buildErrorFn(object.name, object.isIncome);
     };
   }
 }
 
 export default class TransactionSource {
-  income: boolean;
+  isIncome: boolean;
   nameRequired: boolean;
   @ValidateIf(o => o.nameRequired)
-  @IsNotEmpty({message: ValidationErrors.NAME_REQUIRED})
+  @IsNotEmpty({message: ValidationErrors.withMessage(ValidationErrors.NAME_REQUIRED)})
     name: string;
   @IsDefined({message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_REQUIRED)})
   @Min(0, {message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED)})
@@ -47,12 +60,12 @@ export default class TransactionSource {
   @IsDefined({message: ValidationErrors.withMessage(ValidationErrors.SCHEDULE_SELECT_AN_OPTION)})
     schedule: TransactionSchedule;
 
-  constructor(name?: string, amount?: number, schedule?: TransactionSchedule, income?: boolean, nameRequired?: boolean) {
-    this.name = name;
-    this.amount = amount;
-    this.schedule = schedule;
-    this.income = income;
-    this.nameRequired = nameRequired;
+  constructor(params: TransactionSourceParams) {
+    this.name = params.name;
+    this.amount = params.amount;
+    this.schedule = params.schedule;
+    this.isIncome = params.isIncome;
+    this.nameRequired = params.nameRequired;
   }
 
   convertToScheduledAmount(): ScheduledAmount {
