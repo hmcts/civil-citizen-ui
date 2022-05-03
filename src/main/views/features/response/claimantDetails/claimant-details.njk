@@ -37,45 +37,45 @@
             <span class="govuk-caption-l">{{ t('Claimant') }}</span>
             {{ applicant1Details }}
           </h1>
-
-          <div class="govuk-body">
-            <p class="govuk-body">
-              <span class="govuk-body">{{ applicant1.primaryAddress.AddressLine1 }}</span>
-            </p>
+          <h2 class="govuk-heading-m">Address</h2>
+          <div class="govuk-grid-row govuk-body">
+           <span class="govuk-grid-column-full">
+            {{ applicant1.primaryAddress.AddressLine1 }}
+            </span>
             {% set addressLine2 = applicant1.primaryAddress.AddressLine2 %}
             {% if addressLine2 %}
-              <p class="govuk-body">
-                <span class="govuk-body">{{ addressLine2 }}</span>
-              </p>
+              <span class="govuk-grid-column-full">
+              {{ addressLine2 }}
+            </span>
             {% endif %}
             {% set addressLine3 = applicant1.primaryAddress.AddressLine3 %}
             {% if addressLine3 %}
-            <p class="govuk-body">
-              <span class="govuk-body">{{ addressLine3 }}</span>
-            <p>
-              {% endif %}
-              {% set postTown = applicant1.primaryAddress.PostTown %}
-              {% if postTown %}
-            <p class="govuk-body">
-              <span class="govuk-body">{{ postTown }}</span>
-            </p>
+              <span class="govuk-grid-column-full">
+              {{ addressLine3 }}
+            </span>
+            {% endif %}
+            {% set postTown = applicant1.primaryAddress.PostTown %}
+            {% if postTown %}
+              <span class="govuk-grid-column-full">
+              {{ postTown }}
+            </span>
             {% endif %}
             {% set postCode = applicant1.primaryAddress.PostCode %}
             {% if postCode %}
-              <p class="govuk-body">
-                <span class="govuk-body">{{ postCode }}</span>
-              </p>
-            {% endif %}
-            {% set emailAddress = claim.applicantSolicitor1UserDetails.email %}
-            {% if emailAddress %}
-              <p class="govuk-body">
-                <span class="govuk-body">{{ t('Email') }}: <a class="govuk-link"
-                                                              href="{{ emailAddress }}">{{ emailAddress }}</a></span>
-              </p>
+              <span class="govuk-grid-column-full">
+              {{ postCode }}
+            </span>
             {% endif %}
           </div>
-
-
+          {% set emailAddress = claim.applicantSolicitor1UserDetails.email %}
+          {% if emailAddress %}
+            <div class="govuk-grid-row govuk-body">
+              <span class="govuk-grid-column-full">
+                {{ t('Email') }}: <a class="govuk-link"
+                                     href="{{ emailAddress }}">{{ emailAddress }}</a>
+              </span>
+            </div>
+          {% endif %}
           <div class="govuk-form-group">
             {{ contactUsForHelp(t) }}
           </div>
