@@ -2,12 +2,15 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "../../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% set errors = form.getAllErrors() %}
+      {% if form.hasErrors() %}
         {{ govukErrorSummary({
           "titleText": t("There was a problem"),
           "errorList": errors
@@ -16,6 +19,22 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% set ifOther %}
+              {{ govukTextarea({
+                name: "otherReason",
+                id: "otherReason",
+                value: form.model.otherReason,
+                classes:"govuk-!-width-three-quarters",
+                label: {
+                  text: t("Enter your reason here"),
+                  classes: "govuk-label--s"
+                },
+                errorMessage: {
+                  text: t(form.errorFor('otherReason'))
+                } if form.hasFieldError('otherReason')
+              }) }}
+            {% endset %}
             {{ govukRadios({
               idPrefix: "disagreeMediationOption",
               name: "disagreeMediationOption",
@@ -26,42 +45,59 @@
                   classes: "govuk-fieldset__legend--l"
                 }
               },
+              hint: {
+                text: "You have chosen not to try free mediation. Please tell us why:"
+              },
               items: [
                 {
-                  value: 'I have already tried to resolve the dispute with the other party, with no success',
-                  text: t("I have already tried to resolve the dispute with the other party, with no success"),
-                  checked: true if form.paymentType == 'I have already tried to resolve the dispute with the other party, with no success',
-                  conditional: {
-                  html: hintPayImmediatly
-                }
+                  value: NoMediationReasonOptions.ALREADY_TRIED,
+                  text: t(NoMediationReasonOptions.ALREADY_TRIED),
+                  checked: true if form.model.iDoNotWantMediationReason === NoMediationReasonOptions.ALREADY_TRIED
                 },
                 {
-                  value: PaymentOptionType.BY_SET_DATE,
-                  text: t("By set date"),
-                  checked: true if form.paymentType == PaymentOptionType.BY_SET_DATE,
-                  conditional: {
-                  html: hintPayLater
-                }
+                  value: NoMediationReasonOptions.NOT_SURE,
+                  text: t(NoMediationReasonOptions.NOT_SURE),
+                  checked: true if form.model.iDoNotWantMediationReason === NoMediationReasonOptions.NOT_SURE
                 },
                 {
-                  value: PaymentOptionType.INSTALMENTS,
-                  text: t("I'll suggest a repayment plan"),
-                  checked: true if form.paymentType == PaymentOptionType.INSTALMENTS,
-                  conditional: {
-                  html: hintPayLater
-                }
+                  value: NoMediationReasonOptions.WOULD_NOT_SOLVE,
+                  text: t(NoMediationReasonOptions.WOULD_NOT_SOLVE),
+                  checked: true if form.model.iDoNotWantMediationReason === NoMediationReasonOptions.WOULD_NOT_SOLVE
+                },
+                {
+                  value: NoMediationReasonOptions.NO_DELAY_IN_HEARING,
+                  text: t(NoMediationReasonOptions.NO_DELAY_IN_HEARING),
+                  checked: true if form.model.iDoNotWantMediationReason === NoMediationReasonOptions.NO_DELAY_IN_HEARING
+                },
+                {
+                  value: NoMediationReasonOptions.JUDGE_TO_DECIDE,
+                  text: t(NoMediationReasonOptions.JUDGE_TO_DECIDE),
+                  checked: true if form.model.iDoNotWantMediationReason === NoMediationReasonOptions.JUDGE_TO_DECIDE
+                },
+                {
+                  value: NoMediationReasonOptions.OTHER,
+                  checked: true if form.model.iDoNotWantMediationReason === NoMediationReasonOptions.OTHER,
+                  html:NoMediationReasonOptions.OTHER,
+                  conditional:{html: ifOther}
                 }
               ],
               errorMessage: {
-                text: t(form.errorFor('paymentType'))
-              } if form.hasFieldError('paymentType')
-
+                text: t(form.errorFor('NoMediationReason'))
+              } if form.hasFieldError('NoMediationReason')
             }) }}
+            <div class="govuk-form-group">
+              <a class="govuk-link" href="../response/claim-task-list">
+                {{t('Skip this section')}}
+              </a>
+            </div>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")
               }) }}
-              {{ contactUsForHelp(t) }}
+            <p class="font-xsmall"> {{ t('Any information you provide is used solely by HM Courts and Tribunals Service
+       to help us improve our services. Your answers have no impact on the progress or outcome
+        of your case, or on any contact you have with HM Courts and Tribunals Service.') }} </p>
+            {{ contactUsForHelp(t) }}
             </div>
           </form>
         </div>

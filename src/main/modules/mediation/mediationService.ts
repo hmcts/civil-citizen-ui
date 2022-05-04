@@ -12,6 +12,7 @@ const getMediation = async (claimId: string): Promise<Mediation> => {
     return new Mediation(
       claim.mediation.individualTelephone,
       claim.mediation.mediationDisagreement,
+      claim.mediation.noMediationReason,
     );
   } catch (error) {
     logger.error(error);
@@ -36,4 +37,4 @@ const saveMediation = async (claimId: string, value: any, mediationPropertyName:
   }
 };
 
-export { getMediation, saveMediation };
+export {getMediation, saveMediation};
