@@ -867,7 +867,7 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Test",
+        "organisationName": "Example respondent1 organisation",
         "partyTypeDisplayValue": "Organisation"
       },
       "claimInterest": "Yes",
@@ -987,13 +987,7 @@
         "AddressLine2": "21",
         "AddressLine3": "Church Road"
       },
-      "specRespondentCorrespondenceAddressRequired": "Yes",
-      "mediation":{
-        "companyTelephoneNumber":{
-          "option":"yes",
-          "mediationPhoneNumber":"600000000"
-        }
-      }
+      "specRespondentCorrespondenceAddressRequired": "Yes"
     }
   }
 ]
