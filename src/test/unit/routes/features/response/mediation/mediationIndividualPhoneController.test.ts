@@ -17,6 +17,15 @@ import {
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
+
+const civilClaimResponseMock = require('../../../../views/features/response/mediation/noRespondentTelephoneMock.json');
+civilClaimResponseMock.case_data.respondent1.telephoneNumber = '';
+const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(civilClaimResponseMock);
+const mockWithoutRespondentPhone = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithoutRespondentPhone)),
+};
+
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -107,5 +116,18 @@ describe('on Post', () => {
         expect(res.status).toBe(500);
         expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
       });
+  });
+
+  describe('Enter Phone Number Screen', () => {
+    test('should redirect with valid input', async () => {
+      app.locals.draftStoreClient = mockWithoutRespondentPhone;
+      await request(app)
+        .post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL)
+        .send({ option: 'no', telephoneNumber: '01632960002'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
   });
 });

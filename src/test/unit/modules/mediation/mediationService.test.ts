@@ -10,7 +10,7 @@ jest.mock('../../../../main/modules/draft-store/draftStoreService');
 const claimId = '123';
 const telephoneNumber = '6000000';
 const mediationExample = {
-  individualTelephone: { option: YesNo.YES, telephoneNumber: telephoneNumber },
+  canWeUse: { option: YesNo.YES, telephoneNumber: telephoneNumber },
   mediationDisagreement: { option: YesNo.YES },
 };
 
@@ -42,8 +42,8 @@ describe('Mediation service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(mediation).not.toBeNull();
-      expect(mediation.individualTelephone?.telephoneNumber).toBe(telephoneNumber);
-      expect(mediation.individualTelephone?.option).toBeTruthy();
+      expect(mediation.canWeUse?.telephoneNumber).toBe(telephoneNumber);
+      expect(mediation.canWeUse?.option).toBeTruthy();
       expect(mediation.mediationDisagreement?.option).toBeTruthy();
     });
     it('should rethrow error when error occurs', async () => {
@@ -106,7 +106,7 @@ function createClaim() {
 
 function createMediation() {
   return new Mediation(
-    mediationExample.individualTelephone,
+    mediationExample.canWeUse,
     mediationExample.mediationDisagreement,
   );
 }

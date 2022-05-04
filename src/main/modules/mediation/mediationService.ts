@@ -10,7 +10,7 @@ const getMediation = async (claimId: string): Promise<Mediation> => {
     const claim = await getCaseDataFromStore(claimId);
     if (!claim.mediation) return new Mediation();
     return new Mediation(
-      claim.mediation.individualTelephone,
+      claim.mediation.canWeUse,
       claim.mediation.mediationDisagreement,
     );
   } catch (error) {

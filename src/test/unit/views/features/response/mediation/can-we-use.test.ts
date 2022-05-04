@@ -18,6 +18,14 @@ const { JSDOM } = jsdom;
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
+const civilClaimResponseMock = require('./noRespondentTelephoneMock.json');
+civilClaimResponseMock.case_data.respondent1.telephoneNumber = '';
+const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(civilClaimResponseMock);
+const mockWithoutRespondentPhone = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithoutRespondentPhone)),
+};
+
 describe('Confirm Mediation Individual Telephone Number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -88,6 +96,26 @@ describe('Repayment Plan View', () => {
         expect(input).toBeDefined();
         expect(labels).toBeDefined();
         expect(labels[2].innerHTML).toContain('Enter the number for a direct line the mediation service can use. We won\'t give the number to anyone else.');
+      });
+    });
+
+    describe('Enter a phone number screen', () => {
+      it('should display header and text note when phone number is not provided', async () => {
+        app.locals.draftStoreClient = mockWithoutRespondentPhone;
+        await request(app).get(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL).then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+          const header = htmlDocument.getElementsByClassName('govuk-heading-l');
+          const paragraph = htmlDocument.getElementsByClassName('govuk-body-m');
+          const input = htmlDocument.getElementsByClassName('govuk-input');
+          const labels = htmlDocument.getElementsByClassName('govuk-label');
+          const buttons = htmlDocument.getElementsByClassName('govuk-button');
+          expect(header[0].innerHTML).toContain('Enter a phone number');
+          expect(paragraph[0].innerHTML).toContain('Enter the number for a direct line the mediation service can use. We won\'t give the number to anyone else.');
+          expect(input).toBeDefined();
+          expect(labels).toBeDefined();
+          expect(buttons[0].innerHTML).toContain('Save and continue');
+        });
       });
     });
   });

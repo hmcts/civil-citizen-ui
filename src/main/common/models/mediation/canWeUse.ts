@@ -1,5 +1,5 @@
 import {YesNo} from '../../form/models/yesNo';
-export interface MediationIndividualTelephoneNumber {
+export interface CanWeUse {
   option?: YesNo;
   telephoneNumber?: string;
 }
