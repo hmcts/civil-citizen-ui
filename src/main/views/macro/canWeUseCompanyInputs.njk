@@ -1,0 +1,39 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
+{% macro canWeUseCompanyInputs(form) %}
+  <div>
+    {{ govukInput({
+      id: "mediationContactPerson",
+      name: "mediationContactPerson",
+      value: form.model.mediationContactPerson,
+      type: "text",
+      classes: "govuk-!-width-one-half",
+      spellcheck: false,
+      label: {
+        text: t("Who should the mediation service call?")
+      },
+      errorMessage: {
+        text:t(form.errorFor('mediationContactPerson'))
+      } if form.hasFieldError('mediationContactPerson')
+    }) }}
+
+    {{ govukInput({
+      id: "mediationPhoneNumber",
+      name: "mediationPhoneNumber",
+      value: form.model.mediationPhoneNumber,
+      type: "text",
+      classes: "govuk-!-width-one-half",
+      spellcheck: false,
+      label: {
+        text: t("Enter this person’s phone number, including extension if required")
+      },
+      hint: {
+        text: t("For example, 02012346788 ext. 153")
+      },
+      errorMessage: {
+        text:t(form.errorFor('mediationPhoneNumber'))
+      } if form.hasFieldError('mediationPhoneNumber')
+    }) }}
+
+  </div>
+{% endmacro %}
