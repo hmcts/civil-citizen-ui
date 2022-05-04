@@ -14,7 +14,8 @@
     },
     "applicant1": {
       "type": "ORGANISATION",
-      "partyName": "Example applicant1 organisation",
+      "partyName": "Mr. Jan Clark",
+      "telephoneNumber": "(0)207 127 0000",
       "primaryAddress": {
         "County": "Kent",
         "Country": "United Kingdom",
@@ -24,8 +25,11 @@
         "AddressLine2": "Caversham House 15-17",
         "AddressLine3": "Church Road"
       },
-      "organisationName": "Example applicant1 organisation",
+      "organisationName": "Example organisation",
       "partyTypeDisplayValue": "Organisation"
+    },
+    "applicantSolicitor1UserDetails": {
+      "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
     },
     "partialAdmission": {
       "howMuchHaveYouPaid": {

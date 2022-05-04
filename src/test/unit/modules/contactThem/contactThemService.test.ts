@@ -1,7 +1,7 @@
 import {CorrespondenceAddress} from '../../../../main/common/models/correspondenceAddress';
 import {Claim} from '../../../../main/common/models/claim';
 import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
-import {getAddress} from '../../../../main/modules/claimantDetails/claimantDetailsService';
+import {getAddress} from '../../../../main/modules/contactThem/contactThemService';
 
 describe('Claimant details service getAddress', () => {
   const PRIMARY_ADDRESS_LINE_1 = 'Berry House';

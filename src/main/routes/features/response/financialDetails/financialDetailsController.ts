@@ -1,8 +1,8 @@
 import * as express from 'express';
 import {
   CITIZEN_BANK_ACCOUNT_URL,
+  CITIZEN_CONTACT_THEM_URL,
   CLAIM_TASK_LIST_URL,
-  CLAIMANT_DETAILS_URL,
   FINANCIAL_DETAILS_URL,
 } from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
@@ -31,7 +31,7 @@ financialDetailsController
     FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
       try {
         const claim: Claim = await getCaseDataFromStore(req.params.id);
-        const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CLAIMANT_DETAILS_URL);
+        const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
         renderView(res, claim, claimantDetailsUrl);
       } catch (error) {
         logger.error(error);
@@ -40,7 +40,7 @@ financialDetailsController
     })
   .post(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
     try {
-      const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CLAIMANT_DETAILS_URL);
+      const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
       const claim: Claim = await getCaseDataFromStore(req.params.id);
       const counterpartyType: CounterpartyType = claim.respondent1.type;
       if (counterpartyType) {
