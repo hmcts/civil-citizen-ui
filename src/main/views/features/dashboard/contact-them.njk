@@ -54,7 +54,7 @@
           </div>
           {{ contactUsForHelp(t) }}
         </div>
-        {{ aboutClaimWidget(header,otherPartyLabel, otherPartyName,reponseLabel, totalClaimAmount) }}
+        {{ aboutClaimWidget({header:header,lines:[{title: 'Claimant name:', href: otherPartyLabel, hrefContact: otherPartyName},{title: 'Claim amount:', content:totalClaimAmount},{title: 'Claim details:', href: claimDetailsUrl, hrefContact: 'View claim'}]}) }}
       </div>
     </main>
   </div>

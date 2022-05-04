@@ -1,11 +1,11 @@
-{% from "./newLine.njk" import newLine %}
+{% from "./new-line.njk" import newLine %}
 
-{% macro aboutClaimWidget(header,otherPartyLabel, otherPartyName, reponseLabel, totalClaimAmount) %}
+{% macro aboutClaimWidget(aboutClaimParams) %}
   {% set hrefOtherPartyLabel = 'contact-them' %}
   <div class="govuk-grid-column-one-third  govuk-!-padding-top-9">
-    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ header }}</h3>
-    {{ newLine('Claimant name:','',otherPartyLabel,otherPartyName) }}
-    {{ newLine('Claim amount:',totalClaimAmount,'','') }}
-    {{ newLine('Claim details:','','claim-details','View claim') }}
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ aboutClaimParams.header }}</h3>
+    {% for claimLine in aboutClaimParams.lines %}
+      {{ newLine(claimLine.title, claimLine.content, claimLine.href, claimLine.hrefContact ) }}
+    {% endfor %}
   </div>
 {% endmacro %}
