@@ -1,13 +1,13 @@
 import * as express from 'express';
-import {NoMediationReason} from '../../../../common/form/models/mediation/noMediationReason';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {Mediation} from '../../../../common/models/mediation/mediation';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {getMediation, saveMediation} from '../../../../modules/mediation/mediationService';
-import {CLAIM_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL} from '../../../urls';
-import NoMediationReasonOptions from '../../../../common/form/models/mediation/noMediationReasonOptions';
+import {NoMediationReason} from '../../../common/form/models/mediation/noMediationReason';
+import {GenericForm} from '../../../common/form/models/genericForm';
+import {Mediation} from '../../../common/models/mediation/mediation';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {getMediation, saveMediation} from '../../../modules/mediation/mediationService';
+import {CLAIM_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL} from '../../urls';
+import NoMediationReasonOptions from '../../../common/form/models/mediation/noMediationReasonOptions';
 
-const iDontWantFreeMediationViewPath = 'features/response/mediation/i-dont-want-free-mediation';
+const iDontWantFreeMediationViewPath = 'features/mediation/i-dont-want-free-mediation';
 const iDontWantFreeMediationController = express.Router();
 
 async function renderView(form: GenericForm<NoMediationReason>, res: express.Response): Promise<void> {
