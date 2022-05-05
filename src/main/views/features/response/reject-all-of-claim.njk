@@ -1,0 +1,61 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+
+{% set heading = t('Why do you believe you don’t owe {{ claimantName }} any money?', { claimantName: claimantName }) %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getAllErrors() %}
+      {% set optionError = form.errorFor("option") %}
+      {% if form.hasErrors() %}
+        {{ govukErrorSummary({
+          "titleText": 'There was a problem',
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ govukRadios({
+              idPrefix: "option",
+              name: "option",
+              items: [
+                {
+                  value: rejectAllOfClaimType.ALREADY_PAID,
+                  checked: true if form.model.option === rejectAllOfClaimType.ALREADY_PAID,
+                  html:'I’ve paid what I believe I owe'
+                },
+                {
+                  value: rejectAllOfClaimType.DISPUTE,
+                  checked: true if form.model.option  === rejectAllOfClaimType.DISPUTE,
+                  html: 'I dispute all of the claim'
+                },
+                {
+                  value: rejectAllOfClaimType.COUNTER_CLAIM,
+                  checked: true if form.model.option  === rejectAllOfClaimType.COUNTER_CLAIM,
+                  html:'I dispute the claim and want to make a counterclaim'
+                }
+              ],
+              errorMessage: { text: optionError } if optionError else ''
+            }) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
