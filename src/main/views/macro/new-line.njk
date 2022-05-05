@@ -1,8 +1,8 @@
 {% macro newLine(title, content, href, hrefContact) %}
   <p class="govuk-body-s govuk-!-margin-bottom-0 govuk-!-font-weight-bold">{{ t(title) }}</p>
   {% if href %}
-    <p class="govuk-body-s govuk-!-margin-bottom-0"><a href={{href}}>{{ hrefContact}}</a></p>
+    <p class="govuk-body-s govuk-!-margin-bottom-0"><a href={{ href }}>{{ t(hrefContact) }}</a></p>
   {% else %}
-    <p class="govuk-body-s govuk-!-margin-bottom-0">{{content}}</p>
+    <p class="govuk-body-s govuk-!-margin-bottom-0">{{ t(content) }}</p>
   {% endif %}
 {% endmacro %}
