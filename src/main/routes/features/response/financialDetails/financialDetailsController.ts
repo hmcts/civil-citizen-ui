@@ -42,7 +42,7 @@ financialDetailsController
     try {
       const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
       const claim: Claim = await getCaseDataFromStore(req.params.id);
-      const counterpartyType: CounterpartyType = claim.respondent1.type;
+      const counterpartyType: CounterpartyType = claim.respondent1?.type;
       if (counterpartyType) {
         if (counterpartyType == CounterpartyType.INDIVIDUAL || counterpartyType == CounterpartyType.SOLE_TRADER) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));

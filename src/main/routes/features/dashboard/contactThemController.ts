@@ -10,7 +10,7 @@ import {CorrespondenceAddress} from '../../../common/models/correspondenceAddres
 const citizenContactThemViewPath = 'features/dashboard/contact-them';
 const contactThemController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
-let logger: winston.Logger = Logger.getLogger('claimantDetailsController');
+let logger: winston.Logger = Logger.getLogger('contactThemController');
 
 
 export function setClaimantDetailsControllerLogger(winstonLogger: winston.Logger) {
