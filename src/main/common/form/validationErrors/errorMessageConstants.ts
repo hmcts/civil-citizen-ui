@@ -61,3 +61,4 @@ export const VALID_CLAIM_NUMBER = 'Enter a claim number';
 export const VALID_AMOUNT = 'Enter a valid amount';
 export const AMOUNT_LESS_THAN_CLAIMED  = 'Enter a value less than the amount claimed';
 export const ENTER_AN_EXPLANATION = 'Enter an explanation of why you can’t pay now';
+export const PHONE_NUMBER_REQUIRED = 'Please enter a phone number';
