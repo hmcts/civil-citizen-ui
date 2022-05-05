@@ -1,18 +1,15 @@
 import {IsDefined, IsIn, MaxLength, ValidateIf} from 'class-validator';
 import NoMediationReasonOptions from './noMediationReasonOptions';
 
-export class ValidationErrors {
-  static readonly OPTION_REQUIRED: string = 'Please select one reason';
-  static readonly TEXT_TOO_LONG: string = 'Reason must be 500 characters or fewer';
-}
+import {OPTION_REQUIRED, TEXT_TOO_LONG} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 export class NoMediationReason {
-  @IsDefined({message: ValidationErrors.OPTION_REQUIRED})
-  @IsIn(Object.values(NoMediationReasonOptions), {message: ValidationErrors.OPTION_REQUIRED})
+  @IsDefined({message: OPTION_REQUIRED})
+  @IsIn(Object.values(NoMediationReasonOptions), {message: OPTION_REQUIRED})
     iDoNotWantMediationReason?: string;
 
   @ValidateIf(o => o.iDoNotWantMediationReason === NoMediationReasonOptions.OTHER)
-  @MaxLength(500, {message: ValidationErrors.TEXT_TOO_LONG})
+  @MaxLength(500, {message: TEXT_TOO_LONG})
     otherReason?: string;
 
   constructor(iDoNotWantMediationReason?: string, otherReason?: string) {
