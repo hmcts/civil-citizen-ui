@@ -60,7 +60,7 @@ mediationIndividualPhoneController.post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
       if (mediationIndividualPhoneForm.hasErrors()) {
         renderView(mediationIndividualPhoneForm, res, req.params.id);
       } else {
-        if (req.body.option == YesNo.YES) {
+        if (req.body.option === YesNo.YES) {
           mediationIndividualPhoneForm.model.telephoneNumber = undefined;
         }
         await saveMediation(req.params.id, mediationIndividualPhoneForm.model, 'canWeUse');
