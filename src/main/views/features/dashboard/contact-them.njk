@@ -16,7 +16,7 @@
       {% set phone = claim.applicant1.telephoneNumber %}
       {% set email = claim.applicantSolicitor1UserDetails.email %}
       {% set contactPerson = claim.applicant1.contactPerson %}
-      {% set heading = 'Contact ' + t(otherParty) %}
+      {% set heading = t('Contact ') + t(otherParty) %}
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <span class="govuk-caption-l  govuk-!-padding-top-0">{{ t(otherParty) }}</span>
@@ -43,11 +43,11 @@
           </div>
           <div>
             {% if phone %}
-              <div class="govuk-body govuk-!-margin-bottom-0">{{ 'Phone: ' }}{{ phone }}</div>
+              <div class="govuk-body govuk-!-margin-bottom-0">{{ t('Phone') +': ' }}{{ phone }}</div>
             {% endif %}
 
             {% if email %}
-              <div class="govuk-body govuk-!-margin-bottom-6">{{ 'Email: ' }}<a
+              <div class="govuk-body govuk-!-margin-bottom-6">{{ t('Email') +': ' }}<a
                   href='mailto:{{ email }}'>{{ email }}</a></div>
             {% endif %}
 

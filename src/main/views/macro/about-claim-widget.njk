@@ -3,7 +3,7 @@
 {% macro aboutClaimWidget(aboutClaimParams) %}
   {% set hrefOtherPartyLabel = 'contact-them' %}
   <div class="govuk-grid-column-one-third  govuk-!-padding-top-9">
-    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ aboutClaimParams.header }}</h3>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t(aboutClaimParams.header) }}</h3>
     {% for claimLine in aboutClaimParams.lines %}
       {{ newLine(claimLine.title, claimLine.content, claimLine.href, claimLine.hrefContact ) }}
     {% endfor %}
