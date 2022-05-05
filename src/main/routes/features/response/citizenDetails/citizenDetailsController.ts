@@ -9,7 +9,7 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {getRespondentInformation, saveRespondent} from '../../../../modules/citizenDetails/citizenDetailsService';
 import _ from 'lodash';
-
+import {CounterpartyType} from '../../../../common/models/counterpartyType';
 
 const citizenDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -17,6 +17,7 @@ const logger = Logger.getLogger('citizenDetailsController');
 
 let citizenFullName: object;
 
+const CITIZEN_DETAILS_COMPANY_VIEW_PATH = 'features/response/citizenDetails/citizen-details-company';
 const CITIZEN_DETAILS_VIEW_PATH = 'features/response/citizenDetails/citizen-details';
 
 function renderPageWithError(res: express.Response, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, errorList: Form, req: express.Request): void {
@@ -59,11 +60,19 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
       individualFirstName: responseDataRedis?.individualFirstName || 'individualFirstName test',
       individualLastName: responseDataRedis?.individualLastName || 'individualLastName test',
     };
-    res.render(CITIZEN_DETAILS_VIEW_PATH, {
+
+    let path = CITIZEN_DETAILS_VIEW_PATH;
+    if(responseDataRedis?.type === CounterpartyType.ORGANISATION || responseDataRedis?.type === CounterpartyType.COMPANY){
+      path = CITIZEN_DETAILS_COMPANY_VIEW_PATH;
+    }
+    res.render(path, {
       citizenFullName: citizenFullName,
       citizenAddress: citizenAddressModel,
       citizenCorrespondenceAddress: citizenCorrespondenceAddressModel,
       postToThisAddress: citizenCorrespondenceAddressModel ? YesNo.YES : YesNo.NO,
+      companyName: responseDataRedis?.companyName, 
+      contactPerson: responseDataRedis?.contactPerson,
+      type: responseDataRedis?.type,
     });
   } catch (error) {
     logger.error(error);
@@ -88,6 +97,9 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
       req.body.correspondenceCity,
       req.body.correspondencePostCode,
     );
+
+    const contactPerson = req.body.contactPerson;
+
     const validator = new Validator();
     const errorList = new Form();
     if (req.body.postToThisAddress === YesNo.YES) {
@@ -102,7 +114,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
       || (citizenCorrespondenceAddress?.errors?.length > 0)) {
       renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req);
     } else {
-      await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress);
+      await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, contactPerson);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
     }
   } catch (error) {
