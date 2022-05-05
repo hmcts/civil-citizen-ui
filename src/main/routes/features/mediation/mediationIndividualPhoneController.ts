@@ -71,5 +71,4 @@ mediationIndividualPhoneController.post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
     }
   });
 
-
 export default mediationIndividualPhoneController;
