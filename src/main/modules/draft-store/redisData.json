@@ -696,7 +696,6 @@
       "respondent1": {
         "type": "COMPANY",
         "companyName": "Version 1",
-        "contactPerson": "Test contact person",
         "partyName": "Example respondent1 organisation",
         "primaryAddress": {
           "County": "Kent",
