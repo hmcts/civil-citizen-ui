@@ -1,22 +1,22 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../main/app';
 import request from 'supertest';
 import {
   CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
-} from '../../../../../../main/routes/urls';
-import { mockCivilClaim } from '../../../../../utils/mockDraftStore';
+} from '../../../../../main/routes/urls';
+import { mockCivilClaim } from '../../../../utils/mockDraftStore';
 import {
   PHONE_NUMBER_REQUIRED,
   VALID_YES_NO_OPTION,
   VALID_TEXT_LENGTH,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 const civilClaimResponseMock = require('./noRespondentTelephoneMock.json');
 civilClaimResponseMock.case_data.respondent1.telephoneNumber = '';

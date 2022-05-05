@@ -47,10 +47,8 @@ import courtOrdersController from './features/response/statementOfMeans/courtOrd
 import whyDoYouDisagreeController from './features/response/admission/partialAdmission/whyDoYouDisagreeController';
 import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
-import mediationIndividualPhoneController from './features/response/mediation/mediationIndividualPhoneController';
+import mediationIndividualPhoneController from './features/mediation/mediationIndividualPhoneController';
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
-import mediationDisagreementController from './features/mediation/mediationDisagreementController';
-import freeTelephoneMediationController from './features/response/mediation/freeTelephoneMediationController';
 
 export default [
   homeController,
@@ -99,6 +97,4 @@ export default [
   regularIncomeController,
   mediationIndividualPhoneController,
   howMuchHaveYouPaidController,
-  mediationDisagreementController,
-  freeTelephoneMediationController,
 ];

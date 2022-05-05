@@ -1,21 +1,21 @@
 import * as express from 'express';
-import {MediationIndividualPhoneNumber} from '../../../../common/form/models/mediation/mediationIndividualPhoneNumber';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {Mediation} from '../../../../common/models/mediation/mediation';
-import { Claim } from '../../../../common/models/claim';
-import { YesNo } from '../../../../common/form/models/yesNo';
-import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFormatter';
-import { getCaseDataFromStore } from '../../../../modules/draft-store/draftStoreService';
+import {MediationIndividualPhoneNumber} from '../../../common/form/models/mediation/mediationIndividualPhoneNumber';
+import {GenericForm} from '../../../common/form/models/genericForm';
+import {Mediation} from '../../../common/models/mediation/mediation';
+import { Claim } from '../../../common/models/claim';
+import { YesNo } from '../../../common/form/models/yesNo';
+import { constructResponseUrlWithIdParams } from '../../../common/utils/urlFormatter';
+import { getCaseDataFromStore } from '../../../modules/draft-store/draftStoreService';
 import {
   getMediation,
   saveMediation,
-} from '../../../../modules/mediation/mediationService';
+} from '../../../modules/mediation/mediationService';
 import {
   CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
   CLAIM_TASK_LIST_URL,
-} from '../../../urls';
+} from '../../urls';
 
-const mediationIndividualPhoneViewPath = 'features/response/mediation/can-we-use';
+const mediationIndividualPhoneViewPath = 'features/mediation/can-we-use';
 const mediationIndividualPhoneController = express.Router();
 
 async function renderView(form: GenericForm<MediationIndividualPhoneNumber>, res: express.Response, claimId: string): Promise<void> {

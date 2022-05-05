@@ -1,24 +1,24 @@
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {
   CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
   CLAIM_TASK_LIST_URL,
-} from '../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+} from '../../../../../main/routes/urls';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {
   PHONE_NUMBER_REQUIRED,
   VALID_YES_NO_OPTION,
   VALID_TEXT_LENGTH,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 
-const civilClaimResponseMock = require('../../../../views/features/response/mediation/noRespondentTelephoneMock.json');
+const civilClaimResponseMock = require('../../../views/features/mediation/noRespondentTelephoneMock.json');
 civilClaimResponseMock.case_data.respondent1.telephoneNumber = '';
 const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(civilClaimResponseMock);
 const mockWithoutRespondentPhone = {
