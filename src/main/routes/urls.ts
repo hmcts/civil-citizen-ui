@@ -44,7 +44,6 @@ export const CITIZEN_PRIORITY_DEBTS_URL = `${STATEMENT_OF_MEANS_URL}/priority-de
 export const CITIZEN_DEBTS_URL = `${STATEMENT_OF_MEANS_URL}/debts`;
 export const CITIZEN_MONTHLY_EXPENSES_URL = `${STATEMENT_OF_MEANS_URL}/monthly-expenses`;
 export const CITIZEN_MONTHLY_INCOME_URL = `${STATEMENT_OF_MEANS_URL}/monthly-income`;
-export const DEBTS_URL = `${STATEMENT_OF_MEANS_URL}/debts`;
 export const TOTAL_AMOUNT_CALCULATION_URL = '/total-income-expense-calculation';
 export const CITIZEN_REPAYMENT_PLAN = `${BASE_CASE_RESPONSE_URL}/full-admission/payment-plan`;
 export const PARTIAL_ADMISSION_URL = `${BASE_CASE_RESPONSE_URL}/partial-admission`;
