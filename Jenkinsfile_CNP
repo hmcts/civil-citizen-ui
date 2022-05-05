@@ -1,45 +1,122 @@
 #!groovy
 
 @Library("Infrastructure")
+import uk.gov.hmcts.contino.AppPipelineConfig
+import uk.gov.hmcts.contino.GithubAPI
 
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
+def generalappCCDBranch = "master"
+
+AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
-  [$class     : 'AzureKeyVaultSecret',
-   secretType : 'Secret',
-   name       : secretName,
-   envVariable: envVariable
-  ]
+    [$class     : 'AzureKeyVaultSecret',
+     secretType : 'Secret',
+     name       : secretName,
+     envVariable: envVariable
+    ]
 }
 
 def secrets = [
-        'civil-${env}'    :[
-                secret('idam-secret', 'IDAM_SECRET')
+        's2s-${env}': [
+                secret('microservicekey-ccd-gw', 'CCD_API_GATEWAY_S2S_SECRET'),
+                secret('microservicekey-ccd-data', 'CCD_DATA_STORE_S2S_SECRET'),
+                secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET')
+        ],
+        'ccd-${env}': [
+                secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET'),
+                secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
+                secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
+                secret('idam-data-store-client-secret','IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET'),
+                secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
+                secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD')
+        ],
+        'civil-${env}': [
+                secret('microservicekey-civil-service', 'S2S_SECRET'),
+                secret('ccd-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
+                secret('ccd-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
+                secret('postgres-user', 'POSTGRES_USER'),
+                secret('postgres-password', 'POSTGRES_PASSWORD')
         ]
 ]
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+def branchesToSync = ['demo', 'perftest']
+
+def checkForFullDeployLabel(branch_name) {
+    return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
+}
+
+def checkForEnableHelmLabel(branch_name) {
+    return new GithubAPI(this).getLabelsbyPattern(branch_name, "enableHelm").contains("enableHelm")
+}
 
 withPipeline(type, product, component) {
-  enableAksStagingDeployment()
-  disableLegacyDeployment()
+    pipelineConf = config
+    disableLegacyDeployment()
+    enableAksStagingDeployment()
+    enableSlackNotifications('#civil_notifications')
+    syncBranchesWithMaster(branchesToSync)
 
-  after('build') {
-    yarnBuilder.yarn('build')
+    onPR {
+        loadVaultSecrets(secrets)
+        if (!checkForEnableHelmLabel(env.BRANCH_NAME)) {
+          enableCleanupOfHelmReleaseOnSuccess();
+        }
+    }
+    onMaster {
+        loadVaultSecrets(secrets)
+    }
+    onDemo {
+        loadVaultSecrets(secrets)
+    }
+
+    before('smoketest:preview') {
+        sh """
+          eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
+          ./bin/add-roles.sh
+          ./bin/pull-latest-release-asset.sh civil-ccd-definition civil-ccd-definition.zip
+          ./bin/pull-latest-release-asset.sh civil-camunda-bpmn-definition civil-camunda-bpmn-definition.zip
+          ./bin/import-ccd-definition.sh "-e *-nonprod.json,*GAspec.json,*DJspec.json,*DJ.json"
+          ./bin/import-bpmn-diagram.sh .
+        """
+        env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
+        env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+        env.CIVIL_SERVICE_URL="http://civil-service-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+        env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+        env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+        env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
+    }
+
+    after('smoketest:preview') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+    }
+
+    before('functionalTest:preview') {
+      env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
+      env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+      env.CIVIL_SERVICE_URL="http://civil-service-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+      env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+      env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+      env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
+    }
+
+  after('functionalTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
   }
 
-  after('smoketest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
+  before('akschartsinstall') {
+      onPR() {
+          if (!checkForFullDeployLabel(env.BRANCH_NAME)) {
+             error("Build failed because there is no label full deploy.")
+          }
+      }
   }
 
   after('smoketest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
-  }
-
-  after('functionalTest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
   }
 
   after('functionalTest:aat') {
