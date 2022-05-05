@@ -61,7 +61,7 @@ mediationIndividualPhoneController.post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
         renderView(mediationIndividualPhoneForm, res, req.params.id);
       } else {
         if (req.body.option == YesNo.YES) {
-          mediationIndividualPhoneForm.model.telephoneNumber = claim.respondent1.telephoneNumber;
+          mediationIndividualPhoneForm.model.telephoneNumber = undefined;
         }
         await saveMediation(req.params.id, mediationIndividualPhoneForm.model, 'canWeUse');
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
