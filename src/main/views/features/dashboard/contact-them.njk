@@ -24,6 +24,9 @@
           <div>
             {% if address %}
               <h2 class="govuk-heading-m">{{ t('Address') }}</h2>
+              {% if solicitorName %}
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ solicitorName }}</p>
+              {% endif %}
               {% if address.AddressLine1 %}
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine1 }}</p>
               {% endif %}

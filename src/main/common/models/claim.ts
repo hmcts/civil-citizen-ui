@@ -15,6 +15,8 @@ export class Claim {
   legacyCaseReference: string;
   applicant1?: Party;
   specApplicantCorrespondenceAddressdetails?: CorrespondenceAddress;
+  applicantSolicitor1ServiceAddress?: CorrespondenceAddress;
+  applicantSolicitor1ClaimStatementOfTruth?: StatementOfTruth;
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
   detailsOfClaim: string;
@@ -48,6 +50,11 @@ export interface Party {
   type: CounterpartyType;
   primaryAddress?: CorrespondenceAddress;
   phoneNumber?: string;
+}
+
+export interface StatementOfTruth {
+  name?: string;
+  role?: string;
 }
 
 
