@@ -8,8 +8,7 @@ export const getRejectAllOfClaim = async (claimId: string): Promise<RejectAllOfC
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (claim.rejectAllOfClaim) {
-      const rejectAllOfClaim = claim.rejectAllOfClaim;
-      return new RejectAllOfClaim(rejectAllOfClaim.option, rejectAllOfClaim.howMuchHaveYouPaid, rejectAllOfClaim.whyDoYouDisagree);
+      return new RejectAllOfClaim(claim.rejectAllOfClaim.option);
     }
     return new RejectAllOfClaim();
   } catch (error) {
@@ -24,7 +23,7 @@ export const saveRejectAllOfClaim = async (claimId: string, form: RejectAllOfCla
     if (!claim.rejectAllOfClaim) {
       claim.rejectAllOfClaim = new RejectAllOfClaim();
     }
-    claim.rejectAllOfClaim = form;
+    claim.rejectAllOfClaim.option = form.option;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(`${error.stack || error}`);

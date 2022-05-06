@@ -27,7 +27,7 @@ rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: expres
     const form = new GenericForm(rejectAllOfClaim);
     form.validateSync();
     if (form.hasErrors()) {
-      res.render(rejectAllOfClaimViewPath, {form});
+      res.render(rejectAllOfClaimViewPath, {form, rejectAllOfClaimType: RejectAllOfClaimType});
     } else {
       await saveRejectAllOfClaim(claimId, rejectAllOfClaim);
       if (req.body.option == RejectAllOfClaimType.COUNTER_CLAIM) {
