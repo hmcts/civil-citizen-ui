@@ -20,6 +20,11 @@ export default class TimelineRow {
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: VALID_TEXT_LENGTH})
     description?: string;
 
+  constructor(date?: string, description?: string) {
+    this.date = date;
+    this.description = description;
+  }
+
   public isEmpty(): boolean {
     return Object.values(this).every(value => value === undefined || value === '' || value === []);
   }
