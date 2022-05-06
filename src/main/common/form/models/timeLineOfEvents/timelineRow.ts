@@ -19,4 +19,12 @@ export default class TimelineRow {
   @IsNotEmpty({message: DESCRIPTION_REQUIRED})
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: VALID_TEXT_LENGTH})
     description?: string;
+
+  public isEmpty (): boolean {
+    return Object.values(this).every(value => value === undefined || value === '' || value === []);
+  }
+
+  isAtLeastOneFieldPopulated (): boolean {
+    return !this.isEmpty();
+  }
 }
