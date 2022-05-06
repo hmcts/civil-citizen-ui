@@ -26,7 +26,7 @@ export const saveRejectAllOfClaim = async (claimId: string, form: RejectAllOfCla
     claim.rejectAllOfClaim.option = form.option;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
-    logger.error(`${error.stack || error}`);
+    logger.error(error);
     throw error;
   }
 };

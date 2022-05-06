@@ -6,7 +6,7 @@ import RejectAllOfClaimType from '../../form/models/rejectAllOfClaimType';
 export class RejectAllOfClaim {
   @IsDefined({message: OPTION_REQUIRED})
   @IsIn(Object.values(RejectAllOfClaimType), {message: OPTION_REQUIRED})
-    option?: string;
+    option: string;
 
   constructor(option?: string) {
     this.option = option;
