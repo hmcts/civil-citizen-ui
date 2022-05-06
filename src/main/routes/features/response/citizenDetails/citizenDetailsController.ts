@@ -70,7 +70,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
       citizenAddress: citizenAddressModel,
       citizenCorrespondenceAddress: citizenCorrespondenceAddressModel,
       postToThisAddress: citizenCorrespondenceAddressModel ? YesNo.YES : YesNo.NO,
-      companyName: responseDataRedis?.companyName, 
+      partyName: responseDataRedis?.partyName, 
       contactPerson: responseDataRedis?.contactPerson,
       type: responseDataRedis?.type,
     });

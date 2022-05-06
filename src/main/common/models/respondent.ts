@@ -12,6 +12,6 @@ export class Respondent {
   dateOfBirth: Date;
   responseType: string;
   type: CounterpartyType;
-  companyName: string;
+  partyName?: string;
   contactPerson?: string;
 }

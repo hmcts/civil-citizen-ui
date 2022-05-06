@@ -37,7 +37,7 @@
             {% if type === 'ORGANISATION' %}
               <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ t('Organisation name') }}</h2>
             {% endif %}
-            <p class="govuk-label govuk-!-margin-bottom-5">{{ companyName }}</p>
+            <p class="govuk-label govuk-!-margin-bottom-5">{{ partyName }}</p>
             {{ govukInput({
               label: { text: t('Contact name (optional)') },
               classes: "govuk-input--width-20",
@@ -63,7 +63,7 @@
                 {{ t('Enter a UK postcode') }}
               </label>
               <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
-                We can’t find an address for that postcode. Try again or enter the address manually.
+                {{ t('We can’t find an address for that postcode. Try again or enter the address manually.') }}
               </div>
               <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
               <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
