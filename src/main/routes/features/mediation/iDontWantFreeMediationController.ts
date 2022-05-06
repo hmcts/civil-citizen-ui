@@ -31,7 +31,7 @@ iDontWantFreeMediationController.post(DONT_WANT_FREE_MEDIATION_URL,
       if (noMediationReasonForm.hasErrors()) {
         renderView(noMediationReasonForm, res);
       } else {
-        if (req.body.disagreeMediationOption != NoMediationReasonOptions.OTHER) {
+        if (req.body.disagreeMediationOption !== NoMediationReasonOptions.OTHER) {
           noMediationReasonForm.model.otherReason = '';
         }
         await saveMediation(req.params.id, noMediationReasonForm.model, 'noMediationReason');
