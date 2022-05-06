@@ -1,6 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% set heading = t('Confirm your details') %}
-{% set addressTitle = t('Organisation adress') if type == 'ORGANISATION' else t('Company adress') %}
+{% set addressTitle = t('Organisation address') if type == 'ORGANISATION' else t('Company address') %}
 
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}

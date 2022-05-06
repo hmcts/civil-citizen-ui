@@ -1,7 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% set heading = t('Confirm your details') %}
 {% set correspondenceAddressClass = '' if postToThisAddress == 'yes' else 'govuk-visually-hidden' %}
-{% set addressTitle = t('Your adress') %}
+{% set addressTitle = t('Your address') %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
