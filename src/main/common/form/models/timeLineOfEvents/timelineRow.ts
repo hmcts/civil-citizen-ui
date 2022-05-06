@@ -5,7 +5,7 @@ import {
   VALID_FREE_TEXT_DATE_LENGTH,
   VALID_TEXT_LENGTH,
 } from '../../validationErrors/errorMessageConstants';
-import {FREE_TEXT_MAX_LENGTH} from 'common/form/validators/validationConstraints';
+import {FREE_TEXT_MAX_LENGTH} from '../../validators/validationConstraints';
 
 export default class TimelineRow {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
@@ -20,11 +20,11 @@ export default class TimelineRow {
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: VALID_TEXT_LENGTH})
     description?: string;
 
-  public isEmpty (): boolean {
+  public isEmpty(): boolean {
     return Object.values(this).every(value => value === undefined || value === '' || value === []);
   }
 
-  isAtLeastOneFieldPopulated (): boolean {
+  isAtLeastOneFieldPopulated(): boolean {
     return !this.isEmpty();
   }
 }
