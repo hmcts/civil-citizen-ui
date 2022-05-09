@@ -31,7 +31,8 @@
       },
       "respondent1": {
         "type": "ORGANISATION",
-        "partyName": "Example respondent1 organisation",
+        "partyName": "Version 1",
+        "contactPerson": "Test contact person",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -702,7 +703,7 @@
       },
       "respondent1": {
         "type": "COMPANY",
-        "partyName": "Example respondent1 organisation",
+        "partyName": "Version 1",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",

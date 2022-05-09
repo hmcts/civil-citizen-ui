@@ -1,13 +1,12 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
-{% macro addressForm(t,citizenAddress = '', addressLine1Error, addressCityError, addressPostCodeError, addressType) %}
-  {% set fieldSetLabel = t('Your address') %}
+{% macro addressForm(t,citizenAddress = '', addressLine1Error, addressCityError, addressPostCodeError, addressType, addressTitle) %}
   {% set fieldSetText = t('If your address is not correct you can change it here. Any changes will be shared with the claimant when you submit your response.') %}
   {% set textInputLabel = t('Building and street') %}
   {% set govukFormGroupError = 'govuk-form-group govuk-form-group--error' if addressLine1Error else '' %}
   {% call govukFieldset({
   legend: {
-    text: fieldSetLabel,
+    text: addressTitle,
     classes: "govuk-fieldset__legend--m" if addressType == 'primary' else "govuk-fieldset__legend--m govuk-visually-hidden" ,
     isPageHeading: true
   }
