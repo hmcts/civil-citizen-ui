@@ -1,9 +1,9 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% macro timelineRow(timelineModel, index, form) %}
-  <div id="row-container govuk-grid-column-two-thirds">
+  <div id="row-container">
     <div class="multiple-row">
-      <div class="govuk-grid-column-one-third govuk-!-display-inline">
+      <div class="govuk-grid-column-one-half govuk-!-display-inline">
         {{ govukInput({
           id: "rows["+index+"][date]",
           name: "rows["+index+"][date]",
@@ -15,7 +15,7 @@
           } if form.hasFieldError( "rows["+index+"][date]")
         }) }}
       </div>
-      <div class="govuk-grid-column-one-third govuk-!-display-inline">
+      <div class="govuk-grid-column-one-half govuk-!-display-inline">
         {{ govukTextarea({
           id: "rows["+index+"][description]",
           name: "rows["+index+"][description]",

@@ -19,21 +19,38 @@
         </div>
       </div>
       <div class="govuk-grid-row">
-        <form method="post" novalidate>
-          {{ csrfProtection(csrf) }}
-          <div class="govuk-grid-column-one-third govuk-!-display-inline">
-            <label class="govuk-label--s">
-              {{ t('Date') }}
-              <span
-                class="govuk-hint">{{ t('For example, {{ oneMonthAgo }}', { oneMonthAgo: 'now' | addDays(-30) | date }) }}</span>
-            </label>
-          </div>
-          <div class="govuk-grid-column-one-third govuk-!-display-inline">
-            <label class="govuk-label--s">{{ t('Description') }}
-              <span class="govuk-hint">{{ t('For example, you might have signed a contract') }}</span>
-            </label>
-          </div>
-        </form>
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <div class="govuk-grid-column-one-half govuk-!-display-inline">
+              <label class="govuk-label--s">
+                {{ t('Date') }}
+                <p class="govuk-hint">
+                  {{ t('For example, {{ sixMonthAgo }}', { sixMonthAgo: 'now' | addDays(-180) | date }) }}
+                </p>
+              </label>
+            </div>
+            <div class="govuk-grid-column-one-half govuk-!-display-inline">
+              <label class="govuk-label--s">{{ t('Description') }}
+                <p class="govuk-hint">{{ t('For example, you might have signed a contract') }}</p>
+              </label>
+            </div>
+            {% for timeline in form.model.rows %}
+              {{ timelineRow(timeline, loop.index0, form) }}
+            {% endfor %}
+            <div class="govuk-grid-column-two-thirds">
+              {{ govukButton({
+                text: t("Add another account"),
+                classes: "govuk-button--secondary append-row"
+              }) }}
+              <div class="govuk-form-group">
+                {{ govukButton({
+                  text: t("Save and continue")
+                }) }}
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </main>
   </div>
