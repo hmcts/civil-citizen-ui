@@ -16,6 +16,19 @@ export const getRejectAllOfClaim = async (claimId: string): Promise<RejectAllOfC
     throw error;
   }
 };
+export const getclaimantName = async (claimId: string): Promise<string> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId);
+    if (claim.respondent1?.type === 'ORGANISATION' || claim.respondent1?.type === 'COMPANY') {
+      return claim.respondent1.partyName;
+    } else if (claim.respondent1?.type === 'INDIVIDUAL' || claim.respondent1?.type === 'SOLE_TRADER') {
+      return claim.respondent1.individualTitle + ' ' + claim.respondent1.individualFirstName + ' ' + claim.respondent1.individualLastName;
+    }
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
 
 export const saveRejectAllOfClaim = async (claimId: string, form: RejectAllOfClaim) => {
   try {

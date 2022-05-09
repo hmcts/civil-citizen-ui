@@ -364,6 +364,9 @@
         "type": "INDIVIDUAL",
         "partyName": "Example respondent1 organisation",
         "telephoneNumber": "(0)207 127 0000",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jhon",
+        "individualLastName": "Smith",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",

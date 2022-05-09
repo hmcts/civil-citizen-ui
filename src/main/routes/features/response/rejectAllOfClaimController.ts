@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {CITIZEN_REJECT_ALL_CLAIM_URL, CLAIM_TASK_LIST_URL, SEND_RESPONSE_BY_EMAIL_URL} from '../../urls';
-import {getRejectAllOfClaim, saveRejectAllOfClaim} from '../../../modules/rejectAllOfClaimService';
+import {getclaimantName, getRejectAllOfClaim, saveRejectAllOfClaim} from '../../../modules/rejectAllOfClaimService';
 
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../common/form/models/genericForm';
@@ -9,12 +9,19 @@ import RejectAllOfClaimType from '../../../common/form/models/rejectAllOfClaimTy
 
 const rejectAllOfClaimViewPath = 'features/response/reject-all-of-claim';
 const rejectAllOfClaimController = express.Router();
+let claimantName = '';
 
 rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: express.Request, res: express.Response) => {
   try {
     const rejectAllOfClaim: RejectAllOfClaim = await getRejectAllOfClaim(req.params.id);
+    claimantName = await getclaimantName(req.params.id);
+
     const form = new GenericForm(rejectAllOfClaim);
-    res.render(rejectAllOfClaimViewPath, {form, rejectAllOfClaimType: RejectAllOfClaimType});
+    res.render(rejectAllOfClaimViewPath, {
+      form,
+      rejectAllOfClaimType: RejectAllOfClaimType,
+      claimantName: claimantName,
+    });
   } catch (error) {
     res.status(500).send({error: error.message});
   }
@@ -27,7 +34,11 @@ rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: expres
     const form = new GenericForm(rejectAllOfClaim);
     form.validateSync();
     if (form.hasErrors()) {
-      res.render(rejectAllOfClaimViewPath, {form, rejectAllOfClaimType: RejectAllOfClaimType});
+      res.render(rejectAllOfClaimViewPath, {
+        form,
+        rejectAllOfClaimType: RejectAllOfClaimType,
+        claimantName: claimantName,
+      });
     } else {
       await saveRejectAllOfClaim(claimId, rejectAllOfClaim);
       if (req.body.option == RejectAllOfClaimType.COUNTER_CLAIM) {
