@@ -3,6 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/hint/macro.njk" import govukHint %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 
@@ -18,6 +19,8 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+          <h2 class="govuk-heading-m">{{ t('I do not agree to free mediation') }}</h2>
+          {{govukHint({text: "You have chosen not to try free mediation. Please tell us why:"})}}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {% set ifOther %}
@@ -38,16 +41,6 @@
             {{ govukRadios({
               idPrefix: "disagreeMediationOption",
               name: "disagreeMediationOption",
-              fieldset: {
-                legend: {
-                  text: t("I do not agree to free mediation"),
-                  isPageHeading: true,
-                  classes: "govuk-fieldset__legend--l"
-                }
-              },
-              hint: {
-                text: "You have chosen not to try free mediation. Please tell us why:"
-              },
               items: [
                 {
                   value: NoMediationReasonOptions.ALREADY_TRIED,
@@ -82,8 +75,8 @@
                 }
               ],
               errorMessage: {
-                text: t(form.errorFor('NoMediationReason'))
-              } if form.hasFieldError('NoMediationReason')
+                text: t(form.errorFor('iDoNotWantMediationReason'))
+              } if form.hasFieldError('iDoNotWantMediationReason')
             }) }}
             <div class="govuk-form-group">
               <a class="govuk-link" href="../response/claim-task-list">
