@@ -42,6 +42,7 @@ import carerController from './features/response/statementOfMeans/carerControlle
 import explanationController from './features/response/statementOfMeans/explanationController';
 import alreadyPaidController from './features/response/admission/partialAdmission/alreadyPaidController';
 import taskListController from './features/response/taskListController';
+import contactThemController from './features/dashboard/contactThemController';
 import howMuchDoYouOweController from './features/response/admission/partialAdmission/howMuchDoYouOweController';
 import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
 import whyDoYouDisagreeController from './features/response/admission/partialAdmission/whyDoYouDisagreeController';
@@ -102,5 +103,6 @@ export default [
   howMuchHaveYouPaidController,
   mediationDisagreementController,
   freeTelephoneMediationController,
+  contactThemController,
   iDontWantFreeMediationController,
 ];
