@@ -707,7 +707,8 @@
           "AddressLine3": "Church Road"
         },
         "organisationName": "Example respondent1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        "partyTypeDisplayValue": "Organisation",
+        "telephoneNumber": "01632960001"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",

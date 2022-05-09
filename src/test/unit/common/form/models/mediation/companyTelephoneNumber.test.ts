@@ -35,7 +35,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const errors = validator.validateSync(form);
     //Then
     expect(errors.length).toBe(1);
-    expect(errors[0].constraints?.maxLength).toBe(TestMessages.TEXT_TOO_LONG);
+    expect(errors[0].constraints?.maxLength).toBe(TestMessages.TEXT_TOO_MANY);
   });
   it('should have no errors when yes is an option but a telephone number is provided', () => {
     //Given
@@ -83,8 +83,8 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const errors = validator.validateSync(form);
     //Then
     expect(errors.length).toBe(2);
-    expect(errors[0].constraints?.maxLength).toBe(TestMessages.TEXT_TOO_LONG);
-    expect(errors[1].constraints?.maxLength).toBe(TestMessages.TEXT_TOO_LONG);
+    expect(errors[0].constraints?.maxLength).toBe(TestMessages.TEXT_TOO_MANY);
+    expect(errors[1].constraints?.maxLength).toBe(TestMessages.TEXT_TOO_MANY);
   });
   it('should have no errors when no is an option when both contact name and number is provided as valid', () => {
     //Given

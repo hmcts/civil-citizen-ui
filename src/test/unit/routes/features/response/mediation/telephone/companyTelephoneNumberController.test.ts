@@ -8,7 +8,7 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraf
 import {
   PHONE_NUMBER_REQUIRED,
   NAME_REQUIRED,
-  TEXT_TOO_LONG,
+  TEXT_TOO_MANY,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
@@ -31,7 +31,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
       await request(app).get(CAN_WE_USE_COMPANY_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Is '+civilClaimResponseMock.case_data.respondent1.organisationName+' the right person for the mediation service to call?');
+          expect(res.text).toContain('Is '+civilClaimResponseMock.case_data.respondent1.contactPerson+' the right person for the mediation service to call?');
         });
     });
     test('should return 500 status code when error occurs', async () => {
@@ -50,7 +50,16 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const validName = 'David';
     const inValidName = 'Daviddaviddaviddaviddaviddavido';
     test('should return error when option is not selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      
+      // applicantTypeMock.case_data.respondent1.type = CounterpartyType.SOLE_TRADER;
+      const soleTraderTypeMock: string = JSON.stringify(civilClaimResponseMock);
+      const mockRedisSoleTrader = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => Promise.resolve(soleTraderTypeMock)),
+      };
+      app.locals.draftStoreClient = mockRedisSoleTrader;
+
+
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
         .send('')
@@ -74,7 +83,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({ option: YesNo.YES, mediationPhoneNumber: null, mediationContactPerson: null, mediationPhoneNumberConfirmation: inValidPhoneNumber })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TEXT_TOO_LONG);
+          expect(res.text).toContain(TEXT_TOO_MANY);
         });
     });
     test('should have errors when no is an option, but no other thing provided', async () => {
@@ -111,7 +120,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({ option: YesNo.NO, mediationPhoneNumber: inValidPhoneNumber, mediationContactPerson: inValidName })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TEXT_TOO_LONG);
+          expect(res.text).toContain(TEXT_TOO_MANY);
         });
     });
     test('should redirect with valid input', async () => {

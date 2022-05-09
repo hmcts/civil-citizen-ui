@@ -32,7 +32,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     it('should display header', async () => {
       const header = htmlDocument.getElementsByClassName('govuk-fieldset__heading');
-      expect(header[0].innerHTML).toContain('Is ' + civilClaimResponseMock.case_data.respondent1.organisationName + ' the right person for the mediation service to call?');
+      expect(header[0].innerHTML).toContain('Is ' + civilClaimResponseMock.case_data.respondent1.contactPerson + ' the right person for the mediation service to call?');
     });
 
     it('should display 2 radio buttons with yes and no options', () => {
@@ -80,7 +80,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
       });
       it('should display "Enter this person’s phone number" text', async () => {
         const paragraph = htmlDocument.getElementsByClassName('govuk-label');
-        expect(paragraph[4].innerHTML).toContain('Enter this person’s phone number, including extension if required.');
+        expect(paragraph[4].innerHTML).toContain('Enter this person’s phone number, including extension if required');
       });
       it('should display input element for "Enter this person’s phone number"', async () => {
         const input = htmlDocument.getElementById('mediationPhoneNumber');
@@ -144,7 +144,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.TEXT_TOO_LONG);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.TEXT_TOO_MANY);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#mediationPhoneNumberConfirmation');
     });
@@ -197,7 +197,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.TEXT_TOO_LONG);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.TEXT_TOO_MANY);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#mediationContactPerson');
     });
@@ -211,7 +211,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(1);
-      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.TEXT_TOO_LONG);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.TEXT_TOO_MANY);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#mediationPhoneNumber');
     });

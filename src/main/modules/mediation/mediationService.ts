@@ -12,6 +12,7 @@ const getMediation = async (claimId: string): Promise<Mediation> => {
     return new Mediation(
       claim.mediation.individualTelephone,
       claim.mediation.mediationDisagreement,
+      claim.mediation.companyTelephoneNumber,
       claim.mediation.noMediationReason,
     );
   } catch (error) {
