@@ -6,6 +6,7 @@ import civilClaimResponseUnemploymentRetired from './mocks/civilClaimResponseUne
 import civilClaimResponseUnemploymentOther from './mocks/civilClaimResponseUnemploymentOtherMock.json';
 import civilClaimResponseApplicantCompany from './mocks/civilClaimResponseApplicantCompanyMock.json';
 import civilClaimResponseApplicantIndividual from './mocks/civilClaimResponseApplicanIndividualMock.json';
+import civilClaimResponseApplicantWithMediation from './mocks/civilClaimResponseApplicanWithMediationMock.json';
 import {Logger} from 'winston';
 
 const mockCivilClaim = {
@@ -32,9 +33,17 @@ const mockCivilClaimUnemploymentOther = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseUnemploymentOther))),
 };
+const mockRedisWithMediationProperties = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantWithMediation))),
+};
 const mockRedisFailure = {
-  set: jest.fn(() => { throw new Error(TestMessages.REDIS_FAILURE); }),
-  get: jest.fn(() => { throw new Error(TestMessages.REDIS_FAILURE); }),
+  set: jest.fn(() => {
+    throw new Error(TestMessages.REDIS_FAILURE);
+  }),
+  get: jest.fn(() => {
+    throw new Error(TestMessages.REDIS_FAILURE);
+  }),
 };
 
 const mockLogger = {
@@ -42,7 +51,7 @@ const mockLogger = {
   info: jest.fn().mockImplementation((message: string) => message),
 } as unknown as Logger;
 
-const mockCivilClaimApplicantCompanyType =  {
+const mockCivilClaimApplicantCompanyType = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantCompany))),
 };
@@ -52,6 +61,16 @@ const mockCivilClaimApplicantIndividualType = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantIndividual))),
 };
 
-export { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockCivilClaimOptionNo,
-  mockCivilClaimUnemploymentRetired, mockCivilClaimUnemploymentOther, mockRedisFailure, mockCivilClaimApplicantCompanyType,
-  mockCivilClaimApplicantIndividualType, mockLogger };
+export {
+  mockCivilClaim,
+  mockCivilClaimUndefined,
+  mockNoStatementOfMeans,
+  mockCivilClaimOptionNo,
+  mockCivilClaimUnemploymentRetired,
+  mockCivilClaimUnemploymentOther,
+  mockRedisFailure,
+  mockCivilClaimApplicantCompanyType,
+  mockCivilClaimApplicantIndividualType,
+  mockLogger,
+  mockRedisWithMediationProperties,
+};
