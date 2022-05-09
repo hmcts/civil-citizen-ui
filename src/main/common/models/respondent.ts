@@ -13,4 +13,5 @@ export class Respondent {
   responseType: string;
   type: CounterpartyType;
   partyName?: string;
+  contactPerson?: string;
 }
