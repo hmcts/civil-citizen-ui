@@ -30,6 +30,8 @@
         "partyTypeDisplayValue": "Organisation"
       },
       "respondent1": {
+        "partyName": "Version 1",
+        "contactPerson": "Felipe Calderon",
         "type": "ORGANISATION",
         "partyName": "Version 1",
         "contactPerson": "Test contact person",

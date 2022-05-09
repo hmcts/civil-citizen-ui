@@ -19,10 +19,7 @@ const filterFormWithSelection = (form: CompanyTelephoneNumber) => {
 export const getCompanyTelephoneNumberData = async (claimId: string): Promise<[string, CompanyTelephoneNumber]> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    // const contactPerson = claim.respondent1?.organisationName;
-    // let telephoneNumberData = new CompanyTelephoneNumber();
-    // TODO: get contact name from respondent1 company details contanctPerson
-    const contactPerson = '';
+    const contactPerson = claim.respondent1?.contactPerson;
     let telephoneNumberData = new CompanyTelephoneNumber();
 
     if (claim.mediation?.companyTelephoneNumber) {

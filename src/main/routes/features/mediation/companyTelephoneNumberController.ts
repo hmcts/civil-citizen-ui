@@ -6,7 +6,7 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {
   getCompanyTelephoneNumberData, saveCompanyTelephoneNumberData,
 } from '../../../modules/mediation/companyTelephoneNumberService';
-import { YesNo } from '../../../common/form/models/yesNo';
+import {YesNo} from '../../../common/form/models/yesNo';
 
 const companyTelephoneNumberController = express.Router();
 const companyTelephoneNumberView = 'features/response/mediation/company-telephone-number';
@@ -14,12 +14,11 @@ const companyTelephoneNumberView = 'features/response/mediation/company-telephon
 function renderForm(form: GenericForm<CompanyTelephoneNumber>, res: express.Response, contactPerson?: string) {
   const companyTelephoneNumber = Object.assign(form);
   companyTelephoneNumber.option = form.model.option;
-  res.render(companyTelephoneNumberView, { form: form, contactPerson });
+  res.render(companyTelephoneNumberView, {form: form, contactPerson: contactPerson} );
 }
 
 companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, async (req, res) => {
   try {
-    // responseDataRedis?.respondent1?.telephoneNumber
     const [contactPerson, telephoneNumberData] = await getCompanyTelephoneNumberData(req.params.id);
     const form = new GenericForm(telephoneNumberData);
     renderForm(form, res, contactPerson);
@@ -35,10 +34,9 @@ companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res) =
 
   if(!contactPerson){
      companyTelephoneNumber = new CompanyTelephoneNumber(YesNo.NO, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
-  }else{
+  } else{
      companyTelephoneNumber = new CompanyTelephoneNumber(option, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
   }
-  // const companyTelephoneNumber = new CompanyTelephoneNumber(option, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
   const form = new GenericForm(companyTelephoneNumber);
   try {
     await form.validate();

@@ -11,8 +11,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-
-      {% if contactName %}
+      {% if contactPerson %}
         {% set title = t("Is CONTACTPERSON the right person for the mediation service to call?") | replace("CONTACTPERSON", contactPerson) %}
       {% else %}
         {% set title = t("Who should the mediation service call?") %}
@@ -55,7 +54,7 @@
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">{{ t(title) }}</h1>
             </legend>
-            {% if contactName %}
+            {% if contactPerson %}
               {{ yesNoRadioButton(t,id,name,'',form,'',{yesHtml:yesHtml, noHtml:noHtml}) }}
             {% else %}
               {{ yesNoRadioButton(t,id,name,'',form,'',{classes:"govuk-!-display-none"}) }}
