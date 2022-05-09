@@ -51,6 +51,7 @@ import mediationIndividualPhoneController from './features/mediation/mediationIn
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
 import mediationDisagreementController from './features/mediation/mediationDisagreementController';
 import freeTelephoneMediationController from './features/response/mediation/freeTelephoneMediationController';
+import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
 
 export default [
   homeController,
@@ -101,4 +102,5 @@ export default [
   howMuchHaveYouPaidController,
   mediationDisagreementController,
   freeTelephoneMediationController,
+  iDontWantFreeMediationController,
 ];

@@ -18,6 +18,7 @@ import {Claim} from '../../../../../../main/common/models/claim';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -34,6 +35,22 @@ const buildClaimOfRespondent = (): Respondent => {
   claim.respondent1.individualTitle = 'individualTitle';
   claim.respondent1.individualFirstName = 'individualFirstName';
   claim.respondent1.individualLastName = 'individualLastName';
+  claim.respondent1.primaryAddress = buildPrimaryAddress();
+  claim.respondent1.correspondenceAddress = buildCorrespondenceAddress();
+  return claim.respondent1;
+};
+
+const buildClaimOfRespondentCompany = (): Respondent => {
+  claim.respondent1 = new Respondent();
+  claim.respondent1.type = CounterpartyType.COMPANY;
+  claim.respondent1.primaryAddress = buildPrimaryAddress();
+  claim.respondent1.correspondenceAddress = buildCorrespondenceAddress();
+  return claim.respondent1;
+};
+
+const buildClaimOfRespondentOrganisation = (): Respondent => {
+  claim.respondent1 = new Respondent();
+  claim.respondent1.type = CounterpartyType.ORGANISATION;
   claim.respondent1.primaryAddress = buildPrimaryAddress();
   claim.respondent1.correspondenceAddress = buildCorrespondenceAddress();
   return claim.respondent1;
@@ -134,6 +151,32 @@ describe('Confirm Details page', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Confirm your details');
+      });
+  });
+
+  test('should return your details company page', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentCompany();
+    });
+    await request(app)
+      .get(CITIZEN_DETAILS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Confirm your details');
+        expect(res.text).toContain('Company name');
+      });
+  });
+
+  test('should return your details organisation page', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentOrganisation();
+    });
+    await request(app)
+      .get(CITIZEN_DETAILS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Confirm your details');
+        expect(res.text).toContain('Organisation name');
       });
   });
 
