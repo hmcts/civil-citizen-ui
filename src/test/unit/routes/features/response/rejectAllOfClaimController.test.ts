@@ -7,7 +7,7 @@ import {
   CLAIM_TASK_LIST_URL,
   SEND_RESPONSE_BY_EMAIL_URL,
 } from '../../../../../main/routes/urls';
-import {OPTION_REQUIRED} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {OPTION_REQUIRED_RESPONSE} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -76,7 +76,7 @@ describe('rejectAllOfClaim', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(OPTION_REQUIRED);
+          expect(res.text).toContain(OPTION_REQUIRED_RESPONSE);
           expect(res.text).toContain('govuk-error-message');
         });
     });
