@@ -45,4 +45,5 @@ export const enum TestMessages {
   TEXT_TOO_LONG = 'You’ve entered too many characters',
   VALID_YES_NO_SELECTION = 'Please select yes or no',
   MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
+  MEDIATION_I_DONT_WANT_FREE = 'I do not agree to free mediation',
 }
