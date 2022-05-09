@@ -33,8 +33,7 @@
         "partyName": "Version 1",
         "contactPerson": "Felipe Calderon",
         "type": "ORGANISATION",
-        "partyName": "Version 1",
-        "contactPerson": "Test contact person",
+       
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
