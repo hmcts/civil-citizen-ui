@@ -1,5 +1,5 @@
 import {FreeMediation} from '../../../common/form/models/mediation/freeMediation';
-import {CanWeUse} from './canWeUse';
+import {CanWeUse} from '../../../common/models/mediation/canWeUse';
 import {NoMediationReason} from '../../../common/form/models/mediation/noMediationReason';
 
 export class Mediation {
