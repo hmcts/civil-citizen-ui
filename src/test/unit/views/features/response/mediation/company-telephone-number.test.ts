@@ -104,7 +104,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     beforeEach(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).post(CAN_WE_USE_COMPANY_URL);
+      const res = await request(app).post(CAN_WE_USE_COMPANY_URL).send({ contactPerson: 'Test contact person' })
       const dom = new JSDOM(res.text);
       htmlDocument = dom.window.document;
     });
@@ -124,7 +124,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     it('should display correct error summary message with correct link for confirm telephone number when yes is an option', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send({ option: YesNo.YES })
+        .send({ option: YesNo.YES, contactPerson: 'Test contact person' })
         .then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -138,7 +138,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     it('should display correct error summary message with correct link for long telephone number when yes is an option', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send({ option: YesNo.YES, mediationPhoneNumberConfirmation : inValidPhoneNumber })
+        .send({ option: YesNo.YES, mediationPhoneNumberConfirmation: inValidPhoneNumber, contactPerson: 'Test contact person' })
         .then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;

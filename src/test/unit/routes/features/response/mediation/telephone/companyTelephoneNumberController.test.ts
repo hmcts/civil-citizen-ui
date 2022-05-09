@@ -50,19 +50,10 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const validName = 'David';
     const inValidName = 'Daviddaviddaviddaviddaviddavido';
     test('should return error when option is not selected', async () => {
-      
-      // applicantTypeMock.case_data.respondent1.type = CounterpartyType.SOLE_TRADER;
-      const soleTraderTypeMock: string = JSON.stringify(civilClaimResponseMock);
-      const mockRedisSoleTrader = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(soleTraderTypeMock)),
-      };
-      app.locals.draftStoreClient = mockRedisSoleTrader;
-
-
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send('')
+        .send({contactPerson : 'Test contact person'})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_YES_NO_OPTION);
@@ -80,7 +71,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     test('should have errors when yes is an option but a long telephone number is provided', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
-        .send({ option: YesNo.YES, mediationPhoneNumber: null, mediationContactPerson: null, mediationPhoneNumberConfirmation: inValidPhoneNumber })
+        .send({ option: YesNo.YES, mediationPhoneNumber: null, mediationContactPerson: null, mediationPhoneNumberConfirmation: inValidPhoneNumber, contactPerson: 'Test contact person' })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TEXT_TOO_MANY);
