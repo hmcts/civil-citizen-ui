@@ -12,11 +12,30 @@
       "version": "4",
       "calculatedAmountInPence": "7000"
     },
+    "applicant1": {
+      "type": "ORGANISATION",
+      "partyName": "Mr. Jan Clark",
+      "telephoneNumber": "(0)207 127 0000",
+      "primaryAddress": {
+        "County": "Kent",
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AA",
+        "PostTown": "Reading",
+        "AddressLine1": "Flat 2",
+        "AddressLine2": "Caversham House 15-17",
+        "AddressLine3": "Church Road"
+      },
+      "organisationName": "Example organisation",
+      "partyTypeDisplayValue": "Organisation"
+    },
+    "applicantSolicitor1UserDetails": {
+      "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
+    },
     "partialAdmission": {
       "howMuchHaveYouPaid": {
         "amount": 20,
         "totalClaimAmount": 110,
-        "date":"2022-01-01T00:00:00.000Z",
+        "date": "2022-01-01T00:00:00.000Z",
         "day": "1",
         "month": "1",
         "year": "2022",
@@ -103,7 +122,7 @@
       "partyName": "Version 1"
     },
     "totalClaimAmount": 110,
-    "paymentOption":"BY_SET_DATE",
-    "paymentDate":"2025-06-01T00:00:00.000Z"
+    "paymentOption": "BY_SET_DATE",
+    "paymentDate": "2025-06-01T00:00:00.000Z"
   }
 }

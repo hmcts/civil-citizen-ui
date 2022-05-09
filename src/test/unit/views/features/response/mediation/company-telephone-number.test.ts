@@ -104,7 +104,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
 
     beforeEach(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).post(CAN_WE_USE_COMPANY_URL).send({ contactPerson: 'Test contact person' })
+      const res = await request(app).post(CAN_WE_USE_COMPANY_URL).send({ contactPerson: 'Test contact person' });
       const dom = new JSDOM(res.text);
       htmlDocument = dom.window.document;
     });

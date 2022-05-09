@@ -29,13 +29,13 @@ companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, async (req, res) =>
 
 companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res) => {
   const { option, mediationContactPerson, mediationPhoneNumber, mediationPhoneNumberConfirmation, contactPerson } = req.body;
-  
+
   let companyTelephoneNumber: CompanyTelephoneNumber = null;
 
   if(!contactPerson){
-     companyTelephoneNumber = new CompanyTelephoneNumber(YesNo.NO, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
+    companyTelephoneNumber = new CompanyTelephoneNumber(YesNo.NO, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
   } else{
-     companyTelephoneNumber = new CompanyTelephoneNumber(option, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
+    companyTelephoneNumber = new CompanyTelephoneNumber(option, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
   }
   const form = new GenericForm(companyTelephoneNumber);
   try {
