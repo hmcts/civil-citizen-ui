@@ -32,14 +32,14 @@
               <label class="govuk-label--s">
                 {{ t('Date') }}
               </label>
-              <p class="govuk-hint govuk-!-margin-bottom-0">
+              <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
                 {{ t('For example, {{ sixMonthAgo }}', { sixMonthAgo: 'now' | addDays(-180) | date }) }}
               </p>
             </div>
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <label class="govuk-label--s govuk-grid-column-full">{{ t('Description') }}</label>
+              <label class="govuk-label--s">{{ t('Description') }}</label>
               <p
-                class="govuk-hint govuk-!-margin-bottom-0">{{ t('For example, you might have signed a contract') }}</p>
+                class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('For example, you might have signed a contract') }}</p>
             </div>
             {% for timeline in form.model.rows %}
               {{ timelineRow(timeline, loop.index0, form) }}

@@ -49,6 +49,7 @@ export const CITIZEN_REPAYMENT_PLAN = `${BASE_CASE_RESPONSE_URL}/full-admission/
 export const PARTIAL_ADMISSION_URL = `${BASE_CASE_RESPONSE_URL}/partial-admission`;
 export const CITIZEN_WHY_DO_YOU_DISAGREE_URL = `${PARTIAL_ADMISSION_URL}/why-do-you-disagree`;
 export const CITIZEN_TIMELINE_URL = `${BASE_CASE_RESPONSE_URL}/timeline`;
+export const CITIZEN_EVIDENCE_URL = `${BASE_CASE_RESPONSE_URL}/evidence`;
 export const CITIZEN_CARER_URL = `${STATEMENT_OF_MEANS_URL}/carer`;
 export const CITIZEN_EXPLANATION_URL = `${STATEMENT_OF_MEANS_URL}/explanation`;
 export const CITIZEN_OWED_AMOUNT_URL = `${BASE_CASE_RESPONSE_URL}/partial-admission/how-much-do-you-owe`;

@@ -1,4 +1,5 @@
 import * as urls from '../../main/routes/urls';
+import {CITIZEN_EVIDENCE_URL} from "../../main/routes/urls";
 
 export const IGNORED_URLS = [
   urls.SIGN_IN_URL,
@@ -64,4 +65,5 @@ export const IGNORED_URLS = [
   urls.CAN_WE_USE_URL,
   urls.CAN_WE_USE_COMPANY_URL,
   urls.CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
+  urls.CITIZEN_EVIDENCE_URL,
 ];
