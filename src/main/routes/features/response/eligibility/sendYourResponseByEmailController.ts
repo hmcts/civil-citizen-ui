@@ -1,22 +1,18 @@
 import * as express from 'express';
-import {MEDIATION_DISAGREEMENT_URL} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {SEND_RESPONSE_BY_EMAIL_URL} from '../../../urls';
 
 const sendYourResponseByEmailViewPath = 'features/response/eligibility/send-your-response-by-email';
 const sendYourResponseByEmailController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('mediationDisagreementController');
+const logger = Logger.getLogger('sendYourResponseByEmailController');
 
-function renderView(form: GenericForm<>, res: express.Response): void {
-  const alreadyPaid = Object.assign(form);
-  alreadyPaid.option = form.model.option;
-  res.render(sendYourResponseByEmailViewPath, {form});
+function renderView(res: express.Response): void {
+  res.render(sendYourResponseByEmailViewPath);
 }
 
-sendYourResponseByEmailController.get(MEDIATION_DISAGREEMENT_URL, async (req, res) => {
+sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res) => {
   try {
-    const freeMediationForm = new GenericForm(new FreeMediation(mediation.mediationDisagreement?.option));
-    renderView(freeMediationForm, res);
+    renderView(res);
   } catch (error) {
     logger.error(error);
     res.status(500).send({error: error.message});

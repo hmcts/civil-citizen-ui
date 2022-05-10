@@ -12,6 +12,7 @@ export const ROOT_URL = '/';
 export const HOME_URL = '/home';
 export const DOB_URL = `${BASE_CASE_RESPONSE_URL}/your-dob`;
 export const AGE_ELIGIBILITY_URL = `${BASE_CASE_RESPONSE_URL}/eligibility/under-18`;
+export const SEND_RESPONSE_BY_EMAIL_URL = `${BASE_CASE_RESPONSE_URL}/eligibility/send-your-response-by-email`;
 export const UNAUTHORISED_URL = '/unauthorised';
 export const CLAIM_DETAILS_URL = `${BASE_CASE_RESPONSE_URL}/claim-details`;
 export const CITIZEN_DETAILS_URL = `${BASE_CASE_RESPONSE_URL}/your-details`;
