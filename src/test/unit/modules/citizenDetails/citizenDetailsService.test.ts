@@ -53,6 +53,7 @@ describe('Citizen details service', () => {
       const respondentResult = new Respondent();
       respondentResult.primaryAddress =  buildPrimaryAddress();
       respondentResult.correspondenceAddress = buildCorrespondenceAddress();
+      respondentResult.contactPerson = '';
       const resultClaim = new Claim();
       resultClaim.respondent1 =  respondentResult;
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');

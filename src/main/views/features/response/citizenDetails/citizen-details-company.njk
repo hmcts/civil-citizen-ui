@@ -1,7 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% set heading = t('Confirm your details') %}
-{% set correspondenceAddressClass = '' if postToThisAddress == 'yes' else 'govuk-visually-hidden' %}
-{% set addressTitle = t('Your address') %}
+{% set addressTitle = t('Organisation address') if type == 'ORGANISATION' else t('Company address') %}
+
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -10,6 +10,7 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/address.njk" import addressForm %}
+
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -29,13 +30,22 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h2 class="govuk-heading-m">{{ t('Title') }}</h2>
-          <p class="govuk-body">{{ citizenFullName.individualTitle }}</p>
-          <h2 class="govuk-heading-m">{{ t('First name') }}</h2>
-          <p class="govuk-body">{{ citizenFullName.individualFirstName }}</p>
-          <h2 class="govuk-heading-m">{{ t('Last name') }}</h2>
-          <p class="govuk-body">{{ citizenFullName.individualLastName }}</p>
           <form method="post" class="govuk-!-padding-top-4" name="address">
+            {% if type === 'COMPANY' %}
+              <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ t('Company name') }}</h2>
+            {% endif %}
+            {% if type === 'ORGANISATION' %}
+              <h2 class="govuk-heading-m govuk-!-margin-top-5">{{ t('Organisation name') }}</h2>
+            {% endif %}
+            <p class="govuk-label govuk-!-margin-bottom-5">{{ partyName }}</p>
+            {{ govukInput({
+              label: { text: t('Contact name (optional)') },
+              classes: "govuk-input--width-20",
+              id: "contactPerson",
+              name: "contactPerson",
+              type: "text",
+              value: contactPerson
+            }) }}
             {{ addressForm(
               t,
               citizenAddress = citizenAddress,
@@ -43,8 +53,7 @@
               addressCityError = addressCityError,
               addressPostCodeError = addressPostCodeError,
               addressType = 'primary',
-              addressTitle = addressTitle
-              ) }}
+              addressTitle= addressTitle) }}
             {% set noHtml %}
             {% endset -%}
             {% set correspondenceAddressHtml %}
@@ -84,39 +93,39 @@
               addressCityError = correspondenceCityError,
               addressPostCodeError = correspondencePostCodeError,
               addressType = 'correspondence',
-              addressTitle = addressTitle
-              ) }}
+              addressTitle= addressTitle) }}
             </div>
             {% endset -%}
             <h2 class="govuk-heading-m">{{ t('Correspondence address') }}</h2>
             {{ govukRadios({
-                  idPrefix: "postToThisAddress",
-                  name: "postToThisAddress",
-                  fieldset: {
-                    legend: {
-                      text: t("Would you like correspondence sent to a different address?"),
-                      isPageHeading: false
-                    }
-                  },
-                  items: [
-                    {
-                      value: "no",
-                      text: t("No"),
-                      checked: true,
-                      conditional: {
-                        html: noHtml
-                      }
-                    },
-                    {
-                      value: "yes",
-                      checked: true if postToThisAddress == 'yes' else false,
-                      text: t("Yes, add a correspondence address"),
-                      conditional: {
-                        html: correspondenceAddressHtml
-                      }
-                    }
-                  ]
-                }) }}
+              idPrefix: "postToThisAddress",
+              name: "postToThisAddress",
+              fieldset: {
+                legend: {
+                  text: t("Would you like correspondence sent to a different address?"),
+                  isPageHeading: false
+                }
+              },
+              items: [
+                {
+                  value: "no",
+                  text: t("No"),
+                  checked: true,
+                  conditional: {
+                    html: noHtml
+                  }
+                },
+                {
+                  value: "yes",
+                  checked: true if postToThisAddress == 'yes' else false,
+                  text: t("Yes, add a correspondence address"),
+                  conditional: {
+                    html: correspondenceAddressHtml
+                  }
+                }
+              ]
+            }) }}
+
             {{ govukButton({
                   text: t("Save and continue")
                 }) }}
