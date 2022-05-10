@@ -62,3 +62,4 @@ export const CAN_WE_USE_URL = `${MEDIATION_URL}/can-we-use`;
 export const CAN_WE_USE_COMPANY_URL = `${MEDIATION_URL}/can-we-use-company`;
 export const CITIZEN_FREE_TELEPHONE_MEDIATION_URL = `${MEDIATION_URL}/free-telephone-mediation`;
 export const CITIZEN_REJECT_ALL_CLAIM_URL = `${BASE_CASE_RESPONSE_URL}/reject-all-of-claim`;
+export const CITIZEN_CONTACT_THEM_URL = `${DASHBOARD_URL}/:id/contact-them`;

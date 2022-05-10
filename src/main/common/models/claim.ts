@@ -8,12 +8,16 @@ import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
+import {CorrespondenceAddress} from './correspondenceAddress';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
 export class Claim {
   legacyCaseReference: string;
-  applicant1?: Individual | Organisation;
+  applicant1?: Party;
+  specApplicantCorrespondenceAddressdetails?: CorrespondenceAddress;
+  applicantSolicitor1ServiceAddress?: CorrespondenceAddress;
+  applicantSolicitor1ClaimStatementOfTruth?: StatementOfTruth;
   totalClaimAmount: number;
   respondent1ResponseDeadline: Date;
   detailsOfClaim: string;
@@ -40,16 +44,17 @@ export class Claim {
   }
 }
 
-export class Individual {
-  individualTitle: string;
-  individualLastName: string;
-  individualFirstName: string;
+export interface Party {
+  individualTitle?: string;
+  individualLastName?: string;
+  individualFirstName?: string;
+  companyName?: string;
   type: CounterpartyType;
+  primaryAddress?: CorrespondenceAddress;
+  phoneNumber?: string;
 }
 
-export class Organisation {
-  individualTitle: string;
-  individualLastName: string;
-  individualFirstName: string;
-  type: CounterpartyType;
+export interface StatementOfTruth {
+  name?: string;
+  role?: string;
 }

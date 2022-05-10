@@ -1,0 +1,15 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% macro telephone(form, param) %}
+  {{ govukInput({
+  id: param.id,
+  name: param.name,
+  type: param.type,
+  autocomplete: param.autocomplete,
+  classes: param.classes,
+  label: {
+    text: param.label
+  },
+  value: form.model.telephoneNumber if form.model.option == 'no' else '',
+  errorMessage: { text: form.errorFor(param.name) } if form.errorFor(param.name) else ''
+}) }}
+{% endmacro %}
