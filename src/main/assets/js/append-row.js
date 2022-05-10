@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       lastRow.parentNode.appendChild(newRow);
       updateNewRow(document.getElementsByClassName('multiple-row'));
-      if (document.getElementsByClassName('civil-amountRow')) {
+      if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
         addCalculationEventListener();
       }
     }
