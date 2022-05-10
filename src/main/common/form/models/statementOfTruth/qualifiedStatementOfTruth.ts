@@ -24,7 +24,7 @@ export class QualifiedStatementOfTruth extends StatementOfTruth {
 
   constructor (signed?: boolean, directionsQuestionnaireSigned?: boolean, signerName?: string, signerRole?: string) {
     super(SignatureType.QUALIFIED, signed, directionsQuestionnaireSigned);
-    this.signerName = signerName;
-    this.signerRole = signerRole;
+    this.signerName = signerName?.trim();
+    this.signerRole = signerRole?.trim();
   }
 }
