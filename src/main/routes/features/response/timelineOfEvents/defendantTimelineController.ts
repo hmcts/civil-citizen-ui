@@ -18,25 +18,25 @@ function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLin
   res.render(defendantTimelineView, {form: form, theirTimeline: theirTimeline});
 }
 
-defendantTimelineController.get(CITIZEN_TIMELINE_URL, async (req, res) => {
-  try {
-    const claim = await getCaseDataFromStore(req.params.id);
-    res.locals.claim = claim;
-    const theirTimeline = claim.timeLineOfEvents;
-    const form = new GenericForm(getPartialAdmitTimeline(claim));
-    renderView(form, theirTimeline, res);
-  } catch (error) {
-    res.status(500).send({error: error.message});
-  }
-});
+defendantTimelineController.get(CITIZEN_TIMELINE_URL,
+  async (req, res) => {
+    try {
+      const claim = await getCaseDataFromStore(req.params.id);
+      const theirTimeline = claim.timelineOfEvents;
+      const form = new GenericForm(getPartialAdmitTimeline(claim));
+      renderView(form, theirTimeline, res);
+    } catch (error) {
+      res.status(500).send({error: error.message});
+    }
+  });
 
 defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res) => {
   try {
     const form = new GenericForm(DefendantTimeline.buildPopulatedForm(req.body.rows, req.body.comment));
     await form.validate();
     if (form.hasErrors()) {
-      const claim = res.locals.claim;
-      renderView(form, claim.timeLineOfEvents, res);
+      const claim = await getCaseDataFromStore(req.params.id);
+      renderView(form, claim.timelineOfEvents, res);
     } else {
       await savePartialAdmitTimeline(req.params.id, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EVIDENCE_URL));

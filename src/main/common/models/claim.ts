@@ -24,7 +24,7 @@ export class Claim {
   paymentDate?: Date;
   partialAdmission?: PartialAdmission;
   mediation?: Mediation;
-  timeLineOfEvents?: TimeLineOfEvents[];
+  timelineOfEvents?: TimeLineOfEvents[];
 
 
   formattedResponseDeadline(): string {
