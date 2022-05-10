@@ -22,8 +22,11 @@ export class DefendantTimeline {
     return new DefendantTimeline(DefendantTimeline.addRemainingRows([]));
   }
 
-  public static buildPopulatedForm(timelineOfEvents: TimelineRow[], comment?: string): DefendantTimeline {
-    return new DefendantTimeline(DefendantTimeline.addRemainingRows(timelineOfEvents), comment);
+  public static buildPopulatedForm(timelineOfEvents: [], comment?: string): DefendantTimeline {
+    return new DefendantTimeline(DefendantTimeline.addRemainingRows(
+      timelineOfEvents.map((timeline: TimelineRow) => {
+        return TimelineRow.buildPopulatedForm(timeline.date, timeline.description);
+      })), comment);
   }
 
   private static addRemainingRows(timelineOfEvents: TimelineRow[]): TimelineRow[] {

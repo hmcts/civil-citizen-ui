@@ -5,6 +5,9 @@ import {DefendantTimeline} from '../../../../common/form//models/timeLineOfEvent
 
 const defendantTimelineController = express.Router();
 const defendantTimelineView = 'features/response/timelineOfEvents/defendant-timeline';
+const {Logger} = require('@hmcts/nodejs-logging');
+
+const logger = Logger.getLogger('defendantTimelineController');
 
 function renderView(form: GenericForm<DefendantTimeline>, res: express.Response) {
   res.render(defendantTimelineView, {form: form});
@@ -13,6 +16,19 @@ function renderView(form: GenericForm<DefendantTimeline>, res: express.Response)
 defendantTimelineController.get(CITIZEN_TIMELINE_URL, (req, res) => {
   const form = new GenericForm(DefendantTimeline.buildEmptyForm());
   renderView(form, res);
+});
+
+defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res) => {
+  try {
+    const form = new GenericForm(DefendantTimeline.buildPopulatedForm(req.body.rows, req.body.comment));
+    await form.validate();
+    if (form.hasErrors()) {
+      renderView(form, res);
+    }
+  } catch (error) {
+    logger.error(error);
+    res.status(500).send({error: error.message});
+  }
 });
 
 export default defendantTimelineController;

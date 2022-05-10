@@ -25,6 +25,10 @@ export default class TimelineRow {
     this.description = description;
   }
 
+  public static buildPopulatedForm(date: string, description: string): TimelineRow {
+    return new TimelineRow(date, description);
+  }
+
   public isEmpty(): boolean {
     return Object.values(this).every(value => value === undefined || value === '' || value === []);
   }
