@@ -105,4 +105,6 @@ export default [
   mediationDisagreementController,
   freeTelephoneMediationController,
   sendYourResponseByEmailController,
+  iDontWantFreeMediationController,
+  contactThemController,
 ];
