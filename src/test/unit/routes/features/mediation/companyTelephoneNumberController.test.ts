@@ -1,21 +1,21 @@
-import {app} from '../../../../../../../main/app';
+import {app} from '../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from '../../../../../main/routes/urls';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {
   PHONE_NUMBER_REQUIRED,
   NAME_REQUIRED,
   TEXT_TOO_MANY,
   VALID_YES_NO_OPTION,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
-import civilClaimResponseMock from '../../../../../../../test/utils/mocks/civilClaimResponseMock.json';
+} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Mediation - Company or Organisation - Confirm telephone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

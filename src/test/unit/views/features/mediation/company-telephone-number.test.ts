@@ -1,18 +1,18 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../main/app';
 import request from 'supertest';
-import {CAN_WE_USE_COMPANY_URL} from '../../../../../../main/routes/urls';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import civilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {CAN_WE_USE_COMPANY_URL} from '../../../../../main/routes/urls';
+import {mockCivilClaim} from '../../../../utils/mockDraftStore';
+import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {YesNo} from '../../../../../main/common/form/models/yesNo';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Mediation - Company or Organisation - Confirm telephone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

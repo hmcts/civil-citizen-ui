@@ -52,7 +52,7 @@ import mediationIndividualPhoneController from './features/mediation/mediationIn
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
 import companyTelephoneNumberController from './features/mediation/companyTelephoneNumberController';
 import mediationDisagreementController from './features/mediation/mediationDisagreementController';
-import freeTelephoneMediationController from './features/response/mediation/freeTelephoneMediationController';
+import freeTelephoneMediationController from './features/mediation/freeTelephoneMediationController';
 import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
 
 export default [

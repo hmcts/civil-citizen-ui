@@ -9,7 +9,7 @@ import {
 import {YesNo} from '../../../common/form/models/yesNo';
 
 const companyTelephoneNumberController = express.Router();
-const companyTelephoneNumberView = 'features/response/mediation/company-telephone-number';
+const companyTelephoneNumberView = 'features/mediation/company-telephone-number';
 
 function renderForm(form: GenericForm<CompanyTelephoneNumber>, res: express.Response, contactPerson?: string) {
   const companyTelephoneNumber = Object.assign(form);
