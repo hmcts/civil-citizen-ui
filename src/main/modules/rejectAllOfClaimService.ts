@@ -19,10 +19,11 @@ export const getRejectAllOfClaim = async (claimId: string): Promise<RejectAllOfC
 export const getclaimantName = async (claimId: string): Promise<string> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    if (claim.respondent1?.type === 'ORGANISATION' || claim.respondent1?.type === 'COMPANY') {
-      return claim.respondent1.partyName;
-    } else if (claim.respondent1?.type === 'INDIVIDUAL' || claim.respondent1?.type === 'SOLE_TRADER') {
-      return claim.respondent1.individualTitle + ' ' + claim.respondent1.individualFirstName + ' ' + claim.respondent1.individualLastName;
+    if (claim.applicant1?.type === 'ORGANISATION' || claim.applicant1?.type === 'COMPANY') {
+      return claim.applicant1.companyName;
+    } else if ((claim.applicant1?.type === 'INDIVIDUAL' || claim.applicant1?.type === 'SOLE_TRADER')
+      && (claim.applicant1?.individualTitle && claim.applicant1?.individualFirstName && claim.applicant1?.individualLastName)) {
+      return claim.applicant1.individualTitle + ' ' + claim.applicant1.individualFirstName + ' ' + claim.applicant1.individualLastName;
     }
   } catch (error) {
     logger.error(error);

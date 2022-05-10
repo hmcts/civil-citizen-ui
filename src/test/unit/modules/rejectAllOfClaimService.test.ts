@@ -7,13 +7,11 @@ import * as draftStoreService from '../../../main/modules/draft-store/draftStore
 import {Claim} from '../../../main/common/models/claim';
 import rejectAllOfClaimType from '../../../main/common/form/models/rejectAllOfClaimType';
 import {RejectAllOfClaim} from '../../../main/common/form/models/rejectAllOfClaim';
-import {Respondent} from '../../../main/common/models/respondent';
 import {CounterpartyType} from '../../../main/common/models/counterpartyType';
 import {TestMessages} from '../../utils/errorMessageTestConstants';
 
 jest.mock('../../../main/modules/draft-store');
 jest.mock('../../../main/modules/draft-store/draftStoreService');
-
 describe('rejectAllOfClaim service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   describe('get rejectAllOfClaim form model', () => {
@@ -64,8 +62,8 @@ describe('rejectAllOfClaim service', () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const claim = createClaim();
-      if (claim.respondent1?.type) {
-        claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+      if (claim.applicant1?.type) {
+        claim.applicant1.type = CounterpartyType.INDIVIDUAL;
       }
       mockGetCaseData.mockImplementation(async () => {
         return claim;
@@ -106,11 +104,13 @@ describe('rejectAllOfClaim service', () => {
 function createClaim() {
   const claim = new Claim();
   claim.rejectAllOfClaim = new RejectAllOfClaim(rejectAllOfClaimType.ALREADY_PAID);
-  claim.respondent1 = new Respondent();
-  claim.respondent1.type = CounterpartyType.ORGANISATION;
-  claim.respondent1.partyName = 'Test';
-  claim.respondent1.individualTitle = 'Mr.';
-  claim.respondent1.individualFirstName = 'TestName';
-  claim.respondent1.individualLastName = 'TestLastName';
+  claim.applicant1 = {
+    type: CounterpartyType.ORGANISATION,
+    companyName: 'Test',
+    individualTitle: 'Mr.',
+    individualFirstName: 'TestName',
+    individualLastName: 'TestLastName',
+  };
+
   return claim;
 }
