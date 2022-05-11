@@ -14,17 +14,19 @@ const getPartialAdmitTimeline = (claim: Claim): DefendantTimeline => {
 };
 
 const savePartialAdmitTimeline = async (claimId: string, timeline: DefendantTimeline) => {
-  try {
-    const claim = await getCaseDataFromStore(claimId);
-    if (!claim.partialAdmission) {
-      claim.partialAdmission = new PartialAdmission();
+  if (timeline.isNotEmpty()) {
+    try {
+      const claim = await getCaseDataFromStore(claimId);
+      if (!claim.partialAdmission) {
+        claim.partialAdmission = new PartialAdmission();
+      }
+      timeline.filterOutEmptyRows();
+      claim.partialAdmission.timeline = timeline;
+      await saveDraftClaim(claimId, claim);
+    } catch (error) {
+      logger.error(error);
+      throw error;
     }
-    timeline.filterOutEmptyRows();
-    claim.partialAdmission.timeline = timeline;
-    await saveDraftClaim(claimId, claim);
-  } catch (error) {
-    logger.error(error);
-    throw error;
   }
 };
 

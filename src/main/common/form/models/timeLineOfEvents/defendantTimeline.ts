@@ -39,6 +39,11 @@ export class DefendantTimeline {
     return timelineOfEvents.concat(additionalRows);
   }
 
+  isNotEmpty(): boolean {
+    this.filterOutEmptyRows();
+    return this.rows.length > 0 || (this.comment !== undefined && this.comment !== '');
+  }
+
   filterOutEmptyRows() {
     if (this.rows?.length) {
       this.rows = this.rows.filter(row => row.isAtLeastOneFieldPopulated());
