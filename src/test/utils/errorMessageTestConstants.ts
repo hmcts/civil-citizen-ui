@@ -41,4 +41,6 @@ export const enum TestMessages {
   AMOUNT_LESS_THAN_CLAIMED = 'Enter a value less than the amount claimed',
   MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
   MEDIATION_I_DONT_WANT_FREE = 'I do not agree to free mediation',
+  SEND_YOUR_RESPONSE_BY_EMAIL = 'Post your response',
+
 }

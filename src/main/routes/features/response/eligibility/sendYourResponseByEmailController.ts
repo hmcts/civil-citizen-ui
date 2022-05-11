@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {SEND_RESPONSE_BY_EMAIL_URL} from '../../../urls';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../../common/models/claim';
 import {ResponseType} from '../../../../common/form/models/responseType';
 //import {RejectAllOfClaimType} from '../../../../common/form/models/rejectAllOfClaimType';
