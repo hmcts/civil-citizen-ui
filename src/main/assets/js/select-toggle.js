@@ -1,7 +1,7 @@
 /*
   Select Menu Toggle for expandable panel
-   - Wrap select menu an panel in a DIV with class 'select-toggle'.
-   - Use class 'panel' and 'panel-border-narrow' (optional) for left border.
+   - Wrap select menu and the panel in a DIV with class 'select-toggle'.
+   - Use class 'panel' and 'panel-border-narrow' (optional : for left border).
 
   Example :
   --------------------

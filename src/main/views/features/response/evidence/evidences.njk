@@ -30,13 +30,11 @@
             <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
             <p class="govuk-body-m">{{ paragraph }}</p>
             <div data-module="moj-add-another" class="select-toggle">
-              {% if form.model.evidenceItem === undefined %}
-                {{ evidence(0, '', '', description) }}
+              {% for row in form.model.evidenceItem %}
+                {{ evidence(loop.index0, row, form.errorFor, description) }}
               {% else %}
-                {% for row in form.model.evidenceItem %}
-                  {{ evidence(loop.index0, row, form.errorFor, description) }}
-                {% endfor %}
-              {% endif %}
+                {{ evidence(0, '', '', description) }}
+              {% endfor %}
               <div class="moj-button-action">
                 {{ govukButton({
                     text: t('Add more evidence'),
