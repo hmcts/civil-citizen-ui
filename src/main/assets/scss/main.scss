@@ -2,6 +2,7 @@
 @import './task-list';
 
 .moj-add-another {
+
   // sass-lint:disable class-name-format
   &__remove-button {
     display: none;
@@ -19,4 +20,16 @@
   cursor: pointer;
   margin-bottom: 1em;
   text-decoration: underline;
+}
+
+$light-grey: #bfc1c3;
+
+.panel {
+  border-left: 1px solid $light-grey;
+  margin-bottom: 1em;
+  padding: 1em;
+}
+
+.panel-border-narrow {
+  border-left-width: 5px;
 }

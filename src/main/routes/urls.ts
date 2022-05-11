@@ -60,3 +60,5 @@ export const DONT_WANT_FREE_MEDIATION_URL = `${MEDIATION_URL}/i-dont-want-free-m
 export const CAN_WE_USE_URL = `${MEDIATION_URL}/can-we-use`;
 export const CAN_WE_USE_COMPANY_URL = `${MEDIATION_URL}/can-we-use-company`;
 export const CITIZEN_FREE_TELEPHONE_MEDIATION_URL = `${MEDIATION_URL}/free-telephone-mediation`;
+export const EVIDENCE_URL = `${BASE_CASE_RESPONSE_URL}/evidence`;
+export const IMPACT_OF_DISPUTE_URL = `${BASE_CASE_RESPONSE_URL}/impact-of-dispute`;
