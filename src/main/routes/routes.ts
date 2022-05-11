@@ -52,11 +52,8 @@ import mediationIndividualPhoneController from './features/mediation/mediationIn
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
 import mediationDisagreementController from './features/mediation/mediationDisagreementController';
 import freeTelephoneMediationController from './features/response/mediation/freeTelephoneMediationController';
-<<<<<<< HEAD
-import evidenceController from './features/response/evidence/evidenceController';
-=======
 import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
->>>>>>> master
+import evidenceController from './features/response/evidence/evidenceController';
 
 export default [
   homeController,
@@ -107,10 +104,7 @@ export default [
   howMuchHaveYouPaidController,
   mediationDisagreementController,
   freeTelephoneMediationController,
-<<<<<<< HEAD
-  evidenceController,
-=======
   contactThemController,
   iDontWantFreeMediationController,
->>>>>>> master
+  evidenceController,
 ];
