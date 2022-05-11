@@ -8,7 +8,7 @@
 {% from "../../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "../../../macro/contact-us.njk" import contactUs %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 {% set heading = 'Post your response' %}
 
@@ -20,60 +20,73 @@
       {% set pdfAdmission = t('Download admission form (PDF, 102 KB)') %}
       {% set pdfDefence = t('Download defence form (PDF, 76 KB)') %}
       {% set supportEmailAddress = 'civilmoneyclaimsaat@gmail.com' %}
+      {% set responseDeadline = form.formattedResponseDeadline() %}
+
+      {% if form.applicant1.type === CounterpartyType.INDIVIDUAL or form.applicant1.type === CounterpartyType.SOLE_TRADER  %}
+        {% set claimantName = form.applicant1.individualTitle+' '+form.applicant1.individualFirstName+' '+form.applicant1.individualLastName %}
+      {% else %}
+        {% set claimantName = form.applicant1.companyName %}
+      {% endif %}
+      {% if form.respondent1.type === CounterpartyType.ORGANISATION or form.respondent1.type === CounterpartyType.COMPANY  %}
+        {% set defendantName = form.respondent1.partyName %}
+      {% else %}
+        {% set defendantName = form.respondent1.individualTitle+' '+form.respondent1.individualFirstName+' '+form.respondent1.individualLastName %}
+      {% endif %}
+
+      {% set insetText =  t('We need to receive your response before <span class="govuk-body govuk-!-font-weight-bold">4pm on {{ deadline }}</span>. You could get a County Court Judgment against you if you miss the deadline.',
+        { deadline: responseDeadline})|safe %}
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           {{ csrfProtection(csrf) }}
           <h1 class="govuk-heading-l govuk-!-margin-bottom-1">{{header}}</h1>
-          <p class="govuk-body">{{ t('We need to receive your response before <span class="bold">4pm on {{ responseDeadline }}</span>. You could get a County Court Judgment against you if you miss the deadline.',
-              { responseDeadline: claim.responseDeadline }) | safe }}</p>
+          <div class="govuk-inset-text">
+          <p class="govuk-body">{{ t('We need to receive your response before <span class="govuk-body govuk-!-font-weight-bold">4pm on {{ deadline }}</span>. You could get a County Court Judgment against you if you miss the deadline.',
+              { deadline: responseDeadline }) | safe }}</p>
+          </div>
 
           <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t('Follow these steps') }}</h2>
           <ul class="govuk-list--number">
             <li class="govuk-body">
-              {% if draft.response.type === ResponseType.FULL_ADMISSION %}
-                {{ t('Download the <span class="bold-small">admission form.</span>') | safe }}
+              {% if form.response.type === ResponseType.FULL_ADMISSION %}
+                {{ t('Download the <span class="govuk-body govuk-!-font-weight-bold">admission form.</span>') | safe }}
               {% endif %}
-              {% if draft.response.type === ResponseType.PART_ADMISSION %}
-                {{ t('Download the <span class="bold-small">admission form</span> and the <span class="bold-small">defence form</span>') | safe }}
+              {% if form.response.type === ResponseType.PART_ADMISSION %}
+                {{ t('Download the <span class="govuk-body govuk-!-font-weight-bold">admission form</span> and the <span class="govuk-body govuk-!-font-weight-bold">defence form</span>') | safe }}
               {% endif %}
-              {% if draft.response.type === ResponseType.DEFENCE %}
-                {% if draft.rejectAllOfClaim.option === RejectAllOfClaimOption.COUNTER_CLAIM %}
-                  {{ t('Download the <span class="bold-small">defence and counterclaim form.</span>') | safe }}
+              {% if form.response.type === ResponseType.DEFENCE %}
+                {% if form.rejectAllOfClaim.option === RejectAllOfClaimOption.COUNTER_CLAIM %}
+                  {{ t('Download the <span class="govuk-body govuk-!-font-weight-bold">defence and counterclaim form.</span>') | safe }}
                 {% else %}
-                  {{ t('Download the <span class="bold-small">admission form</span> and the <span class="bold-small">defence form</span>') | safe }}
+                  {{ t('Download the <span class="govuk-body govuk-!-font-weight-bold">admission form</span> and the <span class="govuk-body govuk-!-font-weight-bold">defence form</span>') | safe }}
                 {% endif %}
               {% endif %}
             </li>
 
-            {% if draft.response.type === ResponseType.FULL_ADMISSION %}
+            {% if form.response.type === ResponseType.FULL_ADMISSION %}
               <li class="govuk-body">{{ t('Print and complete the form') }}</li>
             {% endif %}
-            {% if draft.response.type === ResponseType.PART_ADMISSION %}
+            {% if form.response.type === ResponseType.PART_ADMISSION %}
               <li class="govuk-body">{{ t('Print and complete the forms (ignore section 4 of the defence form unless you’re making a counterclaim).') }}</li>
             {% endif %}
-            {% if draft.response.type === ResponseType.DEFENCE %}
-              {% if draft.rejectAllOfClaim.option === RejectAllOfClaimOption.COUNTER_CLAIM %}
+            {% if form.response.type === ResponseType.DEFENCE %}
+              {% if form.rejectAllOfClaim.option === RejectAllOfClaimOption.COUNTER_CLAIM %}
                 <li class="govuk-body">{{ t('Print and complete the form') }}</li>
-              {% elseif draft.rejectAllOfClaim.option === RejectAllOfClaimOption.ALREADY_PAID %}
+              {% elseif form.rejectAllOfClaim.option === RejectAllOfClaimOption.ALREADY_PAID %}
                 <li class="govuk-body">{{ t('Print and complete the forms (ignore section 4 of the defence form unless you’re making a counterclaim).') }}</li>
               {% endif %}
             {% endif %}
-            <li class="govuk-body">{{ t('Post the forms to:') }}</li>
+            <li class="govuk-body">{{ t('Post the forms to') }}:</li>
           </ul>
 
-
-
-
-
           {% if signPosting %}
-            <div class="keep-formatting panel">{{ t('HMCTS CMC') }}
+            <div class="govuk-inset-text govuk-grid-column-one-third">{{ t('HMCTS CMC') }}
               {{ t('PO Box 12747') }}
               {{ t('Harlow') }}
               {{ t('CM20 9RA') }}
             </div>
           {% else %}
-            <div class="keep-formatting panel">{{ t('Civil Money Claims') }}
+            <div class="govuk-inset-text govuk-grid-column-one-third">{{ t('Civil Money Claims') }}
               {{ t('St. Katharine`s House') }}
               {{ t('21-27 St. Katharine`s Street') }}
               {{ t('Northampton') }}
@@ -81,27 +94,25 @@
              </div>
           {% endif %}
 
-
-
-
-      <p class="govuk-body">{{ t('You can also email completed forms to {{ supportEmailAddress }}', { supportEmailAddress: supportEmailAddress }) }}</p>
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-4">{{ t('Download and complete the form') }}</h2>
-
+          <div class="govuk-!-display-inline-block">
+            <p class="govuk-body">{{ t('You can also email completed forms to {{ supportEmailAddress }}', { supportEmailAddress: supportEmailAddress }) }}</p>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-4">{{ t('Download and complete the form') }}</h2>
+        </div>
       {% if draft.response.type === ResponseType.DEFENCE %}
-        {% if draft.rejectAllOfClaim.option === RejectAllOfClaimOption.COUNTER_CLAIM %}
-          <a class="govuk-link" href=''>{{ pdfDefenceAndClaim }}</a>
-        {% elseif draft.rejectAllOfClaim.option === RejectAllOfClaimOption.ALREADY_PAID %}
-          <a class="govuk-link" href=/OCON9A.pdf>{{ pdfAdmission }}</a>
-          <a class="govuk-link" href='/OCON9B.pdf'>{{ pdfDefence}} </a>
+        {% if form.rejectAllOfClaim.option === RejectAllOfClaimType.COUNTER_CLAIM %}
+          <a target="_blank" rel="noreferrer noopener"  class="govuk-link" href=/src/main/public/pdf/OCON9A.pdf>{{ pdfDefenceAndClaim }}<span>{{ t('(opens in a new window)') }}</span></a>
+        {% elseif form.rejectAllOfClaim.option === RejectAllOfClaimType.ALREADY_PAID %}
+          <a target="_blank" rel="noreferrer noopener"  class="govuk-link" href=/src/main/public/pdf/OCON9A.pdf>{{ pdfAdmission }}<span>{{ t('(opens in a new window)') }}</span></a>
+          <a target="_blank" rel="noreferrer noopener"  class="govuk-link" href=/src/main/public/pdf/OCON9B.pdf>{{ pdfDefence}}<span>{{ t('(opens in a new window)') }}</span></a>
         {% endif %}
       {% endif %}
 
       <p class="govuk-body govuk-!-margin-top-4">{{t('Use these details when completing the form')}}:</p>
 
       <ul class="govuk-list--bullet">
-        <li class="govuk-body">{{ t('Claim number {{ claimNumber }}', { claimNumber: claim.claimNumber }) }}</li>
-        <li class="govuk-body">{{ t('Claimant {{ claimantName }}', { claimantName: claim.claimData.claimant.name}) }}</li>
-        <li class="govuk-body">{{ t('Defendant {{ defendantName }}', { defendantName: claim.claimData.defendant.name}) }}</li>
+        <li class="govuk-body">{{ t('Claim number {{ claimNumber }}', { claimNumber: form.legacyCaseReference }) }}</li>
+        <li class="govuk-body">{{ t('Claimant {{ claimantName }}', { claimantName: claimantName}) }}</li>
+        <li class="govuk-body">{{ t('Defendant {{ defendantName }}', { defendantName: defendantName}) }}</li>
       </ul>
 
       {% if draft.response.type === ResponseType.DEFENCE %}

@@ -17,6 +17,7 @@
       "applicant1": {
         "type": "ORGANISATION",
         "partyName": "Example applicant1 organisation",
+        "companyName": "Example applicant1 organisation",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
