@@ -1,0 +1,64 @@
+{% extends "../../claim-details-tpl.njk" %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/about-claim-widget.njk" import aboutClaimWidget %}
+{% block content %}
+  {{ govukBackLink({
+    text: "Back",
+    href: backUrl
+  }) }}
+  <div class="govuk-width-container govuk-!-padding-top-0">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      {% set otherParty = 'Claimant' %}
+      {% set otherPartyLabel = 'contact-them' %}
+      {% set header = t('About claim') %}
+      {% set otherPartyName = claim.applicant1.partyName %}
+      {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
+      {% set phone = claim.applicant1.telephoneNumber %}
+      {% set email = claim.applicantSolicitor1UserDetails.email %}
+      {% set contactPerson = claim.applicant1.contactPerson %}
+      {% set heading = t('Contact ') + t(otherParty) %}
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          <span class="govuk-caption-l  govuk-!-padding-top-0">{{ t(otherParty) }}</span>
+          <h1 class="govuk-heading-l govuk-!-margin-bottom-6">{{ t(otherPartyName) }}</h1>
+          <div>
+            {% if address %}
+              <h2 class="govuk-heading-m">{{ t('Address') }}</h2>
+              {% if solicitorName %}
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ solicitorName }}</p>
+              {% endif %}
+              {% if address.AddressLine1 %}
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine1 }}</p>
+              {% endif %}
+              {% if address.AddressLine2 %}
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine2 }}</p>
+              {% endif %}
+              {% if address.AddressLine3 %}
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.AddressLine3 }}</p>
+              {% endif %}
+              {% if address.County %}
+                <p class="govuk-body govuk-!-margin-bottom-0">{{ address.County }}</p>
+              {% endif %}
+              {% if address.PostCode %}
+                <p class="govuk-body govuk-!-margin-bottom-6">{{ address.PostCode }}</p>
+              {% endif %}
+            {% endif %}
+          </div>
+          <div>
+            {% if phone %}
+              <div class="govuk-body govuk-!-margin-bottom-0">{{ t('Phone') +': ' }}{{ phone }}</div>
+            {% endif %}
+
+            {% if email %}
+              <div class="govuk-body govuk-!-margin-bottom-6">{{ t('Email') +': ' }}<a
+                  href='mailto:{{ email }}'>{{ email }}</a></div>
+            {% endif %}
+
+          </div>
+          {{ contactUsForHelp(t) }}
+        </div>
+        {{ aboutClaimWidget({header:header,lines:[{title: 'Claimant name:', href: otherPartyLabel, hrefContact: otherPartyName},{title: 'Claim amount:', content:totalClaimAmount},{title: 'Claim details:', href: claimDetailsUrl, hrefContact: 'View claim'}]}) }}
+      </div>
+    </main>
+  </div>
+{% endblock %}
