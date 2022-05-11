@@ -42,7 +42,9 @@ window.$ = $;
   };
 
   const togglePanel = (optionVal, panel) => {
-    optionVal ? panel.removeClass(settings.hiddenClass) : panel.addClass(settings.hiddenClass);
+    optionVal
+      ? panel.removeClass(settings.hiddenClass)
+      : panel.addClass(settings.hiddenClass); panel.find('textarea').val('');
   };
 
   const setSelectToggle = (params) => {
