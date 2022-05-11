@@ -49,12 +49,13 @@ window.$ = $;
         const optionIndex = $(this).find(':selected').index();
         const panel = $(this).parentsUntil(params.parent).find(params.panel);
         togglePanel(optionVal, panel);
-        optionVal ? toggleDetails(panel, optionIndex) : null;
+        if (optionVal) toggleDetails(panel, optionIndex);
       });
     });
   };
 
-  const init = (settings) => {
+  const init = (_settings) => {
+    const settings = _settings;
     $(mojAddAnotherBTN).on('click', function () {
       setTimeout(() => {
         setSelectToggle(settings);
