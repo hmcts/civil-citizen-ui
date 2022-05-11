@@ -29,7 +29,8 @@ const getViewpathWithType = (type: CounterpartyType) => {
 
 function renderPageWithError(res: express.Response, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, errorList: Form, req: express.Request, respondent: Respondent, contactPerson: string): void {
   const partyName = respondent?.partyName;
-  const viewPath = getViewpathWithType(respondent?.type);
+  const type = respondent?.type;
+  const viewPath = getViewpathWithType(type);
   res.render(viewPath, {
     citizenFullName: citizenFullName,
     citizenAddress: citizenAddress,
@@ -44,6 +45,7 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
     postToThisAddress: req.body.postToThisAddress,
     partyName: partyName,
     contactPerson: contactPerson,
+    type:type,
   });
 }
 
