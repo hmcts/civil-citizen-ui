@@ -6,12 +6,16 @@
   Example :
   --------------------
   <div class="select-toggle">
+    {% call govukFieldset({
+      legend: { ... }
+    }) %}
     {{ govukSelect({
         .....
     });
     <div class="panel panel-border-narrow govuk-visually-hidden">
       ..... Panel Content Here ....
     </div>
+    {% endcall %}
   </div>
 
 */
@@ -55,11 +59,10 @@ window.$ = $;
   };
 
   const init = (_settings) => {
-    const settings = _settings;
     $(mojAddAnotherBTN).on('click', function () {
       setTimeout(() => {
-        setSelectToggle(settings);
-        $(settings.panel).last().addClass(settings.hiddenClass);
+        setSelectToggle(_settings);
+        $(_settings.panel).last().addClass(_settings.hiddenClass);
       }, 0);
     });
 

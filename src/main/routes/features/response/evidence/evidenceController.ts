@@ -33,12 +33,13 @@ evidenceController.get(EVIDENCE_URL, async (req, res) => {
 
 evidenceController.post(EVIDENCE_URL, async (req: express.Request, res: express.Response) => {
   try {
-    const form: GenericForm<Evidence> = new GenericForm(new Evidence(req.body.comment, transformToEvidences(req)));
+    let form: GenericForm<Evidence>;
+    form = new GenericForm(new Evidence(req.body.comment, transformToEvidences(req)));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      const form: GenericForm<Evidence> = new GenericForm(new Evidence(req.body.comment, removeEmptyValueToEvidences(req)));
+      form = new GenericForm(new Evidence(req.body.comment, removeEmptyValueToEvidences(req)));
       await saveEvidence(req.params.id, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, IMPACT_OF_DISPUTE_URL));
     }
