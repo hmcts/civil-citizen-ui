@@ -11,14 +11,11 @@
 
 
 {% macro contactUs(t) %}
-
- <h3 class="govuk-heading-m govuk-!-margin-bottom-0">Email</h3>
+  <h3 class="govuk-heading-m govuk-!-margin-bottom-0">Email</h3>
   <a class="govuk-link" href='mailto:'{{contactEmail}}>{{contactEmail}}</a></p>
-
   <h3 class="govuk-heading-m govuk-!-margin-bottom-0">Telephone</h3>
   <p class="govuk-body govuk-!-margin-bottom-0">{{ phone }}</p>
   <p class="govuk-body govuk-!-margin-bottom-0">{{openingHours}}</p>
   <a class="govuk-link" href={{callChargesUrl}}>{{callCharges}}</a></p>
-
 {% endmacro %}
 
