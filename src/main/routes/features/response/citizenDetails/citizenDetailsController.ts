@@ -20,8 +20,17 @@ let citizenFullName: object;
 const CITIZEN_DETAILS_COMPANY_VIEW_PATH = 'features/response/citizenDetails/citizen-details-company';
 const CITIZEN_DETAILS_VIEW_PATH = 'features/response/citizenDetails/citizen-details';
 
-function renderPageWithError(res: express.Response, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, errorList: Form, req: express.Request): void {
-  res.render(CITIZEN_DETAILS_VIEW_PATH, {
+const getViewpathWithType = (type: CounterpartyType) => {
+  if (type === CounterpartyType.ORGANISATION || type === CounterpartyType.COMPANY) {
+    return CITIZEN_DETAILS_COMPANY_VIEW_PATH;
+  }
+  return CITIZEN_DETAILS_VIEW_PATH;
+};
+
+function renderPageWithError(res: express.Response, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, errorList: Form, req: express.Request, respondent: Respondent, contactPerson: string): void {
+  const partyName = respondent?.partyName;
+  const viewPath = getViewpathWithType(respondent?.type);
+  res.render(viewPath, {
     citizenFullName: citizenFullName,
     citizenAddress: citizenAddress,
     citizenCorrespondenceAddress: citizenCorrespondenceAddress,
@@ -33,6 +42,8 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
     correspondenceCityError: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceCity') : '',
     correspondencePostCodeError: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondencePostCode') : '',
     postToThisAddress: req.body.postToThisAddress,
+    partyName: partyName,
+    contactPerson: contactPerson,
   });
 }
 
@@ -61,16 +72,13 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
       individualLastName: responseDataRedis?.individualLastName || 'individualLastName test',
     };
 
-    let path = CITIZEN_DETAILS_VIEW_PATH;
-    if(responseDataRedis?.type === CounterpartyType.ORGANISATION || responseDataRedis?.type === CounterpartyType.COMPANY){
-      path = CITIZEN_DETAILS_COMPANY_VIEW_PATH;
-    }
-    res.render(path, {
+    const viewPath = getViewpathWithType(responseDataRedis?.type);
+    res.render(viewPath, {
       citizenFullName: citizenFullName,
       citizenAddress: citizenAddressModel,
       citizenCorrespondenceAddress: citizenCorrespondenceAddressModel,
       postToThisAddress: citizenCorrespondenceAddressModel ? YesNo.YES : YesNo.NO,
-      partyName: responseDataRedis?.partyName, 
+      partyName: responseDataRedis?.partyName,
       contactPerson: responseDataRedis?.contactPerson,
       type: responseDataRedis?.type,
     });
@@ -81,6 +89,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
 });
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+  const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
   try {
     const citizenAddress = new CitizenAddress(
       req.body.primaryAddressLine1,
@@ -112,7 +121,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
     }
     if ((citizenAddress?.errors?.length > 0)
       || (citizenCorrespondenceAddress?.errors?.length > 0)) {
-      renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req);
+      renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req, responseDataRedis, contactPerson);
     } else {
       await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, contactPerson);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
