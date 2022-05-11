@@ -112,12 +112,13 @@ describe('Repayment Plan View', () => {
     it('should display correct error summary message with correct link for comment greater than max length', async () => {
       await request(app)
         .post(EVIDENCE_URL)
-        .send({ comment: tooLongEvidenceDetails, evidenceItem: [] })
+        .send({ comment: tooLongEvidenceDetails, evidenceItem: [{ type: EvidenceType.CONTRACTS_AND_AGREEMENTS, description: 'content here..' }] })
         .then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
+      console.log(errorSummaryMessage);
       expect(errorSummaryMessage.innerHTML).toContain(VALID_TEXT_LENGTH);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#comment');
@@ -132,7 +133,6 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(2);
-      console.log(errorSummaryMessage);
       expect(errorSummaryMessage.innerHTML).toContain(VALID_TEXT_LENGTH);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#evidenceItem[0][description]');
