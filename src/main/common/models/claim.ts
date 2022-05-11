@@ -40,6 +40,9 @@ export class Claim {
   responseInDays(): NumberOfDays {
     return this.totalClaimAmount < MAX_CLAIM_AMOUNT ? NumberOfDays.FOURTEEN : NumberOfDays.TWENTYEIGHT;
   }
+  getRemainingDays(): number {
+    return dayjs(this.respondent1ResponseDeadline).diff('20 November 2022', 'days')
+  }
 }
 
 export interface Party {

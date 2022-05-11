@@ -1,16 +1,24 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/about-claim-widget.njk" import aboutClaimWidget %}
 
 {# 
   THIS FILE IS A CONCEPT
   This code is only a concept of what we should do.  
   #}
 
+
+     
+{% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
+{% set responseDeadLine = claim.formattedResponseDeadline()+ ' at 4pm' %}
+{% set remainingDays = '('+claim.getRemainingDays()+' days remaining)' %}
+{% set claimNumber = claim.legacyCaseReference %}
+    
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-width-container govuk-!-padding-top-0">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
 
           <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{title}}</h2>
           <p class="govuk-body">{{description}}</p>
@@ -39,21 +47,8 @@
               </ol>
             </div>
           {% endfor %}
-
-          <h2 class="app-task-list__section">
-            {{ taskLists.length + 1 }}. Submit
-          </h2>
-          <ol class="app-task-list app-task-list__items">
-            <form method="post">
-              <div class="govuk-form-group">
-                {{ govukButton({
-                text: t("Check and submit your response")
-              }) }}
-              </div>
-            </form>
-          </ol>
-
-        </div>
+        </div>     
+         {{ aboutClaimWidget({header:'',lines:[{title: 'Response deadline:', content: responseDeadLine, href: '', hrefContact: '', hint:remainingDays},{title: 'Claim number:', content : claimNumber, href: '', hrefContact: ''},{title: 'Total claim amount:', content:totalClaimAmount},{title: 'Claim details:', href: claimDetailsUrl, hrefContact: 'View claim'}]}) }}
       </div>
     </main>
   </div>

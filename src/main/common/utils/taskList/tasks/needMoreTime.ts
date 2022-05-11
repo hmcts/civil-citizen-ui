@@ -11,7 +11,7 @@ import {TaskStatus} from '../../../models/taskList/TaskStatus';
  */
 
 const needMoreTimeTask = {
-  description: 'Decide if you need more time to respond',
+  description: 'Response deadline',
   url: '/more-time',
   status: TaskStatus.INCOMPLETE,
 };
