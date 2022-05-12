@@ -35,7 +35,7 @@
               <tbody class="govuk-table__body">
               {% for event in theirTimeline %}
                 <tr class="govuk-table__row">
-                  <td class="govuk-table__cell">{{ event.value.timelineDate }}</td>
+                  <td class="govuk-table__cell">{{ event.value.timelineDate | date }}</td>
                   <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
                 </tr>
               {% endfor %}
