@@ -61,3 +61,4 @@ export const CAN_WE_USE_URL = `${MEDIATION_URL}/can-we-use`;
 export const CAN_WE_USE_COMPANY_URL = `${MEDIATION_URL}/can-we-use-company`;
 export const CITIZEN_FREE_TELEPHONE_MEDIATION_URL = `${MEDIATION_URL}/free-telephone-mediation`;
 export const CITIZEN_CONTACT_THEM_URL = `${DASHBOARD_URL}/:id/contact-them`;
+export const RESPONSE_CHECK_ANSWERS_URL = `${BASE_CASE_RESPONSE_URL}/check-and-send`;

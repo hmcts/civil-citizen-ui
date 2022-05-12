@@ -1,0 +1,35 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+
+        <br class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-l">{{ t('Check your answers') }}</h1>
+
+        {% for section in summaryListAggregate.sections %}
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+          <div class="govuk-form-group">
+            {{ govukSummaryList({
+              rows: section.summaryList.rows
+            }) }}
+          </div>
+        {% endfor %}
+
+        <form method="post">
+          <div class="govuk-form-group">
+            {{ govukButton({
+              text: t('Submit response')
+            }) }}
+          </div>
+        </form>
+
+      </div>
+    </main>
+  </div>
+
+{% endblock %}
