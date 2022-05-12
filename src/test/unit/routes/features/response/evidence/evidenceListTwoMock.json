@@ -19,7 +19,7 @@
       ]
     },
     "respondent1": {
-      "responseType": "PART_ADMISSION"
+      "responseType": "FULL_ADMISSION"
     }
   }
 }

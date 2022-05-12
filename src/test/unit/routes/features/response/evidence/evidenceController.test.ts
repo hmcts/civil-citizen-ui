@@ -4,7 +4,8 @@ import config from 'config';
 import nock from 'nock';
 import {
   CITIZEN_EVIDENCE_URL,
-  IMPACT_OF_DISPUTE_URL} from '../../../../../../main/routes/urls';
+  IMPACT_OF_DISPUTE_URL,
+  CLAIM_TASK_LIST_URL} from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockRedisFailure } from '../../../../../utils/mockDraftStore';
 import { EvidenceType } from '../../../../../../main/common/models/evidence/evidenceType';
@@ -18,10 +19,18 @@ jest.mock('../../../../../../main/modules/draft-store');
 
 const civilClaimResponseMock = require('./evidenceListMock.json');
 const civilClaimResponseMockWithOneEvidenceItem: string = JSON.stringify(civilClaimResponseMock);
-const mockWithoutRespondentPhone = {
+const mockWithLessThaFourEvidence = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithOneEvidenceItem)),
 };
+
+const civilClaimResponseTwoMock = require('./evidenceListTwoMock.json');
+const civilClaimResponseMockWithFullAdmission: string = JSON.stringify(civilClaimResponseTwoMock);
+const eMockWithFullAdmission = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithFullAdmission)),
+};
+
 
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -44,7 +53,7 @@ describe('on Get', () => {
   });
 
   test('should return on your evidence list page successfully when less than 4 items saved', async () => {
-    app.locals.draftStoreClient = mockWithoutRespondentPhone;
+    app.locals.draftStoreClient = mockWithLessThaFourEvidence;
     await request(app)
       .get(CITIZEN_EVIDENCE_URL)
       .expect((res) => {
@@ -103,8 +112,30 @@ describe('on Post', () => {
       });
   });
 
-  test('should redirect with empties input', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
+  test('should redirect with empties input and redirect to task list', async () => {
+    app.locals.draftStoreClient = mockWithLessThaFourEvidence;
+    await request(app)
+      .post(CITIZEN_EVIDENCE_URL)
+      .send({comment: '', evidenceItem: []})
+      .expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+      });
+  });
+
+  test('should redirect with correct input and redirect to task list', async () => {
+    app.locals.draftStoreClient = mockWithLessThaFourEvidence;
+    await request(app)
+      .post(CITIZEN_EVIDENCE_URL)
+      .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
+      .expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+      });
+  });
+
+  test('should redirect with empties input and redirect to impact of dispute', async () => {
+    app.locals.draftStoreClient = eMockWithFullAdmission;
     await request(app)
       .post(CITIZEN_EVIDENCE_URL)
       .send({comment: '', evidenceItem: []})
@@ -114,8 +145,8 @@ describe('on Post', () => {
       });
   });
 
-  test('should redirect with correct input', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
+  test('should redirect with correct input and redirect to impact of dispute', async () => {
+    app.locals.draftStoreClient = eMockWithFullAdmission;
     await request(app)
       .post(CITIZEN_EVIDENCE_URL)
       .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})

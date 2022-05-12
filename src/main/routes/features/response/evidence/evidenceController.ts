@@ -9,8 +9,12 @@ import {
 import {
   CITIZEN_EVIDENCE_URL,
   IMPACT_OF_DISPUTE_URL,
+  CLAIM_TASK_LIST_URL,
 } from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import { GenericForm } from '../../../../common/form/models/genericForm';
+import { Claim } from '../../../../common/models/claim';
+import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
+
 
 const evidenceViewPath = 'features/response/evidence/evidences';
 const evidenceController = express.Router();
@@ -41,7 +45,15 @@ evidenceController.post(CITIZEN_EVIDENCE_URL, async (req: express.Request, res: 
     } else {
       form = new GenericForm(new Evidence(req.body.comment, removeEmptyValueToEvidences(req)));
       await saveEvidence(req.params.id, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, IMPACT_OF_DISPUTE_URL));
+
+      const claim = await getCaseDataFromStore(req.params.id) || new Claim();
+      switch (claim.respondent1.responseType) {
+        case 'PART_ADMISSION':
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+          break;
+        default:
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, IMPACT_OF_DISPUTE_URL));
+      }
     }
   } catch (error) {
     res.status(500).send({ error: error.message });
