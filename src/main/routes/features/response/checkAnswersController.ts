@@ -10,9 +10,9 @@ const checkAnswersController = express.Router();
 
 checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL, async (req, res) => {
   try {
-    const getSummaryListAggregate = await checkAnswersService.getSummaryListAggregate(req.params.id);
+    const _summarySections = await checkAnswersService.getSummarySections(req.params.id);
     res.render(checkAnswersViewPath, {
-      summaryListAggregate: getSummaryListAggregate,
+      summarySections: _summarySections,
     });
   } catch (error) {
     logger.error(error);

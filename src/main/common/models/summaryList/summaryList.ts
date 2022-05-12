@@ -1,9 +1,9 @@
 export interface SummaryList {
   classes?: string;
-  rows: Row[];
+  rows: SummaryRow[];
 }
 
-interface Row {
+export interface SummaryRow {
   key: Key;
   value: Value;
   actions?: Actions;
@@ -22,3 +22,25 @@ type Item = {
   href: string;
   visuallyHiddenText?: string;
 } & ({ text: string } | { html: string })
+
+export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string): SummaryRow {
+  const row: SummaryRow = {
+    key: {
+      text: key,
+    },
+    value: {
+      text: value,
+    },
+  };
+  if (href) {
+    row.actions = {
+      items: [
+        {
+          href: href,
+          text: hrefText,
+        },
+      ],
+    };
+  }
+  return row;
+}
