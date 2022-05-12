@@ -1,10 +1,10 @@
 import {SummaryList} from './summaryList';
 
-export class SummaryListAggregate {
+export interface SummaryListAggregate {
   sections: Section[];
 }
 
-export class Section {
+export interface Section {
   title: string;
   summaryList: SummaryList;
 }

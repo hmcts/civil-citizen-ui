@@ -1,9 +1,9 @@
-export class SummaryList {
+export interface SummaryList {
   classes?: string;
   rows: Row[];
 }
 
-class Row {
+interface Row {
   key: Key;
   value: Value;
   actions?: Actions;
