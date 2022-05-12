@@ -46,7 +46,7 @@
           {{ t('If they reject your plan, the court will make a new plan based on your financial details.') }}
         </p>
         <p class="govuk-body">
-          {{ t('Get ') }} {{ applicant1Details }}{{ t("'s contact details.") }}
+          <a href="{{claimantDetailsUrl}}">{{ t('Get ') }} {{ applicant1Details }}{{ t("'s contact details.") }}</a>
         </p>
       {% endif %}
       <form method="post">

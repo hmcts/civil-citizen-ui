@@ -1,5 +1,5 @@
 import * as urls from '../../main/routes/urls';
-import {CITIZEN_EVIDENCE_URL} from "../../main/routes/urls";
+
 
 export const IGNORED_URLS = [
   urls.SIGN_IN_URL,
@@ -48,6 +48,7 @@ export const IGNORED_URLS = [
   urls.CITIZEN_PRIORITY_DEBTS_URL,
   urls.CITIZEN_DEBTS_URL,
   urls.TOTAL_AMOUNT_CALCULATION_URL,
+  urls.CITIZEN_CONTACT_THEM_URL,
   urls.CITIZEN_REPAYMENT_PLAN,
   urls.CITIZEN_WHY_DO_YOU_DISAGREE_URL,
   urls.PARTIAL_ADMISSION_URL,
@@ -65,5 +66,6 @@ export const IGNORED_URLS = [
   urls.CAN_WE_USE_URL,
   urls.CAN_WE_USE_COMPANY_URL,
   urls.CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
+  urls.CITIZEN_CONTACT_THEM_URL,
   urls.CITIZEN_EVIDENCE_URL,
 ];
