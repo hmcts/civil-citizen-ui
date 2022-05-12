@@ -7,7 +7,7 @@ import {
   saveEvidence,
 } from '../../../../modules/evidence/evidenceService';
 import {
-  EVIDENCE_URL,
+  CITIZEN_EVIDENCE_URL,
   IMPACT_OF_DISPUTE_URL,
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
@@ -19,7 +19,7 @@ function renderView(form: GenericForm<Evidence>, res: express.Response): void {
   res.render(evidenceViewPath, { form });
 }
 
-evidenceController.get(EVIDENCE_URL, async (req, res) => {
+evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res) => {
   try {
     const form: Evidence = await getEvidence(req.params.id);
     if (form.evidenceItem.length < INIT_ROW_COUNT) {
@@ -31,7 +31,7 @@ evidenceController.get(EVIDENCE_URL, async (req, res) => {
   }
 });
 
-evidenceController.post(EVIDENCE_URL, async (req: express.Request, res: express.Response) => {
+evidenceController.post(CITIZEN_EVIDENCE_URL, async (req: express.Request, res: express.Response) => {
   try {
     let form: GenericForm<Evidence>;
     form = new GenericForm(new Evidence(req.body.comment, transformToEvidences(req)));

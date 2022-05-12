@@ -8,6 +8,7 @@
 {% from "../../macro/telephone.njk" import telephone %}
 {% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -30,6 +31,43 @@
           <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-l">{{ title if respondentTelNumber else titleEnterPhone }}</h1>
             <p class="govuk-body-m">{{ pText if respondentTelNumber else pTextEnterPhone }}</p>
+          </div>
+          <div class="govuk-grid-column-two-thirds">
+            <div class="select-toggle">
+              {% call govukFieldset({
+                classes: 'moj-add-another__item',
+                legend: {
+                  text: t('Evidence Type List'),
+                  classes: 'moj-add-another__title govuk-fieldset__legend--m govuk-visually-hidden',
+                  isPageHeading: false
+                }
+              }) %}
+              {{ govukSelect({
+                id: "sort",
+                name: "sort",
+                items: [
+                  {
+                    value: "",
+                    text: "-- Please make a selection --",
+                    selected: true
+                  },
+                  {
+                    value: "published",
+                    text: "Recently published",
+                    selected: false
+                  },
+                  {
+                    value: "updated",
+                    text: "Recently updated",
+                    selected: false
+                  }
+                ]
+              }) }}
+              <div class="panel panel-border-narrow govuk-visually-hidden">
+                <h2>Test Panel</h2>
+              </div>
+              {% endcall %}
+            </div>
           </div>
           <div class="govuk-grid-column-two-thirds">
             {% if respondentTelNumber %}

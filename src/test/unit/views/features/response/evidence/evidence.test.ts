@@ -3,7 +3,7 @@ import nock from 'nock';
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {
-  EVIDENCE_URL,
+  CITIZEN_EVIDENCE_URL,
 } from '../../../../../../main/routes/urls';
 import { EvidenceType } from '../../../../../../main/common/models/evidence/evidenceType';
 import { mockCivilClaim } from '../../../../../utils/mockDraftStore';
@@ -40,7 +40,7 @@ describe('Repayment Plan View', () => {
         .post('/o/token')
         .reply(200, { id_token: citizenRoleToken });
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(EVIDENCE_URL).then(res => {
+      await request(app).get(CITIZEN_EVIDENCE_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
       });
@@ -103,7 +103,7 @@ describe('Repayment Plan View', () => {
 
     beforeEach(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).post(EVIDENCE_URL).then(res => {
+      await request(app).post(CITIZEN_EVIDENCE_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
       });
@@ -111,7 +111,7 @@ describe('Repayment Plan View', () => {
 
     it('should display correct error summary message with correct link for comment greater than max length', async () => {
       await request(app)
-        .post(EVIDENCE_URL)
+        .post(CITIZEN_EVIDENCE_URL)
         .send({ comment: tooLongEvidenceDetails, evidenceItem: [{ type: EvidenceType.CONTRACTS_AND_AGREEMENTS, description: 'content here..' }] })
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -126,7 +126,7 @@ describe('Repayment Plan View', () => {
 
     it('should display correct error summary message with correct link for description greater than max length', async () => {
       await request(app)
-        .post(EVIDENCE_URL)
+        .post(CITIZEN_EVIDENCE_URL)
         .send({ comment:'' , evidenceItem: [{ type: EvidenceType.CONTRACTS_AND_AGREEMENTS, description: tooLongEvidenceDetails }] })
         .then(res => {
           const dom = new JSDOM(res.text);
