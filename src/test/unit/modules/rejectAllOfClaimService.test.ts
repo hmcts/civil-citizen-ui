@@ -56,7 +56,7 @@ describe('rejectAllOfClaim service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
       expect(result).toBeTruthy();
-      expect(result.match('Test'));
+      expect(result).toContain('Test');
     });
     it('should return populated form model when INDIVIDUAL data exists', async () => {
       //Given
@@ -74,7 +74,7 @@ describe('rejectAllOfClaim service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
       expect(result).toBeTruthy();
-      expect(result.match('Mr. TestName TestLastName'));
+      expect(result).toContain(('Mr. TestName TestLastName'));
     });
     it('should throw error when error is thrown from redis', async () => {
       //When
