@@ -98,12 +98,17 @@
             <p class="govuk-body">{{ t('You can also email completed forms to {{ supportEmailAddress }}', { supportEmailAddress: supportEmailAddress }) }}</p>
             <h2 class="govuk-heading-m govuk-!-margin-bottom-4">{{ t('Download and complete the form') }}</h2>
         </div>
+
+
+          {% set pdfA = (asset_paths["pdf"]+'/OCON9A.pdf')|safe%}
+          {% set pdfB = (asset_paths["pdf"]+'/OCON9B.pdf')|safe%}
+
       {% if draft.response.type === ResponseType.DEFENCE %}
         {% if form.rejectAllOfClaim.option === RejectAllOfClaimType.COUNTER_CLAIM %}
-          <a target="_blank" rel="noreferrer noopener"  class="govuk-link" href=/src/main/public/pdf/OCON9A.pdf>{{ pdfDefenceAndClaim }}<span>{{ t('(opens in a new window)') }}</span></a>
+          <a target="_blank" rel="noreferrer noopener"  class="govuk-link" href={{pdfA}}>{{ pdfDefenceAndClaim }}<span>{{ t('(opens in a new window)') }}</span></a>
         {% elseif form.rejectAllOfClaim.option === RejectAllOfClaimType.ALREADY_PAID %}
-          <a target="_blank" rel="noreferrer noopener"  class="govuk-link" href=/src/main/public/pdf/OCON9A.pdf>{{ pdfAdmission }}<span>{{ t('(opens in a new window)') }}</span></a>
-          <a target="_blank" rel="noreferrer noopener"  class="govuk-link" href=/src/main/public/pdf/OCON9B.pdf>{{ pdfDefence}}<span>{{ t('(opens in a new window)') }}</span></a>
+          <a target="_blank" rel="noreferrer noopener"  class="govuk-link" href={{pdfA}}>{{ pdfAdmission }}<span>{{ t('(opens in a new window)') }}</span></a>
+          <a target="_blank" rel="noreferrer noopener"  class="govuk-link" href={{pdfB}}>{{ pdfDefence}}<span>{{ t('(opens in a new window)') }}</span></a>
         {% endif %}
       {% endif %}
 
