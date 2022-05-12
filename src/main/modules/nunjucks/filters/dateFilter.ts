@@ -1,4 +1,5 @@
-import moment from 'moment';
+import {DateTime} from 'luxon';
+
 
 const {Logger} = require('@hmcts/nodejs-logging');
 
@@ -15,11 +16,8 @@ const logger = Logger.getLogger('modules/nunjucks/dateFilter');
  * */
 export function dateFilter(value: string): string {
   try {
-    const date = moment(value);
-    if (!date.isValid()) {
-      throw new Error('Invalid date');
-    }
-    return date.format('D MMMM YYYY');
+    const date = DateTime.fromISO(value);
+    return date.toLocaleString(DateTime.DATE_FULL, {locale: 'en-gb'});
   } catch (err) {
     logger.error(err);
     throw err;
@@ -44,26 +42,18 @@ export function dateFilter(value: string): string {
  * output:
  *  a moment representing the date 1 week before today
  */
-export function addDaysFilter(value: moment.Moment | string, num: number): moment.Moment {
+export function addDaysFilter(value: string, num: number): DateTime {
   try {
-    if (!value || !(typeof value === 'string' || value instanceof moment)) {
-      throw new Error('Input should be moment or string, cannot be empty');
-    }
 
-    let date: moment.Moment;
+    let date: DateTime;
     if (typeof value === 'string') {
       if (value === 'now') {
-        date = moment().hours(0).minutes(0).seconds(0).milliseconds(0);
+        date = DateTime.now();
       } else {
-        date = moment(value);
+        date = DateTime.fromISO(value);
       }
-    } else {
-      date = value.clone();
     }
-    if (!date.isValid()) {
-      throw new Error('Invalid date');
-    }
-    return date.add(num, 'day');
+    return date.plus({days: num});
   } catch (err) {
     logger.error(err);
     throw err;
