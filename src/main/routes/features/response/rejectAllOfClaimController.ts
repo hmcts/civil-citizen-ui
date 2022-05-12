@@ -41,7 +41,7 @@ rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: expres
       });
     } else {
       await saveRejectAllOfClaim(claimId, rejectAllOfClaim);
-      if (req.body.option == RejectAllOfClaimType.COUNTER_CLAIM) {
+      if (req.body.option === RejectAllOfClaimType.COUNTER_CLAIM) {
         res.redirect(constructResponseUrlWithIdParams(claimId, SEND_RESPONSE_BY_EMAIL_URL));
       } else {
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));

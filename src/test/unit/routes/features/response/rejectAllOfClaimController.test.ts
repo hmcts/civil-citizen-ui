@@ -32,7 +32,7 @@ describe('rejectAllOfClaim', () => {
   describe('on Get', () => {
     test('should return rejectAllOfClaim page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      const claimantName = '';
+      const claimantName = 'Mr. Jan Clark';
       const header = 'Why do you believe you don’t owe ' + claimantName + ' any money?';
       await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
         .expect((res) => {
@@ -52,7 +52,17 @@ describe('rejectAllOfClaim', () => {
     });
     test('should return rejectAllOfClaim page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaimUnemploymentRetired;
-      const claimantName = '';
+      const claimantName = 'Mr. Jan Clark';
+      const header = 'Why do you believe you don’t owe ' + claimantName + ' any money?';
+      await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(header);
+        });
+    });
+    test('should return rejectAllOfClaim page successfully', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      const claimantName = 'Mr. Jan Clark';
       const header = 'Why do you believe you don’t owe ' + claimantName + ' any money?';
       await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
         .expect((res) => {

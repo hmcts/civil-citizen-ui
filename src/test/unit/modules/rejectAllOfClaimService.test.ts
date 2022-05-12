@@ -135,6 +135,107 @@ describe('rejectAllOfClaim service', () => {
       expect(result).not.toBeNull();
       expect(result).toBeUndefined();
     });
+    it('should return populated form model when SOLE_TRADER and undefined name', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const claim = createClaim();
+      if (claim.applicant1?.type) {
+        claim.applicant1.type = CounterpartyType.SOLE_TRADER;
+        claim.applicant1.individualTitle = 'Test';
+        claim.applicant1.individualFirstName = 'Test';
+        claim.applicant1.individualLastName = undefined;
+      }
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      //When
+      const result = await getclaimantName('123');
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(result).not.toBeNull();
+      expect(result).toBeUndefined();
+    });
+    it('should return populated form model when SOLE_TRADER and undefined name', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const claim = createClaim();
+      if (claim.applicant1?.type) {
+        claim.applicant1.type = CounterpartyType.SOLE_TRADER;
+        claim.applicant1.individualTitle = undefined;
+        claim.applicant1.individualFirstName = 'Test';
+        claim.applicant1.individualLastName = undefined;
+      }
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      //When
+      const result = await getclaimantName('123');
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(result).not.toBeNull();
+      expect(result).toBeUndefined();
+    });
+    it('should return populated form model when SOLE_TRADER and undefined name', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const claim = createClaim();
+      if (claim.applicant1?.type) {
+        claim.applicant1.type = CounterpartyType.SOLE_TRADER;
+        claim.applicant1.individualTitle = 'Test';
+        claim.applicant1.individualFirstName = undefined;
+        claim.applicant1.individualLastName = 'Test';
+      }
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      //When
+      const result = await getclaimantName('123');
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(result).not.toBeNull();
+      expect(result).toBeUndefined();
+    });
+    it('should return populated form model when SOLE_TRADER and undefined name', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const claim = createClaim();
+      if (claim.applicant1?.type) {
+        claim.applicant1.type = CounterpartyType.SOLE_TRADER;
+        claim.applicant1.individualTitle = undefined;
+        claim.applicant1.individualFirstName = 'Test';
+        claim.applicant1.individualLastName = 'Test';
+      }
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      //When
+      const result = await getclaimantName('123');
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(result).not.toBeNull();
+      expect(result).toBeUndefined();
+    });
+
+    it('should return populated form model when SOLE_TRADER and undefined name', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const claim = createClaim();
+      if (claim.applicant1?.type) {
+        claim.applicant1.type = CounterpartyType.SOLE_TRADER;
+        claim.applicant1.individualTitle = undefined;
+        claim.applicant1.individualFirstName = undefined;
+        claim.applicant1.individualLastName = 'Test';
+      }
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      //When
+      const result = await getclaimantName('123');
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(result).not.toBeNull();
+      expect(result).toBeUndefined();
+    });
     it('should return populated form model when INDIVIDUAL and undefined name', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
@@ -161,6 +262,150 @@ describe('rejectAllOfClaim service', () => {
       await expect(getclaimantName('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
+
+  it('should return populated form model when INDIVIDUAL and undefined name', async () => {
+    //Given
+    const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+    const claim = createClaim();
+    if (claim.applicant1?.type) {
+      claim.applicant1.type = CounterpartyType.INDIVIDUAL;
+      claim.applicant1.individualTitle = 'Test';
+      claim.applicant1.individualFirstName = undefined;
+      claim.applicant1.individualLastName = undefined;
+    }
+    mockGetCaseData.mockImplementation(async () => {
+      return claim;
+    });
+    //When
+    const result = await getclaimantName('123');
+    //Then
+    expect(spyGetCaseDataFromStore).toBeCalled();
+    expect(result).not.toBeNull();
+    expect(result).toBeUndefined();
+  });
+  it('should return populated form model when INDIVIDUAL and undefined name', async () => {
+    //Given
+    const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+    const claim = createClaim();
+    if (claim.applicant1?.type) {
+      claim.applicant1.type = CounterpartyType.INDIVIDUAL;
+      claim.applicant1.individualTitle = 'Test';
+      claim.applicant1.individualFirstName = 'Test';
+      claim.applicant1.individualLastName = undefined;
+    }
+    mockGetCaseData.mockImplementation(async () => {
+      return claim;
+    });
+    //When
+    const result = await getclaimantName('123');
+    //Then
+    expect(spyGetCaseDataFromStore).toBeCalled();
+    expect(result).not.toBeNull();
+    expect(result).toBeUndefined();
+  });
+  it('should return populated form model when INDIVIDUAL and undefined name', async () => {
+    //Given
+    const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+    const claim = createClaim();
+    if (claim.applicant1?.type) {
+      claim.applicant1.type = CounterpartyType.INDIVIDUAL;
+      claim.applicant1.individualTitle = undefined;
+      claim.applicant1.individualFirstName = 'Test';
+      claim.applicant1.individualLastName = undefined;
+    }
+    mockGetCaseData.mockImplementation(async () => {
+      return claim;
+    });
+    //When
+    const result = await getclaimantName('123');
+    //Then
+    expect(spyGetCaseDataFromStore).toBeCalled();
+    expect(result).not.toBeNull();
+    expect(result).toBeUndefined();
+  });
+  it('should return populated form model when INDIVIDUAL and undefined name', async () => {
+    //Given
+    const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+    const claim = createClaim();
+    if (claim.applicant1?.type) {
+      claim.applicant1.type = CounterpartyType.INDIVIDUAL;
+      claim.applicant1.individualTitle = 'Test';
+      claim.applicant1.individualFirstName = undefined;
+      claim.applicant1.individualLastName = 'Test';
+    }
+    mockGetCaseData.mockImplementation(async () => {
+      return claim;
+    });
+    //When
+    const result = await getclaimantName('123');
+    //Then
+    expect(spyGetCaseDataFromStore).toBeCalled();
+    expect(result).not.toBeNull();
+    expect(result).toBeUndefined();
+  });
+  it('should return populated form model when INDIVIDUAL and undefined name', async () => {
+    //Given
+    const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+    const claim = createClaim();
+    if (claim.applicant1?.type) {
+      claim.applicant1.type = CounterpartyType.INDIVIDUAL;
+      claim.applicant1.individualTitle = undefined;
+      claim.applicant1.individualFirstName = 'Test';
+      claim.applicant1.individualLastName = 'Test';
+    }
+    mockGetCaseData.mockImplementation(async () => {
+      return claim;
+    });
+    //When
+    const result = await getclaimantName('123');
+    //Then
+    expect(spyGetCaseDataFromStore).toBeCalled();
+    expect(result).not.toBeNull();
+    expect(result).toBeUndefined();
+  });
+
+  it('should return populated form model when INDIVIDUAL and undefined name', async () => {
+    //Given
+    const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+    const claim = createClaim();
+    if (claim.applicant1?.type) {
+      claim.applicant1.type = CounterpartyType.INDIVIDUAL;
+      claim.applicant1.individualTitle = undefined;
+      claim.applicant1.individualFirstName = undefined;
+      claim.applicant1.individualLastName = 'Test';
+    }
+    mockGetCaseData.mockImplementation(async () => {
+      return claim;
+    });
+    //When
+    const result = await getclaimantName('123');
+    //Then
+    expect(spyGetCaseDataFromStore).toBeCalled();
+    expect(result).not.toBeNull();
+    expect(result).toBeUndefined();
+  });
+
+  it('should return populated form model when SOLE_TRADER and undefined name', async () => {
+    //Given
+    const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+    const claim = createClaim();
+    if (claim.applicant1?.type) {
+      claim.applicant1.type = CounterpartyType.SOLE_TRADER;
+      claim.applicant1.individualTitle = undefined;
+      claim.applicant1.individualFirstName = undefined;
+      claim.applicant1.individualLastName = undefined;
+    }
+    mockGetCaseData.mockImplementation(async () => {
+      return claim;
+    });
+    //When
+    const result = await getclaimantName('123');
+    //Then
+    expect(spyGetCaseDataFromStore).toBeCalled();
+    expect(result).not.toBeNull();
+    expect(result).toBeUndefined();
+  });
+
   describe('save rejectAllOfClaim data', () => {
     it('should save data successfully', async () => {
       //Given
