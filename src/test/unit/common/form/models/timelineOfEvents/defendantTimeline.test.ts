@@ -22,7 +22,7 @@ describe('defendant timeline', () => {
       const form = new GenericForm(defendant);
       await form.validate();
       //Then
-      expect(form.hasErrors()).toBeTruthy();
+      expect(form.hasErrors()).toBeFalsy();
     });
   });
   describe('buildEmptyForm', () => {
