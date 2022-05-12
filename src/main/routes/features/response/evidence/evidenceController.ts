@@ -47,7 +47,7 @@ evidenceController.post(CITIZEN_EVIDENCE_URL, async (req: express.Request, res: 
       await saveEvidence(req.params.id, form.model);
 
       const claim = await getCaseDataFromStore(req.params.id) || new Claim();
-      if (claim.respondent1?.responseType === 'PART_ADMISSION') {
+      if (claim.respondent1.responseType === 'PART_ADMISSION') {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
       } else {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, IMPACT_OF_DISPUTE_URL));
