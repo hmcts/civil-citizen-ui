@@ -22,7 +22,7 @@ export const getclaimantName = async (claimId: string): Promise<string> => {
     if (claim.applicant1?.type === 'ORGANISATION' || claim.applicant1?.type === 'COMPANY') {
       return claim.applicant1.companyName;
     } else if ((claim.applicant1?.type === 'INDIVIDUAL' || claim.applicant1?.type === 'SOLE_TRADER')
-      && (claim.applicant1?.individualTitle && claim.applicant1?.individualFirstName && claim.applicant1?.individualLastName)) {
+      && claim.applicant1?.individualTitle && claim.applicant1?.individualFirstName && claim.applicant1?.individualLastName) {
       return claim.applicant1.individualTitle + ' ' + claim.applicant1.individualFirstName + ' ' + claim.applicant1.individualLastName;
     }
   } catch (error) {
