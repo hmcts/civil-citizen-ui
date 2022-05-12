@@ -22,10 +22,8 @@
   text-decoration: underline;
 }
 
-$light-grey: #bfc1c3;
-
 .panel {
-  border-left: 1px solid $light-grey;
+  border-left: 1px solid $govuk-border-colour;
   margin-bottom: 1em;
   padding: 1em;
 }
