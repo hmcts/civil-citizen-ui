@@ -24,6 +24,27 @@
         }
       }
     },
+    "applicant1": {
+      "type": "INDIVIDUAL",
+      "telephoneNumber": "(0)207 127 0000",
+      "partyName": "Mr. Version1 Best",
+      "telephoneNumber": "(0)207 127 0000",
+      "individualTitle": "Mr.",
+      "individualFirstName": "Jan",
+      "individualLastName": "Clark",
+      "partyName": "Example applicant1 organisation",
+      "primaryAddress": {
+        "County": "Kent",
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AA",
+        "PostTown": "Reading",
+        "AddressLine1": "Flat 2",
+        "AddressLine2": "Caversham House 15-17",
+        "AddressLine3": "Church Road"
+      },
+      "organisationName": "Example applicant1 organisation",
+      "partyTypeDisplayValue": "Organisation"
+    },
     "respondent1": {
       "dateOfBirth": "2022-03-01T13:29:24.971",
       "telephoneNumber": "111"

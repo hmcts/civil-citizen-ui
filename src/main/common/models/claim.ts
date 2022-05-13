@@ -8,6 +8,7 @@ import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
 import { DefendantEvidence } from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
+import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
 
 export const MAX_CLAIM_AMOUNT = 10000;
@@ -27,6 +28,7 @@ export class Claim {
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;
   partialAdmission?: PartialAdmission;
+  rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
   evidence?: DefendantEvidence;
 
@@ -58,7 +60,3 @@ export interface StatementOfTruth {
   name?: string;
   role?: string;
 }
-
-
-
-

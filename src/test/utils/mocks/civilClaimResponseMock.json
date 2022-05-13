@@ -15,6 +15,7 @@
     "applicant1": {
       "type": "ORGANISATION",
       "partyName": "Mr. Jan Clark",
+      "companyName": "Mr. Jan Clark",
       "telephoneNumber": "(0)207 127 0000",
       "primaryAddress": {
         "County": "Kent",
