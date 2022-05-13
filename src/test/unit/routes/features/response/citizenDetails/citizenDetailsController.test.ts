@@ -429,6 +429,64 @@ describe('Confirm Details page', () => {
       });
   });
 
+  test('POST/Citizen details - should display organisation details and return errors when postToThisAddress is set to YES', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentOrganisation();
+    });
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: '',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: '',
+        primaryPostCode: '',
+        postToThisAddress: 'yes',
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain('Confirm your details');
+        expect(res.text).toContain('Organisation name');
+      });
+  });
+
+  test('POST/Citizen details - should display company details and return errors when postToThisAddress is set to YES', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentCompany();
+    });
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: '',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: '',
+        primaryPostCode: '',
+        postToThisAddress: 'yes',
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain('Confirm your details');
+        expect(res.text).toContain('Company name');
+      });
+  });
+
   test('get/Citizen details - should return test variable when there is no data on redis and civil-service', async () => {
     await request(app)
       .get('/case/1111/response/your-details')

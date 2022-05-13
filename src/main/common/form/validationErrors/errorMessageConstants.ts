@@ -64,5 +64,6 @@ export const ENTER_AN_EXPLANATION = 'Enter an explanation of why you can’t pay
 export const TEXT_TOO_MANY = 'You’ve entered too many characters';
 export const PHONE_NUMBER_REQUIRED = 'Please enter a phone number';
 export const NAME_REQUIRED = 'Please enter a name';
+export const OPTION_REQUIRED_RESPONSE = 'Please select a response';
 export const OPTION_REQUIRED = 'Please select one reason';
 export const TEXT_TOO_LONG = 'Reason must be 500 characters or fewer';
