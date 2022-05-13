@@ -1,18 +1,14 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/about-claim-widget.njk" import aboutClaimWidget %}
-
-{# 
-  THIS FILE IS A CONCEPT
-  This code is only a concept of what we should do.  
-  #}
-
+{% from "../../macro/time-remaining.njk" import timeRemaining %}
 
      
 {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
-{% set responseDeadLine = claim.formattedResponseDeadline()+ ' at 4pm' %}
-{% set remainingDays = '('+claim.getRemainingDays()+' days remaining)' %}
+{% set responseDeadLineExpression = claim.formattedResponseDeadline()+ ' at 4pm' %}
+{% set remainingDays = claim.getRemainingDays() %}
 {% set claimNumber = claim.legacyCaseReference %}
+{% set isDeadLinePassed = claim.isPastDeadline() %}
     
 {% block content %}
   <div class="govuk-width-container govuk-!-padding-top-0">
@@ -31,24 +27,28 @@
               <h2 class="app-task-list__section">
                 <span class="app-task-list__section-number">
                   {{loop.index}} . </span>
-                {{taskList.title}}
+                  {{ t(taskList.title) }}
               </h2>
               <ol class="app-task-list app-task-list__items">
                 {% for task in taskList.tasks %}
                   <li class="app-task-list__item">
                     <span class="app-task-list__task-name">
-                      <a href={{task.url}}>{{task.description}}</a>
+                      <a href={{task.url}}>{{ t(task.description) }}</a>
                     </span>
                     <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}">
-                      {{ task.status }}
+                      {{ t(task.status) }}
                     </strong>
                   </li>
                 {% endfor %}
               </ol>
             </div>
           {% endfor %}
-        </div>     
-         {{ aboutClaimWidget({header:'',lines:[{title: 'Response deadline:', content: responseDeadLine, href: '', hrefContact: '', hint:remainingDays},{title: 'Claim number:', content : claimNumber, href: '', hrefContact: ''},{title: 'Total claim amount:', content:totalClaimAmount},{title: 'Claim details:', href: claimDetailsUrl, hrefContact: 'View claim'}]}) }}
+        </div>
+        {% set responseDeadLineHint = timeRemaining(remainingDays, isDeadLinePassed) %}
+        {% if remainingDays < 1  %}
+          {% set responseDeadLineHintStyle = "due-or-overdue" %}
+        {% endif %}
+        {{ aboutClaimWidget({header:'',lines:[{title: 'Response deadline:', content: responseDeadLineExpression, href: '', hrefContact: '', hint:responseDeadLineHint, hintStyle:responseDeadLineHintStyle},{title: 'Claim number:', content : claimNumber, href: '', hrefContact: ''},{title: 'Total claim amount:', content:totalClaimAmount},{title: 'Claim details:', href: claimDetailsUrl, hrefContact: 'View claim'}]}) }}
       </div>
     </main>
   </div>
