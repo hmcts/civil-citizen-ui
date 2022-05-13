@@ -6,7 +6,7 @@
       <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t(aboutClaimParams.header) }}</h3>
     {% endif %}
     {% for claimLine in aboutClaimParams.lines %}
-      {{ newLine(claimLine.title, claimLine.content, claimLine.href, claimLine.hrefContact, claimLine.hint ) }}
+      {{ newLine(claimLine.title, claimLine.content, claimLine.href, claimLine.hrefContact, claimLine.hint, claimLine.hintStyle ) }}
     {% endfor %}
   </div>
 {% endmacro %}
