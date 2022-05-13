@@ -16,7 +16,7 @@ dependencies:
     repository: '@hmctspublic'
     condition: civil-service.enabled
   - name: ccd
-    version: 6.0.0
+    version: 8.0.0
     repository: '@hmctspublic'
     condition: ccd.enabled
   - name: xui-webapp
