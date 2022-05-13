@@ -42,9 +42,6 @@ export class Claim {
     return this.totalClaimAmount < MAX_CLAIM_AMOUNT ? NumberOfDays.FOURTEEN : NumberOfDays.TWENTYEIGHT;
   }
   getRemainingDays(): number {
-    console.log('deadline---', dayjs(this.respondent1ResponseDeadline));
-    console.log('current date---', currentDate());
-    console.log('resul---t', dayjs(this.respondent1ResponseDeadline).diff(currentDate(), 'days'));
     return dayjs(this.respondent1ResponseDeadline).diff(currentDate(), 'days');
   }
   isPastDeadline():boolean {
