@@ -8,6 +8,7 @@ import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
 import {Mediation} from './mediation/mediation';
 import {CorrespondenceAddress} from './correspondenceAddress';
+import {currentDate, currentDateTime, setTimeFourPM} from '../utils/dateUtils';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -41,7 +42,13 @@ export class Claim {
     return this.totalClaimAmount < MAX_CLAIM_AMOUNT ? NumberOfDays.FOURTEEN : NumberOfDays.TWENTYEIGHT;
   }
   getRemainingDays(): number {
-    return dayjs(this.respondent1ResponseDeadline).diff('20 November 2022', 'days')
+    console.log('deadline---', dayjs(this.respondent1ResponseDeadline));
+    console.log('current date---', currentDate());
+    console.log('resul---t', dayjs(this.respondent1ResponseDeadline).diff(currentDate(), 'days'));
+    return dayjs(this.respondent1ResponseDeadline).diff(currentDate(), 'days');
+  }
+  isPastDeadline():boolean {
+    return currentDateTime().isSameOrAfter(setTimeFourPM(dayjs(this.respondent1ResponseDeadline)));
   }
 }
 
