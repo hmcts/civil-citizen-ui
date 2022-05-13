@@ -10,6 +10,7 @@ import {ResidenceType} from '../../common/form/models/statementOfMeans/residence
 import {CounterpartyType} from '../../common/models/counterpartyType';
 import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {TransactionSchedule} from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {SignatureType} from '../../common/models/signatureType';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -70,6 +71,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('CounterpartyType', CounterpartyType);
     nunjucksEnv.addGlobal('UnemploymentCategory', UnemploymentCategory);
     nunjucksEnv.addGlobal('TransactionSchedule', TransactionSchedule);
+    nunjucksEnv.addGlobal('SignatureType', SignatureType);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/statement-of-truth.njk" import statementOfTruth %}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -20,13 +21,23 @@
           </div>
         {% endfor %}
 
-        <form method="post">
-          <div class="govuk-form-group">
+        {{ statementOfTruth(
+          form,
+          statementOfTruthType = SignatureType.RESPONSE,
+          labelHtml = 'I believe that the facts stated in this response are true.
+          <p>I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to
+          be made, a false statement in a document verified by a statement of truth without an honest belief in its
+          truth.</p>',
+          isQualified = (signatureType === SignatureType.QUALIFIED)
+        ) }}
+
+        <div class="govuk-form-group">
+          <form method="post">
             {{ govukButton({
               text: t('Submit response')
             }) }}
-          </div>
-        </form>
+          </form>
+        </div>
 
       </div>
     </main>
