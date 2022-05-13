@@ -1,12 +1,13 @@
 import * as express from 'express';
 
-import {CITIZEN_ALREADY_PAID_URL, CITIZEN_RESPONSE_TYPE_URL, ROOT_URL} from '../../../urls';
+import {CITIZEN_ALREADY_PAID_URL, CITIZEN_REJECT_ALL_CLAIM_URL, CITIZEN_RESPONSE_TYPE_URL} from '../../../urls';
 import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
 import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 
@@ -55,10 +56,10 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
         await saveDraftClaim(req.params.id, claim);
         switch (model.responseType) {
           case 'PART_ADMISSION':
-            res.redirect(CITIZEN_ALREADY_PAID_URL);
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_ALREADY_PAID_URL));
             break;
           default:
-            res.redirect(ROOT_URL);
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_REJECT_ALL_CLAIM_URL));
         }
 
       }
