@@ -5,6 +5,7 @@ import {Claim} from '../../../../common/models/claim';
 import {ResponseType} from '../../../../common/form/models/responseType';
 //import {RejectAllOfClaimType} from '../../../../common/form/models/rejectAllOfClaimType';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
+import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClaimType';
 
 const sendYourResponseByEmailViewPath = 'features/response/eligibility/send-your-response-by-email';
 const sendYourResponseByEmailController = express.Router();
@@ -15,7 +16,7 @@ function renderView(res: express.Response, form: Claim): void {
   res.render(sendYourResponseByEmailViewPath, {
     form: form,
     ResponseType: ResponseType,
-    //  RejectAllOfClaimType: RejectAllOfClaimType,
+    RejectAllOfClaimType: RejectAllOfClaimType,
     CounterpartyType: CounterpartyType,
   });
 }
