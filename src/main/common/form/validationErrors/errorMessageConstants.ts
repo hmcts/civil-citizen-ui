@@ -64,6 +64,7 @@ export const VALID_AMOUNT = 'Enter a valid amount';
 export const AMOUNT_LESS_THAN_CLAIMED = 'Enter a value less than the amount claimed';
 export const ENTER_AN_EXPLANATION = 'Enter an explanation of why you can’t pay now';
 export const PHONE_NUMBER_REQUIRED = 'Please enter a phone number';
+export const OPTION_REQUIRED_RESPONSE = 'Please select a response';
 export const OPTION_REQUIRED = 'Please select one reason';
 export const TEXT_TOO_LONG = 'Reason must be 500 characters or fewer';
 export const DESCRIPTION_REQUIRED = 'Enter a description of what happened';

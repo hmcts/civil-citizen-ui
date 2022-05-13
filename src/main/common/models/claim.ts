@@ -7,6 +7,7 @@ import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
 import {Mediation} from './mediation/mediation';
+import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 
@@ -27,6 +28,7 @@ export class Claim {
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;
   partialAdmission?: PartialAdmission;
+  rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
   timelineOfEvents?: TimeLineOfEvents[];
 
