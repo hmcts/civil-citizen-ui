@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import {Task} from '../../models/taskList/task';
 import {TaskList} from '../../models/taskList/taskList';
 import {Claim} from '../../models/claim';
-import {TaskStatus} from '../../models/taskList/TaskStatus';
 import {getConfirmYourDetailsTask} from './tasks/confirmYourDetails';
 import {getneedMoreTimeTask} from './tasks/needMoreTime';
 import {getChooseAResponseTask} from './tasks/chooseAResponse';
@@ -36,20 +35,8 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList 
   return { title: 'Respond to Claim', tasks };
 };
 
-const buildSubmitSection = (claim: Claim, caseData:Claim, claimId:string): TaskList => {
+const buildSubmitSection = (claim: Claim, caseData: Claim, claimId: string, isInCompletsubmission: boolean): TaskList => {
   const tasks: Task[] = [];
-
-  // check if all tasks are completed except check and submit
-  let isInCompletsubmission = true;
-  const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(claim, caseData, claimId);
-  const taskListRespondeToClaim: TaskList = buildRespondToClaimSection(caseData, claimId);
-  const taskGroups = [taskListPrepareYourResponse, taskListRespondeToClaim];
-  const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
-  const allTasksExceptSubmit = filteredTaskGroups.map((taskGroup => taskGroup.tasks)).flat().map(task => task.status);
-  const allTasksExceptSubmitCompleted = allTasksExceptSubmit.every(task => task === TaskStatus.COMPLETE);
-  if (allTasksExceptSubmitCompleted) {
-    isInCompletsubmission = false;
-  }
 
   // TODO: when check and submit tasks page is developed we need to update logic of this task 
   const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claim, caseData, claimId, isInCompletsubmission);

@@ -6,13 +6,6 @@ import {
   buildRespondToClaimSection, buildSubmitSection,
 } from '../common/utils/taskList/taskListBuilder';
 
-/**
- * THIS FILE IS A CONCEPT
- * 
- * This code is only a concept of what we should do. 
- * 
- */
-
 let completed = 0;
 let total = 0;
 
@@ -22,11 +15,20 @@ const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId:string) => {
   // TODO : depending on the defendant's response type (full admission/partial admission/ rejection) we need to build new taskLists and include them in the taskGroups array
   const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(claim, caseData, currentClaimId);
   const taskListRespondeToClaim: TaskList = buildRespondToClaimSection(caseData, currentClaimId);
-  const taskListSubmitYourResponse: TaskList = buildSubmitSection(claim, caseData, currentClaimId);
 
-  // GENERATE DATA, TITLE AND DESCRIPTION
-  const taskGroups = [taskListPrepareYourResponse, taskListRespondeToClaim, taskListSubmitYourResponse];
-  return taskGroups.filter(item => item.tasks.length !== 0);
+  const taskGroups = [taskListPrepareYourResponse, taskListRespondeToClaim];
+  const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
+  // check if all tasks are completed except check and submit
+  let isInCompletsubmission = true;
+  calculateTotalAndCompleted(taskGroups);
+  if (completed === total) {
+    isInCompletsubmission = false;
+  }
+
+  const taskListSubmitYourResponse: TaskList = buildSubmitSection(claim, caseData, currentClaimId, isInCompletsubmission);
+  
+  filteredTaskGroups.push(taskListSubmitYourResponse);
+  return filteredTaskGroups;
 };
 
 const calculateTotalAndCompleted = (taskLists: TaskList[]) => {
@@ -52,4 +54,5 @@ const countCompletedTasks = (taskList: TaskList) => {
   return taskList.tasks.filter(task => task.status === TaskStatus.COMPLETE).length;
 };
 
-export { getTaskLists, getTitle, getDescription};
+export { getTaskLists, getTitle, getDescription };
+  
