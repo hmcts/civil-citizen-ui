@@ -15,10 +15,10 @@ const getCookie = (name) => {
 document.addEventListener('DOMContentLoaded', function () {
   const lang = getCookie('lang');
   if (lang === 'cy') {
-    englishLanguage[0].className = 'govuk-body govuk-link';
-    cymraegLanguage[0].className = 'govuk-body govuk-link disabled-link';
+    englishLanguage[0].className = 'govuk-body govuk-link language';
+    cymraegLanguage[0].className = 'govuk-!-display-none';
   } else {
-    englishLanguage[0].className = 'govuk-body govuk-link disabled-link';
-    cymraegLanguage[0].className = 'govuk-body govuk-link';
+    englishLanguage[0].className = 'govuk-!-display-none';
+    cymraegLanguage[0].className = 'govuk-body govuk-link language';
   }
 });

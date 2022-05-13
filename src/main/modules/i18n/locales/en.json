@@ -8,7 +8,12 @@
   "Actions": "Actions",
   "Respond to the claim": "Respond to the claim",
   "View": "View",
-  "Briefly explain why you can’t pay immediately": "Briefly explain why you can’t pay immediately",
   "Save and continue": "Save and continue",
-  "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+  "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
+  "ERRORS": {
+    "THERE_WAS_A_PROBLEM": "There was a problem"
+  },
+  "EXPLANATION": {
+    "TITLE": "Briefly explain why you can’t pay immediately"
+  }
 }

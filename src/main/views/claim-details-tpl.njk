@@ -5,13 +5,14 @@
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
 {% from "./macro/page-title.njk" import setPageTitle %}
-{% from "./macro/language-toggle.njk" import languageToggle %}
 {% set htmlClasses = "app-html-class" %}
 {% set htmlLang = "en" %}
 {% set assetPath = "" %}
 {% set assetUrl = "<YOUR-DOMAIN>" %}
 {% set themeColor = "blue" %}
 {% set bodyClasses = "app-body-class" %}
+{% set bannerText = "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>feedback</a> will help us to improve it." %}
+{% set languageToggle = "<a class='govuk-body govuk-link language english-language' href='?lang=en'>English</a><a class='govuk-body govuk-link language cymraeg-language' href='?lang=cy'>Cymraeg</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
   {% include "webpack/css.njk" %}
@@ -44,29 +45,18 @@
     ]
   }) }}
 {% endblock %}
+
 {% block beforeContent %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      {{ govukPhaseBanner({
+{{ govukPhaseBanner({
         tag: {
           text: "beta"
         },
-        html: 'This is a new service – your <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen" target="_blank">feedback</a> will help us to improve it.'
+        html: bannerText + languageToggle
       }) }}
-    </div>
-
-    <div class="govuk-grid-column-one-third">
-      {{ languageToggle() }}
-    </div>
-  </div>
 {% endblock %}
 
-{# {% block languageToggle %}
-{% endblock %} #}
-{# {% block content %}{% endblock %} #}
-
 {% block footer %}
-  {{ govukFooter({
+{{ govukFooter({
     meta: {
       items: [
         {
@@ -98,6 +88,6 @@
   }) }}
 {% endblock %}
 {% block bodyEnd %}
-  {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  {% include "webpack/js.njk" %}
+{# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
+{% include "webpack/js.njk" %}
 {% endblock %}

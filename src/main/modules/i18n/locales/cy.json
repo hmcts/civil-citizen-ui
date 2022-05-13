@@ -8,7 +8,12 @@
   "Actions": "Snoitca",
   "Respond to the claim": "Dnopser ot eht mialc",
   "View": "Weiv",
-  "Briefly explain why you can’t pay immediately": "Eglurwch yn gryno pam na allwch dalu ar unwaith",
-  "Save and continue":"Arbed a pharhau",
-  "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "Ar ôl i chi gwblhau'r holl gamau gweithredu byddwch yn cael eich tywys i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno."
+  "Save and continue": "Arbed a pharhau",
+  "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "Ar ôl i chi gwblhau'r holl gamau gweithredu byddwch yn cael eich tywys i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
+  "ERRORS": {
+    "THERE_WAS_A_PROBLEM": "Roedd problem"
+  },
+  "EXPLANATION": {
+    "TITLE": "Eglurwch yn gryno pam na allwch dalu ar unwaith"
+  }
 }
