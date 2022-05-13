@@ -9,14 +9,20 @@ export interface SummarySection {
   summaryList: SummaryList;
 }
 
-export function summarySection(title: string, classes?: string, ...summaryRows: SummaryRow[]): SummarySection {
+export interface SummarySectionParams {
+  title: string;
+  classes?: string;
+  summaryRows: SummaryRow[];
+}
+
+export function summarySection(summarySectionParams: SummarySectionParams): SummarySection {
   const summaryList = {
-    classes: classes,
-    rows: summaryRows,
+    ...(summarySectionParams.classes) && {classes: summarySectionParams.classes},
+    rows: summarySectionParams.summaryRows,
   };
 
   return {
-    title: title,
+    title: summarySectionParams.title,
     summaryList: summaryList,
   };
 }

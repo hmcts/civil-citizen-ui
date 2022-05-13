@@ -3,12 +3,12 @@ import {
 } from '../../../modules/draft-store/draftStoreService';
 import {
   summarySection,
-  SummarySection,
   SummarySections,
-} from 'models/summaryList/summarySections';
-import {Claim} from '../../../../main/common/models/claim';
+} from '../../../common/models/summaryList/summarySections';
+import {Claim} from '../../../common/models/claim';
+// TODO: make translation work inside typescript code
 import {t} from 'i18next';
-import {summaryRow} from '../../../../main/common/models/summaryList/summaryList';
+import {summaryRow} from '../../../common/models/summaryList/summaryList';
 import {
   CITIZEN_DETAILS_URL,
   CITIZEN_PHONE_NUMBER_URL,
@@ -34,20 +34,22 @@ class CheckAnswersService {
 
     const yourDetailsHref = CITIZEN_DETAILS_URL.replace(':id', claimId);
     const phoneNumberHref = CITIZEN_PHONE_NUMBER_URL.replace(':id', claimId);
-    const yourDetailsSection: SummarySection = summarySection(
-      t('Your details'),
-      undefined,
-      summaryRow(t('Full name'), claim.respondent1.partyName, yourDetailsHref, t('Change')),
-      summaryRow(t('Contact number (optional)'), claim.respondent1.telephoneNumber, phoneNumberHref, t('Change')),
-    );
+    const yourDetailsSection = summarySection({
+      title: t('Your details'),
+      summaryRows: [
+        summaryRow(t('Full name'), claim.respondent1.partyName, yourDetailsHref, t('Change')),
+        summaryRow(t('Contact number (optional)'), claim.respondent1.telephoneNumber, phoneNumberHref, t('Change')),
+      ],
+    });
 
     const yourResponseHref = CITIZEN_RESPONSE_TYPE_URL.replace(':id', claimId);
-    const yourResponseSection: SummarySection = summarySection(
-      t('Your response to the claim'),
-      undefined,
-      summaryRow(t('Do you owe the money claimed'), t(claim.respondent1.responseType), yourResponseHref, t('Change')),
-      summaryRow(t('When will you pay'), 'Screen still to be developped', '#', t('Change')),
-    );
+    const yourResponseSection = summarySection({
+      title: t('Your response to the claim'),
+      summaryRows: [
+        summaryRow(t('Do you owe the money claimed'), t(claim.respondent1.responseType), yourResponseHref, t('Change')),
+        summaryRow(t('When will you pay'), 'Screen still to be developped', '#', t('Change')),
+      ],
+    });
     return {
       sections: [
         yourDetailsSection,
