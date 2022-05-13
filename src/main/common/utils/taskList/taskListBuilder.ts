@@ -1,61 +1,25 @@
-import {TaskStatus} from '../../models/taskList/TaskStatus';
+import dayjs from 'dayjs';
 import {Task} from '../../models/taskList/task';
 import {TaskList} from '../../models/taskList/taskList';
 import {Claim} from '../../models/claim';
+import {TaskStatus} from '../../models/taskList/TaskStatus';
 import {getConfirmYourDetailsTask} from './tasks/confirmYourDetails';
-import { getneedMoreTimeTask } from './tasks/needMoreTime';
-import { isPastDeadline } from '../dayJsFactory';
-import dayjs, { Dayjs } from 'dayjs';
+import {getneedMoreTimeTask} from './tasks/needMoreTime';
+import {getChooseAResponseTask} from './tasks/chooseAResponse';
+import {getCheckAndSubmitYourResponseTask} from './tasks/checkAndSubmitYourResponse';
+import {isPastDeadline,currentDateTime} from '../dateUtils';
 
-/**
- * THIS FILE IS A CONCEPT AND DOESN'T WORK
- *
- * The logic on this file is not the real business logic.
- * This code is only a concept of what we should do.
- *
- */
-
-const chooseAResponseTask = {
-  description: 'Choose a response',
-  url: '/chose-a-response',
-  status: TaskStatus.INCOMPLETE,
-};
-
-// const howMuchYouHavePaidTask = {
-//   description: 'Tell us how much you’ve paid',
-//   url: '/how-much-paid',
-//   status: TaskStatus.INCOMPLETE,
-// };
-
-const checkAndSubmitYourResponseTask = {
-  description: 'Check and submit your response',
-  url: '/check-and-send',
-  status: TaskStatus.INCOMPLETE,
-};
-
-// const freeTelephoneMediation =  {
-//   description: 'Free telephone mediation',
-//   url: './mediation/free-telephone-mediation',
-//   status: TaskStatus.INCOMPLETE,
-// };
-
-const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, now:Dayjs): TaskList => {
+const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:string): TaskList => {
   const tasks: Task[] = [];
-  const confirmYourDetailsTask = getConfirmYourDetailsTask(claim);
+  const now = currentDateTime();
+  const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId);
+  // TODO : when need more time page is developed we need to generate this function and push this task to the tasks
   const needMoreTimeTask = getneedMoreTimeTask(claim);
 
-  let isDeadlinePassed = false;
-  const normal = true;
-  // if (await featureToggles.isOCONEnhancementEnabled()) {
-  if (normal) {
-    isDeadlinePassed = isPastDeadline(now, dayjs(caseData.respondent1ResponseDeadline));
-  } else {
-    // const postponedDeadline = await DeadlineCalculatorClient.calculatePostponedDeadline(claim.issuedOn)
-    const postponedDeadline = dayjs('10 March 2022');
-    isDeadlinePassed = isPastDeadline(now, postponedDeadline );
-  }
-  console.log('passed--', isDeadlinePassed)
-
+  const isDeadlinePassed = isPastDeadline(now, dayjs(caseData.respondent1ResponseDeadline));
+  // TODO : we also need to check if the posponed deadline is passed if the defendant requested addtional time when the page is developed 
+  // isDeadlinePassed = isPastDeadline(now, postponedDeadline);
+  
   tasks.push(confirmYourDetailsTask);
   if (!isDeadlinePassed) {
     tasks.push(needMoreTimeTask);
@@ -63,46 +27,39 @@ const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, now:Dayj
   return { title: 'Prepare your response', tasks };
 };
 
-const buildRespondToClaimSection = (claim: Claim): TaskList => {
+const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList => {
   const tasks: Task[] = [];
+  const chooseAResponseTask = getChooseAResponseTask(caseData, claimId);
+  // TODO : depending on the response type full admission/partial admission or rejection we need to add new tasks
 
   tasks.push(chooseAResponseTask);
-  // if (!claim.paymentOption) {
-  //   tasks.push(howMuchYouHavePaidTask);
-  // }
   return { title: 'Respond to Claim', tasks };
 };
 
-const buildSubmitSection = (claim: Claim): TaskList => {
+const buildSubmitSection = (claim: Claim, caseData:Claim, claimId:string): TaskList => {
   const tasks: Task[] = [];
+
+  // check if all tasks are completed except check and submit
+  let isInCompletsubmission = true;
+  const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(claim, caseData, claimId);
+  const taskListRespondeToClaim: TaskList = buildRespondToClaimSection(caseData, claimId);
+  const taskGroups = [taskListPrepareYourResponse, taskListRespondeToClaim];
+  const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
+  const allTasksExceptSubmit = filteredTaskGroups.map((taskGroup => taskGroup.tasks)).flat().map(task => task.status);
+  const allTasksExceptSubmitCompleted = allTasksExceptSubmit.every(task => task === TaskStatus.COMPLETE);
+  if (allTasksExceptSubmitCompleted) {
+    isInCompletsubmission = false;
+  }
+
+  // TODO: when check and submit tasks page is developed we need to update logic of this task 
+  const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claim, caseData, claimId, isInCompletsubmission);
 
   tasks.push(checkAndSubmitYourResponseTask);
   return { title: 'Submit', tasks };
 };
 
-// const buildTryToResolveClaimSection = async (claim: Claim): Promise<TaskList> => {
-//   const tasks: Task[] = [];
-
-//   if (!claim.paymentOption) {
-//     tasks.push(howMuchYouHavePaidTask);
-//     tasks.push(freeTelephoneMediation);
-//   }
-//   return { title: 'Try to resolve the Claim', tasks };
-// };
-
-// const buildYourHearingRequirementsSection = async (claim: Claim): Promise<TaskList> => {
-//   const tasks: Task[] = [];
-
-//   if (claim.paymentOption) {
-//     tasks.push(howMuchYouHavePaidTask);
-//   }
-//   return { title: 'Your hearing requirements', tasks };
-// };
-
 export {
   buildPrepareYourResponseSection,
   buildRespondToClaimSection,
   buildSubmitSection,
-  // buildTryToResolveClaimSection,
-  // buildYourHearingRequirementsSection,
 };
