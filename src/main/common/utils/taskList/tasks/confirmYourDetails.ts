@@ -1,27 +1,28 @@
 import {Task} from '../../../models/taskList/task';
 import {Claim} from '../../../models/claim';
 import {TaskStatus} from '../../../models/taskList/TaskStatus';
-
-/**
- * THIS FILE IS A CONCEPT AND DOESN'T WORK
- * 
- * The logic on this file is not the real business logic.
- * This code is only a concept of what we should do. 
- * 
- */
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {CITIZEN_DETAILS_URL} from '../../../../routes/urls';
 
 const confirmYourDetailsTask = {
   description: 'Confirm your details',
-  url: '/test',
+  url: CITIZEN_DETAILS_URL,
   status: TaskStatus.INCOMPLETE,
 };
 
-export const getConfirmYourDetailsTask = (claim: Claim): Task => {
-
-  if (claim.statementOfMeans?.cohabiting?.option === 'yes') {
-    confirmYourDetailsTask.status = TaskStatus.COMPLETE;
+export const getConfirmYourDetailsTask = (caseData: Claim, claimId: string): Task => {
+  let isTaskCompleted = TaskStatus.COMPLETE;
+  if (!caseData) {
+    isTaskCompleted = TaskStatus.INCOMPLETE;
+  }
+  if (!caseData?.respondent1?.correspondenceAddress && !caseData?.respondent1?.primaryAddress) {
+    isTaskCompleted = TaskStatus.INCOMPLETE;
+  }
+  if (!caseData?.respondent1?.dateOfBirth) {
+    isTaskCompleted = TaskStatus.INCOMPLETE;
   }
 
-  return confirmYourDetailsTask;
+  const constructedUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL);
+  return { ...confirmYourDetailsTask, url: constructedUrl, status: isTaskCompleted };
 };
 

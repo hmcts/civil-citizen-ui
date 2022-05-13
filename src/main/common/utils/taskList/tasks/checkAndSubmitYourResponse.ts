@@ -1,0 +1,32 @@
+import { Task } from '../../../models/taskList/task';
+import { Claim } from '../../../models/claim';
+import { TaskStatus } from '../../../models/taskList/TaskStatus';
+import { constructResponseUrlWithIdParams } from '../../urlFormatter';
+
+/**
+ * 
+ * this file needs to be revisited when check and submit page is developed.
+ * 
+ */
+
+const checkAndSubmitYourResponseTask = {
+  description: 'Check and submit your response',
+  url: '/check-and-send',
+  status: TaskStatus.INCOMPLETE,
+};
+
+export const getCheckAndSubmitYourResponseTask = (claim: Claim, caseData: Claim, claimId: string, isInCompletsubmission: boolean): Task => {
+  const isTaskCompleted = TaskStatus.INCOMPLETE;
+  // TODO : create the logic for successfull submit and change the isTaskCompleted to TaskStatus.COMPLETE
+  // TODO : update the URL when these pages developed
+  const redirectionURL = isInCompletsubmission ? 'incomplete-submission' : 'check-and-send';
+  const constructedUrl = constructResponseUrlWithIdParams(claimId, redirectionURL);
+  return { ...checkAndSubmitYourResponseTask, url: constructedUrl, status: isTaskCompleted };
+};
+
+
+
+
+
+
+
