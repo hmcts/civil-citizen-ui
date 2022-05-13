@@ -20,3 +20,26 @@
   margin-bottom: 1em;
   text-decoration: underline;
 }
+
+.language-toggle-container {
+  display: flex;
+
+  .language-link-right {
+    margin-left: auto;
+    margin-right: 10px;
+    padding: 2px;
+  }
+
+  .language-link-left {
+    padding: 2px;
+    padding-left: 10px;
+    border-left: 1px solid black;
+  }
+
+  .disabled-link {
+    cursor: default;
+    pointer-events: none;
+    text-decoration: none;
+    color: black;
+  }
+}

@@ -1,5 +1,8 @@
 {% from "govuk/components/header/macro.njk" import govukHeader %}
+{% from "./macro/language-toggle.njk" import languageToggle %}
+
 {% extends "govuk/template.njk" %}
+
 {% block head %}
   {% include "webpack/css.njk" %}
 {% endblock %}
@@ -8,6 +11,11 @@
     homepageUrl: "#"
   }) }}
 {% endblock %}
+
+{# {% block languageContent %}
+{% endblock %} #}
+  {# {{ languageToggle({}) | safe }} #}
+
 {% block footer %}
   {{ govukFooter({}) }}
 {% endblock %}
