@@ -75,8 +75,6 @@
              </div>
           {% endif %}
 
-          {% if form.response.type === ResponseType.DEFENCE %}
-            {% if form.rejectAllOfClaim.option === RejectAllOfClaimOption.COUNTER_CLAIM %}
           <div>
               <span class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-weight-bold">Step 3: Pay the court fee</span>
               <p class="govuk-body govuk-!-margin-top-4">
@@ -87,11 +85,9 @@
                 html: content
               }) }}
             <div class="govuk-inset-text govuk-grid-column-two-third">
-              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Do not create a new claim if you want  to counterclaim. Use form N9B.')}}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Do not create a new claim if you want to counterclaim. Use form N9B.')}}</p>
             </div>
           </div>
-            {% endif %}
-          {% endif %}
           <div>
           <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-font-weight-bold">{{ t('Help and support') }}</h2>
           {{ contactUs(t) }}
