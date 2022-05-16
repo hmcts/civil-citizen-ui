@@ -9,8 +9,8 @@ const getCookie = (name) => {
       return c[1];
     }
   }
-  return "";
-}
+  return '';
+};
 
 document.addEventListener('DOMContentLoaded', function () {
   const lang = getCookie('lang');
