@@ -39,6 +39,11 @@ export const enum TestMessages {
   JOB_SCHEDULE_ERROR = 'Select how often you receive income from your job',
   JOB_CORRECT_AMOUNT = 'Enter a valid income from your job amount, maximum two decimal places',
   AMOUNT_LESS_THAN_CLAIMED = 'Enter a value less than the amount claimed',
+  VALID_YES_NO_OPTION = 'Choose option: Yes or No',
+  PHONE_NUMBER_REQUIRED = 'Please enter a phone number',
+  NAME_REQUIRED = 'Please enter a name',
+  TEXT_TOO_MANY = 'You’ve entered too many characters',
+  VALID_YES_NO_SELECTION = 'Please select yes or no',
   MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
   MEDIATION_I_DONT_WANT_FREE = 'I do not agree to free mediation',
 }

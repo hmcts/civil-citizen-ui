@@ -1,16 +1,16 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../../../main/routes/urls';
+import {app} from '../../../../../main/app';
+import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../../main/routes/urls';
 import {
   mockCivilClaimApplicantCompanyType, mockCivilClaimApplicantIndividualType,
   mockRedisFailure,
-} from '../../../../../utils/mockDraftStore';
-import {REDIS_FAILURE} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+} from '../../../../utils/mockDraftStore';
+import {REDIS_FAILURE} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Free Telephone Mediation Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
