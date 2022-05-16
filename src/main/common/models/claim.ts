@@ -50,7 +50,7 @@ export class Claim {
   }
 
   isDeadLinePassed(): boolean {
-    return isPastDeadline(currentDateTime(), this.respondent1ResponseDeadline);
+    return isPastDeadline(this.respondent1ResponseDeadline);
   }
 }
 

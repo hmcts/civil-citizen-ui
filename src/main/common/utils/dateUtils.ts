@@ -14,6 +14,6 @@ export const convertDateToLuxonDate = (date: Date | string) => {
   return DateTime.fromISO(date);
 };
 
-export const isPastDeadline = (dateTime: DateTime, deadline: Date | string) => {
-  return dateTime >= setTimeFourPM(deadline);
+export const isPastDeadline = (deadline: Date | string) => {
+  return currentDateTime() >= setTimeFourPM(deadline);
 };

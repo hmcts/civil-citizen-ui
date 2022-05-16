@@ -18,7 +18,7 @@ const checkAndSubmitYourResponseTask = {
 export const getCheckAndSubmitYourResponseTask = (claim: Claim, caseData: Claim, claimId: string, isInCompletsubmission: boolean): Task => {
   const isTaskCompleted = TaskStatus.INCOMPLETE;
   // TODO : create the logic for successfull submit and change the isTaskCompleted to TaskStatus.COMPLETE
-  // TODO : update the URL when these pages developed
+  // TODO : update the URL constants with the correct ones when these pages developed
   const redirectionURL = isInCompletsubmission ? 'incomplete-submission' : 'check-and-send';
   const constructedUrl = constructResponseUrlWithIdParams(claimId, redirectionURL);
   return { ...checkAndSubmitYourResponseTask, url: constructedUrl, status: isTaskCompleted };

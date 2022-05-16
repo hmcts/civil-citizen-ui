@@ -9,12 +9,11 @@ import {isPastDeadline,currentDateTime} from '../dateUtils';
 
 const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:string): TaskList => {
   const tasks: Task[] = [];
-  const now = currentDateTime();
   const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId);
   // TODO : when need more time page is developed we need to generate this function and push this task to the tasks
   const needMoreTimeTask = getNeedMoreTimeTask(claim);
 
-  const isDeadlinePassed = isPastDeadline(now, caseData.respondent1ResponseDeadline);
+  const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
   // TODO : when need more page is developed, we also need to check if the posponed deadline is passed if the defendant requested addtional time
   // isDeadlinePassed = isPastDeadline(now, postponedDeadline);
   
