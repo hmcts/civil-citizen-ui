@@ -14,8 +14,8 @@ import {TaskStatus} from '../../../models/taskList/TaskStatus';
 const needMoreTimeTask = {
   description: 'Response deadline',
   url: '/more-time-request',
-  status: TaskStatus.COMPLETE,
   // status: TaskStatus.COMPLETE,
+  status: TaskStatus.COMPLETE,
 };
 
 export const getneedMoreTimeTask = (claim: Claim): Task => {

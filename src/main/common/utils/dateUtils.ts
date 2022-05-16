@@ -1,24 +1,19 @@
-import dayjs, { type Dayjs } from 'dayjs';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-dayjs.extend(isSameOrAfter);
+import {DateTime} from 'luxon';
 
 export const currentDateTime = () => {
-  return dayjs();
-}; 
-
-export const currentDate = () => {
-  return dayjs().hour(1).minute(0).second(0).millisecond(1);
+  return DateTime.now();
 };
 
-export const setTimeFourPM = (deadlineDay: Dayjs) => {
+export const setTimeFourPM = (deadlineDay: DateTime) => {
   // set deadline time 4pm
-  return deadlineDay.hour(16).minute(0).second(0).millisecond(0);
+  return deadlineDay.set({ hour: 16, minute: 0, second: 0, millisecond: 0 });
 };
 
-export const isPastDeadline = (dateTime: Dayjs, deadline: Dayjs) => {
-  return dateTime.isSameOrAfter(dayjs(setTimeFourPM(deadline)));
+export const convertDateToLuxonDate = (date: Date | string) => {
+  /* @ts-expect-error : Argument of type 'Date' is not assignable to parameter of type 'string'.ts(2345) */
+  return DateTime.fromISO(date);
 };
 
-export const isAfter4pm = () => {
-  return currentDateTime().hour() > 15;
+export const isPastDeadline = (dateTime: DateTime, deadline: DateTime) => {
+  return dateTime >= setTimeFourPM(deadline);
 };

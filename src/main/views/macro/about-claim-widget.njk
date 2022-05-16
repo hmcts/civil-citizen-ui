@@ -1,7 +1,13 @@
 {% from "./new-line.njk" import newLine %}
 
 {% macro aboutClaimWidget(aboutClaimParams) %}
-  <div class="govuk-grid-column-one-third  govuk-!-padding-top-9">
+
+{% set containerStyle= "govuk-grid-column-one-third" %}
+{% if aboutClaimParams.header %}
+  {% set containerStyle= "govuk-grid-column-one-third govuk-!-padding-top-9" %}
+{% endif %}
+
+  <div class="{{containerStyle}}">
     {% if aboutClaimParams.header %}
       <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t(aboutClaimParams.header) }}</h3>
     {% endif %}

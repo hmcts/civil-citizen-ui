@@ -11,7 +11,7 @@ import { constructResponseUrlWithIdParams } from '../../urlFormatter';
 
 const checkAndSubmitYourResponseTask = {
   description: 'Check and submit your response',
-  url: '/check-and-send',
+  url: '/incomplete-submission',
   status: TaskStatus.INCOMPLETE,
 };
 

@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import {Task} from '../../models/taskList/task';
 import {TaskList} from '../../models/taskList/taskList';
 import {Claim} from '../../models/claim';
@@ -6,17 +5,18 @@ import {getConfirmYourDetailsTask} from './tasks/confirmYourDetails';
 import {getneedMoreTimeTask} from './tasks/needMoreTime';
 import {getChooseAResponseTask} from './tasks/chooseAResponse';
 import {getCheckAndSubmitYourResponseTask} from './tasks/checkAndSubmitYourResponse';
-import {isPastDeadline,currentDateTime} from '../dateUtils';
+import {isPastDeadline,currentDateTime, convertDateToLuxonDate, setTimeFourPM} from '../dateUtils';
 
 const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:string): TaskList => {
   const tasks: Task[] = [];
   const now = currentDateTime();
+  const deadLine = convertDateToLuxonDate(caseData.respondent1ResponseDeadline);
   const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId);
   // TODO : when need more time page is developed we need to generate this function and push this task to the tasks
   const needMoreTimeTask = getneedMoreTimeTask(claim);
 
-  const isDeadlinePassed = isPastDeadline(now, dayjs(caseData.respondent1ResponseDeadline));
-  // TODO : we also need to check if the posponed deadline is passed if the defendant requested addtional time when the page is developed 
+  const isDeadlinePassed = isPastDeadline(now, setTimeFourPM(deadLine));
+  // TODO : when need more page is developed, we also need to check if the posponed deadline is passed if the defendant requested addtional time
   // isDeadlinePassed = isPastDeadline(now, postponedDeadline);
   
   tasks.push(confirmYourDetailsTask);
