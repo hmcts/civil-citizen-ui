@@ -20,7 +20,7 @@ let citizenFullName: object;
 const CITIZEN_DETAILS_COMPANY_VIEW_PATH = 'features/response/citizenDetails/citizen-details-company';
 const CITIZEN_DETAILS_VIEW_PATH = 'features/response/citizenDetails/citizen-details';
 
-const redirectToViewpathWithType = (type:CounterpartyType) => {
+const getViewpathWithType = (type: CounterpartyType) => {
   if (type === CounterpartyType.ORGANISATION || type === CounterpartyType.COMPANY) {
     return CITIZEN_DETAILS_COMPANY_VIEW_PATH;
   }
@@ -29,7 +29,8 @@ const redirectToViewpathWithType = (type:CounterpartyType) => {
 
 function renderPageWithError(res: express.Response, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, errorList: Form, req: express.Request, respondent: Respondent, contactPerson: string): void {
   const partyName = respondent?.partyName;
-  const viewPath = redirectToViewpathWithType(respondent?.type);
+  const type = respondent?.type;
+  const viewPath = getViewpathWithType(type);
   res.render(viewPath, {
     citizenFullName: citizenFullName,
     citizenAddress: citizenAddress,
@@ -44,6 +45,7 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
     postToThisAddress: req.body.postToThisAddress,
     partyName: partyName,
     contactPerson: contactPerson,
+    type:type,
   });
 }
 
@@ -72,7 +74,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
       individualLastName: responseDataRedis?.individualLastName || 'individualLastName test',
     };
 
-    const viewPath = redirectToViewpathWithType(responseDataRedis?.type);
+    const viewPath = getViewpathWithType(responseDataRedis?.type);
     res.render(viewPath, {
       citizenFullName: citizenFullName,
       citizenAddress: citizenAddressModel,
