@@ -1,6 +1,5 @@
 import * as urls from '../../main/routes/urls';
 
-
 export const IGNORED_URLS = [
   urls.SIGN_IN_URL,
   urls.SIGN_OUT_URL,
@@ -69,4 +68,6 @@ export const IGNORED_URLS = [
   urls.CITIZEN_REJECT_ALL_CLAIM_URL,
   urls.CITIZEN_CONTACT_THEM_URL,
   urls.CITIZEN_EVIDENCE_URL,
+  urls.IMPACT_OF_DISPUTE_URL,
+  urls.SEND_RESPONSE_BY_EMAIL_URL,
 ];

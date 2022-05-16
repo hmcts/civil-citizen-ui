@@ -6,6 +6,7 @@ import {CounterpartyType} from './counterpartyType';
 import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
+import { DefendantEvidence } from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
@@ -30,6 +31,7 @@ export class Claim {
   partialAdmission?: PartialAdmission;
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
+  evidence?: DefendantEvidence;
   timelineOfEvents?: TimeLineOfEvents[];
 
 

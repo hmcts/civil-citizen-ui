@@ -52,10 +52,12 @@ import mediationIndividualPhoneController from './features/mediation/mediationIn
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
 import companyTelephoneNumberController from './features/mediation/companyTelephoneNumberController';
 import mediationDisagreementController from './features/mediation/mediationDisagreementController';
+import sendYourResponseByEmailController from './features/response/eligibility/sendYourResponseByEmailController';
 import freeTelephoneMediationController from './features/mediation/freeTelephoneMediationController';
 import rejectAllOfClaimController from './features/response/rejectAllOfClaimController';
 import defendantTimelineController from './features/response/timelineOfEvents/defendantTimelineController';
 import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
+import evidenceController from './features/response/evidence/evidenceController';
 
 export default [
   homeController,
@@ -107,8 +109,10 @@ export default [
   companyTelephoneNumberController,
   mediationDisagreementController,
   freeTelephoneMediationController,
+  sendYourResponseByEmailController,
   contactThemController,
   rejectAllOfClaimController,
   iDontWantFreeMediationController,
+  evidenceController,
   defendantTimelineController,
 ];
