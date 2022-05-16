@@ -9,19 +9,27 @@ export interface SummaryRow {
   actions?: Actions;
 }
 
-type Key = { text: string } | { html: string }
+export interface Key {
+  text?: string;
+  html?: string;
+}
 
-type Value = { text: string } | { html: string }
+export interface Value {
+  text?: string;
+  html?: string;
+}
 
-type Actions = {
+interface Actions {
   classes?: string;
   items: Item[];
 }
 
-type Item = {
+interface Item {
   href: string;
   visuallyHiddenText?: string;
-} & ({ text: string } | { html: string })
+  text?: string;
+  html?: string;
+}
 
 export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string): SummaryRow {
   const row: SummaryRow = {
