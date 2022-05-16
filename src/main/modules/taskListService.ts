@@ -19,13 +19,13 @@ const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId:string) => {
   const taskGroups = [taskListPrepareYourResponse, taskListRespondeToClaim];
   const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
   // check if all tasks are completed except check and submit
-  let isInCompletsubmission = true;
+  let isIncompletSubmission = true;
   calculateTotalAndCompleted(taskGroups);
   if (completed === total) {
-    isInCompletsubmission = false;
+    isIncompletSubmission = false;
   }
 
-  const taskListSubmitYourResponse: TaskList = buildSubmitSection(claim, caseData, currentClaimId, isInCompletsubmission);
+  const taskListSubmitYourResponse: TaskList = buildSubmitSection(claim, caseData, currentClaimId, isIncompletSubmission);
   
   filteredTaskGroups.push(taskListSubmitYourResponse);
   return filteredTaskGroups;

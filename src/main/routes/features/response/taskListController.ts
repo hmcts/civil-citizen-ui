@@ -1,9 +1,9 @@
 import * as express from 'express';
-import { CLAIM_TASK_LIST_URL, CLAIM_DETAILS_URL } from '../../urls';
+import {CLAIM_TASK_LIST_URL, CLAIM_DETAILS_URL} from '../../urls';
 import {getTaskLists, getTitle, getDescription} from '../../../modules/taskListService';
 import {Claim} from '../../../common/models/claim';
-import { getDraftClaimFromStore, getCaseDataFromStore } from '../../../modules/draft-store/draftStoreService';
-import { constructResponseUrlWithIdParams } from '../../../common/utils/urlFormatter';
+import {getDraftClaimFromStore, getCaseDataFromStore } from '../../../modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 
 
 /**

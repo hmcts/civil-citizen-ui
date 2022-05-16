@@ -3,9 +3,9 @@
 {% from "../../macro/about-claim-widget.njk" import aboutClaimWidget %}
 {% from "../../macro/time-remaining.njk" import timeRemaining %}
 
-{% set heading = 'Respond to a money claim' %}     
+{% set heading = t('Respond to a money claim') %}     
 {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
-{% set responseDeadLineExpression = claim.formattedResponseDeadline()+ ' at 4pm' %}
+{% set responseDeadLineExpression = t("£DEADLINE at 4pm") | replace ("£DEADLINE", claim.formattedResponseDeadline()) %}
 {% set remainingDays = claim.getRemainingDays() %}
 {% set claimNumber = claim.legacyCaseReference %}
 {% set isDeadLinePassed = claim.isDeadLinePassed() %}
@@ -16,13 +16,13 @@
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading govuk-!-margin-bottom-7">{{ t(heading) }}</h1>
+            <h1 class="govuk-fieldset__heading govuk-!-margin-bottom-7">{{ heading }}</h1>
           </legend>
         </div>
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           
-          <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{title}}</h2>
-          <p class="govuk-body">{{description}}</p>
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t(title) }}</h2>
+          <p class="govuk-body">{{ t(description) }}</p>
           <p class="govuk-body govuk-!-margin-bottom-7">
             {{ t('After you have completed all the actions you will be taken to a page where you can check your answers before submitting.') }}
           </p>

@@ -86,7 +86,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
     });
   } catch (error) {
     logger.error(error);
-    res.status(500).send({ error: error.message });
+    res.status(500).send({error: error.message});
   }
 });
 
