@@ -17,6 +17,7 @@
       "applicant1": {
         "type": "ORGANISATION",
         "partyName": "Example applicant1 organisation",
+        "companyName": "Oracle",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -30,9 +31,10 @@
         "partyTypeDisplayValue": "Organisation"
       },
       "respondent1": {
-        "type": "ORGANISATION",
         "partyName": "Version 1",
-        "contactPerson": "Test contact person",
+        "contactPerson": "Felipe Calderon",
+        "type": "ORGANISATION",
+       
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -190,9 +192,13 @@
       },
       "issueDate": "2022-01-08",
       "applicant1": {
-        "type": "INDIVIDUAL",
+        "type": "SOLE_TRADER",
         "telephoneNumber": "(0)207 127 0000",
-        "partyName": "Mr. Jan Clark",
+        "partyName": "Mr. Version1 Best",
+        "telephoneNumber": "(0)207 127 0000",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
         "primaryAddress": {
           "County": "London",
           "Country": "United Kingdom",
@@ -358,6 +364,10 @@
       "applicant1": {
         "type": "INDIVIDUAL",
         "partyName": "Example applicant1 organisation",
+        "telephoneNumber": "(0)207 127 0000",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Alex",
+        "individualLastName": "Van",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -374,6 +384,9 @@
         "type": "INDIVIDUAL",
         "partyName": "Example respondent1 organisation",
         "telephoneNumber": "(0)207 127 0000",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jhon",
+        "individualLastName": "Smith",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -687,8 +700,9 @@
       },
       "issueDate": "2022-01-08",
       "applicant1": {
-        "type": "INDIVIDUAL",
+        "type": "COMPANY",
         "partyName": "Example applicant1 organisation",
+        "companyName": "Google",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -714,7 +728,8 @@
           "AddressLine3": "Church Road"
         },
         "organisationName": "Example respondent1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        "partyTypeDisplayValue": "Organisation",
+        "telephoneNumber": "01632960001"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",

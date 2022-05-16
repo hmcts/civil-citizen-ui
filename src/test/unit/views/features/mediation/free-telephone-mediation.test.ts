@@ -1,20 +1,20 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../main/app';
 import request from 'supertest';
-import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../../../main/routes/urls';
+import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../../main/routes/urls';
 import {
   mockCivilClaimApplicantCompanyType,
   mockCivilClaimApplicantIndividualType,
-} from '../../../../../utils/mockDraftStore';
+} from '../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const govukBodyClass = 'govuk-body';
 const pageTitle = 'Free telephone mediation';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/draft-store');
 
 describe('Free Telephone Mediation View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

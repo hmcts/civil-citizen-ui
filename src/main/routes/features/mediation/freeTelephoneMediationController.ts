@@ -1,9 +1,9 @@
 import * as express from 'express';
-import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../urls';
-import {getDraftClaimFromStore} from '../../../../modules/draft-store/draftStoreService';
+import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../urls';
+import {getDraftClaimFromStore} from '../../../modules/draft-store/draftStoreService';
 
 const freeTelephoneMediationController = express.Router();
-const citizenFreeTelephoneMediationViewPath = 'features/response/mediation/free-telephone-mediation';
+const citizenFreeTelephoneMediationViewPath = 'features/mediation/free-telephone-mediation';
 
 freeTelephoneMediationController.get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL, async (req, res) => {
   try {

@@ -50,8 +50,10 @@ import repaymentPlanController from './features/response/repaymentPlan/repayment
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
 import mediationIndividualPhoneController from './features/mediation/mediationIndividualPhoneController';
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
+import companyTelephoneNumberController from './features/mediation/companyTelephoneNumberController';
 import mediationDisagreementController from './features/mediation/mediationDisagreementController';
-import freeTelephoneMediationController from './features/response/mediation/freeTelephoneMediationController';
+import freeTelephoneMediationController from './features/mediation/freeTelephoneMediationController';
+import rejectAllOfClaimController from './features/response/rejectAllOfClaimController';
 import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
 
 export default [
@@ -101,8 +103,10 @@ export default [
   regularIncomeController,
   mediationIndividualPhoneController,
   howMuchHaveYouPaidController,
+  companyTelephoneNumberController,
   mediationDisagreementController,
   freeTelephoneMediationController,
   contactThemController,
+  rejectAllOfClaimController,
   iDontWantFreeMediationController,
 ];
