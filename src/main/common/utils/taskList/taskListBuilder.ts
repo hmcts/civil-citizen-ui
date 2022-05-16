@@ -16,7 +16,6 @@ const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
   // TODO : when need more page is developed, we also need to check if the posponed deadline is passed if the defendant requested addtional time
   // isDeadlinePassed = isPastDeadline(now, postponedDeadline);
-  
   tasks.push(confirmYourDetailsTask);
   if (!isDeadlinePassed) {
     tasks.push(needMoreTimeTask);

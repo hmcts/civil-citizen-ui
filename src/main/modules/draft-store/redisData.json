@@ -33,7 +33,7 @@
       "respondent1": {
         "partyName": "Version 1",
         "contactPerson": "Felipe Calderon",
-        "type": "ORGANISATION",
+        "type": "INDIVIDUAL",
        
         "primaryAddress": {
           "County": "Kent",

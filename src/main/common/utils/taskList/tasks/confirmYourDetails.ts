@@ -12,8 +12,6 @@ const confirmYourDetailsTask = {
   status: TaskStatus.INCOMPLETE,
 };
 
-
-
 export const getConfirmYourDetailsTask = (caseData: Claim, claimId: string): Task => {
   let isTaskCompleted = TaskStatus.COMPLETE;
   if (isCaseDataMissing(caseData) || isBothCorrespondenceAndPrimaryAddressMissing(caseData?.respondent1) || isDOBMissing(caseData?.respondent1) ) {
