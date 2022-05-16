@@ -131,7 +131,6 @@
     "**/uglifyjs-webpack-plugin/**/serialize-javascript": "^3.1.0",
     "**/**/ansi-regex": "^5.0.1",
     "**/**/json-schema": "^0.4.0",
-    "**/**/follow-redirects": "^1.14.8",
     "**/**/winston": "^3.7.2",
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
