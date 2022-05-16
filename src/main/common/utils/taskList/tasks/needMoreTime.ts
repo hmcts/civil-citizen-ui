@@ -18,7 +18,7 @@ const needMoreTimeTask = {
   status: TaskStatus.COMPLETE,
 };
 
-export const getneedMoreTimeTask = (claim: Claim): Task => {
+export const getNeedMoreTimeTask = (claim: Claim): Task => {
 
   if (claim.statementOfMeans?.cohabiting?.option === 'yes') {
     needMoreTimeTask.status = TaskStatus.COMPLETE;

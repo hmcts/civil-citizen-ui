@@ -9,7 +9,7 @@ import {PartialAdmission} from './partialAdmission';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
-import {currentDateTime, convertDateToLuxonDate, setTimeFourPM, isPastDeadline} from '../utils/dateUtils';
+import {currentDateTime, convertDateToLuxonDate, isPastDeadline} from '../utils/dateUtils';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -50,8 +50,7 @@ export class Claim {
   }
 
   isDeadLinePassed(): boolean {
-    const convertedDeadLine = convertDateToLuxonDate(this.respondent1ResponseDeadline);
-    return isPastDeadline(currentDateTime(), setTimeFourPM(convertedDeadLine));
+    return isPastDeadline(currentDateTime(), this.respondent1ResponseDeadline);
   }
 }
 

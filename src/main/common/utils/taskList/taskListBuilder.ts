@@ -2,20 +2,19 @@ import {Task} from '../../models/taskList/task';
 import {TaskList} from '../../models/taskList/taskList';
 import {Claim} from '../../models/claim';
 import {getConfirmYourDetailsTask} from './tasks/confirmYourDetails';
-import {getneedMoreTimeTask} from './tasks/needMoreTime';
+import {getNeedMoreTimeTask} from './tasks/needMoreTime';
 import {getChooseAResponseTask} from './tasks/chooseAResponse';
 import {getCheckAndSubmitYourResponseTask} from './tasks/checkAndSubmitYourResponse';
-import {isPastDeadline,currentDateTime, convertDateToLuxonDate, setTimeFourPM} from '../dateUtils';
+import {isPastDeadline,currentDateTime} from '../dateUtils';
 
 const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:string): TaskList => {
   const tasks: Task[] = [];
   const now = currentDateTime();
-  const deadLine = convertDateToLuxonDate(caseData.respondent1ResponseDeadline);
   const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId);
   // TODO : when need more time page is developed we need to generate this function and push this task to the tasks
-  const needMoreTimeTask = getneedMoreTimeTask(claim);
+  const needMoreTimeTask = getNeedMoreTimeTask(claim);
 
-  const isDeadlinePassed = isPastDeadline(now, setTimeFourPM(deadLine));
+  const isDeadlinePassed = isPastDeadline(now, caseData.respondent1ResponseDeadline);
   // TODO : when need more page is developed, we also need to check if the posponed deadline is passed if the defendant requested addtional time
   // isDeadlinePassed = isPastDeadline(now, postponedDeadline);
   
