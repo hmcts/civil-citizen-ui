@@ -1,5 +1,6 @@
 @import '~govuk-frontend';
 @import './task-list';
+@import './citizen-ui-colours';
 
 .moj-add-another {
   // sass-lint:disable class-name-format
@@ -19,6 +20,12 @@
   cursor: pointer;
   margin-bottom: 1em;
   text-decoration: underline;
+}
+
+.govuk-description-block {
+  background-color: $govuk-description-block-colour;
+  margin-right: 30px;
+  padding: 10px 20px;
 }
 
 .govuk-phase-banner__text {
