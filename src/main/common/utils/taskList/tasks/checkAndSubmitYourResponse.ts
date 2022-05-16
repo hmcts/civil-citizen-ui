@@ -23,10 +23,3 @@ export const getCheckAndSubmitYourResponseTask = (claim: Claim, caseData: Claim,
   const constructedUrl = constructResponseUrlWithIdParams(claimId, redirectionURL);
   return { ...checkAndSubmitYourResponseTask, url: constructedUrl, status: isTaskCompleted };
 };
-
-
-
-
-
-
-
