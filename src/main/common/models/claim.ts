@@ -31,11 +31,8 @@ export class Claim {
   partialAdmission?: PartialAdmission;
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
-<<<<<<< HEAD
   evidence?: DefendantEvidence;
-=======
   timelineOfEvents?: TimeLineOfEvents[];
->>>>>>> master
 
 
   formattedResponseDeadline(): string {
