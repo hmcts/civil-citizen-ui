@@ -1,0 +1,25 @@
+{
+  "id": 1645882162449409,
+  "jurisdiction": "CIVIL",
+  "case_type_id": "CIVIL",
+  "created_date": "2022-03-01T13:29:22.448",
+  "last_modified": "2022-03-01T13:29:24.971",
+  "state": "PENDING_CASE_ISSUED",
+  "security_classification": "PUBLIC",
+  "case_data": {
+    "claimFee": {
+      "code": "FEE0204",
+      "version": "4",
+      "calculatedAmountInPence": "7000"
+    },
+    "evidence": {
+      "comment": "",
+      "evidenceItem": [
+        { "type": "Expert witness", "description": "Nam ac ante id turpis elementum laoreet." }
+      ]
+    },
+    "respondent1": {
+      "responseType": "FULL_ADMISSION"
+    }
+  }
+}
