@@ -56,6 +56,7 @@ import freeTelephoneMediationController from './features/mediation/freeTelephone
 import rejectAllOfClaimController from './features/response/rejectAllOfClaimController';
 import defendantTimelineController from './features/response/timelineOfEvents/defendantTimelineController';
 import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
+import evidenceController from './features/response/evidence/evidenceController';
 
 export default [
   homeController,
@@ -110,5 +111,6 @@ export default [
   contactThemController,
   rejectAllOfClaimController,
   iDontWantFreeMediationController,
+  evidenceController,
   defendantTimelineController,
 ];
