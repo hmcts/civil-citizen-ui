@@ -4,9 +4,9 @@ export const currentDateTime = () => {
   return DateTime.now();
 };
 
-export const setTimeFourPM = (deadlineDay: DateTime) => {
+export const setTimeFourPM = (deadlineDay : Date | string ) =>  {
   // set deadline time 4pm
-  return deadlineDay.set({ hour: 16, minute: 0, second: 0, millisecond: 0 });
+  return convertDateToLuxonDate(deadlineDay).set({ hour: 16, minute: 0, second: 0, millisecond: 0 });
 };
 
 export const convertDateToLuxonDate = (date: Date | string) => {
@@ -14,6 +14,6 @@ export const convertDateToLuxonDate = (date: Date | string) => {
   return DateTime.fromISO(date);
 };
 
-export const isPastDeadline = (dateTime: DateTime, deadline: DateTime) => {
+export const isPastDeadline = (dateTime: DateTime, deadline : Date | string) => {
   return dateTime >= setTimeFourPM(deadline);
 };

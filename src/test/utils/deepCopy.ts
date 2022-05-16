@@ -1,3 +1,3 @@
-export const deepCopy = <GenericType>(obj: GenericType): GenericType => {
-  return JSON.parse(JSON.stringify(obj));
+export const deepCopy = <GenericType>(target: GenericType): GenericType => {
+  return JSON.parse(JSON.stringify(target));
 };
