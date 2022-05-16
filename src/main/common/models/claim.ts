@@ -10,6 +10,7 @@ import { DefendantEvidence } from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
+import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -30,7 +31,11 @@ export class Claim {
   partialAdmission?: PartialAdmission;
   rejectAllOfClaim?: RejectAllOfClaim;
   mediation?: Mediation;
+<<<<<<< HEAD
   evidence?: DefendantEvidence;
+=======
+  timelineOfEvents?: TimeLineOfEvents[];
+>>>>>>> master
 
 
   formattedResponseDeadline(): string {

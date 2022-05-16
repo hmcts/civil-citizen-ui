@@ -31,9 +31,10 @@
         "partyTypeDisplayValue": "Organisation"
       },
       "respondent1": {
-        "type": "ORGANISATION",
         "partyName": "Version 1",
-        "contactPerson": "Test contact person",
+        "contactPerson": "Felipe Calderon",
+        "type": "ORGANISATION",
+       
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -727,7 +728,8 @@
           "AddressLine3": "Church Road"
         },
         "organisationName": "Example respondent1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        "partyTypeDisplayValue": "Organisation",
+        "telephoneNumber": "01632960001"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",

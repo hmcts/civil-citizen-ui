@@ -1,5 +1,6 @@
 @import '~govuk-frontend';
 @import './task-list';
+@import './citizen-ui-colours';
 
 .moj-add-another {
 
@@ -30,4 +31,10 @@
 
 .panel-border-narrow {
   border-left-width: 5px;
+}
+
+.govuk-description-block {
+  background-color: $govuk-description-block-colour;
+  margin-right: 30px;
+  padding: 10px 20px;
 }

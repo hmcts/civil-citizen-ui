@@ -12,6 +12,7 @@ import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/un
 import { TransactionSchedule } from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {EvidenceType} from '../../common/models/evidence/evidenceType';
 import {EvidenceDetails} from '../../common/models/evidence/evidenceDetails';
+import {addDaysFilter, dateFilter} from './filters/dateFilter';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -65,6 +66,8 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('development', this.developmentMode);
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
     nunjucksEnv.addFilter('currencyFormat', currencyFormat);
+    nunjucksEnv.addFilter('addDays', addDaysFilter);
+    nunjucksEnv.addFilter('date', dateFilter);
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
     nunjucksEnv.addGlobal('YesNo', YesNo);
@@ -74,6 +77,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('TransactionSchedule', TransactionSchedule);
     nunjucksEnv.addGlobal('EvidenceType', EvidenceType);
     nunjucksEnv.addGlobal('EvidenceDetails', EvidenceDetails);
+
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

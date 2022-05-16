@@ -13,6 +13,7 @@ const getMediation = async (claimId: string): Promise<Mediation> => {
       claim.mediation.canWeUse,
       claim.mediation.mediationDisagreement,
       claim.mediation.noMediationReason,
+      claim.mediation.companyTelephoneNumber,
     );
   } catch (error) {
     logger.error(error);
