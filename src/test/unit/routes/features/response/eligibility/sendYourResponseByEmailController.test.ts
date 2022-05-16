@@ -26,9 +26,10 @@ describe('Send your response by email', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.SEND_YOUR_RESPONSE_BY_EMAIL);
-          expect(res.text).toContain('Follow these steps');
-          expect(res.text).toContain('Download and complete the form');
-          expect(res.text).toContain('Counterclaim fee');
+          expect(res.text).toContain('How to counterclaim');
+          expect(res.text).toContain('View court fees');
+          expect(res.text).toContain('How to counterclaim');
+          expect(res.text).toContain('Help and support');
           expect(res.text).toContain('Email');
           expect(res.text).toContain('Telephone');
         });
