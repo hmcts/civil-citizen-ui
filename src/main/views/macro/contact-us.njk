@@ -4,6 +4,7 @@
 
 {% set contactocmc = 'contactocmc@justice.gov.uk' %}
 {% set openingHours = t('Monday to Friday, 8.30am to 5pm.') %}
+{% set responseDelay = t('We\'ll get back to you within 10 days') %}
 {% set phone = t('0300 123 7050') %}
 {% set callCharges = t('Find out about call charges (opens in a new window)') %}
 {% set contactEmail = t('contactocmc@justice.gov.uk') %}
@@ -12,10 +13,11 @@
 
 {% macro contactUs(t) %}
   <h3 class="govuk-heading-m govuk-!-margin-bottom-0">Email</h3>
-  <a class="govuk-link" href='mailto:'{{contactEmail}}>{{contactEmail}}</a></p>
+  <a class="govuk-link govuk-!-margin-bottom-0" href='mailto:'{{contactEmail}}>{{contactEmail}}</a></p>
+  <p class="govuk-body govuk-!-margin-bottom-0">{{responseDelay}}</p>
   <h3 class="govuk-heading-m govuk-!-margin-bottom-0">Telephone</h3>
   <p class="govuk-body govuk-!-margin-bottom-0">{{ phone }}</p>
   <p class="govuk-body govuk-!-margin-bottom-0">{{openingHours}}</p>
-  <a class="govuk-link" href={{callChargesUrl}}>{{callCharges}}</a></p>
+  <a target="_blank" class="govuk-link" href={{callChargesUrl}}>{{callCharges}}</a></p>
 {% endmacro %}
 
