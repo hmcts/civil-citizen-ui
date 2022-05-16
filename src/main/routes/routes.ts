@@ -54,6 +54,7 @@ import companyTelephoneNumberController from './features/mediation/companyTeleph
 import mediationDisagreementController from './features/mediation/mediationDisagreementController';
 import freeTelephoneMediationController from './features/mediation/freeTelephoneMediationController';
 import rejectAllOfClaimController from './features/response/rejectAllOfClaimController';
+import defendantTimelineController from './features/response/timelineOfEvents/defendantTimelineController';
 import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
 
 export default [
@@ -109,4 +110,5 @@ export default [
   contactThemController,
   rejectAllOfClaimController,
   iDontWantFreeMediationController,
+  defendantTimelineController,
 ];
