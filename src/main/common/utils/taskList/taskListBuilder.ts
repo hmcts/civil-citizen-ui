@@ -5,7 +5,7 @@ import {getConfirmYourDetailsTask} from './tasks/confirmYourDetails';
 import {getNeedMoreTimeTask} from './tasks/needMoreTime';
 import {getChooseAResponseTask} from './tasks/chooseAResponse';
 import {getCheckAndSubmitYourResponseTask} from './tasks/checkAndSubmitYourResponse';
-import {isPastDeadline,currentDateTime} from '../dateUtils';
+import {isPastDeadline} from '../dateUtils';
 
 const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:string): TaskList => {
   const tasks: Task[] = [];
