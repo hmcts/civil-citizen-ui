@@ -19,8 +19,7 @@
       {% set pdfDefence = t('Download form N9B Make a defence or counterclaim') %}
       {% set supportEmailAddress = 'contactocmc@justice.gov.uk' %}
       {% set responseDeadline = form.formattedResponseDeadline() %}
-      {% set pdfA = (asset_paths["pdf"]+'/OCON9A.pdf')|safe%}
-      {% set pdfB = (asset_paths["pdf"]+'/OCON9B.pdf')|safe%}
+      {% set pdfUrl = 'https://www.gov.uk/government/publications/form-n9b-defence-counterclaim-specified-amount'%}
       {% set signPosting = true %}
 
       {% if form.applicant1.type === CounterpartyType.INDIVIDUAL or form.applicant1.type === CounterpartyType.SOLE_TRADER  %}
@@ -47,7 +46,7 @@
           <h2 class="govuk-heading-m govuk-!-margin-bottom-4 govuk-!-font-weight-bold">{{ t('How to counterclaim') }}</h2>
           <span class="govuk-body govuk-!-margin-bottom-4 govuk-!-font-weight-bold">Step 1: Download and complete form N9B</span>
 
-          <p><a target="_blank" rel="noreferrer noopener"  class="govuk-link" href={{pdfB}}>{{ pdfDefence}}<span>{{ t(' (opens in a new window)') }}</span></a></p>
+          <p><a target="_blank" rel="noreferrer noopener"  class="govuk-link" href={{pdfUrl}}>{{ pdfDefence}}<span>{{ t(' (opens in a new window)') }}</span></a></p>
 
           <p class="govuk-body govuk-!-margin-bottom-4">{{ t('You will need these claim details')}}:</p>
           <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Claim number')}}: {{form.legacyCaseReference}}</p>
