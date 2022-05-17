@@ -1,5 +1,6 @@
-import checkAnswersService
-  from '../../../../../main/services/features/response/checkAnswersService';
+import {
+  getSummarySections,
+} from '../../../../../main/services/features/response/checkAnswersService';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {ResponseType} from '../../../../../main/common/form/models/responseType';
@@ -8,6 +9,7 @@ import {
   CITIZEN_PHONE_NUMBER_URL,
   CITIZEN_RESPONSE_TYPE_URL,
 } from '../../../../../main/routes/urls';
+import {TestMessages} from '../../../../../../src/test/utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -26,7 +28,7 @@ describe('Check Answers service', () => {
         return createClaimWithBasicRespondentDetails();
       });
       //When
-      const summarySections = await checkAnswersService.getSummarySections(CLAIM_ID);
+      const summarySections = await getSummarySections(CLAIM_ID);
       //Then
       expect(summarySections.sections.length).toBe(2);
 
@@ -55,6 +57,16 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[1].actions?.items.length).toBe(1);
       expect(summarySections.sections[1].summaryList.rows[1].actions?.items[0].href).toBe('#');
       expect(summarySections.sections[1].summaryList.rows[1].actions?.items[0].text).toBe('Change');
+    });
+    test('should throw error when retrieving data from draft store fails', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      //Then
+      await expect(
+        getSummarySections(CLAIM_ID)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+
     });
   });
 });
