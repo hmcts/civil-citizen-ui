@@ -7,6 +7,11 @@ import {
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
+import {getElementsByXPath} from '../../../../utils/xpathExtractor';
+
+const jsdom = require('jsdom');
+const {JSDOM} = jsdom;
+
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -15,8 +20,7 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/response/checkAnswersService');
 const mockGetSummarySections = checkAnswersService.getSummarySections as jest.Mock;
 
-const PARTY_NAME = 'Mrs. Marry Richards';
-// const CONTACT_NUMBER = '077777777779';
+const PARTY_NAME = 'Mrs. Mary Richards';
 const CLAIM_ID = 'aaa';
 
 const respondentCheckAnswersUrl = RESPONSE_CHECK_ANSWERS_URL.replace(':id', CLAIM_ID);
@@ -37,12 +41,23 @@ describe('Response - Check answers', () => {
       mockGetSummarySections.mockImplementation(() => {
         return createClaimWithBasicRespondentDetails();
       });
-      await request(app)
-        .get(respondentCheckAnswersUrl)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Check your answers');
-        });
+
+      const response = await request(app).get(respondentCheckAnswersUrl);
+      expect(response.status).toBe(200);
+
+      const dom = new JSDOM(response.text);
+      const htmlDocument = dom.window.document;
+
+      const header = getElementsByXPath("//h1[@class='govuk-heading-l']", htmlDocument);
+      const fullName = getElementsByXPath(
+        "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Full name')]]",
+        htmlDocument);
+
+      expect(header.length).toBe(1);
+      expect(header[0].textContent).toBe('Check your answers');
+      expect(fullName.length).toBe(1);
+      expect(fullName[0].textContent?.trim()).toBe(PARTY_NAME);
+
     });
     test('should return status 500 when error thrown', async () => {
       mockGetSummarySections.mockImplementation(() => {
@@ -58,8 +73,8 @@ describe('Response - Check answers', () => {
   });
 });
 
-function createClaimWithBasicRespondentDetails(): Promise<SummarySections> {
-  const summarySections = {
+function createClaimWithBasicRespondentDetails(): SummarySections {
+  return {
     sections: [{
       title: 'Your details',
       summaryList: {
@@ -82,5 +97,4 @@ function createClaimWithBasicRespondentDetails(): Promise<SummarySections> {
       },
     }],
   };
-  return new Promise((resolve) => resolve(summarySections));
 }
