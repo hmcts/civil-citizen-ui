@@ -50,9 +50,14 @@ import repaymentPlanController from './features/response/repaymentPlan/repayment
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
 import mediationIndividualPhoneController from './features/mediation/mediationIndividualPhoneController';
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
+import companyTelephoneNumberController from './features/mediation/companyTelephoneNumberController';
 import mediationDisagreementController from './features/mediation/mediationDisagreementController';
-import freeTelephoneMediationController from './features/response/mediation/freeTelephoneMediationController';
+import sendYourResponseByEmailController from './features/response/eligibility/sendYourResponseByEmailController';
+import freeTelephoneMediationController from './features/mediation/freeTelephoneMediationController';
+import rejectAllOfClaimController from './features/response/rejectAllOfClaimController';
+import defendantTimelineController from './features/response/timelineOfEvents/defendantTimelineController';
 import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
+import evidenceController from './features/response/evidence/evidenceController';
 import checkAnswersController from './features/response/checkAnswersController';
 
 export default [
@@ -102,9 +107,14 @@ export default [
   regularIncomeController,
   mediationIndividualPhoneController,
   howMuchHaveYouPaidController,
+  companyTelephoneNumberController,
   mediationDisagreementController,
   freeTelephoneMediationController,
+  sendYourResponseByEmailController,
   contactThemController,
+  rejectAllOfClaimController,
   iDontWantFreeMediationController,
+  evidenceController,
+  defendantTimelineController,
   checkAnswersController,
 ];
