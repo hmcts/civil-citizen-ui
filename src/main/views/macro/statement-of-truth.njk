@@ -1,0 +1,47 @@
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+
+{% macro statementOfTruth(
+  form,
+  statementOfTruthType,
+  title = 'Statement of truth',
+  labelHtml = 'I confirm that I believe the details I have provided are correct.',
+  isQualified = false,
+  typeOfStatement = 'statement of truth'
+  ) %}
+
+    <legend><h2 class="govuk-heading-m">{{ t(title) }}</h2></legend>
+
+    {% set legendHtml %}
+      {% if statementOfTruthType == SignatureType.CLAIM or statementOfTruthType == SignatureType.RESPONSE %}
+        <p>{{ t('The information on this page forms your {{ type }}. You can see it on the {{ type }} form after you submit.', { type: statementOfTruthType }) }}</p>
+        <p>{{ t('When you’re satisfied that your answers are accurate, you should tick to “sign” this statement of truth on the form.') }}</p>
+      {% endif %}
+    {% endset -%}
+
+    {% set signed = 'signed' %}
+    {% set signedError = form.errorFor(signed) %}
+    {% set signedSelection = form.model.signed %}
+    <div class="form-group{% if signedError %} form-group-error{% endif %}" id="{{ signed }}[label]">
+      <span class="error-message">{{ t(signedError) }}</span>
+      {{ govukCheckboxes({
+        idPrefix: signed,
+        name: signed,
+        fieldset: {
+          legend: {
+            html: legendHtml
+          }
+        },
+        items: [
+          {
+            value: signed,
+            html: labelHtml,
+            checked: true if signedSelection
+          }
+        ],
+        errorMessage: {
+          text:t(signedError)
+        } if signedError
+      }) }}
+    </div>
+
+{% endmacro %}
