@@ -4,11 +4,12 @@ const cymraegLanguage = document.getElementsByClassName('cymraeg-language');
 const getCookie = (name) => {
   const cookies = document.cookie.split(';');
 
-  cookies.forEach((cookie) => {
-    let c = cookie.trim().split('=');
-    if (c[0] === name) return c[1];
-  });
-
+  for (let i = 0; i < cookies.length; i++) {
+    let c = cookies[i].trim().split('=');
+    if (c[0] === name) {
+      return c[1];
+    }
+  }
   return '';
 };
 
