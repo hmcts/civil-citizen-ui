@@ -11,7 +11,7 @@
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
+          "titleText": t("ERRORS.THERE_WAS_A_PROBLEM"),
           "errorList": errors
         }) }}
       {% endif %}
@@ -27,7 +27,7 @@
               value: form.model.text,
               classes:"govuk-!-width-three-quarters",
               label: {
-                text: t("Briefly explain why you can’t pay immediately"),
+                text: t("EXPLANATION.TITLE"),
                 classes: "govuk-label--l"
               },
               errorMessage: {

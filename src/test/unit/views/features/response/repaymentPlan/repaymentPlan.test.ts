@@ -102,7 +102,7 @@ describe('Repayment Plan View', () => {
         const paragraph = htmlDocument.getElementsByClassName('govuk-body');
         const strongTag = htmlDocument.getElementsByTagName('strong');
         expect(strongTag).not.toBeNull();
-        expect(paragraph[0].innerHTML).toContain('Length of repayment plan');
+        expect(paragraph[2].innerHTML).toContain('Length of repayment plan');
       });
     });
 
