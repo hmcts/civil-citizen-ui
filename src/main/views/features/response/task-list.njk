@@ -1,10 +1,11 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
 
-{# 
+{#
   THIS FILE IS A CONCEPT
-  This code is only a concept of what we should do.  
-  #}
+  This code is only a concept of what we should do.
+#}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -44,7 +45,8 @@
             {{ taskLists.length + 1 }}. Submit
           </h2>
           <ol class="app-task-list app-task-list__items">
-            <form method="post">
+            <form method="post" novalidate>
+              {{ csrfProtection(csrf) }}
               <div class="govuk-form-group">
                 {{ govukButton({
                 text: t("Check and submit your response")
@@ -52,7 +54,6 @@
               </div>
             </form>
           </ol>
-
         </div>
       </div>
     </main>
