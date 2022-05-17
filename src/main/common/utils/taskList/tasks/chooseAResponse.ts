@@ -13,10 +13,10 @@ const chooseAResponseTask = {
 };
 
 export const getChooseAResponseTask = (caseData: Claim, claimId: string): Task => {
-  let isTaskCompleted = TaskStatus.COMPLETE;
+  let taskStatus = TaskStatus.COMPLETE;
   if (isCaseDataMissing(caseData) || isResponseTypeMissing(caseData?.respondent1)) {
-    isTaskCompleted = TaskStatus.INCOMPLETE;
+    taskStatus = TaskStatus.INCOMPLETE;
   }
   const constructedUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
-  return { ...chooseAResponseTask, url: constructedUrl, status: isTaskCompleted };
+  return { ...chooseAResponseTask, url: constructedUrl, status: taskStatus };
 };

@@ -13,11 +13,11 @@ const confirmYourDetailsTask = {
 };
 
 export const getConfirmYourDetailsTask = (caseData: Claim, claimId: string): Task => {
-  let isTaskCompleted = TaskStatus.COMPLETE;
+  let taskStatus = TaskStatus.COMPLETE;
   if (isCaseDataMissing(caseData) || isBothCorrespondenceAndPrimaryAddressMissing(caseData?.respondent1) || isDOBMissing(caseData?.respondent1) ) {
-    isTaskCompleted = TaskStatus.INCOMPLETE;
+    taskStatus = TaskStatus.INCOMPLETE;
   }
   const constructedUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL);
-  return { ...confirmYourDetailsTask, url: constructedUrl, status: isTaskCompleted };
+  return { ...confirmYourDetailsTask, url: constructedUrl, status: taskStatus };
 };
 

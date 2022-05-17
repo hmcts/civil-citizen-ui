@@ -10,8 +10,7 @@ export const setTimeFourPM = (deadlineDay:  Date | string ) => {
 };
 
 export const convertDateToLuxonDate = (date: Date | string) => {
-  /* @ts-expect-error : Argument of type 'Date' is not assignable to parameter of type 'string'.ts(2345) */
-  return DateTime.fromISO(date);
+  return DateTime.fromJSDate(new Date(date));
 };
 
 export const isPastDeadline = (deadline: Date | string) => {
