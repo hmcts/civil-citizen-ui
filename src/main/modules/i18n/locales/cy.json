@@ -1,0 +1,19 @@
+{
+  "Claims made against you": "Smialc edam tsniaga uoy",
+  "Claim number": "Mialc rebmun",
+  "Claimant name": "Tnamialc eman",
+  "Claim amount": "Mialc tnuoma",
+  "Next steps": "Txen spets",
+  "Deadline": "Enildaed",
+  "Actions": "Snoitca",
+  "Respond to the claim": "Dnopser ot eht mialc",
+  "View": "Weiv",
+  "Save and continue": "Arbed a pharhau",
+  "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "Ar ôl i chi gwblhau'r holl gamau gweithredu byddwch yn cael eich tywys i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
+  "ERRORS": {
+    "THERE_WAS_A_PROBLEM": "Roedd problem"
+  },
+  "EXPLANATION": {
+    "TITLE": "Eglurwch yn gryno pam na allwch dalu ar unwaith"
+  }
+}

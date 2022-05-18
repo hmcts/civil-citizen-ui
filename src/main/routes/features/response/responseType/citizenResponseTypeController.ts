@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import {CITIZEN_ALREADY_PAID_URL, CITIZEN_REJECT_ALL_CLAIM_URL, CITIZEN_RESPONSE_TYPE_URL} from '../../../urls';
+import {CITIZEN_ALREADY_PAID_URL, CITIZEN_REJECT_ALL_CLAIM_URL, CITIZEN_RESPONSE_TYPE_URL, CLAIM_TASK_LIST_URL} from '../../../urls';
 import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
@@ -58,8 +58,11 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
           case 'PART_ADMISSION':
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_ALREADY_PAID_URL));
             break;
-          default:
+          case 'FULL_DEFENCE':
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_REJECT_ALL_CLAIM_URL));
+            break;
+          default:
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
         }
 
       }

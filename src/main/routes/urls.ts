@@ -65,3 +65,4 @@ export const CITIZEN_FREE_TELEPHONE_MEDIATION_URL = `${MEDIATION_URL}/free-telep
 export const IMPACT_OF_DISPUTE_URL = `${BASE_CASE_RESPONSE_URL}/impact-of-dispute`;
 export const CITIZEN_REJECT_ALL_CLAIM_URL = `${BASE_CASE_RESPONSE_URL}/reject-all-of-claim`;
 export const CITIZEN_CONTACT_THEM_URL = `${DASHBOARD_URL}/:id/contact-them`;
+export const RESPONSE_CHECK_ANSWERS_URL = `${BASE_CASE_RESPONSE_URL}/check-and-send`;

@@ -13,6 +13,7 @@ import { TransactionSchedule } from '../../common/form/models/statementOfMeans/e
 import {EvidenceType} from '../../common/models/evidence/evidenceType';
 import {EvidenceDetails} from '../../common/models/evidence/evidenceDetails';
 import {addDaysFilter, dateFilter} from './filters/dateFilter';
+import {SignatureType} from '../../common/models/signatureType';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -78,6 +79,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('EvidenceType', EvidenceType);
     nunjucksEnv.addGlobal('EvidenceDetails', EvidenceDetails);
 
+    nunjucksEnv.addGlobal('SignatureType', SignatureType);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
