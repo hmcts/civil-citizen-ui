@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {Validator} from 'class-validator';
 import {Form} from '../../../../common/form/models/form';
-import {CITIZEN_DETAILS_URL, DOB_URL} from '../../../urls';
+import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../urls';
 import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {Respondent} from '../../../../common/models/respondent';
@@ -9,7 +9,9 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {getRespondentInformation, saveRespondent} from '../../../../modules/citizenDetails/citizenDetailsService';
 import _ from 'lodash';
-import {CounterpartyType} from '../../../../common/models/counterpartyType';
+import { CounterpartyType } from '../../../../common/models/counterpartyType';
+import { getCaseDataFromStore } from '../../../../modules/draft-store/draftStoreService';
+import {Claim} from '../../../../common/models/claim';
 
 const citizenDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -126,12 +128,21 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
       renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req, responseDataRedis, contactPerson);
     } else {
       await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, contactPerson);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
+      redirect(req, res);
     }
   } catch (error) {
     logger.error(error);
     res.status(500).send({error: error.message});
   }
 });
+
+const redirect =  async (req: express.Request, res: express.Response) => {
+  const claim: Claim = await getCaseDataFromStore(req.params.id);
+  if (claim?.respondent1?.type === CounterpartyType.SOLE_TRADER || claim?.respondent1?.type === CounterpartyType.INDIVIDUAL) {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
+  } else {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
+  }
+};
 
 export default citizenDetailsController;

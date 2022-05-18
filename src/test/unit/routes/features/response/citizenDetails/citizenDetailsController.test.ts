@@ -19,7 +19,6 @@ import {Respondent} from '../../../../../../main/common/models/respondent';
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
-
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -51,6 +50,22 @@ const buildClaimOfRespondentCompany = (): Respondent => {
 const buildClaimOfRespondentOrganisation = (): Respondent => {
   claim.respondent1 = new Respondent();
   claim.respondent1.type = CounterpartyType.ORGANISATION;
+  claim.respondent1.primaryAddress = buildPrimaryAddress();
+  claim.respondent1.correspondenceAddress = buildCorrespondenceAddress();
+  return claim.respondent1;
+};
+
+const buildClaimOfRespondentIndividual = (): Respondent => {
+  claim.respondent1 = new Respondent();
+  claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+  claim.respondent1.primaryAddress = buildPrimaryAddress();
+  claim.respondent1.correspondenceAddress = buildCorrespondenceAddress();
+  return claim.respondent1;
+};
+
+const buildClaimOfRespondentSoleTrader = (): Respondent => {
+  claim.respondent1 = new Respondent();
+  claim.respondent1.type = CounterpartyType.SOLE_TRADER;
   claim.respondent1.primaryAddress = buildPrimaryAddress();
   claim.respondent1.correspondenceAddress = buildCorrespondenceAddress();
   return claim.respondent1;
@@ -495,5 +510,52 @@ describe('Confirm Details page', () => {
         expect(res.text).toContain('Confirm your details');
         expect(res.text).toContain('individualTitle Test');
       });
+  });
+
+  describe('Redirect to Phone or DOB screen', () => {
+    test('should redirect to confirm phone screen if respondent type is COMPANY', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return buildClaimOfRespondentCompany();
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
+    test('should redirect to confirm phone screen if respondent type is ORGANISATION', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return buildClaimOfRespondentOrganisation();
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
+    test('should redirect to confirm DOB screen if respondent type is INDIVIDUAL', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return buildClaimOfRespondentIndividual();
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
+    test('should redirect to confirm DOB screen if respondent type is SOLE TRADER', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return buildClaimOfRespondentSoleTrader();
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
   });
 });
