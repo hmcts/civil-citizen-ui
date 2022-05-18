@@ -13,7 +13,7 @@ import {t} from 'i18next';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
-const changeLabel = (lang: string | unknown): string => t('CHANGE', getLng(lang));
+const changeLabel = (lang: string | unknown): string => t('CHANGE', {lng: getLng(lang)});
 
 const getLng = (lang: string | unknown): string => {
   return lang ? String(lang) : 'en';
