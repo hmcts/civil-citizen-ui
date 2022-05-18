@@ -11,6 +11,7 @@ import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
+import {currentDateTime, convertDateToLuxonDate, isPastDeadline} from '../utils/dateUtils';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -45,6 +46,15 @@ export class Claim {
 
   responseInDays(): NumberOfDays {
     return this.totalClaimAmount < MAX_CLAIM_AMOUNT ? NumberOfDays.FOURTEEN : NumberOfDays.TWENTYEIGHT;
+  }
+
+  getRemainingDays(): number {
+    const remainingDuration = convertDateToLuxonDate(this.respondent1ResponseDeadline).diff(currentDateTime(), 'days');
+    return Math.trunc(remainingDuration.days);
+  }
+
+  isDeadLinePassed(): boolean {
+    return isPastDeadline(this.respondent1ResponseDeadline);
   }
 }
 

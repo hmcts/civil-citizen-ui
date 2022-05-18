@@ -1,8 +1,9 @@
 import * as express from 'express';
-import {CLAIM_TASK_LIST_URL} from '../../urls';
+import {CLAIM_TASK_LIST_URL, CLAIM_DETAILS_URL} from '../../urls';
 import {getTaskLists, getTitle, getDescription} from '../../../modules/taskListService';
 import {Claim} from '../../../common/models/claim';
-import {getDraftClaimFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getDraftClaimFromStore, getCaseDataFromStore } from '../../../modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 
 
 /**
@@ -20,11 +21,16 @@ const taskListController = express.Router();
 
 taskListController.get(CLAIM_TASK_LIST_URL, async (req, res) => {
   try {
-    const claim: Claim = await getDraftClaimFromStore(req.params.id);
-    const taskLists = await getTaskLists(claim);
+    const currentClaimId = req.params.id;
+    const claim: Claim = await getDraftClaimFromStore(currentClaimId);
+
+    const caseData = await getCaseDataFromStore(currentClaimId);
+    const taskLists = getTaskLists(claim, caseData, currentClaimId);
+    
     const title = getTitle(taskLists);
     const description = getDescription(taskLists);
-    res.render(taskListViewPath, { taskLists, title, description });
+    const claimDetailsUrl = constructResponseUrlWithIdParams(currentClaimId, CLAIM_DETAILS_URL);
+    res.render(taskListViewPath, { taskLists, title, description, claim: caseData, claimDetailsUrl });
   } catch (error) {
     logger.error(error);
     res.status(500).send({ error: error.message });

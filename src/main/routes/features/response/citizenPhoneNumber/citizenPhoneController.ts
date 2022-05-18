@@ -1,10 +1,11 @@
 import * as express from 'express';
 import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
-import {CITIZEN_PHONE_NUMBER_URL, DASHBOARD_URL} from '../../../urls';
+import {CITIZEN_PHONE_NUMBER_URL, CLAIM_TASK_LIST_URL} from '../../../urls';
 import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 
@@ -46,7 +47,8 @@ citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
           claim.respondent1 = respondent;
         }
         await saveDraftClaim(req.params.id, claim);
-        res.redirect(DASHBOARD_URL);
+        const redirectURL = constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL);
+        res.redirect(redirectURL);
       }
     } catch (error) {
       logger.error(error);
