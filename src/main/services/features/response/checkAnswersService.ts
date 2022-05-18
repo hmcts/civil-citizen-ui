@@ -13,6 +13,17 @@ import {t} from 'i18next';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
+const getLng = (lang:string | unknown): string => {
+  return lang ? String(lang) : 'en';
+};
+
+const getDefendantFullName = (claim:Claim): string =>{
+  if(claim.respondent1.individualFirstName && claim.respondent1.individualLastName){
+    return claim.respondent1.individualTitle + ' ' + claim.respondent1.individualFirstName + ' ' + claim.respondent1.individualLastName
+  }
+  return claim.respondent1.partyName;
+};
+
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
   return {
     sections: [
@@ -26,10 +37,10 @@ const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | u
   const yourDetailsHref = CITIZEN_DETAILS_URL.replace(':id', claimId);
   const phoneNumberHref = CITIZEN_PHONE_NUMBER_URL.replace(':id', claimId);
   return summarySection({
-    title: t('CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: lang ? String(lang) : 'en'}),
+    title: t('CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
     summaryRows: [
-      summaryRow(t('CHECK_YOUR_ANSWER.FULL_NAME', {lng: lang ? String(lang) : 'en'}), claim.respondent1.partyName, yourDetailsHref, 'Change'),
-      summaryRow(t('CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: lang ? String(lang) : 'en'}), claim.respondent1.telephoneNumber, phoneNumberHref, 'Change'),
+      summaryRow(t('CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), getDefendantFullName(claim), yourDetailsHref, 'Change'),
+      summaryRow(t('CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.respondent1.telephoneNumber, phoneNumberHref, 'Change'),
     ],
   });
 };
@@ -38,10 +49,10 @@ const buildResponseSection = (claim: Claim, claimId: string, lang: string | unkn
   const yourResponseHref = CITIZEN_RESPONSE_TYPE_URL.replace(':id', claimId);
   const paymentOptionHref = CITIZEN_PAYMENT_OPTION_URL.replace(':id', claimId);
   return summarySection({
-    title: t('CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: lang ? String(lang) : 'en'}),
+    title: t('CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng:getLng(lang)}),
     summaryRows: [
-      summaryRow(t('CHECK_YOUR_ANSWER.OWE_MONEY', {lng: lang ? String(lang) : 'en'}), t(claim.respondent1.responseType, {lng: lang ? String(lang) : 'en'}), yourResponseHref, 'Change'),
-      summaryRow(t('CHECK_YOUR_ANSWER.WHEN_PAY', {lng: lang ? String(lang) : 'en'}), t(claim.paymentOption, {lng: lang ? String(lang) : 'en'}), paymentOptionHref, 'Change'),
+      summaryRow(t('CHECK_YOUR_ANSWER.OWE_MONEY', {lng: getLng(lang)}), t(claim.respondent1.responseType, {lng: lang ? String(lang) : 'en'}), yourResponseHref, 'Change'),
+      summaryRow(t('CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), t(claim.paymentOption, {lng: lang ? String(lang) : 'en'}), paymentOptionHref, 'Change'),
     ],
   });
 };
