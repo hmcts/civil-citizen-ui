@@ -124,7 +124,7 @@ describe('Citizen response type', () => {
         .send('responseType=test')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_REJECT_ALL_CLAIM_URL);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
 
