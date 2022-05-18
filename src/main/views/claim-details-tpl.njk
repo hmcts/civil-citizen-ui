@@ -11,6 +11,8 @@
 {% set assetUrl = "<YOUR-DOMAIN>" %}
 {% set themeColor = "blue" %}
 {% set bodyClasses = "app-body-class" %}
+{% set bannerText = "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>feedback</a> will help us to improve it." %}
+{% set languageToggle = "<a class='govuk-body govuk-link language english-language' href='?lang=en'>English</a><a class='govuk-body govuk-link language cymraeg-language' href='?lang=cy'>Cymraeg</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
   {% include "webpack/css.njk" %}
@@ -43,16 +45,18 @@
     ]
   }) }}
 {% endblock %}
+
 {% block beforeContent %}
-  {{ govukPhaseBanner({
-    tag: {
-      text: "beta"
-    },
-    html: 'This is a new service – your <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen" target="_blank">feedback</a> will help us to improve it.'
-  }) }}
+{{ govukPhaseBanner({
+        tag: {
+          text: "beta"
+        },
+        html: bannerText + languageToggle
+      }) }}
 {% endblock %}
+
 {% block footer %}
-  {{ govukFooter({
+{{ govukFooter({
     meta: {
       items: [
         {
@@ -84,6 +88,6 @@
   }) }}
 {% endblock %}
 {% block bodyEnd %}
-  {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  {% include "webpack/js.njk" %}
+{# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
+{% include "webpack/js.njk" %}
 {% endblock %}

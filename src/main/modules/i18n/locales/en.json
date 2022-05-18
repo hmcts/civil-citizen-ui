@@ -1,0 +1,19 @@
+{
+  "Claims made against you": "Claims made against you",
+  "Claim number": "Claim number",
+  "Claimant name": "Claimant name",
+  "Claim amount": "Claim amount",
+  "Next steps": "Next steps",
+  "Deadline": "Deadline",
+  "Actions": "Actions",
+  "Respond to the claim": "Respond to the claim",
+  "View": "View",
+  "Save and continue": "Save and continue",
+  "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
+  "ERRORS": {
+    "THERE_WAS_A_PROBLEM": "There was a problem"
+  },
+  "EXPLANATION": {
+    "TITLE": "Briefly explain why you can’t pay immediately"
+  }
+}
