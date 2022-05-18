@@ -10,8 +10,6 @@ import {YesNo} from '../../../../common/form/models/yesNo';
 import {getRespondentInformation, saveRespondent} from '../../../../modules/citizenDetails/citizenDetailsService';
 import _ from 'lodash';
 import { CounterpartyType } from '../../../../common/models/counterpartyType';
-import { getCaseDataFromStore } from '../../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../../common/models/claim';
 
 const citizenDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -129,7 +127,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
       renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req, responseDataRedis, contactPerson);
     } else {
       await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, contactPerson);
-      redirect(req, res);
+      redirect(responseDataRedis, req, res);
     }
   } catch (error) {
     logger.error(error);
@@ -137,9 +135,8 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
   }
 });
 
-const redirect =  async (req: express.Request, res: express.Response) => {
-  const claim: Claim = await getCaseDataFromStore(req.params.id);
-  if (claim?.respondent1?.type === CounterpartyType.SOLE_TRADER || claim?.respondent1?.type === CounterpartyType.INDIVIDUAL) {
+const redirect =  async (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
+  if (responseDataRedis?.type === CounterpartyType.SOLE_TRADER || responseDataRedis?.type === CounterpartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));

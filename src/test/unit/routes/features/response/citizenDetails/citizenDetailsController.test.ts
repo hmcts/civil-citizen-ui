@@ -1,7 +1,7 @@
 import { app } from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
-import {CITIZEN_DETAILS_URL} from '../../../../../../main/routes/urls';
+import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from '../../../../../../main/routes/urls';
 import {
   VALID_ADDRESS_LINE_1,
   VALID_CITY,
@@ -522,6 +522,7 @@ describe('Confirm Details page', () => {
         .send(validDataForPost)
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
         });
     });
     test('should redirect to confirm phone screen if respondent type is ORGANISATION', async () => {
@@ -533,6 +534,7 @@ describe('Confirm Details page', () => {
         .send(validDataForPost)
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
         });
     });
     test('should redirect to confirm DOB screen if respondent type is INDIVIDUAL', async () => {
@@ -544,6 +546,7 @@ describe('Confirm Details page', () => {
         .send(validDataForPost)
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(DOB_URL);
         });
     });
     test('should redirect to confirm DOB screen if respondent type is SOLE TRADER', async () => {
@@ -555,6 +558,7 @@ describe('Confirm Details page', () => {
         .send(validDataForPost)
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(DOB_URL);
         });
     });
   });
