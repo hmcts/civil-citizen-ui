@@ -1,6 +1,11 @@
 import * as express from 'express';
 
-import {CITIZEN_ALREADY_PAID_URL, CITIZEN_REJECT_ALL_CLAIM_URL, CITIZEN_RESPONSE_TYPE_URL, CLAIM_TASK_LIST_URL} from '../../../urls';
+import {
+  CITIZEN_ALREADY_PAID_URL,
+  CITIZEN_REJECT_ALL_CLAIM_URL,
+  CITIZEN_RESPONSE_TYPE_URL,
+  CLAIM_TASK_LIST_URL,
+} from '../../../urls';
 import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
@@ -73,7 +78,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
   });
 
 function getDetailItemsList(claim: Claim): ComponentDetailItems[] {
-  const componentDetailItemsList: ComponentDetailItems[] = [
+  return [
     {
       title: 'Admit all of the claim',
       content: ['You have until 4pm on ' + claim.formattedResponseDeadline() + ' to admit the claim.'],
@@ -107,7 +112,6 @@ function getDetailItemsList(claim: Claim): ComponentDetailItems[] {
       content: ['If the claim is against you as an individual, the hearing centre will be the nearest one to your home or business.', 'If the claimant is an individual and the claim is against you as an organisation, the hearing centre will be the nearest one to their home or business.'],
     },
   ];
-  return componentDetailItemsList;
 }
 
 export default citizenResponseTypeController;
