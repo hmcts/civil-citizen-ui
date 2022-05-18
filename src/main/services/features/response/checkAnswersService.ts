@@ -26,10 +26,10 @@ const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | u
   const yourDetailsHref = CITIZEN_DETAILS_URL.replace(':id', claimId);
   const phoneNumberHref = CITIZEN_PHONE_NUMBER_URL.replace(':id', claimId);
   return summarySection({
-    title: t('Your details', {lng: lang ? String(lang) : 'en'}),
+    title: t('CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: lang ? String(lang) : 'en'}),
     summaryRows: [
-      summaryRow('Full name', claim.respondent1.partyName, yourDetailsHref, 'Change'),
-      summaryRow('Contact number (optional)', claim.respondent1.telephoneNumber, phoneNumberHref, 'Change'),
+      summaryRow(t('CHECK_YOUR_ANSWER.FULL_NAME', {lng: lang ? String(lang) : 'en'}), claim.respondent1.partyName, yourDetailsHref, 'Change'),
+      summaryRow(t('CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: lang ? String(lang) : 'en'}), claim.respondent1.telephoneNumber, phoneNumberHref, 'Change'),
     ],
   });
 };
@@ -38,10 +38,10 @@ const buildResponseSection = (claim: Claim, claimId: string, lang: string | unkn
   const yourResponseHref = CITIZEN_RESPONSE_TYPE_URL.replace(':id', claimId);
   const paymentOptionHref = CITIZEN_PAYMENT_OPTION_URL.replace(':id', claimId);
   return summarySection({
-    title: 'Your response to the claim',
+    title: t('CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: lang ? String(lang) : 'en'}),
     summaryRows: [
-      summaryRow(t('Do you owe the money claimed'), t(claim.respondent1.responseType, {lng: lang ? String(lang) : 'en'}), yourResponseHref, 'Change'),
-      summaryRow(t('When will you pay'), t(claim.paymentOption, {lng: lang ? String(lang) : 'en'}), paymentOptionHref, 'Change'),
+      summaryRow(t('CHECK_YOUR_ANSWER.OWE_MONEY', {lng: lang ? String(lang) : 'en'}), t(claim.respondent1.responseType, {lng: lang ? String(lang) : 'en'}), yourResponseHref, 'Change'),
+      summaryRow(t('CHECK_YOUR_ANSWER.WHEN_PAY', {lng: lang ? String(lang) : 'en'}), t(claim.paymentOption, {lng: lang ? String(lang) : 'en'}), paymentOptionHref, 'Change'),
     ],
   });
 };

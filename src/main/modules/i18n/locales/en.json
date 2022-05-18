@@ -17,5 +17,14 @@
     "TITLE": "Briefly explain why you can’t pay immediately"
   },
   "FULL_ADMISSION": "I admit all the claim",
-  "IMMEDIATELY": "Immediately"
+  "IMMEDIATELY": "Immediately",
+  "CHECK_YOUR_ANSWER": {
+    "TITLE": "Check your answers",
+    "DETAILS_TITLE": "Your details",
+    "FULL_NAME": "Full name",
+    "CONTACT_NUMBER": "Contact number (optional)",
+    "RESPONSE_TITLE": "Your response to the claim",
+    "OWE_MONEY": "Do you owe the money claimed?",
+    "WHEN_PAY": "When will you pay"
+  }
 }
