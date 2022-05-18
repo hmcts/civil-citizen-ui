@@ -13,7 +13,8 @@ const checkAnswersController = express.Router();
 
 checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL, async (req, res) => {
   try {
-    const _summarySections = await getSummarySections(req.params.id);
+    const lang = req.query.lang;
+    const _summarySections = await getSummarySections(req.params.id, lang);
     const form = new GenericForm(new StatementOfTruth());
     res.render(checkAnswersViewPath, {
       form: form,
