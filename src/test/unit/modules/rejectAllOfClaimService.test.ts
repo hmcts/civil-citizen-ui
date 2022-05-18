@@ -1,5 +1,5 @@
 import {
-  getclaimantName,
+  getClaimantName,
   getRejectAllOfClaim,
   saveRejectAllOfClaim,
 } from '../../../main/modules/rejectAllOfClaimService';
@@ -51,7 +51,7 @@ describe('rejectAllOfClaim service', () => {
         return claim;
       });
       //When
-      const result = await getclaimantName('123');
+      const result = await getClaimantName('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
@@ -69,7 +69,7 @@ describe('rejectAllOfClaim service', () => {
         return claim;
       });
       //When
-      const result = await getclaimantName('123');
+      const result = await getClaimantName('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
@@ -88,7 +88,7 @@ describe('rejectAllOfClaim service', () => {
         return claim;
       });
       //When
-      const result = await getclaimantName('123');
+      const result = await getClaimantName('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
@@ -109,7 +109,7 @@ describe('rejectAllOfClaim service', () => {
         return claim;
       });
       //When
-      const result = await getclaimantName('123');
+      const result = await getClaimantName('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
@@ -129,7 +129,7 @@ describe('rejectAllOfClaim service', () => {
         return claim;
       });
       //When
-      const result = await getclaimantName('123');
+      const result = await getClaimantName('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
@@ -149,7 +149,7 @@ describe('rejectAllOfClaim service', () => {
         return claim;
       });
       //When
-      const result = await getclaimantName('123');
+      const result = await getClaimantName('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
@@ -169,7 +169,7 @@ describe('rejectAllOfClaim service', () => {
         return claim;
       });
       //When
-      const result = await getclaimantName('123');
+      const result = await getClaimantName('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
@@ -189,7 +189,7 @@ describe('rejectAllOfClaim service', () => {
         return claim;
       });
       //When
-      const result = await getclaimantName('123');
+      const result = await getClaimantName('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
@@ -209,7 +209,7 @@ describe('rejectAllOfClaim service', () => {
         return claim;
       });
       //When
-      const result = await getclaimantName('123');
+      const result = await getClaimantName('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
@@ -230,7 +230,7 @@ describe('rejectAllOfClaim service', () => {
         return claim;
       });
       //When
-      const result = await getclaimantName('123');
+      const result = await getClaimantName('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
@@ -247,7 +247,7 @@ describe('rejectAllOfClaim service', () => {
         return claim;
       });
       //When
-      const result = await getclaimantName('123');
+      const result = await getClaimantName('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
@@ -259,7 +259,7 @@ describe('rejectAllOfClaim service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(getclaimantName('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getClaimantName('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
@@ -277,7 +277,7 @@ describe('rejectAllOfClaim service', () => {
       return claim;
     });
     //When
-    const result = await getclaimantName('123');
+    const result = await getClaimantName('123');
     //Then
     expect(spyGetCaseDataFromStore).toBeCalled();
     expect(result).not.toBeNull();
@@ -297,7 +297,7 @@ describe('rejectAllOfClaim service', () => {
       return claim;
     });
     //When
-    const result = await getclaimantName('123');
+    const result = await getClaimantName('123');
     //Then
     expect(spyGetCaseDataFromStore).toBeCalled();
     expect(result).not.toBeNull();
@@ -317,7 +317,7 @@ describe('rejectAllOfClaim service', () => {
       return claim;
     });
     //When
-    const result = await getclaimantName('123');
+    const result = await getClaimantName('123');
     //Then
     expect(spyGetCaseDataFromStore).toBeCalled();
     expect(result).not.toBeNull();
@@ -337,7 +337,7 @@ describe('rejectAllOfClaim service', () => {
       return claim;
     });
     //When
-    const result = await getclaimantName('123');
+    const result = await getClaimantName('123');
     //Then
     expect(spyGetCaseDataFromStore).toBeCalled();
     expect(result).not.toBeNull();
@@ -357,7 +357,7 @@ describe('rejectAllOfClaim service', () => {
       return claim;
     });
     //When
-    const result = await getclaimantName('123');
+    const result = await getClaimantName('123');
     //Then
     expect(spyGetCaseDataFromStore).toBeCalled();
     expect(result).not.toBeNull();
@@ -378,7 +378,7 @@ describe('rejectAllOfClaim service', () => {
       return claim;
     });
     //When
-    const result = await getclaimantName('123');
+    const result = await getClaimantName('123');
     //Then
     expect(spyGetCaseDataFromStore).toBeCalled();
     expect(result).not.toBeNull();
@@ -399,7 +399,7 @@ describe('rejectAllOfClaim service', () => {
       return claim;
     });
     //When
-    const result = await getclaimantName('123');
+    const result = await getClaimantName('123');
     //Then
     expect(spyGetCaseDataFromStore).toBeCalled();
     expect(result).not.toBeNull();
