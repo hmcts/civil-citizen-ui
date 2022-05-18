@@ -1,10 +1,17 @@
 import * as express from 'express';
 
-import {CITIZEN_ALREADY_PAID_URL, CITIZEN_REJECT_ALL_CLAIM_URL, CITIZEN_RESPONSE_TYPE_URL, CLAIM_TASK_LIST_URL} from '../../../urls';
+import {
+  CITIZEN_ALREADY_PAID_URL,
+  CITIZEN_PAYMENT_OPTION_URL,
+  CITIZEN_REJECT_ALL_CLAIM_URL,
+  CITIZEN_RESPONSE_TYPE_URL,
+  CLAIM_TASK_LIST_URL,
+} from '../../../urls';
 import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
+import {ResponseType} from '../../../../common/form/models/responseType';
 import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
@@ -55,10 +62,13 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
         }
         await saveDraftClaim(req.params.id, claim);
         switch (model.responseType) {
-          case 'PART_ADMISSION':
+          case ResponseType.PART_ADMISSION:
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_ALREADY_PAID_URL));
             break;
-          case 'FULL_DEFENCE':
+          case ResponseType.FULL_ADMISSION:
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PAYMENT_OPTION_URL));
+            break;
+          case ResponseType.FULL_DEFENCE:
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_REJECT_ALL_CLAIM_URL));
             break;
           default:

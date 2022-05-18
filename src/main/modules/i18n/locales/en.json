@@ -15,5 +15,7 @@
   },
   "EXPLANATION": {
     "TITLE": "Briefly explain why you can’t pay immediately"
-  }
+  },
+  "FULL_ADMISSION": "I admit all the claim",
+  "IMMEDIATELY": "Immediately"
 }
