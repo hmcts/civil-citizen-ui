@@ -1,11 +1,17 @@
 {% from "./new-line.njk" import newLine %}
 
 {% macro aboutClaimWidget(aboutClaimParams) %}
-  {% set hrefOtherPartyLabel = 'contact-them' %}
-  <div class="govuk-grid-column-one-third  govuk-!-padding-top-9">
-    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t(aboutClaimParams.header) }}</h3>
+{% set containerStyle= "govuk-grid-column-one-third" %}
+{% if aboutClaimParams.header %}
+  {% set containerStyle= "govuk-grid-column-one-third govuk-!-padding-top-9" %}
+{% endif %}
+
+  <div class="{{containerStyle}}">
+    {% if aboutClaimParams.header %}
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t(aboutClaimParams.header) }}</h3>
+    {% endif %}
     {% for claimLine in aboutClaimParams.lines %}
-      {{ newLine(claimLine.title, claimLine.content, claimLine.href, claimLine.hrefContact ) }}
+      {{ newLine(claimLine.title, claimLine.content, claimLine.href, claimLine.hrefContact, claimLine.hint, claimLine.hintStyle ) }}
     {% endfor %}
   </div>
 {% endmacro %}

@@ -38,3 +38,13 @@
   margin-right: 30px;
   padding: 10px 20px;
 }
+
+.govuk-phase-banner__text {
+  width: 100%;
+}
+
+.language {
+  float: right;
+  // sass-lint:disable zero-unit
+  margin-bottom: 0px;
+}
