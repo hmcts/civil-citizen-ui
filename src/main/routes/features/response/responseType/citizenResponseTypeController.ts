@@ -1,5 +1,4 @@
 import * as express from 'express';
-
 import {
   CITIZEN_ALREADY_PAID_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,
@@ -60,6 +59,9 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
         }
         await saveDraftClaim(req.params.id, claim);
         switch (model.responseType) {
+          case 'FULL_ADMISSION':
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+            break;
           case 'PART_ADMISSION':
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_ALREADY_PAID_URL));
             break;
@@ -69,7 +71,6 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
           default:
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
         }
-
       }
     } catch (error) {
       logger.error(error);
