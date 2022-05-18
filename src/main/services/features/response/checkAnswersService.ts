@@ -1,32 +1,13 @@
-import {
-  getCaseDataFromStore,
-} from '../../../modules/draft-store/draftStoreService';
-import {
-  summarySection,
-  SummarySections,
-} from '../../../common/models/summaryList/summarySections';
+import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {SummarySection, summarySection, SummarySections} from '../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../common/models/claim';
 import {summaryRow} from '../../../common/models/summaryList/summaryList';
-import {
-  CITIZEN_DETAILS_URL,
-  CITIZEN_PHONE_NUMBER_URL,
-  CITIZEN_RESPONSE_TYPE_URL,
-} from '../../../routes/urls';
+import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, CITIZEN_RESPONSE_TYPE_URL} from '../../../routes/urls';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
 const buildSummarySections = (claim: Claim, claimId: string): SummarySections => {
-
-  const yourDetailsHref = CITIZEN_DETAILS_URL.replace(':id', claimId);
-  const phoneNumberHref = CITIZEN_PHONE_NUMBER_URL.replace(':id', claimId);
-  const yourDetailsSection = summarySection({
-    title: 'Your details',
-    summaryRows: [
-      summaryRow('Full name', claim.respondent1.partyName, yourDetailsHref, 'Change'),
-      summaryRow('Contact number (optional)', claim.respondent1.telephoneNumber, phoneNumberHref, 'Change'),
-    ],
-  });
 
   const yourResponseHref = CITIZEN_RESPONSE_TYPE_URL.replace(':id', claimId);
   const yourResponseSection = summarySection({
@@ -38,11 +19,24 @@ const buildSummarySections = (claim: Claim, claimId: string): SummarySections =>
   });
   return {
     sections: [
-      yourDetailsSection,
+      buildYourDetails(claim, claimId),
       yourResponseSection,
     ],
   };
 };
+
+const buildYourDetails = (claim: Claim, claimId: string): SummarySection => {
+  const yourDetailsHref = CITIZEN_DETAILS_URL.replace(':id', claimId);
+  const phoneNumberHref = CITIZEN_PHONE_NUMBER_URL.replace(':id', claimId);
+  return summarySection({
+    title: 'Your details',
+    summaryRows: [
+      summaryRow('Full name', claim.respondent1.partyName, yourDetailsHref, 'Change'),
+      summaryRow('Contact number (optional)', claim.respondent1.telephoneNumber, phoneNumberHref, 'Change'),
+    ],
+  });
+}
+;
 
 export const getSummarySections = async (claimId: string): Promise<SummarySections> => {
   try {
