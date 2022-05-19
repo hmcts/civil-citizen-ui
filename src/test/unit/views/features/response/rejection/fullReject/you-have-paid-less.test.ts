@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../../main/app';
-import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS} from '../../../../../../../main/routes/urls';
+import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL} from '../../../../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
@@ -23,7 +23,7 @@ describe('You Have Paid Less View', () => {
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockCivilClaim;
-      const response = await request(app).get(CITIZEN_FULL_REJECTION_YOU_PAID_LESS);
+      const response = await request(app).get(CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });
