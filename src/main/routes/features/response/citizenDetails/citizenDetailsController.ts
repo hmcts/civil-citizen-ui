@@ -49,6 +49,14 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
   });
 }
 
+const redirect =  async (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
+  if (responseDataRedis?.type === CounterpartyType.SOLE_TRADER || responseDataRedis?.type === CounterpartyType.INDIVIDUAL) {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
+  } else {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
+  }
+};
+
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   try {
     let citizenAddressModel;
@@ -134,13 +142,5 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
     res.status(500).send({error: error.message});
   }
 });
-
-const redirect =  async (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
-  if (responseDataRedis?.type === CounterpartyType.SOLE_TRADER || responseDataRedis?.type === CounterpartyType.INDIVIDUAL) {
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
-  } else {
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
-  }
-};
 
 export default citizenDetailsController;
