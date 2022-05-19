@@ -13,12 +13,12 @@ const checkAnswersController = express.Router();
 
 checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL, async (req, res) => {
   try {
-    const lang = req.query.lang;
-    const _summarySections = await getSummarySections(req.params.id, lang);
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const summarySections = await getSummarySections(req.params.id, lang);
     const form = new GenericForm(new StatementOfTruth());
     res.render(checkAnswersViewPath, {
-      form: form,
-      summarySections: _summarySections,
+      form,
+      summarySections,
       signatureType: SignatureType.BASIC,
     });
   } catch (error) {
