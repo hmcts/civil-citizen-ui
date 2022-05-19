@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../../../main/app';
 import request from 'supertest';
+import {app} from '../../../../../../../main/app';
 import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS} from '../../../../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
 

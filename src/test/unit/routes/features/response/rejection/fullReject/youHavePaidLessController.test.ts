@@ -2,9 +2,9 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../../main/app';
+import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {REDIS_FAILURE} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
