@@ -1,7 +1,7 @@
 import * as express from 'express';
-import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS, CLAIM_TASK_LIST_URL} from 'routes/urls';
+import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS, CLAIM_TASK_LIST_URL} from '../../../../urls';
 import {getClaimantName} from '../../../../../modules/rejectAllOfClaimService';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const youHavePaidLessController = express.Router();
 const youHavePaidLessViewPath = 'features/response/rejection/fullReject/you-have-paid-less';
