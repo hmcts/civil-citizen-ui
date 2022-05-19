@@ -1,5 +1,9 @@
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {SummarySection, summarySection, SummarySections} from '../../../common/models/summaryList/summarySections';
+import {
+  SummarySection,
+  summarySection,
+  SummarySections,
+} from '../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../common/models/claim';
 import {summaryRow} from '../../../common/models/summaryList/summaryList';
 import {
