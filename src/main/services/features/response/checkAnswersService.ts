@@ -9,15 +9,12 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
 } from '../../../routes/urls';
 import {t} from 'i18next';
+import {getLng} from '../../../common/utils/languageToggleUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
 const changeLabel = (lang: string | unknown): string => t('CHANGE', {lng: getLng(lang)});
-
-const getLng = (lang: string | unknown): string => {
-  return lang ? String(lang) : 'en';
-};
 
 const getDefendantFullName = (claim: Claim): string => {
   if (claim.respondent1.individualFirstName && claim.respondent1.individualLastName) {
