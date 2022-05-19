@@ -5,7 +5,7 @@
 {% from "../../../../macro/page-title.njk" import setPageTitle %}
 
 {% block pageTitle %}
-  {{ setPageTitle('pages.youHavePaidLess.PAGE_TITLE') }}
+  {{ setPageTitle('PAGES.YOU_HAVE_PAID_LESS.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -13,13 +13,13 @@
   <main class="govuk-main-wrapper" role="main">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">{{ t('pages.youHavePaidLess.HEADER') }}</h1>
-        <p class="govuk-body">{{ t('pages.youHavePaidLess.EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT') }}</p>
-        <p class="govuk-body">{{ t('pages.youHavePaidLess.IF_CLAIMANT_REJECTS') | replace('CLAIMANT_NAME', claimantName)}}</p>
+        <h1 class="govuk-heading-l">{{ t('PAGES.YOU_HAVE_PAID_LESS.HEADER') }}</h1>
+        <p class="govuk-body">{{ t('PAGES.YOU_HAVE_PAID_LESS.EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT') }}</p>
+        <p class="govuk-body">{{ t('PAGES.YOU_HAVE_PAID_LESS.IF_CLAIMANT_REJECTS') | replace('CLAIMANT_NAME', claimantName)}}</p>
         <form method="POST" novalidate>
           {{ csrfProtection(csrf) }}
           {{ govukButton({
-            text: t('common.buttons.CONTINUE')
+            text: t('COMMON.BUTTONS.CONTINUE')
           }) }}
         </form>
       </div>

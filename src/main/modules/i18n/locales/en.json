@@ -10,13 +10,13 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
-  "common": {
-    "buttons": {
+  "COMMON": {
+    "BUTTONS": {
       "CONTINUE": "Continue"
     }
   },
-  "pages": {
-    "youHavePaidLess": {
+  "PAGES": {
+    "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've Paid Less",
       "HEADER": "You've paid less than the total claim amount",
       "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "You need to explain why you believe you don't owe the remaining amount.",

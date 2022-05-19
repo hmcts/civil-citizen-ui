@@ -10,13 +10,13 @@
   "View": "Weiv",
   "Save and continue": "Arbed a pharhau",
   "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "Ar ôl i chi gwblhau'r holl gamau gweithredu byddwch yn cael eich tywys i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
-  "common": {
-    "buttons": {
+  "COMMON": {
+    "BUTTONS": {
       "CONTINUE": "Parhau"
     }
   },
-  "pages": {
-    "youHavePaidLess": {
+  "PAGES": {
+    "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've Paid Less",
       "HEADER": "You've paid less than the total claim amount",
       "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "You need to explain why you believe you don't owe the remaining amount.",
