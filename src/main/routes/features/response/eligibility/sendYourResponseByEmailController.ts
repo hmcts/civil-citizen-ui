@@ -11,9 +11,10 @@ const sendYourResponseByEmailController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('sendYourResponseByEmailController');
 
-function renderView(res: express.Response, form: Claim): void {
+function renderView(res: express.Response, form: Claim, fees: any): void {
   res.render(sendYourResponseByEmailViewPath, {
     form: form,
+    fees: fees,
     ResponseType: ResponseType,
     RejectAllOfClaimType: RejectAllOfClaimType,
     CounterpartyType: CounterpartyType,
@@ -23,7 +24,22 @@ function renderView(res: express.Response, form: Claim): void {
 sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res) => {
   try {
     const form = await getCaseDataFromStore(req.params.id);
-    renderView(res, form);
+    // TODO call the service
+    const fees: any[] = [
+      [
+        { text: "£0.01 to £300" },
+        { text: "£35" }
+      ],
+      [
+        { text: "£300.01 to £500" },
+        { text: "£50" }
+      ],
+      [
+        { text: "£500.01 to £1000" },
+        { text: "£70" }
+      ]
+    ];
+    renderView(res, form, fees);
   } catch (error) {
     logger.error(error);
     res.status(500).send({error: error.message});
