@@ -148,7 +148,7 @@ describe('Confirm Details page', () => {
 
   test('should return your details company page', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.COMPANY)
+      return buildClaimOfRespondentType(CounterpartyType.COMPANY);
     });
     await request(app)
       .get(CITIZEN_DETAILS_URL)
@@ -161,7 +161,7 @@ describe('Confirm Details page', () => {
 
   test('should return your details organisation page', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION)
+      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
     });
     await request(app)
       .get(CITIZEN_DETAILS_URL)
