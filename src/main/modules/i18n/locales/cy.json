@@ -10,22 +10,30 @@
   "View": "Weiv",
   "Save and continue": "Arbed a pharhau",
   "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "Ar ôl i chi gwblhau'r holl gamau gweithredu byddwch yn cael eich tywys i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
+  "COMMON": {
+    "RESPONSE_TYPE": {
+      "FULL_ADMISSION": "Rwy'n cyfaddef yr holl hawliad"
+    },
+    "PAYMENT_OPTION": {
+      "IMMEDIATELY": "Ar unwaith"
+    }
+  },
+  "PAGES": {
+    "CHECK_YOUR_ANSWER": {
+      "CHANGE": "Newid",
+      "TITLE": "Gwiriwch eich ateb",
+      "DETAILS_TITLE": "Eich manylion",
+      "FULL_NAME": "Enw llawn",
+      "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
+      "RESPONSE_TITLE": "Eich ymateb i’r hawliad",
+      "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
+      "WHEN_PAY": "Pryd fyddwch chi'n talu"
+    }
+  },
   "ERRORS": {
     "THERE_WAS_A_PROBLEM": "Roedd problem"
   },
   "EXPLANATION": {
     "TITLE": "Eglurwch yn gryno pam na allwch dalu ar unwaith"
-  },
-  "FULL_ADMISSION": "Rwy'n cyfaddef yr holl hawliad",
-  "IMMEDIATELY": "Ar unwaith",
-  "CHANGE": "Newid",
-  "CHECK_YOUR_ANSWER": {
-    "TITLE": "Gwiriwch eich ateb",
-    "DETAILS_TITLE": "Eich manylion",
-    "FULL_NAME": "Enw llawn",
-    "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
-    "RESPONSE_TITLE": "Eich ymateb i’r hawliad",
-    "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
-    "WHEN_PAY": "Pryd fyddwch chi'n talu"
   }
 }

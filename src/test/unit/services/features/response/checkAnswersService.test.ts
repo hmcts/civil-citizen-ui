@@ -51,9 +51,9 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[0].summaryList.rows[1].value.text).toBe(CONTACT_NUMBER);
       expect(summarySections.sections[0].summaryList.rows[1].actions?.items.length).toBe(1);
       expect(summarySections.sections[0].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_PHONE_NUMBER_URL.replace(':id', CLAIM_ID));
-      expect(summarySections.sections[0].title).toBe('CHECK_YOUR_ANSWER.DETAILS_TITLE');
-      expect(summarySections.sections[0].summaryList.rows[0].key.text).toBe('CHECK_YOUR_ANSWER.FULL_NAME');
-      expect(summarySections.sections[0].summaryList.rows[1].key.text).toBe('CHECK_YOUR_ANSWER.CONTACT_NUMBER');
+      expect(summarySections.sections[0].title).toBe('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE');
+      expect(summarySections.sections[0].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FULL_NAME');
+      expect(summarySections.sections[0].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER');
     });
     it('should return your response summary section', async () => {
       //When
@@ -63,9 +63,9 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_RESPONSE_TYPE_URL.replace(':id', CLAIM_ID));
       expect(summarySections.sections[1].summaryList.rows[1].actions?.items.length).toBe(1);
       expect(summarySections.sections[1].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_PAYMENT_OPTION_URL.replace(':id', CLAIM_ID));
-      expect(summarySections.sections[1].title).toBe('CHECK_YOUR_ANSWER.RESPONSE_TITLE');
-      expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('CHECK_YOUR_ANSWER.OWE_MONEY');
-      expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('CHECK_YOUR_ANSWER.WHEN_PAY');
+      expect(summarySections.sections[1].title).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE');
+      expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
+      expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
     });
     it('should throw error when retrieving data from draft store fails', async () => {
       //Given

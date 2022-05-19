@@ -39,10 +39,10 @@ const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | u
   const yourDetailsHref = CITIZEN_DETAILS_URL.replace(':id', claimId);
   const phoneNumberHref = CITIZEN_PHONE_NUMBER_URL.replace(':id', claimId);
   return summarySection({
-    title: t('CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
+    title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
     summaryRows: [
-      summaryRow(t('CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), getDefendantFullName(claim), yourDetailsHref, changeLabel(lang)),
-      summaryRow(t('CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.respondent1.telephoneNumber, phoneNumberHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), getDefendantFullName(claim), yourDetailsHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.respondent1.telephoneNumber, phoneNumberHref, changeLabel(lang)),
     ],
   });
 };
@@ -51,10 +51,10 @@ const buildResponseSection = (claim: Claim, claimId: string, lang: string | unkn
   const yourResponseHref = CITIZEN_RESPONSE_TYPE_URL.replace(':id', claimId);
   const paymentOptionHref = CITIZEN_PAYMENT_OPTION_URL.replace(':id', claimId);
   return summarySection({
-    title: t('CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: getLng(lang)}),
+    title: t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: getLng(lang)}),
     summaryRows: [
-      summaryRow(t('CHECK_YOUR_ANSWER.OWE_MONEY', {lng: getLng(lang)}), t(claim.respondent1.responseType, {lng: getLng(lang)}), yourResponseHref, changeLabel(lang)),
-      summaryRow(t('CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), t(claim.paymentOption, {lng: getLng(lang)}), paymentOptionHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', {lng: getLng(lang)}), t(`COMMON.RESPONSE_TYPE.${claim.respondent1.responseType}`, {lng: getLng(lang)}), yourResponseHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_OPTION.${claim.paymentOption}`, {lng: getLng(lang)}), paymentOptionHref, changeLabel(lang)),
     ],
   });
 };

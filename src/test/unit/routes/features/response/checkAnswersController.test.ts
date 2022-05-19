@@ -37,7 +37,6 @@ describe('Response - Check answers', () => {
   });
 
   describe('on GET', () => {
-
     test('should return check answers page', async () => {
       const response = await request(app).get(respondentCheckAnswersUrl);
       expect(response.status).toBe(200);
