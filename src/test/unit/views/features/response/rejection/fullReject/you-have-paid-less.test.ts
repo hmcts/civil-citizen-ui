@@ -7,6 +7,7 @@ import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
+const pageTitle = 'You\'ve Paid Less';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -25,6 +26,10 @@ describe('You Have Paid Less View', () => {
       const response = await request(app).get(CITIZEN_FULL_REJECTION_YOU_PAID_LESS);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+    });
+
+    it('should have correct page title', () => {
+      expect(htmlDocument.title).toEqual(`Your money claims account - ${pageTitle}`);
     });
 
     it('should display header', () => {
