@@ -54,7 +54,8 @@ describe('Send your response by email View', () => {
       expect(paragraphs[11].innerHTML).toContain('Email completed form N9B to:');
       expect(paragraphs[12].innerHTML).toContain('Or, you can send the form by post to:');
       expect(paragraphs[17].innerHTML).toContain('You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.');
-      expect(paragraphs[18].innerHTML).toContain('Do not create a new claim if you want to counterclaim. Use form N9B.');
+      expect(paragraphs[18].innerHTML).toContain('The fee is based on the amount you`re claiming, including interest.');
+      expect(paragraphs[19].innerHTML).toContain('Do not create a new claim if you want to counterclaim. Use form N9B.');
     });
 
     it('should display View claim fees details component', () => {
