@@ -8,6 +8,7 @@ import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClai
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import config from 'config';
 import {FeeRange} from '../../../../common/models/feeRange';
+import {TableItem} from '../../../../common/models/tableItem';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -16,7 +17,7 @@ const sendYourResponseByEmailController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('sendYourResponseByEmailController');
 
-function renderView(res: express.Response, form: Claim, fees: any): void {
+function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): void {
   res.render(sendYourResponseByEmailViewPath, {
     form: form,
     fees: fees,
@@ -39,14 +40,14 @@ sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, re
 });
 
 
-const formatFeesRanges = (feesRanges: FeeRange[]) => {
-  const result: any[] = [];
+const formatFeesRanges = (feesRanges: FeeRange[]): [TableItem[]] => {
+  const tableFormatFeesRanges: [TableItem[]] = [[]];
   feesRanges.forEach((feeRange: FeeRange) => {
-    const item = [];
-    item.push({ text: feeRange.claimAmountRange }, { text: feeRange.fee })
-    result.push(item);
+    const itemTableFeeRange = [];
+    itemTableFeeRange.push({ text: feeRange.claimAmountRange }, { text: feeRange.fee });
+    tableFormatFeesRanges.push(itemTableFeeRange);
   });
-  return result;
-}
+  return tableFormatFeesRanges;
+};
 
 export default sendYourResponseByEmailController;
