@@ -5,11 +5,12 @@ import {
   buildPrepareYourResponseSection,
   buildRespondToClaimSection, buildSubmitSection,
 } from '../common/utils/taskList/taskListBuilder';
+import {Task} from '../common/models/taskList/task';
 
 let completed = 0;
 let total = 0;
 
-const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId:string) => {
+const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId: string) => {
 
   // TASK BUILDER
   // TODO : depending on the defendant's response type (full admission/partial admission/ rejection) we need to build new taskLists and include them in the taskGroups array
@@ -19,16 +20,23 @@ const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId:string) => {
   const taskGroups = [taskListPrepareYourResponse, taskListRespondeToClaim];
   const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
   // check if all tasks are completed except check and submit
-  let isIncompletSubmission = true;
   calculateTotalAndCompleted(taskGroups);
-  if (completed === total) {
-    isIncompletSubmission = false;
-  }
 
-  const taskListSubmitYourResponse: TaskList = buildSubmitSection(claim, caseData, currentClaimId, isIncompletSubmission);
-  
+  const taskListSubmitYourResponse: TaskList = buildSubmitSection(currentClaimId);
+
   filteredTaskGroups.push(taskListSubmitYourResponse);
   return filteredTaskGroups;
+};
+
+const outstandingTasksFromCase = (claim: Claim, claimId: string): Task[] => {
+  return outstandingTasksFromTaskLists(getTaskLists(claim, claim, claimId));
+};
+
+const outstandingTasksFromTaskLists = (taskLists: TaskList[]): Task[] => {
+  return taskLists
+    .map((taskList: TaskList) => taskList.tasks)
+    .flat()
+    .filter(item => item.status === TaskStatus.INCOMPLETE && !item.isCheckTask);
 };
 
 const calculateTotalAndCompleted = (taskLists: TaskList[]) => {
@@ -54,5 +62,11 @@ const countCompletedTasks = (taskList: TaskList) => {
   return taskList.tasks.filter(task => task.status === TaskStatus.COMPLETE).length;
 };
 
-export { getTaskLists, getTitle, getDescription };
-  
+export {
+  getTaskLists,
+  getTitle,
+  getDescription,
+  outstandingTasksFromCase,
+  outstandingTasksFromTaskLists,
+};
+

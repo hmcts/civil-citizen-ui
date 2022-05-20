@@ -1,0 +1,13 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/remaining-tasks-fragment.njk" import remainingTasksFragment %}
+
+{% set heading = t('You need to complete all sections before you submit your response') %}
+
+{% block content %}
+
+  {{ remainingTasksFragment(
+    tasks = tasks,
+    backLink = taskListUri
+  ) }}
+
+{% endblock %}

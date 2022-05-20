@@ -1,0 +1,21 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% macro remainingTasksFragment(tasks, backLink) %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <p class="govuk-body">{{ t('You still need to complete:') }}</p>
+
+      <ul class="govuk-list govuk-list--bullet">
+        {% for task in tasks %}
+          <li>{{ t(task.description) }}</li>
+        {% endfor %}
+      </ul>
+
+      {{ govukBackLink({
+        text: 'Back to task list',
+        href: backLink
+      }) }}
+
+    </div>
+  </div>
+{% endmacro %}
