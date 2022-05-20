@@ -10,6 +10,12 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
+  "PAGES": {
+    "MEDIATION_DISAGREEMENT": {
+      "PAGE_TITLE": "Free Mediation Disagreement",
+      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+    }
+  },
   "ERRORS": {
     "THERE_WAS_A_PROBLEM": "There was a problem"
   },
