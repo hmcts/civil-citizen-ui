@@ -16,5 +16,6 @@ export const getCheckAndSubmitYourResponseTask = (claimId: string): Task => {
     description: 'Check and submit your response',
     url: constructResponseUrlWithIdParams(claimId, RESPONSE_CHECK_ANSWERS_URL),
     status: TaskStatus.INCOMPLETE,
+    isCheckTask: true,
   };
 };

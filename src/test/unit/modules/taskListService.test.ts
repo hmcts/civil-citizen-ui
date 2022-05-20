@@ -1,13 +1,20 @@
 import {CorrespondenceAddress} from '../../../main/common/models/correspondenceAddress';
 import {Claim} from '../../../main/common/models/claim';
-import {getTaskLists, getTitle, getDescription} from '../../../main/modules/taskListService';
+import {
+  getDescription,
+  getTaskLists,
+  getTitle,
+  isOutstanding,
+} from '../../../main/modules/taskListService';
 import {
   buildPrepareYourResponseSection,
-  buildRespondToClaimSection, buildSubmitSection,
+  buildRespondToClaimSection,
+  buildSubmitSection,
 } from '../../../main/common/utils/taskList/taskListBuilder';
 import {ResponseType} from '../../../main/common/form/models/responseType';
 import {TaskStatus} from '../../../main/common/models/taskList/TaskStatus';
 import {deepCopy} from '../../utils/deepCopy';
+import {Task} from '../../../main/common/models/taskList/task';
 
 describe('Response Task List service', () => {
   const mockClaim = require('../../utils/mocks/civilClaimResponseMock.json');
@@ -124,6 +131,44 @@ describe('Response Task List service', () => {
       expect(actaulTaskLists[1].tasks[0].description).toEqual('Choose a response');
       expect(actaulTaskLists[1].tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(description).toEqual('You have completed 2 of 3 sections');
+    });
+  });
+
+  describe('Check task counts towards outstanding tasks', () => {
+
+    const task: Task = {
+      description: 'X',
+      url: 'url',
+      status: TaskStatus.INCOMPLETE,
+    };
+
+    it('should be included when incomplete and not a check task', () => {
+      //Given
+      task.status = TaskStatus.INCOMPLETE;
+      task.isCheckTask = false;
+      //Then
+      expect(isOutstanding(task)).toBe(true);
+    });
+    it('should be excluded when incomplete and a check task', () => {
+      //Given
+      task.status = TaskStatus.INCOMPLETE;
+      task.isCheckTask = true;
+      //Then
+      expect(isOutstanding(task)).toBe(false);
+    });
+    it('should be excluded when complete and not a check task', () => {
+      //Given
+      task.status = TaskStatus.COMPLETE;
+      task.isCheckTask = false;
+      //Then
+      expect(isOutstanding(task)).toBe(false);
+    });
+    it('should be excluded when complete and a check task', () => {
+      //Given
+      task.status = TaskStatus.COMPLETE;
+      task.isCheckTask = true;
+      //Then
+      expect(isOutstanding(task)).toBe(false);
     });
   });
 });

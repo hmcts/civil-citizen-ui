@@ -3,7 +3,8 @@ import {TaskList} from '../common/models/taskList/taskList';
 import {Claim} from '../common/models/claim';
 import {
   buildPrepareYourResponseSection,
-  buildRespondToClaimSection, buildSubmitSection,
+  buildRespondToClaimSection,
+  buildSubmitSection,
 } from '../common/utils/taskList/taskListBuilder';
 import {Task} from '../common/models/taskList/task';
 
@@ -32,11 +33,15 @@ const outstandingTasksFromCase = (claim: Claim, claimId: string): Task[] => {
   return outstandingTasksFromTaskLists(getTaskLists(claim, claim, claimId));
 };
 
+const isOutstanding = (task: Task): boolean => {
+  return task.status !== TaskStatus.COMPLETE && !task.isCheckTask ;
+};
+
 const outstandingTasksFromTaskLists = (taskLists: TaskList[]): Task[] => {
   return taskLists
     .map((taskList: TaskList) => taskList.tasks)
     .flat()
-    .filter(item => item.status === TaskStatus.INCOMPLETE && !item.isCheckTask);
+    .filter(task => isOutstanding(task));
 };
 
 const calculateTotalAndCompleted = (taskLists: TaskList[]) => {
@@ -63,9 +68,10 @@ const countCompletedTasks = (taskList: TaskList) => {
 };
 
 export {
+  getDescription,
   getTaskLists,
   getTitle,
-  getDescription,
+  isOutstanding,
   outstandingTasksFromCase,
   outstandingTasksFromTaskLists,
 };
