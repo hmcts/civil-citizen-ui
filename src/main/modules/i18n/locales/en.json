@@ -27,7 +27,11 @@
       "CONTACT_NUMBER": "Contact number (optional)",
       "RESPONSE_TITLE": "Your response to the claim",
       "OWE_MONEY": "Do you owe the money claimed?",
-      "WHEN_PAY": "When will you pay"
+      "WHEN_PAY": "When will you pay",
+      "ADDRESS": "Address",
+      "CORRESPONDENCE_ADDRESS": "Correspondence address",
+      "SAME_ADDRESS": "Same as address",
+      "DOB": "Date of birth"
     }
   },
   "ERRORS": {

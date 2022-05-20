@@ -1,9 +1,5 @@
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {
-  SummarySection,
-  summarySection,
-  SummarySections,
-} from '../../../common/models/summaryList/summarySections';
+import {SummarySection, summarySection, SummarySections} from '../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../common/models/claim';
 import {summaryRow} from '../../../common/models/summaryList/summaryList';
 import {
@@ -11,14 +7,23 @@ import {
   CITIZEN_PAYMENT_OPTION_URL,
   CITIZEN_PHONE_NUMBER_URL,
   CITIZEN_RESPONSE_TYPE_URL,
+  DOB_URL,
 } from '../../../routes/urls';
 import {t} from 'i18next';
 import {getLng} from '../../../common/utils/languageToggleUtils';
+import {PrimaryAddress} from '../../../common/models/primaryAddress';
+import {CorrespondenceAddress} from '../../../common/models/correspondenceAddress';
+import {formatDateToFullDate} from '../../../common/utils/dateUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
-const changeLabel = (lang: string | unknown): string => t('CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
+
+const addressToString = (address: PrimaryAddress | CorrespondenceAddress) => {
+  return address.AddressLine1 + '<br>' + address.PostTown + '<br>' + address.PostCode;
+};
+
 
 const getDefendantFullName = (claim: Claim): string => {
   if (claim.respondent1.individualFirstName && claim.respondent1.individualLastName) {
@@ -39,13 +44,20 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
 const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const yourDetailsHref = CITIZEN_DETAILS_URL.replace(':id', claimId);
   const phoneNumberHref = CITIZEN_PHONE_NUMBER_URL.replace(':id', claimId);
-  return summarySection({
+  const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
     summaryRows: [
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), getDefendantFullName(claim), yourDetailsHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.ADDRESS', {lng: getLng(lang)}), addressToString(claim.respondent1.primaryAddress), yourDetailsHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng: getLng(lang)}), claim.respondent1.correspondenceAddress ? addressToString(claim.respondent1.correspondenceAddress) : t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng: getLng(lang)}), yourDetailsHref, changeLabel(lang)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.respondent1.telephoneNumber, phoneNumberHref, changeLabel(lang)),
     ],
   });
+  if (claim.respondent1.dateOfBirth) {
+    const yourDOBHref = DOB_URL.replace(':id', claimId);
+    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng: getLng(lang)}), formatDateToFullDate(claim.respondent1.dateOfBirth), yourDOBHref, changeLabel(lang)));
+  }
+  return yourDetailsSection;
 };
 
 const buildResponseSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {

@@ -27,7 +27,11 @@
       "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
       "RESPONSE_TITLE": "Eich ymateb i’r hawliad",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
-      "WHEN_PAY": "Pryd fyddwch chi'n talu"
+      "WHEN_PAY": "Pryd fyddwch chi'n talu",
+      "ADDRESS": "Cyfeiriad",
+      "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
+      "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
+      "DOB": "Dyddiad Geni"
     }
   },
   "ERRORS": {
