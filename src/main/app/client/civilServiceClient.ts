@@ -4,7 +4,8 @@ import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {CIVIL_SERVICE_CASES_URL} from './civilServiceUrls';
-const { Logger } = require('@hmcts/nodejs-logging');
+import {FeeRange} from '../../common/models/feeRange';
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('ciivilServiceClient');
 
 export class CivilServiceClient {
@@ -54,4 +55,22 @@ export class CivilServiceClient {
       logger.error(`${(err as Error).stack || err}`);
     }
   }
+
+  getRangeFeesMock(): FeeRange[] {
+    try {
+      const feesRanges: FeeRange[] = [
+        { claimAmountRange: "£0.01 to £300", fee: "£35" },
+        { claimAmountRange: "£300.01 to £500", fee: "£50" },
+        { claimAmountRange: "£500.01 to £1000", fee: "£70" },
+        { claimAmountRange: "£1000.01 to £1500", fee: "£80" },
+        { claimAmountRange: "£1500.01 to £3000", fee: "£115" },
+        { claimAmountRange: "£3000.01 to £5000", fee: "£205" },
+        { claimAmountRange: "£5000.01 to £10000", fee: "£455" },
+      ];
+      return feesRanges;
+    } catch (err: unknown) {
+      logger.error(`${(err as Error).stack || err}`);
+    }
+  }
+
 }

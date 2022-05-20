@@ -5,7 +5,12 @@ import {Claim} from '../../../../common/models/claim';
 import {ResponseType} from '../../../../common/form/models/responseType';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
 import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClaimType';
+import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
+import config from 'config';
+import {FeeRange} from '../../../../common/models/feeRange';
 
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const sendYourResponseByEmailViewPath = 'features/response/eligibility/send-your-response-by-email';
 const sendYourResponseByEmailController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -24,26 +29,24 @@ function renderView(res: express.Response, form: Claim, fees: any): void {
 sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res) => {
   try {
     const form = await getCaseDataFromStore(req.params.id);
-    // TODO call the service
-    const fees: any[] = [
-      [
-        { text: "£0.01 to £300" },
-        { text: "£35" }
-      ],
-      [
-        { text: "£300.01 to £500" },
-        { text: "£50" }
-      ],
-      [
-        { text: "£500.01 to £1000" },
-        { text: "£70" }
-      ]
-    ];
-    renderView(res, form, fees);
+    const feesRanges: FeeRange[] = await civilServiceClient.getRangeFeesMock();
+    const formatedFeesRanges = formatFeesRanges(feesRanges);
+    renderView(res, form, formatedFeesRanges);
   } catch (error) {
     logger.error(error);
-    res.status(500).send({error: error.message});
+    res.status(500).send({ error: error.message });
   }
 });
+
+
+const formatFeesRanges = (feesRanges: FeeRange[]) => {
+  const result: any[] = [];
+  feesRanges.forEach((feeRange: FeeRange) => {
+    const item = [];
+    item.push({ text: feeRange.claimAmountRange }, { text: feeRange.fee })
+    result.push(item);
+  });
+  return result;
+}
 
 export default sendYourResponseByEmailController;
