@@ -52,12 +52,11 @@ export class CivilServiceClient {
       return response.data as Claim;
 
     } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
+      logger.error(err);
     }
   }
 
   getRangeFeesMock(): FeeRange[] {
-    try {
       const feesRanges: FeeRange[] = [
         { claimAmountRange: '£0.01 to £300', fee: '£35' },
         { claimAmountRange: '£300.01 to £500', fee: '£50' },
@@ -68,9 +67,6 @@ export class CivilServiceClient {
         { claimAmountRange: '£5000.01 to £10000', fee: '£455' },
       ];
       return feesRanges;
-    } catch (err: unknown) {
-      logger.error(`${(err as Error).stack || err}`);
-    }
   }
 
 }
