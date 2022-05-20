@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {RESPONSE_YOUR_DEFENCE_URL, SEND_RESPONSE_BY_EMAIL_URL} from '../../urls';
+import {CITIZEN_TIMELINE_URL, RESPONSE_YOUR_DEFENCE_URL} from '../../urls';
 import {getYourDefence, saveYourDefence} from '../../../modules/yourDefenceService';
 import {getclaimantName} from '../../../modules/rejectAllOfClaimService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
@@ -39,7 +39,7 @@ yourDefenceController.post(RESPONSE_YOUR_DEFENCE_URL, async (req: express.Reques
       });
     } else {
       await saveYourDefence(claimId, defence);
-      res.redirect(constructResponseUrlWithIdParams(claimId, SEND_RESPONSE_BY_EMAIL_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
 
     }
   } catch (error) {
