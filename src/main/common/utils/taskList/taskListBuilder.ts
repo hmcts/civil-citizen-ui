@@ -6,6 +6,7 @@ import {getNeedMoreTimeTask} from './tasks/needMoreTime';
 import {getChooseAResponseTask} from './tasks/chooseAResponse';
 import {getCheckAndSubmitYourResponseTask} from './tasks/checkAndSubmitYourResponse';
 import {isPastDeadline} from '../dateUtils';
+import {getDecideHowYouPayTask} from 'common/utils/taskList/tasks/decideHowYouPay';
 
 const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:string): TaskList => {
   const tasks: Task[] = [];
@@ -26,16 +27,21 @@ const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:
 const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList => {
   const tasks: Task[] = [];
   const chooseAResponseTask = getChooseAResponseTask(caseData, claimId);
-  // TODO : depending on the response type full admission/partial admission or rejection we need to add new tasks
-
   tasks.push(chooseAResponseTask);
+
+  // TODO : depending on the response type full admission/partial admission or rejection we need to add new tasks
+  if (chooseAResponseTask.status === 'COMPLETE') {
+    const decideHowYouPayTask = getDecideHowYouPayTask(caseData, claimId);
+    tasks.push(decideHowYouPayTask);
+  }
+
   return { title: 'Respond to Claim', tasks };
 };
 
 const buildSubmitSection = (claim: Claim, caseData: Claim, claimId: string, isIncompletsubmission: boolean): TaskList => {
   const tasks: Task[] = [];
 
-  // TODO: when check and submit tasks page is developed we need to update logic of this task 
+  // TODO: when check and submit tasks page is developed we need to update logic of this task
   const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claim, caseData, claimId, isIncompletsubmission);
 
   tasks.push(checkAndSubmitYourResponseTask);
