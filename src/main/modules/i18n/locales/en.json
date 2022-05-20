@@ -14,12 +14,14 @@
   "ERRORS": {
     "THERE_WAS_A_PROBLEM": "There was a problem"
   },
-  "EXPLANATION": {
-    "TITLE": "Briefly explain why you can’t pay immediately"
-  },
-  "REJECT_ALL": {
-    "FEE": "Fee",
-    "FEE_BASED": "The fee is based on the amount you`re claiming, including interest.",
-    "VIEW_COURT_FEES": "View court fees"
+  "PAGES":{
+    "EXPLANATION": {
+      "TITLE": "Briefly explain why you can’t pay immediately"
+    },
+    "REJECT_ALL": {
+      "FEE": "Fee",
+      "FEE_BASED": "The fee is based on the amount you`re claiming, including interest.",
+      "VIEW_COURT_FEES": "View court fees"
+    }
   }
 }

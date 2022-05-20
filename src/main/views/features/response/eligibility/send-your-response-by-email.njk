@@ -13,11 +13,11 @@
 
 {% set feesTable %}
 {{ govukTable({
-  caption: t('REJECT_ALL.FEE_BASED'),
+  caption: t('PAGES.REJECT_ALL.FEE_BASED'),
   captionClasses: "govuk-body govuk-!-font-weight-regular",
   head: [
     { text: t('CLAIM_AMOUNT') },
-    { text: t('REJECT_ALL.FEE') }
+    { text: t('PAGES.REJECT_ALL.FEE') }
   ],
   rows: fees
 }) }}
@@ -93,7 +93,7 @@
                 {{ t('You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.')}}
               </p>
               {{ govukDetails({
-                summaryText: t('REJECT_ALL.VIEW_COURT_FEES'),
+                summaryText: t('PAGES.REJECT_ALL.VIEW_COURT_FEES'),
                 html: feesTable
               }) }}
             <div class="govuk-inset-text govuk-grid-column-two-third">
