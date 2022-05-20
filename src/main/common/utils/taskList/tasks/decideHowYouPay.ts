@@ -3,7 +3,7 @@ import {Claim} from '../../../models/claim';
 import {TaskStatus} from '../../../models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {CITIZEN_PAYMENT_OPTION_URL} from '../../../../routes/urls';
-import {isPaymentOptionMissing} from 'common/utils/taskList/tasks/taskListHelpers';
+import {isPaymentOptionMissing} from './taskListHelpers';
 
 const decideHowYouPayTask: Task = {
   description: 'Decide how you\'ll pay',

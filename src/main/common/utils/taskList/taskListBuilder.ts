@@ -1,12 +1,15 @@
 import {Task} from '../../models/taskList/task';
 import {TaskList} from '../../models/taskList/taskList';
 import {Claim} from '../../models/claim';
+import {TaskStatus} from '../../models/taskList/TaskStatus';
 import {getConfirmYourDetailsTask} from './tasks/confirmYourDetails';
 import {getNeedMoreTimeTask} from './tasks/needMoreTime';
 import {getChooseAResponseTask} from './tasks/chooseAResponse';
 import {getCheckAndSubmitYourResponseTask} from './tasks/checkAndSubmitYourResponse';
 import {isPastDeadline} from '../dateUtils';
-import {getDecideHowYouPayTask} from 'common/utils/taskList/tasks/decideHowYouPay';
+import {getDecideHowYouPayTask} from './tasks/decideHowYouPay';
+import {getShareFinancialDetailsTask} from './tasks/shareFinancialDetails';
+import {isNotPayImmediatelyResponse} from './tasks/taskListHelpers';
 
 const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:string): TaskList => {
   const tasks: Task[] = [];
@@ -27,12 +30,17 @@ const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:
 const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList => {
   const tasks: Task[] = [];
   const chooseAResponseTask = getChooseAResponseTask(caseData, claimId);
+  const decideHowYouPayTask = getDecideHowYouPayTask(caseData, claimId);
+  const shareFinancialDetailsTask = getShareFinancialDetailsTask(caseData, claimId);
   tasks.push(chooseAResponseTask);
 
   // TODO : depending on the response type full admission/partial admission or rejection we need to add new tasks
-  if (chooseAResponseTask.status === 'COMPLETE') {
-    const decideHowYouPayTask = getDecideHowYouPayTask(caseData, claimId);
+
+  if (chooseAResponseTask.status === TaskStatus.COMPLETE) {
     tasks.push(decideHowYouPayTask);
+    if (decideHowYouPayTask.status === TaskStatus.COMPLETE && isNotPayImmediatelyResponse(caseData)) {
+      tasks.push(shareFinancialDetailsTask);
+    }
   }
 
   return { title: 'Respond to Claim', tasks };
