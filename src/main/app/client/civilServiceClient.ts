@@ -57,16 +57,16 @@ export class CivilServiceClient {
   }
 
   getRangeFeesMock(): FeeRange[] {
-      const feesRanges: FeeRange[] = [
-        { claimAmountRange: '£0.01 to £300', fee: '£35' },
-        { claimAmountRange: '£300.01 to £500', fee: '£50' },
-        { claimAmountRange: '£500.01 to £1000', fee: '£70' },
-        { claimAmountRange: '£1000.01 to £1500', fee: '£80' },
-        { claimAmountRange: '£1500.01 to £3000', fee: '£115' },
-        { claimAmountRange: '£3000.01 to £5000', fee: '£205' },
-        { claimAmountRange: '£5000.01 to £10000', fee: '£455' },
-      ];
-      return feesRanges;
+    const feesRanges: FeeRange[] = [
+      { claimAmountRange: '£0.01 to £300', fee: '£35' },
+      { claimAmountRange: '£300.01 to £500', fee: '£50' },
+      { claimAmountRange: '£500.01 to £1000', fee: '£70' },
+      { claimAmountRange: '£1000.01 to £1500', fee: '£80' },
+      { claimAmountRange: '£1500.01 to £3000', fee: '£115' },
+      { claimAmountRange: '£3000.01 to £5000', fee: '£205' },
+      { claimAmountRange: '£5000.01 to £10000', fee: '£455' },
+    ];
+    return feesRanges;
   }
 
 }
