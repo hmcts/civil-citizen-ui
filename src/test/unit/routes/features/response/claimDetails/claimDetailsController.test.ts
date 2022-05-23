@@ -8,7 +8,7 @@ import * as draftStoreService from '../../../../../../main/modules/draft-store/d
 import {mockCivilClaim, mockCivilClaimUndefined} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+
 const nock = require('nock');
 
 describe('Confirm Details page', () => {
@@ -49,16 +49,17 @@ describe('Confirm Details page', () => {
       expect(spyRedisSave).toBeCalled();
     });
     test('should retrieve claim from redis when claim exists in redis', async () => {
+      nock('http://localhost:4000')
+        .get('/cases/1111')
+        .reply(200, mockResponse);
       app.locals.draftStoreClient = mockCivilClaim;
       const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
-      const spyRedisGet = spyOn(draftStoreService, 'getCaseDataFromStore');
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(CLAIM_DETAILS);
         });
-      expect(spyRedisGet).toBeCalled();
       expect(spyRedisSave).not.toBeCalled();
     });
   });
