@@ -34,7 +34,7 @@ export class Claim {
   mediation?: Mediation;
   evidence?: DefendantEvidence;
   timelineOfEvents?: TimeLineOfEvents[];
-
+  taskSharedFinancialDetails?: string;
 
   formattedResponseDeadline(): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).format('DD MMMM YYYY') : '';

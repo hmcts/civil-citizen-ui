@@ -3,7 +3,7 @@ import {Claim} from '../../../models/claim';
 import {TaskStatus} from '../../../models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {CITIZEN_REPAYMENT_PLAN} from '../../../../routes/urls';
-import {isRepaymentPlanMissing} from 'common/utils/taskList/tasks/taskListHelpers';
+import {isRepaymentPlanMissing} from './taskListHelpers';
 
 const repaymentPlanTask: Task = {
   description: 'Your repayment plan',

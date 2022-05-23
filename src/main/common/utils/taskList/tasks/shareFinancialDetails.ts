@@ -3,6 +3,7 @@ import {Claim} from '../../../models/claim';
 import {TaskStatus} from '../../../models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {FINANCIAL_DETAILS_URL} from '../../../../routes/urls';
+import {isStatementOfMeansComplete} from './taskListHelpers';
 
 const shareFinancialDetailsTask: Task = {
   description: 'Share your financial details',
@@ -11,9 +12,11 @@ const shareFinancialDetailsTask: Task = {
 };
 
 export const getShareFinancialDetailsTask = (caseData: Claim, claimId: string): Task => {
-  const taskStatus = TaskStatus.INCOMPLETE;
+  let taskStatus = TaskStatus.INCOMPLETE;
 
-  //TODO: add complete logic
+  if (caseData?.taskSharedFinancialDetails === 'yes' && isStatementOfMeansComplete(caseData)) {
+    taskStatus = TaskStatus.COMPLETE;
+  }
 
   const constructedUrl = constructResponseUrlWithIdParams(claimId, FINANCIAL_DETAILS_URL);
   return { ...shareFinancialDetailsTask, url: constructedUrl, status: taskStatus };
