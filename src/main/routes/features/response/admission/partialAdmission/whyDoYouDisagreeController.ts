@@ -13,8 +13,8 @@ const whyDoYouDisagreeController = express.Router();
 const whyDoYouDisagreeViewPath = 'features/response/admission/partialAdmission/why-do-you-disagree';
 let claimAmount: number;
 
-function renderView(form: GenericForm<WhyDoYouDisagree>, claimAmount: number, res: express.Response) {
-  res.render(whyDoYouDisagreeViewPath, {form: form, claimAmount: claimAmount});
+function renderView(form: GenericForm<WhyDoYouDisagree>, _claimAmount: number, res: express.Response) {
+  res.render(whyDoYouDisagreeViewPath, {form: form, claimAmount: _claimAmount});
 }
 
 whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res) => {

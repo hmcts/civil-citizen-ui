@@ -1,9 +1,10 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/bank-account.njk" import bankAccountRow %}
+{% from "../../../../macro/csrf.njk" import csrfProtection %}
 
-{% from "govuk/components/button/macro.njk" import govukButton %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -23,7 +24,8 @@
         </div>
       </div>
       <div class="govuk-grid-row">
-        <form name="accounts" method="post">
+        <form name="accounts" method="post" novalidate>
+          {{ csrfProtection(csrf) }}
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
             <label id="account-balance-label" class="govuk-label--s">{{ t('Type of account') }}</label>
           </div>
