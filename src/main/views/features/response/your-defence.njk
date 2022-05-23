@@ -9,18 +9,18 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set heading = t('Why do you disagree with the claim?') %}
+      {% set heading = t('PAGES.YOUR_DEFENCE.TITLE') %}
       {% set errors = form.getAllErrors() %}
       {% set claimantFullName = claimantName %}
       {% set theirReason = form.model.detailsOfClaim %}
-      {% set labelContent =  '<p class="govuk-!-font-weight-bold">' + t("Briefly explain why you disagree with the claim") + '</p>' +
-        '<p class="govuk-body">' + t('If you fail to dispute any part of the claim the court may assume you admit it.') + '</p>' +
-        '<p class="govuk-body">' + t('You should also say if you accept any parts of the claim.') + '</p>' +
-        '<p class="govuk-body">' + t('Don’t give us a detailed timeline - we’ll ask for that separately.') + '</p>'
+      {% set labelContent =  '<p class="govuk-!-font-weight-bold">' + t('PAGES.YOUR_DEFENCE.BRIEFLY') + '</p>' +
+        '<p class="govuk-body">' + t('PAGES.YOUR_DEFENCE.FAIL') + '</p>' +
+        '<p class="govuk-body">' + t('PAGES.YOUR_DEFENCE.ACCEPT') + '</p>' +
+        '<p class="govuk-body">' + t('PAGES.YOUR_DEFENCE.TIMELINE') + '</p>'
       %}
       {% if form.hasErrors() %}
         {{ govukErrorSummary({
-          "titleText": 'There was a problem',
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
@@ -28,7 +28,7 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
           <div class="govuk-description-block govuk-body">
-            {{ expandableSection(label = t('Their reasons for making the claim'), content = theirReason, id = 'summaryContent') }}
+            {{ expandableSection(label = t('PAGES.YOUR_DEFENCE.REASON'), content = theirReason, id = 'summaryContent') }}
           </div>
 
           <form method="post" novalidate>
@@ -49,7 +49,7 @@
 
             <div class="govuk-inset-text">
               <p class="govuk-body">
-                {{ t('Your response will be sent to {{ claimantFullName }}.', { claimantFullName: claimantFullName }) }}
+                {{ t('PAGES.YOUR_DEFENCE.CLAIMANT', { claimantFullName: claimantFullName }) }}
               </p>
             </div>
 
