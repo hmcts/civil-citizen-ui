@@ -30,7 +30,7 @@ function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): vo
 sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res) => {
   try {
     const form = await getCaseDataFromStore(req.params.id);
-    const feesRanges: FeeRange[] = civilServiceClient.getRangeFeesMock();
+    const feesRanges: FeeRange[] = await civilServiceClient.getRangeFeesMock();
     const formatedFeesRanges = formatFeesRanges(feesRanges);
     renderView(res, form, formatedFeesRanges);
   } catch (error) {

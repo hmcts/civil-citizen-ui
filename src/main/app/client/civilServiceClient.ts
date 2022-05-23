@@ -56,7 +56,7 @@ export class CivilServiceClient {
     }
   }
 
-  getRangeFeesMock(): FeeRange[] {
+  async getRangeFeesMock(): Promise<FeeRange[]> {
     const feesRanges: FeeRange[] = [
       { claimAmountRange: '£0.01 to £300', fee: '£35' },
       { claimAmountRange: '£300.01 to £500', fee: '£50' },
