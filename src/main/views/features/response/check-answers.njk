@@ -3,7 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "../../macro/statement-of-truth.njk" import statementOfTruth %}
-
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -42,6 +42,7 @@
             {{ govukButton({
               text: t('Submit response')
             }) }}
+            {{ contactUsForHelp(t) }}
           </div>
         </form>
       </div>

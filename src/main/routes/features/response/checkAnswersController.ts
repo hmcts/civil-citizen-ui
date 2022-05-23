@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CLAIM_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from '../../urls';
+import {CONFIRMATION_URL, RESPONSE_CHECK_ANSWERS_URL} from '../../urls';
 import {
   getStatementOfTruth,
   getSummarySections,
@@ -49,7 +49,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Requ
       await renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(req.params.id, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CONFIRMATION_URL));
     }
   } catch (error) {
     res.status(500).send({error: error.message});
