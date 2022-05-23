@@ -102,7 +102,7 @@ describe('Check Answers service', () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
       //Then
-      expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe(CONTACT_PERSON);
+      expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe(CONTACT_PERSON);
     });
     it('should return correspondence address when it exists', async () => {
       //Given
