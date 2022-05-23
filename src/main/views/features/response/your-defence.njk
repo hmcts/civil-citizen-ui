@@ -9,18 +9,10 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set heading = 'Why do you disagree with the claim?' %}
+      {% set heading = t('Why do you disagree with the claim?') %}
       {% set errors = form.getAllErrors() %}
       {% set claimantFullName = claimantName %}
-      {#{% set theirReason = claim.claimData.reason %}#}
-      {% set theirReason = 'Reason your defence Reason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defence
-Reason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defence
-Reason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defence
-Reason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defence
-Reason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defence
-Reason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defence
-Reason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defence
-Reason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defenceReason your defence' %}
+      {% set theirReason = form.model.detailsOfClaim %}
       {% set labelContent =  '<p class="govuk-!-font-weight-bold">' + t("Briefly explain why you disagree with the claim") + '</p>' +
         '<p class="govuk-body">' + t('If you fail to dispute any part of the claim the court may assume you admit it.') + '</p>' +
         '<p class="govuk-body">' + t('You should also say if you accept any parts of the claim.') + '</p>' +
@@ -36,7 +28,7 @@ Reason your defenceReason your defenceReason your defenceReason your defenceReas
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
           <div class="govuk-description-block govuk-body">
-            {{ expandableSection(label = 'Their reasons for making the claim', content = theirReason, id = 'summaryContent') }}
+            {{ expandableSection(label = t('Their reasons for making the claim'), content = theirReason, id = 'summaryContent') }}
           </div>
 
           <form method="post" novalidate>
@@ -44,7 +36,7 @@ Reason your defenceReason your defenceReason your defenceReason your defenceReas
             {{ govukTextarea({
               name: "text",
               id: "text",
-              value: form.model.text,
+              value: form.model.defence.text,
               classes:"govuk-!-width-three-quarters",
               label: {
                 classes: "govuk-label--s",
