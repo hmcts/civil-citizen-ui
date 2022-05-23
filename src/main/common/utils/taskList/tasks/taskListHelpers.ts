@@ -28,4 +28,8 @@ export const isNotPayImmediatelyResponse = (caseData: Claim): boolean => {
   return (caseData?.paymentOption !== PaymentOptionType.IMMEDIATELY);
 };
 
+export const isRepaymentPlanMissing = (caseData: Claim): boolean => {
+  return !caseData.repaymentPlan;
+};
+
 

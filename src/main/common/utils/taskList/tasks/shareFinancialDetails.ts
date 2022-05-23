@@ -13,6 +13,8 @@ const shareFinancialDetailsTask: Task = {
 export const getShareFinancialDetailsTask = (caseData: Claim, claimId: string): Task => {
   const taskStatus = TaskStatus.INCOMPLETE;
 
+  //TODO: add complete logic
+
   const constructedUrl = constructResponseUrlWithIdParams(claimId, FINANCIAL_DETAILS_URL);
   return { ...shareFinancialDetailsTask, url: constructedUrl, status: taskStatus };
 };
