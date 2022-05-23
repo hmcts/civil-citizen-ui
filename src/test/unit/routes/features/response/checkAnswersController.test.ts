@@ -1,7 +1,7 @@
 import nock from 'nock';
 import config from 'config';
+import Module from 'module';
 import * as checkAnswersService from '../../../../../main/services/features/response/checkAnswersService';
-import * as taskListService from '../../../../../main/modules/taskListService';
 import {
   CITIZEN_DETAILS_URL,
   CLAIM_TASK_LIST_URL,
@@ -15,17 +15,19 @@ import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus'
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
-
-const request = require('supertest');
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
 const testSession = session(app);
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/response/checkAnswersService');
-jest.mock('../../../../../main/modules/taskListService');
+jest.mock('../../../../../main/modules/taskListService', () => ({
+  ...jest.requireActual('../../../../../main/modules/taskListService') as Module,
+  getTaskLists: jest.fn(() => {
+    return TASK_LISTS;
+  }),
+}));
 const mockGetSummarySections = checkAnswersService.getSummarySections as jest.Mock;
-const mockGetTaskLists = taskListService.getTaskLists as jest.Mock;
 
 const PARTY_NAME = 'Mrs. Mary Richards';
 const CLAIM_ID = 'aaa';
@@ -56,9 +58,6 @@ describe('Response - Check answers', () => {
   describe('on GET', () => {
 
     beforeEach(function (done) {
-      mockGetTaskLists.mockImplementation(() => {
-        return TASK_LISTS;
-      });
 
       testSession
         .get(CLAIM_TASK_LIST_URL.replace(':id', CLAIM_ID))
@@ -92,11 +91,12 @@ describe('Response - Check answers', () => {
       expect(fullName.length).toBe(1);
       expect(fullName[0].textContent?.trim()).toBe(PARTY_NAME);
     });
+
     it('should return status 500 when error thrown', async () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      await request(app)
+      await testSession
         .get(respondentCheckAnswersUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
