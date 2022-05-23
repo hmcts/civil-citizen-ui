@@ -5,6 +5,7 @@ import {
   getTaskLists,
   getTitle,
   isOutstanding,
+  outstandingTasksFromTaskLists,
 } from '../../../main/modules/taskListService';
 import {
   buildPrepareYourResponseSection,
@@ -15,6 +16,7 @@ import {ResponseType} from '../../../main/common/form/models/responseType';
 import {TaskStatus} from '../../../main/common/models/taskList/TaskStatus';
 import {deepCopy} from '../../utils/deepCopy';
 import {Task} from '../../../main/common/models/taskList/task';
+import {TaskList} from '../../../main/common/models/taskList/taskList';
 
 describe('Response Task List service', () => {
   const mockClaim = require('../../utils/mocks/civilClaimResponseMock.json');
@@ -169,6 +171,47 @@ describe('Response Task List service', () => {
       task.isCheckTask = true;
       //Then
       expect(isOutstanding(task)).toBe(false);
+    });
+  });
+  describe('Check outstanding tasks', () => {
+
+    const taskList: TaskList[] = [
+      {
+        title: 'Task List',
+        tasks: [
+          {
+            description: 'Task 1',
+            status: TaskStatus.COMPLETE,
+            url: 'some URL',
+          },
+        ],
+      },
+    ];
+
+    it('should be empty when all non-check tasks complete', () => {
+      //Given
+      taskList[0].tasks[0].status = TaskStatus.COMPLETE;
+      //When
+      const outstandingTasks = outstandingTasksFromTaskLists(taskList);
+      //Then
+      expect(outstandingTasks?.length).toBe(0);
+    });
+    it('should not be empty when at least one non-check task is incomplete', () => {
+      //Given
+      taskList[0].tasks[0].status = TaskStatus.INCOMPLETE;
+      //When
+      const outstandingTasks = outstandingTasksFromTaskLists(taskList);
+      //Then
+      expect(outstandingTasks?.length).toBe(1);
+    });
+    it('should be empty when only incomplete task is a check task', () => {
+      //Given
+      taskList[0].tasks[0].status = TaskStatus.INCOMPLETE;
+      taskList[0].tasks[0].isCheckTask = true;
+      //When
+      const outstandingTasks = outstandingTasksFromTaskLists(taskList);
+      //Then
+      expect(outstandingTasks?.length).toBe(0);
     });
   });
 });

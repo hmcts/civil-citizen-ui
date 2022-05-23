@@ -111,6 +111,7 @@
     "sonar-scanner": "^3.1.0",
     "style-loader": "^3.3.1",
     "supertest": "^6.1.6",
+    "supertest-session": "^4.1.0",
     "ts-jest": "^25.2.1",
     "ts-loader": "^9.2.8",
     "tslint": "^6.1.3",
