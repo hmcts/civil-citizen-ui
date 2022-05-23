@@ -5,6 +5,9 @@ import {CITIZEN_DETAILS_URL, RESPONSE_CHECK_ANSWERS_URL} from '../../../../../ma
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
+import {
+  STATEMENT_OF_TRUTH_REQUIRED_MESSAGE,
+} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -16,6 +19,7 @@ const {app} = require('../../../../../main/app');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/response/checkAnswersService');
 const mockGetSummarySections = checkAnswersService.getSummarySections as jest.Mock;
+const mockSaveStatementOfTruth = checkAnswersService.saveStatementOfTruth as jest.Mock;
 
 const PARTY_NAME = 'Mrs. Mary Richards';
 const CLAIM_ID = 'aaa';
@@ -76,6 +80,31 @@ describe('Response - Check answers', () => {
       });
       await request(app)
         .get(respondentCheckAnswersUrl)
+        .expect((res: Response) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+        });
+    });
+  });
+  describe('on Post', () => {
+    test('should return errors when form is incomplete', async () => {
+      const data = {signed: ''};
+      await request(app)
+        .post(respondentCheckAnswersUrl)
+        .send(data)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(STATEMENT_OF_TRUTH_REQUIRED_MESSAGE);
+        });
+    });
+    test('should return 500 when error in service', async () => {
+      mockSaveStatementOfTruth.mockImplementation(() => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      const data = {signed: 'true'};
+      await request(app)
+        .post(respondentCheckAnswersUrl)
+        .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
           expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});

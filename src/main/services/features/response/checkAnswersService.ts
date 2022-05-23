@@ -1,4 +1,4 @@
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {SummarySection, summarySection, SummarySections} from '../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../common/models/claim';
 import {summaryRow} from '../../../common/models/summaryList/summaryList';
@@ -14,6 +14,7 @@ import {getLng} from '../../../common/utils/languageToggleUtils';
 import {PrimaryAddress} from '../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../common/models/correspondenceAddress';
 import {formatDateToFullDate} from '../../../common/utils/dateUtils';
+import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -28,6 +29,9 @@ const addressToString = (address: PrimaryAddress | CorrespondenceAddress) => {
 const getDefendantFullName = (claim: Claim): string => {
   if (claim.respondent1.individualFirstName && claim.respondent1.individualLastName) {
     return claim.respondent1.individualTitle + ' ' + claim.respondent1.individualFirstName + ' ' + claim.respondent1.individualLastName;
+  }
+  if (claim.respondent1.contactPerson) {
+    return claim.respondent1.contactPerson;
   }
   return claim.respondent1.partyName;
 };
@@ -50,13 +54,13 @@ const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | u
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), getDefendantFullName(claim), yourDetailsHref, changeLabel(lang)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.ADDRESS', {lng: getLng(lang)}), addressToString(claim.respondent1.primaryAddress), yourDetailsHref, changeLabel(lang)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng: getLng(lang)}), claim.respondent1.correspondenceAddress ? addressToString(claim.respondent1.correspondenceAddress) : t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng: getLng(lang)}), yourDetailsHref, changeLabel(lang)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.respondent1.telephoneNumber, phoneNumberHref, changeLabel(lang)),
     ],
   });
   if (claim.respondent1.dateOfBirth) {
     const yourDOBHref = DOB_URL.replace(':id', claimId);
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng: getLng(lang)}), formatDateToFullDate(claim.respondent1.dateOfBirth), yourDOBHref, changeLabel(lang)));
   }
+  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.respondent1.telephoneNumber, phoneNumberHref, changeLabel(lang)));
   return yourDetailsSection;
 };
 
@@ -72,12 +76,24 @@ const buildResponseSection = (claim: Claim, claimId: string, lang: string | unkn
   });
 };
 
-export const getSummarySections = async (claimId: string, lang?: string | unknown): Promise<SummarySections> => {
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
+  return buildSummarySections(claim, claimId, lang);
+};
+
+export const getStatementOfTruth = (claim: Claim) => {
+  if (claim.defendantStatementOfTruth) {
+    return claim.defendantStatementOfTruth;
+  }
+  return new StatementOfTruthForm();
+};
+
+export const saveStatementOfTruth = async (claimId: string, defendantStatementOfTruth: StatementOfTruthForm) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    return buildSummarySections(claim, claimId, lang);
+    claim.defendantStatementOfTruth = defendantStatementOfTruth;
+    await saveDraftClaim(claimId, claim);
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
+    logger.error(error);
     throw error;
   }
 };
