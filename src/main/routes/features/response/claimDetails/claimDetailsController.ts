@@ -4,7 +4,7 @@ import {CLAIM_DETAILS_URL} from '../../../urls';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {Claim} from '../../../../common/models/claim';
 import {AppRequest} from 'models/AppRequest';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 
 const claimDetailsController = express.Router();
 
@@ -19,18 +19,18 @@ function renderPage(res: express.Response, claimDetails: Claim): void {
 
 // -- GET Claim Details
 claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: express.Response) => {
-  let claim = await getCaseDataFromStore((req.params.id));
-  if (!claim) {
+  let claim: Claim = await getCaseDataFromStore((req.params.id));
+  if (claim.isEmpty()) {
     claim = await civilServiceClient.retrieveClaimDetails(req.params.id, <AppRequest>req);
     if (claim) {
       await saveDraftClaim(req.params.id, claim);
+    } else {
+      //Temporarily return a mock claim
+      claim = new Claim();
+      claim.legacyCaseReference = 'testCaseReference';
+      claim.totalClaimAmount = 200;
+      claim.detailsOfClaim = 'detailsOfClaimTest';
     }
-  }
-  if (!claim) {
-    claim = new Claim();
-    claim.legacyCaseReference = 'testCaseReference';
-    claim.totalClaimAmount = 200;
-    claim.detailsOfClaim = 'detailsOfClaimTest';
   }
   renderPage(res, claim);
 });

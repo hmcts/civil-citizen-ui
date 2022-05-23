@@ -6,12 +6,12 @@ import {CounterpartyType} from './counterpartyType';
 import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
-import { DefendantEvidence } from './evidence/evidence';
+import {DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
-import {currentDateTime, convertDateToLuxonDate, isPastDeadline} from '../utils/dateUtils';
+import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -55,6 +55,10 @@ export class Claim {
 
   isDeadLinePassed(): boolean {
     return isPastDeadline(this.respondent1ResponseDeadline);
+  }
+
+  isEmpty(): boolean {
+    return !this.applicant1;
   }
 }
 
