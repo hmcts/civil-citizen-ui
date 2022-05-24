@@ -3,8 +3,10 @@ import {
 } from '../../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
 import {
-  SIGNER_NAME_REQUIRED, SIGNER_NAME_TOO_LONG,
-  SIGNER_ROLE_REQUIRED, SIGNER_ROLE_TOO_LONG,
+  SIGNER_NAME_REQUIRED,
+  SIGNER_NAME_TOO_LONG,
+  SIGNER_ROLE_REQUIRED,
+  SIGNER_ROLE_TOO_LONG,
   STATEMENT_OF_TRUTH_REQUIRED_MESSAGE,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
@@ -18,7 +20,7 @@ const tooLongSignerRole: string = Array(SIGNER_ROLE_MAX_LENGTH + 2).join('a');
 describe('Qualified Statement of Truth form validation', () => {
   test('should fail when signed is false', () => {
     //Given
-    const form = new GenericForm(new QualifiedStatementOfTruth(false));
+    const form = new GenericForm(new QualifiedStatementOfTruth(''));
     //When
     form.validateSync();
     //Then
@@ -32,7 +34,7 @@ describe('Qualified Statement of Truth form validation', () => {
 
   test('should fail when signer name and/or role is empty', () => {
     //Given
-    const form = new GenericForm(new QualifiedStatementOfTruth(true, false, '', ''));
+    const form = new GenericForm(new QualifiedStatementOfTruth('true', false, '', ''));
     //When
     form.validateSync();
     //Then
@@ -46,7 +48,7 @@ describe('Qualified Statement of Truth form validation', () => {
 
   test('should fail when signer name and/or role has only spaces', () => {
     //Given
-    const form = new GenericForm(new QualifiedStatementOfTruth(true, false, ' ', ' '));
+    const form = new GenericForm(new QualifiedStatementOfTruth('true', false, ' ', ' '));
     //When
     form.validateSync();
     //Then
@@ -60,7 +62,7 @@ describe('Qualified Statement of Truth form validation', () => {
 
   test('should fail when signer name and/or role is too long', () => {
     //Given
-    const form = new GenericForm(new QualifiedStatementOfTruth(true, false, tooLongSignerName, tooLongSignerRole));
+    const form = new GenericForm(new QualifiedStatementOfTruth('true', false, tooLongSignerName, tooLongSignerRole));
     //When
     form.validateSync();
     //Then

@@ -1,8 +1,10 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../../macro/csrf.njk" import csrfProtection %}
+
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -28,6 +30,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
             <input type="hidden" name="maxValue" value="{{ form.maxValue | default(0) }}"/>
             {{ govukInput({
               label: {

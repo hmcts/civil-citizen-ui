@@ -50,13 +50,13 @@ describe('Send your response by email View', () => {
     });
 
     it('should display automatically registered paragraph', () => {
-      expect(paragraphs[2].innerHTML).toContain('You have chosen to counterclaim. This means your defence cannot continue online. Follow these steps to download, complete and return form N9B. You must pay a court fee. Do not create a new claim.');
-      expect(paragraphs[3].innerHTML).toContain('We must receive your completed form before <span class="govuk-body govuk-!-font-weight-bold">4pm on </span>. The claim against you will continue if we do not receive this.');
-      expect(paragraphs[11].innerHTML).toContain('Email completed form N9B to:');
-      expect(paragraphs[12].innerHTML).toContain('Or, you can send the form by post to:');
-      expect(paragraphs[17].innerHTML).toContain('You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.');
-      expect(paragraphs[18].innerHTML).toContain(TestMessages.FEES_BASED_ON_AMOUNT);
-      expect(paragraphs[19].innerHTML).toContain(TestMessages.DO_NOT_CREATE_CLAIM_IF_COUNTERCLAIM);
+      expect(paragraphs[0].innerHTML).toContain('You have chosen to counterclaim. This means your defence cannot continue online. Follow these steps to download, complete and return form N9B. You must pay a court fee. Do not create a new claim.');
+      expect(paragraphs[1].innerHTML).toContain('We must receive your completed form before <span class="govuk-body govuk-!-font-weight-bold">4pm on </span>. The claim against you will continue if we do not receive this.');
+      expect(paragraphs[9].innerHTML).toContain('Email completed form N9B to:');
+      expect(paragraphs[10].innerHTML).toContain('Or, you can send the form by post to:');
+      expect(paragraphs[15].innerHTML).toContain('You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.');
+      expect(paragraphs[16].innerHTML).toContain(TestMessages.FEES_BASED_ON_AMOUNT);
+      expect(paragraphs[17].innerHTML).toContain(TestMessages.DO_NOT_CREATE_CLAIM_IF_COUNTERCLAIM);
     });
 
     it('should display View claim fees details component', () => {
