@@ -4,6 +4,7 @@ import nock from 'nock';
 import config from 'config';
 import {
   CITIZEN_ALREADY_PAID_URL,
+  CITIZEN_PAYMENT_OPTION_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,
   CITIZEN_RESPONSE_TYPE_URL,
   CLAIM_TASK_LIST_URL,
@@ -151,7 +152,7 @@ describe('Citizen response type', () => {
         .send('responseType=FULL_ADMISSION')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+          expect(res.header.location).toEqual(CITIZEN_PAYMENT_OPTION_URL);
         });
     });
 
