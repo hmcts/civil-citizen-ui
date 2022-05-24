@@ -1,0 +1,21 @@
+{% macro timelineSummary(timelineRows) %}
+<div class="govuk-body">  
+  <h2 class="govuk-heading-s">{{ t('Timeline') }}</h2>
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">{{ t('Date') }}</th>
+        <th cscope="col" class="govuk-table__header">{{ t('What happened') }}</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      {% for event in timelineRows %}
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">{{ event.value.timelineDate | date }}</td>
+          <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endmacro %}

@@ -1,0 +1,50 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "./interest-snippet.njk" import interestSnippet %}
+
+{% macro amountBreakdownTable(claim, interestData, totalAmount) %}
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">{{ t('Amount breakdown') }}</th>
+      <th scope="col" class="govuk-table__header">{{ t('Amount') }}</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+  {% for breakup in claim.claimAmountBreakup %}
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell">{{ breakup.value.claimReason }}</td>
+      <td class="govuk-table__cell">{{ breakup.value.claimAmount | pennies2pounds  | currencyFormat(breakup.value.claimAmount)}}</td>
+    </tr>
+  {% endfor %}
+  {% if claim.totalInterest > 0 %}
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell">
+      {% if interestData.rate %}
+        {{ govukDetails({
+          summaryText: t("Interest"),
+          classes : "interest",
+          text: interestSnippet(interestData.rate, interestData.numberOfDays, interestData.interestFromDate, interestData.interestToDate)
+          }) }}
+      {% else %}
+        {{  t("Interest") }}
+      {% endif %}
+      </td>
+      <td class="govuk-table__cell">{{ claim.totalInterest | currencyFormat(claim.totalInterest) }}</td>
+    </tr>
+   {% endif %}
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell">{{ t('Claim fee') }}</td>
+      {% if claim.claimFee.calculatedAmountInPence !== 0 %}
+        <td class="govuk-table__cell">{{ claim.claimFee.calculatedAmountInPence | pennies2pounds | currencyFormat(claim.claimFee.calculatedAmountInPence) }}</td>
+      {% else %}
+        <td class="govuk-table__cell">£0</td>
+      {% endif %}
+      </tr>
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell"><strong>{{ t('Claim Total') }}</strong></td>
+        <td class="govuk-table__cell"><strong>{{ totalAmount | currencyFormat(totalAmount) }}</strong></td>
+      </tr>
+  </tbody>
+</table>
+
+{% endmacro %}
