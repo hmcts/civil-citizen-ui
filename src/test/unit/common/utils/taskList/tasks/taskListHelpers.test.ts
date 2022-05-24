@@ -211,6 +211,5 @@ describe('Task List Helpers', () => {
       caseData.taskSharedFinancialDetails = true;
       expect(financialDetailsShared(caseData)).toEqual(true);
     });
-
   });
 });
