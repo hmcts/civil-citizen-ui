@@ -37,6 +37,14 @@ export const isStatementOfMeansComplete = (caseData: Claim): boolean => {
   return !!(caseData?.statementOfMeans && Object.keys(caseData.statementOfMeans).length > 1);
 };
 
+export const financialDetailsShared = (caseData: Claim): boolean => {
+  return !!caseData?.taskSharedFinancialDetails;
+};
+
+export const isIndividualWithStatementOfMeansComplete = (caseData: Claim): boolean => {
+  return (isCounterpartyIndividual(caseData.respondent1) && isStatementOfMeansComplete(caseData));
+};
+
 export const isCounterpartyIndividual = (respondent1: Respondent): boolean => {
   return respondent1.type === CounterpartyType.INDIVIDUAL || respondent1.type === CounterpartyType.SOLE_TRADER;
 };

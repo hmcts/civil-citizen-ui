@@ -161,8 +161,16 @@ describe('Response Task List service', () => {
       expect(respondToClaim.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
     });
 
+    it('should display share your financial details task as incomplete if taskSharedFinancialDetails is not set', () => {
+      caseData.taskSharedFinancialDetails = undefined;
+
+      const respondToClaim = buildRespondToClaimSection(caseData, mockId);
+      expect(respondToClaim.tasks[2].description).toEqual('Share your financial details');
+      expect(respondToClaim.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
+    });
+
     it('should display share your financial details task as complete if payment option is by set date', () => {
-      caseData.taskSharedFinancialDetails = 'yes';
+      caseData.taskSharedFinancialDetails = true;
       caseData.statementOfMeans = {
         disability: {
           option: 'yes',

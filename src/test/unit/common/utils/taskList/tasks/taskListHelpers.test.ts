@@ -1,5 +1,6 @@
 import {Claim} from '../../../../../../main/common/models/claim';
 import {
+  financialDetailsShared,
   isCounterpartyCompany,
   isCounterpartyIndividual,
   isNotPayImmediatelyResponse,
@@ -189,5 +190,27 @@ describe('Task List Helpers', () => {
       caseData.paymentOption = 'validPaymentOption';
       expect(isPaymentOptionMissing(caseData)).toEqual(false);
     });
+  });
+
+  describe('financialDetailsShared helper', () => {
+    it('should return false if financial details are not set', () => {
+      expect(financialDetailsShared(caseData)).toEqual(false);
+    });
+
+    it('should return false if financial details are undefined', () => {
+      caseData.taskSharedFinancialDetails = undefined;
+      expect(financialDetailsShared(caseData)).toEqual(false);
+    });
+
+    it('should return false if financial details are set to false', () => {
+      caseData.taskSharedFinancialDetails = false;
+      expect(financialDetailsShared(caseData)).toEqual(false);
+    });
+
+    it('should return true if financial details are set to true', () => {
+      caseData.taskSharedFinancialDetails = true;
+      expect(financialDetailsShared(caseData)).toEqual(true);
+    });
+
   });
 });

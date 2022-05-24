@@ -47,7 +47,7 @@ financialDetailsController
         if (counterpartyType == CounterpartyType.INDIVIDUAL || counterpartyType == CounterpartyType.SOLE_TRADER) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));
         } else if (counterpartyType == CounterpartyType.COMPANY || counterpartyType == CounterpartyType.ORGANISATION) {
-          claim.taskSharedFinancialDetails = 'yes';
+          claim.taskSharedFinancialDetails = true;
           await saveDraftClaim(req.params.id, claim);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
         }
