@@ -1,7 +1,6 @@
 import * as express from 'express';
 import {CITIZEN_REJECT_ALL_CLAIM_URL, CLAIM_TASK_LIST_URL, SEND_RESPONSE_BY_EMAIL_URL} from '../../urls';
-import {getclaimantName, getRejectAllOfClaim, saveRejectAllOfClaim} from '../../../modules/rejectAllOfClaimService';
-
+import {getClaimantName, getRejectAllOfClaim, saveRejectAllOfClaim} from '../../../modules/rejectAllOfClaimService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {RejectAllOfClaim} from '../../../common/form/models/rejectAllOfClaim';
@@ -14,7 +13,7 @@ let claimantName = '';
 rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: express.Request, res: express.Response) => {
   try {
     const rejectAllOfClaim: RejectAllOfClaim = await getRejectAllOfClaim(req.params.id);
-    claimantName = await getclaimantName(req.params.id);
+    claimantName = await getClaimantName(req.params.id);
 
     const form = new GenericForm(rejectAllOfClaim);
     res.render(rejectAllOfClaimViewPath, {

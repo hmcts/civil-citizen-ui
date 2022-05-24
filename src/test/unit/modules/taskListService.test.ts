@@ -24,32 +24,35 @@ describe('Response Task List service', () => {
   const mockClaimId = '5129';
   describe('none of the tasks completed', () => {
     const caseData = mockClaim.case_data;
-    const actaulTaskLists = getTaskLists(claim, caseData, mockClaimId);
+    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId);
+
     it('should return response task list', () => {
       //when
       const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId);
-      const taskListRespondeToClaim = buildRespondToClaimSection(caseData, mockClaimId);
+      const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
       const taskListSubmitYourResponse = buildSubmitSection(mockClaimId);
-      const taskGroups = [taskListPrepareYourResponse, taskListRespondeToClaim, taskListSubmitYourResponse];
+      const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
-      expect(actaulTaskLists).toMatchObject(filteredTaskGroups);
+      expect(actualTaskLists).toMatchObject(filteredTaskGroups);
     });
+
     it('should return title', () => {
       //When
-      const title = getTitle(actaulTaskLists);
+      const title = getTitle(actualTaskLists);
       //Then
       expect(title).toEqual('Application incomplete');
     });
+
     it('should return description', () => {
       //When
-      const description = getDescription(actaulTaskLists);
+      const description = getDescription(actualTaskLists);
       //Then
       expect(description).toEqual('You have completed 0 of 3 sections');
     });
   });
 
-  describe('when primary adress and dob is provided, expect confirm your details completed', () => {
+  describe('when primary address and dob is provided, expect confirm your details completed', () => {
     const PRIMARY_ADDRESS_LINE_1 = 'Berry House';
     const PRIMARY_ADDRESS_LINE_2 = '12 Berry street';
     const PRIMARY_ADDRESS_TOWN = 'London';
@@ -57,27 +60,30 @@ describe('Response Task List service', () => {
     const caseData = deepCopy(mockClaim.case_data);
     caseData.respondent1.primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
     caseData.respondent1.dateOfBirth = '15 May 1978';
-    const actaulTaskLists = getTaskLists(claim, caseData, mockClaimId);
+    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId);
+
     it('should return response task list', () => {
       //when
       const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId);
-      const taskListRespondeToClaim = buildRespondToClaimSection(caseData, mockClaimId);
+      const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
       const taskListSubmitYourResponse = buildSubmitSection(mockClaimId);
-      const taskGroups = [taskListPrepareYourResponse, taskListRespondeToClaim, taskListSubmitYourResponse];
+      const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
-      expect(actaulTaskLists).toMatchObject(filteredTaskGroups);
+      expect(actualTaskLists).toMatchObject(filteredTaskGroups);
     });
+
     it('should return description', () => {
       //When
-      const description = getDescription(actaulTaskLists);
+      const description = getDescription(actualTaskLists);
       //Then
-      expect(actaulTaskLists[0].tasks[0].description).toEqual('Confirm your details');
-      expect(actaulTaskLists[0].tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(actualTaskLists[0].tasks[0].description).toEqual('Confirm your details');
+      expect(actualTaskLists[0].tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(description).toEqual('You have completed 1 of 3 sections');
     });
   });
-  describe('when correspondence adress and dob is provided, expect confirm your details completed', () => {
+
+  describe('when correspondence address and dob is provided, expect confirm your details completed', () => {
     const CORRESPONDENCE_ADDRESS_LINE_1 = 'PO Box';
     const CORRESPONDENCE_ADDRESS_LINE_2 = 'Dean close';
     const CORRESPONDENCE_TOWN = 'Bristol';
@@ -86,26 +92,29 @@ describe('Response Task List service', () => {
     caseData.respondent1.correspondenceAddress = buildAddress(CORRESPONDENCE_ADDRESS_LINE_1, CORRESPONDENCE_ADDRESS_LINE_2, CORRESPONDENCE_TOWN, CORRESPONDENCE_POSTCODE);
     caseData.respondent1.primaryAddress = {};
     caseData.respondent1.dateOfBirth = '15 May 1978';
-    const actaulTaskLists = getTaskLists(claim, caseData, mockClaimId);
+    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId);
+
     it('should return response task list', () => {
       //when
       const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId);
-      const taskListRespondeToClaim = buildRespondToClaimSection(caseData, mockClaimId);
+      const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
       const taskListSubmitYourResponse = buildSubmitSection(mockClaimId);
-      const taskGroups = [taskListPrepareYourResponse, taskListRespondeToClaim, taskListSubmitYourResponse];
+      const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
-      expect(actaulTaskLists).toMatchObject(filteredTaskGroups);
+      expect(actualTaskLists).toMatchObject(filteredTaskGroups);
     });
+
     it('should return description', () => {
       //When
-      const description = getDescription(actaulTaskLists);
+      const description = getDescription(actualTaskLists);
       //Then
-      expect(actaulTaskLists[0].tasks[0].description).toEqual('Confirm your details');
-      expect(actaulTaskLists[0].tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(actualTaskLists[0].tasks[0].description).toEqual('Confirm your details');
+      expect(actualTaskLists[0].tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(description).toEqual('You have completed 1 of 3 sections');
     });
   });
+
   describe('Choose a response task is completed when any of response type is selected ', () => {
     const CORRESPONDENCE_ADDRESS_LINE_1 = 'PO Box';
     const CORRESPONDENCE_ADDRESS_LINE_2 = 'Dean close';
@@ -115,23 +124,25 @@ describe('Response Task List service', () => {
     caseData.respondent1.correspondenceAddress = buildAddress(CORRESPONDENCE_ADDRESS_LINE_1, CORRESPONDENCE_ADDRESS_LINE_2, CORRESPONDENCE_TOWN, CORRESPONDENCE_POSTCODE);
     caseData.respondent1.dateOfBirth = '15 May 1978';
     caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;
-    const actaulTaskLists = getTaskLists(claim, caseData, mockClaimId);
+    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId);
+
     it('should return response task list', () => {
       //Given
       const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId);
-      const taskListRespondeToClaim = buildRespondToClaimSection(caseData, mockClaimId);
+      const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
       const taskListSubmitYourResponse = buildSubmitSection(mockClaimId);
-      const taskGroups = [taskListPrepareYourResponse, taskListRespondeToClaim, taskListSubmitYourResponse];
+      const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
-      expect(actaulTaskLists).toMatchObject(filteredTaskGroups);
+      expect(actualTaskLists).toMatchObject(filteredTaskGroups);
     });
+
     it('should return description', () => {
       //When
-      const description = getDescription(actaulTaskLists);
+      const description = getDescription(actualTaskLists);
       //Then
-      expect(actaulTaskLists[1].tasks[0].description).toEqual('Choose a response');
-      expect(actaulTaskLists[1].tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(actualTaskLists[1].tasks[0].description).toEqual('Choose a response');
+      expect(actualTaskLists[1].tasks[0].status).toEqual(TaskStatus.COMPLETE);
       expect(description).toEqual('You have completed 2 of 3 sections');
     });
   });

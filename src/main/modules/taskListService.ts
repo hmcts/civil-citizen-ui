@@ -16,9 +16,9 @@ const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId: string) => 
   // TASK BUILDER
   // TODO : depending on the defendant's response type (full admission/partial admission/ rejection) we need to build new taskLists and include them in the taskGroups array
   const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(claim, caseData, currentClaimId);
-  const taskListRespondeToClaim: TaskList = buildRespondToClaimSection(caseData, currentClaimId);
+  const taskListRespondToClaim: TaskList = buildRespondToClaimSection(caseData, currentClaimId);
 
-  const taskGroups = [taskListPrepareYourResponse, taskListRespondeToClaim];
+  const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim];
   const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
   // check if all tasks are completed except check and submit
   calculateTotalAndCompleted(taskGroups);
