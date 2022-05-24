@@ -39,7 +39,7 @@ export class Claim {
   timelineOfEvents?: TimeLineOfEvents[];
   defendantStatementOfTruth?: StatementOfTruthForm;
   claimAmountBreakup?: ClaimAmountBreakup[];
-  totalInterest?: string;
+  totalInterest?: number;
   claimInterest?: YesNo;
   interestClaimFrom?: InterestClaimFromType;
   interestClaimUntil?: InterestClaimUntilType;

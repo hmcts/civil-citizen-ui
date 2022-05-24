@@ -42,7 +42,7 @@ export const buildRespondent1 = () : Respondent =>{
 };
 
 export const mockClaim: Claim = {
- legacyCaseReference: '497MC585',
+  legacyCaseReference: '497MC585',
   applicant1:
     {
       individualTitle: 'Mrs',
@@ -100,6 +100,8 @@ export const mockClaim: Claim = {
   },
   breakDownInterestTotal: 500,
   submittedDate: new Date('2022-05-23T17:02:02.38407'),
+  totalInterest: 15,
+  paymentDate: new Date('2022-06-01T00:00:00'),
 
   formattedResponseDeadline: function (): string {
     throw new Error('Function not implemented.');
@@ -116,5 +118,7 @@ export const mockClaim: Claim = {
   isDeadLinePassed: function (): boolean {
     throw new Error('Function not implemented.');
   },
-  paymentDate: new Date('2022-06-01T00:00:00'),
+  isEmpty : function () :boolean {
+    throw new Error('Function not implemented.');
+  },
 };
