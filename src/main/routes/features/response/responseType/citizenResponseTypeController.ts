@@ -1,6 +1,7 @@
 import * as express from 'express';
 import {
   CITIZEN_ALREADY_PAID_URL,
+  CITIZEN_PAYMENT_OPTION_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,
   CITIZEN_RESPONSE_TYPE_URL,
   CLAIM_TASK_LIST_URL,
@@ -9,6 +10,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
+import {ResponseType} from '../../../../common/form/models/responseType';
 import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
@@ -59,13 +61,13 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
         }
         await saveDraftClaim(req.params.id, claim);
         switch (model.responseType) {
-          case 'FULL_ADMISSION':
-            res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
-            break;
-          case 'PART_ADMISSION':
+          case ResponseType.PART_ADMISSION:
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_ALREADY_PAID_URL));
             break;
-          case 'FULL_DEFENCE':
+          case ResponseType.FULL_ADMISSION:
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PAYMENT_OPTION_URL));
+            break;
+          case ResponseType.FULL_DEFENCE:
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_REJECT_ALL_CLAIM_URL));
             break;
           default:
@@ -79,7 +81,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
   });
 
 function getDetailItemsList(claim: Claim): ComponentDetailItems[] {
-  const componentDetailItemsList: ComponentDetailItems[] = [
+  return [
     {
       title: 'Admit all of the claim',
       content: ['You have until 4pm on ' + claim.formattedResponseDeadline() + ' to admit the claim.'],
@@ -113,7 +115,6 @@ function getDetailItemsList(claim: Claim): ComponentDetailItems[] {
       content: ['If the claim is against you as an individual, the hearing centre will be the nearest one to your home or business.', 'If the claimant is an individual and the claim is against you as an organisation, the hearing centre will be the nearest one to their home or business.'],
     },
   ];
-  return componentDetailItemsList;
 }
 
 export default citizenResponseTypeController;
