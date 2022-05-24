@@ -10,23 +10,18 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
+  "COMMON": {
+    "BUTTONS": {
+      "CONTINUE": "Continue"
+    },
+    "RESPONSE_TYPE": {
+      "FULL_ADMISSION": "I admit all the claim"
+    },
+    "PAYMENT_OPTION": {
+      "IMMEDIATELY": "Immediately"
+    }
+  },
   "PAGES": {
-    "MEDIATION_DISAGREEMENT": {
-      "PAGE_TITLE": "Free Mediation Disagreement",
-      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
-    },
-    "COMMON": {
-      "RESPONSE_TYPE": {
-        "FULL_ADMISSION": "I admit all the claim"
-      },
-      "PAYMENT_OPTION": {
-        "IMMEDIATELY": "Immediately"
-      }
-    },
-    "MEDIATION_DISAGREEMENT": {
-      "PAGE_TITLE": "Free Mediation Disagreement",
-      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
-    },
     "CHECK_YOUR_ANSWER": {
       "CHANGE": "Change",
       "TITLE": "Check your answers",
@@ -41,6 +36,16 @@
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "SAME_ADDRESS": "Same as address",
       "DOB": "Date of birth"
+    },
+    "MEDIATION_DISAGREEMENT": {
+      "PAGE_TITLE": "Free Mediation Disagreement",
+      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+    },
+    "YOU_HAVE_PAID_LESS": {
+      "PAGE_TITLE": "You've Paid Less",
+      "HEADER": "You've paid less than the total claim amount",
+      "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "You need to explain why you believe you don't owe the remaining amount.",
+      "IF_CLAIMANT_REJECTS": "If CLAIMANT_NAME rejects your explanation you might have to go to a hearing."
     },
     "YOUR_DEFENCE": {
       "BRIEFLY": "Briefly explain why you disagree with the claim",

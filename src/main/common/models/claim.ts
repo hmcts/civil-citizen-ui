@@ -13,6 +13,8 @@ import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {Defence} from '../form/models/defence';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
+import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
+import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -36,6 +38,7 @@ export class Claim {
   mediation?: Mediation;
   evidence?: DefendantEvidence;
   timelineOfEvents?: TimeLineOfEvents[];
+  defendantStatementOfTruth?: StatementOfTruthForm;
 
 
   formattedResponseDeadline(): string {

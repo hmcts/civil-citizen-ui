@@ -50,7 +50,6 @@ describe('Bank accounts validation', ()=>{
     //When
     const result = accounts.getOnlyCompletedAccounts();
     //Then
-    console.log(result);
     expect(result.length).toEqual(1);
     expect(result[0].joint).toBeTruthy();
   });

@@ -11,6 +11,9 @@
   "Save and continue": "Arbed a pharhau",
   "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "Ar ôl i chi gwblhau'r holl gamau gweithredu byddwch yn cael eich tywys i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
   "COMMON": {
+    "BUTTONS": {
+      "CONTINUE": "Parhau"
+    },
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "Rwy'n cyfaddef yr holl hawliad"
     },
@@ -33,6 +36,16 @@
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
       "DOB": "Dyddiad Geni"
+    },
+    "MEDIATION_DISAGREEMENT": {
+      "PAGE_TITLE": "Free Mediation Disagreement",
+      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+    },
+    "YOU_HAVE_PAID_LESS": {
+      "PAGE_TITLE": "You've Paid Less",
+      "HEADER": "You've paid less than the total claim amount",
+      "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "You need to explain why you believe you don't owe the remaining amount.",
+      "IF_CLAIMANT_REJECTS": "If CLAIMANT_NAME rejects your explanation you might have to go to a hearing."
     },
     "YOUR_DEFENCE": {
       "BRIEFLY": "Briefly explain why you disagree with the claim",
