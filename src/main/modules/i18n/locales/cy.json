@@ -46,12 +46,17 @@
       "HEADER": "You've paid less than the total claim amount",
       "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "You need to explain why you believe you don't owe the remaining amount.",
       "IF_CLAIMANT_REJECTS": "If CLAIMANT_NAME rejects your explanation you might have to go to a hearing."
+    },
+    "EXPLANATION": {
+      "TITLE": "Briefly explain why you can’t pay immediately"
+    },
+    "REJECT_ALL": {
+      "FEE": "Fee",
+      "FEE_BASED": "The fee is based on the amount you`re claiming, including interest.",
+      "VIEW_COURT_FEES": "View court fees"
     }
   },
   "ERRORS": {
     "THERE_WAS_A_PROBLEM": "Roedd problem"
-  },
-  "EXPLANATION": {
-    "TITLE": "Eglurwch yn gryno pam na allwch dalu ar unwaith"
   }
 }
