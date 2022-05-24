@@ -23,9 +23,7 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/response/checkAnswersService');
 jest.mock('../../../../../main/modules/taskListService', () => ({
   ...jest.requireActual('../../../../../main/modules/taskListService') as Module,
-  getTaskLists: jest.fn(() => {
-    return TASK_LISTS;
-  }),
+  getTaskLists: jest.fn(() => TASK_LISTS),
 }));
 const mockGetSummarySections = checkAnswersService.getSummarySections as jest.Mock;
 

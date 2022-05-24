@@ -14,7 +14,7 @@ const checkAnswersController = express.Router();
 
 checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
   AllResponseTasksCompletedGuard.apply,
-  async (req, res) => {
+  async (req: express.Request, res: express.Response) => {
     try {
       const _summarySections = await getSummarySections(req.params.id);
       const form = new GenericForm(new StatementOfTruth());
