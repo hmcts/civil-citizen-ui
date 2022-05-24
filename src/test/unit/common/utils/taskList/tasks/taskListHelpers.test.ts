@@ -86,7 +86,7 @@ describe('Task List Helpers', () => {
       expect(isStatementOfMeansComplete(caseData)).toEqual(true);
     });
 
-    it('should return true if statement of means more than one property set', () => {
+    it('should return true if statement of means has more than one property set', () => {
       caseData.statementOfMeans = {
         numberOfChildrenLivingWithYou: 0,
         employment: {
