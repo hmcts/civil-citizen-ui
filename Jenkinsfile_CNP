@@ -38,7 +38,7 @@ def secrets = [
                 secret('ccd-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
                 secret('ccd-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
                 secret('postgres-user', 'POSTGRES_USER'),
-                secret('postgres-password', 'POSTGRES_PASSWORD')
+                secret('postgres-password', 'POSTGRES_PASSWORD'),
                 secret('ordnance-survey-api-key', 'ORDNANCE_SURVEY_API_KEY')
         ]
 ]
