@@ -18,8 +18,8 @@ import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus'
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
-const {app} = require('../../../../../main/app');
 const request = require('supertest');
+const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
 const testSession = session(app);
 
