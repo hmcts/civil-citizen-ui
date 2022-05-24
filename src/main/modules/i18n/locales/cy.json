@@ -18,10 +18,20 @@
       "FULL_ADMISSION": "Rwy'n cyfaddef yr holl hawliad"
     },
     "PAYMENT_OPTION": {
-      "IMMEDIATELY": "Ar unwaith"
+      "IMMEDIATELY": "Ar unwaith",
+      "INSTALMENTS": "Mewn rhandaliadau",
+      "BY_SET_DATE": "Erbyn dyddiad gosod"
+    },
+    "PAYMENT_FREQUENCY": {
+      "WEEK": "Each week",
+      "TWO_WEEKS": "Every two weeks",
+      "MONTH": "Every month"
     }
   },
   "PAGES": {
+    "EXPLANATION": {
+      "TITLE": "Eglurwch yn gryno pam na allwch dalu ar unwaith"
+    },
     "CHECK_YOUR_ANSWER": {
       "CHANGE": "Newid",
       "TITLE": "Gwiriwch eich ateb",
@@ -50,8 +60,5 @@
   },
   "ERRORS": {
     "THERE_WAS_A_PROBLEM": "Roedd problem"
-  },
-  "EXPLANATION": {
-    "TITLE": "Eglurwch yn gryno pam na allwch dalu ar unwaith"
   }
 }

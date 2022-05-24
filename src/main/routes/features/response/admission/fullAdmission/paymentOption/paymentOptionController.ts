@@ -1,5 +1,10 @@
 import * as express from 'express';
-import {CITIZEN_PAYMENT_DATE_URL, CITIZEN_PAYMENT_OPTION_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
+import {
+  CITIZEN_PAYMENT_DATE_URL,
+  CITIZEN_PAYMENT_OPTION_URL,
+  CITIZEN_REPAYMENT_PLAN,
+  CLAIM_TASK_LIST_URL,
+} from '../../../../../urls';
 import PaymentOption from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentOption';
 import PaymentOptionType
   from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
@@ -20,6 +25,8 @@ function renderView(form: PaymentOption, res: express.Response) {
 function redirectToNextPage(claimId: string, form: PaymentOption, res: express.Response) {
   if (form.paymentOptionBySetDateSelected()) {
     res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_DATE_URL));
+  } else if (form.paymentOptionByInstallmentsSelected()) {
+    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN));
   } else {
     res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
   }
