@@ -12,6 +12,9 @@ import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {currentDateTime, convertDateToLuxonDate, isPastDeadline} from '../utils/dateUtils';
+import {InterestClaimFromType, InterestClaimUntilType, InterestClaimOptions, SameRateInterestSelection, ClaimFee, ClaimAmountBreakup} from '../form/models/claimDetails';
+import {YesNo} from '../form/models/yesNo';
+
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -34,7 +37,18 @@ export class Claim {
   mediation?: Mediation;
   evidence?: DefendantEvidence;
   timelineOfEvents?: TimeLineOfEvents[];
-
+  claimAmountBreakup?: ClaimAmountBreakup[];
+  totalInterest?: string;
+  claimInterest?: YesNo;
+  interestClaimFrom?: InterestClaimFromType; 
+  interestClaimUntil?: InterestClaimUntilType; 
+  interestFromSpecificDate?: Date;
+  interestClaimOptions: InterestClaimOptions;
+  sameRateInterestSelection?: SameRateInterestSelection;
+  breakDownInterestTotal?: number;
+  submittedDate?: Date;
+  issueDate?: Date;
+  claimFee?: ClaimFee;
 
   formattedResponseDeadline(): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).format('DD MMMM YYYY') : '';
@@ -55,6 +69,9 @@ export class Claim {
 
   isDeadLinePassed(): boolean {
     return isPastDeadline(this.respondent1ResponseDeadline);
+  }
+  isEmpty(): boolean {
+    return !this.applicant1;
   }
 }
 

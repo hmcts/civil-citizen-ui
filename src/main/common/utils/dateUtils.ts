@@ -16,3 +16,7 @@ export const convertDateToLuxonDate = (date: Date | string) => {
 export const isPastDeadline = (deadline: Date | string) => {
   return currentDateTime() >= setTimeFourPM(deadline);
 };
+
+export const getNumberOfDaysBetweenTwoDays = (startDay: Date | string, endDay: Date | string) => {
+  return convertDateToLuxonDate(endDay).startOf('day').diff(convertDateToLuxonDate(startDay).startOf('day'), 'days').days;
+};
