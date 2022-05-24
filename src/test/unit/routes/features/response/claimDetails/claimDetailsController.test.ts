@@ -5,7 +5,7 @@ import {CLAIM_DETAILS} from '../../../../../../main/common/form/validationErrors
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockClaim as mockResponse} from '../../../../../utils/mockClaim';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {mockCivilClaim, mockCivilClaimUndefined} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
 
@@ -49,6 +49,12 @@ describe('Confirm Details page', () => {
       expect(spyRedisSave).toBeCalled();
     });
     test('should retrieve claim from redis when claim exists in redis', async () => {
+      const mockGetClaimById = jest.fn().mockImplementation(() => {
+        return {};
+      });
+      jest.mock('../../../../../../main/app/client/civilServiceClient', () => {
+        return mockGetClaimById;
+      });
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(200, mockResponse);
@@ -61,6 +67,16 @@ describe('Confirm Details page', () => {
           expect(res.text).toContain(CLAIM_DETAILS);
         });
       expect(spyRedisSave).not.toBeCalled();
+      expect(mockGetClaimById).not.toBeCalled();
+    });
+    test('should return 500 status when there is error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get('/case/1111/response/claim-details')
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+        });
     });
   });
 });
