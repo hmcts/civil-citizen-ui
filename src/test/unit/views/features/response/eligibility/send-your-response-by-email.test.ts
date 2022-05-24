@@ -61,7 +61,7 @@ describe('Send your response by email View', () => {
 
     it('should display View claim fees details component', () => {
       const detailsSummary = htmlDocument.getElementsByClassName('govuk-details__summary-text')[0];
-      expect(detailsSummary.innerHTML).toContain('View court fees');
+      expect(detailsSummary.innerHTML).toContain('View claim fees');
     });
   });
 });
