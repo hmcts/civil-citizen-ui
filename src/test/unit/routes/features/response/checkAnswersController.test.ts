@@ -19,6 +19,7 @@ const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
 const {app} = require('../../../../../main/app');
+const request = require('supertest');
 const session = require('supertest-session');
 const testSession = session(app);
 
@@ -98,7 +99,7 @@ describe('Response - Check answers', () => {
 
     });
     test('should pass english translation via query', async () => {
-      await request(app).get(respondentCheckAnswersUrl)
+      await testSession.get(respondentCheckAnswersUrl)
         .query({lang: 'en'})
         .expect((res: Response) => {
           expect(res.status).toBe(200);
@@ -106,7 +107,7 @@ describe('Response - Check answers', () => {
         });
     });
     test('should pass cy translation via query', async () => {
-      await request(app).get(respondentCheckAnswersUrl)
+      await testSession.get(respondentCheckAnswersUrl)
         .query({lang: 'cy'})
         .expect((res: Response) => {
           expect(res.status).toBe(200);
