@@ -4,6 +4,7 @@ import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {SEND_RESPONSE_BY_EMAIL_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaimApplicantCompanyType} from '../../../../../utils/mockDraftStore';
+import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -54,8 +55,8 @@ describe('Send your response by email View', () => {
       expect(paragraphs[11].innerHTML).toContain('Email completed form N9B to:');
       expect(paragraphs[12].innerHTML).toContain('Or, you can send the form by post to:');
       expect(paragraphs[17].innerHTML).toContain('You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.');
-      expect(paragraphs[18].innerHTML).toContain('The fee is based on the amount you`re claiming, including interest.');
-      expect(paragraphs[19].innerHTML).toContain('Do not create a new claim if you want to counterclaim. Use form N9B.');
+      expect(paragraphs[18].innerHTML).toContain(TestMessages.FEES_BASED_ON_AMOUNT);
+      expect(paragraphs[19].innerHTML).toContain(TestMessages.DO_NOT_CREATE_CLAIM_IF_COUNTERCLAIM);
     });
 
     it('should display View claim fees details component', () => {
