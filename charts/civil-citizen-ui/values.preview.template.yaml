@@ -36,7 +36,7 @@ nodejs:
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
-    ORDNANCE_SURVEY_API_KEY: {ORDNANCE_SURVEY_API_KEY}
+    ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
 civil-service:
   enabled: true
   java:
