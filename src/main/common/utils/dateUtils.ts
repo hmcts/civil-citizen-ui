@@ -5,8 +5,8 @@ export const currentDateTime = () => {
 };
 
 // set deadline time 4pm
-export const setTimeFourPM = (deadlineDay:  Date | string ) => {
-  return convertDateToLuxonDate(deadlineDay).set({ hour: 16, minute: 0, second: 0, millisecond: 1 });
+export const setTimeFourPM = (deadlineDay: Date | string) => {
+  return convertDateToLuxonDate(deadlineDay).set({hour: 16, minute: 0, second: 0, millisecond: 1});
 };
 
 export const convertDateToLuxonDate = (date: Date | string) => {
@@ -15,6 +15,12 @@ export const convertDateToLuxonDate = (date: Date | string) => {
 
 export const isPastDeadline = (deadline: Date | string) => {
   return currentDateTime() >= setTimeFourPM(deadline);
+};
+
+export const formatDateToFullDate = (date: Date): string => {
+  const dateTime = convertDateToLuxonDate(date);
+  return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: 'en-gb'});
+
 };
 
 export const getNumberOfDaysBetweenTwoDays = (startDay: Date | string, endDay: Date | string) => {

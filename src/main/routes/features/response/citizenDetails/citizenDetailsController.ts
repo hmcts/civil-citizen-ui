@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {Validator} from 'class-validator';
 import {Form} from '../../../../common/form/models/form';
-import {CITIZEN_DETAILS_URL, DOB_URL} from '../../../urls';
+import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../urls';
 import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {Respondent} from '../../../../common/models/respondent';
@@ -9,7 +9,7 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {getRespondentInformation, saveRespondent} from '../../../../modules/citizenDetails/citizenDetailsService';
 import _ from 'lodash';
-import {CounterpartyType} from '../../../../common/models/counterpartyType';
+import { CounterpartyType } from '../../../../common/models/counterpartyType';
 
 const citizenDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -45,9 +45,17 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
     postToThisAddress: req.body.postToThisAddress,
     partyName: partyName,
     contactPerson: contactPerson,
-    type:type,
+    type: type,
   });
 }
+
+const redirect =  async (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
+  if (responseDataRedis?.type === CounterpartyType.SOLE_TRADER || responseDataRedis?.type === CounterpartyType.INDIVIDUAL) {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
+  } else {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
+  }
+};
 
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   try {
@@ -101,7 +109,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
       req.body.primaryPostCode,
     );
 
-    const citizenCorrespondenceAddress = new CitizenCorrespondenceAddress(
+    let citizenCorrespondenceAddress = new CitizenCorrespondenceAddress(
       req.body.correspondenceAddressLine1,
       req.body.correspondenceAddressLine2,
       req.body.correspondenceAddressLine3,
@@ -120,13 +128,14 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
     } else {
       citizenAddress.errors = validator.validateSync(citizenAddress);
       errorList.errors = citizenAddress.errors;
+      citizenCorrespondenceAddress = new CitizenCorrespondenceAddress();
     }
     if ((citizenAddress?.errors?.length > 0)
       || (citizenCorrespondenceAddress?.errors?.length > 0)) {
       renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req, responseDataRedis, contactPerson);
     } else {
       await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, contactPerson);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
+      redirect(responseDataRedis, req, res);
     }
   } catch (error) {
     logger.error(error);

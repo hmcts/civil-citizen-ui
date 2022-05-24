@@ -22,7 +22,7 @@ citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res) => {
   try {
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
     const citizenTelephoneNumber = responseDataRedis?.respondent1?.telephoneNumber
-      ? new CitizenTelephoneNumber(responseDataRedis.respondent1.telephoneNumber) : new CitizenTelephoneNumber(); 
+      ? new CitizenTelephoneNumber(responseDataRedis.respondent1.telephoneNumber) : new CitizenTelephoneNumber();
     renderView(citizenTelephoneNumber, res);
   } catch (error) {
     logger.error(error);

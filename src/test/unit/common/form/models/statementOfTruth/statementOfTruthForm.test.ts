@@ -1,6 +1,4 @@
-import {
-  StatementOfTruth,
-} from '../../../../../../main/common/form/models/statementOfTruth/statementOfTruth';
+import {StatementOfTruthForm} from '../../../../../../main/common/form/models/statementOfTruth/statementOfTruthForm';
 import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
 import {SignatureType} from '../../../../../../main/common/models/signatureType';
 import {
@@ -12,7 +10,7 @@ import {
 describe('Statement of Truth form validation', () => {
   test('should fail when not signed', () => {
     //Given
-    const form = new GenericForm(new StatementOfTruth(undefined, false));
+    const form = new GenericForm(new StatementOfTruthForm(undefined, ''));
     //When
     form.validateSync();
     //Then
@@ -27,7 +25,7 @@ describe('Statement of Truth form validation', () => {
 
   test('should pass when basic signature type and direction questionnaire not signed', () => {
     //Given
-    const form = new GenericForm(new StatementOfTruth(SignatureType.BASIC, true, false));
+    const form = new GenericForm(new StatementOfTruthForm(SignatureType.BASIC, 'true', false));
     //When
     form.validateSync();
     //Then
@@ -36,7 +34,7 @@ describe('Statement of Truth form validation', () => {
 
   test('should pass when direction questionnaire is signed', () => {
     //Given
-    const form = new GenericForm(new StatementOfTruth(SignatureType.DIRECTION_QUESTIONNAIRE, true, true));
+    const form = new GenericForm(new StatementOfTruthForm(SignatureType.DIRECTION_QUESTIONNAIRE, 'true', true));
     //When
     form.validateSync();
     //Then
@@ -45,7 +43,7 @@ describe('Statement of Truth form validation', () => {
 
   test('should pass when direction questionnaire is not signed', () => {
     //Given
-    const form = new GenericForm(new StatementOfTruth(SignatureType.DIRECTION_QUESTIONNAIRE, true, false));
+    const form = new GenericForm(new StatementOfTruthForm(SignatureType.DIRECTION_QUESTIONNAIRE, 'true', false));
     //When
     form.validateSync();
     //Then

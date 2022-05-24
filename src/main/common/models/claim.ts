@@ -6,15 +6,15 @@ import {CounterpartyType} from './counterpartyType';
 import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
-import { DefendantEvidence } from './evidence/evidence';
+import {DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
-import {currentDateTime, convertDateToLuxonDate, isPastDeadline} from '../utils/dateUtils';
+import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
+import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
 import {InterestClaimFromType, InterestClaimUntilType, InterestClaimOptions, SameRateInterestSelection, ClaimFee, ClaimAmountBreakup} from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
-
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -37,11 +37,12 @@ export class Claim {
   mediation?: Mediation;
   evidence?: DefendantEvidence;
   timelineOfEvents?: TimeLineOfEvents[];
+  defendantStatementOfTruth?: StatementOfTruthForm;
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: string;
   claimInterest?: YesNo;
-  interestClaimFrom?: InterestClaimFromType; 
-  interestClaimUntil?: InterestClaimUntilType; 
+  interestClaimFrom?: InterestClaimFromType;
+  interestClaimUntil?: InterestClaimUntilType;
   interestFromSpecificDate?: Date;
   interestClaimOptions: InterestClaimOptions;
   sameRateInterestSelection?: SameRateInterestSelection;
@@ -49,6 +50,7 @@ export class Claim {
   submittedDate?: Date;
   issueDate?: Date;
   claimFee?: ClaimFee;
+
 
   formattedResponseDeadline(): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).format('DD MMMM YYYY') : '';
