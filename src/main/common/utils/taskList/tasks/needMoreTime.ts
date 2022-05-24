@@ -4,11 +4,11 @@ import {TaskStatus} from '../../../models/taskList/TaskStatus';
 
 /**
  * THIS FILE IS A CONCEPT AND DOESN'T WORK
- * 
+ *
  * The logic on this file is not the real business logic.
  * This code is only a concept of what we should do.
- * this file needs to be revisited when need more time page is developed. 
- * 
+ * this file needs to be revisited when need more time page is developed.
+ *
  */
 
 const needMoreTimeTask = {
@@ -18,11 +18,7 @@ const needMoreTimeTask = {
 };
 
 export const getNeedMoreTimeTask = (claim: Claim): Task => {
-
-  if (claim.statementOfMeans?.cohabiting?.option === 'yes') {
-    needMoreTimeTask.status = TaskStatus.COMPLETE;
-  }
-
+  needMoreTimeTask.status = TaskStatus.COMPLETE;
   return needMoreTimeTask;
 };
 
