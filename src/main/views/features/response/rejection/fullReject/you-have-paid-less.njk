@@ -1,0 +1,34 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.YOU_HAVE_PAID_LESS.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper" role="main">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">{{ t('PAGES.YOU_HAVE_PAID_LESS.HEADER') }}</h1>
+        <p class="govuk-body">{{ t('PAGES.YOU_HAVE_PAID_LESS.EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT') }}</p>
+        <p class="govuk-body">{{ t('PAGES.YOU_HAVE_PAID_LESS.IF_CLAIMANT_REJECTS') | replace('CLAIMANT_NAME', claimantName)}}</p>
+        <form method="POST" novalidate>
+          {{ csrfProtection(csrf) }}
+          {{ govukButton({
+            text: t('COMMON.BUTTONS.CONTINUE')
+          }) }}
+        </form>
+      </div>
+    </div>
+    <div class="govuk-grid-row govuk-!-margin-top-8">
+      <div class="govuk-grid-column-two-thirds">
+        {{ contactUsForHelp(t) }}
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}
