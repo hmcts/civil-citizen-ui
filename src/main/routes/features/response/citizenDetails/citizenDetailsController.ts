@@ -45,7 +45,7 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
     postToThisAddress: req.body.postToThisAddress,
     partyName: partyName,
     contactPerson: contactPerson,
-    type:type,
+    type: type,
   });
 }
 
@@ -101,7 +101,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
       req.body.primaryPostCode,
     );
 
-    const citizenCorrespondenceAddress = new CitizenCorrespondenceAddress(
+    let citizenCorrespondenceAddress = new CitizenCorrespondenceAddress(
       req.body.correspondenceAddressLine1,
       req.body.correspondenceAddressLine2,
       req.body.correspondenceAddressLine3,
@@ -120,6 +120,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
     } else {
       citizenAddress.errors = validator.validateSync(citizenAddress);
       errorList.errors = citizenAddress.errors;
+      citizenCorrespondenceAddress = new CitizenCorrespondenceAddress();
     }
     if ((citizenAddress?.errors?.length > 0)
       || (citizenCorrespondenceAddress?.errors?.length > 0)) {

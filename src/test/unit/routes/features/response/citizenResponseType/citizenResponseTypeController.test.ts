@@ -4,7 +4,9 @@ import nock from 'nock';
 import config from 'config';
 import {
   CITIZEN_ALREADY_PAID_URL,
+  CITIZEN_REJECT_ALL_CLAIM_URL,
   CITIZEN_RESPONSE_TYPE_URL,
+  CLAIM_TASK_LIST_URL,
 } from '../../../../../../main/routes/urls';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
@@ -122,6 +124,7 @@ describe('Citizen response type', () => {
         .send('responseType=test')
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
 
@@ -139,6 +142,26 @@ describe('Citizen response type', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_ALREADY_PAID_URL);
+        });
+    });
+
+    test('should redirect to task list page when user selects I admit all of the claim', async () => {
+      await request(app)
+        .post(CITIZEN_RESPONSE_TYPE_URL)
+        .send('responseType=FULL_ADMISSION')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
+
+    test('should redirect to reject claim page when user selects I reject all of the claim', async () => {
+      await request(app)
+        .post(CITIZEN_RESPONSE_TYPE_URL)
+        .send('responseType=FULL_DEFENCE')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_REJECT_ALL_CLAIM_URL);
         });
     });
   });

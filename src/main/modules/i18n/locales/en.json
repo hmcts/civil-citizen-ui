@@ -10,15 +10,19 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
-  "COMMON": {
-    "RESPONSE_TYPE": {
-      "FULL_ADMISSION": "I admit all the claim"
-    },
-    "PAYMENT_OPTION": {
-      "IMMEDIATELY": "Immediately"
-    }
-  },
   "PAGES": {
+    "MEDIATION_DISAGREEMENT": {
+      "PAGE_TITLE": "Free Mediation Disagreement",
+      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+    },
+    "COMMON": {
+      "RESPONSE_TYPE": {
+        "FULL_ADMISSION": "I admit all the claim"
+      },
+      "PAYMENT_OPTION": {
+        "IMMEDIATELY": "Immediately"
+      }
+    },
     "MEDIATION_DISAGREEMENT": {
       "PAGE_TITLE": "Free Mediation Disagreement",
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
