@@ -42,10 +42,10 @@ describe('your defence View', () => {
     });
 
     it('should display automatically registered paragraph', () => {
-      expect(paragraphs[3].innerHTML).toContain('If you fail to dispute any part of the claim the court may assume you admit it.');
-      expect(paragraphs[4].innerHTML).toContain('You should also say if you accept any parts of the claim.');
-      expect(paragraphs[5].innerHTML).toContain('Don’t give us a detailed timeline - we’ll ask for that separately.');
-      expect(paragraphs[6].innerHTML).toContain('Your response will be sent to');
+      expect(paragraphs[1].innerHTML).toContain('If you fail to dispute any part of the claim the court may assume you admit it.');
+      expect(paragraphs[2].innerHTML).toContain('You should also say if you accept any parts of the claim.');
+      expect(paragraphs[3].innerHTML).toContain('Don’t give us a detailed timeline - we’ll ask for that separately.');
+      expect(paragraphs[4].innerHTML).toContain('Your response will be sent to');
       const bold = htmlDocument.getElementsByClassName('govuk-!-font-weight-bold');
       expect(bold[0].innerHTML).toContain('Their reasons for making the claim');
       expect(bold[1].innerHTML).toContain('Briefly explain why you disagree with the claim');

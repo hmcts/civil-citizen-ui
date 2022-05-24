@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {CITIZEN_TIMELINE_URL, RESPONSE_YOUR_DEFENCE_URL} from '../../urls';
 import {saveYourDefence} from '../../../modules/yourDefenceService';
-import {getclaimantName} from '../../../modules/rejectAllOfClaimService';
+import {getClaimantName} from '../../../modules/rejectAllOfClaimService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../common/form/models/genericForm';
 
@@ -15,7 +15,7 @@ let claimantName = '';
 yourDefenceController.get(RESPONSE_YOUR_DEFENCE_URL, async (req: express.Request, res: express.Response) => {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
-    claimantName = await getclaimantName(req.params.id);
+    claimantName = await getClaimantName(req.params.id);
 
     const form = new GenericForm(claim);
     res.render(yourDefenceViewPath, {
