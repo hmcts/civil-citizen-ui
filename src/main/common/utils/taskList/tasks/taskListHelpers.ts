@@ -1,6 +1,6 @@
 import {Claim} from '../../../models/claim';
 import {Respondent} from '../../../../common/models/respondent';
-import { CounterpartyType } from '../../../../common/models/counterpartyType';
+import {CounterpartyType} from '../../../../common/models/counterpartyType';
 import PaymentOptionType from '../../../../common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
 
 export const isCaseDataMissing = (caseData: Claim): boolean => {
@@ -34,5 +34,13 @@ export const isRepaymentPlanMissing = (caseData: Claim): boolean => {
 
 export const isStatementOfMeansComplete = (caseData: Claim): boolean => {
   // TODO: this should replicate statement of means guard logic CIV-2630
-  return (caseData?.statementOfMeans && Object.keys(caseData.statementOfMeans).length > 1);
+  return !!(caseData?.statementOfMeans && Object.keys(caseData.statementOfMeans).length > 1);
+};
+
+export const isCounterpartyIndividual = (respondent1: Respondent): boolean => {
+  return respondent1.type === CounterpartyType.INDIVIDUAL || respondent1.type === CounterpartyType.SOLE_TRADER;
+};
+
+export const isCounterpartyCompany = (respondent1: Respondent): boolean => {
+  return respondent1.type === CounterpartyType.ORGANISATION || respondent1.type === CounterpartyType.COMPANY;
 };
