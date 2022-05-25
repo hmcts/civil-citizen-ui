@@ -19,7 +19,7 @@
     },
     "PAYMENT_OPTION": {
       "IMMEDIATELY": "Immediately",
-      "INSTALMENTS": "By installments",
+      "INSTALMENTS": "By instalments",
       "BY_SET_DATE": "By set date"
     },
     "PAYMENT_FREQUENCY": {
