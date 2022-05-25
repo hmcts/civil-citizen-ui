@@ -22,9 +22,7 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('Are you paying money as a result of any court orders?') }}</h1>
           <div data-module="moj-add-another">
-            <form
-              method="POST" novalidate>
-
+            <form method="post" novalidate>
               {{ csrfProtection(csrfToken) }}
 
               {% set courtOrdersHtml %}
@@ -84,7 +82,6 @@
                   text: t("Save and continue")
                 }) }}
               </div>
-
             </form>
           </div>
         </div>

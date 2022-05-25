@@ -17,6 +17,7 @@
       "applicant1": {
         "type": "ORGANISATION",
         "partyName": "Example applicant1 organisation",
+        "companyName": "Oracle",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -30,9 +31,10 @@
         "partyTypeDisplayValue": "Organisation"
       },
       "respondent1": {
-        "type": "ORGANISATION",
         "partyName": "Version 1",
-        "contactPerson": "Test contact person",
+        "contactPerson": "Felipe Calderon",
+        "type": "INDIVIDUAL",
+       
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -106,7 +108,7 @@
         "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
       },
       "specRespondent1Represented": "Yes",
-      "respondent1ResponseDeadline": "2022-12-01T15:59:59",
+      "respondent1ResponseDeadline": "2022-05-19T15:59:59",
       "applicant1OrganisationPolicy": {
         "Organisation": {
           "OrganisationID": "Q1KOKP2"
@@ -146,6 +148,14 @@
         "name": "John Smith",
         "role": "Solicitor"
       },
+      "applicantSolicitor1ServiceAddress": {
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AD",
+        "PostTown": "Berkshire",
+        "AddressLine1": "Solicitor Org",
+        "AddressLine2": "20",
+        "AddressLine3": "Church Road"
+      },
       "specApplicantCorrespondenceAddressdetails": {
         "Country": "United Kingdom",
         "PostCode": "RG4 7AD",
@@ -182,12 +192,16 @@
       },
       "issueDate": "2022-01-08",
       "applicant1": {
-        "type": "INDIVIDUAL",
-        "partyName": "Example applicant1 organisation",
+        "type": "SOLE_TRADER",
+        "telephoneNumber": "(0)207 127 0000",
+        "partyName": "Mr. Version1 Best",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
         "primaryAddress": {
-          "County": "Kent",
+          "County": "London",
           "Country": "United Kingdom",
-          "PostCode": "RG4 7AA",
+          "PostCode": "SW1H 9AJ",
           "PostTown": "Reading",
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
@@ -266,12 +280,12 @@
         "reference": "RC-1234-1234-1234-1234",
         "customerReference": "abcdefg"
       },
-      "claimNotificationDeadline": "2022-12-01T23:59:59",
+      "claimNotificationDeadline": "2022-05-14T23:59:59",
       "sameRateInterestSelection": {
         "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
       },
       "specRespondent1Represented": "Yes",
-      "respondent1ResponseDeadline": "2022-10-12T15:59:59",
+      "respondent1ResponseDeadline": "2022-05-12T15:59:59",
       "applicant1OrganisationPolicy": {
         "Organisation": {
           "OrganisationID": "Q1KOKP2"
@@ -349,6 +363,10 @@
       "applicant1": {
         "type": "INDIVIDUAL",
         "partyName": "Example applicant1 organisation",
+        "telephoneNumber": "(0)207 127 0000",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Alex",
+        "individualLastName": "Van",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -365,6 +383,9 @@
         "type": "INDIVIDUAL",
         "partyName": "Example respondent1 organisation",
         "telephoneNumber": "(0)207 127 0000",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jhon",
+        "individualLastName": "Smith",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -437,7 +458,7 @@
         "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
       },
       "specRespondent1Represented": "Yes",
-      "respondent1ResponseDeadline": "2022-10-12T15:59:59",
+      "respondent1ResponseDeadline": "2022-05-17T15:59:59",
       "applicant1OrganisationPolicy": {
         "Organisation": {
           "OrganisationID": "Q1KOKP2"
@@ -678,8 +699,9 @@
       },
       "issueDate": "2022-01-08",
       "applicant1": {
-        "type": "INDIVIDUAL",
+        "type": "COMPANY",
         "partyName": "Example applicant1 organisation",
+        "companyName": "Google",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -705,7 +727,8 @@
           "AddressLine3": "Church Road"
         },
         "organisationName": "Example respondent1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        "partyTypeDisplayValue": "Organisation",
+        "telephoneNumber": "01632960001"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -806,6 +829,14 @@
       "applicantSolicitor1ClaimStatementOfTruth": {
         "name": "John Smith",
         "role": "Solicitor"
+      },
+      "applicantSolicitor1ServiceAddress": {
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AD",
+        "PostTown": "Berkshire",
+        "AddressLine1": "Solicitor Org",
+        "AddressLine2": "20",
+        "AddressLine3": "Church Road"
       },
       "specApplicantCorrespondenceAddressdetails": {
         "Country": "United Kingdom",

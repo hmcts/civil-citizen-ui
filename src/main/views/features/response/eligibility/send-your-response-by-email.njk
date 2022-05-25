@@ -1,0 +1,99 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../../macro/contact-us.njk" import contactUs %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set header = t('Reject all of the claim and counterclaim') %}
+      {% set pdfDefenceAndClaim = t('Download defence and counterclaim form (PDF, 368 KB)') %}
+      {% set pdfAdmission = t('Download admission form (PDF, 102 KB)') %}
+      {% set pdfDefence = t('Download form N9B Make a defence or counterclaim') %}
+      {% set supportEmailAddress = 'contactocmc@justice.gov.uk' %}
+      {% set responseDeadline = form.formattedResponseDeadline() %}
+      {% set pdfUrl = 'https://www.gov.uk/government/publications/form-n9b-defence-counterclaim-specified-amount'%}
+      {% set signPosting = true %}
+
+      {% if form.applicant1.type === CounterpartyType.INDIVIDUAL or form.applicant1.type === CounterpartyType.SOLE_TRADER  %}
+        {% set claimantName = form.applicant1.individualTitle+' '+form.applicant1.individualFirstName+' '+form.applicant1.individualLastName %}
+      {% else %}
+        {% set claimantName = form.applicant1.companyName %}
+      {% endif %}
+      {% if form.respondent1.type === CounterpartyType.ORGANISATION or form.respondent1.type === CounterpartyType.COMPANY  %}
+        {% set defendantName = form.respondent1.partyName %}
+      {% else %}
+        {% set defendantName = form.respondent1.individualTitle+' '+form.respondent1.individualFirstName+' '+form.respondent1.individualLastName %}
+      {% endif %}
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          {{ csrfProtection(csrf) }}
+          <h1 class="govuk-heading-l govuk-!-margin-bottom-5">{{header}}</h1>
+          <p class="govuk-body">{{ t('You have chosen to counterclaim. This means your defence cannot continue online. Follow these steps to download, complete and return form N9B. You must pay a court fee. Do not create a new claim.')}}</p>
+          <div class="govuk-inset-text">
+          <p class="govuk-body">{{ t('We must receive your completed form before <span class="govuk-body govuk-!-font-weight-bold">4pm on {{ deadline }}</span>. The claim against you will continue if we do not receive this.',
+              { deadline: responseDeadline }) | safe }}</p>
+          </div>
+
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-4 govuk-!-font-weight-bold">{{ t('How to counterclaim') }}</h2>
+          <span class="govuk-body govuk-!-margin-bottom-4 govuk-!-font-weight-bold">Step 1: Download and complete form N9B</span>
+
+          <p><a target="_blank" rel="noreferrer noopener"  class="govuk-link" href={{pdfUrl}}>{{ pdfDefence}}<span>{{ t(' (opens in a new window)') }}</span></a></p>
+
+          <p class="govuk-body govuk-!-margin-bottom-4">{{ t('You will need these claim details')}}:</p>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Claim number')}}: {{form.legacyCaseReference}}</p>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Claimant')}}: {{claimantName}}</p>
+          <p class="govuk-body">{{ t('Defendant')}}: {{defendantName}}</p>
+
+          <span class="govuk-body govuk-!-margin-bottom-4 govuk-!-font-weight-bold">Step 2: Email or post form N9B</span>
+          <p class="govuk-body govuk-!-margin-top-4">{{t('Email completed form N9B to')}}:
+            <a class="govuk-link govuk-!-margin-bottom-0" href='mailto:'{{supportEmailAddress}}>{{supportEmailAddress}}</a>
+          </p>
+          <p class="govuk-body govuk-!-margin-bottom-4">{{ t('Or, you can send the form by post to')}}:</p>
+
+          {% if signPosting %}
+            <div class="govuk-inset-text govuk-grid-column-two-third">{{ t('HMCTS CMC') }}
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PO Box 12747')}}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Harlow')}}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('CM20 9RA')}}</p>
+            </div>
+          {% else %}
+            <div class="govuk-inset-text govuk-grid-column-two-third">{{ t('Civil Money Claims') }}
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('St. Katharine`s House')}}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('21-27 St. Katharine`s Street')}}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Northampton')}}</p>
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('NN1 2LH')}}</p>
+             </div>
+          {% endif %}
+
+          <div>
+              <span class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-weight-bold">Step 3: Pay the court fee</span>
+              <p class="govuk-body govuk-!-margin-top-4">
+                {{ t('You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.')}}
+              </p>
+              {{ govukDetails({
+                summaryText: t('View court fees'),
+                html: content
+              }) }}
+            <div class="govuk-inset-text govuk-grid-column-two-third">
+              <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Do not create a new claim if you want to counterclaim. Use form N9B.')}}</p>
+            </div>
+          </div>
+          <div>
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-font-weight-bold">{{ t('Help and support') }}</h2>
+          {{ contactUs(t) }}
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
+{% block contactForHelp %}{% endblock %}
