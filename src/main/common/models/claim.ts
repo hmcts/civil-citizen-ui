@@ -58,6 +58,10 @@ export class Claim {
   isDeadLinePassed(): boolean {
     return isPastDeadline(this.respondent1ResponseDeadline);
   }
+
+  isEmpty(): boolean {
+    return !this.applicant1;
+  }
 }
 
 export interface Party {
