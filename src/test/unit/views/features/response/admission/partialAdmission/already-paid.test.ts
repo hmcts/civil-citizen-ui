@@ -82,7 +82,6 @@ describe('Already Paid View', () => {
 
     it('should display correct error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      console.log('error', errorMessage);
       expect(errorMessage.innerHTML).toContain(VALID_YES_NO_SELECTION);
     });
   });
