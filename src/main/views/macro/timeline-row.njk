@@ -1,0 +1,32 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% macro timelineRow(timelineModel, index, form) %}
+  <div id="row-container">
+    <div class="multiple-row">
+      <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
+        {{ govukInput({
+          id: "rows["+index+"][date]",
+          name: "rows["+index+"][date]",
+          value: timelineModel.date,
+          classes: "govuk-grid-column-full",
+          spellcheck: false,
+          errorMessage: {
+            text: form.errorFor("rows["+index+"][date]")
+          } if form.hasFieldError( "rows["+index+"][date]")
+        }) }}
+      </div>
+      <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
+        {{ govukTextarea({
+          id: "rows["+index+"][description]",
+          name: "rows["+index+"][description]",
+          value: timelineModel.description,
+          classes: "govuk-grid-column-full",
+          spellcheck: false,
+          errorMessage: {
+            text: form.errorFor("rows["+index+"][description]")
+          } if form.hasFieldError( "rows["+index+"][description]")
+        }) }}
+      </div>
+    </div>
+  </div>
+{% endmacro %}

@@ -1,5 +1,5 @@
 import {PrimaryAddress} from './primaryAddress';
-import { CorrespondenceAddress } from '././correspondenceAddress';
+import {CorrespondenceAddress} from '././correspondenceAddress';
 import {CounterpartyType} from './counterpartyType';
 
 export class Respondent {
