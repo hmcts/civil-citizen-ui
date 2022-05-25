@@ -25,15 +25,15 @@ export const buildCorrespondenceAddress = (): CorrespondenceAddress => {
   };
 };
 
-export const buildRespondent1 = () : Respondent =>{
+export const buildRespondent1 = (): Respondent => {
   const respondent = new Respondent();
   respondent.individualTitle = 'Mrs.';
-  respondent.individualLastName= 'Mary';
-  respondent.individualFirstName= 'Richards';
-  respondent.telephoneNumber= '0208339922';
-  respondent.dateOfBirth= new Date('2022-01-24T15:59:59');
-  respondent.responseType= '';
-  respondent.type= CounterpartyType.INDIVIDUAL;
+  respondent.individualLastName = 'Mary';
+  respondent.individualFirstName = 'Richards';
+  respondent.telephoneNumber = '0208339922';
+  respondent.dateOfBirth = new Date('2022-01-24T15:59:59');
+  respondent.responseType = '';
+  respondent.type = CounterpartyType.INDIVIDUAL;
   respondent.primaryAddress = buildPrimaryAddress();
   respondent.correspondenceAddress = buildCorrespondenceAddress();
   return respondent;
@@ -54,14 +54,14 @@ export const mockClaim: Claim = {
         option: 'yes',
       },
     },
-  partialAdmission:{
+  partialAdmission: {
     howMuchHaveYouPaid: {
-      amount : 20,
-      totalClaimAmount : 110,
-      day : 1,
-      month : 1,
-      year : 2040,
-      text : 'text',
+      amount: 20,
+      totalClaimAmount: 110,
+      day: 1,
+      month: 1,
+      year: 2040,
+      text: 'text',
     },
   },
   totalClaimAmount: 110,
@@ -82,6 +82,9 @@ export const mockClaim: Claim = {
   },
   isDeadLinePassed: function (): boolean {
     throw new Error('Function not implemented.');
+  },
+  isEmpty(): boolean {
+    return !this.applicant1;
   },
   paymentDate: new Date('2022-06-01T00:00:00'),
 };
