@@ -14,6 +14,7 @@ import {
   STATEMENT_OF_TRUTH_REQUIRED_MESSAGE,
 } from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus';
+import {constructResponseUrlWithIdParams} from '../../../../../main/common/utils/urlFormatter';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -46,7 +47,7 @@ const TASK_LISTS = [
     ],
   },
 ];
-const respondentCheckAnswersUrl = RESPONSE_CHECK_ANSWERS_URL.replace(':id', CLAIM_ID);
+const respondentCheckAnswersUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_CHECK_ANSWERS_URL);
 
 describe('Response - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -67,7 +68,7 @@ describe('Response - Check answers', () => {
     beforeEach(function (done) {
 
       testSession
-        .get(CLAIM_TASK_LIST_URL.replace(':id', CLAIM_ID))
+        .get(constructResponseUrlWithIdParams(CLAIM_ID, CLAIM_TASK_LIST_URL))
         .expect(200)
         .end(function (err: Error) {
           if (err) {
@@ -169,7 +170,7 @@ function createClaimWithBasicRespondentDetails(): SummarySections {
             },
             actions: {
               items: [{
-                href: CITIZEN_DETAILS_URL.replace(':id', CLAIM_ID),
+                href: constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_DETAILS_URL),
                 text: 'Change',
               }],
             },

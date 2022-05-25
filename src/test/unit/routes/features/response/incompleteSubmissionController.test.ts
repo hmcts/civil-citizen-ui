@@ -8,6 +8,7 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus';
+import {constructResponseUrlWithIdParams} from '../../../../../main/common/utils/urlFormatter';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -25,7 +26,7 @@ const mockOutstandingTasksFromCase = taskListService.outstandingTasksFromCase as
 const CLAIM_ID = 'aaa';
 const TASK_DESCRIPTION = 'Task description';
 const TASK_URL = 'Task URL';
-const respondentIncompleteSubmissionUrl = RESPONSE_INCOMPLETE_SUBMISSION_URL.replace(':id', CLAIM_ID);
+const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_INCOMPLETE_SUBMISSION_URL);
 
 describe('Response - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

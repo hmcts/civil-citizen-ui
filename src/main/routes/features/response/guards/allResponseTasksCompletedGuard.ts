@@ -4,6 +4,7 @@ import {Task} from '../../../../common/models/taskList/task';
 import {RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../../urls';
 import {outstandingTasksFromTaskLists} from '../../../../modules/taskListService';
 import assert from 'assert';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 export class AllResponseTasksCompletedGuard {
 
@@ -19,7 +20,7 @@ export class AllResponseTasksCompletedGuard {
         return next();
       }
 
-      res.redirect(RESPONSE_INCOMPLETE_SUBMISSION_URL.replace(':id', req.session.claimId));
+      res.redirect(constructResponseUrlWithIdParams(req.session.claimId, RESPONSE_INCOMPLETE_SUBMISSION_URL));
     } catch (error) {
       next(error);
     }
