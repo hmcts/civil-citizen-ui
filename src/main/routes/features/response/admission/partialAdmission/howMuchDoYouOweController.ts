@@ -11,7 +11,7 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import { toNumberOrUndefined } from '../../../../../common/utils/numberConverter';
 
-const howMuchDoYouOweViewPath = 'features/response/admission/partialAdmisssion/how-much-do-you-owe';
+const howMuchDoYouOweViewPath = 'features/response/admission/partialAdmission/how-much-do-you-owe';
 const howMuchDoYouOweController = express.Router();
 
 function renderView(form: HowMuchDoYouOwe, res: express.Response) {

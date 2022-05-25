@@ -1,22 +1,23 @@
 import request from 'supertest';
-import { app } from '../../../../../../main/app';
+import {app} from '../../../../../../main/app';
 import config from 'config';
-import { CLAIM_DETAILS } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
-import { mockClaim as mockResponse } from '../../../../../utils/mockClaim';
+import {CLAIM_DETAILS} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {mockClaim as mockResponse} from '../../../../../utils/mockClaim';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+
 const nock = require('nock');
 
 describe('Confirm Details page', () => {
   const idamUrl: string = config.get('idamUrl');
   const citizenRoleToken: string = config.get('citizenRoleToken');
-
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+      .reply(200, {id_token: citizenRoleToken});
   });
 
   describe('on Get', () => {
@@ -24,7 +25,7 @@ describe('Confirm Details page', () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(400);
-
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
@@ -37,12 +38,44 @@ describe('Confirm Details page', () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(200, mockResponse);
-
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(CLAIM_DETAILS);
+        });
+      expect(spyRedisSave).toBeCalled();
+    });
+    test('should retrieve claim from redis when claim exists in redis', async () => {
+      const mockGetClaimById = jest.fn().mockImplementation(() => {
+        return {};
+      });
+      jest.mock('../../../../../../main/app/client/civilServiceClient', () => {
+        return mockGetClaimById;
+      });
+      nock('http://localhost:4000')
+        .get('/cases/1111')
+        .reply(200, mockResponse);
+      app.locals.draftStoreClient = mockCivilClaim;
+      const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
+      await request(app)
+        .get('/case/1111/response/claim-details')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(CLAIM_DETAILS);
+        });
+      expect(spyRedisSave).not.toBeCalled();
+      expect(mockGetClaimById).not.toBeCalled();
+    });
+    test('should return 500 status when there is error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get('/case/1111/response/claim-details')
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
         });
     });
   });

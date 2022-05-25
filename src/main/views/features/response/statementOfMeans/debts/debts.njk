@@ -3,6 +3,7 @@
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
@@ -11,7 +12,6 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 
   {% set yesHtml %}
-
     {% if form.hasFieldError('debtsItems') %}
       {{ govukErrorMessage({
         text:t(form.errorFor('debtsItems'))
@@ -35,7 +35,6 @@
         {% set debtsErrors = debtsItem.getErrors() %}
       <div class="multiple-row">
         <div class="govuk-grid-row govuk-!-padding-top-3 {% if debtsErrors %} govuk-form-group--error{% endif %} ">
-
           {% for error in debtsErrors %}
             {{ govukErrorMessage({
               text:t(error.text)
@@ -110,13 +109,11 @@
         </div>
       </div>
 
-
       <form method="post" novalidate>
-
+        {{ csrfProtection(csrf) }}
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
             {{ yesNoRadioButton(t,'debtsRadio','option','', form,'',{yesHtml:yesHtml}) }}
-
           </div>
         </div>
 
@@ -134,7 +131,6 @@
           {{ contactUsForHelp(t) }}
         </div>
       </div>
-
     </main>
   </div>
 {% endblock %}
