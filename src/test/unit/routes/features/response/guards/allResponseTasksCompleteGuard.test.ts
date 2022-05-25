@@ -5,12 +5,13 @@ import {
 import express from 'express';
 import {TaskStatus} from '../../../../../../main/common/models/taskList/TaskStatus';
 import {TaskList} from '../../../../../../main/common/models/taskList/taskList';
+import {constructResponseUrlWithIdParams} from '../../../../../../main/common/utils/urlFormatter';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/services/features/response/checkAnswersService');
 
 const CLAIM_ID = 'aaa';
-const respondentIncompleteSubmissionUrl = RESPONSE_INCOMPLETE_SUBMISSION_URL.replace(':id', CLAIM_ID);
+const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_INCOMPLETE_SUBMISSION_URL);
 const TASK_LISTS = (taskStatus: TaskStatus) => [
   {
     title: 'Task List',

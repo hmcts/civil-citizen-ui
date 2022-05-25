@@ -6,6 +6,7 @@ import {
 import {outstandingTasksFromCase} from '../../../modules/taskListService';
 import {Task} from '../../../common/models/taskList/task';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersController');
@@ -20,7 +21,7 @@ incompleteSubmissionController.get(RESPONSE_INCOMPLETE_SUBMISSION_URL, async (re
     const tasks: Task[] = outstandingTasksFromCase(claim, claimId);
     res.render(incompleteSubmissionViewPath, {
       tasks: tasks,
-      taskListUri: CLAIM_TASK_LIST_URL.replace(':id', req.params.id),
+      taskListUri: constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL),
     });
   } catch (error) {
     logger.error(error);
