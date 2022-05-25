@@ -50,7 +50,7 @@
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
-      "totalInterest": 0,
+      "totalInterest": 35,
       "detailsOfClaim": "Test details of claim",
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
@@ -243,7 +243,7 @@
           }
         }
       ],
-      "totalClaimAmount": 20000,
+      "totalClaimAmount": 1000,
       "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
       "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
       "claimAmountBreakup": [
@@ -416,7 +416,7 @@
           }
         }
       ],
-      "totalClaimAmount": 5000,
+      "totalClaimAmount": 1000,
       "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
       "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
       "claimAmountBreakup": [
@@ -581,7 +581,7 @@
           }
         }
       ],
-      "totalClaimAmount": 5000,
+      "totalClaimAmount": 1000,
       "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
       "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
       "claimAmountBreakup": [
