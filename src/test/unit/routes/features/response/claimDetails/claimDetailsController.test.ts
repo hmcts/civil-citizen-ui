@@ -49,9 +49,17 @@ describe('Claim details page', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(CLAIM_DETAILS);
-         
+          expect(res.text).toContain(mockResponse.legacyCaseReference);
+          expect(res.text).toContain(getTotalAmountWithInterestAndFees(mockResponse));
+          expect(res.text).toContain(mockResponse?.claimAmountBreakup[0].value.claimReason);
+          expect(res.text).toContain(mockResponse?.claimAmountBreakup[0].value.claimAmount);
+          expect(res.text).toContain(mockResponse?.totalInterest);
+          expect(res.text).toContain(convertToPoundsFilter(mockResponse?.claimFee.calculatedAmountInPence));
+          expect(res.text).toContain(mockResponse.detailsOfClaim);
+          expect(res.text).toContain(mockResponse?.timelineOfEvents[0].value.timelineDescription);
+          expect(res.text).toContain(dateFilter(mockResponse?.timelineOfEvents[0].value.timelineDate));
         });
-      expect(spyRedisSave).not.toBeCalled();
+      expect(spyRedisSave).toBeCalled();
     });
     test('should retrieve claim from redis when claim exists in redis', async () => {
       const mockGetClaimById = jest.fn().mockImplementation(() => {
