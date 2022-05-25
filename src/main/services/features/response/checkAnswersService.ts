@@ -18,6 +18,7 @@ import {formatDateToFullDate} from '../../../common/utils/dateUtils';
 import PaymentOptionType from '../../../common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
 import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -54,13 +55,13 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
 };
 
 const buildExplanationRow = (claim: Claim, claimId: string, lang: string | unknown): SummaryRow => {
-  const explanationHref = CITIZEN_EXPLANATION_URL.replace(':id', claimId);
+  const explanationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_EXPLANATION_URL);
   return summaryRow(t('PAGES.EXPLANATION.TITLE', {lng: getLng(lang)}), claim.statementOfMeans?.explanation?.text, explanationHref, changeLabel(lang));
 };
 
 const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
-  const yourDetailsHref = CITIZEN_DETAILS_URL.replace(':id', claimId);
-  const phoneNumberHref = CITIZEN_PHONE_NUMBER_URL.replace(':id', claimId);
+  const yourDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL);
+  const phoneNumberHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PHONE_NUMBER_URL);
   const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
     summaryRows: [
@@ -81,8 +82,8 @@ const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | u
 };
 
 const buildResponseSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
-  const yourResponseHref = CITIZEN_RESPONSE_TYPE_URL.replace(':id', claimId);
-  const paymentOptionHref = CITIZEN_PAYMENT_OPTION_URL.replace(':id', claimId);
+  const yourResponseHref = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
+  const paymentOptionHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_OPTION_URL);
   const responseSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: getLng(lang)}),
     summaryRows: [
@@ -95,7 +96,7 @@ const buildResponseSection = (claim: Claim, claimId: string, lang: string | unkn
       responseSection.summaryList.rows.push(buildExplanationRow(claim, claimId, lang));
       break;
     case PaymentOptionType.INSTALMENTS: {
-      const repaymentPlanHref = CITIZEN_REPAYMENT_PLAN.replace(':id', claimId);
+      const repaymentPlanHref = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN);
       responseSection.summaryList.rows.push(...[
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng: getLng(lang)}), `£${claim.repaymentPlan.paymentAmount}`, repaymentPlanHref, changeLabel(lang)),
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', {lng: getLng(lang)}), `${t(`COMMON.PAYMENT_FREQUENCY.${claim.repaymentPlan.repaymentFrequency}`, {lng: getLng(lang)})}`, repaymentPlanHref, changeLabel(lang)),
