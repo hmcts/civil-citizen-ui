@@ -22,12 +22,14 @@ import financialDetailsController from './features/response/financialDetails/fin
 import whoEmploysYouController from './features/response/statementOfMeans/employment/whoEmploysYouController';
 import otherDependantsController from './features/response/statementOfMeans/otherDependants/otherDependantsController';
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
-import paymentOptionController from './features/response/admision/fullAdmission/paymentOption/paymentOptionController';
+import paymentOptionController from './features/response/admission/fullAdmission/paymentOption/paymentOptionController';
+import paymentDateController from './features/response/admission/fullAdmission/paymentOption/paymentDateController';
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
 import priorityDebtsController from './features/response/statementOfMeans/priorityDebtsController';
-import selfEmployedAsController from './features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
+import selfEmployedAsController
+  from './features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
 import onTaxPaymentsController
   from './features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
 import unemploymentController from './features/response/statementOfMeans/unemployment/unemploymentController';
@@ -36,7 +38,28 @@ import regularExpensesController from './features/response/statementOfMeans/expe
 import debtsController from './features/response/statementOfMeans/debts/debtsController';
 import monthlyExpenseIncomeCalculatorController
   from './calculateMonthlyIncomeExpense/monthlyExpenseIncomeCalculatorController';
+import carerController from './features/response/statementOfMeans/carerController';
+import explanationController from './features/response/statementOfMeans/explanationController';
+import alreadyPaidController from './features/response/admission/partialAdmission/alreadyPaidController';
 import taskListController from './features/response/taskListController';
+import contactThemController from './features/dashboard/contactThemController';
+import howMuchDoYouOweController from './features/response/admission/partialAdmission/howMuchDoYouOweController';
+import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
+import whyDoYouDisagreeController from './features/response/admission/partialAdmission/whyDoYouDisagreeController';
+import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
+import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
+import mediationIndividualPhoneController from './features/mediation/mediationIndividualPhoneController';
+import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
+import companyTelephoneNumberController from './features/mediation/companyTelephoneNumberController';
+import mediationDisagreementController from './features/mediation/mediationDisagreementController';
+import sendYourResponseByEmailController from './features/response/eligibility/sendYourResponseByEmailController';
+import freeTelephoneMediationController from './features/mediation/freeTelephoneMediationController';
+import rejectAllOfClaimController from './features/response/rejectAllOfClaimController';
+import defendantTimelineController from './features/response/timelineOfEvents/defendantTimelineController';
+import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
+import evidenceController from './features/response/evidence/evidenceController';
+import checkAnswersController from './features/response/checkAnswersController';
+import youHavePaidLessController from './features/response/rejection/fullReject/youHavePaidLessController';
 
 export default [
   homeController,
@@ -63,6 +86,7 @@ export default [
   otherDependantsController,
   partnerPensionController,
   paymentOptionController,
+  paymentDateController,
   betweenSixteenAndNineteenController,
   dependantsController,
   priorityDebtsController,
@@ -73,5 +97,26 @@ export default [
   regularExpensesController,
   debtsController,
   monthlyExpenseIncomeCalculatorController,
+  whyDoYouDisagreeController,
+  carerController,
+  explanationController,
+  alreadyPaidController,
   taskListController,
+  howMuchDoYouOweController,
+  courtOrdersController,
+  repaymentPlanController,
+  regularIncomeController,
+  mediationIndividualPhoneController,
+  howMuchHaveYouPaidController,
+  companyTelephoneNumberController,
+  mediationDisagreementController,
+  freeTelephoneMediationController,
+  sendYourResponseByEmailController,
+  contactThemController,
+  rejectAllOfClaimController,
+  iDontWantFreeMediationController,
+  evidenceController,
+  defendantTimelineController,
+  checkAnswersController,
+  youHavePaidLessController,
 ];

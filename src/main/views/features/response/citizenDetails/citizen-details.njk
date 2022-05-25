@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% set heading = t('Confirm your details') %}
 {% set correspondenceAddressClass = '' if postToThisAddress == 'yes' else 'govuk-visually-hidden' %}
+{% set addressTitle = t('Your address') %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -9,6 +10,8 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/address.njk" import addressForm %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -34,14 +37,17 @@
           <p class="govuk-body">{{ citizenFullName.individualFirstName }}</p>
           <h2 class="govuk-heading-m">{{ t('Last name') }}</h2>
           <p class="govuk-body">{{ citizenFullName.individualLastName }}</p>
-          <form method="post" class="govuk-!-padding-top-4" name="address">
+          <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
+            {{ csrfProtection(csrf) }}
             {{ addressForm(
               t,
               citizenAddress = citizenAddress,
               addressLine1Error = addressLine1Error,
               addressCityError = addressCityError,
               addressPostCodeError = addressPostCodeError,
-              addressType = 'primary') }}
+              addressType = 'primary',
+              addressTitle = addressTitle
+              ) }}
             {% set noHtml %}
             {% endset -%}
             {% set correspondenceAddressHtml %}
@@ -51,7 +57,7 @@
                 {{ t('Enter a UK postcode') }}
               </label>
               <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
-                We can’t find an address for that postcode. Try again or enter the address manually.
+                {{ t('We can’t find an address for that postcode. Try again or enter the address manually.') }}
               </div>
               <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
               <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
@@ -62,7 +68,7 @@
                     id: "correspondenceAddressList",
                     name: "correspondenceAddressList",
                     label: {
-                      text: "Pick an address"
+                      text: t("Pick an address")
                     },
                     items: []
                   }) }}
@@ -80,7 +86,9 @@
               addressLine1Error = correspondenceAddressLine1Error,
               addressCityError = correspondenceCityError,
               addressPostCodeError = correspondencePostCodeError,
-              addressType = 'correspondence') }}
+              addressType = 'correspondence',
+              addressTitle = addressTitle
+              ) }}
             </div>
             {% endset -%}
             <h2 class="govuk-heading-m">{{ t('Correspondence address') }}</h2>

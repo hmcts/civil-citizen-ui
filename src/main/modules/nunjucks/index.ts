@@ -9,7 +9,11 @@ import {YesNo} from '../../common/form/models/yesNo';
 import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
 import {CounterpartyType} from '../../common/models/counterpartyType';
 import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
-import {ScheduledExpenses} from '../../common/form/models/statementOfMeans/expenses/scheduledExpenses';
+import { TransactionSchedule } from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {EvidenceType} from '../../common/models/evidence/evidenceType';
+import {EvidenceDetails} from '../../common/models/evidence/evidenceDetails';
+import {addDaysFilter, dateFilter} from './filters/dateFilter';
+import {SignatureType} from '../../common/models/signatureType';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -41,7 +45,17 @@ export class Nunjucks {
       'node_modules',
       'govuk-frontend',
     );
-    const nunjucksEnv = configure([path.join(__dirname, '..', '..', 'views'), govUkFrontendPath], {
+    const mojFrontendPath = join(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      '..',
+      'node_modules',
+      '@ministryofjustice',
+      'frontend',
+    );
+    const nunjucksEnv = configure([path.join(__dirname, '..', '..', 'views'), govUkFrontendPath, mojFrontendPath], {
       autoescape: true,
       watch: this.developmentMode,
       express: app,
@@ -53,13 +67,19 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('development', this.developmentMode);
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
     nunjucksEnv.addFilter('currencyFormat', currencyFormat);
+    nunjucksEnv.addFilter('addDays', addDaysFilter);
+    nunjucksEnv.addFilter('date', dateFilter);
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
     nunjucksEnv.addGlobal('YesNo', YesNo);
     nunjucksEnv.addGlobal('ResidenceType', ResidenceType);
     nunjucksEnv.addGlobal('CounterpartyType', CounterpartyType);
     nunjucksEnv.addGlobal('UnemploymentCategory', UnemploymentCategory);
-    nunjucksEnv.addGlobal('ScheduledExpenses', ScheduledExpenses);
+    nunjucksEnv.addGlobal('TransactionSchedule', TransactionSchedule);
+    nunjucksEnv.addGlobal('EvidenceType', EvidenceType);
+    nunjucksEnv.addGlobal('EvidenceDetails', EvidenceDetails);
+
+    nunjucksEnv.addGlobal('SignatureType', SignatureType);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

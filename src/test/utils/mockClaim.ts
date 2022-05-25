@@ -54,6 +54,16 @@ export const mockClaim: Claim = {
         option: 'yes',
       },
     },
+  partialAdmission:{
+    howMuchHaveYouPaid: {
+      amount : 20,
+      totalClaimAmount : 110,
+      day : 1,
+      month : 1,
+      year : 2040,
+      text : 'text',
+    },
+  },
   totalClaimAmount: 110,
   respondent1ResponseDeadline: new Date('2022-01-24T15:59:59'),
   detailsOfClaim: 'the reason i have given',
@@ -67,4 +77,11 @@ export const mockClaim: Claim = {
   responseInDays: function (): NumberOfDays {
     throw new Error('Function not implemented.');
   },
+  getRemainingDays: function (): number {
+    throw new Error('Function not implemented.');
+  },
+  isDeadLinePassed: function (): boolean {
+    throw new Error('Function not implemented.');
+  },
+  paymentDate: new Date('2022-06-01T00:00:00'),
 };

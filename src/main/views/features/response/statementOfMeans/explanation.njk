@@ -1,0 +1,49 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getErrors() %}
+      {% if form.hasErrors() %}
+        {{ govukErrorSummary({
+          "titleText": t("ERRORS.THERE_WAS_A_PROBLEM"),
+          "errorList": errors
+        }) }}
+      {% endif %}
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <div class="govuk-form-group {% if errors.length %} govuk-form-group--error {% endif %}">
+              {{ govukTextarea({
+              name: "text",
+              id: "text",
+              value: form.model.text,
+              classes:"govuk-!-width-three-quarters",
+              label: {
+                text: t("EXPLANATION.TITLE"),
+                classes: "govuk-label--l"
+              },
+              errorMessage: {
+                text: t(form.errorFor('text'))
+              } if form.hasFieldError('text')
+            }) }}
+              <div class="govuk-form-group">
+                {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+                {{ contactUsForHelp(t) }}
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

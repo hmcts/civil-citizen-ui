@@ -1,73 +1,49 @@
-import {TaskStatus} from '../../models/taskList/TaskStatus';
 import {Task} from '../../models/taskList/task';
 import {TaskList} from '../../models/taskList/taskList';
 import {Claim} from '../../models/claim';
 import {getConfirmYourDetailsTask} from './tasks/confirmYourDetails';
-import {getneedMoreTimeTask} from './tasks/needMoreTime';
+import {getNeedMoreTimeTask} from './tasks/needMoreTime';
+import {getChooseAResponseTask} from './tasks/chooseAResponse';
+import {getCheckAndSubmitYourResponseTask} from './tasks/checkAndSubmitYourResponse';
+import {isPastDeadline} from '../dateUtils';
 
-/**
- * THIS FILE IS A CONCEPT AND DOESN'T WORK
- * 
- * The logic on this file is not the real business logic.
- * This code is only a concept of what we should do. 
- * 
- */
-
-const chooseAResponseTask = {
-  description: 'Choose a response',
-  url: '/chose-a-response',
-  status: TaskStatus.COMPLETE,
-};
-
-const howMuchYouHavePaidTask = {
-  description: 'Tell us how much you’ve paid',
-  url: '/how-much-paid',
-  status: TaskStatus.INCOMPLETE,
-};
-
-const buildPrepareYourResponseSection = async (claim: Claim): Promise<TaskList> => {
+const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:string): TaskList => {
   const tasks: Task[] = [];
-  const confirmYourDetailsTask = getConfirmYourDetailsTask(claim);
-  const needMoreTimeTask = getneedMoreTimeTask(claim);
+  const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId);
+  // TODO : when need more time page is developed we need to generate this function and push this task to the tasks
+  const needMoreTimeTask = getNeedMoreTimeTask(claim);
 
+  const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
+  // TODO : when need more page is developed, we also need to check if the posponed deadline is passed if the defendant requested addtional time
+  // isDeadlinePassed = isPastDeadline(now, postponedDeadline);
   tasks.push(confirmYourDetailsTask);
-  if (claim.respondent1ResponseDeadline > new Date()) {
+  if (!isDeadlinePassed) {
     tasks.push(needMoreTimeTask);
   }
   return { title: 'Prepare your response', tasks };
 };
 
-const buildRespondeToClaimSection = async (claim: Claim): Promise<TaskList> => {
+const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList => {
   const tasks: Task[] = [];
+  const chooseAResponseTask = getChooseAResponseTask(caseData, claimId);
+  // TODO : depending on the response type full admission/partial admission or rejection we need to add new tasks
 
   tasks.push(chooseAResponseTask);
-  if (!claim.paymentOption) {
-    tasks.push(howMuchYouHavePaidTask);
-  }
-  return { title: 'Responde to Claim', tasks };
+  return { title: 'Respond to Claim', tasks };
 };
 
-const buildTryToResolveClaimSection = async (claim: Claim): Promise<TaskList> => {
+const buildSubmitSection = (claim: Claim, caseData: Claim, claimId: string, isIncompletsubmission: boolean): TaskList => {
   const tasks: Task[] = [];
 
-  if (!claim.paymentOption) {
-    tasks.push(howMuchYouHavePaidTask);
-  }
-  return { title: 'Try to resolve the Claim', tasks };
-};
+  // TODO: when check and submit tasks page is developed we need to update logic of this task 
+  const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claim, caseData, claimId, isIncompletsubmission);
 
-const buildYourHearingRequirementsSection = async (claim: Claim): Promise<TaskList> => {
-  const tasks: Task[] = [];
-
-  if (claim.paymentOption) {
-    tasks.push(howMuchYouHavePaidTask);
-  }
-  return { title: 'Your hearing requirements', tasks };
+  tasks.push(checkAndSubmitYourResponseTask);
+  return { title: 'Submit', tasks };
 };
 
 export {
   buildPrepareYourResponseSection,
-  buildRespondeToClaimSection,
-  buildTryToResolveClaimSection,
-  buildYourHearingRequirementsSection,
+  buildRespondToClaimSection,
+  buildSubmitSection,
 };

@@ -3,7 +3,7 @@ import {VALID_NUMBER_FOR_PREVIOUS_PAGE} from '../validationErrors/errorMessageCo
 import {Form} from '../../form/models/form';
 
 /**
- * Validates a number against a value of a object property. Returns true if the number is equal to or less than the property value number.
+ * Validates a number against a value of an object property. Returns true if the number is equal to or less than the property value number.
  * Will not validate (return true) if the property value is not numeric or is not defined
  */
 @ValidatorConstraint({name: 'equalOrLessToPropertyValue'})
@@ -21,9 +21,13 @@ export class EqualToOrLessThanPropertyValueValidator implements ValidatorConstra
   validate(value: number, validationArguments?: ValidationArguments): Promise<boolean> | boolean {
     if (validationArguments.constraints && validationArguments.constraints.length > 0) {
       const property = validationArguments.constraints[0];
+      const strictComparison = validationArguments.constraints[1];
       const propertyValue = (validationArguments.object as any | Form)[property];
       if (propertyValue === undefined || isNaN(propertyValue) || !value || isNaN(value)) {
         return true;
+      }
+      if (strictComparison){
+        return Number(value) < propertyValue;
       }
       return Number(value) <= propertyValue;
     }

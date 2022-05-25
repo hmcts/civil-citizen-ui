@@ -1,0 +1,72 @@
+{% extends "claim-details-tpl.njk" %}
+
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.MEDIATION_DISAGREEMENT.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  {% set yesHtml %}
+  <p class="govuk-body">{{ t("We'll ask the claimant if they'll try free mediation. If they say no, the claim will go to a hearing.") }}</p>
+  {% endset -%}
+
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+
+      {% set errors = form.getErrors() %}
+      {% if form.hasErrors() %}
+        {{ govukErrorSummary({
+            'titleText': t('ERRORS.THERE_WAS_A_PROBLEM'),
+            'errorList': errors
+          }) }}
+      {% endif %}
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+          <div class="govuk-!-margin-bottom-8">
+            <h1 class="govuk-heading-l">{{t('You chose not to try free mediation')}}</h1>
+            <p class="govuk-body">{{ t('The claim will continue and you may have to go to a hearing.') }}</p>
+          </div>
+
+          <div class="govuk-!-margin-bottom-8">
+            <h2 class="govuk-heading-m">{{ t('Advantages of free mediation') }}</h2>
+            <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.MANY_ADVANTAGES_TO_FREE_MEDIATION') }}</p>
+            <ul class="govuk-list govuk-list--bullet">
+              <li>{{ t('mediation can be quicker and cheaper than going to court') }}</li>
+              <li>{{ t('the mediator speaks to each side separately, you do not speak to the other party during mediation') }}</li>
+              <li>{{ t('it gives you control over how your dispute is settled, which is not possible by going to court') }}</li>
+              <li>{{ t("it's confidential and nothing said or done during mediation can be used in court") }}</li>
+              <li>{{ t('mediation can avoid a ') }}
+                <a target="_blank" rel="noreferrer noopener" href="https://www.gov.uk/county-court-judgments-ccj-for-debt">{{  t('County Court Judgment (opens in a new tab)') }}</a>
+                {{ t(' being made against you') }}</li>
+            </ul>
+          </div>
+
+          <h2 class="govuk-heading-m">{{ t('Will you change your decision and try free mediation?') }}</h2>
+          <p class="govuk-body">{{ t('If you choose not to try mediation this cannot be changed once your response is submitted.') }}</p>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml:yesHtml, classes: 'govuk-radios'}) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+{% endblock %}

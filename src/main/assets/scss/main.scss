@@ -1,2 +1,50 @@
 @import '~govuk-frontend';
 @import './task-list';
+@import './citizen-ui-colours';
+
+.moj-add-another {
+
+  // sass-lint:disable class-name-format
+  &__remove-button {
+    display: none;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.govuk-link-button {
+  background: none;
+  border: 0;
+  color: $govuk-link-colour;
+  cursor: pointer;
+  margin-bottom: 1em;
+  text-decoration: underline;
+}
+
+.panel {
+  border-left: 1px solid $govuk-border-colour;
+  margin-bottom: 1em;
+  padding: 1em;
+}
+
+.panel-border-narrow {
+  border-left-width: 5px;
+}
+
+.govuk-description-block {
+  background-color: $govuk-description-block-colour;
+  margin-right: 30px;
+  padding: 10px 20px;
+}
+
+.govuk-phase-banner__text {
+  width: 100%;
+}
+
+.language {
+  float: right;
+  // sass-lint:disable zero-unit
+  margin-bottom: 0px;
+}

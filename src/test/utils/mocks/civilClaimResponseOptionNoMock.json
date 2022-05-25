@@ -35,6 +35,14 @@
         "option": "no",
         "numberOfPeople": "",
         "details": ""
+      },
+      "carer": {
+        "option": "no"
+      }
+    },
+    "mediation":{
+      "mediationDisagreement":{
+        "option": "no"
       }
     }
   }

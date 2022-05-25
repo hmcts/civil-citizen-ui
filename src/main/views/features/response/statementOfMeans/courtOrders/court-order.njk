@@ -1,0 +1,71 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+
+{% macro courtOrder(courtOrderIndex, courtOrderValue, errorFor) %}
+
+  {% call govukFieldset({
+    classes: 'moj-add-another__item govuk-!-margin-bottom-6',
+    legend: {
+      classes: 'moj-add-another__title govuk-fieldset__legend--m',
+      isPageHeading: false
+    }
+  }) %}
+
+    {{ govukInput({
+      id: 'rows[' + courtOrderIndex + '][claimNumber]',
+      name: 'rows[' + courtOrderIndex + '][claimNumber]',
+      value: courtOrderValue.claimNumber,
+      type: 'text',
+      label: {
+        text: t('Claim number')
+      },
+      attributes: {
+        'data-name': 'rows[%index%][claimNumber]',
+        'data-id': 'rows[%index%][claimNumber]'
+      },
+      errorMessage: {
+        text: t(errorFor('rows['+courtOrderIndex+'][claimNumber]'))
+      } if errorFor('rows['+courtOrderIndex+'][claimNumber]')
+    }) }}
+
+    {{ govukInput({
+      id: 'rows[' + courtOrderIndex + '][amount]',
+      name: 'rows[' + courtOrderIndex + '][amount]',
+      value: '' + courtOrderValue.amount,
+      type: 'number',
+      prefix: {
+        text: "£"
+      },
+      label: {
+        text: t('Amount you owe')
+      },
+      attributes: {
+        'data-name': 'rows[%index%][amount]',
+        'data-id': 'rows[%index%][amount]'
+      },
+      errorMessage: {
+        text: t(errorFor('rows['+courtOrderIndex+'][amount]'))
+      } if errorFor('rows['+courtOrderIndex+'][amount]')
+    }) }}
+    {{ govukInput({
+      id: 'rows[' + courtOrderIndex + '][instalmentAmount]',
+      name: 'rows[' + courtOrderIndex + '][instalmentAmount]',
+      value: '' + courtOrderValue.instalmentAmount,
+      type: 'number',
+      prefix: {
+        text: "£"
+      },
+      label: {
+        text: t('Monthly instalment amount')
+      },
+      attributes: {
+        'data-name': 'rows[%index%][instalmentAmount]',
+        'data-id': 'rows[%index%][instalmentAmount]'
+      },
+      errorMessage: {
+        text: t(errorFor('rows['+courtOrderIndex+'][instalmentAmount]'))
+      } if errorFor('rows['+courtOrderIndex+'][instalmentAmount]')
+    }) }}
+
+  {% endcall %}
+{% endmacro %}

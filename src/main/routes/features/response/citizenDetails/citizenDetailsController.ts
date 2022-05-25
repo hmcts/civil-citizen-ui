@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {Validator} from 'class-validator';
 import {Form} from '../../../../common/form/models/form';
-import {CITIZEN_DETAILS_URL, DOB_URL} from '../../../urls';
+import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../urls';
 import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {Respondent} from '../../../../common/models/respondent';
@@ -9,7 +9,7 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {getRespondentInformation, saveRespondent} from '../../../../modules/citizenDetails/citizenDetailsService';
 import _ from 'lodash';
-
+import { CounterpartyType } from '../../../../common/models/counterpartyType';
 
 const citizenDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -17,10 +17,21 @@ const logger = Logger.getLogger('citizenDetailsController');
 
 let citizenFullName: object;
 
+const CITIZEN_DETAILS_COMPANY_VIEW_PATH = 'features/response/citizenDetails/citizen-details-company';
 const CITIZEN_DETAILS_VIEW_PATH = 'features/response/citizenDetails/citizen-details';
 
-function renderPageWithError(res: express.Response, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, errorList: Form, req: express.Request): void {
-  res.render(CITIZEN_DETAILS_VIEW_PATH, {
+const getViewpathWithType = (type: CounterpartyType) => {
+  if (type === CounterpartyType.ORGANISATION || type === CounterpartyType.COMPANY) {
+    return CITIZEN_DETAILS_COMPANY_VIEW_PATH;
+  }
+  return CITIZEN_DETAILS_VIEW_PATH;
+};
+
+function renderPageWithError(res: express.Response, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, errorList: Form, req: express.Request, respondent: Respondent, contactPerson: string): void {
+  const partyName = respondent?.partyName;
+  const type = respondent?.type;
+  const viewPath = getViewpathWithType(type);
+  res.render(viewPath, {
     citizenFullName: citizenFullName,
     citizenAddress: citizenAddress,
     citizenCorrespondenceAddress: citizenCorrespondenceAddress,
@@ -32,8 +43,19 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
     correspondenceCityError: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceCity') : '',
     correspondencePostCodeError: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondencePostCode') : '',
     postToThisAddress: req.body.postToThisAddress,
+    partyName: partyName,
+    contactPerson: contactPerson,
+    type: type,
   });
 }
+
+const redirect =  async (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
+  if (responseDataRedis?.type === CounterpartyType.SOLE_TRADER || responseDataRedis?.type === CounterpartyType.INDIVIDUAL) {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
+  } else {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
+  }
+};
 
 citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
   try {
@@ -59,11 +81,16 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
       individualFirstName: responseDataRedis?.individualFirstName || 'individualFirstName test',
       individualLastName: responseDataRedis?.individualLastName || 'individualLastName test',
     };
-    res.render(CITIZEN_DETAILS_VIEW_PATH, {
+
+    const viewPath = getViewpathWithType(responseDataRedis?.type);
+    res.render(viewPath, {
       citizenFullName: citizenFullName,
       citizenAddress: citizenAddressModel,
       citizenCorrespondenceAddress: citizenCorrespondenceAddressModel,
       postToThisAddress: citizenCorrespondenceAddressModel ? YesNo.YES : YesNo.NO,
+      partyName: responseDataRedis?.partyName,
+      contactPerson: responseDataRedis?.contactPerson,
+      type: responseDataRedis?.type,
     });
   } catch (error) {
     logger.error(error);
@@ -72,6 +99,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
 });
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+  const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
   try {
     const citizenAddress = new CitizenAddress(
       req.body.primaryAddressLine1,
@@ -81,13 +109,16 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
       req.body.primaryPostCode,
     );
 
-    const citizenCorrespondenceAddress = new CitizenCorrespondenceAddress(
+    let citizenCorrespondenceAddress = new CitizenCorrespondenceAddress(
       req.body.correspondenceAddressLine1,
       req.body.correspondenceAddressLine2,
       req.body.correspondenceAddressLine3,
       req.body.correspondenceCity,
       req.body.correspondencePostCode,
     );
+
+    const contactPerson = req.body.contactPerson;
+
     const validator = new Validator();
     const errorList = new Form();
     if (req.body.postToThisAddress === YesNo.YES) {
@@ -97,13 +128,14 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
     } else {
       citizenAddress.errors = validator.validateSync(citizenAddress);
       errorList.errors = citizenAddress.errors;
+      citizenCorrespondenceAddress = new CitizenCorrespondenceAddress();
     }
     if ((citizenAddress?.errors?.length > 0)
       || (citizenCorrespondenceAddress?.errors?.length > 0)) {
-      renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req);
+      renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req, responseDataRedis, contactPerson);
     } else {
-      await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
+      await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, contactPerson);
+      redirect(responseDataRedis, req, res);
     }
   } catch (error) {
     logger.error(error);

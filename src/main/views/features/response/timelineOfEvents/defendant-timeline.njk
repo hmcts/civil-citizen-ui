@@ -1,0 +1,99 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/timeline-row.njk" import timelineRow %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% set title = 'Add your timeline of events' %}
+{% block pageTitle %}
+  {{ setPageTitle(title) }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getAllErrors() %}
+      {% if errors.length > 0 %}
+        {{ govukErrorSummary({
+          "titleText": t("There was a problem"),
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t(title) }}</h1>
+          <div class="govuk-description-block govuk-body">
+            <h2 class="govuk-heading-s">{{ t('Their timeline') }}</h2>
+            <table class="govuk-table">
+              <thead class="govuk-table__head">
+              <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">{{ t('Date') }}</th>
+                <th scope="col" class="govuk-table__header">{{ t('What happened') }}</th>
+              </tr>
+              </thead>
+              <tbody class="govuk-table__body">
+              {% for event in theirTimeline %}
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">{{ event.value.timelineDate | date }}</td>
+                  <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-0">{{ t("Add your timeline of events (optional)") }}</h2>
+          <p class="govuk-body">
+            {{ t('Include dates if you know them.') }}
+          </p>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
+              <label class="govuk-label--s">
+                {{ t('Date') }}
+              </label>
+              <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
+                {{ t('For example, {{ sixMonthAgo }}', { sixMonthAgo: 'now' | addDays(-180) | date }) }}
+              </p>
+            </div>
+            <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
+              <label class="govuk-label--s">{{ t('What happened') }}</label>
+              <p
+                class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('For example, you might have signed a contract') }}</p>
+            </div>
+            {% for timeline in form.model.rows %}
+              {{ timelineRow(timeline, loop.index0, form) }}
+            {% endfor %}
+
+            {{ govukButton({
+              text: t("Add another event"),
+              classes: "govuk-button--secondary append-row"
+            }) }}
+            {{ govukTextarea({
+              id: "comment",
+              name: "comment",
+              label: {
+                text: t("Add any comments about their timeline (optional)"),
+                classes: "govuk-label--s",
+                isPageHeading: false
+              },
+              value: form.model.comment,
+              classes: "govuk-grid-column-full",
+              spellcheck: false,
+              errorMessage: {
+                text: form.errorFor("comment")
+              } if form.hasFieldError( "comment")
+            }) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

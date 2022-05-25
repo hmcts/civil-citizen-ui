@@ -2,7 +2,13 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_RESPONSE_TYPE_URL} from '../../../../../../main/routes/urls';
+import {
+  CITIZEN_ALREADY_PAID_URL,
+  CITIZEN_PAYMENT_OPTION_URL,
+  CITIZEN_REJECT_ALL_CLAIM_URL,
+  CITIZEN_RESPONSE_TYPE_URL,
+  CLAIM_TASK_LIST_URL,
+} from '../../../../../../main/routes/urls';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {Respondent} from '../../../../../../main/common/models/respondent';
@@ -119,6 +125,44 @@ describe('Citizen response type', () => {
         .send('responseType=test')
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
+
+    test('should redirect page when user selects I admit part of the claim ', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        const respondent1 = new Respondent();
+        respondent1.responseType = 'test';
+        claim.respondent1 = respondent1;
+        return claim;
+      });
+      await request(app)
+        .post(CITIZEN_RESPONSE_TYPE_URL)
+        .send('responseType=PART_ADMISSION')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_ALREADY_PAID_URL);
+        });
+    });
+
+    test('should redirect to task list page when user selects I admit all of the claim', async () => {
+      await request(app)
+        .post(CITIZEN_RESPONSE_TYPE_URL)
+        .send('responseType=FULL_ADMISSION')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_PAYMENT_OPTION_URL);
+        });
+    });
+
+    test('should redirect to reject claim page when user selects I reject all of the claim', async () => {
+      await request(app)
+        .post(CITIZEN_RESPONSE_TYPE_URL)
+        .send('responseType=FULL_DEFENCE')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_REJECT_ALL_CLAIM_URL);
         });
     });
   });

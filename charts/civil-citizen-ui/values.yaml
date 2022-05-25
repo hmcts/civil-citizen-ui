@@ -1,3 +1,21 @@
+ccd:
+  enabled: false
+
+postgresql:
+  enabled: false
+
+idam-pr:
+  enabled: false
+
+xui-webapp:
+  enabled: false
+
+camunda-bpm:
+  enabled: false
+
+civil-service:
+  enabled: false
+
 nodejs:
   applicationPort: 3001
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
@@ -21,10 +39,9 @@ nodejs:
     REDIS_TLS: true
     CIVIL_SERVICE_URL: http://civil-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     ALLOW_CONFIG_MUTATIONS: true
+    ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
   autoscaling:
     enabled: false
     maxReplicas: 16
     targetCPUUtilizationPercentage: 80
 
-idam-pr:
-  enabled: false

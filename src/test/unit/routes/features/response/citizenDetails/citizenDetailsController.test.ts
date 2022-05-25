@@ -1,7 +1,7 @@
 import { app } from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
-import {CITIZEN_DETAILS_URL} from '../../../../../../main/routes/urls';
+import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from '../../../../../../main/routes/urls';
 import {
   VALID_ADDRESS_LINE_1,
   VALID_CITY,
@@ -18,7 +18,7 @@ import {Claim} from '../../../../../../main/common/models/claim';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-
+import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -34,6 +34,15 @@ const buildClaimOfRespondent = (): Respondent => {
   claim.respondent1.individualTitle = 'individualTitle';
   claim.respondent1.individualFirstName = 'individualFirstName';
   claim.respondent1.individualLastName = 'individualLastName';
+  claim.respondent1.primaryAddress = buildPrimaryAddress();
+  claim.respondent1.correspondenceAddress = buildCorrespondenceAddress();
+  return claim.respondent1;
+};
+
+const buildClaimOfRespondentType = (type: CounterpartyType): Respondent =>
+{
+  claim.respondent1 = new Respondent();
+  claim.respondent1.type = type;
   claim.respondent1.primaryAddress = buildPrimaryAddress();
   claim.respondent1.correspondenceAddress = buildCorrespondenceAddress();
   return claim.respondent1;
@@ -134,6 +143,32 @@ describe('Confirm Details page', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Confirm your details');
+      });
+  });
+
+  test('should return your details company page', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(CounterpartyType.COMPANY);
+    });
+    await request(app)
+      .get(CITIZEN_DETAILS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Confirm your details');
+        expect(res.text).toContain('Company name');
+      });
+  });
+
+  test('should return your details organisation page', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+    });
+    await request(app)
+      .get(CITIZEN_DETAILS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Confirm your details');
+        expect(res.text).toContain('Organisation name');
       });
   });
 
@@ -386,6 +421,64 @@ describe('Confirm Details page', () => {
       });
   });
 
+  test('POST/Citizen details - should display organisation details and return errors when postToThisAddress is set to YES', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+    });
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: '',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: '',
+        primaryPostCode: '',
+        postToThisAddress: 'yes',
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain('Confirm your details');
+        expect(res.text).toContain('Organisation name');
+      });
+  });
+
+  test('POST/Citizen details - should display company details and return errors when postToThisAddress is set to YES', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(CounterpartyType.COMPANY);
+    });
+    await request(app)
+      .post(CITIZEN_DETAILS_URL)
+      .send({
+        primaryAddressLine1: '',
+        primaryAddressLine2: '',
+        primaryAddressLine3: '',
+        primaryCity: '',
+        primaryPostCode: '',
+        postToThisAddress: 'yes',
+        correspondenceAddressLine1: '',
+        correspondenceAddressLine2: '',
+        correspondenceAddressLine3: '',
+        correspondenceCity: '',
+        correspondencePostCode: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_ADDRESS_LINE_1);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_CITY);
+        expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
+        expect(res.text).toContain('Confirm your details');
+        expect(res.text).toContain('Company name');
+      });
+  });
+
   test('get/Citizen details - should return test variable when there is no data on redis and civil-service', async () => {
     await request(app)
       .get('/case/1111/response/your-details')
@@ -394,5 +487,56 @@ describe('Confirm Details page', () => {
         expect(res.text).toContain('Confirm your details');
         expect(res.text).toContain('individualTitle Test');
       });
+  });
+
+  describe('Redirect to Phone or DOB screen', () => {
+    test('should redirect to confirm phone screen if respondent type is COMPANY', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return buildClaimOfRespondentType(CounterpartyType.COMPANY);
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
+        });
+    });
+    test('should redirect to confirm phone screen if respondent type is ORGANISATION', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
+        });
+    });
+    test('should redirect to confirm DOB screen if respondent type is INDIVIDUAL', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return buildClaimOfRespondentType(CounterpartyType.INDIVIDUAL);
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(DOB_URL);
+        });
+    });
+    test('should redirect to confirm DOB screen if respondent type is SOLE TRADER', async () => {
+      mockGetRespondentInformation.mockImplementation(async () => {
+        return buildClaimOfRespondentType(CounterpartyType.SOLE_TRADER);
+      });
+      await request(app)
+        .post(CITIZEN_DETAILS_URL)
+        .send(validDataForPost)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(DOB_URL);
+        });
+    });
   });
 });
