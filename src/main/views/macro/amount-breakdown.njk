@@ -5,15 +5,15 @@
 <table class="govuk-table">
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header">{{ t('Amount breakdown') }}</th>
-      <th scope="col" class="govuk-table__header">{{ t('Amount') }}</th>
+      <th scope="col" class="govuk-table__header">{{ t('PAGES.CLAIM_DETAILS.AMOUNT_BREAKDOWN') }}</th>
+      <th scope="col" class="govuk-table__header align-right">{{ t('PAGES.CLAIM_DETAILS.AMOUNT') }}</th>
     </tr>
   </thead>
   <tbody class="govuk-table__body">
   {% for breakup in claim.claimAmountBreakup %}
     <tr class="govuk-table__row">
       <td class="govuk-table__cell">{{ breakup.value.claimReason }}</td>
-      <td class="govuk-table__cell">{{ breakup.value.claimAmount | pennies2pounds  | currencyFormat(breakup.value.claimAmount)}}</td>
+      <td class="govuk-table__cell align-right">{{ breakup.value.claimAmount | pennies2pounds  | currencyFormat(breakup.value.claimAmount)}}</td>
     </tr>
   {% endfor %}
   {% if claim.totalInterest > 0 %}
@@ -21,28 +21,28 @@
       <td class="govuk-table__cell">
       {% if interestData.rate %}
         {{ govukDetails({
-          summaryText: t("Interest"),
-          classes : "interest",
+          summaryText: t('PAGES.CLAIM_DETAILS.INTEREST'),
+          classes : "no-bottom-margin",
           text: interestSnippet(interestData.rate, interestData.numberOfDays, interestData.interestFromDate, interestData.interestToDate)
           }) }}
       {% else %}
-        {{  t("Interest") }}
+        {{ t('PAGES.CLAIM_DETAILS.INTEREST') }}
       {% endif %}
       </td>
-      <td class="govuk-table__cell">{{ claim.totalInterest | currencyFormat(claim.totalInterest) }}</td>
+      <td class="govuk-table__cell align-right">{{ claim.totalInterest | currencyFormat(claim.totalInterest) }}</td>
     </tr>
    {% endif %}
     <tr class="govuk-table__row">
-      <td class="govuk-table__cell">{{ t('Claim fee') }}</td>
+      <td class="govuk-table__cell">{{ t('PAGES.CLAIM_DETAILS.CLAIM_FEE') }}</td>
       {% if claim.claimFee.calculatedAmountInPence !== 0 %}
-        <td class="govuk-table__cell">{{ claim.claimFee.calculatedAmountInPence | pennies2pounds | currencyFormat(claim.claimFee.calculatedAmountInPence) }}</td>
+        <td class="govuk-table__cell align-right">{{ claim.claimFee.calculatedAmountInPence | pennies2pounds | currencyFormat(claim.claimFee.calculatedAmountInPence) }}</td>
       {% else %}
-        <td class="govuk-table__cell">£0</td>
+        <td class="govuk-table__cell align-right">£0</td>
       {% endif %}
       </tr>
       <tr class="govuk-table__row">
-        <td class="govuk-table__cell"><strong>{{ t('Claim Total') }}</strong></td>
-        <td class="govuk-table__cell"><strong>{{ totalAmount | currencyFormat(totalAmount) }}</strong></td>
+        <td class="govuk-table__cell"><strong>{{ t('PAGES.CLAIM_DETAILS.CLAIM_TOTAL') }}</strong></td>
+        <td class="govuk-table__cell  align-right"><strong>{{ totalAmount | currencyFormat(totalAmount) }}</strong></td>
       </tr>
   </tbody>
 </table>
