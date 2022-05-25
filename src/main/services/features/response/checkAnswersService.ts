@@ -99,7 +99,9 @@ const buildResponseSection = (claim: Claim, claimId: string, lang: string | unkn
     case PaymentOptionType.INSTALMENTS: {
       const repaymentPlanHref = CITIZEN_REPAYMENT_PLAN.replace(':id', claimId);
       responseSection.summaryList.rows.push(...[
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng: getLng(lang)}), `£${claim.repaymentPlan.paymentAmount} ${t(`COMMON.PAYMENT_FREQUENCY.${claim.repaymentPlan.repaymentFrequency}`, {lng: getLng(lang)})}`, repaymentPlanHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng: getLng(lang)}), `£${claim.repaymentPlan.paymentAmount}`, repaymentPlanHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', {lng: getLng(lang)}), `${t(`COMMON.PAYMENT_FREQUENCY.${claim.repaymentPlan.repaymentFrequency}`, {lng: getLng(lang)})}`, repaymentPlanHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT', {lng: getLng(lang)}), formatDateToFullDate(claim.repaymentPlan.firstRepaymentDate), repaymentPlanHref, changeLabel(lang)),
         buildExplanationRow(claim, claimId, lang),
       ]);
     }

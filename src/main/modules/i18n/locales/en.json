@@ -46,7 +46,9 @@
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "SAME_ADDRESS": "Same as address",
       "DOB": "Date of birth",
-      "REGULAR_PAYMENTS": "Regular payments of"
+      "REGULAR_PAYMENTS": "Regular payments of",
+      "PAYMENT_FREQUENCY": "Frequency of payments",
+      "FIRST_PAYMENT": "Make the first payment on"
     },
     "MEDIATION_DISAGREEMENT": {
       "PAGE_TITLE": "Free Mediation Disagreement",
