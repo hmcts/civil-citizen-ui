@@ -4,14 +4,7 @@ import {getTaskLists, getTitle, getDescription} from '../../../modules/taskListS
 import {Claim} from '../../../common/models/claim';
 import {getDraftClaimFromStore, getCaseDataFromStore } from '../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {TaskList} from '../../../common/models/taskList/taskList';
 
-declare module 'express-session' {
-  interface Session {
-    claimId: string;
-    taskLists: TaskList[];
-  }
-}
 /**
  * THIS FILE IS A CONCEPT
  *
