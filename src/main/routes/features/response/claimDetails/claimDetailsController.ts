@@ -21,7 +21,7 @@ export const getTotalAmountWithInterestAndFees = (claim: Claim) => {
 
 // -- GET Claim Details
 claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: express.Response) => {
-  try { 
+  try {
     let claim: Claim = await getCaseDataFromStore((req.params.id));
     if (claim.isEmpty()) {
       claim = await civilServiceClient.retrieveClaimDetails(req.params.id, <AppRequest>req);
@@ -32,8 +32,8 @@ claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: 
         claim = new Claim();
         claim.legacyCaseReference = 'testCaseReference';
         claim.totalClaimAmount = 200;
-        claim.totalInterest = 15;
         claim.detailsOfClaim = 'detailsOfClaimTest';
+        claim.totalInterest = 15;
         claim.claimFee = {calculatedAmountInPence: '3500'};
       }
     }
@@ -45,7 +45,6 @@ claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: 
   } catch (error) {
     logger.error(error);
     res.status(500).send({error: error.message});
-    
   }
 });
 
