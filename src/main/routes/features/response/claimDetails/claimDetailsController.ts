@@ -32,6 +32,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: 
         claim = new Claim();
         claim.legacyCaseReference = 'testCaseReference';
         claim.totalClaimAmount = 200;
+        claim.totalInterest = 15;
         claim.detailsOfClaim = 'detailsOfClaimTest';
         claim.claimFee = {calculatedAmountInPence: '3500'};
       }
