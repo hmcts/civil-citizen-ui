@@ -42,16 +42,24 @@ import carerController from './features/response/statementOfMeans/carerControlle
 import explanationController from './features/response/statementOfMeans/explanationController';
 import alreadyPaidController from './features/response/admission/partialAdmission/alreadyPaidController';
 import taskListController from './features/response/taskListController';
+import contactThemController from './features/dashboard/contactThemController';
 import howMuchDoYouOweController from './features/response/admission/partialAdmission/howMuchDoYouOweController';
 import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
 import whyDoYouDisagreeController from './features/response/admission/partialAdmission/whyDoYouDisagreeController';
 import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
-import mediationIndividualPhoneController from './features/response/mediation/mediationIndividualPhoneController';
+import mediationIndividualPhoneController from './features/mediation/mediationIndividualPhoneController';
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
+import companyTelephoneNumberController from './features/mediation/companyTelephoneNumberController';
 import mediationDisagreementController from './features/mediation/mediationDisagreementController';
-import freeTelephoneMediationController from './features/response/mediation/freeTelephoneMediationController';
+import sendYourResponseByEmailController from './features/response/eligibility/sendYourResponseByEmailController';
+import freeTelephoneMediationController from './features/mediation/freeTelephoneMediationController';
+import rejectAllOfClaimController from './features/response/rejectAllOfClaimController';
+import defendantTimelineController from './features/response/timelineOfEvents/defendantTimelineController';
 import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
+import evidenceController from './features/response/evidence/evidenceController';
+import checkAnswersController from './features/response/checkAnswersController';
+import youHavePaidLessController from './features/response/rejection/fullReject/youHavePaidLessController';
 
 export default [
   homeController,
@@ -100,7 +108,15 @@ export default [
   regularIncomeController,
   mediationIndividualPhoneController,
   howMuchHaveYouPaidController,
+  companyTelephoneNumberController,
   mediationDisagreementController,
   freeTelephoneMediationController,
+  sendYourResponseByEmailController,
+  contactThemController,
+  rejectAllOfClaimController,
   iDontWantFreeMediationController,
+  evidenceController,
+  defendantTimelineController,
+  checkAnswersController,
+  youHavePaidLessController,
 ];

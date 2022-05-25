@@ -1,0 +1,73 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../macro/canWeUseCompanyInputs.njk" import canWeUseCompanyInputs %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if contactPerson %}
+        {% set title = t("Is CONTACTPERSON the right person for the mediation service to call?") | replace("CONTACTPERSON", contactPerson) %}
+      {% else %}
+        {% set title = t("Who should the mediation service call?") %}
+      {% endif %}
+
+      {% set id = "option" %}
+      {% set name = "option" %}
+      {% set errors = form.getErrors() %}
+      {% if errors.length %}
+        {{ govukErrorSummary({
+          "titleText": t("There was a problem"),
+          "errorList": errors
+        }) }}
+      {% endif %}
+
+      {% set yesHtml %}
+      {{ govukInput({
+          id: "mediationPhoneNumberConfirmation",
+          name: "mediationPhoneNumberConfirmation",
+          classes: "govuk-!-width-two-thirds",
+          label: { text: t("Confirm telephone number") },
+          type: "text",
+          spellcheck: false,
+          value: form.model.mediationPhoneNumberConfirmation,
+          errorMessage: {
+            text:t(form.errorFor('mediationPhoneNumberConfirmation'))
+          } if form.hasFieldError('mediationPhoneNumberConfirmation')
+        }) }}
+      {% endset -%}
+
+      {% set noHtml %}
+      {{ canWeUseCompanyInputs(form) }}
+      {% endset -%}
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <input type="hidden" name="contactPerson" value="{{contactPerson}}">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">{{ t(title) }}</h1>
+            </legend>
+            {% if contactPerson %}
+              {{ yesNoRadioButton(t,id,name,'',form,'',{yesHtml:yesHtml, noHtml:noHtml}) }}
+            {% else %}
+              {{ yesNoRadioButton(t,id,name,'',form,'',{classes:"govuk-!-display-none"}) }}
+              {{ canWeUseCompanyInputs(form) }}
+            {% endif %}
+            <div class="govuk-form-group">
+              {{ govukButton({ text: t("Save and continue") }) }}
+              {{ contactUsForHelp(t) }}
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+{% endblock %}
