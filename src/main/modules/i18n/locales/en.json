@@ -51,7 +51,7 @@
     "CLAIM_DETAILS": {
       "PAGE_TITLE": "Claim Details",
       "HEADER": "Claim details",
-      "CLAIM_NUMBER": "Claim number:",
+      "CLAIM_NUMBER": "Claim number",
       "CLAIM_AMOUNT": "Claim amount",
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
