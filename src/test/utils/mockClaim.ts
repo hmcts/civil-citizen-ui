@@ -122,3 +122,4 @@ export const mockClaim: Claim = {
     throw new Error('Function not implemented.');
   },
 };
+
