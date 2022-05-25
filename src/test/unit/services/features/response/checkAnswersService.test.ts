@@ -17,6 +17,9 @@ import PaymentOptionType
   from '../../../../../main/common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
 import {StatementOfTruthForm} from '../../../../../main/common/form/models/statementOfTruth/statementOfTruthForm';
 import {SignatureType} from '../../../../../main/common/models/signatureType';
+import {
+  TransactionSchedule,
+} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -69,6 +72,7 @@ describe('Check Answers service', () => {
     it('should return your response summary section', async () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
+      //Then
       expect(summarySections.sections[1].summaryList.rows.length).toBe(2);
       expect(summarySections.sections[1].summaryList.rows[0].actions?.items.length).toBe(1);
       expect(summarySections.sections[1].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_RESPONSE_TYPE_URL.replace(':id', CLAIM_ID));
@@ -77,6 +81,32 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].title).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE');
       expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
       expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
+    });
+    it('should return response summary section with payment option type instalments', async () => {
+      //Given
+      const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.INSTALMENTS);
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
+      //Then
+      expect(summarySections.sections[1].summaryList.rows.length).toBe(6);
+      expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
+      expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
+      expect(summarySections.sections[1].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS');
+      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY');
+      expect(summarySections.sections[1].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT');
+      expect(summarySections.sections[1].summaryList.rows[5].key.text).toBe('PAGES.EXPLANATION.TITLE');
+    });
+    it('should return response summary section with payment option by set date', async () => {
+      //Given
+      const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.BY_SET_DATE);
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
+      //Then
+      expect(summarySections.sections[1].summaryList.rows.length).toBe(3);
+      expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
+      expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
+      expect(summarySections.sections[1].summaryList.rows[2].key.text).toBe('PAGES.EXPLANATION.TITLE');
+      expect(summarySections.sections[1].summaryList.rows[1].value.html).toContain('COMMON.PAYMENT_OPTION.BY_SET_DATE: 25 June 2022');
     });
     it('should throw error when retrieving data from draft store fails', async () => {
       //Given
@@ -98,7 +128,6 @@ describe('Check Answers service', () => {
     it('should return contact person when contact person is specified', async () => {
       //Given
       const claim = createClaimWithContactPersonDetails();
-
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
       //Then
@@ -129,6 +158,30 @@ function createClaimWithBasicRespondentDetails(): Claim {
       },
     },
     paymentOption: PaymentOptionType.IMMEDIATELY,
+  };
+  return claim as Claim;
+}
+
+function createClaimWithRespondentDetailsWithPaymentOption(paymentOption: PaymentOptionType): Claim {
+  const claim = {
+    respondent1: {
+      partyName: PARTY_NAME,
+      telephoneNumber: CONTACT_NUMBER,
+      dateOfBirth: new Date('2000-12-12'),
+      responseType: ResponseType.FULL_ADMISSION,
+      primaryAddress: {
+        AddressLine1: '23 Brook lane',
+        PostTown: 'Bristol',
+        PostCode: 'BS13SS',
+      },
+    },
+    paymentOption: paymentOption,
+    repaymentPlan: {
+      paymentAmount: 33,
+      repaymentFrequency: TransactionSchedule.WEEK,
+      firstRepaymentDate: new Date('2022-06-25'),
+    },
+    paymentDate: new Date('2022-06-25'),
   };
   return claim as Claim;
 }
