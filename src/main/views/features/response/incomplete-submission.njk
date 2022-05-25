@@ -7,10 +7,11 @@
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row govuk-!-margin-bottom-6">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('You need to complete all sections before you submit your response') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.INCOMPLETE_SUBMISSION.TITLE') }}</h1>
           {{ remainingTasksFragment(
             tasks = tasks,
-            backLink = taskListUri
+            backLink = taskListUri,
+            translationFunction = t
           ) }}
         </div>
       </div>

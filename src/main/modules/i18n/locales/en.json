@@ -19,6 +19,10 @@
     },
     "PAYMENT_OPTION": {
       "IMMEDIATELY": "Immediately"
+    },
+    "REMAINING_TASKS": {
+      "TITLE": "You still need to complete:",
+      "BACK": "Back to task list"
     }
   },
   "PAGES": {
@@ -36,6 +40,9 @@
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "SAME_ADDRESS": "Same as address",
       "DOB": "Date of birth"
+    },
+    "INCOMPLETE_SUBMISSION": {
+      "TITLE": "You need to complete all sections before you submit your response"
     },
     "MEDIATION_DISAGREEMENT": {
       "PAGE_TITLE": "Free Mediation Disagreement",
