@@ -75,7 +75,7 @@ export const mockClaim: Claim = {
       id: 'a08e42f4-6d7a-4f5c-b33d-85e4ef42ad9e',
       value: {
         timelineDate: '2022-01-01',
-        timelineDescription: 'I noticed a leak on the landing and told Mr Smith about this.'
+        timelineDescription: 'I noticed a leak on the landing and told Mr Smith about this.',
       },
     },
   ],
