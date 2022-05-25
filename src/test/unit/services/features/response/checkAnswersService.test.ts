@@ -20,6 +20,7 @@ import {SignatureType} from '../../../../../main/common/models/signatureType';
 import {
   TransactionSchedule,
 } from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
 
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -144,90 +145,61 @@ describe('Check Answers service', () => {
   });
 });
 
-function createClaimWithBasicRespondentDetails(): Claim {
-  const claim = {
-    respondent1: {
-      partyName: PARTY_NAME,
-      telephoneNumber: CONTACT_NUMBER,
-      dateOfBirth: new Date('2000-12-12'),
-      responseType: ResponseType.FULL_ADMISSION,
-      primaryAddress: {
-        AddressLine1: '23 Brook lane',
-        PostTown: 'Bristol',
-        PostCode: 'BS13SS',
-      },
+function createClaimWithBasicRespondentDetails(contactPerson?: string): Claim {
+  const claim = new Claim();
+  claim.respondent1 = {
+    partyName: PARTY_NAME,
+    telephoneNumber: CONTACT_NUMBER,
+    contactPerson: contactPerson,
+    dateOfBirth: new Date('2000-12-12'),
+    responseType: ResponseType.FULL_ADMISSION,
+    type: CounterpartyType.INDIVIDUAL,
+    primaryAddress: {
+      AddressLine1: '23 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
     },
-    paymentOption: PaymentOptionType.IMMEDIATELY,
   };
-  return claim as Claim;
+  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
+  return claim;
 }
 
 function createClaimWithRespondentDetailsWithPaymentOption(paymentOption: PaymentOptionType): Claim {
-  const claim = {
-    respondent1: {
-      partyName: PARTY_NAME,
-      telephoneNumber: CONTACT_NUMBER,
-      dateOfBirth: new Date('2000-12-12'),
-      responseType: ResponseType.FULL_ADMISSION,
-      primaryAddress: {
-        AddressLine1: '23 Brook lane',
-        PostTown: 'Bristol',
-        PostCode: 'BS13SS',
-      },
-    },
-    paymentOption: paymentOption,
-    repaymentPlan: {
-      paymentAmount: 33,
-      repaymentFrequency: TransactionSchedule.WEEK,
-      firstRepaymentDate: new Date('2022-06-25'),
-    },
-    paymentDate: new Date('2022-06-25'),
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = paymentOption;
+  claim.repaymentPlan = {
+    paymentAmount: 33,
+    repaymentFrequency: TransactionSchedule.WEEK,
+    firstRepaymentDate: new Date('2022-06-25'),
   };
-  return claim as Claim;
+  claim.paymentDate = new Date('2022-06-25');
+  return claim;
 }
 
 function createClaimWithIndividualDetails(): Claim {
-  const claim = {
-    respondent1: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
-      partyName: PARTY_NAME,
-      telephoneNumber: CONTACT_NUMBER,
-      responseType: ResponseType.FULL_ADMISSION,
-      primaryAddress: {
-        AddressLine1: '23 Brook lane',
-        PostTown: 'Bristol',
-        PostCode: 'BS13SS',
-      },
-      correspondenceAddress: {
-        AddressLine1: '24 Brook lane',
-        PostTown: 'Bristol',
-        PostCode: 'BS13SS',
-      },
+  const claim = new Claim();
+  claim.respondent1 = {
+    type: CounterpartyType.INDIVIDUAL,
+    individualTitle: TITLE,
+    individualLastName: LAST_NAME,
+    individualFirstName: FIRST_NAME,
+    partyName: PARTY_NAME,
+    telephoneNumber: CONTACT_NUMBER,
+    responseType: ResponseType.FULL_ADMISSION,
+    primaryAddress: {
+      AddressLine1: '23 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
+    },
+    correspondenceAddress: {
+      AddressLine1: '24 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
     },
   };
-  return claim as Claim;
+  return claim;
 }
 
 function createClaimWithContactPersonDetails(): Claim {
-  const claim = {
-    respondent1: {
-      contactPerson: CONTACT_PERSON,
-      partyName: PARTY_NAME,
-      telephoneNumber: CONTACT_NUMBER,
-      responseType: ResponseType.FULL_ADMISSION,
-      primaryAddress: {
-        AddressLine1: '23 Brook lane',
-        PostTown: 'Bristol',
-        PostCode: 'BS13SS',
-      },
-      correspondenceAddress: {
-        AddressLine1: '24 Brook lane',
-        PostTown: 'Bristol',
-        PostCode: 'BS13SS',
-      },
-    },
-  };
-  return claim as Claim;
+  return createClaimWithBasicRespondentDetails(CONTACT_PERSON);
 }

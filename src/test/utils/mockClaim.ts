@@ -86,5 +86,8 @@ export const mockClaim: Claim = {
   isEmpty(): boolean {
     return !this.applicant1;
   },
+  isPaymentOptionBySetDate(): boolean {
+    return false;
+  },
   paymentDate: new Date('2022-06-01T00:00:00'),
 };

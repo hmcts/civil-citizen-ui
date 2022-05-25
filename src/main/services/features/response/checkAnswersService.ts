@@ -38,12 +38,10 @@ const getDefendantFullName = (claim: Claim): string => {
 
 const getPaymentOption = (claim: Claim, lang: string | unknown): string => {
   const option = t(`COMMON.PAYMENT_OPTION.${claim.paymentOption}`, {lng: getLng(lang)});
-  switch (claim.paymentOption) {
-    case PaymentOptionType.BY_SET_DATE:
-      return option + ': ' + formatDateToFullDate(claim.paymentDate);
-    default:
-      return option;
+  if (claim.isPaymentOptionBySetDate()) {
+    return option + ': ' + formatDateToFullDate(claim.paymentDate);
   }
+  return option;
 };
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {

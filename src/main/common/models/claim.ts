@@ -13,6 +13,7 @@ import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
+import PaymentOptionType from '../form/models/admission/fullAdmission/paymentOption/paymentOptionType';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -61,6 +62,10 @@ export class Claim {
 
   isEmpty(): boolean {
     return !this.applicant1;
+  }
+
+  isPaymentOptionBySetDate(): boolean {
+    return this.paymentOption === PaymentOptionType.BY_SET_DATE;
   }
 }
 
