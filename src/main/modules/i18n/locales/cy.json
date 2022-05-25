@@ -19,7 +19,8 @@
     },
     "PAYMENT_OPTION": {
       "IMMEDIATELY": "Ar unwaith"
-    }
+    },
+    "DOWNLOAD_THE_CLAIM" : "Download the claim"
   },
   "PAGES": {
     "CHECK_YOUR_ANSWER": {
@@ -46,6 +47,23 @@
       "HEADER": "You've paid less than the total claim amount",
       "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "You need to explain why you believe you don't owe the remaining amount.",
       "IF_CLAIMANT_REJECTS": "If CLAIMANT_NAME rejects your explanation you might have to go to a hearing."
+    },
+    "CLAIM_DETAILS": {
+      "PAGE_TITLE": "Claim Details",
+      "HEADER": "Claim Details",
+      "CLAIM_NUMBER": "Claim number:",
+      "CLAIM_AMOUNT": "Claim amount",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "AMOUNT_BREAKDOWN": "Amount breakdown",
+      "AMOUNT": "Amount",
+      "INTEREST" : "Interest",
+      "CLAIM_FEE" : "Claim fee",
+      "CLAIM_TOTAL" : "Claim Total",
+      "REASON_FOR_CLAIM" : "Reason for claim",
+      "TIMELINE" : "Timeline",
+      "DATE" : "Date",
+      "WHAT_HAPPENED" : "What happened",
+      "INTEREST_SNIPPET" : "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     }
   },
   "ERRORS": {
