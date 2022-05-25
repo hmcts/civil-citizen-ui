@@ -14,7 +14,7 @@ jest.mock('../../../../../../main/modules/oidc');
 
 const nock = require('nock');
 
-describe('Confirm Details page', () => {
+describe('Claim details page', () => {
   const idamUrl: string = config.get('idamUrl');
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');

@@ -25,7 +25,6 @@ claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: 
     let claim: Claim = await getCaseDataFromStore((req.params.id));
     if (claim.isEmpty()) {
       claim = await civilServiceClient.retrieveClaimDetails(req.params.id, <AppRequest>req);
-      
       if (claim) {
         await saveDraftClaim(req.params.id, claim);
       } else {
@@ -34,7 +33,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: 
         claim.legacyCaseReference = 'testCaseReference';
         claim.totalClaimAmount = 200;
         claim.detailsOfClaim = 'detailsOfClaimTest';
-        claim.claimFee.calculatedAmountInPence = '3500';
+        claim.claimFee = {calculatedAmountInPence: '3500'};
       }
     }
     const interestData = getInterestDetails(claim);

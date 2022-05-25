@@ -125,7 +125,17 @@
     "respondent1ResponseDeadline": "2022-05-15T02:59:59",
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 110,
+    "claimInterest": "Yes",
+    "submittedDate": "2022-05-23T17:02:02.38407",
+    "submittedDate": "2022-05-23T17:02:02.38407",
     "totalInterest": 15,
+    "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
+    "interestClaimUntil": "UNTIL_CLAIM_SUBMIT_DATE",
+    "interestClaimOptions": "SAME_RATE_INTEREST",
+    "interestFromSpecificDate": "2022-05-20",
+    "sameRateInterestSelection": {
+      "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
+    },
     "detailsOfClaim": "House repair",
     "claimAmountBreakup": [
       {
