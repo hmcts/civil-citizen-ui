@@ -1,14 +1,14 @@
-import {RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../../../../../main/routes/urls';
+import {RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../../../main/routes/urls';
 import {
   AllResponseTasksCompletedGuard,
-} from '../../../../../../main/routes/features/response/guards/allResponseTasksCompletedGuard';
+} from '../../../../main/routes/guards/allResponseTasksCompletedGuard';
 import express from 'express';
-import {TaskStatus} from '../../../../../../main/common/models/taskList/TaskStatus';
-import {TaskList} from '../../../../../../main/common/models/taskList/taskList';
-import {constructResponseUrlWithIdParams} from '../../../../../../main/common/utils/urlFormatter';
+import {TaskStatus} from '../../../../main/common/models/taskList/TaskStatus';
+import {TaskList} from '../../../../main/common/models/taskList/taskList';
+import {constructResponseUrlWithIdParams} from '../../../../main/common/utils/urlFormatter';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/services/features/response/checkAnswersService');
+jest.mock('../../../../main/modules/oidc');
+jest.mock('../../../../main/services/features/response/checkAnswersService');
 
 const CLAIM_ID = 'aaa';
 const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_INCOMPLETE_SUBMISSION_URL);
@@ -52,7 +52,7 @@ describe('Response - Incomplete Submission', () => {
       //Given
       const mockRequest = MOCK_REQUEST(TASK_LISTS(TaskStatus.COMPLETE));
       //When
-      await AllResponseTasksCompletedGuard.apply(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
+      await AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
       //Then
       expect(MOCK_RESPONSE.redirect).not.toHaveBeenCalled();
       expect(MOCK_NEXT).toHaveBeenCalledWith();
@@ -62,7 +62,7 @@ describe('Response - Incomplete Submission', () => {
       //Given
       const mockRequest = MOCK_REQUEST([]);
       //When
-      await AllResponseTasksCompletedGuard.apply(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
+      await AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
       //Then
       expect(MOCK_RESPONSE.redirect).not.toHaveBeenCalled();
       expect(MOCK_NEXT).toHaveBeenLastCalledWith(expect.objectContaining({
@@ -74,7 +74,7 @@ describe('Response - Incomplete Submission', () => {
       //Given
       const mockRequest = MOCK_REQUEST(TASK_LISTS(TaskStatus.INCOMPLETE));
       //When
-      await AllResponseTasksCompletedGuard.apply(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
+      await AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
       //Then
       expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(respondentIncompleteSubmissionUrl);
       expect(MOCK_NEXT).not.toHaveBeenCalled();
