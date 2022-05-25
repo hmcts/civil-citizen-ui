@@ -1,7 +1,4 @@
-import {
-  getCaseDataFromStore,
-  saveDraftClaim,
-} from '../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../modules/draft-store/draftStoreService';
 import {Respondent} from '../../common/models/respondent';
 import {Claim} from '../../common/models/claim';
 import {PrimaryAddress} from '../../common/models/primaryAddress';
@@ -18,19 +15,15 @@ export const getRespondentInformation = async (claimId: string): Promise<Respond
   return new Respondent();
 };
 
-export const saveRespondent = async(claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, contactPerson = '') : Promise<void> => {
+export const saveRespondent = async (claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, contactPerson = ''): Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId) || new Claim();
-  if (!responseData?.respondent1) {
-    const respondent = new Respondent();
-    respondent.contactPerson = contactPerson;
-    respondent.primaryAddress = buildPrimaryAddress(citizenAddress);
-    respondent.correspondenceAddress = citizenCorrespondenceAddress.isEmpty() ? undefined :  buildCorrespondenceAddress(citizenCorrespondenceAddress);
-    responseData.respondent1 = respondent;
-  } else {
-    responseData.respondent1.contactPerson = contactPerson;
-    responseData.respondent1.primaryAddress = buildPrimaryAddress(citizenAddress);
-    responseData.respondent1.correspondenceAddress = citizenCorrespondenceAddress.isEmpty() ?  undefined :  buildCorrespondenceAddress(citizenCorrespondenceAddress);
+  if (!responseData.respondent1) {
+    responseData.respondent1 = new Respondent();
   }
+  responseData.respondent1.contactPerson = contactPerson;
+  responseData.respondent1.primaryAddress = buildPrimaryAddress(citizenAddress);
+  responseData.respondent1.correspondenceAddress = citizenCorrespondenceAddress.isEmpty() ? undefined : buildCorrespondenceAddress(citizenCorrespondenceAddress);
+
   await saveDraftClaim(claimId, responseData);
 };
 

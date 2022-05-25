@@ -1,6 +1,7 @@
 {% extends "template.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
 {% set heading = 'Your financial details' %}
 
 {% block content %}
@@ -46,10 +47,11 @@
           {{ t('If they reject your plan, the court will make a new plan based on your financial details.') }}
         </p>
         <p class="govuk-body">
-          {{ t('Get ') }} {{ applicant1Details }}{{ t("'s contact details.") }}
+          <a href="{{claimantDetailsUrl}}">{{ t('Get ') }} {{ applicant1Details }}{{ t("'s contact details.") }}</a>
         </p>
       {% endif %}
-      <form method="post">
+      <form method="post" novalidate>
+        {{ csrfProtection(csrf) }}
         <div class="govuk-form-group">
           {{ govukButton({
           text: t('Continue')

@@ -1,0 +1,101 @@
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% macro evidence(evidenceIndex, evidenceValue, errorFor, description) %}
+  {% call govukFieldset({
+      classes: 'moj-add-another__item',
+      legend: {
+        text: t('Evidence Type List'),
+        classes: 'moj-add-another__title govuk-fieldset__legend--m govuk-visually-hidden',
+        isPageHeading: false
+      }
+    }) %}
+  {{ govukSelect({
+    id: "evidenceItem[" + evidenceIndex + "][type]",
+    name: "evidenceItem[" + evidenceIndex + "][type]",
+    label: {
+      text: t("Evidence"),
+      classes: "govuk-visually-hidden"
+    },
+    attributes: {
+      'data-name': 'evidenceItem[%index%][type]',
+      'data-id': 'evidenceItem[%index%][type]'
+    },
+    items: [
+      {
+        value: "",
+        text: t("-- Please make a selection --"),
+        selected: false if evidenceValue.type else true
+      },
+      {
+        value: EvidenceType.CONTRACTS_AND_AGREEMENTS,
+        text: t(EvidenceType.CONTRACTS_AND_AGREEMENTS),
+        selected: true if evidenceValue.type === EvidenceType.CONTRACTS_AND_AGREEMENTS else false
+      },
+      {
+        value: EvidenceType.EXPERT_WITNESS,
+        text: t(EvidenceType.EXPERT_WITNESS),
+        selected: true if evidenceValue.type === EvidenceType.EXPERT_WITNESS else false
+      },
+      {
+        value: EvidenceType.CORRESPONDENCE,
+        text: t(EvidenceType.CORRESPONDENCE),
+        selected: true if evidenceValue.type ===  EvidenceType.CORRESPONDENCE else false
+      },
+      {
+        value: EvidenceType.PHOTO,
+        text: t(EvidenceType.PHOTO),
+        selected: true if evidenceValue.type === EvidenceType.PHOTO else false
+      },
+      {
+        value: EvidenceType.RECEIPTS,
+        text: t(EvidenceType.RECEIPTS),
+        selected: true if evidenceValue.type === EvidenceType.RECEIPTS else false
+      },
+      {
+        value: EvidenceType.STATEMENT_OF_ACCOUNT,
+        text: t(EvidenceType.STATEMENT_OF_ACCOUNT),
+        selected: true if evidenceValue.type === EvidenceType.STATEMENT_OF_ACCOUNT else false
+      },
+      {
+        value: EvidenceType.OTHER,
+        text: t(EvidenceType.OTHER),
+        selected: true if evidenceValue.type === EvidenceType.OTHER else false
+      }
+    ]
+  }) }}
+  <div class="panel panel-border-narrow {{ '' if evidenceValue.type else 'govuk-visually-hidden' }}">
+    <span class="govuk-body {% if evidenceValue.type !== EvidenceType.CONTRACTS_AND_AGREEMENTS %} govuk-visually-hidden {% endif
+      %}">{{ t(description) }}
+      {{ t(EvidenceDetails.CONTRACTS_AND_AGREEMENTS_DETAILS) }}</span>
+    <span class="govuk-body {% if evidenceValue.type !== EvidenceType.EXPERT_WITNESS %} govuk-visually-hidden {% endif %}">{{ t(description) }}
+      {{ t(EvidenceDetails.EXPERT_WITNESS_DETAILS) }}</span>
+    <span class="govuk-body {% if evidenceValue.type !== EvidenceType.CORRESPONDENCE %} govuk-visually-hidden {% endif %}">{{ t(description) }}
+      {{ t(EvidenceDetails.CORRESPONDENCE_DETAILS) }}</span>
+    <span class="govuk-body {% if evidenceValue.type !== EvidenceType.PHOTO %} govuk-visually-hidden {% endif %}">{{ t(description) }}
+      {{ t(EvidenceDetails.PHOTO_DETAILS) }}</span>
+    <span class="govuk-body {% if evidenceValue.type !== EvidenceType.RECEIPTS %} govuk-visually-hidden {% endif %}">{{ t(description) }}
+      {{ t(EvidenceDetails.RECEIPTS_DETAILS) }}</span>
+    <span class="govuk-body {% if evidenceValue.type !== EvidenceType.STATEMENT_OF_ACCOUNT %} govuk-visually-hidden {% endif %}">{{ t(description) }}
+      {{ t(EvidenceDetails.STATEMENT_OF_ACCOUNT_DETAILS) }}</span>
+    <span class="govuk-body {% if evidenceValue.type !== EvidenceType.OTHER %} govuk-visually-hidden {% endif %}">{{ t(description) }}</span>
+    {{ govukTextarea({
+      name: "evidenceItem[" + evidenceIndex + "][description]",
+      id: "evidenceItem[" + evidenceIndex + "][description]",
+      value: evidenceValue.description,
+      label: {
+        text: 'Description',
+        classes: 'govuk-visually-hidden'
+      },
+      attributes: {
+        'data-name': 'evidenceItem[%index%][description]',
+        'data-id': 'evidenceItem[%index%][description]'
+      },
+      errorMessage: {
+        text: t(errorFor('evidenceItem['+evidenceIndex+'][description]'))
+      } if errorFor('evidenceItem['+evidenceIndex+'][description]')
+    }) }}
+  </div>
+  {% endcall %}
+{% endmacro %}
