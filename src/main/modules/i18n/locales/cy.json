@@ -45,7 +45,10 @@
       "ADDRESS": "Cyfeiriad",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
-      "DOB": "Dyddiad Geni"
+      "DOB": "Dyddiad Geni",
+      "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
+      "PAYMENT_FREQUENCY": "Amlder taliadau",
+      "FIRST_PAYMENT": "Gwnewch y taliad cyntaf ymlaen"
     },
     "MEDIATION_DISAGREEMENT": {
       "PAGE_TITLE": "Free Mediation Disagreement",
