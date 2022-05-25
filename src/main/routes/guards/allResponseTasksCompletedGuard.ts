@@ -8,7 +8,7 @@ import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter'
 export class AllResponseTasksCompletedGuard {
 
   static apply(redirectUrl: string) {
-    return async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
+    return (req: express.Request, res: express.Response, next: express.NextFunction): void => {
       try {
 
         const taskLists: TaskList[] = req.session.taskLists;
