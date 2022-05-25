@@ -3,39 +3,32 @@ import {TaskList} from '../common/models/taskList/taskList';
 import {Claim} from '../common/models/claim';
 import {
   buildPrepareYourResponseSection,
-  buildRespondToClaimSection,
-  buildTryToResolveClaimSection,
-  buildYourHearingRequirementsSection,
+  buildRespondToClaimSection, buildSubmitSection,
 } from '../common/utils/taskList/taskListBuilder';
-
-/**
- * THIS FILE IS A CONCEPT
- *
- * This code is only a concept of what we should do.
- *
- */
 
 let completed = 0;
 let total = 0;
 
-const getTaskLists = async (claim: Claim) => {
+const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId:string) => {
 
   // TASK BUILDER
-  const taskListPrepareYourResponse: TaskList = await buildPrepareYourResponseSection(claim);
-  const taskListRespondeToClaim: TaskList = await buildRespondToClaimSection(claim);
-  const taskListTryToResolveClaim: TaskList = await buildTryToResolveClaimSection(claim);
-  const taskListYourHearingRequirements: TaskList = await buildYourHearingRequirementsSection(claim);
+  // TODO : depending on the defendant's response type (full admission/partial admission/ rejection) we need to build new taskLists and include them in the taskGroups array
+  const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(claim, caseData, currentClaimId);
+  const taskListRespondToClaim: TaskList = buildRespondToClaimSection(caseData, currentClaimId);
 
-  // GENERATE DATA, TITLE AND DESCRIPTION
-  let taskLists = [];
-  taskLists.push(
-    taskListPrepareYourResponse,
-    taskListRespondeToClaim,
-    taskListTryToResolveClaim,
-    taskListYourHearingRequirements,
-  );
-  taskLists = taskLists.filter(item => item.tasks.length !== 0);
-  return taskLists;
+  const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim];
+  const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
+  // check if all tasks are completed except check and submit
+  let isIncompleteSubmission = true;
+  calculateTotalAndCompleted(taskGroups);
+  if (completed === total) {
+    isIncompleteSubmission = false;
+  }
+
+  const taskListSubmitYourResponse: TaskList = buildSubmitSection(claim, caseData, currentClaimId, isIncompleteSubmission);
+
+  filteredTaskGroups.push(taskListSubmitYourResponse);
+  return filteredTaskGroups;
 };
 
 const calculateTotalAndCompleted = (taskLists: TaskList[]) => {
@@ -62,3 +55,4 @@ const countCompletedTasks = (taskList: TaskList) => {
 };
 
 export { getTaskLists, getTitle, getDescription };
+

@@ -47,10 +47,11 @@ document.addEventListener('DOMContentLoaded', function () {
       Array.from(children).forEach((child) => {
         let inputs = child.querySelectorAll('input, textarea, select');
         updateInputs(inputs);
+        removeErrors(child);
       });
       lastRow.parentNode.appendChild(newRow);
       updateNewRow(document.getElementsByClassName('multiple-row'));
-      if (document.getElementsByClassName('civil-amountRow')) {
+      if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
         addCalculationEventListener();
       }
     }
@@ -67,11 +68,15 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function removeErrors(newRow) {
-    const errorRow = newRow.querySelectorAll('.govuk-form-group .govuk-form-group--error .govuk-error-message');
+    const errorRow = newRow.querySelectorAll('.govuk-error-message');
     if (elementExists(errorRow)) {
       errorRow.forEach(element => element.parentNode.removeChild(element));
     }
-    const errorField = newRow.querySelectorAll('.govuk-form-group .govuk-form-group--error');
+    const errorField = newRow.querySelectorAll('.govuk-form-group--error');
+    removeErrorClass(errorField);
+  }
+
+  function removeErrorClass(errorField) {
     if (elementExists(errorField)) {
       errorField.forEach(element => element.classList.remove('govuk-form-group--error'));
     }
@@ -87,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
           input.checked = false;
         }
         input.classList.remove('govuk-input--error', 'govuk-select--error', 'govuk-textarea--error');
+        input.parentNode.classList.remove('govuk-form-group--error');
         incrementIndexOnName(input);
       });
     }

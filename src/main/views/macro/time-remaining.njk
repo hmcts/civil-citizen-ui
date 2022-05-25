@@ -1,0 +1,25 @@
+{% macro timeRemaining(noOfRemainingDays, isDeadLinePassed) %}
+  {% if noOfRemainingDays > 0 %}
+    {% if noOfRemainingDays == 1 %}
+      {{ t('(1 day remaining)') }}
+    {% else %}
+      ({{ noOfRemainingDays }} {{t(' days remaining')}}) 
+    {% endif %}
+  {% else %}
+    {% if noOfRemainingDays == 0 %}
+      {% if isDeadLinePassed %}
+        {{ t('(Overdue)') }}
+      {% else %}
+        {{ t('(Due today)') }}
+      {% endif %}
+    {% else %}
+      ({{ noOfRemainingDays | abs }}
+      {% if noOfRemainingDays < -1 %}
+        {{ t(' days ') }}
+      {% else %}
+        {{ t(' day ') }}
+      {% endif %}
+      {{ t('overdue)') }}
+    {% endif %}
+  {% endif %}
+{% endmacro %}

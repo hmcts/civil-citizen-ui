@@ -5,9 +5,13 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.MEDIATION_DISAGREEMENT.PAGE_TITLE') }}
+{% endblock %}
 
 {% block content %}
-
   {% set yesHtml %}
   <p class="govuk-body">{{ t("We'll ask the claimant if they'll try free mediation. If they say no, the claim will go to a hearing.") }}</p>
   {% endset -%}
@@ -18,7 +22,7 @@
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ govukErrorSummary({
-            'titleText': 'There was a problem',
+            'titleText': t('ERRORS.THERE_WAS_A_PROBLEM'),
             'errorList': errors
           }) }}
       {% endif %}
@@ -33,7 +37,7 @@
 
           <div class="govuk-!-margin-bottom-8">
             <h2 class="govuk-heading-m">{{ t('Advantages of free mediation') }}</h2>
-            <p class="govuk-body">{{ t('There are many advantages to free mediation, including:') }}</p>
+            <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.MANY_ADVANTAGES_TO_FREE_MEDIATION') }}</p>
             <ul class="govuk-list govuk-list--bullet">
               <li>{{ t('mediation can be quicker and cheaper than going to court') }}</li>
               <li>{{ t('the mediator speaks to each side separately, you do not speak to the other party during mediation') }}</li>
