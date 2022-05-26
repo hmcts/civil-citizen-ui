@@ -41,7 +41,7 @@ describe('Free Telephone Mediation View', () => {
 
     it('should display header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
-      expect(header[0].innerHTML).toContain(pageTitle);
+      expect(header[0].innerHTML).toContain('Free telephone mediation');
     });
 
     it('should display two h2 headers', () => {
