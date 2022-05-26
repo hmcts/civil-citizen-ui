@@ -89,14 +89,13 @@ describe('Check Answers service', () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
       //Then
-      expect(summarySections.sections[1].summaryList.rows.length).toBe(6);
+      expect(summarySections.sections[1].summaryList.rows.length).toBe(5);
       expect(summarySections.sections[1].title).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE');
-      expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
-      expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
-      expect(summarySections.sections[1].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS');
-      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY');
-      expect(summarySections.sections[1].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT');
-      expect(summarySections.sections[1].summaryList.rows[5].key.text).toBe('PAGES.EXPLANATION.TITLE');
+      expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
+      expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS');
+      expect(summarySections.sections[1].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY');
+      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT');
+      expect(summarySections.sections[1].summaryList.rows[4].key.text).toBe('PAGES.EXPLANATION.TITLE');
     });
     it('should return response summary section with payment option by set date', async () => {
       //Given
@@ -104,12 +103,11 @@ describe('Check Answers service', () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
       //Then
-      expect(summarySections.sections[1].summaryList.rows.length).toBe(3);
+      expect(summarySections.sections[1].summaryList.rows.length).toBe(2);
       expect(summarySections.sections[1].title).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE');
-      expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
-      expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
-      expect(summarySections.sections[1].summaryList.rows[2].key.text).toBe('PAGES.EXPLANATION.TITLE');
-      expect(summarySections.sections[1].summaryList.rows[1].value.html).toContain('COMMON.PAYMENT_OPTION.BY_SET_DATE: 25 June 2022');
+      expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
+      expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.EXPLANATION.TITLE');
+      expect(summarySections.sections[1].summaryList.rows[0].value.html).toContain('COMMON.PAYMENT_OPTION.BY_SET_DATE: 25 June 2022');
     });
     it('should throw error when retrieving data from draft store fails', async () => {
       //Given
