@@ -35,6 +35,7 @@ export class Claim {
   mediation?: Mediation;
   evidence?: DefendantEvidence;
   timelineOfEvents?: TimeLineOfEvents[];
+  taskSharedFinancialDetails?: boolean;
   defendantStatementOfTruth?: StatementOfTruthForm;
 
 
@@ -57,6 +58,10 @@ export class Claim {
 
   isDeadLinePassed(): boolean {
     return isPastDeadline(this.respondent1ResponseDeadline);
+  }
+
+  isEmpty(): boolean {
+    return !this.applicant1;
   }
 }
 
