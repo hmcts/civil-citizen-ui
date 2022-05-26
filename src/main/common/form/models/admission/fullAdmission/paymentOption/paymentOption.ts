@@ -15,8 +15,4 @@ export default class PaymentOption extends Form {
   paymentOptionBySetDateSelected() {
     return this.paymentType && this.paymentType === PaymentOptionType.BY_SET_DATE;
   }
-
-  paymentOptionByInstallmentsSelected() {
-    return this.paymentType && this.paymentType === PaymentOptionType.INSTALMENTS;
-  }
 }
