@@ -9,7 +9,6 @@
   "Respond to the claim": "Respond to the claim",
   "View": "View",
   "Save and continue": "Save and continue",
-  "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
   "COMMON": {
     "BUTTONS": {
       "CONTINUE": "Continue"
@@ -40,6 +39,11 @@
     "MEDIATION_DISAGREEMENT": {
       "PAGE_TITLE": "Free Mediation Disagreement",
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+    },
+    "TASK_LIST": {
+      "PAGE_TITLE": "Your Task List",
+      "HEADER": "Respond to a money claim",
+      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've Paid Less",
