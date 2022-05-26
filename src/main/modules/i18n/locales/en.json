@@ -22,6 +22,12 @@
     }
   },
   "PAGES": {
+    "ARE_YOU_SEVERELY_DISABLED": {
+      "PAGE_TITLE": "Severely Disabled"
+    },
+    "CARER": {
+      "PAGE_TITLE": "Carer's Allowance"
+    },
     "CHECK_YOUR_ANSWER": {
       "CHANGE": "Change",
       "TITLE": "Check your answers",
@@ -70,6 +76,9 @@
     "DEBTS": {
       "PAGE_TITLE": "Any Debts?"
     },
+    "DEFENDANT_TIMELINE": {
+      "PAGE_TITLE": "Add your timeline of events"
+    },
     "DEPENDANTS": {
       "PAGE_TITLE": "Any Dependants?"
     },
@@ -79,6 +88,9 @@
     "DEPENDANTS_CHILDREN_DISABILITY": {
       "PAGE_TITLE": "Any Dependants With Disability?"
     },
+    "DISABILITY": {
+      "PAGE_TITLE": "Any You Disabled?"
+    },
     "EMPLOYMENT_STATUS": {
       "PAGE_TITLE": "Are You Employed?"
     },
@@ -86,6 +98,7 @@
       "PAGE_TITLE": "List Your Evidence"
     },
     "EXPLANATION": {
+      "PAGE_TITLE": "Explanation",
       "TITLE": "Briefly explain why you can’t pay immediately"
     },
     "FINANCIAL_DETAILS": {
@@ -128,6 +141,24 @@
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why Do You Disagree?"
     },
+    "PARTNER": {
+      "PAGE_TITLE": "Living With a Partner"
+    },
+    "PARTNER_AGE": {
+      "PAGE_TITLE": "Partner's Age"
+    },
+    "PARTNER_DISABILITY": {
+      "PAGE_TITLE": "Partner With Disability"
+    },
+    "PARTNER_PENSION": {
+      "PAGE_TITLE": "Partner With Pension"
+    },
+    "PARTNER_SEVERE_DISABILITY": {
+      "PAGE_TITLE": "Partner With Severe Disability"
+    },
+    "PRIORITY_DEBTS": {
+      "PAGE_TITLE": "Priority Debts"
+    },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your Regular Expenses"
     },
@@ -139,8 +170,14 @@
       "FEE_BASED": "The fee is based on the amount you`re claiming, including interest.",
       "VIEW_CLAIM_FEES": "View claim fees"
     },
+    "REJECT_ALL_CLAIM": {
+      "PAGE_TITLE": "Reject All Of Claim"
+    },
     "REPAYMENT_PLAN": {
       "PAGE_TITLE": "Your Repayment Plan"
+    },
+    "RESIDENCE": {
+      "PAGE_TITLE": "Your Residence"
     },
     "SELF_EMPLOYED":{
       "PAGE_TITLE": "Self Employment Details"
@@ -158,6 +195,9 @@
     },
     "UNDER_18": {
       "PAGE_TITLE": "Under 18"
+    },
+    "UNEMPLOYMENT": {
+      "PAGE_TITLE": "Unemployed or Retired"
     },
     "WHO_EMPLOYS_YOU": {
       "PAGE_TITLE": "Your Employer"
