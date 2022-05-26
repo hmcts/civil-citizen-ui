@@ -22,22 +22,22 @@
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group {% if errors.length %} govuk-form-group--error {% endif %}">
               {{ govukTextarea({
-                name: "text",
-                id: "text",
-                value: form.model.text,
-                classes:"govuk-!-width-three-quarters",
-                label: {
-                  text: t("PAGES.EXPLANATION.TITLE"),
-                  classes: "govuk-label--l"
-                },
-                errorMessage: {
-                  text: t(form.errorFor('text'))
-                } if form.hasFieldError('text')
-              }) }}
+              name: "text",
+              id: "text",
+              value: form.model.text,
+              classes:"govuk-!-width-three-quarters",
+              label: {
+                text: t("PAGES.EXPLANATION.TITLE"),
+                classes: "govuk-label--l"
+              },
+              errorMessage: {
+                text: t(form.errorFor('text'))
+              } if form.hasFieldError('text')
+            }) }}
               <div class="govuk-form-group">
                 {{ govukButton({
-                  text: t("Save and continue")
-                }) }}
+                text: t("Save and continue")
+              }) }}
                 {{ contactUsForHelp(t) }}
               </div>
             </div>

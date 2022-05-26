@@ -9,6 +9,19 @@
 {% from "../../../macro/contact-us.njk" import contactUs %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% set feesTable %}
+{{ govukTable({
+  caption: t('PAGES.REJECT_ALL.FEE_BASED'),
+  captionClasses: "govuk-body govuk-!-font-weight-regular",
+  head: [
+    { text: t('CLAIM_AMOUNT') },
+    { text: t('PAGES.REJECT_ALL.FEE') }
+  ],
+  rows: fees
+}) }}
+{% endset -%}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -80,8 +93,8 @@
                 {{ t('You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.')}}
               </p>
               {{ govukDetails({
-                summaryText: t('View court fees'),
-                html: content
+                summaryText: t('PAGES.REJECT_ALL.VIEW_CLAIM_FEES'),
+                html: feesTable
               }) }}
             <div class="govuk-inset-text govuk-grid-column-two-third">
               <p class="govuk-body govuk-!-margin-bottom-0">{{ t('Do not create a new claim if you want to counterclaim. Use form N9B.')}}</p>
