@@ -41,7 +41,7 @@ export const buildRespondent1 = (): Respondent => {
   return respondent;
 };
 
-export const mockClaim: Claim = {
+export const mockClaim :Claim = {
   legacyCaseReference: '497MC585',
   applicant1:
     {
@@ -120,6 +120,21 @@ export const mockClaim: Claim = {
   },
   isEmpty(): boolean {
     return !this.applicant1;
+  },
+  isInterestClaimUntilSubmitDate(): boolean {
+    return this?.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
+  },
+  isInterestFromClaimSubmitDate(): boolean {
+    return this?.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+  },
+  isInterestFromASpecificDate(): boolean {
+    return this?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+  },
+  isInterestClaimOptionsSameRateInterest(): boolean {
+    return this?.interestClaimOptions === InterestClaimOptions.SAME_RATE_INTEREST;
+  },
+  isSameRateTypeEightPercent(): boolean {
+    return this?.sameRateInterestSelection?.sameRateInterestType !== SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   },
   
 };

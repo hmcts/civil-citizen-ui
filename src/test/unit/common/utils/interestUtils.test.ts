@@ -6,7 +6,7 @@ import {YesNo} from '../../../../main/common/form/models/yesNo';
 import {InterestClaimFromType, InterestClaimOptions, SameRateInterestType} from '../../../../main/common/form/models/claimDetails';
 
 describe('Interest Utils', () => {
-  const claim: Claim = deepCopy(mockResponse);
+  const claim: Claim = Object.assign(new Claim(), deepCopy(mockResponse));
 
   it('getInterestDetails should return undefined when interest is not requested', () => {
     //Given

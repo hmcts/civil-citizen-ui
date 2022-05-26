@@ -1,7 +1,6 @@
 import {Claim} from '../models/claim';
 import {YesNo} from '../form/models/yesNo';
 import {getNumberOfDaysBetweenTwoDays} from './dateUtils';
-import {InterestClaimFromType, InterestClaimUntilType, InterestClaimOptions, SameRateInterestType} from '../form/models/claimDetails';
 
 export const getInterestDetails = (claim: Claim) => {
   if (claim?.claimInterest === YesNo.NO) {
@@ -18,7 +17,7 @@ export const getInterestDetails = (claim: Claim) => {
 
 function getInterestToDate(claim: Claim) {
   let interestToDate : Date | string = new Date().toISOString();
-  if (claim?.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE) {
+  if (claim?.isInterestClaimUntilSubmitDate()) {
     interestToDate = claim.submittedDate;
   }
   return interestToDate;
@@ -26,9 +25,9 @@ function getInterestToDate(claim: Claim) {
 
 export function getInterestDateOrIssueDate(claim: Claim) {
   let interestFromDate = claim?.issueDate;
-  if (claim?.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE) {
+  if (claim.isInterestFromClaimSubmitDate()) {
     interestFromDate = claim.submittedDate;
-  } else if (claim?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE) {
+  } else if (claim.isInterestFromASpecificDate()) {
     interestFromDate = claim.interestFromSpecificDate;
   }
   return interestFromDate;
@@ -36,10 +35,10 @@ export function getInterestDateOrIssueDate(claim: Claim) {
 
 export function getInterestRate(claim: Claim) {
   let interestRate;
-  if (claim?.interestClaimOptions === InterestClaimOptions.SAME_RATE_INTEREST) {
-    if (claim?.sameRateInterestSelection?.sameRateInterestType !== SameRateInterestType.SAME_RATE_INTEREST_8_PC) {
+  if (claim.isInterestClaimOptionsSameRateInterest()) {
+    if (!claim.isSameRateTypeEightPercent()) {
       interestRate = claim?.sameRateInterestSelection?.differentRate;
-    } else if (claim?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC) {
+    } else if (claim.isSameRateTypeEightPercent()) {
       interestRate = 8;
     }
   }
