@@ -37,9 +37,117 @@
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
       "DOB": "Dyddiad Geni"
     },
+    "CITIZEN_BANK_ACCOUNTS": {
+      "PAGE_TITLE": "Your Bank Accounts"
+    },
+    "CITIZEN_DETAILS": {
+      "PAGE_TITLE": "Your Details"
+    },
+    "CITIZEN_DOB": {
+      "PAGE_TITLE": "Your Date of Birth"
+    },
+    "CITIZEN_PHONE": {
+      "PAGE_TITLE": "Your Phone Number"
+    },
+    "CITIZEN_RESPONSE_TYPE": {
+      "PAGE_TITLE": "Your Claim Response"
+    },
+    "CLAIM_DETAILS": {
+      "PAGE_TITLE": "Claim Details"
+    },
+    "COMPANY_DETAILS": {
+      "PAGE_TITLE": "Company Details"
+    },
+    "CONTACT_THEM": {
+      "PAGE_TITLE": "Contact Claimant"
+    },
+    "COURT_ORDERS": {
+      "PAGE_TITLE": "Any Court Orders?"
+    },
+    "DASHBOARD": {
+      "PAGE_TITLE": "Claims made against you"
+    },
+    "DEBTS": {
+      "PAGE_TITLE": "Any Debts?"
+    },
+    "DEPENDANTS": {
+      "PAGE_TITLE": "Any Dependants?"
+    },
+    "DEPENDANTS_BETWEEN_16_AND_19": {
+      "PAGE_TITLE": "Any Dependants Between 16 and 19?"
+    },
+    "DEPENDANTS_CHILDREN_DISABILITY": {
+      "PAGE_TITLE": "Any Dependants With Disability?"
+    },
+    "EMPLOYMENT_STATUS": {
+      "PAGE_TITLE": "Are You Employed?"
+    },
+    "EVIDENCE": {
+      "PAGE_TITLE": "List Your Evidence"
+    },
+    "FINANCIAL_DETAILS": {
+      "PAGE_TITLE": "Your Financial Details"
+    },
+    "FREE_TELEPHONE_MEDIATION": {
+      "PAGE_TITLE": "Free Telephone Mediation"
+    },
+    "FULL_ADMISSION_PAYMENT_DATE": {
+      "PAGE_TITLE": "Payment Date"
+    },
+    "FULL_ADMISSION_PAYMENT_OPTION": {
+      "PAGE_TITLE": "Payment Option"
+    },
+    "I_DON_T_WANT_FREE_MEDIATION": {
+      "PAGE_TITLE": "I don't want free mediation"
+    },
+    "MEDIATION_CAN_WE_USE": {
+      "PAGE_TITLE": "Mediation - Provide a Phone Number"
+    },
+    "MEDIATION_COMPANY_PHONE": {
+      "PAGE_TITLE": "Mediation - Provide Company Contact Number"
+    },
     "MEDIATION_DISAGREEMENT": {
       "PAGE_TITLE": "Free Mediation Disagreement",
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+    },
+    "OTHER_DEPENDANTS": {
+      "PAGE_TITLE": "Other Dependants?"
+    },
+    "PARTIAL_ADMISSION_ALREADY_PAID": {
+      "PAGE_TITLE": "Already Paid"
+    },
+    "PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE": {
+      "PAGE_TITLE": "How Much Do You Owe?"
+    },
+    "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
+      "PAGE_TITLE": "How Much Do You Owe?"
+    },
+    "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
+      "PAGE_TITLE": "Why Do You Disagree?"
+    },
+    "REGULAR_EXPENSES": {
+      "PAGE_TITLE": "Your Regular Expenses"
+    },
+    "REGULAR_INCOME": {
+      "PAGE_TITLE": "Your Regular Income"
+    },
+    "REPAYMENT_PLAN": {
+      "PAGE_TITLE": "Your Repayment Plan"
+    },
+    "SELF_EMPLOYED":{
+      "PAGE_TITLE": "Self Employment Details"
+    },
+    "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
+      "PAGE_TITLE": "Behind On Tax Payments?"
+    },
+    "SEND_YOUR_RESPONSE_BY_EMAIL": {
+      "PAGE_TITLE": "Send Your Response By Email"
+    },
+    "UNDER_18": {
+      "PAGE_TITLE": "Under 18"
+    },
+    "WHO_EMPLOYS_YOU": {
+      "PAGE_TITLE": "Your Employer"
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've Paid Less",

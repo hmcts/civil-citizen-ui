@@ -28,6 +28,9 @@ describe('Already Paid View', () => {
       htmlDocument = dom.window.document;
     });
 
+    it('should have correct page title', () => {
+      expect(htmlDocument.title).toEqual('Your money claims account - Already Paid');
+    });
 
     it('should display header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');

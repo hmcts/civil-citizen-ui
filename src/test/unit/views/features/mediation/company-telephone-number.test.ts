@@ -30,6 +30,10 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
       htmlDocument = dom.window.document;
     });
 
+    it('should have correct page title', () => {
+      expect(htmlDocument.title).toEqual('Your money claims account - Mediation - Provide Company Contact Number');
+    });
+
     it('should display header', async () => {
       const header = htmlDocument.getElementsByClassName('govuk-fieldset__heading');
       expect(header[0].innerHTML).toContain('Is ' + civilClaimResponseMock.case_data.respondent1.contactPerson + ' the right person for the mediation service to call?');
