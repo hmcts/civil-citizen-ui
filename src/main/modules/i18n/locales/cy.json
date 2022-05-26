@@ -204,6 +204,15 @@
       "HEADER": "You've paid less than the total claim amount",
       "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "You need to explain why you believe you don't owe the remaining amount.",
       "IF_CLAIMANT_REJECTS": "If CLAIMANT_NAME rejects your explanation you might have to go to a hearing."
+    },
+    "YOUR_DEFENCE": {
+      "BRIEFLY": "Briefly explain why you disagree with the claim",
+      "FAIL": "If you fail to dispute any part of the claim the court may assume you admit it.",
+      "ACCEPT": "You should also say if you accept any parts of the claim.",
+      "TIMELINE": "Don’t give us a detailed timeline - we’ll ask for that separately.",
+      "TITLE": "Why do you disagree with the claim?",
+      "REASON": "Their reasons for making the claim",
+      "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
     }
   },
   "ERRORS": {
