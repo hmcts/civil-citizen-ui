@@ -60,7 +60,7 @@ export class CivilServiceClient {
       { claimAmountRange: '£1,000.01 to £1,500', fee: '£80' },
       { claimAmountRange: '£1,500.01 to £3,000', fee: '£115' },
       { claimAmountRange: '£3,000.01 to £5,000', fee: '£205' },
-      { claimAmountRange: '£5,000.01 to £1,0000', fee: '£455' },
+      { claimAmountRange: '£5,000.01 to £10,000', fee: '£455' },
     ];
     return feesRanges;
   }
