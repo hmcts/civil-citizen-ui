@@ -11,7 +11,7 @@ import {
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const govukBodyClass = 'govuk-body';
-const pageTitle = 'Free telephone mediation';
+const pageTitle = 'Free Telephone Mediation';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
