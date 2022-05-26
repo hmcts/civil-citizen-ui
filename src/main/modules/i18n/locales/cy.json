@@ -60,7 +60,16 @@
       "FEE_BASED": "The fee is based on the amount you`re claiming, including interest.",
       "VIEW_CLAIM_FEES": "View claim fees"
     },
-    "CLAIM_DETAILS": {
+    "YOUR_DEFENCE": {
+      "BRIEFLY": "Briefly explain why you disagree with the claim",
+      "FAIL": "If you fail to dispute any part of the claim the court may assume you admit it.",
+      "ACCEPT": "You should also say if you accept any parts of the claim.",
+      "TIMELINE": "Don’t give us a detailed timeline - we’ll ask for that separately.",
+      "TITLE": "Why do you disagree with the claim?",
+      "REASON": "Their reasons for making the claim",
+      "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
+    },
+     "CLAIM_DETAILS": {
       "PAGE_TITLE": "Claim Details",
       "HEADER": "Claim Details",
       "CLAIM_NUMBER": "Claim number",
@@ -80,5 +89,8 @@
   },
   "ERRORS": {
     "THERE_WAS_A_PROBLEM": "Roedd problem"
+  },
+  "EXPLANATION": {
+    "TITLE": "Eglurwch yn gryno pam na allwch dalu ar unwaith"
   }
 }
