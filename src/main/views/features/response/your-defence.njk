@@ -1,0 +1,68 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/expandableSection.njk" import expandableSection %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set heading = t('PAGES.YOUR_DEFENCE.TITLE') %}
+      {% set errors = form.getAllErrors() %}
+      {% set claimantFullName = claimantName %}
+      {% set theirReason = form.model.detailsOfClaim %}
+      {% set labelContent =  '<p class="govuk-!-font-weight-bold">' + t('PAGES.YOUR_DEFENCE.BRIEFLY') + '</p>' +
+        '<p class="govuk-body">' + t('PAGES.YOUR_DEFENCE.FAIL') + '</p>' +
+        '<p class="govuk-body">' + t('PAGES.YOUR_DEFENCE.ACCEPT') + '</p>' +
+        '<p class="govuk-body">' + t('PAGES.YOUR_DEFENCE.TIMELINE') + '</p>'
+      %}
+      {% if form.hasErrors() %}
+        {{ govukErrorSummary({
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
+          <div class="govuk-description-block govuk-body">
+            {{ expandableSection(label = t('PAGES.YOUR_DEFENCE.REASON'), content = theirReason, id = 'summaryContent') }}
+          </div>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ govukTextarea({
+              name: "text",
+              id: "text",
+              value: form.model.defence.text,
+              classes:"govuk-!-width-three-quarters",
+              label: {
+                classes: "govuk-label--s",
+                html: labelContent
+              },
+              errorMessage: {
+                text: t(form.errorFor('text'))
+              } if form.hasFieldError('text')
+            }) }}
+
+            <div class="govuk-inset-text">
+              <p class="govuk-body">
+                {{ t('PAGES.YOUR_DEFENCE.CLAIMANT', { claimantFullName: claimantFullName }) }}
+              </p>
+            </div>
+
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

@@ -34,7 +34,6 @@
         "partyName": "Version 1",
         "contactPerson": "Felipe Calderon",
         "type": "INDIVIDUAL",
-
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -51,7 +50,7 @@
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 0,
-      "detailsOfClaim": "Test details of claim",
+      "detailsOfClaim": "Judicial review is a type of court proceeding in which a judge reviews the lawfulness of a decision or action made by a public body. In other words, judicial reviews are a challenge to the way in which a decision has been made, rather than the rights and wrongs of the conclusion reached. It is not really concerned with the conclusions of that process and whether those were ‘right’, as long as the right procedures have been followed. The court will not substitute what it thinks is the ‘correct’ decision. This may mean that the public body will be able to make the same decision again, so long as it does so in a lawful way. If you want to argue that a decision was incorrect, judicial review may not be best for you. There are alternative remedies, such as appealing against the decision to a higher court. Examples of the types of decision which may fall within the range of judicial review include: Decisions of local authorities in the exercise of their duties to provide various welfare benefits and special education for children in need of such education; Certain decisions of the immigration authorities and the Immigration and Asylum Chamber; Decisions of regulatory bodies; Decisions relating to prisoner’s rights.",
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
