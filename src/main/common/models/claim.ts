@@ -36,6 +36,7 @@ export class Claim {
   mediation?: Mediation;
   evidence?: DefendantEvidence;
   timelineOfEvents?: TimeLineOfEvents[];
+  taskSharedFinancialDetails?: boolean;
   defendantStatementOfTruth?: StatementOfTruthForm;
 
 

@@ -1,7 +1,6 @@
 import * as express from 'express';
 import {
   CITIZEN_ALREADY_PAID_URL,
-  CITIZEN_PAYMENT_OPTION_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,
   CITIZEN_RESPONSE_TYPE_URL,
   CLAIM_TASK_LIST_URL,
@@ -65,7 +64,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_ALREADY_PAID_URL));
             break;
           case ResponseType.FULL_ADMISSION:
-            res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PAYMENT_OPTION_URL));
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
             break;
           case ResponseType.FULL_DEFENCE:
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_REJECT_ALL_CLAIM_URL));
