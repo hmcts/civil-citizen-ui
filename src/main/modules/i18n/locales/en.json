@@ -3,13 +3,13 @@
   "Claim number": "Claim number",
   "Claimant name": "Claimant name",
   "Claim amount": "Claim amount",
+  "CLAIM_AMOUNT": "Claim amount",
   "Next steps": "Next steps",
   "Deadline": "Deadline",
   "Actions": "Actions",
   "Respond to the claim": "Respond to the claim",
   "View": "View",
   "Save and continue": "Save and continue",
-  "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
   "COMMON": {
     "BUTTONS": {
       "CONTINUE": "Continue"
@@ -85,6 +85,9 @@
     "EVIDENCE": {
       "PAGE_TITLE": "List Your Evidence"
     },
+    "EXPLANATION": {
+      "TITLE": "Briefly explain why you can’t pay immediately"
+    },
     "FINANCIAL_DETAILS": {
       "PAGE_TITLE": "Your Financial Details"
     },
@@ -131,6 +134,11 @@
     "REGULAR_INCOME": {
       "PAGE_TITLE": "Your Regular Income"
     },
+    "REJECT_ALL": {
+      "FEE": "Fee",
+      "FEE_BASED": "The fee is based on the amount you`re claiming, including interest.",
+      "VIEW_CLAIM_FEES": "View claim fees"
+    },
     "REPAYMENT_PLAN": {
       "PAGE_TITLE": "Your Repayment Plan"
     },
@@ -142,6 +150,11 @@
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send Your Response By Email"
+    },
+    "TASK_LIST": {
+      "PAGE_TITLE": "Your Task List",
+      "HEADER": "Respond to a money claim",
+      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
     },
     "UNDER_18": {
       "PAGE_TITLE": "Under 18"
@@ -158,8 +171,5 @@
   },
   "ERRORS": {
     "THERE_WAS_A_PROBLEM": "There was a problem"
-  },
-  "EXPLANATION": {
-    "TITLE": "Briefly explain why you can’t pay immediately"
   }
 }
