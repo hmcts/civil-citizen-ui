@@ -3,13 +3,13 @@
   "Claim number": "Claim number",
   "Claimant name": "Claimant name",
   "Claim amount": "Claim amount",
+  "CLAIM_AMOUNT": "Claim amount",
   "Next steps": "Next steps",
   "Deadline": "Deadline",
   "Actions": "Actions",
   "Respond to the claim": "Respond to the claim",
   "View": "View",
   "Save and continue": "Save and continue",
-  "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
   "COMMON": {
     "BUTTONS": {
       "CONTINUE": "Continue"
@@ -41,6 +41,11 @@
       "PAGE_TITLE": "Free Mediation Disagreement",
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
     },
+    "TASK_LIST": {
+      "PAGE_TITLE": "Your Task List",
+      "HEADER": "Respond to a money claim",
+      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+    },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've Paid Less",
       "HEADER": "You've paid less than the total claim amount",
@@ -55,12 +60,17 @@
       "TITLE": "Why do you disagree with the claim?",
       "REASON": "Their reasons for making the claim",
       "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
+    },
+    "EXPLANATION": {
+      "TITLE": "Briefly explain why you can’t pay immediately"
+    },
+    "REJECT_ALL": {
+      "FEE": "Fee",
+      "FEE_BASED": "The fee is based on the amount you`re claiming, including interest.",
+      "VIEW_CLAIM_FEES": "View claim fees"
     }
   },
   "ERRORS": {
     "THERE_WAS_A_PROBLEM": "There was a problem"
-  },
-  "EXPLANATION": {
-    "TITLE": "Briefly explain why you can’t pay immediately"
-  }
+    }
 }
