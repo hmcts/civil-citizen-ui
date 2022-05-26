@@ -90,6 +90,7 @@ describe('Check Answers service', () => {
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
       //Then
       expect(summarySections.sections[1].summaryList.rows.length).toBe(6);
+      expect(summarySections.sections[1].title).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE');
       expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
       expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
       expect(summarySections.sections[1].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS');
@@ -104,6 +105,7 @@ describe('Check Answers service', () => {
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
       //Then
       expect(summarySections.sections[1].summaryList.rows.length).toBe(3);
+      expect(summarySections.sections[1].title).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE');
       expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
       expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
       expect(summarySections.sections[1].summaryList.rows[2].key.text).toBe('PAGES.EXPLANATION.TITLE');

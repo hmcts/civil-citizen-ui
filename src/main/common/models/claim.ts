@@ -70,6 +70,10 @@ export class Claim {
   isPaymentOptionBySetDate(): boolean {
     return this.paymentOption === PaymentOptionType.BY_SET_DATE;
   }
+
+  isPaymentOptionPayImmediately(): boolean {
+    return this.paymentOption === PaymentOptionType.IMMEDIATELY;
+  }
 }
 
 export interface Party {

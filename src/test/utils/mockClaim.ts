@@ -40,6 +40,9 @@ export const buildRespondent1 = (): Respondent => {
 };
 
 export const mockClaim: Claim = {
+  isPaymentOptionPayImmediately(): boolean {
+    return false;
+  },
   legacyCaseReference: '497MC585',
   applicant1:
     {

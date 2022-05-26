@@ -15,3 +15,4 @@ export class Respondent {
   partyName?: string;
   contactPerson?: string;
 }
+

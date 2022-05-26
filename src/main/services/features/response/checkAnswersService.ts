@@ -45,6 +45,13 @@ const getPaymentOption = (claim: Claim, lang: string | unknown): string => {
   return option;
 };
 
+const getResponseTitle = (claim: Claim, lang: string | unknown): string => {
+  if (claim.isPaymentOptionPayImmediately()) {
+    return t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: getLng(lang)});
+  }
+  return t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE', {lng: getLng(lang)});
+};
+
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
   return {
     sections: [
@@ -85,7 +92,7 @@ const buildResponseSection = (claim: Claim, claimId: string, lang: string | unkn
   const yourResponseHref = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
   const paymentOptionHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_OPTION_URL);
   const responseSection = summarySection({
-    title: t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: getLng(lang)}),
+    title: getResponseTitle(claim, lang),
     summaryRows: [
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', {lng: getLng(lang)}), t(`COMMON.RESPONSE_TYPE.${claim.respondent1.responseType}`, {lng: getLng(lang)}), yourResponseHref, changeLabel(lang)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), getPaymentOption(claim, lang), paymentOptionHref, changeLabel(lang)),
