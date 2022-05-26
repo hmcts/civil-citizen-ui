@@ -6,7 +6,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockClaim as mockResponse} from '../../../../../utils/mockClaim';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {getTotalAmountWithInterestAndFees} from '../../../../../../main/routes/features/response/claimDetails/claimDetailsController';
+import {getTotalAmountWithInterestAndFees} from '../../../../../../main/modules/claimDetailsService';
 import {dateFilter} from '../../../../../../main/modules/nunjucks/filters/dateFilter';
 import {convertToPoundsFilter} from '../../../../../../main/common/utils/currencyFormat';
 

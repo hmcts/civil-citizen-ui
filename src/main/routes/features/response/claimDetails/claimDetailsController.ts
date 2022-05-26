@@ -6,7 +6,7 @@ import {Claim} from '../../../../common/models/claim';
 import {AppRequest} from 'models/AppRequest';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {getInterestDetails} from '../../../../common/utils/interestUtils';
-import {convertToPoundsFilter} from '../../../../common/utils/currencyFormat';
+import {getTotalAmountWithInterestAndFees} from '../../../../modules/claimDetailsService';
 
 const claimDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -14,10 +14,6 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimDetailsController');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-
-export const getTotalAmountWithInterestAndFees = (claim: Claim) => {
-  return claim.totalClaimAmount + claim?.totalInterest + convertToPoundsFilter(claim.claimFee.calculatedAmountInPence);
-};
 
 // -- GET Claim Details
 claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: express.Response) => {

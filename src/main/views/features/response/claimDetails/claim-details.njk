@@ -19,10 +19,9 @@
           <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_DETAILS.HEADER') }}</h1>
           {% if claim.helpWithFeesNumber %}
             <p class="govuk-body">
-              <span>
-                <strong>{{ t('PAGES.CLAIM_DETAILS.CLAIM_NUMBER') }}
-                </span>
-              </strong>
+              <span class="govuk-!-font-weight-bold">
+                {{ t('PAGES.CLAIM_DETAILS.CLAIM_NUMBER') }}
+              </span>
               <span>
                 {% set dash = joiner("-") %}
                 {% for batch in claim.ccdCaseId | string | batch(4) -%}
@@ -35,14 +34,14 @@
             </p>
           {% else %}
             <p class="govuk-body">
-              <span>
-                <strong>{{ t('PAGES.CLAIM_DETAILS.CLAIM_NUMBER') }}:</strong>
+              <span class="govuk-!-font-weight-bold">
+                {{ t('PAGES.CLAIM_DETAILS.CLAIM_NUMBER') }}:
               </span>
               {{ claim.legacyCaseReference }}</p>
           {% endif %}
           <p class="govuk-body">
-            <span>
-              <strong>{{ t('PAGES.CLAIM_DETAILS.CLAIM_AMOUNT') }}:</strong>
+            <span class="govuk-!-font-weight-bold">
+              {{ t('PAGES.CLAIM_DETAILS.CLAIM_AMOUNT') }}:
             </span>
             {{ totalAmount | currencyFormat(totalAmount) }}
           </p>
@@ -54,10 +53,10 @@
           <p class="govuk-body">{{ claim.detailsOfClaim }}</p>
           {% if timelineRows and timelineRows.length > 0 %}
             {{ timelineSummary(timelineRows) }}
-          {% endif %} 
+          {% endif %}
           <p class="govuk-body">
-            <span>
-              <strong>{{ t('COMMON.DOWNLOAD_THE_CLAIM') }}</strong>
+            <span class="govuk-!-font-weight-bold">
+              {{ t('COMMON.DOWNLOAD_THE_CLAIM') }}
             </span>
           </p>
           <p class="govuk-body"><a href="#">Download claim(PDF)</a></p>

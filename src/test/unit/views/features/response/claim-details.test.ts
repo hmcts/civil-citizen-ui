@@ -4,7 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {mockClaim as mockResponse} from '../../../../utils/mockClaim';
-import {getTotalAmountWithInterestAndFees} from '../../../../../main/routes/features/response/claimDetails/claimDetailsController';
+import {getTotalAmountWithInterestAndFees} from '../../../../../main/modules/claimDetailsService';
 import {dateFilter} from '../../../../../main/modules/nunjucks/filters/dateFilter';
 import {convertToPoundsFilter} from '../../../../../main/common/utils/currencyFormat';
 
@@ -20,7 +20,7 @@ describe('Task List View', () => {
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
   const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-  
+
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
