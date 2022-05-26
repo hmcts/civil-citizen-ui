@@ -47,5 +47,6 @@ export const enum TestMessages {
   MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
   MEDIATION_I_DONT_WANT_FREE = 'I do not agree to free mediation',
   SEND_YOUR_RESPONSE_BY_EMAIL = 'Reject all of the claim and counterclaim',
-
+  FEES_BASED_ON_AMOUNT = 'The fee is based on the amount you`re claiming, including interest.',
+  DO_NOT_CREATE_CLAIM_IF_COUNTERCLAIM = 'Do not create a new claim if you want to counterclaim. Use form N9B.',
 }
