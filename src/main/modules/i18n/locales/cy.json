@@ -3,6 +3,7 @@
   "Claim number": "Mialc rebmun",
   "Claimant name": "Tnamialc eman",
   "Claim amount": "Mialc tnuoma",
+  "CLAIM_AMOUNT": "Claim amount",
   "Next steps": "Txen spets",
   "Deadline": "Enildaed",
   "Actions": "Snoitca",
@@ -21,6 +22,12 @@
     }
   },
   "PAGES": {
+    "ARE_YOU_SEVERELY_DISABLED": {
+      "PAGE_TITLE": "Severely disabled"
+    },
+    "CARER": {
+      "PAGE_TITLE": "Carer's allowance"
+    },
     "CHECK_YOUR_ANSWER": {
       "CHANGE": "Newid",
       "TITLE": "Gwiriwch eich ateb",
@@ -36,28 +43,170 @@
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
       "DOB": "Dyddiad Geni"
     },
-    "MEDIATION_DISAGREEMENT": {
-      "PAGE_TITLE": "Free Mediation Disagreement",
-      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+    "CITIZEN_BANK_ACCOUNTS": {
+      "PAGE_TITLE": "Your bank accounts"
     },
-    "TASK_LIST": {
-      "PAGE_TITLE": "Your Task List",
-      "HEADER": "Respond to a money claim",
-      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+    "CITIZEN_DETAILS": {
+      "PAGE_TITLE": "Your details"
     },
-    "YOU_HAVE_PAID_LESS": {
-      "PAGE_TITLE": "You've Paid Less",
-      "HEADER": "You've paid less than the total claim amount",
-      "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "You need to explain why you believe you don't owe the remaining amount.",
-      "IF_CLAIMANT_REJECTS": "If CLAIMANT_NAME rejects your explanation you might have to go to a hearing."
+    "CITIZEN_DOB": {
+      "PAGE_TITLE": "Your date of birth"
+    },
+    "CITIZEN_PHONE": {
+      "PAGE_TITLE": "Your phone number"
+    },
+    "CITIZEN_RESPONSE_TYPE": {
+      "PAGE_TITLE": "Your claim response"
+    },
+    "CLAIM_DETAILS": {
+      "PAGE_TITLE": "Claim details"
+    },
+    "COMPANY_DETAILS": {
+      "PAGE_TITLE": "Company details"
+    },
+    "CONTACT_THEM": {
+      "PAGE_TITLE": "Contact claimant"
+    },
+    "COURT_ORDERS": {
+      "PAGE_TITLE": "Any court orders?"
+    },
+    "DASHBOARD": {
+      "PAGE_TITLE": "Smialc edam tsniaga uoy"
+    },
+    "DEBTS": {
+      "PAGE_TITLE": "Any debts?"
+    },
+    "DEFENDANT_TIMELINE": {
+      "PAGE_TITLE": "Add your timeline of events"
+    },
+    "DEPENDANTS": {
+      "PAGE_TITLE": "Any dependants?"
+    },
+    "DEPENDANTS_BETWEEN_16_AND_19": {
+      "PAGE_TITLE": "Any dependants between 16 and 19?"
+    },
+    "DEPENDANTS_CHILDREN_DISABILITY": {
+      "PAGE_TITLE": "Any dependants with disability?"
+    },
+    "DISABILITY": {
+      "PAGE_TITLE": "Any you disabled?"
+    },
+    "EMPLOYMENT_STATUS": {
+      "PAGE_TITLE": "Are you employed?"
+    },
+    "EVIDENCE": {
+      "PAGE_TITLE": "List your evidence"
     },
     "EXPLANATION": {
+      "PAGE_TITLE": "Explanation",
       "TITLE": "Briefly explain why you can’t pay immediately"
+    },
+    "FINANCIAL_DETAILS": {
+      "PAGE_TITLE": "Your financial details"
+    },
+    "FREE_TELEPHONE_MEDIATION": {
+      "PAGE_TITLE": "Free telephone mediation"
+    },
+    "FULL_ADMISSION_PAYMENT_DATE": {
+      "PAGE_TITLE": "Payment date"
+    },
+    "FULL_ADMISSION_PAYMENT_OPTION": {
+      "PAGE_TITLE": "Payment option"
+    },
+    "I_DON_T_WANT_FREE_MEDIATION": {
+      "PAGE_TITLE": "I don't want free mediation"
+    },
+    "MEDIATION_CAN_WE_USE": {
+      "PAGE_TITLE": "Mediation - Provide a phone number"
+    },
+    "MEDIATION_COMPANY_PHONE": {
+      "PAGE_TITLE": "Mediation - Provide company contact number"
+    },
+    "MEDIATION_DISAGREEMENT": {
+      "PAGE_TITLE": "Free mediation disagreement",
+      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+    },
+    "OTHER_DEPENDANTS": {
+      "PAGE_TITLE": "Other dependants?"
+    },
+    "PARTIAL_ADMISSION_ALREADY_PAID": {
+      "PAGE_TITLE": "Already paid"
+    },
+    "PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE": {
+      "PAGE_TITLE": "How much do you owe?"
+    },
+    "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
+      "PAGE_TITLE": "How much have you paid?"
+    },
+    "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
+      "PAGE_TITLE": "Why do you disagree?"
+    },
+    "PARTNER": {
+      "PAGE_TITLE": "Living with a partner"
+    },
+    "PARTNER_AGE": {
+      "PAGE_TITLE": "Partner's age"
+    },
+    "PARTNER_DISABILITY": {
+      "PAGE_TITLE": "Partner with disability"
+    },
+    "PARTNER_PENSION": {
+      "PAGE_TITLE": "Partner with pension"
+    },
+    "PARTNER_SEVERE_DISABILITY": {
+      "PAGE_TITLE": "Partner with severe disability"
+    },
+    "PRIORITY_DEBTS": {
+      "PAGE_TITLE": "Priority debts"
+    },
+    "REGULAR_EXPENSES": {
+      "PAGE_TITLE": "Your regular expenses"
+    },
+    "REGULAR_INCOME": {
+      "PAGE_TITLE": "Your regular income"
     },
     "REJECT_ALL": {
       "FEE": "Fee",
       "FEE_BASED": "The fee is based on the amount you`re claiming, including interest.",
       "VIEW_CLAIM_FEES": "View claim fees"
+    },
+    "REJECT_ALL_CLAIM": {
+      "PAGE_TITLE": "Reject all of claim"
+    },
+    "REPAYMENT_PLAN": {
+      "PAGE_TITLE": "Your repayment plan"
+    },
+    "RESIDENCE": {
+      "PAGE_TITLE": "Your residence"
+    },
+    "SELF_EMPLOYED":{
+      "PAGE_TITLE": "Self employment details"
+    },
+    "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
+      "PAGE_TITLE": "Behind on tax payments?"
+    },
+    "SEND_YOUR_RESPONSE_BY_EMAIL": {
+      "PAGE_TITLE": "Send your response by email"
+    },
+    "TASK_LIST": {
+      "PAGE_TITLE": "Your task list",
+      "HEADER": "Respond to a money claim",
+      "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+    },
+    "UNDER_18": {
+      "PAGE_TITLE": "Under 18"
+    },
+    "UNEMPLOYMENT": {
+      "PAGE_TITLE": "Unemployed or retired"
+    },
+    "WHO_EMPLOYS_YOU": {
+      "PAGE_TITLE": "Your employer"
+    },
+    "YOU_HAVE_PAID_LESS": {
+      "PAGE_TITLE": "You've paid less",
+      "HEADER": "You've paid less than the total claim amount",
+      "EXPLAIN_WHY_YOU_DONT_OWE_REMAINING_AMOUNT": "You need to explain why you believe you don't owe the remaining amount.",
+      "IF_CLAIMANT_REJECTS": "If CLAIMANT_NAME rejects your explanation you might have to go to a hearing."
     },
     "YOUR_DEFENCE": {
       "BRIEFLY": "Briefly explain why you disagree with the claim",
@@ -71,8 +220,5 @@
   },
   "ERRORS": {
     "THERE_WAS_A_PROBLEM": "Roedd problem"
-  },
-  "EXPLANATION": {
-    "TITLE": "Eglurwch yn gryno pam na allwch dalu ar unwaith"
   }
 }
