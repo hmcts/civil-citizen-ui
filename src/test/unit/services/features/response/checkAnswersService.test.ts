@@ -114,6 +114,7 @@ describe('Check Answers service', () => {
       mockGetCaseDataFromStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
+
       //Then
       await expect(
         saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(SignatureType.BASIC, 'true'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
