@@ -17,21 +17,18 @@
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "I admit all the claim"
     },
-    "PAYMENT_OPTION": {
-      "IMMEDIATELY": "Immediately",
-      "INSTALMENTS": "By instalments",
-      "BY_SET_DATE": "By a set date"
-    },
     "PAYMENT_FREQUENCY": {
       "WEEK": "Each week",
       "TWO_WEEKS": "Every two weeks",
       "MONTH": "Every month"
+    },
+    "PAYMENT_OPTION": {
+      "BY_SET_DATE": "By a set date",
+      "IMMEDIATELY": "Immediately",
+      "INSTALMENTS": "By instalments"
     }
   },
   "PAGES": {
-    "EXPLANATION": {
-      "TITLE": "Briefly explain why you can’t pay immediately"
-    },
     "CHECK_YOUR_ANSWER": {
       "CHANGE": "Change",
       "TITLE": "Check your answers",

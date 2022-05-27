@@ -3,7 +3,8 @@ import {RepaymentPlanForm} from '../../../../common/form/models/repaymentPlan/re
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {DateFormatter} from '../../../../common/utils/dateFormatter';
 import {getRepaymentPlanForm, saveRepaymentPlanData} from '../../../../modules/repaymentPlan/repaymentPlanService';
-import {CITIZEN_REPAYMENT_PLAN, CLAIM_TASK_LIST_URL} from '../../../urls';
+import {CITIZEN_REPAYMENT_PLAN,
+  CLAIM_TASK_LIST_URL} from '../../../urls';
 import {validateForm} from '../../../../common/form/validators/formValidator';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
