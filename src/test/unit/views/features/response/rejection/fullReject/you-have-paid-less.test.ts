@@ -7,7 +7,7 @@ import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-const pageTitle = 'You\'ve Paid Less';
+const pageTitle = 'You\'ve paid less';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
