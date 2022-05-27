@@ -60,7 +60,21 @@
       "PAGE_TITLE": "Your claim response"
     },
     "CLAIM_DETAILS": {
-      "PAGE_TITLE": "Claim details"
+      "PAGE_TITLE": "Claim Details",
+      "HEADER": "Claim details",
+      "CLAIM_NUMBER": "Claim number",
+      "CLAIM_AMOUNT": "Claim amount",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "AMOUNT_BREAKDOWN": "Amount breakdown",
+      "AMOUNT": "Amount",
+      "INTEREST": "Interest",
+      "CLAIM_FEE": "Claim fee",
+      "CLAIM_TOTAL": "Claim Total",
+      "REASON_FOR_CLAIM": "Reason for claim",
+      "TIMELINE": "Timeline",
+      "DATE": "Date",
+      "WHAT_HAPPENED": "What happened",
+      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     },
     "COMPANY_DETAILS": {
       "PAGE_TITLE": "Company details"
@@ -217,23 +231,6 @@
       "TITLE": "Why do you disagree with the claim?",
       "REASON": "Their reasons for making the claim",
       "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
-    },
-     "CLAIM_DETAILS": {
-      "PAGE_TITLE": "Claim Details",
-      "HEADER": "Claim Details",
-      "CLAIM_NUMBER": "Claim number",
-      "CLAIM_AMOUNT": "Claim amount",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
-      "AMOUNT_BREAKDOWN": "Amount breakdown",
-      "AMOUNT": "Amount",
-      "INTEREST" : "Interest",
-      "CLAIM_FEE" : "Claim fee",
-      "CLAIM_TOTAL" : "Claim Total",
-      "REASON_FOR_CLAIM" : "Reason for claim",
-      "TIMELINE" : "Timeline",
-      "DATE" : "Date",
-      "WHAT_HAPPENED" : "What happened",
-      "INTEREST_SNIPPET" : "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     }
   },
   "ERRORS": {
