@@ -36,7 +36,7 @@ describe('Task List View', () => {
     });
 
     it('should have title set', () => {
-      expect(htmlDocument.title).toContain('Your money claims account - Your Task List');
+      expect(htmlDocument.title).toContain('Your money claims account - Your task list');
     });
 
     it('should display header', () => {
