@@ -1,17 +1,22 @@
 import * as express from 'express';
-import {RepaymentPlanForm} from '../../../../common/form/models/repaymentPlan/repaymentPlanForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {DateFormatter} from '../../../../common/utils/dateFormatter';
-import {getRepaymentPlanForm, saveRepaymentPlanData} from '../../../../modules/repaymentPlan/repaymentPlanService';
-import {CITIZEN_REPAYMENT_PLAN,
-  CLAIM_TASK_LIST_URL} from '../../../urls';
+import { RepaymentPlanForm } from '../../../../common/form/models/repaymentPlan/repaymentPlanForm';
+import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFormatter';
+import { DateFormatter } from '../../../../common/utils/dateFormatter';
+import {
+  getRepaymentPlanForm,
+  saveRepaymentPlanData,
+} from '../../../../modules/repaymentPlan/repaymentPlanService';
+import {
+  CITIZEN_REPAYMENT_PLAN,
+  CLAIM_TASK_LIST_URL,
+} from '../../../urls';
 import {validateForm} from '../../../../common/form/validators/formValidator';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
 const repaymentPlanController = express.Router();
 
 function renderView(form: RepaymentPlanForm, res: express.Response): void {
-  res.render(repaymentPlanViewPath, {form, paymentExampleDate: getFirstPaymentExampleDate()});
+  res.render(repaymentPlanViewPath, { form, paymentExampleDate: getFirstPaymentExampleDate() });
 }
 
 const getFirstPaymentExampleDate = () => {
