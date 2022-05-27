@@ -53,6 +53,10 @@ describe('Repayment Plan View', () => {
       });
     });
 
+    it('should have correct page title', () => {
+      expect(htmlDocument.title).toEqual('Your money claims account - Mediation - Provide a phone number');
+    });
+
     it('should display header', async () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
       expect(header[0].innerHTML).toContain('Confirm your telephone number');

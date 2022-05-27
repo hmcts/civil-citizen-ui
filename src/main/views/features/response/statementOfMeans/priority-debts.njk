@@ -3,6 +3,11 @@
 {% from "macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/buttons.njk" import saveAndContinueButton %}
 {% from "../../../macro/conditional-checkBoxHTML.njk" import conditionalCheckBoxHTML %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.PRIORITY_DEBTS.PAGE_TITLE') }}
+{% endblock %}
 
 {% block question %}
   {% set title = t("Debts you're behind on") %}
