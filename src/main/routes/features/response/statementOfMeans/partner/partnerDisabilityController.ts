@@ -6,7 +6,7 @@ import {
 } from '../../../../urls';
 import {PartnerDisability} from '../../../../../common/form/models/statementOfMeans/partner/partnerDisability';
 import {ValidationError,Validator} from 'class-validator';
-import {PartnerDisabilityService} from '../../../../../modules/statementOfMeans/partner/partnerDisabilityService';
+import {PartnerDisabilityService} from '../../../../../services/features/response/statementOfMeans/partner/partnerDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner-disability';

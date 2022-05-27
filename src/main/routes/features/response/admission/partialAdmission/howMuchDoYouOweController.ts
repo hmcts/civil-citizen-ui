@@ -7,7 +7,7 @@ import {validateForm} from '../../../../../common/form/validators/formValidator'
 import {
   getHowMuchDoYouOweForm,
   saveHowMuchDoYouOweData,
-} from '../../../../../modules/admission/partialAdmission/howMuchDoYouOweService';
+} from '../../../../../services/features/response/admission/partialAdmission/howMuchDoYouOweService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import { toNumberOrUndefined } from '../../../../../common/utils/numberConverter';
 
