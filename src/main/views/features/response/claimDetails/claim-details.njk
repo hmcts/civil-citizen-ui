@@ -1,15 +1,18 @@
 {% extends "claim-details-tpl.njk" %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/timeline-summary.njk" import timelineSummary %}
 {% from "../../../macro/amount-breakdown.njk" import amountBreakdownTable %}
-{% set heading = 'Claim details' %}
-{% set evidenceRows = claim.evidence %}
-{% set timelineRows = claim.timelineOfEvents %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CLAIM_DETAILS.PAGE_TITLE') }}
 {% endblock %}
+
+{% set heading = 'Claim details' %}
+{% set evidenceRows = claim.evidence %}
+{% set timelineRows = claim.timelineOfEvents %}
+
 
 {% block content %}
   <div class="govuk-width-container">
