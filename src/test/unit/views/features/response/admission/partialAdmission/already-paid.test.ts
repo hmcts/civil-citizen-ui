@@ -29,7 +29,7 @@ describe('Already Paid View', () => {
     });
 
     it('should have correct page title', () => {
-      expect(htmlDocument.title).toEqual('Your money claims account - Already Paid');
+      expect(htmlDocument.title).toEqual('Your money claims account - Already paid');
     });
 
     it('should display header', () => {

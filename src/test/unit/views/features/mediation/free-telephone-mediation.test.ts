@@ -11,7 +11,7 @@ import {
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const govukBodyClass = 'govuk-body';
-const pageTitle = 'Free Telephone Mediation';
+const pageTitle = 'Free telephone mediation';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -41,7 +41,7 @@ describe('Free Telephone Mediation View', () => {
 
     it('should display header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
-      expect(header[0].innerHTML).toContain('Free telephone mediation');
+      expect(header[0].innerHTML).toContain(pageTitle);
     });
 
     it('should display two h2 headers', () => {

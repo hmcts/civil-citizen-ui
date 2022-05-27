@@ -31,7 +31,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     });
 
     it('should have correct page title', () => {
-      expect(htmlDocument.title).toEqual('Your money claims account - Mediation - Provide Company Contact Number');
+      expect(htmlDocument.title).toEqual('Your money claims account - Mediation - Provide company contact number');
     });
 
     it('should display header', async () => {

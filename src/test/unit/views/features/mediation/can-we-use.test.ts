@@ -54,7 +54,7 @@ describe('Repayment Plan View', () => {
     });
 
     it('should have correct page title', () => {
-      expect(htmlDocument.title).toEqual('Your money claims account - Mediation - Provide a Phone Number');
+      expect(htmlDocument.title).toEqual('Your money claims account - Mediation - Provide a phone number');
     });
 
     it('should display header', async () => {
