@@ -14,6 +14,7 @@ import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {Defence} from '../form/models/defence';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
+import {Document} from '../../common/models/document';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -39,6 +40,7 @@ export class Claim {
   timelineOfEvents?: TimeLineOfEvents[];
   taskSharedFinancialDetails?: boolean;
   defendantStatementOfTruth?: StatementOfTruthForm;
+  specClaimTemplateDocumentFiles?: Document;
 
 
   formattedResponseDeadline(): string {
