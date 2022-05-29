@@ -60,6 +60,7 @@ import iDontWantFreeMediationController from './features/mediation/iDontWantFree
 import evidenceController from './features/response/evidence/evidenceController';
 import checkAnswersController from './features/response/checkAnswersController';
 import youHavePaidLessController from './features/response/rejection/fullReject/youHavePaidLessController';
+import yourDefenceController from './features/response/yourDefenceController';
 
 export default [
   homeController,
@@ -119,4 +120,5 @@ export default [
   defendantTimelineController,
   checkAnswersController,
   youHavePaidLessController,
+  yourDefenceController,
 ];
