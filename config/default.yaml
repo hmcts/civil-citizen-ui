@@ -24,6 +24,9 @@ services:
       port: 6379
       key:
       tls: false
+  dmStore:
+    clientID: 'civil_citizen_ui'
+    url: 'http://localhost:4506'
 health:
   timeout: 5000
   deadline: 15000

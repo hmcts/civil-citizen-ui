@@ -13,6 +13,9 @@ services:
       host: REDIS_HOST
       port: REDIS_PORT
       tls: REDIS_TLS
+  dmStore:
+    clientID: IDAM_CLIENT_ID
+    url: DM_STORE_URL
 
 port: PORT
 appInsights:
