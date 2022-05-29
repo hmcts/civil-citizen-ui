@@ -28,6 +28,7 @@ export const saveExplanation = async (claimId: string, explanation: Explanation)
       statementOfMeans.explanation = explanation;
       claim.statementOfMeans = statementOfMeans;
     }
+    claim.taskSharedFinancialDetails = true;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
