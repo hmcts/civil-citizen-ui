@@ -7,6 +7,7 @@ import civilClaimResponseUnemploymentOther from './mocks/civilClaimResponseUnemp
 import civilClaimResponseApplicantCompany from './mocks/civilClaimResponseApplicantCompanyMock.json';
 import civilClaimResponseApplicantIndividual from './mocks/civilClaimResponseApplicanIndividualMock.json';
 import civilClaimResponseApplicantWithMediation from './mocks/civilClaimResponseApplicanWithMediationMock.json';
+import civilClaimResponsePDFTimeline from './mocks/civilClaimResponsePDFTimelineMock.json';
 import {Logger} from 'winston';
 
 const mockCivilClaim = {
@@ -61,6 +62,13 @@ const mockCivilClaimApplicantIndividualType = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantIndividual))),
 };
 
+const mockCivilClaimPDFTimeline = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponsePDFTimeline))),
+};
+
+
+
 export {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -73,4 +81,5 @@ export {
   mockCivilClaimApplicantIndividualType,
   mockLogger,
   mockRedisWithMediationProperties,
+  mockCivilClaimPDFTimeline,
 };

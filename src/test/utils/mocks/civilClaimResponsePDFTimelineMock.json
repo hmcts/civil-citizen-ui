@@ -122,6 +122,11 @@
       "contactPerson": "Felipe",
       "partyName": "Version 1"
     },
+    "specClaimTemplateDocumentFiles": {
+      "document_url": "http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c",
+      "document_filename": "timeline-event-template-Kadir.pdf",
+      "document_binary_url": "http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary"
+    },
     "respondent1ResponseDeadline": "2022-05-15T02:59:59",
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 110,
@@ -129,15 +134,6 @@
     "paymentDate": "2025-06-01T00:00:00.000Z",
     "defence": {
       "text": "reasons for making the claim"
-    },
-    "timelineOfEvents": [
-      {
-        "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
-        "value": {
-          "timelineDate": "2021-01-01",
-          "timelineDescription": "Test details of claim"
-        }
-      }
-    ]
+    }
   }
 }
