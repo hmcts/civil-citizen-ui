@@ -1,4 +1,10 @@
 {% extends "claim-details-tpl.njk" %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CLAIM_DETAILS.PAGE_TITLE') }}
+{% endblock %}
+
 {% set heading = 'Claim details' %}
 {% set evidenceRows = claim.claimData.evidence.getPopulatedRowsOnly() if claim.claimData.evidence %}
 {% set timelineRows = claim.claimData.timeline.getPopulatedRowsOnly() if claim.claimData.timeline %}
