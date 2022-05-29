@@ -7,6 +7,11 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "../../macro/canWeUseCompanyInputs.njk" import canWeUseCompanyInputs %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.MEDIATION_COMPANY_PHONE.PAGE_TITLE') }}
+{% endblock %}
 
 {% block content %}
   <div class="govuk-width-container">
