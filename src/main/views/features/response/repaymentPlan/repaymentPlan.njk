@@ -44,59 +44,59 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-third">
         {{ govukInput({
-            label: {
-              html: '<p class="govuk-!-margin-0 govuk-body-m"><strong>' + t("Regular payments of") + ':' + '</strong></p>',
-              isPageHeading: true
-            },
-            hint: {
-              text: t('For example') + ', £200'
-            },
-            classes: "repayment-instalments",
-            id: "paymentAmount",
-            name: "paymentAmount",
-            type: "number",
-            autocomplete: "number",
-            prefix: {
-              text: "£"
-            },
-            spellcheck: false,
-            value: form.getPaymentAmountAsString(),
-            errorMessage: {
-              text:t(form.errorFor('paymentAmount'))
-            } if form.hasFieldError('paymentAmount')
-          }) }}
+          label: {
+            html: '<p class="govuk-!-margin-0 govuk-body-m"><strong>' + t("Regular payments of") + ':' + '</strong></p>',
+            isPageHeading: true
+          },
+          hint: {
+            text: t('For example') + ', £200'
+          },
+          classes: "repayment-instalments",
+          id: "paymentAmount",
+          name: "paymentAmount",
+          type: "number",
+          autocomplete: "number",
+          prefix: {
+            text: "£"
+          },
+          spellcheck: false,
+          value: form.getPaymentAmountAsString(),
+          errorMessage: {
+            text:t(form.errorFor('paymentAmount'))
+          } if form.hasFieldError('paymentAmount')
+        }) }}
         {{ govukRadios({
-              idPrefix: "repaymentFrequency",
-              name: "repaymentFrequency",
-              classes: "repayment-frequency",
-              fieldset: {
-                legend: {
-                  text: t("How often you'll make payments"),
-                  isPageHeading: true,
-                  classes: "govuk-fieldset__legend--s"
-                }
-              },
-              items: [
-                {
-                  value: ScheduledExpenses.WEEK,
-                  checked: true if form.repaymentFrequency === ScheduledExpenses.WEEK else false,
-                  text: t("Each week")
-                },
-                {
-                  value: ScheduledExpenses.TWO_WEEKS,
-                  checked: true if form.repaymentFrequency === ScheduledExpenses.TWO_WEEKS else false,
-                  text: t("Every two weeks")
-                },
-                {
-                  value: ScheduledExpenses.MONTH,
-                  checked: true if form.repaymentFrequency === ScheduledExpenses.MONTH else false,
-                  text: t("Every month")
-                }
-              ],
-              errorMessage: {
-                text:t(form.errorFor('repaymentFrequency'))
-              } if form.hasFieldError('repaymentFrequency')
-          }) }}
+          idPrefix: "repaymentFrequency",
+          name: "repaymentFrequency",
+          classes: "repayment-frequency",
+          fieldset: {
+            legend: {
+              text: t("How often you'll make payments"),
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--s"
+            }
+          },
+          items: [
+            {
+              value: TransactionSchedule.WEEK,
+              checked: true if form.repaymentFrequency === TransactionSchedule.WEEK,
+              text: t("Each week")
+            },
+            {
+              value: TransactionSchedule.TWO_WEEKS,
+              checked: true if form.repaymentFrequency === TransactionSchedule.TWO_WEEKS,
+              text: t("Every two weeks")
+            },
+            {
+              value: TransactionSchedule.MONTH,
+              checked: true if form.repaymentFrequency === TransactionSchedule.MONTH,
+              text: t("Every month")
+            }
+          ],
+          errorMessage: {
+            text:t(form.errorFor('repaymentFrequency'))
+          } if form.hasFieldError('repaymentFrequency')
+        }) }}
         <div>
           <p class="govuk-body">
             <strong>{{ t('Length of repayment plan') }}</strong>
@@ -108,52 +108,52 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds govuk-!-padding-top-5">
         {{ govukDateInput({
-            id: "firstRepaymentDate",
-            type: "number",
-            inputmode: "numeric",
-            fieldset: {
-              legend: {
-                text: t("When will you make the first payment?"),
-                isPageHeading: true,
-                classes: "govuk-fieldset__legend--s"
-              }
+          id: "firstRepaymentDate",
+          type: "number",
+          inputmode: "numeric",
+          fieldset: {
+            legend: {
+              text: t("When will you make the first payment?"),
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--s"
+            }
+          },
+          hint: {
+            text: firstPaymentExample
+          },
+          errorMessage: {
+            html: '<p class="govuk-error-message">' + t(form.errorFor('firstRepaymentDate')) + '</p>' +
+            '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
+            '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
+            '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
+          } if (form.hasFieldError('firstRepaymentDate') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
+          items: [
+            {
+              name: "day",
+              id: "day",
+              classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-2",
+              autocomplete: "bday-day",
+              value: form.getDayAsString(),
+              max: 31
             },
-            hint: {
-              text: firstPaymentExample
+            {
+              name: "month",
+              id: "month",
+              classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-2",
+              autocomplete: "bday-month",
+              value: form.getMonthAsString(),
+              max: 12
             },
-            errorMessage: {
-              html: '<p class="govuk-error-message">' + t(form.errorFor('firstRepaymentDate')) + '</p>' +
-                    '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
-                    '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
-                    '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
-            } if (form.hasFieldError('firstRepaymentDate') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
-            items: [
-              {
-                name: "day",
-                id: "day",
-                classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-2",
-                autocomplete: "bday-day",
-                value: form.getDayAsString(),
-                max: 31
-              },
-              {
-                name: "month",
-                id: "month",
-                classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-2",
-                autocomplete: "bday-month",
-                value: form.getMonthAsString(),
-                max: 12
-              },
-              {
-                name: "year",
-                id: "year",
-                classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-4",
-                autocomplete: "bday-year",
-                value: form.getYearAsString(),
-                max: 9999
-              }
-            ]
-          }) }}
+            {
+              name: "year",
+              id: "year",
+              classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-4",
+              autocomplete: "bday-year",
+              value: form.getYearAsString(),
+              max: 9999
+            }
+          ]
+        }) }}
         {{ govukButton({
           text: t("Save and continue")
         }) }}

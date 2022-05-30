@@ -41,7 +41,10 @@ export const buildRespondent1 = (): Respondent => {
   return respondent;
 };
 
-export const mockClaim :Claim = {
+export const mockClaim: Claim = {
+  isPaymentOptionPayImmediately(): boolean {
+    return false;
+  },
   legacyCaseReference: '497MC585',
   applicant1:
     {
@@ -121,6 +124,9 @@ export const mockClaim :Claim = {
   isEmpty(): boolean {
     return !this.applicant1;
   },
+  isPaymentOptionBySetDate(): boolean {
+    return false;
+  },
   isInterestClaimUntilSubmitDate(): boolean {
     return this?.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
   },
@@ -136,6 +142,5 @@ export const mockClaim :Claim = {
   isSameRateTypeEightPercent(): boolean {
     return this?.sameRateInterestSelection?.sameRateInterestType !== SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   },
-  
 };
 
