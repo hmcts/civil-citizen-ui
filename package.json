@@ -73,7 +73,7 @@
     "nunjucks": "^3.2.2",
     "require-directory": "^2.1.1",
     "serve-favicon": "^2.5.0",
-    "ts-node": "^10.7.0",
+    "ts-node": "^10.8.0",
     "tsconfig-paths": "^3.14.1",
     "typescript": "^4.6.4",
     "validator": "^13.7.0"
