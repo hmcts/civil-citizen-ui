@@ -123,7 +123,6 @@
     "webpack-node-externals": "^3.0.0"
   },
   "resolutions": {
-    "**/chokidar/**/glob-parent": "^5.1.2",
     "**/jest/**/node-notifier": "^8.0.1",
     "**/sass-lint/**/merge": "^2.1.1",
     "**/minimist": "^1.2.6",
