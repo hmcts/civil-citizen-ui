@@ -14,6 +14,7 @@ import { HealthCheck } from './modules/health';
 import { OidcMiddleware } from './modules/oidc';
 import {DraftStoreClient} from './modules/draft-store';
 import routes from './routes/routes';
+import {TaskList} from './common/models/taskList/taskList';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -29,6 +30,13 @@ app.use(cookieSession({
   maxAge: cookieMaxAge,
   secure: false,
 }));
+
+declare module 'express-session' {
+  interface Session {
+    claimId: string;
+    taskLists: TaskList[];
+  }
+}
 
 app.locals.ENV = env;
 const i18next = I18Next.enableFor(app);
