@@ -90,7 +90,7 @@
     "@typescript-eslint/parser": "^5.26.0",
     "babel-loader": "^8.2.5",
     "codeceptjs": "^3.3.0",
-    "copy-webpack-plugin": "^10.2.1",
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
     "debug": "^4.3.4",
     "eslint": "^8.14.0",
