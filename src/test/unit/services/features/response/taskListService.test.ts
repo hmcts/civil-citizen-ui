@@ -14,17 +14,17 @@ import {CounterpartyType} from '../../../../../main/common/models/counterpartyTy
 describe('Response Task List service', () => {
   const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
   const claim = new Claim();
-  const mockId = '5129';
+  const mockClaimId = '5129';
 
   describe('none of the tasks completed', () => {
     const caseData = mockClaim.case_data;
-    const actualTaskLists = getTaskLists(claim, caseData, mockId);
+    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId);
 
     it('should return response task list', () => {
       //when
-      const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockId);
-      const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockId);
-      const taskListSubmitYourResponse = buildSubmitSection(claim, caseData, mockId, true);
+      const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId);
+      const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
+      const taskListSubmitYourResponse = buildSubmitSection(mockClaimId);
       const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
@@ -54,13 +54,13 @@ describe('Response Task List service', () => {
     const caseData = deepCopy(mockClaim.case_data);
     caseData.respondent1.primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
     caseData.respondent1.dateOfBirth = '15 May 1978';
-    const actualTaskLists = getTaskLists(claim, caseData, mockId);
+    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId);
 
     it('should return response task list', () => {
       //when
-      const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockId);
-      const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockId);
-      const taskListSubmitYourResponse = buildSubmitSection(claim, caseData, mockId, true);
+      const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId);
+      const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
+      const taskListSubmitYourResponse = buildSubmitSection(mockClaimId);
       const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
@@ -86,13 +86,13 @@ describe('Response Task List service', () => {
     caseData.respondent1.correspondenceAddress = buildAddress(CORRESPONDENCE_ADDRESS_LINE_1, CORRESPONDENCE_ADDRESS_LINE_2, CORRESPONDENCE_TOWN, CORRESPONDENCE_POSTCODE);
     caseData.respondent1.primaryAddress = {};
     caseData.respondent1.dateOfBirth = '15 May 1978';
-    const actualTaskLists = getTaskLists(claim, caseData, mockId);
+    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId);
 
     it('should return response task list', () => {
       //when
-      const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockId);
-      const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockId);
-      const taskListSubmitYourResponse = buildSubmitSection(claim, caseData, mockId, true);
+      const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId);
+      const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
+      const taskListSubmitYourResponse = buildSubmitSection(mockClaimId);
       const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
       const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
       //Then
@@ -114,7 +114,7 @@ describe('Response Task List service', () => {
     delete caseData.paymentOption;
 
     it('should display choose a response task as incomplete', () => {
-      const respondToClaim = buildRespondToClaimSection(caseData, mockId);
+      const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
 
       expect(respondToClaim.tasks[0].description).toEqual('Choose a response');
       expect(respondToClaim.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
@@ -126,14 +126,14 @@ describe('Response Task List service', () => {
         type: CounterpartyType.INDIVIDUAL,
         responseType: ResponseType.FULL_ADMISSION,
       };
-      const respondToClaim = buildRespondToClaimSection(caseData, mockId);
+      const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
 
       expect(respondToClaim.tasks[0].description).toEqual('Choose a response');
       expect(respondToClaim.tasks[0].status).toEqual(TaskStatus.COMPLETE);
     });
 
     it('should display decide how you\'ll pay task as incomplete', () => {
-      const respondToClaim = buildRespondToClaimSection(caseData, mockId);
+      const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
 
       expect(respondToClaim.tasks[1].description).toEqual('Decide how you\'ll pay');
       expect(respondToClaim.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
@@ -142,19 +142,19 @@ describe('Response Task List service', () => {
     it('should display decide how you\'ll pay task as complete', () => {
       caseData.paymentOption = 'IMMEDIATELY';
 
-      const respondToClaim = buildRespondToClaimSection(caseData, mockId);
+      const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
       expect(respondToClaim.tasks[1].description).toEqual('Decide how you\'ll pay');
       expect(respondToClaim.tasks[1].status).toEqual(TaskStatus.COMPLETE);
     });
 
     it('should have all respond to claim tasks marked as complete if payment option is immediately', () => {
-      expect(buildRespondToClaimSection(caseData, mockId).tasks.every(task => task.status === TaskStatus.COMPLETE)).toEqual(true);
+      expect(buildRespondToClaimSection(caseData, mockClaimId).tasks.every(task => task.status === TaskStatus.COMPLETE)).toEqual(true);
     });
 
     it('should display share your financial details task as incomplete if payment option is by set date', () => {
       caseData.paymentOption = 'BY_SET_DATE';
 
-      const respondToClaim = buildRespondToClaimSection(caseData, mockId);
+      const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
       expect(respondToClaim.tasks[2].description).toEqual('Share your financial details');
       expect(respondToClaim.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
     });
@@ -162,7 +162,7 @@ describe('Response Task List service', () => {
     it('should display share your financial details task as incomplete if taskSharedFinancialDetails is not set', () => {
       caseData.taskSharedFinancialDetails = undefined;
 
-      const respondToClaim = buildRespondToClaimSection(caseData, mockId);
+      const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
       expect(respondToClaim.tasks[2].description).toEqual('Share your financial details');
       expect(respondToClaim.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
     });
@@ -178,7 +178,7 @@ describe('Response Task List service', () => {
         },
       };
 
-      const respondToClaim = buildRespondToClaimSection(caseData, mockId);
+      const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
       expect(respondToClaim.tasks[2].description).toEqual('Share your financial details');
       expect(respondToClaim.tasks[2].status).toEqual(TaskStatus.COMPLETE);
       // all tasks completed check
@@ -188,19 +188,19 @@ describe('Response Task List service', () => {
     it('should display your repayment plan as incomplete if payment option is installments', () => {
       caseData.paymentOption = 'INSTALMENTS';
 
-      const respondToClaim = buildRespondToClaimSection(caseData, mockId);
+      const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
       expect(respondToClaim.tasks[3].description).toEqual('Your repayment plan');
       expect(respondToClaim.tasks[3].status).toEqual(TaskStatus.INCOMPLETE);
     });
 
     it('should display your repayment plan as complete if payment option is installments', () => {
       caseData.paymentOption = 'INSTALMENTS';
-      caseData.repaymentPlan = {
+      caseData.repaymentPlan =  {
         paymentAmount: 5,
         repaymentFrequency: 'monthly',
       };
 
-      const respondToClaim = buildRespondToClaimSection(caseData, mockId);
+      const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId);
       expect(respondToClaim.tasks[3].description).toEqual('Your repayment plan');
       expect(respondToClaim.tasks[3].status).toEqual(TaskStatus.COMPLETE);
       // all tasks completed check

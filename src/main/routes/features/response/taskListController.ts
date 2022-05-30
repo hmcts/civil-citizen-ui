@@ -27,6 +27,9 @@ taskListController.get(CLAIM_TASK_LIST_URL, async (req, res) => {
     const caseData = await getCaseDataFromStore(currentClaimId);
     const taskLists = getTaskLists(claim, caseData, currentClaimId);
 
+    req.session.claimId = currentClaimId;
+    req.session.taskLists = taskLists;
+
     const title = getTitle(taskLists);
     const description = getDescription(taskLists);
     const claimDetailsUrl = constructResponseUrlWithIdParams(currentClaimId, CLAIM_DETAILS_URL);

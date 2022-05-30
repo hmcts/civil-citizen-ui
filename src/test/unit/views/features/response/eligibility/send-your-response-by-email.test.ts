@@ -9,7 +9,7 @@ import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const govukBodyClass = 'govuk-body';
-const pageTitle = 'Money Claims';
+const pageTitle = 'Send your response by email';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');

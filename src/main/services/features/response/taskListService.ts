@@ -6,6 +6,7 @@ import {
   buildRespondToClaimSection,
   buildSubmitSection,
 } from '../../../common/utils/taskList/taskListBuilder';
+import {Task} from '../../../common/models/taskList/task';
 
 let completed = 0;
 let total = 0;
@@ -20,16 +21,27 @@ const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId: string) => 
   const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim];
   const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
   // check if all tasks are completed except check and submit
-  let isIncompleteSubmission = true;
   calculateTotalAndCompleted(taskGroups);
-  if (completed === total) {
-    isIncompleteSubmission = false;
-  }
 
-  const taskListSubmitYourResponse: TaskList = buildSubmitSection(claim, caseData, currentClaimId, isIncompleteSubmission);
+  const taskListSubmitYourResponse: TaskList = buildSubmitSection(currentClaimId);
 
   filteredTaskGroups.push(taskListSubmitYourResponse);
   return filteredTaskGroups;
+};
+
+const outstandingTasksFromCase = (claim: Claim, claimId: string): Task[] => {
+  return outstandingTasksFromTaskLists(getTaskLists(claim, claim, claimId));
+};
+
+const isOutstanding = (task: Task): boolean => {
+  return task.status !== TaskStatus.COMPLETE && !task.isCheckTask ;
+};
+
+const outstandingTasksFromTaskLists = (taskLists: TaskList[]): Task[] => {
+  return taskLists
+    .map((taskList: TaskList) => taskList.tasks)
+    .flat()
+    .filter(task => isOutstanding(task));
 };
 
 const calculateTotalAndCompleted = (taskLists: TaskList[]) => {
@@ -55,5 +67,12 @@ const countCompletedTasks = (taskList: TaskList) => {
   return taskList.tasks.filter(task => task.status === TaskStatus.COMPLETE).length;
 };
 
-export {getTaskLists, getTitle, getDescription};
+export {
+  getDescription,
+  getTaskLists,
+  getTitle,
+  isOutstanding,
+  outstandingTasksFromCase,
+  outstandingTasksFromTaskLists,
+};
 

@@ -37,7 +37,7 @@ repaymentPlanController.get(CITIZEN_REPAYMENT_PLAN, async (req, res) => {
 });
 
 repaymentPlanController.post(CITIZEN_REPAYMENT_PLAN,
-  async (req:express.Request, res:express.Response) => {
+  async (req: express.Request, res: express.Response) => {
     try {
       const savedValues = await getRepaymentPlanForm(req.params.id);
       const form: RepaymentPlanForm = new RepaymentPlanForm(savedValues.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day);
