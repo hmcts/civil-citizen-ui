@@ -1,6 +1,6 @@
-import {Claim} from 'common/models/claim';
+import {Claim} from '../../../common/models/claim';
 import * as express from 'express';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {CLAIMANT_SUMMARY_URL} from '../../urls';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';

@@ -15,9 +15,9 @@
         {% set soleTraderTitle = claim.applicant1.soleTraderTitle %}
         {% set applicant1Details = (soleTraderTitle if soleTraderTitle else '') + ' ' +  claim.applicant1.soleTraderFirstName + ' ' + claim.applicant1.soleTraderLastName %}
       {% elseif (claimantType == CounterpartyType.ORGANISATION) %}
-        {% set applicant1Details = claim.applicant1.organisationName %}
+        {% set applicant1Details = claim.applicant1.partyName %}
       {% elseif (claimantType == CounterpartyType.COMPANY) %}
-        {% set applicant1Details = claim.applicant1.companyName %}
+        {% set applicant1Details = claim.applicant1.partyName %}
       {% endif %}
 
       <h2 class="govuk-heading-l">{{ t('Send ') }}  {{ applicant1Details }} {{ t(' your financial details') }}</h2>

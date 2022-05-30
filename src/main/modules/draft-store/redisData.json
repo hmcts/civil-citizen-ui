@@ -16,8 +16,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "ORGANISATION",
-        "partyName": "Example applicant1 organisation",
-        "companyName": "Oracle",
+        "partyName": "Version 1",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -27,14 +26,13 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example applicant1 organisation",
         "partyTypeDisplayValue": "Organisation"
       },
       "respondent1": {
-        "partyName": "Version 1",
-        "contactPerson": "Felipe Calderon",
         "type": "INDIVIDUAL",
-       
+        "individualTitle": "Mrs.",
+        "individualFirstName": "Jane",
+        "individualLastName": "Doe",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -44,7 +42,6 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example respondent1 organisation",
         "partyTypeDisplayValue": "Organisation",
         "telephoneNumber": "01632960001"
       },
@@ -194,7 +191,6 @@
       "applicant1": {
         "type": "SOLE_TRADER",
         "telephoneNumber": "(0)207 127 0000",
-        "partyName": "Mr. Version1 Best",
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
@@ -207,12 +203,11 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example applicant1 organisation",
         "partyTypeDisplayValue": "Organisation"
       },
       "respondent1": {
         "type": "ORGANISATION",
-        "partyName": "Example respondent1 organisation",
+        "partyName": "Version 1",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -222,7 +217,6 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example respondent1 organisation",
         "partyTypeDisplayValue": "Organisation"
       },
       "claimInterest": "Yes",
@@ -362,7 +356,6 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "partyName": "Example applicant1 organisation",
         "telephoneNumber": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Alex",
@@ -376,12 +369,10 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example applicant1 organisation",
         "partyTypeDisplayValue": "Organisation"
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "partyName": "Example respondent1 organisation",
         "telephoneNumber": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jhon",
@@ -395,7 +386,6 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example respondent1 organisation",
         "partyTypeDisplayValue": "Organisation"
       },
       "claimInterest": "Yes",
@@ -535,7 +525,9 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "partyName": "Example applicant1 organisation",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -545,12 +537,13 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example applicant1 organisation",
         "partyTypeDisplayValue": "Organisation"
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "partyName": "Example respondent1 organisation",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -560,7 +553,6 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example respondent1 organisation",
         "partyTypeDisplayValue": "Organisation"
       },
       "claimInterest": "Yes",
@@ -700,8 +692,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "COMPANY",
-        "partyName": "Example applicant1 organisation",
-        "companyName": "Google",
+        "partyName": "Google",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -711,7 +702,6 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example applicant1 organisation",
         "partyTypeDisplayValue": "Organisation"
       },
       "respondent1": {
@@ -726,7 +716,6 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example respondent1 organisation",
         "partyTypeDisplayValue": "Organisation",
         "telephoneNumber": "01632960001"
       },
@@ -875,7 +864,9 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "partyName": "Example applicant1 organisation",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -885,12 +876,13 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example applicant1 organisation",
         "partyTypeDisplayValue": "Organisation"
       },
       "respondent1": {
         "type": "SOLE_TRADER",
-        "partyName": "Example respondent1 organisation",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -900,7 +892,6 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example respondent1 organisation",
         "partyTypeDisplayValue": "Organisation"
       },
       "claimInterest": "Yes",
