@@ -5,12 +5,11 @@ import {Claim} from '../../../common/models/claim';
 import {getDraftClaimFromStore, getCaseDataFromStore } from '../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 
-
 /**
  * THIS FILE IS A CONCEPT
- * 
- * This code is only a concept of what we should do. 
- * 
+ *
+ * This code is only a concept of what we should do.
+ *
  */
 
 
@@ -26,7 +25,9 @@ taskListController.get(CLAIM_TASK_LIST_URL, async (req, res) => {
 
     const caseData = await getCaseDataFromStore(currentClaimId);
     const taskLists = getTaskLists(claim, caseData, currentClaimId);
-    
+    req.session.claimId = currentClaimId;
+    req.session.taskLists = taskLists;
+
     const title = getTitle(taskLists);
     const description = getDescription(taskLists);
     const claimDetailsUrl = constructResponseUrlWithIdParams(currentClaimId, CLAIM_DETAILS_URL);
