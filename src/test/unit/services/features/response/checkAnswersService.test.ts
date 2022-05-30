@@ -17,6 +17,10 @@ import PaymentOptionType
   from '../../../../../main/common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
 import {StatementOfTruthForm} from '../../../../../main/common/form/models/statementOfTruth/statementOfTruthForm';
 import {SignatureType} from '../../../../../main/common/models/signatureType';
+import {
+  TransactionSchedule,
+} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
 
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -69,6 +73,7 @@ describe('Check Answers service', () => {
     it('should return your response summary section', async () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
+      //Then
       expect(summarySections.sections[1].summaryList.rows.length).toBe(2);
       expect(summarySections.sections[1].summaryList.rows[0].actions?.items.length).toBe(1);
       expect(summarySections.sections[1].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_RESPONSE_TYPE_URL.replace(':id', CLAIM_ID));
@@ -78,11 +83,38 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
       expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
     });
+    it('should return response summary section with payment option type instalments', async () => {
+      //Given
+      const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.INSTALMENTS);
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
+      //Then
+      expect(summarySections.sections[1].summaryList.rows.length).toBe(5);
+      expect(summarySections.sections[1].title).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE');
+      expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
+      expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS');
+      expect(summarySections.sections[1].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY');
+      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT');
+      expect(summarySections.sections[1].summaryList.rows[4].key.text).toBe('PAGES.EXPLANATION.TITLE');
+    });
+    it('should return response summary section with payment option by set date', async () => {
+      //Given
+      const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.BY_SET_DATE);
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
+      //Then
+      expect(summarySections.sections[1].summaryList.rows.length).toBe(2);
+      expect(summarySections.sections[1].title).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE');
+      expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
+      expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.EXPLANATION.TITLE');
+      expect(summarySections.sections[1].summaryList.rows[0].value.html).toContain('COMMON.PAYMENT_OPTION.BY_SET_DATE: 25 June 2022');
+    });
     it('should throw error when retrieving data from draft store fails', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
+
       //Then
       await expect(
         saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(SignatureType.BASIC, 'true'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
@@ -98,7 +130,6 @@ describe('Check Answers service', () => {
     it('should return contact person when contact person is specified', async () => {
       //Given
       const claim = createClaimWithContactPersonDetails();
-
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
       //Then
@@ -115,66 +146,61 @@ describe('Check Answers service', () => {
   });
 });
 
-function createClaimWithBasicRespondentDetails(): Claim {
-  const claim = {
-    respondent1: {
-      partyName: PARTY_NAME,
-      telephoneNumber: CONTACT_NUMBER,
-      dateOfBirth: new Date('2000-12-12'),
-      responseType: ResponseType.FULL_ADMISSION,
-      primaryAddress: {
-        AddressLine1: '23 Brook lane',
-        PostTown: 'Bristol',
-        PostCode: 'BS13SS',
-      },
+function createClaimWithBasicRespondentDetails(contactPerson?: string): Claim {
+  const claim = new Claim();
+  claim.respondent1 = {
+    partyName: PARTY_NAME,
+    telephoneNumber: CONTACT_NUMBER,
+    contactPerson: contactPerson,
+    dateOfBirth: new Date('2000-12-12'),
+    responseType: ResponseType.FULL_ADMISSION,
+    type: CounterpartyType.INDIVIDUAL,
+    primaryAddress: {
+      AddressLine1: '23 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
     },
-    paymentOption: PaymentOptionType.IMMEDIATELY,
   };
-  return claim as Claim;
+  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
+  return claim;
+}
+
+function createClaimWithRespondentDetailsWithPaymentOption(paymentOption: PaymentOptionType): Claim {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = paymentOption;
+  claim.repaymentPlan = {
+    paymentAmount: 33,
+    repaymentFrequency: TransactionSchedule.WEEK,
+    firstRepaymentDate: new Date('2022-06-25'),
+  };
+  claim.paymentDate = new Date('2022-06-25');
+  return claim;
 }
 
 function createClaimWithIndividualDetails(): Claim {
-  const claim = {
-    respondent1: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
-      partyName: PARTY_NAME,
-      telephoneNumber: CONTACT_NUMBER,
-      responseType: ResponseType.FULL_ADMISSION,
-      primaryAddress: {
-        AddressLine1: '23 Brook lane',
-        PostTown: 'Bristol',
-        PostCode: 'BS13SS',
-      },
-      correspondenceAddress: {
-        AddressLine1: '24 Brook lane',
-        PostTown: 'Bristol',
-        PostCode: 'BS13SS',
-      },
+  const claim = new Claim();
+  claim.respondent1 = {
+    type: CounterpartyType.INDIVIDUAL,
+    individualTitle: TITLE,
+    individualLastName: LAST_NAME,
+    individualFirstName: FIRST_NAME,
+    partyName: PARTY_NAME,
+    telephoneNumber: CONTACT_NUMBER,
+    responseType: ResponseType.FULL_ADMISSION,
+    primaryAddress: {
+      AddressLine1: '23 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
+    },
+    correspondenceAddress: {
+      AddressLine1: '24 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
     },
   };
-  return claim as Claim;
+  return claim;
 }
 
 function createClaimWithContactPersonDetails(): Claim {
-  const claim = {
-    respondent1: {
-      contactPerson: CONTACT_PERSON,
-      partyName: PARTY_NAME,
-      telephoneNumber: CONTACT_NUMBER,
-      responseType: ResponseType.FULL_ADMISSION,
-      primaryAddress: {
-        AddressLine1: '23 Brook lane',
-        PostTown: 'Bristol',
-        PostCode: 'BS13SS',
-      },
-      correspondenceAddress: {
-        AddressLine1: '24 Brook lane',
-        PostTown: 'Bristol',
-        PostCode: 'BS13SS',
-      },
-    },
-  };
-  return claim as Claim;
+  return createClaimWithBasicRespondentDetails(CONTACT_PERSON);
 }

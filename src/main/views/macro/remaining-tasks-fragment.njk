@@ -1,0 +1,22 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% macro remainingTasksFragment(tasks, backLink, translationFunction) %}
+  {% set t = translationFunction %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <p class="govuk-body">{{ t('COMMON.REMAINING_TASKS.TITLE') }}</p>
+
+      <ul class="govuk-list govuk-list--bullet">
+        {% for task in tasks %}
+          <li>{{ t(task.description) }}</li>
+        {% endfor %}
+      </ul>
+
+      {{ govukBackLink({
+        text: t('COMMON.REMAINING_TASKS.BACK'),
+        href: backLink
+      }) }}
+
+    </div>
+  </div>
+{% endmacro %}
