@@ -190,12 +190,8 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "SOLE_TRADER",
-<<<<<<< HEAD
-        "telephoneNumber": "(0)207 127 0000",
-=======
         "telephoneNumber": "02071270000",
         "partyName": "Mr. Version1 Best",
->>>>>>> master
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
