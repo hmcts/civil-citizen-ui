@@ -27,6 +27,10 @@
       "BY_SET_DATE": "By a set date",
       "IMMEDIATELY": "Immediately",
       "INSTALMENTS": "By instalments"
+    },
+    "REMAINING_TASKS": {
+      "TITLE": "You still need to complete:",
+      "BACK": "Back to task list"
     }
   },
   "PAGES": {
@@ -138,6 +142,9 @@
     },
     "FULL_ADMISSION_PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option"
+    },
+    "INCOMPLETE_SUBMISSION": {
+      "TITLE": "You need to complete all sections before you submit your response"
     },
     "I_DON_T_WANT_FREE_MEDIATION": {
       "PAGE_TITLE": "I don't want free mediation"

@@ -54,11 +54,11 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList 
   return { title: 'Respond to Claim', tasks };
 };
 
-const buildSubmitSection = (claim: Claim, caseData: Claim, claimId: string, isIncompletsubmission: boolean): TaskList => {
+const buildSubmitSection = (claimId: string): TaskList => {
   const tasks: Task[] = [];
 
   // TODO: when check and submit tasks page is developed we need to update logic of this task
-  const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claim, caseData, claimId, isIncompletsubmission);
+  const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claimId);
 
   tasks.push(checkAndSubmitYourResponseTask);
   return { title: 'Submit', tasks };
