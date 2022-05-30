@@ -28,7 +28,7 @@ nodejs:
         - AppInsightsInstrumentationKey
         - redis-access-key
         - ordnance-survey-api-key
-        - idam-secret
+        - citizen-ui-idam-secret
   environment:
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
     IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
@@ -39,6 +39,7 @@ nodejs:
     REDIS_TLS: true
     CIVIL_SERVICE_URL: http://civil-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     ALLOW_CONFIG_MUTATIONS: true
+    ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
   autoscaling:
     enabled: false
     maxReplicas: 16

@@ -7,9 +7,11 @@
 {% from "../../../macro/timeline-row.njk" import timelineRow %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% set title = 'Add your timeline of events' %}
+
 {% block pageTitle %}
-  {{ setPageTitle(title) }}
+  {{ setPageTitle('PAGES.DEFENDANT_TIMELINE.PAGE_TITLE') }}
 {% endblock %}
+
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -72,7 +74,7 @@
             }) }}
             {{ govukTextarea({
               id: "comment",
-              name: "coment",
+              name: "comment",
               label: {
                 text: t("Add any comments about their timeline (optional)"),
                 classes: "govuk-label--s",

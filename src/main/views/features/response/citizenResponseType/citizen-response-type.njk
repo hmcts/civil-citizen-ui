@@ -6,6 +6,12 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "./details-content.njk" import detailsContent %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CITIZEN_RESPONSE_TYPE.PAGE_TITLE') }}
+{% endblock %}
+
 {% set heading = 'How do you respond to the claim?' %}
 
 {% block content %}

@@ -1,12 +1,14 @@
 {% extends "claim-details-tpl.njk" %}
-{% set heading = 'Your money claims account' %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.DASHBOARD.PAGE_TITLE') }}
+{% endblock %}
 
 {% block content %}
-
   <div class="govuk-grid-row">
-
     <div class="govuk-grid-column-full">
-      <h2 class="govuk-heading-m">{{ t('Claims made against you') }}</h2>
+      <h2 class="govuk-heading-m">{{ t('PAGES.DASHBOARD.PAGE_TITLE') }}</h2>
       <p class="govuk-body">
           {{ t('To view or progress your claim click on your claim number. Most recently created claims are listed first.') }}
       </p>
@@ -30,7 +32,6 @@
         {% endfor %}
         </tbody>
       </table>
-
     </div>
   </div>
 {% endblock %}

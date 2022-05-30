@@ -6,12 +6,14 @@ import {CounterpartyType} from './counterpartyType';
 import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
-import { DefendantEvidence } from './evidence/evidence';
+import {DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
-import {currentDateTime, convertDateToLuxonDate, isPastDeadline} from '../utils/dateUtils';
+import {Defence} from '../form/models/defence';
+import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
+import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -26,6 +28,7 @@ export class Claim {
   detailsOfClaim: string;
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
+  defence?: Defence;
   paymentOption?: string;
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;
@@ -34,6 +37,8 @@ export class Claim {
   mediation?: Mediation;
   evidence?: DefendantEvidence;
   timelineOfEvents?: TimeLineOfEvents[];
+  taskSharedFinancialDetails?: boolean;
+  defendantStatementOfTruth?: StatementOfTruthForm;
 
 
   formattedResponseDeadline(): string {
@@ -55,6 +60,10 @@ export class Claim {
 
   isDeadLinePassed(): boolean {
     return isPastDeadline(this.respondent1ResponseDeadline);
+  }
+
+  isEmpty(): boolean {
+    return !this.applicant1;
   }
 }
 

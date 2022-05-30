@@ -118,7 +118,6 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      console.log(errorSummaryMessage);
       expect(errorSummaryMessage.innerHTML).toContain(VALID_TEXT_LENGTH);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#comment');
