@@ -40,6 +40,9 @@ export const buildRespondent1 = (): Respondent => {
 };
 
 export const mockClaim: Claim = {
+  isPaymentOptionPayImmediately(): boolean {
+    return false;
+  },
   legacyCaseReference: '497MC585',
   applicant1:
     {
@@ -85,6 +88,9 @@ export const mockClaim: Claim = {
   },
   isEmpty(): boolean {
     return !this.applicant1;
+  },
+  isPaymentOptionBySetDate(): boolean {
+    return false;
   },
   paymentDate: new Date('2022-06-01T00:00:00'),
 };
