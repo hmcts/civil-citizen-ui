@@ -16,7 +16,7 @@ export const getRejectAllOfClaim = async (claimId: string): Promise<RejectAllOfC
     throw error;
   }
 };
-export const getclaimantName = async (claimId: string): Promise<string> => {
+export const getClaimantName = async (claimId: string): Promise<string> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (claim.applicant1?.type === 'ORGANISATION' || claim.applicant1?.type === 'COMPANY') {

@@ -28,6 +28,9 @@ describe('Already Paid View', () => {
       htmlDocument = dom.window.document;
     });
 
+    it('should have correct page title', () => {
+      expect(htmlDocument.title).toEqual('Your money claims account - Already paid');
+    });
 
     it('should display header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
@@ -82,7 +85,6 @@ describe('Already Paid View', () => {
 
     it('should display correct error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      console.log('error', errorMessage);
       expect(errorMessage.innerHTML).toContain(VALID_YES_NO_SELECTION);
     });
   });

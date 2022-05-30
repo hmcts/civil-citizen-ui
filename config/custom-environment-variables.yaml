@@ -1,6 +1,8 @@
 services:
   civilService:
     url: CIVIL_SERVICE_URL
+  postcodeLookup:
+    ordnanceSurveyApiKey: ORDNANCE_SURVEY_API_KEY
   idam:
     authorizationURL: IDAM_WEB_URL
     tokenURL: IDAM_API_URL
