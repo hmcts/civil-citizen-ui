@@ -110,7 +110,7 @@
     "sinon": "^13.0.2",
     "sonar-scanner": "^3.1.0",
     "style-loader": "^3.3.1",
-    "supertest": "^6.1.6",
+    "supertest": "^6.2.3",
     "supertest-session": "^4.1.0",
     "ts-jest": "^25.2.1",
     "ts-loader": "^9.2.8",
