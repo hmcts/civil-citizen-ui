@@ -1,11 +1,12 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {SummarySection, summarySection, SummarySections} from '../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../common/models/claim';
-import {summaryRow} from '../../../common/models/summaryList/summaryList';
+import {SummaryRow, summaryRow} from '../../../common/models/summaryList/summaryList';
 import {
   CITIZEN_DETAILS_URL,
+  CITIZEN_EXPLANATION_URL,
   CITIZEN_PAYMENT_OPTION_URL,
   CITIZEN_PHONE_NUMBER_URL,
+  CITIZEN_REPAYMENT_PLAN,
   CITIZEN_RESPONSE_TYPE_URL,
   DOB_URL,
 } from '../../../routes/urls';
@@ -14,7 +15,10 @@ import {getLng} from '../../../common/utils/languageToggleUtils';
 import {PrimaryAddress} from '../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../common/models/correspondenceAddress';
 import {formatDateToFullDate} from '../../../common/utils/dateUtils';
+import PaymentOptionType from '../../../common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
 import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -33,6 +37,21 @@ const getDefendantFullName = (claim: Claim): string => {
   return claim.respondent1.partyName;
 };
 
+const getPaymentOption = (claim: Claim, lang: string | unknown): string => {
+  const option = t(`COMMON.PAYMENT_OPTION.${claim.paymentOption}`, {lng: getLng(lang)});
+  if (claim.isPaymentOptionBySetDate()) {
+    return option + ': ' + formatDateToFullDate(claim.paymentDate);
+  }
+  return option;
+};
+
+const getResponseTitle = (claim: Claim, lang: string | unknown): string => {
+  if (claim.isPaymentOptionPayImmediately()) {
+    return t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: getLng(lang)});
+  }
+  return t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE', {lng: getLng(lang)});
+};
+
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
   return {
     sections: [
@@ -42,9 +61,14 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   };
 };
 
+const buildExplanationRow = (claim: Claim, claimId: string, lang: string | unknown): SummaryRow => {
+  const explanationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_EXPLANATION_URL);
+  return summaryRow(t('PAGES.EXPLANATION.TITLE', {lng: getLng(lang)}), claim.statementOfMeans?.explanation?.text, explanationHref, changeLabel(lang));
+};
+
 const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
-  const yourDetailsHref = CITIZEN_DETAILS_URL.replace(':id', claimId);
-  const phoneNumberHref = CITIZEN_PHONE_NUMBER_URL.replace(':id', claimId);
+  const yourDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL);
+  const phoneNumberHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PHONE_NUMBER_URL);
   const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
     summaryRows: [
@@ -65,15 +89,34 @@ const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | u
 };
 
 const buildResponseSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
-  const yourResponseHref = CITIZEN_RESPONSE_TYPE_URL.replace(':id', claimId);
-  const paymentOptionHref = CITIZEN_PAYMENT_OPTION_URL.replace(':id', claimId);
-  return summarySection({
-    title: t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: getLng(lang)}),
-    summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', {lng: getLng(lang)}), t(`COMMON.RESPONSE_TYPE.${claim.respondent1.responseType}`, {lng: getLng(lang)}), yourResponseHref, changeLabel(lang)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_OPTION.${claim.paymentOption}`, {lng: getLng(lang)}), paymentOptionHref, changeLabel(lang)),
-    ],
+  const yourResponseHref = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
+  const paymentOptionHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_OPTION_URL);
+  const responseSection = summarySection({
+    title: getResponseTitle(claim, lang),
+    summaryRows: [],
   });
+  switch (claim.paymentOption) {
+    case PaymentOptionType.IMMEDIATELY:
+      responseSection.summaryList.rows.push(...[
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', {lng: getLng(lang)}), t(`COMMON.RESPONSE_TYPE.${claim.respondent1.responseType}`, {lng: getLng(lang)}), yourResponseHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), getPaymentOption(claim, lang), paymentOptionHref, changeLabel(lang)),
+      ]);
+      break;
+    case PaymentOptionType.BY_SET_DATE:
+      responseSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), getPaymentOption(claim, lang), paymentOptionHref, changeLabel(lang)), buildExplanationRow(claim, claimId, lang)]);
+      break;
+    case PaymentOptionType.INSTALMENTS: {
+      const repaymentPlanHref = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN);
+      responseSection.summaryList.rows.push(...[
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), getPaymentOption(claim, lang), paymentOptionHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng: getLng(lang)}), `£${claim.repaymentPlan.paymentAmount}`, repaymentPlanHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_FREQUENCY.${claim.repaymentPlan.repaymentFrequency}`, {lng: getLng(lang)}), repaymentPlanHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT', {lng: getLng(lang)}), formatDateToFullDate(claim.repaymentPlan.firstRepaymentDate), repaymentPlanHref, changeLabel(lang)),
+        buildExplanationRow(claim, claimId, lang),
+      ]);
+    }
+  }
+  return responseSection;
 };
 
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
