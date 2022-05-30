@@ -11,16 +11,27 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "COMMON": {
+    "DOWNLOAD_THE_CLAIM": "Download the claim",
     "BUTTONS": {
       "CONTINUE": "Continue"
     },
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "I admit all the claim"
     },
-    "PAYMENT_OPTION": {
-      "IMMEDIATELY": "Immediately"
+    "PAYMENT_FREQUENCY": {
+      "WEEK": "Each week",
+      "TWO_WEEKS": "Every two weeks",
+      "MONTH": "Every month"
     },
-    "DOWNLOAD_THE_CLAIM": "Download the claim"
+    "PAYMENT_OPTION": {
+      "BY_SET_DATE": "By a set date",
+      "IMMEDIATELY": "Immediately",
+      "INSTALMENTS": "By instalments"
+    },
+    "REMAINING_TASKS": {
+      "TITLE": "You still need to complete:",
+      "BACK": "Back to task list"
+    }
   },
   "PAGES": {
     "ARE_YOU_SEVERELY_DISABLED": {
@@ -37,12 +48,16 @@
       "CONTACT_PERSON": "Contact person",
       "CONTACT_NUMBER": "Contact number (optional)",
       "RESPONSE_TITLE": "Your response to the claim",
+      "WHEN_PAY_TITLE": "When you'll pay",
       "OWE_MONEY": "Do you owe the money claimed?",
       "WHEN_PAY": "When will you pay",
       "ADDRESS": "Address",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "SAME_ADDRESS": "Same as address",
-      "DOB": "Date of birth"
+      "DOB": "Date of birth",
+      "REGULAR_PAYMENTS": "Regular payments of",
+      "PAYMENT_FREQUENCY": "Frequency of payments",
+      "FIRST_PAYMENT": "Make the first payment on"
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "PAGE_TITLE": "Your bank accounts"
@@ -127,6 +142,9 @@
     },
     "FULL_ADMISSION_PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option"
+    },
+    "INCOMPLETE_SUBMISSION": {
+      "TITLE": "You need to complete all sections before you submit your response"
     },
     "I_DON_T_WANT_FREE_MEDIATION": {
       "PAGE_TITLE": "I don't want free mediation"
