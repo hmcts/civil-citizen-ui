@@ -3,5 +3,6 @@ import { TaskStatus } from './TaskStatus';
 export interface Task {
   description: string,
   url: string,
-  status: TaskStatus
+  status: TaskStatus,
+  isCheckTask?: boolean;
 }
