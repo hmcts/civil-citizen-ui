@@ -19,7 +19,8 @@
     },
     "PAYMENT_OPTION": {
       "IMMEDIATELY": "Immediately"
-    }
+    },
+    "DOWNLOAD_THE_CLAIM": "Download the claim"
   },
   "PAGES": {
     "ARE_YOU_SEVERELY_DISABLED": {
@@ -59,7 +60,21 @@
       "PAGE_TITLE": "Your claim response"
     },
     "CLAIM_DETAILS": {
-      "PAGE_TITLE": "Claim details"
+      "PAGE_TITLE": "Claim Details",
+      "HEADER": "Claim details",
+      "CLAIM_NUMBER": "Claim number",
+      "CLAIM_AMOUNT": "Claim amount",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "AMOUNT_BREAKDOWN": "Amount breakdown",
+      "AMOUNT": "Amount",
+      "INTEREST": "Interest",
+      "CLAIM_FEE": "Claim fee",
+      "CLAIM_TOTAL": "Claim Total",
+      "REASON_FOR_CLAIM": "Reason for claim",
+      "TIMELINE": "Timeline",
+      "DATE": "Date",
+      "WHAT_HAPPENED": "What happened",
+      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     },
     "COMPANY_DETAILS": {
       "PAGE_TITLE": "Company details"
@@ -179,7 +194,7 @@
     "RESIDENCE": {
       "PAGE_TITLE": "Your residence"
     },
-    "SELF_EMPLOYED":{
+    "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
