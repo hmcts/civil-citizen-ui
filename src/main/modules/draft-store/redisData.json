@@ -190,8 +190,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "SOLE_TRADER",
-        "telephoneNumber": "02071270000",
-        "partyName": "Mr. Version1 Best",
+        "telephoneNumber": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
@@ -357,8 +356,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "partyName": "Example applicant1 organisation",
-        "telephoneNumber": "02071270000",
+        "telephoneNumber": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Alex",
         "individualLastName": "Van",
@@ -375,8 +373,7 @@
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "partyName": "Example respondent1 organisation",
-        "telephoneNumber": "02071270000",
+        "telephoneNumber": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jhon",
         "individualLastName": "Smith",

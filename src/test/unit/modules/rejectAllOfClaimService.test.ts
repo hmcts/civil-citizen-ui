@@ -427,7 +427,7 @@ function createClaim() {
   claim.rejectAllOfClaim = new RejectAllOfClaim(rejectAllOfClaimType.ALREADY_PAID);
   claim.applicant1 = {
     type: CounterpartyType.ORGANISATION,
-    companyName: 'Test',
+    partyName: 'Test',
     individualTitle: 'Mr.',
     individualFirstName: 'TestName',
     individualLastName: 'TestLastName',
