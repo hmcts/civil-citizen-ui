@@ -1,28 +1,29 @@
-import { app } from '../../../../../../main/app';
+import {app} from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
 import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from '../../../../../../main/routes/urls';
 import {
   VALID_ADDRESS_LINE_1,
   VALID_CITY,
-  VALID_POSTCODE,
   VALID_CORRESPONDENCE_ADDRESS_LINE_1,
   VALID_CORRESPONDENCE_CITY,
   VALID_CORRESPONDENCE_POSTCODE,
+  VALID_POSTCODE,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   getRespondentInformation,
   saveRespondent,
-} from '../../../../../../main/modules/citizenDetails/citizenDetailsService';
+} from '../../../../../../main/services/features/response/citizenDetails/citizenDetailsService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../../utils/mockClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
+
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/citizenDetails/citizenDetailsService');
+jest.mock('../../../../../../main/services/features/response/citizenDetails/citizenDetailsService');
 
 const mockGetRespondentInformation = getRespondentInformation as jest.Mock;
 const mockSaveRespondent = saveRespondent as jest.Mock;
@@ -39,8 +40,7 @@ const buildClaimOfRespondent = (): Respondent => {
   return claim.respondent1;
 };
 
-const buildClaimOfRespondentType = (type: CounterpartyType): Respondent =>
-{
+const buildClaimOfRespondentType = (type: CounterpartyType): Respondent => {
   claim.respondent1 = new Respondent();
   claim.respondent1.type = type;
   claim.respondent1.primaryAddress = buildPrimaryAddress();

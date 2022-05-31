@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {TaskList} from '../../common/models/taskList/taskList';
 import {Task} from '../../common/models/taskList/task';
-import {outstandingTasksFromTaskLists} from '../../modules/taskListService';
+import {outstandingTasksFromTaskLists} from '../../services/features/response/taskListService';
 import assert from 'assert';
 import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
 
