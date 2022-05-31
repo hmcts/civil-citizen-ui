@@ -22,9 +22,24 @@ module "civil-citizen-ui-draft-store" {
   common_tags  = var.common_tags
 }
 
+module "citizen-ui-draft-store" {
+  source   = "git@github.com:hmcts/cnp-module-redis?ref=master"
+  product  = "${var.product}-${var.component}-draft-store"
+  location = var.location
+  env      = var.env
+  subnetid = data.azurerm_subnet.core_infra_redis_subnet.id
+  common_tags  = var.common_tags
+}
+
 resource "azurerm_key_vault_secret" "redis_access_key" {
   name         = "redis-access-key"
   value        = module.civil-citizen-ui-draft-store.access_key
+  key_vault_id = data.azurerm_key_vault.civil_vault.id
+}
+
+resource "azurerm_key_vault_secret" "draft_store_access_key" {
+  name         = "draft-store-access-key"
+  value        = module.citizen-ui-draft-store.access_key
   key_vault_id = data.azurerm_key_vault.civil_vault.id
 }
 
