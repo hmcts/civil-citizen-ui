@@ -13,19 +13,16 @@ import {TimeLineOfEvents} from '../../../../common/models/timelineOfEvents/timeL
 const defendantTimelineController = express.Router();
 const defendantTimelineView = 'features/response/timelineOfEvents/defendant-timeline';
 
+
 function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLineOfEvents[], res: express.Response) {
-  res.render(defendantTimelineView, {
-    form: form, theirTimeline: theirTimeline,
-  });
+  res.render(defendantTimelineView, {form: form, theirTimeline: theirTimeline});
 }
 
 defendantTimelineController.get(CITIZEN_TIMELINE_URL,
   async (req, res) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
-      
-      const theirTimeline = claim?.timelineOfEvents;
-    
+      const theirTimeline = claim.timelineOfEvents;
       const form = new GenericForm(getPartialAdmitTimeline(claim));
       renderView(form, theirTimeline, res);
     } catch (error) {
@@ -39,8 +36,7 @@ defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res) => {
     await form.validate();
     if (form.hasErrors()) {
       const claim = await getCaseDataFromStore(req.params.id);
-      
-      renderView(form, claim?.timelineOfEvents, res);
+      renderView(form, claim.timelineOfEvents, res);
     } else {
       await savePartialAdmitTimeline(req.params.id, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EVIDENCE_URL));
