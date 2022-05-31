@@ -930,14 +930,14 @@
           }
         }
       ],
-      "totalClaimAmount": 1250,
+      "totalClaimAmount": 1350,
       "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
-      "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1250 | \n | Interest amount | £ 6.82 | \n | Total amount | £ 1256.82 |",
+      "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1350 | \n | Interest amount | £ 6.82 | \n | Total amount | £ 1356.82 |",
       "claimAmountBreakup": [
         {
           "id": "b0f5d2d8-20b4-4c06-9699-e4340408c604",
           "value": {
-            "claimAmount": "50000",
+            "claimAmount": "60000",
             "claimReason": "Broken tiles"
           }
         },
