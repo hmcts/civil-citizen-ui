@@ -56,6 +56,7 @@ import sendYourResponseByEmailController from './features/response/eligibility/s
 import freeTelephoneMediationController from './features/mediation/freeTelephoneMediationController';
 import rejectAllOfClaimController from './features/response/rejectAllOfClaimController';
 import defendantTimelineController from './features/response/timelineOfEvents/defendantTimelineController';
+import defendantPDFTimelineDownloadController from './features/response/timelineOfEvents/defendantPDFTimelineDownloadController';
 import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
 import evidenceController from './features/response/evidence/evidenceController';
 import checkAnswersController from './features/response/checkAnswersController';
@@ -118,6 +119,7 @@ export default [
   iDontWantFreeMediationController,
   evidenceController,
   defendantTimelineController,
+  defendantPDFTimelineDownloadController,
   checkAnswersController,
   youHavePaidLessController,
   yourDefenceController,
