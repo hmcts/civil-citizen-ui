@@ -26,7 +26,8 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
       
       const theirTimeline = claim?.timelineOfEvents;
       // TODO : update the pdfurl
-      const pdfUrl = `claim/${claim?.specClaimTemplateDocumentFiles?.document_binary_url}`;
+      const documentId = '74bf213e-72dd-4908-9e08-72fefaed9c5c';
+      const pdfUrl = `/claim/${documentId}/binary`;
       const form = new GenericForm(getPartialAdmitTimeline(claim));
       renderView(form, theirTimeline, pdfUrl, res);
     } catch (error) {
