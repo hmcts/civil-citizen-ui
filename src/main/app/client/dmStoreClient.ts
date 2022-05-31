@@ -4,11 +4,11 @@ import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('ciivilServiceClient');
+const logger = Logger.getLogger('dmStoreClient');
 
-// const dmStoreBaseUrl = config.get('services.dmStore.url');
+// const dmStoreBaseUrl = config.get<string>('services.dmStore.url');
 const dmStoreBaseUrl = 'http://localhost:4506/documents';
-export class DocumentsClient {
+export class DmStoreClient {
   client: AxiosInstance;
 
   constructor(baseURL = `${dmStoreBaseUrl}/documents`) {
