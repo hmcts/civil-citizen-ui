@@ -79,7 +79,7 @@ describe('contact them service', () => {
 function buildClaimWithAddress(address: CorrespondenceAddress, correspondenceAddress?: CorrespondenceAddress, solicitorAddress?: CorrespondenceAddress): Claim {
   const claim = new Claim();
   const applicant = {
-    companyName: 'Some Very Important Company Ltd',
+    partyName: 'Some Very Important Company Ltd',
     primaryAddress: address,
     type: CounterpartyType.COMPANY,
   };

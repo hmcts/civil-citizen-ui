@@ -35,14 +35,14 @@ describe('Civil Service Client', () => {
     const mockPost = jest.fn().mockResolvedValue({data: {cases: [mockResponse]}});
     mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
     const civilServiceClient = new CivilServiceClient(baseUrl);
-    const actualClaims: Claim[] = await civilServiceClient.retrieveByDefendantId(mockedAppRequest);
+    const actualClaims: CivilClaimResponse[] = await civilServiceClient.retrieveByDefendantId(mockedAppRequest);
     expect(mockedAxios.create).toHaveBeenCalledWith({
       baseURL: baseUrl,
     });
     expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_CASES_URL);
     expect(actualClaims.length).toEqual(1);
-    expect(actualClaims[0].legacyCaseReference).toEqual('000MC003');
-    expect(actualClaims[0].applicant1?.individualFirstName).toEqual('Jane');
-    expect(actualClaims[0].applicant1?.individualLastName).toEqual('Clark');
+    expect(actualClaims[0].case_data.legacyCaseReference).toEqual('000MC003');
+    expect(actualClaims[0].case_data.applicant1?.individualFirstName).toEqual('Jane');
+    expect(actualClaims[0].case_data.applicant1?.individualLastName).toEqual('Clark');
   });
 });
