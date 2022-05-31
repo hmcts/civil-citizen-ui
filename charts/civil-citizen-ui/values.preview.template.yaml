@@ -30,7 +30,7 @@ nodejs:
       resourceGroup: civil-service
       secrets:
         - AppInsightsInstrumentationKey
-        - redis-access-key
+        - draft-store-access-key
         - ordnance-survey-api-key
         - citizen-ui-idam-secret
   environment:
