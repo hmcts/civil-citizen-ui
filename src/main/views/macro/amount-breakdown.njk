@@ -1,0 +1,50 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "./interest-snippet.njk" import interestSnippet %}
+
+{% macro amountBreakdownTable(claim, interestData, totalAmount) %}
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">{{ t('PAGES.CLAIM_DETAILS.AMOUNT_BREAKDOWN') }}</th>
+      <th scope="col" class="govuk-table__header govuk-!-text-align-right">{{ t('PAGES.CLAIM_DETAILS.AMOUNT') }}</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+  {% for breakup in claim.claimAmountBreakup %}
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell">{{ breakup.value.claimReason }}</td>
+      <td class="govuk-table__cell govuk-!-text-align-right">{{ breakup.value.claimAmount | pennies2pounds  | currencyFormat(breakup.value.claimAmount)}}</td>
+    </tr>
+  {% endfor %}
+  {% if claim.totalInterest > 0 %}
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell">
+      {% if interestData.rate %}
+        {{ govukDetails({
+          summaryText: t('PAGES.CLAIM_DETAILS.INTEREST'),
+          classes : "govuk-!-margin-0",
+          text: interestSnippet(interestData.rate, interestData.numberOfDays, interestData.interestFromDate, interestData.interestToDate)
+          }) }}
+      {% else %}
+        {{ t('PAGES.CLAIM_DETAILS.INTEREST') }}
+      {% endif %}
+      </td>
+      <td class="govuk-table__cell govuk-!-text-align-right">{{ claim.totalInterest | currencyFormat(claim.totalInterest) }}</td>
+    </tr>
+   {% endif %}
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell">{{ t('PAGES.CLAIM_DETAILS.CLAIM_FEE') }}</td>
+      {% if claim.claimFee.calculatedAmountInPence !== 0 %}
+        <td class="govuk-table__cell govuk-!-text-align-right">{{ claim.claimFee.calculatedAmountInPence | pennies2pounds | currencyFormat(claim.claimFee.calculatedAmountInPence) }}</td>
+      {% else %}
+        <td class="govuk-table__cell govuk-!-text-align-right">£0</td>
+      {% endif %}
+      </tr>
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell govuk-!-font-weight-bold">{{ t('PAGES.CLAIM_DETAILS.CLAIM_TOTAL') }}</td>
+        <td class="govuk-table__cell govuk-!-font-weight-bold govuk-!-text-align-right">{{ totalAmount | currencyFormat(totalAmount) }}</td>
+      </tr>
+  </tbody>
+</table>
+
+{% endmacro %}

@@ -15,6 +15,8 @@ import {Defence} from '../form/models/defence';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
 import PaymentOptionType from '../form/models/admission/fullAdmission/paymentOption/paymentOptionType';
+import {InterestClaimFromType, InterestClaimUntilType, InterestClaimOptions, SameRateInterestSelection, SameRateInterestType, ClaimFee, ClaimAmountBreakup} from '../form/models/claimDetails';
+import {YesNo} from '../form/models/yesNo';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -40,6 +42,18 @@ export class Claim {
   timelineOfEvents?: TimeLineOfEvents[];
   taskSharedFinancialDetails?: boolean;
   defendantStatementOfTruth?: StatementOfTruthForm;
+  claimAmountBreakup?: ClaimAmountBreakup[];
+  totalInterest?: number;
+  claimInterest?: YesNo;
+  interestClaimFrom?: InterestClaimFromType;
+  interestClaimUntil?: InterestClaimUntilType;
+  interestFromSpecificDate?: Date;
+  interestClaimOptions: InterestClaimOptions;
+  sameRateInterestSelection?: SameRateInterestSelection;
+  breakDownInterestTotal?: number;
+  submittedDate?: Date;
+  issueDate?: Date;
+  claimFee?: ClaimFee;
 
 
   formattedResponseDeadline(): string {
@@ -62,7 +76,6 @@ export class Claim {
   isDeadLinePassed(): boolean {
     return isPastDeadline(this.respondent1ResponseDeadline);
   }
-
   isEmpty(): boolean {
     return !this.applicant1;
   }
@@ -73,6 +86,22 @@ export class Claim {
 
   isPaymentOptionPayImmediately(): boolean {
     return this.paymentOption === PaymentOptionType.IMMEDIATELY;
+  }
+
+  isInterestClaimUntilSubmitDate(): boolean {
+    return this?.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
+  }
+  isInterestFromClaimSubmitDate(): boolean {
+    return this?.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+  }
+  isInterestFromASpecificDate(): boolean {
+    return this?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+  }
+  isInterestClaimOptionsSameRateInterest(): boolean {
+    return this?.interestClaimOptions === InterestClaimOptions.SAME_RATE_INTEREST;
+  }
+  isSameRateTypeEightPercent(): boolean {
+    return this?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   }
 }
 
