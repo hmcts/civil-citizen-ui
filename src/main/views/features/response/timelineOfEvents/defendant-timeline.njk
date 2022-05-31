@@ -43,7 +43,7 @@
                     </tr>
                   {% endfor %}
                 {% elseif pdfUrl %}
-                  <a id="timeline-link" href={{ pdfUrl }} class="govuk-link">{{ t('Download and view their Timeline') }}</a>
+                  <a id="timeline-link" href={{ pdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('Download and view their Timeline') }}</a>
                 {% endif %}
               </tbody>
             </table>
