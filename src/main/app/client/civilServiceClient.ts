@@ -31,7 +31,7 @@ export class CivilServiceClient {
     let claims: Claim[] = [];
     await this.client.post(CIVIL_SERVICE_CASES_URL, {match_all: {}}, config)
       .then(response => {
-        claims = response.data.cases.map((claim: CivilClaimResponse) => Object.assign(new CivilClaimResponse(), claim.case_data));
+        claims = response.data.cases.map((claim: CivilClaimResponse) => Object.assign(new Claim(), claim.case_data));
       }).catch(error => {
         console.log(error.message);
       });
