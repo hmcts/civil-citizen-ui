@@ -202,9 +202,9 @@
           "Country": "United Kingdom",
           "PostCode": "SW1H 9AJ",
           "PostTown": "Reading",
-          "AddressLine1": "testRedis",
-          "AddressLine2": "testRedis",
-          "AddressLine3": "testRedis"
+          "AddressLine1": "Flat 2",
+          "AddressLine2": "Caversham House 15-17",
+          "AddressLine3": "Church Road"
         },
         "organisationName": "Example applicant1 organisation",
         "partyTypeDisplayValue": "Organisation"
@@ -217,9 +217,9 @@
           "Country": "United Kingdom",
           "PostCode": "RG4 7AA",
           "PostTown": "Reading",
-          "AddressLine1": "testRedis",
-          "AddressLine2": "testRedis",
-          "AddressLine3": "testRedis"
+          "AddressLine1": "Flat 2",
+          "AddressLine2": "Caversham House 15-17",
+          "AddressLine3": "Church Road"
         },
         "organisationName": "Example respondent1 organisation",
         "partyTypeDisplayValue": "Organisation"
