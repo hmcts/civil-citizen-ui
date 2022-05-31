@@ -7,7 +7,7 @@ import {validateForm} from '../../../../../../common/form/validators/formValidat
 import {
   getOnTaxPaymentsForm,
   saveTaxPaymentsData,
-} from '../../../../../../modules/statementOfMeans/employment/selfEmployed/onTaxPaymentsService';
+} from '../../../../../../services/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsService';
 import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
 
 const citizenOnTaxPaymentsViewPath = 'features/response/statementOfMeans/employment/selfEmployed/on-tax-payments';

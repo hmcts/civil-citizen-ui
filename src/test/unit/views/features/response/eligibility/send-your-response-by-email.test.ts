@@ -4,11 +4,12 @@ import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {SEND_RESPONSE_BY_EMAIL_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaimApplicantCompanyType} from '../../../../../utils/mockDraftStore';
+import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const govukBodyClass = 'govuk-body';
-const pageTitle = 'Money Claims';
+const pageTitle = 'Send your response by email';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -54,12 +55,13 @@ describe('Send your response by email View', () => {
       expect(paragraphs[9].innerHTML).toContain('Email completed form N9B to:');
       expect(paragraphs[10].innerHTML).toContain('Or, you can send the form by post to:');
       expect(paragraphs[15].innerHTML).toContain('You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.');
-      expect(paragraphs[16].innerHTML).toContain('Do not create a new claim if you want to counterclaim. Use form N9B.');
+      expect(paragraphs[16].innerHTML).toContain(TestMessages.FEES_BASED_ON_AMOUNT);
+      expect(paragraphs[17].innerHTML).toContain(TestMessages.DO_NOT_CREATE_CLAIM_IF_COUNTERCLAIM);
     });
 
     it('should display View claim fees details component', () => {
       const detailsSummary = htmlDocument.getElementsByClassName('govuk-details__summary-text')[0];
-      expect(detailsSummary.innerHTML).toContain('View court fees');
+      expect(detailsSummary.innerHTML).toContain('View claim fees');
     });
   });
 });

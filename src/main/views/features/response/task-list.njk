@@ -2,13 +2,17 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/about-claim-widget.njk" import aboutClaimWidget %}
 {% from "../../macro/time-remaining.njk" import timeRemaining %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
 
-{% set heading = t('Respond to a money claim') %}     
 {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
 {% set responseDeadLineExpression = t("£DEADLINE at 4pm") | replace ("£DEADLINE", claim.formattedResponseDeadline()) %}
 {% set remainingDays = claim.getRemainingDays() %}
 {% set claimNumber = claim.legacyCaseReference %}
 {% set isDeadLinePassed = claim.isDeadLinePassed() %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.TASK_LIST.PAGE_TITLE') }}
+{% endblock %}
 
 {% block content %}
   <div class="govuk-width-container govuk-!-padding-top-0">
@@ -16,15 +20,15 @@
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading govuk-!-margin-bottom-7">{{ heading }}</h1>
+            <h1 class="govuk-fieldset__heading govuk-!-margin-bottom-7">{{ t('PAGES.TASK_LIST.HEADER') }}</h1>
           </legend>
         </div>
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-          
+
           <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t(title) }}</h2>
           <p class="govuk-body">{{ t(description) }}</p>
           <p class="govuk-body govuk-!-margin-bottom-7">
-            {{ t('After you have completed all the actions you will be taken to a page where you can check your answers before submitting.') }}
+            {{ t('PAGES.TASK_LIST.ALL_ACTIONS_COMPLETED_CHECK_ANSWERS') }}
           </p>
 
           {% for taskList in taskLists %}

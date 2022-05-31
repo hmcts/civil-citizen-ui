@@ -124,6 +124,9 @@
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 110,
     "paymentOption": "BY_SET_DATE",
-    "paymentDate": "2025-06-01T00:00:00.000Z"
+    "paymentDate": "2025-06-01T00:00:00.000Z",
+    "defence": {
+      "text": "reasons for making the claim"
+    }
   }
 }

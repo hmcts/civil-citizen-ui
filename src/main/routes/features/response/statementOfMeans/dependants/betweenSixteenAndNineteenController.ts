@@ -11,9 +11,9 @@ import {validateForm} from '../../../../../common/form/validators/formValidator'
 import {
   getForm,
   saveFormToDraftStore,
-} from '../../../../../modules/statementOfMeans/dependants/betweenSixteenAndNineteenService';
+} from '../../../../../services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {hasDisabledChildren} from '../../../../../modules/statementOfMeans/dependants/childrenDisabilityService';
+import {hasDisabledChildren} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 
 
 const {Logger} = require('@hmcts/nodejs-logging');

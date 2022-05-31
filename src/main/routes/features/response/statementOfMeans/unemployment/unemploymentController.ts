@@ -4,7 +4,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import {Unemployment} from '../../../../../common/form/models/statementOfMeans/unemployment/unemployment';
 import {UnemploymentDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentDetails';
 import {OtherDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/otherDetails';
-import {UnemploymentService} from '../../../../../modules/statementOfMeans/unemployment/unemploymentService';
+import {UnemploymentService} from '../../../../../services/features/response/statementOfMeans/unemployment/unemploymentService';
 import {
   UnemploymentCategory,
 } from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';

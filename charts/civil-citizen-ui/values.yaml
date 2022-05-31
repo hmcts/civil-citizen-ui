@@ -28,7 +28,7 @@ nodejs:
         - AppInsightsInstrumentationKey
         - redis-access-key
         - ordnance-survey-api-key
-        - idam-secret
+        - citizen-ui-idam-secret
   environment:
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
     IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
