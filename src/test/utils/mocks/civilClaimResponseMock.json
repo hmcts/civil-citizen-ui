@@ -114,6 +114,7 @@
       }
     },
     "respondent1": {
+      "type": "ORGANISATION",
       "dateOfBirth": "2022-03-01T13:29:24.971",
       "telephoneNumber": "111",
       "contactPerson": "Felipe",
