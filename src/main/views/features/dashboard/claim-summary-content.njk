@@ -1,7 +1,8 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% macro claimSummaryContent(params) %}
-
+<div class="govuk-grid-row govuk-!-margin-top-0">
+  <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
     {% if params.title %}
       <h3 class="govuk-heading-m">{{ params.title }}</h3>
     {% endif %}
@@ -10,16 +11,19 @@
     {% endif %}
     {% if params.content %}
       {% for content in params.content %}
-          {{ content | safe }}
-
+        {{ content | safe }}
       {% endfor %}
     {% endif %}
-  {% if params.button %}
+    {% if params.button %}
+      {{ govukButton({
+        href: params.button.href,
+        text:  params.button.text
+      }) }}
+    {% endif %}
+    {% if params.hasDivider == true %}
+      <hr>
+    {% endif %}
+  </div>
+</div>
 
-    {{ govukButton({
-      href: params.button.href,
-      text:  params.button.text
-    }) }}
-
-  {% endif %}
 {% endmacro %}
