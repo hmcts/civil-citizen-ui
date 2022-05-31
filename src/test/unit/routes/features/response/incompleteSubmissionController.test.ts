@@ -1,10 +1,8 @@
 import nock from 'nock';
 import config from 'config';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import * as taskListService from '../../../../../main/modules/taskListService';
-import {
-  RESPONSE_INCOMPLETE_SUBMISSION_URL,
-} from '../../../../../main/routes/urls';
+import * as taskListService from '../../../../../main/services/features/response/taskListService';
+import {RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus';
@@ -19,7 +17,7 @@ const {app} = require('../../../../../main/app');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/response/checkAnswersService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/taskListService');
+jest.mock('../../../../../main/services/features/response/taskListService');
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockOutstandingTasksFromCase = taskListService.outstandingTasksFromCase as jest.Mock;
 

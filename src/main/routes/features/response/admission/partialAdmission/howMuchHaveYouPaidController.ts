@@ -2,7 +2,7 @@ import express from 'express';
 import {CITIZEN_AMOUNT_YOU_PAID_URL, CLAIM_TASK_LIST_URL} from '../../../../../routes/urls';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import howMuchHaveYouPaidService from '../../../../../modules/admission/partialAdmission/howMuchHaveYouPaidService';
+import howMuchHaveYouPaidService from '../../../../../services/features/response/admission/partialAdmission/howMuchHaveYouPaidService';
 import * as winston from 'winston';
 import {HowMuchHaveYouPaid} from '../../../../../common/form/models/admission/partialAdmission/howMuchHaveYouPaid';
 import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
