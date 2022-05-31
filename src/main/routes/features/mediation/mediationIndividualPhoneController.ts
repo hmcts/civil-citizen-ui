@@ -9,7 +9,7 @@ import { getCaseDataFromStore } from '../../../modules/draft-store/draftStoreSer
 import {
   getMediation,
   saveMediation,
-} from '../../../modules/mediation/mediationService';
+} from '../../../services/features/response/mediation/mediationService';
 import {
   CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
   CLAIM_TASK_LIST_URL,

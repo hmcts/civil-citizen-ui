@@ -1,9 +1,10 @@
 import * as express from 'express';
 import {CLAIM_TASK_LIST_URL, CLAIM_DETAILS_URL} from '../../urls';
-import {getTaskLists, getTitle, getDescription} from '../../../modules/taskListService';
+import {getTaskLists, getTitle, getDescription} from '../../../services/features/response/taskListService';
 import {Claim} from '../../../common/models/claim';
 import {getDraftClaimFromStore, getCaseDataFromStore } from '../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+
 
 /**
  * THIS FILE IS A CONCEPT
@@ -25,6 +26,7 @@ taskListController.get(CLAIM_TASK_LIST_URL, async (req, res) => {
 
     const caseData = await getCaseDataFromStore(currentClaimId);
     const taskLists = getTaskLists(claim, caseData, currentClaimId);
+
     req.session.claimId = currentClaimId;
     req.session.taskLists = taskLists;
 

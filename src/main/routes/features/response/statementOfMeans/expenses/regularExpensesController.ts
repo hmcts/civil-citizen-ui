@@ -6,7 +6,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import {
   getRegularExpenses,
   saveRegularExpenses,
-} from '../../../../../modules/statementOfMeans/expenses/regularExpensesService';
+} from '../../../../../services/features/response/statementOfMeans/expenses/regularExpensesService';
 import {toRegularExpenseForm} from '../../../../../common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 
 

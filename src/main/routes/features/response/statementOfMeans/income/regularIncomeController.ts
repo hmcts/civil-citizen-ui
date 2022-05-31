@@ -2,7 +2,7 @@ import express from 'express';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import RegularIncome from '../../../../../common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {CITIZEN_EXPLANATION_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../urls';
-import {getRegularIncome, saveRegularIncome} from '../../../../../modules/statementOfMeans/income/regularIncomeService';
+import {getRegularIncome, saveRegularIncome} from '../../../../../services/features/response/statementOfMeans/income/regularIncomeService';
 import {toRegularIncomeForm} from '../../../../../common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
