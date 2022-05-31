@@ -10,7 +10,7 @@ export class PropertiesVolume {
       propertiesVolume.addTo(config);
 
       this.setSecret('secrets.civil.AppInsightsInstrumentationKey', 'appInsights.instrumentationKey');
-      this.setSecret('secrets.civil.redis-access-key', 'services.draftStore.redis.key');
+      this.setSecret('secrets.civil.draft-store-access-key', 'services.draftStore.redis.key');
       this.setSecret('secrets.civil.ordnance-survey-api-key', 'services.postcodeLookup.ordnanceSurveyApiKey');
       this.setSecret('secrets.civil.citizen-ui-idam-secret', 'services.idam.clientSecret');
     }

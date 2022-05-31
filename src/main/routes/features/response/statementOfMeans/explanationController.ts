@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {CITIZEN_EXPLANATION_URL, CLAIM_TASK_LIST_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {getExplanation, saveExplanation} from '../../../../modules/statementOfMeans/explanationService';
+import {getExplanation, saveExplanation} from '../../../../services/features/response/statementOfMeans/explanationService';
 import {Explanation} from '../../../../common/form/models/statementOfMeans/explanation';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 

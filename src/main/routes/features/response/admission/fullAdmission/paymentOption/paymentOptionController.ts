@@ -7,7 +7,7 @@ import {validateForm} from '../../../../../../common/form/validators/formValidat
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
-} from '../../../../../../modules/admission/fullAdmission/paymentOption/paymentOptionService';
+} from '../../../../../../services/features/response/admission/fullAdmission/paymentOption/paymentOptionService';
 import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
 
 const paymentOptionController = express.Router();

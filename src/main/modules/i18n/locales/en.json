@@ -11,14 +11,26 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "COMMON": {
+    "DOWNLOAD_THE_CLAIM": "Download the claim",
     "BUTTONS": {
       "CONTINUE": "Continue"
     },
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "I admit all the claim"
     },
+    "PAYMENT_FREQUENCY": {
+      "WEEK": "Each week",
+      "TWO_WEEKS": "Every two weeks",
+      "MONTH": "Every month"
+    },
     "PAYMENT_OPTION": {
-      "IMMEDIATELY": "Immediately"
+      "BY_SET_DATE": "By a set date",
+      "IMMEDIATELY": "Immediately",
+      "INSTALMENTS": "By instalments"
+    },
+    "REMAINING_TASKS": {
+      "TITLE": "You still need to complete:",
+      "BACK": "Back to task list"
     }
   },
   "PAGES": {
@@ -36,12 +48,16 @@
       "CONTACT_PERSON": "Contact person",
       "CONTACT_NUMBER": "Contact number (optional)",
       "RESPONSE_TITLE": "Your response to the claim",
+      "WHEN_PAY_TITLE": "When you'll pay",
       "OWE_MONEY": "Do you owe the money claimed?",
       "WHEN_PAY": "When will you pay",
       "ADDRESS": "Address",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
       "SAME_ADDRESS": "Same as address",
-      "DOB": "Date of birth"
+      "DOB": "Date of birth",
+      "REGULAR_PAYMENTS": "Regular payments of",
+      "PAYMENT_FREQUENCY": "Frequency of payments",
+      "FIRST_PAYMENT": "Make the first payment on"
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "PAGE_TITLE": "Your bank accounts"
@@ -59,7 +75,21 @@
       "PAGE_TITLE": "Your claim response"
     },
     "CLAIM_DETAILS": {
-      "PAGE_TITLE": "Claim details"
+      "PAGE_TITLE": "Claim Details",
+      "HEADER": "Claim details",
+      "CLAIM_NUMBER": "Claim number",
+      "CLAIM_AMOUNT": "Claim amount",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "AMOUNT_BREAKDOWN": "Amount breakdown",
+      "AMOUNT": "Amount",
+      "INTEREST": "Interest",
+      "CLAIM_FEE": "Claim fee",
+      "CLAIM_TOTAL": "Claim Total",
+      "REASON_FOR_CLAIM": "Reason for claim",
+      "TIMELINE": "Timeline",
+      "DATE": "Date",
+      "WHAT_HAPPENED": "What happened",
+      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     },
     "COMPANY_DETAILS": {
       "PAGE_TITLE": "Company details"
@@ -77,7 +107,17 @@
       "PAGE_TITLE": "Any debts?"
     },
     "DEFENDANT_TIMELINE": {
-      "PAGE_TITLE": "Add your timeline of events"
+      "PAGE_TITLE": "Add your timeline of events",
+      "THEIR_TIMELINE": "Their timeline",
+      "DATE": "Date",
+      "WHAT_HAPPENED": "What happened",
+      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view their Timeline",
+      "ADD_YOUR_TIMELINE": "Add your timeline of events (optional)",
+      "INCLUDE_DATES_IF_YOU_KNOW": "Include dates if you know them.",
+      "FOR_EXAMPLE": "For example, {{ sixMonthAgo }}",
+      "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "For example, you might have signed a contract",
+      "ADD_ANOTHER_EVENT": "Add another event",
+      "ADD_ANY_COMMENTS": "Add any comments about their timeline (optional)"
     },
     "DEPENDANTS": {
       "PAGE_TITLE": "Any dependants?"
@@ -112,6 +152,9 @@
     },
     "FULL_ADMISSION_PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option"
+    },
+    "INCOMPLETE_SUBMISSION": {
+      "TITLE": "You need to complete all sections before you submit your response"
     },
     "I_DON_T_WANT_FREE_MEDIATION": {
       "PAGE_TITLE": "I don't want free mediation"
@@ -179,7 +222,7 @@
     "RESIDENCE": {
       "PAGE_TITLE": "Your residence"
     },
-    "SELF_EMPLOYED":{
+    "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {

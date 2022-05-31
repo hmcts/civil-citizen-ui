@@ -11,14 +11,26 @@
   "View": "Weiv",
   "Save and continue": "Arbed a pharhau",
   "COMMON": {
+    "DOWNLOAD_THE_CLAIM": "Download the claim",
     "BUTTONS": {
       "CONTINUE": "Parhau"
     },
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "Rwy'n cyfaddef yr holl hawliad"
     },
+    "PAYMENT_FREQUENCY": {
+      "WEEK": "Each week",
+      "TWO_WEEKS": "Every two weeks",
+      "MONTH": "Every month"
+    },
     "PAYMENT_OPTION": {
-      "IMMEDIATELY": "Ar unwaith"
+      "BY_SET_DATE": "Erbyn dyddiad gosod",
+      "IMMEDIATELY": "Ar unwaith",
+      "INSTALMENTS": "Mewn rhandaliadau"
+    },
+    "REMAINING_TASKS": {
+      "TITLE": "You still need to complete:",
+      "BACK": "Back to task list"
     }
   },
   "PAGES": {
@@ -36,12 +48,16 @@
       "CONTACT_PERSON": "Cyswllt",
       "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
       "RESPONSE_TITLE": "Eich ymateb i’r hawliad",
+      "WHEN_PAY_TITLE": "When you'll pay",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
       "WHEN_PAY": "Pryd fyddwch chi'n talu",
       "ADDRESS": "Cyfeiriad",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
-      "DOB": "Dyddiad Geni"
+      "DOB": "Dyddiad Geni",
+      "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
+      "PAYMENT_FREQUENCY": "Amlder taliadau",
+      "FIRST_PAYMENT": "Gwnewch y taliad cyntaf ymlaen"
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "PAGE_TITLE": "Your bank accounts"
@@ -59,7 +75,21 @@
       "PAGE_TITLE": "Your claim response"
     },
     "CLAIM_DETAILS": {
-      "PAGE_TITLE": "Claim details"
+      "PAGE_TITLE": "Claim Details",
+      "HEADER": "Claim details",
+      "CLAIM_NUMBER": "Claim number",
+      "CLAIM_AMOUNT": "Claim amount",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "AMOUNT_BREAKDOWN": "Amount breakdown",
+      "AMOUNT": "Amount",
+      "INTEREST": "Interest",
+      "CLAIM_FEE": "Claim fee",
+      "CLAIM_TOTAL": "Claim Total",
+      "REASON_FOR_CLAIM": "Reason for claim",
+      "TIMELINE": "Timeline",
+      "DATE": "Date",
+      "WHAT_HAPPENED": "What happened",
+      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     },
     "COMPANY_DETAILS": {
       "PAGE_TITLE": "Company details"
@@ -112,6 +142,9 @@
     },
     "FULL_ADMISSION_PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option"
+    },
+    "INCOMPLETE_SUBMISSION": {
+      "TITLE": "You need to complete all sections before you submit your response"
     },
     "I_DON_T_WANT_FREE_MEDIATION": {
       "PAGE_TITLE": "I don't want free mediation"
@@ -179,7 +212,7 @@
     "RESIDENCE": {
       "PAGE_TITLE": "Your residence"
     },
-    "SELF_EMPLOYED":{
+    "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {

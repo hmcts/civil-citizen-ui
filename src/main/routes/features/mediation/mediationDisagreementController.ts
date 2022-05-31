@@ -7,7 +7,7 @@ import {
 } from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {FreeMediation} from '../../../common/form/models/mediation/freeMediation';
-import {getMediation, saveMediation} from '../../../modules/mediation/mediationService';
+import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {YesNo} from '../../../common/form/models/yesNo';
 import {Claim} from '../../../common/models/claim';

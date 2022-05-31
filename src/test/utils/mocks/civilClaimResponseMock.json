@@ -125,6 +125,35 @@
     "respondent1ResponseDeadline": "2022-05-15T02:59:59",
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 110,
+    "claimInterest": "Yes",
+    "submittedDate": "2022-05-23T17:02:02.38407",
+    "totalInterest": 15,
+    "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
+    "interestClaimUntil": "UNTIL_CLAIM_SUBMIT_DATE",
+    "interestClaimOptions": "SAME_RATE_INTEREST",
+    "interestFromSpecificDate": "2022-05-20",
+    "sameRateInterestSelection": {
+      "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
+    },
+    "detailsOfClaim": "House repair",
+    "claimAmountBreakup": [
+      {
+        "id": "acbefa73-f24b-4c64-a00f-38f90c31d7e3",
+        "value": {
+          "claimAmount": "2000",
+          "claimReason": "House repair"
+        }
+      }
+    ],
+    "timelineOfEvents": [
+      {
+        "id": "a08e42f4-6d7a-4f5c-b33d-85e4ef42ad9e",
+        "value": {
+          "timelineDate": "2022-01-01",
+          "timelineDescription": "I noticed a leak on the landing and told Mr Smith about this."
+        }
+      }
+    ],
     "paymentOption": "BY_SET_DATE",
     "paymentDate": "2025-06-01T00:00:00.000Z",
     "defence": {

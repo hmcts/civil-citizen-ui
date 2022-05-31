@@ -5,7 +5,7 @@ import {DefendantTimeline} from '../../../../common/form//models/timeLineOfEvent
 import {
   getPartialAdmitTimeline,
   savePartialAdmitTimeline,
-} from '../../../../modules/timelineOfEvents/defendantTimelineService';
+} from '../../../../services/features/response/timelineOfEvents/defendantTimelineService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {TimeLineOfEvents} from '../../../../common/models/timelineOfEvents/timeLineOfEvents';
