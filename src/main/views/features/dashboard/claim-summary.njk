@@ -32,7 +32,7 @@
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <h1 class="govuk-heading-m govuk-!-margin-0">{{ claimantName }} v {{ defendantName }}</h1>
           <p class="govuk-body-s">
-            {{ t('PAGES.CLAIM_DETAILS.CLAIM_NUMBER') }}
+            {{ t('PAGES.CLAIM_SUMMARY.CLAIM_NUMBER') }}
             {{ claim.legacyCaseReference }}
           </p>
 
@@ -40,12 +40,12 @@
             classes: 'tab-section',
             items: [
               {
-                label: t('PAGES.CLAIM_DETAILS.LATEST_UPDATE'),
+                label: t('PAGES.CLAIM_SUMMARY.LATEST_UPDATE'),
                 id: "latest-update",
                 panel: {html: latestUpdate}
               },
               {
-                label: t('PAGES.CLAIM_DETAILS.DOCUMENTS'),
+                label: t('PAGES.CLAIM_SUMMARY.DOCUMENTS'),
                 id: "documents",
                 panel: {html: documents}
               }
@@ -55,11 +55,11 @@
           {{ contactUsForHelp(t) }}
         </div>
         {{ aboutClaimWidget({
-          header: t('PAGES.CLAIM_DETAILS.ABOUT_CLAIM'),
+          header: t('PAGES.CLAIM_SUMMARY.ABOUT_CLAIM'),
           lines:[
-            {title: t('PAGES.CLAIM_DETAILS.CLAIMANT_NAME'), href: 'contact-them', hrefContact: claimantName},
-            {title: t('PAGES.CLAIM_DETAILS.CLAIM_AMOUNT'), content: totalClaimAmount},
-            {title: t('PAGES.CLAIM_DETAILS.CLAIM_DETAILS'), href: '/case/' + claimId + '/response/claim-details', hrefContact: t('PAGES.CLAIM_DETAILS.VIEW_CLAIM')}]
+            {title: t('PAGES.CLAIM_SUMMARY.CLAIMANT_NAME'), href: 'contact-them', hrefContact: claimantName},
+            {title: t('PAGES.CLAIM_SUMMARY.CLAIM_AMOUNT'), content: totalClaimAmount},
+            {title: t('PAGES.CLAIM_SUMMARY.CLAIM_DETAILS'), href: '/case/' + claimId + '/response/claim-details', hrefContact: t('PAGES.CLAIM_SUMMARY.VIEW_CLAIM')}]
           }) }}
       </div>
     </main>
