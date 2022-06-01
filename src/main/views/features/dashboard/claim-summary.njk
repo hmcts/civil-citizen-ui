@@ -1,0 +1,69 @@
+{% extends "claim-details-tpl.njk" %}
+
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "../../macro/about-claim-widget.njk" import aboutClaimWidget %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "./claim-summary-content.njk" import claimSummaryContent %}
+
+{% block content %}
+
+  <div class="govuk-width-container govuk-!-padding-top-0">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      {% set totalClaimAmount = '£' + claim.totalClaimAmount %}
+
+      {% set latestUpdate %}
+        {{ claimSummaryContent({
+          title: content.title,
+          subtitle: content.subtitle,
+          content: content.content,
+          button: {
+            text: content.button.text,
+            href: content.button.href
+          },
+          hasDivider: content.hasDivider
+        }) }}
+      {% endset %}
+
+      {% set documents %}
+      <p>Documents content here </p>
+      {% endset %}
+
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          <h1 class="govuk-heading-m govuk-!-margin-0">{{ claimantName }} v {{ defendantName }}</h1>
+          <p class="govuk-body-s">
+            {{ t('PAGES.CLAIM_SUMMARY.CLAIM_NUMBER') }}
+            {{ claim.legacyCaseReference }}
+          </p>
+
+          {{ govukTabs({
+            classes: 'tab-section',
+            items: [
+              {
+                label: t('PAGES.CLAIM_SUMMARY.LATEST_UPDATE'),
+                id: "latest-update",
+                panel: {html: latestUpdate}
+              },
+              {
+                label: t('PAGES.CLAIM_SUMMARY.DOCUMENTS'),
+                id: "documents",
+                panel: {html: documents}
+              }
+            ]
+          }) }}
+
+          {{ contactUsForHelp(t) }}
+        </div>
+        {{ aboutClaimWidget({
+          header: t('PAGES.CLAIM_SUMMARY.ABOUT_CLAIM'),
+          lines:[
+            {title: t('PAGES.CLAIM_SUMMARY.CLAIMANT_NAME'), href: 'contact-them', hrefContact: claimantName},
+            {title: t('PAGES.CLAIM_SUMMARY.CLAIM_AMOUNT'), content: totalClaimAmount},
+            {title: t('PAGES.CLAIM_SUMMARY.CLAIM_DETAILS'), href: '/case/' + claimId + '/response/claim-details', hrefContact: t('PAGES.CLAIM_SUMMARY.VIEW_CLAIM')}]
+          }) }}
+      </div>
+    </main>
+  </div>
+</div>
+
+{% endblock %}

@@ -15,7 +15,6 @@
     "applicant1": {
       "type": "ORGANISATION",
       "partyName": "Mr. Jan Clark",
-      "companyName": "Mr. Jan Clark",
       "telephoneNumber": "(0)207 127 0000",
       "primaryAddress": {
         "County": "Kent",
@@ -26,7 +25,6 @@
         "AddressLine2": "Caversham House 15-17",
         "AddressLine3": "Church Road"
       },
-      "organisationName": "Example organisation",
       "partyTypeDisplayValue": "Organisation"
     },
     "applicantSolicitor1UserDetails": {
@@ -116,9 +114,9 @@
       }
     },
     "respondent1": {
+      "type": "ORGANISATION",
       "dateOfBirth": "2022-03-01T13:29:24.971",
       "telephoneNumber": "111",
-      "organisationName": "def two",
       "contactPerson": "Felipe",
       "partyName": "Version 1"
     },

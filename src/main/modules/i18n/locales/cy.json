@@ -249,6 +249,16 @@
       "TITLE": "Why do you disagree with the claim?",
       "REASON": "Their reasons for making the claim",
       "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
+    },
+    "CLAIM_SUMMARY": {
+      "ABOUT_CLAIM": "About claim",
+      "CLAIM_NUMBER": "Claim number:",
+      "CLAIM_AMOUNT": "Claim amount:",
+      "CLAIM_DETAILS": "Claim details:",
+      "CLAIMANT_NAME": "Claimant name:",
+      "DOCUMENTS": "Documents",
+      "LATEST_UPDATE": "Latest update",
+      "VIEW_CLAIM": "View claim"
     }
   },
   "ERRORS": {
