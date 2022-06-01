@@ -73,9 +73,6 @@
     "CITIZEN_RESPONSE_TYPE": {
       "PAGE_TITLE": "Your claim response"
     },
-    "CLAIM_DETAILS": {
-      "PAGE_TITLE": "Claim details"
-    },
     "COMPANY_DETAILS": {
       "PAGE_TITLE": "Company details"
     },
@@ -236,6 +233,7 @@
       "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
     },
     "CLAIM_DETAILS": {
+      "PAGE_TITLE": "Claim details",
       "ABOUT_CLAIM": "About claim",
       "CLAIM_NUMBER": "Claim number:",
       "CLAIM_AMOUNT": "Claim amount:",
