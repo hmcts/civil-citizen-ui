@@ -4,9 +4,9 @@ import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import howMuchHaveYouPaidService from '../../../../../services/features/response/admission/howMuchHaveYouPaidService';
 import * as winston from 'winston';
-import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
+import {HowMuchHaveYouPaid} from '../../../../../common/form/models/admission/howMuchHaveYouPaid';
 import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
-import {ResponseType} from 'common/form/models/responseType';
+import {ResponseType} from '../../../../../common/form/models/responseType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('HowMuchHaveYouPaidController');
