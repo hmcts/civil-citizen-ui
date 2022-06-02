@@ -12,16 +12,18 @@
       {% set totalClaimAmount = '£' + claim.totalClaimAmount %}
 
       {% set latestUpdate %}
+      {% for contentSection in latestUpdateContent %}
         {{ claimSummaryContent({
-          title: content.title,
-          subtitle: content.subtitle,
-          content: content.content,
+          title: contentSection.title,
+          subtitle: contentSection.subtitle,
+          content: contentSection.content,
           button: {
-            text: content.button.text,
-            href: content.button.href
+            text: contentSection.button.text,
+            href: contentSection.button.href
           },
-          hasDivider: content.hasDivider
+          hasDivider: contentSection.hasDivider
         }) }}
+      {% endfor %}
       {% endset %}
 
       {% set documents %}

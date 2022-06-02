@@ -11,10 +11,10 @@ const claimSummaryController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimSummaryController');
 
-function getComponentDetailItems(lang: string): ComponentDetailItems {
-  return {
-    title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
-    subtitle: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
+function getComponentDetailItems(lang: string): ComponentDetailItems[] {
+  return [{
+    title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', { lng: getLng(lang) }),
+    subtitle: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', { lng: getLng(lang) }),
     content: [
       '<p class="govuk-body">If you’ve been paid or you’ve made another agreement with the defendant, you need to tell us.</p>',
       '<p class="govuk-body">More information about the <a class="govuk-link" href="https://www.gov.uk/government/publications/debt-respite-scheme-breathing-space-guidance/debt-respite-scheme-breathing-space-guidance-for-creditors#end-of-a-breathing-space">debt respite scheme (opens in new tab)</a></p>',
@@ -32,8 +32,8 @@ function getComponentDetailItems(lang: string): ComponentDetailItems {
       text: 'Example',
       href: '/test',
     },
-    hasDivider:  true,
-  };
+    hasDivider: true,
+  }];
 }
 
 claimSummaryController.get(CLAIMANT_SUMMARY_URL, async (req, res) => {
@@ -43,8 +43,8 @@ claimSummaryController.get(CLAIMANT_SUMMARY_URL, async (req, res) => {
     const claim: Claim = await getCaseDataFromStore((req.params.id));
     const claimantName = claim.getClaimantName();
     const defendantName = claim.getDefendantName();
-    const content = getComponentDetailItems(lang);
-    res.render(claimSummaryViewPath, { claim, claimId: req.params.id, claimantName, defendantName, content });
+    const latestUpdateContent = getComponentDetailItems(lang);
+    res.render(claimSummaryViewPath, { claim, claimId: req.params.id, claimantName, defendantName, latestUpdateContent });
   } catch (error) {
     logger.error(error);
     res.status(500).send({ error: error.message });
