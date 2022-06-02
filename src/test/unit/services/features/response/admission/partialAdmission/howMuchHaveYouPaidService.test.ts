@@ -1,9 +1,7 @@
 import howMuchHaveYouPaidService
-  from '../../../../../../../main/services/features/response/admission/partialAdmission/howMuchHaveYouPaidService';
+  from '../../../../../../../main/services/features/response/admission/howMuchHaveYouPaidService';
 import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
-import {
-  HowMuchHaveYouPaid,
-} from '../../../../../../../main/common/form/models/admission/partialAdmission/howMuchHaveYouPaid';
+import {HowMuchHaveYouPaid} from '../../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {
   ENTER_PAYMENT_EXPLANATION,
   VALID_AMOUNT,

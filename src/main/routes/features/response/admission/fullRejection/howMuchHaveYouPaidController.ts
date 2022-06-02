@@ -1,5 +1,5 @@
 import express from 'express';
-import {CITIZEN_AMOUNT_YOU_PAID_URL, CLAIM_TASK_LIST_URL} from '../../../../../routes/urls';
+import {CITIZEN_FR_AMOUNT_YOU_PAID_URL, CLAIM_TASK_LIST_URL} from '../../../../../routes/urls';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import howMuchHaveYouPaidService from '../../../../../services/features/response/admission/howMuchHaveYouPaidService';
@@ -22,9 +22,9 @@ export function setHowMuchHaveYouPaidControllerLogger(winstonLogger: winston.Log
 
 howMuchHaveYouPaidController
   .get(
-    CITIZEN_AMOUNT_YOU_PAID_URL, async (req: express.Request, res: express.Response) => {
+    CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req: express.Request, res: express.Response) => {
       try {
-        const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id, ResponseType.PART_ADMISSION);
+        const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id, ResponseType.FULL_DEFENCE);
         totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
 
         res.render(howMuchHaveYouPaidPath, {
@@ -36,7 +36,7 @@ howMuchHaveYouPaidController
       }
     })
   .post(
-    CITIZEN_AMOUNT_YOU_PAID_URL, async (req, res) => {
+    CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req, res) => {
       const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
       const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       await form.validate();
@@ -47,7 +47,7 @@ howMuchHaveYouPaidController
         });
       } else {
         try {
-          await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(req.params.id, howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
+          await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(req.params.id, howMuchHaveYouPaid, ResponseType.FULL_DEFENCE);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
         } catch (error) {
           logger.error(error);
