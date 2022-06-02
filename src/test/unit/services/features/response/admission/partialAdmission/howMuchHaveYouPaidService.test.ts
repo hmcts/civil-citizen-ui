@@ -15,6 +15,7 @@ import {
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
 import {mockClaim} from '../../../../../../utils/mockClaim';
+import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
 
 
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -65,7 +66,7 @@ describe('HowMuchHaveYouPaid service', () => {
         return undefined;
       });
       //When
-      const howMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId');
+      const howMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId', ResponseType.PART_ADMISSION);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(howMuchHaveYouPaid.amount).toBeUndefined();
@@ -83,7 +84,7 @@ describe('HowMuchHaveYouPaid service', () => {
         return {case_data: {}};
       });
       //When
-      const howMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId');
+      const howMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId', ResponseType.PART_ADMISSION);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(howMuchHaveYouPaid.amount).toBeUndefined();
@@ -101,7 +102,7 @@ describe('HowMuchHaveYouPaid service', () => {
         return mockClaim;
       });
       //When
-      const howMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId');
+      const howMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId', ResponseType.PART_ADMISSION);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(howMuchHaveYouPaid).not.toBeNull();
@@ -116,7 +117,7 @@ describe('HowMuchHaveYouPaid service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid('claimId', new HowMuchHaveYouPaid());
+      await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid('claimId', new HowMuchHaveYouPaid(), ResponseType.PART_ADMISSION);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -130,7 +131,7 @@ describe('HowMuchHaveYouPaid service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid('claimId', new HowMuchHaveYouPaid());
+      await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid('claimId', new HowMuchHaveYouPaid(), ResponseType.PART_ADMISSION);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -144,7 +145,7 @@ describe('HowMuchHaveYouPaid service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid('claimId', new HowMuchHaveYouPaid());
+      await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid('claimId', new HowMuchHaveYouPaid(), ResponseType.PART_ADMISSION);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
@@ -481,7 +482,7 @@ describe('HowMuchHaveYouPaid service', () => {
       });
       //Then
       await expect(
-        howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId')).rejects.toThrow(DRAFT_STORE_GET_ERROR);
+        howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId', ResponseType.PART_ADMISSION)).rejects.toThrow(DRAFT_STORE_GET_ERROR);
     });
 
     test('should throw error when saving data to draft store fails', async () => {
@@ -494,7 +495,7 @@ describe('HowMuchHaveYouPaid service', () => {
       });
       //Then
       await expect(
-        howMuchHaveYouPaidService.saveHowMuchHaveYouPaid('claimId', new HowMuchHaveYouPaid())).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
+        howMuchHaveYouPaidService.saveHowMuchHaveYouPaid('claimId', new HowMuchHaveYouPaid(), ResponseType.PART_ADMISSION)).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
     });
   });
 });
