@@ -31,6 +31,17 @@
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
+    },
+    "CONTACT_US_FOR_HELP": {
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)",
+      "EMAIL": "Email",
+      "OPENING_HOURS": "Monday to Friday, 8.30am to 5pm.",
+      "RESPONSE_DELAY": "We'll get back to you within 10 days",
+      "TITLE": "Contact us for help",
+      "TELEPHONE": "Telephone",
+      "WEB_CHAT": "Web chat",
+      "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
+      "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
     }
   },
   "PAGES": {
@@ -120,7 +131,14 @@
       "ADD_ANY_COMMENTS": "Add any comments about their timeline (optional)"
     },
     "DEPENDANTS": {
-      "PAGE_TITLE": "Any dependants?"
+      "GROUP11": "11 to 15",
+      "GROUP16": "16 to 19",
+      "HOW_MANY": "Enter how many for each age group.",
+      "NO": "No",
+      "PAGE_TITLE": "Any dependants?",
+      "TITLE": "Do any children live with you?",
+      "UNDER": "Under 11",
+      "YES": "Yes"
     },
     "DEPENDANTS_BETWEEN_16_AND_19": {
       "PAGE_TITLE": "Any dependants between 16 and 19?"
@@ -151,7 +169,13 @@
       "PAGE_TITLE": "Payment date"
     },
     "FULL_ADMISSION_PAYMENT_OPTION": {
-      "PAGE_TITLE": "Payment option"
+      "BY_SET_DAY": "By a set date",
+      "IMMEDIATELY": "Immediately",
+      "PAGE_TITLE": "Payment option",
+      "REQUEST": "The claimant can request a County Court Judgment (CCJ) against you if you don't pay immediately.",
+      "REPAYMENT": "I'll suggest a repayment plan",
+      "TITLE": "When do you want to pay?",
+      "YOU_MUST_CONTACT": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
@@ -220,7 +244,14 @@
       "PAGE_TITLE": "Your repayment plan"
     },
     "RESIDENCE": {
-      "PAGE_TITLE": "Your residence"
+      "ASSOCIATION_HOME": "Council or housing association home",
+      "OWN_HOME": "Home you own yourself (or pay a mortgage on)",
+      "HOME_TYPE": "What type of housing?",
+      "JOIN_HOME": "Jointly-owned home (or jointly mortgaged home)",
+      "OTHER": "Other",
+      "PAGE_TITLE": "Your residence",
+      "RENTAL_HOME": "Private rental",
+      "TITLE": "Where do you live?"
     },
     "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details"
@@ -272,6 +303,86 @@
     }
   },
   "ERRORS": {
-    "THERE_WAS_A_PROBLEM": "There was a problem"
+    "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
+    "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
+    "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
+    "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
+    "CLAIM_DETAILS": "Claim details",
+    "CLAIM_VALID_AMOUNT": "Enter a valid amount",
+    "DATE_REQUIRED": "Enter a date",
+    "DEFENCE_REQUIRED": "You need to explain why you don’t owe the money",
+    "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
+    "DESCRIPTION_REQUIRED": "Enter a description of what happened",
+    "DETAILS_REQUIRED": "Enter details",
+    "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
+    "ENTER_A_DEBT": "Enter a debt",
+    "ENTER_AN_EXPLANATION": "Enter an explanation of why you can’t pay now",
+    "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
+    "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
+    "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
+    "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
+    "JOB_TITLE_REQUIRED": "Enter a job title",
+    "NAME_REQUIRED": "Please enter a name",
+    "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
+    "NUMBER_REQUIRED": "Enter a valid number",
+    "OPTION_REQUIRED": "Please select one reason",
+    "OPTION_REQUIRED_RESPONSE": "Please select a response",
+    "PAYMENT_FREQUENCY_REQUIRED": "Choose a payment frequency",
+    "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
+    "REDIS_FAILURE": "Redis DraftStore failure.",
+    "SELECT_AN_OPTION": "Select an option",
+    "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
+    "SIGNER_NAME_TOO_LONG": "You’ve entered too many characters",
+    "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
+    "SIGNER_ROLE_TOO_LONG": "You’ve entered too many characters",
+    "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
+    "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
+    "TEXT_TOO_MANY": "You’ve entered too many characters",
+    "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
+    "THERE_WAS_A_PROBLEM": "There was a problem",
+    "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
+    "VALID_ADDRESS_LINE_1": "Enter first address line",
+    "VALID_AMOUNT": "Enter a valid amount",
+    "VALID_AMOUNT_ONE_POUND_OR_MORE": "Enter an amount of £1 or more",
+    "VALID_AT_LEAST_ONE_OPTION": "You must select at least one option",
+    "VALID_BETWEEN_NUMBERS_0_11": "Enter a number between 0 and 11",
+    "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
+    "VALID_CHOOSE": "Choose your response",
+    "VALID_CITY": "Enter a valid town/city",
+    "VALID_CLAIM_NUMBER": "Enter a claim number",
+    "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Enter first correspondence address line",
+    "VALID_CORRESPONDENCE_CITY": "Enter correspondence town/city",
+    "VALID_CORRESPONDENCE_POSTCODE": "Enter correspondence address postcode",
+    "VALID_DATE": "Please enter a valid date",
+    "VALID_DATE_IN_PAST": "Enter date before ",
+    "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
+    "VALID_DAY": "Enter a valid day",
+    "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
+    "VALID_ENTER_A_JOB_TITLE": "Enter a job title",
+    "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
+    "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Enter at least one court order",
+    "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Enter at least one employer",
+    "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
+    "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
+    "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
+    "VALID_HOUSING": "Describe your housing",
+    "VALID_INTEGER": "Enter a numeric, for example 3",
+    "VALID_MONTH": "Enter a valid month",
+    "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
+    "VALID_NUMBER_OF_PEOPLE": "Enter a number higher than 0",
+    "VALID_OPTION_SELECTION": "Select an option",
+    "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
+    "VALID_PAYMENT_OPTION": "Choose a payment option",
+    "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
+    "VALID_POSITIVE_NUMBER": "Don’t enter a negative number",
+    "VALID_POSTCODE": "Enter address postcode",
+    "VALID_REASON_REQUIRED": "Enter a reason",
+    "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
+    "VALID_TEXT_LENGTH": "You’ve entered too many characters",
+    "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
+    "VALID_VALUE": "Are you sure this is a valid value?",
+    "VALID_YEAR": "Enter a valid year",
+    "VALID_YES_NO_OPTION": "Choose option: Yes or No",
+    "VALID_YES_NO_SELECTION": "Please select yes or no"
   }
 }

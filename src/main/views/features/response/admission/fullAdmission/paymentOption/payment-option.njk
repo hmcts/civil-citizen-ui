@@ -15,12 +15,11 @@
     <main class="govuk-main-wrapper" role="main">
       {% set hintPayImmediatly %}
         <div
-          class='govuk-hint'>{{ t('You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account.') }}</div>
+          class='govuk-hint'>{{ t('PAGES.FULL_ADMISSION_PAYMENT_OPTION.YOU_MUST_CONTACT') }}</div>
       {% endset -%}
 
       {% set hintPayLater %}
-        <div
-          class='govuk-hint'>{{ t('The claimant can request a County Court Judgment (CCJ) against you if you don’t pay immediately.') }}</div>
+        <div class='govuk-hint'>{{ t('PAGES.FULL_ADMISSION_PAYMENT_OPTION.REQUEST') }}</div>
       {% endset -%}
       {% set errors = form.getErrors() %}
       {% if errors %}
@@ -38,7 +37,7 @@
               name: "paymentType",
               fieldset: {
                 legend: {
-                  text: t("When do you want to pay?"),
+                  text: t('PAGES.FULL_ADMISSION_PAYMENT_OPTION.TITLE'),
                   isPageHeading: true,
                   classes: "govuk-fieldset__legend--l"
                 }
@@ -46,7 +45,7 @@
               items: [
                 {
                   value: PaymentOptionType.IMMEDIATELY,
-                  text: t("Immediately"),
+                  text: t('PAGES.FULL_ADMISSION_PAYMENT_OPTION.IMMEDIATELY'),
                   checked: true if form.paymentType == PaymentOptionType.IMMEDIATELY,
                   conditional: {
                   html: hintPayImmediatly
@@ -54,7 +53,7 @@
                 },
                 {
                   value: PaymentOptionType.BY_SET_DATE,
-                  text: t("By set date"),
+                  text: t('PAGES.FULL_ADMISSION_PAYMENT_OPTION.BY_SET_DAY'),
                   checked: true if form.paymentType == PaymentOptionType.BY_SET_DATE,
                   conditional: {
                   html: hintPayLater
@@ -62,7 +61,7 @@
                 },
                 {
                   value: PaymentOptionType.INSTALMENTS,
-                  text: t("I'll suggest a repayment plan"),
+                  text: t('PAGES.FULL_ADMISSION_PAYMENT_OPTION.REPAYMENT'),
                   checked: true if form.paymentType == PaymentOptionType.INSTALMENTS,
                   conditional: {
                   html: hintPayLater
