@@ -24,6 +24,7 @@ class HowMuchHaveYouPaidService {
           claim.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount = totalClaimAmount;
           return claim.rejectAllOfClaim.howMuchHaveYouPaid;
         }
+
       }
       return new HowMuchHaveYouPaid({totalClaimAmount: totalClaimAmount});
     } catch (error) {

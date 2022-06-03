@@ -95,7 +95,7 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(howMuchHaveYouPaid.date).toBeNull();
       expect(howMuchHaveYouPaid.text).toBeUndefined();
     });
-    test('should return HowMuchHaveYouPaid when HowMuchHaveYouPaid retrieved', async () => {
+    test('should return HowMuchHaveYouPaid when HowMuchHaveYouPaid Partial Admission retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -107,6 +107,19 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(howMuchHaveYouPaid).not.toBeNull();
       expect(howMuchHaveYouPaid).toEqual(mockClaim?.partialAdmission?.howMuchHaveYouPaid);
+    });
+    test('should return HowMuchHaveYouPaid when HowMuchHaveYouPaid full Rejection retrieved', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockClaim;
+      });
+      //When
+      const howMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId', ResponseType.FULL_DEFENCE);
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(howMuchHaveYouPaid).not.toBeNull();
+      expect(howMuchHaveYouPaid).toEqual(mockClaim?.rejectAllOfClaim?.howMuchHaveYouPaid);
     });
 
     test('should save howMuchHaveYouPaid when nothing in Redis draft store', async () => {

@@ -5,7 +5,12 @@ import {PrimaryAddress} from '../../main/common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddress';
 import {NumberOfDays} from '../../main/common/form/models/numberOfDays';
 import {YesNo} from '../../main/common/form/models/yesNo';
-import {InterestClaimFromType, InterestClaimOptions, InterestClaimUntilType, SameRateInterestType} from '../../main/common/form/models/claimDetails';
+import {
+  InterestClaimFromType,
+  InterestClaimOptions,
+  InterestClaimUntilType,
+  SameRateInterestType,
+} from '../../main/common/form/models/claimDetails';
 
 export const buildPrimaryAddress = (): PrimaryAddress => {
   return {
@@ -47,18 +52,18 @@ export const mockClaim: Claim = {
   },
   legacyCaseReference: '497MC585',
   applicant1:
-  {
-    individualTitle: 'Mrs',
-    individualLastName: 'Clark',
-    individualFirstName: 'Jane',
-    type: CounterpartyType.INDIVIDUAL,
-  },
-  statementOfMeans:
-  {
-    childrenDisability: {
-      option: 'yes',
+    {
+      individualTitle: 'Mrs',
+      individualLastName: 'Clark',
+      individualFirstName: 'Jane',
+      type: CounterpartyType.INDIVIDUAL,
     },
-  },
+  statementOfMeans:
+    {
+      childrenDisability: {
+        option: 'yes',
+      },
+    },
   partialAdmission: {
     howMuchHaveYouPaid: {
       amount: 20,
@@ -68,6 +73,17 @@ export const mockClaim: Claim = {
       year: 2040,
       text: 'text',
     },
+  },
+  rejectAllOfClaim: {
+    howMuchHaveYouPaid: {
+      amount: 20,
+      totalClaimAmount: 110,
+      day: 1,
+      month: 1,
+      year: 2040,
+      text: 'text',
+    },
+    option: 'test',
   },
   totalClaimAmount: 110,
   respondent1ResponseDeadline: new Date('2022-01-24T15:59:59'),
