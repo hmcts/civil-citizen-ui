@@ -109,7 +109,7 @@ export interface Party {
   individualTitle?: string;
   individualLastName?: string;
   individualFirstName?: string;
-  companyName?: string;
+  partyName?: string;
   type: CounterpartyType;
   primaryAddress?: CorrespondenceAddress;
   phoneNumber?: string;

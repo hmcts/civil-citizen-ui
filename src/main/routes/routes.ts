@@ -63,7 +63,7 @@ import youHavePaidLessController from './features/response/rejection/fullReject/
 import yourDefenceController from './features/response/yourDefenceController';
 import incompleteSubmissionController from './features/response/incompleteSubmissionController';
 import howMuchHaveYouPaidFRController from './features/response/rejection/fullReject/howMuchHaveYouPaidController';
-
+import claimSummaryController from './features/dashboard/claimSummaryController';
 
 export default [
   homeController,
@@ -126,4 +126,5 @@ export default [
   yourDefenceController,
   incompleteSubmissionController,
   howMuchHaveYouPaidFRController,
+  claimSummaryController,
 ];
