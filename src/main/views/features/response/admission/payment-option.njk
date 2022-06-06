@@ -41,7 +41,7 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukRadios({
-              idPrefix: "paymentOption",
+              idPrefix: "paymentType",
               name: "paymentType",
               fieldset: {
                 legend: {
