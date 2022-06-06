@@ -234,14 +234,14 @@
       "PAGE_TITLE": "Your repayment plan"
     },
     "RESIDENCE": {
-      "ASSOCIATION_HOME": "Council or housing association home",
-      "OWN_HOME": "Home you own yourself (or pay a mortgage on)",
-      "HOME_TYPE": "What type of housing?",
-      "JOIN_HOME": "Jointly-owned home (or jointly mortgaged home)",
-      "OTHER": "Other",
+      "ASSOCIATION_HOME": "Cartref cymdeithas dai neu’r cyngor",
+      "OWN_HOME": "Cartref rydych yn berchen arno (neu’n talu morgais arno)",
+      "HOME_TYPE": "Pa fath o dŷ?",
+      "JOIN_HOME": "Cartref rydych yn berchen arno ar y cyd (neu’n talu morgais arno ar y cyd)",
+      "OTHER": "Arall",
       "PAGE_TITLE": "Your residence",
-      "RENTAL_HOME": "Private rental",
-      "TITLE": "Where do you live?"
+      "RENTAL_HOME": "Cartref rydych yn rhentu’n breifat",
+      "TITLE": "Ble ydych chi’n byw?"
     },
     "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details"
