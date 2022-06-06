@@ -3,7 +3,6 @@ import {CITIZEN_PAYMENT_DATE_URL, CITIZEN_PAYMENT_OPTION_URL, CLAIM_TASK_LIST_UR
 import PaymentOption from '../../../../../../common/form/models/admission/paymentOption/paymentOption';
 import PaymentOptionType
   from '../../../../../../common/form/models/admission/paymentOption/paymentOptionType';
-// import {validateForm} from '../../../../../../common/form/validators/formValidator';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,

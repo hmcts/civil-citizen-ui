@@ -3,7 +3,7 @@ import paymentDateService
 import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
 import {
   PaymentDate,
-} from '../../../../../../../main/common/form/models/admission/paymentOption/paymentDate';
+} from '../../../../../../../main/common/form/models/admission/fullAdmission/paymentDate';
 import {
   VALID_DATE_NOT_IN_PAST,
   VALID_DAY,
