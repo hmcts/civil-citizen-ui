@@ -63,6 +63,7 @@ import youHavePaidLessController from './features/response/rejection/fullReject/
 import yourDefenceController from './features/response/yourDefenceController';
 import incompleteSubmissionController from './features/response/incompleteSubmissionController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
+import partialAdmissionPaymentOptionController from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
 
 export default [
   homeController,
@@ -125,4 +126,5 @@ export default [
   yourDefenceController,
   incompleteSubmissionController,
   claimSummaryController,
+  partialAdmissionPaymentOptionController,
 ];
