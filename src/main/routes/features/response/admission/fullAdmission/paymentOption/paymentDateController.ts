@@ -1,5 +1,5 @@
 import express from 'express';
-import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentDate';
+import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
 import {GenericForm} from '../../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';

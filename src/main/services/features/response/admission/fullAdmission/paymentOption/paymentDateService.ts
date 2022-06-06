@@ -1,5 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../modules/draft-store/draftStoreService';
-import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentDate';
+import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {Claim} from '../../../../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');

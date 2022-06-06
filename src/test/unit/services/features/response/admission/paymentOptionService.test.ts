@@ -1,20 +1,20 @@
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../../main/common/models/claim';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {Claim} from '../../../../../../main/common/models/claim';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
-} from '../../../../../../../main/services/features/response/admission/paymentOptionService';
+} from '../../../../../../main/services/features/response/admission/paymentOptionService';
 import PaymentOptionType
-  from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+  from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import PaymentOption
-  from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOption';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
-import {PartialAdmission} from '../../../../../../../main/common/models/partialAdmission';
-import {mockClaim} from '../../../../../../utils/mockClaim';
+  from '../../../../../../main/common/form/models/admission/paymentOption/paymentOption';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {ResponseType} from '../../../../../../main/common/form/models/responseType';
+import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
+import {mockClaim} from '../../../../../utils/mockClaim';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('.../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
 describe('payment option service', () => {
