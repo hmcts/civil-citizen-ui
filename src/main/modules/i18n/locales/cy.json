@@ -26,7 +26,12 @@
     "PAYMENT_OPTION": {
       "BY_SET_DATE": "Erbyn dyddiad gosod",
       "IMMEDIATELY": "Ar unwaith",
-      "INSTALMENTS": "Mewn rhandaliadau"
+      "INSTALMENTS": "Mewn rhandaliadau",
+      "REPAYMENT_PLAN": "I'll suggest a repayment plan",
+      "HINT_PAY_IMMEDIATELY": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account.",
+      "HINT_PAY_LATER": "The claimant can request a County Court Judgment (CCJ) against you if you don’t pay immediately.",
+      "WHY_DO_YOU_WANT_TO_PAY_WITH_AMOUNT": "When do you want to pay £{{ amount}}?",
+      "WHY_DO_YOU_WANT_TO_PAY": "When do you want to pay?"
     },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
@@ -170,6 +175,12 @@
     },
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
       "PAGE_TITLE": "How much have you paid?"
+    },
+    "PARTIAL_ADMISSION_PAYMENT_DATE": {
+      "PAGE_TITLE": "Part Admit - Payment date"
+    },
+    "PARTIAL_ADMISSION_PAYMENT_OPTION": {
+      "PAGE_TITLE": "Part Admit - Payment option"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?"
