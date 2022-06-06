@@ -1,0 +1,116 @@
+import request from 'supertest';
+import config from 'config';
+import nock from 'nock';
+import {app} from '../../../../../../../main/app';
+import {
+  CITIZEN_PARTIAL_ADMISSION_PAYMENT_DATE_URL,
+  CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
+  CLAIM_TASK_LIST_URL,
+} from '../../../../../../../main/routes/urls';
+import {VALID_PAYMENT_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {mockRedisWithPaymentAmount, mockRedisFullAdmission, mockRedisWithoutAdmittedPaymentAmount, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import civilClaimResponseWithAdmittedPaymentAmountMock from '../../../../../../utils/mocks/civilClaimResponseWithAdmittedPaymentAmountMock.json';
+
+jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('../../../../../../../main/modules/draft-store');
+
+describe('Part Admit - Payment Option Controller', () => {
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const idamUrl: string = config.get('idamUrl');
+  beforeEach(() => {
+    nock(idamUrl)
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
+  });
+  describe('on Get', () => {
+    test('should return payment option page successfully', async () => {
+      app.locals.draftStoreClient = mockRedisWithPaymentAmount;
+      const mockAdmittedPaymentAmount = civilClaimResponseWithAdmittedPaymentAmountMock.case_data.partialAdmission.howMuchDoYouOwe.amount;
+      await request(app)
+        .get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(`When do you want to pay £${mockAdmittedPaymentAmount}?`);
+        });
+    });
+    test('should redirect to claim task list when response type is not part admission', async () => {
+      app.locals.draftStoreClient = mockRedisFullAdmission;
+      await request(app)
+        .get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
+    test('should redirect to claim task list when admitted payment amount is not provided', async () => {
+      app.locals.draftStoreClient = mockRedisWithoutAdmittedPaymentAmount;
+      await request(app)
+        .get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
+    test('should return status 500 when there is an error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+        });
+    });
+  });
+  describe('on Post', () => {
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockRedisWithPaymentAmount;
+    });
+    test('should validate when option is not selected', async () => {
+      await request(app)
+        .post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
+        .send('')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(VALID_PAYMENT_OPTION);
+        });
+    });
+    test('should redirect to claim task list when immediately option is selected', async () => {
+      await request(app)
+        .post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
+        .send('paymentType=IMMEDIATELY')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
+    test('should redirect to claim task list when instalments option is selected', async () => {
+      await request(app)
+        .post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
+        .send('paymentType=IMMEDIATELY')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
+        });
+    });
+    test('should redirect to claim task list when instalments option is selected', async () => {
+      await request(app)
+        .post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
+        .send('paymentType=BY_SET_DATE')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_PARTIAL_ADMISSION_PAYMENT_DATE_URL);
+        });
+    });
+    test('should return 500 status when there is error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
+        .send('paymentType=BY_SET_DATE')
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+        });
+    });
+  });
+});
