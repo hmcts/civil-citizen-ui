@@ -1,22 +1,22 @@
 import paymentDateService
-  from '../../../../../../../../main/services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
-import * as draftStoreService from '../../../../../../../../main/modules/draft-store/draftStoreService';
+  from '../../../../../../../main/services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
+import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
 import {
   PaymentDate,
-} from '../../../../../../../../main/common/form/models/admission/fullAdmission/paymentOption/paymentDate';
+} from '../../../../../../../main/common/form/models/admission/paymentOption/paymentDate';
 import {
   VALID_DATE_NOT_IN_PAST,
   VALID_DAY,
   VALID_FOUR_DIGIT_YEAR,
   VALID_MONTH,
   VALID_YEAR,
-} from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {GenericForm} from '../../../../../../../../main/common/form/models/genericForm';
-import {mockClaim} from '../../../../../../../utils/mockClaim';
+} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
+import {mockClaim} from '../../../../../../utils/mockClaim';
 
 
-jest.mock('../../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 

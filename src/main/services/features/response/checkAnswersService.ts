@@ -15,7 +15,7 @@ import {getLng} from '../../../common/utils/languageToggleUtils';
 import {PrimaryAddress} from '../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../common/models/correspondenceAddress';
 import {formatDateToFullDate} from '../../../common/utils/dateUtils';
-import PaymentOptionType from '../../../common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
+import PaymentOptionType from '../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';

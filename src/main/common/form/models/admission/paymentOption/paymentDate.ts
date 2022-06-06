@@ -6,11 +6,11 @@ import {
   VALID_FOUR_DIGIT_YEAR,
   VALID_MONTH,
   VALID_YEAR,
-} from '../../../../../../common/form/validationErrors/errorMessageConstants';
-import {OptionalDateFourDigitValidator} from '../../../../../../common/form/validators/optionalDateFourDigitValidator';
-import {OptionalDateNotInPastValidator} from '../../../../../../common/form/validators/optionalDateNotInPastValidator';
-import {DateConverter} from '../../../../../../common/utils/dateConverter';
-import {toNumberOrUndefined} from '../../../../../../common/utils/numberConverter';
+} from '../../../../../common/form/validationErrors/errorMessageConstants';
+import {OptionalDateFourDigitValidator} from '../../../../../common/form/validators/optionalDateFourDigitValidator';
+import {OptionalDateNotInPastValidator} from '../../../../../common/form/validators/optionalDateNotInPastValidator';
+import {DateConverter} from '../../../../../common/utils/dateConverter';
+import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 
 export class PaymentDate {
 
