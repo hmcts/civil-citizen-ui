@@ -12,12 +12,13 @@ const logger = Logger.getLogger('paymentOptionService');
 const getPaymentOptionForm = async (claimId: string, responseType : ResponseType): Promise<PaymentOption> => {
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
+    const paymentOption = new PaymentOption();
     if (isFullAdmission(responseType) && claim?.isFullAdmissionPaymentOptionExists()) {
-      return new PaymentOption(PaymentOptionType[claim.paymentOption as keyof typeof PaymentOptionType]);
+      paymentOption.paymentType = claim.paymentOption as PaymentOptionType;
     } else if (isPartAdmission(responseType) && claim?.isPartialAdmissionPaymentOptionExists()) {
-      return new PaymentOption(PaymentOptionType[claim.partialAdmission.paymentOption as keyof typeof PaymentOptionType]);    
+      paymentOption.paymentType = claim.partialAdmission.paymentOption as PaymentOptionType; 
     }
-    return new PaymentOption();
+    return paymentOption;
   } catch (error) {
     logger.error(`${error.stack || error}`);
     throw error;
