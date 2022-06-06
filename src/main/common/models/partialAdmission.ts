@@ -10,6 +10,8 @@ export class PartialAdmission {
   alreadyPaid?: AlreadyPaid;
   howMuchHaveYouPaid?: HowMuchHaveYouPaid;
   timeline?: DefendantTimeline;
+  paymentOption?: string;
+  paymentDate?: Date;
 }
 
 
