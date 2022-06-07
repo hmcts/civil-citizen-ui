@@ -16,7 +16,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("How much have you paid the claimant?") %}
-      {% if responseType %}
+      {% if responseType==="FULL_DEFENCE" %}
         {% set title = t("How much have you paid?") %}
       {% endif %}
       {% set description = t("The total amount claimed is £CLAIMAMOUNT. This includes the claim fee and any interest.")  | replace ("CLAIMAMOUNT", totalClaimAmount)  %}

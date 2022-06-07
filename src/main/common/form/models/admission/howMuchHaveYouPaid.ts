@@ -37,7 +37,7 @@ export class HowMuchHaveYouPaid {
   @IsDefined({message: VALID_AMOUNT})
   @Min(MIN_AMOUNT_VALUE, {message: VALID_AMOUNT})
   @IsNumber({allowNaN: false, maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
-  @Validate(EqualToOrLessThanPropertyValueValidator, ['totalClaimAmount', 'strictComparison'], {message: AMOUNT_LESS_THAN_CLAIMED})
+  @Validate(EqualToOrLessThanPropertyValueValidator, ['totalClaimAmount'], {message: AMOUNT_LESS_THAN_CLAIMED})
     amount?: number;
 
   totalClaimAmount?: number;
