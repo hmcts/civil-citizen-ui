@@ -25,10 +25,10 @@ import {
 } from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import { DebtItems } from '../../../../../main/common/form/models/statementOfMeans/debts/debtItems';
-import { Debts } from '../../../../../main/common/form/models/statementOfMeans/debts/debts';
-import { PriorityDebts } from '../../../../../main/common/form/models/statementOfMeans/priorityDebts';
-import { PriorityDebtDetails } from '../../../../../main/common/form/models/statementOfMeans/priorityDebtDetails';
+import {DebtItems} from '../../../../../main/common/form/models/statementOfMeans/debts/debtItems';
+import {Debts} from '../../../../../main/common/form/models/statementOfMeans/debts/debts';
+import {PriorityDebts} from '../../../../../main/common/form/models/statementOfMeans/priorityDebts';
+import {PriorityDebtDetails} from '../../../../../main/common/form/models/statementOfMeans/priorityDebtDetails';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
