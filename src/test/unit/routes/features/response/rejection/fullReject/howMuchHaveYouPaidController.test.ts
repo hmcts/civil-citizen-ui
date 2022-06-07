@@ -72,7 +72,7 @@ describe('How Much Have You Paid', () => {
         .get(CITIZEN_FR_AMOUNT_YOU_PAID_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('How much have you paid the claimant?');
+          expect(res.text).toContain('How much have you paid?');
         });
     });
     test('should return how much have you paid with payment amount loaded from Redis', async () => {
@@ -81,7 +81,7 @@ describe('How Much Have You Paid', () => {
         .get(CITIZEN_FR_AMOUNT_YOU_PAID_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('How much have you paid the claimant?');
+          expect(res.text).toContain('How much have you paid?');
           expect(res.text).toContain('name="amount" type="number" spellcheck="false" value="20"');
           expect(res.text).toContain('name="year" type="text" value="2022" pattern="[0-9]*');
           expect(res.text).toContain('name="month" type="text" value="1" pattern="[0-9]*');
