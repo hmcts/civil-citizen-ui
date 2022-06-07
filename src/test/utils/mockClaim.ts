@@ -6,6 +6,7 @@ import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddr
 import {NumberOfDays} from '../../main/common/form/models/numberOfDays';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {InterestClaimFromType, InterestClaimOptions, InterestClaimUntilType, SameRateInterestType} from '../../main/common/form/models/claimDetails';
+import {ResponseType} from '../../main/common/form/models/responseType';
 
 export const buildPrimaryAddress = (): PrimaryAddress => {
   return {
@@ -141,5 +142,20 @@ export const mockClaim: Claim = {
   },
   isSameRateTypeEightPercent(): boolean {
     return this?.sameRateInterestSelection?.sameRateInterestType !== SameRateInterestType.SAME_RATE_INTEREST_8_PC;
+  },
+  isFullAdmission(): boolean {
+    return this?.respondent1?.responseType === ResponseType.FULL_ADMISSION;
+  },
+  isPartialAdmission(): boolean {
+    return this?.respondent1?.responseType === ResponseType.PART_ADMISSION;
+  },
+  isFullAdmissionPaymentOptionExists(): boolean {
+    return this?.paymentOption?.length > 0;
+  },
+  isPartialAdmissionPaymentOptionExists(): boolean {
+    return this?.partialAdmission?.paymentOption?.length > 0;
+  },
+  partialAdmissionPaymentAmount(): number {
+    return this?.partialAdmission?.howMuchDoYouOwe?.amount;
   },
 };
