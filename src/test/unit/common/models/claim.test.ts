@@ -1,5 +1,10 @@
 import {Claim} from '../../../../main/common/models/claim';
 import {InterestClaimUntilType, InterestClaimFromType, InterestClaimOptions, SameRateInterestType} from '../../../../main/common/form/models/claimDetails';
+import {ResponseType} from '../../../../main/common/form/models/responseType';
+import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
+import {PartialAdmission} from '../../../../main/common/models/partialAdmission';
+import {Respondent} from '../../../../main/common/models/respondent';
+import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 
 describe('Claim isInterestClaimUntilSubmitDate', () => {
   const claim = new Claim();
@@ -129,3 +134,183 @@ describe('Claim isSameRateTypeEightPercent', () => {
     expect(result).toBeFalsy();
   });
 });
+
+describe('Claim isFullAdmission', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isFullAdmission();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false without respondent details', () => {
+    //Given
+    claim.respondent1 = new Respondent();
+    //When
+    const result = claim.isFullAdmission();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with partial admission', () => {
+    //Given
+    claim.respondent1 = {responseType: ResponseType.PART_ADMISSION, primaryAddress: {}, type: CounterpartyType.INDIVIDUAL};
+    //When
+    const result = claim.isFullAdmission();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with full rejection', () => {
+    //Given
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    //When
+    const result = claim.isFullAdmission();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return true with full admission', () => {
+    //Given
+    claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+    //When
+    const result = claim.isFullAdmission();
+    //Then
+    expect(result).toBeTruthy();
+  });
+});
+
+describe('Claim isPartialAdmission', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isPartialAdmission();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false without respondent details', () => {
+    //Given
+    claim.respondent1 = new Respondent();
+    //When
+    const result = claim.isPartialAdmission();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with full admission', () => {
+    //Given
+    claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION, primaryAddress: {}, type: CounterpartyType.INDIVIDUAL};
+    //When
+    const result = claim.isPartialAdmission();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with full rejection', () => {
+    //Given
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    //When
+    const result = claim.isPartialAdmission();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return true with part admission', () => {
+    //Given
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    //When
+    const result = claim.isPartialAdmission();
+    //Then
+    expect(result).toBeTruthy();
+  });
+});
+
+describe('Claim isFullAdmissionPaymentOptionExists', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isFullAdmissionPaymentOptionExists();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with empty payment option', () => {
+    //Given
+    claim.paymentOption = '';
+    //When
+    const result = claim.isFullAdmissionPaymentOptionExists();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return true with payment option', () => {
+    //Given
+    claim.paymentOption = 'IMMEDIATELY';
+    //When
+    const result = claim.isFullAdmissionPaymentOptionExists();
+    //Then
+    expect(result).toBeTruthy();
+  });
+});
+
+describe('Claim isPartialAdmissionPaymentOptionExists', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isPartialAdmissionPaymentOptionExists();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with empty partial admission', () => {
+    //Given
+    claim.partialAdmission = new PartialAdmission();
+    //When
+    const result = claim.isPartialAdmissionPaymentOptionExists();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with part admit empty payment option', () => {
+    //Given
+    claim.partialAdmission.paymentOption = '';
+    //When
+    const result = claim.isPartialAdmissionPaymentOptionExists();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return true with payment option', () => {
+    //Given
+    claim.partialAdmission.paymentOption = 'IMMEDIATELY';
+    //When
+    const result = claim.isPartialAdmissionPaymentOptionExists();
+    //Then
+    expect(result).toBeTruthy();
+  });
+});
+
+describe('Claim partialAdmissionPaymentAmount', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.partialAdmissionPaymentAmount();
+    //Then
+    expect(result).toBeUndefined();
+  });
+  it('should return false with empty partial admission', () => {
+    //Given
+    claim.partialAdmission = new PartialAdmission();
+    //When
+    const result = claim.partialAdmissionPaymentAmount();
+    //Then
+    expect(result).toBeUndefined();
+  });
+  it('should return false with part admit empty HowMuchDoYouOwe', () => {
+    //Given
+    claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
+    //When
+    const result = claim.partialAdmissionPaymentAmount();
+    //Then
+    expect(result).toBeUndefined();
+  });
+  it('should return existing amount', () => {
+    //Given
+    claim.partialAdmission.howMuchDoYouOwe.amount = 55;
+    //When
+    const result = claim.partialAdmissionPaymentAmount();
+    //Then
+    expect(result).toEqual(55);
+  });
+});
+
+

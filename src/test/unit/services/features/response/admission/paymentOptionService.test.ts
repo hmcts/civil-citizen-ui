@@ -88,7 +88,7 @@ describe('payment option service', () => {
     it('should save payment option successfully with no claim in draft store', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
-        return undefined;
+        return new Claim();
       });
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
@@ -178,7 +178,7 @@ describe('payment option service', () => {
     it('should save payment option successfully with no claim in draft store', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
-        return undefined;
+        return new Claim();
       });
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When

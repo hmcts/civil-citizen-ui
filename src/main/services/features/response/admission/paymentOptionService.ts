@@ -27,10 +27,7 @@ const getPaymentOptionForm = async (claimId: string, responseType : ResponseType
 
 const savePaymentOptionData = async (claimId: string, form: PaymentOption, responseType: ResponseType) => {  
   try {
-    let claim: Claim = await getCaseDataFromStore(claimId);
-    if (!claim) {
-      claim = new Claim();
-    }  
+    const claim: Claim = await getCaseDataFromStore(claimId);
     if (isFullAdmission(responseType)) {
       claim.paymentOption = form.paymentType; 
     } else if (isPartAdmission(responseType)) {
