@@ -46,7 +46,10 @@ howMuchHaveYouPaidController
 
       if (form.hasErrors()) {
         res.render(howMuchHaveYouPaidPath, {
-          form: form, lastMonth: lastMonth, totalClaimAmount: howMuchHaveYouPaid.totalClaimAmount,
+          form: form,
+          lastMonth: lastMonth,
+          totalClaimAmount: howMuchHaveYouPaid.totalClaimAmount,
+          responseType: ResponseType.FULL_DEFENCE,
         });
       } else {
         try {
