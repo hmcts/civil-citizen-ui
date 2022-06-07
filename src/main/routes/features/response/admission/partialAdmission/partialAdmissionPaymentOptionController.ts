@@ -1,5 +1,9 @@
 import * as express from 'express';
-import {CITIZEN_PARTIAL_ADMISSION_PAYMENT_DATE_URL, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, CLAIM_TASK_LIST_URL} from '../../../../urls';
+import {
+  CITIZEN_PARTIAL_ADMISSION_PAYMENT_DATE_URL,
+  CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
+  CLAIM_TASK_LIST_URL,
+} from '../../../../urls';
 import PaymentOption from '../../../../../common/form/models/admission/paymentOption/paymentOption';
 import PaymentOptionType
   from '../../../../../common/form/models/admission/paymentOption/paymentOptionType';
