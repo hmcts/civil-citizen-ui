@@ -28,7 +28,10 @@ howMuchHaveYouPaidController
         totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
 
         res.render(howMuchHaveYouPaidPath, {
-          form: new GenericForm(howMuchHaveYouPaid), lastMonth: lastMonth, totalClaimAmount: totalClaimAmount,
+          form: new GenericForm(howMuchHaveYouPaid),
+          lastMonth: lastMonth,
+          totalClaimAmount: totalClaimAmount,
+          responseType: ResponseType.FULL_DEFENCE,
         });
       } catch (error) {
         logger.error(error);
