@@ -90,34 +90,34 @@ export class Claim {
   }
 
   isInterestClaimUntilSubmitDate(): boolean {
-    return this?.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
+    return this.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
   }
   isInterestFromClaimSubmitDate(): boolean {
-    return this?.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+    return this.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
   }
   isInterestFromASpecificDate(): boolean {
-    return this?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+    return this.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
   }
   isInterestClaimOptionsSameRateInterest(): boolean {
-    return this?.interestClaimOptions === InterestClaimOptions.SAME_RATE_INTEREST;
+    return this.interestClaimOptions === InterestClaimOptions.SAME_RATE_INTEREST;
   }
   isSameRateTypeEightPercent(): boolean {
-    return this?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
+    return this.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   }
   isFullAdmission(): boolean {
-    return this?.respondent1?.responseType === ResponseType.FULL_ADMISSION;
+    return this.respondent1?.responseType === ResponseType.FULL_ADMISSION;
   }
   isPartialAdmission(): boolean{
-    return this?.respondent1?.responseType === ResponseType.PART_ADMISSION;
+    return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
   isFullAdmissionPaymentOptionExists(): boolean{
-    return this?.paymentOption?.length > 0;
+    return this.paymentOption?.length > 0;
   }
   isPartialAdmissionPaymentOptionExists(): boolean {
-    return this?.partialAdmission?.paymentOption?.length > 0;
+    return this.partialAdmission?.paymentOption?.length > 0;
   }
   partialAdmissionPaymentAmount(): number {
-    return this?.partialAdmission?.howMuchDoYouOwe?.amount;
+    return this.partialAdmission?.howMuchDoYouOwe?.amount;
   }
 }
 
