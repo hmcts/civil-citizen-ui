@@ -8,7 +8,7 @@ export default function currencyFormat(amount: number): string {
 }
 
 export function currencyFormatWithNoTrailingZeros(amount: number): string {
-  return currencyFormat(amount).replace(/(\.00+|00+)$/, '');
+  return currencyFormat(amount).replace(/(\.00+)$/, '');
 }
 
 export function convertToPoundsFilter(value: number | string): number {
