@@ -252,11 +252,13 @@
     },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "About claim",
-      "CLAIM_NUMBER": "Claim number:",
       "CLAIM_AMOUNT": "Claim amount:",
       "CLAIM_DETAILS": "Claim details:",
+      "CLAIM_DOCUMENTS": "Claim documents",
       "CLAIMANT_NAME": "Claimant name:",
+      "CLAIM_NUMBER": "Claim number:",
       "DOCUMENTS": "Documents",
+      "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "LATEST_UPDATE": "Latest update",
       "VIEW_CLAIM": "View claim"
     }

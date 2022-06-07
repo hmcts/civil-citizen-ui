@@ -1,0 +1,54 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% macro itemContent(content) %}
+
+  {% if content.type === "html" %}
+    {{ content.data.html | safe }}
+  {% endif %}
+
+  {% if content.type === "title" %}
+    <h3 class="govuk-heading-m">{{ content.data.text }}</h3>
+  {% endif %}
+
+  {% if content.type === "subtitle" %}
+    <h3 class="govuk-heading-s">{{ content.data.text }}</h3>
+  {% endif %}
+
+  {% if content.type === "p" %}
+    <p class="govuk-body">{{ content.data.text }}</p>
+  {% endif %}
+
+  {% if content.type === "insetText" %}
+    {{ govukInsetText({
+      text: content.data.text,
+      html: content.data.html
+    }) }}
+  {% endif %}
+
+  {% if content.type === "summary" %}
+    {{ govukSummaryList({
+      rows: content.data.rows
+    }) }}
+  {% endif %}
+
+  {% if content.type === "button" %}
+    <div>
+      {{ govukButton({
+        href: content.data.href,
+        text:  content.data.text,
+        classes: content.data.classes
+      }) }}
+    </div>
+  {% endif %}
+
+  {% if content.type === "link" %}
+    <p class="govuk-body govuk-!-margin-bottom-1">{{ content.data.textBefore }}
+      <a class="govuk-link" href={{ content.data.href }}>{{ content.data.text }}</a>
+      {{ content.data.textAfter }}</p>
+    <p class="govuk-body-s mid-grey">{{ content.data.subtitle }}</p>
+  {% endif %}
+
+{% endmacro %}

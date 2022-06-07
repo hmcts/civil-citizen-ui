@@ -12,22 +12,22 @@
       {% set totalClaimAmount = '£' + claim.totalClaimAmount %}
 
       {% set latestUpdate %}
-      {% for contentSection in latestUpdateContent %}
+      {% for latestUpdateSection in latestUpdateContent %}
         {{ claimSummaryContent({
-          title: contentSection.title,
-          subtitle: contentSection.subtitle,
-          content: contentSection.content,
-          button: {
-            text: contentSection.button.text,
-            href: contentSection.button.href
-          },
-          hasDivider: contentSection.hasDivider
+          section: latestUpdateSection.sectionItems,
+          hasDivider: latestUpdateSection.hasDivider
         }) }}
       {% endfor %}
       {% endset %}
 
       {% set documents %}
-      <p>Documents content here </p>
+      <h1 class="govuk-heading-m govuk-!-margin-0">{{ t('PAGES.CLAIM_SUMMARY.CLAIM_DOCUMENTS') }}</h1>
+
+      {% for documentsSection in documentsContent %}
+        {{ claimSummaryContent({
+          section: documentsSection.sectionItems
+        }) }}
+      {% endfor %}
       {% endset %}
 
       <div class="govuk-grid-row govuk-!-margin-top-0">

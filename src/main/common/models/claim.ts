@@ -62,7 +62,7 @@ export class Claim {
     } else if (this.applicant1.type === CounterpartyType.ORGANISATION || this.applicant1.type === CounterpartyType.COMPANY) {
       return this.applicant1.partyName;
     }
-  };
+  }
 
   getDefendantName(): string {
     if (this.respondent1.type === CounterpartyType.INDIVIDUAL || this.respondent1.type === CounterpartyType.SOLE_TRADER) {
@@ -70,7 +70,7 @@ export class Claim {
     } else if (this.respondent1.type === CounterpartyType.ORGANISATION || this.respondent1.type === CounterpartyType.COMPANY) {
       return this.respondent1.partyName;
     }
-  };
+  }
 
   formattedResponseDeadline(): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).format('DD MMMM YYYY') : '';
