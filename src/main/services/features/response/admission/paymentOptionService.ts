@@ -1,10 +1,10 @@
 import PaymentOption from '../../../../common/form/models/admission/paymentOption/paymentOption';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import PaymentOptionType
-  from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {Claim} from '../../../../common/models/claim';
 import {ResponseType} from '../../../../common/form/models/responseType';
-import {PartialAdmission} from '../../../../common/models/partialAdmission';
+import PaymentOptionType
+  from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentIntention} from '../../../../common/models/paymentIntention';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentOptionService');
@@ -12,15 +12,14 @@ const logger = Logger.getLogger('paymentOptionService');
 const getPaymentOptionForm = async (claimId: string, responseType : ResponseType): Promise<PaymentOption> => {
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
-    const paymentOption = new PaymentOption();
-    if (isFullAdmission(responseType) && claim?.isFullAdmissionPaymentOptionExists()) {
-      paymentOption.paymentType = claim.paymentOption as PaymentOptionType;
-    } else if (isPartAdmission(responseType) && claim?.isPartialAdmissionPaymentOptionExists()) {
-      paymentOption.paymentType = claim.partialAdmission.paymentOption as PaymentOptionType; 
+    if (isFullAdmission(responseType) && claim.isFullAdmissionPaymentOptionExists()) {
+      return new PaymentOption(PaymentOptionType[claim.paymentOption as keyof typeof PaymentOptionType]);
+    } else if (isPartAdmission(responseType) && claim.isPartialAdmissionPaymentOptionExists()) {
+      return new PaymentOption(PaymentOptionType[claim.partialAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType]); 
     }
-    return paymentOption;
+    return new PaymentOption();
   } catch (error) {
-    logger.error(`${error.stack || error}`);
+    logger.error(error);
     throw error;
   }
 };
@@ -31,10 +30,10 @@ const savePaymentOptionData = async (claimId: string, form: PaymentOption, respo
     if (isFullAdmission(responseType)) {
       claim.paymentOption = form.paymentType; 
     } else if (isPartAdmission(responseType)) {
-      if (!claim.partialAdmission) {
-        claim.partialAdmission = new PartialAdmission();
+      if (!claim.partialAdmission.paymentIntention) {
+        claim.partialAdmission.paymentIntention = new PaymentIntention();
       }
-      claim.partialAdmission.paymentOption = form.paymentType; 
+      claim.partialAdmission.paymentIntention.paymentOption = form.paymentType; 
     }
 
     if (!form.paymentOptionBySetDateSelected()) {
@@ -42,12 +41,12 @@ const savePaymentOptionData = async (claimId: string, form: PaymentOption, respo
       if (isFullAdmission(responseType)) {
         claim.paymentDate = undefined;
       } else if (isPartAdmission(responseType)) {
-        claim.partialAdmission.paymentDate = undefined;    
+        claim.partialAdmission.paymentIntention.paymentDate = undefined;    
       }
     }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
-    logger.error(`${error.stack || error}`);
+    logger.error(error);
     throw error;
   }
 };

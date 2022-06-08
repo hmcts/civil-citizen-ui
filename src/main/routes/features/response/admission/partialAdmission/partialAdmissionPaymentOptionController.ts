@@ -38,11 +38,11 @@ partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OP
   const claimId = req.params.id;
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
-    if (!claim?.partialAdmissionPaymentAmount() || !claim?.isPartialAdmission()) {
+    if (!claim.partialAdmissionPaymentAmount() || !claim.isPartialAdmission()) {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
     } else {
       const paymentOption = await getPaymentOptionForm(claimId, ResponseType.PART_ADMISSION);
-      admittedPaymentAmount = claim?.partialAdmissionPaymentAmount();
+      admittedPaymentAmount = claim.partialAdmissionPaymentAmount();
       renderView(new GenericForm(paymentOption), res, admittedPaymentAmount);
     }
   } catch (error) {

@@ -33,7 +33,7 @@ export class Claim {
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
   defence?: Defence;
-  paymentOption?: string;
+  paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;
   partialAdmission?: PartialAdmission;
@@ -114,7 +114,7 @@ export class Claim {
     return this.paymentOption?.length > 0;
   }
   isPartialAdmissionPaymentOptionExists(): boolean {
-    return this.partialAdmission?.paymentOption?.length > 0;
+    return this.partialAdmission?.paymentIntention?.paymentOption?.length > 0;
   }
   partialAdmissionPaymentAmount(): number {
     return this.partialAdmission?.howMuchDoYouOwe?.amount;
