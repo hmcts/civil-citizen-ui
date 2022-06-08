@@ -30,6 +30,7 @@ import {Debts} from '../../../../../main/common/form/models/statementOfMeans/deb
 import {PriorityDebts} from '../../../../../main/common/form/models/statementOfMeans/priorityDebts';
 import {PriorityDebtDetails} from '../../../../../main/common/form/models/statementOfMeans/priorityDebtDetails';
 
+
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/i18n');
@@ -168,6 +169,23 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe(CORRESPONDENCE_ADDRESS);
     });
 
+    it('should return bank accounts and show it without list number when it exists only one', async () => {
+      //Given
+      const claim = createClaimWithOneBankAccount();
+
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+
+      //Then
+      expect(summarySections.sections[2].summaryList.rows[1].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_BANK_TYPE_OF_ACCOUNT);
+      expect(summarySections.sections[2].summaryList.rows[1].value.html).toBe('Current account');
+      expect(summarySections.sections[2].summaryList.rows[2].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_BANK_BALANCE);
+      expect(summarySections.sections[2].summaryList.rows[2].value.html).toBe('£1,000');
+      expect(summarySections.sections[2].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_BANK_JOINT_ACCOUNT);
+      expect(summarySections.sections[2].summaryList.rows[3].value.html).toBe(YesNo.YES.charAt(0).toUpperCase() + YesNo.YES.slice(1));
+
+    });
+
     it('should return bank accounts when it exists', async () => {
       //Given
       const claim = createClaimWithStatementOfMeansDetails();
@@ -271,6 +289,28 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[2].summaryList.rows[31].value.html).toBe('£10');
     });
 
+    it('should return multiple loans or credit card debts and show it with list number when it exists', async () => {
+      //Given
+      const claim = createClaimWithMultipleDebt();
+
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+
+      //Then
+      expect(summarySections.sections[2].summaryList.rows[2].key.text).toBe('1. PAGES.CHECK_YOUR_ANSWER.DEBT');
+      expect(summarySections.sections[2].summaryList.rows[2].value.html).toBe('Loan 1');
+      expect(summarySections.sections[2].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED');
+      expect(summarySections.sections[2].summaryList.rows[3].value.html).toBe('£1,000');
+      expect(summarySections.sections[2].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS');
+      expect(summarySections.sections[2].summaryList.rows[4].value.html).toBe('£10');
+
+      expect(summarySections.sections[2].summaryList.rows[5].key.text).toBe('2. PAGES.CHECK_YOUR_ANSWER.DEBT');
+      expect(summarySections.sections[2].summaryList.rows[5].value.html).toBe('Loan 2');
+      expect(summarySections.sections[2].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED');
+      expect(summarySections.sections[2].summaryList.rows[6].value.html).toBe('£2,000');
+      expect(summarySections.sections[2].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS');
+      expect(summarySections.sections[2].summaryList.rows[7].value.html).toBe('£10');
+    });
   });
 });
 
@@ -331,6 +371,37 @@ function createClaimWithIndividualDetails(): Claim {
 
 function createClaimWithContactPersonDetails(): Claim {
   return createClaimWithBasicRespondentDetails(CONTACT_PERSON);
+}
+
+function createClaimWithOneBankAccount(): Claim {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.statementOfMeans = {
+    'bankAccounts': [
+      {
+        'typeOfAccount': 'CURRENT_ACCOUNT',
+        'joint': 'true',
+        'balance': '1000',
+      },
+    ],
+  };
+  return claim as Claim;
+}
+
+function createClaimWithMultipleDebt(): Claim {
+  const claim = createClaimWithBasicRespondentDetails();
+
+  const debts: Debts = new Debts();
+  debts.option = 'yes';
+  debts.debtsItems = [
+    new DebtItems('Loan 1', '1000', '10'),
+    new DebtItems('Loan 2', '2000', '10'),
+  ];
+
+  claim.statementOfMeans = {
+    debts: debts,
+  };
+
+  return claim as Claim;
 }
 
 function createClaimWithStatementOfMeansDetails(): Claim {
