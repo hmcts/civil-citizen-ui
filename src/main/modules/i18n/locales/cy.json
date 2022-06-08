@@ -80,11 +80,11 @@
       "PAGE_TITLE": "Your date of birth"
     },
     "CITIZEN_PHONE": {
-      "EXAMPLE": "Use numbers only, for example, 01632960001.",
-      "INFORMATION": "We'll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.",
-      "MORE_INFORMATION": "We will only call you if we need more information about this claim.",
+      "EXAMPLE": "Defnyddiwch rifau yn unig, er enghraifft, 01632960001.",
+      "INFORMATION": "Byddwn yn rhoi eich rhif ffôn i'r unigolyn, y busnes neu'r sefydliad sydd wedi cyflwyno hawliad yn eich erbyn, neu eu cynrychiolydd cyfreithiol os oes ganddynt gynrychiolydd.",
+      "MORE_INFORMATION": "Ni fyddwn yn eich ffonio ond os bydd arnom angen rhagor o wybodaeth am yr hawliad hwn.",
       "PAGE_TITLE": "Your phone number",
-      "TITLE": "Enter a phone number (optional)"
+      "TITLE": "Rhowch rif ffôn (dewisol)"
     },
     "CITIZEN_RESPONSE_TYPE": {
       "PAGE_TITLE": "Your claim response"
