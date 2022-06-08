@@ -152,7 +152,7 @@ describe('Task List Helpers', () => {
     });
 
     it('should return true if payment option is BY_SET_DATE', () => {
-      caseData.paymentOption = PaymentOptionType.BY_SET_DATE;;
+      caseData.paymentOption = PaymentOptionType.BY_SET_DATE;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
