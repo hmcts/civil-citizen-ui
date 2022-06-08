@@ -2,7 +2,11 @@ import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
-import {CITIZEN_FR_AMOUNT_YOU_PAID_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
+import {
+  CITIZEN_FR_AMOUNT_YOU_PAID_URL,
+  CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL,
+  CLAIM_TASK_LIST_URL,
+} from '../../../../../../../main/routes/urls';
 import {
   setHowMuchHaveYouPaidControllerLogger,
 } from '../../../../../../../main/routes/features/response/rejection/fullReject/howMuchHaveYouPaidController';
@@ -148,7 +152,7 @@ describe('How Much Have You Paid', () => {
         .send({amount: 20, totalClaimAmount: 110, year: '2022', month: '1', day: '1', text: 'text'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CLAIM_TASK_LIST_URL}`);
+          expect(res.text).toContain(`Redirecting to ${CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL}`);
         });
     });
   });

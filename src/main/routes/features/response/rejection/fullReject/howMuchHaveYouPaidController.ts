@@ -1,5 +1,9 @@
 import express from 'express';
-import {CITIZEN_FR_AMOUNT_YOU_PAID_URL, CLAIM_TASK_LIST_URL} from '../../../../../routes/urls';
+import {
+  CITIZEN_FR_AMOUNT_YOU_PAID_URL,
+  CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL,
+  CLAIM_TASK_LIST_URL,
+} from '../../../../../routes/urls';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import howMuchHaveYouPaidService from '../../../../../services/features/response/admission/howMuchHaveYouPaidService';
@@ -42,6 +46,7 @@ howMuchHaveYouPaidController
     CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req, res) => {
       const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
       const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
+      const paid = toNumberOrUndefined(req.body.amount);
       await form.validate();
 
       if (form.hasErrors()) {
@@ -54,7 +59,12 @@ howMuchHaveYouPaidController
       } else {
         try {
           await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(req.params.id, howMuchHaveYouPaid, ResponseType.FULL_DEFENCE);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+          if (paid < howMuchHaveYouPaid.totalClaimAmount) {
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL));
+          } else {
+            res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+          }
+
         } catch (error) {
           logger.error(error);
           res.status(500).send({error: error.message});
