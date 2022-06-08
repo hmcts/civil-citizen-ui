@@ -18,7 +18,7 @@ export class FeeRange {
   }
 
   formatFeeRangeToTableItem():TableItem[] {
-    return [{text: `${this.minRange.toLocaleString()} to ${this.maxRange.toLocaleString()}`}, {text: `£${this.currentVersion.flatAmount.amount.toLocaleString()}`}];
+    return [{text: `£${this.minRange.toLocaleString()} to £${this.maxRange.toLocaleString()}`}, {text: `£${this.currentVersion.flatAmount.amount.toLocaleString()}`}];
   }
 }
 

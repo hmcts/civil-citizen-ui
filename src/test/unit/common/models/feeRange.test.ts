@@ -10,7 +10,7 @@ describe('Fee range', ()=>{
 
     //Then
     expect(tableItems.length).toBe(2);
-    expect(tableItems[0].text).toBe('500.01 to 10,000');
+    expect(tableItems[0].text).toBe('£500.01 to £10,000');
     expect(tableItems[1].text).toBe('£20,000');
   });
 });
