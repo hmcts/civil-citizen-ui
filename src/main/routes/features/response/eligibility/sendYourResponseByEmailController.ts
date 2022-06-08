@@ -44,7 +44,7 @@ sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, re
 const formatFeesRanges = (feesRanges: FeeRange[]): [TableItem[]] => {
   const tableFormatFeesRanges: [TableItem[]] = [[]];
   feesRanges.forEach((feeRange: FeeRange) => {
-    tableFormatFeesRanges.push(feeRange.formatFeeRange());
+    tableFormatFeesRanges.push(feeRange.formatFeeRangeToTableItem());
   });
   return tableFormatFeesRanges;
 };
