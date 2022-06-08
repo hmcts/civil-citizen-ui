@@ -9,6 +9,7 @@ import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import config from 'config';
 import {FeeRange} from '../../../../common/models/feeRange';
 import {TableItem} from '../../../../common/models/tableItem';
+import {AppRequest} from 'models/AppRequest';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -30,9 +31,9 @@ function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): vo
 sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res) => {
   try {
     const form = await getCaseDataFromStore(req.params.id);
-    const feesRanges: FeeRange[] = await civilServiceClient.getRangeFeesMock();
-    const formatedFeesRanges = formatFeesRanges(feesRanges);
-    renderView(res, form, formatedFeesRanges);
+    const feesRanges: FeeRange[] = await civilServiceClient.getRangeFees(<AppRequest>req);
+    const formattedFeesRanges = formatFeesRanges(feesRanges);
+    renderView(res, form, formattedFeesRanges);
   } catch (error) {
     logger.error(error);
     res.status(500).send({ error: error.message });
@@ -43,9 +44,7 @@ sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, re
 const formatFeesRanges = (feesRanges: FeeRange[]): [TableItem[]] => {
   const tableFormatFeesRanges: [TableItem[]] = [[]];
   feesRanges.forEach((feeRange: FeeRange) => {
-    const itemTableFeeRange = [];
-    itemTableFeeRange.push({ text: feeRange.claimAmountRange }, { text: feeRange.fee });
-    tableFormatFeesRanges.push(itemTableFeeRange);
+    tableFormatFeesRanges.push(feeRange.formatFeeRange());
   });
   return tableFormatFeesRanges;
 };
