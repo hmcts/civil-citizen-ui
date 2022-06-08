@@ -83,7 +83,7 @@ const rows: SummaryRow[] = [
 function getLatestUpdateContent(lang: string): ClaimSummaryContent[] {
   return [
     {
-      sectionItems: [
+      contentSections: [
         {
           type: ClaimSummaryType.TITLE,
           data: {
@@ -91,19 +91,19 @@ function getLatestUpdateContent(lang: string): ClaimSummaryContent[] {
           },
         },
         {
-          type: ClaimSummaryType.PARRAGRAPH,
+          type: ClaimSummaryType.PARAGRAPH,
           data: {
             text: `${claimantName} has not responded to your claim by the deadline. You can request a County Court Judgment (CCJ) against them.`,
           },
         },
         {
-          type: ClaimSummaryType.PARRAGRAPH,
+          type: ClaimSummaryType.PARAGRAPH,
           data: {
             text: 'The court will order them to pay the money. It doesn´t guarantee that they´ll pay it.',
           },
         },
         {
-          type: ClaimSummaryType.PARRAGRAPH,
+          type: ClaimSummaryType.PARAGRAPH,
           data: {
             text: `${claimantName} can still respond to the claim until you request a CCJ.`,
           },
@@ -119,7 +119,7 @@ function getLatestUpdateContent(lang: string): ClaimSummaryContent[] {
       hasDivider: true,
     },
     {
-      sectionItems: [
+      contentSections: [
         {
           type: ClaimSummaryType.TITLE,
           data: {
@@ -127,7 +127,7 @@ function getLatestUpdateContent(lang: string): ClaimSummaryContent[] {
           },
         },
         {
-          type: ClaimSummaryType.PARRAGRAPH,
+          type: ClaimSummaryType.PARAGRAPH,
           data: {
             text: 'If you´ve been paid or you´ve made another agreement with the defendant, you need to tell us.',
           },
@@ -144,7 +144,7 @@ function getLatestUpdateContent(lang: string): ClaimSummaryContent[] {
       hasDivider: true,
     },
     {
-      sectionItems: [
+      contentSections: [
         {
           type: ClaimSummaryType.TITLE,
           data: {
@@ -152,7 +152,7 @@ function getLatestUpdateContent(lang: string): ClaimSummaryContent[] {
           },
         },
         {
-          type: ClaimSummaryType.PARRAGRAPH,
+          type: ClaimSummaryType.PARAGRAPH,
           data: {
             text: 'Do you need to notify us that the defendant has entered the debt respite scheme (breathing space)?',
           },
@@ -177,7 +177,7 @@ function getLatestUpdateContent(lang: string): ClaimSummaryContent[] {
       hasDivider: true,
     },
     {
-      sectionItems: [
+      contentSections: [
         {
           type: ClaimSummaryType.TITLE,
           data: {
@@ -204,7 +204,7 @@ function getLatestUpdateContent(lang: string): ClaimSummaryContent[] {
       hasDivider: true,
     },
     {
-      sectionItems: [
+      contentSections: [
         {
           type: ClaimSummaryType.TITLE,
           data: {
@@ -224,7 +224,7 @@ function getLatestUpdateContent(lang: string): ClaimSummaryContent[] {
           },
         },
         {
-          type: ClaimSummaryType.PARRAGRAPH,
+          type: ClaimSummaryType.PARAGRAPH,
           data: {
             text: 'Hello',
           },
@@ -269,7 +269,7 @@ function getLatestUpdateContent(lang: string): ClaimSummaryContent[] {
 
 function getDocumentsContent(lang?: string): ClaimSummaryContent[] {
   return [{
-    sectionItems: [
+    contentSections: [
       {
         type: ClaimSummaryType.LINK,
         data: {

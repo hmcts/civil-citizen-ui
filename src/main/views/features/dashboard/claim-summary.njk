@@ -14,7 +14,7 @@
       {% set latestUpdate %}
       {% for latestUpdateSection in latestUpdateContent %}
         {{ claimSummaryContent({
-          section: latestUpdateSection.sectionItems,
+          contentSections: latestUpdateSection.contentSections,
           hasDivider: latestUpdateSection.hasDivider
         }) }}
       {% endfor %}
@@ -25,7 +25,7 @@
 
       {% for documentsSection in documentsContent %}
         {{ claimSummaryContent({
-          section: documentsSection.sectionItems
+          contentSections: documentsSection.contentSections
         }) }}
       {% endfor %}
       {% endset %}
