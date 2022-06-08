@@ -8,7 +8,6 @@
 
 {% set pageTitle = 'PAGES.PAYMENT_OPTION.PAGE_TITLE_FOR_PART_ADMIT' if amount else 
   'PAGES.PAYMENT_OPTION.PAGE_TITLE' %}
-  {% set xxx = amount %}
 
 {% block pageTitle %}
 
@@ -44,7 +43,7 @@
               name: "paymentType",
               fieldset: {
                 legend: {
-                  text: t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT') | replace ("AMOUNT", amount)  if amount else t('PAGES.PAYMENT_OPTION.TITLE'),
+                  text: t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount}) if amount else t('PAGES.PAYMENT_OPTION.TITLE'),
                   isPageHeading: true,
                   classes: "govuk-fieldset__legend--l"
                 }
