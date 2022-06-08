@@ -426,7 +426,7 @@ function createClaimWithStatementOfMeansDetails(): Claim {
     },
   };
 
-  claim.paymentOption = ResponseType.FULL_ADMISSION;
+  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
 
   claim.statementOfMeans = {
     'bankAccounts': [
