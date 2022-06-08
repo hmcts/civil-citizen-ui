@@ -57,7 +57,7 @@ export class CivilServiceClient {
     }
   }
 
-  async getRangeFees(req: AppRequest): Promise<FeeRange[]> {
+  async getFeeRanges(req: AppRequest): Promise<FeeRange[]> {
     const config = this.getConfig(req);
     try{
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_URL, config);

@@ -31,7 +31,7 @@ function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): vo
 sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res) => {
   try {
     const form = await getCaseDataFromStore(req.params.id);
-    const feesRanges: FeeRange[] = await civilServiceClient.getRangeFees(<AppRequest>req);
+    const feesRanges: FeeRange[] = await civilServiceClient.getFeeRanges(<AppRequest>req);
     const formattedFeesRanges = formatFeesRanges(feesRanges);
     renderView(res, form, formattedFeesRanges);
   } catch (error) {
