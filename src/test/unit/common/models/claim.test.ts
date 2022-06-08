@@ -5,6 +5,8 @@ import {CounterpartyType} from '../../../../main/common/models/counterpartyType'
 import {PartialAdmission} from '../../../../main/common/models/partialAdmission';
 import {Respondent} from '../../../../main/common/models/respondent';
 import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {PaymentIntention} from '../../../../main/common/models/paymentIntention';
+import PaymentOptionType from '../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 
 describe('Claim isInterestClaimUntilSubmitDate', () => {
   const claim = new Claim();
@@ -229,7 +231,7 @@ describe('Claim isFullAdmissionPaymentOptionExists', () => {
   });
   it('should return false with empty payment option', () => {
     //Given
-    claim.paymentOption = '';
+    claim.paymentOption = undefined;
     //When
     const result = claim.isFullAdmissionPaymentOptionExists();
     //Then
@@ -237,7 +239,7 @@ describe('Claim isFullAdmissionPaymentOptionExists', () => {
   });
   it('should return true with payment option', () => {
     //Given
-    claim.paymentOption = 'IMMEDIATELY';
+    claim.paymentOption = PaymentOptionType.INSTALMENTS;
     //When
     const result = claim.isFullAdmissionPaymentOptionExists();
     //Then
@@ -261,9 +263,17 @@ describe('Claim isPartialAdmissionPaymentOptionExists', () => {
     //Then
     expect(result).toBeFalsy();
   });
+  it('should return false with empty payment intention', () => {
+    //Given
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    //When
+    const result = claim.isPartialAdmissionPaymentOptionExists();
+    //Then
+    expect(result).toBeFalsy();
+  });
   it('should return false with part admit empty payment option', () => {
     //Given
-    claim.partialAdmission.paymentOption = '';
+    claim.partialAdmission.paymentIntention.paymentOption = undefined;
     //When
     const result = claim.isPartialAdmissionPaymentOptionExists();
     //Then
@@ -271,7 +281,7 @@ describe('Claim isPartialAdmissionPaymentOptionExists', () => {
   });
   it('should return true with payment option', () => {
     //Given
-    claim.partialAdmission.paymentOption = 'IMMEDIATELY';
+    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
     //When
     const result = claim.isPartialAdmissionPaymentOptionExists();
     //Then

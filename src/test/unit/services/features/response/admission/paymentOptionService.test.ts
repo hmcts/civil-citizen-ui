@@ -11,6 +11,7 @@ import PaymentOption
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {ResponseType} from '../../../../../../main/common/form/models/responseType';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
+import {PaymentIntention} from '../../../../../../main/common/models/paymentIntention';
 import {mockClaim} from '../../../../../utils/mockClaim';
 
 jest.mock('.../../../../../../main/modules/draft-store');
@@ -21,8 +22,7 @@ describe('payment option service', () => {
   describe('get payment option form when full admission', () => {
     it('should get populated form when data exists', async () => {
       //Given
-      const claim = createClaim('IMMEDIATELY');
-      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+      const claim = createClaim(PaymentOptionType.IMMEDIATELY);
       mockGetCaseData.mockImplementation(async () => {
         return claim;
       });
@@ -33,8 +33,7 @@ describe('payment option service', () => {
     });
     it('should get new form when payment option is empty', async () => {
       //Given
-      const claim = createClaim('');
-      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+      const claim = createClaim(undefined);
       mockGetCaseData.mockImplementation(async () => {
         return claim;
       });
@@ -48,16 +47,6 @@ describe('payment option service', () => {
       const claim = new Claim();
       mockGetCaseData.mockImplementation(async () => {
         return claim;
-      });
-      //When
-      const form = await getPaymentOptionForm('123', ResponseType.FULL_ADMISSION);
-      //Then
-      expect(form.paymentType).toBeUndefined();
-    });
-    it('should get new form when data does not exist', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return undefined;
       });
       //When
       const form = await getPaymentOptionForm('123', ResponseType.FULL_ADMISSION);
@@ -100,20 +89,18 @@ describe('payment option service', () => {
   describe('get payment option form when part admission', () => {
     it('should get populated form when data exists', async () => {
       //Given
-      const claim = createPartialAdmissionClaim('IMMEDIATELY');
-      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+      const claim = createPartialAdmissionClaim(PaymentOptionType.INSTALMENTS);
       mockGetCaseData.mockImplementation(async () => {
         return claim;
       });
       //When
       const form = await getPaymentOptionForm('123', ResponseType.PART_ADMISSION);
       //Then
-      expect(form.paymentType).toBe(PaymentOptionType.IMMEDIATELY);
+      expect(form.paymentType).toBe(PaymentOptionType.INSTALMENTS);
     });
     it('should get new form when payment option is empty', async () => {
       //Given
-      const claim = createPartialAdmissionClaim('');
-      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+      const claim = createPartialAdmissionClaim(undefined);
       mockGetCaseData.mockImplementation(async () => {
         return claim;
       });
@@ -127,16 +114,6 @@ describe('payment option service', () => {
       const claim = new Claim();
       mockGetCaseData.mockImplementation(async () => {
         return claim;
-      });
-      //When
-      const form = await getPaymentOptionForm('123', ResponseType.PART_ADMISSION);
-      //Then
-      expect(form.paymentType).toBeUndefined();
-    });
-    it('should get new form when data does not exist', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return undefined;
       });
       //When
       const form = await getPaymentOptionForm('123', ResponseType.PART_ADMISSION);
@@ -175,10 +152,12 @@ describe('payment option service', () => {
       //Then
       expect(spy).toBeCalled();
     });
-    it('should save payment option successfully with no claim in draft store', async () => {
+    it('should save payment option successfully with no payment intention in draft store', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
+        const claim = new Claim();
+        claim.partialAdmission = new PartialAdmission();
+        return claim;
       });
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
@@ -199,15 +178,16 @@ describe('payment option service', () => {
   });
 });
 
-function createClaim(paymentOption: string) {
+function createClaim(paymentOption: PaymentOptionType) {
   const claim = new Claim();
   claim.paymentOption = paymentOption;
   return claim;
 }
 
-function createPartialAdmissionClaim(paymentOption: string) {
+function createPartialAdmissionClaim(paymentOption: PaymentOptionType) {
   const claim = new Claim();
   claim.partialAdmission = new PartialAdmission();
-  claim.partialAdmission.paymentOption = paymentOption;
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = paymentOption;
   return claim;
 }
