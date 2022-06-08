@@ -61,9 +61,6 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try{
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_URL, config);
-      if (!response.data) {
-        throw new AssertionError({message: 'Fee range not available'});
-      }
       return plainToInstance(FeeRange, response.data as object[]);
     } catch (err: unknown) {
       logger.error(err);
