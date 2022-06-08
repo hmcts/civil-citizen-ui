@@ -11,6 +11,8 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "COMMON": {
+    "NO": "No",
+    "YES": "Yes",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "BUTTONS": {
       "CONTINUE": "Continue"
@@ -138,11 +140,9 @@
       "GROUP11": "11 to 15",
       "GROUP16": "16 to 19",
       "HOW_MANY": "Enter how many for each age group.",
-      "NO": "No",
       "PAGE_TITLE": "Any dependants?",
       "TITLE": "Do any children live with you?",
-      "UNDER": "Under 11",
-      "YES": "Yes"
+      "UNDER": "Under 11"
     },
     "DEPENDANTS_BETWEEN_16_AND_19": {
       "PAGE_TITLE": "Any dependants between 16 and 19?"
@@ -172,9 +172,7 @@
     "FULL_ADMISSION_PAYMENT_DATE": {
       "PAGE_TITLE": "Payment date"
     },
-    "FULL_ADMISSION_PAYMENT_OPTION": {
-      "BY_SET_DAY": "By a set date",
-      "IMMEDIATELY": "Immediately",
+    "PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option",
       "REQUEST": "The claimant can request a County Court Judgment (CCJ) against you if you don't pay immediately.",
       "REPAYMENT": "I'll suggest a repayment plan",

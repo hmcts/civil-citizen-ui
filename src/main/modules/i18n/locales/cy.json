@@ -11,6 +11,8 @@
   "View": "Weiv",
   "Save and continue": "Arbed a pharhau",
   "COMMON": {
+    "NO": "Na",
+    "YES": "Le",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "BUTTONS": {
       "CONTINUE": "Parhau"
@@ -128,11 +130,9 @@
       "GROUP11": "11 i 15",
       "GROUP16": "16 i 19",
       "HOW_MANY": "Nodwch sawl un ar gyfer pob grŵp oedran.",
-      "NO": "Na",
       "PAGE_TITLE": "Any dependants?",
       "TITLE": "A oes unrhyw blant yn byw gyda chi?",
-      "UNDER": "Dan 11",
-      "YES": "Le"
+      "UNDER": "Dan 11"
     },
     "DEPENDANTS_BETWEEN_16_AND_19": {
       "PAGE_TITLE": "Any dependants between 16 and 19?"
@@ -162,9 +162,7 @@
     "FULL_ADMISSION_PAYMENT_DATE": {
       "PAGE_TITLE": "Payment date"
     },
-    "FULL_ADMISSION_PAYMENT_OPTION": {
-      "BY_SET_DAY": "Erbyn dyddiad penodole",
-      "IMMEDIATELY": "Ar unwaith",
+    "PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option",
       "REQUEST": "Gall yr hawlydd wneud cais am Ddyfarniad Llys Sirol (CCJ) yn eich erbyn os na fyddwch yn talu ar unwaith.",
       "REPAYMENT": "Byddaf yn awgrymu cynllun ad-dalu",
