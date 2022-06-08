@@ -6,8 +6,9 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 
-{% set pageTitle = 'PAGES.PARTIAL_ADMISSION_PAYMENT_OPTION.PAGE_TITLE' if amount else 
-  'PAGES.FULL_ADMISSION_PAYMENT_OPTION.PAGE_TITLE' %}
+{% set pageTitle = 'PAGES.PAYMENT_OPTION.PAGE_TITLE_FOR_PART_ADMIT' if amount else 
+  'PAGES.PAYMENT_OPTION.PAGE_TITLE' %}
+  {% set xxx = amount %}
 
 {% block pageTitle %}
 
@@ -20,12 +21,12 @@
     <main class="govuk-main-wrapper" role="main">
       {% set hintPayImmediatly %}
       <div
-          class='govuk-hint'>{{ t('COMMON.PAYMENT_OPTION.HINT_PAY_IMMEDIATELY') }}</div>
+          class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT') }}</div>
       {% endset -%}
 
       {% set hintPayLater %}
       <div
-          class='govuk-hint'>{{ t('COMMON.PAYMENT_OPTION.HINT_PAY_LATER') }}</div>
+          class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.REQUEST') }}</div>
       {% endset -%}
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
@@ -43,7 +44,7 @@
               name: "paymentType",
               fieldset: {
                 legend: {
-                  text: t('COMMON.PAYMENT_OPTION.WHY_DO_YOU_WANT_TO_PAY_WITH_AMOUNT', { amount : amount }) if amount else t('COMMON.PAYMENT_OPTION.WHY_DO_YOU_WANT_TO_PAY'),
+                  text: t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT') | replace ("AMOUNT", amount)  if amount else t('PAGES.PAYMENT_OPTION.TITLE'),
                   isPageHeading: true,
                   classes: "govuk-fieldset__legend--l"
                 }
@@ -67,7 +68,7 @@
                 },
                 {
                   value: PaymentOptionType.INSTALMENTS,
-                  text: t('COMMON.PAYMENT_OPTION.REPAYMENT_PLAN'),
+                  text: t('PAGES.PAYMENT_OPTION.REPAYMENT'),
                   checked: true if form.model.paymentType == PaymentOptionType.INSTALMENTS,
                   conditional: {
                   html: hintPayLater

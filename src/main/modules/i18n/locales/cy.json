@@ -25,13 +25,8 @@
     },
     "PAYMENT_OPTION": {
       "BY_SET_DATE": "Erbyn dyddiad gosod",
-      "HINT_PAY_IMMEDIATELY": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account.",
-      "HINT_PAY_LATER": "The claimant can request a County Court Judgment (CCJ) against you if you don’t pay immediately.",
       "IMMEDIATELY": "Ar unwaith",
-      "INSTALMENTS": "Mewn rhandaliadau",
-      "REPAYMENT_PLAN": "I'll suggest a repayment plan",
-      "WHY_DO_YOU_WANT_TO_PAY": "When do you want to pay?",
-      "WHY_DO_YOU_WANT_TO_PAY_WITH_AMOUNT": "When do you want to pay £{{ amount}}?"
+      "INSTALMENTS": "Mewn rhandaliadau"
     },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
@@ -145,9 +140,6 @@
     "FULL_ADMISSION_PAYMENT_DATE": {
       "PAGE_TITLE": "Payment date"
     },
-    "FULL_ADMISSION_PAYMENT_OPTION": {
-      "PAGE_TITLE": "Payment option"
-    },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
     },
@@ -176,9 +168,6 @@
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
       "PAGE_TITLE": "How much have you paid?"
     },
-    "PARTIAL_ADMISSION_PAYMENT_OPTION": {
-      "PAGE_TITLE": "Part Admit - Payment option"
-    },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?"
     },
@@ -196,6 +185,15 @@
     },
     "PARTNER_SEVERE_DISABILITY": {
       "PAGE_TITLE": "Partner with severe disability"
+    },
+    "PAYMENT_OPTION": {
+      "PAGE_TITLE": "Payment option",
+      "PAGE_TITLE_FOR_PART_ADMIT": "Part Admit - Payment option",
+      "REQUEST": "Gall yr hawlydd wneud cais am Ddyfarniad Llys Sirol (CCJ) yn eich erbyn os na fyddwch yn talu ar unwaith.",
+      "REPAYMENT": "Byddaf yn awgrymu cynllun ad-dalu",
+      "TITLE": "Pryd ydych chi eisiau talu?",
+      "TITLE_WITH_AMOUNT": "Pryd ydych chi eisiau talu £AMOUNT?",
+      "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â’r hawlydd a thalu’r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
     },
     "PRIORITY_DEBTS": {
       "PAGE_TITLE": "Priority debts"
