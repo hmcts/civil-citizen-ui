@@ -142,4 +142,24 @@ export const mockClaim: Claim = {
   isSameRateTypeEightPercent(): boolean {
     return this?.sameRateInterestSelection?.sameRateInterestType !== SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   },
+  isDefendantDisabled(): boolean {
+    return this.statementOfMeans?.disability?.option === YesNo.YES;
+  },
+  isDefendantSeverlyDisabled(): boolean {
+    return this.statementOfMeans?.severeDisability?.option === YesNo.YES;
+  },
+  isDefendantDisabledAndSeverlyDiabled(): boolean {
+    return this.isDefendantDisabled() && this.isDefendantSeverlyDisabled();
+  },
+  isPartnerDisabled(): boolean {
+    return this.statementOfMeans?.cohabiting?.option === YesNo.YES &&
+      this.statementOfMeans?.partnerDisability?.option === YesNo.YES;
+  },
+  isChildrenDisabled(): boolean {
+    return this.statementOfMeans?.dependants?.declared === true &&
+      this.statementOfMeans?.childrenDisability?.option === YesNo.YES;
+  },
+  skipCarerPage(): boolean {
+    return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverlyDiabled();
+  },
 };
