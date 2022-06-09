@@ -1,6 +1,7 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../modules/draft-store/draftStoreService';
 import {ResponseType} from '../../../../../../common/form/models/responseType';
 import {PartialAdmission} from '../../../../../../common/models/partialAdmission';
+import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentDateService');
@@ -8,19 +9,19 @@ const logger = Logger.getLogger('paymentDateService');
 
 class PaymentDateService {
 
-  public async getPaymentDate(claimId: string, responseType: ResponseType): Promise<Date> {
+  public async getPaymentDate(claimId: string, responseType: ResponseType): Promise<PaymentDate> {
     try {
       const claim = await getCaseDataFromStore(claimId);
       if (responseType === ResponseType.PART_ADMISSION) {
         if (claim?.partialAdmission?.paymentDate) {
-          return claim.partialAdmission.paymentDate;
+          return this.setDate(claim.partialAdmission.paymentDate);
         }
       } else {
         if (claim?.paymentDate) {
-          return claim.paymentDate;
+          return this.setDate(claim.paymentDate);
         }
-        return undefined;
       }
+      return undefined;
     } catch (error) {
       logger.error(error);
       throw error;
@@ -38,15 +39,25 @@ class PaymentDateService {
           case_data.partialAdmission.paymentDate = paymentDate;
         }
       } else {
-        if (case_data?.paymentDate) {
-          case_data.paymentDate = paymentDate;
-        }
+        case_data.paymentDate = paymentDate;
       }
       await saveDraftClaim(claimId, case_data);
     } catch (error) {
       logger.error(error);
       throw error;
     }
+  }
+
+  private setDate(claimPaymentDate: Date): PaymentDate {
+
+    const dateOfPayment = new Date(claimPaymentDate);
+    const paymentDate = new PaymentDate();
+    paymentDate.date = dateOfPayment;
+    paymentDate.year = dateOfPayment.getFullYear();
+    paymentDate.month = dateOfPayment.getMonth() + 1;
+    paymentDate.day = dateOfPayment.getDate();
+    return paymentDate;
+
   }
 
 }

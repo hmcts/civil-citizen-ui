@@ -24,15 +24,7 @@ paymentDateController
   .get(
     CITIZEN_PAYMENT_DATE_URL, async (req: express.Request, res: express.Response) => {
       try {
-        const date = await paymentDateService.getPaymentDate(req.params.id, ResponseType.FULL_ADMISSION);
-        const paymentDate = new PaymentDate();
-        if (date) {
-          const dateOfPayment = new Date(date);
-          paymentDate.date = dateOfPayment;
-          paymentDate.year = dateOfPayment.getFullYear();
-          paymentDate.month = dateOfPayment.getMonth() + 1;
-          paymentDate.day = dateOfPayment.getDate();
-        }
+        const paymentDate = await paymentDateService.getPaymentDate(req.params.id, ResponseType.FULL_ADMISSION);
         res.render(paymentDatePath, {
           form: new GenericForm(paymentDate), nextMonth: nextMonth,
         });

@@ -4,8 +4,8 @@ import config from 'config';
 import request from 'supertest';
 import {CITIZEN_PA_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
 import {
-  setPaymentDateControllerLogger,
-} from '../../../../../../../main/routes/features/response/admission/fullAdmission/paymentOption/paymentDateController';
+  setPaymentDatePAControllerLogger,
+} from '../../../../../../../main/routes/features/response/admission/partialAdmission/paymentDateController';
 import {
   VALID_DATE_NOT_IN_PAST,
   VALID_DAY,
@@ -34,7 +34,7 @@ describe('Payment date', () => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    setPaymentDateControllerLogger(mockLogger);
+    setPaymentDatePAControllerLogger(mockLogger);
   });
 
   describe('on Exception', () => {

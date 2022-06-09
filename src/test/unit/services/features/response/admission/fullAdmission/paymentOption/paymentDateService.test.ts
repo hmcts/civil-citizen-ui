@@ -83,10 +83,18 @@ describe('Payment Date service', () => {
       });
       //When
       const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.FULL_ADMISSION));
+      let mockPaymentDate;
+      if (mockClaim?.paymentDate) {
+        const year = mockClaim.paymentDate.getFullYear();
+        const month = mockClaim.paymentDate.getMonth() + 1;
+        const day = mockClaim.paymentDate.getDate();
+        mockPaymentDate = new PaymentDate(year.toString(), month.toString(), day.toString());
+      }
+
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(paymentDate).not.toBeNull();
-      expect(paymentDate).toEqual(mockClaim?.paymentDate);
+      expect(paymentDate).toEqual(mockPaymentDate);
     });
 
     test('should save paymentDate when nothing in Redis draft store', async () => {
@@ -135,10 +143,18 @@ describe('Payment Date service', () => {
       });
       //When
       const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.PART_ADMISSION));
+      let mockPaymentDate;
+      if (mockClaim?.paymentDate) {
+        const year = mockClaim.paymentDate.getFullYear();
+        const month = mockClaim.paymentDate.getMonth() + 1;
+        const day = mockClaim.paymentDate.getDate();
+        mockPaymentDate = new PaymentDate(year.toString(), month.toString(), day.toString());
+      }
+
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(paymentDate).not.toBeNull();
-      expect(paymentDate).toEqual(mockClaim?.partialAdmission?.paymentDate);
+      expect(paymentDate).toEqual(mockPaymentDate);
     });
 
     test('should save paymentDate when case_data, but no paymentDate, in Redis draft store', async () => {
