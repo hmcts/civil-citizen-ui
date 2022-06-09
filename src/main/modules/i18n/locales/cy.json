@@ -9,7 +9,7 @@
   "Actions": "Snoitca",
   "Respond to the claim": "Dnopser ot eht mialc",
   "View": "Weiv",
-  "Save and continue": "Arbed a pharhau",
+  "Save and continue": "Cadw a Pharhau",
   "COMMON": {
     "NO": "Na",
     "YES": "Le",
@@ -26,7 +26,7 @@
       "MONTH": "Every month"
     },
     "PAYMENT_OPTION": {
-      "BY_SET_DATE": "Erbyn dyddiad gosod",
+      "BY_SET_DATE": "Erbyn dyddiad penodol",
       "IMMEDIATELY": "Ar unwaith",
       "INSTALMENTS": "Mewn rhandaliadau"
     },
