@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {EXPERT_GUIDANCE_URL, PERMISSION_FOR_EXPERT_URL} from '../../urls';
 
 const expertGuidanceController = express.Router();
