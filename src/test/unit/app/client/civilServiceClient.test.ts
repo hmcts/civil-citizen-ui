@@ -4,7 +4,8 @@ import {Claim} from '../../../../main/common/models/claim';
 import * as requestModels from '../../../../main/common/models/AppRequest';
 import {CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
 import config from 'config';
-import {CIVIL_SERVICE_CASES_URL, CIVIL_SERVICE_FEES_RANGES} from '../../../../main/app/client/civilServiceUrls';
+import {CIVIL_SERVICE_CASES_URL,
+  CIVIL_SERVICE_FEES_RANGES} from '../../../../main/app/client/civilServiceUrls';
 import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
 
 
