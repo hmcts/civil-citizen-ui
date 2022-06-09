@@ -115,7 +115,7 @@ describe('Part Admit - Payment Option View', () => {
     it('should display header for part admit', () => {
       const paymentAmount = civilClaimResponseWithAdmittedPaymentAmountMock.case_data.partialAdmission.howMuchDoYouOwe.amount;
       const header = htmlDocument.getElementsByClassName('govuk-fieldset__heading');
-      expect(header[0].innerHTML).toContain(`When do you want to pay £${paymentAmount}?`);
+      expect(header[0].innerHTML).toContain(`When do you want to pay the £${paymentAmount}?`);
     });
   });
 });

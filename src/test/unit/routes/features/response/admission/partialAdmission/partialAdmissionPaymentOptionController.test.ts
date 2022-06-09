@@ -31,7 +31,7 @@ describe('Part Admit - Payment Option Controller', () => {
         .get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(`When do you want to pay £${mockAdmittedPaymentAmount}?`);
+          expect(res.text).toContain(`When do you want to pay the £${mockAdmittedPaymentAmount}?`);
         });
     });
     test('should redirect to claim task list when response type is not part admission', async () => {
