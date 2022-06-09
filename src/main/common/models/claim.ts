@@ -103,6 +103,25 @@ export class Claim {
   isSameRateTypeEightPercent(): boolean {
     return this?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   }
+  isDefendantDisabled(): boolean {
+    return this.statementOfMeans?.disability?.option === YesNo.YES;
+  }
+  isDefendantSeverlyDisabled(): boolean{
+    return this.statementOfMeans?.severeDisability?.option === YesNo.YES;
+  }
+  isDefendantDisabledAndSeverlyDiabled(): boolean {
+    return this.isDefendantDisabled() && this.isDefendantSeverlyDisabled();
+  }
+  isPartnerDisabled(): boolean {
+    return this.statementOfMeans?.partnerDisability?.option === YesNo.YES;
+  }
+  isChildrenDisabled(): boolean {
+    return this.statementOfMeans?.childrenDisability?.option === YesNo.YES;
+  }
+  // skip carer allowance page if any children are disabled, or if partner is diabled, or if defendant is severely disabled
+  skipCarerPage(): boolean {
+    return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverlyDiabled();
+  }
 }
 
 export interface Party {
