@@ -5,7 +5,12 @@ import {PrimaryAddress} from '../../main/common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddress';
 import {NumberOfDays} from '../../main/common/form/models/numberOfDays';
 import {YesNo} from '../../main/common/form/models/yesNo';
-import {InterestClaimFromType, InterestClaimOptions, InterestClaimUntilType, SameRateInterestType} from '../../main/common/form/models/claimDetails';
+import {
+  InterestClaimFromType,
+  InterestClaimOptions,
+  InterestClaimUntilType,
+  SameRateInterestType,
+} from '../../main/common/form/models/claimDetails';
 
 export const buildPrimaryAddress = (): PrimaryAddress => {
   return {
@@ -47,19 +52,20 @@ export const mockClaim: Claim = {
   },
   legacyCaseReference: '497MC585',
   applicant1:
-  {
-    individualTitle: 'Mrs',
-    individualLastName: 'Clark',
-    individualFirstName: 'Jane',
-    type: CounterpartyType.INDIVIDUAL,
-  },
-  statementOfMeans:
-  {
-    childrenDisability: {
-      option: 'yes',
+    {
+      individualTitle: 'Mrs',
+      individualLastName: 'Clark',
+      individualFirstName: 'Jane',
+      type: CounterpartyType.INDIVIDUAL,
     },
-  },
+  statementOfMeans:
+    {
+      childrenDisability: {
+        option: 'yes',
+      },
+    },
   partialAdmission: {
+    paymentDate: new Date('2022-06-01T00:00:00'),
     howMuchHaveYouPaid: {
       amount: 20,
       totalClaimAmount: 110,

@@ -138,7 +138,12 @@
       "PAGE_TITLE": "Free telephone mediation"
     },
     "FULL_ADMISSION_PAYMENT_DATE": {
-      "PAGE_TITLE": "Payment date"
+      "PAGE_TITLE": "Payment date",
+      "TITLE": "What date will you pay on?"
+    },
+    "PARTIAL_ADMISSION_PAYMENT_DATE": {
+      "PAGE_TITLE": "Payment date",
+      "TITLE": "What date will you pay on?"
     },
     "FULL_ADMISSION_PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option"

@@ -4,12 +4,14 @@ import {AlreadyPaid} from '../form/models/admission/partialAdmission/alreadyPaid
 import {HowMuchHaveYouPaid} from '../form/models/admission/partialAdmission/howMuchHaveYouPaid';
 import {DefendantTimeline} from '../form/models/timeLineOfEvents/defendantTimeline';
 
+
 export class PartialAdmission {
   whyDoYouDisagree?: WhyDoYouDisagree;
   howMuchDoYouOwe?: HowMuchDoYouOwe;
   alreadyPaid?: AlreadyPaid;
   howMuchHaveYouPaid?: HowMuchHaveYouPaid;
   timeline?: DefendantTimeline;
+  paymentDate?: Date;
 }
 
 
