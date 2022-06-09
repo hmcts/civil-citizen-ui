@@ -113,10 +113,12 @@ export class Claim {
     return this.isDefendantDisabled() && this.isDefendantSeverlyDisabled();
   }
   isPartnerDisabled(): boolean {
-    return this.statementOfMeans?.partnerDisability?.option === YesNo.YES;
+    return this.statementOfMeans?.cohabiting?.option === YesNo.YES &&
+      this.statementOfMeans?.partnerDisability?.option === YesNo.YES;
   }
   isChildrenDisabled(): boolean {
-    return this.statementOfMeans?.childrenDisability?.option === YesNo.YES;
+    return this.statementOfMeans?.dependants?.declared === true &&
+      this.statementOfMeans?.childrenDisability?.option === YesNo.YES;
   }
   // skip carer allowance page if any children are disabled, or if partner is diabled, or if defendant is severely disabled
   skipCarerPage(): boolean {
