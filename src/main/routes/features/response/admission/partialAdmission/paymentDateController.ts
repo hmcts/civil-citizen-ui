@@ -10,13 +10,13 @@ import {ResponseType} from '../../../../../common/form/models/responseType';
 
 
 const {Logger} = require('@hmcts/nodejs-logging');
-let logger = Logger.getLogger('paymentDateController');
+let logger = Logger.getLogger('paymentDatePAController');
 const paymentDatePath = 'features/response/admission/partialAdmission/payment-date';
 const paymentDateController = express.Router();
 const nextMonth = new Date();
 nextMonth.setMonth(nextMonth.getMonth() + 1);
 
-export function setPaymentDateControllerLogger(winstonLogger: winston.Logger) {
+export function setPaymentDatePAControllerLogger(winstonLogger: winston.Logger) {
   logger = winstonLogger;
 }
 
