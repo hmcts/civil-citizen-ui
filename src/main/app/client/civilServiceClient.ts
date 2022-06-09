@@ -3,7 +3,7 @@ import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
-import {CIVIL_SERVICE_CASES_URL, CIVIL_SERVICE_FEES_URL} from './civilServiceUrls';
+import {CIVIL_SERVICE_CASES_URL, CIVIL_SERVICE_FEES_RANGES} from './civilServiceUrls';
 import {FeeRange} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 
@@ -60,10 +60,11 @@ export class CivilServiceClient {
   async getFeeRanges(req: AppRequest): Promise<FeeRange[]> {
     const config = this.getConfig(req);
     try{
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_URL, config);
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_RANGES, config);
       return plainToInstance(FeeRange, response.data as object[]);
     } catch (err: unknown) {
       logger.error(err);
+      throw err;
     }
   }
 }

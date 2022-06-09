@@ -4,7 +4,7 @@ import {Claim} from '../../../../main/common/models/claim';
 import * as requestModels from '../../../../main/common/models/AppRequest';
 import {CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
 import config from 'config';
-import {CIVIL_SERVICE_CASES_URL, CIVIL_SERVICE_FEES_URL} from '../../../../main/app/client/civilServiceUrls';
+import {CIVIL_SERVICE_CASES_URL, CIVIL_SERVICE_FEES_RANGES} from '../../../../main/app/client/civilServiceUrls';
 import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
 
 
@@ -57,7 +57,6 @@ describe('Civil Service Client', () => {
       //Given
       const data = require('../../../utils/mocks/feeRangesMock.json');
       const mockGet = jest.fn().mockResolvedValue({data: data});
-      console.log(mockGet);
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
@@ -66,7 +65,7 @@ describe('Civil Service Client', () => {
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
       });
-      expect(mockGet.mock.calls[0][0]).toEqual(CIVIL_SERVICE_FEES_URL);
+      expect(mockGet.mock.calls[0][0]).toEqual(CIVIL_SERVICE_FEES_RANGES);
       expect(feeRanges.length).toEqual(1);
       expect(feeRanges[0].minRange).toEqual(data[0].min_range);
       expect(feeRanges[0].maxRange).toEqual(data[0].max_range);
