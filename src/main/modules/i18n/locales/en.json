@@ -221,7 +221,7 @@
       "REQUEST": "The claimant can request a County Court Judgment (CCJ) against you if you don’t pay immediately.",
       "REPAYMENT": "I'll suggest a repayment plan",
       "TITLE": "When do you want to pay?",
-      "TITLE_FOR_PART_ADMIT": "When do you want to pay £{{ amount }}?",
+      "TITLE_FOR_PART_ADMIT": "When do you want to pay the £{{ amount }}?",
       "YOU_MUST_CONTACT": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
     },
     "PRIORITY_DEBTS": {
