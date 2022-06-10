@@ -8,7 +8,6 @@ import paymentDateService
 import * as winston from 'winston';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 
-
 const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('paymentDatePAController');
 const paymentDatePath = 'features/response/admission/payment-date';

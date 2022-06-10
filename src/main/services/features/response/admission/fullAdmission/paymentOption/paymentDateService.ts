@@ -13,14 +13,10 @@ class PaymentDateService {
   public async getPaymentDate(claimId: string, responseType: ResponseType): Promise<PaymentDate> {
     try {
       const claim = await getCaseDataFromStore(claimId);
-      if (responseType === ResponseType.PART_ADMISSION) {
-        if (claim?.partialAdmission?.paymentIntention?.paymentDate) {
-          return this.setDate(claim.partialAdmission.paymentIntention.paymentDate);
-        }
-      } else {
-        if (claim?.paymentDate) {
-          return this.setDate(claim.paymentDate);
-        }
+      if (responseType === ResponseType.PART_ADMISSION && claim?.partialAdmission?.paymentIntention?.paymentDate) {
+        return this.setDate(claim.partialAdmission.paymentIntention.paymentDate);
+      } else if (claim?.paymentDate) {
+        return this.setDate(claim.paymentDate);
       }
       return undefined;
     } catch (error) {

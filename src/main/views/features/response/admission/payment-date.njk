@@ -13,6 +13,7 @@
 {% block pageTitle %}
   {{ setPageTitle('PAGES.ADMISSION_PAYMENT_DATE.PAGE_TITLE') }}
 {% endblock %}
+{% set hint = t('PAGES.ADMISSION_PAYMENT_DATE.FOR_EXAMPLE', {nextDate: nextMonth.getDate(), nextMonth: nextMonth.getMonth() + 1,nextYear: nextMonth.getFullYear()}) %}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -53,7 +54,7 @@
                   }
                 },
                 hint: {
-                  text: t('COMMON.FOR_EXAMPLE') + nextMonth.getDate() + " " + (nextMonth.getMonth() + 1) + " " + nextMonth.getFullYear()
+                  text: hint
                 },
                 errorMessage: {
                   html: errorMessages
