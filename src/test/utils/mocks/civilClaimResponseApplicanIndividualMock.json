@@ -5,8 +5,17 @@
   "created_date": "2022-03-01T13:29:22.447",
   "last_modified": "2022-03-01T13:29:24.971",
   "case_data": {
+    "applicant1": {
+      "type": "INDIVIDUAL",
+      "individualTitle": "Mr.",
+      "individualFirstName": "Jan",
+      "individualLastName": "Clark"
+    },
     "respondent1": {
-      "type": "INDIVIDUAL"
+      "type": "INDIVIDUAL",
+      "individualTitle": "Mr.",
+      "individualFirstName": "Joe",
+      "individualLastName": "Doe"
     }
   }
 }
