@@ -65,7 +65,9 @@ export const mockClaim: Claim = {
       },
     },
   partialAdmission: {
-    paymentDate: new Date('2022-06-01T00:00:00'),
+    paymentIntention: {
+      paymentDate: new Date('2022-06-01T00:00:00'),
+    },
     howMuchHaveYouPaid: {
       amount: 20,
       totalClaimAmount: 110,

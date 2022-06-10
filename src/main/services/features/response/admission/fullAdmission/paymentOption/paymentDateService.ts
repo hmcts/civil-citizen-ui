@@ -2,6 +2,7 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../modules/dr
 import {ResponseType} from '../../../../../../common/form/models/responseType';
 import {PartialAdmission} from '../../../../../../common/models/partialAdmission';
 import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {PaymentIntention} from '../../../../../../common/form/models/admission/partialAdmission/paymentIntention';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentDateService');
@@ -13,8 +14,8 @@ class PaymentDateService {
     try {
       const claim = await getCaseDataFromStore(claimId);
       if (responseType === ResponseType.PART_ADMISSION) {
-        if (claim?.partialAdmission?.paymentDate) {
-          return this.setDate(claim.partialAdmission.paymentDate);
+        if (claim?.partialAdmission?.paymentIntention?.paymentDate) {
+          return this.setDate(claim.partialAdmission.paymentIntention.paymentDate);
         }
       } else {
         if (claim?.paymentDate) {
@@ -32,10 +33,11 @@ class PaymentDateService {
     try {
       const case_data = await getCaseDataFromStore(claimId);
       if (responseType === ResponseType.PART_ADMISSION) {
-        if (!case_data.partialAdmission?.paymentDate) {
+        if (!case_data.partialAdmission?.paymentIntention?.paymentDate) {
           case_data.partialAdmission = new PartialAdmission();
+          case_data.partialAdmission.paymentIntention = new PaymentIntention();
         }
-        case_data.partialAdmission.paymentDate = paymentDate;
+        case_data.partialAdmission.paymentIntention.paymentDate = paymentDate;
       } else {
         if (!case_data.paymentDate) {
           case_data.paymentDate = new Date();
