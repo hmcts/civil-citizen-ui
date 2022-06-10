@@ -315,6 +315,14 @@ describe('Claim isChildrenDisabled', () => {
     //Then
     expect(result).toBeFalsy();
   });
+  it('should return false with undefined option', () => {
+    //Given
+    claim.statementOfMeans.childrenDisability.option = undefined;
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
   it('should return false with "no" option', () => {
     //Given
     claim.statementOfMeans.childrenDisability.option = YesNo.NO;
@@ -326,6 +334,14 @@ describe('Claim isChildrenDisabled', () => {
   it('should return false with empty Dependants', () => {
     //Given
     claim.statementOfMeans.dependants = new Dependants();
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with declared is undefined ', () => {
+    //Given
+    claim.statementOfMeans.dependants.declared = undefined;
     //When
     const result = claim.isChildrenDisabled();
     //Then
