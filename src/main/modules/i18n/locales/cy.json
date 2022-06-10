@@ -11,7 +11,11 @@
   "View": "Weiv",
   "Save and continue": "Arbed a pharhau",
   "COMMON": {
+    "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "FOR_EXAMPLE": "For example, ",
+    "MONTH": "Month",
+    "YEAR": "Year",
     "BUTTONS": {
       "CONTINUE": "Parhau"
     },

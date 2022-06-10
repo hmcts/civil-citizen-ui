@@ -11,7 +11,11 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "COMMON": {
+    "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "FOR_EXAMPLE": "For example, ",
+    "MONTH": "Month",
+    "YEAR": "Year",
     "BUTTONS": {
       "CONTINUE": "Continue"
     },
@@ -166,11 +170,7 @@
     "FREE_TELEPHONE_MEDIATION": {
       "PAGE_TITLE": "Free telephone mediation"
     },
-    "FULL_ADMISSION_PAYMENT_DATE": {
-      "PAGE_TITLE": "Payment date",
-      "TITLE": "What date will you pay on?"
-    },
-    "PARTIAL_ADMISSION_PAYMENT_DATE": {
+    "ADMISSION_PAYMENT_DATE": {
       "PAGE_TITLE": "Payment date",
       "TITLE": "What date will you pay on?"
     },

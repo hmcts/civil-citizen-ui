@@ -11,7 +11,7 @@ import {ResponseType} from '../../../../../common/form/models/responseType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('paymentDatePAController');
-const paymentDatePath = 'features/response/admission/partialAdmission/payment-date';
+const paymentDatePath = 'features/response/admission/payment-date';
 const paymentDateController = express.Router();
 const nextMonth = new Date();
 nextMonth.setMonth(nextMonth.getMonth() + 1);
