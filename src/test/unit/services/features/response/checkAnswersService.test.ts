@@ -3,8 +3,6 @@ import {
   saveStatementOfTruth,
 } from '../../../../../main/services/features/response/checkAnswersService';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {ResponseType} from '../../../../../main/common/form/models/responseType';
 import {
   CITIZEN_DETAILS_URL,
   CITIZEN_PAYMENT_OPTION_URL,
@@ -14,22 +12,31 @@ import {
   CITIZEN_BANK_ACCOUNT_URL,
   CITIZEN_PRIORITY_DEBTS_URL,
   CITIZEN_DEBTS_URL,
+  CITIZEN_MONTHLY_EXPENSES_URL,
+  CITIZEN_MONTHLY_INCOME_URL,
+  CITIZEN_COURT_ORDERS_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../src/test/utils/errorMessageTestConstants';
 import PaymentOptionType
   from '../../../../../main/common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
 import {StatementOfTruthForm} from '../../../../../main/common/form/models/statementOfTruth/statementOfTruthForm';
 import {SignatureType} from '../../../../../main/common/models/signatureType';
-import {
-  TransactionSchedule,
-} from '../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {DebtItems} from '../../../../../main/common/form/models/statementOfMeans/debts/debtItems';
-import {Debts} from '../../../../../main/common/form/models/statementOfMeans/debts/debts';
-import {PriorityDebts} from '../../../../../main/common/form/models/statementOfMeans/priorityDebts';
-import {PriorityDebtDetails} from '../../../../../main/common/form/models/statementOfMeans/priorityDebtDetails';
-
+import {
+  createClaimWithBasicRespondentDetails,
+  createClaimWithRespondentDetailsWithPaymentOption,
+  createClaimWithIndividualDetails,
+  createClaimWithContactPersonDetails,
+  createClaimWithOneBankAccount,
+  createClaimWithBankAccounts,
+  createClaimWithCourtOrders,
+  createClaimWithNoCourtOrders,
+  createClaimWithDebts,
+  createClaimWithPriorityDebts,
+  createClaimWithMultipleDebt,
+  createClaimWithRegularExpenses,
+  createClaimWithRegularIncome,
+} from '../../../../utils/mockCLaimForCheckAnswers';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -38,7 +45,6 @@ jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
-
 
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CONTACT_PERSON = 'The Post Man';
@@ -102,7 +108,7 @@ describe('Check Answers service', () => {
     it('should return your financial details section', async () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
-      expect(summarySections.sections[2].summaryList.rows.length).toBe(1);
+      expect(summarySections.sections[2].summaryList.rows.length).toBe(2);
       expect(summarySections.sections[2].summaryList.rows[0].actions?.items.length).toBe(1);
       expect(summarySections.sections[2].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_BANK_ACCOUNT_URL.replace(':id', CLAIM_ID));
       expect(summarySections.sections[2].title).toBe('PAGES.CHECK_YOUR_ANSWER.YOUR_FINANCIAL_DETAILS_TITLE');
@@ -188,7 +194,7 @@ describe('Check Answers service', () => {
 
     it('should return bank accounts when it exists', async () => {
       //Given
-      const claim = createClaimWithStatementOfMeansDetails();
+      const claim = createClaimWithBankAccounts();
 
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
@@ -226,67 +232,108 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[2].summaryList.rows[12].value.html).toBe(YesNo.NO.charAt(0).toUpperCase() + YesNo.NO.slice(1));
     });
 
+    it('should return court orders when it exists', async () => {
+      //Given
+      const claim = createClaimWithCourtOrders();
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+
+      //Then
+      expect(summarySections.sections[2].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE');
+      expect(summarySections.sections[2].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_COURT_ORDERS_URL.replace(':id', CLAIM_ID));
+      expect(summarySections.sections[2].summaryList.rows[1].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
+
+      expect(summarySections.sections[2].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_CLAIM_NUMBER');
+      expect(summarySections.sections[2].summaryList.rows[2].value.html).toBe('1');
+      expect(summarySections.sections[2].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_AMOUNT_OWNED');
+      expect(summarySections.sections[2].summaryList.rows[3].value.html).toBe('£100');
+      expect(summarySections.sections[2].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_MONTHLY_INSTALMENT');
+      expect(summarySections.sections[2].summaryList.rows[4].value.html).toBe('£1,500');
+
+      expect(summarySections.sections[2].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_CLAIM_NUMBER');
+      expect(summarySections.sections[2].summaryList.rows[5].value.html).toBe('2');
+      expect(summarySections.sections[2].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_AMOUNT_OWNED');
+      expect(summarySections.sections[2].summaryList.rows[6].value.html).toBe('£250');
+      expect(summarySections.sections[2].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_MONTHLY_INSTALMENT');
+      expect(summarySections.sections[2].summaryList.rows[7].value.html).toBe('£2,500');
+
+    });
+
+    it('should display "No" when court orders checkbox is set to no', async () => {
+      //Given
+      const claim = createClaimWithNoCourtOrders();
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+
+      //Then
+      expect(summarySections.sections[2].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE');
+      expect(summarySections.sections[2].summaryList.rows[1].value.html).toBe('No');
+      expect(summarySections.sections[2].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_COURT_ORDERS_URL.replace(':id', CLAIM_ID));
+      expect(summarySections.sections[2].summaryList.rows[1].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
+    });
+
     it('should return priority debts when it exists', async () => {
       //Given
-      const claim = createClaimWithStatementOfMeansDetails();
+      const claim = createClaimWithPriorityDebts();
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
       //Then
-      expect(summarySections.sections[2].summaryList.rows[13].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBTS_YOU_ARE_BEHIND_ON');
-      expect(summarySections.sections[2].summaryList.rows[14].key.text).toBe('1. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
-      expect(summarySections.sections[2].summaryList.rows[14].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_MORTGAGE');
-      expect(summarySections.sections[2].summaryList.rows[14].actions?.items[0].href).toBe(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', CLAIM_ID));
-      expect(summarySections.sections[2].summaryList.rows[14].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
-      expect(summarySections.sections[2].summaryList.rows[15].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
-      expect(summarySections.sections[2].summaryList.rows[15].value.html).toBe('£1,000');
+      expect(summarySections.sections[2].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBTS_YOU_ARE_BEHIND_ON');
+      expect(summarySections.sections[2].summaryList.rows[3].key.text).toBe('1. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
+      expect(summarySections.sections[2].summaryList.rows[3].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_MORTGAGE');
+      expect(summarySections.sections[2].summaryList.rows[3].actions?.items[0].href).toBe(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', CLAIM_ID));
+      expect(summarySections.sections[2].summaryList.rows[3].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
+      expect(summarySections.sections[2].summaryList.rows[4].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
+      expect(summarySections.sections[2].summaryList.rows[4].value.html).toBe('£1,000');
 
-      expect(summarySections.sections[2].summaryList.rows[16].key.text).toBe('2. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
-      expect(summarySections.sections[2].summaryList.rows[16].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_RENT');
-      expect(summarySections.sections[2].summaryList.rows[17].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
-      expect(summarySections.sections[2].summaryList.rows[17].value.html).toBe('£2,000');
+      expect(summarySections.sections[2].summaryList.rows[5].key.text).toBe('2. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
+      expect(summarySections.sections[2].summaryList.rows[5].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_RENT');
+      expect(summarySections.sections[2].summaryList.rows[6].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
+      expect(summarySections.sections[2].summaryList.rows[6].value.html).toBe('£2,000');
 
-      expect(summarySections.sections[2].summaryList.rows[18].key.text).toBe('3. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
-      expect(summarySections.sections[2].summaryList.rows[18].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_COUNCIL_TAX');
-      expect(summarySections.sections[2].summaryList.rows[19].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
-      expect(summarySections.sections[2].summaryList.rows[19].value.html).toBe('£500.55');
+      expect(summarySections.sections[2].summaryList.rows[7].key.text).toBe('3. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
+      expect(summarySections.sections[2].summaryList.rows[7].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_COUNCIL_TAX');
+      expect(summarySections.sections[2].summaryList.rows[8].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
+      expect(summarySections.sections[2].summaryList.rows[8].value.html).toBe('£500.55');
 
-      expect(summarySections.sections[2].summaryList.rows[20].key.text).toBe('4. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
-      expect(summarySections.sections[2].summaryList.rows[20].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_GAS');
-      expect(summarySections.sections[2].summaryList.rows[21].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
-      expect(summarySections.sections[2].summaryList.rows[21].value.html).toBe('£300');
+      expect(summarySections.sections[2].summaryList.rows[9].key.text).toBe('4. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
+      expect(summarySections.sections[2].summaryList.rows[9].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_GAS');
+      expect(summarySections.sections[2].summaryList.rows[10].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
+      expect(summarySections.sections[2].summaryList.rows[10].value.html).toBe('£300');
 
-      expect(summarySections.sections[2].summaryList.rows[22].key.text).toBe('5. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
-      expect(summarySections.sections[2].summaryList.rows[22].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_ELECTRICITY');
-      expect(summarySections.sections[2].summaryList.rows[23].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
-      expect(summarySections.sections[2].summaryList.rows[23].value.html).toBe('£400');
+      expect(summarySections.sections[2].summaryList.rows[11].key.text).toBe('5. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
+      expect(summarySections.sections[2].summaryList.rows[11].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_ELECTRICITY');
+      expect(summarySections.sections[2].summaryList.rows[12].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
+      expect(summarySections.sections[2].summaryList.rows[12].value.html).toBe('£400');
 
-      expect(summarySections.sections[2].summaryList.rows[24].key.text).toBe('6. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
-      expect(summarySections.sections[2].summaryList.rows[24].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_WATER');
-      expect(summarySections.sections[2].summaryList.rows[25].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
-      expect(summarySections.sections[2].summaryList.rows[25].value.html).toBe('£500');
+      expect(summarySections.sections[2].summaryList.rows[13].key.text).toBe('6. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
+      expect(summarySections.sections[2].summaryList.rows[13].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_WATER');
+      expect(summarySections.sections[2].summaryList.rows[14].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
+      expect(summarySections.sections[2].summaryList.rows[14].value.html).toBe('£500');
 
-      expect(summarySections.sections[2].summaryList.rows[26].key.text).toBe('7. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
-      expect(summarySections.sections[2].summaryList.rows[26].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_MAINTENANCE');
-      expect(summarySections.sections[2].summaryList.rows[27].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
-      expect(summarySections.sections[2].summaryList.rows[27].value.html).toBe('£500');
+      expect(summarySections.sections[2].summaryList.rows[15].key.text).toBe('7. ' + PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE);
+      expect(summarySections.sections[2].summaryList.rows[15].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_MAINTENANCE');
+      expect(summarySections.sections[2].summaryList.rows[16].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT);
+      expect(summarySections.sections[2].summaryList.rows[16].value.html).toBe('£500');
     });
 
     it('should return loans or credit card debts when it exists', async () => {
       //Given
-      const claim = createClaimWithStatementOfMeansDetails();
+      const claim = createClaimWithDebts();
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
       //Then
-      expect(summarySections.sections[2].summaryList.rows[28].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_LOANS_OR_CREDIT_CARDS');
-      expect(summarySections.sections[2].summaryList.rows[28].value.html).toBe(YesNo.YES.charAt(0).toUpperCase() + YesNo.YES.slice(1));
-      expect(summarySections.sections[2].summaryList.rows[28].actions?.items[0].href).toBe(CITIZEN_DEBTS_URL.replace(':id', CLAIM_ID));
-      expect(summarySections.sections[2].summaryList.rows[28].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
-      expect(summarySections.sections[2].summaryList.rows[29].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBT');
-      expect(summarySections.sections[2].summaryList.rows[29].value.html).toBe('Loan 1');
-      expect(summarySections.sections[2].summaryList.rows[30].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED');
-      expect(summarySections.sections[2].summaryList.rows[30].value.html).toBe('£1,000');
-      expect(summarySections.sections[2].summaryList.rows[31].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS');
-      expect(summarySections.sections[2].summaryList.rows[31].value.html).toBe('£10');
+      expect(summarySections.sections[2].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_LOANS_OR_CREDIT_CARDS');
+      expect(summarySections.sections[2].summaryList.rows[2].value.html).toBe(YesNo.YES.charAt(0).toUpperCase() + YesNo.YES.slice(1));
+      expect(summarySections.sections[2].summaryList.rows[2].actions?.items[0].href).toBe(CITIZEN_DEBTS_URL.replace(':id', CLAIM_ID));
+      expect(summarySections.sections[2].summaryList.rows[2].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
+
+      expect(summarySections.sections[2].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBT');
+      expect(summarySections.sections[2].summaryList.rows[3].value.html).toBe('Loan 1');
+      expect(summarySections.sections[2].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED');
+      expect(summarySections.sections[2].summaryList.rows[4].value.html).toBe('£1,000');
+      expect(summarySections.sections[2].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS');
+      expect(summarySections.sections[2].summaryList.rows[5].value.html).toBe('£10');
     });
 
     it('should return multiple loans or credit card debts and show it with list number when it exists', async () => {
@@ -297,180 +344,120 @@ describe('Check Answers service', () => {
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
 
       //Then
-      expect(summarySections.sections[2].summaryList.rows[2].key.text).toBe('1. PAGES.CHECK_YOUR_ANSWER.DEBT');
-      expect(summarySections.sections[2].summaryList.rows[2].value.html).toBe('Loan 1');
-      expect(summarySections.sections[2].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED');
-      expect(summarySections.sections[2].summaryList.rows[3].value.html).toBe('£1,000');
-      expect(summarySections.sections[2].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS');
-      expect(summarySections.sections[2].summaryList.rows[4].value.html).toBe('£10');
+      expect(summarySections.sections[2].summaryList.rows[3].key.text).toBe('1. PAGES.CHECK_YOUR_ANSWER.DEBT');
+      expect(summarySections.sections[2].summaryList.rows[3].value.html).toBe('Loan 1');
+      expect(summarySections.sections[2].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED');
+      expect(summarySections.sections[2].summaryList.rows[4].value.html).toBe('£1,000');
+      expect(summarySections.sections[2].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS');
+      expect(summarySections.sections[2].summaryList.rows[5].value.html).toBe('£10');
 
-      expect(summarySections.sections[2].summaryList.rows[5].key.text).toBe('2. PAGES.CHECK_YOUR_ANSWER.DEBT');
-      expect(summarySections.sections[2].summaryList.rows[5].value.html).toBe('Loan 2');
-      expect(summarySections.sections[2].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED');
-      expect(summarySections.sections[2].summaryList.rows[6].value.html).toBe('£2,000');
-      expect(summarySections.sections[2].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS');
-      expect(summarySections.sections[2].summaryList.rows[7].value.html).toBe('£10');
+      expect(summarySections.sections[2].summaryList.rows[6].key.text).toBe('2. PAGES.CHECK_YOUR_ANSWER.DEBT');
+      expect(summarySections.sections[2].summaryList.rows[6].value.html).toBe('Loan 2');
+      expect(summarySections.sections[2].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED');
+      expect(summarySections.sections[2].summaryList.rows[7].value.html).toBe('£2,000');
+      expect(summarySections.sections[2].summaryList.rows[8].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS');
+      expect(summarySections.sections[2].summaryList.rows[8].value.html).toBe('£10');
     });
+
+    it('should return monthly expenses when it exists', async () => {
+      //Given
+      const claim = createClaimWithRegularExpenses();
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+      //Then
+      expect(summarySections.sections[2].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSES_REGULAR');
+      expect(summarySections.sections[2].summaryList.rows[3].actions?.items[0].href).toBe(CITIZEN_MONTHLY_EXPENSES_URL.replace(':id', CLAIM_ID));
+      expect(summarySections.sections[2].summaryList.rows[3].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
+
+      expect(summarySections.sections[2].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSE_RENT');
+      expect(summarySections.sections[2].summaryList.rows[4].value.html).toBe('£300');
+
+      expect(summarySections.sections[2].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSE_COUNCIL_TAX');
+      expect(summarySections.sections[2].summaryList.rows[5].value.html).toBe('£10,000');
+
+      expect(summarySections.sections[2].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSE_GAS');
+      expect(summarySections.sections[2].summaryList.rows[6].value.html).toBe('£100');
+
+      expect(summarySections.sections[2].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSE_ELECTRICITY');
+      expect(summarySections.sections[2].summaryList.rows[7].value.html).toBe('£100');
+
+      expect(summarySections.sections[2].summaryList.rows[8].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSE_WATER');
+      expect(summarySections.sections[2].summaryList.rows[8].value.html).toBe('£400');
+
+      expect(summarySections.sections[2].summaryList.rows[9].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSE_TRAVEL');
+      expect(summarySections.sections[2].summaryList.rows[9].value.html).toBe('£500');
+
+      expect(summarySections.sections[2].summaryList.rows[10].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSE_SCHOOL_COSTS');
+      expect(summarySections.sections[2].summaryList.rows[10].value.html).toBe('£600');
+
+      expect(summarySections.sections[2].summaryList.rows[11].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSE_FOOD_AND_HOUSEKEEPING');
+      expect(summarySections.sections[2].summaryList.rows[11].value.html).toBe('£700');
+
+      expect(summarySections.sections[2].summaryList.rows[12].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSE_TV_BROADBAND');
+      expect(summarySections.sections[2].summaryList.rows[12].value.html).toBe('£500.50');
+
+      expect(summarySections.sections[2].summaryList.rows[13].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSE_HIRE_PURCHASE');
+      expect(summarySections.sections[2].summaryList.rows[13].value.html).toBe('£44.40');
+
+      expect(summarySections.sections[2].summaryList.rows[14].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSE_MOBILE_PHONE');
+      expect(summarySections.sections[2].summaryList.rows[14].value.html).toBe('£25');
+
+      expect(summarySections.sections[2].summaryList.rows[15].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EXPENSE_MAINTENANCE');
+      expect(summarySections.sections[2].summaryList.rows[15].value.html).toBe('£120');
+
+      expect(summarySections.sections[2].summaryList.rows[16].key.text).toBe('Expenses 1');
+      expect(summarySections.sections[2].summaryList.rows[16].value.html).toBe('£1,000');
+
+      expect(summarySections.sections[2].summaryList.rows[17].key.text).toBe('Expenses 2');
+      expect(summarySections.sections[2].summaryList.rows[17].value.html).toBe('£2,000');
+    });
+
+    it('should return monthly incomes when it exists', async () => {
+      //Given
+      const claim = createClaimWithRegularIncome();
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+      //Then
+      expect(summarySections.sections[2].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.INCOME_REGULAR');
+      expect(summarySections.sections[2].summaryList.rows[2].actions?.items[0].href).toBe(CITIZEN_MONTHLY_INCOME_URL.replace(':id', CLAIM_ID));
+      expect(summarySections.sections[2].summaryList.rows[2].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
+
+      expect(summarySections.sections[2].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.INCOME_JOB');
+      expect(summarySections.sections[2].summaryList.rows[3].value.html).toBe('£1,000');
+
+      expect(summarySections.sections[2].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.INCOME_UNIVERSAL_CREDIT');
+      expect(summarySections.sections[2].summaryList.rows[4].value.html).toBe('£200');
+
+      expect(summarySections.sections[2].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.INCOME_SUPPORT');
+      expect(summarySections.sections[2].summaryList.rows[5].value.html).toBe('£475.33');
+
+      expect(summarySections.sections[2].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.INCOME_PENSION');
+      expect(summarySections.sections[2].summaryList.rows[6].value.html).toBe('£247');
+
+      expect(summarySections.sections[2].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.INCOME_COUNCIL_TAX_SUPPORT');
+      expect(summarySections.sections[2].summaryList.rows[7].value.html).toBe('£10');
+
+      expect(summarySections.sections[2].summaryList.rows[8].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.INCOME_CHILD_TAX_CREDIT');
+      expect(summarySections.sections[2].summaryList.rows[8].value.html).toBe('£550.50');
+
+      expect(summarySections.sections[2].summaryList.rows[9].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.INCOME_CHILD_BENEFIT');
+      expect(summarySections.sections[2].summaryList.rows[9].value.html).toBe('£600');
+
+      expect(summarySections.sections[2].summaryList.rows[10].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.INCOME_JOB_SEEKER_ALLOWANCE');
+      expect(summarySections.sections[2].summaryList.rows[10].value.html).toBe('£300');
+
+      expect(summarySections.sections[2].summaryList.rows[11].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION');
+      expect(summarySections.sections[2].summaryList.rows[11].value.html).toBe('£350.50');
+
+      expect(summarySections.sections[2].summaryList.rows[12].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.INCOME_WORKING_TAX_CREDIT');
+      expect(summarySections.sections[2].summaryList.rows[12].value.html).toBe('£400.70');
+
+      expect(summarySections.sections[2].summaryList.rows[13].key.text).toBe('Income 1');
+      expect(summarySections.sections[2].summaryList.rows[13].value.html).toBe('£1,000');
+
+      expect(summarySections.sections[2].summaryList.rows[14].key.text).toBe('Income 2');
+      expect(summarySections.sections[2].summaryList.rows[14].value.html).toBe('£2,000');
+    });
+
   });
 });
-
-function createClaimWithBasicRespondentDetails(contactPerson?: string): Claim {
-  const claim = new Claim();
-  claim.respondent1 = {
-    partyName: PARTY_NAME,
-    telephoneNumber: CONTACT_NUMBER,
-    contactPerson: contactPerson,
-    dateOfBirth: new Date('2000-12-12'),
-    responseType: ResponseType.FULL_ADMISSION,
-    type: CounterpartyType.INDIVIDUAL,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
-    },
-  };
-  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
-  return claim;
-}
-
-function createClaimWithRespondentDetailsWithPaymentOption(paymentOption: PaymentOptionType): Claim {
-  const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = paymentOption;
-  claim.repaymentPlan = {
-    paymentAmount: 33,
-    repaymentFrequency: TransactionSchedule.WEEK,
-    firstRepaymentDate: new Date('2022-06-25'),
-  };
-  claim.paymentDate = new Date('2022-06-25');
-  return claim;
-}
-
-function createClaimWithIndividualDetails(): Claim {
-  const claim = new Claim();
-  claim.respondent1 = {
-    type: CounterpartyType.INDIVIDUAL,
-    individualTitle: TITLE,
-    individualLastName: LAST_NAME,
-    individualFirstName: FIRST_NAME,
-    partyName: PARTY_NAME,
-    telephoneNumber: CONTACT_NUMBER,
-    responseType: ResponseType.FULL_ADMISSION,
-    primaryAddress: {
-      AddressLine1: '23 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
-    },
-    correspondenceAddress: {
-      AddressLine1: '24 Brook lane',
-      PostTown: 'Bristol',
-      PostCode: 'BS13SS',
-    },
-  };
-  return claim;
-}
-
-function createClaimWithContactPersonDetails(): Claim {
-  return createClaimWithBasicRespondentDetails(CONTACT_PERSON);
-}
-
-function createClaimWithOneBankAccount(): Claim {
-  const claim = createClaimWithBasicRespondentDetails();
-  claim.statementOfMeans = {
-    'bankAccounts': [
-      {
-        'typeOfAccount': 'CURRENT_ACCOUNT',
-        'joint': 'true',
-        'balance': '1000',
-      },
-    ],
-  };
-  return claim as Claim;
-}
-
-function createClaimWithMultipleDebt(): Claim {
-  const claim = createClaimWithBasicRespondentDetails();
-
-  const debts: Debts = new Debts();
-  debts.option = 'yes';
-  debts.debtsItems = [
-    new DebtItems('Loan 1', '1000', '10'),
-    new DebtItems('Loan 2', '2000', '10'),
-  ];
-
-  claim.statementOfMeans = {
-    debts: debts,
-  };
-
-  return claim as Claim;
-}
-
-function createClaimWithStatementOfMeansDetails(): Claim {
-  const claim = new Claim();
-  claim.respondent1 = {
-    'individualTitle': 'Mr',
-    'individualLastName': 'Richards',
-    'individualFirstName': 'John',
-    'partyName': 'Nice organisation',
-    'telephoneNumber': '077777777779',
-    'responseType': 'FULL_ADMISSION',
-    'type': CounterpartyType.INDIVIDUAL,
-    'primaryAddress': {
-      'AddressLine1': '23 Brook lane',
-      'PostTown': 'Bristol',
-      'PostCode': 'BS13SS',
-    },
-    'correspondenceAddress': {
-      'AddressLine1': '24 Brook lane',
-      'PostTown': 'Bristol',
-      'PostCode': 'BS13SS',
-    },
-  };
-
-  claim.paymentOption = ResponseType.FULL_ADMISSION;
-
-  claim.statementOfMeans = {
-    'bankAccounts': [
-      {
-        'typeOfAccount': 'CURRENT_ACCOUNT',
-        'joint': 'true',
-        'balance': '1000',
-      },
-      {
-        'typeOfAccount': 'SAVINGS_ACCOUNT',
-        'joint': 'false',
-        'balance': '2000',
-      },
-      {
-        'typeOfAccount': 'ISA',
-        'joint': 'false',
-        'balance': '2000',
-      },
-      {
-        'typeOfAccount': 'OTHER',
-        'joint': 'false',
-        'balance': '2000',
-      },
-    ],
-  };
-
-  const debts: Debts = new Debts();
-  debts.option = 'yes';
-  debts.debtsItems = [
-    new DebtItems('Loan 1', '1000', '10'),
-  ];
-
-  claim.statementOfMeans.debts = debts;
-
-  const mortgage: PriorityDebtDetails = new PriorityDebtDetails(true, 'Mortgage', 1000, 'WEEK');
-  const rent: PriorityDebtDetails = new PriorityDebtDetails(true, 'Rent', 2000, 'FOUR_WEEKS');
-  const councilTax: PriorityDebtDetails = new PriorityDebtDetails(true,'Council Tax or Community Charge',500.55,'FOUR_WEEKS');
-  const gas: PriorityDebtDetails = new PriorityDebtDetails(true, 'Gas', 300, 'WEEK');
-  const electricity: PriorityDebtDetails = new PriorityDebtDetails(true, 'Electricity', 400, 'TWO_WEEKS');
-  const water: PriorityDebtDetails = new PriorityDebtDetails(true, 'Water', 500, 'MONTH');
-  const maintenance: PriorityDebtDetails = new PriorityDebtDetails(true,'Maintenance Payments',500,'TWO_WEEKS');
-  const priorityDebts: PriorityDebts = new PriorityDebts(mortgage,rent,councilTax,gas,electricity,water,maintenance);
-
-  claim.statementOfMeans.priorityDebts = priorityDebts;
-
-  return claim as Claim;
-}
