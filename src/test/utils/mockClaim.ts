@@ -155,5 +155,5 @@ export const mockClaim: Claim = {
     } else {
       return this.respondent1.partyName;
     }
-  }
+  },
 };
