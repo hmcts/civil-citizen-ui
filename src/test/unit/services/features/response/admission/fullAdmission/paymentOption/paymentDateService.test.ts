@@ -14,6 +14,7 @@ import {
 import {GenericForm} from '../../../../../../../../main/common/form/models/genericForm';
 import {mockClaim} from '../../../../../../../utils/mockClaim';
 import {ResponseType} from '../../../../../../../../main/common/form/models/responseType';
+import {Claim} from '../../../../../../../../main/common/models/claim';
 
 
 jest.mock('../../../../../../../../main/modules/draft-store');
@@ -100,7 +101,7 @@ describe('Payment Date service', () => {
     test('should save paymentDate when nothing in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return undefined;
+        return new Claim();
       });
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');

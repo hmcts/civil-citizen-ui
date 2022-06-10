@@ -2,7 +2,6 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../../../../../modules/dr
 import {ResponseType} from '../../../../../../common/form/models/responseType';
 import {PartialAdmission} from '../../../../../../common/models/partialAdmission';
 import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
-import {Claim} from '../../../../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentDateService');
@@ -31,9 +30,9 @@ class PaymentDateService {
 
   public async savePaymentDate(claimId: string, paymentDate: Date, responseType: ResponseType) {
     try {
-      const case_data = await getCaseDataFromStore(claimId) || new Claim();
+      const case_data = await getCaseDataFromStore(claimId);
       if (responseType === ResponseType.PART_ADMISSION) {
-        if (!case_data?.partialAdmission?.paymentDate) {
+        if (!case_data.partialAdmission?.paymentDate) {
           case_data.partialAdmission = new PartialAdmission();
         }
         case_data.partialAdmission.paymentDate = paymentDate;
