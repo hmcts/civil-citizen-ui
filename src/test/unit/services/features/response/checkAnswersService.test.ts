@@ -37,6 +37,7 @@ import {
   createClaimWithRegularExpenses,
   createClaimWithRegularIncome,
 } from '../../../../utils/mockCLaimForCheckAnswers';
+import { Claim } from '../../../../../main/common/models/claim';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -149,6 +150,18 @@ describe('Check Answers service', () => {
       //Then
       await expect(
         saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(SignatureType.BASIC, 'true'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+    it('should retrieve data from draft store', async () => {
+      //Given
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.defendantStatementOfTruth = { type: SignatureType.BASIC, signed: 'true' };
+        return claim;
+      });
+
+      //Then
+      await expect(
+        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(SignatureType.BASIC, 'true'))).toBeTruthy();
     });
     it('should return full name of a person when full name is present', async () => {
       //Given

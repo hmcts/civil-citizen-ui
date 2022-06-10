@@ -352,6 +352,7 @@ export const saveStatementOfTruth = async (claimId: string, defendantStatementOf
   try {
     const claim = await getCaseDataFromStore(claimId);
     claim.defendantStatementOfTruth = defendantStatementOfTruth;
+    console.log(defendantStatementOfTruth)
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
