@@ -185,11 +185,13 @@ const addLoansOrCreditCardDebts = (claim: Claim, financialSection: SummarySectio
   }
 };
 
-const addMonthlyExpensesListRow = (section:SummarySection, sectionHref:string, transaction:Transaction, expense: string, amount:string, lang: string | unknown) => {
+
+const addListRow = (section:SummarySection, sectionHref:string, transaction:Transaction, expense: string, amount:string, lang: string | unknown) => {
   if (transaction?.declared && transaction?.transactionSource?.amount) {
     section.summaryList.rows.push(summaryRow(t(expense, { lng: getLng(lang) }), amount, sectionHref, changeLabel(lang)));
   }
 };
+
 const addMonthlyExpenses = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourMonthlyExpensessHref = CITIZEN_MONTHLY_EXPENSES_URL.replace(':id', claimId);
 
@@ -199,34 +201,28 @@ const addMonthlyExpenses = (claim: Claim, financialSection: SummarySection, clai
     );
   }
 
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.mortgage, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MORTGAGE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mortgage?.transactionSource?.amount), lang);
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.rent, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_RENT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.rent?.transactionSource?.amount), lang);
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.councilTax, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_COUNCIL_TAX', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.councilTax?.transactionSource?.amount), lang);
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.gas, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_GAS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.gas?.transactionSource?.amount), lang);
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.electricity, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_ELECTRICITY', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.electricity?.transactionSource?.amount), lang);
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.water, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_WATER', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.water?.transactionSource?.amount), lang);
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.travel, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TRAVEL', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.travel?.transactionSource?.amount), lang);
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.schoolCosts, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_SCHOOL_COSTS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.schoolCosts?.transactionSource?.amount), lang);
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_FOOD_AND_HOUSEKEEPING', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping?.transactionSource?.amount), lang);
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.tvAndBroadband, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TV_BROADBAND', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.tvAndBroadband?.transactionSource?.amount), lang);
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.hirePurchase, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_HIRE_PURCHASE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.hirePurchase?.transactionSource?.amount), lang);
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.mobilePhone, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MOBILE_PHONE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mobilePhone?.transactionSource?.amount), lang);
-  addMonthlyExpensesListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.maintenance, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MAINTENANCE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.maintenance?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.mortgage, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MORTGAGE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mortgage?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.rent, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_RENT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.rent?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.councilTax, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_COUNCIL_TAX', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.councilTax?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.gas, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_GAS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.gas?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.electricity, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_ELECTRICITY', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.electricity?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.water, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_WATER', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.water?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.travel, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TRAVEL', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.travel?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.schoolCosts, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_SCHOOL_COSTS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.schoolCosts?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_FOOD_AND_HOUSEKEEPING', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.tvAndBroadband, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TV_BROADBAND', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.tvAndBroadband?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.hirePurchase, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_HIRE_PURCHASE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.hirePurchase?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.mobilePhone, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MOBILE_PHONE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mobilePhone?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.maintenance, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MAINTENANCE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.maintenance?.transactionSource?.amount), lang);
 
   if (claim.statementOfMeans?.regularExpenses?.other?.declared) {
     const otherExpenses = claim.statementOfMeans?.regularExpenses.other.transactionSources;
-    for (let i = 0; i < otherExpenses.length; i++) {
-      financialSection.summaryList.rows.push(summaryRow(otherExpenses[i].name, currencyFormatWithNoTrailingZeros(otherExpenses[i].amount), yourMonthlyExpensessHref, changeLabel(lang)));
+    for (let item of otherExpenses) {
+      financialSection.summaryList.rows.push(summaryRow(item.name, currencyFormatWithNoTrailingZeros(item.amount), yourMonthlyExpensessHref, changeLabel(lang)));
     }
   }
 };
 
-
-const addMonthlyIncomeListRow = (section:SummarySection, sectionHref:string, transaction:Transaction, expense: string, amount:string, lang: string | unknown) => {
-  if (transaction?.declared && transaction?.transactionSource?.amount) {
-    section.summaryList.rows.push(summaryRow(t(expense, { lng: getLng(lang) }), amount, sectionHref, changeLabel(lang)));
-  }
-};
 const addMonthlyIncome = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourMonthlyIncomesHref = CITIZEN_MONTHLY_INCOME_URL.replace(':id', claimId);
 
@@ -236,21 +232,21 @@ const addMonthlyIncome = (claim: Claim, financialSection: SummarySection, claimI
     );
   }
 
-  addMonthlyIncomeListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.job, 'PAGES.CHECK_YOUR_ANSWER.INCOME_JOB', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.job?.transactionSource?.amount), lang);
-  addMonthlyIncomeListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.universalCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_UNIVERSAL_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.universalCredit?.transactionSource?.amount), lang);
-  addMonthlyIncomeListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.incomeSupport, 'PAGES.CHECK_YOUR_ANSWER.INCOME_SUPPORT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.incomeSupport?.transactionSource?.amount), lang);
-  addMonthlyIncomeListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.pension, 'PAGES.CHECK_YOUR_ANSWER.INCOME_PENSION', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.pension?.transactionSource?.amount), lang);
-  addMonthlyIncomeListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.councilTaxSupport, 'PAGES.CHECK_YOUR_ANSWER.INCOME_COUNCIL_TAX_SUPPORT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.councilTaxSupport?.transactionSource?.amount), lang);
-  addMonthlyIncomeListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.childTaxCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_CHILD_TAX_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.childTaxCredit?.transactionSource?.amount), lang);
-  addMonthlyIncomeListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.childBenefit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_CHILD_BENEFIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.childBenefit?.transactionSource?.amount), lang);
-  addMonthlyIncomeListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.jobseekerAllowanceIncome, 'PAGES.CHECK_YOUR_ANSWER.INCOME_JOB_SEEKER_ALLOWANCE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.jobseekerAllowanceIncome?.transactionSource?.amount), lang);
-  addMonthlyIncomeListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.jobseekerAllowanceContribution, 'PAGES.CHECK_YOUR_ANSWER.INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.jobseekerAllowanceContribution?.transactionSource?.amount), lang);
-  addMonthlyIncomeListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.workingTaxCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_WORKING_TAX_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.workingTaxCredit?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.job, 'PAGES.CHECK_YOUR_ANSWER.INCOME_JOB', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.job?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.universalCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_UNIVERSAL_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.universalCredit?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.incomeSupport, 'PAGES.CHECK_YOUR_ANSWER.INCOME_SUPPORT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.incomeSupport?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.pension, 'PAGES.CHECK_YOUR_ANSWER.INCOME_PENSION', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.pension?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.councilTaxSupport, 'PAGES.CHECK_YOUR_ANSWER.INCOME_COUNCIL_TAX_SUPPORT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.councilTaxSupport?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.childTaxCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_CHILD_TAX_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.childTaxCredit?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.childBenefit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_CHILD_BENEFIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.childBenefit?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.jobseekerAllowanceIncome, 'PAGES.CHECK_YOUR_ANSWER.INCOME_JOB_SEEKER_ALLOWANCE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.jobseekerAllowanceIncome?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.jobseekerAllowanceContribution, 'PAGES.CHECK_YOUR_ANSWER.INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.jobseekerAllowanceContribution?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.workingTaxCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_WORKING_TAX_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.workingTaxCredit?.transactionSource?.amount), lang);
 
   if (claim.statementOfMeans?.regularIncome?.other?.declared) {
     const otherIncomes = claim.statementOfMeans?.regularIncome.other.transactionSources;
-    for (let i = 0; i < otherIncomes.length; i++) {
-      financialSection.summaryList.rows.push(summaryRow(otherIncomes[i].name, currencyFormatWithNoTrailingZeros(otherIncomes[i].amount), yourMonthlyIncomesHref, changeLabel(lang)));
+    for (let item of otherIncomes) {
+      financialSection.summaryList.rows.push(summaryRow(item.name, currencyFormatWithNoTrailingZeros(item.amount), yourMonthlyIncomesHref, changeLabel(lang)));
     }
   }
 };
@@ -265,10 +261,10 @@ const addCourtOrders = (claim: Claim, financialSection: SummarySection, claimId:
     );
 
     const courtOrders = claim.statementOfMeans?.courtOrders.rows;
-    for (let i = 0; i < courtOrders.length; i++) {
-      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_CLAIM_NUMBER', { lng: getLng(lang) }), courtOrders[i].claimNumber, '', changeLabel(lang)));
-      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_AMOUNT_OWNED', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(courtOrders[i].amount), '', changeLabel(lang)));
-      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_MONTHLY_INSTALMENT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(courtOrders[i].instalmentAmount), '', changeLabel(lang)));
+    for (let item of courtOrders) {
+      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_CLAIM_NUMBER', { lng: getLng(lang) }), item.claimNumber, '', changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_AMOUNT_OWNED', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(item.amount), '', changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_MONTHLY_INSTALMENT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(item.instalmentAmount), '', changeLabel(lang)));
     }
   } else {
     financialSection.summaryList.rows.push(
