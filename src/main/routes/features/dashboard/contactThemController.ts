@@ -4,8 +4,7 @@ import {Claim} from '../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import * as winston from 'winston';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import { getAddress, getSolicitorName } from '../../../modules/contactThem/contactThemService';
-import { getClaimantName } from '../../../common/utils/getNameByType';
+import {getAddress, getSolicitorName} from '../../../../main/services/features/response/contactThem/contactThemService';
 
 const citizenContactThemViewPath = 'features/dashboard/contact-them';
 const contactThemController = express.Router();
@@ -25,7 +24,7 @@ function renderView(res: express.Response, claim: Claim, claimantDetailsUrl: str
     backUrl: financialDetailsUrl,
     address: getAddress(claim),
     solicitorName: getSolicitorName(claim),
-    claimantName: getClaimantName(claim),
+    claimantName: claim.getClaimantName(),
   });
 }
 
