@@ -139,7 +139,7 @@ export const createClaimWithNoCourtOrders = () => {
   };
 
   return claim as Claim;
-}
+};
 
 export const createClaimWithDebts = () => {
   const claim = createClaimWithBasicRespondentDetails();
@@ -199,7 +199,7 @@ export const createClaimWithRegularExpenses = (): Claim => {
 
   const otherExpenses: TransactionSource[] = [
     new TransactionSource({ name: 'Expenses 1', amount: 1000, schedule: TransactionSchedule.TWO_WEEKS, isIncome: false, nameRequired: true }),
-    new TransactionSource({ name: 'Expenses 2', amount: 2000, schedule: TransactionSchedule.MONTH, isIncome: false, nameRequired: true })
+    new TransactionSource({ name: 'Expenses 2', amount: 2000, schedule: TransactionSchedule.MONTH, isIncome: false, nameRequired: true }),
   ];
 
   const expense_regular: RegularExpenses = new RegularExpenses(
