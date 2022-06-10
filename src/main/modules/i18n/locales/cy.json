@@ -13,7 +13,6 @@
   "COMMON": {
     "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
-    "FOR_EXAMPLE": "For example, ",
     "MONTH": "Month",
     "YEAR": "Year",
     "BUTTONS": {
@@ -39,6 +38,7 @@
   },
   "PAGES": {
     "ADMISSION_PAYMENT_DATE": {
+      "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Payment date",
       "TITLE": "What date will you pay on?"
     },
