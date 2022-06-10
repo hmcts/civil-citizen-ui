@@ -48,7 +48,7 @@ otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
         await otherDependantsService.saveOtherDependants(req.params.id, otherDependants);
         const claim: Claim = await getCaseDataFromStore(req.params.id);
         // skip carer allowance page if any children are disabled, or if partner is diabled, or if defendant is severely disabled
-        if (claim.skipCarerPage()) {
+        if (claim.isDefendantSeverelyDisabledOrDependentsDisabled()) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EMPLOYMENT_URL));
          
         } else {

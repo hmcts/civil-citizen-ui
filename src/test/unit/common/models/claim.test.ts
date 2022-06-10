@@ -270,6 +270,16 @@ describe('Claim isPartnerDisabled', () => {
     //Then
     expect(result).toBeFalsy();
   });
+  it('should return false with not disabled partner', () => {
+    //Given
+    claim.statementOfMeans.partnerDisability.option = YesNo.NO;
+    claim.statementOfMeans.cohabiting.option = YesNo.YES;
+    //When
+    //When
+    const result = claim.isPartnerDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
   it('should return true with "yes" option', () => {
     //Given
     claim.statementOfMeans.partnerDisability.option = YesNo.YES;
@@ -324,6 +334,15 @@ describe('Claim isChildrenDisabled', () => {
   it('should return false with no children ', () => {
     //Given
     claim.statementOfMeans.dependants.declared =false;
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with not disabled children ', () => {
+    //Given
+    claim.statementOfMeans.dependants.declared = true;
+    claim.statementOfMeans.childrenDisability.option = YesNo.NO;
     //When
     const result = claim.isChildrenDisabled();
     //Then

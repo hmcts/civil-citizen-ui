@@ -89,19 +89,19 @@ export class Claim {
   }
 
   isInterestClaimUntilSubmitDate(): boolean {
-    return this?.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
+    return this.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
   }
   isInterestFromClaimSubmitDate(): boolean {
-    return this?.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+    return this.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
   }
   isInterestFromASpecificDate(): boolean {
-    return this?.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+    return this.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
   }
   isInterestClaimOptionsSameRateInterest(): boolean {
-    return this?.interestClaimOptions === InterestClaimOptions.SAME_RATE_INTEREST;
+    return this.interestClaimOptions === InterestClaimOptions.SAME_RATE_INTEREST;
   }
   isSameRateTypeEightPercent(): boolean {
-    return this?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
+    return this.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   }
   isDefendantDisabled(): boolean {
     return this.statementOfMeans?.disability?.option === YesNo.YES;
@@ -120,8 +120,7 @@ export class Claim {
     return this.statementOfMeans?.dependants?.declared === true &&
       this.statementOfMeans?.childrenDisability?.option === YesNo.YES;
   }
-  // skip carer allowance page if any children are disabled, or if partner is diabled, or if defendant is severely disabled
-  skipCarerPage(): boolean {
+  isDefendantSeverelyDisabledOrDependentsDisabled(): boolean {
     return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverlyDiabled();
   }
 }

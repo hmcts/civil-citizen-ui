@@ -159,7 +159,7 @@ export const mockClaim: Claim = {
     return this.statementOfMeans?.dependants?.declared === true &&
       this.statementOfMeans?.childrenDisability?.option === YesNo.YES;
   },
-  skipCarerPage(): boolean {
+  isDefendantSeverelyDisabledOrDependentsDisabled(): boolean {
     return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverlyDiabled();
   },
 };
