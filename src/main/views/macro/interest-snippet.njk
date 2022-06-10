@@ -1,0 +1,3 @@
+{% macro interestSnippet(rate, numberOfDays, interestDate, interestToDate) %}
+  {{ t('PAGES.CLAIM_DETAILS.INTEREST_SNIPPET', { rate: rate, numberOfDays: numberOfDays, interestDate: interestDate | date, interestToDate: interestToDate | date }) }}   
+{% endmacro %}

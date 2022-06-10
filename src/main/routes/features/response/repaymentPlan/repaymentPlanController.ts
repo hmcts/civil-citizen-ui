@@ -5,7 +5,7 @@ import { DateFormatter } from '../../../../common/utils/dateFormatter';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
-} from '../../../../modules/repaymentPlan/repaymentPlanService';
+} from '../../../../services/features/response/repaymentPlan/repaymentPlanService';
 import {
   CITIZEN_REPAYMENT_PLAN,
   CLAIM_TASK_LIST_URL,

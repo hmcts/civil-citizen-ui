@@ -6,7 +6,7 @@ import {
 } from '../../../../urls';
 import {OtherDependants} from '../../../../../common/form/models/statementOfMeans/otherDependants';
 import {ValidationError, Validator} from 'class-validator';
-import {OtherDependantsService} from '../../../../../modules/statementOfMeans/otherDependants/otherDependantsService';
+import {OtherDependantsService} from '../../../../../services/features/response/statementOfMeans/otherDependants/otherDependantsService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {Claim} from '../../../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../../../modules/draft-store/draftStoreService';

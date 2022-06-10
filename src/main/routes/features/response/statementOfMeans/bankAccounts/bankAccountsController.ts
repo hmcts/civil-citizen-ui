@@ -5,7 +5,7 @@ import {
 import {BankAccounts} from '../../../../../common/form/models/bankAndSavings/bankAccounts';
 import {BankAccount} from '../../../../../common/form/models/bankAndSavings/bankAccount';
 import { BankAccountTypes } from '../../../../../common/form/models/bankAndSavings/bankAccountTypes';
-import {BankAccountService} from '../../../../../modules/statementOfMeans/bankAccounts/bankAccountService';
+import {BankAccountService} from '../../../../../services/features/response/statementOfMeans/bankAccounts/bankAccountService';
 import {validateForm, validateFormArray} from '../../../../../common/form/validators/formValidator';
 import { constructResponseUrlWithIdParams } from '../../../../../common/utils/urlFormatter';
 

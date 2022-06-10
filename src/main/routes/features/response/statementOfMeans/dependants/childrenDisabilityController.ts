@@ -4,7 +4,7 @@ import {ChildrenDisability} from '../../../../../common/form/models/statementOfM
 import {
   getChildrenDisability,
   saveChildrenDisability,
-} from '../../../../../modules/statementOfMeans/dependants/childrenDisabilityService';
+} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import * as winston from 'winston';
 import {GenericForm} from '../../../../../common/form/models/genericForm';

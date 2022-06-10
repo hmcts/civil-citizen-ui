@@ -2,7 +2,7 @@ import * as express from 'express';
 import {CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
 import {SevereDisability} from '../../../../common/form/models/statementOfMeans/severeDisability';
 import {ValidationError, Validator} from 'class-validator';
-import {SevereDisabilityService} from '../../../../modules/statementOfMeans/severeDisabilityService';
+import {SevereDisabilityService} from '../../../../services/features/response/statementOfMeans/severeDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
 const citizenSevereDisabilityViewPath = 'features/response/statementOfMeans/are-you-severely-disabled';

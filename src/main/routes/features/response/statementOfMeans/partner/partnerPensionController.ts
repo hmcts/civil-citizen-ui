@@ -2,8 +2,8 @@ import * as express from 'express';
 import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_DISABILITY_URL, CITIZEN_PARTNER_PENSION_URL} from '../../../../urls';
 import {PartnerPension} from '../../../../../common/form/models/statementOfMeans/partner/partnerPension';
 import {ValidationError, Validator} from 'class-validator';
-import {PartnerPensionService} from '../../../../../modules/statementOfMeans/partner/partnerPensionService';
-import {DisabilityService} from '../../../../../modules/statementOfMeans/disabilityService';
+import {PartnerPensionService} from '../../../../../services/features/response/statementOfMeans/partner/partnerPensionService';
+import {DisabilityService} from '../../../../../services/features/response/statementOfMeans/disabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const citizenPartnerPensionViewPath = 'features/response/statementOfMeans/partner/partner-pension';

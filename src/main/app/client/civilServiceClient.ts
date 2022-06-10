@@ -2,7 +2,7 @@ import {Claim} from '../../common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
-import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {CIVIL_SERVICE_CASES_URL} from './civilServiceUrls';
 import {FeeRange} from '../../common/models/feeRange';
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -26,12 +26,15 @@ export class CivilServiceClient {
     };
   }
 
-  async retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
+  async retrieveByDefendantId(req: AppRequest): Promise<CivilClaimResponse[]> {
     const config = this.getConfig(req);
-    let claims: Claim[] = [];
+    let claims: CivilClaimResponse[] = [];
     await this.client.post(CIVIL_SERVICE_CASES_URL, {match_all: {}}, config)
       .then(response => {
-        claims = response.data.cases.map((claim: CivilClaimResponse) => Object.assign(new Claim(), claim.case_data));
+        claims = response.data.cases.map((claim: CivilClaimResponse) => {
+          const caseData = Object.assign(new Claim(), claim.case_data);
+          return new CivilClaimResponse(claim.id, caseData);
+        });
       }).catch(error => {
         console.log(error.message);
       });
@@ -44,9 +47,9 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`, config);// nosonar
 
       if (!response.data) {
-        throw new AssertionError({message: 'Claim details not available.'});
+        throw new AssertionError({message: 'Claim details not available!'});
       }
-      return response.data as Claim;
+      return Object.assign(new Claim(), response.data);
     } catch (err: unknown) {
       logger.error(err);
     }
