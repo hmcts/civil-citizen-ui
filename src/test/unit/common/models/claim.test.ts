@@ -8,6 +8,8 @@ import {PartnerDisability} from '../../../../main/common/form/models/statementOf
 import {Cohabiting} from '../../../../main/common/form/models/statementOfMeans/partner/cohabiting';
 import {ChildrenDisability} from '../../../../main/common/form/models/statementOfMeans/dependants/childrenDisability';
 import {Dependants} from '../../../../main/common/form/models/statementOfMeans/dependants/dependants';
+import civilClaimResponseApplicantCompany from '../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
+import civilClaimResponseApplicantIndividual from '../../../utils/mocks/civilClaimResponseApplicanIndividualMock.json';
 import {ResponseType} from '../../../../main/common/form/models/responseType';
 import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
 import {PartialAdmission} from '../../../../main/common/models/partialAdmission';
@@ -382,6 +384,36 @@ describe('Claim isChildrenDisabled', () => {
   });
 });
 
+
+describe('Claim get claimant and defendant names by type', () => {
+  const claimCompany =  Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantCompany)).case_data);
+  const claimIndividual =  Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantIndividual)).case_data);
+  it('should return claimantName for INDIVIDUAL', () => {
+    //When
+    const result = claimIndividual.getClaimantName();
+    //Then
+    expect(result).toBe('Mr. Jan Clark');
+  });
+  it('should return defendantName for INDIVIDUAL', () => {
+    //When
+    const result = claimIndividual.getDefendantName();
+    //Then
+    expect(result).toBe('Mr. Joe Doe');
+  });
+  it('should return claimantName for COMPANY', () => {
+    //When
+    const result = claimCompany.getClaimantName();
+    //Then
+    expect(result).toBe('Version 1');
+  });
+  it('should return defendantName for COMPANY', () => {
+    //When
+    const result = claimCompany.getDefendantName();
+    //Then
+    expect(result).toBe('Google');
+  });
+});
+
 describe('Claim isFullAdmission', () => {
   const claim = new Claim();
   it('should return false with empty claim', () => {
@@ -567,7 +599,3 @@ describe('Claim partialAdmissionPaymentAmount', () => {
     expect(result).toEqual(55);
   });
 });
-
-
-
-
