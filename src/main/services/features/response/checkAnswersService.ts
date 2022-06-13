@@ -72,8 +72,8 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
-      buildResponseSection(claim, claimId, lang),
       buildYourFinancialSection(claim, claimId, lang),
+      buildResponseSection(claim, claimId, lang),
     ],
   };
 };
@@ -234,14 +234,14 @@ const addMonthlyIncome = (claim: Claim, financialSection: SummarySection, claimI
 
   addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.job, 'PAGES.CHECK_YOUR_ANSWER.INCOME_JOB', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.job?.transactionSource?.amount), lang);
   addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.universalCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_UNIVERSAL_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.universalCredit?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.incomeSupport, 'PAGES.CHECK_YOUR_ANSWER.INCOME_SUPPORT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.incomeSupport?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.pension, 'PAGES.CHECK_YOUR_ANSWER.INCOME_PENSION', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.pension?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.councilTaxSupport, 'PAGES.CHECK_YOUR_ANSWER.INCOME_COUNCIL_TAX_SUPPORT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.councilTaxSupport?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.childTaxCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_CHILD_TAX_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.childTaxCredit?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.childBenefit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_CHILD_BENEFIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.childBenefit?.transactionSource?.amount), lang);
   addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.jobseekerAllowanceIncome, 'PAGES.CHECK_YOUR_ANSWER.INCOME_JOB_SEEKER_ALLOWANCE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.jobseekerAllowanceIncome?.transactionSource?.amount), lang);
   addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.jobseekerAllowanceContribution, 'PAGES.CHECK_YOUR_ANSWER.INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.jobseekerAllowanceContribution?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.incomeSupport, 'PAGES.CHECK_YOUR_ANSWER.INCOME_SUPPORT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.incomeSupport?.transactionSource?.amount), lang);
   addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.workingTaxCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_WORKING_TAX_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.workingTaxCredit?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.childTaxCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_CHILD_TAX_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.childTaxCredit?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.childBenefit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_CHILD_BENEFIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.childBenefit?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.councilTaxSupport, 'PAGES.CHECK_YOUR_ANSWER.INCOME_COUNCIL_TAX_SUPPORT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.councilTaxSupport?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.pension, 'PAGES.CHECK_YOUR_ANSWER.INCOME_PENSION', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.pension?.transactionSource?.amount), lang);
 
   if (claim.statementOfMeans?.regularIncome?.other?.declared) {
     const otherIncomes = claim.statementOfMeans?.regularIncome.other.transactionSources;
