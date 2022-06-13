@@ -253,6 +253,7 @@ describe('Check Answers service', () => {
 
       //Then
       expect(summarySections.sections[2].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE');
+      expect(summarySections.sections[2].summaryList.rows[1].value.html).toBe(YesNo.YES.charAt(0).toUpperCase() + YesNo.YES.slice(1));
       expect(summarySections.sections[2].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_COURT_ORDERS_URL.replace(':id', CLAIM_ID));
       expect(summarySections.sections[2].summaryList.rows[1].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
 
@@ -280,7 +281,7 @@ describe('Check Answers service', () => {
 
       //Then
       expect(summarySections.sections[2].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE');
-      expect(summarySections.sections[2].summaryList.rows[1].value.html).toBe('No');
+      expect(summarySections.sections[2].summaryList.rows[1].value.html).toBe(YesNo.NO.charAt(0).toUpperCase() + YesNo.NO.slice(1));
       expect(summarySections.sections[2].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_COURT_ORDERS_URL.replace(':id', CLAIM_ID));
       expect(summarySections.sections[2].summaryList.rows[1].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
     });

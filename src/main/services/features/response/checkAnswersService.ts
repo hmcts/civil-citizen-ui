@@ -257,7 +257,7 @@ const addCourtOrders = (claim: Claim, financialSection: SummarySection, claimId:
 
   if (courtOrders?.declared && courtOrders?.rows?.length > 0) {
     financialSection.summaryList.rows.push(
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE', { lng: getLng(lang) }), '', yourCourtOrdersHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE', { lng: getLng(lang) }), YesNo.YES.charAt(0).toUpperCase() + YesNo.YES.slice(1), yourCourtOrdersHref, changeLabel(lang)),
     );
 
     for (const item of courtOrders.rows) {
@@ -267,7 +267,7 @@ const addCourtOrders = (claim: Claim, financialSection: SummarySection, claimId:
     }
   } else {
     financialSection.summaryList.rows.push(
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE', { lng: getLng(lang) }), 'No', yourCourtOrdersHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE', { lng: getLng(lang) }), YesNo.NO.charAt(0).toUpperCase() + YesNo.NO.slice(1), yourCourtOrdersHref, changeLabel(lang)),
     );
   }
 };
