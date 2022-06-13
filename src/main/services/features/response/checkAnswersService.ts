@@ -217,7 +217,7 @@ const addMonthlyExpenses = (claim: Claim, financialSection: SummarySection, clai
 
   if (claim.statementOfMeans?.regularExpenses?.other?.declared) {
     const otherExpenses = claim.statementOfMeans?.regularExpenses.other.transactionSources;
-    for (let item of otherExpenses) {
+    for (const item of otherExpenses) {
       financialSection.summaryList.rows.push(summaryRow(item.name, currencyFormatWithNoTrailingZeros(item.amount), yourMonthlyExpensessHref, changeLabel(lang)));
     }
   }
@@ -245,7 +245,7 @@ const addMonthlyIncome = (claim: Claim, financialSection: SummarySection, claimI
 
   if (claim.statementOfMeans?.regularIncome?.other?.declared) {
     const otherIncomes = claim.statementOfMeans?.regularIncome.other.transactionSources;
-    for (let item of otherIncomes) {
+    for (const item of otherIncomes) {
       financialSection.summaryList.rows.push(summaryRow(item.name, currencyFormatWithNoTrailingZeros(item.amount), yourMonthlyIncomesHref, changeLabel(lang)));
     }
   }
@@ -261,7 +261,7 @@ const addCourtOrders = (claim: Claim, financialSection: SummarySection, claimId:
     );
 
     const courtOrders = claim.statementOfMeans?.courtOrders.rows;
-    for (let item of courtOrders) {
+    for (const item of courtOrders) {
       financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_CLAIM_NUMBER', { lng: getLng(lang) }), item.claimNumber, '', changeLabel(lang)));
       financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_AMOUNT_OWNED', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(item.amount), '', changeLabel(lang)));
       financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_MONTHLY_INSTALMENT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(item.instalmentAmount), '', changeLabel(lang)));
