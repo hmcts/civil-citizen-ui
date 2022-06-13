@@ -36,7 +36,7 @@ import {
   createClaimWithMultipleDebt,
   createClaimWithRegularExpenses,
   createClaimWithRegularIncome,
-} from '../../../../utils/mockCLaimForCheckAnswers';
+} from '../../../../utils/mockClaimForCheckAnswers';
 import { Claim } from '../../../../../main/common/models/claim';
 
 jest.mock('../../../../../main/modules/draft-store');
