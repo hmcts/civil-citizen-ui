@@ -11,7 +11,7 @@ import PaymentOption
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {ResponseType} from '../../../../../../main/common/form/models/responseType';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
-import {PaymentIntention} from '../../../../../../main/common/models/paymentIntention';
+import {PaymentIntention} from '../../../../../../main/common/form/models/admission/paymentIntention';
 import {mockClaim} from '../../../../../utils/mockClaim';
 
 jest.mock('.../../../../../../main/modules/draft-store');

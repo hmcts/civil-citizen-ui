@@ -10,7 +10,6 @@ import {
   InterestClaimUntilType,
   SameRateInterestType,
 } from '../../main/common/form/models/claimDetails';
-// import {ResponseType} from '../../main/common/form/models/responseType';
 
 export const buildPrimaryAddress = (): PrimaryAddress => {
   return {
