@@ -1,5 +1,13 @@
 import {Claim} from '../../../../main/common/models/claim';
 import {InterestClaimUntilType, InterestClaimFromType, InterestClaimOptions, SameRateInterestType} from '../../../../main/common/form/models/claimDetails';
+import {StatementOfMeans} from '../../../../main/common/models/statementOfMeans';
+import {Disability} from '../../../../main/common/form/models/statementOfMeans/disability';
+import {YesNo} from '../../../../main/common/form/models/yesNo';
+import {SevereDisability} from '../../../../main/common/form/models/statementOfMeans/severeDisability';
+import {PartnerDisability} from '../../../../main/common/form/models/statementOfMeans/partner/partnerDisability';
+import {Cohabiting} from '../../../../main/common/form/models/statementOfMeans/partner/cohabiting';
+import {ChildrenDisability} from '../../../../main/common/form/models/statementOfMeans/dependants/childrenDisability';
+import {Dependants} from '../../../../main/common/form/models/statementOfMeans/dependants/dependants';
 import civilClaimResponseApplicantCompany from '../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
 import civilClaimResponseApplicantIndividual from '../../../utils/mocks/civilClaimResponseApplicanIndividualMock.json';
 
@@ -131,6 +139,244 @@ describe('Claim isSameRateTypeEightPercent', () => {
     expect(result).toBeFalsy();
   });
 });
+
+describe('Claim isDefendantDisabled', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isDefendantDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with empty statementOfMeans', () => {
+    //Given
+    claim.statementOfMeans = new StatementOfMeans();
+    //When
+    const result = claim.isDefendantDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with empty disability', () => {
+    //Given
+    claim.statementOfMeans.disability = new Disability();
+    //When
+    const result = claim.isDefendantDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with "no" option', () => {
+    //Given
+    claim.statementOfMeans.disability.option = YesNo.NO;
+    //When
+    const result = claim.isDefendantDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return true with "yes" option', () => {
+    //Given
+    claim.statementOfMeans.disability.option = YesNo.YES;
+    //When
+    const result = claim.isDefendantDisabled();
+    //Then
+    expect(result).toBeTruthy;
+  });
+});
+
+describe('Claim isDefendantSeverlyDisabled', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isDefendantSeverlyDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with empty statementOfMeans', () => {
+    //Given
+    claim.statementOfMeans = new StatementOfMeans();
+    //When
+    const result = claim.isDefendantSeverlyDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with empty severe disability', () => {
+    //Given
+    claim.statementOfMeans.severeDisability = new SevereDisability();
+    //When
+    const result = claim.isDefendantSeverlyDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with "no" option', () => {
+    //Given
+    claim.statementOfMeans.severeDisability.option = YesNo.NO;
+    //When
+    const result = claim.isDefendantSeverlyDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return true with "yes" option', () => {
+    //Given
+    claim.statementOfMeans.severeDisability.option = YesNo.YES;
+    //When
+    const result = claim.isDefendantSeverlyDisabled();
+    //Then
+    expect(result).toBeTruthy();
+  });
+});
+
+describe('Claim isPartnerDisabled', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isPartnerDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with empty statementOfMeans', () => {
+    //Given
+    claim.statementOfMeans = new StatementOfMeans();
+    //When
+    const result = claim.isPartnerDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with empty partrner disability', () => {
+    //Given
+    claim.statementOfMeans.partnerDisability = new PartnerDisability();
+    //When
+    const result = claim.isPartnerDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with "no" option', () => {
+    //Given
+    claim.statementOfMeans.partnerDisability.option = YesNo.NO;
+    //When
+    const result = claim.isPartnerDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with empty cohabiting ', () => {
+    //Given
+    claim.statementOfMeans.cohabiting = new Cohabiting();
+    //When
+    const result = claim.isPartnerDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with no partner ', () => {
+    //Given
+    claim.statementOfMeans.cohabiting.option = YesNo.NO;
+    //When
+    const result = claim.isPartnerDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with not disabled partner', () => {
+    //Given
+    claim.statementOfMeans.partnerDisability.option = YesNo.NO;
+    claim.statementOfMeans.cohabiting.option = YesNo.YES;
+    //When
+    //When
+    const result = claim.isPartnerDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return true with "yes" option', () => {
+    //Given
+    claim.statementOfMeans.partnerDisability.option = YesNo.YES;
+    claim.statementOfMeans.cohabiting.option = YesNo.YES;
+    //When
+    const result = claim.isPartnerDisabled();
+    //Then
+    expect(result).toBeTruthy();
+  });
+});
+
+describe('Claim isChildrenDisabled', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with empty statementOfMeans', () => {
+    //Given
+    claim.statementOfMeans = new StatementOfMeans();
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with empty partrner disability', () => {
+    //Given
+    claim.statementOfMeans.childrenDisability = new ChildrenDisability();
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with undefined option', () => {
+    //Given
+    claim.statementOfMeans.childrenDisability.option = undefined;
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with "no" option', () => {
+    //Given
+    claim.statementOfMeans.childrenDisability.option = YesNo.NO;
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with empty Dependants', () => {
+    //Given
+    claim.statementOfMeans.dependants = new Dependants();
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with declared is undefined ', () => {
+    //Given
+    claim.statementOfMeans.dependants.declared = undefined;
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with no children ', () => {
+    //Given
+    claim.statementOfMeans.dependants.declared =false;
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return false with not disabled children ', () => {
+    //Given
+    claim.statementOfMeans.dependants.declared = true;
+    claim.statementOfMeans.childrenDisability.option = YesNo.NO;
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeFalsy();
+  });
+  it('should return true with "yes" option', () => {
+    //Given
+    claim.statementOfMeans.childrenDisability.option = YesNo.YES;
+    claim.statementOfMeans.dependants.declared = true;
+    //When
+    const result = claim.isChildrenDisabled();
+    //Then
+    expect(result).toBeTruthy();
+  });
+});
+
 
 describe('Claim get claimant and defendant names by type', () => {
   const claimCompany =  Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantCompany)).case_data);
