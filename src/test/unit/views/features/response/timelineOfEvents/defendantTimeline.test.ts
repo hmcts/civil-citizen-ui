@@ -49,7 +49,6 @@ describe('defendant timeline view', () => {
       expect(tableCells[1].innerHTML).toContain(claim.case_data.timelineOfEvents[0].value.timelineDescription);
     });
     it('should display pdf document link for their timeline of events', async () => {
-      const claimWithPDFLink = require('../../../../../utils/mocks/civilClaimResponsePDFTimelineMock.json');
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
       const res = await request(app)
         .get(CITIZEN_TIMELINE_URL);
@@ -57,7 +56,7 @@ describe('defendant timeline view', () => {
       htmlDocument = dom.window.document;
       const downloadLink = htmlDocument.getElementById('timeline-link') as HTMLAnchorElement;
       expect(downloadLink.innerHTML).toContain('Download and view their Timeline');
-      expect(downloadLink.href).toContain(claimWithPDFLink.case_data.specClaimTemplateDocumentFiles.document_url);
+      expect(downloadLink.href).toContain('/case/:id/timeline/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c');
     });
     it('should ask for defendant timeline of events', () => {
       const yourTimelineHeader = htmlDocument.getElementsByClassName('govuk-heading-s govuk-!-margin-bottom-0');

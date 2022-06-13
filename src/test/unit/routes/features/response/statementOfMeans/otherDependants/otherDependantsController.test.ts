@@ -15,6 +15,9 @@ import {
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../../../test/utils/errorMessageTestConstants';
 import {mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import severlyDisabledDefendantMock from './severlyDisabledDefendantMock.json';
+import disabledPartnerMock from './disabledPartnerMock.json';
+import disabledChildrenMock from './disabledChildrenMock.json';
 
 const civilClaimResponseMock = require('../../../../../../utils/mocks/civilClaimResponseMock.json');
 const withoutOtherDependentJson = require('./withoutOtherDependantsMock.json');
@@ -25,6 +28,10 @@ const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
 const civilClaimResponseWithoutOtherDependent: string = JSON.stringify(withoutOtherDependentJson);
 const civilClaimResponseOption1ToRedirectToCarer: string = JSON.stringify(option1ToRedirectToCarerJson);
 const civilClaimResponseOption2ToRedirectToCarer: string = JSON.stringify(option2ToRedirectToCarerJson);
+const civilClaimResponseSeverlyDisabledDefendant: string = JSON.stringify(severlyDisabledDefendantMock);
+const civilClaimResponseDisabledPartnerMock: string = JSON.stringify(disabledPartnerMock);
+const civilClaimResponseDisabledChildrenMock: string = JSON.stringify(disabledChildrenMock);
+
 const mockRedisException = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponse)),
@@ -40,6 +47,18 @@ const mockWithOption1ToRedirectToCarer = {
 const mockWithOption2ToRedirectToCarer = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseOption2ToRedirectToCarer)),
+};
+const mockWithSeverlyDisabledDefendant = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(civilClaimResponseSeverlyDisabledDefendant)),
+};
+const mockWithDisabledPartner = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(civilClaimResponseDisabledChildrenMock)),
+};
+const mockWithDisabledChildren = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(civilClaimResponseDisabledPartnerMock)),
 };
 
 jest.mock('../../../../../../../main/modules/oidc');
@@ -132,6 +151,38 @@ describe('Other Dependants', () => {
         });
     });
 
+    test('should redirect employment page when defendant is disabled and severly disabled', async () => {
+      app.locals.draftStoreClient = mockWithSeverlyDisabledDefendant;
+      await request(app)
+        .post(CITIZEN_OTHER_DEPENDANTS_URL)
+        .send({option: 'no', numberOfPeople: '', details: ''})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
+        });
+    });
+
+    test('should redirect employment page when partner is selected and disabled', async () => {
+      app.locals.draftStoreClient = mockWithDisabledPartner;
+      await request(app)
+        .post(CITIZEN_OTHER_DEPENDANTS_URL)
+        .send({option: 'no', numberOfPeople: '', details: ''})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
+        });
+    });
+
+    test('should redirect employment page when children is existing and any of them is disabled', async () => {
+      app.locals.draftStoreClient = mockWithDisabledChildren;
+      await request(app)
+        .post(CITIZEN_OTHER_DEPENDANTS_URL)
+        .send({option: 'no', numberOfPeople: '', details: ''})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
+        });
+    });
 
     test('should redirect when disability, cohabiting and childrenDisability are "no"', async () => {
       app.locals.draftStoreClient = mockWithOption1ToRedirectToCarer;
