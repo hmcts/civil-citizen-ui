@@ -55,6 +55,21 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
 
+  getClaimantName(): string {
+    if (this.applicant1.type === CounterpartyType.INDIVIDUAL || this.applicant1.type === CounterpartyType.SOLE_TRADER) {
+      return this.applicant1.individualTitle + ' ' + this.applicant1.individualFirstName + ' ' + this.applicant1.individualLastName;
+    } else if (this.applicant1.type === CounterpartyType.ORGANISATION || this.applicant1.type === CounterpartyType.COMPANY) {
+      return this.applicant1.partyName;
+    }
+  }
+
+  getDefendantName(): string {
+    if (this.respondent1.type === CounterpartyType.INDIVIDUAL || this.respondent1.type === CounterpartyType.SOLE_TRADER) {
+      return this.respondent1.individualTitle + ' ' + this.respondent1.individualFirstName + ' ' + this.respondent1.individualLastName;
+    } else if (this.respondent1.type === CounterpartyType.ORGANISATION || this.respondent1.type === CounterpartyType.COMPANY) {
+      return this.respondent1.partyName;
+    }
+  }
 
   formattedResponseDeadline(): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).format('DD MMMM YYYY') : '';
