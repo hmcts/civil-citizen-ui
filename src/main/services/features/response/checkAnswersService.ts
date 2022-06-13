@@ -260,8 +260,7 @@ const addCourtOrders = (claim: Claim, financialSection: SummarySection, claimId:
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE', { lng: getLng(lang) }), '', yourCourtOrdersHref, changeLabel(lang)),
     );
 
-    const courtOrders = claim.statementOfMeans?.courtOrders.rows;
-    for (const item of courtOrders) {
+    for (const item of courtOrders.rows) {
       financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_CLAIM_NUMBER', { lng: getLng(lang) }), item.claimNumber, '', changeLabel(lang)));
       financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_AMOUNT_OWNED', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(item.amount), '', changeLabel(lang)));
       financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_MONTHLY_INSTALMENT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(item.instalmentAmount), '', changeLabel(lang)));
