@@ -25,8 +25,10 @@ services:
       key:
       tls: false
   dmStore:
-    clientID: 'civil_citizen_ui'
+    clientID: 'xui_webapp'
     url: 'http://localhost:4506'
+  serviceAuthProvider:
+    url: 'http://localhost:4502'
 health:
   timeout: 5000
   deadline: 15000

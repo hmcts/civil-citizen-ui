@@ -2,12 +2,17 @@
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
+import {ServiceAuthProviderClient} from './serviceAuthProviderClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dmStoreClient');
 
-// const dmStoreBaseUrl = config.get<string>('services.dmStore.url');
+// const serviceAuthProviderClientBaseUrl = config.get<string>('services.serviceAuthProvider.url');
+const serviceAuthProviderClientBaseUrl = 'http://localhost:4502';
 // const dmStoreBaseUrl = 'http://localhost:4506';
+const serviceAuthProviderClient: ServiceAuthProviderClient = new ServiceAuthProviderClient(serviceAuthProviderClientBaseUrl);
+
+
 export class DmStoreClient {
   client: AxiosInstance;
 
@@ -19,9 +24,12 @@ export class DmStoreClient {
     });
   }
 
-  getConfig(req: AppRequest) {
+  async getConfig(req: AppRequest) {
     // TODO : update here
-    const serviceauthcode = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4dWlfd2ViYXBwIiwiZXhwIjoxNjU0MDk1MTU3fQ.jzeoPkH_vyWFq4f3YicdyzJ2QZNUAv6YX8saJY14uAuDBjtqoGdO93KFfVG4Ba4V0Tbjajf41ey3ZpIOGeypoQ';
+    const res = await serviceAuthProviderClient.getServiceAuthorisationToken(req);
+    console.log('new servoce--', res);
+    // const serviceauthcode = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4dWlfd2ViYXBwIiwiZXhwIjoxNjU0MDk1MTU3fQ.jzeoPkH_vyWFq4f3YicdyzJ2QZNUAv6YX8saJY14uAuDBjtqoGdO93KFfVG4Ba4V0Tbjajf41ey3ZpIOGeypoQ';
+    const serviceauthcode = res;
     return {
       headers: {
         'Content-Type': 'application/pdf',
@@ -36,7 +44,9 @@ export class DmStoreClient {
   }
 
   async retrieveDocumentByDocumentId(documentId: string, req: AppRequest): Promise<Buffer> {
-    const options = this.getConfig(req);
+    const options = await this.getConfig(req);
+
+    // TODO : move the constant folder
 
     const downloadUrl = `documents/${documentId}/binary`;
     try {
