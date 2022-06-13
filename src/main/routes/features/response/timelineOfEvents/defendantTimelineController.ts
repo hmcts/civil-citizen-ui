@@ -19,24 +19,13 @@ function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLin
   });
 }
 
-const extractDocumentId = (claim: any) => {
-  const documentData = claim?.specClaimTemplateDocumentFiles?.document_url;
-  if (documentData) {
-    const splitted = documentData?.split('/');
-    return splitted[splitted?.length - 1];
-  }
-};
-
-
 defendantTimelineController.get(CITIZEN_TIMELINE_URL,
   async (req, res) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       
       const theirTimeline = claim?.timelineOfEvents;
-      
-      const documentId = extractDocumentId(claim);
-      const pdfUrl = `/case/${req.params.id}/documents/${documentId}/binary`;
+      const pdfUrl = `/case/${req.params.id}/timeline/documents/${claim.extractDocumentId()}`;
       const form = new GenericForm(getPartialAdmitTimeline(claim));
       renderView(form, theirTimeline, pdfUrl, res);
     } catch (error) {
@@ -50,9 +39,7 @@ defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res) => {
     await form.validate();
     if (form.hasErrors()) {
       const claim = await getCaseDataFromStore(req.params.id);
-      // TODO : update the pdfurl
-      const documentId = extractDocumentId(claim);
-      const pdfUrl = `/case/${req.params.id}/documents/${documentId}/binary`;
+      const pdfUrl = `/case/${req.params.id}/timeline/documents/${claim.extractDocumentId()}`;
       renderView(form, claim?.timelineOfEvents, pdfUrl, res);
     } else {
       await savePartialAdmitTimeline(req.params.id, form.model);

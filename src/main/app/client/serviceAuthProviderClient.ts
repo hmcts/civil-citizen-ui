@@ -1,13 +1,7 @@
-// import * as config from 'config';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
-// import {AssertionError} from 'assert';
-import {AppRequest} from '../../common/models/AppRequest';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('serviceAuthProviderClient');
-
-// const dmStoreBaseUrl = config.get<string>('services.dmStore.url');
-// const dmStoreBaseUrl = 'http://localhost:4506';
 
 export class ServiceAuthProviderClient {
   client: AxiosInstance;
@@ -18,35 +12,24 @@ export class ServiceAuthProviderClient {
     });
   }
 
-  getConfig(req: AppRequest) {
-    // TODO : update here
-    // const serviceauthcode = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4dWlfd2ViYXBwIiwiZXhwIjoxNjU0MDk1MTU3fQ.jzeoPkH_vyWFq4f3YicdyzJ2QZNUAv6YX8saJY14uAuDBjtqoGdO93KFfVG4Ba4V0Tbjajf41ey3ZpIOGeypoQ';
+  getConfig() {
     return {
       headers: {
         'Content-Type': 'application/json',
-        // 'Authorization': `Bearer ${req.session?.user?.accessToken}`,
-        // 'serviceauthorization': `Bearer ${serviceauthcode}`,
-        // 'user-id': 'anyone@gmail.com',
-        // 'classification': 'PUBLIC',
-        // 'user-roles': 'caseworker',
-
       },
     };
   }
 
-  async getServiceAuthorisationToken(req: AppRequest): Promise<Buffer> {
-    // const options = this.getConfig(req);
-    const JWTtokenGenerationUrl = '/testing-support/lease';
-    // TODO : should be replaced with civil_citizen_ui
+  async getServiceAuthorisationToken(): Promise<string> {
+    const options = this.getConfig();
+    const serviceAuthTokenGeneratorUrl = '/testing-support/lease';
+    // TODO : should be replaced with civil_citizen_ui when civil citizen ui is given permission to access prf documents created by xui
     const reqBody = {
       microservice: 'xui_webapp',
     };
-
-    
     try {
-      const response: AxiosResponse<object> = await this.client.post(JWTtokenGenerationUrl, reqBody);
-
-      return response.data as Buffer;
+      const response: AxiosResponse<string> = await this.client.post(serviceAuthTokenGeneratorUrl, reqBody, options);
+      return response.data;
     } catch (err: unknown) {
       logger.error(err);
     }

@@ -105,6 +105,18 @@ export class Claim {
   isSameRateTypeEightPercent(): boolean {
     return this?.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   }
+  extractDocumentId():string {
+    const documentData = this.specClaimTemplateDocumentFiles?.document_url;
+    let documentId : string; 
+    if (documentData) {
+      const splittedData = documentData?.split('/');
+      documentId = splittedData[splittedData?.length - 1];
+    }
+    return documentId;
+  }
+  generatePdfFileName(): string{
+    return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
+  }
 }
 
 export interface Party {
