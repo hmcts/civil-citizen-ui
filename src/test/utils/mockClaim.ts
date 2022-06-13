@@ -71,24 +71,23 @@ function buildMockClaim(): Claim {
       year: 2040,
       text: 'text',
     },
-  },
-  _mockClaim.rejectAllOfClaim: {
+  };
+  _mockClaim.rejectAllOfClaim = {
     howMuchHaveYouPaid: {
       amount: 20,
-        totalClaimAmount: 110,
-        day: 1,
-        month: 1,
-        year: 2040,
-        text: 'text',
+      totalClaimAmount: 110,
+      day: 1,
+      month: 1,
+      year: 2040,
+      text: 'text',
     },
     option: 'test',
-  },
   };
   _mockClaim.totalClaimAmount = 110;
   _mockClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
   _mockClaim.detailsOfClaim = 'the reason i have given';
   _mockClaim.respondent1 = buildRespondent1();
-_mockClaim.timelineOfEvents = [
+  _mockClaim.timelineOfEvents = [
     {
       id: 'a08e42f4-6d7a-4f5c-b33d-85e4ef42ad9e',
       value: {
