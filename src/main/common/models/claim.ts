@@ -55,7 +55,6 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
 
-
   getClaimantName(): string {
     if (this.applicant1.type === CounterpartyType.INDIVIDUAL || this.applicant1.type === CounterpartyType.SOLE_TRADER) {
       return this.applicant1.individualTitle + ' ' + this.applicant1.individualFirstName + ' ' + this.applicant1.individualLastName;
