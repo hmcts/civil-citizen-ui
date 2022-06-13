@@ -5,7 +5,6 @@ import {CLAIMANT_SUMMARY_URL} from '../../urls';
 import {ComponentDetailItems} from 'common/form/models/componentDetailItems/componentDetailItems';
 import {t} from 'i18next';
 import {getLng} from '../../../common/utils/languageToggleUtils';
-import {getClaimantName, getDefendantName} from '../../../common/utils/getNameByType';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = express.Router();
@@ -42,8 +41,8 @@ claimSummaryController.get(CLAIMANT_SUMMARY_URL, async (req, res) => {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
     const claim: Claim = await getCaseDataFromStore((req.params.id));
-    const claimantName = getClaimantName(claim);
-    const defendantName = getDefendantName(claim);
+    const claimantName = claim.getClaimantName();
+    const defendantName = claim.getDefendantName();
     const content = getComponentDetailItems(lang);
     res.render(claimSummaryViewPath, { claim, claimId: req.params.id, claimantName, defendantName, content });
   } catch (error) {
