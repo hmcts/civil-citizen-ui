@@ -3,7 +3,6 @@ import {Claim} from '../../main/common/models/claim';
 import {CounterpartyType} from '../../main/common/models/counterpartyType';
 import {PrimaryAddress} from '../../main/common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddress';
-import {NumberOfDays} from '../../main/common/form/models/numberOfDays';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {
   InterestClaimFromType,
