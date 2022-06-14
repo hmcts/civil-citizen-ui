@@ -1380,10 +1380,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@ministryofjustice/frontend@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@ministryofjustice/frontend/-/frontend-1.3.0.tgz#f1982225927024565b5365adc7d8515c8af3f065"
-  integrity sha512-YE8xbuGkX8goM0jkV4tHhnzl3A0DD+eoX01XQDzfchRXQf2yQrCfoSdCJf3Xf5oBaknhtBSq3D0eKVt+vRu6OA==
+"@ministryofjustice/frontend@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@ministryofjustice/frontend/-/frontend-1.4.2.tgz#d105ada3bb7abf5977dcb742213178a7820a3959"
+  integrity sha512-vkJFncllNqVoogLEjsk2k1Fn1EtOV9IJS0XB1htw0x1nhq/fX1Edac3mY04IfQyzIiA9RNwIbV/5qQ83z+Akgg==
   dependencies:
     govuk-frontend "^3.0.0 || ^4.0.0"
     moment "^2.27.0"
@@ -3373,6 +3373,11 @@ circular-json@^0.3.1:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
   integrity sha512-UZK3NBx2Mca+b5LsG7bY183pHWt5Y1xts4P3Pz7ENTwGVnJOUWbRb3ocjvX7hx9tq/yTAdclXm9sZ38gNuem4A==
+
+class-transformer@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/class-transformer/-/class-transformer-0.5.1.tgz#24147d5dffd2a6cea930a3250a677addf96ab336"
+  integrity sha512-SQa1Ws6hUbfC98vKGxZH3KFY0Y1lm5Zm0SY8XX9zbK7FJCyVEac3ATW0RIpwzW+oOfmHE5PMPufDG9hCfoEOMw==
 
 class-utils@^0.3.5:
   version "0.3.6"
@@ -5912,12 +5917,7 @@ got@^9.6.0:
     to-readable-stream "^1.0.0"
     url-parse-lax "^3.0.0"
 
-govuk-frontend@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-4.0.1.tgz#bceff58ecb399272cba32bd2b357fe16198e3249"
-  integrity sha512-X+B88mqYHoxAz0ID87Uxo3oHqdKBRnNHd3Cz8+u8nvQUAsrEzROFLK+t7sAu7e+fKqCCrJyIgx6Cmr6dIGnohQ==
-
-"govuk-frontend@^3.0.0 || ^4.0.0":
+govuk-frontend@4.1.0, "govuk-frontend@^3.0.0 || ^4.0.0":
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-4.1.0.tgz#d3bc3af09baba539adee31f980ac0322b9eeb949"
   integrity sha512-xBUUarxinGWSccmXPmwa7ovg3xabEQ0+Dcv7pdq9X3F69892OFMqP2g8jvlDUrVsDVdasXLk4Jq4w8dPiaEVqQ==
@@ -8246,10 +8246,10 @@ mute-stream@0.0.7:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
 
-nanoid@^3.2.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.0.tgz#5906f776fd886c66c24f3653e0c46fcb1d4ad6b0"
-  integrity sha512-JzxqqT5u/x+/KOFSd7JP15DOo9nOoHpx6DYatqIHUW2+flybkm+mdcraotSQR5WcnZr+qhGVh8Ted0KdfSMxlg==
+nanoid@^3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
+  integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -9034,12 +9034,12 @@ postcss-value-parser@^4.1.0, postcss-value-parser@^4.2.0:
   resolved "https://registry.yarnpkg.com/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz#723c09920836ba6d3e5af019f92bc0971c02e514"
   integrity sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==
 
-postcss@^8.2.13, postcss@^8.4.7:
-  version "8.4.6"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.6.tgz#c5ff3c3c457a23864f32cb45ac9b741498a09ae1"
-  integrity sha512-OovjwIzs9Te46vlEx7+uXB0PLijpwjXGKXjVGGPIGubGpq7uh5Xgf6D6FiJ/SzJMBosHDp6a2hiXOS97iBXcaA==
+postcss@^8.4.7:
+  version "8.4.14"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.14.tgz#ee9274d5622b4858c1007a74d76e42e56fd21caf"
+  integrity sha512-E398TUmfAYFPBSdzgeieK2Y1+1cpdxJx8yXbK/m57nRhKSmk1GB2tO4lbLBtlkfPQTDKfe4Xqv1ASWPpayPEig==
   dependencies:
-    nanoid "^3.2.0"
+    nanoid "^3.3.4"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
@@ -9459,6 +9459,11 @@ redis-parser@^3.0.0:
   integrity sha1-tm2CjNyv5rS4pCin3vTGvKwxyLQ=
   dependencies:
     redis-errors "^1.0.0"
+
+reflect-metadata@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 regenerate-unicode-properties@^10.0.1:
   version "10.0.1"

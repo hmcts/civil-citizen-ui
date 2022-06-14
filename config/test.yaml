@@ -2,3 +2,4 @@ port: 3001
 citizenRoleToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NUb2tlbiI6IjEyMzQ1Njc4OTAiLCJzdWIiOiJqc0B0ZXN0LmNvbSIsImdpdmVuX25hbWUiOiJKb2huIiwiZmFtaWx5X25hbWUiOiJTbWl0aCIsInVpZCI6IjEyMyIsInJvbGVzIjpbImNpdGl6ZW4iXX0.147JLrD9OkxdRjjlL2mEceu4KEUigtwwT2enIh5jm4k'
 idamUrl: 'http://localhost:5000'
 baseUrl: 'http://localhost'
+feesUrl: 'http://localhost:4000/fees'

@@ -10,12 +10,15 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Send your response by email', () => {
+  const data = require('../../../../../utils/mocks/feeRangesMock.json');
+  const feesUrl: string = config.get('feesUrl');
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    nock(feesUrl).get('/ranges/').reply(200, data);
   });
 
   describe('on GET', () => {
@@ -34,7 +37,6 @@ describe('Send your response by email', () => {
           expect(res.text).toContain('Telephone');
         });
     });
-
     test('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
@@ -45,5 +47,4 @@ describe('Send your response by email', () => {
         });
     });
   });
-
 });

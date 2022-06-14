@@ -63,6 +63,9 @@ function buildMockClaim(): Claim {
     },
   };
   _mockClaim.partialAdmission = {
+    paymentIntention: {
+      paymentDate: new Date('2022-06-01T00:00:00'),
+    },
     howMuchHaveYouPaid: {
       amount: 20,
       totalClaimAmount: 110,
