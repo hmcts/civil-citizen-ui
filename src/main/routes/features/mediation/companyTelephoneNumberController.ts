@@ -5,7 +5,7 @@ import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from '../../urls';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {
   getCompanyTelephoneNumberData, saveCompanyTelephoneNumberData,
-} from '../../../modules/mediation/companyTelephoneNumberService';
+} from '../../../services/features/response/mediation/companyTelephoneNumberService';
 import {YesNo} from '../../../common/form/models/yesNo';
 
 const companyTelephoneNumberController = express.Router();

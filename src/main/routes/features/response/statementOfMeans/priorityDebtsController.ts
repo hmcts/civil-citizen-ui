@@ -6,7 +6,7 @@ import {checkBoxFields} from '../../../../common/utils/priorityDebts/priorityDeb
 import {
   getPriorityDebts,
   savePriorityDebts,
-} from '../../../../modules/statementOfMeans/priorityDebtsService';
+} from '../../../../services/features/response/statementOfMeans/priorityDebtsService';
 import {
   convertRequestBodyToForm,
   formatFormErrors,
@@ -39,10 +39,10 @@ priorityDebtsController.post(
   CITIZEN_PRIORITY_DEBTS_URL,
   async (req: express.Request, res: express.Response) => {
     const convertedDebtValues = convertRequestBodyToForm(req);
-    
+
     try {
       await validateForm(convertedDebtValues);
-      
+
       if (convertedDebtValues.hasErrors()) {
         const priorityDebtErrors = formatFormErrors(convertedDebtValues.errors);
         const errorList = listFormErrors(priorityDebtErrors);

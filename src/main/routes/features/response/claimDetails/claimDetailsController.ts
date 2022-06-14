@@ -5,6 +5,8 @@ import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {Claim} from '../../../../common/models/claim';
 import {AppRequest} from 'models/AppRequest';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getInterestDetails} from '../../../../common/utils/interestUtils';
+import {getTotalAmountWithInterestAndFees} from '../../../../modules/claimDetailsService';
 
 const claimDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -12,12 +14,6 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimDetailsController');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-
-function renderPage(res: express.Response, claimDetails: Claim): void {
-  res.render('features/response/claimDetails/claim-details', {
-    claim: claimDetails,
-  });
-}
 
 // -- GET Claim Details
 claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: express.Response) => {
@@ -33,9 +29,15 @@ claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: 
         claim.legacyCaseReference = 'testCaseReference';
         claim.totalClaimAmount = 200;
         claim.detailsOfClaim = 'detailsOfClaimTest';
+        claim.totalInterest = 15;
+        claim.claimFee = {calculatedAmountInPence: '3500'};
       }
     }
-    renderPage(res, claim);
+    const interestData = getInterestDetails(claim);
+    const totalAmount = getTotalAmountWithInterestAndFees(claim);
+    res.render('features/response/claimDetails/claim-details', {
+      claim, totalAmount, interestData,
+    });
   } catch (error) {
     logger.error(error);
     res.status(500).send({error: error.message});
