@@ -23,8 +23,7 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
   async (req, res) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
-      
-      const theirTimeline = claim?.timelineOfEvents;
+      const theirTimeline = claim.timelineOfEvents;
       const pdfUrl = `/case/${req.params.id}/timeline/documents/${claim.extractDocumentId()}`;
       const form = new GenericForm(getPartialAdmitTimeline(claim));
       renderView(form, theirTimeline, pdfUrl, res);
@@ -40,7 +39,7 @@ defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res) => {
     if (form.hasErrors()) {
       const claim = await getCaseDataFromStore(req.params.id);
       const pdfUrl = `/case/${req.params.id}/timeline/documents/${claim.extractDocumentId()}`;
-      renderView(form, claim?.timelineOfEvents, pdfUrl, res);
+      renderView(form, claim.timelineOfEvents, pdfUrl, res);
     } else {
       await savePartialAdmitTimeline(req.params.id, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EVIDENCE_URL));
