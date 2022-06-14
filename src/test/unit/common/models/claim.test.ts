@@ -420,7 +420,7 @@ describe('Claim isFullAdmission', () => {
     //When
     const result = claim.isFullAdmission();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return false without respondent details', () => {
     //Given
@@ -428,7 +428,7 @@ describe('Claim isFullAdmission', () => {
     //When
     const result = claim.isFullAdmission();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return false with partial admission', () => {
     //Given
@@ -436,7 +436,7 @@ describe('Claim isFullAdmission', () => {
     //When
     const result = claim.isFullAdmission();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return false with full rejection', () => {
     //Given
@@ -444,7 +444,7 @@ describe('Claim isFullAdmission', () => {
     //When
     const result = claim.isFullAdmission();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return true with full admission', () => {
     //Given
@@ -452,7 +452,7 @@ describe('Claim isFullAdmission', () => {
     //When
     const result = claim.isFullAdmission();
     //Then
-    expect(result).toBeTruthy();
+    expect(result).toBe(true);
   });
 });
 
@@ -462,7 +462,7 @@ describe('Claim isPartialAdmission', () => {
     //When
     const result = claim.isPartialAdmission();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return false without respondent details', () => {
     //Given
@@ -470,7 +470,7 @@ describe('Claim isPartialAdmission', () => {
     //When
     const result = claim.isPartialAdmission();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return false with full admission', () => {
     //Given
@@ -478,7 +478,7 @@ describe('Claim isPartialAdmission', () => {
     //When
     const result = claim.isPartialAdmission();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return false with full rejection', () => {
     //Given
@@ -486,7 +486,7 @@ describe('Claim isPartialAdmission', () => {
     //When
     const result = claim.isPartialAdmission();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return true with part admission', () => {
     //Given
@@ -494,7 +494,7 @@ describe('Claim isPartialAdmission', () => {
     //When
     const result = claim.isPartialAdmission();
     //Then
-    expect(result).toBeTruthy();
+    expect(result).toBe(true);
   });
 });
 
@@ -504,7 +504,7 @@ describe('Claim isFullAdmissionPaymentOptionExists', () => {
     //When
     const result = claim.isFullAdmissionPaymentOptionExists();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return false with empty payment option', () => {
     //Given
@@ -512,7 +512,7 @@ describe('Claim isFullAdmissionPaymentOptionExists', () => {
     //When
     const result = claim.isFullAdmissionPaymentOptionExists();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return true with payment option', () => {
     //Given
@@ -520,7 +520,7 @@ describe('Claim isFullAdmissionPaymentOptionExists', () => {
     //When
     const result = claim.isFullAdmissionPaymentOptionExists();
     //Then
-    expect(result).toBeTruthy();
+    expect(result).toBe(true);
   });
 });
 
@@ -530,7 +530,7 @@ describe('Claim isPartialAdmissionPaymentOptionExists', () => {
     //When
     const result = claim.isPartialAdmissionPaymentOptionExists();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return false with empty partial admission', () => {
     //Given
@@ -538,7 +538,7 @@ describe('Claim isPartialAdmissionPaymentOptionExists', () => {
     //When
     const result = claim.isPartialAdmissionPaymentOptionExists();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return false with empty payment intention', () => {
     //Given
@@ -546,7 +546,7 @@ describe('Claim isPartialAdmissionPaymentOptionExists', () => {
     //When
     const result = claim.isPartialAdmissionPaymentOptionExists();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return false with part admit empty payment option', () => {
     //Given
@@ -554,7 +554,7 @@ describe('Claim isPartialAdmissionPaymentOptionExists', () => {
     //When
     const result = claim.isPartialAdmissionPaymentOptionExists();
     //Then
-    expect(result).toBeFalsy();
+    expect(result).toBe(false);
   });
   it('should return true with payment option', () => {
     //Given
@@ -562,7 +562,7 @@ describe('Claim isPartialAdmissionPaymentOptionExists', () => {
     //When
     const result = claim.isPartialAdmissionPaymentOptionExists();
     //Then
-    expect(result).toBeTruthy();
+    expect(result).toBe(true);
   });
 });
 
