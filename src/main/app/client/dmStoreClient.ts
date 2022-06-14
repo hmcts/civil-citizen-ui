@@ -11,7 +11,7 @@ const serviceAuthProviderClient: ServiceAuthProviderClient = new ServiceAuthProv
 export class DmStoreClient {
   client: AxiosInstance;
 
-  constructor(baseURL : string) {
+  constructor(baseURL: string) {
     this.client = Axios.create({
       baseURL,
       responseType: 'arraybuffer',
@@ -26,7 +26,7 @@ export class DmStoreClient {
         'Content-Type': 'application/pdf',
         'serviceauthorization': `Bearer ${serviceauthToken}`,
         'classification': 'PUBLIC',
-        'user-roles' : 'caseworker',
+        'user-roles': 'caseworker',
       },
     };
   }
@@ -47,4 +47,5 @@ export class DmStoreClient {
   }
 
 }
+
 
