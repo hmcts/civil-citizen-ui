@@ -1,0 +1,110 @@
+[
+  {
+    "applicant_type": {
+      "creationTime": "2022-06-06T12:23:33.616Z",
+      "lastUpdated": "2022-06-06T12:23:33.616Z",
+      "name": "civil money claims"
+    },
+    "channel_type": {
+      "creationTime": "2022-06-06T12:23:33.616Z",
+      "lastUpdated": "2022-06-06T12:23:33.616Z",
+      "name": "default"
+    },
+    "code": "234",
+    "current_version": {
+      "approved_by": "Mr Goodman",
+      "author": "Mrs Goodwoman",
+      "description": "very good",
+      "direction": "direction",
+      "fee_order_name": "name",
+      "flat_amount": {
+        "amount": 35
+      },
+      "memo_line": "line",
+      "natural_account_code": "37464",
+      "percentage_amount": {
+        "percentage": 10
+      },
+      "si_ref_id": "374",
+      "status": "active",
+      "statutory_instrument": "done",
+      "valid_from": "2022-06-06T12:23:33.616Z",
+      "valid_to": "2022-06-06T12:23:33.616Z",
+      "version": 1,
+      "volume_amount": {
+        "amount": 35
+      }
+    },
+    "event_type": {
+      "creationTime": "2022-06-06T12:23:33.616Z",
+      "lastUpdated": "2022-06-06T12:23:33.616Z",
+      "name": "issued"
+    },
+    "fee_type": "counter claim",
+    "fee_versions": [
+      {
+        "approved_by": "Mr Goodman",
+        "author": "Mrs Goodwoman",
+        "description": "very good",
+        "direction": "direction",
+        "fee_order_name": "name",
+        "flat_amount": {
+          "amount": 35
+        },
+        "memo_line": "line",
+        "natural_account_code": "37464",
+        "percentage_amount": {
+          "percentage": 10
+        },
+        "si_ref_id": "374",
+        "status": "active",
+        "statutory_instrument": "done",
+        "valid_from": "2022-06-06T12:23:33.616Z",
+        "valid_to": "2022-06-06T12:23:33.616Z",
+        "version": 1,
+        "volume_amount": {
+          "amount": 35
+        }
+      }
+    ],
+    "jurisdiction1": {
+      "name": "CIVIL"
+    },
+    "jurisdiction2": {
+      "name": "CIVIL"
+    },
+    "keyword": "CIVIL",
+    "matching_version": {
+      "approved_by": "Mr Goodman",
+      "author": "Mrs Goodwoman",
+      "description": "very good",
+      "direction": "direction",
+      "fee_order_name": "name",
+      "flat_amount": {
+        "amount": 35
+      },
+      "memo_line": "line",
+      "natural_account_code": "37464",
+      "percentage_amount": {
+        "percentage": 10
+      },
+      "si_ref_id": "374",
+      "status": "active",
+      "statutory_instrument": "done",
+      "valid_from": "2022-06-06T12:23:33.616Z",
+      "valid_to": "2022-06-06T12:23:33.616Z",
+      "version": 1,
+      "volume_amount": {
+        "amount": 35
+      }
+    },
+    "max_range": 300,
+    "min_range": 0.1,
+    "range_unit": "pounds",
+    "service_type": {
+      "creationTime": "2022-06-06T12:23:33.616Z",
+      "lastUpdated": "2022-06-06T12:23:33.616Z",
+      "name": "300 range"
+    },
+    "unspecified_claim_amount": true
+  }]
