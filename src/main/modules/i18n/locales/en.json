@@ -13,7 +13,10 @@
   "COMMON": {
     "NO": "No",
     "YES": "Yes",
+    "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "MONTH": "Month",
+    "YEAR": "Year",
     "BUTTONS": {
       "CONTINUE": "Continue"
     },
@@ -47,6 +50,11 @@
     }
   },
   "PAGES": {
+    "ADMISSION_PAYMENT_DATE": {
+      "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
+      "PAGE_TITLE": "Payment date",
+      "TITLE": "What date will you pay on?"
+    },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
     },
@@ -254,9 +262,6 @@
     },
     "FREE_TELEPHONE_MEDIATION": {
       "PAGE_TITLE": "Free telephone mediation"
-    },
-    "FULL_ADMISSION_PAYMENT_DATE": {
-      "PAGE_TITLE": "Payment date"
     },
     "PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option",
