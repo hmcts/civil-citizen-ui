@@ -60,7 +60,7 @@
     "express": "^4.18.1",
     "express-nunjucks": "^2.2.5",
     "express-session": "^1.17.2",
-    "glob": "^8.0.1",
+    "glob": "^8.0.3",
     "govuk-frontend": "4.1.0",
     "helmet": "^5.1.0",
     "i18next": "^21.6.16",
