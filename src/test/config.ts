@@ -10,10 +10,6 @@ export const config = {
   TestHeadlessBrowser: process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true,
   TestSlowMo: 250,
   WaitForTimeout: 10000,
-  Gherkin: {
-    features: './features/**/*.feature',
-    steps: ['../e2e/step_definitions/steps.ts'],
-  },
   helpers: {},
 };
 

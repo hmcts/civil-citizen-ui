@@ -30,3 +30,4 @@ functional-output/
 
 .yarn/
 .yarnrc
+src/test/output/*

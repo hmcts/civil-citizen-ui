@@ -5,9 +5,13 @@ import { config as testConfig } from '../config';
 setHeadlessWhen(testConfig.TestHeadlessBrowser);
 
 export const config: CodeceptJS.Config = {
+
+  tests: [
+    '../functionalTests/tests/*_test.ts',
+  ],
+
   name: 'civil-citizen-ui-functional',
-  gherkin: testConfig.Gherkin,
-  output: '../../../functional-output/functional/reports',
+  output: '.././output',
   helpers: testConfig.helpers,
   plugins: {
     allure: {
