@@ -1,6 +1,6 @@
 import axios, {AxiosInstance} from 'axios';
 import config from 'config';
-import {ServiceAuthProviderClient} from '../../../../main/app/client/serviceAuthProviderClient'
+import {ServiceAuthProviderClient} from '../../../../main/app/client/serviceAuthProviderClient';
 
 
 jest.mock('axios');

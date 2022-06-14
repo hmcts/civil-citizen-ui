@@ -411,12 +411,12 @@ describe('Documents', () => {
   const emptyDocumentDetails = {
     document_url: '',
     document_binary_url: '',
-    document_filename: ''
+    document_filename: '',
   };
   const documentDetails = {
     document_url: 'http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c',
     document_filename: 'timeline-event-summary.pdf',
-    document_binary_url: 'http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary'
+    document_binary_url: 'http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary',
   };
 
   describe('extractDocumentId', () => {
