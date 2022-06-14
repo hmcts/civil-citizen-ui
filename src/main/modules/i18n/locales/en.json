@@ -168,6 +168,32 @@
     "EVIDENCE": {
       "PAGE_TITLE": "List your evidence"
     },
+    "EXPERT_GUIDANCE":{
+      "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
+      "CLAIMANT": "claimant",
+      "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the {{ otherParty }} choose.",
+      "EXPERT_REPORT": "The expert will provide a written report - they won’t usually come to court in person.",
+      "FOR_EXAMPLE": "For example, they might allow a structural engineer to be used in a claim about building works or a mechanic in a claim about car repairs.",
+      "IF_JUDGE_ALLOWS": "If a judge allows you to use an expert, you’ll usually have to share one expert with the {{ otherParty }}.",
+      "IF_PERMISSION": "If you get permission to use an expert",
+      "IF_YOU_WIN": "If you win the case you may be able to recover a maximum of £750 of the cost you paid. A judge will rule on this at the end of the hearing.",
+      "JUDGE_ALLOW_EXPERT": "A judge will only allow you to use an expert if they believe they need the expert’s specialist knowledge.",
+      "JUDGE_DECIDE_COST": "The judge will also decide whether the cost of the expert is reasonable compared to the value of the claim.",
+      "JUDGE_MAY_ASK": "The judge may ask one of you to make a list of 3 independent experts who can provide a written report in return for a fee.",
+      "JUDGES_RESPONSIBLE_COST": "Even though you and the {{ otherParty }} share the cost of hiring the expert, judges are still responsible for keeping costs in proportion to value.",
+      "MUST_AVOID_DISCUSSING": "You must avoid discussing the case in detail with the 3 experts.",
+      "OTHER_PARTY_CHOOSES": "The other party then chooses one expert from the list. After that, you both need to follow these steps",
+      "PAGE_TITLE": "Expert guidance",
+      "PAY_EXPERT": "Pay the expert - you usually both share this cost.",
+      "PAYING_EXPERT": "Paying for the expert",
+      "PROVIDE_EXTRA": "Provide any extra information the expert asks for.",
+      "PROVIDE_QUESTIONS": "Provide questions for the expert to answer in a report.",
+      "RARE": "It’s rare for judges to allow you to use an expert in a small claim.",
+      "SEND_EXPERT_REPORT": "Send the expert’s report to the court (only one of you will have to do this).",
+      "TITLE": "Using an expert in small claims",
+      "USUALLY_SHARE_COST": "Usually you both share this cost.",
+      "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
+    },
     "EXPLANATION": {
       "PAGE_TITLE": "Explanation",
       "TITLE": "Briefly explain why you can’t pay immediately"
