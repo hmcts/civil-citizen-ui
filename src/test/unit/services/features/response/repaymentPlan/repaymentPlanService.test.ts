@@ -16,7 +16,7 @@ const REPAYMENT_FREQUENCY = 'WEEK';
 const YEAR = '2023';
 const MONTH = '02';
 const DAY = '02';
-const FIRST_PAYMENT_DATE = new Date('2023-02-14T00:00:00.000Z');
+const FIRST_PAYMENT_DATE = new Date('2023-02-14T00:00:00.000');
 
 describe('Replayment Plan Service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;

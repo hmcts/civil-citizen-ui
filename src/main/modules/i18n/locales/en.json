@@ -110,6 +110,18 @@
       "WHAT_HAPPENED": "What happened",
       "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     },
+    "CLAIM_SUMMARY": {
+      "ABOUT_CLAIM": "About claim",
+      "CLAIM_AMOUNT": "Claim amount:",
+      "CLAIM_DETAILS": "Claim details:",
+      "CLAIM_DOCUMENTS": "Claim documents",
+      "CLAIMANT_NAME": "Claimant name:",
+      "CLAIM_NUMBER": "Claim number:",
+      "DOCUMENTS": "Documents",
+      "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
+      "LATEST_UPDATE": "Latest update",
+      "VIEW_CLAIM": "View claim"
+    },
     "COMPANY_DETAILS": {
       "PAGE_TITLE": "Company details"
     },
@@ -278,16 +290,6 @@
       "TITLE": "Why do you disagree with the claim?",
       "REASON": "Their reasons for making the claim",
       "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
-    },
-    "CLAIM_SUMMARY": {
-      "ABOUT_CLAIM": "About claim",
-      "CLAIM_NUMBER": "Claim number:",
-      "CLAIM_AMOUNT": "Claim amount:",
-      "CLAIM_DETAILS": "Claim details:",
-      "CLAIMANT_NAME": "Claimant name:",
-      "DOCUMENTS": "Documents",
-      "LATEST_UPDATE": "Latest update",
-      "VIEW_CLAIM": "View claim"
     }
   },
   "ERRORS": {
