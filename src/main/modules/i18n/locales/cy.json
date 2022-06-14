@@ -9,9 +9,14 @@
   "Actions": "Snoitca",
   "Respond to the claim": "Dnopser ot eht mialc",
   "View": "Weiv",
-  "Save and continue": "Arbed a pharhau",
+  "Save and continue": "Cadw a Pharhau",
   "COMMON": {
+    "DAY": "Day",
+    "NO": "Na",
+    "YES": "Le",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "MONTH": "Month",
+    "YEAR": "Year",
     "BUTTONS": {
       "CONTINUE": "Parhau"
     },
@@ -24,16 +29,32 @@
       "MONTH": "Every month"
     },
     "PAYMENT_OPTION": {
-      "BY_SET_DATE": "Erbyn dyddiad gosod",
+      "BY_SET_DATE": "Erbyn dyddiad penodol",
       "IMMEDIATELY": "Ar unwaith",
       "INSTALMENTS": "Mewn rhandaliadau"
     },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
+    },
+    "CONTACT_US_FOR_HELP": {
+      "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
+      "EMAIL": "E-bost",
+      "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
+      "RESPONSE_DELAY": "We'll get back to you within 10 days",
+      "TITLE": "Cysylltwch â ni i gael cymorth",
+      "TELEPHONE": "Rhif ffôn",
+      "WEB_CHAT": "Sgwrsio ar y We",
+      "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
+      "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
     }
   },
   "PAGES": {
+    "ADMISSION_PAYMENT_DATE": {
+      "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
+      "PAGE_TITLE": "Payment date",
+      "TITLE": "What date will you pay on?"
+    },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled"
     },
@@ -50,14 +71,43 @@
       "CONTACT_PERSON": "Cyswllt",
       "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
+      "COURT_ORDERS_TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?",
+      "COURT_ORDERS_CLAIM_NUMBER": "Rhif hawlio",
+      "COURT_ORDERS_AMOUNT_OWNED": "Swm sy'n ddyledus gennych",
+      "COURT_ORDERS_MONTHLY_INSTALMENT": "Swm rhandaliad misol",
       "DEBTS_LOANS_OR_CREDIT_CARDS": "Oes gennych chi fenthyciadau neu ddyledion cardiau credyd?",
       "DEBT": "Dyled",
       "DEBTS_TOTAL_OWED": "Cyfanswm sy'n ddyledus",
       "DEBTS_MONTHLY_PAYMENTS": "Taliadau Misol",
       "DETAILS_TITLE": "Eich manylion",
       "DOB": "Dyddiad Geni",
+      "EXPENSES_REGULAR": "Treuliau rheolaidd",
+      "EXPENSE_MORTGAGE": "Morgais",
+      "EXPENSE_RENT": "Rhent",
+      "EXPENSE_COUNCIL_TAX": "Treth cyngor",
+      "EXPENSE_GAS": "Nwy",
+      "EXPENSE_ELECTRICITY": "Trydan",
+      "EXPENSE_WATER": "Dwfr",
+      "EXPENSE_TRAVEL": "Teithio (gwaith neu ysgol)",
+      "EXPENSE_SCHOOL_COSTS": "Costau ysgol (gan gynnwys dillad)",
+      "EXPENSE_FOOD_AND_HOUSEKEEPING": "Bwyd a chadw tŷ",
+      "EXPENSE_TV_BROADBAND": "Teledu a band eang",
+      "EXPENSE_HIRE_PURCHASE": "Hurbrynu",
+      "EXPENSE_MOBILE_PHONE": "Ffôn Symudol",
+      "EXPENSE_MAINTENANCE": "Taliadau cynhaliaeth",
       "FIRST_PAYMENT": "Gwnewch y taliad cyntaf ymlaen",
       "FULL_NAME": "Enw llawn",
+      "INCOME_REGULAR": "Incwm rheolaidd",
+      "INCOME_JOB": "Incwm o'ch swydd",
+      "INCOME_UNIVERSAL_CREDIT": "Credyd Cynhwysol",
+      "INCOME_SUPPORT": "Cymhorthdal Incwm",
+      "INCOME_PENSION": "Pensiwn",
+      "INCOME_COUNCIL_TAX_SUPPORT": "Cymorth Treth y Cyngor",
+      "INCOME_CHILD_TAX_CREDIT": "Credyd Treth Plant",
+      "INCOME_CHILD_BENEFIT": "Budd-dal Plant",
+      "INCOME_JOB_SEEKER_ALLOWANCE": "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
+      "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
+      "INCOME_WORKING_TAX_CREDIT": "Credyd Treth Gwaith",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
       "PAYMENT_FREQUENCY": "Amlder taliadau",
       "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Dyledion yr ydych ar ei hôl hi",
@@ -88,7 +138,11 @@
       "PAGE_TITLE": "Your date of birth"
     },
     "CITIZEN_PHONE": {
-      "PAGE_TITLE": "Your phone number"
+      "EXAMPLE": "Defnyddiwch rifau yn unig, er enghraifft, 01632960001.",
+      "INFORMATION": "Byddwn yn rhoi eich rhif ffôn i'r unigolyn, y busnes neu'r sefydliad sydd wedi cyflwyno hawliad yn eich erbyn, neu eu cynrychiolydd cyfreithiol os oes ganddynt gynrychiolydd.",
+      "MORE_INFORMATION": "Ni fyddwn yn eich ffonio ond os bydd arnom angen rhagor o wybodaeth am yr hawliad hwn.",
+      "PAGE_TITLE": "Your phone number",
+      "TITLE": "Rhowch rif ffôn (dewisol)"
     },
     "CITIZEN_RESPONSE_TYPE": {
       "PAGE_TITLE": "Your claim response"
@@ -110,6 +164,18 @@
       "WHAT_HAPPENED": "What happened",
       "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     },
+    "CLAIM_SUMMARY": {
+      "ABOUT_CLAIM": "About claim",
+      "CLAIM_AMOUNT": "Claim amount:",
+      "CLAIM_DETAILS": "Claim details:",
+      "CLAIM_DOCUMENTS": "Claim documents",
+      "CLAIMANT_NAME": "Claimant name:",
+      "CLAIM_NUMBER": "Claim number:",
+      "DOCUMENTS": "Documents",
+      "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
+      "LATEST_UPDATE": "Latest update",
+      "VIEW_CLAIM": "View claim"
+    },
     "COMPANY_DETAILS": {
       "PAGE_TITLE": "Company details"
     },
@@ -126,10 +192,25 @@
       "PAGE_TITLE": "Any debts?"
     },
     "DEFENDANT_TIMELINE": {
-      "PAGE_TITLE": "Add your timeline of events"
+      "PAGE_TITLE": "Add your timeline of events",
+      "THEIR_TIMELINE": "Their timeline",
+      "DATE": "Date",
+      "WHAT_HAPPENED": "What happened",
+      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view their Timeline",
+      "ADD_YOUR_TIMELINE": "Add your timeline of events (optional)",
+      "INCLUDE_DATES_IF_YOU_KNOW": "Include dates if you know them.",
+      "FOR_EXAMPLE": "For example, {{ sixMonthAgo }}",
+      "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "For example, you might have signed a contract",
+      "ADD_ANOTHER_EVENT": "Add another event",
+      "ADD_ANY_COMMENTS": "Add any comments about their timeline (optional)"
     },
     "DEPENDANTS": {
-      "PAGE_TITLE": "Any dependants?"
+      "GROUP11": "11 i 15",
+      "GROUP16": "16 i 19",
+      "HOW_MANY": "Nodwch sawl un ar gyfer pob grŵp oedran.",
+      "PAGE_TITLE": "Any dependants?",
+      "TITLE": "A oes unrhyw blant yn byw gyda chi?",
+      "UNDER": "Dan 11"
     },
     "DEPENDANTS_BETWEEN_16_AND_19": {
       "PAGE_TITLE": "Any dependants between 16 and 19?"
@@ -146,6 +227,32 @@
     "EVIDENCE": {
       "PAGE_TITLE": "List your evidence"
     },
+    "EXPERT_GUIDANCE": {
+      "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
+      "CLAIMANT": "claimant",
+      "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the {{ otherParty }} choose.",
+      "EXPERT_REPORT": "The expert will provide a written report - they won’t usually come to court in person.",
+      "FOR_EXAMPLE": "For example, they might allow a structural engineer to be used in a claim about building works or a mechanic in a claim about car repairs.",
+      "IF_JUDGE_ALLOWS": "If a judge allows you to use an expert, you’ll usually have to share one expert with the {{ otherParty }}.",
+      "IF_PERMISSION": "If you get permission to use an expert",
+      "IF_YOU_WIN": "If you win the case you may be able to recover a maximum of £750 of the cost you paid. A judge will rule on this at the end of the hearing.",
+      "JUDGE_ALLOW_EXPERT": "A judge will only allow you to use an expert if they believe they need the expert’s specialist knowledge.",
+      "JUDGE_DECIDE_COST": "The judge will also decide whether the cost of the expert is reasonable compared to the value of the claim.",
+      "JUDGE_MAY_ASK": "The judge may ask one of you to make a list of 3 independent experts who can provide a written report in return for a fee.",
+      "JUDGES_RESPONSIBLE_COST": "Even though you and the {{ otherParty }} share the cost of hiring the expert, judges are still responsible for keeping costs in proportion to value.",
+      "MUST_AVOID_DISCUSSING": "You must avoid discussing the case in detail with the 3 experts.",
+      "OTHER_PARTY_CHOOSES": "The other party then chooses one expert from the list. After that, you both need to follow these steps",
+      "PAGE_TITLE": "Expert guidance",
+      "PAY_EXPERT": "Pay the expert - you usually both share this cost.",
+      "PAYING_EXPERT": "Paying for the expert",
+      "PROVIDE_EXTRA": "Provide any extra information the expert asks for.",
+      "PROVIDE_QUESTIONS": "Provide questions for the expert to answer in a report.",
+      "RARE": "It’s rare for judges to allow you to use an expert in a small claim.",
+      "SEND_EXPERT_REPORT": "Send the expert’s report to the court (only one of you will have to do this).",
+      "TITLE": "Using an expert in small claims",
+      "USUALLY_SHARE_COST": "Usually you both share this cost.",
+      "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
+    },
     "EXPLANATION": {
       "PAGE_TITLE": "Explanation",
       "TITLE": "Briefly explain why you can’t pay immediately"
@@ -156,8 +263,12 @@
     "FREE_TELEPHONE_MEDIATION": {
       "PAGE_TITLE": "Free telephone mediation"
     },
-    "FULL_ADMISSION_PAYMENT_DATE": {
-      "PAGE_TITLE": "Payment date"
+    "PAYMENT_OPTION": {
+      "PAGE_TITLE": "Payment option",
+      "REQUEST": "Gall yr hawlydd wneud cais am Ddyfarniad Llys Sirol (CCJ) yn eich erbyn os na fyddwch yn talu ar unwaith.",
+      "REPAYMENT": "Byddaf yn awgrymu cynllun ad-dalu",
+      "TITLE": "Pryd ydych chi eisiau talu?",
+      "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â’r hawlydd a thalu’r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
@@ -235,7 +346,14 @@
       "PAGE_TITLE": "Your repayment plan"
     },
     "RESIDENCE": {
-      "PAGE_TITLE": "Your residence"
+      "ASSOCIATION_HOME": "Cartref cymdeithas dai neu’r cyngor",
+      "OWN_HOME": "Cartref rydych yn berchen arno (neu’n talu morgais arno)",
+      "HOME_TYPE": "Pa fath o dŷ?",
+      "JOIN_HOME": "Cartref rydych yn berchen arno ar y cyd (neu’n talu morgais arno ar y cyd)",
+      "OTHER": "Arall",
+      "PAGE_TITLE": "Your residence",
+      "RENTAL_HOME": "Cartref rydych yn rhentu’n breifat",
+      "TITLE": "Ble ydych chi’n byw?"
     },
     "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details"
@@ -274,19 +392,89 @@
       "TITLE": "Why do you disagree with the claim?",
       "REASON": "Their reasons for making the claim",
       "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
-    },
-    "CLAIM_SUMMARY": {
-      "ABOUT_CLAIM": "About claim",
-      "CLAIM_NUMBER": "Claim number:",
-      "CLAIM_AMOUNT": "Claim amount:",
-      "CLAIM_DETAILS": "Claim details:",
-      "CLAIMANT_NAME": "Claimant name:",
-      "DOCUMENTS": "Documents",
-      "LATEST_UPDATE": "Latest update",
-      "VIEW_CLAIM": "View claim"
     }
   },
   "ERRORS": {
-    "THERE_WAS_A_PROBLEM": "Roedd problem"
+    "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
+    "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
+    "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
+    "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
+    "CLAIM_DETAILS": "Claim details",
+    "CLAIM_VALID_AMOUNT": "Enter a valid amount",
+    "DATE_REQUIRED": "Enter a date",
+    "DEFENCE_REQUIRED": "You need to explain why you don’t owe the money",
+    "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
+    "DESCRIPTION_REQUIRED": "Enter a description of what happened",
+    "DETAILS_REQUIRED": "Enter details",
+    "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
+    "ENTER_A_DEBT": "Enter a debt",
+    "ENTER_AN_EXPLANATION": "Enter an explanation of why you can’t pay now",
+    "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
+    "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
+    "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
+    "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
+    "JOB_TITLE_REQUIRED": "Enter a job title",
+    "NAME_REQUIRED": "Please enter a name",
+    "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
+    "NUMBER_REQUIRED": "Enter a valid number",
+    "OPTION_REQUIRED": "Please select one reason",
+    "OPTION_REQUIRED_RESPONSE": "Please select a response",
+    "PAYMENT_FREQUENCY_REQUIRED": "Choose a payment frequency",
+    "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
+    "REDIS_FAILURE": "Redis DraftStore failure.",
+    "SELECT_AN_OPTION": "Dewiswch opsiwn",
+    "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
+    "SIGNER_NAME_TOO_LONG": "You’ve entered too many characters",
+    "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
+    "SIGNER_ROLE_TOO_LONG": "You’ve entered too many characters",
+    "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
+    "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
+    "TEXT_TOO_MANY": "You’ve entered too many characters",
+    "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
+    "THERE_WAS_A_PROBLEM": "Roedd problem",
+    "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
+    "VALID_ADDRESS_LINE_1": "Enter first address line",
+    "VALID_AMOUNT": "Enter a valid amount",
+    "VALID_AMOUNT_ONE_POUND_OR_MORE": "Enter an amount of £1 or more",
+    "VALID_AT_LEAST_ONE_OPTION": "You must select at least one option",
+    "VALID_BETWEEN_NUMBERS_0_11": "Enter a number between 0 and 11",
+    "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
+    "VALID_CHOOSE": "Choose your response",
+    "VALID_CITY": "Enter a valid town/city",
+    "VALID_CLAIM_NUMBER": "Enter a claim number",
+    "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Enter first correspondence address line",
+    "VALID_CORRESPONDENCE_CITY": "Enter correspondence town/city",
+    "VALID_CORRESPONDENCE_POSTCODE": "Enter correspondence address postcode",
+    "VALID_DATE": "Please enter a valid date",
+    "VALID_DATE_IN_PAST": "Enter date before ",
+    "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
+    "VALID_DAY": "Enter a valid day",
+    "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
+    "VALID_ENTER_A_JOB_TITLE": "Enter a job title",
+    "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
+    "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Enter at least one court order",
+    "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Enter at least one employer",
+    "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
+    "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
+    "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
+    "VALID_HOUSING": "Disgrifiwch eich cartref",
+    "VALID_INTEGER": "Enter a numeric, for example 3",
+    "VALID_MONTH": "Enter a valid month",
+    "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
+    "VALID_NUMBER_OF_PEOPLE": "Enter a number higher than 0",
+    "VALID_OPTION_SELECTION": "Select an option",
+    "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
+    "VALID_PAYMENT_OPTION": "Choose a payment option",
+    "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
+    "VALID_POSITIVE_NUMBER": "Don’t enter a negative number",
+    "VALID_POSTCODE": "Enter address postcode",
+    "VALID_REASON_REQUIRED": "Enter a reason",
+    "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
+    "VALID_TEXT_LENGTH": "You’ve entered too many characters",
+    "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
+    "VALID_VALUE": "Are you sure this is a valid value?",
+    "VALID_YEAR": "Enter a valid year",
+    "VALID_YES_NO_OPTION": "Choose option: Yes or No",
+    "VALID_YES_NO_SELECTION": "Please select yes or no"
   }
 }

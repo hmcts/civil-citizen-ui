@@ -1,9 +1,9 @@
 const path = require('path');
 
 const sourcePath = path.resolve(__dirname, 'src/main/');
-const govukFrontend = require(path.resolve(__dirname, 'webpack/govukFrontend'));
 const scss = require(path.resolve(__dirname, 'webpack/scss'));
 const HtmlWebpack = require(path.resolve(__dirname, 'webpack/htmlWebpack'));
+const govukFrontend = require(path.resolve(__dirname, 'webpack/govukFrontend'));
 
 const devMode = process.env.NODE_ENV !== 'production';
 const fileNameSuffix = devMode ? '-dev' : '.[contenthash]';
@@ -22,10 +22,17 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.mjs$/,
+        type: 'javascript/auto',
+        resolve: {
+          fullySpecified: false,
+        },
+      },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.mjs'],
   },
   output: {
     path: path.resolve(__dirname, 'src/main/public/'),

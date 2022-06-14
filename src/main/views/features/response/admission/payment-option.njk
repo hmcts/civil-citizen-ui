@@ -10,22 +10,19 @@
   'PAGES.PAYMENT_OPTION.PAGE_TITLE' %}
 
 {% block pageTitle %}
-
-  {{ setPageTitle(pageTitle) }}
-
+  {{ setPageTitle('PAGES.PAYMENT_OPTION.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set hintPayImmediatly %}
-      <div
+        <div
           class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT') }}</div>
       {% endset -%}
 
       {% set hintPayLater %}
-      <div
-          class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.REQUEST') }}</div>
+        <div class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.REQUEST') }}</div>
       {% endset -%}
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
@@ -43,7 +40,7 @@
               name: "paymentType",
               fieldset: {
                 legend: {
-                  text: t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount}) if amount else t('PAGES.PAYMENT_OPTION.TITLE'),
+                  text: t('PAGES.PAYMENT_OPTION.TITLE'),
                   isPageHeading: true,
                   classes: "govuk-fieldset__legend--l"
                 }
@@ -52,7 +49,7 @@
                 {
                   value: PaymentOptionType.IMMEDIATELY,
                   text: t('COMMON.PAYMENT_OPTION.IMMEDIATELY'),
-                  checked: true if form.model.paymentType == PaymentOptionType.IMMEDIATELY,
+                  checked: true if form.paymentType == PaymentOptionType.IMMEDIATELY,
                   conditional: {
                   html: hintPayImmediatly
                 }
@@ -60,7 +57,7 @@
                 {
                   value: PaymentOptionType.BY_SET_DATE,
                   text: t('COMMON.PAYMENT_OPTION.BY_SET_DATE'),
-                  checked: true if form.model.paymentType == PaymentOptionType.BY_SET_DATE,
+                  checked: true if form.paymentType == PaymentOptionType.BY_SET_DATE,
                   conditional: {
                   html: hintPayLater
                 }
@@ -68,7 +65,7 @@
                 {
                   value: PaymentOptionType.INSTALMENTS,
                   text: t('PAGES.PAYMENT_OPTION.REPAYMENT'),
-                  checked: true if form.model.paymentType == PaymentOptionType.INSTALMENTS,
+                  checked: true if form.paymentType == PaymentOptionType.INSTALMENTS,
                   conditional: {
                   html: hintPayLater
                 }

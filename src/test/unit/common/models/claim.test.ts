@@ -599,3 +599,4 @@ describe('Claim partialAdmissionPaymentAmount', () => {
     expect(result).toEqual(55);
   });
 });
+

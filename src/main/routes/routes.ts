@@ -24,6 +24,8 @@ import otherDependantsController from './features/response/statementOfMeans/othe
 import partnerPensionController from './features/response/statementOfMeans/partner/partnerPensionController';
 import paymentOptionController from './features/response/admission/fullAdmission/paymentOption/paymentOptionController';
 import paymentDateController from './features/response/admission/fullAdmission/paymentOption/paymentDateController';
+import paymentDatePAController from './features/response/admission/partialAdmission/paymentDateController';
+
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
@@ -63,6 +65,7 @@ import youHavePaidLessController from './features/response/rejection/fullReject/
 import yourDefenceController from './features/response/yourDefenceController';
 import incompleteSubmissionController from './features/response/incompleteSubmissionController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
+import expertGuidanceController from './features/directionsQuestionnaire/expertGuidanceController';
 import partialAdmissionPaymentOptionController from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
 
 export default [
@@ -126,5 +129,7 @@ export default [
   yourDefenceController,
   incompleteSubmissionController,
   claimSummaryController,
+  paymentDatePAController,
+  expertGuidanceController,
   partialAdmissionPaymentOptionController,
 ];
