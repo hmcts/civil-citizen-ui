@@ -14,6 +14,7 @@ import {EvidenceType} from '../../common/models/evidence/evidenceType';
 import {EvidenceDetails} from '../../common/models/evidence/evidenceDetails';
 import {addDaysFilter, dateFilter} from './filters/dateFilter';
 import {SignatureType} from '../../common/models/signatureType';
+import {convertToPoundsFilter} from '../../common/utils/currencyFormat';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -78,7 +79,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('TransactionSchedule', TransactionSchedule);
     nunjucksEnv.addGlobal('EvidenceType', EvidenceType);
     nunjucksEnv.addGlobal('EvidenceDetails', EvidenceDetails);
-
+    nunjucksEnv.addFilter('pennies2pounds', convertToPoundsFilter);
     nunjucksEnv.addGlobal('SignatureType', SignatureType);
 
     app.use((req, res, next) => {

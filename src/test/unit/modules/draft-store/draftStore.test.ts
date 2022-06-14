@@ -7,6 +7,9 @@ jest.mock('ioredis', () => {
     return {
       ping: jest.fn(async () => 'PONG'),
       set: jest.fn(async () => {return;}),
+      on: jest.fn(async () => {
+        return;
+      }),
     };
   });
 });

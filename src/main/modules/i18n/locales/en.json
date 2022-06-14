@@ -11,6 +11,7 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "COMMON": {
+    "DOWNLOAD_THE_CLAIM": "Download the claim",
     "BUTTONS": {
       "CONTINUE": "Continue"
     },
@@ -40,23 +41,42 @@
       "PAGE_TITLE": "Carer's allowance"
     },
     "CHECK_YOUR_ANSWER": {
+      "ADDRESS": "Address",
+      "BANK_AND_SAVINGS_ACCOUNTS": "Bank and savings accounts",
+      "BANK_TYPE_OF_ACCOUNT": "Type of account",
+      "BANK_BALANCE": "Balance",
+      "BANK_JOINT_ACCOUNT": "Joint account",
       "CHANGE": "Change",
-      "TITLE": "Check your answers",
-      "DETAILS_TITLE": "Your details",
-      "FULL_NAME": "Full name",
       "CONTACT_PERSON": "Contact person",
       "CONTACT_NUMBER": "Contact number (optional)",
-      "RESPONSE_TITLE": "Your response to the claim",
-      "WHEN_PAY_TITLE": "When you'll pay",
-      "OWE_MONEY": "Do you owe the money claimed?",
-      "WHEN_PAY": "When will you pay",
-      "ADDRESS": "Address",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
-      "SAME_ADDRESS": "Same as address",
+      "DEBTS_LOANS_OR_CREDIT_CARDS": "Do you have loans or credit card debts?",
+      "DEBT": "Debt",
+      "DEBTS_TOTAL_OWED": "Total owed",
+      "DEBTS_MONTHLY_PAYMENTS": "Monthly Payments",
+      "DETAILS_TITLE": "Your details",
       "DOB": "Date of birth",
-      "REGULAR_PAYMENTS": "Regular payments of",
+      "FIRST_PAYMENT": "Make the first payment on",
+      "FULL_NAME": "Full name",
+      "OWE_MONEY": "Do you owe the money claimed?",
       "PAYMENT_FREQUENCY": "Frequency of payments",
-      "FIRST_PAYMENT": "Make the first payment on"
+      "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Debts you are behind on",
+      "PRIORITY_DEBT_TYPE": "Debt type",
+      "PRIORITY_DEBT_ARREARS_REPAYMENT": "Arrears repayment",
+      "PRIORITY_DEBT_MORTGAGE": "Mortgage",
+      "PRIORITY_DEBT_RENT": "Rent",
+      "PRIORITY_DEBT_COUNCIL_TAX": "Council tax or community charge",
+      "PRIORITY_DEBT_GAS": "Gas",
+      "PRIORITY_DEBT_ELECTRICITY": "Electricity",
+      "PRIORITY_DEBT_WATER": "Water",
+      "PRIORITY_DEBT_MAINTENANCE": "Maintenance payments",
+      "REGULAR_PAYMENTS": "Regular payments of",
+      "RESPONSE_TITLE": "Your response to the claim",
+      "SAME_ADDRESS": "Same as address",
+      "TITLE": "Check your answers",
+      "WHEN_PAY": "When will you pay",
+      "WHEN_PAY_TITLE": "When you'll pay",
+      "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details"
     },
     "CITIZEN_BANK_ACCOUNTS": {
       "PAGE_TITLE": "Your bank accounts"
@@ -74,7 +94,21 @@
       "PAGE_TITLE": "Your claim response"
     },
     "CLAIM_DETAILS": {
-      "PAGE_TITLE": "Claim details"
+      "PAGE_TITLE": "Claim Details",
+      "HEADER": "Claim details",
+      "CLAIM_NUMBER": "Claim number",
+      "CLAIM_AMOUNT": "Claim amount",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "AMOUNT_BREAKDOWN": "Amount breakdown",
+      "AMOUNT": "Amount",
+      "INTEREST": "Interest",
+      "CLAIM_FEE": "Claim fee",
+      "CLAIM_TOTAL": "Claim Total",
+      "REASON_FOR_CLAIM": "Reason for claim",
+      "TIMELINE": "Timeline",
+      "DATE": "Date",
+      "WHAT_HAPPENED": "What happened",
+      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     },
     "COMPANY_DETAILS": {
       "PAGE_TITLE": "Company details"
@@ -92,7 +126,17 @@
       "PAGE_TITLE": "Any debts?"
     },
     "DEFENDANT_TIMELINE": {
-      "PAGE_TITLE": "Add your timeline of events"
+      "PAGE_TITLE": "Add your timeline of events",
+      "THEIR_TIMELINE": "Their timeline",
+      "DATE": "Date",
+      "WHAT_HAPPENED": "What happened",
+      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view their Timeline",
+      "ADD_YOUR_TIMELINE": "Add your timeline of events (optional)",
+      "INCLUDE_DATES_IF_YOU_KNOW": "Include dates if you know them.",
+      "FOR_EXAMPLE": "For example, {{ sixMonthAgo }}",
+      "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "For example, you might have signed a contract",
+      "ADD_ANOTHER_EVENT": "Add another event",
+      "ADD_ANY_COMMENTS": "Add any comments about their timeline (optional)"
     },
     "DEPENDANTS": {
       "PAGE_TITLE": "Any dependants?"
@@ -197,7 +241,7 @@
     "RESIDENCE": {
       "PAGE_TITLE": "Your residence"
     },
-    "SELF_EMPLOYED":{
+    "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
@@ -234,6 +278,16 @@
       "TITLE": "Why do you disagree with the claim?",
       "REASON": "Their reasons for making the claim",
       "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
+    },
+    "CLAIM_SUMMARY": {
+      "ABOUT_CLAIM": "About claim",
+      "CLAIM_NUMBER": "Claim number:",
+      "CLAIM_AMOUNT": "Claim amount:",
+      "CLAIM_DETAILS": "Claim details:",
+      "CLAIMANT_NAME": "Claimant name:",
+      "DOCUMENTS": "Documents",
+      "LATEST_UPDATE": "Latest update",
+      "VIEW_CLAIM": "View claim"
     }
   },
   "ERRORS": {
