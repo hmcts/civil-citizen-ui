@@ -14,7 +14,7 @@ import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {Defence} from '../form/models/defence';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
-import PaymentOptionType from '../form/models/admission/fullAdmission/paymentOption/paymentOptionType';
+import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
 import {
   ClaimAmountBreakup,
   ClaimFee,
@@ -25,6 +25,7 @@ import {
   SameRateInterestType,
 } from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
+import {ResponseType} from '../form/models/responseType';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -40,7 +41,7 @@ export class Claim {
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
   defence?: Defence;
-  paymentOption?: string;
+  paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;
   partialAdmission?: PartialAdmission;
@@ -150,6 +151,21 @@ export class Claim {
   }
   isDefendantSeverelyDisabledOrDependentsDisabled(): boolean {
     return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverlyDiabled();
+  }
+  isFullAdmission(): boolean {
+    return this.respondent1?.responseType === ResponseType.FULL_ADMISSION;
+  }
+  isPartialAdmission(): boolean {
+    return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
+  }
+  isFullAdmissionPaymentOptionExists(): boolean {
+    return this.paymentOption?.length > 0;
+  }
+  isPartialAdmissionPaymentOptionExists(): boolean {
+    return this.partialAdmission?.paymentIntention?.paymentOption?.length > 0;
+  }
+  partialAdmissionPaymentAmount(): number {
+    return this.partialAdmission?.howMuchDoYouOwe?.amount;
   }
 }
 

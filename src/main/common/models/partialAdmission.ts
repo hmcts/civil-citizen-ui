@@ -5,7 +5,6 @@ import {HowMuchHaveYouPaid} from '../form/models/admission/howMuchHaveYouPaid';
 import {DefendantTimeline} from '../form/models/timeLineOfEvents/defendantTimeline';
 import {PaymentIntention} from '../form/models/admission/partialAdmission/paymentIntention';
 
-
 export class PartialAdmission {
   whyDoYouDisagree?: WhyDoYouDisagree;
   howMuchDoYouOwe?: HowMuchDoYouOwe;

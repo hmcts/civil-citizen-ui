@@ -1,7 +1,7 @@
 import {Claim} from '../../main/common/models/claim';
 import {ResponseType} from '../../main/common/form/models/responseType';
 import PaymentOptionType
-  from '../../main/common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
+  from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {
   TransactionSchedule,
 } from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
@@ -99,7 +99,7 @@ export const createClaimWithOneBankAccount = (): Claim => {
 
 export const createClaimWithBankAccounts = () => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = ResponseType.FULL_ADMISSION;
+  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   const bankAccounts: BankAccount[] = [
     new BankAccount('CURRENT_ACCOUNT', 'true', '1000'),
     new BankAccount('SAVINGS_ACCOUNT', 'false', '2000'),
@@ -116,7 +116,7 @@ export const createClaimWithBankAccounts = () => {
 
 export const createClaimWithCourtOrders = () => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = ResponseType.FULL_ADMISSION;
+  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   const courtOrders: CourtOrders = new CourtOrders(true, [
     new CourtOrder(100, 1500, '1'),
     new CourtOrder(250, 2500, '2'),
@@ -131,7 +131,7 @@ export const createClaimWithCourtOrders = () => {
 
 export const createClaimWithNoCourtOrders = () => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = ResponseType.FULL_ADMISSION;
+  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
   const courtOrders: CourtOrders = new CourtOrders(true, []);
 
   claim.statementOfMeans = {
@@ -143,7 +143,7 @@ export const createClaimWithNoCourtOrders = () => {
 
 export const createClaimWithDebts = () => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = ResponseType.FULL_ADMISSION;
+  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
 
   const debts: Debts = new Debts();
   debts.option = 'yes';
