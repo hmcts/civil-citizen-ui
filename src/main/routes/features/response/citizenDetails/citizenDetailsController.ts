@@ -7,7 +7,7 @@ import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citiz
 import {Respondent} from '../../../../common/models/respondent';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {YesNo} from '../../../../common/form/models/yesNo';
-import {getRespondentInformation, saveRespondent} from '../../../../modules/citizenDetails/citizenDetailsService';
+import {getRespondentInformation, saveRespondent} from '../../../../services/features/response/citizenDetails/citizenDetailsService';
 import _ from 'lodash';
 import { CounterpartyType } from '../../../../common/models/counterpartyType';
 

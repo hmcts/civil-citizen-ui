@@ -14,12 +14,12 @@ import {
   VALID_POSITIVE_NUMBER,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import * as childrenDisabilityService
-  from '../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
+  from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService');
+jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
 const mockHasDisabledChildren = childrenDisabilityService.hasDisabledChildren as jest.Mock;
 
 const EXPECTED_TEXT = 'Children aged 16 to 19 living with you';
@@ -91,7 +91,7 @@ describe('Dependant Teenagers', () => {
         });
     });
     test('should redirect to other dependants when hasDisabledChildren returns false and no errors', async () => {
-      mockHasDisabledChildren.mockImplementation( () => {
+      mockHasDisabledChildren.mockImplementation(() => {
         return false;
       });
       app.locals.draftStoreClient = mockCivilClaim;
@@ -104,7 +104,7 @@ describe('Dependant Teenagers', () => {
         });
     });
     test('should redirect to other dependants when hasDisabledChildren returns true and no errors', async () => {
-      mockHasDisabledChildren.mockImplementation( () => {
+      mockHasDisabledChildren.mockImplementation(() => {
         return true;
       });
       app.locals.draftStoreClient = mockCivilClaim;

@@ -22,7 +22,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('Where do you live?') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.RESIDENCE.TITLE') }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrfToken) }}
 
@@ -36,7 +36,7 @@
                   value: form.model.housingDetails,
                   classes: "govuk-!-width-two-third",
                   label: {
-                    text: t('What type of housing?')
+                    text: t('PAGES.RESIDENCE.HOME_TYPE')
                   },
                   errorMessage: {
                     text: t(housingDetailsError)
@@ -50,27 +50,27 @@
                 items: [
                   {
                     value: ResidenceType.OWN_HOME.value,
-                    text: t(ResidenceType.OWN_HOME.displayValue),
-                    checked: form.model.type.value === ResidenceType.OWN_HOME.value
+                    text: t('PAGES.RESIDENCE.OWN_HOME'),
+                    checked: form.model.type === ResidenceType.OWN_HOME
                   },
                   {
                     value: ResidenceType.JOINT_OWN_HOME.value,
-                    text: t(ResidenceType.JOINT_OWN_HOME.displayValue),
+                    text: t('PAGES.RESIDENCE.JOIN_HOME'),
                     checked: form.model.type.value === ResidenceType.JOINT_OWN_HOME.value
                   },
                   {
                     value: ResidenceType.PRIVATE_RENTAL.value,
-                    text: t(ResidenceType.PRIVATE_RENTAL.displayValue),
+                    text: t('PAGES.RESIDENCE.RENTAL_HOME'),
                     checked: form.model.type.value === ResidenceType.PRIVATE_RENTAL.value
                   },
                   {
                     value: ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME.value,
-                    text: t(ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME.displayValue),
+                    text: t('PAGES.RESIDENCE.ASSOCIATION_HOME'),
                     checked: form.model.type.value === ResidenceType.COUNCIL_OR_HOUSING_ASSN_HOME.value
                   },
                   {
                     value: ResidenceType.OTHER.value,
-                    text: t(ResidenceType.OTHER.displayValue),
+                    text: t('PAGES.RESIDENCE.OTHER'),
                     checked: form.model.type.value === ResidenceType.OTHER.value,
                     conditional: {
                       html: housingDetailsHtml
@@ -78,7 +78,7 @@
                   }
                 ],
                 errorMessage: {
-                  text: typeError
+                  text: t(typeError)
                 } if typeError
               }) }}
             </div>

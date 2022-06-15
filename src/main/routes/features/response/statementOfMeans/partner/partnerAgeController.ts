@@ -7,8 +7,8 @@ import {
 } from '../../../../urls';
 import { PartnerAge } from '../../../../../common/form/models/statementOfMeans/partner/partnerAge';
 import { ValidationError, Validator } from 'class-validator';
-import { PartnerAgeService } from '../../../../../modules/statementOfMeans/partner/partnerAgeService';
-import { DisabilityService } from '../../../../../modules/statementOfMeans/disabilityService';
+import { PartnerAgeService } from '../../../../../services/features/response/statementOfMeans/partner/partnerAgeService';
+import { DisabilityService } from '../../../../../services/features/response/statementOfMeans/disabilityService';
 import { constructResponseUrlWithIdParams } from '../../../../../common/utils/urlFormatter';
 
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';

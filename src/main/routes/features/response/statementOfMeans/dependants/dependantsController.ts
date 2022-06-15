@@ -7,8 +7,8 @@ import {
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../urls';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
-import dependantsService from '../../../../../modules/statementOfMeans/dependants/dependantsService';
-import {hasDisabledChildren} from '../../../../../modules/statementOfMeans/dependants/childrenDisabilityService';
+import dependantsService from '../../../../../services/features/response/statementOfMeans/dependants/dependantsService';
+import {hasDisabledChildren} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');

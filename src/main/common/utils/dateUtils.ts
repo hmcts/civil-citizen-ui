@@ -22,3 +22,8 @@ export const formatDateToFullDate = (date: Date): string => {
   return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: 'en-gb'});
 
 };
+
+export const getNumberOfDaysBetweenTwoDays = (startDay: Date | string, endDay: Date | string) => {
+  return convertDateToLuxonDate(endDay).startOf('day').diff(convertDateToLuxonDate(startDay).startOf('day'), 'days').days;
+};
+

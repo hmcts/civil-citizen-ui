@@ -5,8 +5,13 @@
   "created_date": "2022-03-01T13:29:22.447",
   "last_modified": "2022-03-01T13:29:24.971",
   "case_data": {
+    "applicant1": {
+      "type": "COMPANY",
+      "partyName": "Version 1"
+    },
     "respondent1": {
-      "type": "COMPANY"
+      "type": "COMPANY",
+      "partyName": "Google"
     }
   }
 }

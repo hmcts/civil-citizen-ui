@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {CITIZEN_REJECT_ALL_CLAIM_URL, CLAIM_TASK_LIST_URL, SEND_RESPONSE_BY_EMAIL_URL} from '../../urls';
-import {getClaimantName, getRejectAllOfClaim, saveRejectAllOfClaim} from '../../../modules/rejectAllOfClaimService';
+import {getClaimantName, getRejectAllOfClaim, saveRejectAllOfClaim} from '../../../services/features/response/rejectAllOfClaimService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {RejectAllOfClaim} from '../../../common/form/models/rejectAllOfClaim';

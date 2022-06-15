@@ -2,13 +2,7 @@
 
 {# Set some default values #}
 
-{% set contactocmc = 'contactocmc@justice.gov.uk' %}
-{% set responseDelay = t('We\'ll get back to you within 10 days') %}
-{% set webChat = t('Web chat') %}
-{% set webChatClosed = t('Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.') %}
-{% set webChatUnavailable = t('The web chat service is temporarily unavailable, please try again later.') %}
-{% set callCharges = t('Find out about call charges (opens in a new window)') %}
-{% set openingHours = t('Monday to Friday, 8.30am to 5pm.') %}
+
 
 {% macro _widget(spanContent, name, href, hrefContact, hrefContent, phoneNumber, linkTarget) %}
   {% if linkTarget %}
@@ -17,7 +11,7 @@
     {# setting default behaviour to open the link in the same frame if not provided as parameter #}
     {% set hrefTarget= "_self" %}
   {% endif %}
-  
+
   <h3 class="govuk-heading-m">{{ name }}</h3>
   {% if phoneNumber %}
     {{ phoneNumber }}
@@ -32,14 +26,24 @@
 {% endmacro %}
 
 {% macro contactUsForHelp(t,widget) %}
-  {% set ContactUs = t('Contact us for help') %}
+  {% set ContactUs = t('COMMON.CONTACT_US_FOR_HELP.TITLE') %}
+  {% set Email = t('COMMON.CONTACT_US_FOR_HELP.EMAIL') %}
+  {% set Telephone = t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') %}
+  {% set contactocmc = 'contactocmc@justice.gov.uk' %}
+  {% set responseDelay = t('COMMON.CONTACT_US_FOR_HELP.RESPONSE_DELAY') %}
+  {% set webChat = t('COMMON.CONTACT_US_FOR_HELP.WEB_CHAT') %}
+  {% set webChatClosed = t('COMMON.CONTACT_US_FOR_HELP.WEB_CHAT_CLOSED') %}
+  {% set webChatUnavailable = t('COMMON.CONTACT_US_FOR_HELP.WEB_CHAT_UNAVAILABLE') %}
+  {% set callCharges = t('COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES') %}
+  {% set openingHours = t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') %}
+
   {% set content = '' %}
   {% if widget ==='Web_chat' %}
     {% set content = _widget(webChatUnavailable,webChat,'','','','')
       + _widget(webChatClosed,webChat,'','','','') %}
   {% endif %}
-  {% set content = content + _widget('','Email','mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk','','')
-    + _widget(openingHours,'Telephone','https://www.gov.uk/call-charges','',callCharges,'0300 123 7050', '_blank') %}
+  {% set content = content + _widget('',Email,'mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk','','')
+    + _widget(openingHours,Telephone,'https://www.gov.uk/call-charges','',callCharges,'0300 123 7050', '_blank') %}
 
   {{ govukDetails({
     summaryText: ContactUs,

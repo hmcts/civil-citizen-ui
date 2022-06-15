@@ -7,6 +7,10 @@ import civilClaimResponseUnemploymentOther from './mocks/civilClaimResponseUnemp
 import civilClaimResponseApplicantCompany from './mocks/civilClaimResponseApplicantCompanyMock.json';
 import civilClaimResponseApplicantIndividual from './mocks/civilClaimResponseApplicanIndividualMock.json';
 import civilClaimResponseApplicantWithMediation from './mocks/civilClaimResponseApplicanWithMediationMock.json';
+import civilClaimResponseNoAdmittedPaymentAmountMock from './mocks/civilClaimResponseNoAdmittedPaymentAmountMock.json';
+import civilClaimResponseFullAdmissionMock from './mocks/civilClaimResponseFullAdmissionMock.json';
+import civilClaimResponseWithAdmittedPaymentAmountMock from './mocks/civilClaimResponseWithAdmittedPaymentAmountMock.json';
+
 import {Logger} from 'winston';
 
 const mockCivilClaim = {
@@ -37,6 +41,19 @@ const mockRedisWithMediationProperties = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseApplicantWithMediation))),
 };
+const mockRedisWithoutAdmittedPaymentAmount = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseNoAdmittedPaymentAmountMock))),
+};
+const mockRedisWithPaymentAmount = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithAdmittedPaymentAmountMock))),
+};
+const mockRedisFullAdmission = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseFullAdmissionMock))),
+};
+
 const mockRedisFailure = {
   set: jest.fn(() => {
     throw new Error(TestMessages.REDIS_FAILURE);
@@ -73,4 +90,7 @@ export {
   mockCivilClaimApplicantIndividualType,
   mockLogger,
   mockRedisWithMediationProperties,
+  mockRedisWithoutAdmittedPaymentAmount,
+  mockRedisWithPaymentAmount,
+  mockRedisFullAdmission,
 };
