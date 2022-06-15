@@ -10,6 +10,9 @@ jest.mock('ioredis', () => {
       set: jest.fn(async () => {
         return;
       }),
+      on: jest.fn(async () => {
+        return;
+      }),
     };
   });
 });

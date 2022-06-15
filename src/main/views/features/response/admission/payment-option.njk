@@ -1,0 +1,91 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+
+{% set pageTitle = 'PAGES.PAYMENT_OPTION.PAGE_TITLE_FOR_PART_ADMIT' if amount else 
+  'PAGES.PAYMENT_OPTION.PAGE_TITLE' %}
+
+{% block pageTitle %}
+  {{ setPageTitle(pageTitle) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set hintPayImmediatly %}
+        <div
+          class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT') }}</div>
+      {% endset -%}
+
+      {% set hintPayLater %}
+        <div class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.REQUEST') }}</div>
+      {% endset -%}
+      {% set errors = form.getErrors() %}
+      {% if form.hasErrors() %}
+        {{ govukErrorSummary({
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
+          "errorList": errors
+        }) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ govukRadios({
+              idPrefix: "paymentType",
+              name: "paymentType",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount}) if amount 
+                        else t('PAGES.PAYMENT_OPTION.TITLE'),
+                  isPageHeading: true,
+                  classes: "govuk-fieldset__legend--l"
+                }
+              },
+              items: [
+                {
+                  value: PaymentOptionType.IMMEDIATELY,
+                  text: t('COMMON.PAYMENT_OPTION.IMMEDIATELY'),
+                  checked: true if form.model.paymentType == PaymentOptionType.IMMEDIATELY,
+                  conditional: {
+                  html: hintPayImmediatly
+                }
+                },
+                {
+                  value: PaymentOptionType.BY_SET_DATE,
+                  text: t('COMMON.PAYMENT_OPTION.BY_SET_DATE'),
+                  checked: true if form.model.paymentType == PaymentOptionType.BY_SET_DATE,
+                  conditional: {
+                  html: hintPayLater
+                }
+                },
+                {
+                  value: PaymentOptionType.INSTALMENTS,
+                  text: t('PAGES.PAYMENT_OPTION.REPAYMENT'),
+                  checked: true if form.model.paymentType == PaymentOptionType.INSTALMENTS,
+                  conditional: {
+                  html: hintPayLater
+                }
+                }
+              ],
+              errorMessage: {
+                text: t(form.errorFor('paymentType'))
+              } if form.hasFieldError('paymentType')
+
+            }) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

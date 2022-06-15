@@ -3,7 +3,7 @@ import {NoMediationReason} from '../../../common/form/models/mediation/noMediati
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {Mediation} from '../../../common/models/mediation/mediation';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {getMediation, saveMediation} from '../../../modules/mediation/mediationService';
+import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
 import {CLAIM_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL} from '../../urls';
 import NoMediationReasonOptions from '../../../common/form/models/mediation/noMediationReasonOptions';
 

@@ -5,7 +5,7 @@ import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFo
 import {
   getEvidence,
   saveEvidence,
-} from '../../../../modules/evidence/evidenceService';
+} from '../../../../services/features/response/evidence/evidenceService';
 import {
   CITIZEN_EVIDENCE_URL,
   IMPACT_OF_DISPUTE_URL,
