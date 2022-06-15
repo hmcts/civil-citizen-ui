@@ -46,7 +46,7 @@
     "@types/nunjucks": "^3.2.1",
     "@types/require-directory": "^2.1.1",
     "@types/serve-favicon": "^2.5.1",
-    "@wdio/sauce-service": "^7.19.7",
+    "@wdio/sauce-service": "^7.20.2",
     "applicationinsights": "^2.3.1",
     "axios": "^0.27.2",
     "boolean": "^3.2.0",
