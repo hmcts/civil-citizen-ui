@@ -4,7 +4,7 @@ import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('serviceAuthProviderClient');
 
-const xuiClientId = config.get<string>('services.dmStore.clientID');
+const xuiMicroserviceName = config.get<string>('services.dmStore.microserviceName');
 
 export class ServiceAuthProviderClient {
   client: AxiosInstance;
@@ -29,7 +29,7 @@ export class ServiceAuthProviderClient {
     // TODO : should be replaced with civil_citizen_ui when civil citizen ui 
     // is given permission to access prf documents on dm - store created via Xui
     const reqBody = {
-      microservice: xuiClientId,
+      microservice: xuiMicroserviceName,
     };
     try {
       const response: AxiosResponse<string> = await this.client.post(serviceAuthTokenGeneratorUrl, reqBody, options);

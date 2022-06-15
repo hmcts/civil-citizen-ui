@@ -14,7 +14,7 @@ services:
       port: REDIS_PORT
       tls: REDIS_TLS
   dmStore:
-    clientID: IDAM_CLIENT_ID
+    microserviceName: MICROSERVICE_NAME
     url: DM_STORE_URL
   serviceAuthProvider:
     url: SERVICE_AUTH_PROVIDER_URL

@@ -9,6 +9,7 @@ import * as documentUtils from '../../../../../../main/common/utils/downloadUtil
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/app/client/dmStoreClient');
 
 describe('Their PDF timeline controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,10 +23,12 @@ describe('Their PDF timeline controller', () => {
     afterEach(() => {
       app.locals.draftStoreClient = undefined;
     });
-    test('should display the page successfully', async () => {
+
+    test('should display the pdf successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
       const dmStoreClient = new DmStoreClient('baseURl');
-      const mockRetrieveDocumentById = jest.spyOn(dmStoreClient, 'retrieveDocumentByDocumentId');
+      const mockResponse : Buffer = Buffer.from('22 30 45 50');
+      const mockRetrieveDocumentById = jest.spyOn(dmStoreClient, 'retrieveDocumentByDocumentId').mockReturnValue(Promise.resolve(mockResponse));
       const mockDownLoadPDFDocument = jest.spyOn(documentUtils, 'downloadPDF');
       await request(app)
         .get('/case/1111/timeline/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c')

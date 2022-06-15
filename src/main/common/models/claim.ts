@@ -140,7 +140,7 @@ export class Claim {
   isDefendantSeverelyDisabledOrDependentsDisabled(): boolean {
     return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverlyDiabled();
   }
-  extractDocumentId():string {
+  extractDocumentId(): string {
     const documentData = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId : string; 
     if (documentData) {
