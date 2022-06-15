@@ -14,7 +14,7 @@ import {
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../../main/routes/urls';
 import * as childrenDisabilityService
-  from '../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService';
+  from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 
 const request = require('supertest');
@@ -22,7 +22,7 @@ const {app} = require('../../../../../../../main/app');
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/statementOfMeans/dependants/childrenDisabilityService');
+jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
 const mockHasDisabledChildren = childrenDisabilityService.hasDisabledChildren as jest.Mock;
 
 const respondentDependantsUrl = CITIZEN_DEPENDANTS_URL.replace(':id', 'aaa');
@@ -66,7 +66,7 @@ describe('Citizen dependants', () => {
     });
 
     test('when Yes option,under11 field filled in, hasDisabledChildren returns false, should redirect to Other Dependants screen', async () => {
-      mockHasDisabledChildren.mockImplementation( () => {
+      mockHasDisabledChildren.mockImplementation(() => {
         return false;
       });
       await request(app)

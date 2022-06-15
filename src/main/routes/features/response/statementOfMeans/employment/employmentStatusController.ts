@@ -12,7 +12,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import {
   getEmploymentForm,
   saveEmploymentData,
-} from '../../../../../modules/statementOfMeans/employment/employmentService';
+} from '../../../../../services/features/response/statementOfMeans/employment/employmentService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentStatusController');

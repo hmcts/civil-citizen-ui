@@ -14,7 +14,18 @@ import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {Defence} from '../form/models/defence';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
-import PaymentOptionType from '../form/models/admission/fullAdmission/paymentOption/paymentOptionType';
+import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
+import {
+  ClaimAmountBreakup,
+  ClaimFee,
+  InterestClaimFromType,
+  InterestClaimOptions,
+  InterestClaimUntilType,
+  SameRateInterestSelection,
+  SameRateInterestType,
+} from '../form/models/claimDetails';
+import {YesNo} from '../form/models/yesNo';
+import {ResponseType} from '../form/models/responseType';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -30,7 +41,7 @@ export class Claim {
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
   defence?: Defence;
-  paymentOption?: string;
+  paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;
   partialAdmission?: PartialAdmission;
@@ -40,7 +51,34 @@ export class Claim {
   timelineOfEvents?: TimeLineOfEvents[];
   taskSharedFinancialDetails?: boolean;
   defendantStatementOfTruth?: StatementOfTruthForm;
+  claimAmountBreakup?: ClaimAmountBreakup[];
+  totalInterest?: number;
+  claimInterest?: YesNo;
+  interestClaimFrom?: InterestClaimFromType;
+  interestClaimUntil?: InterestClaimUntilType;
+  interestFromSpecificDate?: Date;
+  interestClaimOptions: InterestClaimOptions;
+  sameRateInterestSelection?: SameRateInterestSelection;
+  breakDownInterestTotal?: number;
+  submittedDate?: Date;
+  issueDate?: Date;
+  claimFee?: ClaimFee;
 
+  getClaimantName(): string {
+    if (this.applicant1.type === CounterpartyType.INDIVIDUAL || this.applicant1.type === CounterpartyType.SOLE_TRADER) {
+      return this.applicant1.individualTitle + ' ' + this.applicant1.individualFirstName + ' ' + this.applicant1.individualLastName;
+    } else if (this.applicant1.type === CounterpartyType.ORGANISATION || this.applicant1.type === CounterpartyType.COMPANY) {
+      return this.applicant1.partyName;
+    }
+  }
+
+  getDefendantName(): string {
+    if (this.respondent1.type === CounterpartyType.INDIVIDUAL || this.respondent1.type === CounterpartyType.SOLE_TRADER) {
+      return this.respondent1.individualTitle + ' ' + this.respondent1.individualFirstName + ' ' + this.respondent1.individualLastName;
+    } else if (this.respondent1.type === CounterpartyType.ORGANISATION || this.respondent1.type === CounterpartyType.COMPANY) {
+      return this.respondent1.partyName;
+    }
+  }
 
   formattedResponseDeadline(): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).format('DD MMMM YYYY') : '';
@@ -74,13 +112,68 @@ export class Claim {
   isPaymentOptionPayImmediately(): boolean {
     return this.paymentOption === PaymentOptionType.IMMEDIATELY;
   }
+
+  isInterestClaimUntilSubmitDate(): boolean {
+    return this.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
+  }
+
+  isInterestFromClaimSubmitDate(): boolean {
+    return this.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+  }
+
+  isInterestFromASpecificDate(): boolean {
+    return this.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
+  }
+
+  isInterestClaimOptionsSameRateInterest(): boolean {
+    return this.interestClaimOptions === InterestClaimOptions.SAME_RATE_INTEREST;
+  }
+
+  isSameRateTypeEightPercent(): boolean {
+    return this.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
+  }
+  isDefendantDisabled(): boolean {
+    return this.statementOfMeans?.disability?.option === YesNo.YES;
+  }
+  isDefendantSeverlyDisabled(): boolean{
+    return this.statementOfMeans?.severeDisability?.option === YesNo.YES;
+  }
+  isDefendantDisabledAndSeverlyDiabled(): boolean {
+    return this.isDefendantDisabled() && this.isDefendantSeverlyDisabled();
+  }
+  isPartnerDisabled(): boolean {
+    return this.statementOfMeans?.cohabiting?.option === YesNo.YES &&
+      this.statementOfMeans?.partnerDisability?.option === YesNo.YES;
+  }
+  isChildrenDisabled(): boolean {
+    return this.statementOfMeans?.dependants?.declared === true &&
+      this.statementOfMeans?.childrenDisability?.option === YesNo.YES;
+  }
+  isDefendantSeverelyDisabledOrDependentsDisabled(): boolean {
+    return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverlyDiabled();
+  }
+  isFullAdmission(): boolean {
+    return this.respondent1?.responseType === ResponseType.FULL_ADMISSION;
+  }
+  isPartialAdmission(): boolean {
+    return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
+  }
+  isFullAdmissionPaymentOptionExists(): boolean {
+    return this.paymentOption?.length > 0;
+  }
+  isPartialAdmissionPaymentOptionExists(): boolean {
+    return this.partialAdmission?.paymentIntention?.paymentOption?.length > 0;
+  }
+  partialAdmissionPaymentAmount(): number {
+    return this.partialAdmission?.howMuchDoYouOwe?.amount;
+  }
 }
 
 export interface Party {
   individualTitle?: string;
   individualLastName?: string;
   individualFirstName?: string;
-  companyName?: string;
+  partyName?: string;
   type: CounterpartyType;
   primaryAddress?: CorrespondenceAddress;
   phoneNumber?: string;

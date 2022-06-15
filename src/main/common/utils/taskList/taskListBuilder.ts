@@ -11,7 +11,7 @@ import {getDecideHowYouPayTask} from './tasks/decideHowYouPay';
 import {getShareFinancialDetailsTask} from './tasks/shareFinancialDetails';
 import {getRepaymentPlanTask} from './tasks/repaymentPlan';
 import {isNotPayImmediatelyResponse} from './tasks/taskListHelpers';
-import PaymentOptionType from '../../../common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
+import PaymentOptionType from '../../../common/form/models/admission/paymentOption/paymentOptionType';
 
 const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:string): TaskList => {
   const tasks: Task[] = [];
