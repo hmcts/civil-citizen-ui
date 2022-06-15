@@ -31,6 +31,20 @@
       "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
     },
     "partialAdmission": {
+      "paymentIntention": {
+        "paymentDate": "2025-06-01T00:00:00.000Z"
+      },
+      "howMuchHaveYouPaid": {
+        "amount": 20,
+        "totalClaimAmount": 110,
+        "date": "2022-01-01T00:00:00.000Z",
+        "day": "1",
+        "month": "1",
+        "year": "2022",
+        "text": "text"
+      }
+    },
+    "rejectAllOfClaim": {
       "howMuchHaveYouPaid": {
         "amount": 20,
         "totalClaimAmount": 110,

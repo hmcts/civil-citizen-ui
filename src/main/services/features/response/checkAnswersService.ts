@@ -12,23 +12,27 @@ import {
   CITIZEN_BANK_ACCOUNT_URL,
   CITIZEN_PRIORITY_DEBTS_URL,
   CITIZEN_DEBTS_URL,
+  CITIZEN_MONTHLY_EXPENSES_URL,
+  CITIZEN_MONTHLY_INCOME_URL,
+  CITIZEN_COURT_ORDERS_URL,
 } from '../../../routes/urls';
 import {t} from 'i18next';
 import {getLng} from '../../../common/utils/languageToggleUtils';
 import {PrimaryAddress} from '../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../common/models/correspondenceAddress';
 import {formatDateToFullDate} from '../../../common/utils/dateUtils';
-import PaymentOptionType from '../../../common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
+import PaymentOptionType from '../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-
 import {CitizenBankAccount} from '../../../common/models/citizenBankAccount';
 import {DebtItems} from '../../../common/form/models/statementOfMeans/debts/debtItems';
 import {currencyFormatWithNoTrailingZeros} from '../../../common/utils/currencyFormat';
 import {PriorityDebtDetails} from '../../../common/form/models/statementOfMeans/priorityDebtDetails';
 import {YesNo} from '../../../common/form/models/yesNo';
 import {BankAccountTypeValues} from '../../../common/form/models/bankAndSavings/bankAccountTypeValues';
+
+import Transaction from '../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -68,8 +72,8 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
-      buildResponseSection(claim, claimId, lang),
       buildYourFinancialSection(claim, claimId, lang),
+      buildResponseSection(claim, claimId, lang),
     ],
   };
 };
@@ -182,6 +186,93 @@ const addLoansOrCreditCardDebts = (claim: Claim, financialSection: SummarySectio
 };
 
 
+const addListRow = (section:SummarySection, sectionHref:string, transaction:Transaction, expense: string, amount:string, lang: string | unknown) => {
+  if (transaction?.declared && transaction?.transactionSource?.amount) {
+    section.summaryList.rows.push(summaryRow(t(expense, { lng: getLng(lang) }), amount, sectionHref, changeLabel(lang)));
+  }
+};
+
+const addMonthlyExpenses = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+  const yourMonthlyExpensessHref = CITIZEN_MONTHLY_EXPENSES_URL.replace(':id', claimId);
+
+  if (claim.statementOfMeans?.regularExpenses) {
+    financialSection.summaryList.rows.push(
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EXPENSES_REGULAR', { lng: getLng(lang) }), '', yourMonthlyExpensessHref, changeLabel(lang)),
+    );
+  }
+
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.mortgage, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MORTGAGE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mortgage?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.rent, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_RENT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.rent?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.councilTax, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_COUNCIL_TAX', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.councilTax?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.gas, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_GAS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.gas?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.electricity, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_ELECTRICITY', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.electricity?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.water, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_WATER', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.water?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.travel, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TRAVEL', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.travel?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.schoolCosts, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_SCHOOL_COSTS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.schoolCosts?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_FOOD_AND_HOUSEKEEPING', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.tvAndBroadband, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TV_BROADBAND', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.tvAndBroadband?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.hirePurchase, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_HIRE_PURCHASE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.hirePurchase?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.mobilePhone, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MOBILE_PHONE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mobilePhone?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.maintenance, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MAINTENANCE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.maintenance?.transactionSource?.amount), lang);
+
+  if (claim.statementOfMeans?.regularExpenses?.other?.declared) {
+    const otherExpenses = claim.statementOfMeans?.regularExpenses.other.transactionSources;
+    for (const item of otherExpenses) {
+      financialSection.summaryList.rows.push(summaryRow(item.name, currencyFormatWithNoTrailingZeros(item.amount), yourMonthlyExpensessHref, changeLabel(lang)));
+    }
+  }
+};
+
+const addMonthlyIncome = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+  const yourMonthlyIncomesHref = CITIZEN_MONTHLY_INCOME_URL.replace(':id', claimId);
+
+  if (claim.statementOfMeans?.regularIncome) {
+    financialSection.summaryList.rows.push(
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.INCOME_REGULAR', { lng: getLng(lang) }), '', yourMonthlyIncomesHref, changeLabel(lang)),
+    );
+  }
+
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.job, 'PAGES.CHECK_YOUR_ANSWER.INCOME_JOB', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.job?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.universalCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_UNIVERSAL_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.universalCredit?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.jobseekerAllowanceIncome, 'PAGES.CHECK_YOUR_ANSWER.INCOME_JOB_SEEKER_ALLOWANCE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.jobseekerAllowanceIncome?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.jobseekerAllowanceContribution, 'PAGES.CHECK_YOUR_ANSWER.INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.jobseekerAllowanceContribution?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.incomeSupport, 'PAGES.CHECK_YOUR_ANSWER.INCOME_SUPPORT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.incomeSupport?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.workingTaxCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_WORKING_TAX_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.workingTaxCredit?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.childTaxCredit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_CHILD_TAX_CREDIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.childTaxCredit?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.childBenefit, 'PAGES.CHECK_YOUR_ANSWER.INCOME_CHILD_BENEFIT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.childBenefit?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.councilTaxSupport, 'PAGES.CHECK_YOUR_ANSWER.INCOME_COUNCIL_TAX_SUPPORT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.councilTaxSupport?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyIncomesHref, claim.statementOfMeans?.regularIncome?.pension, 'PAGES.CHECK_YOUR_ANSWER.INCOME_PENSION', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularIncome?.pension?.transactionSource?.amount), lang);
+
+  if (claim.statementOfMeans?.regularIncome?.other?.declared) {
+    const otherIncomes = claim.statementOfMeans?.regularIncome.other.transactionSources;
+    for (const item of otherIncomes) {
+      financialSection.summaryList.rows.push(summaryRow(item.name, currencyFormatWithNoTrailingZeros(item.amount), yourMonthlyIncomesHref, changeLabel(lang)));
+    }
+  }
+};
+
+const addCourtOrders = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+  const yourCourtOrdersHref = CITIZEN_COURT_ORDERS_URL.replace(':id', claimId);
+  const courtOrders = claim.statementOfMeans?.courtOrders;
+
+  if (courtOrders?.declared && courtOrders?.rows?.length > 0) {
+    financialSection.summaryList.rows.push(
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE', { lng: getLng(lang) }), YesNo.YES.charAt(0).toUpperCase() + YesNo.YES.slice(1), yourCourtOrdersHref, changeLabel(lang)),
+    );
+
+    for (const item of courtOrders.rows) {
+      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_CLAIM_NUMBER', { lng: getLng(lang) }), item.claimNumber, '', changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_AMOUNT_OWNED', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(item.amount), '', changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_MONTHLY_INSTALMENT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(item.instalmentAmount), '', changeLabel(lang)));
+    }
+  } else {
+    financialSection.summaryList.rows.push(
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE', { lng: getLng(lang) }), YesNo.NO.charAt(0).toUpperCase() + YesNo.NO.slice(1), yourCourtOrdersHref, changeLabel(lang)),
+    );
+  }
+};
+
+
 // -- FINANCIAL SECTION
 const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
 
@@ -194,10 +285,16 @@ const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string |
 
   // -- Bank Accounts
   addBankAccounts(claim, yourFinancialSection, claimId, lang);
+  // -- Court Orders
+  addCourtOrders(claim, yourFinancialSection, claimId, lang);
   // -- Priority Debts
   addPriorityDebts(claim, yourFinancialSection, claimId, lang);
   // -- Loans or Credit Card Debts
   addLoansOrCreditCardDebts(claim, yourFinancialSection, claimId, lang);
+  // -- Regular Expenses
+  addMonthlyExpenses(claim, yourFinancialSection, claimId, lang);
+  // -- Regular Income
+  addMonthlyIncome(claim, yourFinancialSection, claimId, lang);
 
   return yourFinancialSection;
 }; // -- End

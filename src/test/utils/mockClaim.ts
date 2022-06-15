@@ -63,6 +63,9 @@ function buildMockClaim(): Claim {
     },
   };
   _mockClaim.partialAdmission = {
+    paymentIntention: {
+      paymentDate: new Date('2022-06-01T00:00:00'),
+    },
     howMuchHaveYouPaid: {
       amount: 20,
       totalClaimAmount: 110,
@@ -71,6 +74,17 @@ function buildMockClaim(): Claim {
       year: 2040,
       text: 'text',
     },
+  };
+  _mockClaim.rejectAllOfClaim = {
+    howMuchHaveYouPaid: {
+      amount: 20,
+      totalClaimAmount: 110,
+      day: 1,
+      month: 1,
+      year: 2040,
+      text: 'text',
+    },
+    option: 'test',
   };
   _mockClaim.totalClaimAmount = 110;
   _mockClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');

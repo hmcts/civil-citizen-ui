@@ -14,10 +14,19 @@ import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {Defence} from '../form/models/defence';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
-import PaymentOptionType from '../form/models/admission/fullAdmission/paymentOption/paymentOptionType';
-import {InterestClaimFromType, InterestClaimUntilType, InterestClaimOptions, SameRateInterestSelection, SameRateInterestType, ClaimFee, ClaimAmountBreakup} from '../form/models/claimDetails';
-import {Document} from '../../common/models/document';
+import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
+import {
+  ClaimAmountBreakup,
+  ClaimFee,
+  InterestClaimFromType,
+  InterestClaimOptions,
+  InterestClaimUntilType,
+  SameRateInterestSelection,
+  SameRateInterestType,
+} from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
+import {ResponseType} from '../form/models/responseType';
+import {Document} from '../../common/models/document';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -33,7 +42,7 @@ export class Claim {
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
   defence?: Defence;
-  paymentOption?: string;
+  paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;
   partialAdmission?: PartialAdmission;
@@ -93,6 +102,7 @@ export class Claim {
   isDeadLinePassed(): boolean {
     return isPastDeadline(this.respondent1ResponseDeadline);
   }
+
   isEmpty(): boolean {
     return !this.applicant1;
   }
@@ -108,15 +118,19 @@ export class Claim {
   isInterestClaimUntilSubmitDate(): boolean {
     return this.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
   }
+
   isInterestFromClaimSubmitDate(): boolean {
     return this.interestClaimFrom === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
   }
+
   isInterestFromASpecificDate(): boolean {
     return this.interestClaimFrom === InterestClaimFromType.FROM_A_SPECIFIC_DATE;
   }
+
   isInterestClaimOptionsSameRateInterest(): boolean {
     return this.interestClaimOptions === InterestClaimOptions.SAME_RATE_INTEREST;
   }
+
   isSameRateTypeEightPercent(): boolean {
     return this.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   }
@@ -140,16 +154,31 @@ export class Claim {
   isDefendantSeverelyDisabledOrDependentsDisabled(): boolean {
     return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverlyDiabled();
   }
+  isFullAdmission(): boolean {
+    return this.respondent1?.responseType === ResponseType.FULL_ADMISSION;
+  }
+  isPartialAdmission(): boolean {
+    return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
+  }
+  isFullAdmissionPaymentOptionExists(): boolean {
+    return this.paymentOption?.length > 0;
+  }
+  isPartialAdmissionPaymentOptionExists(): boolean {
+    return this.partialAdmission?.paymentIntention?.paymentOption?.length > 0;
+  }
+  partialAdmissionPaymentAmount(): number {
+    return this.partialAdmission?.howMuchDoYouOwe?.amount;
+  }
   extractDocumentId(): string {
     const documentData = this.specClaimTemplateDocumentFiles?.document_url;
-    let documentId : string; 
+    let documentId: string;
     if (documentData) {
       const splittedData = documentData?.split('/');
       documentId = splittedData[splittedData?.length - 1];
     }
     return documentId;
   }
-  generatePdfFileName(): string{
+  generatePdfFileName(): string {
     return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
   }
 }
