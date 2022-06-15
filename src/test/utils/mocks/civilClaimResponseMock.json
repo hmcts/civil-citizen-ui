@@ -44,6 +44,17 @@
         "text": "text"
       }
     },
+    "rejectAllOfClaim": {
+      "howMuchHaveYouPaid": {
+        "amount": 20,
+        "totalClaimAmount": 110,
+        "date": "2022-01-01T00:00:00.000Z",
+        "day": "1",
+        "month": "1",
+        "year": "2022",
+        "text": "text"
+      }
+    },
     "statementOfMeans": {
       "disability": {
         "option": "yes"
