@@ -20,6 +20,17 @@
     "BUTTONS": {
       "CONTINUE": "Continue"
     },
+    "CONTACT_US_FOR_HELP": {
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)",
+      "EMAIL": "Email",
+      "OPENING_HOURS": "Monday to Friday, 8.30am to 5pm.",
+      "RESPONSE_DELAY": "We'll get back to you within 10 days",
+      "TITLE": "Contact us for help",
+      "TELEPHONE": "Telephone",
+      "WEB_CHAT": "Web chat",
+      "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
+      "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
+    },
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "I admit all the claim"
     },
@@ -37,16 +48,20 @@
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
     },
-    "CONTACT_US_FOR_HELP": {
-      "CALL_CHARGES": "Find out about call charges (opens in a new window)",
-      "EMAIL": "Email",
-      "OPENING_HOURS": "Monday to Friday, 8.30am to 5pm.",
-      "RESPONSE_DELAY": "We'll get back to you within 10 days",
-      "TITLE": "Contact us for help",
-      "TELEPHONE": "Telephone",
-      "WEB_CHAT": "Web chat",
-      "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
-      "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
+    "TYPES_OF_SENIOR_POSITION": {
+      "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
+      "NON_CORPORATION_SENIOR_POSITIONS": [
+        "the chairperson or president",
+        "another officer of the corporation"
+      ],
+      "POSITION_COULD_BE": "A senior position could be a:",
+      "SENIOR_POSITIONS": [
+        "director",
+        "treasurer",
+        "chief executive",
+        "manager or other officer of the company or corporation"
+      ],
+      "TITLE": "Types of senior position"
     }
   },
   "PAGES": {

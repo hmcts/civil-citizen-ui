@@ -20,6 +20,17 @@
     "BUTTONS": {
       "CONTINUE": "Parhau"
     },
+    "CONTACT_US_FOR_HELP": {
+      "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
+      "EMAIL": "E-bost",
+      "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
+      "RESPONSE_DELAY": "We'll get back to you within 10 days",
+      "TITLE": "Cysylltwch â ni i gael cymorth",
+      "TELEPHONE": "Rhif ffôn",
+      "WEB_CHAT": "Sgwrsio ar y We",
+      "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
+      "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
+    },
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "Rwy'n cyfaddef yr holl hawliad"
     },
@@ -37,16 +48,20 @@
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
     },
-    "CONTACT_US_FOR_HELP": {
-      "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
-      "EMAIL": "E-bost",
-      "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
-      "RESPONSE_DELAY": "We'll get back to you within 10 days",
-      "TITLE": "Cysylltwch â ni i gael cymorth",
-      "TELEPHONE": "Rhif ffôn",
-      "WEB_CHAT": "Sgwrsio ar y We",
-      "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
-      "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
+    "TYPES_OF_SENIOR_POSITION": {
+      "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
+      "NON_CORPORATION_SENIOR_POSITIONS": [
+        "the chairperson or president",
+        "another officer of the corporation"
+      ],
+      "POSITION_COULD_BE": "A senior position could be a:",
+      "SENIOR_POSITIONS": [
+        "director",
+        "treasurer",
+        "chief executive",
+        "manager or other officer of the company or corporation"
+      ],
+      "TITLE": "Types of senior position"
     }
   },
   "PAGES": {
