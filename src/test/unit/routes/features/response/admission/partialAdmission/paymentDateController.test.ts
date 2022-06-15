@@ -70,9 +70,9 @@ describe('Payment date', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('What date will you pay on?');
-          expect(res.text).toContain('name="year" type="text" pattern="[0-9]*"');
-          expect(res.text).toContain('name="month" type="text" pattern="[0-9]*"');
-          expect(res.text).toContain('name="day" type="text" pattern="[0-9]*"');
+          expect(res.text).toContain('name="year" type="text"');
+          expect(res.text).toContain('name="month" type="text"');
+          expect(res.text).toContain('name="day" type="text"');
         });
     });
     test('should return payment date page with payment date loaded from Redis', async () => {
@@ -82,9 +82,9 @@ describe('Payment date', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('What date will you pay on?');
-          expect(res.text).toContain('name="year" type="text" value="2025" pattern="[0-9]*');
-          expect(res.text).toContain('name="month" type="text" value="6" pattern="[0-9]*');
-          expect(res.text).toContain('name="day" type="text" value="1" pattern="[0-9]*');
+          expect(res.text).toContain('name="year" type="text" value="2025"');
+          expect(res.text).toContain('name="month" type="text" value="6"');
+          expect(res.text).toContain('name="day" type="text" value="1"');
         });
     });
   });
