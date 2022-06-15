@@ -3,7 +3,7 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../../main/app';
 import {
-  CITIZEN_PARTIAL_ADMISSION_PAYMENT_DATE_URL,
+  CITIZEN_PA_PAYMENT_DATE_URL,
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../../../../../main/routes/urls';
@@ -99,7 +99,7 @@ describe('Part Admit - Payment Option Controller', () => {
         .send('paymentType=BY_SET_DATE')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PARTIAL_ADMISSION_PAYMENT_DATE_URL);
+          expect(res.header.location).toEqual(CITIZEN_PA_PAYMENT_DATE_URL);
         });
     });
     test('should return 500 status when there is error', async () => {

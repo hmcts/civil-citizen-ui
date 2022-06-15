@@ -15,7 +15,7 @@ import {CounterpartyType} from '../../../../main/common/models/counterpartyType'
 import {PartialAdmission} from '../../../../main/common/models/partialAdmission';
 import {Respondent} from '../../../../main/common/models/respondent';
 import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import {PaymentIntention} from '../../../../main/common/form/models/admission/paymentIntention';
+import {PaymentIntention} from '../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
 import PaymentOptionType from '../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 
 describe('Claim isInterestClaimUntilSubmitDate', () => {
@@ -283,7 +283,6 @@ describe('Claim isPartnerDisabled', () => {
     //Given
     claim.statementOfMeans.partnerDisability.option = YesNo.NO;
     claim.statementOfMeans.cohabiting.option = YesNo.YES;
-    //When
     //When
     const result = claim.isPartnerDisabled();
     //Then

@@ -263,13 +263,6 @@
     "FREE_TELEPHONE_MEDIATION": {
       "PAGE_TITLE": "Free telephone mediation"
     },
-    "PAYMENT_OPTION": {
-      "PAGE_TITLE": "Payment option",
-      "REQUEST": "The claimant can request a County Court Judgment (CCJ) against you if you don't pay immediately.",
-      "REPAYMENT": "I'll suggest a repayment plan",
-      "TITLE": "When do you want to pay?",
-      "YOU_MUST_CONTACT": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
-    },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
     },

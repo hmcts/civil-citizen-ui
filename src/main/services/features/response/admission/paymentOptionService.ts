@@ -4,7 +4,7 @@ import {Claim} from '../../../../common/models/claim';
 import {ResponseType} from '../../../../common/form/models/responseType';
 import PaymentOptionType
   from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
-import {PaymentIntention} from '../../../../common/form/models/admission/paymentIntention';
+import {PaymentIntention} from '../../../../common/form/models/admission/partialAdmission/paymentIntention';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentOptionService');

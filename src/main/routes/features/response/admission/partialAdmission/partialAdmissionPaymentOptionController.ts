@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {
-  CITIZEN_PARTIAL_ADMISSION_PAYMENT_DATE_URL,
+  CITIZEN_PA_PAYMENT_DATE_URL,
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../../urls';
@@ -27,7 +27,7 @@ function renderView(form: GenericForm<PaymentOption>, res: express.Response, amo
 
 function redirectToNextPage(claimId: string, form: PaymentOption, res: express.Response) {
   if (form.paymentOptionBySetDateSelected()) {
-    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_DATE_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PA_PAYMENT_DATE_URL));
   } else {
     res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
   }

@@ -10,7 +10,7 @@
   'PAGES.PAYMENT_OPTION.PAGE_TITLE' %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.PAYMENT_OPTION.PAGE_TITLE') }}
+  {{ setPageTitle(pageTitle) }}
 {% endblock %}
 
 {% block content %}
@@ -40,7 +40,8 @@
               name: "paymentType",
               fieldset: {
                 legend: {
-                  text: t('PAGES.PAYMENT_OPTION.TITLE'),
+                  text: t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount}) if amount 
+                        else t('PAGES.PAYMENT_OPTION.TITLE'),
                   isPageHeading: true,
                   classes: "govuk-fieldset__legend--l"
                 }
@@ -49,7 +50,7 @@
                 {
                   value: PaymentOptionType.IMMEDIATELY,
                   text: t('COMMON.PAYMENT_OPTION.IMMEDIATELY'),
-                  checked: true if form.paymentType == PaymentOptionType.IMMEDIATELY,
+                  checked: true if form.model.paymentType == PaymentOptionType.IMMEDIATELY,
                   conditional: {
                   html: hintPayImmediatly
                 }
@@ -57,7 +58,7 @@
                 {
                   value: PaymentOptionType.BY_SET_DATE,
                   text: t('COMMON.PAYMENT_OPTION.BY_SET_DATE'),
-                  checked: true if form.paymentType == PaymentOptionType.BY_SET_DATE,
+                  checked: true if form.model.paymentType == PaymentOptionType.BY_SET_DATE,
                   conditional: {
                   html: hintPayLater
                 }
@@ -65,7 +66,7 @@
                 {
                   value: PaymentOptionType.INSTALMENTS,
                   text: t('PAGES.PAYMENT_OPTION.REPAYMENT'),
-                  checked: true if form.paymentType == PaymentOptionType.INSTALMENTS,
+                  checked: true if form.model.paymentType == PaymentOptionType.INSTALMENTS,
                   conditional: {
                   html: hintPayLater
                 }
