@@ -45,7 +45,5 @@ export class DmStoreClient {
       logger.error(err);
     }
   }
-
 }
-
 

@@ -67,8 +67,6 @@ const mockCivilClaimPDFTimeline = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponsePDFTimeline))),
 };
 
-
-
 export {
   mockCivilClaim,
   mockCivilClaimUndefined,

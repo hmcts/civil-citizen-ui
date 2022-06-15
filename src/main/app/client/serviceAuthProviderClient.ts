@@ -38,6 +38,5 @@ export class ServiceAuthProviderClient {
       logger.error(err);
     }
   }
-
 }
 
