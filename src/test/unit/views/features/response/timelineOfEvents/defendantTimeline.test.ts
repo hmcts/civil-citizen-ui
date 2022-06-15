@@ -56,7 +56,7 @@ describe('defendant timeline view', () => {
       htmlDocument = dom.window.document;
       const downloadLink = htmlDocument.getElementById('timeline-link') as HTMLAnchorElement;
       expect(downloadLink.innerHTML).toContain('Download and view their Timeline');
-      expect(downloadLink.href).toContain('/case/:id/timeline/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c');
+      expect(downloadLink.href).toContain('/case/:id/documents/timeline');
     });
     it('should ask for defendant timeline of events', () => {
       const yourTimelineHeader = htmlDocument.getElementsByClassName('govuk-heading-s govuk-!-margin-bottom-0');

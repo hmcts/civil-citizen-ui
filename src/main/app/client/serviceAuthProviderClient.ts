@@ -5,6 +5,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('serviceAuthProviderClient');
 
 const xuiMicroserviceName = config.get<string>('services.dmStore.microserviceName');
+const serviceAuthTokenGeneratorUrl = config.get<string>('services.serviceAuthProvider.serviceAuthTokenGeneratorUrl');
 
 export class ServiceAuthProviderClient {
   client: AxiosInstance;
@@ -25,7 +26,6 @@ export class ServiceAuthProviderClient {
 
   async getServiceAuthorisationToken(): Promise<string> {
     const options = this.getConfig();
-    const serviceAuthTokenGeneratorUrl = '/testing-support/lease';
     // TODO : should be replaced with civil_citizen_ui when civil citizen ui 
     // is given permission to access prf documents on dm - store created via Xui
     const reqBody = {

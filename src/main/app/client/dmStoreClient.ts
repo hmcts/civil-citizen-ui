@@ -6,7 +6,7 @@ import {ServiceAuthProviderClient} from './serviceAuthProviderClient';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dmStoreClient');
 
-const serviceAuthProviderClientBaseUrl = config.get<string>('services.serviceAuthProvider.url');
+const serviceAuthProviderClientBaseUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
 const serviceAuthProviderClient: ServiceAuthProviderClient = new ServiceAuthProviderClient(serviceAuthProviderClientBaseUrl);
 export class DmStoreClient {
   client: AxiosInstance;

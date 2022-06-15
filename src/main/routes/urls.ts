@@ -72,4 +72,5 @@ export const RESPONSE_YOUR_DEFENCE_URL = `${BASE_CASE_RESPONSE_URL}/your-defence
 export const CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL = `${FULL_REJECTION_URL}/you-have-paid-less`;
 export const RESPONSE_INCOMPLETE_SUBMISSION_URL = `${BASE_CASE_RESPONSE_URL}/incomplete-submission`;
 export const CLAIMANT_SUMMARY_URL = `${DASHBOARD_URL}/:id/claimant`;
-export const DM_STORE_RETRIEVE_DOCUMENTS_URL = `${BASE_CASE_URL}/timeline/documents/:documentId`;
+export const CASE_TIMELINE_DOCUMENTS_URL = `${BASE_CASE_URL}/documents/timeline`;
+

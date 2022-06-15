@@ -1,5 +1,9 @@
 import * as express from 'express';
-import {CITIZEN_EVIDENCE_URL, CITIZEN_TIMELINE_URL} from '../../../urls';
+import {
+  CITIZEN_EVIDENCE_URL,
+  CITIZEN_TIMELINE_URL,
+  CASE_TIMELINE_DOCUMENTS_URL,
+} from '../../../urls';
 import {GenericForm} from '../../../../common/form//models/genericForm';
 import {DefendantTimeline} from '../../../../common/form//models/timeLineOfEvents/defendantTimeline';
 import {
@@ -24,7 +28,7 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       const theirTimeline = claim.timelineOfEvents;
-      const pdfUrl = `/case/${req.params.id}/timeline/documents/${claim.extractDocumentId()}`;
+      const pdfUrl = CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id);
       const form = new GenericForm(getPartialAdmitTimeline(claim));
       renderView(form, theirTimeline, pdfUrl, res);
     } catch (error) {
@@ -38,7 +42,7 @@ defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res) => {
     await form.validate();
     if (form.hasErrors()) {
       const claim = await getCaseDataFromStore(req.params.id);
-      const pdfUrl = `/case/${req.params.id}/timeline/documents/${claim.extractDocumentId()}`;
+      const pdfUrl = CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id);
       renderView(form, claim.timelineOfEvents, pdfUrl, res);
     } else {
       await savePartialAdmitTimeline(req.params.id, form.model);

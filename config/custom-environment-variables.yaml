@@ -15,9 +15,10 @@ services:
       tls: REDIS_TLS
   dmStore:
     microserviceName: MICROSERVICE_NAME
-    url: DM_STORE_URL
+    baseUrl: DM_STORE_URL
   serviceAuthProvider:
-    url: SERVICE_AUTH_PROVIDER_URL
+    baseUrl: SERVICE_AUTH_PROVIDER_BASE_URL
+    serviceAuthTokenGeneratorUrl : SERVICE_AUTH_TOKEN_GENERATOR_URL   
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
