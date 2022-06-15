@@ -6,11 +6,10 @@ import {
 } from '../../../../urls';
 import {OtherDependants} from '../../../../../common/form/models/statementOfMeans/otherDependants';
 import {ValidationError, Validator} from 'class-validator';
-import {OtherDependantsService} from '../../../../../modules/statementOfMeans/otherDependants/otherDependantsService';
+import {OtherDependantsService} from '../../../../../services/features/response/statementOfMeans/otherDependants/otherDependantsService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {Claim} from '../../../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../../../modules/draft-store/draftStoreService';
-import {YesNo} from '../../../../../common/form/models/yesNo';
 
 const citizenOtherDependantsViewPath = 'features/response/statementOfMeans/otherDependants/other-dependants';
 const otherDependantsController = express.Router();
@@ -48,18 +47,12 @@ otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
       } else {
         await otherDependantsService.saveOtherDependants(req.params.id, otherDependants);
         const claim: Claim = await getCaseDataFromStore(req.params.id);
-        if (
-          (claim.statementOfMeans?.disability?.option === YesNo.NO &&
-          claim.statementOfMeans?.cohabiting?.option === YesNo.NO &&
-          claim.statementOfMeans?.childrenDisability?.option === YesNo.NO)
-          ||
-          (claim.statementOfMeans?.disability?.option === YesNo.YES &&
-          claim.statementOfMeans?.cohabiting?.option === YesNo.YES &&
-          claim.statementOfMeans?.partnerDisability?.option === YesNo.NO)
-        ) {
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_CARER_URL));
-        } else{
+        if (claim.isDefendantSeverelyDisabledOrDependentsDisabled()) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EMPLOYMENT_URL));
+         
+        } else {
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_CARER_URL));
+          
         }
       }
     } catch (error) {

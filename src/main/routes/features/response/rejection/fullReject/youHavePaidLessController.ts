@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, CLAIM_TASK_LIST_URL} from '../../../../urls';
-import {getClaimantName} from '../../../../../modules/rejectAllOfClaimService';
+import {getClaimantName} from '../../../../../services/features/response/rejectAllOfClaimService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const youHavePaidLessController = express.Router();

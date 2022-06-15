@@ -1,4 +1,4 @@
-@import '~govuk-frontend';
+@import 'node_modules/govuk-frontend/govuk/all';
 @import './task-list';
 @import './citizen-ui-colours';
 
@@ -12,6 +12,10 @@
 
 .hide {
   display: none;
+}
+
+.mid-grey {
+  color: govuk-colour('dark-grey');
 }
 
 .govuk-link-button {

@@ -3,7 +3,7 @@ import {Residence} from '../../../../common/form/models/statementOfMeans/residen
 import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ResidenceType} from '../../../../common/form/models/statementOfMeans/residenceType';
-import residenceService from '../../../../modules/statementOfMeans/residence/residenceService';
+import residenceService from '../../../../services/features/response/statementOfMeans/residence/residenceService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 

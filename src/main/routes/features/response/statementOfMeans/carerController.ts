@@ -2,7 +2,7 @@ import * as express from 'express';
 import {CITIZEN_CARER_URL, CITIZEN_EMPLOYMENT_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {Carer} from '../../../../common/form/models/statementOfMeans/carer';
-import {getCarer, saveCarer} from '../../../../modules/statementOfMeans/carerService';
+import {getCarer, saveCarer} from '../../../../services/features/response/statementOfMeans/carerService';
 import {validateForm} from '../../../../common/form/validators/formValidator';
 
 const carerViewPath = 'features/response/statementOfMeans/carer';
