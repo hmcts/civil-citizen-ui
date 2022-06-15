@@ -7,7 +7,7 @@ const dashboardPage: DashboardPage = new DashboardPage();
 export class DashboardSteps {
 
   DashboardPage (): void {
-    dashboardPage.open();
+    // dashboardPage.open();
     dashboardPage.verifyDashboardPageContent();
   }
 }

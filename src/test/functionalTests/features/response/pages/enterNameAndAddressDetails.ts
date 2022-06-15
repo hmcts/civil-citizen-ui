@@ -15,25 +15,15 @@ const fields = {
   correspondenceAddressLine3: 'input[id="correspondenceAddressLine3"]',
   correspondenceCity: 'input[id="correspondenceCity"]',
   correspondencePostCode: 'input[id="correspondencePostCode"]',
-  day: 'input[id="day"]',
-  month: 'input[id="month"]',
-  year: 'input[id="year"]',
-  contactNumber: 'input[id="telephoneNumber"]',
 };
+
 
 const buttons = {
   saveAndContinue: 'button.govuk-button',
 };
 
-export class ResponsePage {
-
-  open (claimRef): void {
-    I.amOnPage('/case/'+claimRef+'/response/task-list');
-  }
-  verifyResponsePageContent (): void {
-    I.see('Respond to a money claim');
-  }
-  enterConfirmYourDetails (claimRef): void {
+export class NameAndAddressDetailsPage {
+  enterNameAndAddressDetails (claimRef): void {
     I.amOnPage('/case/'+claimRef+'/response/your-details');
     I.fillField(fields.addressLine1, 'Test AddressLine1');
     I.fillField(fields.addressLine2, 'Test AddressLine2');
@@ -41,25 +31,14 @@ export class ResponsePage {
     I.fillField(fields.city, 'Test City');
     I.fillField(fields.postcode, 'IG6 1JD');
 
-    // I.click(fields.correspondenceAddress_yes);
-    // I.fillField(fields.correspondenceAddressLine1, 'Flat 10');
-    // I.fillField(fields.correspondenceAddressLine2, '823 Knighton Court');
-    // I.fillField(fields.correspondenceAddressLine3, 'Cranbrook Road');
-    // I.fillField(fields.correspondenceCity, 'Barkingside');
-    // I.fillField(fields.correspondencePostCode, 'IG2 6QU');
+    I.click(fields.correspondenceAddress_yes);
+    I.click(fields.enterAddressManuallyLink);
+    I.fillField(fields.correspondenceAddressLine1, 'Flat 10');
+    I.fillField(fields.correspondenceAddressLine2, '823 Knighton Court');
+    I.fillField(fields.correspondenceAddressLine3, 'Cranbrook Road');
+    I.fillField(fields.correspondenceCity, 'Barkingside');
+    I.fillField(fields.correspondencePostCode, 'IG2 6QU');
 
     I.click(buttons.saveAndContinue);
-  }
-  enterDateOfBirth (claimRef): void {
-    I.amOnPage('/case/'+claimRef+'/response/your-dob');
-    I.fillField(fields.day, '10');
-    I.fillField(fields.month, '12');
-    I.fillField(fields.year, '1990');
-
-    I.click(buttons.saveAndContinue);
-  }
-  enterContactNumber (claimRef): void{
-    I.amOnPage('/case/'+claimRef+'/response/your-phone');
-    I.fillField(fields.contactNumber, '02088908876');
   }
 }

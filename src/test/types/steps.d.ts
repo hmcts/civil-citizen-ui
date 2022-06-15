@@ -15,7 +15,8 @@ declare namespace CodeceptJS {
     click: (click) => any;
     fillField: (locator: string | object, value: string) => any;
     // @ts-ignore
-    see: (text, context=null) => any;
+    see: (text, context=any) => any;
+    waitForText: (waitForText) => any;
   }
 }
 

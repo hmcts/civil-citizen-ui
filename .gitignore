@@ -31,3 +31,5 @@ functional-output/
 .yarn/
 .yarnrc
 src/test/output/*
+/package-lock.json
+src/main/app.ts
