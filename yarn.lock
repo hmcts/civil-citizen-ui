@@ -2049,7 +2049,7 @@
   dependencies:
     "@wdio/utils" "7.20.0"
 
-"@wdio/sauce-service@^7.19.7":
+"@wdio/sauce-service@^7.20.2":
   version "7.20.2"
   resolved "https://registry.yarnpkg.com/@wdio/sauce-service/-/sauce-service-7.20.2.tgz#ac2113bbb545cc2a784e2533bf22eb55dc43d9fd"
   integrity sha512-8febPY4mKsildIGvrivVQ/Zp+7SGmJeGV1zkMekys9Rv5/V7RekvQ5KFy3cLtyd4fwZnT56x+eCdGkVkU2ylCg==
