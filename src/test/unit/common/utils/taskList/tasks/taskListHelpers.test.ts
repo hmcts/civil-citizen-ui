@@ -10,6 +10,7 @@ import {
 } from '../../../../../../main/common/utils/taskList/tasks/taskListHelpers';
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 import {Respondent} from '../../../../../../main/common/models/respondent';
+import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Respondent = {
@@ -145,28 +146,18 @@ describe('Task List Helpers', () => {
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
-    it('should return true if payment option is blank', () => {
-      caseData.paymentOption = '';
-      expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
-    });
-
-    it('should return true if payment option is invalid', () => {
-      caseData.paymentOption = 'foo';
-      expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
-    });
-
     it('should return true if payment option is INSTALMENTS', () => {
-      caseData.paymentOption = 'INSTALMENTS';
+      caseData.paymentOption = PaymentOptionType.INSTALMENTS;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
     it('should return true if payment option is BY_SET_DATE', () => {
-      caseData.paymentOption = 'BY_SET_DATE';
+      caseData.paymentOption = PaymentOptionType.BY_SET_DATE;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(true);
     });
 
     it('should return false if payment option is IMMEDIATELY', () => {
-      caseData.paymentOption = 'IMMEDIATELY';
+      caseData.paymentOption = PaymentOptionType.IMMEDIATELY;
       expect(isNotPayImmediatelyResponse(caseData)).toEqual(false);
     });
   });
@@ -181,13 +172,8 @@ describe('Task List Helpers', () => {
       expect(isPaymentOptionMissing(caseData)).toEqual(true);
     });
 
-    it('should return true if paymentOption is blank', () => {
-      caseData.paymentOption = '';
-      expect(isPaymentOptionMissing(caseData)).toEqual(true);
-    });
-
     it('should return false if paymentOption is set', () => {
-      caseData.paymentOption = 'validPaymentOption';
+      caseData.paymentOption = PaymentOptionType.IMMEDIATELY;
       expect(isPaymentOptionMissing(caseData)).toEqual(false);
     });
   });

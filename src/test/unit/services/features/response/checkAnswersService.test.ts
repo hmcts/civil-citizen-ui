@@ -18,7 +18,7 @@ import {
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../src/test/utils/errorMessageTestConstants';
 import PaymentOptionType
-  from '../../../../../main/common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
+  from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {StatementOfTruthForm} from '../../../../../main/common/form/models/statementOfTruth/statementOfTruthForm';
 import {SignatureType} from '../../../../../main/common/models/signatureType';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
