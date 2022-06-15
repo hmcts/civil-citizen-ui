@@ -50,17 +50,17 @@
     },
     "TYPES_OF_SENIOR_POSITION": {
       "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
-      "NON_CORPORATION_SENIOR_POSITIONS": [
-        "the chairperson or president",
-        "another officer of the corporation"
-      ],
+      "NON_CORPORATION_SENIOR_POSITIONS": {
+        "ANOTHER_OFFICER": "another officer of the corporation",
+        "CHAIR": "the chairperson or president"
+      },
       "POSITION_COULD_BE": "A senior position could be a:",
-      "SENIOR_POSITIONS": [
-        "director",
-        "treasurer",
-        "chief executive",
-        "manager or other officer of the company or corporation"
-      ],
+      "SENIOR_POSITIONS": {
+        "CEO": "chief executive",
+        "DIRECTOR": "director",
+        "MANAGER_OR_OTHER": "manager or other officer of the company or corporation",
+        "TREASURER": "treasurer"
+      },
       "TITLE": "Types of senior position"
     }
   },

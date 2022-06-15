@@ -1,0 +1,20 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% macro typesOfSeniorPosition() %}
+  {% set positionCouldBe = '<p class="govuk-body">' + t('COMMON.TYPES_OF_SENIOR_POSITION.POSITION_COULD_BE') + '</p>' %}
+  {% set seniorPositionsList = '<ul class="govuk-!-padding-left-4"><li>'  +
+    t('COMMON.TYPES_OF_SENIOR_POSITION.SENIOR_POSITIONS.DIRECTOR') + '</li><li>' +
+    t('COMMON.TYPES_OF_SENIOR_POSITION.SENIOR_POSITIONS.TREASURER') + '</li><li>' +
+    t('COMMON.TYPES_OF_SENIOR_POSITION.SENIOR_POSITIONS.CEO') + '</li><li>' +
+    t('COMMON.TYPES_OF_SENIOR_POSITION.SENIOR_POSITIONS.MANAGER_OR_OTHER')+ '</li></ul>'
+   %}
+  {% set nonCorporation = '<p class="govuk-body">' + t('COMMON.TYPES_OF_SENIOR_POSITION.CORPORATION_NOT_REGISTERED') + '</p>' %}
+  {% set nonCorpPostionsList = '<ul class="govuk-!-padding-left-4"><li>'  +
+    t('COMMON.TYPES_OF_SENIOR_POSITION.NON_CORPORATION_SENIOR_POSITIONS.ANOTHER_OFFICER') + '</li><li>' +
+    t('COMMON.TYPES_OF_SENIOR_POSITION.NON_CORPORATION_SENIOR_POSITIONS.CHAIR')+ '</li></ul>'
+  %}
+  {{ govukDetails({
+    summaryText: t('COMMON.TYPES_OF_SENIOR_POSITION.TITLE'),
+    html: positionCouldBe + seniorPositionsList + nonCorporation + nonCorpPostionsList
+  }) }}
+{% endmacro %}
