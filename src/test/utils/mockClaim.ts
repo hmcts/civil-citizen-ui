@@ -75,6 +75,17 @@ function buildMockClaim(): Claim {
       text: 'text',
     },
   };
+  _mockClaim.rejectAllOfClaim = {
+    howMuchHaveYouPaid: {
+      amount: 20,
+      totalClaimAmount: 110,
+      day: 1,
+      month: 1,
+      year: 2040,
+      text: 'text',
+    },
+    option: 'test',
+  };
   _mockClaim.totalClaimAmount = 110;
   _mockClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
   _mockClaim.detailsOfClaim = 'the reason i have given';

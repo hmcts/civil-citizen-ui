@@ -1,7 +1,7 @@
 import {Claim} from '../../../models/claim';
 import {Respondent} from '../../../../common/models/respondent';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
-import PaymentOptionType from '../../../../common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
+import PaymentOptionType from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
 
 export const isCaseDataMissing = (caseData: Claim): boolean => {
   return !caseData;

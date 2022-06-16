@@ -1,4 +1,4 @@
-import PaymentOptionType from '../../../models/admission/fullAdmission/paymentOption/paymentOptionType';
+import PaymentOptionType from '../../../models/admission/paymentOption/paymentOptionType';
 
 export class PaymentIntention {
   paymentOption?: PaymentOptionType;

@@ -64,8 +64,10 @@ import checkAnswersController from './features/response/checkAnswersController';
 import youHavePaidLessController from './features/response/rejection/fullReject/youHavePaidLessController';
 import yourDefenceController from './features/response/yourDefenceController';
 import incompleteSubmissionController from './features/response/incompleteSubmissionController';
+import howMuchHaveYouPaidFRController from './features/response/rejection/fullReject/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/expertGuidanceController';
+import partialAdmissionPaymentOptionController from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
 
 export default [
   homeController,
@@ -127,7 +129,9 @@ export default [
   youHavePaidLessController,
   yourDefenceController,
   incompleteSubmissionController,
+  howMuchHaveYouPaidFRController,
   claimSummaryController,
   paymentDatePAController,
   expertGuidanceController,
+  partialAdmissionPaymentOptionController,
 ];

@@ -1,9 +1,9 @@
 import PaymentOption
-  from '../../../../../../../../../main/common/form/models/admission/fullAdmission/paymentOption/paymentOption';
+  from '../../../../../../main/common/form/models/admission/paymentOption/paymentOption';
 import {Validator} from 'class-validator';
-import {VALID_PAYMENT_OPTION} from '../../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {VALID_PAYMENT_OPTION} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import PaymentOptionType
-  from '../../../../../../../../../main/common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
+  from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 
 const validator = new Validator();
 describe('Payment Option validation', () => {
