@@ -45,7 +45,6 @@ const addressToString = (address: PrimaryAddress | CorrespondenceAddress) => {
   return address.AddressLine1 + '<br>' + address.PostTown + '<br>' + address.PostCode;
 };
 
-
 const getDefendantFullName = (claim: Claim): string => {
   if (claim.respondent1.individualFirstName && claim.respondent1.individualLastName) {
     return claim.respondent1.individualTitle + ' ' + claim.respondent1.individualFirstName + ' ' + claim.respondent1.individualLastName;
@@ -104,7 +103,6 @@ const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | u
   yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.respondent1.telephoneNumber, phoneNumberHref, changeLabel(lang)));
   return yourDetailsSection;
 };
-
 
 const addBankAccounts = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourBankAccountHref = CITIZEN_BANK_ACCOUNT_URL.replace(':id', claimId);
@@ -185,7 +183,6 @@ const addLoansOrCreditCardDebts = (claim: Claim, financialSection: SummarySectio
   }
 };
 
-
 const addListRow = (section:SummarySection, sectionHref:string, transaction:Transaction, expense: string, amount:string, lang: string | unknown) => {
   if (transaction?.declared && transaction?.transactionSource?.amount) {
     section.summaryList.rows.push(summaryRow(t(expense, { lng: getLng(lang) }), amount, sectionHref, changeLabel(lang)));
@@ -193,32 +190,32 @@ const addListRow = (section:SummarySection, sectionHref:string, transaction:Tran
 };
 
 const addMonthlyExpenses = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
-  const yourMonthlyExpensessHref = CITIZEN_MONTHLY_EXPENSES_URL.replace(':id', claimId);
+  const yourMonthlyExpensesHref = CITIZEN_MONTHLY_EXPENSES_URL.replace(':id', claimId);
 
   if (claim.statementOfMeans?.regularExpenses) {
     financialSection.summaryList.rows.push(
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EXPENSES_REGULAR', { lng: getLng(lang) }), '', yourMonthlyExpensessHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EXPENSES_REGULAR', { lng: getLng(lang) }), '', yourMonthlyExpensesHref, changeLabel(lang)),
     );
   }
 
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.mortgage, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MORTGAGE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mortgage?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.rent, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_RENT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.rent?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.councilTax, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_COUNCIL_TAX', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.councilTax?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.gas, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_GAS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.gas?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.electricity, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_ELECTRICITY', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.electricity?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.water, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_WATER', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.water?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.travel, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TRAVEL', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.travel?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.schoolCosts, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_SCHOOL_COSTS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.schoolCosts?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_FOOD_AND_HOUSEKEEPING', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.tvAndBroadband, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TV_BROADBAND', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.tvAndBroadband?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.hirePurchase, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_HIRE_PURCHASE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.hirePurchase?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.mobilePhone, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MOBILE_PHONE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mobilePhone?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.maintenance, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MAINTENANCE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.maintenance?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.mortgage, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MORTGAGE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mortgage?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.rent, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_RENT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.rent?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.councilTax, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_COUNCIL_TAX', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.councilTax?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.gas, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_GAS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.gas?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.electricity, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_ELECTRICITY', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.electricity?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.water, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_WATER', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.water?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.travel, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TRAVEL', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.travel?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.schoolCosts, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_SCHOOL_COSTS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.schoolCosts?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_FOOD_AND_HOUSEKEEPING', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.tvAndBroadband, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TV_BROADBAND', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.tvAndBroadband?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.hirePurchase, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_HIRE_PURCHASE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.hirePurchase?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.mobilePhone, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MOBILE_PHONE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mobilePhone?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.maintenance, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MAINTENANCE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.maintenance?.transactionSource?.amount), lang);
 
   if (claim.statementOfMeans?.regularExpenses?.other?.declared) {
     const otherExpenses = claim.statementOfMeans?.regularExpenses.other.transactionSources;
     for (const item of otherExpenses) {
-      financialSection.summaryList.rows.push(summaryRow(item.name, currencyFormatWithNoTrailingZeros(item.amount), yourMonthlyExpensessHref, changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRow(item.name, currencyFormatWithNoTrailingZeros(item.amount), yourMonthlyExpensesHref, changeLabel(lang)));
     }
   }
 };
@@ -271,7 +268,6 @@ const addCourtOrders = (claim: Claim, financialSection: SummarySection, claimId:
     );
   }
 };
-
 
 // -- FINANCIAL SECTION
 const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
