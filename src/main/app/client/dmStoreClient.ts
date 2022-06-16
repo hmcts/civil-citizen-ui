@@ -43,6 +43,7 @@ export class DmStoreClient {
       return response.data as Buffer;
     } catch (err: unknown) {
       logger.error(err);
+      throw err;
     }
   }
 }

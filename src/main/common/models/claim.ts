@@ -170,10 +170,10 @@ export class Claim {
     return this.partialAdmission?.howMuchDoYouOwe?.amount;
   }
   extractDocumentId(): string {
-    const documentData = this.specClaimTemplateDocumentFiles?.document_url;
+    const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
-    if (documentData) {
-      const splittedData = documentData?.split('/');
+    if (documentUrl?.length) {
+      const splittedData = documentUrl.split('/');
       documentId = splittedData[splittedData?.length - 1];
     }
     return documentId;

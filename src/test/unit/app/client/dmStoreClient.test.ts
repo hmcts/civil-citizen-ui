@@ -1,6 +1,7 @@
 import {DmStoreClient} from '../../../../main/app/client/dmStoreClient';
 import axios, {AxiosInstance} from 'axios';
 import config from 'config';
+import {TestMessages} from '../../../utils/errorMessageTestConstants';
 
 
 jest.mock('axios');
@@ -23,5 +24,14 @@ describe('DM Store Client', () => {
     expect(mockGet.mock.calls[0][0]).toEqual(`/documents/${mockDecumentId}/binary`);
     expect(actualPdfDocument.length).toEqual(mockResponse.length);
   });
+
+  it('should return error', async () => {
+    const mockDecumentId = '1234-5678';
+    const mockGet = jest.fn().mockResolvedValue({status: 500});
+    mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+    const dmStoreClient = new DmStoreClient(baseUrl);
+    await expect(dmStoreClient.retrieveDocumentByDocumentId(mockDecumentId)).rejects.toThrow(TestMessages.DOCUMENT_NOT_AVAILABLE);
+  });
 });
+
 
