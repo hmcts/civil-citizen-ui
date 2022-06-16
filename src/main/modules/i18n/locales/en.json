@@ -32,7 +32,9 @@
       "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
     },
     "RESPONSE_TYPE": {
-      "FULL_ADMISSION": "I admit all the claim"
+      "FULL_ADMISSION": "I admit all the claim",
+      "FULL_DEFENCE": "I reject all of the claim",
+      "PART_ADMISSION": "I admit part of the claim"
     },
     "PAYMENT_FREQUENCY": {
       "WEEK": "Each week",
@@ -47,6 +49,11 @@
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
+    },
+    "STATEMENT_OF_TRUTH": {
+      "INFORMATION_ON_PAGE": "The information on this page forms your {{ type }}. You can see it on the {{ type }} form after you submit.",
+      "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
+      "WHEN_SATISFIED": "When you’re satisfied that your answers are accurate, you should tick to /“sign/” this statement of truth on the form."
     },
     "TYPES_OF_SENIOR_POSITION": {
       "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
