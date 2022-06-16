@@ -10,7 +10,7 @@ const admitAll = 'admitAll';
 const partAdmit = 'partAdmit';
 const rejectAll = 'rejectAll';
 const immediatePayment = 'immediate';
-const setByDate = 'bySetDate';
+const bySetDate = 'bySetDate';
 const repaymentPlan = 'repaymentPlan';
 
 Feature('Response with AdmitAll');
@@ -30,6 +30,33 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI', () => {
   responseSteps.EnterResponseToClaim(claimRef, admitAll);
   responseSteps.EnterPaymentOption(claimRef, immediatePayment);
   responseSteps.CheckAndSubmit(claimRef);
+});
+
+Scenario('Response with AdmitAll and Date to PayOn @citizenUI', () => {
+  responseSteps.VerifyResponsePageContent(claimRef);
+  responseSteps.EnterNameAndAddressDetails(claimRef);
+  responseSteps.EnterDateOfBirth(claimRef);
+  responseSteps.EnterContactNumber(claimRef);
+  responseSteps.EnterResponseToClaim(claimRef, admitAll);
+  responseSteps.EnterPaymentOption(claimRef, bySetDate);
+  responseSteps.EnterDateToPayOn();
+  responseSteps.ShareYourFinancialDetailsIntro(claimRef);
+  responseSteps.EnterBankAccountDetails();
+  responseSteps.SelectDisabilityDetails('yes', 'yes');
+  responseSteps.SelectResidenceDetails('ownHome');
+  responseSteps.SelectPartnerDetails('yes');
+  responseSteps.SelectPartnerAge('yes');
+  responseSteps.SelectPartnerPension('yes');
+  responseSteps.SelectPartnerDisability('no');
+  responseSteps.SelectDependantDetails('yes');
+  responseSteps.SelectOtherDependantDetails('yes');
+  responseSteps.SelectEmploymentDetails('yes');
+  responseSteps.EnterEmployerDetails();
+  responseSteps.EnterSelfEmploymentDetails();
+  responseSteps.EnterSelfEmploymentTaxDetails();
+  responseSteps.EnterCourtOrderDetails(claimRef);
+
+  // responseSteps.CheckAndSubmit(claimRef);
 });
 
 

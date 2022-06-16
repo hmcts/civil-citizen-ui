@@ -16,7 +16,7 @@ export const config = {
   username: 'cmcclaimant23@gmail.com',
   password: defaultPassword,
   hmctsUsername: 'raja.mani@hmcts.net',
-  hmctsPassword: 'MOJJan@London2022',
+  hmctsPassword: '',
 };
 
 config.helpers = {

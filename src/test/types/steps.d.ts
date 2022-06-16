@@ -17,6 +17,9 @@ declare namespace CodeceptJS {
     // @ts-ignore
     see: (text, context=any) => any;
     waitForText: (waitForText) => any;
+    selectOption: (select: string | object, option: string) => any
+    // @ts-ignore
+    checkOption: (field: string | object, context=any) => any;
   }
 }
 
