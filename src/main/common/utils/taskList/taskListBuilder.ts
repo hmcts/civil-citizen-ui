@@ -1,19 +1,26 @@
-import {Task} from '../../models/taskList/task';
-import {TaskList} from '../../models/taskList/taskList';
-import {Claim} from '../../models/claim';
-import {TaskStatus} from '../../models/taskList/TaskStatus';
-import {getConfirmYourDetailsTask} from './tasks/confirmYourDetails';
-import {getNeedMoreTimeTask} from './tasks/needMoreTime';
-import {getChooseAResponseTask} from './tasks/chooseAResponse';
-import {getCheckAndSubmitYourResponseTask} from './tasks/checkAndSubmitYourResponse';
-import {isPastDeadline} from '../dateUtils';
-import {getDecideHowYouPayTask} from './tasks/decideHowYouPay';
-import {getShareFinancialDetailsTask} from './tasks/shareFinancialDetails';
-import {getRepaymentPlanTask} from './tasks/repaymentPlan';
-import {isNotPayImmediatelyResponse} from './tasks/taskListHelpers';
+import { Task } from '../../models/taskList/task';
+import { TaskList } from '../../models/taskList/taskList';
+import { Claim } from '../../models/claim';
+import { TaskStatus } from '../../models/taskList/TaskStatus';
+import { getConfirmYourDetailsTask } from './tasks/confirmYourDetails';
+import { getNeedMoreTimeTask } from './tasks/needMoreTime';
+import { getChooseAResponseTask } from './tasks/chooseAResponse';
+import { getCheckAndSubmitYourResponseTask } from './tasks/checkAndSubmitYourResponse';
+import { isPastDeadline } from '../dateUtils';
+import { getDecideHowYouPayTask } from './tasks/decideHowYouPay';
+import { getShareFinancialDetailsTask } from './tasks/shareFinancialDetails';
+import { getRepaymentPlanTask } from './tasks/repaymentPlan';
+import { isNotPayImmediatelyResponse } from './tasks/taskListHelpers';
+import { ResponseType } from '../../../common/form/models/responseType';
+import { YesNo } from '../../../common/form/models/yesNo';
+import { getHowMuchHaveYouPaidTask } from './tasks/howMuchHaveYouPaid';
+import { getWhyDisagreeWithAmountClaimedTask } from './tasks/whyDisagreeWithAmountClaimed';
+import { getGiveUsDetailsHearingTask } from './tasks/giveUsDetailsHearing';
+import { getHowMuchMoneyAdmitOweTask } from './tasks/howMuchMoneyAdmitOwe';
+import { getFreeTelephoneMediationTask } from './tasks/freeTelephoneMediation';
 import PaymentOptionType from '../../../common/form/models/admission/paymentOption/paymentOptionType';
 
-const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:string): TaskList => {
+const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId: string): TaskList => {
   const tasks: Task[] = [];
   const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId);
   // TODO : when need more time page is developed we need to generate this function and push this task to the tasks
@@ -45,14 +52,52 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList 
     if (decideHowYouPayTask.status === TaskStatus.COMPLETE && isNotPayImmediatelyResponse(caseData)) {
       tasks.push(shareFinancialDetailsTask);
 
-      if(caseData.paymentOption === PaymentOptionType.INSTALMENTS) {
+      if (caseData.paymentOption === PaymentOptionType.INSTALMENTS) {
         tasks.push(repaymentPlanTask);
       }
     }
   }
 
+  // PART ADMISSION
+  if (caseData.respondent1?.responseType === ResponseType.PART_ADMISSION) {
+    const howMuchHaveYouPaidTask = getHowMuchHaveYouPaidTask(caseData, claimId);
+    const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId);
+    const howMuchMoneyAdmitOweTask = getHowMuchMoneyAdmitOweTask(caseData, claimId);
+
+    if (caseData.partialAdmission.alreadyPaid.option === YesNo.YES) {
+      tasks.push(howMuchHaveYouPaidTask);
+    } else {
+      tasks.push(howMuchMoneyAdmitOweTask);
+    }
+    tasks.push(whyDisagreeWithAmountClaimedTask);
+
+  }
+
   return { title: 'Respond to Claim', tasks };
 };
+
+
+const buildResolvingTheClaimSection = (caseData: Claim, claimId: string): TaskList => {
+  const tasks: Task[] = [];
+  const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId);
+
+  if (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE) {
+    const freeTelephoneMediationTask = getFreeTelephoneMediationTask(caseData, claimId);
+    tasks.push(freeTelephoneMediationTask);
+  }
+  return { title: 'Resolving the claim', tasks };
+};
+
+
+const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string): TaskList => {
+  const tasks: Task[] = [];
+  if (caseData.respondent1?.responseType === ResponseType.PART_ADMISSION) {
+    const giveUsDetailsHearingTask = getGiveUsDetailsHearingTask(caseData, claimId);
+    tasks.push(giveUsDetailsHearingTask);
+  }
+  return { title: 'Your hearing requirements', tasks };
+};
+
 
 const buildSubmitSection = (claimId: string): TaskList => {
   const tasks: Task[] = [];
@@ -67,5 +112,7 @@ const buildSubmitSection = (claimId: string): TaskList => {
 export {
   buildPrepareYourResponseSection,
   buildRespondToClaimSection,
+  buildResolvingTheClaimSection,
+  buildYourHearingRequirementsSection,
   buildSubmitSection,
 };

@@ -5,6 +5,8 @@ import {
   buildPrepareYourResponseSection,
   buildRespondToClaimSection,
   buildSubmitSection,
+  buildYourHearingRequirementsSection,
+  buildResolvingTheClaimSection,
 } from '../../../common/utils/taskList/taskListBuilder';
 import {Task} from '../../../common/models/taskList/task';
 
@@ -17,8 +19,10 @@ const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId: string) => 
   // TODO : depending on the defendant's response type (full admission/partial admission/ rejection) we need to build new taskLists and include them in the taskGroups array
   const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(claim, caseData, currentClaimId);
   const taskListRespondToClaim: TaskList = buildRespondToClaimSection(caseData, currentClaimId);
+  const taskListResolvingTheClaim: TaskList = buildResolvingTheClaimSection(caseData, currentClaimId);
+  const taskListYourHearingRequirements: TaskList = buildYourHearingRequirementsSection(caseData, currentClaimId);
 
-  const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim];
+  const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListResolvingTheClaim, taskListYourHearingRequirements];
   const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
   // check if all tasks are completed except check and submit
   calculateTotalAndCompleted(taskGroups);
