@@ -31,6 +31,16 @@ export class CivilServiceClient {
     };
   }
 
+  async getClaimsForDefendant(req: AppRequest) {
+    const config = this.getConfig(req);
+    try{
+      const result = await this.client.post('/cases/defendant/',{'submitterId': '546d8752-abbf-0acfd08d713b'}, config);
+      console.log(result);
+    }catch(err){
+      console.log(err);
+    }
+  }
+
   async retrieveByDefendantId(req: AppRequest): Promise<CivilClaimResponse[]> {
     const config = this.getConfig(req);
     let claims: CivilClaimResponse[] = [];

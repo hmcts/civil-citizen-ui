@@ -28,6 +28,7 @@ const dashboardController = express.Router();
 dashboardController.get(DASHBOARD_URL, async function (req, res) {
   const claimsAsClaimant : Claim[] = [];
   const claimsAsDefendant : CivilClaimResponse[]  = await civilServiceClient.retrieveByDefendantId(<AppRequest>req);
+  await civilServiceClient.getClaimsForDefendant(<AppRequest>req);
   const claimDraftSaved = false;
   const responseDraftSaved = false;
   const paginationArgumentClaimant: object = {};
