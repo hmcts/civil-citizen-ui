@@ -18,7 +18,8 @@
     "MONTH": "Month",
     "YEAR": "Year",
     "BUTTONS": {
-      "CONTINUE": "Parhau"
+      "CONTINUE": "Parhau",
+      "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
@@ -51,8 +52,12 @@
       "BACK": "Back to task list"
     },
     "STATEMENT_OF_TRUTH": {
+      "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
+      "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
       "INFORMATION_ON_PAGE": "The information on this page forms your {{ type }}. You can see it on the {{ type }} form after you submit.",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
+      "STATEMENT_OF_WORK": "statement of truth",
+      "PAGE_TITLE": "Statement of truth",
       "WHEN_SATISFIED": "When you’re satisfied that your answers are accurate, you should tick to /“sign/” this statement of truth on the form."
     },
     "TYPES_OF_SENIOR_POSITION": {

@@ -18,7 +18,8 @@
     "MONTH": "Month",
     "YEAR": "Year",
     "BUTTONS": {
-      "CONTINUE": "Continue"
+      "CONTINUE": "Continue",
+      "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Find out about call charges (opens in a new window)",
@@ -51,9 +52,13 @@
       "BACK": "Back to task list"
     },
     "STATEMENT_OF_TRUTH": {
+      "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
+      "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
       "INFORMATION_ON_PAGE": "The information on this page forms your {{ type }}. You can see it on the {{ type }} form after you submit.",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
-      "WHEN_SATISFIED": "When you’re satisfied that your answers are accurate, you should tick to /“sign/” this statement of truth on the form."
+      "STATEMENT_OF_WORK": "statement of truth",
+      "PAGE_TITLE": "Statement of truth",
+      "WHEN_SATISFIED": "When you’re satisfied that your answers are accurate, you should tick to \"sign\" this statement of truth on the form."
     },
     "TYPES_OF_SENIOR_POSITION": {
       "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
@@ -143,6 +148,8 @@
       "PRIORITY_DEBT_WATER": "Water",
       "PRIORITY_DEBT_MAINTENANCE": "Maintenance payments",
       "REGULAR_PAYMENTS": "Regular payments of",
+      "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
+      "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_TITLE": "Your response to the claim",
       "SAME_ADDRESS": "Same as address",
       "TITLE": "Check your answers",
