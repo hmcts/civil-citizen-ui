@@ -7,7 +7,7 @@ import {
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_FEES_RANGES,
 } from './civilServiceUrls';
-import {FeeRange} from '../../common/models/feeRange';
+import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -60,11 +60,11 @@ export class CivilServiceClient {
     }
   }
 
-  async getFeeRanges(req: AppRequest): Promise<FeeRange[]> {
+  async getFeeRanges(req: AppRequest): Promise<FeeRanges> {
     const config = this.getConfig(req);
     try{
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_RANGES, config);
-      return plainToInstance(FeeRange, response.data as object[]);
+      return new FeeRanges(plainToInstance(FeeRange, response.data as object[]));
     } catch (err: unknown) {
       logger.error(err);
       throw err;

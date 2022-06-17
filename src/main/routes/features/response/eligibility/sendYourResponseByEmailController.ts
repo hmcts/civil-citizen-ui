@@ -7,7 +7,7 @@ import {CounterpartyType} from '../../../../common/models/counterpartyType';
 import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClaimType';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import config from 'config';
-import {FeeRange} from '../../../../common/models/feeRange';
+import {FeeRange, FeeRanges} from '../../../../common/models/feeRange';
 import {TableItem} from '../../../../common/models/tableItem';
 import {AppRequest} from 'models/AppRequest';
 
@@ -31,32 +31,20 @@ function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): vo
 sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res) => {
   try {
     const form = await getCaseDataFromStore(req.params.id);
-    const feesRanges: FeeRange[] = await civilServiceClient.getFeeRanges(<AppRequest>req);
+    const feesRanges: FeeRanges = await civilServiceClient.getFeeRanges(<AppRequest>req);
     const formattedFeesRanges = formatFeesRanges(feesRanges);
     renderView(res, form, formattedFeesRanges);
   } catch (error) {
     logger.error(error);
-    res.status(500).send({ error: error.message });
+    res.status(500).send({error: error.message});
   }
 });
 
 
-const formatFeesRanges = (feesRanges: FeeRange[]): [TableItem[]] => {
+const formatFeesRanges = (feesRanges: FeeRanges): [TableItem[]] => {
   const tableFormatFeesRanges: [TableItem[]] = [[]];
-  let previousFeeRange: FeeRange = undefined;
-  feesRanges.sort((element1:FeeRange, element2:FeeRange ) => {
-    if(element1.maxRange < element2.maxRange){
-      return -1;
-    }
-    if(element1.maxRange > element2.maxRange){
-      return 1;
-    }
-    return 0;
-  }).forEach((feeRange: FeeRange) => {
-    if(!feeRange.equals(previousFeeRange)){
-      tableFormatFeesRanges.push(feeRange.formatFeeRangeToTableItem());
-    }
-    previousFeeRange = feeRange;
+  feesRanges.value.forEach((feeRange: FeeRange) => {
+    tableFormatFeesRanges.push(feeRange.formatFeeRangeToTableItem());
   });
   return tableFormatFeesRanges;
 };
