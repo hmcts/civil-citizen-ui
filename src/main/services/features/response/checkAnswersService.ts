@@ -36,6 +36,8 @@ import {BankAccountTypeValues} from '../../../common/form/models/bankAndSavings/
 import Transaction from '../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {EmploymentCategory} from '../../../common/form/models/statementOfMeans/employment/employmentCategory';
 import {UnemploymentCategory} from '../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {Unemployment} from '../../../common/form/models/statementOfMeans/unemployment/unemployment';
+import { Employment } from 'common/models/employment';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -275,6 +277,46 @@ const addCourtOrders = (claim: Claim, financialSection: SummarySection, claimId:
   }
 };
 
+
+const showEmploymentDetails = (claim:Claim, financialSection:SummarySection, employment:Employment, lang:string | unknown) => {
+  const getTypeOfJob = (type:string) => type === EmploymentCategory.EMPLOYED ? 'Employed' : 'Self-employed';
+  const typeOfJob: Array<string> = [];
+  for (const item of employment.employmentType) {
+    typeOfJob.push(getTypeOfJob(item));
+  }
+  const typeOfJobs = typeOfJob[0] + (typeOfJob.length > 1 ? (' and ' + typeOfJob[1]) : '');
+
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), typeOfJobs, '', changeLabel(lang)));
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_WHO_EMPLOYS_YOU', { lng: getLng(lang) }), '', '', changeLabel(lang)));
+
+  for (const item of claim.statementOfMeans.employers.rows) {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_NAME', { lng: getLng(lang) }), item.employerName, '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_JOB_TITLE', { lng: getLng(lang) }), item.jobTitle, '', changeLabel(lang)));
+  }
+};
+
+const showUnemploymentDetails = (financialSection: SummarySection, unemployment: Unemployment, lang: string | unknown) => {
+  let unemploymentLengthOrOther: string;
+  const years = unemployment?.unemploymentDetails?.years;
+  const months = unemployment?.unemploymentDetails?.months;
+  const getUnemploymentLength = (val: number, length: string) => val > 1 ? val + ' ' + length + 's' : val + ' ' + length;
+
+  switch (unemployment?.option) {
+    case UnemploymentCategory.UNEMPLOYED:
+      unemploymentLengthOrOther = UnemploymentCategory.UNEMPLOYED + ' for ' + getUnemploymentLength(years, 'year') + ' ' + getUnemploymentLength(months, 'month');
+      break;
+    case UnemploymentCategory.OTHER:
+      unemploymentLengthOrOther = unemployment?.otherDetails?.details;
+      break;
+    case UnemploymentCategory.RETIRED:
+      unemploymentLengthOrOther = unemployment?.option;
+      break;
+    default:
+  }
+
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), unemploymentLengthOrOther, '', changeLabel(lang)));
+};
+
 const addEmploymentDetails = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourEmploymentHref = CITIZEN_EMPLOYMENT_URL.replace(':id', claimId);
   const employment = claim.statementOfMeans?.employment;
@@ -288,40 +330,9 @@ const addEmploymentDetails = (claim: Claim, financialSection: SummarySection, cl
   );
 
   if (employment?.declared && employment) {
-    const getTypeOfJob = (type:string) => type === EmploymentCategory.EMPLOYED ? 'Employed' : 'Self-employed';
-    const typeOfJob: Array<string> = [];
-    for (const item of employment.employmentType) {
-      typeOfJob.push(getTypeOfJob(item));
-    }
-    const typeOfJobs = typeOfJob[0] + (typeOfJob.length > 1 ? (' and ' + typeOfJob[1]) : '');
-
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), typeOfJobs, '', changeLabel(lang)));
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_WHO_EMPLOYS_YOU', { lng: getLng(lang) }), '', '', changeLabel(lang)));
-
-    for (const item of claim.statementOfMeans.employers.rows) {
-      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_NAME', { lng: getLng(lang) }), item.employerName, '', changeLabel(lang)));
-      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_JOB_TITLE', { lng: getLng(lang) }), item.jobTitle, '', changeLabel(lang)));
-    }
+    showEmploymentDetails(claim,financialSection,employment,lang);
   } else {
-    let unemploymentLengthOrOther: string;
-    const years = unemployment?.unemploymentDetails?.years;
-    const months = unemployment?.unemploymentDetails?.months;
-    const getUnemploymentLength = (val:number, length:string) => val > 1 ? val + ' ' + length + 's' : val + ' ' + length;
-
-    switch (unemployment?.option) {
-      case UnemploymentCategory.UNEMPLOYED:
-        unemploymentLengthOrOther = UnemploymentCategory.UNEMPLOYED + ' for ' + getUnemploymentLength(years, 'year') + ' ' + getUnemploymentLength(months, 'month');
-        break;
-      case UnemploymentCategory.OTHER:
-        unemploymentLengthOrOther = unemployment?.otherDetails?.details;
-        break;
-      case UnemploymentCategory.RETIRED:
-        unemploymentLengthOrOther = unemployment?.option;
-        break;
-      default:
-    }
-
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), unemploymentLengthOrOther, '', changeLabel(lang)));
+    showUnemploymentDetails(financialSection,unemployment,lang);
   }
 };
 
