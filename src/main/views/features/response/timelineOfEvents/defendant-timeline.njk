@@ -28,19 +28,23 @@
           <div class="govuk-description-block govuk-body">
             <h2 class="govuk-heading-s">{{ t('Their timeline') }}</h2>
             <table class="govuk-table">
-              <thead class="govuk-table__head">
-              <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">{{ t('Date') }}</th>
-                <th scope="col" class="govuk-table__header">{{ t('What happened') }}</th>
-              </tr>
-              </thead>
-              <tbody class="govuk-table__body">
-              {% for event in theirTimeline %}
-                <tr class="govuk-table__row">
-                  <td class="govuk-table__cell">{{ event.value.timelineDate | date }}</td>
-                  <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
-                </tr>
-              {% endfor %}
+              {% if theirTimeline.length %}
+                <thead class="govuk-table__head">
+                  <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">{{ t('PAGES.DEFENDANT_TIMELINE.DATE') }}</th>
+                    <th scope="col" class="govuk-table__header">{{ t('PAGES.DEFENDANT_TIMELINE.WHAT_HAPPENED') }}</th>
+                  </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                  {% for event in theirTimeline %}
+                    <tr class="govuk-table__row">
+                      <td class="govuk-table__cell">{{ event.value.timelineDate | date }}</td>
+                      <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
+                    </tr>
+                  {% endfor %}
+                {% elseif pdfUrl %}
+                  <a id="timeline-link" href={{ pdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.DEFENDANT_TIMELINE.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
+                {% endif %}
               </tbody>
             </table>
           </div>

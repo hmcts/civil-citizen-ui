@@ -728,15 +728,11 @@
         "status": "FINISHED",
         "camundaEvent": "CREATE_CLAIM_SPEC"
       },
-      "timelineOfEvents": [
-        {
-          "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
-          "value": {
-            "timelineDate": "2021-01-01",
-            "timelineDescription": "Test details of claim"
-          }
-        }
-      ],
+      "specClaimTemplateDocumentFiles": {
+        "document_url": "http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c",
+        "document_filename": "timeline-event-template-Kadir.pdf",
+        "document_binary_url": "http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary"
+      },
       "totalClaimAmount": 1000,
       "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
       "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
