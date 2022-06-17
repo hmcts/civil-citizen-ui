@@ -15,6 +15,7 @@ import {
   CITIZEN_MONTHLY_EXPENSES_URL,
   CITIZEN_MONTHLY_INCOME_URL,
   CITIZEN_COURT_ORDERS_URL,
+  CITIZEN_EMPLOYMENT_URL,
 } from '../../../routes/urls';
 import {t} from 'i18next';
 import {getLng} from '../../../common/utils/languageToggleUtils';
@@ -33,6 +34,8 @@ import {YesNo} from '../../../common/form/models/yesNo';
 import {BankAccountTypeValues} from '../../../common/form/models/bankAndSavings/bankAccountTypeValues';
 
 import Transaction from '../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {EmploymentCategory} from '../../../common/form/models/statementOfMeans/employment/employmentCategory';
+import {UnemploymentCategory} from '../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -272,6 +275,56 @@ const addCourtOrders = (claim: Claim, financialSection: SummarySection, claimId:
   }
 };
 
+const addEmploymentDetails = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+  const yourEmploymentHref = CITIZEN_EMPLOYMENT_URL.replace(':id', claimId);
+  const employment = claim.statementOfMeans?.employment;
+  const jobDetails = employment?.declared ? YesNo.YES : '';
+  const hasAjob = employment?.declared ? YesNo.YES : YesNo.NO;
+  const unemployment = claim.statementOfMeans?.unemployment;
+
+  financialSection.summaryList.rows.push(
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_DETAILS', { lng: getLng(lang) }), jobDetails.charAt(0).toUpperCase() + jobDetails.slice(1), yourEmploymentHref, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_DO_YOU_HAVE_A_JOB', { lng: getLng(lang) }), hasAjob.charAt(0).toUpperCase() + hasAjob.slice(1), yourEmploymentHref, changeLabel(lang)),
+  );
+
+  if (employment?.declared && employment) {
+    const getTypeOfJob = (type:string) => type === EmploymentCategory.EMPLOYED ? 'Employed' : 'Self-employed';
+    const typeOfJob: Array<string> = [];
+    for (const item of employment.employmentType) {
+      typeOfJob.push(getTypeOfJob(item));
+    }
+    const typeOfJobs = typeOfJob[0] + (typeOfJob.length > 1 ? (' and ' + typeOfJob[1]) : '');
+
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), typeOfJobs, '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_WHO_EMPLOYS_YOU', { lng: getLng(lang) }), '', '', changeLabel(lang)));
+
+    for (const item of claim.statementOfMeans.employers.rows) {
+      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_NAME', { lng: getLng(lang) }), item.employerName, '', changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_JOB_TITLE', { lng: getLng(lang) }), item.jobTitle, '', changeLabel(lang)));
+    }
+  } else {
+    let unemploymentLengthOrOther: string;
+    const years = unemployment?.unemploymentDetails?.years;
+    const months = unemployment?.unemploymentDetails?.months;
+    const getUnemploymentLength = (val:number, length:string) => val > 1 ? val + ' ' + length + 's' : val + ' ' + length;
+
+    switch (unemployment?.option) {
+      case UnemploymentCategory.UNEMPLOYED:
+        unemploymentLengthOrOther = UnemploymentCategory.UNEMPLOYED + ' for ' + getUnemploymentLength(years, 'year') + ' ' + getUnemploymentLength(months, 'month');
+        break;
+      case UnemploymentCategory.OTHER:
+        unemploymentLengthOrOther = unemployment?.otherDetails?.details;
+        break;
+      case UnemploymentCategory.RETIRED:
+        unemploymentLengthOrOther = unemployment?.option;
+        break;
+      default:
+    }
+
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), unemploymentLengthOrOther, '', changeLabel(lang)));
+  }
+};
+
 
 // -- FINANCIAL SECTION
 const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
@@ -285,6 +338,8 @@ const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string |
 
   // -- Bank Accounts
   addBankAccounts(claim, yourFinancialSection, claimId, lang);
+  // -- Employment Details
+  addEmploymentDetails(claim, yourFinancialSection, claimId, lang);
   // -- Court Orders
   addCourtOrders(claim, yourFinancialSection, claimId, lang);
   // -- Priority Debts
