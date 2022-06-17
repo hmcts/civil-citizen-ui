@@ -26,6 +26,7 @@ import {
 } from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
 import {ResponseType} from '../form/models/responseType';
+import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifiedStatementOfTruth';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -50,7 +51,7 @@ export class Claim {
   evidence?: DefendantEvidence;
   timelineOfEvents?: TimeLineOfEvents[];
   taskSharedFinancialDetails?: boolean;
-  defendantStatementOfTruth?: StatementOfTruthForm;
+  defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
   claimInterest?: YesNo;
