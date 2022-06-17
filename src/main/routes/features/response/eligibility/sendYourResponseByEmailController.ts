@@ -43,10 +43,23 @@ sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, re
 
 const formatFeesRanges = (feesRanges: FeeRange[]): [TableItem[]] => {
   const tableFormatFeesRanges: [TableItem[]] = [[]];
-  feesRanges.forEach((feeRange: FeeRange) => {
-    tableFormatFeesRanges.push(feeRange.formatFeeRangeToTableItem());
+  let previousFeeRange: FeeRange = undefined;
+  feesRanges.sort((element1:FeeRange, element2:FeeRange ) => {
+    if(element1.maxRange < element2.maxRange){
+      return -1;
+    }
+    if(element1.maxRange > element2.maxRange){
+      return 1;
+    }
+    return 0;
+  }).forEach((feeRange: FeeRange) => {
+    if(!feeRange.equals(previousFeeRange)){
+      tableFormatFeesRanges.push(feeRange.formatFeeRangeToTableItem());
+    }
+    previousFeeRange = feeRange;
   });
   return tableFormatFeesRanges;
 };
+
 
 export default sendYourResponseByEmailController;

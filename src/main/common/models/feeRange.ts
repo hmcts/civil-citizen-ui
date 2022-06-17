@@ -18,7 +18,12 @@ export class FeeRange {
   }
 
   formatFeeRangeToTableItem():TableItem[] {
-    return [{text: `£${this.minRange.toLocaleString()} to £${this.maxRange.toLocaleString()}`}, {text: `£${this.currentVersion.flatAmount.amount.toLocaleString()}`}];
+    if(this.minRange && this.maxRange && this.currentVersion?.flatAmount?.amount){
+      return [{text: `£${this.minRange.toLocaleString()} to £${this.maxRange.toLocaleString()}`}, {text: `£${this.currentVersion.flatAmount?.amount.toLocaleString()}`}];
+    }
+  }
+  equals(feeRange: FeeRange){
+    return this.minRange === feeRange?.minRange && this.maxRange === feeRange?.maxRange;
   }
 }
 
