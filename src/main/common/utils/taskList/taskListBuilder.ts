@@ -18,6 +18,7 @@ import { getWhyDisagreeWithAmountClaimedTask } from './tasks/whyDisagreeWithAmou
 import { getGiveUsDetailsHearingTask } from './tasks/giveUsDetailsHearing';
 import { getHowMuchMoneyAdmitOweTask } from './tasks/howMuchMoneyAdmitOwe';
 import { getFreeTelephoneMediationTask } from './tasks/freeTelephoneMediation';
+import { getWhenWillYouPayTask } from './tasks/whenWillYouPay';
 import PaymentOptionType from '../../../common/form/models/admission/paymentOption/paymentOptionType';
 
 const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId: string): TaskList => {
@@ -63,12 +64,22 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList 
     const howMuchHaveYouPaidTask = getHowMuchHaveYouPaidTask(caseData, claimId);
     const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId);
     const howMuchMoneyAdmitOweTask = getHowMuchMoneyAdmitOweTask(caseData, claimId);
+    const whenWillYouPayTask = getWhenWillYouPayTask(caseData, claimId);
+    const shareFinancialDetailsTask = getShareFinancialDetailsTask(caseData, claimId);
 
-    if (caseData.partialAdmission.alreadyPaid.option === YesNo.YES) {
+    if (caseData.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
       tasks.push(howMuchHaveYouPaidTask);
-    } else {
+    } else if (caseData.partialAdmission?.alreadyPaid?.option === YesNo.NO) {
       tasks.push(howMuchMoneyAdmitOweTask);
+      if (caseData.partialAdmission?.howMuchDoYouOwe?.amount) {
+        tasks.push(whenWillYouPayTask);
+      }
     }
+
+    if(whenWillYouPayTask.status === TaskStatus.COMPLETE){
+      tasks.push(shareFinancialDetailsTask);
+    }
+
     tasks.push(whyDisagreeWithAmountClaimedTask);
 
   }

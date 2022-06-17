@@ -3,7 +3,6 @@ import {Claim} from '../../../models/claim';
 import {TaskStatus} from '../../../models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {CITIZEN_OWED_AMOUNT_URL} from '../../../../routes/urls';
-// import {isPaymentOptionMissing} from './taskListHelpers';
 
 const howMuchMoneyAdmitOweTask: Task = {
   description: 'How much money do you admit you owe',
@@ -13,9 +12,9 @@ const howMuchMoneyAdmitOweTask: Task = {
 
 export const getHowMuchMoneyAdmitOweTask = (caseData: Claim, claimId: string): Task => {
   let taskStatus = TaskStatus.INCOMPLETE;
-  // if (isPaymentOptionMissing(caseData)) {
-  //   taskStatus = TaskStatus.COMPLETE;
-  // }
+  if (caseData.partialAdmission?.howMuchDoYouOwe?.amount) {
+    taskStatus = TaskStatus.COMPLETE;
+  }
   const constructedUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_OWED_AMOUNT_URL);
   return { ...howMuchMoneyAdmitOweTask, url: constructedUrl, status: taskStatus };
 };
