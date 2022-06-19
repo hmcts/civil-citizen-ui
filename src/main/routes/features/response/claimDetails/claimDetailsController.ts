@@ -38,7 +38,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: 
     }
     const interestData = getInterestDetails(claim);
     const totalAmount = getTotalAmountWithInterestAndFees(claim);
-    const pdfUrl = CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id);
+    const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id);
     res.render('features/response/claimDetails/claim-details', {
       claim, totalAmount, interestData, pdfUrl,
     });

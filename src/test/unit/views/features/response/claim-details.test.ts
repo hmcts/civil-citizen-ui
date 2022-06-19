@@ -2,7 +2,10 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
+import {
+  mockCivilClaim,
+  mockCivilClaimPDFTimeline,
+} from '../../../../utils/mockDraftStore';
 import {mockClaim as mockResponse} from '../../../../utils/mockClaim';
 import {getTotalAmountWithInterestAndFees} from '../../../../../main/modules/claimDetailsService';
 import {dateFilter} from '../../../../../main/modules/nunjucks/filters/dateFilter';
@@ -105,6 +108,16 @@ describe('Task List View', () => {
       expect(tableHeaders[3].innerHTML).toContain('What happened');
       expect(timeLineCells[0].innerHTML).toContain(dateFilter(claim.case_data.timelineOfEvents[0].value.timelineDate));
       expect(timeLineCells[1].innerHTML).toContain(claim.case_data.timelineOfEvents[0].value.timelineDescription);
+    });
+
+    it('should display Download and view their Timeline text', async () => {
+      app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
+      const response = await request(app).get('/case/1111/response/claim-details');
+      const dom = new JSDOM(response.text);
+      htmlDocument = dom.window.document;
+      const downloadLink = htmlDocument.getElementById('timeline-link') as HTMLAnchorElement;
+      expect(downloadLink.innerHTML).toContain('Download and view their Timeline');
+      expect(downloadLink.href).toContain('case/1111/documents/timeline');
     });
 
     it('should display download the claim text', () => {
