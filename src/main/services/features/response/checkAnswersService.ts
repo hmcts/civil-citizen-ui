@@ -349,10 +349,8 @@ export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | Qualif
 
   switch (getSignatureType(claim)) {
     case SignatureType.BASIC:
-    case SignatureType.DIRECTION_QUESTIONNAIRE:
       return new StatementOfTruthForm(rejectingFullAmount(claim));
     case SignatureType.QUALIFIED:
-    case SignatureType.DIRECTION_QUESTIONNAIRE_QUALIFIED:
       return new QualifiedStatementOfTruth(rejectingFullAmount(claim));
     default:
       return new StatementOfTruthForm(rejectingFullAmount(claim));

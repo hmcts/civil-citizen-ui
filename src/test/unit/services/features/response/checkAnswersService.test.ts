@@ -1,5 +1,9 @@
 import {
+  getSignatureType,
+  getStatementOfTruth,
   getSummarySections,
+  rejectingFullAmount,
+  resetCheckboxFields,
   saveStatementOfTruth,
 } from '../../../../../main/services/features/response/checkAnswersService';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
@@ -38,6 +42,10 @@ import {
   createClaimWithRegularIncome,
 } from '../../../../utils/mockClaimForCheckAnswers';
 import { Claim } from '../../../../../main/common/models/claim';
+import {ResponseType} from '../../../../../main/common/form/models/responseType';
+import {Respondent} from '../../../../../main/common/models/respondent';
+import {QualifiedStatementOfTruth} from '../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -59,13 +67,18 @@ const ADDRESS = '23 Brook lane<br>Bristol<br>BS13SS';
 const CORRESPONDENCE_ADDRESS = '24 Brook lane<br>Bristol<br>BS13SS';
 const DOB = '12 December 2000';
 const CLAIM_ID = 'claimId';
+const expectedStatementOfTruth = {
+  fullAmountReject: false,
+  type: 'basic',
+  directionsQuestionnaireSigned: '',
+  signed: '',
+};
 
 const PAGES_CHECK_YOUR_ANSWER_BANK_TYPE_OF_ACCOUNT = 'PAGES.CHECK_YOUR_ANSWER.BANK_TYPE_OF_ACCOUNT';
 const PAGES_CHECK_YOUR_ANSWER_BANK_BALANCE = 'PAGES.CHECK_YOUR_ANSWER.BANK_BALANCE';
 const PAGES_CHECK_YOUR_ANSWER_BANK_JOINT_ACCOUNT = 'PAGES.CHECK_YOUR_ANSWER.BANK_JOINT_ACCOUNT';
 const PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE = 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_TYPE';
 const PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT = 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_ARREARS_REPAYMENT';
-
 
 describe('Check Answers service', () => {
   describe('Get Summary Sections', () => {
@@ -473,6 +486,99 @@ describe('Check Answers service', () => {
 
       expect(summarySections.sections[1].summaryList.rows[14].key.text).toBe('Income 2');
       expect(summarySections.sections[1].summaryList.rows[14].value.html).toBe('£2,000');
+    });
+  });
+
+  describe('rejectingFullAmount', () => {
+    let claim: Claim;
+
+    beforeEach(() => {
+      claim = createClaimWithBasicRespondentDetails();
+    });
+
+    it('should return false if respondent responseType is FULL_ADMISSION', () => {
+      expect(rejectingFullAmount(claim)).toBe(false);
+    });
+
+    it('should return true if respondent responseType is PART_ADMISSION', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      expect(rejectingFullAmount(claim)).toBe(true);
+    });
+
+    it('should return true if respondent responseType is FULL_DEFENCE', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      expect(rejectingFullAmount(claim)).toBe(true);
+    });
+  });
+
+  describe('resetCheckboxFields', () => {
+    it('should set directionsQuestionnaireSigned and signed to empty string for statement of truth', () => {
+      const statementOfTruth = new StatementOfTruthForm(false);
+      expect(resetCheckboxFields(statementOfTruth)).toEqual(expectedStatementOfTruth);
+    });
+
+    it('should set directionsQuestionnaireSigned and signed to empty string for qualified statement of truth', () => {
+      const qualifiedStatementOfTruth = new QualifiedStatementOfTruth(false);
+      const expectedQualifiedStatementOfTruth = {
+        ...expectedStatementOfTruth,
+        type: 'qualified',
+      };
+      expect(resetCheckboxFields(qualifiedStatementOfTruth)).toEqual(expectedQualifiedStatementOfTruth);
+    });
+  });
+
+  describe('getStatementOfTruth', () => {
+    let claim: Claim;
+
+    beforeEach(() => {
+      claim = createClaimWithBasicRespondentDetails();
+    });
+
+    it('should return statement of truth if it is set in the draft store', () => {
+      claim.defendantStatementOfTruth = new StatementOfTruthForm(false);
+      expect(getStatementOfTruth(claim)).toEqual(expectedStatementOfTruth);
+    });
+
+    it('should create new statement of truth if signature type is basic', () => {
+      expect(getStatementOfTruth(claim)).toEqual({fullAmountReject: false, type: 'basic'});
+    });
+
+    it('should create new qualified statement of truth if signature type is qualified', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      expect(getStatementOfTruth(claim)).toEqual({fullAmountReject: false, type: 'qualified'});
+    });
+  });
+
+  describe('getSignatureType', () => {
+    let claim: Claim;
+
+    beforeEach(() => {
+      claim = createClaimWithBasicRespondentDetails();
+    });
+
+    it('should return basic signature type if respondent is individual', () => {
+      expect(getSignatureType(claim)).toEqual(SignatureType.BASIC);
+    });
+
+    it('should return basic signature type if respondent is sole trader', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
+      expect(getSignatureType(claim)).toEqual(SignatureType.BASIC);
+    });
+
+    it('should return basic signature type if respondent is company', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.COMPANY;
+      expect(getSignatureType(claim)).toEqual(SignatureType.QUALIFIED);
+    });
+
+    it('should return basic signature type if respondent is organisation', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      expect(getSignatureType(claim)).toEqual(SignatureType.QUALIFIED);
     });
   });
 });
