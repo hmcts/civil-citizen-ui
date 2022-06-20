@@ -74,7 +74,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
-      buildYourFinancialSection(claim, claimId, lang),
+      claim.paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourFinancialSection(claim, claimId, lang) : null,
       buildResponseSection(claim, claimId, lang),
     ],
   };
