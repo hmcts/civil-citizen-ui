@@ -5,6 +5,7 @@
 {% from "../../macro/statement-of-truth.njk" import statementOfTruth %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CHECK_YOUR_ANSWER.TITLE') }}
@@ -15,40 +16,43 @@
     <main class="govuk-main-wrapper" role="main">
       {% if form.hasErrors() %}
         {{ govukErrorSummary({
-          "titleText": t('There was a problem'),
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": form.getErrors()
         }) }}
       {% endif %}
       <div class="govuk-grid-row">
-        <br class="govuk-grid-column-two-thirds" />
-        <h1 class="govuk-heading-l">{{ t('PAGES.CHECK_YOUR_ANSWER.TITLE') }}</h1>
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.CHECK_YOUR_ANSWER.TITLE') }}</h1>
 
-        {% for section in summarySections.sections %}
-          <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
-          <div class="govuk-form-group">
-            {{ govukSummaryList({
-              rows: section.summaryList.rows
-            }) }}
-          </div>
-        {% endfor %}
-        <form method="post" novalidate>
-          {{ statementOfTruth(
-            form,
-            statementOfTruthType = SignatureType.RESPONSE,
-            labelHtml = 'I believe that the facts stated in this response are true.
-          <p>I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to
-          be made, a false statement in a document verified by a statement of truth without an honest belief in its
-          truth.</p>',
-            isQualified = (signatureType === SignatureType.QUALIFIED)
-          ) }}
+          {% for section in summarySections.sections %}
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+            <div class="govuk-form-group">
+              {{ govukSummaryList({
+                rows: section.summaryList.rows
+              }) }}
+            </div>
+          {% endfor %}
+          <form method="post" novalidate autocomplete="off">
+            {{ csrfProtection(csrf) }}
+            <input type="hidden" name="type" value="{{ form.model.type }}">
+            <input type="hidden" name="fullAmountReject" value="{{ form.model.fullAmountReject }}">
+            {{ statementOfTruth(
+              form,
+              statementOfTruthType = SignatureType.RESPONSE,
+              labelHtml = t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX') + '<p class="govuk-!-margin-top-2">' +
+              t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS') +'</p>',
+              isQualified = (signatureType === SignatureType.QUALIFIED),
+              fullAmountReject = fullAmountReject
+            ) }}
 
-          <div class="govuk-form-group">
-            {{ govukButton({
-              text: t('Submit response')
-            }) }}
-            {{ contactUsForHelp(t) }}
-          </div>
-        </form>
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SUBMIT_RESPONSE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
       </div>
     </main>
   </div>

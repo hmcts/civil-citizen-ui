@@ -31,8 +31,11 @@ import {currencyFormatWithNoTrailingZeros} from '../../../common/utils/currencyF
 import {PriorityDebtDetails} from '../../../common/form/models/statementOfMeans/priorityDebtDetails';
 import {YesNo} from '../../../common/form/models/yesNo';
 import {BankAccountTypeValues} from '../../../common/form/models/bankAndSavings/bankAccountTypeValues';
-
+import {SignatureType} from '../../../common/models/signatureType';
+import {isCounterpartyIndividual} from '../../../common/utils/taskList/tasks/taskListHelpers';
+import {ResponseType} from '../../../common/form/models/responseType';
 import Transaction from '../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -271,7 +274,6 @@ const addCourtOrders = (claim: Claim, financialSection: SummarySection, claimId:
 
 // -- FINANCIAL SECTION
 const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
-
   let yourFinancialSection: SummarySection = null;
 
   yourFinancialSection = summarySection({
@@ -294,8 +296,6 @@ const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string |
 
   return yourFinancialSection;
 }; // -- End
-
-
 
 const buildResponseSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const yourResponseHref = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
@@ -332,11 +332,35 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
   return buildSummarySections(claim, claimId, lang);
 };
 
-export const getStatementOfTruth = (claim: Claim) => {
+export const rejectingFullAmount = (claim: Claim): boolean => {
+  return claim.respondent1.responseType === ResponseType.PART_ADMISSION || claim.respondent1.responseType === ResponseType.FULL_DEFENCE;
+};
+
+export const resetCheckboxFields = (statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): StatementOfTruthForm | QualifiedStatementOfTruth => {
+  statementOfTruth.directionsQuestionnaireSigned = '';
+  statementOfTruth.signed = '';
+  return statementOfTruth;
+};
+
+export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | QualifiedStatementOfTruth => {
   if (claim.defendantStatementOfTruth) {
-    return claim.defendantStatementOfTruth;
+    return resetCheckboxFields(claim.defendantStatementOfTruth);
   }
-  return new StatementOfTruthForm();
+
+  switch (getSignatureType(claim)) {
+    case SignatureType.BASIC:
+    case SignatureType.DIRECTION_QUESTIONNAIRE:
+      return new StatementOfTruthForm(rejectingFullAmount(claim));
+    case SignatureType.QUALIFIED:
+    case SignatureType.DIRECTION_QUESTIONNAIRE_QUALIFIED:
+      return new QualifiedStatementOfTruth(rejectingFullAmount(claim));
+    default:
+      return new StatementOfTruthForm(rejectingFullAmount(claim));
+  }
+};
+
+export const getSignatureType = (claim: Claim): SignatureType => {
+  return isCounterpartyIndividual(claim.respondent1) ?  SignatureType.BASIC : SignatureType.QUALIFIED;
 };
 
 export const saveStatementOfTruth = async (claimId: string, defendantStatementOfTruth: StatementOfTruthForm) => {

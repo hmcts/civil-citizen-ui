@@ -22,8 +22,8 @@ export class QualifiedStatementOfTruth extends StatementOfTruthForm {
   @IsNotEmpty({message: SIGNER_ROLE_REQUIRED})
     signerRole?: string;
 
-  constructor(signed?: string, directionsQuestionnaireSigned?: boolean, signerName?: string, signerRole?: string) {
-    super(SignatureType.QUALIFIED, signed, directionsQuestionnaireSigned);
+  constructor(fullAmountReject: boolean, signed?: string, directionsQuestionnaireSigned?: string, signerName?: string, signerRole?: string) {
+    super(fullAmountReject, SignatureType.QUALIFIED, signed, directionsQuestionnaireSigned);
     this.signerName = signerName?.trim();
     this.signerRole = signerRole?.trim();
   }
