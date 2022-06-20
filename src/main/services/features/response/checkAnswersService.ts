@@ -35,7 +35,7 @@ import {SignatureType} from '../../../common/models/signatureType';
 import {isCounterpartyIndividual} from '../../../common/utils/taskList/tasks/taskListHelpers';
 import {ResponseType} from '../../../common/form/models/responseType';
 import Transaction from '../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
-import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');

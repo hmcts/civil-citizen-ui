@@ -150,19 +150,19 @@ describe('Check Answers service', () => {
 
       //Then
       await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(SignatureType.BASIC, 'true'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, 'true'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
     it('should retrieve data from draft store', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const claim = new Claim();
-        claim.defendantStatementOfTruth = { type: SignatureType.BASIC, signed: 'true' };
+        claim.defendantStatementOfTruth = { fullAmountReject: false, type: SignatureType.BASIC, signed: 'true' };
         return claim;
       });
 
       //Then
       await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(SignatureType.BASIC, 'true'))).toBeTruthy();
+        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, 'true'))).toBeTruthy();
     });
     it('should return full name of a person when full name is present', async () => {
       //Given
@@ -203,7 +203,6 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[2].value.html).toBe('£1,000');
       expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_BANK_JOINT_ACCOUNT);
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe(YesNo.YES.charAt(0).toUpperCase() + YesNo.YES.slice(1));
-
     });
 
     it('should return bank accounts when it exists', async () => {
@@ -473,6 +472,5 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[14].key.text).toBe('Income 2');
       expect(summarySections.sections[1].summaryList.rows[14].value.html).toBe('£2,000');
     });
-
   });
 });
