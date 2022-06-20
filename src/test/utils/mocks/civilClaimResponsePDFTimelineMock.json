@@ -15,6 +15,7 @@
     "applicant1": {
       "type": "ORGANISATION",
       "partyName": "Mr. Jan Clark",
+      "companyName": "Mr. Jan Clark",
       "telephoneNumber": "(0)207 127 0000",
       "primaryAddress": {
         "County": "Kent",
@@ -25,26 +26,13 @@
         "AddressLine2": "Caversham House 15-17",
         "AddressLine3": "Church Road"
       },
+      "organisationName": "Example organisation",
       "partyTypeDisplayValue": "Organisation"
     },
     "applicantSolicitor1UserDetails": {
       "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
     },
     "partialAdmission": {
-      "paymentIntention": {
-        "paymentDate": "2025-06-01T00:00:00.000Z"
-      },
-      "howMuchHaveYouPaid": {
-        "amount": 20,
-        "totalClaimAmount": 110,
-        "date": "2022-01-01T00:00:00.000Z",
-        "day": "1",
-        "month": "1",
-        "year": "2022",
-        "text": "text"
-      }
-    },
-    "rejectAllOfClaim": {
       "howMuchHaveYouPaid": {
         "amount": 20,
         "totalClaimAmount": 110,
@@ -128,57 +116,24 @@
       }
     },
     "respondent1": {
-      "type": "ORGANISATION",
       "dateOfBirth": "2022-03-01T13:29:24.971",
       "telephoneNumber": "111",
+      "organisationName": "def two",
       "contactPerson": "Felipe",
       "partyName": "Version 1"
+    },
+    "specClaimTemplateDocumentFiles": {
+      "document_url": "http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c",
+      "document_filename": "timeline-event-template-Kadir.pdf",
+      "document_binary_url": "http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary"
     },
     "respondent1ResponseDeadline": "2022-05-15T02:59:59",
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 110,
-    "claimInterest": "Yes",
-    "submittedDate": "2022-05-23T17:02:02.38407",
-    "totalInterest": 15,
-    "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
-    "interestClaimUntil": "UNTIL_CLAIM_SUBMIT_DATE",
-    "interestClaimOptions": "SAME_RATE_INTEREST",
-    "interestFromSpecificDate": "2022-05-20",
-    "sameRateInterestSelection": {
-      "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
-    },
-    "detailsOfClaim": "House repair",
-    "claimAmountBreakup": [
-      {
-        "id": "acbefa73-f24b-4c64-a00f-38f90c31d7e3",
-        "value": {
-          "claimAmount": "2000",
-          "claimReason": "House repair"
-        }
-      }
-    ],
-    "timelineOfEvents": [
-      {
-        "id": "a08e42f4-6d7a-4f5c-b33d-85e4ef42ad9e",
-        "value": {
-          "timelineDate": "2022-01-01",
-          "timelineDescription": "I noticed a leak on the landing and told Mr Smith about this."
-        }
-      }
-    ],
     "paymentOption": "BY_SET_DATE",
     "paymentDate": "2025-06-01T00:00:00.000Z",
     "defence": {
       "text": "reasons for making the claim"
-    },
-    "timelineOfEvents": [
-      {
-        "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
-        "value": {
-          "timelineDate": "2021-01-01",
-          "timelineDescription": "Test details of claim"
-        }
-      }
-    ]
+    }
   }
 }
