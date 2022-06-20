@@ -112,7 +112,7 @@ describe('Claim details page', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(CLAIM_DETAILS);
-          expect(res.text).toContain('Download and view their Timeline');
+          expect(res.text).toContain('Download and view timeline');
         });
       expect(spyRedisSave).not.toBeCalled();
       expect(mockGetClaimById).not.toBeCalled();

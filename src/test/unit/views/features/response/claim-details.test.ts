@@ -116,7 +116,7 @@ describe('Task List View', () => {
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
       const downloadLink = htmlDocument.getElementById('timeline-link') as HTMLAnchorElement;
-      expect(downloadLink.innerHTML).toContain('Download and view their Timeline');
+      expect(downloadLink.innerHTML).toContain('Download and view timeline');
       expect(downloadLink.href).toContain('case/1111/documents/timeline');
     });
 
