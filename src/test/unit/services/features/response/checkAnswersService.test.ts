@@ -30,6 +30,7 @@ import {
   createClaimWithContactPersonDetails,
   createClaimWithOneBankAccount,
   createClaimWithBankAccounts,
+  createClaimWithNoBankAccounts,
   createClaimWithCourtOrders,
   createClaimWithNoCourtOrders,
   createClaimWithDebts,
@@ -254,6 +255,20 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[11].value.html).toBe('£2,000');
       expect(summarySections.sections[1].summaryList.rows[12].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_BANK_JOINT_ACCOUNT);
       expect(summarySections.sections[1].summaryList.rows[12].value.html).toBe(YesNo.NO.charAt(0).toUpperCase() + YesNo.NO.slice(1));
+    });
+
+    it('should return bank accounts when it exists', async () => {
+      //Given
+      const claim = createClaimWithNoBankAccounts();
+
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+
+      //Then
+      expect(summarySections.sections[1].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.BANK_AND_SAVINGS_ACCOUNTS');
+      expect(summarySections.sections[1].summaryList.rows[0].value.html).toBe('None');
+      expect(summarySections.sections[1].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_BANK_ACCOUNT_URL.replace(':id', CLAIM_ID));
+      expect(summarySections.sections[1].summaryList.rows[0].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
     });
 
     it('should return employemt details when it exists', async () => {

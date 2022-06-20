@@ -124,6 +124,12 @@ export const createClaimWithBankAccounts = () => {
   return claim as Claim;
 };
 
+export const createClaimWithNoBankAccounts = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  return claim as Claim;
+};
+
 export const createClaimWithCourtOrders = () => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;

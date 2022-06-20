@@ -37,7 +37,7 @@ import Transaction from '../../../common/form/models/statementOfMeans/expensesAn
 import {EmploymentCategory} from '../../../common/form/models/statementOfMeans/employment/employmentCategory';
 import {UnemploymentCategory} from '../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {Unemployment} from '../../../common/form/models/statementOfMeans/unemployment/unemployment';
-import { Employment } from 'common/models/employment';
+import {Employment} from 'common/models/employment';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
