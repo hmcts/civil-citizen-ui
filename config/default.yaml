@@ -24,6 +24,16 @@ services:
       port: 6379
       key:
       tls: false
+    legacy:
+      url: 'http://localhost:8800'
+      s2s:
+        microserviceName: 'cmc'
+        primarySecret: 'not-a-real-primary-secret'
+        secondarySecret: 'not-a-real-secondary-secret'
+  serviceAuthProvider:
+    url: 'http://localhost:4552'
+    cmcS2sSecret: 'AAAAAAAAAAAAAAAA'
+
 health:
   timeout: 5000
   deadline: 15000

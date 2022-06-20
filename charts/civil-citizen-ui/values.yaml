@@ -29,6 +29,12 @@ nodejs:
         - draft-store-access-key
         - ordnance-survey-api-key
         - citizen-ui-idam-secret
+    cmc:
+      resourceGroup: cmc
+      secrets:
+        - citizen-draft-store-primary
+        - citizen-draft-store-secondary
+
   environment:
     IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
     IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
