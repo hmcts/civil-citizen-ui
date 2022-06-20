@@ -26,7 +26,8 @@ import {Unemployment} from '../../main/common/form/models/statementOfMeans/unemp
 import {OtherDetails} from '../../main/common/form/models/statementOfMeans/unemployment/otherDetails';
 import {UnemploymentCategory} from '../../main/common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {UnemploymentDetails} from '../../main/common/form/models/statementOfMeans/unemployment/unemploymentDetails';
-
+import {SelfEmployedAs} from '../../main/common/models/selfEmployedAs';
+import {TaxPayments} from '../../main/common/models/taxPayments';
 
 
 const CONTACT_PERSON = 'The Post Man';
@@ -295,13 +296,12 @@ export const createClaimWithEmplymentDetails = (): Claim => {
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.EMPLOYED, EmploymentCategory.SELF_EMPLOYED];
   const employment: Employment = { declared: true, employmentType: employmentType };
-
-  const unemployment = new Unemployment(UnemploymentCategory.UNEMPLOYED, new UnemploymentDetails('10', '10'), undefined);
+  const selfEmployedAs: SelfEmployedAs = { jobTitle: 'Developer', annualTurnover: 50000 };
 
   claim.statementOfMeans = {
     employment: employment,
     employers: createEmployers(),
-    unemployment: unemployment,
+    selfEmployedAs: selfEmployedAs,
   };
 
   return claim as Claim;
@@ -322,16 +322,37 @@ export const createClaimWithEmployedCategory = (): Claim => {
   return claim as Claim;
 };
 
-export const createClaimWithSelfEmployedCategory = (): Claim => {
+export const createClaimWithSelfEmployedAndTaxBehind = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.SELF_EMPLOYED];
   const employment: Employment = { declared: true, employmentType: employmentType };
+  const selfEmployedAs: SelfEmployedAs = { jobTitle: 'Developer', annualTurnover: 50000 };
+  const taxPayments: TaxPayments = { owed: true, amountOwed: 200, reason: 'Tax payment reasons'};
 
   claim.statementOfMeans = {
     employment: employment,
-    employers: createEmployers(),
+    selfEmployedAs: selfEmployedAs,
+    taxPayments: taxPayments,
+  };
+
+  return claim as Claim;
+};
+
+export const createClaimWithSelfEmployedNoTaxBehind = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+
+  const employmentType: EmploymentCategory[] = [EmploymentCategory.SELF_EMPLOYED];
+  const employment: Employment = { declared: true, employmentType: employmentType };
+  const selfEmployedAs: SelfEmployedAs = { jobTitle: 'Developer', annualTurnover: 50000 };
+  const taxPayments: TaxPayments = { owed: false, amountOwed: undefined, reason: ''};
+
+  claim.statementOfMeans = {
+    employment: employment,
+    selfEmployedAs: selfEmployedAs,
+    taxPayments: taxPayments,
   };
 
   return claim as Claim;

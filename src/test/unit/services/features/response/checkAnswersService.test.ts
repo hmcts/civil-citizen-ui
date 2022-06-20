@@ -16,6 +16,7 @@ import {
   CITIZEN_MONTHLY_INCOME_URL,
   CITIZEN_COURT_ORDERS_URL,
   CITIZEN_EMPLOYMENT_URL,
+  CITIZEN_SELF_EMPLOYED_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../src/test/utils/errorMessageTestConstants';
 import PaymentOptionType
@@ -40,7 +41,8 @@ import {
   createClaimWithRegularIncome,
   createClaimWithEmplymentDetails,
   createClaimWithEmployedCategory,
-  createClaimWithSelfEmployedCategory,
+  createClaimWithSelfEmployedAndTaxBehind,
+  createClaimWithSelfEmployedNoTaxBehind,
   createClaimWithUnemplymentDetailsOne,
   createClaimWithUnemplymentDetailsTwo,
   createClaimWithUnemploymentCategoryRETIRED,
@@ -75,6 +77,21 @@ const PAGES_CHECK_YOUR_ANSWER_BANK_JOINT_ACCOUNT = 'PAGES.CHECK_YOUR_ANSWER.BANK
 const PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_TYPE = 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_TYPE';
 const PAGES_CHECK_YOUR_ANSWER_PRIORITY_DEBT_ARREARS_REPAYMENT = 'PAGES.CHECK_YOUR_ANSWER.PRIORITY_DEBT_ARREARS_REPAYMENT';
 
+const PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE = 'PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE';
+const PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_NAME = 'PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_NAME';
+const PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_JOB_TITLE = 'PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_JOB_TITLE';
+const PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_SELF_DETAILS = 'PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_SELF_DETAILS';
+const PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_SELF_ANNUAL_TURNOVER = 'PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_SELF_ANNUAL_TURNOVER';
+
+const PAGES_CHECK_YOUR_ANSWER_TAX_PAYMENT_ARE_YOU_BEHIND = 'PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_ARE_YOU_BEHIND';
+
+const PAGES_CHECK_YOUR_ANSWER_COURT_ORDERS_CLAIM_NUMBER = 'PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_CLAIM_NUMBER';
+const PAGES_CHECK_YOUR_ANSWER_COURT_ORDERS_AMOUNT_OWNED = 'PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_AMOUNT_OWNED';
+const PAGES_CHECK_YOUR_ANSWER_COURT_ORDERS_MONTHLY_INSTALMENT = 'PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_MONTHLY_INSTALMENT';
+
+const PAGES_CHECK_YOUR_ANSWER_DEBT = 'PAGES.CHECK_YOUR_ANSWER.DEBT';
+const PAGES_CHECK_YOUR_ANSWER_DEBTS_TOTAL_OWED = 'PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED';
+const PAGES_CHECK_YOUR_ANSWER_DEBTS_MONTHLY_PAYMENTS = 'PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS';
 
 describe('Check Answers service', () => {
   describe('Get Summary Sections', () => {
@@ -278,26 +295,36 @@ describe('Check Answers service', () => {
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
       //Then
       expect(summarySections.sections[1].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_DETAILS');
-      expect(summarySections.sections[1].summaryList.rows[1].value.html).toBe(YesNo.YES.charAt(0).toUpperCase() + YesNo.YES.slice(1));
       expect(summarySections.sections[1].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_EMPLOYMENT_URL.replace(':id', CLAIM_ID));
       expect(summarySections.sections[1].summaryList.rows[1].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
 
       expect(summarySections.sections[1].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_DO_YOU_HAVE_A_JOB');
       expect(summarySections.sections[1].summaryList.rows[2].value.html).toBe(YesNo.YES.charAt(0).toUpperCase() + YesNo.YES.slice(1));
 
-      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE');
+      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('Employed and Self-employed');
 
       expect(summarySections.sections[1].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_WHO_EMPLOYS_YOU');
-      expect(summarySections.sections[1].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_NAME');
+      expect(summarySections.sections[1].summaryList.rows[4].actions?.items[0].href).toBe(CITIZEN_EMPLOYMENT_URL.replace(':id', CLAIM_ID));
+
+      expect(summarySections.sections[1].summaryList.rows[5].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_NAME);
       expect(summarySections.sections[1].summaryList.rows[5].value.html).toBe('Version 1');
-      expect(summarySections.sections[1].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_JOB_TITLE');
+      expect(summarySections.sections[1].summaryList.rows[6].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_JOB_TITLE);
       expect(summarySections.sections[1].summaryList.rows[6].value.html).toBe('FE Developer');
 
-      expect(summarySections.sections[1].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_NAME');
+      expect(summarySections.sections[1].summaryList.rows[7].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_NAME);
       expect(summarySections.sections[1].summaryList.rows[7].value.html).toBe('Version 1');
-      expect(summarySections.sections[1].summaryList.rows[8].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_JOB_TITLE');
+      expect(summarySections.sections[1].summaryList.rows[8].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_JOB_TITLE);
       expect(summarySections.sections[1].summaryList.rows[8].value.html).toBe('BE Developer');
+
+      expect(summarySections.sections[1].summaryList.rows[9].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_SELF_DETAILS);
+      expect(summarySections.sections[1].summaryList.rows[9].actions?.items[0].href).toBe(CITIZEN_SELF_EMPLOYED_URL.replace(':id', CLAIM_ID));
+
+      expect(summarySections.sections[1].summaryList.rows[10].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_JOB_TITLE);
+      expect(summarySections.sections[1].summaryList.rows[10].value.html).toBe('Developer');
+
+      expect(summarySections.sections[1].summaryList.rows[11].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_SELF_ANNUAL_TURNOVER);
+      expect(summarySections.sections[1].summaryList.rows[11].value.html).toBe('£50,000');
     });
 
     it('should return employemt with "Employed" category selected when it exists', async () => {
@@ -306,18 +333,57 @@ describe('Check Answers service', () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
       //Then
-      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE');
+      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('Employed');
     });
 
-    it('should return employemt with "Self-Employed" category selected when it exists', async () => {
+    it('should return employemt with "Self-Employed" category selected and tax payments behind when it exists', async () => {
       //Given
-      const claim = createClaimWithSelfEmployedCategory();
+      const claim = createClaimWithSelfEmployedAndTaxBehind();
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
       //Then
-      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE');
+      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('Self-employed');
+
+      expect(summarySections.sections[1].summaryList.rows[4].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_SELF_DETAILS);
+      expect(summarySections.sections[1].summaryList.rows[4].actions?.items[0].href).toBe(CITIZEN_SELF_EMPLOYED_URL.replace(':id', CLAIM_ID));
+
+      expect(summarySections.sections[1].summaryList.rows[5].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_JOB_TITLE);
+      expect(summarySections.sections[1].summaryList.rows[5].value.html).toBe('Developer');
+
+      expect(summarySections.sections[1].summaryList.rows[6].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_SELF_ANNUAL_TURNOVER);
+      expect(summarySections.sections[1].summaryList.rows[6].value.html).toBe('£50,000');
+
+      expect(summarySections.sections[1].summaryList.rows[7].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_TAX_PAYMENT_ARE_YOU_BEHIND);
+
+      expect(summarySections.sections[1].summaryList.rows[8].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_AMOUNT_YOU_OWE');
+      expect(summarySections.sections[1].summaryList.rows[8].value.html).toBe('£200');
+
+      expect(summarySections.sections[1].summaryList.rows[9].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_REASON');
+      expect(summarySections.sections[1].summaryList.rows[9].value.html).toBe('Tax payment reasons');
+    });
+
+    it('should return employemt with "Self-Employed" category selected and no tax payments behind when it exists', async () => {
+      //Given
+      const claim = createClaimWithSelfEmployedNoTaxBehind();
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+      //Then
+      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
+      expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('Self-employed');
+
+      expect(summarySections.sections[1].summaryList.rows[4].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_SELF_DETAILS);
+      expect(summarySections.sections[1].summaryList.rows[4].actions?.items[0].href).toBe(CITIZEN_SELF_EMPLOYED_URL.replace(':id', CLAIM_ID));
+
+      expect(summarySections.sections[1].summaryList.rows[5].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_JOB_TITLE);
+      expect(summarySections.sections[1].summaryList.rows[5].value.html).toBe('Developer');
+
+      expect(summarySections.sections[1].summaryList.rows[6].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_SELF_ANNUAL_TURNOVER);
+      expect(summarySections.sections[1].summaryList.rows[6].value.html).toBe('£50,000');
+
+      expect(summarySections.sections[1].summaryList.rows[7].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_TAX_PAYMENT_ARE_YOU_BEHIND);
+      expect(summarySections.sections[1].summaryList.rows[7].value.html).toBe('No');
     });
 
     it('should return unemployemt details with signle year/month when it exists', async () => {
@@ -326,7 +392,7 @@ describe('Check Answers service', () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
       //Then
-      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE');
+      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('Unemployed for 1 year 1 month');
 
     });
@@ -337,7 +403,7 @@ describe('Check Answers service', () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
       //Then
-      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE');
+      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('Unemployed for 10 years 10 months');
     });
 
@@ -347,7 +413,7 @@ describe('Check Answers service', () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
       //Then
-      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE');
+      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('Retired');
     });
 
@@ -357,7 +423,7 @@ describe('Check Answers service', () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
       //Then
-      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE');
+      expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('Other details here');
     });
 
@@ -373,18 +439,18 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[4].actions?.items[0].href).toBe(CITIZEN_COURT_ORDERS_URL.replace(':id', CLAIM_ID));
       expect(summarySections.sections[1].summaryList.rows[4].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
 
-      expect(summarySections.sections[1].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_CLAIM_NUMBER');
+      expect(summarySections.sections[1].summaryList.rows[5].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_COURT_ORDERS_CLAIM_NUMBER);
       expect(summarySections.sections[1].summaryList.rows[5].value.html).toBe('1');
-      expect(summarySections.sections[1].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_AMOUNT_OWNED');
+      expect(summarySections.sections[1].summaryList.rows[6].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_COURT_ORDERS_AMOUNT_OWNED);
       expect(summarySections.sections[1].summaryList.rows[6].value.html).toBe('£100');
-      expect(summarySections.sections[1].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_MONTHLY_INSTALMENT');
+      expect(summarySections.sections[1].summaryList.rows[7].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_COURT_ORDERS_MONTHLY_INSTALMENT);
       expect(summarySections.sections[1].summaryList.rows[7].value.html).toBe('£1,500');
 
-      expect(summarySections.sections[1].summaryList.rows[8].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_CLAIM_NUMBER');
+      expect(summarySections.sections[1].summaryList.rows[8].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_COURT_ORDERS_CLAIM_NUMBER);
       expect(summarySections.sections[1].summaryList.rows[8].value.html).toBe('2');
-      expect(summarySections.sections[1].summaryList.rows[9].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_AMOUNT_OWNED');
+      expect(summarySections.sections[1].summaryList.rows[9].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_COURT_ORDERS_AMOUNT_OWNED);
       expect(summarySections.sections[1].summaryList.rows[9].value.html).toBe('£250');
-      expect(summarySections.sections[1].summaryList.rows[10].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_MONTHLY_INSTALMENT');
+      expect(summarySections.sections[1].summaryList.rows[10].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_COURT_ORDERS_MONTHLY_INSTALMENT);
       expect(summarySections.sections[1].summaryList.rows[10].value.html).toBe('£2,500');
 
     });
@@ -458,11 +524,11 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[5].actions?.items[0].href).toBe(CITIZEN_DEBTS_URL.replace(':id', CLAIM_ID));
       expect(summarySections.sections[1].summaryList.rows[5].actions?.items[0].text).toBe('PAGES.CHECK_YOUR_ANSWER.CHANGE');
 
-      expect(summarySections.sections[1].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBT');
+      expect(summarySections.sections[1].summaryList.rows[6].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_DEBT);
       expect(summarySections.sections[1].summaryList.rows[6].value.html).toBe('Loan 1');
-      expect(summarySections.sections[1].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED');
+      expect(summarySections.sections[1].summaryList.rows[7].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_DEBTS_TOTAL_OWED);
       expect(summarySections.sections[1].summaryList.rows[7].value.html).toBe('£1,000');
-      expect(summarySections.sections[1].summaryList.rows[8].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS');
+      expect(summarySections.sections[1].summaryList.rows[8].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_DEBTS_MONTHLY_PAYMENTS);
       expect(summarySections.sections[1].summaryList.rows[8].value.html).toBe('£10');
     });
 
@@ -474,18 +540,18 @@ describe('Check Answers service', () => {
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
 
       //Then
-      expect(summarySections.sections[1].summaryList.rows[6].key.text).toBe('1. PAGES.CHECK_YOUR_ANSWER.DEBT');
+      expect(summarySections.sections[1].summaryList.rows[6].key.text).toBe('1. ' + PAGES_CHECK_YOUR_ANSWER_DEBT);
       expect(summarySections.sections[1].summaryList.rows[6].value.html).toBe('Loan 1');
-      expect(summarySections.sections[1].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED');
+      expect(summarySections.sections[1].summaryList.rows[7].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_DEBTS_TOTAL_OWED);
       expect(summarySections.sections[1].summaryList.rows[7].value.html).toBe('£1,000');
-      expect(summarySections.sections[1].summaryList.rows[8].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS');
+      expect(summarySections.sections[1].summaryList.rows[8].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_DEBTS_MONTHLY_PAYMENTS);
       expect(summarySections.sections[1].summaryList.rows[8].value.html).toBe('£10');
 
-      expect(summarySections.sections[1].summaryList.rows[9].key.text).toBe('2. PAGES.CHECK_YOUR_ANSWER.DEBT');
+      expect(summarySections.sections[1].summaryList.rows[9].key.text).toBe('2. ' + PAGES_CHECK_YOUR_ANSWER_DEBT);
       expect(summarySections.sections[1].summaryList.rows[9].value.html).toBe('Loan 2');
-      expect(summarySections.sections[1].summaryList.rows[10].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED');
+      expect(summarySections.sections[1].summaryList.rows[10].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_DEBTS_TOTAL_OWED);
       expect(summarySections.sections[1].summaryList.rows[10].value.html).toBe('£2,000');
-      expect(summarySections.sections[1].summaryList.rows[11].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS');
+      expect(summarySections.sections[1].summaryList.rows[11].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_DEBTS_MONTHLY_PAYMENTS);
       expect(summarySections.sections[1].summaryList.rows[11].value.html).toBe('£10');
     });
 
