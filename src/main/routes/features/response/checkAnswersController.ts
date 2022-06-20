@@ -22,7 +22,7 @@ const checkAnswersController = express.Router();
 function renderView(req: express.Request, res: express.Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summarySections = getSummarySections(req.params.id, claim, lang);
-  const signatureType = form.model.type;
+  const signatureType = form.model?.type;
   const fullAmountReject = rejectingFullAmount(claim);
   res.render(checkAnswersViewPath, {
     form,
