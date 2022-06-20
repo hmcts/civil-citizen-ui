@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-export function downloadPDF(res: express.Response, content: Buffer, filename: string) {
+export function displayPDF(res: express.Response, content: Buffer, filename: string) {
   res.writeHead(200, {
     'Content-Type': 'application/pdf',
     'Content-Disposition': `inline; filename=${filename}.pdf`,

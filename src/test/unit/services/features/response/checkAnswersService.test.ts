@@ -94,6 +94,8 @@ describe('Check Answers service', () => {
     });
 
     it('should return your financial details section', async () => {
+      //Given
+      const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.BY_SET_DATE);
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
       expect(summarySections.sections[1].summaryList.rows.length).toBe(2);
