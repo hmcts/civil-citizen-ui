@@ -19,6 +19,9 @@ export const getWhenWillYouPayTask = (caseData: Claim, claimId: string): Task =>
   if (caseData.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE && caseData.partialAdmission?.paymentIntention?.paymentDate) {
     taskStatus = TaskStatus.COMPLETE;
   }
+  if (caseData.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS) {
+    taskStatus = TaskStatus.COMPLETE;
+  }
   const constructedUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL);
   return { ...whenWillYouPayTask, url: constructedUrl, status: taskStatus };
 };

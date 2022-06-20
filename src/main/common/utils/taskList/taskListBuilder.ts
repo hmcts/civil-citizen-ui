@@ -1,24 +1,24 @@
-import { Task } from '../../models/taskList/task';
-import { TaskList } from '../../models/taskList/taskList';
-import { Claim } from '../../models/claim';
-import { TaskStatus } from '../../models/taskList/TaskStatus';
-import { getConfirmYourDetailsTask } from './tasks/confirmYourDetails';
-import { getNeedMoreTimeTask } from './tasks/needMoreTime';
-import { getChooseAResponseTask } from './tasks/chooseAResponse';
-import { getCheckAndSubmitYourResponseTask } from './tasks/checkAndSubmitYourResponse';
-import { isPastDeadline } from '../dateUtils';
-import { getDecideHowYouPayTask } from './tasks/decideHowYouPay';
-import { getShareFinancialDetailsTask } from './tasks/shareFinancialDetails';
-import { getRepaymentPlanTask } from './tasks/repaymentPlan';
-import { isNotPayImmediatelyResponse } from './tasks/taskListHelpers';
-import { ResponseType } from '../../../common/form/models/responseType';
-import { YesNo } from '../../../common/form/models/yesNo';
-import { getHowMuchHaveYouPaidTask } from './tasks/howMuchHaveYouPaid';
-import { getWhyDisagreeWithAmountClaimedTask } from './tasks/whyDisagreeWithAmountClaimed';
-import { getGiveUsDetailsHearingTask } from './tasks/giveUsDetailsHearing';
-import { getHowMuchMoneyAdmitOweTask } from './tasks/howMuchMoneyAdmitOwe';
-import { getFreeTelephoneMediationTask } from './tasks/freeTelephoneMediation';
-import { getWhenWillYouPayTask } from './tasks/whenWillYouPay';
+import {Task} from '../../models/taskList/task';
+import {TaskList} from '../../models/taskList/taskList';
+import {Claim} from '../../models/claim';
+import {TaskStatus} from '../../models/taskList/TaskStatus';
+import {getConfirmYourDetailsTask} from './tasks/confirmYourDetails';
+import {getNeedMoreTimeTask} from './tasks/needMoreTime';
+import {getChooseAResponseTask} from './tasks/chooseAResponse';
+import {getCheckAndSubmitYourResponseTask} from './tasks/checkAndSubmitYourResponse';
+import {isPastDeadline} from '../dateUtils';
+import {getDecideHowYouPayTask} from './tasks/decideHowYouPay';
+import {getShareFinancialDetailsTask} from './tasks/shareFinancialDetails';
+import {getRepaymentPlanTask} from './tasks/repaymentPlan';
+import {isNotPayImmediatelyResponse} from './tasks/taskListHelpers';
+import {ResponseType} from '../../../common/form/models/responseType';
+import {YesNo} from '../../../common/form/models/yesNo';
+import {getHowMuchHaveYouPaidTask} from './tasks/howMuchHaveYouPaid';
+import {getWhyDisagreeWithAmountClaimedTask} from './tasks/whyDisagreeWithAmountClaimed';
+import {getGiveUsDetailsHearingTask} from './tasks/giveUsDetailsHearing';
+import {getHowMuchMoneyAdmitOweTask} from './tasks/howMuchMoneyAdmitOwe';
+import {getFreeTelephoneMediationTask} from './tasks/freeTelephoneMediation';
+import {getWhenWillYouPayTask} from './tasks/whenWillYouPay';
 import PaymentOptionType from '../../../common/form/models/admission/paymentOption/paymentOptionType';
 
 const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId: string): TaskList => {
@@ -43,11 +43,15 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList 
   const decideHowYouPayTask = getDecideHowYouPayTask(caseData, claimId);
   const shareFinancialDetailsTask = getShareFinancialDetailsTask(caseData, claimId);
   const repaymentPlanTask = getRepaymentPlanTask(caseData, claimId);
+  const howMuchHaveYouPaidTask = getHowMuchHaveYouPaidTask(caseData, claimId);
+  const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId);
+  const howMuchMoneyAdmitOweTask = getHowMuchMoneyAdmitOweTask(caseData, claimId);
+  const whenWillYouPayTask = getWhenWillYouPayTask(caseData, claimId);
   tasks.push(chooseAResponseTask);
 
   // TODO : depending on the response type full admission/partial admission or rejection we need to add new tasks
 
-  if (chooseAResponseTask.status === TaskStatus.COMPLETE) {
+  if (chooseAResponseTask.status === TaskStatus.COMPLETE && caseData.respondent1?.responseType === ResponseType.FULL_ADMISSION) {
     tasks.push(decideHowYouPayTask);
 
     if (decideHowYouPayTask.status === TaskStatus.COMPLETE && isNotPayImmediatelyResponse(caseData)) {
@@ -60,12 +64,7 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList 
   }
 
   // PART ADMISSION
-  if (caseData.respondent1?.responseType === ResponseType.PART_ADMISSION) {
-    const howMuchHaveYouPaidTask = getHowMuchHaveYouPaidTask(caseData, claimId);
-    const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId);
-    const howMuchMoneyAdmitOweTask = getHowMuchMoneyAdmitOweTask(caseData, claimId);
-    const whenWillYouPayTask = getWhenWillYouPayTask(caseData, claimId);
-    const shareFinancialDetailsTask = getShareFinancialDetailsTask(caseData, claimId);
+  if (chooseAResponseTask.status === TaskStatus.COMPLETE && caseData.respondent1?.responseType === ResponseType.PART_ADMISSION) {
 
     if (caseData.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
       tasks.push(howMuchHaveYouPaidTask);
@@ -76,8 +75,13 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList 
       }
     }
 
-    if(whenWillYouPayTask.status === TaskStatus.COMPLETE){
+    if (caseData.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE && caseData.partialAdmission?.paymentIntention?.paymentDate) {
       tasks.push(shareFinancialDetailsTask);
+    }
+
+    if (caseData.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS) {
+      tasks.push(shareFinancialDetailsTask);
+      tasks.push(repaymentPlanTask);
     }
 
     tasks.push(whyDisagreeWithAmountClaimedTask);
