@@ -678,7 +678,7 @@
     }
   },
   {
-    "id": 1645882162449405,
+    "id": 1653311433897526,
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -729,9 +729,9 @@
         "camundaEvent": "CREATE_CLAIM_SPEC"
       },
       "specClaimTemplateDocumentFiles": {
-        "document_url": "http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c",
+        "document_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac",
         "document_filename": "timeline-event-template-Kadir.pdf",
-        "document_binary_url": "http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary"
+        "document_binary_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac/binary"
       },
       "totalClaimAmount": 1000,
       "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",

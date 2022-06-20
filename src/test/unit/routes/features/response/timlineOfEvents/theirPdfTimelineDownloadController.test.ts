@@ -25,12 +25,12 @@ describe('Their PDF timeline controller', () => {
 
     test('should display the pdf successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
-      const mockDownLoadPDFDocument = jest.spyOn(documentUtils, 'downloadPDF');
+      const mockDisplayPDFDocument = jest.spyOn(documentUtils, 'displayPDF');
       await request(app)
         .get('/case/1111/documents/timeline')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(mockDownLoadPDFDocument).toBeCalled();
+          expect(mockDisplayPDFDocument).toBeCalled();
         });
     });
     test('should return http 500 when has error', async () => {

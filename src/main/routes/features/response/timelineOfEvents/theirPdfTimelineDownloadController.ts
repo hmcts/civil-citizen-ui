@@ -16,7 +16,7 @@ theirPdfTimelineDownloadController.get(CASE_TIMELINE_DOCUMENTS_URL, async (req: 
   try {
     const claim = await getCaseDataFromStore(req.params.id);
     const pdfDocument: Buffer = await dmStoreClient.retrieveDocumentByDocumentId(claim.extractDocumentId());
-    documentUtils.downloadPDF(res, pdfDocument, claim.generatePdfFileName()); 
+    documentUtils.displayPDF(res, pdfDocument, claim.generatePdfFileName()); 
   } catch (error) {
     logger.error(error);
     res.status(500).send({error: error.message});
