@@ -20,10 +20,12 @@ import {getHowMuchMoneyAdmitOweTask} from './tasks/howMuchMoneyAdmitOwe';
 import {getFreeTelephoneMediationTask} from './tasks/freeTelephoneMediation';
 import {getWhenWillYouPayTask} from './tasks/whenWillYouPay';
 import PaymentOptionType from '../../../common/form/models/admission/paymentOption/paymentOptionType';
+import {getLng} from '../../../common/utils/languageToggleUtils';
+import {t} from 'i18next';
 
-const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId: string): TaskList => {
+const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
-  const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId);
+  const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId, lang);
   // TODO : when need more time page is developed we need to generate this function and push this task to the tasks
   const needMoreTimeTask = getNeedMoreTimeTask(claim);
 
@@ -34,19 +36,20 @@ const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:
   if (!isDeadlinePassed) {
     tasks.push(needMoreTimeTask);
   }
-  return { title: 'Prepare your response', tasks };
+
+  return { title: t('TASK_LIST.PREPARE_YOUR_RESPONSE.TITLE', { lng: getLng(lang) }), tasks };
 };
 
-const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList => {
+const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
-  const chooseAResponseTask = getChooseAResponseTask(caseData, claimId);
-  const decideHowYouPayTask = getDecideHowYouPayTask(caseData, claimId);
-  const shareFinancialDetailsTask = getShareFinancialDetailsTask(caseData, claimId);
-  const repaymentPlanTask = getRepaymentPlanTask(caseData, claimId);
-  const howMuchHaveYouPaidTask = getHowMuchHaveYouPaidTask(caseData, claimId);
-  const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId);
-  const howMuchMoneyAdmitOweTask = getHowMuchMoneyAdmitOweTask(caseData, claimId);
-  const whenWillYouPayTask = getWhenWillYouPayTask(caseData, claimId);
+  const chooseAResponseTask = getChooseAResponseTask(caseData, claimId, lang);
+  const decideHowYouPayTask = getDecideHowYouPayTask(caseData, claimId, lang);
+  const shareFinancialDetailsTask = getShareFinancialDetailsTask(caseData, claimId, lang);
+  const repaymentPlanTask = getRepaymentPlanTask(caseData, claimId, lang);
+  const howMuchHaveYouPaidTask = getHowMuchHaveYouPaidTask(caseData, claimId, lang);
+  const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, lang);
+  const howMuchMoneyAdmitOweTask = getHowMuchMoneyAdmitOweTask(caseData, claimId, lang);
+  const whenWillYouPayTask = getWhenWillYouPayTask(caseData, claimId, lang);
   tasks.push(chooseAResponseTask);
 
   // TODO : depending on the response type full admission/partial admission or rejection we need to add new tasks
@@ -88,40 +91,40 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string): TaskList 
 
   }
 
-  return { title: 'Respond to Claim', tasks };
+  return { title: t('TASK_LIST.RESPOND_TO_CLAIM.TITLE', { lng: getLng(lang) }), tasks };
 };
 
 
-const buildResolvingTheClaimSection = (caseData: Claim, claimId: string): TaskList => {
+const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
-  const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId);
+  const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, lang);
 
   if (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE) {
-    const freeTelephoneMediationTask = getFreeTelephoneMediationTask(caseData, claimId);
+    const freeTelephoneMediationTask = getFreeTelephoneMediationTask(caseData, claimId, lang);
     tasks.push(freeTelephoneMediationTask);
   }
-  return { title: 'Resolving the claim', tasks };
+  return { title: t('TASK_LIST.RESOLVING_THE_CLAIM.TITLE', { lng: getLng(lang) }), tasks };
 };
 
 
-const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string): TaskList => {
+const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
   if (caseData.respondent1?.responseType === ResponseType.PART_ADMISSION) {
-    const giveUsDetailsHearingTask = getGiveUsDetailsHearingTask(caseData, claimId);
+    const giveUsDetailsHearingTask = getGiveUsDetailsHearingTask(caseData, claimId, lang);
     tasks.push(giveUsDetailsHearingTask);
   }
-  return { title: 'Your hearing requirements', tasks };
+  return { title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', { lng: getLng(lang) }), tasks };
 };
 
 
-const buildSubmitSection = (claimId: string): TaskList => {
+const buildSubmitSection = (claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
 
   // TODO: when check and submit tasks page is developed we need to update logic of this task
-  const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claimId);
+  const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claimId, lang);
 
   tasks.push(checkAndSubmitYourResponseTask);
-  return { title: 'Submit', tasks };
+  return { title: t('TASK_LIST.SUBMIT.TITLE', { lng: getLng(lang) }), tasks };
 };
 
 export {

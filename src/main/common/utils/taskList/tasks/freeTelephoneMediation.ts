@@ -1,17 +1,18 @@
-import { Task } from '../../../models/taskList/task';
-import { Claim } from '../../../models/claim';
-import { TaskStatus } from '../../../models/taskList/TaskStatus';
-import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFormatter';
-import { CITIZEN_FREE_TELEPHONE_MEDIATION_URL } from '../../../../routes/urls';
-import { YesNo } from '../../../../common/form/models/yesNo';
+import {Task} from '../../../models/taskList/task';
+import {Claim} from '../../../models/claim';
+import {TaskStatus} from '../../../models/taskList/TaskStatus';
+import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../routes/urls';
+import {YesNo} from '../../../../common/form/models/yesNo';
+import {getLng} from '../../../../common/utils/languageToggleUtils';
+import {t} from 'i18next';
 
-const freeTelephoneMediationTask: Task = {
-  description: 'Free telephone mediation',
-  url: CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
-  status: TaskStatus.INCOMPLETE,
-};
-
-export const getFreeTelephoneMediationTask = (caseData: Claim, claimId: string): Task => {
+export const getFreeTelephoneMediationTask = (caseData: Claim, claimId: string, lang: string): Task => {
+  const freeTelephoneMediationTask: Task = {
+    description: t('TASK_LIST.RESOLVING_THE_CLAIM.FREE_TELEPHONE_MEDIATION', { lng: getLng(lang) }),
+    url: CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
+    status: TaskStatus.INCOMPLETE,
+  };
   let taskStatus = TaskStatus.INCOMPLETE;
 
   // Unhappy path NO MEDIATION

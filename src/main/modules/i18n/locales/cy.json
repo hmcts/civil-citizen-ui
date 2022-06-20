@@ -49,6 +49,34 @@
       "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
     }
   },
+  "TASK_LIST":{
+    "PREPARE_YOUR_RESPONSE": {
+      "TITLE": "Prepare your response",
+      "CONFIRM_YOUR_DETAILS": "Confirm your details"
+    },
+    "RESOLVING_THE_CLAIM": {
+      "TITLE": "Resolving the claim",
+      "FREE_TELEPHONE_MEDIATION": "Free telephone mediation"
+    },
+    "RESPOND_TO_CLAIM": {
+      "TITLE": "Respond to claim",
+      "CHOOSE_A_RESPONSE": "Choose a response",
+      "DECIDE_HOW_YOU_WILL_PAYS": "Decide how you'll pay",
+      "HOW_MUCH_HAVE_YOU_PAID": "How much have you paid",
+      "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
+      "YOUR_REPAYMENT_PLAN": "Your repayment plan",
+      "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
+      "WHEN_WILL_YOU_PAY": "When will you pay the £{{ amount }}?",
+      "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?"
+    },
+    "SUBMIT": {
+      "TITLE": "Submit",
+      "CHECK_AND_SUBMIT": "Check and submit your response"
+    },
+    "YOUR_HEARING_REQUIREMENTS": {
+      "TITLE": "Your hearing requirements"
+    }
+  },
   "PAGES": {
     "ADMISSION_PAYMENT_DATE": {
       "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",

@@ -8,14 +8,15 @@ import {
   isCounterpartyCompany,
   isIndividualWithStatementOfMeansComplete,
 } from './taskListHelpers';
+import {getLng} from '../../../../common/utils/languageToggleUtils';
+import {t} from 'i18next';
 
-const shareFinancialDetailsTask: Task = {
-  description: 'Share your financial details',
-  url: FINANCIAL_DETAILS_URL,
-  status: TaskStatus.INCOMPLETE,
-};
-
-export const getShareFinancialDetailsTask = (caseData: Claim, claimId: string): Task => {
+export const getShareFinancialDetailsTask = (caseData: Claim, claimId: string, lang: string): Task => {
+  const shareFinancialDetailsTask: Task = {
+    description: t('TASK_LIST.RESPOND_TO_CLAIM.SHARE_YOUR_FINANCIAL_DETAILS', { lng: getLng(lang) }),
+    url: FINANCIAL_DETAILS_URL,
+    status: TaskStatus.INCOMPLETE,
+  };
   let taskStatus = TaskStatus.INCOMPLETE;
 
   if (financialDetailsShared(caseData) && (isIndividualWithStatementOfMeansComplete(caseData) || isCounterpartyCompany(caseData.respondent1))) {

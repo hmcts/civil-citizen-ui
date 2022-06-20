@@ -3,14 +3,15 @@ import {Claim} from '../../../models/claim';
 import {TaskStatus} from '../../../models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {CITIZEN_OWED_AMOUNT_URL} from '../../../../routes/urls';
+import {getLng} from '../../../../common/utils/languageToggleUtils';
+import {t} from 'i18next';
 
-const howMuchMoneyAdmitOweTask: Task = {
-  description: 'How much money do you admit you owe',
-  url: CITIZEN_OWED_AMOUNT_URL,
-  status: TaskStatus.INCOMPLETE,
-};
-
-export const getHowMuchMoneyAdmitOweTask = (caseData: Claim, claimId: string): Task => {
+export const getHowMuchMoneyAdmitOweTask = (caseData: Claim, claimId: string, lang: string): Task => {
+  const howMuchMoneyAdmitOweTask: Task = {
+    description: t('TASK_LIST.RESPOND_TO_CLAIM.HOW_MUCH_MONEY_ADMIT_OWE', { lng: getLng(lang) }),
+    url: CITIZEN_OWED_AMOUNT_URL,
+    status: TaskStatus.INCOMPLETE,
+  };
   let taskStatus = TaskStatus.INCOMPLETE;
   if (caseData.partialAdmission?.howMuchDoYouOwe?.amount) {
     taskStatus = TaskStatus.COMPLETE;

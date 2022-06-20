@@ -13,28 +13,28 @@ import {Task} from '../../../common/models/taskList/task';
 let completed = 0;
 let total = 0;
 
-const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId: string) => {
+const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId: string, lang: string) => {
 
   // TASK BUILDER
   // TODO : depending on the defendant's response type (full admission/partial admission/ rejection) we need to build new taskLists and include them in the taskGroups array
-  const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(claim, caseData, currentClaimId);
-  const taskListRespondToClaim: TaskList = buildRespondToClaimSection(caseData, currentClaimId);
-  const taskListResolvingTheClaim: TaskList = buildResolvingTheClaimSection(caseData, currentClaimId);
-  const taskListYourHearingRequirements: TaskList = buildYourHearingRequirementsSection(caseData, currentClaimId);
+  const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(claim, caseData, currentClaimId, lang);
+  const taskListRespondToClaim: TaskList = buildRespondToClaimSection(caseData, currentClaimId, lang);
+  const taskListResolvingTheClaim: TaskList = buildResolvingTheClaimSection(caseData, currentClaimId, lang);
+  const taskListYourHearingRequirements: TaskList = buildYourHearingRequirementsSection(caseData, currentClaimId, lang);
 
   const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListResolvingTheClaim, taskListYourHearingRequirements];
   const filteredTaskGroups = taskGroups.filter(item => item.tasks.length !== 0);
   // check if all tasks are completed except check and submit
   calculateTotalAndCompleted(taskGroups);
 
-  const taskListSubmitYourResponse: TaskList = buildSubmitSection(currentClaimId);
+  const taskListSubmitYourResponse: TaskList = buildSubmitSection(currentClaimId, lang);
 
   filteredTaskGroups.push(taskListSubmitYourResponse);
   return filteredTaskGroups;
 };
 
-const outstandingTasksFromCase = (claim: Claim, claimId: string): Task[] => {
-  return outstandingTasksFromTaskLists(getTaskLists(claim, claim, claimId));
+const outstandingTasksFromCase = (claim: Claim, claimId: string, lang: string): Task[] => {
+  return outstandingTasksFromTaskLists(getTaskLists(claim, claim, claimId, lang));
 };
 
 const isOutstanding = (task: Task): boolean => {
