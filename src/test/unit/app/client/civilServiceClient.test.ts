@@ -69,9 +69,9 @@ describe('Civil Service Client', () => {
         baseURL: baseUrl,
       });
       expect(mockGet.mock.calls[0][0]).toEqual(CIVIL_SERVICE_FEES_RANGES);
-      expect(feeRanges.length).toEqual(1);
-      expect(feeRanges[0].minRange).toEqual(data[0].min_range);
-      expect(feeRanges[0].maxRange).toEqual(data[0].max_range);
+      expect(feeRanges.value.length).toEqual(15);
+      expect(feeRanges.value[0].minRange).toEqual(data[0].min_range);
+      expect(feeRanges.value[0].maxRange).toEqual(data[0].max_range);
     });
   });
 });

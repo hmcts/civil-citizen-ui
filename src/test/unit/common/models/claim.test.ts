@@ -599,3 +599,63 @@ describe('Claim partialAdmissionPaymentAmount', () => {
   });
 });
 
+describe('Documents', () => {
+  const emptyDocumentDetails = {
+    document_url: '',
+    document_binary_url: '',
+    document_filename: '',
+  };
+  const documentDetails = {
+    document_url: 'http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c',
+    document_filename: 'timeline-event-summary.pdf',
+    document_binary_url: 'http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary',
+  };
+
+  describe('extractDocumentId', () => {
+    const claim = new Claim();
+    it('should return undefined with empty claim', () => {
+      //When
+      const result = claim.extractDocumentId();
+      //Then
+      expect(result).toBeUndefined;
+    });
+    it('should return undefined with empty document details', () => {
+      //Given
+      claim.specClaimTemplateDocumentFiles = emptyDocumentDetails;
+      //When
+      const result = claim.extractDocumentId();
+      //Then
+      expect(result).toBeUndefined;
+    });
+    it('should return document id with existing document details  ', () => {
+      //Given
+      claim.specClaimTemplateDocumentFiles = documentDetails;
+      //When
+      const result = claim.extractDocumentId();
+      //Then
+      expect(result).toBe('74bf213e-72dd-4908-9e08-72fefaed9c5c');
+    });
+  });
+
+  describe('generatePdfFileName', () => {
+    const claim = new Claim();
+    it('should return only case reference number with empty document details', () => {
+      // Given
+      claim.legacyCaseReference = '000MC009';
+      claim.specClaimTemplateDocumentFiles = emptyDocumentDetails;
+      //When
+      const result = claim.generatePdfFileName();
+      //Then
+      expect(result).toContain('000MC009');
+    });
+    it('should return file name with case number and declared file name', () => {
+      // Given
+      claim.specClaimTemplateDocumentFiles = documentDetails;
+      //When
+      const result = claim.generatePdfFileName();
+      //Then
+      expect(result).toBe('000MC009-timeline-event-summary.pdf');
+    });
+  });
+});
+

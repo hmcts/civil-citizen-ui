@@ -1,110 +1,4290 @@
 [
   {
-    "applicant_type": {
-      "creationTime": "2022-06-06T12:23:33.616Z",
-      "lastUpdated": "2022-06-06T12:23:33.616Z",
-      "name": "civil money claims"
-    },
+    "code": "FEE0209",
+    "fee_type": "ranged",
     "channel_type": {
-      "creationTime": "2022-06-06T12:23:33.616Z",
-      "lastUpdated": "2022-06-06T12:23:33.616Z",
       "name": "default"
     },
-    "code": "234",
-    "current_version": {
-      "approved_by": "Mr Goodman",
-      "author": "Mrs Goodwoman",
-      "description": "very good",
-      "direction": "direction",
-      "fee_order_name": "name",
-      "flat_amount": {
-        "amount": 35
-      },
-      "memo_line": "line",
-      "natural_account_code": "37464",
-      "percentage_amount": {
-        "percentage": 10
-      },
-      "si_ref_id": "374",
-      "status": "active",
-      "statutory_instrument": "done",
-      "valid_from": "2022-06-06T12:23:33.616Z",
-      "valid_to": "2022-06-06T12:23:33.616Z",
-      "version": 1,
-      "volume_amount": {
-        "amount": 35
-      }
-    },
     "event_type": {
-      "creationTime": "2022-06-06T12:23:33.616Z",
-      "lastUpdated": "2022-06-06T12:23:33.616Z",
-      "name": "issued"
+      "name": "issue"
     },
-    "fee_type": "counter claim",
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
     "fee_versions": [
       {
-        "approved_by": "Mr Goodman",
-        "author": "Mrs Goodwoman",
-        "description": "very good",
-        "direction": "direction",
-        "fee_order_name": "name",
+        "description": "Civil Court fees - Money Claims - Claim Amount - 10000.01 up to 200000 GBP.",
+        "status": "approved",
+        "version": 1,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "GOV - Paper fees - Money claim £10,000.01-200,000",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Money Claims - Claim Amount - 10000.01 up to 200000 GBP.",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1h",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Money Claims - Claim Amount - 10000.01 up to 200000 GBP. FEE AMOUNT = 5% of claim value",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 3,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1h",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 10000.01 up to 200000 GBP.",
+      "status": "approved",
+      "version": 1,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 5
+      },
+      "memo_line": "GOV - Paper fees - Money claim £10,000.01-200,000",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    },
+    "min_range": 10000.01,
+    "max_range": 200000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 10000.01 up to 200000 GBP.",
+      "status": "approved",
+      "version": 1,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 5
+      },
+      "memo_line": "GOV - Paper fees - Money claim £10,000.01-200,000",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0209",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 10000.01 up to 200000 GBP.",
+        "status": "approved",
+        "version": 1,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "GOV - Paper fees - Money claim £10,000.01-200,000",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Money Claims - Claim Amount - 10000.01 up to 200000 GBP.",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1h",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Money Claims - Claim Amount - 10000.01 up to 200000 GBP. FEE AMOUNT = 5% of claim value",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 3,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1h",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Money Claims - Claim Amount - 10000.01 up to 200000 GBP.",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 5
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1h",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "min_range": 10000.01,
+    "max_range": 200000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Money Claims - Claim Amount - 10000.01 up to 200000 GBP.",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 5
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1h",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0209",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 10000.01 up to 200000 GBP.",
+        "status": "approved",
+        "version": 1,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "GOV - Paper fees - Money claim £10,000.01-200,000",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Money Claims - Claim Amount - 10000.01 up to 200000 GBP.",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1h",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Money Claims - Claim Amount - 10000.01 up to 200000 GBP. FEE AMOUNT = 5% of claim value",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 3,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1h",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Money Claims - Claim Amount - 10000.01 up to 200000 GBP. FEE AMOUNT = 5% of claim value",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 3,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 5
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1h",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "min_range": 10000.01,
+    "max_range": 200000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Money Claims - Claim Amount - 10000.01 up to 200000 GBP. FEE AMOUNT = 5% of claim value",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 3,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 5
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1h",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0508",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "counter-claim",
+    "fee_versions": [
+      {
+        "description": "Counter Claim - 5000.01 up to 10000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 1,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 455
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 5000.01 up to 10000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 455
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Counter Claim - 5000.01 up to 10000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 1,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 455
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2014 No 874",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Counter Claim - 5000.01 up to 10000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 1,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 455
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2014 No 874",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0508",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "counter-claim",
+    "fee_versions": [
+      {
+        "description": "Counter Claim - 5000.01 up to 10000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 1,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 455
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 5000.01 up to 10000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 455
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Counter Claim - 5000.01 up to 10000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 455
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Counter Claim - 5000.01 up to 10000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 455
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0515",
+    "fee_type": "fixed",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "counter-claim",
+    "fee_versions": [
+      {
+        "description": "Counter Claim - Unspecified",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 1,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - Unspecified",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Counter Claim - Unspecified",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 1,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2014 No 874",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Counter Claim - Unspecified",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 1,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2014 No 874",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0515",
+    "fee_type": "fixed",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "counter-claim",
+    "fee_versions": [
+      {
+        "description": "Counter Claim - Unspecified",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 1,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - Unspecified",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Counter Claim - Unspecified",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Counter Claim - Unspecified",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0202",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
         "flat_amount": {
           "amount": 35
         },
-        "memo_line": "line",
-        "natural_account_code": "37464",
-        "percentage_amount": {
-          "percentage": 10
-        },
-        "si_ref_id": "374",
-        "status": "active",
-        "statutory_instrument": "done",
-        "valid_from": "2022-06-06T12:23:33.616Z",
-        "valid_to": "2022-06-06T12:23:33.616Z",
-        "version": 1,
-        "volume_amount": {
+        "memo_line": "GOV - Paper fees - Money claim £0-300",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
           "amount": 35
-        }
+        },
+        "memo_line": "GOV - Paper fees - Money claim £0-300",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1a",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 35
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1a",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
       }
     ],
-    "jurisdiction1": {
-      "name": "CIVIL"
-    },
-    "jurisdiction2": {
-      "name": "CIVIL"
-    },
-    "keyword": "CIVIL",
-    "matching_version": {
-      "approved_by": "Mr Goodman",
-      "author": "Mrs Goodwoman",
-      "description": "very good",
-      "direction": "direction",
-      "fee_order_name": "name",
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+      "status": "approved",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
       "flat_amount": {
         "amount": 35
       },
-      "memo_line": "line",
-      "natural_account_code": "37464",
-      "percentage_amount": {
-        "percentage": 10
-      },
-      "si_ref_id": "374",
-      "status": "active",
-      "statutory_instrument": "done",
-      "valid_from": "2022-06-06T12:23:33.616Z",
-      "valid_to": "2022-06-06T12:23:33.616Z",
-      "version": 1,
-      "volume_amount": {
-        "amount": 35
-      }
+      "memo_line": "GOV - Paper fees - Money claim £0-300",
+      "statutory_instrument": "2015 No 576",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
     },
+    "min_range": 0.01,
     "max_range": 300,
-    "min_range": 0.1,
-    "range_unit": "pounds",
-    "service_type": {
-      "creationTime": "2022-06-06T12:23:33.616Z",
-      "lastUpdated": "2022-06-06T12:23:33.616Z",
-      "name": "300 range"
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+      "status": "approved",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 35
+      },
+      "memo_line": "GOV - Paper fees - Money claim £0-300",
+      "statutory_instrument": "2015 No 576",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0202",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
     },
-    "unspecified_claim_amount": true
-  }]
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 35
+        },
+        "memo_line": "GOV - Paper fees - Money claim £0-300",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 35
+        },
+        "memo_line": "GOV - Paper fees - Money claim £0-300",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1a",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 35
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1a",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 5,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 35
+      },
+      "memo_line": "GOV - Paper fees - Money claim £0-300",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1a",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "min_range": 0.01,
+    "max_range": 300,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 5,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 35
+      },
+      "memo_line": "GOV - Paper fees - Money claim £0-300",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1a",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0202",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 35
+        },
+        "memo_line": "GOV - Paper fees - Money claim £0-300",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 35
+        },
+        "memo_line": "GOV - Paper fees - Money claim £0-300",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1a",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 35
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1a",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 6,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 35
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1a",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "min_range": 0.01,
+    "max_range": 300,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 6,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 35
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1a",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0204",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 70
+        },
+        "memo_line": "GOV - Paper fees - Money claim £500-1,000",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 70
+        },
+        "memo_line": "GOV - Paper fees - Money claim £500-1,000",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1c",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 70
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1c",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+      "status": "approved",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 70
+      },
+      "memo_line": "GOV - Paper fees - Money claim £500-1,000",
+      "statutory_instrument": "2015 No 576",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    },
+    "min_range": 500.01,
+    "max_range": 1000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+      "status": "approved",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 70
+      },
+      "memo_line": "GOV - Paper fees - Money claim £500-1,000",
+      "statutory_instrument": "2015 No 576",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0204",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 70
+        },
+        "memo_line": "GOV - Paper fees - Money claim £500-1,000",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 70
+        },
+        "memo_line": "GOV - Paper fees - Money claim £500-1,000",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1c",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 70
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1c",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 5,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 70
+      },
+      "memo_line": "GOV - Paper fees - Money claim £500-1,000",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1c",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "min_range": 500.01,
+    "max_range": 1000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 5,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 70
+      },
+      "memo_line": "GOV - Paper fees - Money claim £500-1,000",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1c",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0204",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 70
+        },
+        "memo_line": "GOV - Paper fees - Money claim £500-1,000",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 70
+        },
+        "memo_line": "GOV - Paper fees - Money claim £500-1,000",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1c",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 70
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1c",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 6,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 70
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1c",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "min_range": 500.01,
+    "max_range": 1000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 500.01 up to 1000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 6,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 70
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1c",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0507",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "counter-claim",
+    "fee_versions": [
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 1,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 0.05
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP - 0.05% of claim value",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 0.05
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP - 5% of claim value",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 3,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 0.05
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP - 5% of claim value",
+        "status": "approved",
+        "author": "b0aa5dff-b1bb-49be-a598-7107b572316f",
+        "approvedBy": "39907",
+        "version": 4,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced",
+        "reason_for_update": "Amending incorrect percentage of 0.05% to 5%",
+        "reason_for_reject": "Testing reworkability of editor and approval workflow"
+      }
+    ],
+    "current_version": {
+      "description": "Counter Claim - 10000.01 up to 200000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 1,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 0.05
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2014 No 874",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Counter Claim - 10000.01 up to 200000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 1,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 0.05
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2014 No 874",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0507",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "counter-claim",
+    "fee_versions": [
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 1,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 0.05
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP - 0.05% of claim value",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 0.05
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP - 5% of claim value",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 3,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 0.05
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP - 5% of claim value",
+        "status": "approved",
+        "author": "b0aa5dff-b1bb-49be-a598-7107b572316f",
+        "approvedBy": "39907",
+        "version": 4,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced",
+        "reason_for_update": "Amending incorrect percentage of 0.05% to 5%",
+        "reason_for_reject": "Testing reworkability of editor and approval workflow"
+      }
+    ],
+    "current_version": {
+      "description": "Counter Claim - 10000.01 up to 200000 GBP - 0.05% of claim value",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 0.05
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2014 No 874",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Counter Claim - 10000.01 up to 200000 GBP - 0.05% of claim value",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 0.05
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2014 No 874",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0507",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "counter-claim",
+    "fee_versions": [
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 1,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 0.05
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP - 0.05% of claim value",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 0.05
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP - 5% of claim value",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 3,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 0.05
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP - 5% of claim value",
+        "status": "approved",
+        "author": "b0aa5dff-b1bb-49be-a598-7107b572316f",
+        "approvedBy": "39907",
+        "version": 4,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced",
+        "reason_for_update": "Amending incorrect percentage of 0.05% to 5%",
+        "reason_for_reject": "Testing reworkability of editor and approval workflow"
+      }
+    ],
+    "current_version": {
+      "description": "Counter Claim - 10000.01 up to 200000 GBP - 5% of claim value",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 3,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 0.05
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Counter Claim - 10000.01 up to 200000 GBP - 5% of claim value",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 3,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 0.05
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0507",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "counter-claim",
+    "fee_versions": [
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 1,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 0.05
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP - 0.05% of claim value",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 0.05
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP - 5% of claim value",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 3,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 0.05
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 10000.01 up to 200000 GBP - 5% of claim value",
+        "status": "approved",
+        "author": "b0aa5dff-b1bb-49be-a598-7107b572316f",
+        "approvedBy": "39907",
+        "version": 4,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "percentage_amount": {
+          "percentage": 5
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced",
+        "reason_for_update": "Amending incorrect percentage of 0.05% to 5%",
+        "reason_for_reject": "Testing reworkability of editor and approval workflow"
+      }
+    ],
+    "current_version": {
+      "description": "Counter Claim - 10000.01 up to 200000 GBP - 5% of claim value",
+      "status": "approved",
+      "author": "b0aa5dff-b1bb-49be-a598-7107b572316f",
+      "approvedBy": "39907",
+      "version": 4,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 5
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced",
+      "reason_for_update": "Amending incorrect percentage of 0.05% to 5%",
+      "reason_for_reject": "Testing reworkability of editor and approval workflow"
+    },
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Counter Claim - 10000.01 up to 200000 GBP - 5% of claim value",
+      "status": "approved",
+      "author": "b0aa5dff-b1bb-49be-a598-7107b572316f",
+      "approvedBy": "39907",
+      "version": 4,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "percentage_amount": {
+        "percentage": 5
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced",
+      "reason_for_update": "Amending incorrect percentage of 0.05% to 5%",
+      "reason_for_reject": "Testing reworkability of editor and approval workflow"
+    }
+  },
+  {
+    "code": "FEE0205",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 80
+        },
+        "memo_line": "GOV - Paper fees - Money claim £1,000-1,500",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 80
+        },
+        "memo_line": "GOV - Paper fees - Money claim £1,000-1,500",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1d",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 80
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1d",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+      "status": "approved",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 80
+      },
+      "memo_line": "GOV - Paper fees - Money claim £1,000-1,500",
+      "statutory_instrument": "2015 No 576",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    },
+    "min_range": 1000.01,
+    "max_range": 1500,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+      "status": "approved",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 80
+      },
+      "memo_line": "GOV - Paper fees - Money claim £1,000-1,500",
+      "statutory_instrument": "2015 No 576",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0205",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 80
+        },
+        "memo_line": "GOV - Paper fees - Money claim £1,000-1,500",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 80
+        },
+        "memo_line": "GOV - Paper fees - Money claim £1,000-1,500",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1d",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 80
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1d",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 5,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 80
+      },
+      "memo_line": "GOV - Paper fees - Money claim £1,000-1,500",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1d",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "min_range": 1000.01,
+    "max_range": 1500,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 5,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 80
+      },
+      "memo_line": "GOV - Paper fees - Money claim £1,000-1,500",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1d",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0205",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 80
+        },
+        "memo_line": "GOV - Paper fees - Money claim £1,000-1,500",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 80
+        },
+        "memo_line": "GOV - Paper fees - Money claim £1,000-1,500",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1d",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 80
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1d",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 6,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 80
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1d",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "min_range": 1000.01,
+    "max_range": 1500,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 1000.01 up to 1500 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 6,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 80
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1d",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0203",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 50
+        },
+        "memo_line": "GOV - Paper fees - Money claim £300-500",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 50
+        },
+        "memo_line": "GOV - Paper fees - Money claim £300-500",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1b",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 50
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1b",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+      "status": "approved",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 50
+      },
+      "memo_line": "GOV - Paper fees - Money claim £300-500",
+      "statutory_instrument": "2015 No 576",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    },
+    "min_range": 300.01,
+    "max_range": 500,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+      "status": "approved",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 50
+      },
+      "memo_line": "GOV - Paper fees - Money claim £300-500",
+      "statutory_instrument": "2015 No 576",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0203",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 50
+        },
+        "memo_line": "GOV - Paper fees - Money claim £300-500",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 50
+        },
+        "memo_line": "GOV - Paper fees - Money claim £300-500",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1b",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 50
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1b",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 5,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 50
+      },
+      "memo_line": "GOV - Paper fees - Money claim £300-500",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1b",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "min_range": 300.01,
+    "max_range": 500,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 5,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 50
+      },
+      "memo_line": "GOV - Paper fees - Money claim £300-500",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1b",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0203",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 50
+        },
+        "memo_line": "GOV - Paper fees - Money claim £300-500",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 50
+        },
+        "memo_line": "GOV - Paper fees - Money claim £300-500",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1b",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 50
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1b",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 6,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 50
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1b",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "min_range": 300.01,
+    "max_range": 500,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 300.01 up to 500 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 6,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 50
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1b",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0207",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 205
+        },
+        "memo_line": "GOV - Paper fees - Money claim £3,000-5,000",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 205
+        },
+        "memo_line": "GOV - Paper fees - Money claim £3,000-5,000",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1f",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 205
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1f",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+      "status": "approved",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 205
+      },
+      "memo_line": "GOV - Paper fees - Money claim £3,000-5,000",
+      "statutory_instrument": "2015 No 576",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    },
+    "min_range": 3000.01,
+    "max_range": 5000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+      "status": "approved",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 205
+      },
+      "memo_line": "GOV - Paper fees - Money claim £3,000-5,000",
+      "statutory_instrument": "2015 No 576",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0207",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 205
+        },
+        "memo_line": "GOV - Paper fees - Money claim £3,000-5,000",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 205
+        },
+        "memo_line": "GOV - Paper fees - Money claim £3,000-5,000",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1f",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 205
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1f",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 5,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 205
+      },
+      "memo_line": "GOV - Paper fees - Money claim £3,000-5,000",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1f",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "min_range": 3000.01,
+    "max_range": 5000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 5,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 205
+      },
+      "memo_line": "GOV - Paper fees - Money claim £3,000-5,000",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1f",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0207",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 205
+        },
+        "memo_line": "GOV - Paper fees - Money claim £3,000-5,000",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 205
+        },
+        "memo_line": "GOV - Paper fees - Money claim £3,000-5,000",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1f",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 205
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1f",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 6,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 205
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1f",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "min_range": 3000.01,
+    "max_range": 5000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 3000.01 up to 5000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 6,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 205
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1f",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0875",
+    "fee_type": "fixed",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "moneyclaim3",
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP\r\n",
+        "status": "approved",
+        "author": "fef0daba-7815-4be0-b5f0-5a8cd2085cfe",
+        "approvedBy": "92466b62-e3a0-4c17-b2b9-934ef13218db",
+        "version": 1,
+        "valid_from": "2020-11-01T00:00:00.000+00:00",
+        "volume_amount": {
+          "amount": 10
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1a",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015\r\n",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008\r\n",
+        "direction": "enhanced",
+        "reason_for_update": "POC"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP\r\n",
+      "status": "approved",
+      "author": "fef0daba-7815-4be0-b5f0-5a8cd2085cfe",
+      "approvedBy": "92466b62-e3a0-4c17-b2b9-934ef13218db",
+      "version": 1,
+      "valid_from": "2020-11-01T00:00:00.000+00:00",
+      "volume_amount": {
+        "amount": 10
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1a",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015\r\n",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008\r\n",
+      "direction": "enhanced",
+      "reason_for_update": "POC"
+    },
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 0.01 up to 300 GBP\r\n",
+      "status": "approved",
+      "author": "fef0daba-7815-4be0-b5f0-5a8cd2085cfe",
+      "approvedBy": "92466b62-e3a0-4c17-b2b9-934ef13218db",
+      "version": 1,
+      "valid_from": "2020-11-01T00:00:00.000+00:00",
+      "volume_amount": {
+        "amount": 10
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1a",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015\r\n",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008\r\n",
+      "direction": "enhanced",
+      "reason_for_update": "POC"
+    }
+  },
+  {
+    "code": "FEE0208",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 5000.01 up to 10000 GBP",
+        "status": "approved",
+        "version": 3,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 455
+        },
+        "memo_line": "GOV - Paper fees - Money claim £5,000.01-10,000",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Money Claims - Claim Amount - 5000.01 up to 10000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 455
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1g",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 5000.01 up to 10000 GBP",
+      "status": "approved",
+      "version": 3,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 455
+      },
+      "memo_line": "GOV - Paper fees - Money claim £5,000.01-10,000",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    },
+    "min_range": 5000.01,
+    "max_range": 10000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 5000.01 up to 10000 GBP",
+      "status": "approved",
+      "version": 3,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 455
+      },
+      "memo_line": "GOV - Paper fees - Money claim £5,000.01-10,000",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0208",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 5000.01 up to 10000 GBP",
+        "status": "approved",
+        "version": 3,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 455
+        },
+        "memo_line": "GOV - Paper fees - Money claim £5,000.01-10,000",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Money Claims - Claim Amount - 5000.01 up to 10000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 455
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1g",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Money Claims - Claim Amount - 5000.01 up to 10000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 455
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1g",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "min_range": 5000.01,
+    "max_range": 10000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Money Claims - Claim Amount - 5000.01 up to 10000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 455
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1g",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0506",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "counter-claim",
+    "fee_versions": [
+      {
+        "description": "Counter Claim - 200000.01 GBP or more",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 1,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 200000.01 GBP or more",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Counter Claim - 200000.01 GBP or more",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 1,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2014 No 874",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Counter Claim - 200000.01 GBP or more",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 1,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2014 No 874",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0506",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "counter-claim",
+    "fee_versions": [
+      {
+        "description": "Counter Claim - 200000.01 GBP or more",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 1,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2014 No 874",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Counter Claim - 200000.01 GBP or more",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.7",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Counter Claim - 200000.01 GBP or more",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Counter Claim - 200000.01 GBP or more",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.7",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0001",
+    "fee_type": "fixed",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - Unspecified",
+        "status": "approved",
+        "version": 1,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "GOV - Paper fees - Money claim >£200,000",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Money Claims - Claim Amount - Unspecified",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1i",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - Unspecified",
+      "status": "approved",
+      "version": 1,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "GOV - Paper fees - Money claim >£200,000",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    },
+    "unspecified_claim_amount": true,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - Unspecified",
+      "status": "approved",
+      "version": 1,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "valid_to": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "GOV - Paper fees - Money claim >£200,000",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0001",
+    "fee_type": "fixed",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - Unspecified",
+        "status": "approved",
+        "version": 1,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "valid_to": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "GOV - Paper fees - Money claim >£200,000",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Money Claims - Claim Amount - Unspecified",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2014-04-22T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1i",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Money Claims - Claim Amount - Unspecified",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1i",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "unspecified_claim_amount": true,
+    "matching_version": {
+      "description": "Money Claims - Claim Amount - Unspecified",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2014-04-22T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1i",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0206",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 115
+        },
+        "memo_line": "GOV - Paper fees - Money claim £1,500-3,000",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 115
+        },
+        "memo_line": "GOV - Paper fees - Money claim £1,500-3,000",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1e",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 115
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1e",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+      "status": "approved",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 115
+      },
+      "memo_line": "GOV - Paper fees - Money claim £1,500-3,000",
+      "statutory_instrument": "2015 No 576",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    },
+    "min_range": 1500.01,
+    "max_range": 3000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+      "status": "approved",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 115
+      },
+      "memo_line": "GOV - Paper fees - Money claim £1,500-3,000",
+      "statutory_instrument": "2015 No 576",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0206",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 115
+        },
+        "memo_line": "GOV - Paper fees - Money claim £1,500-3,000",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 115
+        },
+        "memo_line": "GOV - Paper fees - Money claim £1,500-3,000",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1e",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 115
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1e",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 5,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 115
+      },
+      "memo_line": "GOV - Paper fees - Money claim £1,500-3,000",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1e",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    },
+    "min_range": 1500.01,
+    "max_range": 3000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 5,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 115
+      },
+      "memo_line": "GOV - Paper fees - Money claim £1,500-3,000",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1e",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "Civil Proceedings",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0206",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+        "status": "approved",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 115
+        },
+        "memo_line": "GOV - Paper fees - Money claim £1,500-3,000",
+        "statutory_instrument": "2015 No 576",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 5,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 115
+        },
+        "memo_line": "GOV - Paper fees - Money claim £1,500-3,000",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1e",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "Civil Proceedings",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 6,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 115
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1e",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 6,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 115
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1e",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "min_range": 1500.01,
+    "max_range": 3000,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 1500.01 up to 3000 GBP",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 6,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 115
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1e",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0210",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 200000.01 GBP or more",
+        "status": "approved",
+        "version": 3,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "GOV - Paper fees - Money claim >£200,000",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Money Claims - Claim Amount - 200000.01 GBP or more",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1i",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 200000.01 GBP or more",
+      "status": "approved",
+      "version": 3,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "GOV - Paper fees - Money claim >£200,000",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    },
+    "min_range": 200000.01,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Civil Court fees - Money Claims - Claim Amount - 200000.01 GBP or more",
+      "status": "approved",
+      "version": 3,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "valid_to": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "GOV - Paper fees - Money claim >£200,000",
+      "natural_account_code": "4481102133",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0210",
+    "fee_type": "ranged",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "civil money claims"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "fee_versions": [
+      {
+        "description": "Civil Court fees - Money Claims - Claim Amount - 200000.01 GBP or more",
+        "status": "approved",
+        "version": 3,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "valid_to": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "GOV - Paper fees - Money claim >£200,000",
+        "natural_account_code": "4481102133",
+        "direction": "enhanced"
+      },
+      {
+        "description": "Money Claims - Claim Amount - 200000.01 GBP or more",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 4,
+        "valid_from": "2015-03-09T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 10000
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue money",
+        "statutory_instrument": "2015 No 576",
+        "si_ref_id": "1.1i",
+        "natural_account_code": "4481102133",
+        "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Money Claims - Claim Amount - 200000.01 GBP or more",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1i",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "min_range": 200000.01,
+    "range_unit": "GBP",
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Money Claims - Claim Amount - 200000.01 GBP or more",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 4,
+      "valid_from": "2015-03-09T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 10000
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue money",
+      "statutory_instrument": "2015 No 576",
+      "si_ref_id": "1.1i",
+      "natural_account_code": "4481102133",
+      "last_amending_si": "The Civil Proceedings and Family Proceedings Fees (Amendment) Order 2015",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  },
+  {
+    "code": "FEE0412",
+    "fee_type": "fixed",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "possession claim"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "PossessionCC",
+    "fee_versions": [
+      {
+        "description": "Recovery of Land - County Court",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 1,
+        "valid_from": "2016-03-21T00:00:00.000+00:00",
+        "valid_to": "2016-03-21T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 355
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue possession",
+        "statutory_instrument": "2016 No 402",
+        "si_ref_id": "1.4b",
+        "natural_account_code": "4481102134",
+        "last_amending_si": "The Civil Proceedings, Family Proceedings and Upper Tribunal Fees (Amendment) Order 2016",
+        "direction": "cost recovery"
+      },
+      {
+        "description": "Recovery of Land - County Court",
+        "status": "approved",
+        "author": "300856",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2016-03-21T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 355
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue possession",
+        "statutory_instrument": "2016 No 402",
+        "si_ref_id": "1.4b",
+        "natural_account_code": "4481102134",
+        "last_amending_si": "The Civil Proceedings, Family Proceedings and Upper Tribunal Fees (Amendment) Order 2016",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Recovery of Land - County Court",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 1,
+      "valid_from": "2016-03-21T00:00:00.000+00:00",
+      "valid_to": "2016-03-21T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 355
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue possession",
+      "statutory_instrument": "2016 No 402",
+      "si_ref_id": "1.4b",
+      "natural_account_code": "4481102134",
+      "last_amending_si": "The Civil Proceedings, Family Proceedings and Upper Tribunal Fees (Amendment) Order 2016",
+      "direction": "cost recovery"
+    },
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Recovery of Land - County Court",
+      "status": "approved",
+      "author": "124756",
+      "approvedBy": "39907",
+      "version": 1,
+      "valid_from": "2016-03-21T00:00:00.000+00:00",
+      "valid_to": "2016-03-21T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 355
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue possession",
+      "statutory_instrument": "2016 No 402",
+      "si_ref_id": "1.4b",
+      "natural_account_code": "4481102134",
+      "last_amending_si": "The Civil Proceedings, Family Proceedings and Upper Tribunal Fees (Amendment) Order 2016",
+      "direction": "cost recovery"
+    }
+  },
+  {
+    "code": "FEE0412",
+    "fee_type": "fixed",
+    "channel_type": {
+      "name": "default"
+    },
+    "event_type": {
+      "name": "issue"
+    },
+    "jurisdiction1": {
+      "name": "civil"
+    },
+    "jurisdiction2": {
+      "name": "county court"
+    },
+    "service_type": {
+      "name": "possession claim"
+    },
+    "applicant_type": {
+      "name": "all"
+    },
+    "keyword": "PossessionCC",
+    "fee_versions": [
+      {
+        "description": "Recovery of Land - County Court",
+        "status": "approved",
+        "author": "124756",
+        "approvedBy": "39907",
+        "version": 1,
+        "valid_from": "2016-03-21T00:00:00.000+00:00",
+        "valid_to": "2016-03-21T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 355
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue possession",
+        "statutory_instrument": "2016 No 402",
+        "si_ref_id": "1.4b",
+        "natural_account_code": "4481102134",
+        "last_amending_si": "The Civil Proceedings, Family Proceedings and Upper Tribunal Fees (Amendment) Order 2016",
+        "direction": "cost recovery"
+      },
+      {
+        "description": "Recovery of Land - County Court",
+        "status": "approved",
+        "author": "300856",
+        "approvedBy": "39907",
+        "version": 2,
+        "valid_from": "2016-03-21T00:00:00.000+00:00",
+        "flat_amount": {
+          "amount": 355
+        },
+        "memo_line": "RECEIPT OF FEES - Civil issue possession",
+        "statutory_instrument": "2016 No 402",
+        "si_ref_id": "1.4b",
+        "natural_account_code": "4481102134",
+        "last_amending_si": "The Civil Proceedings, Family Proceedings and Upper Tribunal Fees (Amendment) Order 2016",
+        "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+        "direction": "enhanced"
+      }
+    ],
+    "current_version": {
+      "description": "Recovery of Land - County Court",
+      "status": "approved",
+      "author": "300856",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2016-03-21T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 355
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue possession",
+      "statutory_instrument": "2016 No 402",
+      "si_ref_id": "1.4b",
+      "natural_account_code": "4481102134",
+      "last_amending_si": "The Civil Proceedings, Family Proceedings and Upper Tribunal Fees (Amendment) Order 2016",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    },
+    "unspecified_claim_amount": false,
+    "matching_version": {
+      "description": "Recovery of Land - County Court",
+      "status": "approved",
+      "author": "300856",
+      "approvedBy": "39907",
+      "version": 2,
+      "valid_from": "2016-03-21T00:00:00.000+00:00",
+      "flat_amount": {
+        "amount": 355
+      },
+      "memo_line": "RECEIPT OF FEES - Civil issue possession",
+      "statutory_instrument": "2016 No 402",
+      "si_ref_id": "1.4b",
+      "natural_account_code": "4481102134",
+      "last_amending_si": "The Civil Proceedings, Family Proceedings and Upper Tribunal Fees (Amendment) Order 2016",
+      "consolidated_fee_order_name": "Civil Proceedings Fees Order 2008",
+      "direction": "enhanced"
+    }
+  }
+]

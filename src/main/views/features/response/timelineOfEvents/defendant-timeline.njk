@@ -18,7 +18,7 @@
       {% set errors = form.getAllErrors() %}
       {% if errors.length > 0 %}
         {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
@@ -28,55 +28,59 @@
           <div class="govuk-description-block govuk-body">
             <h2 class="govuk-heading-s">{{ t('Their timeline') }}</h2>
             <table class="govuk-table">
-              <thead class="govuk-table__head">
-              <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">{{ t('Date') }}</th>
-                <th scope="col" class="govuk-table__header">{{ t('What happened') }}</th>
-              </tr>
-              </thead>
-              <tbody class="govuk-table__body">
-              {% for event in theirTimeline %}
-                <tr class="govuk-table__row">
-                  <td class="govuk-table__cell">{{ event.value.timelineDate | date }}</td>
-                  <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
-                </tr>
-              {% endfor %}
+              {% if theirTimeline.length %}
+                <thead class="govuk-table__head">
+                  <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">{{ t('PAGES.DEFENDANT_TIMELINE.DATE') }}</th>
+                    <th scope="col" class="govuk-table__header">{{ t('PAGES.DEFENDANT_TIMELINE.WHAT_HAPPENED') }}</th>
+                  </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                  {% for event in theirTimeline %}
+                    <tr class="govuk-table__row">
+                      <td class="govuk-table__cell">{{ event.value.timelineDate | date }}</td>
+                      <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
+                    </tr>
+                  {% endfor %}
+                {% elseif pdfUrl %}
+                  <a id="timeline-link" href={{ pdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.DEFENDANT_TIMELINE.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
+                {% endif %}
               </tbody>
             </table>
           </div>
-          <h2 class="govuk-heading-s govuk-!-margin-bottom-0">{{ t("Add your timeline of events (optional)") }}</h2>
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-0">{{ t('PAGES.DEFENDANT_TIMELINE.ADD_YOUR_TIMELINE') }}</h2>
           <p class="govuk-body">
-            {{ t('Include dates if you know them.') }}
+            {{ t('PAGES.DEFENDANT_TIMELINE.INCLUDE_DATES_IF_YOU_KNOW') }}
           </p>
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
               <label class="govuk-label--s">
-                {{ t('Date') }}
+                {{ t('PAGES.DEFENDANT_TIMELINE.DATE') }}
               </label>
               <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
-                {{ t('For example, {{ sixMonthAgo }}', { sixMonthAgo: 'now' | addDays(-180) | date }) }}
+                {{ t('PAGES.DEFENDANT_TIMELINE.FOR_EXAMPLE', { sixMonthAgo: 'now' | addDays(-180) | date }) }}
               </p>
             </div>
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <label class="govuk-label--s">{{ t('What happened') }}</label>
+              <label class="govuk-label--s">{{ t('PAGES.DEFENDANT_TIMELINE.WHAT_HAPPENED') }}</label>
               <p
-                class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('For example, you might have signed a contract') }}</p>
+                class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('PAGES.DEFENDANT_TIMELINE.YOU_MIGHT_HAVE_SIGNED_A_CONTRACT') }}</p>
             </div>
             {% for timeline in form.model.rows %}
               {{ timelineRow(timeline, loop.index0, form) }}
             {% endfor %}
 
             {{ govukButton({
-              text: t("Add another event"),
+              text: t('PAGES.DEFENDANT_TIMELINE.ADD_ANOTHER_EVENT'),
               classes: "govuk-button--secondary append-row"
             }) }}
             {{ govukTextarea({
               id: "comment",
               name: "comment",
               label: {
-                text: t("Add any comments about their timeline (optional)"),
+                text: t('PAGES.DEFENDANT_TIMELINE.ADD_ANY_COMMENTS'),
                 classes: "govuk-label--s",
                 isPageHeading: false
               },
