@@ -79,8 +79,9 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
-      claim.paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourFinancialSection(claim, claimId, lang) : null,
-      buildResponseSection(claim, claimId, lang),
+      claim.paymentOption !== PaymentOptionType.IMMEDIATELY ?  buildResponseSection(claim, claimId, true, lang) : null,
+      claim.paymentOption !== PaymentOptionType.IMMEDIATELY ?  buildYourFinancialSection(claim, claimId, lang) : null,
+      buildResponseSection(claim, claimId, false, lang),
     ],
   };
 };
@@ -394,32 +395,39 @@ const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string |
 
 
 
-const buildResponseSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+const buildResponseSection = (claim: Claim, claimId: string, hasFinancialSection: boolean, lang: string | unknown): SummarySection => {
   const yourResponseHref = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
   const paymentOptionHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_OPTION_URL);
   const responseSection = summarySection({
-    title: getResponseTitle(claim, lang),
+    title: hasFinancialSection ? t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: getLng(lang)}) : getResponseTitle(claim, lang),
     summaryRows: [],
   });
-  switch (claim.paymentOption) {
-    case PaymentOptionType.IMMEDIATELY:
-      responseSection.summaryList.rows.push(...[
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', {lng: getLng(lang)}), t(`COMMON.RESPONSE_TYPE.${claim.respondent1.responseType}`, {lng: getLng(lang)}), yourResponseHref, changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), getPaymentOption(claim, lang), paymentOptionHref, changeLabel(lang)),
-      ]);
-      break;
-    case PaymentOptionType.BY_SET_DATE:
-      responseSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), getPaymentOption(claim, lang), paymentOptionHref, changeLabel(lang)), buildExplanationRow(claim, claimId, lang)]);
-      break;
-    case PaymentOptionType.INSTALMENTS: {
-      const repaymentPlanHref = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN);
-      responseSection.summaryList.rows.push(...[
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), getPaymentOption(claim, lang), paymentOptionHref, changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng: getLng(lang)}), `£${claim.repaymentPlan.paymentAmount}`, repaymentPlanHref, changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_FREQUENCY.${claim.repaymentPlan.repaymentFrequency}`, {lng: getLng(lang)}), repaymentPlanHref, changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT', {lng: getLng(lang)}), formatDateToFullDate(claim.repaymentPlan.firstRepaymentDate), repaymentPlanHref, changeLabel(lang)),
-        buildExplanationRow(claim, claimId, lang),
-      ]);
+
+  if (hasFinancialSection && (claim.paymentOption === PaymentOptionType.BY_SET_DATE || claim.paymentOption === PaymentOptionType.INSTALMENTS)) {
+    responseSection.summaryList.rows.push(...[
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', { lng: getLng(lang) }), t(`COMMON.RESPONSE_TYPE.${claim.respondent1.responseType}`, { lng: getLng(lang) }), yourResponseHref, changeLabel(lang)),
+    ]);
+  } else {
+    switch (claim.paymentOption) {
+      case PaymentOptionType.IMMEDIATELY:
+        responseSection.summaryList.rows.push(...[
+          summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', { lng: getLng(lang) }), t(`COMMON.RESPONSE_TYPE.${claim.respondent1.responseType}`, { lng: getLng(lang) }), yourResponseHref, changeLabel(lang)),
+          summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', { lng: getLng(lang) }), getPaymentOption(claim, lang), paymentOptionHref, changeLabel(lang)),
+        ]);
+        break;
+      case PaymentOptionType.BY_SET_DATE:
+        responseSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', { lng: getLng(lang) }), getPaymentOption(claim, lang), paymentOptionHref, changeLabel(lang)), buildExplanationRow(claim, claimId, lang)]);
+        break;
+      case PaymentOptionType.INSTALMENTS: {
+        const repaymentPlanHref = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN);
+        responseSection.summaryList.rows.push(...[
+          summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', { lng: getLng(lang) }), getPaymentOption(claim, lang), paymentOptionHref, changeLabel(lang)),
+          summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', { lng: getLng(lang) }), `£${claim.repaymentPlan.paymentAmount}`, repaymentPlanHref, changeLabel(lang)),
+          summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', { lng: getLng(lang) }), t(`COMMON.PAYMENT_FREQUENCY.${claim.repaymentPlan.repaymentFrequency}`, { lng: getLng(lang) }), repaymentPlanHref, changeLabel(lang)),
+          summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT', { lng: getLng(lang) }), formatDateToFullDate(claim.repaymentPlan.firstRepaymentDate), repaymentPlanHref, changeLabel(lang)),
+          buildExplanationRow(claim, claimId, lang),
+        ]);
+      }
     }
   }
   return responseSection;
