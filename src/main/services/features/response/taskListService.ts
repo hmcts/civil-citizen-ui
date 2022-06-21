@@ -9,6 +9,8 @@ import {
   buildResolvingTheClaimSection,
 } from '../../../common/utils/taskList/taskListBuilder';
 import {Task} from '../../../common/models/taskList/task';
+import {getLng} from '../../../common/utils/languageToggleUtils';
+import {t} from 'i18next';
 
 let completed = 0;
 let total = 0;
@@ -57,14 +59,14 @@ const calculateTotalAndCompleted = (taskLists: TaskList[]) => {
   });
 };
 
-const getTitle = (taskLists: TaskList[]) => {
+const getTitle = (taskLists: TaskList[], lang: string) => {
   calculateTotalAndCompleted(taskLists);
-  return completed < total ? 'Application incomplete' : 'Application complete';
+  return completed < total ? t('TASK_LIST.APPLICATION_INCOMPLETE', { lng: getLng(lang) }) : t('TASK_LIST.APPLICATION_COMPLETE', { lng: getLng(lang) });
 };
 
-const getDescription = (taskLists: TaskList[]) => {
+const getDescription = (taskLists: TaskList[], lang: string) => {
   calculateTotalAndCompleted(taskLists);
-  return `You have completed ${completed} of ${total} sections`;
+  return  t('TASK_LIST.COMPLETED_SECTIONS', { completed, total, lng: getLng(lang) })
 };
 
 const countCompletedTasks = (taskList: TaskList) => {

@@ -50,6 +50,9 @@
     }
   },
   "TASK_LIST":{
+    "APPLICATION_COMPLETE": "Application complete",
+    "APPLICATION_INCOMPLETE": "Application incomplete",
+    "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
     "PREPARE_YOUR_RESPONSE": {
       "TITLE": "Prepare your response",
       "CONFIRM_YOUR_DETAILS": "Confirm your details"

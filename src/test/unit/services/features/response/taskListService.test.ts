@@ -41,16 +41,16 @@ describe('Response Task List service', () => {
 
     it('should return title', () => {
       //When
-      const title = getTitle(actualTaskLists);
+      const title = getTitle(actualTaskLists, lang);
       //Then
-      expect(title).toEqual('Application incomplete');
+      expect(title).toEqual('TASK_LIST.APPLICATION_INCOMPLETE');
     });
 
     it('should return description', () => {
       //When
-      const description = getDescription(actualTaskLists);
+      const description = getDescription(actualTaskLists, lang);
       //Then
-      expect(description).toEqual('You have completed 0 of 3 sections');
+      expect(description).toEqual('TASK_LIST.COMPLETED_SECTIONS');
     });
   });
 
@@ -77,11 +77,11 @@ describe('Response Task List service', () => {
 
     it('should return description', () => {
       //When
-      const description = getDescription(actualTaskLists);
+      const description = getDescription(actualTaskLists, lang);
       //Then
       expect(actualTaskLists[0].tasks[0].description).toEqual('TASK_LIST.PREPARE_YOUR_RESPONSE.CONFIRM_YOUR_DETAILS');
       expect(actualTaskLists[0].tasks[0].status).toEqual(TaskStatus.COMPLETE);
-      expect(description).toEqual('You have completed 1 of 3 sections');
+      expect(description).toEqual('TASK_LIST.COMPLETED_SECTIONS');
     });
   });
 
@@ -109,11 +109,11 @@ describe('Response Task List service', () => {
 
     it('should return description', () => {
       //When
-      const description = getDescription(actualTaskLists);
+      const description = getDescription(actualTaskLists, lang);
       //Then
       expect(actualTaskLists[0].tasks[0].description).toEqual('TASK_LIST.PREPARE_YOUR_RESPONSE.CONFIRM_YOUR_DETAILS');
       expect(actualTaskLists[0].tasks[0].status).toEqual(TaskStatus.COMPLETE);
-      expect(description).toEqual('You have completed 1 of 3 sections');
+      expect(description).toEqual('TASK_LIST.COMPLETED_SECTIONS');
     });
   });
 
