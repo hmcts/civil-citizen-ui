@@ -15,6 +15,7 @@ const buttons = {
 export class RespondTypePage {
   enterResponseToClaim(claimRef, responseType): void{
     I.amOnPage('/case/'+claimRef+'/response/response-type');
+    I.see('How do you respond to the claim?', 'h1');
     switch (responseType){
       case 'admitAll':{
         I.click(fields.responseAdmitAll);

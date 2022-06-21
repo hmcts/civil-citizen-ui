@@ -13,6 +13,7 @@ const buttons = {
 export class ContactNumberDetailsPage {
   enterContactNumber (claimRef): void{
     I.amOnPage('/case/'+claimRef+'/response/your-phone');
+    I.see('Enter a phone number (optional)', 'h1');
     I.fillField(fields.contactNumber, '02088908876');
     I.click(buttons.saveAndContinue);
   }

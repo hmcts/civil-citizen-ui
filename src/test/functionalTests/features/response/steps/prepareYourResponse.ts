@@ -23,6 +23,11 @@ import { EmployerDetails } from '../pages/employerDetails';
 import { SelfEmploymentDetails } from '../pages/selfEmploymentDetails';
 import { SelfEmploymentTaxDetails } from '../pages/selfEmploymentTaxDetails';
 import { CourtOrders } from '../pages/courtOrders';
+import { PriorityDebtsDetails } from '../pages/priorityDebtsDetails';
+import { Debts } from '../pages/debts';
+import { MonthlyExpenses } from '../pages/monthlyExpenses';
+import { MonthlyIncome } from '../pages/monthlyIncome';
+import { Explanation } from '../pages/explanation';
 
 const I: I = actor();
 const taskListPage: TaskListPage = new TaskListPage();
@@ -49,6 +54,11 @@ const enterEmployerDetails: EmployerDetails = new EmployerDetails();
 const enterSelfEmploymentDetails: SelfEmploymentDetails = new SelfEmploymentDetails();
 const enterSelfEmploymentTaxDetails: SelfEmploymentTaxDetails = new SelfEmploymentTaxDetails();
 const courtOrders: CourtOrders = new CourtOrders();
+const priorityDebtsDetails: PriorityDebtsDetails = new PriorityDebtsDetails();
+const debts: Debts = new Debts();
+const monthlyExpenses: MonthlyExpenses = new MonthlyExpenses();
+const monthlyIncome: MonthlyIncome = new MonthlyIncome();
+const explanation: Explanation = new Explanation();
 
 export class ResponseSteps {
 
@@ -162,5 +172,32 @@ export class ResponseSteps {
   EnterCourtOrderDetails(claimRef: string): void {
     courtOrders.clickYesButton(claimRef);
   }
-
+  PriorityDebtsDetails(mortage: string, councilTax: string, gas: string, electricity: string): void {
+    priorityDebtsDetails.selectMortgage(mortage);
+    priorityDebtsDetails.selectCouncilTax(councilTax);
+    priorityDebtsDetails.selectGas(gas);
+    priorityDebtsDetails.selectElectricity(electricity);
+    priorityDebtsDetails.clickContinue();
+  }
+  EnterDebtDetails(): void {
+    debts.clickYesButton();
+  }
+  MonthlyExpensesDetails(mortgage: string, councilTax: string, gas: string, electricity: string, foodAndHouseKeeping: string, otherExpenses: string): void {
+    monthlyExpenses.selectMortgage(mortgage);
+    monthlyExpenses.selectCouncilTax(councilTax);
+    monthlyExpenses.selectGas(gas);
+    monthlyExpenses.selectElectricity(electricity);
+    monthlyExpenses.selectFoodAndHouseKeeping(foodAndHouseKeeping);
+    monthlyExpenses.selectOtherExpenses(otherExpenses);
+    monthlyExpenses.clickContinue();
+  }
+  MonthlyIncomeDetails(incomeFromJob: string, childBenefit: string, otherIncome: string): void {
+    monthlyIncome.selectIncomeFromJob(incomeFromJob);
+    monthlyIncome.selectChildBenefit(childBenefit);
+    monthlyIncome.selectOtherIncome(otherIncome);
+    monthlyIncome.clickContinue();
+  }
+  EnterExplanation(): void {
+    explanation.enterExplanation();
+  }
 }

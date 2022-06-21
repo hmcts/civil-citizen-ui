@@ -13,10 +13,12 @@ const buttons = {
 export class PartnerAgeDetails {
 
   clickYesButton(): void {
+    I.see('Is your partner aged 18 or over?', 'h1');
     I.click(fields.yesButton);
     I.click(buttons.continue);
   }
   clickNoButton(): void {
+    I.see('Is your partner aged 18 or over?', 'h1');
     I.click(fields.noButton);
     I.click(buttons.continue);
   }

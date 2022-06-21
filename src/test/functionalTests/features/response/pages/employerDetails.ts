@@ -13,6 +13,7 @@ const buttons = {
 export class EmployerDetails {
 
   enterEmployerDetails(): void {
+    I.see('Who employs you?', 'h1');
     I.fillField(fields.employerName, 'ABC Ltd');
     I.fillField(fields.jobTitle, 'Builder');
     I.click(buttons.saveAndContinue);

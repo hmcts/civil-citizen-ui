@@ -13,10 +13,12 @@ const buttons = {
 export class PartnerPensionDetails {
 
   clickYesButton(): void {
+    I.see('Does your partner receive a pension?', 'h1');
     I.click(fields.yesButton);
     I.click(buttons.continue);
   }
   clickNoButton(): void {
+    I.see('Does your partner receive a pension?', 'h1');
     I.click(fields.noButton);
     I.click(buttons.continue);
   }

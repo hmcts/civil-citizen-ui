@@ -25,6 +25,7 @@ const buttons = {
 export class NameAndAddressDetailsPage {
   enterNameAndAddressDetails (claimRef): void {
     I.amOnPage('/case/'+claimRef+'/response/your-details');
+    I.see('Confirm your details','h1');
     I.fillField(fields.addressLine1, 'Test AddressLine1');
     I.fillField(fields.addressLine2, 'Test AddressLine2');
     I.fillField(fields.addressLine3, 'Test AddressLine3');

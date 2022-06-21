@@ -16,6 +16,7 @@ const buttons = {
 export class ResidenceDetails {
 
   selectResidenceType(residenceType): void {
+    I.see('Where do you live?', 'h1');
     switch (residenceType){
       case 'ownHome':{
         I.click(fields.ownHome);

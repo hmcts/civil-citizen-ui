@@ -13,10 +13,12 @@ const buttons = {
 export class DisabilityDetails {
 
   clickYesButton(): void {
+    I.see('Are you disabled?', 'h1');
     I.click(fields.yesButton);
     I.click(buttons.continue);
   }
   clickNoButton(): void {
+    I.see('Are you disabled?', 'h1');
     I.click(fields.noButton);
     I.click(buttons.continue);
   }

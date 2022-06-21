@@ -21,6 +21,7 @@ const buttons = {
 
 export class BankAccountsDetails {
   enterBankAccountDetails(): void{
+    I.see('List your bank and savings accounts', 'h1');
     I.selectOption(fields.accounts1, 'Current account');
     I.selectOption(fields.jointAccount1, 'Yes');
     I.fillField(fields.account1Balance, '2000');

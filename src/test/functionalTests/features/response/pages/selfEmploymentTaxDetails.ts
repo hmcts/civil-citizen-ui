@@ -15,12 +15,14 @@ const buttons = {
 export class SelfEmploymentTaxDetails {
 
   clickYesButton(): void {
+    I.see('Are you behind on tax payments?', 'h1');
     I.click(fields.yesButton);
     I.fillField(fields.amountYouOwe, '2000');
     I.fillField(fields.reason, 'Last year pending');
     I.click(buttons.continue);
   }
   clickNoButton(): void {
+    I.see('Are you behind on tax payments?', 'h1');
     I.click(fields.noButton);
     I.click(buttons.continue);
   }

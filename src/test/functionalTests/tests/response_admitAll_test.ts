@@ -55,8 +55,21 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI', () => {
   responseSteps.EnterSelfEmploymentDetails();
   responseSteps.EnterSelfEmploymentTaxDetails();
   responseSteps.EnterCourtOrderDetails(claimRef);
+  responseSteps.PriorityDebtsDetails('120','20','10', '5');
+  responseSteps.EnterDebtDetails();
+  responseSteps.MonthlyExpensesDetails('1200','45', '25', '30', '100', '125');
+  responseSteps.MonthlyIncomeDetails('4500', '120', '1100');
+  responseSteps.EnterExplanation();
+  responseSteps.CheckAndSubmit(claimRef);
+});
 
-  // responseSteps.CheckAndSubmit(claimRef);
+Scenario('Response with AdmitAll and Repayment plan @citizenUI', () => {
+  responseSteps.VerifyResponsePageContent(claimRef);
+  responseSteps.EnterNameAndAddressDetails(claimRef);
+  responseSteps.EnterDateOfBirth(claimRef);
+  responseSteps.EnterContactNumber(claimRef);
+  responseSteps.EnterResponseToClaim(claimRef, admitAll);
+  responseSteps.EnterPaymentOption(claimRef, repaymentPlan);
 });
 
 

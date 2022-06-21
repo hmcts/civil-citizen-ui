@@ -18,6 +18,7 @@ const year = currentDate.getFullYear() + 1;
 
 export class DateToPayOn {
   enterDateToPayOn (): void {
+    I.see('What date will you pay on?', 'h1');
     I.fillField(fields.day, day.toString());
     I.fillField(fields.month, month.toString());
     I.fillField(fields.year, year.toString());
