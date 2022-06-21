@@ -25,11 +25,11 @@ expertGuidanceController.get(SUPPORT_REQUIRED_URL, async (req, res) => {
 expertGuidanceController.post(SUPPORT_REQUIRED_URL, async (req, res) => {
   try {
     const claimId = req.params.id;
-    const languageSelected = boolean(req.body.declared.languageSelected);
-    const signLanguageSelected = boolean(req.body.declared.signLanguageSelected);
-    const disabledAccessSelected = boolean(req.body.declared.disabledAccessSelected);
-    const hearingLoopSelected = boolean(req.body.declared.hearingLoopSelected);
-    const otherSupportSelected = boolean(req.body.declared.otherSupportSelected);
+    const languageSelected = boolean(req.body.declared.includes('languageSelected'));
+    const signLanguageSelected = boolean(req.body.declared.includes('signLanguageSelected'));
+    const disabledAccessSelected = boolean(req.body.declared.includes('disabledAccessSelected'));
+    const hearingLoopSelected = boolean(req.body.declared.includes('hearingLoopSelected'));
+    const otherSupportSelected = boolean(req.body.declared.includes('otherSupportSelected'));
     const supportRequired = new SupportRequired(languageSelected, req.body.languageInterpreted, signLanguageSelected, req.body.signLanguageInterpreted, hearingLoopSelected, disabledAccessSelected, otherSupportSelected, req.body.otherSupport);
     const form = new GenericForm(supportRequired);
     form.validateSync();

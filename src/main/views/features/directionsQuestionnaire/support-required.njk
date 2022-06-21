@@ -13,17 +13,13 @@
 {% endblock %}
 
 {% block content %}
-  {% set errors = form.getNestedErrors('model') %}
+  {% set errors = form.getErrors() %}
   {% if form.hasErrors() %}
     {{ govukErrorSummary({
       "titleText": t("There was a problem"),
       "errorList": errors
     }) }}
   {% endif %}
-  {% set rowNumberToShowRemoveButton = 2 %}
-  {% set amountLabel = 'Amount paid' %}
-  {% set scheduleLabel = 'Paid every' %}
-  {% set expenseSourceLabel = 'Source of expense' %}
 
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">

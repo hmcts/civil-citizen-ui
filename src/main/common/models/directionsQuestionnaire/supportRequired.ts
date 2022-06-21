@@ -16,20 +16,20 @@ export class SupportRequired {
   languageSelected?: boolean;
   otherSupportSelected?: boolean;
 
-  @ValidateIf(o => o.signLanguageSelected)
+  @ValidateIf(o => o.signLanguageSelected === 'true')
   @IsDefined({message: NO_SIGN_LANGUAGE_ENTERED})
   @IsNotEmpty({message: NO_SIGN_LANGUAGE_ENTERED})
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
 
     signLanguageInterpreted?: string;
 
-  @ValidateIf(o => o.languageSelected)
+  @ValidateIf(o => o.languageSelected === 'true')
   @IsDefined({message: NO_LANGUAGE_ENTERED})
   @IsNotEmpty({message: NO_LANGUAGE_ENTERED})
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
     languageInterpreted?: string;
 
-  @ValidateIf(o => o.otherSupportSelected)
+  @ValidateIf(o => o.otherSupportSelected === 'true')
   @IsDefined({message: NO_OTHER_SUPPORT})
   @IsNotEmpty({message: NO_OTHER_SUPPORT})
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
