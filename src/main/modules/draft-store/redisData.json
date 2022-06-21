@@ -25,8 +25,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
@@ -42,7 +41,6 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "partyTypeDisplayValue": "Organisation",
         "telephoneNumber": "01632960001"
       },
       "claimInterest": "Yes",
@@ -202,8 +200,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "ORGANISATION",
@@ -216,8 +213,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -368,8 +364,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
@@ -385,8 +380,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -536,8 +530,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
@@ -552,8 +545,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-05-25T16:29:22.100358",
@@ -686,7 +678,7 @@
     }
   },
   {
-    "id": 1645882162449405,
+    "id": 1653311433897526,
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -711,8 +703,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "COMPANY",
@@ -726,7 +717,6 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "partyTypeDisplayValue": "Organisation",
         "telephoneNumber": "01632960001"
       },
       "claimInterest": "Yes",
@@ -738,15 +728,11 @@
         "status": "FINISHED",
         "camundaEvent": "CREATE_CLAIM_SPEC"
       },
-      "timelineOfEvents": [
-        {
-          "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
-          "value": {
-            "timelineDate": "2021-01-01",
-            "timelineDescription": "Test details of claim"
-          }
-        }
-      ],
+      "specClaimTemplateDocumentFiles": {
+        "document_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac",
+        "document_filename": "timeline-event-template-Kadir.pdf",
+        "document_binary_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac/binary"
+      },
       "totalClaimAmount": 1000,
       "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
       "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
@@ -885,8 +871,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "SOLE_TRADER",
@@ -901,8 +886,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",

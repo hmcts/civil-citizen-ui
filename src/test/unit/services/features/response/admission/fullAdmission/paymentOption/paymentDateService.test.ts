@@ -13,6 +13,8 @@ import {
 } from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {GenericForm} from '../../../../../../../../main/common/form/models/genericForm';
 import {mockClaim} from '../../../../../../../utils/mockClaim';
+import {ResponseType} from '../../../../../../../../main/common/form/models/responseType';
+import {Claim} from '../../../../../../../../main/common/models/claim';
 
 
 jest.mock('../../../../../../../../main/modules/draft-store');
@@ -30,7 +32,7 @@ describe('Payment Date service', () => {
   describe('Serialisation', () => {
     test('should keep the form input values unchanged after validation', async () => {
       //Given
-      const paymentDate = paymentDateService.buildPaymentDate('2040', '1', '1');
+      const paymentDate = new PaymentDate('2040', '1', '1');
       //Then
       expect(paymentDate.day).toBe(1);
       expect(paymentDate.month).toBe(1);
@@ -38,7 +40,7 @@ describe('Payment Date service', () => {
     });
     test('should keep the form input values unchanged after validation', async () => {
       //Given
-      const paymentDate = paymentDateService.buildPaymentDate('--', '-', '&');
+      const paymentDate = new PaymentDate('--', '-', '&');
       //Then
       expect(isNaN(paymentDate.day)).toBeTruthy();
       expect(isNaN(paymentDate.month)).toBeTruthy();
@@ -57,7 +59,7 @@ describe('Payment Date service', () => {
         return undefined;
       });
       //When
-      const paymentDate = await (paymentDateService.getPaymentDate('claimId'));
+      const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.FULL_ADMISSION));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(paymentDate).toBeUndefined();
@@ -69,7 +71,7 @@ describe('Payment Date service', () => {
         return {case_data: {}};
       });
       //When
-      const paymentDate = await (paymentDateService.getPaymentDate('claimId'));
+      const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.FULL_ADMISSION));
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(paymentDate).toBeUndefined();
@@ -81,25 +83,79 @@ describe('Payment Date service', () => {
         return mockClaim;
       });
       //When
-      const paymentDate = await (paymentDateService.getPaymentDate('claimId'));
+      const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.FULL_ADMISSION));
+      let mockPaymentDate;
+      if (mockClaim?.paymentDate) {
+        const year = mockClaim.paymentDate.getFullYear();
+        const month = mockClaim.paymentDate.getMonth() + 1;
+        const day = mockClaim.paymentDate.getDate();
+        mockPaymentDate = new PaymentDate(year.toString(), month.toString(), day.toString());
+      }
+
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(paymentDate).not.toBeNull();
-      expect(paymentDate).toEqual(mockClaim?.paymentDate);
+      expect(paymentDate).toEqual(mockPaymentDate);
     });
 
     test('should save paymentDate when nothing in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return undefined;
+        return new Claim();
       });
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await paymentDateService.savePaymentDate('claimId', new Date());
+      await paymentDateService.savePaymentDate('claimId', new Date(), ResponseType.FULL_ADMISSION);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
+    });
+
+    test('should return empty PaymentDate when nothing retrieved partAdmission', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return undefined;
+      });
+      //When
+      const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.PART_ADMISSION));
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(paymentDate).toBeUndefined();
+    });
+    test('should return undefined when case_data, but no paymentDate, retrieved partAdmission', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return {case_data: {}};
+      });
+      //When
+      const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.PART_ADMISSION));
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(paymentDate).toBeUndefined();
+    });
+    test('should return PaymentDate when date retrieved partAdmission', async () => {
+      //Given
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockClaim;
+      });
+      //When
+      const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.PART_ADMISSION));
+      let mockPaymentDate;
+      if (mockClaim?.paymentDate) {
+        const year = mockClaim.paymentDate.getFullYear();
+        const month = mockClaim.paymentDate.getMonth() + 1;
+        const day = mockClaim.paymentDate.getDate();
+        mockPaymentDate = new PaymentDate(year.toString(), month.toString(), day.toString());
+      }
+
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(paymentDate).not.toBeNull();
+      expect(paymentDate).toEqual(mockPaymentDate);
     });
 
     test('should save paymentDate when case_data, but no paymentDate, in Redis draft store', async () => {
@@ -110,13 +166,26 @@ describe('Payment Date service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await paymentDateService.savePaymentDate('claimId', new Date());
+      await paymentDateService.savePaymentDate('claimId', new Date(), ResponseType.FULL_ADMISSION);
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalled();
+    });
+    test('should save paymentDate when case_data, but no paymentDate, in Redis draft store partAdmission', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return {case_data: {}};
+      });
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await paymentDateService.savePaymentDate('claimId', new Date(), ResponseType.PART_ADMISSION);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
     });
 
-    test('should save paymentDate when claim in Redis draft store', async () => {
+    test('should save paymentDate when claim in Redis draft store fullAdmission', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return mockClaim;
@@ -124,7 +193,21 @@ describe('Payment Date service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await paymentDateService.savePaymentDate('claimId', new Date());
+      await paymentDateService.savePaymentDate('claimId', new Date(), ResponseType.FULL_ADMISSION);
+      //Then
+      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
+    });
+
+    test('should save paymentDate when claim in Redis draft store partAdmission', async () => {
+      //Given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return mockClaim;
+      });
+      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await paymentDateService.savePaymentDate('claimId', new Date(), ResponseType.PART_ADMISSION);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
@@ -313,7 +396,7 @@ describe('Payment Date service', () => {
       });
       //Then
       await expect(
-        paymentDateService.getPaymentDate('claimId')).rejects.toThrow(DRAFT_STORE_GET_ERROR);
+        paymentDateService.getPaymentDate('claimId', ResponseType.FULL_ADMISSION)).rejects.toThrow(DRAFT_STORE_GET_ERROR);
     });
 
     test('should throw error when saving data to draft store fails', async () => {
@@ -326,7 +409,7 @@ describe('Payment Date service', () => {
       });
       //Then
       await expect(
-        paymentDateService.savePaymentDate('claimId', new Date())).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
+        paymentDateService.savePaymentDate('claimId', new Date(), ResponseType.FULL_ADMISSION)).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
     });
   });
 });

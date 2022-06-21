@@ -1,0 +1,139 @@
+{
+  "id": 1645882162449409,
+  "jurisdiction": "CIVIL",
+  "case_type_id": "CIVIL",
+  "created_date": "2022-03-01T13:29:22.447",
+  "last_modified": "2022-03-01T13:29:24.971",
+  "state": "PENDING_CASE_ISSUED",
+  "security_classification": "PUBLIC",
+  "case_data": {
+    "claimFee": {
+      "code": "FEE0204",
+      "version": "4",
+      "calculatedAmountInPence": "7000"
+    },
+    "applicant1": {
+      "type": "ORGANISATION",
+      "partyName": "Mr. Jan Clark",
+      "companyName": "Mr. Jan Clark",
+      "telephoneNumber": "(0)207 127 0000",
+      "primaryAddress": {
+        "County": "Kent",
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AA",
+        "PostTown": "Reading",
+        "AddressLine1": "Flat 2",
+        "AddressLine2": "Caversham House 15-17",
+        "AddressLine3": "Church Road"
+      },
+      "organisationName": "Example organisation",
+      "partyTypeDisplayValue": "Organisation"
+    },
+    "applicantSolicitor1UserDetails": {
+      "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
+    },
+    "partialAdmission": {
+      "howMuchHaveYouPaid": {
+        "amount": 20,
+        "totalClaimAmount": 110,
+        "date": "2022-01-01T00:00:00.000Z",
+        "day": "1",
+        "month": "1",
+        "year": "2022",
+        "text": "text"
+      }
+    },
+    "statementOfMeans": {
+      "disability": {
+        "option": "yes"
+      },
+      "severeDisability": {
+        "option": "yes"
+      },
+      "cohabiting": {
+        "option": "yes"
+      },
+      "otherDependants": {
+        "option": "yes",
+        "numberOfPeople": "1",
+        "details": "Test details"
+      },
+      "partnerAge": {
+        "option": "yes"
+      },
+      "partnerDisability": {
+        "option": "yes"
+      },
+      "partnerSevereDisability": {
+        "option": "yes"
+      },
+      "partnerPension": {
+        "option": "yes"
+      },
+      "childrenDisability": {
+        "option": "yes"
+      },
+      "residence": {
+        "type": {
+          "value": "PRIVATE_RENTAL",
+          "displayValue": "Private rental"
+        },
+        "housingDetails": ""
+      },
+      "dependants": {
+        "declared": true,
+        "numberOfChildren": {
+          "under11": 2
+        }
+      },
+      "employers": {
+        "rows": [
+          {
+            "employerName": "Felipe",
+            "jobTitle": "Developer"
+          },
+          {
+            "employerName": "Tim",
+            "jobTitle": "Manager"
+          }
+        ]
+      },
+      "priorityDebts": {
+        "mortgage": {
+          "amount": 100.0,
+          "schedule": "week"
+        }
+      },
+      "unemployment": {
+        "option": "Unemployed",
+        "unemploymentDetails": {
+          "years": "10",
+          "months": "1"
+        },
+        "otherDetails": {
+          "details": ""
+        }
+      }
+    },
+    "respondent1": {
+      "dateOfBirth": "2022-03-01T13:29:24.971",
+      "telephoneNumber": "111",
+      "organisationName": "def two",
+      "contactPerson": "Felipe",
+      "partyName": "Version 1"
+    },
+    "specClaimTemplateDocumentFiles": {
+      "document_url": "http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c",
+      "document_filename": "timeline-event-template-Kadir.pdf",
+      "document_binary_url": "http://dm-store:8080/documents/74bf213e-72dd-4908-9e08-72fefaed9c5c/binary"
+    },
+    "respondent1ResponseDeadline": "2022-05-15T02:59:59",
+    "legacyCaseReference": "000MC009",
+    "totalClaimAmount": 110,
+    "paymentOption": "BY_SET_DATE",
+    "paymentDate": "2025-06-01T00:00:00.000Z",
+    "defence": {
+      "text": "reasons for making the claim"
+    }
+  }
+}

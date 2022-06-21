@@ -2,12 +2,15 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "../../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
-{% from "../../../../../macro/csrf.njk" import csrfProtection %}
-{% from "../../../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+
+{% set pageTitle = 'PAGES.PAYMENT_OPTION.PAGE_TITLE_FOR_PART_ADMIT' if amount else 
+  'PAGES.PAYMENT_OPTION.PAGE_TITLE' %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.FULL_ADMISSION_PAYMENT_OPTION.PAGE_TITLE') }}
+  {{ setPageTitle(pageTitle) }}
 {% endblock %}
 
 {% block content %}
@@ -15,17 +18,16 @@
     <main class="govuk-main-wrapper" role="main">
       {% set hintPayImmediatly %}
         <div
-          class='govuk-hint'>{{ t('You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account.') }}</div>
+          class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.YOU_MUST_CONTACT') }}</div>
       {% endset -%}
 
       {% set hintPayLater %}
-        <div
-          class='govuk-hint'>{{ t('The claimant can request a County Court Judgment (CCJ) against you if you don’t pay immediately.') }}</div>
+        <div class='govuk-hint'>{{ t('PAGES.PAYMENT_OPTION.REQUEST') }}</div>
       {% endset -%}
       {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% if form.hasErrors() %}
         {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
@@ -34,11 +36,12 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukRadios({
-              idPrefix: "paymentOption",
+              idPrefix: "paymentType",
               name: "paymentType",
               fieldset: {
                 legend: {
-                  text: t("When do you want to pay?"),
+                  text: t('PAGES.PAYMENT_OPTION.TITLE_FOR_PART_ADMIT', { amount : amount}) if amount 
+                        else t('PAGES.PAYMENT_OPTION.TITLE'),
                   isPageHeading: true,
                   classes: "govuk-fieldset__legend--l"
                 }
@@ -46,24 +49,24 @@
               items: [
                 {
                   value: PaymentOptionType.IMMEDIATELY,
-                  text: t("Immediately"),
-                  checked: true if form.paymentType == PaymentOptionType.IMMEDIATELY,
+                  text: t('COMMON.PAYMENT_OPTION.IMMEDIATELY'),
+                  checked: true if form.model.paymentType == PaymentOptionType.IMMEDIATELY,
                   conditional: {
                   html: hintPayImmediatly
                 }
                 },
                 {
                   value: PaymentOptionType.BY_SET_DATE,
-                  text: t("By set date"),
-                  checked: true if form.paymentType == PaymentOptionType.BY_SET_DATE,
+                  text: t('COMMON.PAYMENT_OPTION.BY_SET_DATE'),
+                  checked: true if form.model.paymentType == PaymentOptionType.BY_SET_DATE,
                   conditional: {
                   html: hintPayLater
                 }
                 },
                 {
                   value: PaymentOptionType.INSTALMENTS,
-                  text: t("I'll suggest a repayment plan"),
-                  checked: true if form.paymentType == PaymentOptionType.INSTALMENTS,
+                  text: t('PAGES.PAYMENT_OPTION.REPAYMENT'),
+                  checked: true if form.model.paymentType == PaymentOptionType.INSTALMENTS,
                   conditional: {
                   html: hintPayLater
                 }

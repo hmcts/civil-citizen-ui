@@ -24,6 +24,12 @@ services:
       port: 6379
       key:
       tls: false
+  dmStore:
+    microserviceName: 'xui_webapp'
+    baseUrl: 'http://localhost:4506'
+  serviceAuthProvider:
+    baseUrl: 'http://localhost:4502'
+    serviceAuthTokenGeneratorUrl : '/testing-support/lease'
 health:
   timeout: 5000
   deadline: 15000

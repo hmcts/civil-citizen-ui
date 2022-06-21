@@ -1,19 +1,20 @@
 import * as express from 'express';
 import {CITIZEN_PAYMENT_DATE_URL, CITIZEN_PAYMENT_OPTION_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
-import PaymentOption from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentOption';
+import PaymentOption from '../../../../../../common/form/models/admission/paymentOption/paymentOption';
 import PaymentOptionType
-  from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentOptionType';
-import {validateForm} from '../../../../../../common/form/validators/formValidator';
+  from '../../../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
-} from '../../../../../../services/features/response/admission/fullAdmission/paymentOption/paymentOptionService';
+} from '../../../../../../services/features/response/admission/paymentOptionService';
 import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
+import {ResponseType} from '../../../../../../common/form/models/responseType';
+import {GenericForm} from '../../../../../../common/form/models/genericForm';
 
 const paymentOptionController = express.Router();
-const citizenPaymentOptionViewPath = 'features/response/admission/fullAdmission/paymentOption/payment-option';
+const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';
 
-function renderView(form: PaymentOption, res: express.Response) {
+function renderView(form: GenericForm<PaymentOption>, res: express.Response) {
   res.render(citizenPaymentOptionViewPath, {form: form, PaymentOptionType: PaymentOptionType});
 }
 
@@ -27,22 +28,23 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: express.R
 
 paymentOptionController.get(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
   try {
-    const form = await getPaymentOptionForm(req.params.id);
-    renderView(form, res);
+    const paymentOption = await getPaymentOptionForm(req.params.id, ResponseType.FULL_ADMISSION);
+    renderView(new GenericForm(paymentOption), res);
   } catch (error) {
     res.status(500).send({error: error.message});
   }
 });
 
 paymentOptionController.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
-  const form = new PaymentOption(req.body.paymentType);
+  const paymentOption = new PaymentOption(req.body.paymentType);
+  const form = new GenericForm(paymentOption);
   try {
-    await validateForm(form);
+    await form.validate();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await savePaymentOptionData(req.params.id, form);
-      redirectToNextPage(req.params.id, form, res);
+      await savePaymentOptionData(req.params.id, paymentOption, ResponseType.FULL_ADMISSION);
+      redirectToNextPage(req.params.id, paymentOption, res);
     }
   } catch (error) {
     res.status(500).send({error: error.message});

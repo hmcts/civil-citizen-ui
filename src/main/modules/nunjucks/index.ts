@@ -9,12 +9,13 @@ import {YesNo} from '../../common/form/models/yesNo';
 import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
 import {CounterpartyType} from '../../common/models/counterpartyType';
 import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
-import { TransactionSchedule } from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {TransactionSchedule} from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {EvidenceType} from '../../common/models/evidence/evidenceType';
 import {EvidenceDetails} from '../../common/models/evidence/evidenceDetails';
 import {addDaysFilter, dateFilter} from './filters/dateFilter';
 import {SignatureType} from '../../common/models/signatureType';
 import {convertToPoundsFilter} from '../../common/utils/currencyFormat';
+import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -81,6 +82,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('EvidenceDetails', EvidenceDetails);
     nunjucksEnv.addFilter('pennies2pounds', convertToPoundsFilter);
     nunjucksEnv.addGlobal('SignatureType', SignatureType);
+    nunjucksEnv.addGlobal('ClaimSummaryType', ClaimSummaryType);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
