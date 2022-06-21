@@ -93,12 +93,12 @@
                 {
                   value: "disabledAccessSelected",
                   text: t('PAGES.SUPPORT_REQUIRED.DISABLE'),
-                  checked: true if form.model.disabledAccessSelected.declared
+                  checked: true if form.model.disabledAccessSelected
                 },
                 {
                   value: "hearingLoopSelected",
                   text: t('PAGES.SUPPORT_REQUIRED.HEARING'),
-                  checked: true if form.model.hearingLoopSelected.declared
+                  checked: true if form.model.hearingLoopSelected
                 },
                 {
                   value: "signLanguageSelected",
@@ -106,7 +106,7 @@
                   conditional: {
                   html: checkedSingHtml
                 },
-                  checked: true if form.model.signLanguageSelected.declared
+                  checked: true if form.model.signLanguageSelected
                 },
                 {
                   value: "languageSelected",
@@ -114,7 +114,7 @@
                   conditional: {
                   html: checkedLanguageHtml
                 },
-                  checked: true if form.model.languageSelected.declared
+                  checked: true if form.model.languageSelected
                 },
                 {
                   value: "otherSupportSelected",
@@ -122,7 +122,7 @@
                   conditional: {
                   html: checkedOtherHtml
                 },
-                  checked: true if form.model.otherSupportSelected.declared
+                  checked: true if form.model.otherSupportSelected
                 }
               ]
             }) }}

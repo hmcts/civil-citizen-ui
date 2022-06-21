@@ -16,20 +16,20 @@ export class SupportRequired {
   languageSelected?: boolean;
   otherSupportSelected?: boolean;
 
-  @ValidateIf(o => o.signLanguageSelected === 'true')
+  @ValidateIf(o => o.signLanguageSelected)
   @IsDefined({message: NO_SIGN_LANGUAGE_ENTERED})
   @IsNotEmpty({message: NO_SIGN_LANGUAGE_ENTERED})
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
 
     signLanguageInterpreted?: string;
 
-  @ValidateIf(o => o.languageSelected === 'true')
+  @ValidateIf(o => o.languageSelected)
   @IsDefined({message: NO_LANGUAGE_ENTERED})
   @IsNotEmpty({message: NO_LANGUAGE_ENTERED})
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
     languageInterpreted?: string;
 
-  @ValidateIf(o => o.otherSupportSelected === 'true')
+  @ValidateIf(o => o.otherSupportSelected)
   @IsDefined({message: NO_OTHER_SUPPORT})
   @IsNotEmpty({message: NO_OTHER_SUPPORT})
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
@@ -39,8 +39,12 @@ export class SupportRequired {
   constructor(languageSelected?: boolean, languageInterpreted?: string, signLanguageSelected?: boolean, signLanguageInterpreted?: string, hearingLoopSelected?: boolean, disabledAccessSelected?: boolean, otherSupportSelected?: boolean, otherSupport?: string) {
     this.languageSelected = languageSelected;
     this.languageInterpreted = languageInterpreted;
+    console.log('languageSelected is ' + languageSelected);
+    console.log('languageInterpreted is ' + languageInterpreted);
     this.signLanguageSelected = signLanguageSelected;
     this.signLanguageInterpreted = signLanguageInterpreted;
+    console.log('signLanguageSelected is ' + signLanguageSelected);
+    console.log('signLanguageInterpreted is ' + signLanguageInterpreted);
     this.hearingLoopSelected = hearingLoopSelected;
     this.disabledAccessSelected = disabledAccessSelected;
     this.otherSupportSelected = otherSupportSelected;
