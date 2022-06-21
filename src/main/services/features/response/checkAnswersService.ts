@@ -17,6 +17,7 @@ import {
   CITIZEN_COURT_ORDERS_URL,
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_SELF_EMPLOYED_URL,
+  CITIZEN_WHO_EMPLOYS_YOU_URL,
 } from '../../../routes/urls';
 import {t} from 'i18next';
 import {getLng} from '../../../common/utils/languageToggleUtils';
@@ -292,7 +293,7 @@ const showSelfEmploymentTaxPayments = (claim: Claim, financialSection: SummarySe
   }
 };
 
-const showEmploymentDetails = (claim: Claim, financialSection: SummarySection, employment: Employment, employmentHref: string, selfemploymentHref: string, lang: string | unknown) => {
+const showEmploymentDetails = (claim: Claim, financialSection: SummarySection, employment: Employment, whoEmploysYouHref: string, selfemploymentHref: string, lang: string | unknown) => {
   const isSelfEmployedAs = claim.statementOfMeans?.selfEmployedAs;
   const getTypeOfJob = (type: string) => type === EmploymentCategory.EMPLOYED ? 'Employed' : 'Self-employed';
   const typeOfJob: Array<string> = [];
@@ -305,7 +306,7 @@ const showEmploymentDetails = (claim: Claim, financialSection: SummarySection, e
 
   if (claim.statementOfMeans?.employers?.rows
     && ((employment.employmentType[0] === EmploymentCategory.EMPLOYED && employment.employmentType[1] === EmploymentCategory.SELF_EMPLOYED) || employment.employmentType[0] === EmploymentCategory.EMPLOYED)) {
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_WHO_EMPLOYS_YOU', { lng: getLng(lang) }), '', employmentHref, changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_WHO_EMPLOYS_YOU', { lng: getLng(lang) }), '', whoEmploysYouHref, changeLabel(lang)));
     for (const item of claim.statementOfMeans.employers.rows) {
       financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_NAME', { lng: getLng(lang) }), item.employerName, '', changeLabel(lang)));
       financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_JOB_TITLE', { lng: getLng(lang) }), item.jobTitle, '', changeLabel(lang)));
@@ -344,6 +345,7 @@ const showUnemploymentDetails = (financialSection: SummarySection, unemployment:
 
 const addEmploymentDetails = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourEmploymentHref = CITIZEN_EMPLOYMENT_URL.replace(':id', claimId);
+  const whoEmploysYouHref = CITIZEN_WHO_EMPLOYS_YOU_URL.replace(':id', claimId);
   const yourSelfEmploymentHref = CITIZEN_SELF_EMPLOYED_URL.replace(':id', claimId);
   const employment = claim.statementOfMeans?.employment;
   const hasAjob = employment?.declared ? YesNo.YES : YesNo.NO;
@@ -355,7 +357,7 @@ const addEmploymentDetails = (claim: Claim, financialSection: SummarySection, cl
   );
 
   if (employment?.declared && employment) {
-    showEmploymentDetails(claim,financialSection,employment,yourEmploymentHref,yourSelfEmploymentHref,lang);
+    showEmploymentDetails(claim,financialSection,employment,whoEmploysYouHref,yourSelfEmploymentHref,lang);
   } else {
     showUnemploymentDetails(financialSection,unemployment,lang);
   }

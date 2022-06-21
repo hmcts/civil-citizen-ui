@@ -16,6 +16,7 @@ import {
   CITIZEN_MONTHLY_INCOME_URL,
   CITIZEN_COURT_ORDERS_URL,
   CITIZEN_EMPLOYMENT_URL,
+  CITIZEN_WHO_EMPLOYS_YOU_URL,
   CITIZEN_SELF_EMPLOYED_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../src/test/utils/errorMessageTestConstants';
@@ -305,7 +306,7 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('Employed and Self-employed');
 
       expect(summarySections.sections[1].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_WHO_EMPLOYS_YOU');
-      expect(summarySections.sections[1].summaryList.rows[4].actions?.items[0].href).toBe(CITIZEN_EMPLOYMENT_URL.replace(':id', CLAIM_ID));
+      expect(summarySections.sections[1].summaryList.rows[4].actions?.items[0].href).toBe(CITIZEN_WHO_EMPLOYS_YOU_URL.replace(':id', CLAIM_ID));
 
       expect(summarySections.sections[1].summaryList.rows[5].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_NAME);
       expect(summarySections.sections[1].summaryList.rows[5].value.html).toBe('Version 1');
