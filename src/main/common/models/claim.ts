@@ -26,7 +26,8 @@ import {
 } from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
 import {ResponseType} from '../form/models/responseType';
-import {Document} from '../../common/models/document';
+import {Document} from './document/document';
+import {CaseDocument} from './document/caseDocument';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -65,6 +66,8 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  systemGeneratedCaseDocuments?: CaseDocument;
+
 
   getClaimantName(): string {
     if (this.applicant1.type === CounterpartyType.INDIVIDUAL || this.applicant1.type === CounterpartyType.SOLE_TRADER) {

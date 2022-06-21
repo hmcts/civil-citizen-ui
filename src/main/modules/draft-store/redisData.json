@@ -1017,5 +1017,197 @@
       },
       "specRespondentCorrespondenceAddressRequired": "Yes"
     }
+  },
+  {
+    "id": 1655813706596063,
+    "jurisdiction": "CIVIL",
+    "case_type_id": "CIVIL",
+    "created_date": "2022-03-01T13:29:22.447",
+    "last_modified": "2022-03-01T13:29:24.971",
+    "state": "PENDING_CASE_ISSUED",
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "claimFee": {
+        "code": "FEE0204",
+        "version": "4",
+        "calculatedAmountInPence": "8000"
+      },
+      "issueDate": "2022-01-08",
+      "applicant1": {
+        "type": "INDIVIDUAL",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
+        "primaryAddress": {
+          "County": "Kent",
+          "Country": "United Kingdom",
+          "PostCode": "RG4 7AA",
+          "PostTown": "Reading",
+          "AddressLine1": "Flat 2",
+          "AddressLine2": "Caversham House 15-17",
+          "AddressLine3": "Church Road"
+        }
+      },
+      "respondent1": {
+        "type": "SOLE_TRADER",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
+        "primaryAddress": {
+          "County": "Kent",
+          "Country": "United Kingdom",
+          "PostCode": "RG4 7AA",
+          "PostTown": "Reading",
+          "AddressLine1": "Flat 2",
+          "AddressLine2": "Caversham House 15-17",
+          "AddressLine3": "Church Road"
+        }
+      },
+      "claimInterest": "Yes",
+      "submittedDate": "2022-03-01T11:57:10.592492",
+      "totalInterest": 6.82,
+      "detailsOfClaim": "Test details of claim",
+      "superClaimType": "SPEC_CLAIM",
+      "businessProcess": {
+        "status": "FINISHED",
+        "camundaEvent": "CREATE_CLAIM_SPEC"
+      },
+      "timelineOfEvents": [
+        {
+          "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
+          "value": {
+            "timelineDate": "2021-01-01",
+            "timelineDescription": "Test details of claim"
+          }
+        }
+      ],
+      "totalClaimAmount": 1250,
+      "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
+      "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1250 | \n | Interest amount | £ 6.82 | \n | Total amount | £ 1256.82 |",
+      "claimAmountBreakup": [
+        {
+          "id": "b0f5d2d8-20b4-4c06-9699-e4340408c604",
+          "value": {
+            "claimAmount": "50000",
+            "claimReason": "Broken tiles"
+          }
+        },
+        {
+          "id": "7b78f377-4355-44f0-a79d-e71eede7e342",
+          "value": {
+            "claimAmount": "75000",
+            "claimReason": "Car accident"
+          }
+        }
+      ],
+      "interestClaimUntil": "UNTIL_SETTLED_OR_JUDGEMENT_MADE",
+      "legacyCaseReference": "000MC009",
+      "solicitorReferences": {
+        "applicantSolicitor1Reference": "Applicant Reference",
+        "respondentSolicitor1Reference": "Respondent Reference"
+      },
+      "interestClaimOptions": "SAME_RATE_INTEREST",
+      "claimNotificationDate": "2022-03-01T11:57:10.592492",
+      "paymentSuccessfulDate": "2022-03-01T11:57:10.592492",
+      "interestFromSpecificDate": "2022-05-01",
+      "respondent1Represented": "Yes",
+      "respondent1OrgRegistered": "Yes",
+      "speclistYourEvidenceList": [
+        {
+          "id": "339536de-eeb8-4b74-968d-4b9d02c00ef7",
+          "value": {
+            "evidenceType": "OTHER",
+            "otherEvidence": "evidence"
+          }
+        }
+      ],
+      "claimIssuedPaymentDetails": {
+        "status": "SUCCESS",
+        "reference": "RC-1234-1234-1234-1234",
+        "customerReference": "abcdefg"
+      },
+      "claimNotificationDeadline": "2022-12-01T23:59:59",
+      "sameRateInterestSelection": {
+        "differentRate": 9,
+        "differentRateReason": "This happened in the past",
+        "sameRateInterestType": "SAME_RATE_INTEREST_DIFFERENT_RATE"
+      },
+      "specRespondent1Represented": "Yes",
+      "respondent1ResponseDeadline": "2022-10-12T15:59:59",
+      "applicant1OrganisationPolicy": {
+        "Organisation": {
+          "OrganisationID": "Q1KOKP2"
+        },
+        "OrgPolicyReference": "Claimant policy reference",
+        "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+      },
+      "systemGeneratedCaseDocuments": [
+        {
+          "id": "9e632049-ff29-44a0-bdb7-d71ec1d42e2d",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "document_url": "http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de",
+              "document_filename": "sealed_claim_form_000MC001.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary"
+            },
+            "documentName": "sealed_claim_form_000MC001.pdf",
+            "documentSize": 45794,
+            "documentType": "SEALED_CLAIM",
+            "createdDatetime": "2022-06-21T14:15:19"
+          }
+        }
+      ],
+      "respondent1OrganisationPolicy": {
+        "Organisation": {
+          "OrganisationID": "Q1KOKP2"
+        },
+        "OrgPolicyReference": "Defendant policy reference",
+        "OrgPolicyCaseAssignedRole": "[RESPONDENTSOLICITORONE]"
+      },
+      "applicantSolicitor1PbaAccounts": {
+        "value": {
+          "code": "399990cf-7706-4591-bea6-2769da11ec1f",
+          "label": "PBA0088192"
+        },
+        "list_items": [
+          {
+            "code": "399990cf-7706-4591-bea6-2769da11ec1f",
+            "label": "PBA0088192"
+          },
+          {
+            "code": "3c2e91e9-d1dd-421c-8b9c-0a5268a99d8d",
+            "label": "PBA0078095"
+          }
+        ]
+      },
+      "applicantSolicitor1UserDetails": {
+        "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
+      },
+      "claimAmountBreakupSummaryObject": "| Description | Amount | \n |---|---| \n | Broken tiles | £ 500.00 |\n Car accident | £ 750.00 |\n | **Total** | £ 1250.00 |",
+      "respondentSolicitor1EmailAddress": "civilmoneyclaimsdemo@gmail.com",
+      "applicantSolicitor1ClaimStatementOfTruth": {
+        "name": "John Smith",
+        "role": "Solicitor"
+      },
+      "specApplicantCorrespondenceAddressdetails": {
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AD",
+        "PostTown": "Berkshire",
+        "AddressLine1": "Claimant House",
+        "AddressLine2": "20",
+        "AddressLine3": "Church Road"
+      },
+      "specApplicantCorrespondenceAddressRequired": "Yes",
+      "specRespondentCorrespondenceAddressdetails": {
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AD",
+        "PostTown": "Berkshire",
+        "AddressLine1": "Defendant House",
+        "AddressLine2": "21",
+        "AddressLine3": "Church Road"
+      },
+      "specRespondentCorrespondenceAddressRequired": "Yes"
+    }
   }
 ]
