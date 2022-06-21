@@ -31,7 +31,7 @@ const mockSaveStatementOfTruth = checkAnswersService.saveStatementOfTruth as jes
 
 const PARTY_NAME = 'Mrs. Mary Richards';
 const CLAIM_ID = 'aaa';
-const TASK_LISTS = [
+export const TASK_LISTS = [
   {
     title: 'Task List',
     tasks: [
@@ -151,7 +151,7 @@ describe('Response - Check answers', () => {
   });
 });
 
-function createClaimWithBasicRespondentDetails(): SummarySections {
+export function createClaimWithBasicRespondentDetails(): SummarySections {
   return {
     sections: [{
       title: 'Your details',
