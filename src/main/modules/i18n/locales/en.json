@@ -239,7 +239,7 @@
     "EVIDENCE": {
       "PAGE_TITLE": "List your evidence"
     },
-    "EXPERT_GUIDANCE":{
+    "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",
       "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the {{ otherParty }} choose.",
@@ -292,19 +292,26 @@
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
     },
     "OTHER_DEPENDANTS": {
-      "PAGE_TITLE": "Other dependants?"
+      "DETAILS": "Give details",
+      "NUMBER": "Number of people",
+      "PAGE_TITLE": "Other dependants?",
+      "TITLE": "Do you support anyone else financially?"
     },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
       "PAGE_TITLE": "Already paid"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE": {
-      "PAGE_TITLE": "How much do you owe?"
+      "PAGE_TITLE": "How much do you owe?",
+      "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
+      "TITLE": "How much money do you admit you owe?"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
       "PAGE_TITLE": "How much have you paid?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
-      "PAGE_TITLE": "Why do you disagree?"
+      "PAGE_TITLE": "Why do you disagree?",
+      "SUBTITLE": "The total amount claimed is £{{ claimAmount }}. This includes the claim fee.",
+      "TITLE": "Why do you disagree with the claim amount?"
     },
     "PARTNER": {
       "PAGE_TITLE": "Living with a partner"
@@ -364,7 +371,10 @@
       "PAGE_TITLE": "Self employment details"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
-      "PAGE_TITLE": "Behind on tax payments?"
+      "AMOUNT": "Amount you owe",
+      "PAGE_TITLE": "Behind on tax payments?",
+      "REASON": "Reason",
+      "TITLE": "Are you behind on tax payments?"
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"

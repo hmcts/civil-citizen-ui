@@ -292,19 +292,26 @@
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
     },
     "OTHER_DEPENDANTS": {
-      "PAGE_TITLE": "Other dependants?"
+      "DETAILS": "Rhowch fanylion",
+      "NUMBER": "Nifer y bobl",
+      "PAGE_TITLE": "Other dependants?",
+      "TITLE": "A ydych yn cefnogi rhywun arall yn ariannol?"
     },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
       "PAGE_TITLE": "Already paid"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE": {
-      "PAGE_TITLE": "How much do you owe?"
+      "PAGE_TITLE": "How much do you owe?",
+      "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r",
+      "TITLE": "Faint o arian ydych chi’n cyfaddef sy’n ddyledus gennych?"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
       "PAGE_TITLE": "How much have you paid?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
-      "PAGE_TITLE": "Why do you disagree?"
+      "PAGE_TITLE": "Why do you disagree?",
+      "SUBTITLE": "Y cyfanswm a hawlir yw £{{ claimAmount }}. Mae hyn yn cynnwys ffi’r hawliad.",
+      "TITLE": "Pam eich bod yn anghytuno â swm yr hawliad?"
     },
     "PARTNER": {
       "PAGE_TITLE": "Living with a partner"
@@ -364,7 +371,10 @@
       "PAGE_TITLE": "Self employment details"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
-      "PAGE_TITLE": "Behind on tax payments?"
+      "AMOUNT": "Swm sy’n ddyledus gennych",
+      "PAGE_TITLE": "Behind on tax payments?",
+      "REASON": "Rheswm",
+      "TITLE": "A ydych yn hwyr yn gwneud taliadau treth?"
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
