@@ -1,0 +1,144 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.SUPPORT_REQUIRED.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  {% set errors = form.getNestedErrors('model') %}
+  {% if form.hasErrors() %}
+    {{ govukErrorSummary({
+      "titleText": t("There was a problem"),
+      "errorList": errors
+    }) }}
+  {% endif %}
+  {% set rowNumberToShowRemoveButton = 2 %}
+  {% set amountLabel = 'Amount paid' %}
+  {% set scheduleLabel = 'Paid every' %}
+  {% set expenseSourceLabel = 'Source of expense' %}
+
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+
+            {% set checkedSingHtml %}
+              {% set signLanguageInterpretedError = form.errorFor('signLanguageInterpreted') %}
+              {{ govukInput({
+                id: "signLanguageInterpreted",
+                name: "signLanguageInterpreted",
+                value: form.model.signLanguageInterpreted,
+                classes: "govuk-!-width-one-half",
+                label: {
+                  classes: "govuk-!-width-two-thirds",
+                  text: t('PAGES.SUPPORT_REQUIRED.ENTER_SING_LANGUAGE')
+                },
+                errorMessage: {
+                  text: t(signLanguageInterpretedError)
+                } if signLanguageInterpretedError
+              }) }}
+            {% endset -%}
+            {% set checkedLanguageHtml %}
+              {% set languageInterpretedError = form.errorFor('languageInterpreted') %}
+              {{ govukInput({
+                id: "languageInterpreted",
+                name: "languageInterpreted",
+                value: form.model.languageInterpreted,
+                classes: "govuk-!-width-one-half",
+                label: {
+                  text: t('PAGES.SUPPORT_REQUIRED.WHAT_LANGUAGE')
+                },
+                hint: {
+                  classes: "govuk-!-width-Three-quarters",
+                  text: t('PAGES.SUPPORT_REQUIRED.ARRANGE_AND_PAY')
+                },
+                errorMessage: {
+                  text: t(languageInterpretedError)
+                } if languageInterpretedError
+              }) }}
+            {% endset -%}
+            {% set checkedOtherHtml %}
+              {% set otherSupportError = form.errorFor('otherSupport') %}
+              {{ govukTextarea({
+                id: "otherSupport",
+                name: "otherSupport",
+                value: form.model.otherSupport,
+                classes: "govuk-!-width-three-quarters",
+                label: {
+                  text: t('PAGES.SUPPORT_REQUIRED.EXTRA_SUPPORT')
+                },
+                errorMessage: {
+                  text: t(otherSupportError)
+                } if otherSupportError
+              }) }}
+            {% endset -%}
+
+            {{ govukCheckboxes({
+              idPrefix: "declared",
+              name: "declared",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.SUPPORT_REQUIRED.TITLE'),
+                  isPageHeading: true,
+                  classes: "govuk-fieldset__legend--l"
+                }
+              },
+              items: [
+                {
+                  value: "disabledAccessSelected",
+                  text: t('PAGES.SUPPORT_REQUIRED.DISABLE'),
+                  checked: true if form.model.disabledAccessSelected.declared
+                },
+                {
+                  value: "hearingLoopSelected",
+                  text: t('PAGES.SUPPORT_REQUIRED.HEARING'),
+                  checked: true if form.model.hearingLoopSelected.declared
+                },
+                {
+                  value: "signLanguageSelected",
+                  text: t('PAGES.SUPPORT_REQUIRED.SING_LANGUAGE'),
+                  conditional: {
+                  html: checkedSingHtml
+                },
+                  checked: true if form.model.signLanguageSelected.declared
+                },
+                {
+                  value: "languageSelected",
+                  text: t('PAGES.SUPPORT_REQUIRED.LANGUAGE'),
+                  conditional: {
+                  html: checkedLanguageHtml
+                },
+                  checked: true if form.model.languageSelected.declared
+                },
+                {
+                  value: "otherSupportSelected",
+                  text: t('PAGES.SUPPORT_REQUIRED.OTHER'),
+                  conditional: {
+                  html: checkedOtherHtml
+                },
+                  checked: true if form.model.otherSupportSelected.declared
+                }
+              ]
+            }) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t("Save and continue")
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

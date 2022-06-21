@@ -227,7 +227,7 @@
     "EVIDENCE": {
       "PAGE_TITLE": "List your evidence"
     },
-    "EXPERT_GUIDANCE":{
+    "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",
       "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the {{ otherParty }} choose.",
@@ -361,6 +361,19 @@
       "PAGE_TITLE": "Your task list",
       "HEADER": "Respond to a money claim",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+    },
+    "SUPPORT_REQUIRED": {
+      "ARRANGE_AND_PAY": "You may have to arrange and pay for interpreters except for Welsh. The court will tell you.",
+      "DISABLE": "Disabled access",
+      "ENTER_SING_LANGUAGE": "Enter the sign language you need",
+      "EXTRA_SUPPORT": "The court can’t guarantee extra support, but it will consider other needs relating to physical or mental health impairments",
+      "HEARING": "Hearing loop",
+      "LANGUAGE": "Language interpreter",
+      "OTHER": "Other support",
+      "PAGE_TITLE": "Support required",
+      "SING_LANGUAGE": "Sign language interpreter",
+      "TITLE": "Select any support you’d require for a court hearing (optional)",
+      "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
       "PAGE_TITLE": "Under 18"

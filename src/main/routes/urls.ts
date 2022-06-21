@@ -78,3 +78,4 @@ export const CITIZEN_FR_AMOUNT_YOU_PAID_URL = `${BASE_CASE_RESPONSE_URL}/full-re
 export const CLAIMANT_SUMMARY_URL = `${DASHBOARD_URL}/:id/claimant`;
 export const EXPERT_GUIDANCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-guidance`;
 export const PERMISSION_FOR_EXPERT_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/permission-for-expert`;
+export const SUPPORT_REQUIRED_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/support-required`;
