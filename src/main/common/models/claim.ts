@@ -26,6 +26,7 @@ import {
 } from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
 import {ResponseType} from '../form/models/responseType';
+import {Document} from '../../common/models/document';
 import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifiedStatementOfTruth';
 
 export const MAX_CLAIM_AMOUNT = 10000;
@@ -64,6 +65,7 @@ export class Claim {
   submittedDate?: Date;
   issueDate?: Date;
   claimFee?: ClaimFee;
+  specClaimTemplateDocumentFiles?: Document;
 
   getClaimantName(): string {
     if (this.applicant1.type === CounterpartyType.INDIVIDUAL || this.applicant1.type === CounterpartyType.SOLE_TRADER) {
@@ -167,6 +169,19 @@ export class Claim {
   }
   partialAdmissionPaymentAmount(): number {
     return this.partialAdmission?.howMuchDoYouOwe?.amount;
+  }
+
+  extractDocumentId(): string {
+    const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
+    let documentId: string;
+    if (documentUrl?.length) {
+      const splittedData = documentUrl.split('/');
+      documentId = splittedData[splittedData?.length - 1];
+    }
+    return documentId;
+  }
+  generatePdfFileName(): string {
+    return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
   }
 }
 
