@@ -56,7 +56,8 @@
       "TITLE": "What date will you pay on?"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
-      "PAGE_TITLE": "Severely disabled"
+      "PAGE_TITLE": "Severely disabled",
+      "TITLE": "Are you severely disabled?"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
@@ -192,7 +193,11 @@
       "PAGE_TITLE": "Company details"
     },
     "CONTACT_THEM": {
-      "PAGE_TITLE": "Contact claimant"
+      "ADDRESS": "Address",
+      "CLAIMANT": "Claimant",
+      "EMAIL": "Email",
+      "PAGE_TITLE": "Contact claimant",
+      "PHONE": "Phone"
     },
     "COURT_ORDERS": {
       "PAGE_TITLE": "Any court orders?"
@@ -231,7 +236,8 @@
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {
-      "PAGE_TITLE": "Any you disabled?"
+      "PAGE_TITLE": "Are you disabled?",
+      "TITLE": "Are you disabled?"
     },
     "EMPLOYMENT_STATUS": {
       "PAGE_TITLE": "Are you employed?"
@@ -239,7 +245,7 @@
     "EVIDENCE": {
       "PAGE_TITLE": "List your evidence"
     },
-    "EXPERT_GUIDANCE":{
+    "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",
       "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the {{ otherParty }} choose.",
