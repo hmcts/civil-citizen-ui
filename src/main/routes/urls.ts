@@ -79,3 +79,4 @@ export const CLAIMANT_SUMMARY_URL = `${DASHBOARD_URL}/:id/claimant`;
 export const EXPERT_GUIDANCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-guidance`;
 export const PERMISSION_FOR_EXPERT_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/permission-for-expert`;
 export const CASE_TIMELINE_DOCUMENTS_URL = `${BASE_CASE_URL}/documents/timeline`;
+export const CASE_DOCUMENT_DOWNLOAD_URL = `${BASE_CASE_URL}/documents/:documentType`;

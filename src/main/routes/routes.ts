@@ -69,6 +69,9 @@ import howMuchHaveYouPaidFRController from './features/response/rejection/fullRe
 import claimSummaryController from './features/dashboard/claimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/expertGuidanceController';
 import partialAdmissionPaymentOptionController from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
+import documentDownloadController from './features/documentDownloadController';
+
+
 
 export default [
   homeController,
@@ -136,4 +139,5 @@ export default [
   paymentDatePAController,
   expertGuidanceController,
   partialAdmissionPaymentOptionController,
+  documentDownloadController,
 ];
