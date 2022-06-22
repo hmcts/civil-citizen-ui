@@ -13,8 +13,8 @@
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       {% set otherParty = t('PAGES.CONTACT_THEM.CLAIMANT') %}
-      {% set otherPartyLabel = t('contact-them') %}
-      {% set header = t('About claim') %}
+      {% set otherPartyLabel = 'contact-them' %}
+      {% set header = t('PAGES.CONTACT_THEM.ABOUT') %}
       {% set otherPartyName = claimantName %}
       {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
       {% set phone = claim.applicant1.telephoneNumber %}
