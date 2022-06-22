@@ -18,7 +18,7 @@ describe('Free telephone mediation', () => {
   const resultIncomplete = {
     description: 'TASK_LIST.RESOLVING_THE_CLAIM.FREE_TELEPHONE_MEDIATION',
     url: '/case/5129/mediation/free-telephone-mediation',
-    status: TaskStatus.INCOMPLETE
+    status: TaskStatus.INCOMPLETE,
   };
 
   const resultComplete = { ...resultIncomplete, status: TaskStatus.COMPLETE };
@@ -31,7 +31,7 @@ describe('Free telephone mediation', () => {
     });
 
     it('should return complete if no mediation', () => {
-      claim.mediation = new Mediation(undefined, { option: YesNo.NO }, undefined, undefined,);
+      claim.mediation = new Mediation(undefined, { option: YesNo.NO }, undefined, undefined);
       const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
       expect(freeTelephoneMediationTask).toEqual(resultComplete);
     });
@@ -42,7 +42,7 @@ describe('Free telephone mediation', () => {
           { option: YesNo.NO, mediationPhoneNumber: '666555444' },
           { option: YesNo.YES },
           undefined,
-          undefined
+          undefined,
         );
         const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
         expect(freeTelephoneMediationTask).toEqual(resultComplete);
@@ -53,7 +53,7 @@ describe('Free telephone mediation', () => {
           { option: YesNo.YES },
           { option: YesNo.YES },
           undefined,
-          undefined
+          undefined,
         );
         const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
         expect(freeTelephoneMediationTask).toEqual(resultComplete);
@@ -66,7 +66,7 @@ describe('Free telephone mediation', () => {
           undefined,
           { option: YesNo.YES },
           undefined,
-          { option: YesNo.NO, mediationPhoneNumber: '666555444', mediationContactPerson: 'Jon Doe' }
+          { option: YesNo.NO, mediationPhoneNumber: '666555444', mediationContactPerson: 'Jon Doe' },
         );
         const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
         expect(freeTelephoneMediationTask).toEqual(resultComplete);
@@ -77,7 +77,7 @@ describe('Free telephone mediation', () => {
           undefined,
           { option: YesNo.YES },
           undefined,
-          { option: YesNo.YES, mediationPhoneNumberConfirmation: '666555444' }
+          { option: YesNo.YES, mediationPhoneNumberConfirmation: '666555444' },
         );
         const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
         expect(freeTelephoneMediationTask).toEqual(resultComplete);

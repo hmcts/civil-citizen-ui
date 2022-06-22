@@ -18,7 +18,7 @@ describe('How much money admit owe Task', () => {
   const resultIncomplete = {
     description: 'TASK_LIST.RESPOND_TO_CLAIM.HOW_MUCH_MONEY_ADMIT_OWE',
     url: '/case/5129/response/partial-admission/how-much-do-you-owe',
-    status: TaskStatus.INCOMPLETE
+    status: TaskStatus.INCOMPLETE,
   };
 
   const resultComplete = { ...resultIncomplete, status: TaskStatus.COMPLETE };

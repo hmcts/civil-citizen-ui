@@ -9,13 +9,13 @@ import {t} from 'i18next';
 
 export const getRepaymentPlanTask = (caseData: Claim, claimId: string, lang: string): Task => {
   const repaymentPlanTask: Task = {
-  description: t('TASK_LIST.RESPOND_TO_CLAIM.YOUR_REPAYMENT_PLAN', { lng: getLng(lang) }),
-  url: CITIZEN_REPAYMENT_PLAN,
-  status: TaskStatus.INCOMPLETE,
+    description: t('TASK_LIST.RESPOND_TO_CLAIM.YOUR_REPAYMENT_PLAN', { lng: getLng(lang) }),
+    url: CITIZEN_REPAYMENT_PLAN,
+    status: TaskStatus.INCOMPLETE,
   };
   let taskStatus = TaskStatus.INCOMPLETE;
 
-  if(!isRepaymentPlanMissing(caseData)) {
+  if (!isRepaymentPlanMissing(caseData)) {
     taskStatus = TaskStatus.COMPLETE;
   }
 

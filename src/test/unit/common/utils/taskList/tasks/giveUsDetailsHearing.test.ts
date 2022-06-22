@@ -15,7 +15,7 @@ describe('When will you pay Task', () => {
   const resultIncomplete = {
     description: 'TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS',
     url: '/case/5129/directions-questionnaire/support-required',
-    status: TaskStatus.INCOMPLETE
+    status: TaskStatus.INCOMPLETE,
   };
 
   describe('getGiveUsDetailsHearingTask', () => {

@@ -12,7 +12,7 @@ export const getGiveUsDetailsHearingTask = (caseData: Claim, claimId: string, la
     url: SUPPORT_REQUIRED_URL,
     status: TaskStatus.INCOMPLETE,
   };
-  let taskStatus = TaskStatus.INCOMPLETE;
+  const taskStatus = TaskStatus.INCOMPLETE;
   // if (isPaymentOptionMissing(caseData)) {
   //   taskStatus = TaskStatus.COMPLETE;
   // }

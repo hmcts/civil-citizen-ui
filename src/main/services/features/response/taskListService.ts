@@ -66,7 +66,7 @@ const getTitle = (taskLists: TaskList[], lang: string) => {
 
 const getDescription = (taskLists: TaskList[], lang: string) => {
   calculateTotalAndCompleted(taskLists);
-  return  t('TASK_LIST.COMPLETED_SECTIONS', { completed, total, lng: getLng(lang) })
+  return  t('TASK_LIST.COMPLETED_SECTIONS', { completed, total, lng: getLng(lang) });
 };
 
 const countCompletedTasks = (taskList: TaskList) => {

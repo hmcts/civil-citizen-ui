@@ -18,7 +18,7 @@ describe('When will you pay Task', () => {
   const resultIncomplete = {
     description: 'TASK_LIST.RESPOND_TO_CLAIM.WHEN_WILL_YOU_PAY',
     url: '/case/5129/response/partial-admission/payment-option',
-    status: TaskStatus.INCOMPLETE
+    status: TaskStatus.INCOMPLETE,
   };
 
   const resultComplete = { ...resultIncomplete, status: TaskStatus.COMPLETE };

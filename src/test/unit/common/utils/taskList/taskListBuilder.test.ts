@@ -12,7 +12,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../main/common/utils
 import { 
   buildResolvingTheClaimSection, 
   buildRespondToClaimSection, 
-  buildYourHearingRequirementsSection 
+  buildYourHearingRequirementsSection,
 } from '../../../../../main/common/utils/taskList/taskListBuilder';
 import { 
   CITIZEN_RESPONSE_TYPE_URL,
@@ -24,8 +24,8 @@ import {
   CITIZEN_OWED_AMOUNT_URL,
   CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
   SUPPORT_REQUIRED_URL,
-  CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL
- } from '../../../../../main/routes/urls';
+  CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
+} from '../../../../../main/routes/urls';
 
 describe('Task List Builder', () => {
   const claimId = '5129';

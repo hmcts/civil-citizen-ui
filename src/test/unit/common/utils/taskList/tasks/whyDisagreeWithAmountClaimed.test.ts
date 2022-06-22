@@ -17,7 +17,7 @@ describe('Why disagree with amount claimed Task', () => {
   const resultIncomplete = {
     description: 'TASK_LIST.RESPOND_TO_CLAIM.WHY_DO_YOU_DISAGREE',
     url: '/case/5129/response/partial-admission/why-do-you-disagree',
-    status: TaskStatus.INCOMPLETE
+    status: TaskStatus.INCOMPLETE,
   };
 
   const resultComplete = { ...resultIncomplete, status: TaskStatus.COMPLETE };

@@ -9,8 +9,8 @@ import {t} from 'i18next';
 export const getWhyDisagreeWithAmountClaimedTask = (caseData: Claim, claimId: string, lang: string): Task => {
   const whyDisagreeWithAmountClaimed: Task = {
     description: t('TASK_LIST.RESPOND_TO_CLAIM.WHY_DO_YOU_DISAGREE', { lng: getLng(lang) }),
-  url: CITIZEN_WHY_DO_YOU_DISAGREE_URL,
-  status: TaskStatus.INCOMPLETE,
+    url: CITIZEN_WHY_DO_YOU_DISAGREE_URL,
+    status: TaskStatus.INCOMPLETE,
   };
   let taskStatus = TaskStatus.INCOMPLETE;
   if (caseData.partialAdmission?.whyDoYouDisagree?.text) {
