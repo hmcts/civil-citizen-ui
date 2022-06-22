@@ -9,7 +9,6 @@ import {
   CITIZEN_PHONE_NUMBER_URL,
   CITIZEN_RESPONSE_TYPE_URL,
   DOB_URL,
-  CITIZEN_BANK_ACCOUNT_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../src/test/utils/errorMessageTestConstants';
 import PaymentOptionType
@@ -24,6 +23,12 @@ import {
 } from '../../../../utils/mockClaimForCheckAnswers';
 import {Claim} from '../../../../../main/common/models/claim';
 import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
+import {
+  CLAIM_ID,
+  INDEX_DETAILS_SECTION,
+  INDEX_RESPONSE_CLAIM_SECTION,
+  INDEX_RESPONSE_SECTION,
+} from './checkAnswers/constants';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -44,13 +49,6 @@ const CONTACT_NUMBER = '077777777779';
 const ADDRESS = '23 Brook lane<br>Bristol<br>BS13SS';
 const CORRESPONDENCE_ADDRESS = '24 Brook lane<br>Bristol<br>BS13SS';
 const DOB = '12 December 2000';
-const CLAIM_ID = 'claimId';
-
-// -- Summary Section Array Index
-const INDEX_DETAILS_SECTION = 0;
-const INDEX_RESPONSE_CLAIM_SECTION = 1;
-const INDEX_FINANCIAL_SECTION = 2;
-const INDEX_RESPONSE_SECTION = 3;
 
 describe('Check Answers service', () => {
   describe('Get Summary Sections', () => {
@@ -86,17 +84,6 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
       expect(summarySections.sections[INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_RESPONSE_TYPE_URL.replace(':id', CLAIM_ID));
       expect(summarySections.sections[INDEX_RESPONSE_CLAIM_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE');
-    });
-
-    it('should return your financial details section', async () => {
-      //Given
-      const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.BY_SET_DATE);
-      //When
-      const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
-      expect(summarySections.sections[INDEX_FINANCIAL_SECTION].summaryList.rows.length).toBe(5);
-      expect(summarySections.sections[INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
-      expect(summarySections.sections[INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_BANK_ACCOUNT_URL.replace(':id', CLAIM_ID));
-      expect(summarySections.sections[INDEX_FINANCIAL_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.YOUR_FINANCIAL_DETAILS_TITLE');
     });
 
     it('should return your response summary section', async () => {

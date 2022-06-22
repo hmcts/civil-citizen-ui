@@ -7,7 +7,7 @@ import {
   createClaimWithUnemploymentCategoryRETIRED,
   createClaimWithUnemploymentCategoryOTHER,
 } from '../../../../../utils/mockClaimForCheckAnswers';
-import {CLAIM_ID,INDEX_FINANCIAL_SECTION} from './constants';
+import * as constVal from './constants';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -17,17 +17,19 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-const PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE = 'PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE';
-
 describe('Unemployemt Details', () => {
   it('should return unemployment details with signle year/month when it exists', async () => {
     //Given
     const claim = createClaimWithUnemplymentDetailsOne();
     //When
-    const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
     //Then
-    expect(summarySections.sections[INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
-    expect(summarySections.sections[INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('Unemployed for 1 year 1 month');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_BANK_AND_SAVINGS_ACCOUNTS);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_DETAILS);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_DO_YOU_HAVE_A_JOB);
+
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('Unemployed for 1 year 1 month');
 
   });
 
@@ -35,29 +37,29 @@ describe('Unemployemt Details', () => {
     //Given
     const claim = createClaimWithUnemplymentDetailsTwo();
     //When
-    const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
     //Then
-    expect(summarySections.sections[INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
-    expect(summarySections.sections[INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('Unemployed for 10 years 10 months');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('Unemployed for 10 years 10 months');
   });
 
   it('should return unemployment details with unemployment category equal to "Retired" when it exists', async () => {
     //Given
     const claim = createClaimWithUnemploymentCategoryRETIRED();
     //When
-    const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
     //Then
-    expect(summarySections.sections[INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
-    expect(summarySections.sections[INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('Retired');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('Retired');
   });
 
   it('should return unemployment details with unemployment category equal to "Other" when it exists', async () => {
     //Given
     const claim = createClaimWithUnemploymentCategoryOTHER();
     //When
-    const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
     //Then
-    expect(summarySections.sections[INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
-    expect(summarySections.sections[INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('Other details here');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('Other details here');
   });
 });
