@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {AGE_ELIGIBILITY_URL} from '../../../../routes/urls';
+import {AGE_ELIGIBILITY_URL} from 'routes/urls';
 
 const ageEligibilityController = express.Router();
 
