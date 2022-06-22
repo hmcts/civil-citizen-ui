@@ -35,7 +35,7 @@ describe('Banck Account Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows.length).toBe(5);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_BANK_ACCOUNT_URL.replace(':id', constVal.CLAIM_ID));
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.YOUR_FINANCIAL_DETAILS_TITLE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].title).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_YOUR_FINANCIAL_DETAILS_TITLE);
   });
 
   it('should return bank accounts and show it without list number when it exists only one', async () => {
