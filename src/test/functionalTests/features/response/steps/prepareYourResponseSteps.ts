@@ -28,6 +28,7 @@ import { Debts } from '../pages/debts';
 import { MonthlyExpenses } from '../pages/monthlyExpenses';
 import { MonthlyIncome } from '../pages/monthlyIncome';
 import { Explanation } from '../pages/explanation';
+import { RepaymentPlan } from '../pages/repaymentPlan';
 
 const I: I = actor();
 const taskListPage: TaskListPage = new TaskListPage();
@@ -59,6 +60,7 @@ const debts: Debts = new Debts();
 const monthlyExpenses: MonthlyExpenses = new MonthlyExpenses();
 const monthlyIncome: MonthlyIncome = new MonthlyIncome();
 const explanation: Explanation = new Explanation();
+const repaymentPlan: RepaymentPlan= new RepaymentPlan();
 
 export class ResponseSteps {
 
@@ -199,5 +201,8 @@ export class ResponseSteps {
   }
   EnterExplanation(): void {
     explanation.enterExplanation();
+  }
+  EnterRepaymentPlan(claimRef: string): void {
+    repaymentPlan.enterRepaymentPlan(claimRef);
   }
 }

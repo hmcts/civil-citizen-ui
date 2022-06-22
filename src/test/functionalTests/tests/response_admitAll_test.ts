@@ -1,9 +1,11 @@
 import I = CodeceptJS.I
 import {config} from '../../config';
-import { ResponseSteps } from '../features/response/steps/prepareYourResponse';
+import { ResponseSteps } from '../features/response/steps/prepareYourResponseSteps';
+import { CommonSteps } from '../features/response/steps/commonSteps';
 import { LoginSteps} from '../features/home/steps/login';
 
 const responseSteps: ResponseSteps = new ResponseSteps();
+const commonSteps: CommonSteps = new CommonSteps();
 const loginSteps: LoginSteps = new LoginSteps();
 const claimRef = '1645882162449409';
 const admitAll = 'admitAll';
@@ -23,53 +25,28 @@ Before(() => {
 });
 
 Scenario('Response with AdmitAll and Immediate payment @citizenUI', () => {
-  responseSteps.VerifyResponsePageContent(claimRef);
-  responseSteps.EnterNameAndAddressDetails(claimRef);
-  responseSteps.EnterDateOfBirth(claimRef);
-  responseSteps.EnterContactNumber(claimRef);
+  commonSteps.EnterPersonalDetails(claimRef);
   responseSteps.EnterResponseToClaim(claimRef, admitAll);
   responseSteps.EnterPaymentOption(claimRef, immediatePayment);
   responseSteps.CheckAndSubmit(claimRef);
 });
 
 Scenario('Response with AdmitAll and Date to PayOn @citizenUI', () => {
-  responseSteps.VerifyResponsePageContent(claimRef);
-  responseSteps.EnterNameAndAddressDetails(claimRef);
-  responseSteps.EnterDateOfBirth(claimRef);
-  responseSteps.EnterContactNumber(claimRef);
+  commonSteps.EnterPersonalDetails(claimRef);
   responseSteps.EnterResponseToClaim(claimRef, admitAll);
   responseSteps.EnterPaymentOption(claimRef, bySetDate);
   responseSteps.EnterDateToPayOn();
-  responseSteps.ShareYourFinancialDetailsIntro(claimRef);
-  responseSteps.EnterBankAccountDetails();
-  responseSteps.SelectDisabilityDetails('yes', 'yes');
-  responseSteps.SelectResidenceDetails('ownHome');
-  responseSteps.SelectPartnerDetails('yes');
-  responseSteps.SelectPartnerAge('yes');
-  responseSteps.SelectPartnerPension('yes');
-  responseSteps.SelectPartnerDisability('no');
-  responseSteps.SelectDependantDetails('yes');
-  responseSteps.SelectOtherDependantDetails('yes');
-  responseSteps.SelectEmploymentDetails('yes');
-  responseSteps.EnterEmployerDetails();
-  responseSteps.EnterSelfEmploymentDetails();
-  responseSteps.EnterSelfEmploymentTaxDetails();
-  responseSteps.EnterCourtOrderDetails(claimRef);
-  responseSteps.PriorityDebtsDetails('120','20','10', '5');
-  responseSteps.EnterDebtDetails();
-  responseSteps.MonthlyExpensesDetails('1200','45', '25', '30', '100', '125');
-  responseSteps.MonthlyIncomeDetails('4500', '120', '1100');
-  responseSteps.EnterExplanation();
+  commonSteps.EnterFinancialDetails(claimRef);
   responseSteps.CheckAndSubmit(claimRef);
 });
 
-Scenario('Response with AdmitAll and Repayment plan @citizenUI', () => {
-  responseSteps.VerifyResponsePageContent(claimRef);
-  responseSteps.EnterNameAndAddressDetails(claimRef);
-  responseSteps.EnterDateOfBirth(claimRef);
-  responseSteps.EnterContactNumber(claimRef);
+Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAllRepayment', () => {
+  commonSteps.EnterPersonalDetails(claimRef);
   responseSteps.EnterResponseToClaim(claimRef, admitAll);
   responseSteps.EnterPaymentOption(claimRef, repaymentPlan);
+  commonSteps.EnterFinancialDetails(claimRef);
+  responseSteps.EnterRepaymentPlan(claimRef);
+  responseSteps.CheckAndSubmit(claimRef);
 });
 
 

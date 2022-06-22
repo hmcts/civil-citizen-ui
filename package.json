@@ -18,7 +18,7 @@
     "sonar-scan": "sonar-scanner",
     "test:smoke": "jest -c jest.smoketest.config.js",
     "test:crossbrowser": "SAUCE='true' yarn test:crossbrowser:codeceptjs run",
-    "test:functional": "yarn test:functional:codeceptjs run",
+    "test:functional": "yarn test:functional:codeceptjs run --grep @citizenUI",
     "test:crossbrowser:playwright": "yarn test:crossbrowser:codeceptjs run-multiple crossBrowser",
     "test:crossbrowser:codeceptjs": "codeceptjs --config ./src/test/cross-browser/codecept.conf.js",
     "test:functional:codeceptjs": "codeceptjs --config src/test/functionalTests/codecept.conf.js",
