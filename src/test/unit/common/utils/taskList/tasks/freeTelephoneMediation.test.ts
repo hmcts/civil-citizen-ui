@@ -21,11 +21,7 @@ describe('Free telephone mediation', () => {
     status: TaskStatus.INCOMPLETE
   };
 
-  const resultComplete = {
-    description: 'TASK_LIST.RESOLVING_THE_CLAIM.FREE_TELEPHONE_MEDIATION',
-    url: '/case/5129/mediation/free-telephone-mediation',
-    status: TaskStatus.COMPLETE
-  };
+  const resultComplete = { ...resultIncomplete, status: TaskStatus.COMPLETE };
 
   describe('getFreeTelephoneMediationTask', () => {
 
