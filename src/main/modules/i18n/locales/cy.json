@@ -11,12 +11,12 @@
   "View": "Weiv",
   "Save and continue": "Cadw a Pharhau",
   "COMMON": {
-    "DAY": "Day",
+    "DAY": "Diwrnod",
     "NO": "Na",
     "YES": "Le",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
-    "MONTH": "Month",
-    "YEAR": "Year",
+    "MONTH": "Mis",
+    "YEAR": "Blwyddyn",
     "BUTTONS": {
       "CONTINUE": "Parhau"
     },
@@ -147,7 +147,9 @@
       "PAGE_TITLE": "Your details"
     },
     "CITIZEN_DOB": {
-      "PAGE_TITLE": "Your date of birth"
+      "EXAMPLE": "Er enghraifft, 31 3 1980",
+      "PAGE_TITLE": "Your date of birth",
+      "TITLE": "Rhowch eich dyddiad geni"
     },
     "CITIZEN_PHONE": {
       "EXAMPLE": "Defnyddiwch rifau yn unig, er enghraifft, 01632960001.",
@@ -201,7 +203,12 @@
       "PAGE_TITLE": "Smialc edam tsniaga uoy"
     },
     "DEBTS": {
-      "PAGE_TITLE": "Any debts?"
+      "ADD": "Ychwanegu dyled",
+      "LIST": "Rhestrwch bob benthyciad neu ddyled cerdyn credyd",
+      "MONTHLY": "Taliadau misol",
+      "PAGE_TITLE": "Any debts?",
+      "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
+      "TOTAL": "Cyfanswm sy’n ddyledus gennych"
     },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Add your timeline of events",
@@ -234,7 +241,12 @@
       "PAGE_TITLE": "Any you disabled?"
     },
     "EMPLOYMENT_STATUS": {
-      "PAGE_TITLE": "Are you employed?"
+      "BOTH": "Gallwch ddewis y ddau",
+      "EMPLOYED": "Cyflogedig",
+      "PAGE_TITLE": "Are you employed?",
+      "SELF_EMPLOYED": "Hunangyflogedig",
+      "STATUS": "Beth yw eich statws cyflogaeth?",
+      "TITLE": "A oes gennych swydd?"
     },
     "EVIDENCE": {
       "PAGE_TITLE": "List your evidence"
@@ -316,7 +328,8 @@
       "PAGE_TITLE": "Partner with disability"
     },
     "PARTNER_PENSION": {
-      "PAGE_TITLE": "Partner with pension"
+      "PAGE_TITLE": "Partner with pension",
+      "TITLE": "A yw eich partner yn cael pensiwn?"
     },
     "PARTNER_SEVERE_DISABILITY": {
       "PAGE_TITLE": "Partner with severe disability"

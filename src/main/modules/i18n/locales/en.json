@@ -147,7 +147,9 @@
       "PAGE_TITLE": "Your details"
     },
     "CITIZEN_DOB": {
-      "PAGE_TITLE": "Your date of birth"
+      "EXAMPLE": "For example, 31 3 1980",
+      "PAGE_TITLE": "Your date of birth",
+      "TITLE": "Enter your date of birth"
     },
     "CITIZEN_PHONE": {
       "EXAMPLE": "Use numbers only, for example, 01632960001.",
@@ -201,7 +203,12 @@
       "PAGE_TITLE": "Claims made against you"
     },
     "DEBTS": {
-      "PAGE_TITLE": "Any debts?"
+      "ADD": "Add a debt",
+      "LIST": "List each loan or credit card debt",
+      "MONTHLY": "Monthly payments",
+      "PAGE_TITLE": "Any debts?",
+      "TITLE": "Do you have loans or credit card debts?",
+      "TOTAL": "Total owed"
     },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Add your timeline of events",
@@ -234,12 +241,17 @@
       "PAGE_TITLE": "Any you disabled?"
     },
     "EMPLOYMENT_STATUS": {
-      "PAGE_TITLE": "Are you employed?"
+      "BOTH": "You can select both.",
+      "EMPLOYED": "Employed",
+      "PAGE_TITLE": "Are you employed?",
+      "SELF_EMPLOYED": "Self-employed",
+      "STATUS": "What's your employment status?",
+      "TITLE": "Do you have a job?"
     },
     "EVIDENCE": {
       "PAGE_TITLE": "List your evidence"
     },
-    "EXPERT_GUIDANCE":{
+    "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",
       "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the {{ otherParty }} choose.",
@@ -316,7 +328,8 @@
       "PAGE_TITLE": "Partner with disability"
     },
     "PARTNER_PENSION": {
-      "PAGE_TITLE": "Partner with pension"
+      "PAGE_TITLE": "Partner with pension",
+      "TITLE": "Does your partner receive a pension?"
     },
     "PARTNER_SEVERE_DISABILITY": {
       "PAGE_TITLE": "Partner with severe disability"
