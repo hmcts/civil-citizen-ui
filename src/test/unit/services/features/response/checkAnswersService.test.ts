@@ -2,7 +2,6 @@ import {
   getSignatureType,
   getStatementOfTruth,
   getSummarySections,
-  rejectingFullAmount,
   resetCheckboxFields,
   saveStatementOfTruth,
 } from '../../../../../main/services/features/response/checkAnswersService';
@@ -53,7 +52,6 @@ import {
   createClaimWithUnemploymentCategoryRETIRED,
   createClaimWithUnemploymentCategoryOTHER,
 } from '../../../../utils/mockClaimForCheckAnswers';
-import {ResponseType} from '../../../../../main/common/form/models/responseType';
 import {Respondent} from '../../../../../main/common/models/respondent';
 import {QualifiedStatementOfTruth} from '../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
@@ -667,30 +665,6 @@ describe('Check Answers service', () => {
 
       expect(summarySections.sections[1].summaryList.rows[17].key.text).toBe('Income 2');
       expect(summarySections.sections[1].summaryList.rows[17].value.html).toBe('£2,000');
-    });
-  });
-
-  describe('rejectingFullAmount', () => {
-    let claim: Claim;
-
-    beforeEach(() => {
-      claim = createClaimWithBasicRespondentDetails();
-    });
-
-    it('should return false if respondent responseType is FULL_ADMISSION', () => {
-      expect(rejectingFullAmount(claim)).toBe(false);
-    });
-
-    it('should return true if respondent responseType is PART_ADMISSION', () => {
-      claim.respondent1 = new Respondent();
-      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-      expect(rejectingFullAmount(claim)).toBe(true);
-    });
-
-    it('should return true if respondent responseType is FULL_DEFENCE', () => {
-      claim.respondent1 = new Respondent();
-      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
-      expect(rejectingFullAmount(claim)).toBe(true);
     });
   });
 

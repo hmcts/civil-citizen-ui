@@ -3,7 +3,6 @@ import {CONFIRMATION_URL, RESPONSE_CHECK_ANSWERS_URL, RESPONSE_INCOMPLETE_SUBMIS
 import {
   getStatementOfTruth,
   getSummarySections,
-  rejectingFullAmount,
   saveStatementOfTruth,
 } from '../../../services/features/response/checkAnswersService';
 import {GenericForm} from '../../../common/form/models/genericForm';
@@ -13,6 +12,7 @@ import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AllResponseTasksCompletedGuard} from '../../guards/allResponseTasksCompletedGuard';
 import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {isFullAmountReject} from '../../../modules/claimDetailsService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersController');
@@ -23,7 +23,7 @@ function renderView(req: express.Request, res: express.Response, form: GenericFo
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summarySections = getSummarySections(req.params.id, claim, lang);
   const signatureType = form.model?.type;
-  const fullAmountReject = rejectingFullAmount(claim);
+  const fullAmountReject = isFullAmountReject(claim);
   res.render(checkAnswersViewPath, {
     form,
     summarySections,

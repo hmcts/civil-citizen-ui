@@ -2,6 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import Module from 'module';
 import * as checkAnswersService from '../../../../../main/services/features/response/checkAnswersService';
+import * as claimDetailsService from '../../../../../main/modules/claimDetailsService';
 import {app} from '../../../../../main/app';
 import {CLAIM_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
 import {
@@ -25,6 +26,7 @@ const session = require('supertest-session');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/services/features/response/checkAnswersService');
+jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/response/taskListService', () => ({
   ...jest.requireActual('../../../../../main/services/features/response/taskListService') as Module,
   getTaskLists: jest.fn(() => TASK_LISTS),
@@ -32,7 +34,7 @@ jest.mock('../../../../../main/services/features/response/taskListService', () =
 
 const mockGetSummarySections = checkAnswersService.getSummarySections as jest.Mock;
 const mockGetStatementOfTruth = checkAnswersService.getStatementOfTruth as jest.Mock;
-const mockRejectingFullAmount = checkAnswersService.rejectingFullAmount as jest.Mock;
+const mockRejectingFullAmount = claimDetailsService.isFullAmountReject as jest.Mock;
 mockGetSummarySections.mockImplementation(() => {return createClaimWithBasicRespondentDetails();});
 
 const CLAIM_ID = 'aaa';

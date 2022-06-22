@@ -36,13 +36,13 @@ import {YesNo} from '../../../common/form/models/yesNo';
 import {BankAccountTypeValues} from '../../../common/form/models/bankAndSavings/bankAccountTypeValues';
 import {SignatureType} from '../../../common/models/signatureType';
 import {isCounterpartyIndividual} from '../../../common/utils/taskList/tasks/taskListHelpers';
-import {ResponseType} from '../../../common/form/models/responseType';
 import Transaction from '../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
 import {EmploymentCategory} from '../../../common/form/models/statementOfMeans/employment/employmentCategory';
 import {UnemploymentCategory} from '../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {Unemployment} from '../../../common/form/models/statementOfMeans/unemployment/unemployment';
 import {Employment} from 'common/models/employment';
 import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {isFullAmountReject} from '../../../modules/claimDetailsService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -424,10 +424,6 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
   return buildSummarySections(claim, claimId, lang);
 };
 
-export const rejectingFullAmount = (claim: Claim): boolean => {
-  return claim.respondent1.responseType === ResponseType.PART_ADMISSION || claim.respondent1.responseType === ResponseType.FULL_DEFENCE;
-};
-
 export const resetCheckboxFields = (statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): StatementOfTruthForm | QualifiedStatementOfTruth => {
   statementOfTruth.directionsQuestionnaireSigned = '';
   statementOfTruth.signed = '';
@@ -441,11 +437,11 @@ export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | Qualif
 
   switch (getSignatureType(claim)) {
     case SignatureType.BASIC:
-      return new StatementOfTruthForm(rejectingFullAmount(claim));
+      return new StatementOfTruthForm(isFullAmountReject(claim));
     case SignatureType.QUALIFIED:
-      return new QualifiedStatementOfTruth(rejectingFullAmount(claim));
+      return new QualifiedStatementOfTruth(isFullAmountReject(claim));
     default:
-      return new StatementOfTruthForm(rejectingFullAmount(claim));
+      return new StatementOfTruthForm(isFullAmountReject(claim));
   }
 };
 
