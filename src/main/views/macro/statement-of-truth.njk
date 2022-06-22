@@ -9,7 +9,7 @@
   labelHtml = t('COMMON.STATEMENT_OF_TRUTH.CORRECT_INFORMATION_CONFIRMATION'),
   isQualified = false,
   typeOfStatement = t('COMMON.STATEMENT_OF_TRUTH.STATEMENT_OF_WORK'),
-  fullAmountReject
+  isFullAmountRejected
   ) %}
 
   <legend><h2 class="govuk-heading-m">{{ t(title) }}</h2></legend>
@@ -71,7 +71,7 @@
     } if signedError
   }) }}
 
-  {% if fullAmountReject %}
+  {% if isFullAmountRejected %}
     {{ govukCheckboxes({
       idPrefix: detailsTruthy,
       name: detailsTruthy,

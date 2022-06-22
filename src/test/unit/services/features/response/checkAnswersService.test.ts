@@ -78,7 +78,7 @@ const CORRESPONDENCE_ADDRESS = '24 Brook lane<br>Bristol<br>BS13SS';
 const DOB = '12 December 2000';
 const CLAIM_ID = 'claimId';
 const expectedStatementOfTruth = {
-  fullAmountReject: false,
+  isFullAmountRejected: false,
   type: 'basic',
   directionsQuestionnaireSigned: '',
   signed: '',
@@ -197,7 +197,7 @@ describe('Check Answers service', () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const claim = new Claim();
-        claim.defendantStatementOfTruth = { fullAmountReject: false, type: SignatureType.BASIC, signed: 'true' };
+        claim.defendantStatementOfTruth = { isFullAmountRejected: false, type: SignatureType.BASIC, signed: 'true' };
         return claim;
       });
 
@@ -697,13 +697,13 @@ describe('Check Answers service', () => {
     });
 
     it('should create new statement of truth if signature type is basic', () => {
-      expect(getStatementOfTruth(claim)).toEqual({fullAmountReject: false, type: 'basic'});
+      expect(getStatementOfTruth(claim)).toEqual({isFullAmountRejected: false, type: 'basic'});
     });
 
     it('should create new qualified statement of truth if signature type is qualified', () => {
       claim.respondent1 = new Respondent();
       claim.respondent1.type = CounterpartyType.ORGANISATION;
-      expect(getStatementOfTruth(claim)).toEqual({fullAmountReject: false, type: 'qualified'});
+      expect(getStatementOfTruth(claim)).toEqual({isFullAmountRejected: false, type: 'qualified'});
     });
   });
 

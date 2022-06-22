@@ -23,12 +23,12 @@ function renderView(req: express.Request, res: express.Response, form: GenericFo
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summarySections = getSummarySections(req.params.id, claim, lang);
   const signatureType = form.model?.type;
-  const fullAmountReject = isFullAmountReject(claim);
+  const isFullAmountRejected = isFullAmountReject(claim);
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
     signatureType,
-    fullAmountReject,
+    isFullAmountRejected,
   });
 }
 
@@ -47,10 +47,10 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
 
 checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Request, res: express.Response) => {
   try {
-    const fullAmountReject = (req.body?.fullAmountReject === 'true');
+    const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const form = new GenericForm((req.body.type === 'qualified')
-      ? new QualifiedStatementOfTruth(fullAmountReject, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
-      : new StatementOfTruthForm(fullAmountReject, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
+      ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
+      : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
     await form.validate();
     if (form.hasErrors()) {
       const claim = await getCaseDataFromStore(req.params.id);

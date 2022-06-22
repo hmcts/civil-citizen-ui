@@ -35,14 +35,14 @@
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
             <input type="hidden" name="type" value="{{ form.model.type }}">
-            <input type="hidden" name="fullAmountReject" value="{{ form.model.fullAmountReject }}">
+            <input type="hidden" name="isFullAmountRejected" value="{{ form.model.isFullAmountRejected }}">
             {{ statementOfTruth(
               form,
               statementOfTruthType = SignatureType.RESPONSE,
               labelHtml = t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX') + '<p class="govuk-!-margin-top-2">' +
               t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS') +'</p>',
               isQualified = (signatureType === SignatureType.QUALIFIED),
-              fullAmountReject = fullAmountReject
+              isFullAmountRejected = isFullAmountRejected
             ) }}
 
             <div class="govuk-form-group">

@@ -7,19 +7,19 @@ import {SignatureType} from '../../../models/signatureType';
 
 export class StatementOfTruthForm {
   type: SignatureType;
-  fullAmountReject: boolean;
+  isFullAmountRejected: boolean;
 
   @IsDefined({message: STATEMENT_OF_TRUTH_REQUIRED_MESSAGE})
   @IsNotEmpty({message: STATEMENT_OF_TRUTH_REQUIRED_MESSAGE})
     signed?: string;
 
-  @ValidateIf(o => o.fullAmountReject === true)
+  @ValidateIf(o => o.isFullAmountRejected === true)
   @IsDefined({message: DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE})
   @IsNotEmpty({message: DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE})
     directionsQuestionnaireSigned?: string;
 
-  constructor(fullAmountReject: boolean, type?: SignatureType, signed?: string, directionsQuestionnaireSigned?: string) {
-    this.fullAmountReject = fullAmountReject;
+  constructor(isFullAmountRejected: boolean, type?: SignatureType, signed?: string, directionsQuestionnaireSigned?: string) {
+    this.isFullAmountRejected = isFullAmountRejected;
     this.type = (type) ? type : SignatureType.BASIC;
     this.signed = signed;
     this.directionsQuestionnaireSigned = directionsQuestionnaireSigned;

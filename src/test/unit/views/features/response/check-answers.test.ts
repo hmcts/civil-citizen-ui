@@ -226,7 +226,7 @@ describe('Check answers View', () => {
         const data = {
           type: 'qualified',
           signed: '',
-          fullAmountReject: 'true',
+          isFullAmountRejected: 'true',
           directionsQuestionnaireSigned: '',
         };
         const response = await request(app)
