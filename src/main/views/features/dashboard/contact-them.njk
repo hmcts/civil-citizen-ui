@@ -20,7 +20,7 @@
       {% set phone = claim.applicant1.telephoneNumber %}
       {% set email = claim.applicantSolicitor1UserDetails.email %}
       {% set contactPerson = claim.applicant1.contactPerson %}
-      {% set heading = t('Contact')+ ' '+ t(otherParty) %}
+      {% set heading = t('PAGES.CONTACT_THEM.CONTACT')+ t(otherParty) %}
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <span class="govuk-caption-l  govuk-!-padding-top-0">{{ t(otherParty) }}</span>
