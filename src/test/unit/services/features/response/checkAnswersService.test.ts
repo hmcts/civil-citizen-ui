@@ -182,7 +182,7 @@ describe('Check Answers service', () => {
 
       it('should return response to claim when financial detail section exists with payment option type instalments', async () => {
         //Given
-        const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.INSTALMENTS)
+        const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.INSTALMENTS);
 
         //When
         const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
@@ -193,7 +193,7 @@ describe('Check Answers service', () => {
 
       it('should return response to claim when financial detail section exists with payment option type by set date', async () => {
         //Given
-        const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.BY_SET_DATE)
+        const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.BY_SET_DATE);
 
         //When
         const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
