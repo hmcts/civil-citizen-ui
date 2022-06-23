@@ -95,7 +95,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
     "debug": "^4.3.4",
-    "eslint": "^8.14.0",
+    "eslint": "^8.18.0",
     "html-webpack-plugin": "^5.5.0",
     "ioredis-mock": "^7.4.0",
     "jest": "^25.1.0",
