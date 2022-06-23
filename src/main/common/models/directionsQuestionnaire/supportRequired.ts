@@ -39,12 +39,8 @@ export class SupportRequired {
   constructor(languageSelected?: boolean, languageInterpreted?: string, signLanguageSelected?: boolean, signLanguageInterpreted?: string, hearingLoopSelected?: boolean, disabledAccessSelected?: boolean, otherSupportSelected?: boolean, otherSupport?: string) {
     this.languageSelected = languageSelected;
     this.languageInterpreted = languageInterpreted;
-    console.log('languageSelected is ' + languageSelected);
-    console.log('languageInterpreted is ' + languageInterpreted);
     this.signLanguageSelected = signLanguageSelected;
     this.signLanguageInterpreted = signLanguageInterpreted;
-    console.log('signLanguageSelected is ' + signLanguageSelected);
-    console.log('signLanguageInterpreted is ' + signLanguageInterpreted);
     this.hearingLoopSelected = hearingLoopSelected;
     this.disabledAccessSelected = disabledAccessSelected;
     this.otherSupportSelected = otherSupportSelected;

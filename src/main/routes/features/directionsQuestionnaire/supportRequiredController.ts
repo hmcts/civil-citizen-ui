@@ -9,10 +9,10 @@ import {
 } from '../../../services/features/directionsQuestionnaire/supportRequiredService';
 import {boolean} from 'boolean';
 
-const expertGuidanceController = express.Router();
+const supportRequiredController = express.Router();
 const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required';
 
-expertGuidanceController.get(SUPPORT_REQUIRED_URL, async (req, res) => {
+supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res) => {
   try {
     const supportRequired = await getSupportRequired(req.params.id);
     const form = new GenericForm(supportRequired);
@@ -22,11 +22,13 @@ expertGuidanceController.get(SUPPORT_REQUIRED_URL, async (req, res) => {
   }
 });
 
-expertGuidanceController.post(SUPPORT_REQUIRED_URL, async (req, res) => {
+supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res) => {
   try {
     const claimId = req.params.id;
     const languageSelected = boolean(req.body.declared.includes('languageSelected'));
     const signLanguageSelected = boolean(req.body.declared.includes('signLanguageSelected'));
+    console.log(req.body.declared);
+    console.log(req.body.languageInterpreted);
     const disabledAccessSelected = boolean(req.body.declared.includes('disabledAccessSelected'));
     const hearingLoopSelected = boolean(req.body.declared.includes('hearingLoopSelected'));
     const otherSupportSelected = boolean(req.body.declared.includes('otherSupportSelected'));
@@ -44,4 +46,4 @@ expertGuidanceController.post(SUPPORT_REQUIRED_URL, async (req, res) => {
   }
 });
 
-export default expertGuidanceController;
+export default supportRequiredController;
