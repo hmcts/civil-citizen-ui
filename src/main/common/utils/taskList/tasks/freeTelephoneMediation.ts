@@ -18,9 +18,7 @@ export const getFreeTelephoneMediationTask = (caseData: Claim, claimId: string, 
   if (caseData.mediation?.mediationDisagreement?.option === YesNo.NO) {
     freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
   } else {
-    if (caseData.mediation?.canWeUse?.option === YesNo.YES) {
-      freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
-    } else if (caseData.mediation?.canWeUse?.mediationPhoneNumber) {
+    if (caseData.mediation?.canWeUse?.option === YesNo.YES || caseData.mediation?.canWeUse?.mediationPhoneNumber) {
       freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
     }
     if (caseData.mediation?.companyTelephoneNumber?.option === YesNo.NO) {
