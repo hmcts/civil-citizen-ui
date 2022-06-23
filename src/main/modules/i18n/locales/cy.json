@@ -182,7 +182,7 @@
       "CLAIM_AMOUNT": "Swm yr hawliad:",
       "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Claim documents",
-      "CLAIMANT_NAME": "Tnamialc eman:",
+      "CLAIMANT_NAME": "Enw’r hawlydd:",
       "CLAIM_NUMBER": "Mialc rebmun:",
       "DOCUMENTS": "Documents",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
@@ -195,7 +195,7 @@
     "CONTACT_THEM": {
       "ABOUT": "About claim",
       "ADDRESS": "Cyfeiriad",
-      "CLAIMANT": "Tnamialc",
+      "CLAIMANT": "Hawlydd",
       "CONTACT": "Contact ",
       "EMAIL": "E-bost",
       "PAGE_TITLE": "Contact claimant",
