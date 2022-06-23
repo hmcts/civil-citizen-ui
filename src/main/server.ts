@@ -1,11 +1,9 @@
 #!/usr/bin/env node
-import {find} from 'client/legacyDraftStoreClient';
-
-const {Logger} = require('@hmcts/nodejs-logging');
+const { Logger } = require('@hmcts/nodejs-logging');
 import * as fs from 'fs';
 import * as https from 'https';
 import * as path from 'path';
-import {app} from './app';
+import { app } from './app';
 
 const logger = Logger.getLogger('server');
 
@@ -25,8 +23,5 @@ if (app.locals.ENV === 'development') {
 } else {
   app.listen(port, () => {
     logger.info(`Application started: http://localhost:${port}`);
-    find('<insert here user access token>').then(() => {
-      logger.info('Find method called successfully');
-    });
   });
 }
