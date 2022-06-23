@@ -678,7 +678,7 @@
     }
   },
   {
-    "id": 1645882162449405,
+    "id": 1653311433897526,
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -728,15 +728,11 @@
         "status": "FINISHED",
         "camundaEvent": "CREATE_CLAIM_SPEC"
       },
-      "timelineOfEvents": [
-        {
-          "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
-          "value": {
-            "timelineDate": "2021-01-01",
-            "timelineDescription": "Test details of claim"
-          }
-        }
-      ],
+      "specClaimTemplateDocumentFiles": {
+        "document_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac",
+        "document_filename": "timeline-event-template-Kadir.pdf",
+        "document_binary_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac/binary"
+      },
       "totalClaimAmount": 1000,
       "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
       "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
