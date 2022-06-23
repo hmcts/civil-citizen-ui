@@ -302,7 +302,7 @@
     },
     "PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE": {
       "PAGE_TITLE": "How much do you owe?",
-      "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r",
+      "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
       "TITLE": "Faint o arian ydych chi’n cyfaddef sy’n ddyledus gennych?"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
@@ -310,7 +310,7 @@
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
-      "SUBTITLE": "Y cyfanswm a hawlir yw £{{ claimAmount }}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
+      "SUBTITLE": "Y cyfanswm a hawlir yw £{{ claimAmount }}. Mae hyn yn cynnwys ffi’r.",
       "TITLE": "Pam eich bod yn anghytuno â swm yr hawliad?"
     },
     "PARTNER": {
