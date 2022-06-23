@@ -14,34 +14,21 @@ export const getFreeTelephoneMediationTask = (caseData: Claim, claimId: string, 
     status: TaskStatus.INCOMPLETE,
   };
 
-  // Unhappy path NO MEDIATION
   if (caseData.mediation?.mediationDisagreement?.option === YesNo.NO) {
     freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
   } else {
-    // Happy path YES MEDIATION
-    
-    // INDIVIDUAL OR SOLETRADER
-    // Use same telephone number for mediation
     if (caseData.mediation?.canWeUse?.option === YesNo.YES) {
       freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
-    }
-    // Provide new telephone number for mediation
-    if (caseData.mediation?.canWeUse?.option === YesNo.NO && caseData.mediation?.canWeUse?.mediationPhoneNumber) {
+    } else if (caseData.mediation?.canWeUse?.mediationPhoneNumber) {
       freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
     }
-  
-    // COMPANY OR ORGANISATION
     if (caseData.mediation?.companyTelephoneNumber?.option === YesNo.NO) {
-      if(caseData.mediation?.companyTelephoneNumber?.mediationContactPerson && caseData.mediation?.companyTelephoneNumber?.mediationPhoneNumber){
+      if (caseData.mediation?.companyTelephoneNumber?.mediationContactPerson && caseData.mediation?.companyTelephoneNumber?.mediationPhoneNumber) {
         freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
       }
+    } else if (caseData.mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation) {
+      freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
     }
-    if (caseData.mediation?.companyTelephoneNumber?.option === YesNo.YES) {
-      if(caseData.mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation){
-        freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
-      }
-    } 
-
   }
 
   return freeTelephoneMediationTask;
