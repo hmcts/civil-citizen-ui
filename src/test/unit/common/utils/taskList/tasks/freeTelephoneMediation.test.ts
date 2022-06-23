@@ -72,6 +72,17 @@ describe('Free telephone mediation', () => {
         expect(freeTelephoneMediationTask).toEqual(resultComplete);
       });
 
+      it('should return incomplete if companyTelephoneNumber NO and doesnt has contact person', () => {
+        claim.mediation = new Mediation(
+          undefined,
+          { option: YesNo.YES },
+          undefined,
+          { option: YesNo.NO, mediationPhoneNumber: '666555444' },
+        );
+        const freeTelephoneMediationTask = getFreeTelephoneMediationTask(claim, claimId, lang);
+        expect(freeTelephoneMediationTask).toEqual(resultIncomplete);
+      });
+
       it('should return complete if companyTelephoneNumber YES', () => {
         claim.mediation = new Mediation(
           undefined,

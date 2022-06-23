@@ -50,6 +50,15 @@ describe('When will you pay Task', () => {
       expect(whenWillYouPayTask).toEqual(resultComplete);
     });
 
+    it('should return incomplete task when paymentOption is BY_SET_DATE and doesnt has paymentDate', () => {
+      const claim  = new Claim();
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.paymentIntention = new PaymentIntention();
+      claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+      const whenWillYouPayTask = getWhenWillYouPayTask(claim, claimId, lang);
+      expect(whenWillYouPayTask).toEqual(resultIncomplete);
+    });
+
     it('should return complete task when paymentOption is INSTALMENTS', () => {
       const claim  = new Claim();
       claim.partialAdmission = new PartialAdmission();
