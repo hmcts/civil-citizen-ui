@@ -239,7 +239,7 @@
     "EVIDENCE": {
       "PAGE_TITLE": "List your evidence"
     },
-    "EXPERT_GUIDANCE":{
+    "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",
       "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the {{ otherParty }} choose.",
@@ -292,6 +292,7 @@
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
     },
     "OTHER_DEPENDANTS": {
+      "DESCRIPTION": "This can include adults and people you don't live with.",
       "PAGE_TITLE": "Other dependants?"
     },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
@@ -364,6 +365,7 @@
       "PAGE_TITLE": "Self employment details"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
+      "EXAMPLE": "For example National Insurance contributions, Income Tax or VAT",
       "PAGE_TITLE": "Behind on tax payments?"
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {

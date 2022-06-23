@@ -16,6 +16,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("Are you behind on tax payments?") %}
+      {% set description = t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.EXAMPLE') %}
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
@@ -59,7 +60,7 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t,id,name,title,form,'',{yesHtml:yesHtml}) }}
+            {{ yesNoRadioButton(t,id,name,title,form,description,{yesHtml:yesHtml}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")

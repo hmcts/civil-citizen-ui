@@ -292,6 +292,7 @@
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
     },
     "OTHER_DEPENDANTS": {
+      "DESCRIPTION": "Gall hyn gynnwys oedolion a phobl nad ydych yn byw gyda nhw.",
       "PAGE_TITLE": "Other dependants?"
     },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
@@ -364,6 +365,7 @@
       "PAGE_TITLE": "Self employment details"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
+      "EXAMPLE": "Er enghraifft, cyfraniadau yswiriant gwladol, treth incwm neu TAW",
       "PAGE_TITLE": "Behind on tax payments?"
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {

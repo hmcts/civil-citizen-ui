@@ -17,6 +17,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("Do you support anyone else financially?") %}
+      {% set description = t('PAGES.OTHER_DEPENDANTS.DESCRIPTION') %}
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
@@ -55,7 +56,7 @@
                 errorMessage: { text: detailsError.isNotEmpty } if detailsError else ''
               }) }}
             {% endset %}
-            {{ yesNoRadioButton(t,id,name,title,form,'',{yesHtml:yesHtml}) }}
+            {{ yesNoRadioButton(t,id,name,title,form,description,{yesHtml:yesHtml}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")
