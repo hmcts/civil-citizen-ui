@@ -4,10 +4,11 @@ import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
-let supportRequired;
+
 
 export const getSupportRequired = async (claimId: string): Promise<SupportRequired> => {
   try {
+    let supportRequired;
     const case_data = await getCaseDataFromStore(claimId);
     if (!case_data?.supportRequired) {
       supportRequired = new SupportRequired();
