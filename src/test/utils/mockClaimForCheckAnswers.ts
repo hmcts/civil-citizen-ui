@@ -18,6 +18,16 @@ import RegularIncome from '../../main/common/form/models/statementOfMeans/expens
 import {BankAccount} from '../../main/common/form/models/bankAndSavings/bankAccount';
 import {CourtOrders} from '../../main/common/form/models/statementOfMeans/courtOrders/courtOrders';
 import {CourtOrder} from '../../main/common/form/models/statementOfMeans/courtOrders/courtOrder';
+import {Employment} from '../../main/common/models/employment';
+import {Employer} from '../../main/common/form/models/statementOfMeans/employment/employer';
+import {Employers} from '../../main/common/form/models/statementOfMeans/employment/employers';
+import {EmploymentCategory} from '../../main/common/form/models/statementOfMeans/employment/employmentCategory';
+import {Unemployment} from '../../main/common/form/models/statementOfMeans/unemployment/unemployment';
+import {OtherDetails} from '../../main/common/form/models/statementOfMeans/unemployment/otherDetails';
+import {UnemploymentCategory} from '../../main/common/form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {UnemploymentDetails} from '../../main/common/form/models/statementOfMeans/unemployment/unemploymentDetails';
+import {SelfEmployedAs} from '../../main/common/models/selfEmployedAs';
+import {TaxPayments} from '../../main/common/models/taxPayments';
 
 
 const CONTACT_PERSON = 'The Post Man';
@@ -88,6 +98,7 @@ export const createClaimWithContactPersonDetails = (): Claim => {
 
 export const createClaimWithOneBankAccount = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const bankAccounts: BankAccount[] = [
     new BankAccount('CURRENT_ACCOUNT', 'true', '1000'),
   ];
@@ -99,7 +110,7 @@ export const createClaimWithOneBankAccount = (): Claim => {
 
 export const createClaimWithBankAccounts = () => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const bankAccounts: BankAccount[] = [
     new BankAccount('CURRENT_ACCOUNT', 'true', '1000'),
     new BankAccount('SAVINGS_ACCOUNT', 'false', '2000'),
@@ -114,9 +125,15 @@ export const createClaimWithBankAccounts = () => {
   return claim as Claim;
 };
 
+export const createClaimWithNoBankAccounts = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  return claim as Claim;
+};
+
 export const createClaimWithCourtOrders = () => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const courtOrders: CourtOrders = new CourtOrders(true, [
     new CourtOrder(100, 1500, '1'),
     new CourtOrder(250, 2500, '2'),
@@ -131,7 +148,7 @@ export const createClaimWithCourtOrders = () => {
 
 export const createClaimWithNoCourtOrders = () => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const courtOrders: CourtOrders = new CourtOrders(true, []);
 
   claim.statementOfMeans = {
@@ -143,7 +160,7 @@ export const createClaimWithNoCourtOrders = () => {
 
 export const createClaimWithDebts = () => {
   const claim = createClaimWithBasicRespondentDetails();
-  claim.paymentOption = PaymentOptionType.IMMEDIATELY;
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const debts: Debts = new Debts();
   debts.option = 'yes';
@@ -160,6 +177,7 @@ export const createClaimWithDebts = () => {
 
 export const createClaimWithPriorityDebts = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const mortgage: PriorityDebtDetails = new PriorityDebtDetails(true, 'Mortgage', 1000, 'WEEK');
   const rent: PriorityDebtDetails = new PriorityDebtDetails(true, 'Rent', 2000, 'FOUR_WEEKS');
@@ -179,6 +197,7 @@ export const createClaimWithPriorityDebts = (): Claim => {
 
 export const createClaimWithMultipleDebt = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const debts: Debts = new Debts();
   debts.option = 'yes';
@@ -196,6 +215,7 @@ export const createClaimWithMultipleDebt = (): Claim => {
 
 export const createClaimWithRegularExpenses = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const otherExpenses: TransactionSource[] = [
     new TransactionSource({ name: 'Expenses 1', amount: 1000, schedule: TransactionSchedule.TWO_WEEKS, isIncome: false, nameRequired: true }),
@@ -229,6 +249,7 @@ export const createClaimWithRegularExpenses = (): Claim => {
 
 export const createClaimWithRegularIncome = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const otherIncome: TransactionSource[] = [
     new TransactionSource({ name: 'Income 1', amount: 1000, schedule: TransactionSchedule.TWO_WEEKS, isIncome: true, nameRequired: true }),
@@ -252,6 +273,134 @@ export const createClaimWithRegularIncome = (): Claim => {
 
   claim.statementOfMeans = {
     regularIncome: income_regular,
+  };
+
+  return claim as Claim;
+};
+
+
+export const createEmployers = () => {
+  const employers = new Employers(
+    [
+      new Employer('Version 1', 'FE Developer'),
+      new Employer('Version 1', 'BE Developer'),
+    ],
+  );
+
+  return employers;
+};
+
+export const createClaimWithEmplymentDetails = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+
+  const employmentType: EmploymentCategory[] = [EmploymentCategory.EMPLOYED, EmploymentCategory.SELF_EMPLOYED];
+  const employment: Employment = { declared: true, employmentType: employmentType };
+  const selfEmployedAs: SelfEmployedAs = { jobTitle: 'Developer', annualTurnover: 50000 };
+
+  claim.statementOfMeans = {
+    employment: employment,
+    employers: createEmployers(),
+    selfEmployedAs: selfEmployedAs,
+  };
+
+  return claim as Claim;
+};
+
+export const createClaimWithEmployedCategory = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+
+  const employmentType: EmploymentCategory[] = [EmploymentCategory.EMPLOYED];
+  const employment: Employment = { declared: true, employmentType: employmentType };
+
+  claim.statementOfMeans = {
+    employment: employment,
+    employers: createEmployers(),
+  };
+
+  return claim as Claim;
+};
+
+export const createClaimWithSelfEmployedAndTaxBehind = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+
+  const employmentType: EmploymentCategory[] = [EmploymentCategory.SELF_EMPLOYED];
+  const employment: Employment = { declared: true, employmentType: employmentType };
+  const selfEmployedAs: SelfEmployedAs = { jobTitle: 'Developer', annualTurnover: 50000 };
+  const taxPayments: TaxPayments = { owed: true, amountOwed: 200, reason: 'Tax payment reasons'};
+
+  claim.statementOfMeans = {
+    employment: employment,
+    selfEmployedAs: selfEmployedAs,
+    taxPayments: taxPayments,
+  };
+
+  return claim as Claim;
+};
+
+export const createClaimWithSelfEmployedNoTaxBehind = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+
+  const employmentType: EmploymentCategory[] = [EmploymentCategory.SELF_EMPLOYED];
+  const employment: Employment = { declared: true, employmentType: employmentType };
+  const selfEmployedAs: SelfEmployedAs = { jobTitle: 'Developer', annualTurnover: 50000 };
+  const taxPayments: TaxPayments = { owed: false, amountOwed: undefined, reason: ''};
+
+  claim.statementOfMeans = {
+    employment: employment,
+    selfEmployedAs: selfEmployedAs,
+    taxPayments: taxPayments,
+  };
+
+  return claim as Claim;
+};
+
+export const createClaimWithUnemplymentDetailsOne = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  const unemployment = new Unemployment(UnemploymentCategory.UNEMPLOYED, new UnemploymentDetails('1', '1'), undefined);
+
+  claim.statementOfMeans = {
+    unemployment: unemployment,
+  };
+
+  return claim as Claim;
+};
+
+export const createClaimWithUnemplymentDetailsTwo = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  const unemployment = new Unemployment(UnemploymentCategory.UNEMPLOYED, new UnemploymentDetails('10', '10'), undefined);
+
+  claim.statementOfMeans = {
+    unemployment: unemployment,
+  };
+
+  return claim as Claim;
+};
+
+export const createClaimWithUnemploymentCategoryRETIRED = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  const unemployment = new Unemployment(UnemploymentCategory.RETIRED, undefined, undefined);
+
+  claim.statementOfMeans = {
+    unemployment: unemployment,
+  };
+
+  return claim as Claim;
+};
+
+export const createClaimWithUnemploymentCategoryOTHER = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  const unemployment = new Unemployment(UnemploymentCategory.OTHER, undefined, new OtherDetails('Other details here'));
+
+  claim.statementOfMeans = {
+    unemployment: unemployment,
   };
 
   return claim as Claim;
