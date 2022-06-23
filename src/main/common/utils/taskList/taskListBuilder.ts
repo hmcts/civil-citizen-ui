@@ -55,7 +55,7 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
   if (chooseAResponseTask.status === TaskStatus.COMPLETE) {
 
     //FULL_ADMISSION
-    if (caseData.respondent1?.responseType === ResponseType.FULL_ADMISSION) {
+    if (caseData.isFullAdmission()) {
       tasks.push(decideHowYouPayTask);
 
       if (decideHowYouPayTask.status === TaskStatus.COMPLETE && isNotPayImmediatelyResponse(caseData)) {
@@ -68,7 +68,7 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
     }
 
     // PART ADMISSION
-    if (caseData.respondent1?.responseType === ResponseType.PART_ADMISSION) {
+    if (caseData.isPartialAdmission()) {
 
       if (caseData.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
         tasks.push(howMuchHaveYouPaidTask);
