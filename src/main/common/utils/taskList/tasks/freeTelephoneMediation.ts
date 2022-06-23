@@ -6,6 +6,7 @@ import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../routes/urls';
 import {YesNo} from '../../../../common/form/models/yesNo';
 import {getLng} from '../../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';
+import {hasContactPersonAndCompanyPhone} from './taskListHelpers';
 
 export const getFreeTelephoneMediationTask = (caseData: Claim, claimId: string, lang: string): Task => {
   const freeTelephoneMediationTask: Task = {
@@ -23,7 +24,7 @@ export const getFreeTelephoneMediationTask = (caseData: Claim, claimId: string, 
       freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
     }
     if (caseData.mediation?.companyTelephoneNumber?.option === YesNo.NO) {
-      if (caseData.mediation?.companyTelephoneNumber?.mediationContactPerson && caseData.mediation?.companyTelephoneNumber?.mediationPhoneNumber) {
+      if (hasContactPersonAndCompanyPhone(caseData)) {
         freeTelephoneMediationTask.status = TaskStatus.COMPLETE;
       }
     } else if (caseData.mediation?.companyTelephoneNumber?.mediationPhoneNumberConfirmation) {
