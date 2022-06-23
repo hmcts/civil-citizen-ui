@@ -7,7 +7,7 @@ import {CounterpartyType} from '../../../../common/models/counterpartyType';
 import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClaimType';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import config from 'config';
-import {FeeRange} from '../../../../common/models/feeRange';
+import {FeeRange, FeeRanges} from '../../../../common/models/feeRange';
 import {TableItem} from '../../../../common/models/tableItem';
 import {AppRequest} from 'models/AppRequest';
 
@@ -31,22 +31,23 @@ function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): vo
 sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res) => {
   try {
     const form = await getCaseDataFromStore(req.params.id);
-    const feesRanges: FeeRange[] = await civilServiceClient.getFeeRanges(<AppRequest>req);
+    const feesRanges: FeeRanges = await civilServiceClient.getFeeRanges(<AppRequest>req);
     const formattedFeesRanges = formatFeesRanges(feesRanges);
     renderView(res, form, formattedFeesRanges);
   } catch (error) {
     logger.error(error);
-    res.status(500).send({ error: error.message });
+    res.status(500).send({error: error.message});
   }
 });
 
 
-const formatFeesRanges = (feesRanges: FeeRange[]): [TableItem[]] => {
+const formatFeesRanges = (feesRanges: FeeRanges): [TableItem[]] => {
   const tableFormatFeesRanges: [TableItem[]] = [[]];
-  feesRanges.forEach((feeRange: FeeRange) => {
+  feesRanges.value.forEach((feeRange: FeeRange) => {
     tableFormatFeesRanges.push(feeRange.formatFeeRangeToTableItem());
   });
   return tableFormatFeesRanges;
 };
+
 
 export default sendYourResponseByEmailController;
