@@ -32,7 +32,7 @@ const find = async (userToken: string): Promise<void> => {
       {headers},
     );
 
-    logger.info(`Draft raw data retrieved from Legacy Draft Store: ${response.data}`);
+    logger.info(`Draft raw data retrieved from Legacy Draft Store: ${JSON.stringify(response.data)}`);
   } catch (error) {
     logger.error(error);
     throw error;

@@ -11,7 +11,7 @@ services:
     ordnanceSurveyApiKey: dummy
   idam:
     url: 'http://localhost:5000'
-    authorizationURL: 'http://localhost:3501/login'
+    authorizationURL: 'http://localhost:9002/login'
     tokenURL: 'http://localhost:5000/o/token'
     clientID: 'civil_citizen_ui'
     clientSecret: 'citizen-ui-secret'
@@ -25,13 +25,13 @@ services:
       key:
       tls: false
     legacy:
-      url: 'http://localhost:8800'
+      url: 'http://localhost:8765'
       s2s:
         microserviceName: 'cmc'
         primarySecret: 'not-a-real-primary-secret'
         secondarySecret: 'not-a-real-secondary-secret'
   serviceAuthProvider:
-    url: 'http://localhost:4552'
+    url: 'http://localhost:4502'
     cmcS2sSecret: 'AAAAAAAAAAAAAAAA'
 
 health:
