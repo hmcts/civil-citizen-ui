@@ -14,15 +14,13 @@ import {t} from 'i18next';
 export const getShareFinancialDetailsTask = (caseData: Claim, claimId: string, lang: string): Task => {
   const shareFinancialDetailsTask: Task = {
     description: t('TASK_LIST.RESPOND_TO_CLAIM.SHARE_YOUR_FINANCIAL_DETAILS', { lng: getLng(lang) }),
-    url: FINANCIAL_DETAILS_URL,
+    url: constructResponseUrlWithIdParams(claimId, FINANCIAL_DETAILS_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  let taskStatus = TaskStatus.INCOMPLETE;
 
   if (financialDetailsShared(caseData) && (isIndividualWithStatementOfMeansComplete(caseData) || isCounterpartyCompany(caseData.respondent1))) {
-    taskStatus = TaskStatus.COMPLETE;
+    shareFinancialDetailsTask.status = TaskStatus.COMPLETE;
   }
 
-  const constructedUrl = constructResponseUrlWithIdParams(claimId, FINANCIAL_DETAILS_URL);
-  return { ...shareFinancialDetailsTask, url: constructedUrl, status: taskStatus };
+  return shareFinancialDetailsTask;
 };

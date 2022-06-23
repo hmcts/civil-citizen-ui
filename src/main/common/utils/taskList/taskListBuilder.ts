@@ -52,42 +52,44 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
   const whenWillYouPayTask = getWhenWillYouPayTask(caseData, claimId, lang);
   tasks.push(chooseAResponseTask);
 
-  // TODO : depending on the response type full admission/partial admission or rejection we need to add new tasks
+  if (chooseAResponseTask.status === TaskStatus.COMPLETE) {
 
-  if (chooseAResponseTask.status === TaskStatus.COMPLETE && caseData.respondent1?.responseType === ResponseType.FULL_ADMISSION) {
-    tasks.push(decideHowYouPayTask);
+    //FULL_ADMISSION
+    if (caseData.respondent1?.responseType === ResponseType.FULL_ADMISSION) {
+      tasks.push(decideHowYouPayTask);
 
-    if (decideHowYouPayTask.status === TaskStatus.COMPLETE && isNotPayImmediatelyResponse(caseData)) {
-      tasks.push(shareFinancialDetailsTask);
+      if (decideHowYouPayTask.status === TaskStatus.COMPLETE && isNotPayImmediatelyResponse(caseData)) {
+        tasks.push(shareFinancialDetailsTask);
 
-      if (caseData.paymentOption === PaymentOptionType.INSTALMENTS) {
+        if (caseData.paymentOption === PaymentOptionType.INSTALMENTS) {
+          tasks.push(repaymentPlanTask);
+        }
+      }
+    }
+
+    // PART ADMISSION
+    if (caseData.respondent1?.responseType === ResponseType.PART_ADMISSION) {
+
+      if (caseData.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
+        tasks.push(howMuchHaveYouPaidTask);
+      } else if (caseData.partialAdmission?.alreadyPaid?.option === YesNo.NO) {
+        tasks.push(howMuchMoneyAdmitOweTask);
+        if (caseData.partialAdmission?.howMuchDoYouOwe?.amount) {
+          tasks.push(whenWillYouPayTask);
+        }
+      }
+
+      if (caseData.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE && caseData.partialAdmission?.paymentIntention?.paymentDate) {
+        tasks.push(shareFinancialDetailsTask);
+      }
+
+      if (caseData.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS) {
+        tasks.push(shareFinancialDetailsTask);
         tasks.push(repaymentPlanTask);
       }
+
+      tasks.push(whyDisagreeWithAmountClaimedTask);
     }
-  }
-
-  // PART ADMISSION
-  if (chooseAResponseTask.status === TaskStatus.COMPLETE && caseData.respondent1?.responseType === ResponseType.PART_ADMISSION) {
-
-    if (caseData.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
-      tasks.push(howMuchHaveYouPaidTask);
-    } else if (caseData.partialAdmission?.alreadyPaid?.option === YesNo.NO) {
-      tasks.push(howMuchMoneyAdmitOweTask);
-      if (caseData.partialAdmission?.howMuchDoYouOwe?.amount) {
-        tasks.push(whenWillYouPayTask);
-      }
-    }
-
-    if (caseData.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE && caseData.partialAdmission?.paymentIntention?.paymentDate) {
-      tasks.push(shareFinancialDetailsTask);
-    }
-
-    if (caseData.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS) {
-      tasks.push(shareFinancialDetailsTask);
-      tasks.push(repaymentPlanTask);
-    }
-
-    tasks.push(whyDisagreeWithAmountClaimedTask);
 
   }
 

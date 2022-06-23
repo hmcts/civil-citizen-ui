@@ -10,14 +10,12 @@ import {t} from 'i18next';
 export const getConfirmYourDetailsTask = (caseData: Claim, claimId: string, lang: string): Task => {
   const confirmYourDetailsTask = {
     description: t('TASK_LIST.PREPARE_YOUR_RESPONSE.CONFIRM_YOUR_DETAILS', { lng: getLng(lang) }),
-    url: CITIZEN_DETAILS_URL,
-    status: TaskStatus.INCOMPLETE,
+    url: constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL),
+    status: TaskStatus.COMPLETE,
   };
-  let taskStatus = TaskStatus.COMPLETE;
   if (isCaseDataMissing(caseData) || isBothCorrespondenceAndPrimaryAddressMissing(caseData?.respondent1) || isDOBMissing(caseData?.respondent1) ) {
-    taskStatus = TaskStatus.INCOMPLETE;
+    confirmYourDetailsTask.status = TaskStatus.INCOMPLETE;
   }
-  const constructedUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL);
-  return { ...confirmYourDetailsTask, url: constructedUrl, status: taskStatus };
+  return confirmYourDetailsTask;
 };
 

@@ -9,13 +9,11 @@ import {t} from 'i18next';
 export const getHowMuchMoneyAdmitOweTask = (caseData: Claim, claimId: string, lang: string): Task => {
   const howMuchMoneyAdmitOweTask: Task = {
     description: t('TASK_LIST.RESPOND_TO_CLAIM.HOW_MUCH_MONEY_ADMIT_OWE', { lng: getLng(lang) }),
-    url: CITIZEN_OWED_AMOUNT_URL,
+    url: constructResponseUrlWithIdParams(claimId, CITIZEN_OWED_AMOUNT_URL),
     status: TaskStatus.INCOMPLETE,
   };
-  let taskStatus = TaskStatus.INCOMPLETE;
   if (caseData.partialAdmission?.howMuchDoYouOwe?.amount) {
-    taskStatus = TaskStatus.COMPLETE;
+    howMuchMoneyAdmitOweTask.status = TaskStatus.COMPLETE;
   }
-  const constructedUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_OWED_AMOUNT_URL);
-  return { ...howMuchMoneyAdmitOweTask, url: constructedUrl, status: taskStatus };
+  return howMuchMoneyAdmitOweTask;
 };
