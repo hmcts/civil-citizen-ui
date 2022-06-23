@@ -2,7 +2,12 @@ import * as express from 'express';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {CLAIM_TASK_LIST_URL, SUPPORT_REQUIRED_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {SupportRequired} from '../../../common/models/directionsQuestionnaire/supportRequired';
+import {
+  LanguageSupportItem,
+  OtherSupportItem,
+  SignLanguageSupportItem,
+  SupportRequired,
+} from '../../../common/models/directionsQuestionnaire/supportRequired';
 import {
   getSupportRequired,
   saveSupportRequired,
@@ -32,7 +37,10 @@ supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res) => {
     const disabledAccessSelected = boolean(req.body.declared.includes('disabledAccessSelected'));
     const hearingLoopSelected = boolean(req.body.declared.includes('hearingLoopSelected'));
     const otherSupportSelected = boolean(req.body.declared.includes('otherSupportSelected'));
-    const supportRequired = new SupportRequired(languageSelected, req.body.languageInterpreted, signLanguageSelected, req.body.signLanguageInterpreted, hearingLoopSelected, disabledAccessSelected, otherSupportSelected, req.body.otherSupport);
+    const languageSupportItem = new LanguageSupportItem(languageSelected, req.body.languageInterpreted);
+    const signLanguageSupportItem = new SignLanguageSupportItem(signLanguageSelected, req.body.signLanguageInterpreted);
+    const otherSupportItem = new OtherSupportItem(otherSupportSelected, req.body.otherSupport);
+    const supportRequired = new SupportRequired(languageSupportItem, signLanguageSupportItem, hearingLoopSelected, disabledAccessSelected, otherSupportItem);
     const form = new GenericForm(supportRequired);
     form.validateSync();
     if (form.hasErrors()) {
