@@ -141,12 +141,12 @@ export class Claim {
     return this.statementOfMeans?.disability?.option === YesNo.YES;
   }
 
-  isDefendantSeverlyDisabled(): boolean {
+  isDefendantSeverelyDisabled(): boolean {
     return this.statementOfMeans?.severeDisability?.option === YesNo.YES;
   }
 
-  isDefendantDisabledAndSeverlyDiabled(): boolean {
-    return this.isDefendantDisabled() && this.isDefendantSeverlyDisabled();
+  isDefendantDisabledAndSeverelyDiabled(): boolean {
+    return this.isDefendantDisabled() && this.isDefendantSeverelyDisabled();
   }
 
   isPartnerDisabled(): boolean {
@@ -160,7 +160,7 @@ export class Claim {
   }
 
   isDefendantSeverelyDisabledOrDependentsDisabled(): boolean {
-    return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverlyDiabled();
+    return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverelyDiabled();
   }
 
   isFullAdmission(): boolean {
