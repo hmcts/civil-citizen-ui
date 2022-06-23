@@ -9,7 +9,7 @@ import {
   createClaimWithMultipleDebt,
 } from '../../../../../utils/mockClaimForCheckAnswers';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
-import * as constVal from './constants';
+import * as constVal from '../../../../../utils/checkAnswersConstants';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');

@@ -28,7 +28,7 @@ import {
   INDEX_DETAILS_SECTION,
   INDEX_RESPONSE_CLAIM_SECTION,
   INDEX_RESPONSE_SECTION,
-} from './checkAnswers/constants';
+} from '../../../../utils/checkAnswersConstants';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');

@@ -12,9 +12,10 @@ import {
   createClaimWithNoBankAccounts,
   createClaimWithRespondentDetailsWithPaymentOption,
 } from '../../../../../utils/mockClaimForCheckAnswers';
+import * as constVal from '../../../../../utils/checkAnswersConstants';
 import PaymentOptionType
   from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import * as constVal from './constants';
+
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');

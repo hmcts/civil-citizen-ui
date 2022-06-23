@@ -7,7 +7,7 @@ import {
 import {
   createClaimWithPriorityDebts,
 } from '../../../../../utils/mockClaimForCheckAnswers';
-import * as constVal from './constants';
+import * as constVal from '../../../../../utils/checkAnswersConstants';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
