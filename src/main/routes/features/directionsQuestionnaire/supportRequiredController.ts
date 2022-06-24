@@ -30,17 +30,20 @@ supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res) => {
 supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res) => {
   try {
     const claimId = req.params.id;
-    const languageSelected = boolean(req.body.declared.includes('languageSelected'));
-    const signLanguageSelected = boolean(req.body.declared.includes('signLanguageSelected'));
-    console.log(req.body.declared);
-    console.log(req.body.languageInterpreted);
-    const disabledAccessSelected = boolean(req.body.declared.includes('disabledAccessSelected'));
-    const hearingLoopSelected = boolean(req.body.declared.includes('hearingLoopSelected'));
-    const otherSupportSelected = boolean(req.body.declared.includes('otherSupportSelected'));
-    const languageSupportItem = new LanguageSupportItem(languageSelected, req.body.languageInterpreted);
-    const signLanguageSupportItem = new SignLanguageSupportItem(signLanguageSelected, req.body.signLanguageInterpreted);
-    const otherSupportItem = new OtherSupportItem(otherSupportSelected, req.body.otherSupport);
-    const supportRequired = new SupportRequired(languageSupportItem, signLanguageSupportItem, hearingLoopSelected, disabledAccessSelected, otherSupportItem);
+    let supportRequired;
+    if (req.body.declared) {
+      const languageSelected = boolean(req.body.declared.includes('languageSelected'));
+      const signLanguageSelected = boolean(req.body.declared.includes('signLanguageSelected'));
+      const disabledAccessSelected = boolean(req.body.declared.includes('disabledAccessSelected'));
+      const hearingLoopSelected = boolean(req.body.declared.includes('hearingLoopSelected'));
+      const otherSupportSelected = boolean(req.body.declared.includes('otherSupportSelected'));
+      const languageSupportItem = new LanguageSupportItem(languageSelected, req.body.languageInterpreted);
+      const signLanguageSupportItem = new SignLanguageSupportItem(signLanguageSelected, req.body.signLanguageInterpreted);
+      const otherSupportItem = new OtherSupportItem(otherSupportSelected, req.body.otherSupport);
+      supportRequired = new SupportRequired(languageSupportItem, signLanguageSupportItem, hearingLoopSelected, disabledAccessSelected, otherSupportItem);
+    } else {
+      supportRequired = new SupportRequired();
+    }
     const form = new GenericForm(supportRequired);
     form.validateSync();
     if (form.hasErrors()) {
