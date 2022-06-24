@@ -19,10 +19,6 @@ import {addLoansOrCreditCardDebts} from './answers/addLoansOrCreditCardDebts';
 import {addMonthlyExpenses} from './answers/addMonthlyExpenses';
 import {addMonthlyIncome} from './answers/addMonthlyIncome';
 
-
-//const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
-
-
 export const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   let yourFinancialSection: SummarySection = null;
 
