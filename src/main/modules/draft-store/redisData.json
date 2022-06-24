@@ -783,6 +783,23 @@
         "OrgPolicyReference": "Claimant policy reference",
         "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
       },
+      "systemGeneratedCaseDocuments": [
+        {
+          "id": "9e632049-ff29-44a0-bdb7-d71ec1d42e2d",
+          "value": {
+            "createdBy": "Civil",
+            "documentLink": {
+              "document_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac",
+              "document_filename": "sealed_claim_form_000MC002.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac/binary"
+            },
+            "documentName": "sealed_claim_form_000MC001.pdf",
+            "documentSize": 45794,
+            "documentType": "SEALED_CLAIM",
+            "createdDatetime": "2022-06-21T14:15:19"
+          }
+        }
+      ],
       "respondent1OrganisationPolicy": {
         "Organisation": {
           "OrganisationID": "Q1KOKP2"
