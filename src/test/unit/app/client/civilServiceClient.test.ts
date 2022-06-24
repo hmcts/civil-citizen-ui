@@ -11,6 +11,7 @@ import {
 } from '../../../../main/app/client/civilServiceUrls';
 import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
 import {mockClaim} from '../../../utils/mockClaim';
+import {TestMessages} from '../../../utils/errorMessageTestConstants';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -92,6 +93,13 @@ describe('Civil Service Client', () => {
         responseEncoding: 'binary',
         responseType: 'arraybuffer',
       });
+    });
+    it('should return error', async () => {
+      const mockDocumentDetails = mockClaim.systemGeneratedCaseDocuments[0].value;
+      const mockPost = jest.fn().mockResolvedValue({status: 500});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      await expect(civilServiceClient.retrieveDocument(mockDocumentDetails, mockedAppRequest)).rejects.toThrow(TestMessages.DOCUMENT_NOT_AVAILABLE);
     });
   });
 });
