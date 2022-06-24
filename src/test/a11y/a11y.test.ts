@@ -5,6 +5,7 @@ import nock from 'nock';
 import {app} from '../../main/app';
 import {fail} from 'assert';
 import {IGNORED_URLS} from './ignored-urls';
+import {urlsWithActions} from './action-urls';
 import {mockCivilClaim} from '../utils/mockDraftStore';
 
 jest.mock('../../main/modules/oidc');
@@ -13,7 +14,7 @@ jest.mock('../../main/modules/draft-store');
 const pa11y = require('pa11y');
 app.locals.draftStoreClient = mockCivilClaim;
 const agent = supertest.agent(app);
-const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
+const urlsList = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 
 class Pa11yResult {
   documentTitle: string;
@@ -65,7 +66,7 @@ function expectNoErrors(messages: PallyIssue[]): void {
 
 function testAccessibilityWithActions(url: string, actions: string[]): void {
   describe(`Page ${url}`, () => {
-    test('should have no accessibility errors', done => {
+    test(`should have no accessibility errors ${(actions.length) ? 'with actions': ''}`, done => {
       ensurePageCallWillSucceed(url)
         .then(() => runPally(agent.get(url).url, actions))
         .then((result: Pa11yResult) => {
@@ -78,6 +79,11 @@ function testAccessibilityWithActions(url: string, actions: string[]): void {
 }
 
 function testAccessibility(url: string): void {
+  const urlWithAction = urlsWithActions.find(item => item.url === url);
+  // if object exists we want to test it both with and without actions
+  if (urlWithAction) {
+    testAccessibilityWithActions(urlWithAction.url, urlWithAction.actions);
+  }
   testAccessibilityWithActions(url, []);
 }
 
@@ -91,12 +97,7 @@ describe('Accessibility', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-  urlsNoSignOut.forEach((url) => {
+  urlsList.forEach((url) => {
     testAccessibility(url);
-  });
-
-  afterEach((done) => {
-    console.log('after');
-    done();
   });
 });
