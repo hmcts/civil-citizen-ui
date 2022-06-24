@@ -26,7 +26,8 @@ import {
 } from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
 import {ResponseType} from '../form/models/responseType';
-import {Document} from './document/document';
+import {Document} from '../../common/models/document/document';
+import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
@@ -54,7 +55,7 @@ export class Claim {
   evidence?: DefendantEvidence;
   timelineOfEvents?: TimeLineOfEvents[];
   taskSharedFinancialDetails?: boolean;
-  defendantStatementOfTruth?: StatementOfTruthForm;
+  defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
   claimInterest?: YesNo;
@@ -174,6 +175,7 @@ export class Claim {
   partialAdmissionPaymentAmount(): number {
     return this.partialAdmission?.howMuchDoYouOwe?.amount;
   }
+
   extractDocumentId(): string {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;

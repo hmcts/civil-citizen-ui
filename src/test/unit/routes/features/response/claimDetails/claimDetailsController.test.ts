@@ -5,7 +5,12 @@ import {CLAIM_DETAILS} from '../../../../../../main/common/form/validationErrors
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockClaim as mockResponse} from '../../../../../utils/mockClaim';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {
+  mockCivilClaim,
+  mockCivilClaimUndefined,
+  mockRedisFailure,
+  mockCivilClaimPDFTimeline,
+} from '../../../../../utils/mockDraftStore';
 import {getTotalAmountWithInterestAndFees} from '../../../../../../main/modules/claimDetailsService';
 import {dateFilter} from '../../../../../../main/modules/nunjucks/filters/dateFilter';
 import {convertToPoundsFilter} from '../../../../../../main/common/utils/currencyFormat';
@@ -86,6 +91,28 @@ describe('Claim details page', () => {
           expect(res.text).toContain(claim.case_data.detailsOfClaim);
           expect(res.text).toContain(claim.case_data?.timelineOfEvents[0].value.timelineDescription);
           expect(res.text).toContain(dateFilter(claim.case_data?.timelineOfEvents[0].value.timelineDate));
+        });
+      expect(spyRedisSave).not.toBeCalled();
+      expect(mockGetClaimById).not.toBeCalled();
+    });
+    test('should display Download and view their Timeline', async () => {
+      const mockGetClaimById = jest.fn().mockImplementation(() => {
+        return {};
+      });
+      jest.mock('../../../../../../main/app/client/civilServiceClient', () => {
+        return mockGetClaimById;
+      });
+      nock('http://localhost:4000')
+        .get('/cases/1111')
+        .reply(200, mockResponse);
+      app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
+      const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
+      await request(app)
+        .get('/case/1111/response/claim-details')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(CLAIM_DETAILS);
+          expect(res.text).toContain('Download and view timeline');
         });
       expect(spyRedisSave).not.toBeCalled();
       expect(mockGetClaimById).not.toBeCalled();

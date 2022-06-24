@@ -16,7 +16,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t("Do you support anyone else financially?") %}
+      {% set title = t('PAGES.OTHER_DEPENDANTS.TITLE') %}
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
@@ -24,7 +24,7 @@
       {% set detailsError = form.getTextError(errors, 'details') %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": "There was a problem",
+          "titleText":  t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
@@ -40,7 +40,7 @@
                 autocomplete: "number",
                 classes: "govuk-!-width-one-third",
                 label: {
-                  text: t('Number of people')
+                  text: t('PAGES.OTHER_DEPENDANTS.NUMBER')
                 },
                 value: form.numberOfPeople,
                 errorMessage: { text: numberOfPeopleError.customZeroOrMinOnePerson } if numberOfPeopleError else ''
@@ -49,7 +49,7 @@
                 name: "details",
                 id: "details",
                 label: {
-                  text: t('Give details')
+                  text: t('PAGES.OTHER_DEPENDANTS.DETAILS')
                 },
                 value: form.details,
                 errorMessage: { text: detailsError.isNotEmpty } if detailsError else ''
