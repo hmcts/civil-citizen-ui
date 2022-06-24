@@ -333,11 +333,11 @@
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
     },
     "OTHER_DEPENDANTS": {
+      "DESCRIPTION": "Gall hyn gynnwys oedolion a phobl nad ydych yn byw gyda nhw.",
       "DETAILS": "Rhowch fanylion",
       "NUMBER": "Nifer y bobl",
       "PAGE_TITLE": "Other dependants?",
       "TITLE": "A ydych yn cefnogi rhywun arall yn ariannol?"
-      "DESCRIPTION": "Gall hyn gynnwys oedolion a phobl nad ydych yn byw gyda nhw.",
     },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
       "PAGE_TITLE": "Already paid"
