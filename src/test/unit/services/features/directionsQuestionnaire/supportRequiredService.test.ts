@@ -8,12 +8,7 @@ import {
   NO_LANGUAGE_ENTERED,
   TEXT_TOO_LONG,
 } from '../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {
-  LanguageSupportItem,
-  OtherSupportItem,
-  SignLanguageSupportItem,
-  SupportRequired,
-} from '../../../../../main/common/models/directionsQuestionnaire/supportRequired';
+import {SupportRequired} from '../../../../../main/common/models/directionsQuestionnaire/supportRequired';
 import {GenericForm} from '../../../../../main/common/form/models/genericForm';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -28,7 +23,7 @@ describe('Support Required service', () => {
   describe('Validation', () => {
     test('should not raise any error if no support option selected', async () => {
       //Given
-      const supportRequired = new SupportRequired(new LanguageSupportItem(false, undefined), new SignLanguageSupportItem(false, undefined), false, false, new OtherSupportItem(false, undefined));
+      const supportRequired = new SupportRequired(false, undefined, false, undefined, false, false ,false, undefined);
       //When
       const form = new GenericForm(supportRequired);
       form.validateSync();
@@ -37,7 +32,7 @@ describe('Support Required service', () => {
     });
     test('should raise an error if languageSelected is true and languageInterpreted undefined', async () => {
       //Given
-      const supportRequired = new SupportRequired(new LanguageSupportItem(true, undefined), new SignLanguageSupportItem(false, undefined), false, false, new OtherSupportItem(false, undefined));
+      const supportRequired = new SupportRequired(true, undefined, false, undefined, false, false ,false, undefined);
       //When
       const form = new GenericForm(supportRequired);
       form.validateSync();
@@ -48,7 +43,7 @@ describe('Support Required service', () => {
     });
     test('should raise an error if languageSelected is true and languageInterpreted empty', async () => {
       //Given
-      const supportRequired = new SupportRequired(new LanguageSupportItem(true, ''), new SignLanguageSupportItem(false, undefined), false, false, new OtherSupportItem(false, undefined));
+      const supportRequired = new SupportRequired(true, '', false, undefined, false, false ,false, undefined);
       //When
       const form = new GenericForm(supportRequired);
       form.validateSync();
@@ -59,7 +54,7 @@ describe('Support Required service', () => {
     });
     test('should raise no error if languageSelected true and languageInterpreted is specified', async () => {
       //Given
-      const supportRequired = new SupportRequired(new LanguageSupportItem(true, 'Croatian'), new SignLanguageSupportItem(false, undefined), false, false, new OtherSupportItem(false, undefined));
+      const supportRequired = new SupportRequired(true, 'Croatian', false, undefined, false, false ,false, undefined);
       //When
       const form = new GenericForm(supportRequired);
       form.validateSync();
@@ -91,7 +86,7 @@ describe('Support Required service', () => {
         });
         //Then
         await expect(
-          saveSupportRequired('claimId', new SupportRequired(new LanguageSupportItem(false, undefined), new SignLanguageSupportItem(false, undefined), false, false, new OtherSupportItem(false, undefined)))).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
+          saveSupportRequired('claimId', new SupportRequired())).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
       });
     });
   });

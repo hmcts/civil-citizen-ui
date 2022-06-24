@@ -1,6 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {SupportRequired} from '../../../common/models/directionsQuestionnaire/supportRequired';
-import {Claim} from '../../../common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -24,7 +23,7 @@ export const getSupportRequired = async (claimId: string): Promise<SupportRequir
 
 export const saveSupportRequired = async (claimId: string, supportRequired: SupportRequired) => {
   try {
-    const case_data = await getCaseDataFromStore(claimId) || new Claim();
+    const case_data = await getCaseDataFromStore(claimId);
     if (!case_data?.supportRequired) {
       case_data.supportRequired = new SupportRequired();
     }

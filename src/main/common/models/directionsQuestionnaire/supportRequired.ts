@@ -36,45 +36,15 @@ export class SupportRequired {
 
     otherSupport?: string;
 
-  constructor(languageSupportItem?: LanguageSupportItem, signLanguageItem?: SignLanguageSupportItem, hearingLoopSelected?: boolean, disabledAccessSelected?: boolean, otherSupportItem?: OtherSupportItem) {
-    this.languageSelected = languageSupportItem?.languageSelected;
-    this.languageInterpreted = languageSupportItem?.languageInterpreted;
-    this.signLanguageSelected = signLanguageItem?.signLanguageSelected;
-    this.signLanguageInterpreted = signLanguageItem?.signLanguageInterpreted;
-    this.hearingLoopSelected = hearingLoopSelected;
-    this.disabledAccessSelected = disabledAccessSelected;
-    this.otherSupportSelected = otherSupportItem?.otherSupportSelected;
-    this.otherSupport = otherSupportItem?.otherSupport;
-  }
-
-}
-
-export class LanguageSupportItem {
-  languageSelected?: boolean;
-  languageInterpreted?: string;
-
-  constructor(languageSelected?: boolean, languageInterpreted?: string) {
+  constructor(languageSelected?: boolean, languageInterpreted?: string, signLanguageSelected?: boolean, signLanguageInterpreted?: string, hearingLoopSelected?: boolean, disabledAccessSelected?: boolean, otherSupportSelected?: boolean, otherSupport?: string) {
     this.languageSelected = languageSelected;
     this.languageInterpreted = languageInterpreted;
-  }
-}
-
-export class SignLanguageSupportItem {
-  signLanguageSelected?: boolean;
-  signLanguageInterpreted?: string;
-
-  constructor(signLanguageSelected?: boolean, signLanguageInterpreted?: string) {
     this.signLanguageSelected = signLanguageSelected;
     this.signLanguageInterpreted = signLanguageInterpreted;
-  }
-}
-
-export class OtherSupportItem {
-  otherSupportSelected?: boolean;
-  otherSupport?: string;
-
-  constructor(otherSupportSelected?: boolean, otherSupport?: string) {
+    this.hearingLoopSelected = hearingLoopSelected;
+    this.disabledAccessSelected = disabledAccessSelected;
     this.otherSupportSelected = otherSupportSelected;
     this.otherSupport = otherSupport;
   }
+
 }
