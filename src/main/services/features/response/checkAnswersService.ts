@@ -18,6 +18,17 @@ import {
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_SELF_EMPLOYED_URL,
   CITIZEN_WHO_EMPLOYS_YOU_URL,
+  CITIZEN_DISABILITY_URL,
+  CITIZEN_SEVERELY_DISABLED_URL,
+  CITIZEN_RESIDENCE_URL,
+  CITIZEN_PARTNER_URL,
+  CITIZEN_PARTNER_AGE_URL,
+  CITIZEN_PARTNER_PENSION_URL,
+  CITIZEN_PARTNER_DISABILITY_URL,
+  CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
+  CITIZEN_DEPENDANTS_URL,
+  CITIZEN_CARER_URL,
+  CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../routes/urls';
 import {t} from 'i18next';
 import {getLng} from '../../../common/utils/languageToggleUtils';
@@ -40,6 +51,9 @@ import {EmploymentCategory} from '../../../common/form/models/statementOfMeans/e
 import {UnemploymentCategory} from '../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {Unemployment} from '../../../common/form/models/statementOfMeans/unemployment/unemployment';
 import {Employment} from 'common/models/employment';
+
+// part 4
+import {ResidenceType} from '../../../common/form/models/statementOfMeans/residenceType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -364,6 +378,92 @@ const addEmploymentDetails = (claim: Claim, financialSection: SummarySection, cl
   }
 };
 
+const addDisability = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+  const yourDisabilityHref = CITIZEN_DISABILITY_URL.replace(':id', claimId);
+  const yourSevereDisabilityHref = CITIZEN_SEVERELY_DISABLED_URL.replace(':id', claimId);
+  const isDisabled = claim.statementOfMeans?.disability?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
+  const isSevereDisabled = claim.statementOfMeans?.severeDisability?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DISABILITY_ARE_YOU_DISABLED', { lng: getLng(lang) }), isDisabled.charAt(0).toUpperCase() + isDisabled.slice(1), yourDisabilityHref, changeLabel(lang)));
+
+  if (isDisabled === YesNo.YES) {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DISABILITY_ARE_YOU_SEVERELY_DISABLED', { lng: getLng(lang) }), isSevereDisabled.charAt(0).toUpperCase() + isSevereDisabled.slice(1), yourSevereDisabilityHref, changeLabel(lang)));
+  }
+};
+
+const addResidence = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+  const yourResidenceTypeHref = CITIZEN_RESIDENCE_URL.replace(':id', claimId);
+  const residence = claim.statementOfMeans?.residence;
+  let residenceType: string;
+  if (residence) {
+    residenceType = claim.statementOfMeans?.residence?.type === ResidenceType.OTHER ? residence.housingDetails : residence.type?.displayValue;
+  }
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHERE_DO_YOU_LIVE', { lng: getLng(lang) }), residenceType, yourResidenceTypeHref, changeLabel(lang)));
+};
+
+const addPartner = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+  const yourCohabitingHref = CITIZEN_PARTNER_URL.replace(':id', claimId);
+  const yourPartnerAgeHref = CITIZEN_PARTNER_AGE_URL.replace(':id', claimId);
+  const yourPartnerPensionHref = CITIZEN_PARTNER_PENSION_URL.replace(':id', claimId);
+  const yourPartnerDisabilityHref = CITIZEN_PARTNER_DISABILITY_URL.replace(':id', claimId);
+  const yourPartnerSevereDisabilityHref = CITIZEN_PARTNER_SEVERE_DISABILITY_URL.replace(':id', claimId);
+
+  const cohabiting = claim.statementOfMeans?.cohabiting?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
+  const partnerAge = claim.statementOfMeans?.partnerAge?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
+  const partnerPension = claim.statementOfMeans?.partnerPension?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
+  const partnerDisability = claim.statementOfMeans?.partnerDisability?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
+  const partnerSevereDisability = claim.statementOfMeans?.partnerSevereDisability?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PARTNER_DO_YOU_LIVE_WITH_A', { lng: getLng(lang) }), cohabiting.charAt(0).toUpperCase() + cohabiting.slice(1), yourCohabitingHref, changeLabel(lang)));
+
+  if (cohabiting === YesNo.YES) {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PARTNER_IS_AGED_18_OR_OVER', { lng: getLng(lang) }), partnerAge.charAt(0).toUpperCase() + partnerAge.slice(1), yourPartnerAgeHref, changeLabel(lang)));
+  }
+
+  if (partnerAge === YesNo.YES) {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PARTNER_DOES_RECEIVE_A_PENSION', { lng: getLng(lang) }), partnerPension.charAt(0).toUpperCase() + partnerPension.slice(1), yourPartnerPensionHref, changeLabel(lang)));
+  }
+
+  if (claim.statementOfMeans?.disability?.option === YesNo.YES) {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PARTNER_IS_DISABLED', { lng: getLng(lang) }), partnerDisability.charAt(0).toUpperCase() + partnerDisability.slice(1), yourPartnerDisabilityHref, changeLabel(lang)));
+    if (partnerDisability === YesNo.YES) {
+      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PARTNER_IS_SEVERELY_DISABLED', { lng: getLng(lang) }), partnerSevereDisability.charAt(0).toUpperCase() + partnerSevereDisability.slice(1), yourPartnerSevereDisabilityHref, changeLabel(lang)));
+    }
+  }
+};
+
+const addDependants = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+  const yourDependantsHref = CITIZEN_DEPENDANTS_URL.replace(':id', claimId);
+  const dependants = claim.statementOfMeans?.dependants?.declared ? YesNo.YES : YesNo.NO;
+  const numberOfChildren = claim.statementOfMeans?.dependants?.numberOfChildren;
+  const numberOfChildrenLivingWithYou = claim.statementOfMeans?.numberOfChildrenLivingWithYou;
+
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN', { lng: getLng(lang) }), '', yourDependantsHref, changeLabel(lang)));
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU', { lng: getLng(lang) }), dependants.charAt(0).toUpperCase() + dependants.slice(1), yourDependantsHref, changeLabel(lang)));
+
+  if (dependants === YesNo.YES) {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_11', { lng: getLng(lang) }), numberOfChildren.under11.toString(), '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_11_TO_15', { lng: getLng(lang) }), numberOfChildren.between11and15.toString(), '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_16_TO_19', { lng: getLng(lang) }), numberOfChildren.between11and15.toString(), '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_AGED_16_19_FT_EDUCATION', { lng: getLng(lang) }), numberOfChildrenLivingWithYou.toString(), '', changeLabel(lang)));
+  }
+};
+
+const addOtherDependants = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+  const yourOtherDependantsHref = CITIZEN_OTHER_DEPENDANTS_URL.replace(':id', claimId);
+  const otherDependantsOption = claim.statementOfMeans?.otherDependants?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
+  const otherDependants = claim.statementOfMeans?.otherDependants;
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_ANYONE_ELSE_FINANCIALLY', { lng: getLng(lang) }), otherDependantsOption.charAt(0).toUpperCase() + otherDependantsOption.slice(1), yourOtherDependantsHref, changeLabel(lang)));
+
+  if (otherDependantsOption === YesNo.YES) {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_NUMBER_OF_PEOPLE', { lng: getLng(lang) }), otherDependants.numberOfPeople.toString(), yourOtherDependantsHref, changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_GIVE_DETAILS', { lng: getLng(lang) }), otherDependants.details, yourOtherDependantsHref, changeLabel(lang)));
+  }
+};
+
+const addCarer = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+  const yourCareCreditsHref = CITIZEN_CARER_URL.replace(':id', claimId);
+  const carerCredit = claim.statementOfMeans?.carer?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CARER_CREDIT_DO_YOU_CLAIM', { lng: getLng(lang) }), carerCredit.charAt(0).toUpperCase() + carerCredit.slice(1), yourCareCreditsHref, changeLabel(lang)));
+};
 
 // -- FINANCIAL SECTION
 const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
@@ -377,6 +477,18 @@ const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string |
 
   // -- Bank Accounts
   addBankAccounts(claim, yourFinancialSection, claimId, lang);
+  // -- Disability
+  addDisability(claim, yourFinancialSection, claimId, lang);
+  // -- Residence
+  addResidence(claim, yourFinancialSection, claimId, lang);
+  // -- Partner
+  addPartner(claim, yourFinancialSection, claimId, lang);
+  // -- Dependants
+  addDependants(claim, yourFinancialSection, claimId, lang);
+  // -- Other Dependants
+  addOtherDependants(claim, yourFinancialSection, claimId, lang);
+  // -- Carer’s Allowance or Carer’s Credit
+  addCarer(claim, yourFinancialSection, claimId, lang);
   // -- Employment Details
   addEmploymentDetails(claim, yourFinancialSection, claimId, lang);
   // -- Court Orders
