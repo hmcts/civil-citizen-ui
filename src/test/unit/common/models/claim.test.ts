@@ -668,7 +668,7 @@ describe('Documents', () => {
       //When
       const result = claim.isSystemGeneratedCaseDocumentsAvailable();
       //Then
-      expect(result).toBe(false);
+      expect(result).toBeFalsy();
     });
     it('should return true with proper document details', () => {
       //Given
@@ -676,7 +676,7 @@ describe('Documents', () => {
       //When
       const result = claim.isSystemGeneratedCaseDocumentsAvailable();
       //Then
-      expect(result).toBe(true);
+      expect(result).toBeTruthy();
     });
   });
 

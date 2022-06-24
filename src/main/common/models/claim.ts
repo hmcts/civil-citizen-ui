@@ -188,8 +188,8 @@ export class Claim {
   generatePdfFileName(): string {
     return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
   }
-  isSystemGeneratedCaseDocumentsAvailable(): boolean {
-    return this.systemGeneratedCaseDocuments?.length > 0;
+  isSystemGeneratedCaseDocumentsAvailable(): number {
+    return this.systemGeneratedCaseDocuments?.length;
   }
   getDocumentDetails(documentType: DocumentType): CaseDocument {
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
