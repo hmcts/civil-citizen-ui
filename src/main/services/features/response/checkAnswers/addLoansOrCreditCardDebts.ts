@@ -1,0 +1,29 @@
+import {SummarySection} from '../../../../common/models/summaryList/summarySections';
+import {Claim} from '../../../../common/models/claim';
+import {summaryRow} from '../../../../common/models/summaryList/summaryList';
+import {t} from 'i18next';
+import {getLng} from '../../../../common/utils/languageToggleUtils';
+import {
+  CITIZEN_DEBTS_URL,
+} from '../../../../routes/urls';
+import {DebtItems} from '../../../../common/form/models/statementOfMeans/debts/debtItems';
+import {currencyFormatWithNoTrailingZeros} from '../../../../common/utils/currencyFormat';
+
+const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
+
+export const addLoansOrCreditCardDebts = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+  const yourLoansOrCreditCardsDebtsHref = CITIZEN_DEBTS_URL.replace(':id', claimId);
+
+  if (claim.statementOfMeans?.debts?.debtsItems) {
+    const debtsItems: DebtItems[] = claim.statementOfMeans.debts.debtsItems;
+    const option = claim.statementOfMeans.debts.option;
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DEBTS_LOANS_OR_CREDIT_CARDS', { lng: getLng(lang) }), option.charAt(0).toUpperCase() + option.slice(1), yourLoansOrCreditCardsDebtsHref, changeLabel(lang)));
+    for (let i = 0; i < debtsItems.length; i++) {
+      financialSection.summaryList.rows.push(
+        summaryRow((debtsItems.length > 1 ? (i + 1) + '. ' : '') + t('PAGES.CHECK_YOUR_ANSWER.DEBT', { lng: getLng(lang) }), debtsItems[i].debt, '', changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DEBTS_TOTAL_OWED', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(Number(debtsItems[i].totalOwned)), '', changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DEBTS_MONTHLY_PAYMENTS', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(Number(debtsItems[i].monthlyPayments)), '', changeLabel(lang)),
+      );
+    }
+  }
+};
