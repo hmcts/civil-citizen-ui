@@ -1,7 +1,7 @@
 import nock from 'nock';
 import config from 'config';
 import Module from 'module';
-import * as checkAnswersService from '../../../../../main/services/features/response/checkAnswersService';
+import * as checkAnswersService from '../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {CITIZEN_DETAILS_URL, CLAIM_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
@@ -23,7 +23,7 @@ const testSession = session(app);
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
-jest.mock('../../../../../main/services/features/response/checkAnswersService');
+jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
 jest.mock('../../../../../main/services/features/response/taskListService', () => ({
   ...jest.requireActual('../../../../../main/services/features/response/taskListService') as Module,
   getTaskLists: jest.fn(() => TASK_LISTS),

@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import Module from 'module';
-import * as checkAnswersService from '../../../../../main/services/features/response/checkAnswersService';
+import * as checkAnswersService from '../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import * as claimDetailsService from '../../../../../main/modules/claimDetailsService';
 import {app} from '../../../../../main/app';
 import {CLAIM_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
@@ -25,7 +25,7 @@ const request = require('supertest');
 const session = require('supertest-session');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/services/features/response/checkAnswersService');
+jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/response/taskListService', () => ({
   ...jest.requireActual('../../../../../main/services/features/response/taskListService') as Module,
