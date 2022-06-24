@@ -24,7 +24,7 @@ for example {noHtml:'<span>you clicked on no</span>' #}
       {
         value: YesNo.YES,
         checked: true if form.option=="yes" else false,
-        html: "<span>" + t('Yes') + "</span>",
+        html: "<span>" + t('COMMON.YES') + "</span>",
         conditional:{
         html: params.yesHtml
       }
@@ -32,7 +32,7 @@ for example {noHtml:'<span>you clicked on no</span>' #}
       {
         value: YesNo.NO,
         checked: true if form.option=="no" else false,
-        html: "<span>" + t('No') + "</span>",
+        html: "<span>" + t('COMMON.NO') + "</span>",
         conditional:{
         html: params.noHtml
       }

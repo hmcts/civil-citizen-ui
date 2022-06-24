@@ -18,10 +18,24 @@
     "MONTH": "Month",
     "YEAR": "Year",
     "BUTTONS": {
-      "CONTINUE": "Parhau"
+      "CONTINUE": "Parhau",
+      "SUBMIT_RESPONSE": "Submit Response"
+    },
+    "CONTACT_US_FOR_HELP": {
+      "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
+      "EMAIL": "E-bost",
+      "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
+      "RESPONSE_DELAY": "We'll get back to you within 10 days",
+      "TITLE": "Cysylltwch â ni i gael cymorth",
+      "TELEPHONE": "Rhif ffôn",
+      "WEB_CHAT": "Sgwrsio ar y We",
+      "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
+      "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
     },
     "RESPONSE_TYPE": {
-      "FULL_ADMISSION": "Rwy'n cyfaddef yr holl hawliad"
+      "FULL_ADMISSION": "Rwy'n cyfaddef yr holl hawliad",
+      "FULL_DEFENCE": "I reject all of the claim",
+      "PART_ADMISSION": "I admit part of the claim"
     },
     "PAYMENT_FREQUENCY": {
       "WEEK": "Each week",
@@ -37,16 +51,29 @@
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
     },
-    "CONTACT_US_FOR_HELP": {
-      "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
-      "EMAIL": "E-bost",
-      "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
-      "RESPONSE_DELAY": "We'll get back to you within 10 days",
-      "TITLE": "Cysylltwch â ni i gael cymorth",
-      "TELEPHONE": "Rhif ffôn",
-      "WEB_CHAT": "Sgwrsio ar y We",
-      "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
-      "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
+    "STATEMENT_OF_TRUTH": {
+      "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
+      "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
+      "INFORMATION_ON_PAGE": "The information on this page forms your {{ type }}. You can see it on the {{ type }} form after you submit.",
+      "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
+      "STATEMENT_OF_WORK": "statement of truth",
+      "TITLE": "Statement of truth",
+      "WHEN_SATISFIED": "When you’re satisfied that your answers are accurate, you should tick to /“sign/” this statement of truth on the form."
+    },
+    "TYPES_OF_SENIOR_POSITION": {
+      "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
+      "NON_CORPORATION_SENIOR_POSITIONS": {
+        "ANOTHER_OFFICER": "another officer of the corporation",
+        "CHAIR": "the chairperson or president"
+      },
+      "POSITION_COULD_BE": "A senior position could be a:",
+      "SENIOR_POSITIONS": {
+        "CEO": "chief executive",
+        "DIRECTOR": "director",
+        "MANAGER_OR_OTHER": "manager or other officer of the company or corporation",
+        "TREASURER": "treasurer"
+      },
+      "TITLE": "Types of senior position"
     }
   },
   "PAGES": {
@@ -117,6 +144,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
       "INCOME_WORKING_TAX_CREDIT": "Credyd Treth Gwaith",
+      "JOB_TITLE": "Job title",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
       "PAYMENT_FREQUENCY": "Amlder taliadau",
       "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Dyledion yr ydych ar ei hôl hi",
@@ -307,19 +335,24 @@
       "PAGE_TITLE": "Why do you disagree?"
     },
     "PARTNER": {
-      "PAGE_TITLE": "Living with a partner"
+      "EXAMPLE": "Er enghraifft, cariad, gŵr, gwraig neu bartner sifil.",
+      "PAGE_TITLE": "Living with a partner",
+      "TITLE": "Ydych chi'n byw gyda phartner?"
     },
     "PARTNER_AGE": {
-      "PAGE_TITLE": "Partner's age"
+      "PAGE_TITLE": "Partner's age",
+      "TITLE": "A yw eich partner yn 18 oed neu’n hŷn?"
     },
     "PARTNER_DISABILITY": {
-      "PAGE_TITLE": "Partner with disability"
+      "PAGE_TITLE": "Partner with disability",
+      "TITLE": "A oes gan eich partner anabledd?"
     },
     "PARTNER_PENSION": {
       "PAGE_TITLE": "Partner with pension"
     },
     "PARTNER_SEVERE_DISABILITY": {
-      "PAGE_TITLE": "Partner with severe disability"
+      "PAGE_TITLE": "Partner with severe disability",
+      "TITLE": "A oes gan eich partner anabledd difrifol?\n"
     },
     "PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option",
