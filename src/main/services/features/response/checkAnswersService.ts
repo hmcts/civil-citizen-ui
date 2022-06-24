@@ -19,6 +19,10 @@ import PaymentOptionType from '../../../common/form/models/admission/paymentOpti
 import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {SignatureType} from '../../../common/models/signatureType';
+import {isCounterpartyIndividual} from '../../../common/utils/taskList/tasks/taskListHelpers';
+import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {isFullAmountReject} from '../../../modules/claimDetailsService';
 
 import {addBankAccounts} from './checkAnswers/addBankAccounts';
 import {addEmploymentDetails} from './checkAnswers/addEmploymentDetails';
@@ -36,7 +40,6 @@ const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSW
 const addressToString = (address: PrimaryAddress | CorrespondenceAddress) => {
   return address.AddressLine1 + '<br>' + address.PostTown + '<br>' + address.PostCode;
 };
-
 
 const getDefendantFullName = (claim: Claim): string => {
   if (claim.respondent1.individualFirstName && claim.respondent1.individualLastName) {
@@ -101,7 +104,6 @@ const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | u
 
 // -- FINANCIAL SECTION
 const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
-
   let yourFinancialSection: SummarySection = null;
 
   yourFinancialSection = summarySection({
@@ -171,11 +173,29 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
   return buildSummarySections(claim, claimId, lang);
 };
 
-export const getStatementOfTruth = (claim: Claim) => {
+export const resetCheckboxFields = (statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): StatementOfTruthForm | QualifiedStatementOfTruth => {
+  statementOfTruth.directionsQuestionnaireSigned = '';
+  statementOfTruth.signed = '';
+  return statementOfTruth;
+};
+
+export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | QualifiedStatementOfTruth => {
   if (claim.defendantStatementOfTruth) {
-    return claim.defendantStatementOfTruth;
+    return resetCheckboxFields(claim.defendantStatementOfTruth);
   }
-  return new StatementOfTruthForm();
+
+  switch (getSignatureType(claim)) {
+    case SignatureType.BASIC:
+      return new StatementOfTruthForm(isFullAmountReject(claim));
+    case SignatureType.QUALIFIED:
+      return new QualifiedStatementOfTruth(isFullAmountReject(claim));
+    default:
+      return new StatementOfTruthForm(isFullAmountReject(claim));
+  }
+};
+
+export const getSignatureType = (claim: Claim): SignatureType => {
+  return isCounterpartyIndividual(claim.respondent1) ?  SignatureType.BASIC : SignatureType.QUALIFIED;
 };
 
 export const saveStatementOfTruth = async (claimId: string, defendantStatementOfTruth: StatementOfTruthForm) => {

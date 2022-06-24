@@ -1,5 +1,8 @@
 import {
+  getSignatureType,
+  getStatementOfTruth,
   getSummarySections,
+  resetCheckboxFields,
   saveStatementOfTruth,
 } from '../../../../../main/services/features/response/checkAnswersService';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
@@ -21,6 +24,9 @@ import {
   createClaimWithIndividualDetails,
   createClaimWithContactPersonDetails,
 } from '../../../../utils/mockClaimForCheckAnswers';
+import {Respondent} from '../../../../../main/common/models/respondent';
+import {QualifiedStatementOfTruth} from '../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
 import {Claim} from '../../../../../main/common/models/claim';
 import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
 import {
@@ -37,7 +43,6 @@ jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
-
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -49,6 +54,12 @@ const CONTACT_NUMBER = '077777777779';
 const ADDRESS = '23 Brook lane<br>Bristol<br>BS13SS';
 const CORRESPONDENCE_ADDRESS = '24 Brook lane<br>Bristol<br>BS13SS';
 const DOB = '12 December 2000';
+const expectedStatementOfTruth = {
+  isFullAmountRejected: false,
+  type: 'basic',
+  directionsQuestionnaireSigned: '',
+  signed: '',
+};
 
 describe('Check Answers service', () => {
   describe('Get Summary Sections', () => {
@@ -75,7 +86,6 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[INDEX_DETAILS_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FULL_NAME');
       expect(summarySections.sections[INDEX_DETAILS_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER');
     });
-
     it('should return your response to claim section', async () => {
       //Given
       const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.BY_SET_DATE);
@@ -85,7 +95,6 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_RESPONSE_TYPE_URL.replace(':id', CLAIM_ID));
       expect(summarySections.sections[INDEX_RESPONSE_CLAIM_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE');
     });
-
     it('should return your response summary section', async () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
@@ -99,7 +108,6 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[INDEX_RESPONSE_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
       expect(summarySections.sections[INDEX_RESPONSE_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
     });
-
     it('should return response summary section with payment option type instalments', async () => {
       //Given
       const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.INSTALMENTS);
@@ -134,19 +142,19 @@ describe('Check Answers service', () => {
 
       //Then
       await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(SignatureType.BASIC, 'true'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, 'true'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
     it('should retrieve data from draft store', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const claim = new Claim();
-        claim.defendantStatementOfTruth = { type: SignatureType.BASIC, signed: 'true' };
+        claim.defendantStatementOfTruth = { isFullAmountRejected: false, type: SignatureType.BASIC, signed: 'true' };
         return claim;
       });
 
       //Then
       await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(SignatureType.BASIC, 'true'))).toBeTruthy();
+        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, 'true'))).toBeTruthy();
     });
     it('should return full name of a person when full name is present', async () => {
       //Given
@@ -183,10 +191,8 @@ describe('Check Answers service', () => {
       it('should return response to claim when financial detail section exists with payment option type instalments', async () => {
         //Given
         const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.INSTALMENTS);
-
         //When
         const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
-
         //Then
         resultExpected(summarySections);
       });
@@ -194,13 +200,80 @@ describe('Check Answers service', () => {
       it('should return response to claim when financial detail section exists with payment option type by set date', async () => {
         //Given
         const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.BY_SET_DATE);
-
         //When
         const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
-
         //Then
         resultExpected(summarySections);
       });
+    });
+  });
+
+  describe('resetCheckboxFields', () => {
+    it('should set directionsQuestionnaireSigned and signed to empty string for statement of truth', () => {
+      const statementOfTruth = new StatementOfTruthForm(false);
+      expect(resetCheckboxFields(statementOfTruth)).toEqual(expectedStatementOfTruth);
+    });
+
+    it('should set directionsQuestionnaireSigned and signed to empty string for qualified statement of truth', () => {
+      const qualifiedStatementOfTruth = new QualifiedStatementOfTruth(false);
+      const expectedQualifiedStatementOfTruth = {
+        ...expectedStatementOfTruth,
+        type: 'qualified',
+      };
+      expect(resetCheckboxFields(qualifiedStatementOfTruth)).toEqual(expectedQualifiedStatementOfTruth);
+    });
+  });
+
+  describe('getStatementOfTruth', () => {
+    let claim: Claim;
+
+    beforeEach(() => {
+      claim = createClaimWithBasicRespondentDetails();
+    });
+
+    it('should return statement of truth if it is set in the draft store', () => {
+      claim.defendantStatementOfTruth = new StatementOfTruthForm(false);
+      expect(getStatementOfTruth(claim)).toEqual(expectedStatementOfTruth);
+    });
+
+    it('should create new statement of truth if signature type is basic', () => {
+      expect(getStatementOfTruth(claim)).toEqual({isFullAmountRejected: false, type: 'basic'});
+    });
+
+    it('should create new qualified statement of truth if signature type is qualified', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      expect(getStatementOfTruth(claim)).toEqual({isFullAmountRejected: false, type: 'qualified'});
+    });
+  });
+
+  describe('getSignatureType', () => {
+    let claim: Claim;
+
+    beforeEach(() => {
+      claim = createClaimWithBasicRespondentDetails();
+    });
+
+    it('should return basic signature type if respondent is individual', () => {
+      expect(getSignatureType(claim)).toEqual(SignatureType.BASIC);
+    });
+
+    it('should return basic signature type if respondent is sole trader', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
+      expect(getSignatureType(claim)).toEqual(SignatureType.BASIC);
+    });
+
+    it('should return basic signature type if respondent is company', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.COMPANY;
+      expect(getSignatureType(claim)).toEqual(SignatureType.QUALIFIED);
+    });
+
+    it('should return basic signature type if respondent is organisation', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      expect(getSignatureType(claim)).toEqual(SignatureType.QUALIFIED);
     });
   });
 });
