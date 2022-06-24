@@ -15,6 +15,7 @@ export class PropertiesVolume {
       this.setSecret('secrets.civil.citizen-ui-idam-secret', 'services.idam.clientSecret');
       this.setSecret('secrets.cmc.citizen-draft-store-primary', 'services.draftStore.legacy.s2s.primarySecret');
       this.setSecret('secrets.cmc.citizen-draft-store-secondary', 'services.draftStore.legacy.s2s.secondarySecret');
+      this.setSecret('secrets.cmc.cmc-s2s-secret', 'services.serviceAuthProvider.cmcS2sSecret');
     }
   }
 

@@ -13,6 +13,10 @@ services:
       host: REDIS_HOST
       port: REDIS_PORT
       tls: REDIS_TLS
+    legacy:
+      url: DRAFT_STORE_API_URL
+  serviceAuthProvider:
+    url: SERVICE_AUTH_PROVIDER_API_URL
 
 port: PORT
 appInsights:
