@@ -29,6 +29,8 @@ import { MonthlyExpenses } from '../pages/monthlyExpenses';
 import { MonthlyIncome } from '../pages/monthlyIncome';
 import { Explanation } from '../pages/explanation';
 import { RepaymentPlan } from '../pages/repaymentPlan';
+import { PartAdmitAlreadyPaid } from '../pages/partAdmitAlreadyPaid';
+import { RejectAllOfClaim } from '../pages/rejectAllOfClaim';
 
 const I: I = actor();
 const taskListPage: TaskListPage = new TaskListPage();
@@ -61,6 +63,8 @@ const monthlyExpenses: MonthlyExpenses = new MonthlyExpenses();
 const monthlyIncome: MonthlyIncome = new MonthlyIncome();
 const explanation: Explanation = new Explanation();
 const repaymentPlan: RepaymentPlan= new RepaymentPlan();
+const partAdmitAlreadyPaid: PartAdmitAlreadyPaid = new PartAdmitAlreadyPaid();
+const rejectAllOfClaim: RejectAllOfClaim = new RejectAllOfClaim();
 
 export class ResponseSteps {
 
@@ -204,5 +208,11 @@ export class ResponseSteps {
   }
   EnterRepaymentPlan(claimRef: string): void {
     repaymentPlan.enterRepaymentPlan(claimRef);
+  }
+  SelectPartAdmitAlreadyPaid(option: string): void {
+    partAdmitAlreadyPaid.selectAlreadyPaid(option);
+  }
+  SelectOptionInRejectAllClaim(reason: string): void {
+    rejectAllOfClaim.selectRejectAllReason(reason);
   }
 }

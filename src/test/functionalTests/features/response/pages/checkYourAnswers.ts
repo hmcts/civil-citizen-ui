@@ -3,21 +3,20 @@ import I = CodeceptJS.I
 const I: I = actor();
 
 const fields = {
-  cyaVerifyHeading: 'h1.govuk-heading-l',
-  cyaVerifyResponse: 'dd.govuk-summary-list__value',
   cyaSigned: 'input[id="signed"]',
 };
 
 const buttons = {
-  saveAndContinue: 'button.govuk-button',
+  submit: 'Submit Response',
 };
 
 export class CheckYourAnswersPage {
   checkAndSubmit(claimRef): void{
     I.amOnPage('/case/'+claimRef+'/response/check-and-send');
-    I.see('Check your answers', fields.cyaVerifyHeading);
-    I.click(fields.cyaSigned);
-    I.click(buttons.saveAndContinue);
+    I.see('Check your answers', 'h1');
+    I.waitForElement(fields.cyaSigned);
+    I.checkOption(fields.cyaSigned);
+    I.click(buttons.submit);
     // I.waitForText('You’ve submitted your response');
   }
 }
