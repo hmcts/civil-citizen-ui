@@ -1,13 +1,13 @@
-import {SummarySection} from '../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../common/models/claim';
-import {summaryRow} from '../../../../common/models/summaryList/summaryList';
+import {SummarySection} from '../../../../../../common/models/summaryList/summarySections';
+import {Claim} from '../../../../../../common/models/claim';
+import {summaryRow} from '../../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../common/utils/languageToggleUtils';
+import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {
   CITIZEN_MONTHLY_EXPENSES_URL,
-} from '../../../../routes/urls';
-import Transaction from '../../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
-import {currencyFormatWithNoTrailingZeros} from '../../../../common/utils/currencyFormat';
+} from '../../../../../../routes/urls';
+import Transaction from '../../../../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
 

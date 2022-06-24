@@ -1,14 +1,14 @@
-import {SummarySection} from '../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../common/models/claim';
-import {summaryRow} from '../../../../common/models/summaryList/summaryList';
+import {SummarySection} from '../../../../../../common/models/summaryList/summarySections';
+import {Claim} from '../../../../../../common/models/claim';
+import {summaryRow} from '../../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../common/utils/languageToggleUtils';
+import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {
   CITIZEN_PRIORITY_DEBTS_URL,
-} from '../../../../routes/urls';
-import {PriorityDebtDetails} from '../../../../common/form/models/statementOfMeans/priorityDebtDetails';
+} from '../../../../../../routes/urls';
+import {PriorityDebtDetails} from '../../../../../../common/form/models/statementOfMeans/priorityDebtDetails';
 
-import {currencyFormatWithNoTrailingZeros} from '../../../../common/utils/currencyFormat';
+import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
 

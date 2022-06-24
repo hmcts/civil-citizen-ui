@@ -1,20 +1,20 @@
-import {SummarySection} from '../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../common/models/claim';
-import {summaryRow} from '../../../../common/models/summaryList/summaryList';
+import {SummarySection} from '../../../../../../common/models/summaryList/summarySections';
+import {Claim} from '../../../../../../common/models/claim';
+import {summaryRow} from '../../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../common/utils/languageToggleUtils';
+import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_WHO_EMPLOYS_YOU_URL,
   CITIZEN_SELF_EMPLOYED_URL,
-} from '../../../../routes/urls';
+} from '../../../../../../routes/urls';
 
-import {currencyFormatWithNoTrailingZeros} from '../../../../common/utils/currencyFormat';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {EmploymentCategory} from '../../../../common/form/models/statementOfMeans/employment/employmentCategory';
-import {UnemploymentCategory} from '../../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
-import {Unemployment} from '../../../../common/form/models/statementOfMeans/unemployment/unemployment';
-import {Employment} from '../../../../common/models/employment';
+import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
+import {YesNo} from '../../../../../../common/form/models/yesNo';
+import {EmploymentCategory} from '../../../../../../common/form/models/statementOfMeans/employment/employmentCategory';
+import {UnemploymentCategory} from '../../../../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {Unemployment} from '../../../../../../common/form/models/statementOfMeans/unemployment/unemployment';
+import {Employment} from '../../../../../../common/models/employment';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
 

@@ -4,7 +4,7 @@ import {
   getStatementOfTruth,
   getSummarySections,
   saveStatementOfTruth,
-} from '../../../services/features/response/checkAnswersService';
+} from '../../../services/features/response/checkAnswers/checkAnswersService';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';

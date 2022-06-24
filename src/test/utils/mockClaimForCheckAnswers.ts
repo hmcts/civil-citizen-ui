@@ -29,6 +29,21 @@ import {UnemploymentDetails} from '../../main/common/form/models/statementOfMean
 import {SelfEmployedAs} from '../../main/common/models/selfEmployedAs';
 import {TaxPayments} from '../../main/common/models/taxPayments';
 
+import {Disability} from '../../main/common/form/models/statementOfMeans/disability';
+import {YesNo} from '../../main/common/form/models/yesNo';
+import {SevereDisability} from '../../main/common/form/models/statementOfMeans/severeDisability';
+import {Residence} from '../../main/common/form/models/statementOfMeans/residence';
+import {ResidenceType} from '../../main/common/form/models/statementOfMeans/residenceType';
+import {Cohabiting} from '../../main/common/form/models/statementOfMeans/partner/cohabiting';
+import {PartnerAge} from '../../main/common/form/models/statementOfMeans/partner/partnerAge';
+import {PartnerDisability} from '../../main/common/form/models/statementOfMeans/partner/partnerDisability';
+import {PartnerSevereDisability} from '../../main/common/form/models/statementOfMeans/partner/partnerSevereDisability';
+import {PartnerPension} from '../../main/common/form/models/statementOfMeans/partner/partnerPension';
+import {Dependants} from '../../main/common/form/models/statementOfMeans/dependants/dependants';
+import {NumberOfChildren} from '../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
+import {OtherDependants} from '../../main/common/form/models/statementOfMeans/otherDependants';
+import {Carer} from '../../main/common/form/models/statementOfMeans/carer';
+
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -404,4 +419,107 @@ export const createClaimWithUnemploymentCategoryOTHER = (): Claim => {
   };
 
   return claim as Claim;
+};
+
+export const createClaimWithDisability = (option:YesNo): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  const disability: Disability = new Disability(option);
+  const severeDisability: SevereDisability = new SevereDisability(option);
+  claim.statementOfMeans = {
+    disability: disability,
+    severeDisability: severeDisability,
+  };
+  return claim;
+};
+
+export const createClaimWithDisabilityAndSevereDisability = (optionDisability:YesNo,optionSevereDisability:YesNo): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  const disability: Disability = new Disability(optionDisability);
+  const severeDisability: SevereDisability = new SevereDisability(optionSevereDisability);
+  claim.statementOfMeans = {
+    disability: disability,
+    severeDisability: severeDisability,
+  };
+  return claim;
+};
+
+export const createClaimWithResidence = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  const residence: Residence = new Residence(new ResidenceType('COUNCIL_OR_HOUSING_ASSN_HOME', 'Council or housing association home'), '');
+  claim.statementOfMeans = {
+    residence: residence,
+  };
+  return claim;
+};
+
+export const createClaimWithResidenceOther = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  const residence: Residence = new Residence(new ResidenceType('OTHER', 'Other'), 'Flat');
+  claim.statementOfMeans = {
+    residence: residence,
+  };
+  return claim;
+};
+
+export const createClaimWithCohabiting = (
+  disabilityOption: YesNo,
+  cohabitingOption: YesNo,
+  partnerAgeOption: YesNo,
+  partnerPensionOption: YesNo,
+  partnerDisabilityOption: YesNo,
+  partnerSevereDisabilityOption: YesNo): Claim => {
+
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  const disability: Disability = new Disability(disabilityOption);
+  const cohabiting: Cohabiting = new Cohabiting(cohabitingOption);
+  const partnerAge: PartnerAge = new PartnerAge(partnerAgeOption);
+  const partnerPension: PartnerPension = new PartnerPension(partnerPensionOption);
+  const partnerDisability: PartnerDisability = new PartnerDisability(partnerDisabilityOption);
+  const partnerSevereDisability: PartnerSevereDisability = new PartnerSevereDisability(partnerSevereDisabilityOption);
+  claim.statementOfMeans = {
+    disability: disability,
+    cohabiting: cohabiting,
+    partnerAge: partnerAge,
+    partnerPension: partnerPension,
+    partnerDisability: partnerDisability,
+    partnerSevereDisability: partnerSevereDisability,
+  };
+  return claim;
+};
+
+export const createClaimWithDependants = (declared: boolean, under11?:number, between11and15?:number, between16and19?:number, numberOfChildrenLivingWithYou?:number): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  const numberOfChildren: NumberOfChildren = new NumberOfChildren(under11,between11and15,between16and19);
+  const dependants: Dependants = new Dependants(declared, numberOfChildren);
+  claim.statementOfMeans = {
+    dependants: dependants,
+    numberOfChildrenLivingWithYou: numberOfChildrenLivingWithYou,
+  };
+  return claim;
+};
+
+export const createClaimWithCarer = (option: YesNo): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  const carer: Carer = new Carer(option);
+  claim.statementOfMeans = {
+    carer: carer,
+  };
+  return claim;
+};
+
+export const createClaimWithOtherDependants = (option: YesNo, numberOfPeople: number, details:string): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  claim.paymentOption = PaymentOptionType.BY_SET_DATE;
+  const otherDependants: OtherDependants = new OtherDependants(option, numberOfPeople, details);
+  claim.statementOfMeans = {
+    otherDependants: otherDependants,
+  };
+  return claim;
 };

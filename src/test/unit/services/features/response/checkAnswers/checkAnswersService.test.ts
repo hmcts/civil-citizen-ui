@@ -4,41 +4,41 @@ import {
   getSummarySections,
   resetCheckboxFields,
   saveStatementOfTruth,
-} from '../../../../../main/services/features/response/checkAnswersService';
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+} from '../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {
   CITIZEN_DETAILS_URL,
   CITIZEN_PAYMENT_OPTION_URL,
   CITIZEN_PHONE_NUMBER_URL,
   CITIZEN_RESPONSE_TYPE_URL,
   DOB_URL,
-} from '../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../../src/test/utils/errorMessageTestConstants';
+} from '../../../../../../main/routes/urls';
+import {TestMessages} from '../../../../../../../src/test/utils/errorMessageTestConstants';
 import PaymentOptionType
-  from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {StatementOfTruthForm} from '../../../../../main/common/form/models/statementOfTruth/statementOfTruthForm';
-import {SignatureType} from '../../../../../main/common/models/signatureType';
+  from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {StatementOfTruthForm} from '../../../../../../main/common/form/models/statementOfTruth/statementOfTruthForm';
+import {SignatureType} from '../../../../../../main/common/models/signatureType';
 import {
   createClaimWithBasicRespondentDetails,
   createClaimWithRespondentDetailsWithPaymentOption,
   createClaimWithIndividualDetails,
   createClaimWithContactPersonDetails,
-} from '../../../../utils/mockClaimForCheckAnswers';
-import {Respondent} from '../../../../../main/common/models/respondent';
-import {QualifiedStatementOfTruth} from '../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
-import {Claim} from '../../../../../main/common/models/claim';
-import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
+} from '../../../../../utils/mockClaimForCheckAnswers';
+import {Respondent} from '../../../../../../main/common/models/respondent';
+import {QualifiedStatementOfTruth} from '../../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
+import {Claim} from '../../../../../../main/common/models/claim';
+import {SummarySections} from '../../../../../../main/common/models/summaryList/summarySections';
 import {
   CLAIM_ID,
   INDEX_DETAILS_SECTION,
   INDEX_RESPONSE_CLAIM_SECTION,
   INDEX_RESPONSE_SECTION,
-} from '../../../../utils/checkAnswersConstants';
+} from '../../../../../utils/checkAnswersConstants';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/i18n');
+jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
