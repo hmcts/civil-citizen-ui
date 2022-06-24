@@ -15,13 +15,13 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t("How much money do you admit you owe?") %}
-      {% set description = "The total amount claimed is £"+form.totalAmount+". This includes the claim fee and any interest." %}
+      {% set title = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE.TITLE') %}
+      {% set description = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE.SUBTITLE', { totalAmount: form.totalAmount }) %}
       {% set amountAsString = ''+form.amount %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}

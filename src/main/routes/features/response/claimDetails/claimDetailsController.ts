@@ -1,6 +1,9 @@
 import * as express from 'express';
 import config from 'config';
-import {CLAIM_DETAILS_URL} from '../../../urls';
+import {
+  CLAIM_DETAILS_URL,
+  CASE_TIMELINE_DOCUMENTS_URL,
+} from '../../../urls';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {Claim} from '../../../../common/models/claim';
 import {AppRequest} from 'models/AppRequest';
@@ -35,8 +38,9 @@ claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: 
     }
     const interestData = getInterestDetails(claim);
     const totalAmount = getTotalAmountWithInterestAndFees(claim);
+    const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id);
     res.render('features/response/claimDetails/claim-details', {
-      claim, totalAmount, interestData,
+      claim, totalAmount, interestData, pdfUrl,
     });
   } catch (error) {
     logger.error(error);

@@ -29,8 +29,10 @@ class PaymentDateService {
     try {
       const case_data = await getCaseDataFromStore(claimId);
       if (responseType === ResponseType.PART_ADMISSION) {
-        if (!case_data.partialAdmission?.paymentIntention?.paymentDate) {
+        if (!case_data.partialAdmission) {
           case_data.partialAdmission = new PartialAdmission();
+        }
+        if (!case_data.partialAdmission?.paymentIntention?.paymentDate) {
           case_data.partialAdmission.paymentIntention = new PaymentIntention();
         }
         case_data.partialAdmission.paymentIntention.paymentDate = paymentDate;
