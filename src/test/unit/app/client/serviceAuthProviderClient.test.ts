@@ -1,13 +1,25 @@
+import axios, {AxiosInstance} from 'axios';
 import config from 'config';
-import {authenticator} from 'otplib';
+import {ServiceAuthProviderClient} from '../../../../main/app/client/serviceAuthProviderClient';
 
+
+jest.mock('axios');
+const mockedAxios = axios as jest.Mocked<typeof axios>;
+const baseUrl: string = config.get('baseUrl');
 
 describe('Service Authorisation Provider Client', () => {
-  describe('TBC', ()=>{
-    it('calculates one-time password', async () => {
-      const s2sSecret = config.get<string>('services.serviceAuthProvider.cmcS2sSecret');
-      const oneTimePassword = authenticator.generate(s2sSecret);
-      console.log(`oneTimePassword: ${oneTimePassword}`);
+  it('return service aurhorisation token', async () => {
+
+    const mockResponse = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4dWlfd2ViYXBwIiwiZXhwIjoxNjU1MTUxNjUzfQ.AAara6z3N4hsvlaZdP_Xi8e9PnQHHBB4HpBBrEkZSk1_9eesnLXn6-r-4VoVBihFoin2DSand4_NqTkahCAF9g';
+
+    const mockPost = jest.fn().mockResolvedValue({data: mockResponse });
+    mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+    const serviceAuthProviderClient = new ServiceAuthProviderClient(baseUrl);
+    const actualToken: string = await serviceAuthProviderClient.getServiceAuthorisationToken();
+    expect(mockedAxios.create).toHaveBeenCalledWith({
+      baseURL: baseUrl,
     });
+    expect(mockPost.mock.calls[0][0]).toEqual('/testing-support/lease');
+    expect(actualToken.length).toEqual(mockResponse.length);
   });
 });

@@ -27,13 +27,13 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-half">
           <label id="account-balance-label"
-                 class="govuk-label--s">{{ t('List each loan or credit card debt') }}</label>
+                 class="govuk-label--s">{{ t('PAGES.DEBTS.LIST') }}</label>
         </div>
         <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
-          <label id="account-balance-label" class="govuk-label--s ">{{ t('Total owed') }}</label>
+          <label id="account-balance-label" class="govuk-label--s ">{{ t('PAGES.DEBTS.TOTAL') }}</label>
         </div>
         <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
-          <label id="account-balance-label" class="govuk-label--s">{{ t('Monthly payments') }}</label>
+          <label id="account-balance-label" class="govuk-label--s">{{ t('PAGES.DEBTS.MONTHLY') }}</label>
         </div>
       </div>
       {% for debtsItem in form.debtsItems %}
@@ -87,7 +87,7 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         {{ govukButton({
-          text: t("Add a debt"),
+          text: t('PAGES.DEBTS.ADD'),
           classes: "govuk-button--secondary append-row"
         }) }}
       </div>
@@ -97,12 +97,12 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t('Do you have loans or credit card debts?') %}
+      {% set title = t('PAGES.DEBTS.TITLE') %}
       {% set errors = form.getErrors() %}
 
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": t('There was a problem'),
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
