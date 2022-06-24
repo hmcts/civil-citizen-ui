@@ -16,7 +16,7 @@
   {% set errors = form.getErrors() %}
   {% if form.hasErrors() %}
     {{ govukErrorSummary({
-      "titleText": t("There was a problem"),
+      "titleText": t("ERRORS.THERE_WAS_A_PROBLEM"),
       "errorList": errors
     }) }}
   {% endif %}
@@ -128,7 +128,7 @@
             }) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

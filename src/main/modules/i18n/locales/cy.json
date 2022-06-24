@@ -19,6 +19,7 @@
     "YEAR": "Blwyddyn",
     "BUTTONS": {
       "CONTINUE": "Parhau",
+      "SAVE_AND_CONTINUE": "Save and continue",
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {

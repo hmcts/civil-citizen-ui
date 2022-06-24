@@ -7,7 +7,6 @@ import {
   getSupportRequired,
   saveSupportRequired,
 } from '../../../services/features/directionsQuestionnaire/supportRequiredService';
-import {boolean} from 'boolean';
 
 const supportRequiredController = express.Router();
 const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required';
@@ -27,11 +26,11 @@ supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res) => {
     const claimId = req.params.id;
     let supportRequired = new SupportRequired();
     if (req.body.declared) {
-      const languageSelected = boolean(req.body.declared.includes('languageSelected'));
-      const signLanguageSelected = boolean(req.body.declared.includes('signLanguageSelected'));
-      const disabledAccessSelected = boolean(req.body.declared.includes('disabledAccessSelected'));
-      const hearingLoopSelected = boolean(req.body.declared.includes('hearingLoopSelected'));
-      const otherSupportSelected = boolean(req.body.declared.includes('otherSupportSelected'));
+      const languageSelected = !!(req.body.declared.includes('languageSelected'));
+      const signLanguageSelected = !!(req.body.declared.includes('signLanguageSelected'));
+      const disabledAccessSelected = !!(req.body.declared.includes('disabledAccessSelected'));
+      const hearingLoopSelected = !!(req.body.declared.includes('hearingLoopSelected'));
+      const otherSupportSelected = !!(req.body.declared.includes('otherSupportSelected'));
       supportRequired = new SupportRequired(languageSelected, req.body.languageInterpreted, signLanguageSelected, req.body.signLanguageInterpreted, hearingLoopSelected, disabledAccessSelected, otherSupportSelected, req.body.otherSupport);
     }
     const form = new GenericForm(supportRequired);

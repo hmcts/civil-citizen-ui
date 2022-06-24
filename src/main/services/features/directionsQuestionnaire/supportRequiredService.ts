@@ -9,7 +9,7 @@ export const getSupportRequired = async (claimId: string): Promise<SupportRequir
   try {
     let supportRequired;
     const case_data = await getCaseDataFromStore(claimId);
-    if (!case_data?.supportRequired) {
+    if (!case_data.supportRequired) {
       supportRequired = new SupportRequired();
     } else {
       supportRequired = case_data.supportRequired;
@@ -24,7 +24,7 @@ export const getSupportRequired = async (claimId: string): Promise<SupportRequir
 export const saveSupportRequired = async (claimId: string, supportRequired: SupportRequired) => {
   try {
     const case_data = await getCaseDataFromStore(claimId);
-    if (!case_data?.supportRequired) {
+    if (!case_data.supportRequired) {
       case_data.supportRequired = new SupportRequired();
     }
     case_data.supportRequired = supportRequired;
