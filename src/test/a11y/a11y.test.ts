@@ -5,11 +5,13 @@ import nock from 'nock';
 import {app} from '../../main/app';
 import {fail} from 'assert';
 import {IGNORED_URLS} from './ignored-urls';
+import {mockCivilClaim} from '../utils/mockDraftStore';
 
 jest.mock('../../main/modules/oidc');
 jest.mock('../../main/modules/draft-store');
 
 const pa11y = require('pa11y');
+app.locals.draftStoreClient = mockCivilClaim;
 const agent = supertest.agent(app);
 const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 
@@ -42,7 +44,7 @@ function ensurePageCallWillSucceed(url: string): Promise<void> {
 }
 
 function runPally(url: string, actions: string[]): Pa11yResult {
-  const PAGE_URL = url.replace(':id', '1645882162449408');
+  const PAGE_URL = url.replace(':id', '1645882162449409');
   return pa11y(PAGE_URL, {
     // Ignore GovUK template elements that are outside the team's control from a11y tests
     hideElements: '#logo, .logo, .copyright, link[rel=mask-icon]',
@@ -91,5 +93,10 @@ describe('Accessibility', () => {
 
   urlsNoSignOut.forEach((url) => {
     testAccessibility(url);
+  });
+
+  afterEach((done) => {
+    console.log('after');
+    done();
   });
 });
