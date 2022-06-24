@@ -1,6 +1,6 @@
 import {
   getSummarySections,
-} from '../../../../../../../main/services/features/response/checkAnswersService';
+} from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_DISABILITY_URL,
   CITIZEN_SEVERELY_DISABLED_URL,
