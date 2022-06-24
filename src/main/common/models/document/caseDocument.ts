@@ -1,15 +1,11 @@
 import {Document} from './document';
 import {DocumentType} from './documentType';
 
-export class CaseDocument {
-  document: Document;
+export interface CaseDocument {
+  createdBy: string;
+  documentLink: Document;
   documentName: string;
   documentType: DocumentType;
   documentSize: number;
   createdDatetime: Date;
-  createdBy: string;
-
-  getDocumentSizeAsKB():string {
-    return (this.documentSize / 1000).toFixed(0);
-  }
 }

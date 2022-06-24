@@ -1,13 +1,13 @@
 import * as express from 'express';
 import config from 'config';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from '../urls';
-import {CivilServiceClient} from  '../../app/client/civilServiceClient';
-import * as documentUtils from '../../common/utils/downloadUtils';
-import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
-import {convertToDocumentType} from '../../common/utils/documentTypeConverter';
+import {CASE_DOCUMENT_DOWNLOAD_URL} from '../../urls';
+import {CivilServiceClient} from  '../../../app/client/civilServiceClient';
+import * as documentUtils from '../../../common/utils/downloadUtils';
+import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {convertToDocumentType} from '../../../common/utils/documentTypeConverter';
 
-import {AppRequest} from '../../common/models/AppRequest';
-import {DocumentType} from 'common/models/document/documentType';
+import {AppRequest} from '../../../common/models/AppRequest';
+import {DocumentType} from '../../../common/models/document/documentType';
 
 const documentDownloadController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');

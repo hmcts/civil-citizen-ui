@@ -191,11 +191,10 @@ export class Claim {
   }
   getDocumentDetails(documentType: DocumentType): CaseDocument {
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
-      const documentDetails = new CaseDocument();
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
         return document.value.documentType === documentType;
       });
-      return Object.assign(documentDetails, filteredDocumentDetailsByType.value);
+      return filteredDocumentDetailsByType.value;
     }
     return undefined;
   }

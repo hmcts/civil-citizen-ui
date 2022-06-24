@@ -107,9 +107,12 @@ describe('Task List View', () => {
       expect(timeLineCells[1].innerHTML).toContain(claim.case_data.timelineOfEvents[0].value.timelineDescription);
     });
 
-    it('should display download the claim text', () => {
+    it('should display download the claim text and link', () => {
       const subHeadings = htmlDocument.getElementsByClassName('govuk-body');
+      const downloadLink = htmlDocument.getElementById('sealed-claim-link') as HTMLAnchorElement;
       expect(subHeadings[4].innerHTML).toContain('Download the claim');
+      expect(downloadLink.innerHTML).toContain('Download claim (PDF)');
+      expect(downloadLink.href).toContain('case/1111/documents/sealed-claim');
     });
 
     it('should contain contact us detail component', () => {

@@ -1,4 +1,4 @@
-import {DocumentType} from 'common/models/document/documentType';
+import {DocumentType} from '../../common/models/document/documentType';
 
 export const convertToDocumentType = (uri: string): DocumentType => {
   switch (uri) {

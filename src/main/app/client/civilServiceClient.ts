@@ -81,10 +81,10 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveDocument(reqBody : CaseDocument, req: AppRequest): Promise<Buffer> {
+  async retrieveDocument(documentDetails : CaseDocument, req: AppRequest): Promise<Buffer> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL, reqBody, config);
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL, documentDetails, config);
       if (!response.data) {
         throw new AssertionError({message: 'Document is not available.'});
       }
