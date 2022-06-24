@@ -412,13 +412,13 @@
     "SUPPORT_REQUIRED": {
       "ARRANGE_AND_PAY": "You may have to arrange and pay for interpreters except for Welsh. The court will tell you.",
       "DISABLE": "Disabled access",
-      "ENTER_SING_LANGUAGE": "Enter the sign language you need",
+      "ENTER_SIGN_LANGUAGE": "Enter the sign language you need",
       "EXTRA_SUPPORT": "The court can’t guarantee extra support, but it will consider other needs relating to physical or mental health impairments",
       "HEARING": "Hearing loop",
       "LANGUAGE": "Language interpreter",
       "OTHER": "Other support",
       "PAGE_TITLE": "Support required",
-      "SING_LANGUAGE": "Sign language interpreter",
+      "SIGN_LANGUAGE": "Sign language interpreter",
       "TITLE": "Select any support you’d require for a court hearing (optional)",
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },

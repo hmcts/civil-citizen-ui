@@ -76,6 +76,18 @@ describe('Support Required service', () => {
           getSupportRequired('claimId')).rejects.toThrow(DRAFT_STORE_GET_ERROR);
       });
 
+      test('should return empty SupportRequired when case_data, but no supportRequired, retrieved', async () => {
+        //Given
+        mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+          return {case_data: {}};
+        });
+        //When
+        const supportRequired = await (getSupportRequired('claimId'));
+        //Then
+        expect(supportRequired).not.toBeNull();
+        expect(supportRequired).toEqual(new SupportRequired());
+      });
+
       test('should throw error when saving data to draft store fails', async () => {
       //When
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
