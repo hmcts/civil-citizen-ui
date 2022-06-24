@@ -54,27 +54,27 @@
     "APPLICATION_INCOMPLETE": "Application incomplete",
     "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
     "PREPARE_YOUR_RESPONSE": {
-      "TITLE": "Prepare your response",
-      "CONFIRM_YOUR_DETAILS": "Confirm your details"
+      "CONFIRM_YOUR_DETAILS": "Confirm your details",
+      "TITLE": "Prepare your response"
     },
     "RESOLVING_THE_CLAIM": {
-      "TITLE": "Resolving the claim",
-      "FREE_TELEPHONE_MEDIATION": "Free telephone mediation"
+      "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
+      "TITLE": "Resolving the claim"
     },
     "RESPOND_TO_CLAIM": {
-      "TITLE": "Respond to claim",
       "CHOOSE_A_RESPONSE": "Choose a response",
       "DECIDE_HOW_YOU_WILL_PAYS": "Decide how you'll pay",
       "HOW_MUCH_HAVE_YOU_PAID": "How much have you paid",
       "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
-      "YOUR_REPAYMENT_PLAN": "Your repayment plan",
       "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
+      "TITLE": "Respond to claim",
       "WHEN_WILL_YOU_PAY": "When will you pay the £{{ amount }}?",
-      "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?"
+      "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
+      "YOUR_REPAYMENT_PLAN": "Your repayment plan"
     },
     "SUBMIT": {
-      "TITLE": "Submit",
-      "CHECK_AND_SUBMIT": "Check and submit your response"
+      "CHECK_AND_SUBMIT": "Check and submit your response",
+      "TITLE": "Submit"
     },
     "YOUR_HEARING_REQUIREMENTS": {
       "TITLE": "Your hearing requirements"
