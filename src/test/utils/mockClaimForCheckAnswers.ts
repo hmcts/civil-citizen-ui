@@ -445,10 +445,10 @@ export const createClaimWithDisabilityAndSevereDisability = (optionDisability:Ye
   return claim;
 };
 
-export const createClaimWithResidence = (): Claim => {
+export const createClaimWithResidence = (value:string, displayValue:string): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const residence: Residence = new Residence(new ResidenceType('COUNCIL_OR_HOUSING_ASSN_HOME', 'Council or housing association home'), '');
+  const residence: Residence = new Residence(new ResidenceType(value, displayValue), '');
   claim.statementOfMeans = {
     residence: residence,
   };
