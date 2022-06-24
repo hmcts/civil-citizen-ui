@@ -335,19 +335,24 @@
       "PAGE_TITLE": "Why do you disagree?"
     },
     "PARTNER": {
-      "PAGE_TITLE": "Living with a partner"
+      "EXAMPLE": "Er enghraifft, cariad, gŵr, gwraig neu bartner sifil.",
+      "PAGE_TITLE": "Living with a partner",
+      "TITLE": "Ydych chi'n byw gyda phartner?"
     },
     "PARTNER_AGE": {
-      "PAGE_TITLE": "Partner's age"
+      "PAGE_TITLE": "Partner's age",
+      "TITLE": "A yw eich partner yn 18 oed neu’n hŷn?"
     },
     "PARTNER_DISABILITY": {
-      "PAGE_TITLE": "Partner with disability"
+      "PAGE_TITLE": "Partner with disability",
+      "TITLE": "A oes gan eich partner anabledd?"
     },
     "PARTNER_PENSION": {
       "PAGE_TITLE": "Partner with pension"
     },
     "PARTNER_SEVERE_DISABILITY": {
-      "PAGE_TITLE": "Partner with severe disability"
+      "PAGE_TITLE": "Partner with severe disability",
+      "TITLE": "A oes gan eich partner anabledd difrifol?\n"
     },
     "PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option",
