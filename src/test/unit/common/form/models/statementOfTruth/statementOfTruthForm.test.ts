@@ -6,11 +6,10 @@ import {
   STATEMENT_OF_TRUTH_REQUIRED_MESSAGE,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
-
 describe('Statement of Truth form validation', () => {
   test('should fail when not signed', () => {
     //Given
-    const form = new GenericForm(new StatementOfTruthForm(undefined, ''));
+    const form = new GenericForm(new StatementOfTruthForm(false, undefined, ''));
     //When
     form.validateSync();
     //Then
@@ -25,7 +24,7 @@ describe('Statement of Truth form validation', () => {
 
   test('should pass when basic signature type and direction questionnaire not signed', () => {
     //Given
-    const form = new GenericForm(new StatementOfTruthForm(SignatureType.BASIC, 'true', false));
+    const form = new GenericForm(new StatementOfTruthForm(false, SignatureType.BASIC, 'true', 'false'));
     //When
     form.validateSync();
     //Then
@@ -34,7 +33,7 @@ describe('Statement of Truth form validation', () => {
 
   test('should pass when direction questionnaire is signed', () => {
     //Given
-    const form = new GenericForm(new StatementOfTruthForm(SignatureType.DIRECTION_QUESTIONNAIRE, 'true', true));
+    const form = new GenericForm(new StatementOfTruthForm(false, SignatureType.QUALIFIED, 'true', 'true'));
     //When
     form.validateSync();
     //Then
@@ -43,7 +42,7 @@ describe('Statement of Truth form validation', () => {
 
   test('should pass when direction questionnaire is not signed', () => {
     //Given
-    const form = new GenericForm(new StatementOfTruthForm(SignatureType.DIRECTION_QUESTIONNAIRE, 'true', false));
+    const form = new GenericForm(new StatementOfTruthForm(true, SignatureType.QUALIFIED, 'true', undefined));
     //When
     form.validateSync();
     //Then
@@ -53,6 +52,5 @@ describe('Statement of Truth form validation', () => {
     expect(form.errorFor('directionsQuestionnaireSigned')).toBe(DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE);
     expect(form.errorFor('signerName')).toBeUndefined();
     expect(form.errorFor('signerRole')).toBeUndefined();
-
   });
 });
