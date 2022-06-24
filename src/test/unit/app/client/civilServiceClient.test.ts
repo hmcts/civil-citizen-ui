@@ -11,9 +11,6 @@ import {
 } from '../../../../main/app/client/civilServiceUrls';
 import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
 import {mockClaim} from '../../../utils/mockClaim';
-// import {CaseDocument} from '../../../../main/common/models/document/caseDocument';
-// import {DocumentType} from '../../../../main/common/models/document/documentType';
-
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
