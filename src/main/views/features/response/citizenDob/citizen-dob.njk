@@ -20,13 +20,13 @@
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": 'There was a problem',
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('Enter your date of birth') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.CITIZEN_DOB.TITLE') }}</h1>
         </div>
       </div>
       <div class="govuk-grid-row">
@@ -51,7 +51,7 @@
                   }
                 },
                 hint: {
-                  text: "For example, 31 3 1980"
+                  text: t('PAGES.CITIZEN_DOB.EXAMPLE')
                 },
                 errorMessage: {
                   html: errorMessage
@@ -60,7 +60,7 @@
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
                     id: "day",
-                    label: "Day",
+                    label: t('COMMON.DAY'),
                     name: "day",
                     value: form.day,
                     max: 31
@@ -68,7 +68,7 @@
                   {
                     classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
                     id: "month",
-                    label: "Month",
+                    label: t('COMMON.MONTH'),
                     name: "month",
                     value: form.month,
                     max: 12
@@ -76,7 +76,7 @@
                   {
                     classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
                     id: "year",
-                    label: "Year",
+                    label: t('COMMON.YEAR'),
                     name: "year",
                     value: form.year,
                     max: 9999

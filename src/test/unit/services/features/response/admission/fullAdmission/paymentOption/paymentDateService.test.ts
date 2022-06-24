@@ -171,6 +171,29 @@ describe('Payment Date service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
     });
+
+    test('should add payment intention to the partial admission object if partial admission is already defined', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return {partialAdmission: {foo: 'blah'}};
+      });
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const dateNow = new Date();
+      await paymentDateService.savePaymentDate('claimId', dateNow, ResponseType.PART_ADMISSION);
+      const expectedParam = {partialAdmission: {foo: 'blah', paymentIntention: {paymentDate: dateNow}}};
+      expect(spySaveDraftClaim).toHaveBeenCalledWith('claimId', expectedParam);
+    });
+
+    test('should initialise partial admission object if partial admission is not defined', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return {};
+      });
+      const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const dateNow = new Date();
+      await paymentDateService.savePaymentDate('claimId', dateNow, ResponseType.PART_ADMISSION);
+      const expectedParam = {partialAdmission: { paymentIntention: {paymentDate: dateNow}}};
+      expect(spySaveDraftClaim).toHaveBeenCalledWith('claimId', expectedParam);
+    });
+
     test('should save paymentDate when case_data, but no paymentDate, in Redis draft store partAdmission', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -213,6 +236,7 @@ describe('Payment Date service', () => {
       expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
     });
   });
+
   describe('Validation', () => {
     test('should raise an error if nothing specified for date', async () => {
       //Given

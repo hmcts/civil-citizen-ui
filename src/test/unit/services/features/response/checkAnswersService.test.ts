@@ -1,5 +1,8 @@
 import {
+  getSignatureType,
+  getStatementOfTruth,
   getSummarySections,
+  resetCheckboxFields,
   saveStatementOfTruth,
 } from '../../../../../main/services/features/response/checkAnswersService';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
@@ -49,6 +52,9 @@ import {
   createClaimWithUnemploymentCategoryRETIRED,
   createClaimWithUnemploymentCategoryOTHER,
 } from '../../../../utils/mockClaimForCheckAnswers';
+import {Respondent} from '../../../../../main/common/models/respondent';
+import {QualifiedStatementOfTruth} from '../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
 import {Claim} from '../../../../../main/common/models/claim';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -71,6 +77,12 @@ const ADDRESS = '23 Brook lane<br>Bristol<br>BS13SS';
 const CORRESPONDENCE_ADDRESS = '24 Brook lane<br>Bristol<br>BS13SS';
 const DOB = '12 December 2000';
 const CLAIM_ID = 'claimId';
+const expectedStatementOfTruth = {
+  isFullAmountRejected: false,
+  type: 'basic',
+  directionsQuestionnaireSigned: '',
+  signed: '',
+};
 
 const PAGES_CHECK_YOUR_ANSWER_BANK_TYPE_OF_ACCOUNT = 'PAGES.CHECK_YOUR_ANSWER.BANK_TYPE_OF_ACCOUNT';
 const PAGES_CHECK_YOUR_ANSWER_BANK_BALANCE = 'PAGES.CHECK_YOUR_ANSWER.BANK_BALANCE';
@@ -179,19 +191,19 @@ describe('Check Answers service', () => {
 
       //Then
       await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(SignatureType.BASIC, 'true'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, 'true'))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
     it('should retrieve data from draft store', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const claim = new Claim();
-        claim.defendantStatementOfTruth = { type: SignatureType.BASIC, signed: 'true' };
+        claim.defendantStatementOfTruth = { isFullAmountRejected: false, type: SignatureType.BASIC, signed: 'true' };
         return claim;
       });
 
       //Then
       await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(SignatureType.BASIC, 'true'))).toBeTruthy();
+        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, 'true'))).toBeTruthy();
     });
     it('should return full name of a person when full name is present', async () => {
       //Given
@@ -232,7 +244,6 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[2].value.html).toBe('£1,000');
       expect(summarySections.sections[1].summaryList.rows[3].key.text).toBe(PAGES_CHECK_YOUR_ANSWER_BANK_JOINT_ACCOUNT);
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe(YesNo.YES.charAt(0).toUpperCase() + YesNo.YES.slice(1));
-
     });
 
     it('should return bank accounts when it exists', async () => {
@@ -328,7 +339,7 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[11].value.html).toBe('£50,000');
     });
 
-    it('should return employemt with "Employed" category selected when it exists', async () => {
+    it('should return employment with "Employed" category selected when it exists', async () => {
       //Given
       const claim = createClaimWithEmployedCategory();
       //When
@@ -338,7 +349,7 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('Employed');
     });
 
-    it('should return employemt with "Self-Employed" category selected and tax payments behind when it exists', async () => {
+    it('should return employment with "Self-Employed" category selected and tax payments behind when it exists', async () => {
       //Given
       const claim = createClaimWithSelfEmployedAndTaxBehind();
       //When
@@ -365,7 +376,7 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[9].value.html).toBe('Tax payment reasons');
     });
 
-    it('should return employemt with "Self-Employed" category selected and no tax payments behind when it exists', async () => {
+    it('should return employment with "Self-Employed" category selected and no tax payments behind when it exists', async () => {
       //Given
       const claim = createClaimWithSelfEmployedNoTaxBehind();
       //When
@@ -387,7 +398,7 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[7].value.html).toBe('No');
     });
 
-    it('should return unemployemt details with signle year/month when it exists', async () => {
+    it('should return unemployment details with signle year/month when it exists', async () => {
       //Given
       const claim = createClaimWithUnemplymentDetailsOne();
       //When
@@ -398,7 +409,7 @@ describe('Check Answers service', () => {
 
     });
 
-    it('should return unemployemt details with multiple years/months when it exists', async () => {
+    it('should return unemployment details with multiple years/months when it exists', async () => {
       //Given
       const claim = createClaimWithUnemplymentDetailsTwo();
       //When
@@ -408,7 +419,7 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('Unemployed for 10 years 10 months');
     });
 
-    it('should return unemployemt details with unemployment category equal to "Retired" when it exists', async () => {
+    it('should return unemployment details with unemployment category equal to "Retired" when it exists', async () => {
       //Given
       const claim = createClaimWithUnemploymentCategoryRETIRED();
       //When
@@ -418,7 +429,7 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[3].value.html).toBe('Retired');
     });
 
-    it('should return unemployemt details with unemployment category equal to "Other" when it exists', async () => {
+    it('should return unemployment details with unemployment category equal to "Other" when it exists', async () => {
       //Given
       const claim = createClaimWithUnemploymentCategoryOTHER();
       //When
@@ -655,6 +666,74 @@ describe('Check Answers service', () => {
       expect(summarySections.sections[1].summaryList.rows[17].key.text).toBe('Income 2');
       expect(summarySections.sections[1].summaryList.rows[17].value.html).toBe('£2,000');
     });
+  });
 
+  describe('resetCheckboxFields', () => {
+    it('should set directionsQuestionnaireSigned and signed to empty string for statement of truth', () => {
+      const statementOfTruth = new StatementOfTruthForm(false);
+      expect(resetCheckboxFields(statementOfTruth)).toEqual(expectedStatementOfTruth);
+    });
+
+    it('should set directionsQuestionnaireSigned and signed to empty string for qualified statement of truth', () => {
+      const qualifiedStatementOfTruth = new QualifiedStatementOfTruth(false);
+      const expectedQualifiedStatementOfTruth = {
+        ...expectedStatementOfTruth,
+        type: 'qualified',
+      };
+      expect(resetCheckboxFields(qualifiedStatementOfTruth)).toEqual(expectedQualifiedStatementOfTruth);
+    });
+  });
+
+  describe('getStatementOfTruth', () => {
+    let claim: Claim;
+
+    beforeEach(() => {
+      claim = createClaimWithBasicRespondentDetails();
+    });
+
+    it('should return statement of truth if it is set in the draft store', () => {
+      claim.defendantStatementOfTruth = new StatementOfTruthForm(false);
+      expect(getStatementOfTruth(claim)).toEqual(expectedStatementOfTruth);
+    });
+
+    it('should create new statement of truth if signature type is basic', () => {
+      expect(getStatementOfTruth(claim)).toEqual({isFullAmountRejected: false, type: 'basic'});
+    });
+
+    it('should create new qualified statement of truth if signature type is qualified', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      expect(getStatementOfTruth(claim)).toEqual({isFullAmountRejected: false, type: 'qualified'});
+    });
+  });
+
+  describe('getSignatureType', () => {
+    let claim: Claim;
+
+    beforeEach(() => {
+      claim = createClaimWithBasicRespondentDetails();
+    });
+
+    it('should return basic signature type if respondent is individual', () => {
+      expect(getSignatureType(claim)).toEqual(SignatureType.BASIC);
+    });
+
+    it('should return basic signature type if respondent is sole trader', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
+      expect(getSignatureType(claim)).toEqual(SignatureType.BASIC);
+    });
+
+    it('should return basic signature type if respondent is company', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.COMPANY;
+      expect(getSignatureType(claim)).toEqual(SignatureType.QUALIFIED);
+    });
+
+    it('should return basic signature type if respondent is organisation', () => {
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      expect(getSignatureType(claim)).toEqual(SignatureType.QUALIFIED);
+    });
   });
 });
