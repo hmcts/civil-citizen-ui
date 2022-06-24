@@ -10,6 +10,12 @@ import {ResponseType} from '../../../../../main/common/form/models/responseType'
 import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus';
 import {deepCopy} from '../../../../utils/deepCopy';
 import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
+import {Respondent} from '../../../../../main/common/models/respondent';
+import PaymentOptionType from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
+import {Disability} from '../../../../../main/common/form/models/statementOfMeans/disability';
+import {YesNo} from '../../../../../main/common/form/models/yesNo';
+import {SevereDisability} from '../../../../../main/common/form/models/statementOfMeans/severeDisability';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -118,22 +124,21 @@ describe('Response Task List service', () => {
   });
 
   describe('Respond to claim task list', () => {
-    const caseData = mockClaim.case_data;
+    const caseData = new Claim();
+    caseData.respondent1 = new Respondent();
+    caseData.respondent1.individualFirstName = 'Joe';
+    caseData.respondent1.type = CounterpartyType.INDIVIDUAL;
+    caseData.respondent1.responseType =  ResponseType.FULL_ADMISSION;
     delete caseData.paymentOption;
 
     it('should display choose a response task as incomplete', () => {
-      const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
+      const respondToClaim = buildRespondToClaimSection(new Claim(), mockClaimId, lang);
 
       expect(respondToClaim.tasks[0].description).toEqual('TASK_LIST.RESPOND_TO_CLAIM.CHOOSE_A_RESPONSE');
       expect(respondToClaim.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
     });
 
     it('should display choose a response task as complete', () => {
-      caseData.respondent1 = {
-        individualFirstName: 'Joe',
-        type: CounterpartyType.INDIVIDUAL,
-        responseType: ResponseType.FULL_ADMISSION,
-      };
       const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
 
       expect(respondToClaim.tasks[0].description).toEqual('TASK_LIST.RESPOND_TO_CLAIM.CHOOSE_A_RESPONSE');
@@ -148,7 +153,7 @@ describe('Response Task List service', () => {
     });
 
     it('should display decide how you\'ll pay task as complete', () => {
-      caseData.paymentOption = 'IMMEDIATELY';
+      caseData.paymentOption = PaymentOptionType.IMMEDIATELY;
 
       const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       expect(respondToClaim.tasks[1].description).toEqual('TASK_LIST.RESPOND_TO_CLAIM.DECIDE_HOW_YOU_WILL_PAYS');
@@ -160,7 +165,7 @@ describe('Response Task List service', () => {
     });
 
     it('should display share your financial details task as incomplete if payment option is by set date', () => {
-      caseData.paymentOption = 'BY_SET_DATE';
+      caseData.paymentOption = PaymentOptionType.BY_SET_DATE;
 
       const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       expect(respondToClaim.tasks[2].description).toEqual('TASK_LIST.RESPOND_TO_CLAIM.SHARE_YOUR_FINANCIAL_DETAILS');
@@ -177,14 +182,11 @@ describe('Response Task List service', () => {
 
     it('should display share your financial details task as complete if payment option is by set date', () => {
       caseData.taskSharedFinancialDetails = true;
-      caseData.statementOfMeans = {
-        disability: {
-          option: 'yes',
-        },
-        severeDisability: {
-          option: 'no',
-        },
-      };
+      caseData.statementOfMeans = new StatementOfMeans();
+      caseData.statementOfMeans.disability = new Disability();
+      caseData.statementOfMeans.severeDisability = new SevereDisability();
+      caseData.statementOfMeans.disability.option = YesNo.YES;
+      caseData.statementOfMeans.severeDisability.option = YesNo.NO;
 
       const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       expect(respondToClaim.tasks[2].description).toEqual('TASK_LIST.RESPOND_TO_CLAIM.SHARE_YOUR_FINANCIAL_DETAILS');
@@ -194,7 +196,7 @@ describe('Response Task List service', () => {
     });
 
     it('should display your repayment plan as incomplete if payment option is installments', () => {
-      caseData.paymentOption = 'INSTALMENTS';
+      caseData.paymentOption = PaymentOptionType.INSTALMENTS;
 
       const respondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       expect(respondToClaim.tasks[3].description).toEqual('TASK_LIST.RESPOND_TO_CLAIM.YOUR_REPAYMENT_PLAN');
@@ -202,7 +204,7 @@ describe('Response Task List service', () => {
     });
 
     it('should display your repayment plan as complete if payment option is installments', () => {
-      caseData.paymentOption = 'INSTALMENTS';
+      caseData.paymentOption = PaymentOptionType.INSTALMENTS;
       caseData.repaymentPlan =  {
         paymentAmount: 5,
         repaymentFrequency: 'monthly',
