@@ -18,10 +18,24 @@
     "MONTH": "Month",
     "YEAR": "Year",
     "BUTTONS": {
-      "CONTINUE": "Continue"
+      "CONTINUE": "Continue",
+      "SUBMIT_RESPONSE": "Submit Response"
+    },
+    "CONTACT_US_FOR_HELP": {
+      "CALL_CHARGES": "Find out about call charges (opens in a new window)",
+      "EMAIL": "Email",
+      "OPENING_HOURS": "Monday to Friday, 8.30am to 5pm.",
+      "RESPONSE_DELAY": "We'll get back to you within 10 days",
+      "TITLE": "Contact us for help",
+      "TELEPHONE": "Telephone",
+      "WEB_CHAT": "Web chat",
+      "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
+      "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
     },
     "RESPONSE_TYPE": {
-      "FULL_ADMISSION": "I admit all the claim"
+      "FULL_ADMISSION": "I admit all the claim",
+      "FULL_DEFENCE": "I reject all of the claim",
+      "PART_ADMISSION": "I admit part of the claim"
     },
     "PAYMENT_FREQUENCY": {
       "WEEK": "Each week",
@@ -37,16 +51,29 @@
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
     },
-    "CONTACT_US_FOR_HELP": {
-      "CALL_CHARGES": "Find out about call charges (opens in a new window)",
-      "EMAIL": "Email",
-      "OPENING_HOURS": "Monday to Friday, 8.30am to 5pm.",
-      "RESPONSE_DELAY": "We'll get back to you within 10 days",
-      "TITLE": "Contact us for help",
-      "TELEPHONE": "Telephone",
-      "WEB_CHAT": "Web chat",
-      "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
-      "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
+    "STATEMENT_OF_TRUTH": {
+      "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
+      "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
+      "INFORMATION_ON_PAGE": "The information on this page forms your {{ type }}. You can see it on the {{ type }} form after you submit.",
+      "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
+      "STATEMENT_OF_WORK": "statement of truth",
+      "TITLE": "Statement of truth",
+      "WHEN_SATISFIED": "When you’re satisfied that your answers are accurate, you should tick to \"sign\" this statement of truth on the form."
+    },
+    "TYPES_OF_SENIOR_POSITION": {
+      "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
+      "NON_CORPORATION_SENIOR_POSITIONS": {
+        "ANOTHER_OFFICER": "another officer of the corporation",
+        "CHAIR": "the chairperson or president"
+      },
+      "POSITION_COULD_BE": "A senior position could be a:",
+      "SENIOR_POSITIONS": {
+        "CEO": "chief executive",
+        "DIRECTOR": "director",
+        "MANAGER_OR_OTHER": "manager or other officer of the company or corporation",
+        "TREASURER": "treasurer"
+      },
+      "TITLE": "Types of senior position"
     }
   },
   "PAGES": {
@@ -118,6 +145,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Jobseeker's Allowance (income based)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Jobseeker's Allowance (contribution based)",
       "INCOME_WORKING_TAX_CREDIT": "Working Tax Credit",
+      "JOB_TITLE": "Job title",
       "OWE_MONEY": "Do you owe the money claimed?",
       "PAYMENT_FREQUENCY": "Frequency of payments",
       "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Debts you are behind on",
@@ -131,6 +159,8 @@
       "PRIORITY_DEBT_WATER": "Water",
       "PRIORITY_DEBT_MAINTENANCE": "Maintenance payments",
       "REGULAR_PAYMENTS": "Regular payments of",
+      "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
+      "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_TITLE": "Your response to the claim",
       "SAME_ADDRESS": "Same as address",
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Are you behind on tax payments?",
@@ -148,7 +178,9 @@
       "PAGE_TITLE": "Your details"
     },
     "CITIZEN_DOB": {
-      "PAGE_TITLE": "Your date of birth"
+      "EXAMPLE": "For example, 31 3 1980",
+      "PAGE_TITLE": "Your date of birth",
+      "TITLE": "Enter your date of birth"
     },
     "CITIZEN_PHONE": {
       "EXAMPLE": "Use numbers only, for example, 01632960001.",
@@ -165,6 +197,7 @@
       "HEADER": "Claim details",
       "CLAIM_NUMBER": "Claim number",
       "CLAIM_AMOUNT": "Claim amount",
+      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
       "AMOUNT": "Amount",
@@ -208,7 +241,12 @@
       "PAGE_TITLE": "Claims made against you"
     },
     "DEBTS": {
-      "PAGE_TITLE": "Any debts?"
+      "ADD": "Add a debt",
+      "LIST": "List each loan or credit card debt",
+      "MONTHLY": "Monthly payments",
+      "PAGE_TITLE": "Any debts?",
+      "TITLE": "Do you have loans or credit card debts?",
+      "TOTAL": "Total owed"
     },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Add your timeline of events",
@@ -242,7 +280,12 @@
       "TITLE": "Are you disabled?"
     },
     "EMPLOYMENT_STATUS": {
-      "PAGE_TITLE": "Are you employed?"
+      "BOTH": "You can select both.",
+      "EMPLOYED": "Employed",
+      "PAGE_TITLE": "Are you employed?",
+      "SELF_EMPLOYED": "Self-employed",
+      "STATUS": "What's your employment status?",
+      "TITLE": "Do you have a job?"
     },
     "EVIDENCE": {
       "PAGE_TITLE": "List your evidence"
@@ -300,34 +343,48 @@
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
     },
     "OTHER_DEPENDANTS": {
-      "PAGE_TITLE": "Other dependants?"
+      "DESCRIPTION": "This can include adults and people you don't live with.",
+      "DETAILS": "Give details",
+      "NUMBER": "Number of people",
+      "PAGE_TITLE": "Other dependants?",
+      "TITLE": "Do you support anyone else financially?"
     },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
       "PAGE_TITLE": "Already paid"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE": {
-      "PAGE_TITLE": "How much do you owe?"
+      "PAGE_TITLE": "How much do you owe?",
+      "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
+      "TITLE": "How much money do you admit you owe?"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
       "PAGE_TITLE": "How much have you paid?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
-      "PAGE_TITLE": "Why do you disagree?"
+      "PAGE_TITLE": "Why do you disagree?",
+      "SUBTITLE": "The total amount claimed is £{{ claimAmount }}. This includes the claim fee.",
+      "TITLE": "Why do you disagree with the claim amount?"
     },
     "PARTNER": {
-      "PAGE_TITLE": "Living with a partner"
+      "EXAMPLE": "For example, a boyfriend, girlfriend, husband, wife or civil partner.",
+      "PAGE_TITLE": "Living with a partner",
+      "TITLE": "Do you live with a partner?"
     },
     "PARTNER_AGE": {
-      "PAGE_TITLE": "Partner's age"
+      "PAGE_TITLE": "Partner's age",
+      "TITLE": "Is your partner aged 18 or over?"
     },
     "PARTNER_DISABILITY": {
-      "PAGE_TITLE": "Partner with disability"
+      "PAGE_TITLE": "Partner with disability",
+      "TITLE": "Is your partner disabled?"
     },
     "PARTNER_PENSION": {
-      "PAGE_TITLE": "Partner with pension"
+      "PAGE_TITLE": "Partner with pension",
+      "TITLE": "Does your partner receive a pension?"
     },
     "PARTNER_SEVERE_DISABILITY": {
-      "PAGE_TITLE": "Partner with severe disability"
+      "PAGE_TITLE": "Partner with severe disability",
+      "TITLE": "Is your partner severely disabled?"
     },
     "PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option",
@@ -372,7 +429,10 @@
       "PAGE_TITLE": "Self employment details"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
-      "PAGE_TITLE": "Behind on tax payments?"
+      "AMOUNT": "Amount you owe",
+      "PAGE_TITLE": "Behind on tax payments?",
+      "REASON": "Reason",
+      "TITLE": "Are you behind on tax payments?"
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
