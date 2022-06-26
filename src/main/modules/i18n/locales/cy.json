@@ -178,7 +178,7 @@
       "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     },
     "CLAIM_SUMMARY": {
-      "ABOUT_CLAIM": "About claim",
+      "ABOUT_CLAIM": "Ynghylch yr Hawliad",
       "CLAIM_AMOUNT": "Swm yr hawliad:",
       "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Claim documents",
