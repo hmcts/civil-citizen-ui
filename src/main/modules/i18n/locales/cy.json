@@ -19,6 +19,7 @@
     "YEAR": "Blwyddyn",
     "BUTTONS": {
       "CONTINUE": "Parhau",
+      "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {
@@ -436,15 +437,15 @@
       "PAGE_TITLE": "Under 18"
     },
     "UNEMPLOYMENT": {
-      "PAGE_TITLE": "Unemployed or retired",
-      "TITLE": "A ydych yn ddi-waith neu wedi ymddeol?",
-      "SUBTITLE": "Ers faint ydych chi wedi bod yn ddi-waith?",
       "GIVE_DETAILS": "Rhowch fanylion",
-      "YEARS": "Blwyddyn",
       "MONTHS": "Mis",
-      "UNEMPLOYED": "Di-waith",
+      "OTHER": "Arall",
+      "PAGE_TITLE": "Unemployed or retired",
       "RETIRED": "Wedi ymddeol",
-      "OTHER": "Arall"
+      "SUBTITLE": "Ers faint ydych chi wedi bod yn ddi-waith?",
+      "TITLE": "A ydych yn ddi-waith neu wedi ymddeol?",
+      "UNEMPLOYED": "Di-waith",
+      "YEARS": "Blwyddyn"
     },
     "WHO_EMPLOYS_YOU": {
       "PAGE_TITLE": "Your employer"
