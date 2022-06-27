@@ -12,11 +12,13 @@
   "Save and continue": "Cadw a Pharhau",
   "COMMON": {
     "DAY": "Diwrnod",
-    "NO": "Na",
-    "YES": "Le",
+    "NO": "Nac oes",
+    "YES": "Oes",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Mis",
+    "MONTHS": "Mis",
     "YEAR": "Blwyddyn",
+    "YEARS": "Blwyddyn",
     "BUTTONS": {
       "CONTINUE": "Parhau",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
@@ -441,7 +443,13 @@
       "PAGE_TITLE": "Under 18"
     },
     "UNEMPLOYMENT": {
-      "PAGE_TITLE": "Unemployed or retired"
+      "DESCRIPTION": "Ers faint ydych chi wedi bod yn ddi-waith?",
+      "DETAILS": "Rhowch fanylion",
+      "OTHER": "Arall",
+      "PAGE_TITLE": "Unemployed or retired",
+      "RETIRED": "Wedi ymddeol",
+      "TITLE": "A ydych yn ddi-waith neu wedi ymddeol?",
+      "UNEMPLOYED": "Di-waith"
     },
     "WHO_EMPLOYS_YOU": {
       "PAGE_TITLE": "Your employer"

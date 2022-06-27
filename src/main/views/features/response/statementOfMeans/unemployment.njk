@@ -12,8 +12,8 @@
   {{ setPageTitle('PAGES.UNEMPLOYMENT.PAGE_TITLE') }}
 {% endblock %}
 
-{% set heading = 'Are you unemployed or retired?' %}
-{% set subtitle = 'How long have you been unemployed?' %}
+{% set heading = t('PAGES.UNEMPLOYMENT.TITLE') %}
+{% set subtitle = t('PAGES.UNEMPLOYMENT.DESCRIPTION') %}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -25,7 +25,7 @@
       {% set monthsNestedError = form.nestedErrorFor('unemploymentDetails[months]') %}
       {% if form.hasErrors() %}
         {{ govukErrorSummary({
-          "titleText": 'There was a problem',
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
@@ -41,14 +41,14 @@
                 type: "text",
                 classes:  "govuk-input--width-5 govuk-input--error" if form.hasFieldError('details') else "govuk-input--width-5",
                 label: {
-                  text: t('Give details')
+                  text: t('PAGES.UNEMPLOYMENT.DETAILS')
                 },
                 value: form.model.otherDetails.details,
                 errorMessage: { text: otherDetailsNestedError } if otherDetailsNestedError else ''
               }) }}
             {% endset -%}
             {% set ifUnemployed %}
-              <p class="govuk-body-m">{{ t(subtitle) }}</p>
+              <p class="govuk-body-m">{{ subtitle }}</p>
               {{ govukInput({
                 id: "unemploymentDetails[years]",
                 name: "years",
@@ -56,7 +56,7 @@
                 autocomplete: "number",
                 classes: "govuk-input--width-3",
                 label: {
-                  text: t('Years')
+                  text: t('COMMON.YEARS')
                 },
                 value: '' + form.model.unemploymentDetails.years,
                 errorMessage: { text: yearNestedError } if yearNestedError else ''
@@ -68,7 +68,7 @@
                 autocomplete: "number",
                 classes: "govuk-input--width-3",
                 label: {
-                  text: t('Months')
+                  text: t('COMMON.MONTHS')
                 },
                 value: '' + form.model.unemploymentDetails.months,
                 errorMessage: { text: monthsNestedError } if monthsNestedError else ''
@@ -82,18 +82,18 @@
                 {
                   value: UnemploymentCategory.UNEMPLOYED,
                   checked: true if form.model.option === UnemploymentCategory.UNEMPLOYED,
-                  html:UnemploymentCategory.UNEMPLOYED,
+                  html: t('PAGES.UNEMPLOYMENT.UNEMPLOYED'),
                   conditional:{html: ifUnemployed}
                 },
                 {
                   value: UnemploymentCategory.RETIRED,
                   checked: true if form.model.option  === UnemploymentCategory.RETIRED,
-                  html: UnemploymentCategory.RETIRED
+                  html: t('PAGES.UNEMPLOYMENT.RETIRED')
                 },
                 {
                   value: UnemploymentCategory.OTHER,
                   checked: true if form.model.option  === UnemploymentCategory.OTHER,
-                  html:UnemploymentCategory.OTHER,
+                  html:t('PAGES.UNEMPLOYMENT.OTHER'),
                   conditional:{html: ifOther}
                 }
               ],
