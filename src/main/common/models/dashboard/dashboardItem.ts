@@ -1,16 +1,17 @@
-export interface DashboardItem {
+export class DashboardItem {
+  claimId: number;
   claimNumber: string;
   claimAmount: number;
 }
 
-export interface DashboardClaimantItem extends DashboardItem {
+export class DashboardClaimantItem extends DashboardItem {
   claimantName: string;
   nextSteps: string;// TODO: this is only a placeholder. To be revisited in a separate story
   responseDeadline?: Date;
   actions: string;// TODO: this is only a placeholder. To be revisited in a separate story
 }
 
-export interface DashboardDefendantItem extends DashboardItem {
+export class DashboardDefendantItem extends DashboardItem {
   defendantName: string;
   status: string;// TODO: this is only a placeholder. To be revisited in a separate story
 }
