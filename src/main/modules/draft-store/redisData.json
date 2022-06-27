@@ -13,6 +13,16 @@
         "version": "4",
         "calculatedAmountInPence": "7000"
       },
+      "supportRequired":{
+        "languageSelected":true,
+        "languageInterpreted":"Croatian",
+        "signLanguageSelected":true,
+        "signLanguageInterpreted":"Sign",
+        "hearingLoopSelected":false,
+        "disabledAccessSelected":false,
+        "otherSupportSelected":false,
+        "otherSupport":""
+      },
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "ORGANISATION",
