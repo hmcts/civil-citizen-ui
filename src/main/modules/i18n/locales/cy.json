@@ -211,16 +211,16 @@
       "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     },
     "CLAIM_SUMMARY": {
-      "ABOUT_CLAIM": "About claim",
-      "CLAIM_AMOUNT": "Claim amount:",
-      "CLAIM_DETAILS": "Claim details:",
+      "ABOUT_CLAIM": "Am hawliad",
+      "CLAIM_AMOUNT": "Swm yr hawliad:",
+      "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Claim documents",
-      "CLAIMANT_NAME": "Claimant name:",
-      "CLAIM_NUMBER": "Claim number:",
-      "DOCUMENTS": "Documents",
+      "CLAIMANT_NAME": "Enw’r hawlydd:",
+      "CLAIM_NUMBER": "Rhif yr hawliad:",
+      "DOCUMENTS": "Dogfennau",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
-      "LATEST_UPDATE": "Latest update",
-      "VIEW_CLAIM": "View claim"
+      "LATEST_UPDATE": "Diweddariad diweddaraf",
+      "VIEW_CLAIM": "Gweld yr hawliad"
     },
     "COMPANY_DETAILS": {
       "PAGE_TITLE": "Company details"
