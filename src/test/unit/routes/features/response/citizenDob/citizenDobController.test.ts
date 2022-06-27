@@ -70,7 +70,6 @@ describe('Citizen date of birth', () => {
         .send('day=')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_DATE);
           expect(res.text).toContain(VALID_DAY);
           expect(res.text).toContain(VALID_MONTH);
           expect(res.text).toContain(VALID_YEAR);
