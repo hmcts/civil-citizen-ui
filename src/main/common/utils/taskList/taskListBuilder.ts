@@ -86,7 +86,7 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
         tasks.push(repaymentPlanTask);
       }
 
-      tasks.push(whyDisagreeWithAmountClaimedTask);
+      tasks.splice(2, 0, whyDisagreeWithAmountClaimedTask);
     }
 
   }

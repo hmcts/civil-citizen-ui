@@ -118,8 +118,8 @@ describe('Task List Builder', () => {
         expect(respondToClaimSection.tasks).toHaveLength(4);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(howMuchMoneyAdmitOweUrl);
-        expect(respondToClaimSection.tasks[2].url).toEqual(whenWillYouPayUrl);
-        expect(respondToClaimSection.tasks[3].url).toEqual(whyDisagreeWithAmountClaimedUrl);
+        expect(respondToClaimSection.tasks[2].url).toEqual(whyDisagreeWithAmountClaimedUrl);
+        expect(respondToClaimSection.tasks[3].url).toEqual(whenWillYouPayUrl);
       });
       it('should have chooseAResponseTask, shareFinancialDetailsTask and whyDisagreeWithAmountClaimedTask', () => {
         const claim = new Claim();
@@ -147,8 +147,8 @@ describe('Task List Builder', () => {
         expect(respondToClaimSection.tasks).toHaveLength(4);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(shareFinancialDetailsUrl);
-        expect(respondToClaimSection.tasks[2].url).toEqual(repaymentPlanUrl);
-        expect(respondToClaimSection.tasks[3].url).toEqual(whyDisagreeWithAmountClaimedUrl);
+        expect(respondToClaimSection.tasks[2].url).toEqual(whyDisagreeWithAmountClaimedUrl);
+        expect(respondToClaimSection.tasks[3].url).toEqual(repaymentPlanUrl);
       });
     });
 
