@@ -13,7 +13,6 @@ const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSW
 export const addResidence = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourResidenceTypeHref = CITIZEN_RESIDENCE_URL.replace(':id', claimId);
   const residence = claim.statementOfMeans?.residence;
-  let residenceType = '';
-  residenceType = claim.statementOfMeans?.residence?.type === ResidenceType.OTHER ? residence.housingDetails : residence.type?.displayValue;
+  const residenceType = claim.statementOfMeans?.residence?.type === ResidenceType.OTHER ? residence?.housingDetails : residence?.type?.displayValue;
   financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHERE_DO_YOU_LIVE', { lng: getLng(lang) }), residenceType, yourResidenceTypeHref, changeLabel(lang)));
 };
