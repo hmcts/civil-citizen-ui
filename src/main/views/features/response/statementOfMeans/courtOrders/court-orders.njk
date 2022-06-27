@@ -40,9 +40,9 @@
                   {% endif %}
 
                   {% for row in form.model.rows %}
-                    {{ courtOrder(loop.index0, row, form.errorFor) }}
+                    {{ courtOrder(loop.index0, row, form.errorFor, t) }}
                   {% else %}
-                    {{ courtOrder(0, '', form.errorFor) }}
+                    {{ courtOrder(0, '', form.errorFor, t) }}
                   {% endfor %}
 
                   <div class="moj-button-action">
