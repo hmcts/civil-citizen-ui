@@ -12,9 +12,6 @@
   {{ setPageTitle('PAGES.UNEMPLOYMENT.PAGE_TITLE') }}
 {% endblock %}
 
-{% set heading = 'Are you unemployed or retired?' %}
-{% set subtitle = 'How long have you been unemployed?' %}
-
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -25,13 +22,13 @@
       {% set monthsNestedError = form.nestedErrorFor('unemploymentDetails[months]') %}
       {% if form.hasErrors() %}
         {{ govukErrorSummary({
-          "titleText": 'There was a problem',
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.UNEMPLOYMENT.TITLE') }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {% set ifOther %}
@@ -41,14 +38,14 @@
                 type: "text",
                 classes:  "govuk-input--width-5 govuk-input--error" if form.hasFieldError('details') else "govuk-input--width-5",
                 label: {
-                  text: t('Give details')
+                  text: t('PAGES.UNEMPLOYMENT.GIVE_DETAILS')
                 },
                 value: form.model.otherDetails.details,
                 errorMessage: { text: otherDetailsNestedError } if otherDetailsNestedError else ''
               }) }}
             {% endset -%}
             {% set ifUnemployed %}
-              <p class="govuk-body-m">{{ t(subtitle) }}</p>
+              <p class="govuk-body-m">{{ t('PAGES.UNEMPLOYMENT.SUBTITLE') }}</p>
               {{ govukInput({
                 id: "unemploymentDetails[years]",
                 name: "years",
@@ -56,7 +53,7 @@
                 autocomplete: "number",
                 classes: "govuk-input--width-3",
                 label: {
-                  text: t('Years')
+                  text: t('PAGES.UNEMPLOYMENT.YEARS') 
                 },
                 value: '' + form.model.unemploymentDetails.years,
                 errorMessage: { text: yearNestedError } if yearNestedError else ''
@@ -68,7 +65,7 @@
                 autocomplete: "number",
                 classes: "govuk-input--width-3",
                 label: {
-                  text: t('Months')
+                  text: t('PAGES.UNEMPLOYMENT.MONTHS') 
                 },
                 value: '' + form.model.unemploymentDetails.months,
                 errorMessage: { text: monthsNestedError } if monthsNestedError else ''
@@ -82,18 +79,18 @@
                 {
                   value: UnemploymentCategory.UNEMPLOYED,
                   checked: true if form.model.option === UnemploymentCategory.UNEMPLOYED,
-                  html:UnemploymentCategory.UNEMPLOYED,
+                  text: t('PAGES.UNEMPLOYMENT.UNEMPLOYED'),
                   conditional:{html: ifUnemployed}
                 },
                 {
                   value: UnemploymentCategory.RETIRED,
                   checked: true if form.model.option  === UnemploymentCategory.RETIRED,
-                  html: UnemploymentCategory.RETIRED
+                  text: t('PAGES.UNEMPLOYMENT.RETIRED')
                 },
                 {
                   value: UnemploymentCategory.OTHER,
                   checked: true if form.model.option  === UnemploymentCategory.OTHER,
-                  html:UnemploymentCategory.OTHER,
+                  text: t('PAGES.UNEMPLOYMENT.OTHER'),
                   conditional:{html: ifOther}
                 }
               ],
