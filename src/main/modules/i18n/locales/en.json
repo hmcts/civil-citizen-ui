@@ -229,7 +229,9 @@
       "PAGE_TITLE": "Contact claimant"
     },
     "COURT_ORDERS": {
-      "PAGE_TITLE": "Any court orders?"
+      "ADD_ANOTHER": "Add another court order",
+      "PAGE_TITLE": "Any court orders?",
+      "TITLE": "Are you paying money as a result of any court orders?"
     },
     "DASHBOARD": {
       "PAGE_TITLE": "Claims made against you"
@@ -479,6 +481,7 @@
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
+    "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
@@ -528,7 +531,6 @@
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
-    "VALID_NUMBER_OF_PEOPLE": "Enter a number higher than 0",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",

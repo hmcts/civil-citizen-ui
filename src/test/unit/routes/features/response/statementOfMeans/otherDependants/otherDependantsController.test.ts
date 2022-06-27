@@ -11,7 +11,7 @@ import {
   VALID_YES_NO_OPTION,
   NUMBER_OF_PEOPLE_REQUIRED,
   DETAILS_REQUIRED,
-  VALID_NUMBER_OF_PEOPLE,
+  VALID_STRICTLY_POSITIVE_NUMBER,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../../../test/utils/errorMessageTestConstants';
 import {mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
@@ -224,7 +224,7 @@ describe('Other Dependants', () => {
         .send({ option: 'yes', numberOfPeople: '0', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_NUMBER_OF_PEOPLE);
+          expect(res.text).toContain(VALID_STRICTLY_POSITIVE_NUMBER);
         });
     });
 
@@ -258,7 +258,7 @@ describe('Other Dependants', () => {
         .send({ option: 'yes', numberOfPeople: '0', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_NUMBER_OF_PEOPLE);
+          expect(res.text).toContain(VALID_STRICTLY_POSITIVE_NUMBER);
           expect(res.text).toContain(DETAILS_REQUIRED);
         });
     });

@@ -227,7 +227,9 @@
       "PAGE_TITLE": "Contact claimant"
     },
     "COURT_ORDERS": {
-      "PAGE_TITLE": "Any court orders?"
+      "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
+      "PAGE_TITLE": "Any court orders?",
+      "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
     },
     "DASHBOARD": {
       "PAGE_TITLE": "Smialc edam tsniaga uoy"
@@ -462,7 +464,7 @@
   "ERRORS": {
     "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
     "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
-    "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
+    "AMOUNT_REQUIRED": "Rhowch swm o £1 neu fwy",
     "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
@@ -477,6 +479,7 @@
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
+    "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
@@ -517,7 +520,7 @@
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_JOB_TITLE": "Enter a job title",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
-    "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Enter at least one court order",
+    "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Enter at least one employer",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
     "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
@@ -526,7 +529,6 @@
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
-    "VALID_NUMBER_OF_PEOPLE": "Enter a number higher than 0",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
@@ -534,12 +536,12 @@
     "VALID_POSITIVE_NUMBER": "Don’t enter a negative number",
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
-    "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
+    "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy’n uwch na 0",
     "VALID_TEXT_LENGTH": "You’ve entered too many characters",
     "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
-    "VALID_YES_NO_SELECTION": "Please select yes or no"
+    "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda"
   }
 }
