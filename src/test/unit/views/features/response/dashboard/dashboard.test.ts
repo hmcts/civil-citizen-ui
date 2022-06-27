@@ -21,10 +21,18 @@ export const USER_DETAILS = {
 describe('Dashboard page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
+  const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
+    nock(serviceAuthProviderUrl)
+      .post('/lease')
+      .reply(200, {});
+    nock(draftStoreUrl)
+      .get('/drafts')
+      .reply(200, {});
   });
 
   describe('on GET', () => {
