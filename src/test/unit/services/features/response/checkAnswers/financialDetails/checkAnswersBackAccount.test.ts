@@ -44,7 +44,7 @@ describe('Banck Account Details', () => {
     const claim = createClaimWithOneBankAccount();
 
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
 
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_BANK_TYPE_OF_ACCOUNT);
@@ -61,7 +61,7 @@ describe('Banck Account Details', () => {
     const claim = createClaimWithBankAccounts();
 
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_BANK_AND_SAVINGS_ACCOUNTS);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_BANK_ACCOUNT_URL.replace(':id', constVal.CLAIM_ID));
@@ -101,7 +101,7 @@ describe('Banck Account Details', () => {
     const claim = createClaimWithNoBankAccounts();
 
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
 
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_BANK_AND_SAVINGS_ACCOUNTS);

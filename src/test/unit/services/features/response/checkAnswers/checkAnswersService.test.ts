@@ -160,7 +160,7 @@ describe('Check Answers service', () => {
       //Given
       const claim = createClaimWithIndividualDetails();
       //When
-      const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
       //Then
       expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe(FULL_NAME);
     });
@@ -168,7 +168,7 @@ describe('Check Answers service', () => {
       //Given
       const claim = createClaimWithContactPersonDetails();
       //When
-      const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
       //Then
       expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe(CONTACT_PERSON);
     });
@@ -176,7 +176,7 @@ describe('Check Answers service', () => {
       //Given
       const claim = createClaimWithIndividualDetails();
       //When
-      const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
       //Then
       expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe(CORRESPONDENCE_ADDRESS);
     });
@@ -192,7 +192,7 @@ describe('Check Answers service', () => {
         //Given
         const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.INSTALMENTS);
         //When
-        const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+        const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
         //Then
         resultExpected(summarySections);
       });
@@ -201,7 +201,7 @@ describe('Check Answers service', () => {
         //Given
         const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.BY_SET_DATE);
         //When
-        const summarySections = await getSummarySections(CLAIM_ID, claim, 'eng');
+        const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
         //Then
         resultExpected(summarySections);
       });

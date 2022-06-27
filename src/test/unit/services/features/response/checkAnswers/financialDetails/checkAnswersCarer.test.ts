@@ -23,7 +23,7 @@ describe('Carer Details', () => {
     //Given
     const claim = createClaimWithCarer(YesNo.YES);
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_BANK_AND_SAVINGS_ACCOUNTS);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DISABILITY_ARE_YOU_DISABLED);
@@ -43,7 +43,7 @@ describe('Carer Details', () => {
     //Given
     const claim = createClaimWithCarer(YesNo.NO);
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.html).toBe('No');
   });

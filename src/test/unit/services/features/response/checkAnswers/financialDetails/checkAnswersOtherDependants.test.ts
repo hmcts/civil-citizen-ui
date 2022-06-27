@@ -23,7 +23,7 @@ describe('Other Dependants Details', () => {
     //Given
     const claim = createClaimWithOtherDependants(YesNo.YES, 1, 'Test details');
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_BANK_AND_SAVINGS_ACCOUNTS);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DISABILITY_ARE_YOU_DISABLED);
@@ -52,7 +52,7 @@ describe('Other Dependants Details', () => {
     //Given
     const claim = createClaimWithOtherDependants(YesNo.NO, 0, '');
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].value.html).toBe('No');
   });

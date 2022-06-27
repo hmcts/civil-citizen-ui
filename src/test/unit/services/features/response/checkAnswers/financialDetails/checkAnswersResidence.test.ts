@@ -23,7 +23,7 @@ describe('Residence Details', () => {
     //Given
     const claim = createClaimWithResidence('COUNCIL_OR_HOUSING_ASSN_HOME','Council or housing association home');
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_BANK_AND_SAVINGS_ACCOUNTS);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DISABILITY_ARE_YOU_DISABLED);
@@ -38,7 +38,7 @@ describe('Residence Details', () => {
     //Given
     const claim = createClaimWithResidence('PRIVATE_RENTAL','Private rental');
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_WHERE_DO_YOU_LIVE);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CITIZEN_RESIDENCE_URL.replace(':id', constVal.CLAIM_ID));
@@ -50,7 +50,7 @@ describe('Residence Details', () => {
     //Given
     const claim = createClaimWithResidence('JOINT_OWN_HOME','Jointly-owned home (or jointly mortgaged home)');
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_WHERE_DO_YOU_LIVE);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CITIZEN_RESIDENCE_URL.replace(':id', constVal.CLAIM_ID));
@@ -62,7 +62,7 @@ describe('Residence Details', () => {
     //Given
     const claim = createClaimWithResidence('OWN_HOME','Home you own yourself (or pay a mortgage on)');
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_WHERE_DO_YOU_LIVE);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CITIZEN_RESIDENCE_URL.replace(':id', constVal.CLAIM_ID));
@@ -74,7 +74,7 @@ describe('Residence Details', () => {
     //Given
     const claim = createClaimWithResidenceOther();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_WHERE_DO_YOU_LIVE);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CITIZEN_RESIDENCE_URL.replace(':id', constVal.CLAIM_ID));

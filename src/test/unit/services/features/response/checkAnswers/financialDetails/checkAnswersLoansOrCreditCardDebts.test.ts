@@ -24,7 +24,7 @@ describe('Loans or Credit Card Debts Details', () => {
     //Given
     const claim = createClaimWithDebts();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_BANK_AND_SAVINGS_ACCOUNTS);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DISABILITY_ARE_YOU_DISABLED);
@@ -57,7 +57,7 @@ describe('Loans or Credit Card Debts Details', () => {
     const claim = createClaimWithMultipleDebt();
 
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
 
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[13].key.text).toBe('1. ' + constVal.PAGES_CHECK_YOUR_ANSWER_DEBT);
