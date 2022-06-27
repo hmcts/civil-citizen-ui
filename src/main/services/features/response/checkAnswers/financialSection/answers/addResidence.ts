@@ -14,8 +14,6 @@ export const addResidence = (claim: Claim, financialSection: SummarySection, cla
   const yourResidenceTypeHref = CITIZEN_RESIDENCE_URL.replace(':id', claimId);
   const residence = claim.statementOfMeans?.residence;
   let residenceType: string;
-  if (residence) {
-    residenceType = claim.statementOfMeans?.residence?.type === ResidenceType.OTHER ? residence.housingDetails : residence.type?.displayValue;
-  }
+  residenceType = claim.statementOfMeans?.residence?.type === ResidenceType.OTHER ? residence.housingDetails : residence.type?.displayValue;
   financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHERE_DO_YOU_LIVE', { lng: getLng(lang) }), residenceType, yourResidenceTypeHref, changeLabel(lang)));
 };
