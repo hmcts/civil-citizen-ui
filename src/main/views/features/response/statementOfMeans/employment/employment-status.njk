@@ -14,13 +14,13 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t("Do you have a job?") %}
+      {% set title = t('PAGES.EMPLOYMENT_STATUS.TITLE') %}
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
@@ -30,21 +30,21 @@
           name: "employmentCategory",
           fieldset: {
             legend: {
-              text: t("What's your employment status?")
+              text: t('PAGES.EMPLOYMENT_STATUS.STATUS')
             }
           },
           hint: {
-            text: t("You can select both.")
+            text: t('PAGES.EMPLOYMENT_STATUS.BOTH')
           },
           items: [
             {
               value: EmploymentCategory.EMPLOYED,
-              text: t("Employed"),
+              text: t('PAGES.EMPLOYMENT_STATUS.EMPLOYED'),
               checked: true if form.hasEmploymentCategory(EmploymentCategory.EMPLOYED)
             },
             {
               value: EmploymentCategory.SELF_EMPLOYED,
-              text: t("Self-employed"),
+              text: t('PAGES.EMPLOYMENT_STATUS.SELF_EMPLOYED'),
               checked: true if form.hasEmploymentCategory(EmploymentCategory.SELF_EMPLOYED)
             }
           ],

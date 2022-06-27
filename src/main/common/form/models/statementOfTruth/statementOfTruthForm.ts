@@ -1,4 +1,4 @@
-import {Equals, IsDefined, IsNotEmpty, ValidateIf} from 'class-validator';
+import {IsDefined, IsNotEmpty, ValidateIf} from 'class-validator';
 import {
   DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE,
   STATEMENT_OF_TRUTH_REQUIRED_MESSAGE,
@@ -7,25 +7,21 @@ import {SignatureType} from '../../../models/signatureType';
 
 export class StatementOfTruthForm {
   type: SignatureType;
+  isFullAmountRejected: boolean;
 
   @IsDefined({message: STATEMENT_OF_TRUTH_REQUIRED_MESSAGE})
   @IsNotEmpty({message: STATEMENT_OF_TRUTH_REQUIRED_MESSAGE})
     signed?: string;
 
-  @ValidateIf(o => o.type === SignatureType.DIRECTION_QUESTIONNAIRE)
+  @ValidateIf(o => o.isFullAmountRejected === true)
   @IsDefined({message: DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE})
-  @Equals(true, {message: DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE})
-    directionsQuestionnaireSigned?: boolean;
+  @IsNotEmpty({message: DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE})
+    directionsQuestionnaireSigned?: string;
 
-  constructor(type?: SignatureType, signed?: string, directionsQuestionnaireSigned?: boolean) {
-    if (type) {
-      this.type = type;
-    } else {
-      this.type = SignatureType.BASIC;
-    }
+  constructor(isFullAmountRejected: boolean, type?: SignatureType, signed?: string, directionsQuestionnaireSigned?: string) {
+    this.isFullAmountRejected = isFullAmountRejected;
+    this.type = (type) ? type : SignatureType.BASIC;
     this.signed = signed;
-    if (directionsQuestionnaireSigned) {
-      this.directionsQuestionnaireSigned = directionsQuestionnaireSigned;
-    }
+    this.directionsQuestionnaireSigned = directionsQuestionnaireSigned;
   }
 }

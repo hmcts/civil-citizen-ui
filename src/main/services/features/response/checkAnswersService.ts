@@ -15,6 +15,9 @@ import {
   CITIZEN_MONTHLY_EXPENSES_URL,
   CITIZEN_MONTHLY_INCOME_URL,
   CITIZEN_COURT_ORDERS_URL,
+  CITIZEN_EMPLOYMENT_URL,
+  CITIZEN_SELF_EMPLOYED_URL,
+  CITIZEN_WHO_EMPLOYS_YOU_URL,
 } from '../../../routes/urls';
 import {t} from 'i18next';
 import {getLng} from '../../../common/utils/languageToggleUtils';
@@ -31,8 +34,15 @@ import {currencyFormatWithNoTrailingZeros} from '../../../common/utils/currencyF
 import {PriorityDebtDetails} from '../../../common/form/models/statementOfMeans/priorityDebtDetails';
 import {YesNo} from '../../../common/form/models/yesNo';
 import {BankAccountTypeValues} from '../../../common/form/models/bankAndSavings/bankAccountTypeValues';
-
+import {SignatureType} from '../../../common/models/signatureType';
+import {isCounterpartyIndividual} from '../../../common/utils/taskList/tasks/taskListHelpers';
 import Transaction from '../../../common/form/models/statementOfMeans/expensesAndIncome/transaction';
+import {EmploymentCategory} from '../../../common/form/models/statementOfMeans/employment/employmentCategory';
+import {UnemploymentCategory} from '../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {Unemployment} from '../../../common/form/models/statementOfMeans/unemployment/unemployment';
+import {Employment} from 'common/models/employment';
+import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {isFullAmountReject} from '../../../modules/claimDetailsService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -44,7 +54,6 @@ const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSW
 const addressToString = (address: PrimaryAddress | CorrespondenceAddress) => {
   return address.AddressLine1 + '<br>' + address.PostTown + '<br>' + address.PostCode;
 };
-
 
 const getDefendantFullName = (claim: Claim): string => {
   if (claim.respondent1.individualFirstName && claim.respondent1.individualLastName) {
@@ -72,7 +81,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
-      buildYourFinancialSection(claim, claimId, lang),
+      claim.paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourFinancialSection(claim, claimId, lang) : null,
       buildResponseSection(claim, claimId, lang),
     ],
   };
@@ -104,7 +113,6 @@ const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string | u
   yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng: getLng(lang)}), claim.respondent1.telephoneNumber, phoneNumberHref, changeLabel(lang)));
   return yourDetailsSection;
 };
-
 
 const addBankAccounts = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
   const yourBankAccountHref = CITIZEN_BANK_ACCOUNT_URL.replace(':id', claimId);
@@ -185,7 +193,6 @@ const addLoansOrCreditCardDebts = (claim: Claim, financialSection: SummarySectio
   }
 };
 
-
 const addListRow = (section:SummarySection, sectionHref:string, transaction:Transaction, expense: string, amount:string, lang: string | unknown) => {
   if (transaction?.declared && transaction?.transactionSource?.amount) {
     section.summaryList.rows.push(summaryRow(t(expense, { lng: getLng(lang) }), amount, sectionHref, changeLabel(lang)));
@@ -193,32 +200,32 @@ const addListRow = (section:SummarySection, sectionHref:string, transaction:Tran
 };
 
 const addMonthlyExpenses = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
-  const yourMonthlyExpensessHref = CITIZEN_MONTHLY_EXPENSES_URL.replace(':id', claimId);
+  const yourMonthlyExpensesHref = CITIZEN_MONTHLY_EXPENSES_URL.replace(':id', claimId);
 
   if (claim.statementOfMeans?.regularExpenses) {
     financialSection.summaryList.rows.push(
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EXPENSES_REGULAR', { lng: getLng(lang) }), '', yourMonthlyExpensessHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EXPENSES_REGULAR', { lng: getLng(lang) }), '', yourMonthlyExpensesHref, changeLabel(lang)),
     );
   }
 
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.mortgage, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MORTGAGE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mortgage?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.rent, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_RENT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.rent?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.councilTax, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_COUNCIL_TAX', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.councilTax?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.gas, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_GAS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.gas?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.electricity, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_ELECTRICITY', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.electricity?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.water, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_WATER', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.water?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.travel, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TRAVEL', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.travel?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.schoolCosts, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_SCHOOL_COSTS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.schoolCosts?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_FOOD_AND_HOUSEKEEPING', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.tvAndBroadband, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TV_BROADBAND', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.tvAndBroadband?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.hirePurchase, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_HIRE_PURCHASE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.hirePurchase?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.mobilePhone, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MOBILE_PHONE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mobilePhone?.transactionSource?.amount), lang);
-  addListRow(financialSection, yourMonthlyExpensessHref, claim.statementOfMeans?.regularExpenses?.maintenance, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MAINTENANCE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.maintenance?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.mortgage, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MORTGAGE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mortgage?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.rent, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_RENT', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.rent?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.councilTax, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_COUNCIL_TAX', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.councilTax?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.gas, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_GAS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.gas?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.electricity, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_ELECTRICITY', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.electricity?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.water, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_WATER', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.water?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.travel, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TRAVEL', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.travel?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.schoolCosts, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_SCHOOL_COSTS', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.schoolCosts?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_FOOD_AND_HOUSEKEEPING', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.foodAndHousekeeping?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.tvAndBroadband, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_TV_BROADBAND', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.tvAndBroadband?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.hirePurchase, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_HIRE_PURCHASE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.hirePurchase?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.mobilePhone, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MOBILE_PHONE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.mobilePhone?.transactionSource?.amount), lang);
+  addListRow(financialSection, yourMonthlyExpensesHref, claim.statementOfMeans?.regularExpenses?.maintenance, 'PAGES.CHECK_YOUR_ANSWER.EXPENSE_MAINTENANCE', currencyFormatWithNoTrailingZeros(claim.statementOfMeans?.regularExpenses?.maintenance?.transactionSource?.amount), lang);
 
   if (claim.statementOfMeans?.regularExpenses?.other?.declared) {
     const otherExpenses = claim.statementOfMeans?.regularExpenses.other.transactionSources;
     for (const item of otherExpenses) {
-      financialSection.summaryList.rows.push(summaryRow(item.name, currencyFormatWithNoTrailingZeros(item.amount), yourMonthlyExpensessHref, changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRow(item.name, currencyFormatWithNoTrailingZeros(item.amount), yourMonthlyExpensesHref, changeLabel(lang)));
     }
   }
 };
@@ -272,10 +279,91 @@ const addCourtOrders = (claim: Claim, financialSection: SummarySection, claimId:
   }
 };
 
+const showSelfEmploymentTaxPayments = (claim: Claim, financialSection: SummarySection, lang: string | unknown) => {
+  const taxPayments = claim.statementOfMeans?.taxPayments;
+  const isBehindTaxPayments = taxPayments?.owed ? YesNo.YES : YesNo.NO;
+
+  if (taxPayments?.owed) {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_ARE_YOU_BEHIND', { lng: getLng(lang) }), isBehindTaxPayments.charAt(0).toUpperCase() + isBehindTaxPayments.slice(1), '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_AMOUNT_YOU_OWE', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(taxPayments.amountOwed), '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_REASON', { lng: getLng(lang) }), taxPayments.reason, '', changeLabel(lang)));
+  } else {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_ARE_YOU_BEHIND', { lng: getLng(lang) }), isBehindTaxPayments.charAt(0).toUpperCase() + isBehindTaxPayments.slice(1), '', changeLabel(lang)));
+  }
+};
+
+const showEmploymentDetails = (claim: Claim, financialSection: SummarySection, employment: Employment, whoEmploysYouHref: string, selfemploymentHref: string, lang: string | unknown) => {
+  const isSelfEmployedAs = claim.statementOfMeans?.selfEmployedAs;
+  const getTypeOfJob = (type: string) => type === EmploymentCategory.EMPLOYED ? 'Employed' : 'Self-employed';
+  const typeOfJob: Array<string> = [];
+  for (const item of employment.employmentType) {
+    typeOfJob.push(getTypeOfJob(item));
+  }
+  const typeOfJobs = typeOfJob[0] + (typeOfJob.length > 1 ? (' and ' + typeOfJob[1]) : '');
+
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), typeOfJobs, '', changeLabel(lang)));
+
+  if (claim.statementOfMeans?.employers?.rows
+    && ((employment.employmentType[0] === EmploymentCategory.EMPLOYED && employment.employmentType[1] === EmploymentCategory.SELF_EMPLOYED) || employment.employmentType[0] === EmploymentCategory.EMPLOYED)) {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_WHO_EMPLOYS_YOU', { lng: getLng(lang) }), '', whoEmploysYouHref, changeLabel(lang)));
+    for (const item of claim.statementOfMeans.employers.rows) {
+      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_NAME', { lng: getLng(lang) }), item.employerName, '', changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_JOB_TITLE', { lng: getLng(lang) }), item.jobTitle, '', changeLabel(lang)));
+    }
+  }
+
+  if (isSelfEmployedAs) {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_SELF_DETAILS', { lng: getLng(lang) }), '', selfemploymentHref, changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_JOB_TITLE', { lng: getLng(lang) }), isSelfEmployedAs.jobTitle, '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_SELF_ANNUAL_TURNOVER', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(isSelfEmployedAs.annualTurnover), '', changeLabel(lang)));
+    showSelfEmploymentTaxPayments(claim, financialSection, lang);
+  }
+};
+
+const showUnemploymentDetails = (financialSection: SummarySection, unemployment: Unemployment, lang: string | unknown) => {
+  let unemploymentLengthOrOther: string;
+  const years = unemployment?.unemploymentDetails?.years;
+  const months = unemployment?.unemploymentDetails?.months;
+  const getUnemploymentLength = (val: number, length: string) => val > 1 ? val + ' ' + length + 's' : val + ' ' + length;
+
+  switch (unemployment?.option) {
+    case UnemploymentCategory.UNEMPLOYED:
+      unemploymentLengthOrOther = UnemploymentCategory.UNEMPLOYED + ' for ' + getUnemploymentLength(years, 'year') + ' ' + getUnemploymentLength(months, 'month');
+      break;
+    case UnemploymentCategory.OTHER:
+      unemploymentLengthOrOther = unemployment?.otherDetails?.details;
+      break;
+    case UnemploymentCategory.RETIRED:
+      unemploymentLengthOrOther = unemployment?.option;
+      break;
+    default:
+  }
+
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), unemploymentLengthOrOther, '', changeLabel(lang)));
+};
+
+const addEmploymentDetails = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+  const yourEmploymentHref = CITIZEN_EMPLOYMENT_URL.replace(':id', claimId);
+  const whoEmploysYouHref = CITIZEN_WHO_EMPLOYS_YOU_URL.replace(':id', claimId);
+  const yourSelfEmploymentHref = CITIZEN_SELF_EMPLOYED_URL.replace(':id', claimId);
+  const employment = claim.statementOfMeans?.employment;
+  const hasAjob = employment?.declared ? YesNo.YES : YesNo.NO;
+  const unemployment = claim.statementOfMeans?.unemployment;
+
+  financialSection.summaryList.rows.push(
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_DETAILS', { lng: getLng(lang) }), '', yourEmploymentHref, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_DO_YOU_HAVE_A_JOB', { lng: getLng(lang) }), hasAjob.charAt(0).toUpperCase() + hasAjob.slice(1), yourEmploymentHref, changeLabel(lang)),
+  );
+
+  if (employment?.declared && employment) {
+    showEmploymentDetails(claim,financialSection,employment,whoEmploysYouHref,yourSelfEmploymentHref,lang);
+  } else {
+    showUnemploymentDetails(financialSection,unemployment,lang);
+  }
+};
 
 // -- FINANCIAL SECTION
 const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
-
   let yourFinancialSection: SummarySection = null;
 
   yourFinancialSection = summarySection({
@@ -285,6 +373,8 @@ const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string |
 
   // -- Bank Accounts
   addBankAccounts(claim, yourFinancialSection, claimId, lang);
+  // -- Employment Details
+  addEmploymentDetails(claim, yourFinancialSection, claimId, lang);
   // -- Court Orders
   addCourtOrders(claim, yourFinancialSection, claimId, lang);
   // -- Priority Debts
@@ -298,8 +388,6 @@ const buildYourFinancialSection = (claim: Claim, claimId: string, lang: string |
 
   return yourFinancialSection;
 }; // -- End
-
-
 
 const buildResponseSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const yourResponseHref = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
@@ -336,11 +424,29 @@ export const getSummarySections = (claimId: string, claim: Claim, lang?: string 
   return buildSummarySections(claim, claimId, lang);
 };
 
-export const getStatementOfTruth = (claim: Claim) => {
+export const resetCheckboxFields = (statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): StatementOfTruthForm | QualifiedStatementOfTruth => {
+  statementOfTruth.directionsQuestionnaireSigned = '';
+  statementOfTruth.signed = '';
+  return statementOfTruth;
+};
+
+export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | QualifiedStatementOfTruth => {
   if (claim.defendantStatementOfTruth) {
-    return claim.defendantStatementOfTruth;
+    return resetCheckboxFields(claim.defendantStatementOfTruth);
   }
-  return new StatementOfTruthForm();
+
+  switch (getSignatureType(claim)) {
+    case SignatureType.BASIC:
+      return new StatementOfTruthForm(isFullAmountReject(claim));
+    case SignatureType.QUALIFIED:
+      return new QualifiedStatementOfTruth(isFullAmountReject(claim));
+    default:
+      return new StatementOfTruthForm(isFullAmountReject(claim));
+  }
+};
+
+export const getSignatureType = (claim: Claim): SignatureType => {
+  return isCounterpartyIndividual(claim.respondent1) ?  SignatureType.BASIC : SignatureType.QUALIFIED;
 };
 
 export const saveStatementOfTruth = async (claimId: string, defendantStatementOfTruth: StatementOfTruthForm) => {
