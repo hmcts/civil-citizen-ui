@@ -9,6 +9,7 @@ import {
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
+import {DashboardDefendantItem} from '../../common/models/dashboard/dashboardItem';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -31,11 +32,16 @@ export class CivilServiceClient {
     };
   }
 
-  async getClaimsForDefendant(req: AppRequest) {
+
+
+  async getClaimsForDefendant(req: AppRequest): Promise <DashboardDefendantItem[]>{
     const config = this.getConfig(req);
+    const submitterId = req.session?.user?.id;
     try{
-      const result = await this.client.post('/cases/defendant/',{'submitterId': '546d8752-abbf-0acfd08d713b'}, config);
+      const response = await this.client.get('/cases/defendant/' + submitterId, config);
+      const result = plainToInstance(DashboardDefendantItem, response.data as object[]);
       console.log(result);
+      return result;
     }catch(err){
       console.log(err);
     }
