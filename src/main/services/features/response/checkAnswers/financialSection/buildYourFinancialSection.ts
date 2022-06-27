@@ -27,31 +27,18 @@ export const buildYourFinancialSection = (claim: Claim, claimId: string, lang: s
     summaryRows: [],
   });
 
-  // -- Bank Accounts
   addBankAccounts(claim, yourFinancialSection, claimId, lang);
-  // -- Disability
   addDisability(claim, yourFinancialSection, claimId, lang);
-  // -- Residence
   addResidence(claim, yourFinancialSection, claimId, lang);
-  // -- Partner
   addPartner(claim, yourFinancialSection, claimId, lang);
-  // -- Dependants
   addDependants(claim, yourFinancialSection, claimId, lang);
-  // -- Other Dependants
   addOtherDependants(claim, yourFinancialSection, claimId, lang);
-  // -- Carer’s Allowance or Carer’s Credit
   addCarer(claim, yourFinancialSection, claimId, lang);
-  // -- Employment Details
   addEmploymentDetails(claim, yourFinancialSection, claimId, lang);
-  // -- Court Orders
   addCourtOrders(claim, yourFinancialSection, claimId, lang);
-  // -- Priority Debts
   addPriorityDebts(claim, yourFinancialSection, claimId, lang);
-  // -- Loans or Credit Card Debts
   addLoansOrCreditCardDebts(claim, yourFinancialSection, claimId, lang);
-  // -- Regular Expenses
   addMonthlyExpenses(claim, yourFinancialSection, claimId, lang);
-  // -- Regular Income
   addMonthlyIncome(claim, yourFinancialSection, claimId, lang);
 
   return yourFinancialSection;
