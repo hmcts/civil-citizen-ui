@@ -23,6 +23,6 @@ export const addDependants = (claim: Claim, financialSection: SummarySection, cl
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_11', { lng: getLng(lang) }), numberOfChildren.under11.toString(), '', changeLabel(lang)));
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_11_TO_15', { lng: getLng(lang) }), numberOfChildren.between11and15.toString(), '', changeLabel(lang)));
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_16_TO_19', { lng: getLng(lang) }), numberOfChildren.between11and15.toString(), '', changeLabel(lang)));
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_AGED_16_19_FT_EDUCATION', { lng: getLng(lang) }), numberOfChildrenLivingWithYou.toString(), '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_AGED_16_19_FT_EDUCATION', { lng: getLng(lang) }), numberOfChildrenLivingWithYou.toString(), yourDependantsHref, changeLabel(lang)));
   }
 };

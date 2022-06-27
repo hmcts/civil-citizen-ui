@@ -14,9 +14,9 @@ export const addOtherDependants = (claim: Claim, financialSection: SummarySectio
   const yourOtherDependantsHref = CITIZEN_OTHER_DEPENDANTS_URL.replace(':id', claimId);
   const otherDependantsOption = claim.statementOfMeans?.otherDependants?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
   const otherDependants = claim.statementOfMeans?.otherDependants;
-  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_ANYONE_ELSE_FINANCIALLY', { lng: getLng(lang) }), otherDependantsOption.charAt(0).toUpperCase() + otherDependantsOption.slice(1), yourOtherDependantsHref, changeLabel(lang)));
 
   if (otherDependantsOption === YesNo.YES) {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_ANYONE_ELSE_FINANCIALLY', { lng: getLng(lang) }), '', yourOtherDependantsHref, changeLabel(lang)));
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_NUMBER_OF_PEOPLE', { lng: getLng(lang) }), otherDependants.numberOfPeople.toString(), yourOtherDependantsHref, changeLabel(lang)));
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_GIVE_DETAILS', { lng: getLng(lang) }), otherDependants.details, yourOtherDependantsHref, changeLabel(lang)));
   }
