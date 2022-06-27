@@ -19,6 +19,7 @@
     "YEAR": "Blwyddyn",
     "BUTTONS": {
       "CONTINUE": "Parhau",
+      "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {
@@ -264,6 +265,7 @@
       "PAGE_TITLE": "Any dependants between 16 and 19?"
     },
     "DEPENDANTS_CHILDREN_DISABILITY": {
+      "ANY_DISABLED_CHILDREN": "A oes gan unrhyw un o’r plant sy’n byw gyda chi anabledd?",
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {

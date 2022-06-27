@@ -19,6 +19,7 @@
     "YEAR": "Year",
     "BUTTONS": {
       "CONTINUE": "Continue",
+      "SAVE_AND_CONTINUE": "Save and continue",
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {
@@ -266,6 +267,7 @@
       "PAGE_TITLE": "Any dependants between 16 and 19?"
     },
     "DEPENDANTS_CHILDREN_DISABILITY": {
+      "ANY_DISABLED_CHILDREN": "Are any of the children who live with you disabled?",
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {
