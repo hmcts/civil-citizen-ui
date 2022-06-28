@@ -44,9 +44,9 @@ function ensurePageCallWillSucceed(url: string): Promise<void> {
   });
 }
 
-function runPally(url: string, actions: string[]): Pa11yResult {
+async function runPally(url: string, actions: string[]): Promise<Pa11yResult> {
   const PAGE_URL = url.replace(':id', '1645882162449409');
-  return pa11y(PAGE_URL, {
+  return await pa11y(PAGE_URL, {
     // Ignore GovUK template elements that are outside the team's control from a11y tests
     hideElements: '#logo, .logo, .copyright, link[rel=mask-icon]',
     actions,
