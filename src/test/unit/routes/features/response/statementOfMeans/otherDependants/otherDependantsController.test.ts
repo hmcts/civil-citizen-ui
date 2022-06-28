@@ -9,8 +9,8 @@ import {
 } from '../../../../../../../main/routes/urls';
 import {
   DETAILS_REQUIRED,
-  NUMBER_OF_PEOPLE_REQUIRED,
   VALID_STRICTLY_POSITIVE_NUMBER,
+  NUMBER_OF_PEOPLE_REQUIRED,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../../../test/utils/errorMessageTestConstants';
