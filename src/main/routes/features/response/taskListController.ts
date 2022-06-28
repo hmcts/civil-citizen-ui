@@ -22,16 +22,17 @@ const taskListController = express.Router();
 taskListController.get(CLAIM_TASK_LIST_URL, async (req, res) => {
   try {
     const currentClaimId = req.params.id;
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim: Claim = await getDraftClaimFromStore(currentClaimId);
 
     const caseData = await getCaseDataFromStore(currentClaimId);
-    const taskLists = getTaskLists(claim, caseData, currentClaimId);
+    const taskLists = getTaskLists(claim, caseData, currentClaimId, lang);
 
     req.session.claimId = currentClaimId;
     req.session.taskLists = taskLists;
 
-    const title = getTitle(taskLists);
-    const description = getDescription(taskLists);
+    const title = getTitle(taskLists, lang);
+    const description = getDescription(taskLists, lang);
     const claimDetailsUrl = constructResponseUrlWithIdParams(currentClaimId, CLAIM_DETAILS_URL);
     res.render(taskListViewPath, { taskLists, title, description, claim: caseData, claimDetailsUrl });
   } catch (error) {
