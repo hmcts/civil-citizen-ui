@@ -15,13 +15,14 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t("Are you behind on tax payments?") %}
+      {% set title = t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.TITLE') %}
+      {% set description = t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.EXAMPLE') %}
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
@@ -30,7 +31,7 @@
           id: "amountYouOwe",
           name: "amountYouOwe",
           label: {
-            text: t("Amount you owe")
+            text: t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.AMOUNT')
           },
           type: "number",
           prefix: {
@@ -47,7 +48,7 @@
           name: "reason",
           id: "reason",
           label: {
-            text: t("Reason")
+            text: t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.REASON')
           },
           value: form.reason,
           errorMessage: {
@@ -59,7 +60,7 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t,id,name,title,form,'',{yesHtml:yesHtml}) }}
+            {{ yesNoRadioButton(t,id,name,title,form,description,{yesHtml:yesHtml}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t("Save and continue")
