@@ -63,7 +63,7 @@ describe('Task List View', () => {
       it('should display section 2 header', () => {
         const sectionHeader = htmlDocument.getElementsByClassName(taskSection);
         const sectionNumber = htmlDocument.getElementsByClassName(taskSectionNumber);
-        expect(sectionHeader[1].innerHTML).toContain('Respond to Claim');
+        expect(sectionHeader[1].innerHTML).toContain('Respond to claim');
         expect(sectionNumber[1].innerHTML).toContain('2');
       });
 

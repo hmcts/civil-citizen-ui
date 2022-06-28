@@ -52,3 +52,7 @@ export const isCounterpartyIndividual = (respondent1: Respondent): boolean => {
 export const isCounterpartyCompany = (respondent1: Respondent): boolean => {
   return respondent1.type === CounterpartyType.ORGANISATION || respondent1.type === CounterpartyType.COMPANY;
 };
+
+export const hasContactPersonAndCompanyPhone = (caseData: Claim): boolean => {
+  return caseData.mediation?.companyTelephoneNumber?.mediationContactPerson && caseData.mediation?.companyTelephoneNumber?.mediationPhoneNumber ? true : false;
+};

@@ -77,6 +77,38 @@
       "TITLE": "Types of senior position"
     }
   },
+  "TASK_LIST":{
+    "APPLICATION_COMPLETE": "Application complete",
+    "APPLICATION_INCOMPLETE": "Application incomplete",
+    "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
+    "PREPARE_YOUR_RESPONSE": {
+      "CONFIRM_YOUR_DETAILS": "Confirm your details",
+      "TITLE": "Prepare your response"
+    },
+    "RESOLVING_THE_CLAIM": {
+      "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
+      "TITLE": "Resolving the claim"
+    },
+    "RESPOND_TO_CLAIM": {
+      "CHOOSE_A_RESPONSE": "Choose a response",
+      "DECIDE_HOW_YOU_WILL_PAYS": "Decide how you'll pay",
+      "HOW_MUCH_HAVE_YOU_PAID": "How much have you paid",
+      "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
+      "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
+      "TITLE": "Respond to claim",
+      "WHEN_WILL_YOU_PAY": "When will you pay the £{{ amount }}?",
+      "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
+      "YOUR_REPAYMENT_PLAN": "Your repayment plan"
+    },
+    "SUBMIT": {
+      "CHECK_AND_SUBMIT": "Check and submit your response",
+      "TITLE": "Submit"
+    },
+    "YOUR_HEARING_REQUIREMENTS": {
+      "GIVE_US_DETAILS": "Give us details in case there’s a hearing",
+      "TITLE": "Your hearing requirements"
+    }
+  },
   "PAGES": {
     "ADMISSION_PAYMENT_DATE": {
       "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",

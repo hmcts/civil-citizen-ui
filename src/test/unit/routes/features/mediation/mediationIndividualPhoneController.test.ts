@@ -3,7 +3,7 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {
-  CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
+  CAN_WE_USE_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -38,7 +38,7 @@ describe('Repayment Plan', () => {
 describe('on Get', () => {
   test('should return on mediation confirm your telephone number repayment plan page successfully', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
-    await request(app).get(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL)
+    await request(app).get(CAN_WE_USE_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Confirm your telephone number');
@@ -47,7 +47,7 @@ describe('on Get', () => {
   test('should return 500 status code when error occurs', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
-      .get(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL)
+      .get(CAN_WE_USE_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
         expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
@@ -59,7 +59,7 @@ describe('on Post', () => {
   test('should return error when no input text is filled', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
-      .post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL)
+      .post(CAN_WE_USE_URL)
       .send('')
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -69,7 +69,7 @@ describe('on Post', () => {
   test('should return errors when "NO" option selected and telephone number is undefined ', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
-      .post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL)
+      .post(CAN_WE_USE_URL)
       .send({ option: 'no', telephoneNumber: ''})
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -79,7 +79,7 @@ describe('on Post', () => {
   test('should return errors when "NO" option selected and telephone number max length is greater than 30 characters ', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
-      .post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL)
+      .post(CAN_WE_USE_URL)
       .send({ option: 'no', telephoneNumber: '1234567890123456789012345678900'})
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -89,7 +89,7 @@ describe('on Post', () => {
   test('should redirect with valid input', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
-      .post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL)
+      .post(CAN_WE_USE_URL)
       .send({ option: 'no', telephoneNumber: '01632960001'})
       .expect((res) => {
         expect(res.status).toBe(302);
@@ -99,7 +99,7 @@ describe('on Post', () => {
   test('should redirect with input option equal to "yes" ', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
-      .post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL)
+      .post(CAN_WE_USE_URL)
       .send({ option: 'yes', telephoneNumber: ''})
       .expect((res) => {
         expect(res.status).toBe(302);
@@ -109,7 +109,7 @@ describe('on Post', () => {
   test('should return status 500 when there is error', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
-      .post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL)
+      .post(CAN_WE_USE_URL)
       .send({ option: 'yes', telephoneNumber: ''})
       .expect((res) => {
         expect(res.status).toBe(500);
@@ -121,7 +121,7 @@ describe('on Post', () => {
     test('should redirect with valid input', async () => {
       app.locals.draftStoreClient = mockWithoutRespondentPhone;
       await request(app)
-        .post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL)
+        .post(CAN_WE_USE_URL)
         .send({ option: 'no', telephoneNumber: '01632960002'})
         .expect((res) => {
           expect(res.status).toBe(302);
