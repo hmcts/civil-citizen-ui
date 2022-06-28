@@ -37,3 +37,19 @@ data "azurerm_key_vault_secret" "ordnance-survey-api-key" {
   name = "ordnance-survey-api-key"
   key_vault_id = data.azurerm_key_vault.civil_vault.id
 }
+
+data "azurerm_key_vault_secret" "s2s_secret" {
+  name = "cmc-s2s-secret"
+  key_vault_id = "${data.azurerm_key_vault.cmc_key_vault.id}"
+}
+
+data "azurerm_key_vault_secret" "draft_store_primary" {
+  name = "citizen-draft-store-primary"
+  key_vault_id = "${data.azurerm_key_vault.cmc_key_vault.id}"
+}
+
+data "azurerm_key_vault_secret" "draft_store_secondary" {
+  name = "citizen-draft-store-secondary"
+  key_vault_id = "${data.azurerm_key_vault.cmc_key_vault.id}"
+}
+
