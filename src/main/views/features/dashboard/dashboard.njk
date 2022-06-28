@@ -23,7 +23,7 @@
         </thead>
         <tbody class="govuk-table__body">
         {% for claim in claimsAsDefendant %}
-          {% set claimantDetailsUrl = '/dashboard/' + claim.id + '/claimant' %}
+          {% set claimantDetailsUrl = '/dashboard/' + claim.id + '/defendant' %}
           <tr class="govuk-table__row">
           <td class="govuk-table__cell">
             <a href={{claimantDetailsUrl}}> {{ claim.case_data.legacyCaseReference }} </a>
