@@ -1,5 +1,5 @@
 export class DashboardItem {
-  claimId: number;
+  claimId: string;
   claimNumber: string;
   claimAmount: number;
 }

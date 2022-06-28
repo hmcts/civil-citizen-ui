@@ -31,7 +31,17 @@
           <td class="govuk-table__cell">{{ claim.case_data.applicant1.individualFirstName }} {{ claim.case_data.applicant1.individualLastName }}</td>
           <td class="govuk-table__cell">{{ claim.case_data.formattedTotalClaimAmount() }}</td>
           <td class="govuk-table__cell">{{ t('You need to respond before ') }}{{ claim.case_data.formattedResponseDeadline() }}</td>
-        </tr> 
+        </tr>
+        {% endfor %}
+        {% for item in ocmcClaimsAsDefendant %}
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">
+            <a href="#"> {{ item.claimNumber }} </a>
+          </td>
+          <td class="govuk-table__cell">{{ item.claimantName }}</td>
+          <td class="govuk-table__cell">{{ item.claimAmount }}</td>
+          <td class="govuk-table__cell">{{ t('You need to respond before ') }}{{ item.responseDeadline }}</td>
+        </tr>
         {% endfor %}
         </tbody>
       </table>
