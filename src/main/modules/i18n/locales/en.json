@@ -195,22 +195,22 @@
       "PAGE_TITLE": "Your claim response"
     },
     "CLAIM_DETAILS": {
-      "PAGE_TITLE": "Claim Details",
-      "HEADER": "Claim details",
-      "CLAIM_NUMBER": "Claim number",
-      "CLAIM_AMOUNT": "Claim amount",
-      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
-      "AMOUNT_BREAKDOWN": "Amount breakdown",
       "AMOUNT": "Amount",
-      "INTEREST": "Interest",
+      "AMOUNT_BREAKDOWN": "Amount breakdown",
+      "CLAIM_AMOUNT": "Claim amount",
       "CLAIM_FEE": "Claim fee",
+      "CLAIM_NUMBER": "Claim number",
       "CLAIM_TOTAL": "Claim Total",
+      "DATE": "Date",
+      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
+      "HEADER": "Claim details",
+      "INTEREST": "Interest",
+      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})",
+      "PAGE_TITLE": "Claim Details",
       "REASON_FOR_CLAIM": "Reason for claim",
       "TIMELINE": "Timeline",
-      "DATE": "Date",
-      "WHAT_HAPPENED": "What happened",
-      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "WHAT_HAPPENED": "What happened"
     },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "About claim",
