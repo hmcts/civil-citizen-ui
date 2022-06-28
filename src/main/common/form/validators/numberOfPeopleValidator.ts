@@ -1,5 +1,8 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import { VALID_NUMBER_OF_PEOPLE, NUMBER_OF_PEOPLE_REQUIRED } from '../validationErrors/errorMessageConstants';
+import {
+  NUMBER_OF_PEOPLE_REQUIRED,
+  VALID_STRICTLY_POSITIVE_NUMBER,
+} from '../validationErrors/errorMessageConstants';
 
 @ValidatorConstraint({name: 'customZeroOrMinOnePerson', async: false})
 export class NumberOfPeopleValidator implements ValidatorConstraintInterface {
@@ -14,6 +17,6 @@ export class NumberOfPeopleValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return this.numericValue ? VALID_NUMBER_OF_PEOPLE : NUMBER_OF_PEOPLE_REQUIRED;
+    return this.numericValue ? VALID_STRICTLY_POSITIVE_NUMBER : NUMBER_OF_PEOPLE_REQUIRED;
   }
 }

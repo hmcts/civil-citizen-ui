@@ -55,7 +55,7 @@
           {% if timelineRows and timelineRows.length > 0 %}
             {{ timelineSummary(timelineRows) }}
           {% elseif timelinePdfUrl %}
-            <div class="govuk-body">  
+            <div class="govuk-body">
               <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.TIMELINE') }}</h2>
               <a id="timeline-link" href={{ timelinePdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.CLAIM_DETAILS.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
             </div>
