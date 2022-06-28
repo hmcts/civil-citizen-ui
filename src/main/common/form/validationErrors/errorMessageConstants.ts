@@ -78,3 +78,6 @@ export const SIGNER_NAME_TOO_LONG = 'You’ve entered too many characters';
 export const SIGNER_ROLE_REQUIRED = 'Enter the role of the person signing the statement';
 export const SIGNER_ROLE_TOO_LONG = 'You’ve entered too many characters';
 export const DEFENCE_REQUIRED = 'You need to explain why you don’t owe the money';
+export const NO_LANGUAGE_ENTERED = 'Enter the language that needs to be interpreted';
+export const NO_SIGN_LANGUAGE_ENTERED = 'Enter the sign language you need';
+export const NO_OTHER_SUPPORT = 'Enter the other support you need at your hearing';
