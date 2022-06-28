@@ -51,7 +51,7 @@ citizenDobController.post(DOB_URL, async (req, res) => {
     if (citizenDob?.errors?.length > 0) {
       renderView(res, citizenDob);
     } else {
-      const claim = await getCaseDataFromStore(req.params.id) || new Claim();
+      const claim = await getCaseDataFromStore(req.params.id);
       if (claim.respondent1){
         claim.respondent1.dateOfBirth = citizenDob.dateOfBirth;
       } else {
