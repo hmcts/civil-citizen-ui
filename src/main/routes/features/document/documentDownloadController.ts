@@ -20,7 +20,9 @@ documentDownloadController.get(CASE_DOCUMENT_DOWNLOAD_URL, async (req: express.R
   try {
     const claim = await getCaseDataFromStore(req.params.id);
     const documentType = convertToDocumentType(req.params.documentType);
+    console.log('controller-document type:', documentType);
     const documentDetails = claim.getDocumentDetails(DocumentType[documentType]);
+    console.log('controller-document details:', documentDetails);
     const pdfDocument: Buffer = await civilServiceClient.retrieveDocument(documentDetails, <AppRequest>req);
     documentUtils.downloadPDF(res, pdfDocument, documentDetails.documentName);
   } catch (error) {
