@@ -22,6 +22,8 @@ export const addPartner = (claim: Claim, financialSection: SummarySection, claim
   const yourPartnerSevereDisabilityHref = CITIZEN_PARTNER_SEVERE_DISABILITY_URL.replace(':id', claimId);
 
   const cohabiting = claim.statementOfMeans?.cohabiting?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
+  const disability = claim.statementOfMeans?.disability?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
+  const severeDisability = claim.statementOfMeans?.severeDisability?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
   const partnerAge = claim.statementOfMeans?.partnerAge?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
   const partnerPension = claim.statementOfMeans?.partnerPension?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
   const partnerDisability = claim.statementOfMeans?.partnerDisability?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
@@ -36,9 +38,9 @@ export const addPartner = (claim: Claim, financialSection: SummarySection, claim
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PARTNER_DOES_RECEIVE_A_PENSION', { lng: getLng(lang) }), partnerPension.charAt(0).toUpperCase() + partnerPension.slice(1), yourPartnerPensionHref, changeLabel(lang)));
   }
 
-  if (cohabiting === YesNo.YES) {
+  if (cohabiting === YesNo.YES && disability === YesNo.YES) {
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PARTNER_IS_DISABLED', { lng: getLng(lang) }), partnerDisability.charAt(0).toUpperCase() + partnerDisability.slice(1), yourPartnerDisabilityHref, changeLabel(lang)));
-    if (partnerDisability === YesNo.YES) {
+    if (severeDisability && partnerDisability === YesNo.YES) {
       financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PARTNER_IS_SEVERELY_DISABLED', { lng: getLng(lang) }), partnerSevereDisability.charAt(0).toUpperCase() + partnerSevereDisability.slice(1), yourPartnerSevereDisabilityHref, changeLabel(lang)));
     }
   }
