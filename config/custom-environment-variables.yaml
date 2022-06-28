@@ -20,7 +20,7 @@ services:
     baseUrl: DOCUMENT_MANAGEMENT_URL
   serviceAuthProvider:
     baseUrl: AUTH_PROVIDER_SERVICE_CLIENT_BASEURL
-    serviceAuthTokenGeneratorUrl : SERVICE_AUTH_TOKEN_GENERATOR_URL
+    serviceAuthTokenGeneratorUrl: SERVICE_AUTH_TOKEN_GENERATOR_URL
 
 port: PORT
 appInsights:
