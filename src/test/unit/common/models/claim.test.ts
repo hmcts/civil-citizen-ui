@@ -1,5 +1,10 @@
 import {Claim} from '../../../../main/common/models/claim';
-import {InterestClaimUntilType, InterestClaimFromType, InterestClaimOptions, SameRateInterestType} from '../../../../main/common/form/models/claimDetails';
+import {
+  InterestClaimFromType,
+  InterestClaimOptions,
+  InterestClaimUntilType,
+  SameRateInterestType,
+} from '../../../../main/common/form/models/claimDetails';
 import {StatementOfMeans} from '../../../../main/common/models/statementOfMeans';
 import {Disability} from '../../../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../../../main/common/form/models/yesNo';
@@ -193,7 +198,7 @@ describe('Claim isDefendantSeverlyDisabled', () => {
   const claim = new Claim();
   it('should return false with empty claim', () => {
     //When
-    const result = claim.isDefendantSeverlyDisabled();
+    const result = claim.isDefendantSeverelyDisabled();
     //Then
     expect(result).toBeFalsy();
   });
@@ -201,7 +206,7 @@ describe('Claim isDefendantSeverlyDisabled', () => {
     //Given
     claim.statementOfMeans = new StatementOfMeans();
     //When
-    const result = claim.isDefendantSeverlyDisabled();
+    const result = claim.isDefendantSeverelyDisabled();
     //Then
     expect(result).toBeFalsy();
   });
@@ -209,7 +214,7 @@ describe('Claim isDefendantSeverlyDisabled', () => {
     //Given
     claim.statementOfMeans.severeDisability = new SevereDisability();
     //When
-    const result = claim.isDefendantSeverlyDisabled();
+    const result = claim.isDefendantSeverelyDisabled();
     //Then
     expect(result).toBeFalsy();
   });
@@ -217,7 +222,7 @@ describe('Claim isDefendantSeverlyDisabled', () => {
     //Given
     claim.statementOfMeans.severeDisability.option = YesNo.NO;
     //When
-    const result = claim.isDefendantSeverlyDisabled();
+    const result = claim.isDefendantSeverelyDisabled();
     //Then
     expect(result).toBeFalsy();
   });
@@ -225,7 +230,7 @@ describe('Claim isDefendantSeverlyDisabled', () => {
     //Given
     claim.statementOfMeans.severeDisability.option = YesNo.YES;
     //When
-    const result = claim.isDefendantSeverlyDisabled();
+    const result = claim.isDefendantSeverelyDisabled();
     //Then
     expect(result).toBeTruthy();
   });

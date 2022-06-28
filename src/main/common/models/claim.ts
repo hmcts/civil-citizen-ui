@@ -15,6 +15,7 @@ import {Defence} from '../form/models/defence';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
 import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
+import {SupportRequired} from '../models/directionsQuestionnaire/supportRequired';
 import {
   ClaimAmountBreakup,
   ClaimFee,
@@ -61,6 +62,7 @@ export class Claim {
   interestFromSpecificDate?: Date;
   interestClaimOptions: InterestClaimOptions;
   sameRateInterestSelection?: SameRateInterestSelection;
+  supportRequired?: SupportRequired;
   breakDownInterestTotal?: number;
   submittedDate?: Date;
   issueDate?: Date;
@@ -135,38 +137,49 @@ export class Claim {
   isSameRateTypeEightPercent(): boolean {
     return this.sameRateInterestSelection?.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_8_PC;
   }
+
   isDefendantDisabled(): boolean {
     return this.statementOfMeans?.disability?.option === YesNo.YES;
   }
-  isDefendantSeverlyDisabled(): boolean{
+
+  isDefendantSeverelyDisabled(): boolean {
     return this.statementOfMeans?.severeDisability?.option === YesNo.YES;
   }
-  isDefendantDisabledAndSeverlyDiabled(): boolean {
-    return this.isDefendantDisabled() && this.isDefendantSeverlyDisabled();
+
+  isDefendantDisabledAndSeverelyDisabled(): boolean {
+    return this.isDefendantDisabled() && this.isDefendantSeverelyDisabled();
   }
+
   isPartnerDisabled(): boolean {
     return this.statementOfMeans?.cohabiting?.option === YesNo.YES &&
       this.statementOfMeans?.partnerDisability?.option === YesNo.YES;
   }
+
   isChildrenDisabled(): boolean {
     return this.statementOfMeans?.dependants?.declared === true &&
       this.statementOfMeans?.childrenDisability?.option === YesNo.YES;
   }
+
   isDefendantSeverelyDisabledOrDependentsDisabled(): boolean {
-    return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverlyDiabled();
+    return this.isChildrenDisabled() || this.isPartnerDisabled() || this.isDefendantDisabledAndSeverelyDisabled();
   }
+
   isFullAdmission(): boolean {
     return this.respondent1?.responseType === ResponseType.FULL_ADMISSION;
   }
+
   isPartialAdmission(): boolean {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
+
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }
+
   isPartialAdmissionPaymentOptionExists(): boolean {
     return this.partialAdmission?.paymentIntention?.paymentOption?.length > 0;
   }
+
   partialAdmissionPaymentAmount(): number {
     return this.partialAdmission?.howMuchDoYouOwe?.amount;
   }
