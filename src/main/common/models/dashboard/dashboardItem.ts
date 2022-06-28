@@ -8,10 +8,10 @@ export class DashboardItem {
 }
 
 export class DashboardClaimantItem extends DashboardItem {
-  nextSteps: string;// TODO: this is only a placeholder. To be revisited in a separate story
-  actions: string;// TODO: this is only a placeholder. To be revisited in a separate story
+  status: string;// TODO: this is only a placeholder. To be revisited in a separate story
 }
 
 export class DashboardDefendantItem extends DashboardItem {
-  status: string;// TODO: this is only a placeholder. To be revisited in a separate story
+  nextSteps: string;// TODO: this is only a placeholder. To be revisited in a separate story
+  actions: string;// TODO: this is only a placeholder. To be revisited in a separate story
 }
