@@ -1057,7 +1057,7 @@
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
-        "calculatedAmountInPence": "8000"
+        "calculatedAmountInPence": "9000"
       },
       "issueDate": "2022-01-08",
       "applicant1": {
@@ -1174,9 +1174,9 @@
           "value": {
             "createdBy": "Civil",
             "documentLink": {
-              "document_url": "http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de",
+              "document_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac",
               "document_filename": "sealed_claim_form_000MC001.pdf",
-              "document_binary_url": "http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary"
+              "document_binary_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac/binary"
             },
             "documentName": "sealed_claim_form_000MC001.pdf",
             "documentSize": 45794,
