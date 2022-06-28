@@ -84,7 +84,8 @@
       "TITLE": "What date will you pay on?"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
-      "PAGE_TITLE": "Severely disabled"
+      "PAGE_TITLE": "Severely disabled",
+      "TITLE": "Are you severely disabled?"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
@@ -227,7 +228,13 @@
       "PAGE_TITLE": "Company details"
     },
     "CONTACT_THEM": {
-      "PAGE_TITLE": "Contact claimant"
+      "ABOUT": "About claim",
+      "ADDRESS": "Address",
+      "CLAIMANT": "Claimant",
+      "CONTACT": "Contact ",
+      "EMAIL": "Email",
+      "PAGE_TITLE": "Contact claimant",
+      "PHONE": "Phone"
     },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Add another court order",
@@ -277,7 +284,8 @@
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {
-      "PAGE_TITLE": "Any you disabled?"
+      "PAGE_TITLE": "Are you disabled?",
+      "TITLE": "Are you disabled?"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
@@ -441,6 +449,19 @@
       "PAGE_TITLE": "Your task list",
       "HEADER": "Respond to a money claim",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+    },
+    "SUPPORT_REQUIRED": {
+      "ARRANGE_AND_PAY": "You may have to arrange and pay for interpreters except for Welsh. The court will tell you.",
+      "DISABLE": "Disabled access",
+      "ENTER_SIGN_LANGUAGE": "Enter the sign language you need",
+      "EXTRA_SUPPORT": "The court can’t guarantee extra support, but it will consider other needs relating to physical or mental health impairments",
+      "HEARING": "Hearing loop",
+      "LANGUAGE": "Language interpreter",
+      "OTHER": "Other support",
+      "PAGE_TITLE": "Support required",
+      "SIGN_LANGUAGE": "Sign language interpreter",
+      "TITLE": "Select any support you’d require for a court hearing (optional)",
+      "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
       "PAGE_TITLE": "Under 18"

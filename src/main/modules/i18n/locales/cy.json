@@ -79,12 +79,13 @@
   },
   "PAGES": {
     "ADMISSION_PAYMENT_DATE": {
-      "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
+      "FOR_EXAMPLE": "Er enghraifft, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Payment date",
-      "TITLE": "What date will you pay on?"
+      "TITLE": "Ar ba ddyddiad byddwch yn talu"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
-      "PAGE_TITLE": "Severely disabled"
+      "PAGE_TITLE": "Severely disabled",
+      "TITLE": "A oes gennych anabledd difrifol?"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
@@ -225,7 +226,13 @@
       "PAGE_TITLE": "Company details"
     },
     "CONTACT_THEM": {
-      "PAGE_TITLE": "Contact claimant"
+      "ABOUT": "Ynghylch yr Hawliad",
+      "ADDRESS": "Cyfeiriad",
+      "CLAIMANT": "Hawlydd",
+      "CONTACT": "Contact ",
+      "EMAIL": "E-bost",
+      "PAGE_TITLE": "Contact claimant",
+      "PHONE": "Rhif ffôn"
     },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
@@ -275,7 +282,8 @@
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {
-      "PAGE_TITLE": "Any you disabled?"
+      "PAGE_TITLE": "A oes gennych anabledd?",
+      "TITLE": "A oes gennych anabledd?"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
@@ -439,6 +447,19 @@
       "PAGE_TITLE": "Your task list",
       "HEADER": "Respond to a money claim",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+    },
+    "SUPPORT_REQUIRED": {
+      "ARRANGE_AND_PAY": "You may have to arrange and pay for interpreters except for Welsh. The court will tell you.",
+      "DISABLE": "Disabled access",
+      "ENTER_SIGN_LANGUAGE": "Enter the sign language you need",
+      "EXTRA_SUPPORT": "The court can’t guarantee extra support, but it will consider other needs relating to physical or mental health impairments",
+      "HEARING": "Hearing loop",
+      "LANGUAGE": "Language interpreter",
+      "OTHER": "Other support",
+      "PAGE_TITLE": "Support required",
+      "SIGN_LANGUAGE": "Sign language interpreter",
+      "TITLE": "Select any support you’d require for a court hearing (optional)",
+      "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
       "PAGE_TITLE": "Under 18"
