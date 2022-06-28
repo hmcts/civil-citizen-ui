@@ -13,12 +13,12 @@ import {CounterpartyType} from '../../../../main/common/models/counterpartyType'
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-const baseUrl:string = config.get('baseUrl');
+const baseUrl: string = config.get('baseUrl');
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 
 describe('Civil Service Client', () => {
-  describe('retrieveByDefendantId', ()=>{
+  describe('retrieveByDefendantId', () => {
     it('should retrieve cases successfully', async () => {
       //Given
       const claim = new Claim();
@@ -28,12 +28,12 @@ describe('Civil Service Client', () => {
           individualTitle: 'Mrs',
           individualLastName: 'Clark',
           individualFirstName: 'Jane',
-          type : CounterpartyType.INDIVIDUAL,
+          type: CounterpartyType.INDIVIDUAL,
         };
       claim.totalClaimAmount = 1500;
 
       const mockResponse: CivilClaimResponse = {
-        id:'1',
+        id: '1',
         case_data: claim,
       };
 
@@ -55,7 +55,7 @@ describe('Civil Service Client', () => {
       expect(actualClaims[0].case_data.applicant1?.individualLastName).toEqual('Clark');
     });
   });
-  describe('getFeeRanges', ()=>{
+  describe('getFeeRanges', () => {
     it('should return fee ranges successfully', async () => {
       //Given
       const data = require('../../../utils/mocks/feeRangesMock.json');
@@ -72,6 +72,27 @@ describe('Civil Service Client', () => {
       expect(feeRanges.value.length).toEqual(15);
       expect(feeRanges.value[0].minRange).toEqual(data[0].min_range);
       expect(feeRanges.value[0].maxRange).toEqual(data[0].max_range);
+    });
+  });
+  describe('getClaimsForDefendant', () => {
+    it('should return claims for defendant successfully', async () => {
+      //Given
+      const data = require('../../../utils/mocks/defendantClaimsMock.json');
+      const mockGet = jest.fn().mockResolvedValue({data: data});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const defendantDashboardItems = await civilServiceClient.getClaimsForDefendant(mockedAppRequest);
+
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(defendantDashboardItems.length).toEqual(1);
+      expect(defendantDashboardItems[0].defendantName).toEqual(data[0].defendantName);
+      expect(defendantDashboardItems[0].claimantName).toEqual(data[0].claimantName);
+      expect(defendantDashboardItems[0].claimNumber).toEqual(data[0].claimNumber);
     });
   });
 });

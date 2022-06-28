@@ -32,16 +32,12 @@ export class CivilServiceClient {
     };
   }
 
-
-
   async getClaimsForDefendant(req: AppRequest): Promise <DashboardDefendantItem[]>{
     const config = this.getConfig(req);
     const submitterId = req.session?.user?.id;
     try{
       const response = await this.client.get('/cases/defendant/' + submitterId, config);
-      const result = plainToInstance(DashboardDefendantItem, response.data as object[]);
-      console.log(result);
-      return result;
+      return plainToInstance(DashboardDefendantItem, response.data as object[]);
     }catch(err){
       console.log(err);
     }
