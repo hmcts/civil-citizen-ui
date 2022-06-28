@@ -41,7 +41,7 @@ export class ServiceAuthProviderClient {
   }
 }
 
-const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.url');
+const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
 const client: AxiosInstance = Axios.create({baseURL: serviceAuthProviderUrl});
 
 const generateServiceToken = async (microservice: string, s2sSecret: string): Promise<string> => {
@@ -62,7 +62,6 @@ const generateServiceToken = async (microservice: string, s2sSecret: string): Pr
         oneTimePassword: oneTimePassword,
       });
     logger.info(`Service Authorisation Token generated for: ${microservice}`);
-    logger.info(`Generated Service Authorisation Token: ${response.data}`);
 
     return response.data;
   } catch (error) {

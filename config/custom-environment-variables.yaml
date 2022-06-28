@@ -21,7 +21,6 @@ services:
   serviceAuthProvider:
     baseUrl: AUTH_PROVIDER_SERVICE_CLIENT_BASEURL
     serviceAuthTokenGeneratorUrl : SERVICE_AUTH_TOKEN_GENERATOR_URL
-    url: SERVICE_AUTH_PROVIDER_API_URL
 
 port: PORT
 appInsights:

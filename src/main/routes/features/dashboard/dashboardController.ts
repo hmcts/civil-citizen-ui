@@ -5,7 +5,7 @@ import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
 import {AppRequest, UserDetails} from 'models/AppRequest';
 import {CivilClaimResponse} from 'common/models/civilClaimResponse';
-import {find} from '../../../app/client/legacyDraftStoreClient';
+import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -28,9 +28,9 @@ const dashboardController = express.Router();
 
 dashboardController.get(DASHBOARD_URL, async function (req: AppRequest, res) {
   const user: UserDetails = req.session.user;
-  // This is a call to validate integration with legacy draft-store. This will have to be refined in the future
-  // to display the draft claims on the dashboard
-  await find(user.accessToken);
+  /*This is a call to validate integration with legacy draft-store. This will have to be refined in the future
+  to display the draft claims on the dashboard*/
+  await getOcmcDraftClaims(user.accessToken);
 
   const claimsAsClaimant: Claim[] = [];
   const claimsAsDefendant: CivilClaimResponse[] = await civilServiceClient.retrieveByDefendantId(req);

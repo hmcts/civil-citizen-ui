@@ -16,7 +16,7 @@ const secretsAsHeader = (): string => {
   return secondarySecret ? `${primarySecret}, ${secondarySecret}` : primarySecret;
 };
 
-const find = async (userToken: string): Promise<void> => {
+const getOcmcDraftClaims = async (userToken: string): Promise<void> => {
   try {
     const cmcServiceToken = await generateServiceToken(microserviceName, cmcS2sSecret);
 
@@ -40,5 +40,5 @@ const find = async (userToken: string): Promise<void> => {
 };
 
 export {
-  find,
+  getOcmcDraftClaims,
 };
