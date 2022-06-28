@@ -205,12 +205,10 @@ export class Claim {
     return this.systemGeneratedCaseDocuments?.length;
   }
   getDocumentDetails(documentType: DocumentType): CaseDocument {
-    console.log('is available:', this.systemGeneratedCaseDocuments, documentType);
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
         return document.value.documentType === documentType;
       });
-      console.log('claim-filter--', filteredDocumentDetailsByType);
       return filteredDocumentDetailsByType.value;
     }
     return undefined;
