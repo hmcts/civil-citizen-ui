@@ -36,7 +36,7 @@ export const addPartner = (claim: Claim, financialSection: SummarySection, claim
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PARTNER_DOES_RECEIVE_A_PENSION', { lng: getLng(lang) }), partnerPension.charAt(0).toUpperCase() + partnerPension.slice(1), yourPartnerPensionHref, changeLabel(lang)));
   }
 
-  if (claim.statementOfMeans?.disability?.option === YesNo.YES) {
+  if (cohabiting === YesNo.YES) {
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PARTNER_IS_DISABLED', { lng: getLng(lang) }), partnerDisability.charAt(0).toUpperCase() + partnerDisability.slice(1), yourPartnerDisabilityHref, changeLabel(lang)));
     if (partnerDisability === YesNo.YES) {
       financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PARTNER_IS_SEVERELY_DISABLED', { lng: getLng(lang) }), partnerSevereDisability.charAt(0).toUpperCase() + partnerSevereDisability.slice(1), yourPartnerSevereDisabilityHref, changeLabel(lang)));
