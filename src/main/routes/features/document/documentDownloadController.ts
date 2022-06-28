@@ -19,6 +19,8 @@ const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 documentDownloadController.get(CASE_DOCUMENT_DOWNLOAD_URL, async (req: express.Request, res: express.Response) => {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
+    console.log('controller-claim:', claim);
+    console.log('claim-documents', claim.systemGeneratedCaseDocuments);
     const documentType = convertToDocumentType(req.params.documentType);
     console.log('controller-document type:', documentType);
     const documentDetails = claim.getDocumentDetails(DocumentType[documentType]);
