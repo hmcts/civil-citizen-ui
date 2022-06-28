@@ -1,5 +1,4 @@
 {
-  "Claims made against you": "Smialc edam tsniaga uoy",
   "Claim number": "Mialc rebmun",
   "Claimant name": "Tnamialc eman",
   "Claim amount": "Mialc tnuoma",
@@ -7,7 +6,6 @@
   "Next steps": "Txen spets",
   "Deadline": "Enildaed",
   "Actions": "Snoitca",
-  "Respond to the claim": "Dnopser ot eht mialc",
   "View": "Weiv",
   "Save and continue": "Cadw a Pharhau",
   "COMMON": {
@@ -16,10 +14,12 @@
     "YES": "Oes",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Mis",
+    "MONTHS": "Mis",
     "YEAR": "Blwyddyn",
+    "YEARS": "Blwyddyn",
     "BUTTONS": {
       "CONTINUE": "Parhau",
-      "SAVE_AND_CONTINUE": "Save and continue",
+      "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {
@@ -224,33 +224,34 @@
       "PAGE_TITLE": "Your claim response"
     },
     "CLAIM_DETAILS": {
-      "PAGE_TITLE": "Claim Details",
-      "HEADER": "Claim details",
-      "CLAIM_NUMBER": "Claim number",
-      "CLAIM_AMOUNT": "Claim amount",
-      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
-      "AMOUNT_BREAKDOWN": "Amount breakdown",
       "AMOUNT": "Amount",
-      "INTEREST": "Interest",
+      "AMOUNT_BREAKDOWN": "Amount breakdown",
+      "CLAIM_AMOUNT": "Swm yr hawliad",
       "CLAIM_FEE": "Claim fee",
+      "CLAIM_NUMBER": "Rhif yr hawliad",
       "CLAIM_TOTAL": "Claim Total",
+      "DATE": "Date",
+      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
+      "HEADER": "Manylion yr hawliad",
+      "INTEREST": "Interest",
+      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})",
+      "PAGE_TITLE": "Manylion yr hawliad",
       "REASON_FOR_CLAIM": "Reason for claim",
       "TIMELINE": "Timeline",
-      "DATE": "Date",
-      "WHAT_HAPPENED": "What happened",
-      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "WHAT_HAPPENED": "What happened"
     },
     "CLAIM_SUMMARY": {
-      "ABOUT_CLAIM": "Ynghylch yr Hawliad",
+      "ABOUT_CLAIM": "Am hawliad",
       "CLAIM_AMOUNT": "Swm yr hawliad:",
       "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Claim documents",
       "CLAIMANT_NAME": "Enw’r hawlydd:",
-      "CLAIM_NUMBER": "Mialc rebmun:",
-      "DOCUMENTS": "Documents",
+      "CLAIM_NUMBER": "Rhif yr hawliad:",
+      "DOCUMENTS": "Dogfennau",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
-      "LATEST_UPDATE": "Latest update",
+      "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
+      "LATEST_UPDATE": "Diweddariad diweddaraf",
       "VIEW_CLAIM": "Gweld yr hawliad"
     },
     "COMPANY_DETAILS": {
@@ -266,7 +267,12 @@
       "PHONE": "Rhif ffôn"
     },
     "COURT_ORDERS": {
-      "PAGE_TITLE": "Any court orders?"
+      "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
+      "CLAIM_NUMBER": "Rhif yr hawliad",
+      "MONTHLY_INSTALMENT_AMOUNT": "Swm y rhandaliad bob mis",
+      "OWED_AMOUNT": "Swm sy’n ddyledus gennych",
+      "PAGE_TITLE": "Any court orders?",
+      "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
     },
     "DASHBOARD": {
       "PAGE_TITLE": "Smialc edam tsniaga uoy"
@@ -304,6 +310,7 @@
       "PAGE_TITLE": "Any dependants between 16 and 19?"
     },
     "DEPENDANTS_CHILDREN_DISABILITY": {
+      "ANY_DISABLED_CHILDREN": "A oes gan unrhyw un o’r plant sy’n byw gyda chi anabledd?",
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {
@@ -490,7 +497,13 @@
       "PAGE_TITLE": "Under 18"
     },
     "UNEMPLOYMENT": {
-      "PAGE_TITLE": "Unemployed or retired"
+      "DESCRIPTION": "Ers faint ydych chi wedi bod yn ddi-waith?",
+      "DETAILS": "Rhowch fanylion",
+      "OTHER": "Arall",
+      "PAGE_TITLE": "Unemployed or retired",
+      "RETIRED": "Wedi ymddeol",
+      "TITLE": "A ydych yn ddi-waith neu wedi ymddeol?",
+      "UNEMPLOYED": "Di-waith"
     },
     "WHO_EMPLOYS_YOU": {
       "PAGE_TITLE": "Your employer"
@@ -514,7 +527,7 @@
   "ERRORS": {
     "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
     "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
-    "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
+    "AMOUNT_REQUIRED": "Rhowch swm o £1 neu fwy",
     "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
@@ -529,6 +542,7 @@
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
+    "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
@@ -569,7 +583,7 @@
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_JOB_TITLE": "Enter a job title",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
-    "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Enter at least one court order",
+    "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Enter at least one employer",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
     "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
@@ -578,7 +592,6 @@
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
-    "VALID_NUMBER_OF_PEOPLE": "Enter a number higher than 0",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
@@ -586,12 +599,12 @@
     "VALID_POSITIVE_NUMBER": "Don’t enter a negative number",
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
-    "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
+    "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy’n uwch na 0",
     "VALID_TEXT_LENGTH": "You’ve entered too many characters",
     "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
-    "VALID_YES_NO_OPTION": "Choose option: Yes or No",
-    "VALID_YES_NO_SELECTION": "Please select yes or no"
+    "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
+    "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda"
   }
 }

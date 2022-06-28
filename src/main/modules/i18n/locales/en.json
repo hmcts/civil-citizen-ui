@@ -1,5 +1,4 @@
 {
-  "Claims made against you": "Claims made against you",
   "Claim number": "Claim number",
   "Claimant name": "Claimant name",
   "Claim amount": "Claim amount",
@@ -7,7 +6,6 @@
   "Next steps": "Next steps",
   "Deadline": "Deadline",
   "Actions": "Actions",
-  "Respond to the claim": "Respond to the claim",
   "View": "View",
   "Save and continue": "Save and continue",
   "COMMON": {
@@ -16,7 +14,9 @@
     "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Month",
+    "MONTHS": "Months",
     "YEAR": "Year",
+    "YEARS": "Years",
     "BUTTONS": {
       "CONTINUE": "Continue",
       "SAVE_AND_CONTINUE": "Save and continue",
@@ -226,22 +226,22 @@
       "PAGE_TITLE": "Your claim response"
     },
     "CLAIM_DETAILS": {
-      "PAGE_TITLE": "Claim Details",
-      "HEADER": "Claim details",
-      "CLAIM_NUMBER": "Claim number",
-      "CLAIM_AMOUNT": "Claim amount",
-      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
-      "AMOUNT_BREAKDOWN": "Amount breakdown",
       "AMOUNT": "Amount",
-      "INTEREST": "Interest",
+      "AMOUNT_BREAKDOWN": "Amount breakdown",
+      "CLAIM_AMOUNT": "Claim amount",
       "CLAIM_FEE": "Claim fee",
+      "CLAIM_NUMBER": "Claim number",
       "CLAIM_TOTAL": "Claim Total",
+      "DATE": "Date",
+      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
+      "HEADER": "Claim details",
+      "INTEREST": "Interest",
+      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})",
+      "PAGE_TITLE": "Claim Details",
       "REASON_FOR_CLAIM": "Reason for claim",
       "TIMELINE": "Timeline",
-      "DATE": "Date",
-      "WHAT_HAPPENED": "What happened",
-      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "WHAT_HAPPENED": "What happened"
     },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "About claim",
@@ -252,6 +252,7 @@
       "CLAIM_NUMBER": "Claim number:",
       "DOCUMENTS": "Documents",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
+      "DOWNLOAD_RESPONSE": "Download response",
       "LATEST_UPDATE": "Latest update",
       "VIEW_CLAIM": "View claim"
     },
@@ -268,7 +269,12 @@
       "PHONE": "Phone"
     },
     "COURT_ORDERS": {
-      "PAGE_TITLE": "Any court orders?"
+      "ADD_ANOTHER": "Add another court order",
+      "CLAIM_NUMBER": "Claim number",
+      "MONTHLY_INSTALMENT_AMOUNT": "Monthly instalment amount",
+      "OWED_AMOUNT": "Amount you owe",
+      "PAGE_TITLE": "Any court orders?",
+      "TITLE": "Are you paying money as a result of any court orders?"
     },
     "DASHBOARD": {
       "PAGE_TITLE": "Claims made against you"
@@ -306,6 +312,7 @@
       "PAGE_TITLE": "Any dependants between 16 and 19?"
     },
     "DEPENDANTS_CHILDREN_DISABILITY": {
+      "ANY_DISABLED_CHILDREN": "Are any of the children that live with you disabled?",
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {
@@ -492,7 +499,13 @@
       "PAGE_TITLE": "Under 18"
     },
     "UNEMPLOYMENT": {
-      "PAGE_TITLE": "Unemployed or retired"
+      "DESCRIPTION": "How long have you been unemployed?",
+      "DETAILS": "Give details",
+      "OTHER": "Other",
+      "PAGE_TITLE": "Unemployed or retired",
+      "RETIRED": "Retired",
+      "TITLE": "Are you unemployed or retired?",
+      "UNEMPLOYED": "Unemployed"
     },
     "WHO_EMPLOYS_YOU": {
       "PAGE_TITLE": "Your employer"
@@ -531,6 +544,7 @@
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
+    "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
@@ -580,7 +594,6 @@
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
-    "VALID_NUMBER_OF_PEOPLE": "Enter a number higher than 0",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",

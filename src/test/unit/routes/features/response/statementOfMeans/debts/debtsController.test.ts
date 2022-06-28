@@ -21,7 +21,7 @@ import {
   ENTER_A_DEBT,
   ENTER_AT_LEAST_ONE_DEBT,
   REDIS_FAILURE,
-  VALID_NUMBER_OF_PEOPLE,
+  VALID_STRICTLY_POSITIVE_NUMBER,
   VALID_TWO_DECIMAL_NUMBER,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
@@ -154,7 +154,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithTotalOwnedZero())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_NUMBER_OF_PEOPLE);
+          expect(res.text).toMatch(VALID_STRICTLY_POSITIVE_NUMBER);
         });
     });
     test('should validate when has option is yes but Total owned is empty ', async () => {
@@ -163,7 +163,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithTotalOwnedEmpty())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_NUMBER_OF_PEOPLE);
+          expect(res.text).toMatch(VALID_STRICTLY_POSITIVE_NUMBER);
         });
     });
 

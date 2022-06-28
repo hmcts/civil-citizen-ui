@@ -9,8 +9,8 @@ import {
 } from '../../../../../../../main/routes/urls';
 import {
   DETAILS_REQUIRED,
+  VALID_STRICTLY_POSITIVE_NUMBER,
   NUMBER_OF_PEOPLE_REQUIRED,
-  VALID_NUMBER_OF_PEOPLE,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../../../test/utils/errorMessageTestConstants';
@@ -224,7 +224,7 @@ describe('Other Dependants', () => {
         .send({ option: 'yes', numberOfPeople: '0', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_NUMBER_OF_PEOPLE);
+          expect(res.text).toContain(VALID_STRICTLY_POSITIVE_NUMBER);
         });
     });
 
@@ -258,7 +258,7 @@ describe('Other Dependants', () => {
         .send({ option: 'yes', numberOfPeople: '0', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_NUMBER_OF_PEOPLE);
+          expect(res.text).toContain(VALID_STRICTLY_POSITIVE_NUMBER);
           expect(res.text).toContain(DETAILS_REQUIRED);
         });
     });
