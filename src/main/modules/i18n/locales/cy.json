@@ -12,8 +12,8 @@
   "Save and continue": "Cadw a Pharhau",
   "COMMON": {
     "DAY": "Diwrnod",
-    "NO": "Na",
-    "YES": "Le",
+    "NO": "Nac oes",
+    "YES": "Oes",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Mis",
     "YEAR": "Blwyddyn",
@@ -78,12 +78,13 @@
   },
   "PAGES": {
     "ADMISSION_PAYMENT_DATE": {
-      "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
+      "FOR_EXAMPLE": "Er enghraifft, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Payment date",
-      "TITLE": "What date will you pay on?"
+      "TITLE": "Ar ba ddyddiad byddwch yn talu"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
-      "PAGE_TITLE": "Severely disabled"
+      "PAGE_TITLE": "Severely disabled",
+      "TITLE": "A oes gennych anabledd difrifol?"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
@@ -208,22 +209,28 @@
       "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     },
     "CLAIM_SUMMARY": {
-      "ABOUT_CLAIM": "About claim",
-      "CLAIM_AMOUNT": "Claim amount:",
-      "CLAIM_DETAILS": "Claim details:",
+      "ABOUT_CLAIM": "Ynghylch yr Hawliad",
+      "CLAIM_AMOUNT": "Swm yr hawliad:",
+      "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Claim documents",
-      "CLAIMANT_NAME": "Claimant name:",
-      "CLAIM_NUMBER": "Claim number:",
+      "CLAIMANT_NAME": "Enw’r hawlydd:",
+      "CLAIM_NUMBER": "Mialc rebmun:",
       "DOCUMENTS": "Documents",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "LATEST_UPDATE": "Latest update",
-      "VIEW_CLAIM": "View claim"
+      "VIEW_CLAIM": "Gweld yr hawliad"
     },
     "COMPANY_DETAILS": {
       "PAGE_TITLE": "Company details"
     },
     "CONTACT_THEM": {
-      "PAGE_TITLE": "Contact claimant"
+      "ABOUT": "Ynghylch yr Hawliad",
+      "ADDRESS": "Cyfeiriad",
+      "CLAIMANT": "Hawlydd",
+      "CONTACT": "Contact ",
+      "EMAIL": "E-bost",
+      "PAGE_TITLE": "Contact claimant",
+      "PHONE": "Rhif ffôn"
     },
     "COURT_ORDERS": {
       "PAGE_TITLE": "Any court orders?"
@@ -267,7 +274,8 @@
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {
-      "PAGE_TITLE": "Any you disabled?"
+      "PAGE_TITLE": "A oes gennych anabledd?",
+      "TITLE": "A oes gennych anabledd?"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",

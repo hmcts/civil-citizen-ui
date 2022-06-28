@@ -83,7 +83,8 @@
       "TITLE": "What date will you pay on?"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
-      "PAGE_TITLE": "Severely disabled"
+      "PAGE_TITLE": "Severely disabled",
+      "TITLE": "Are you severely disabled?"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
@@ -225,7 +226,13 @@
       "PAGE_TITLE": "Company details"
     },
     "CONTACT_THEM": {
-      "PAGE_TITLE": "Contact claimant"
+      "ABOUT": "About claim",
+      "ADDRESS": "Address",
+      "CLAIMANT": "Claimant",
+      "CONTACT": "Contact ",
+      "EMAIL": "Email",
+      "PAGE_TITLE": "Contact claimant",
+      "PHONE": "Phone"
     },
     "COURT_ORDERS": {
       "PAGE_TITLE": "Any court orders?"
@@ -269,7 +276,8 @@
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {
-      "PAGE_TITLE": "Any you disabled?"
+      "PAGE_TITLE": "Are you disabled?",
+      "TITLE": "Are you disabled?"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
