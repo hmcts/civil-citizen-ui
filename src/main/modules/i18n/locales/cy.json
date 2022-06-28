@@ -230,6 +230,7 @@
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
       "CLAIM_NUMBER": "Rhif yr hawliad",
+      "MONTHLY_INSTALMENT_AMOUNT": "Swm y rhandaliad bob mis",
       "OWED_AMOUNT": "Swm sy’n ddyledus gennych",
       "PAGE_TITLE": "Any court orders?",
       "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
