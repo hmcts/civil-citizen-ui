@@ -191,10 +191,10 @@
       "PAGE_TITLE": "Your claim response"
     },
     "CLAIM_DETAILS": {
-      "PAGE_TITLE": "Claim Details",
-      "HEADER": "Claim details",
-      "CLAIM_NUMBER": "Claim number",
-      "CLAIM_AMOUNT": "Claim amount",
+      "PAGE_TITLE": "Manylion yr hawliad",
+      "HEADER": "Manylion yr hawliad",
+      "CLAIM_NUMBER": "Rhif yr hawliad",
+      "CLAIM_AMOUNT": "Swm yr hawliad",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
@@ -210,15 +210,16 @@
     },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "About claim",
-      "CLAIM_AMOUNT": "Claim amount:",
-      "CLAIM_DETAILS": "Claim details:",
+      "CLAIM_AMOUNT": "Swm yr hawliad:",
+      "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Claim documents",
-      "CLAIMANT_NAME": "Claimant name:",
-      "CLAIM_NUMBER": "Claim number:",
-      "DOCUMENTS": "Documents",
+      "CLAIMANT_NAME": "Enw’r hawlydd:",
+      "CLAIM_NUMBER": "Rhif yr hawliad:",
+      "DOCUMENTS": "Dogfennau",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
-      "LATEST_UPDATE": "Latest update",
-      "VIEW_CLAIM": "View claim"
+      "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
+      "LATEST_UPDATE": "Diweddariad diweddaraf",
+      "VIEW_CLAIM": "Gweld yr hawliad"
     },
     "COMPANY_DETAILS": {
       "PAGE_TITLE": "Company details"

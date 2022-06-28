@@ -219,6 +219,7 @@
       "CLAIM_NUMBER": "Claim number:",
       "DOCUMENTS": "Documents",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
+      "DOWNLOAD_RESPONSE": "Download response",
       "LATEST_UPDATE": "Latest update",
       "VIEW_CLAIM": "View claim"
     },
@@ -272,7 +273,7 @@
       "PAGE_TITLE": "Any dependants between 16 and 19?"
     },
     "DEPENDANTS_CHILDREN_DISABILITY": {
-      "ANY_DISABLED_CHILDREN": "Are any of the children who live with you disabled?",
+      "ANY_DISABLED_CHILDREN": "Are any of the children that live with you disabled?",
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {
