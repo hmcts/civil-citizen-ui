@@ -3,7 +3,7 @@ import nock from 'nock';
 import {app} from '../../../../../main/app';
 import request from 'supertest';
 import {
-  CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
+  CAN_WE_USE_URL,
 } from '../../../../../main/routes/urls';
 import { mockCivilClaim } from '../../../../utils/mockDraftStore';
 import {
@@ -47,7 +47,7 @@ describe('Repayment Plan View', () => {
         .post('/o/token')
         .reply(200, { id_token: citizenRoleToken });
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL).then(res => {
+      await request(app).get(CAN_WE_USE_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
       });
@@ -106,7 +106,7 @@ describe('Repayment Plan View', () => {
     describe('Enter a phone number screen', () => {
       it('should display header and text note when phone number is not provided', async () => {
         app.locals.draftStoreClient = mockWithoutRespondentPhone;
-        await request(app).get(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL).then(res => {
+        await request(app).get(CAN_WE_USE_URL).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
           const header = htmlDocument.getElementsByClassName('govuk-heading-l');
@@ -129,7 +129,7 @@ describe('Repayment Plan View', () => {
 
     beforeEach(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL).then(res => {
+      await request(app).post(CAN_WE_USE_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
       });
@@ -149,7 +149,7 @@ describe('Repayment Plan View', () => {
 
     it('should display correct error summary message with correct link for telephone number is undefined', async () => {
       await request(app)
-        .post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL)
+        .post(CAN_WE_USE_URL)
         .send({ option: 'no', telephoneNumber: ''})
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -158,12 +158,12 @@ describe('Repayment Plan View', () => {
       const errorSummaryMessage = getErrorSummaryListElement(0);
       expect(errorSummaryMessage.innerHTML).toContain(PHONE_NUMBER_REQUIRED);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#telephoneNumber');
+        .toContain('#mediationPhoneNumber');
     });
 
     it('should display correct error summary message with correct link for telephone number greater than 30 characters', async () => {
       await request(app)
-        .post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL)
+        .post(CAN_WE_USE_URL)
         .send({ option: 'no', telephoneNumber: '1234567890123456789012345678900'})
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -172,7 +172,7 @@ describe('Repayment Plan View', () => {
       const errorSummaryMessage = getErrorSummaryListElement(0);
       expect(errorSummaryMessage.innerHTML).toContain(VALID_TEXT_LENGTH);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#telephoneNumber');
+        .toContain('#mediationPhoneNumber');
     });
 
   });

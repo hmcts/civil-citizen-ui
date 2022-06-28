@@ -12,13 +12,14 @@
   "Save and continue": "Cadw a Pharhau",
   "COMMON": {
     "DAY": "Diwrnod",
-    "NO": "Na",
-    "YES": "Le",
+    "NO": "Nac oes",
+    "YES": "Oes",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Mis",
     "YEAR": "Blwyddyn",
     "BUTTONS": {
       "CONTINUE": "Parhau",
+      "SAVE_AND_CONTINUE": "Save and continue",
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {
@@ -76,14 +77,47 @@
       "TITLE": "Types of senior position"
     }
   },
+  "TASK_LIST":{
+    "APPLICATION_COMPLETE": "Application complete",
+    "APPLICATION_INCOMPLETE": "Application incomplete",
+    "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
+    "PREPARE_YOUR_RESPONSE": {
+      "CONFIRM_YOUR_DETAILS": "Confirm your details",
+      "TITLE": "Prepare your response"
+    },
+    "RESOLVING_THE_CLAIM": {
+      "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
+      "TITLE": "Resolving the claim"
+    },
+    "RESPOND_TO_CLAIM": {
+      "CHOOSE_A_RESPONSE": "Choose a response",
+      "DECIDE_HOW_YOU_WILL_PAYS": "Decide how you'll pay",
+      "HOW_MUCH_HAVE_YOU_PAID": "How much have you paid",
+      "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
+      "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
+      "TITLE": "Respond to claim",
+      "WHEN_WILL_YOU_PAY": "When will you pay the £{{ amount }}?",
+      "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
+      "YOUR_REPAYMENT_PLAN": "Your repayment plan"
+    },
+    "SUBMIT": {
+      "CHECK_AND_SUBMIT": "Check and submit your response",
+      "TITLE": "Submit"
+    },
+    "YOUR_HEARING_REQUIREMENTS": {
+      "GIVE_US_DETAILS": "Give us details in case there’s a hearing",
+      "TITLE": "Your hearing requirements"
+    }
+  },
   "PAGES": {
     "ADMISSION_PAYMENT_DATE": {
-      "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
+      "FOR_EXAMPLE": "Er enghraifft, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Payment date",
-      "TITLE": "What date will you pay on?"
+      "TITLE": "Ar ba ddyddiad byddwch yn talu"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
-      "PAGE_TITLE": "Severely disabled"
+      "PAGE_TITLE": "Severely disabled",
+      "TITLE": "A oes gennych anabledd difrifol?"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
@@ -209,22 +243,28 @@
       "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
     },
     "CLAIM_SUMMARY": {
-      "ABOUT_CLAIM": "About claim",
-      "CLAIM_AMOUNT": "Claim amount:",
-      "CLAIM_DETAILS": "Claim details:",
+      "ABOUT_CLAIM": "Ynghylch yr Hawliad",
+      "CLAIM_AMOUNT": "Swm yr hawliad:",
+      "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Claim documents",
-      "CLAIMANT_NAME": "Claimant name:",
-      "CLAIM_NUMBER": "Claim number:",
+      "CLAIMANT_NAME": "Enw’r hawlydd:",
+      "CLAIM_NUMBER": "Mialc rebmun:",
       "DOCUMENTS": "Documents",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "LATEST_UPDATE": "Latest update",
-      "VIEW_CLAIM": "View claim"
+      "VIEW_CLAIM": "Gweld yr hawliad"
     },
     "COMPANY_DETAILS": {
       "PAGE_TITLE": "Company details"
     },
     "CONTACT_THEM": {
-      "PAGE_TITLE": "Contact claimant"
+      "ABOUT": "Ynghylch yr Hawliad",
+      "ADDRESS": "Cyfeiriad",
+      "CLAIMANT": "Hawlydd",
+      "CONTACT": "Contact ",
+      "EMAIL": "E-bost",
+      "PAGE_TITLE": "Contact claimant",
+      "PHONE": "Rhif ffôn"
     },
     "COURT_ORDERS": {
       "PAGE_TITLE": "Any court orders?"
@@ -268,7 +308,8 @@
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {
-      "PAGE_TITLE": "Any you disabled?"
+      "PAGE_TITLE": "A oes gennych anabledd?",
+      "TITLE": "A oes gennych anabledd?"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
@@ -334,6 +375,7 @@
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
     },
     "OTHER_DEPENDANTS": {
+      "DESCRIPTION": "Gall hyn gynnwys oedolion a phobl nad ydych yn byw gyda nhw.",
       "DETAILS": "Rhowch fanylion",
       "NUMBER": "Nifer y bobl",
       "PAGE_TITLE": "Other dependants?",
@@ -431,6 +473,19 @@
       "PAGE_TITLE": "Your task list",
       "HEADER": "Respond to a money claim",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+    },
+    "SUPPORT_REQUIRED": {
+      "ARRANGE_AND_PAY": "You may have to arrange and pay for interpreters except for Welsh. The court will tell you.",
+      "DISABLE": "Disabled access",
+      "ENTER_SIGN_LANGUAGE": "Enter the sign language you need",
+      "EXTRA_SUPPORT": "The court can’t guarantee extra support, but it will consider other needs relating to physical or mental health impairments",
+      "HEARING": "Hearing loop",
+      "LANGUAGE": "Language interpreter",
+      "OTHER": "Other support",
+      "PAGE_TITLE": "Support required",
+      "SIGN_LANGUAGE": "Sign language interpreter",
+      "TITLE": "Select any support you’d require for a court hearing (optional)",
+      "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
       "PAGE_TITLE": "Under 18"
