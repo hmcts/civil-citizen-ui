@@ -16,7 +16,9 @@
     "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Month",
+    "MONTHS": "Months",
     "YEAR": "Year",
+    "YEARS": "Years",
     "BUTTONS": {
       "CONTINUE": "Continue",
       "SAVE_AND_CONTINUE": "Save and continue",
@@ -446,7 +448,13 @@
       "PAGE_TITLE": "Under 18"
     },
     "UNEMPLOYMENT": {
-      "PAGE_TITLE": "Unemployed or retired"
+      "DESCRIPTION": "How long have you been unemployed?",
+      "DETAILS": "Give details",
+      "OTHER": "Other",
+      "PAGE_TITLE": "Unemployed or retired",
+      "RETIRED": "Retired",
+      "TITLE": "Are you unemployed or retired?",
+      "UNEMPLOYED": "Unemployed"
     },
     "WHO_EMPLOYS_YOU": {
       "PAGE_TITLE": "Your employer"
