@@ -234,6 +234,7 @@
       "CLAIM_TOTAL": "Claim Total",
       "DATE": "Date",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
+      "DOWNLOAD_CLAIM": "Download claim (PDF)",
       "HEADER": "Claim details",
       "INTEREST": "Interest",
       "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})",
