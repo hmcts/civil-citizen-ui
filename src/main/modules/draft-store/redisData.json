@@ -202,6 +202,10 @@
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
+        "soleTraderTitle": "Mr.",
+        "soleTraderFirstName": "Jan",
+        "soleTraderLastName": "Clark",
+        "soleTraderTradingAs": "Gardener",
         "primaryAddress": {
           "County": "London",
           "Country": "United Kingdom",
