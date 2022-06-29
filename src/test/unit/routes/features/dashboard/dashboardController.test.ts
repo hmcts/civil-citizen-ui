@@ -28,7 +28,7 @@ describe('Dashboard page', () => {
       .reply(200, {id_token: citizenRoleToken});
     authenticate();
     nock('http://localhost:4000')
-      .post(CIVIL_SERVICE_CASES_URL)
+      .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined')
       .reply(200, {});
   });
 
