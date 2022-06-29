@@ -1897,7 +1897,7 @@
     "@typescript-eslint/utils" "5.30.0"
     lodash "^4.17.21"
 
-"@typescript-eslint/eslint-plugin@^5.29.0":
+"@typescript-eslint/eslint-plugin@^5.30.0":
   version "5.30.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.30.0.tgz#524a11e15c09701733033c96943ecf33f55d9ca1"
   integrity sha512-lvhRJ2pGe2V9MEU46ELTdiHgiAFZPKtLhiU5wlnaYpMc2+c1R8fh8i80ZAa665drvjHKUJyRRGg3gEm1If54ow==
