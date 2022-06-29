@@ -22,21 +22,10 @@
         </tr>
         </thead>
         <tbody class="govuk-table__body">
-        {% for claim in claimsAsDefendant %}
-          {% set claimantDetailsUrl = '/dashboard/' + claim.id + '/claimant' %}
-          <tr class="govuk-table__row">
-          <td class="govuk-table__cell">
-            <a href={{claimantDetailsUrl}}> {{ claim.case_data.legacyCaseReference }} </a>
-          </td>
-          <td class="govuk-table__cell">{{ claim.case_data.applicant1.individualFirstName }} {{ claim.case_data.applicant1.individualLastName }}</td>
-          <td class="govuk-table__cell">{{ claim.case_data.formattedTotalClaimAmount() }}</td>
-          <td class="govuk-table__cell">{{ t('You need to respond before ') }}{{ claim.case_data.formattedResponseDeadline() }}</td>
-        </tr>
-        {% endfor %}
-        {% for item in ocmcClaimsAsDefendant %}
+        {% for item in claimsAsDefendant %}
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
-            <a href="#"> {{ item.claimNumber }} </a>
+            <a href={{ item.getHref() }}> {{ item.claimNumber }} </a>
           </td>
           <td class="govuk-table__cell">{{ item.claimantName }}</td>
           <td class="govuk-table__cell">{{ item.claimAmount }}</td>

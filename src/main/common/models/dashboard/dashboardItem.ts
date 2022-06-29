@@ -5,6 +5,11 @@ export class DashboardItem {
   claimantName: string;
   defendantName: string;
   responseDeadline?: Date;
+  ocmc?: boolean;
+
+  getHref (){
+    return this.ocmc? '#' : `/dashboard/${this.claimId}/claimant`;
+  }
 }
 
 export class DashboardClaimantItem extends DashboardItem {
