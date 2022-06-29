@@ -1,7 +1,7 @@
 import nock from 'nock';
 import config from 'config';
 import Module from 'module';
-import * as checkAnswersService from '../../../../../main/services/features/response/checkAnswersService';
+import * as checkAnswersService from '../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {CITIZEN_DETAILS_URL, CLAIM_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {SummarySections} from '../../../../../main/common/models/summaryList/summarySections';
@@ -11,6 +11,7 @@ import {
 } from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TaskStatus} from '../../../../../main/common/models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../../../../main/common/utils/urlFormatter';
+import * as claimDetailsService from '../../../../../main/modules/claimDetailsService';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -21,17 +22,20 @@ const session = require('supertest-session');
 const testSession = session(app);
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/services/features/response/checkAnswersService');
+jest.mock('../../../../../main/modules/claimDetailsService');
+jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
 jest.mock('../../../../../main/services/features/response/taskListService', () => ({
   ...jest.requireActual('../../../../../main/services/features/response/taskListService') as Module,
   getTaskLists: jest.fn(() => TASK_LISTS),
 }));
 const mockGetSummarySections = checkAnswersService.getSummarySections as jest.Mock;
 const mockSaveStatementOfTruth = checkAnswersService.saveStatementOfTruth as jest.Mock;
+const mockRejectingFullAmount = claimDetailsService.isFullAmountReject as jest.Mock;
+mockRejectingFullAmount.mockImplementation(() => true);
 
 const PARTY_NAME = 'Mrs. Mary Richards';
 const CLAIM_ID = 'aaa';
-const TASK_LISTS = [
+export const TASK_LISTS = [
   {
     title: 'Task List',
     tasks: [
@@ -151,7 +155,7 @@ describe('Response - Check answers', () => {
   });
 });
 
-function createClaimWithBasicRespondentDetails(): SummarySections {
+export function createClaimWithBasicRespondentDetails(): SummarySections {
   return {
     sections: [{
       title: 'Your details',

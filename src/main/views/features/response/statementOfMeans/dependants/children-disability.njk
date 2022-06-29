@@ -13,13 +13,13 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t("Are any of the children who live with you disabled?") %}
+      {% set title = t('PAGES.DEPENDANTS_CHILDREN_DISABILITY.ANY_DISABLED_CHILDREN') %}
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
@@ -30,7 +30,7 @@
             {{ yesNoRadioButton(t,id,name,title,form) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

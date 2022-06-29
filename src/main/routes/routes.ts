@@ -68,7 +68,10 @@ import incompleteSubmissionController from './features/response/incompleteSubmis
 import howMuchHaveYouPaidFRController from './features/response/rejection/fullReject/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/expertGuidanceController';
-import partialAdmissionPaymentOptionController from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
+import partialAdmissionPaymentOptionController
+  from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
+import supportRequiredController from './features/directionsQuestionnaire/supportRequiredController';
+import documentDownloadController from './features/document/documentDownloadController';
 
 export default [
   homeController,
@@ -136,4 +139,6 @@ export default [
   paymentDatePAController,
   expertGuidanceController,
   partialAdmissionPaymentOptionController,
+  supportRequiredController,
+  documentDownloadController,
 ];

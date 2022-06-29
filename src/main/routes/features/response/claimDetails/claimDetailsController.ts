@@ -1,12 +1,17 @@
 import * as express from 'express';
 import config from 'config';
-import {CLAIM_DETAILS_URL} from '../../../urls';
+import {
+  CLAIM_DETAILS_URL,
+  CASE_TIMELINE_DOCUMENTS_URL,
+  CASE_DOCUMENT_DOWNLOAD_URL,
+} from '../../../urls';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {Claim} from '../../../../common/models/claim';
 import {AppRequest} from 'models/AppRequest';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {getInterestDetails} from '../../../../common/utils/interestUtils';
 import {getTotalAmountWithInterestAndFees} from '../../../../modules/claimDetailsService';
+import {DocumentUri} from '../../../../common/models/document/documentType';
 
 const claimDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -35,8 +40,10 @@ claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: 
     }
     const interestData = getInterestDetails(claim);
     const totalAmount = getTotalAmountWithInterestAndFees(claim);
+    const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id);
+    const sealedClaimPdfUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', req.params.id).replace(':documentType', DocumentUri.SEALED_CLAIM);
     res.render('features/response/claimDetails/claim-details', {
-      claim, totalAmount, interestData,
+      claim, totalAmount, interestData, timelinePdfUrl, sealedClaimPdfUrl,
     });
   } catch (error) {
     logger.error(error);

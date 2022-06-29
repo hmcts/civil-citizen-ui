@@ -1,6 +1,6 @@
 import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
 import {
-  ENTER_A_DEBT, VALID_NUMBER_OF_PEOPLE,
+  ENTER_A_DEBT, VALID_STRICTLY_POSITIVE_NUMBER,
 } from '../../../../form/validationErrors/errorMessageConstants';
 import {Form} from '../../../../../common/form/models/form';
 import {CurrencyValidator} from '../../../../../common/form/validators/currencyValidator';
@@ -12,12 +12,12 @@ export class DebtItems extends Form{
     debt: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({message: VALID_NUMBER_OF_PEOPLE})
+  @IsNotEmpty({message: VALID_STRICTLY_POSITIVE_NUMBER})
   @Validate(CurrencyValidator)
     totalOwned: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({message: VALID_NUMBER_OF_PEOPLE})
+  @IsNotEmpty({message: VALID_STRICTLY_POSITIVE_NUMBER})
   @Validate(CurrencyValidator)
     monthlyPayments: string;
 

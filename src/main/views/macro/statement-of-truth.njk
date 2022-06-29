@@ -1,47 +1,90 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "./types-of-senior-position.njk" import typesOfSeniorPosition %}
 
 {% macro statementOfTruth(
   form,
   statementOfTruthType,
-  title = 'Statement of truth',
-  labelHtml = 'I confirm that I believe the details I have provided are correct.',
+  title = t('COMMON.STATEMENT_OF_TRUTH.TITLE'),
+  labelHtml = t('COMMON.STATEMENT_OF_TRUTH.CORRECT_INFORMATION_CONFIRMATION'),
   isQualified = false,
-  typeOfStatement = 'statement of truth'
+  typeOfStatement = t('COMMON.STATEMENT_OF_TRUTH.STATEMENT_OF_WORK'),
+  isFullAmountRejected
   ) %}
 
   <legend><h2 class="govuk-heading-m">{{ t(title) }}</h2></legend>
 
-  {% set legendHtml %}
-    {% if statementOfTruthType == SignatureType.CLAIM or statementOfTruthType == SignatureType.RESPONSE %}
-      <p>{{ t('The information on this page forms your {{ type }}. You can see it on the {{ type }} form after you submit.', { type: statementOfTruthType }) }}</p>
-      <p>{{ t('When you’re satisfied that your answers are accurate, you should tick to “sign” this statement of truth on the form.') }}</p>
-    {% endif %}
-  {% endset -%}
+  {% if statementOfTruthType == SignatureType.CLAIM or statementOfTruthType == SignatureType.RESPONSE %}
+    <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.INFORMATION_ON_PAGE', { type: statementOfTruthType }) }}</p>
+    <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.WHEN_SATISFIED') }}</p>
+  {% endif %}
+
+  {% if isQualified %}
+    <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.SENIOR_POSITION_REQUIREMENT', { typeOfStatement: typeOfStatement}) }}</p>
+    {{ typesOfSeniorPosition() }}
+    {% set signerName = 'signerName' %}
+    {% set signerRole = 'signerRole' %}
+    {{ govukInput({
+      classes: "govuk-!-width-one-half",
+      label: {
+        text: t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME')
+      },
+      value: form.model.signerName,
+      id: signerName,
+      name: signerName,
+      errorMessage: {
+        text:t(form.errorFor(signerName))
+      } if form.errorFor(signerName)
+    }) }}
+    {{ govukInput({
+      classes: "govuk-!-width-one-half",
+      label: {
+        text: "Job title"
+      },
+      value: form.model.signerRole,
+      id: signerRole,
+      name: signerRole,
+      errorMessage: {
+        text:t(form.errorFor(signerRole))
+      } if form.errorFor(signerRole)
+    }) }}
+  {% endif %}
 
   {% set signed = 'signed' %}
+  {% set detailsTruthy = 'directionsQuestionnaireSigned' %}
   {% set signedError = form.errorFor(signed) %}
+  {% set detailsTruthyError = form.errorFor(detailsTruthy) %}
   {% set signedSelection = form.model.signed %}
-  <div class="form-group{% if signedError %} form-group-error{% endif %}" id="{{ signed }}[label]">
-    <span class="error-message">{{ t(signedError) }}</span>
+  {% set detailsTruthySelection = form.model.directionsQuestionnaireSigned %}
+  {{ govukCheckboxes({
+    idPrefix: signed,
+    name: signed,
+    items: [
+      {
+        value: 'true',
+        html: labelHtml,
+        checked: true if signedSelection
+      }
+    ],
+    errorMessage: {
+      text:t(signedError)
+    } if signedError
+  }) }}
+
+  {% if isFullAmountRejected %}
     {{ govukCheckboxes({
-      idPrefix: signed,
-      name: signed,
-      fieldset: {
-        legend: {
-          html: legendHtml
-        }
-      },
+      idPrefix: detailsTruthy,
+      name: detailsTruthy,
       items: [
         {
           value: 'true',
-          html: labelHtml,
-          checked: true if signedSelection
+          html: t('COMMON.STATEMENT_OF_TRUTH.DETAILS_TRUTHY'),
+          checked: true if detailsTruthySelection
         }
       ],
       errorMessage: {
-        text:t(signedError)
-      } if signedError
+        text:t(detailsTruthyError)
+      } if detailsTruthyError
     }) }}
-  </div>
-
+  {% endif %}
 {% endmacro %}

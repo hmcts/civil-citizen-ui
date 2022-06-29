@@ -1,5 +1,10 @@
 import {Claim} from '../../../../main/common/models/claim';
-import {InterestClaimUntilType, InterestClaimFromType, InterestClaimOptions, SameRateInterestType} from '../../../../main/common/form/models/claimDetails';
+import {
+  InterestClaimFromType,
+  InterestClaimOptions,
+  InterestClaimUntilType,
+  SameRateInterestType,
+} from '../../../../main/common/form/models/claimDetails';
 import {StatementOfMeans} from '../../../../main/common/models/statementOfMeans';
 import {Disability} from '../../../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../../../main/common/form/models/yesNo';
@@ -17,6 +22,8 @@ import {Respondent} from '../../../../main/common/models/respondent';
 import {HowMuchDoYouOwe} from '../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {PaymentIntention} from '../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
 import PaymentOptionType from '../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {mockClaim} from '../../../utils/mockClaim';
+import {DocumentType} from '../../../../main/common/models/document/documentType';
 
 describe('Claim isInterestClaimUntilSubmitDate', () => {
   const claim = new Claim();
@@ -193,7 +200,7 @@ describe('Claim isDefendantSeverlyDisabled', () => {
   const claim = new Claim();
   it('should return false with empty claim', () => {
     //When
-    const result = claim.isDefendantSeverlyDisabled();
+    const result = claim.isDefendantSeverelyDisabled();
     //Then
     expect(result).toBeFalsy();
   });
@@ -201,7 +208,7 @@ describe('Claim isDefendantSeverlyDisabled', () => {
     //Given
     claim.statementOfMeans = new StatementOfMeans();
     //When
-    const result = claim.isDefendantSeverlyDisabled();
+    const result = claim.isDefendantSeverelyDisabled();
     //Then
     expect(result).toBeFalsy();
   });
@@ -209,7 +216,7 @@ describe('Claim isDefendantSeverlyDisabled', () => {
     //Given
     claim.statementOfMeans.severeDisability = new SevereDisability();
     //When
-    const result = claim.isDefendantSeverlyDisabled();
+    const result = claim.isDefendantSeverelyDisabled();
     //Then
     expect(result).toBeFalsy();
   });
@@ -217,7 +224,7 @@ describe('Claim isDefendantSeverlyDisabled', () => {
     //Given
     claim.statementOfMeans.severeDisability.option = YesNo.NO;
     //When
-    const result = claim.isDefendantSeverlyDisabled();
+    const result = claim.isDefendantSeverelyDisabled();
     //Then
     expect(result).toBeFalsy();
   });
@@ -225,7 +232,7 @@ describe('Claim isDefendantSeverlyDisabled', () => {
     //Given
     claim.statementOfMeans.severeDisability.option = YesNo.YES;
     //When
-    const result = claim.isDefendantSeverlyDisabled();
+    const result = claim.isDefendantSeverelyDisabled();
     //Then
     expect(result).toBeTruthy();
   });
@@ -655,6 +662,45 @@ describe('Documents', () => {
       const result = claim.generatePdfFileName();
       //Then
       expect(result).toBe('000MC009-timeline-event-summary.pdf');
+    });
+  });
+
+  describe('isSystemGeneratedCaseDocumentsAvailable', () => {
+    
+    it('should return false with empty claim', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.isSystemGeneratedCaseDocumentsAvailable();
+      //Then
+      expect(result).toBeFalsy();
+    });
+    it('should return true with proper document details', () => {
+      //Given
+      const claim = mockClaim;
+      //When
+      const result = claim.isSystemGeneratedCaseDocumentsAvailable();
+      //Then
+      expect(result).toBeTruthy();
+    });
+  });
+
+  describe('getDocumentDetails', () => {
+    it('should return undefined with empty claim', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.getDocumentDetails(DocumentType.SEALED_CLAIM);
+      //Then
+      expect(result).toBeUndefined;
+    });
+    it('should return document details  ', () => {
+      //Given
+      const claim = mockClaim;
+      //When
+      const result = claim.getDocumentDetails(DocumentType.SEALED_CLAIM);
+      //Then
+      expect(result).toBe(mockClaim.systemGeneratedCaseDocuments[0].value);
     });
   });
 });
