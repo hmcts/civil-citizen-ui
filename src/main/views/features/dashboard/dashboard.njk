@@ -8,17 +8,53 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-      <h2 class="govuk-heading-m">{{ t('PAGES.DASHBOARD.PAGE_TITLE') }}</h2>
+      <h2 class="govuk-heading-m">{{ t('PAGES.DASHBOARD.CLAIMANT_TITLE') }}</h2>
       <p class="govuk-body">
-          {{ t('To view or progress your claim click on your claim number. Most recently created claims are listed first.') }}
+        {{ t('PAGES.DASHBOARD.CLAIM_PROMPT') }}
       </p>
       <table class="govuk-table">
         <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">{{ t('Claim number') }}</th>
-          <th scope="col" class="govuk-table__header">{{ t('Claimant name') }}</th>
-          <th scope="col" class="govuk-table__header">{{ t('Claim amount') }}</th>
-          <th scope="col" class="govuk-table__header">{{ t('Status') }}</th>
+          <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_NUMBER') }}</th>
+          <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.DEFENDANT_NAME') }}</th>
+          <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_AMOUNT') }}</th>
+          <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.NEXT_STEPS') }}</th>
+          <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.DEADLINE') }}</th>
+          <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.ACTIONS') }}</th>
+        </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+        {% for item in claimsAsDefendant %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              <a href={{ item.getHref() }}> {{ item.claimNumber }} </a>
+            </td>
+            <td class="govuk-table__cell">{{ item.defendantName }}</td>
+            <td class="govuk-table__cell">{{ item.claimAmount }}</td>
+            <td class="govuk-table__cell">{{ item.nextSteps }}</td>
+            <td class="govuk-table__cell">{{ item.responseDeadline }}</td>
+            <td class="govuk-table__cell">
+              <a href={{ item.getHref() }}> {{ t('PAGES.DASHBOARD.VIEW') }} </a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <h2 class="govuk-heading-m">{{ t('PAGES.DASHBOARD.DEFENDANT_TITLE') }}</h2>
+      <p class="govuk-body">
+          {{ t('PAGES.DASHBOARD.CLAIM_PROMPT') }}
+      </p>
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_NUMBER') }}</th>
+          <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIMANT_NAME') }}</th>
+          <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_AMOUNT') }}</th>
+          <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_STATUS') }}</th>
         </tr>
         </thead>
         <tbody class="govuk-table__body">
@@ -30,8 +66,8 @@
           </td>
           <td class="govuk-table__cell">{{ claim.case_data.applicant1.individualFirstName }} {{ claim.case_data.applicant1.individualLastName }}</td>
           <td class="govuk-table__cell">{{ claim.case_data.formattedTotalClaimAmount() }}</td>
-          <td class="govuk-table__cell">{{ t('You need to respond before ') }}{{ claim.case_data.formattedResponseDeadline() }}</td>
-        </tr> 
+          <td class="govuk-table__cell">{{ t('PAGES.DASHBOARD.ACTION_PROMPT') }}{{ claim.case_data.formattedResponseDeadline() }}</td>
+        </tr>
         {% endfor %}
         </tbody>
       </table>

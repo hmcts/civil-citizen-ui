@@ -27,6 +27,7 @@ const dashboardController = express.Router();
 
 dashboardController.get(DASHBOARD_URL, async function (req, res) {
   const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(<AppRequest>req);
+  console.log(claimsAsClaimant);
   const claimsAsDefendant : CivilClaimResponse[]  = await civilServiceClient.retrieveByDefendantId(<AppRequest>req);
   const claimDraftSaved = false;
   const responseDraftSaved = false;

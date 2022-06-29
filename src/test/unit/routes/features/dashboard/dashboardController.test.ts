@@ -4,6 +4,7 @@ import {app} from '../../../../../main/app';
 import config from 'config';
 import {DASHBOARD_URL} from '../../../../../main/routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../../main/app/client/civilServiceUrls';
+
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 const nock = require('nock');
@@ -29,6 +30,9 @@ describe('Dashboard page', () => {
     authenticate();
     nock('http://localhost:4000')
       .post(CIVIL_SERVICE_CASES_URL)
+      .reply(200, {});
+    nock('http://localhost:4000')
+      .get(CIVIL_SERVICE_CASES_URL  + 'claimant/undefined')
       .reply(200, {});
   });
 

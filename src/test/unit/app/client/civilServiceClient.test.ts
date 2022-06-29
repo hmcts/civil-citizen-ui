@@ -7,8 +7,8 @@ import config from 'config';
 import {
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIMANT,
-  CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_FEES_RANGES,
 } from '../../../../main/app/client/civilServiceUrls';
 import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
 import {mockClaim} from '../../../utils/mockClaim';
@@ -81,7 +81,7 @@ describe('Civil Service Client', () => {
       expect(actualClaims[0].case_data.applicant1?.individualLastName).toEqual('Clark');
     });
   });
-  describe('getFeeRanges', ()=>{
+  describe('getFeeRanges', () =>{
     it('should return fee ranges successfully', async () => {
       //Given
       const data = require('../../../utils/mocks/feeRangesMock.json');
