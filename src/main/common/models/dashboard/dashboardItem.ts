@@ -6,10 +6,6 @@ export class DashboardItem {
   defendantName: string;
   responseDeadline?: Date;
   ocmc?: boolean;
-
-  getHref (){
-    return this.ocmc? '#' : `/dashboard/${this.claimId}/claimant`;
-  }
 }
 
 export class DashboardClaimantItem extends DashboardItem {
@@ -19,4 +15,7 @@ export class DashboardClaimantItem extends DashboardItem {
 export class DashboardDefendantItem extends DashboardItem {
   nextSteps: string;// TODO: this is only a placeholder. To be revisited in a separate story
   actions: string;// TODO: this is only a placeholder. To be revisited in a separate story
+  getHref (){
+    return this.ocmc? '#' : `/dashboard/${this.claimId}/defendant`;
+  }
 }
