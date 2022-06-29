@@ -24,7 +24,7 @@
         </tr>
         </thead>
         <tbody class="govuk-table__body">
-        {% for item in claimsAsDefendant %}
+        {% for item in claimsAsClaimant %}
           <tr class="govuk-table__row">
             <td class="govuk-table__cell">
               <a href={{ item.getHref() }}> {{ item.claimNumber }} </a>
