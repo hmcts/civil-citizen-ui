@@ -13,6 +13,16 @@
         "version": "4",
         "calculatedAmountInPence": "7000"
       },
+      "supportRequired":{
+        "languageSelected":true,
+        "languageInterpreted":"Swahili",
+        "signLanguageSelected":true,
+        "signLanguageInterpreted":"Sign",
+        "hearingLoopSelected":false,
+        "disabledAccessSelected":false,
+        "otherSupportSelected":false,
+        "otherSupport":""
+      },
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "ORGANISATION",
@@ -25,8 +35,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
@@ -42,13 +51,12 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "partyTypeDisplayValue": "Organisation",
         "telephoneNumber": "01632960001"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 0,
-      "detailsOfClaim": "Judicial review is a type of court proceeding in which a judge reviews the lawfulness of a decision or action made by a public body. In other words, judicial reviews are a challenge to the way in which a decision has been made, rather than the rights and wrongs of the conclusion reached. It is not really concerned with the conclusions of that process and whether those were ‘right’, as long as the right procedures have been followed. The court will not substitute what it thinks is the ‘correct’ decision. This may mean that the public body will be able to make the same decision again, so long as it does so in a lawful way. If you want to argue that a decision was incorrect, judicial review may not be best for you. There are alternative remedies, such as appealing against the decision to a higher court. Examples of the types of decision which may fall within the range of judicial review include: Decisions of local authorities in the exercise of their duties to provide various welfare benefits and special education for children in need of such education; Certain decisions of the immigration authorities and the Immigration and Asylum Chamber; Decisions of regulatory bodies; Decisions relating to prisoner’s rights.",
+      "detailsOfClaim": "Test details of claim",
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
@@ -194,6 +202,10 @@
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
+        "soleTraderTitle": "Mr.",
+        "soleTraderFirstName": "Jan",
+        "soleTraderLastName": "Clark",
+        "soleTraderTradingAs": "Gardener",
         "primaryAddress": {
           "County": "London",
           "Country": "United Kingdom",
@@ -202,8 +214,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "ORGANISATION",
@@ -216,8 +227,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -368,8 +378,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
@@ -385,8 +394,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -536,8 +544,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
@@ -552,8 +559,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-05-25T16:29:22.100358",
@@ -686,7 +692,7 @@
     }
   },
   {
-    "id": 1645882162449405,
+    "id": 1653311433897526,
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -711,8 +717,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "COMPANY",
@@ -726,7 +731,6 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "partyTypeDisplayValue": "Organisation",
         "telephoneNumber": "01632960001"
       },
       "claimInterest": "Yes",
@@ -738,15 +742,11 @@
         "status": "FINISHED",
         "camundaEvent": "CREATE_CLAIM_SPEC"
       },
-      "timelineOfEvents": [
-        {
-          "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
-          "value": {
-            "timelineDate": "2021-01-01",
-            "timelineDescription": "Test details of claim"
-          }
-        }
-      ],
+      "specClaimTemplateDocumentFiles": {
+        "document_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac",
+        "document_filename": "timeline-event-template-Kadir.pdf",
+        "document_binary_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac/binary"
+      },
       "totalClaimAmount": 1000,
       "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
       "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
@@ -885,8 +885,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "SOLE_TRADER",
@@ -901,8 +900,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",

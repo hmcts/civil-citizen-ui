@@ -2,11 +2,9 @@
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/about-claim-widget.njk" import aboutClaimWidget %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
-
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CONTACT_THEM.PAGE_TITLE') }}
 {% endblock %}
-
 {% block content %}
   {{ govukBackLink({
     text: "Back",
@@ -14,22 +12,22 @@
   }) }}
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
-      {% set otherParty = 'Claimant' %}
+      {% set otherParty = t('PAGES.CONTACT_THEM.CLAIMANT') %}
       {% set otherPartyLabel = 'contact-them' %}
-      {% set header = t('About claim') %}
-      {% set otherPartyName = claim.applicant1.partyName %}
+      {% set header = t('PAGES.CONTACT_THEM.ABOUT') %}
+      {% set otherPartyName = claimantName %}
       {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
       {% set phone = claim.applicant1.telephoneNumber %}
       {% set email = claim.applicantSolicitor1UserDetails.email %}
       {% set contactPerson = claim.applicant1.contactPerson %}
-      {% set heading = t('Contact ') + t(otherParty) %}
+      {% set heading = t('PAGES.CONTACT_THEM.CONTACT')+ t(otherParty) %}
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <span class="govuk-caption-l  govuk-!-padding-top-0">{{ t(otherParty) }}</span>
           <h1 class="govuk-heading-l govuk-!-margin-bottom-6">{{ t(otherPartyName) }}</h1>
           <div>
             {% if address %}
-              <h2 class="govuk-heading-m">{{ t('Address') }}</h2>
+              <h2 class="govuk-heading-m">{{ t('PAGES.CONTACT_THEM.ADDRESS') }}</h2>
               {% if solicitorName %}
                 <p class="govuk-body govuk-!-margin-bottom-0">{{ solicitorName }}</p>
               {% endif %}
@@ -52,18 +50,16 @@
           </div>
           <div>
             {% if phone %}
-              <div class="govuk-body govuk-!-margin-bottom-0">{{ t('Phone') +': ' }}{{ phone }}</div>
+              <div class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.CONTACT_THEM.PHONE') +': ' }}{{ phone }}</div>
             {% endif %}
-
             {% if email %}
-              <div class="govuk-body govuk-!-margin-bottom-6">{{ t('Email') +': ' }}<a
-                  href='mailto:{{ email }}'>{{ email }}</a></div>
+              <div class="govuk-body govuk-!-margin-bottom-6">{{ t('PAGES.CONTACT_THEM.EMAIL') +': ' }}<a href='mailto:{{ email }}'>{{ email }}</a>
+              </div>
             {% endif %}
-
           </div>
           {{ contactUsForHelp(t) }}
         </div>
-        {{ aboutClaimWidget({header:header,lines:[{title: 'Claimant name:', href: otherPartyLabel, hrefContact: otherPartyName},{title: 'Claim amount:', content:totalClaimAmount},{title: 'Claim details:', href: claimDetailsUrl, hrefContact: 'View claim'}]}) }}
+        {{ aboutClaimWidget({header:header,lines:[{title: t('PAGES.CLAIM_SUMMARY.CLAIMANT_NAME'), href: otherPartyLabel, hrefContact: otherPartyName},{title: t('PAGES.CLAIM_SUMMARY.CLAIM_AMOUNT'), content:totalClaimAmount},{title: t('PAGES.CLAIM_SUMMARY.CLAIM_DETAILS'), href: claimDetailsUrl, hrefContact: t('PAGES.CLAIM_SUMMARY.VIEW_CLAIM')}]}) }}
       </div>
     </main>
   </div>

@@ -19,13 +19,13 @@
       {% set atLeastOneCourtOrderError = form.errorFor('rows') %}
       {% if errors.length > 0 %}
         {{ govukErrorSummary({
-          "titleText": t('There was a problem'),
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('Are you paying money as a result of any court orders?') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.COURT_ORDERS.TITLE') }}</h1>
           <div data-module="moj-add-another">
             <form method="post" novalidate>
               {{ csrfProtection(csrfToken) }}
@@ -35,19 +35,19 @@
                   class="govuk-form-group {% if atLeastOneCourtOrderError %} govuk-form-group--error {% endif %}">
                   {% if atLeastOneCourtOrderError %}
                     <p class="govuk-error-message">
-                      <span class="govuk-visually-hidden">Error:</span> {{ t(atLeastOneCourtOrderError) }}
+                      <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(atLeastOneCourtOrderError) }}
                     </p>
                   {% endif %}
 
                   {% for row in form.model.rows %}
-                    {{ courtOrder(loop.index0, row, form.errorFor) }}
+                    {{ courtOrder(loop.index0, row, form.errorFor, t) }}
                   {% else %}
-                    {{ courtOrder(0, '', form.errorFor) }}
+                    {{ courtOrder(0, '', form.errorFor, t) }}
                   {% endfor %}
 
                   <div class="moj-button-action">
                     {{ govukButton({
-                      text: t('Add another court order'),
+                      text: t('PAGES.COURT_ORDERS.ADD_ANOTHER'),
                       classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                       type: 'button',
                       attributes: {
@@ -65,7 +65,7 @@
                 items: [
                   {
                     value: YesNo.YES,
-                    text: t('Yes'),
+                    text: t('COMMON.YES'),
                     checked: form.model.declared === true,
                     conditional: {
                     html: courtOrdersHtml
@@ -73,7 +73,7 @@
                   },
                   {
                     value: YesNo.NO,
-                    text: t('No'),
+                    text: t('COMMON.NO'),
                     checked: form.model.declared === false
                   }
                 ],
@@ -84,7 +84,7 @@
 
               <div class="govuk-form-group">
                 {{ govukButton({
-                  text: t("Save and continue")
+                  text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
                 }) }}
               </div>
             </form>

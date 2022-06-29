@@ -1,0 +1,102 @@
+{% extends "claim-details-tpl.njk" %}
+{% set heading = t('What date will you pay on?') %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.ADMISSION_PAYMENT_DATE.PAGE_TITLE') }}
+{% endblock %}
+{% set hint = t('PAGES.ADMISSION_PAYMENT_DATE.FOR_EXAMPLE', {nextDate: nextMonth.getDate(), nextMonth: nextMonth.getMonth() + 1,nextYear: nextMonth.getFullYear()}) %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getErrors() %}
+      {% if form.hasErrors() %}
+        {{ govukErrorSummary({
+          "titleText": t("ERRORS.THERE_WAS_A_PROBLEM"),
+          "errorList": errors
+        }) }}
+        {% set errorMessages %}
+          {% if errors %}
+            {% for error in errors %}
+              <span class="govuk-error-message">{{ t(error.text) }}</span>
+            {% endfor %}
+          {% endif %}
+        {% endset -%}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.ADMISSION_PAYMENT_DATE.TITLE') }}</h1>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <div class="govuk-form-group">
+              {{ govukDateInput({
+                id: "date",
+                type: "number",
+                inputmode: "numeric",
+                name: "date",
+                fieldset: {
+                  legend: {
+                    isPageHeading: false,
+                    classes: 'govuk-fieldset__legend--m'
+                  }
+                },
+                hint: {
+                  text: hint
+                },
+                errorMessage: {
+                  html: errorMessages
+                } if form.hasErrors(),
+                items: [
+                  {
+                    classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+                    id: "day",
+                    label: t('COMMON.DAY'),
+                    name: "day",
+                    value: form.model.day,
+                    max: 31
+                  },
+                  {
+                    classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+                    id: "month",
+                    label: t('COMMON.MONTH'),
+                    name: "month",
+                    value: form.model.month,
+                    max: 12
+                  },
+                  {
+                    classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+                    id: "year",
+                    label: t('COMMON.YEAR'),
+                    name: "year",
+                    value: form.model.year,
+                    max: 9999
+                  }
+                ]
+              }) }}
+            </div>
+            {{ govukButton({ text: t("Save and continue") }) }}
+          </form>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-thirds">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
+

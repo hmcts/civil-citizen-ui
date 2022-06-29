@@ -12,6 +12,15 @@
       "version": "4",
       "calculatedAmountInPence": "7000"
     },
+    "supportRequired":{
+      "languageSelected":true,
+      "languageInterpreted":"Croatian",
+      "signLanguageSelected":true,
+      "signLanguageInterpreted":"Sign",
+      "hearingLoopSelected":false,
+      "disabledAccessSelected":false,
+      "otherSupportSelected":false,
+      "otherSupport":""},
     "applicant1": {
       "type": "ORGANISATION",
       "partyName": "Mr. Jan Clark",
@@ -31,6 +40,20 @@
       "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
     },
     "partialAdmission": {
+      "paymentIntention": {
+        "paymentDate": "2025-06-01T00:00:00.000Z"
+      },
+      "howMuchHaveYouPaid": {
+        "amount": 20,
+        "totalClaimAmount": 110,
+        "date": "2022-01-01T00:00:00.000Z",
+        "day": "1",
+        "month": "1",
+        "year": "2022",
+        "text": "text"
+      }
+    },
+    "rejectAllOfClaim": {
       "howMuchHaveYouPaid": {
         "amount": 20,
         "totalClaimAmount": 110,
@@ -156,6 +179,15 @@
     "paymentDate": "2025-06-01T00:00:00.000Z",
     "defence": {
       "text": "reasons for making the claim"
-    }
+    },
+    "timelineOfEvents": [
+      {
+        "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
+        "value": {
+          "timelineDate": "2021-01-01",
+          "timelineDescription": "Test details of claim"
+        }
+      }
+    ]
   }
 }
