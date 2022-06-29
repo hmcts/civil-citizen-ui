@@ -33,7 +33,9 @@ class PaymentDateService {
           case_data.partialAdmission = new PartialAdmission();
         }
         if (!case_data.partialAdmission?.paymentIntention?.paymentDate) {
+          const paymentType =  case_data.partialAdmission?.paymentIntention?.paymentOption;
           case_data.partialAdmission.paymentIntention = new PaymentIntention();
+          case_data.partialAdmission.paymentIntention.paymentOption = paymentType;
         }
         case_data.partialAdmission.paymentIntention.paymentDate = paymentDate;
       } else {

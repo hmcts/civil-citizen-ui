@@ -1,14 +1,20 @@
-import {fail} from 'assert';
 import * as supertest from 'supertest';
-import {app} from '../../main/app';
 import * as urls from '../../main/routes/urls';
+import config from 'config';
+import nock from 'nock';
+import {app} from '../../main/app';
+import {fail} from 'assert';
 import {IGNORED_URLS} from './ignored-urls';
+import {urlsWithActions} from './action-urls';
+import {mockCivilClaim} from '../utils/mockDraftStore';
+
+jest.mock('../../main/modules/oidc');
+jest.mock('../../main/modules/draft-store');
 
 const pa11y = require('pa11y');
-
+app.locals.draftStoreClient = mockCivilClaim;
 const agent = supertest.agent(app);
-
-const urlsNoSignOut = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
+const urlsList = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 
 class Pa11yResult {
   documentTitle: string;
@@ -25,19 +31,6 @@ class PallyIssue {
   typeCode: number;
 }
 
-beforeAll((done /* call it or remove it*/) => {
-  done(); // calling it
-});
-
-beforeEach(() => {
-  jest.useFakeTimers();
-  jest.setTimeout(100000);
-});
-
-afterEach(() => {
-  jest.clearAllTimers();
-});
-
 function ensurePageCallWillSucceed(url: string): Promise<void> {
   return agent.get(url).then((res: supertest.Response) => {
     if (res.redirect && res.get('Location') === 'login') {
@@ -51,16 +44,16 @@ function ensurePageCallWillSucceed(url: string): Promise<void> {
   });
 }
 
-async function runPally(url: string): Promise<Pa11yResult> {
-  const pa11yResult = await pa11y(url, {
-    includeWarnings: true,
+async function runPally(url: string, actions: string[]): Promise<Pa11yResult> {
+  const PAGE_URL = url.replace(':id', '1645882162449409');
+  return await pa11y(PAGE_URL, {
     // Ignore GovUK template elements that are outside the team's control from a11y tests
     hideElements: '#logo, .logo, .copyright, link[rel=mask-icon]',
+    actions,
     chromeLaunchConfig: {
       args: ['--no-sandbox'],
     },
   });
-  return pa11yResult;
 }
 
 function expectNoErrors(messages: PallyIssue[]): void {
@@ -71,19 +64,40 @@ function expectNoErrors(messages: PallyIssue[]): void {
   }
 }
 
-describe('check URLs for accessibility errors', () => {
-  if (urlsNoSignOut.length > 0) {
-    describe.each(urlsNoSignOut)('Page %s', url => {
-      test('should have no accessibility errors', async () => {
-        await ensurePageCallWillSucceed(url);
-        const result = await runPally(agent.get(url).url);
-        expect(result.issues).toEqual(expect.any(Array));
-        expectNoErrors(result.issues);
-      });
+function testAccessibilityWithActions(url: string, actions: string[]): void {
+  describe(`Page ${url}`, () => {
+    test(`should have no accessibility errors ${(actions.length) ? 'with actions': ''}`, done => {
+      ensurePageCallWillSucceed(url)
+        .then(() => runPally(agent.get(url).url, actions))
+        .then((result: Pa11yResult) => {
+          expectNoErrors(result.issues);
+          done();
+        })
+        .catch((err: Error) => done(err));
     });
-  } else {
-    it('does nothing', async () => {
-      //see https://github.com/facebook/jest/issues/5783#issuecomment-450626450
-    });
+  });
+}
+
+function testAccessibility(url: string): void {
+  const urlWithAction = urlsWithActions.find(item => item.url === url);
+  // if object exists we want to test it both with and without actions
+  if (urlWithAction) {
+    testAccessibilityWithActions(urlWithAction.url, urlWithAction.actions);
   }
+  testAccessibilityWithActions(url, []);
+}
+
+describe('Accessibility', () => {
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const idamUrl: string = config.get('idamUrl');
+
+  beforeEach(() => {
+    nock(idamUrl)
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
+  });
+
+  urlsList.forEach((url) => {
+    testAccessibility(url);
+  });
 });

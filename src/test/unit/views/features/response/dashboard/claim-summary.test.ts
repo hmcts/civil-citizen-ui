@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
-import {CLAIMANT_SUMMARY_URL} from '../../../../../../main/routes/urls';
+import {DEFENDANT_SUMMARY_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
@@ -25,7 +25,7 @@ describe('Send your response by email View', () => {
         .post('/o/token')
         .reply(200, { id_token: citizenRoleToken });
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIMANT_SUMMARY_URL).then(res => {
+      await request(app).get(DEFENDANT_SUMMARY_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
         paragraphs = htmlDocument.getElementsByClassName(govukBodyClass);

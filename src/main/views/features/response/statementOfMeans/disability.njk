@@ -13,13 +13,13 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t("Are you disabled?") %}
+      {% set title = t("PAGES.DISABILITY.TITLE") %}
       {% set id = "disability" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
+          "titleText": t("ERRORS.THERE_WAS_A_PROBLEM"),
           "errorList": errors
         }) }}
       {% endif %}

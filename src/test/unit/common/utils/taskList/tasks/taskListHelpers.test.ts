@@ -1,6 +1,7 @@
 import {Claim} from '../../../../../../main/common/models/claim';
 import {
   financialDetailsShared,
+  hasContactPersonAndCompanyPhone,
   isCounterpartyCompany,
   isCounterpartyIndividual,
   isNotPayImmediatelyResponse,
@@ -11,6 +12,8 @@ import {
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import { Mediation } from '../../../../../../main/common/models/mediation/mediation';
+import { CompanyTelephoneNumber } from '../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Respondent = {
@@ -196,6 +199,34 @@ describe('Task List Helpers', () => {
     it('should return true if financial details are set to true', () => {
       caseData.taskSharedFinancialDetails = true;
       expect(financialDetailsShared(caseData)).toEqual(true);
+    });
+  });
+
+  describe('hasContactPersonAndCompanyPhone helper', () => {
+    it('should return false if companyTelephoneNumber are not set', () => {
+      expect(hasContactPersonAndCompanyPhone(caseData)).toEqual(false);
+    });
+
+    it('should return false if contact person are not set', () => {
+      caseData.mediation = new Mediation();
+      caseData.mediation.companyTelephoneNumber = new CompanyTelephoneNumber();
+      caseData.mediation.companyTelephoneNumber.mediationPhoneNumber = '123';
+      expect(hasContactPersonAndCompanyPhone(caseData)).toEqual(false);
+    });
+
+    it('should return false if mediation phone are not set', () => {
+      caseData.mediation = new Mediation();
+      caseData.mediation.companyTelephoneNumber = new CompanyTelephoneNumber();
+      caseData.mediation.companyTelephoneNumber.mediationContactPerson = 'test';
+      expect(hasContactPersonAndCompanyPhone(caseData)).toEqual(false);
+    });
+
+    it('should return true if contact person and mediation phone are set', () => {
+      caseData.mediation = new Mediation();
+      caseData.mediation.companyTelephoneNumber = new CompanyTelephoneNumber();
+      caseData.mediation.companyTelephoneNumber.mediationContactPerson = 'test';
+      caseData.mediation.companyTelephoneNumber.mediationPhoneNumber = '123';
+      expect(hasContactPersonAndCompanyPhone(caseData)).toEqual(true);
     });
   });
 });
