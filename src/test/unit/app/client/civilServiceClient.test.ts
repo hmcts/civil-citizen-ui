@@ -6,6 +6,7 @@ import {CivilClaimResponse} from '../../../../main/common/models/civilClaimRespo
 import config from 'config';
 import {
   CIVIL_SERVICE_CASES_URL,
+  CIVIL_SERVICE_CLAIMANT,
   CIVIL_SERVICE_FEES_RANGES,
 } from '../../../../main/app/client/civilServiceUrls';
 import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
@@ -18,6 +19,29 @@ declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 
 describe('Civil Service Client', () => {
+  describe('get dashboard claims for claimant', ()=>{
+    it('should return claimant claims successfully', async () => {
+      //Given
+      const data = require('../../../utils/mocks/claimantClaimsMock.json');
+      const mockGet = jest.fn().mockResolvedValue({data: data});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const claimantDashboardItems = await civilServiceClient.getClaimsForClaimant(mockedAppRequest);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockGet.mock.calls[0][0]).toContain(CIVIL_SERVICE_CLAIMANT);
+      expect(claimantDashboardItems.length).toEqual(1);
+      expect(claimantDashboardItems[0].claimNumber).toEqual(data[0].claimNumber);
+      expect(claimantDashboardItems[0].claimantName).toEqual(data[0].claimantName);
+      expect(claimantDashboardItems[0].defendantName).toEqual(data[0].defendantName);
+      expect(claimantDashboardItems[0].claimAmount).toEqual(data[0].claimAmount);
+      expect(claimantDashboardItems[0].responseDeadline).toEqual(data[0].responseDeadline);
+    });
+  });
   describe('retrieveByDefendantId', ()=>{
     it('should retrieve cases successfully', async () => {
       //Given

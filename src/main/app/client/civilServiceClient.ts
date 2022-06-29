@@ -3,12 +3,10 @@ import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
-import {
-  CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_FEES_RANGES,
-} from './civilServiceUrls';
+import {CIVIL_SERVICE_CASES_URL, CIVIL_SERVICE_FEES_RANGES} from './civilServiceUrls';
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
+import {DashboardClaimantItem} from '../../common/models/dashboard/dashboardItem';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -29,6 +27,18 @@ export class CivilServiceClient {
         'Authorization': `Bearer ${req.session?.user?.accessToken}`,
       },
     };
+  }
+
+  async getClaimsForClaimant(req: AppRequest) : Promise<DashboardClaimantItem[]>{
+    const config = this.getConfig(req);
+    const submitterId = req.session?.user?.id;
+    try {
+      const response = await this.client.get('/cases/claimant/' + submitterId, config);
+      console.log(response.data);
+      return plainToInstance(DashboardClaimantItem, response.data as object[]);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async retrieveByDefendantId(req: AppRequest): Promise<CivilClaimResponse[]> {
