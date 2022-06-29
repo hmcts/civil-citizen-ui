@@ -1,7 +1,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
-{% macro courtOrder(courtOrderIndex, courtOrderValue, errorFor) %}
+{% macro courtOrder(courtOrderIndex, courtOrderValue, errorFor, t) %}
 
   {% call govukFieldset({
     classes: 'moj-add-another__item govuk-!-margin-bottom-6',
@@ -17,7 +17,7 @@
       value: courtOrderValue.claimNumber,
       type: 'text',
       label: {
-        text: t('Claim number')
+        text: t('PAGES.COURT_ORDERS.CLAIM_NUMBER')
       },
       attributes: {
         'data-name': 'rows[%index%][claimNumber]',
@@ -37,7 +37,7 @@
         text: "£"
       },
       label: {
-        text: t('Amount you owe')
+        text: t('PAGES.COURT_ORDERS.OWED_AMOUNT')
       },
       attributes: {
         'data-name': 'rows[%index%][amount]',
@@ -56,7 +56,7 @@
         text: "£"
       },
       label: {
-        text: t('Monthly instalment amount')
+        text: t('PAGES.COURT_ORDERS.MONTHLY_INSTALMENT_AMOUNT')
       },
       attributes: {
         'data-name': 'rows[%index%][instalmentAmount]',

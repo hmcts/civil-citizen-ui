@@ -15,7 +15,7 @@ const request = require('supertest');
 const {app} = require('../../../../../main/app');
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/services/features/response/checkAnswersService');
+jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/features/response/taskListService');
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;

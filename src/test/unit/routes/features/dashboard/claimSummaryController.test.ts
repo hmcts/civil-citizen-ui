@@ -3,7 +3,7 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 
-import {CLAIMANT_SUMMARY_URL} from '../../../../../main/routes/urls';
+import {DEFENDANT_SUMMARY_URL} from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
@@ -22,7 +22,7 @@ describe('Claim summary', () => {
     test('should return claim summary', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .get(CLAIMANT_SUMMARY_URL)
+        .get(DEFENDANT_SUMMARY_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
 
@@ -36,7 +36,7 @@ describe('Claim summary', () => {
     test('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CLAIMANT_SUMMARY_URL)
+        .get(DEFENDANT_SUMMARY_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});

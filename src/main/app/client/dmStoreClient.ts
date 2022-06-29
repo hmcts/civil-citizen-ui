@@ -2,6 +2,7 @@ import config from 'config';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {ServiceAuthProviderClient} from './serviceAuthProviderClient';
+import {DOCUMENT_NOT_AVAILABLE} from './errorMessageContants';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dmStoreClient');
@@ -38,7 +39,7 @@ export class DmStoreClient {
       const response: AxiosResponse<object> = await this.client.get(retrieveDocumentByIdUrl, options);
 
       if (!response.data) {
-        throw new AssertionError({message: 'Document is not available.'});
+        throw new AssertionError({message: DOCUMENT_NOT_AVAILABLE});
       }
       return response.data as Buffer;
     } catch (err: unknown) {

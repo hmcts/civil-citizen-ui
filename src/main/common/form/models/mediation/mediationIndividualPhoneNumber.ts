@@ -16,10 +16,10 @@ export class MediationIndividualPhoneNumber {
   @IsNotEmpty({ message: PHONE_NUMBER_REQUIRED })
   @MaxLength(30, { message: VALID_TEXT_LENGTH })
   @Validate(OptionalIntegerValidator, {message: PHONE_NUMBER_REQUIRED})
-    telephoneNumber?: string;
+    mediationPhoneNumber?: string;
 
-  constructor(option?: YesNo, telephoneNumber?: string) {
+  constructor(option?: YesNo, mediationPhoneNumber?: string) {
     this.option = option;
-    this.telephoneNumber = telephoneNumber?.trim();
+    this.mediationPhoneNumber = mediationPhoneNumber?.trim();
   }
 }

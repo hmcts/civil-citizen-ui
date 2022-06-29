@@ -1,5 +1,4 @@
 {
-  "Claims made against you": "Claims made against you",
   "Claim number": "Claim number",
   "Claimant name": "Claimant name",
   "Claim amount": "Claim amount",
@@ -7,7 +6,6 @@
   "Next steps": "Next steps",
   "Deadline": "Deadline",
   "Actions": "Actions",
-  "Respond to the claim": "Respond to the claim",
   "View": "View",
   "Save and continue": "Save and continue",
   "COMMON": {
@@ -16,9 +14,12 @@
     "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Month",
+    "MONTHS": "Months",
     "YEAR": "Year",
+    "YEARS": "Years",
     "BUTTONS": {
       "CONTINUE": "Continue",
+      "SAVE_AND_CONTINUE": "Save and continue",
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {
@@ -76,6 +77,38 @@
       "TITLE": "Types of senior position"
     }
   },
+  "TASK_LIST":{
+    "APPLICATION_COMPLETE": "Application complete",
+    "APPLICATION_INCOMPLETE": "Application incomplete",
+    "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
+    "PREPARE_YOUR_RESPONSE": {
+      "CONFIRM_YOUR_DETAILS": "Confirm your details",
+      "TITLE": "Prepare your response"
+    },
+    "RESOLVING_THE_CLAIM": {
+      "FREE_TELEPHONE_MEDIATION": "Free telephone mediation",
+      "TITLE": "Resolving the claim"
+    },
+    "RESPOND_TO_CLAIM": {
+      "CHOOSE_A_RESPONSE": "Choose a response",
+      "DECIDE_HOW_YOU_WILL_PAYS": "Decide how you'll pay",
+      "HOW_MUCH_HAVE_YOU_PAID": "How much have you paid",
+      "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
+      "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
+      "TITLE": "Respond to claim",
+      "WHEN_WILL_YOU_PAY": "When will you pay the £{{ amount }}?",
+      "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
+      "YOUR_REPAYMENT_PLAN": "Your repayment plan"
+    },
+    "SUBMIT": {
+      "CHECK_AND_SUBMIT": "Check and submit your response",
+      "TITLE": "Submit"
+    },
+    "YOUR_HEARING_REQUIREMENTS": {
+      "GIVE_US_DETAILS": "Give us details in case there’s a hearing",
+      "TITLE": "Your hearing requirements"
+    }
+  },
   "PAGES": {
     "ADMISSION_PAYMENT_DATE": {
       "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
@@ -83,7 +116,8 @@
       "TITLE": "What date will you pay on?"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
-      "PAGE_TITLE": "Severely disabled"
+      "PAGE_TITLE": "Severely disabled",
+      "TITLE": "Are you severely disabled?"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
@@ -94,7 +128,14 @@
       "BANK_TYPE_OF_ACCOUNT": "Type of account",
       "BANK_BALANCE": "Balance",
       "BANK_JOINT_ACCOUNT": "Joint account",
+      "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
       "CHANGE": "Change",
+      "CHILDREN": "Children",
+      "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
+      "CHILDREN_UNDER_11": "Under 11",
+      "CHILDREN_UNDER_11_TO_15": "11 to 15",
+      "CHILDREN_UNDER_16_TO_19": "16 to 19",
+      "CHILDREN_AGED_16_19_FT_EDUCATION": "Number of children aged 16 to 19 full-time education or training",
       "CONTACT_PERSON": "Contact person",
       "CONTACT_NUMBER": "Contact number (optional)",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
@@ -107,6 +148,8 @@
       "DEBTS_TOTAL_OWED": "Total owed",
       "DEBTS_MONTHLY_PAYMENTS": "Monthly Payments",
       "DETAILS_TITLE": "Your details",
+      "DISABILITY_ARE_YOU_DISABLED": "Are you disabled?",
+      "DISABILITY_ARE_YOU_SEVERELY_DISABLED": "Are you severely disabled?",
       "DOB": "Date of birth",
       "EMPLOYMENT_DETAILS": "Employment details",
       "EMPLOYMENT_DO_YOU_HAVE_A_JOB": "Do you have a job?",
@@ -147,6 +190,11 @@
       "JOB_TITLE": "Job title",
       "OWE_MONEY": "Do you owe the money claimed?",
       "PAYMENT_FREQUENCY": "Frequency of payments",
+      "PARTNER_DO_YOU_LIVE_WITH_A": "Do you live with a partner?",
+      "PARTNER_IS_AGED_18_OR_OVER": "Is your partner aged 18 or over?",
+      "PARTNER_DOES_RECEIVE_A_PENSION": "Does your partner receive a pension?",
+      "PARTNER_IS_DISABLED": "Is your partner disabled?",
+      "PARTNER_IS_SEVERELY_DISABLED": "Is your partner severely disabled?",
       "PRIORITY_DEBTS_YOU_ARE_BEHIND_ON": "Debts you are behind on",
       "PRIORITY_DEBT_TYPE": "Debt type",
       "PRIORITY_DEBT_ARREARS_REPAYMENT": "Arrears repayment",
@@ -162,12 +210,16 @@
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_TITLE": "Your response to the claim",
       "SAME_ADDRESS": "Same as address",
+      "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Do you support anyone else financially?",
+      "SUPPORT_NUMBER_OF_PEOPLE": "Number of people",
+      "SUPPORT_GIVE_DETAILS": "Give details",
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Are you behind on tax payments?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Amount you owe?",
       "TAX_PAYMENT_REASON": "Reason",
       "TITLE": "Check your answers",
       "WHEN_PAY": "When will you pay",
       "WHEN_PAY_TITLE": "When you'll pay",
+      "WHERE_DO_YOU_LIVE": "Where do you live?",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details"
     },
     "CITIZEN_BANK_ACCOUNTS": {
@@ -192,22 +244,23 @@
       "PAGE_TITLE": "Your claim response"
     },
     "CLAIM_DETAILS": {
-      "PAGE_TITLE": "Claim Details",
-      "HEADER": "Claim details",
-      "CLAIM_NUMBER": "Claim number",
-      "CLAIM_AMOUNT": "Claim amount",
-      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
-      "AMOUNT_BREAKDOWN": "Amount breakdown",
       "AMOUNT": "Amount",
-      "INTEREST": "Interest",
+      "AMOUNT_BREAKDOWN": "Amount breakdown",
+      "CLAIM_AMOUNT": "Claim amount",
       "CLAIM_FEE": "Claim fee",
+      "CLAIM_NUMBER": "Claim number",
       "CLAIM_TOTAL": "Claim Total",
+      "DATE": "Date",
+      "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
+      "DOWNLOAD_CLAIM": "Download claim (PDF)",
+      "HEADER": "Claim details",
+      "INTEREST": "Interest",
+      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})",
+      "PAGE_TITLE": "Claim Details",
       "REASON_FOR_CLAIM": "Reason for claim",
       "TIMELINE": "Timeline",
-      "DATE": "Date",
-      "WHAT_HAPPENED": "What happened",
-      "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})"
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "WHAT_HAPPENED": "What happened"
     },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "About claim",
@@ -218,6 +271,7 @@
       "CLAIM_NUMBER": "Claim number:",
       "DOCUMENTS": "Documents",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
+      "DOWNLOAD_RESPONSE": "Download response",
       "LATEST_UPDATE": "Latest update",
       "VIEW_CLAIM": "View claim"
     },
@@ -225,10 +279,21 @@
       "PAGE_TITLE": "Company details"
     },
     "CONTACT_THEM": {
-      "PAGE_TITLE": "Contact claimant"
+      "ABOUT": "About claim",
+      "ADDRESS": "Address",
+      "CLAIMANT": "Claimant",
+      "CONTACT": "Contact ",
+      "EMAIL": "Email",
+      "PAGE_TITLE": "Contact claimant",
+      "PHONE": "Phone"
     },
     "COURT_ORDERS": {
-      "PAGE_TITLE": "Any court orders?"
+      "ADD_ANOTHER": "Add another court order",
+      "CLAIM_NUMBER": "Claim number",
+      "MONTHLY_INSTALMENT_AMOUNT": "Monthly instalment amount",
+      "OWED_AMOUNT": "Amount you owe",
+      "PAGE_TITLE": "Any court orders?",
+      "TITLE": "Are you paying money as a result of any court orders?"
     },
     "DASHBOARD": {
       "PAGE_TITLE": "Claims made against you"
@@ -266,10 +331,12 @@
       "PAGE_TITLE": "Any dependants between 16 and 19?"
     },
     "DEPENDANTS_CHILDREN_DISABILITY": {
+      "ANY_DISABLED_CHILDREN": "Are any of the children that live with you disabled?",
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {
-      "PAGE_TITLE": "Any you disabled?"
+      "PAGE_TITLE": "Are you disabled?",
+      "TITLE": "Are you disabled?"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
@@ -434,11 +501,30 @@
       "HEADER": "Respond to a money claim",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
     },
+    "SUPPORT_REQUIRED": {
+      "ARRANGE_AND_PAY": "You may have to arrange and pay for interpreters except for Welsh. The court will tell you.",
+      "DISABLE": "Disabled access",
+      "ENTER_SIGN_LANGUAGE": "Enter the sign language you need",
+      "EXTRA_SUPPORT": "The court can’t guarantee extra support, but it will consider other needs relating to physical or mental health impairments",
+      "HEARING": "Hearing loop",
+      "LANGUAGE": "Language interpreter",
+      "OTHER": "Other support",
+      "PAGE_TITLE": "Support required",
+      "SIGN_LANGUAGE": "Sign language interpreter",
+      "TITLE": "Select any support you’d require for a court hearing (optional)",
+      "WHAT_LANGUAGE": "What language needs to be interpreted?"
+    },
     "UNDER_18": {
       "PAGE_TITLE": "Under 18"
     },
     "UNEMPLOYMENT": {
-      "PAGE_TITLE": "Unemployed or retired"
+      "DESCRIPTION": "How long have you been unemployed?",
+      "DETAILS": "Give details",
+      "OTHER": "Other",
+      "PAGE_TITLE": "Unemployed or retired",
+      "RETIRED": "Retired",
+      "TITLE": "Are you unemployed or retired?",
+      "UNEMPLOYED": "Unemployed"
     },
     "WHO_EMPLOYS_YOU": {
       "PAGE_TITLE": "Your employer"
@@ -477,6 +563,7 @@
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
+    "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
@@ -526,7 +613,6 @@
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
-    "VALID_NUMBER_OF_PEOPLE": "Enter a number higher than 0",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
