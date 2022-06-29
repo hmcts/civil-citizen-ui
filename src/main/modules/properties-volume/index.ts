@@ -3,6 +3,10 @@ import * as propertiesVolume from '@hmcts/properties-volume';
 import { Application } from 'express';
 import { get, set } from 'lodash';
 
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('propertiesVolume');
+
+
 export class PropertiesVolume {
 
   enableFor(server: Application): void {
@@ -20,7 +24,11 @@ export class PropertiesVolume {
   }
 
   private setSecret(fromPath: string, toPath: string): void {
+    logger.info(`fromPath = ${fromPath}`);
+    logger.info(`toPath = ${toPath}`);
+    logger.info(`config.has(fromPath) = ${config.has(fromPath)}`);
     if (config.has(fromPath)) {
+      logger.info(`get(config, fromPath) = ${get(config, fromPath)}`);
       set(config, toPath, get(config, fromPath));
     }
   }
