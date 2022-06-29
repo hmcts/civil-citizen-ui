@@ -71,6 +71,7 @@ import expertGuidanceController from './features/directionsQuestionnaire/expertG
 import partialAdmissionPaymentOptionController
   from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
 import supportRequiredController from './features/directionsQuestionnaire/supportRequiredController';
+import documentDownloadController from './features/document/documentDownloadController';
 
 export default [
   homeController,
@@ -139,4 +140,5 @@ export default [
   expertGuidanceController,
   partialAdmissionPaymentOptionController,
   supportRequiredController,
+  documentDownloadController,
 ];
