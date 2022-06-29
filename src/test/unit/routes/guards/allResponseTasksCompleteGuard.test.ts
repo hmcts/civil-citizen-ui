@@ -8,7 +8,7 @@ import {TaskList} from '../../../../main/common/models/taskList/taskList';
 import {constructResponseUrlWithIdParams} from '../../../../main/common/utils/urlFormatter';
 
 jest.mock('../../../../main/modules/oidc');
-jest.mock('../../../../main/services/features/response/checkAnswersService');
+jest.mock('../../../../main/services/features/response/checkAnswers/checkAnswersService');
 
 const CLAIM_ID = 'aaa';
 const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_INCOMPLETE_SUBMISSION_URL);

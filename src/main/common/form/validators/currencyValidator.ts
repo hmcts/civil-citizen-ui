@@ -1,6 +1,6 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
 import {
-  VALID_NUMBER_OF_PEOPLE,
+  VALID_STRICTLY_POSITIVE_NUMBER,
   VALID_TWO_DECIMAL_NUMBER,
 } from '../validationErrors/errorMessageConstants';
 import {MAX_AMOUNT_VALUE} from './validationConstraints';
@@ -30,7 +30,7 @@ export class CurrencyValidator implements ValidatorConstraintInterface {  numeri
   }
 
   defaultMessage() {
-    return !this.validNumber ? VALID_NUMBER_OF_PEOPLE : VALID_TWO_DECIMAL_NUMBER;
+    return !this.validNumber ? VALID_STRICTLY_POSITIVE_NUMBER : VALID_TWO_DECIMAL_NUMBER;
   }
 
 }

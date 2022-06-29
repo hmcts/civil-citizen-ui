@@ -74,7 +74,7 @@ describe('Children Disability', () => {
         .get(CHILDREN_DISABILITY_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Are any of the children who live with you disabled?');
+          expect(res.text).toContain('Are any of the children that live with you disabled?');
         });
     });
     test('should show disability page when haven´t statementOfMeans', async () => {
