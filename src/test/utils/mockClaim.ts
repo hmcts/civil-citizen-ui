@@ -1,6 +1,7 @@
 import {Respondent} from '../../main/common/models/respondent';
 import {Claim} from '../../main/common/models/claim';
 import {CounterpartyType} from '../../main/common/models/counterpartyType';
+import {DocumentType} from '../../main/common/models/document/documentType';
 import {PrimaryAddress} from '../../main/common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../main/common/models/correspondenceAddress';
 import {YesNo} from '../../main/common/form/models/yesNo';
@@ -122,6 +123,23 @@ function buildMockClaim(): Claim {
   _mockClaim.submittedDate = new Date('2022-05-23T17:02:02.38407');
   _mockClaim.totalInterest = 15;
   _mockClaim.paymentDate = new Date('2022-06-01T00:00:00');
+  _mockClaim.systemGeneratedCaseDocuments = [
+    {
+      id: '1234556',
+      value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de',
+          document_filename: 'sealed_claim_form_000MC001.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary',
+        },
+        documentName: 'sealed_claim_form_000MC001.pdf',
+        documentSize: 45794,
+        documentType: DocumentType.SEALED_CLAIM,
+        createdDatetime: new Date('2022-06-21T14:15:19'),
+      },
+    },
+  ];
 
   _mockClaim.isPaymentOptionPayImmediately = (): boolean => false;
   _mockClaim.isPaymentOptionBySetDate = (): boolean => false;
