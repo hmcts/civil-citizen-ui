@@ -207,6 +207,8 @@
       "PRIORITY_DEBT_MAINTENANCE": "Cynnal a chadw",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "RESPONSE_TITLE": "Eich ymateb i'r hawliad",
+      "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
+      "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Nifer y bobl",
@@ -523,6 +525,15 @@
       "TITLE": "A ydych yn ddi-waith neu wedi ymddeol?",
       "UNEMPLOYED": "Di-waith"
     },
+    "VULNERABILITY": {
+      "PAGE_TITLE": "Vulnerability questions",
+      "QUESTION": "Question {{ questionNumber }}:",
+      "QUESTION_1": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
+      "QUESTION_2": "If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
+      "YOUR_ANSWERS": "Your answers to the questions above will enable the court and the judge, to consider what steps, adjustments or support can be arranged",
+      "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties",
+      "TITLE": "Vulnerability Questions"
+    },
     "WHO_EMPLOYS_YOU": {
       "PAGE_TITLE": "Your employer"
     },
@@ -570,6 +581,8 @@
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
     "PAYMENT_FREQUENCY_REQUIRED": "Choose a payment frequency",
     "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
+    "QUESTION_1_REQUIRED": "1. Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
+    "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
