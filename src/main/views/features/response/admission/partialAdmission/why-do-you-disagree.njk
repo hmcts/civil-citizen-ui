@@ -13,12 +13,12 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set header = t('Why do you disagree with the claim amount?') %}
-      {% set subTitle = t('The total amount claimed is £{{ claimAmount }}. This includes the claim fee.', { claimAmount: claimAmount }) %}
+      {% set header = t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.TITLE') %}
+      {% set subTitle = t('PAGES.PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE.SUBTITLE', { claimAmount: claimAmount }) %}
       {% set errors = form.getAllErrors()%}
       {% if form.hasErrors() %}
       {{ govukErrorSummary({
-        "titleText": t("There was a problem"),
+        "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
         "errorList": errors
       }) }}
       {% endif %}

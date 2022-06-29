@@ -9,9 +9,9 @@ import { getCaseDataFromStore } from '../../../modules/draft-store/draftStoreSer
 import {
   getMediation,
   saveMediation,
-} from '../../../modules/mediation/mediationService';
+} from '../../../services/features/response/mediation/mediationService';
 import {
-  CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
+  CAN_WE_USE_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../urls';
 
@@ -41,7 +41,7 @@ const isTelephoneNumberSaved = (telephoneNumber: string, req: express.Request) =
 };
 
 // -- GET
-mediationIndividualPhoneController.get(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL, async (req, res) => {
+mediationIndividualPhoneController.get(CAN_WE_USE_URL, async (req, res) => {
   try {
     const mediation: Mediation = await getMediation(req.params.id);
     renderView(getGenericForm(mediation.canWeUse), res, req.params.id);
@@ -51,7 +51,7 @@ mediationIndividualPhoneController.get(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL, 
 });
 
 // -- POST
-mediationIndividualPhoneController.post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
+mediationIndividualPhoneController.post(CAN_WE_USE_URL,
   async (req:express.Request, res:express.Response) => {
     try {
       const claim: Claim = await getCaseDataFromStore(req.params.id);
@@ -61,7 +61,7 @@ mediationIndividualPhoneController.post(CITIZEN_CONFIRM_TELEPHONE_MEDIATION_URL,
         renderView(mediationIndividualPhoneForm, res, req.params.id);
       } else {
         if (req.body.option === YesNo.YES) {
-          mediationIndividualPhoneForm.model.telephoneNumber = undefined;
+          mediationIndividualPhoneForm.model.mediationPhoneNumber = undefined;
         }
         await saveMediation(req.params.id, mediationIndividualPhoneForm.model, 'canWeUse');
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));

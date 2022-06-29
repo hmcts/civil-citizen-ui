@@ -1,0 +1,14 @@
+{
+  "id": 1645882162449409,
+  "jurisdiction": "CIVIL",
+  "case_type_id": "CIVIL",
+  "created_date": "2022-03-01T13:29:22.447",
+  "last_modified": "2022-03-01T13:29:24.971",
+  "state": "PENDING_CASE_ISSUED",
+  "security_classification": "PUBLIC",
+  "case_data": {
+    "respondent1": {
+      "responseType": "FULL_ADMISSION"
+    }
+  }
+}

@@ -26,7 +26,7 @@ nodejs:
       resourceGroup: civil-service
       secrets:
         - AppInsightsInstrumentationKey
-        - redis-access-key
+        - draft-store-access-key
         - ordnance-survey-api-key
         - citizen-ui-idam-secret
   environment:
@@ -34,12 +34,14 @@ nodejs:
     IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
     IDAM_CLIENT_ID: civil_citizen_ui
     OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback
-    REDIS_HOST: 'civil-{{ .Values.global.environment }}.redis.cache.windows.net'
+    REDIS_HOST: 'civil-citizen-ui-draft-store-{{ .Values.global.environment }}.redis.cache.windows.net'
     REDIS_PORT: 6380
     REDIS_TLS: true
     CIVIL_SERVICE_URL: http://civil-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     ALLOW_CONFIG_MUTATIONS: true
     ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
+    DOCUMENT_MANAGEMENT_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   autoscaling:
     enabled: false
     maxReplicas: 16

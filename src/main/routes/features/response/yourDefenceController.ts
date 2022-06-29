@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {CITIZEN_TIMELINE_URL, RESPONSE_YOUR_DEFENCE_URL} from '../../urls';
-import {saveYourDefence} from '../../../modules/yourDefenceService';
-import {getClaimantName} from '../../../modules/rejectAllOfClaimService';
+import {saveYourDefence} from '../../../services/features/response/yourDefenceService';
+import {getClaimantName} from '../../../services/features/response/rejectAllOfClaimService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../common/form/models/genericForm';
 

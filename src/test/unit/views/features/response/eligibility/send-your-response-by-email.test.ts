@@ -4,7 +4,7 @@ import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {SEND_RESPONSE_BY_EMAIL_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaimApplicantCompanyType} from '../../../../../utils/mockDraftStore';
-import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -17,7 +17,8 @@ jest.mock('../../../../../../main/modules/draft-store');
 describe('Send your response by email View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-
+  const feesUrl: string = config.get('feesUrl');
+  const data = require('../../../../../utils/mocks/feeRangesMock.json');
   describe('on GET', () => {
     let htmlDocument: Document;
     let paragraphs: HTMLCollection;
@@ -26,6 +27,7 @@ describe('Send your response by email View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
+      nock(feesUrl).get('/ranges/').reply(200, data);
       app.locals.draftStoreClient = mockCivilClaimApplicantCompanyType;
       const response = await request(app).get(SEND_RESPONSE_BY_EMAIL_URL);
       const dom = new JSDOM(response.text);

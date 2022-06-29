@@ -3,7 +3,6 @@ import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CITIZEN_OWED_AMOUNT_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
-// import { CITIZEN_OWED_AMOUNT_URL} from '../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 

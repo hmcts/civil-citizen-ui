@@ -2,7 +2,7 @@ import * as express from 'express';
 import { CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_AGE_URL, CITIZEN_PARTNER_URL } from '../../../../urls';
 import { Cohabiting } from '../../../../../common/form/models/statementOfMeans/partner/cohabiting';
 import { ValidationError, Validator } from 'class-validator';
-import { CohabitingService } from '../../../../../modules/statementOfMeans/partner/cohabitingService';
+import { CohabitingService } from '../../../../../services/features/response/statementOfMeans/partner/cohabitingService';
 import { constructResponseUrlWithIdParams } from '../../../../../common/utils/urlFormatter';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner';

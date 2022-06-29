@@ -2,11 +2,16 @@ import {Claim} from '../../common/models/claim';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
-import {CivilClaimResponse} from 'models/civilClaimResponse';
-import {CIVIL_SERVICE_CASES_URL} from './civilServiceUrls';
-import {FeeRange} from '../../common/models/feeRange';
+import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
+import {
+  CIVIL_SERVICE_CASES_URL,
+  CIVIL_SERVICE_FEES_RANGES,
+} from './civilServiceUrls';
+import {FeeRange, FeeRanges} from '../../common/models/feeRange';
+import {plainToInstance} from 'class-transformer';
+
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('ciivilServiceClient');
+const logger = Logger.getLogger('civilServiceClient');
 
 export class CivilServiceClient {
   client: AxiosInstance;
@@ -26,12 +31,15 @@ export class CivilServiceClient {
     };
   }
 
-  async retrieveByDefendantId(req: AppRequest): Promise<Claim[]> {
+  async retrieveByDefendantId(req: AppRequest): Promise<CivilClaimResponse[]> {
     const config = this.getConfig(req);
-    let claims: Claim[] = [];
+    let claims: CivilClaimResponse[] = [];
     await this.client.post(CIVIL_SERVICE_CASES_URL, {match_all: {}}, config)
       .then(response => {
-        claims = response.data.cases.map((claim: CivilClaimResponse) => Object.assign(new Claim(), claim.case_data));
+        claims = response.data.cases.map((claim: CivilClaimResponse) => {
+          const caseData = Object.assign(new Claim(), claim.case_data);
+          return new CivilClaimResponse(claim.id, caseData);
+        });
       }).catch(error => {
         console.log(error.message);
       });
@@ -44,25 +52,22 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`, config);// nosonar
 
       if (!response.data) {
-        throw new AssertionError({message: 'Claim details not available.'});
+        throw new AssertionError({message: 'Claim details not available!'});
       }
-      return response.data as Claim;
+      return Object.assign(new Claim(), response.data);
     } catch (err: unknown) {
       logger.error(err);
     }
   }
 
-  async getRangeFeesMock(): Promise<FeeRange[]> {
-    const feesRanges: FeeRange[] = [
-      { claimAmountRange: '£0.01 to £300', fee: '£35' },
-      { claimAmountRange: '£300.01 to £500', fee: '£50' },
-      { claimAmountRange: '£500.01 to £1,000', fee: '£70' },
-      { claimAmountRange: '£1,000.01 to £1,500', fee: '£80' },
-      { claimAmountRange: '£1,500.01 to £3,000', fee: '£115' },
-      { claimAmountRange: '£3,000.01 to £5,000', fee: '£205' },
-      { claimAmountRange: '£5,000.01 to £10,000', fee: '£455' },
-    ];
-    return feesRanges;
+  async getFeeRanges(req: AppRequest): Promise<FeeRanges> {
+    const config = this.getConfig(req);
+    try{
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_RANGES, config);
+      return new FeeRanges(plainToInstance(FeeRange, response.data as object[]));
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
   }
-
 }

@@ -29,7 +29,7 @@ describe('Claimant details', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Respond to a money claim');
           expect(res.text).toContain('Prepare your response');
-          expect(res.text).toContain('Respond to Claim');
+          expect(res.text).toContain('Respond to claim');
           expect(res.text).toContain('Submit');
           expect(res.text).toContain('Response deadline:');
           expect(res.text).toContain('15 May 2022'); // Response deadline value

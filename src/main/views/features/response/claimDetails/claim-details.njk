@@ -1,25 +1,28 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/timeline-summary.njk" import timelineSummary %}
+{% from "../../../macro/amount-breakdown.njk" import amountBreakdownTable %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CLAIM_DETAILS.PAGE_TITLE') }}
 {% endblock %}
 
-{% set heading = 'Claim details' %}
-{% set evidenceRows = claim.claimData.evidence.getPopulatedRowsOnly() if claim.claimData.evidence %}
-{% set timelineRows = claim.claimData.timeline.getPopulatedRowsOnly() if claim.claimData.timeline %}
+{% set evidenceRows = claim.evidence %}
+{% set timelineRows = claim.timelineOfEvents %}
+
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('Claim details') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_DETAILS.HEADER') }}</h1>
           {% if claim.helpWithFeesNumber %}
             <p class="govuk-body">
-              <span>
-                <strong>{{ t('Claim number:') }}
-                </span>
-              </strong>
+              <span class="govuk-!-font-weight-bold">
+                {{ t('PAGES.CLAIM_DETAILS.CLAIM_NUMBER') }}
+              </span>
               <span>
                 {% set dash = joiner("-") %}
                 {% for batch in claim.ccdCaseId | string | batch(4) -%}
@@ -32,56 +35,39 @@
             </p>
           {% else %}
             <p class="govuk-body">
-              <span>
-                <strong>{{ t('Claim number') }}:</strong>
+              <span class="govuk-!-font-weight-bold">
+                {{ t('PAGES.CLAIM_DETAILS.CLAIM_NUMBER') }}:
               </span>
               {{ claim.legacyCaseReference }}</p>
           {% endif %}
           <p class="govuk-body">
-            <span>
-              <strong>{{ t('Claim amount') }}:</strong>
+            <span class="govuk-!-font-weight-bold">
+              {{ t('PAGES.CLAIM_DETAILS.CLAIM_AMOUNT') }}:
             </span>
-            {{ claim.totalClaimAmount | currencyFormat(totalClaimAmount) }}
+            {{ totalAmount | currencyFormat(totalAmount) }}
           </p>
-          {# {{ amountBreakdownTable('View amount breakdown', claim, interestData) }} #}
-          {% if claim.helpWithFeesNumber and interestData !== undefined and interestData.rate !== undefined and claim.claimData.interest.type !== 'breakdown' %}
-            {{ interestCalculationBreakdownTable('How interest to date is calculated', claim, interestData, numOfDayInYear) }}
-          {% endif %}
-          <p class="govuk-body">
-            <span class="govuk-body">
-              <strong>{{ t('Reason for claim') }}:</strong>
-            </span>
-          </p>
+          {{ govukDetails({
+            summaryText: t('PAGES.CLAIM_DETAILS.VIEW_AMOUNT_BREAKDOWN'),
+            html: amountBreakdownTable(claim, interestData, totalAmount)
+          }) }}
+          <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.REASON_FOR_CLAIM')+' :' }}</h2>
           <p class="govuk-body">{{ claim.detailsOfClaim }}</p>
           {% if timelineRows and timelineRows.length > 0 %}
-            <div class="form-group">
-              <p class="govuk-body">
-                <span>
-                  <strong>{{ t('Timeline') }}</strong>
-                </span>
-              </p>
-              {{ timelineSummary(timelineRows) }}
+            {{ timelineSummary(timelineRows) }}
+          {% elseif pdfUrl %}
+            <div class="govuk-body">
+              <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.TIMELINE') }}</h2>
+              <a id="timeline-link" href={{ pdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.CLAIM_DETAILS.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
             </div>
           {% endif %}
-          {% if evidenceRows and evidenceRows.length > 0 %}
-            <div class="form-group">
-              <p class="govuk-body">
-                <span>
-                  <strong>{{ t('Evidence') }}</strong>
-                </span>
-              </p>
-              {{ evidenceSummary(evidenceRows) }}
-            </div>
-          {% endif %}
-          {% from "govuk/components/button/macro.njk" import govukButton %}
-          {{ govukButton({
-            text: "Respond to claim"
-          }) }}
           <p class="govuk-body">
-            <span>
-              <strong>{{ t('Download the claim') }}</strong>
+            <span class="govuk-!-font-weight-bold">
+              {{ t('COMMON.DOWNLOAD_THE_CLAIM') }}
             </span>
           </p>
+          <p class="govuk-body"><a href="#">Download claim(PDF)</a></p>
+          <br>
+          {{ contactUsForHelp(t) }}
         </div>
       </div>
     </main>

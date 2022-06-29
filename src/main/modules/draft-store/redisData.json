@@ -13,11 +13,20 @@
         "version": "4",
         "calculatedAmountInPence": "7000"
       },
+      "supportRequired":{
+        "languageSelected":true,
+        "languageInterpreted":"Swahili",
+        "signLanguageSelected":true,
+        "signLanguageInterpreted":"Sign",
+        "hearingLoopSelected":false,
+        "disabledAccessSelected":false,
+        "otherSupportSelected":false,
+        "otherSupport":""
+      },
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "ORGANISATION",
-        "partyName": "Example applicant1 organisation",
-        "companyName": "Oracle",
+        "partyName": "Version 1",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -26,14 +35,13 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "organisationName": "Example applicant1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
-        "partyName": "Version 1",
-        "contactPerson": "Felipe Calderon",
         "type": "INDIVIDUAL",
+        "individualTitle": "Mrs.",
+        "individualFirstName": "Jane",
+        "individualLastName": "Doe",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -43,14 +51,12 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example respondent1 organisation",
-        "partyTypeDisplayValue": "Organisation",
         "telephoneNumber": "01632960001"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
       "totalInterest": 0,
-      "detailsOfClaim": "Judicial review is a type of court proceeding in which a judge reviews the lawfulness of a decision or action made by a public body. In other words, judicial reviews are a challenge to the way in which a decision has been made, rather than the rights and wrongs of the conclusion reached. It is not really concerned with the conclusions of that process and whether those were ‘right’, as long as the right procedures have been followed. The court will not substitute what it thinks is the ‘correct’ decision. This may mean that the public body will be able to make the same decision again, so long as it does so in a lawful way. If you want to argue that a decision was incorrect, judicial review may not be best for you. There are alternative remedies, such as appealing against the decision to a higher court. Examples of the types of decision which may fall within the range of judicial review include: Decisions of local authorities in the exercise of their duties to provide various welfare benefits and special education for children in need of such education; Certain decisions of the immigration authorities and the Immigration and Asylum Chamber; Decisions of regulatory bodies; Decisions relating to prisoner’s rights.",
+      "detailsOfClaim": "Test details of claim",
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
@@ -187,16 +193,19 @@
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
-        "calculatedAmountInPence": "7000"
+        "calculatedAmountInPence": "8000"
       },
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "SOLE_TRADER",
-        "telephoneNumber": "02071270000",
-        "partyName": "Mr. Version1 Best",
+        "telephoneNumber": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
+        "soleTraderTitle": "Mr.",
+        "soleTraderFirstName": "Jan",
+        "soleTraderLastName": "Clark",
+        "soleTraderTradingAs": "Gardener",
         "primaryAddress": {
           "County": "London",
           "Country": "United Kingdom",
@@ -205,13 +214,11 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "organisationName": "Example applicant1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "ORGANISATION",
-        "partyName": "Example respondent1 organisation",
+        "partyName": "Version 1",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -220,13 +227,11 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "organisationName": "Example respondent1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
-      "totalInterest": 0,
+      "totalInterest": 15,
       "detailsOfClaim": "Test details of claim",
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
@@ -242,7 +247,7 @@
           }
         }
       ],
-      "totalClaimAmount": 20000,
+      "totalClaimAmount": 1000,
       "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
       "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
       "claimAmountBreakup": [
@@ -361,8 +366,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "partyName": "Example applicant1 organisation",
-        "telephoneNumber": "02071270000",
+        "telephoneNumber": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Alex",
         "individualLastName": "Van",
@@ -374,14 +378,11 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "organisationName": "Example applicant1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "partyName": "Example respondent1 organisation",
-        "telephoneNumber": "02071270000",
+        "telephoneNumber": "(0)207 127 0000",
         "individualTitle": "Mr.",
         "individualFirstName": "Jhon",
         "individualLastName": "Smith",
@@ -393,9 +394,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "organisationName": "Example respondent1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
@@ -415,7 +414,7 @@
           }
         }
       ],
-      "totalClaimAmount": 5000,
+      "totalClaimAmount": 1000,
       "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
       "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
       "claimAmountBreakup": [
@@ -529,12 +528,14 @@
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
-        "calculatedAmountInPence": "7000"
+        "calculatedAmountInPence": "8000"
       },
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "partyName": "Example applicant1 organisation",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -543,13 +544,13 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "organisationName": "Example applicant1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "INDIVIDUAL",
-        "partyName": "Example respondent1 organisation",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -558,13 +559,11 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "organisationName": "Example respondent1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "claimInterest": "Yes",
-      "submittedDate": "2022-03-01T11:57:10.592492",
-      "totalInterest": 0,
+      "submittedDate": "2022-05-25T16:29:22.100358",
+      "totalInterest": 6.82,
       "detailsOfClaim": "Test details of claim",
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
@@ -580,15 +579,22 @@
           }
         }
       ],
-      "totalClaimAmount": 5000,
-      "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
-      "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
+      "totalClaimAmount": 1250,
+      "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
+      "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1250 | \n | Interest amount | £ 6.82 | \n | Total amount | £ 1256.82 |",
       "claimAmountBreakup": [
         {
-          "id": "da31f19f-157f-4c2d-8a31-2225ecf155fa",
+          "id": "b0f5d2d8-20b4-4c06-9699-e4340408c604",
           "value": {
-            "claimAmount": "100000",
-            "claimReason": "Test claim item details"
+            "claimAmount": "50000",
+            "claimReason": "Broken tiles"
+          }
+        },
+        {
+          "id": "7b78f377-4355-44f0-a79d-e71eede7e342",
+          "value": {
+            "claimAmount": "75000",
+            "claimReason": "Car accident"
           }
         }
       ],
@@ -601,6 +607,7 @@
       "interestClaimOptions": "SAME_RATE_INTEREST",
       "claimNotificationDate": "2022-03-01T11:57:10.592492",
       "paymentSuccessfulDate": "2022-03-01T11:57:10.592492",
+      "interestFromSpecificDate": "2022-05-01",
       "respondent1Represented": "Yes",
       "respondent1OrgRegistered": "Yes",
       "speclistYourEvidenceList": [
@@ -619,7 +626,9 @@
       },
       "claimNotificationDeadline": "2022-12-01T23:59:59",
       "sameRateInterestSelection": {
-        "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
+        "differentRate": 9,
+        "differentRateReason": "This happened in the past",
+        "sameRateInterestType": "SAME_RATE_INTEREST_DIFFERENT_RATE"
       },
       "specRespondent1Represented": "Yes",
       "respondent1ResponseDeadline": "2022-10-12T15:59:59",
@@ -656,7 +665,7 @@
       "applicantSolicitor1UserDetails": {
         "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
       },
-      "claimAmountBreakupSummaryObject": "| Description | Amount | \n |---|---| \n | Test claim item details | £ 1000.00 |\n  | **Total** | £ 1000.00 |",
+      "claimAmountBreakupSummaryObject": "| Description | Amount | \n |---|---| \n | Broken tiles | £ 500.00 |\n Car accident | £ 750.00 |\n  | **Total** | £ 1250.00 |",
       "respondentSolicitor1EmailAddress": "civilmoneyclaimsdemo@gmail.com",
       "applicantSolicitor1ClaimStatementOfTruth": {
         "name": "John Smith",
@@ -683,7 +692,7 @@
     }
   },
   {
-    "id": 1645882162449405,
+    "id": 1653311433897526,
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -699,8 +708,7 @@
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "COMPANY",
-        "partyName": "Example applicant1 organisation",
-        "companyName": "Google",
+        "partyName": "Google",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -709,9 +717,7 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "organisationName": "Example applicant1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "COMPANY",
@@ -725,29 +731,23 @@
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
         },
-        "organisationName": "Example respondent1 organisation",
-        "partyTypeDisplayValue": "Organisation",
         "telephoneNumber": "01632960001"
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
-      "totalInterest": 0,
+      "totalInterest": 15,
       "detailsOfClaim": "Test details of claim",
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
         "status": "FINISHED",
         "camundaEvent": "CREATE_CLAIM_SPEC"
       },
-      "timelineOfEvents": [
-        {
-          "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
-          "value": {
-            "timelineDate": "2021-01-01",
-            "timelineDescription": "Test details of claim"
-          }
-        }
-      ],
-      "totalClaimAmount": 5000,
+      "specClaimTemplateDocumentFiles": {
+        "document_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac",
+        "document_filename": "timeline-event-template-Kadir.pdf",
+        "document_binary_url": "http://dm-store:8080/documents/6b55692f-107a-480e-86b7-917bc0dae8ac/binary"
+      },
+      "totalClaimAmount": 1000,
       "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
       "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
       "claimAmountBreakup": [
@@ -869,12 +869,14 @@
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
-        "calculatedAmountInPence": "7000"
+        "calculatedAmountInPence": "8000"
       },
       "issueDate": "2022-01-08",
       "applicant1": {
         "type": "INDIVIDUAL",
-        "partyName": "Example applicant1 organisation",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -883,13 +885,13 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "organisationName": "Example applicant1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "respondent1": {
         "type": "SOLE_TRADER",
-        "partyName": "Example respondent1 organisation",
+        "individualTitle": "Mr.",
+        "individualFirstName": "Jan",
+        "individualLastName": "Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -898,13 +900,11 @@
           "AddressLine1": "Flat 2",
           "AddressLine2": "Caversham House 15-17",
           "AddressLine3": "Church Road"
-        },
-        "organisationName": "Example respondent1 organisation",
-        "partyTypeDisplayValue": "Organisation"
+        }
       },
       "claimInterest": "Yes",
       "submittedDate": "2022-03-01T11:57:10.592492",
-      "totalInterest": 0,
+      "totalInterest": 6.82,
       "detailsOfClaim": "Test details of claim",
       "superClaimType": "SPEC_CLAIM",
       "businessProcess": {
@@ -920,15 +920,22 @@
           }
         }
       ],
-      "totalClaimAmount": 5000,
-      "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
-      "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1000 | \n | Interest amount | £ 0.00 | \n | Total amount | £ 1000.00 |",
+      "totalClaimAmount": 1250,
+      "interestClaimFrom": "FROM_A_SPECIFIC_DATE",
+      "calculatedInterest": "| Description | Amount | \n |---|---| \n | Claim amount | £ 1250 | \n | Interest amount | £ 6.82 | \n | Total amount | £ 1256.82 |",
       "claimAmountBreakup": [
         {
-          "id": "da31f19f-157f-4c2d-8a31-2225ecf155fa",
+          "id": "b0f5d2d8-20b4-4c06-9699-e4340408c604",
           "value": {
-            "claimAmount": "100000",
-            "claimReason": "Test claim item details"
+            "claimAmount": "50000",
+            "claimReason": "Broken tiles"
+          }
+        },
+        {
+          "id": "7b78f377-4355-44f0-a79d-e71eede7e342",
+          "value": {
+            "claimAmount": "75000",
+            "claimReason": "Car accident"
           }
         }
       ],
@@ -941,6 +948,7 @@
       "interestClaimOptions": "SAME_RATE_INTEREST",
       "claimNotificationDate": "2022-03-01T11:57:10.592492",
       "paymentSuccessfulDate": "2022-03-01T11:57:10.592492",
+      "interestFromSpecificDate": "2022-05-01",
       "respondent1Represented": "Yes",
       "respondent1OrgRegistered": "Yes",
       "speclistYourEvidenceList": [
@@ -959,7 +967,9 @@
       },
       "claimNotificationDeadline": "2022-12-01T23:59:59",
       "sameRateInterestSelection": {
-        "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
+        "differentRate": 9,
+        "differentRateReason": "This happened in the past",
+        "sameRateInterestType": "SAME_RATE_INTEREST_DIFFERENT_RATE"
       },
       "specRespondent1Represented": "Yes",
       "respondent1ResponseDeadline": "2022-10-12T15:59:59",
@@ -996,7 +1006,7 @@
       "applicantSolicitor1UserDetails": {
         "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"
       },
-      "claimAmountBreakupSummaryObject": "| Description | Amount | \n |---|---| \n | Test claim item details | £ 1000.00 |\n  | **Total** | £ 1000.00 |",
+      "claimAmountBreakupSummaryObject": "| Description | Amount | \n |---|---| \n | Broken tiles | £ 500.00 |\n Car accident | £ 750.00 |\n | **Total** | £ 1250.00 |",
       "respondentSolicitor1EmailAddress": "civilmoneyclaimsdemo@gmail.com",
       "applicantSolicitor1ClaimStatementOfTruth": {
         "name": "John Smith",
