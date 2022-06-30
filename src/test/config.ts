@@ -8,7 +8,7 @@ if (!process.env.TEST_PASSWORD) {
 
 export const config = {
   TestUrl: process.env.TEST_URL || 'https://civil-citizen-ui.demo.platform.hmcts.net',
-  env: 'demo',
+  env: 'preview',
   TestHeadlessBrowser: process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true,
   TestSlowMo: 250,
   WaitForTimeout: 10000,
