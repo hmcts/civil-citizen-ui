@@ -28,7 +28,6 @@ import {Respondent} from '../../../../../../main/common/models/respondent';
 import {QualifiedStatementOfTruth} from '../../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 import {Claim} from '../../../../../../main/common/models/claim';
-import {SummarySections} from '../../../../../../main/common/models/summaryList/summarySections';
 import {
   CLAIM_ID,
   INDEX_DETAILS_SECTION,
@@ -179,32 +178,6 @@ describe('Check Answers service', () => {
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
       //Then
       expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe(CORRESPONDENCE_ADDRESS);
-    });
-
-    describe('Response To Claim', () => {
-      const resultExpected = (summarySections: SummarySections) => {
-        expect(summarySections.sections[INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
-        expect(summarySections.sections[INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].value.html).toBe('COMMON.RESPONSE_TYPE.FULL_ADMISSION');
-        expect(summarySections.sections[INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_RESPONSE_TYPE_URL.replace(':id', CLAIM_ID));
-      };
-
-      it('should return response to claim when financial detail section exists with payment option type instalments', async () => {
-        //Given
-        const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.INSTALMENTS);
-        //When
-        const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
-        //Then
-        resultExpected(summarySections);
-      });
-
-      it('should return response to claim when financial detail section exists with payment option type by set date', async () => {
-        //Given
-        const claim = createClaimWithRespondentDetailsWithPaymentOption(PaymentOptionType.BY_SET_DATE);
-        //When
-        const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
-        //Then
-        resultExpected(summarySections);
-      });
     });
   });
 

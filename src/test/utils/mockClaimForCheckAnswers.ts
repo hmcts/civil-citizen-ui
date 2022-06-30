@@ -43,7 +43,13 @@ import {Dependants} from '../../main/common/form/models/statementOfMeans/dependa
 import {NumberOfChildren} from '../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {OtherDependants} from '../../main/common/form/models/statementOfMeans/otherDependants';
 import {Carer} from '../../main/common/form/models/statementOfMeans/carer';
-
+import {HowMuchDoYouOwe} from '../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../main/common/form/models/admission/howMuchHaveYouPaid';
+import {WhyDoYouDisagree} from '../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {PartialAdmission} from '../../main/common/models/partialAdmission';
+import {AlreadyPaid} from '../../main/common/form/models/admission/partialAdmission/alreadyPaid';
+import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/defendantTimeline';
+import {PaymentIntention} from '../../main/common/form/models/admission/partialAdmission/paymentIntention';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -521,5 +527,44 @@ export const createClaimWithOtherDependants = (option: YesNo, numberOfPeople: nu
   claim.statementOfMeans = {
     otherDependants: otherDependants,
   };
+  return claim;
+};
+
+export const ceateClaimWithPartialAdmission = () => {
+  const claim = new Claim();
+  const param: HowMuchHaveYouPaidParams = {};
+  param.amount = 100;
+  param.totalClaimAmount = 200;
+  param.day = '14';
+  param.month = '2';
+  param.year = '2022';
+  param.text = 'Test details';
+
+  const howMuchDoYouOwe: HowMuchDoYouOwe = new HowMuchDoYouOwe(100, 200);
+  const whyDoYouDisagree: WhyDoYouDisagree = new WhyDoYouDisagree('Reasons for disagree');
+  const howMuchHaveYouPaid: HowMuchHaveYouPaid = new HowMuchHaveYouPaid(param);
+
+  const partialAdmission: PartialAdmission = {
+    whyDoYouDisagree: whyDoYouDisagree,
+    howMuchDoYouOwe: howMuchDoYouOwe,
+    alreadyPaid: new AlreadyPaid(''),
+    howMuchHaveYouPaid: howMuchHaveYouPaid,
+    timeline: new DefendantTimeline(undefined, undefined),
+    paymentIntention: new PaymentIntention(),
+  };
+  claim.respondent1 = {
+    partyName: PARTY_NAME,
+    telephoneNumber: CONTACT_NUMBER,
+    contactPerson: '',
+    dateOfBirth: new Date('2000-12-12'),
+    responseType: ResponseType.PART_ADMISSION,
+    type: CounterpartyType.INDIVIDUAL,
+    primaryAddress: {
+      AddressLine1: '23 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
+    },
+  };
+  claim.partialAdmission = partialAdmission;
   return claim;
 };
