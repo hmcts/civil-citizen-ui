@@ -530,7 +530,7 @@ export const createClaimWithOtherDependants = (option: YesNo, numberOfPeople: nu
   return claim;
 };
 
-export const ceateClaimWithPartialAdmission = () => {
+export const ceateClaimWithPartialAdmission = (alreadyPaid? :YesNo) => {
   const claim = new Claim();
   const param: HowMuchHaveYouPaidParams = {};
   param.amount = 100;
@@ -547,7 +547,7 @@ export const ceateClaimWithPartialAdmission = () => {
   const partialAdmission: PartialAdmission = {
     whyDoYouDisagree: whyDoYouDisagree,
     howMuchDoYouOwe: howMuchDoYouOwe,
-    alreadyPaid: new AlreadyPaid(''),
+    alreadyPaid: new AlreadyPaid(alreadyPaid || ''),
     howMuchHaveYouPaid: howMuchHaveYouPaid,
     timeline: new DefendantTimeline(undefined, undefined),
     paymentIntention: new PaymentIntention(),
