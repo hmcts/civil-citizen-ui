@@ -20,6 +20,7 @@ export class PropertiesVolume {
       PropertiesVolume.setSecret('secrets.cmc.citizen-draft-store-secondary', 'services.draftStore.legacy.s2s.secondarySecret');
       PropertiesVolume.setSecret('secrets.cmc.cmc-s2s-secret', 'services.serviceAuthProvider.cmcS2sSecret');
     }
+    logger.info(JSON.stringify(config));
   }
 
   private static setSecret(fromPath: string, toPath: string): void {
