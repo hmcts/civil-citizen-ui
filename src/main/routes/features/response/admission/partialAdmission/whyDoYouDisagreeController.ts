@@ -8,6 +8,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../../../../urls';
 import {WhyDoYouDisagreeForm} from '../../../../../common/models/whyDoYouDisagreeForm';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import { ResponseType } from '../../../../../common/form/models/responseType';
 
 const whyDoYouDisagreeController = express.Router();
 const whyDoYouDisagreeViewPath = 'features/response/admission/why-do-you-disagree';
@@ -19,7 +20,7 @@ function renderView(form: GenericForm<WhyDoYouDisagree>, _claimAmount: number, r
 
 whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res) => {
   try {
-    const form = await getWhyDoYouDisagreeForm(req.params.id);
+    const form = await getWhyDoYouDisagreeForm(req.params.id, ResponseType.PART_ADMISSION);
     claimAmount = form.claimAmount;
     renderView(new GenericForm(form.whyDoYouDisagree), claimAmount, res);
   } catch (error) {
@@ -38,7 +39,7 @@ whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res
     if (form.hasErrors() || form.hasNestedErrors()) {
       renderView(form, whyDoYouDisagreeForm.claimAmount, res);
     } else {
-      await saveWhyDoYouDisagreeData(req.params.id, form.model);
+      await saveWhyDoYouDisagreeData(req.params.id, form.model, ResponseType.PART_ADMISSION);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_TIMELINE_URL));
     }
   } catch (error) {

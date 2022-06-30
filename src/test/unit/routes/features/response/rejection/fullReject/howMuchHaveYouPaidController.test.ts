@@ -9,7 +9,7 @@ import {
 } from '../../../../../../../main/routes/urls';
 import {
   setHowMuchHaveYouPaidControllerLogger,
-} from '../../../../../../../main/routes/features/response/rejection/fullReject/howMuchHaveYouPaidController';
+} from '../../../../../../../main/routes/features/response/admission/fullRejection/howMuchHaveYouPaidController';
 import {
   ENTER_PAYMENT_EXPLANATION,
   VALID_AMOUNT,
