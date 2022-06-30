@@ -52,34 +52,17 @@ describe('why do you disagree service', () => {
       //Then
       expect(form.whyDoYouDisagree.text).toBeUndefined();
     });
-    it('should get new form when data does not exist Partial Admission', async () => {
+    it('should get new form when text is empty Full Rejection', async () => {
       //Given
-      const claim = createPartialAdmission();
+      const claim = createClaim('');
       mockGetCaseData.mockImplementation(async () => {
         return claim;
       });
       //When
-      const form = await getWhyDoYouDisagreeForm('123', ResponseType.PART_ADMISSION);
+      const form = await getWhyDoYouDisagreeForm('123', ResponseType.FULL_DEFENCE);
       //Then
       expect(form.whyDoYouDisagree.text).toBeUndefined();
     });
-
-    // it('should get new form when partial admission does not exist', async () => {
-    //   //Given
-    //   const claim = new Claim();
-    //   claim.partialAdmission = undefined;
-    //   mockGetCaseData.mockImplementation(async () => {
-    //     return claim;
-    //   });
-
-    //   expect(claim.partialAdmission).toBeUndefined();
-
-    //   //When
-    //   const form = await getWhyDoYouDisagreeForm('123', ResponseType.PART_ADMISSION);
-    //   //Then
-    //   expect(form.whyDoYouDisagree.text).toBeUndefined();
-    // });
-
     it('should get text form when data exists Full Rejection', async () => {
       //Given
       const claim = createClaimFullRejection('Test');
@@ -127,12 +110,36 @@ describe('why do you disagree service', () => {
       //Then
       expect(spy).toBeCalled();
     });
+    it('should get new form when Partial Admission does not exist', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveWhyDoYouDisagreeData('123', new WhyDoYouDisagree('Test'), ResponseType.PART_ADMISSION);
+      //Then
+      expect(spy).toBeCalled();
+    });
     it('should save text successfully with existing claim Full Rejection', async () => {
       //Given
       const claim = createFullRejection();
       mockGetCaseData.mockImplementation(async () => {
         return claim;
       });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveWhyDoYouDisagreeData('123', new WhyDoYouDisagree('Test'), ResponseType.FULL_DEFENCE);
+      //Then
+      expect(spy).toBeCalled();
+    });
+    it('should get new form when Full Rejection does not exist', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
       await saveWhyDoYouDisagreeData('123', new WhyDoYouDisagree('Test'), ResponseType.FULL_DEFENCE);
