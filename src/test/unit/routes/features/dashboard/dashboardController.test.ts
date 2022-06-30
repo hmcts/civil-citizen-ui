@@ -4,6 +4,7 @@ import {app} from '../../../../../main/app';
 import config from 'config';
 import {DASHBOARD_URL} from '../../../../../main/routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../../main/app/client/civilServiceUrls';
+import {mockClaimantClaims} from "../../../../utils/mockDraftStore";
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -38,10 +39,12 @@ describe('Dashboard page', () => {
 
   describe('on GET', () => {
     test('should return dashboard page', async () => {
+      app.locals.draftStoreClient = mockClaimantClaims;
       await agent
         .get(DASHBOARD_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('Claims you&#39;ve made');
           expect(res.text).toContain('Claims made against you');
         });
     });

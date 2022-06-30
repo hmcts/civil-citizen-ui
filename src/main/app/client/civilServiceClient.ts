@@ -5,16 +5,13 @@ import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_FEES_RANGES,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import {
-  CLAIM_DETAILS_NOT_AVAILBALE,
-  DOCUMENT_NOT_AVAILABLE,
-} from './errorMessageContants';
+import {CLAIM_DETAILS_NOT_AVAILBALE, DOCUMENT_NOT_AVAILABLE,} from './errorMessageContants';
 import {DashboardClaimantItem} from '../../common/models/dashboard/dashboardItem';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -51,7 +48,6 @@ export class CivilServiceClient {
     const submitterId = req.session?.user?.id;
     try {
       const response = await this.client.get('/cases/claimant/' + submitterId, config);
-      console.log(response.data);
       return plainToInstance(DashboardClaimantItem, response.data as object[]);
     } catch (err) {
       console.log(err);

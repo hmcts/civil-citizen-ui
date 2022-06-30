@@ -23,6 +23,7 @@ describe('Dashboard page', () => {
         .get(DASHBOARD_URL + '?lang=en')
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('Claims you\'ve made');
           expect(res.text).toContain('Claims made against you');
         });
     });
