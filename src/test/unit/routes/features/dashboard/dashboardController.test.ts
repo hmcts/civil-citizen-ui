@@ -3,13 +3,7 @@ import config from 'config';
 import Module from 'module';
 import {DASHBOARD_URL} from '../../../../../main/routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../../main/app/client/civilServiceUrls';
-import {mockClaimantClaims} from "../../../../utils/mockDraftStore";
-
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 const nock = require('nock');
-
-const agent = request.agent(app);
 
 const session = require('supertest-session');
 const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -30,17 +24,6 @@ describe('Dashboard page', () => {
   const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
   const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
 
-  beforeEach(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    authenticate();
-    nock('http://localhost:4000')
-      .post(CIVIL_SERVICE_CASES_URL)
-      .reply(200, {});
-    nock('http://localhost:4000')
-      .get(CIVIL_SERVICE_CASES_URL  + 'claimant/undefined')
-      .reply(200, {});
   nock(idamUrl)
     .post('/o/token')
     .reply(200, {id_token: citizenRoleToken});
@@ -72,12 +55,9 @@ describe('Dashboard page', () => {
       // console.log(`authenticatedSession: ${authenticatedSession}`);
       console.log(JSON.stringify(testSession));
       await testSession
-      app.locals.draftStoreClient = mockClaimantClaims;
-      await agent
         .get(DASHBOARD_URL)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Claims you&#39;ve made');
           expect(res.text).toContain('Claims made against you');
         });
     });
