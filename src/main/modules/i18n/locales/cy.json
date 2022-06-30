@@ -527,11 +527,10 @@
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
-      "QUESTION": "Question {{ questionNumber }}:",
-      "QUESTION_1": "Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
-      "QUESTION_2": "If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
-      "YOUR_ANSWERS": "Your answers to the questions above will enable the court and the judge, to consider what steps, adjustments or support can be arranged",
-      "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties",
+      "QUESTION_1": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
+      "QUESTION_2": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
+      "YOUR_ANSWERS": "Your answers to the questions above will enable the court and the judge, to consider what steps, adjustments or support can be arranged.",
+      "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties.",
       "TITLE": "Vulnerability Questions"
     },
     "WHO_EMPLOYS_YOU": {

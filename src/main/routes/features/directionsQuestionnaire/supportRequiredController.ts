@@ -39,7 +39,7 @@ supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res) => {
       res.render(supportRequiredViewPath, {form});
     } else {
       await saveSupportRequired(claimId, supportRequired);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {
     res.status(500).send({error: error.message});

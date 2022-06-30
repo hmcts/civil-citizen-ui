@@ -29,6 +29,7 @@ import {YesNo} from '../form/models/yesNo';
 import {ResponseType} from '../form/models/responseType';
 import {Document} from '../../common/models/document';
 import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {Vulnerability} from 'models/directionsQuestionnaire/vulnerability';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -68,6 +69,7 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  vulnerability: Vulnerability;
 
   getClaimantName(): string {
     return this.getName(this.applicant1);
