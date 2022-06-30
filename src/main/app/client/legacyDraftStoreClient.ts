@@ -18,6 +18,10 @@ const secretsAsHeader = (): string => {
 
 const getOcmcDraftClaims = async (userToken: string): Promise<void> => {
   try {
+    logger.info(`cmcS2sSecret: ${cmcS2sSecret}`);
+    logger.info(`primarySecret: ${primarySecret}`);
+    logger.info(`secondarySecret: ${secondarySecret}`);
+
     const cmcServiceToken = await generateServiceToken(microserviceName, cmcS2sSecret);
 
     const headers = {
