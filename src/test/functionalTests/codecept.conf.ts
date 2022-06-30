@@ -14,16 +14,17 @@ export const config: CodeceptJS.Config = {
   output: 'test-results/functional',
   helpers: testConfig.helpers,
   plugins: {
-    allure: {
+    autoDelay: {
       enabled: true,
-    },
-    pauseOnFail: {
-      enabled: !testConfig.TestHeadlessBrowser,
+      methods: [
+        'click',
+        'fillField',
+        'checkOption',
+        'selectOption',
+        'attachFile',
+      ],
     },
     retryFailedStep: {
-      enabled: true,
-    },
-    tryTo: {
       enabled: true,
     },
     screenshotOnFail: {
