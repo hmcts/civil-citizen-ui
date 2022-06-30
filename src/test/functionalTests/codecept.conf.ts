@@ -11,7 +11,7 @@ export const config: CodeceptJS.Config = {
   ],
 
   name: 'civil-citizen-ui-functional',
-  output: '.././output',
+  output: 'test-results/functional',
   helpers: testConfig.helpers,
   plugins: {
     allure: {
@@ -42,16 +42,16 @@ export const config: CodeceptJS.Config = {
         },
       },
       'mocha-junit-reporter': {
-        stdout: './src/test/output/console.log',
+        stdout: 'test-results/functional/console.log',
         options: {
-          mochaFile: './src/test/output/result.xml',
+          mochaFile: 'test-results/functional/result.xml',
           'attachments': true,
         },
       },
       'mochawesome': {
-        stdout: './src/test/output/console.log',
+        stdout: 'test-results/functional/console.log',
         options: {
-          reportDir: './src/test/output',
+          reportDir: 'test-results/functional',
           inlineAssets: true,
           json: false,
           reportFilename: 'report',

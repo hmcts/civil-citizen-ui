@@ -33,3 +33,4 @@ functional-output/
 src/test/output/*
 /package-lock.json
 src/main/app.ts
+test-results/
