@@ -12,7 +12,7 @@ import {ResponseType} from '../../../../common/form/models/responseType';
 
 import {buildYourDetailsSection} from './detailsSection/buildYourDetailsSection';
 import {buildYourResponseToClaimSection} from './responseSection/buildYourResponseToClaimSection';
-import {buildYourResponsePaySection} from './responseSection/buildYourResponsePaySection';
+import {buildYourResponsePaymentSection} from './responseSection/buildYourResponsePaymentSection';
 import {buildYourFinancialSection} from './financialSection/buildYourFinancialSection';
 import {buildYourResponseDetailsSection} from './responseSection/buildYourResponseDetailsSection';
 
@@ -28,7 +28,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourResponseToClaimSection(claim, claimId, lang) : responseType === ResponseType.PART_ADMISSION ?  buildYourResponseToClaimSection(claim, claimId, lang) : null,
       responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourFinancialSection(claim, claimId, lang) : null,
       responseType === ResponseType.PART_ADMISSION ? buildYourResponseDetailsSection(claim, claimId, lang) : null,
-      responseType === ResponseType.FULL_ADMISSION ? buildYourResponsePaySection(claim, claimId, lang) : null,
+      responseType === ResponseType.FULL_ADMISSION ? buildYourResponsePaymentSection(claim, claimId, lang) : null,
     ],
   };
 };

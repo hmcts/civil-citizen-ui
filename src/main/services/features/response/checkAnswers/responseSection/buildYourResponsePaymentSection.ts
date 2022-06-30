@@ -36,7 +36,7 @@ const buildExplanationRow = (claim: Claim, claimId: string, lang: string | unkno
   return summaryRow(t('PAGES.EXPLANATION.TITLE', {lng: getLng(lang)}), claim.statementOfMeans?.explanation?.text, explanationHref, changeLabel(lang));
 };
 
-export const buildYourResponsePaySection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const yourResponseHref = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
   const paymentOptionHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_OPTION_URL);
   const responseSection = summarySection({
