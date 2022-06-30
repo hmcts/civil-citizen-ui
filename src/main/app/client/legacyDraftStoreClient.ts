@@ -7,28 +7,24 @@ const logger = Logger.getLogger('legacyDraftStoreClient');
 
 const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
 const client: AxiosInstance = Axios.create({baseURL: draftStoreUrl});
-const primarySecret = config.get<string>('services.draftStore.legacy.s2s.primarySecret');
-const secondarySecret = config.get<string>('services.draftStore.legacy.s2s.secondarySecret');
 const microserviceName = config.get<string>('services.draftStore.legacy.s2s.microserviceName');
 
-const secretsAsHeader = (): string => {
+const secretsAsHeader = (primarySecret: string, secondarySecret: string): string => {
   return secondarySecret ? `${primarySecret}, ${secondarySecret}` : primarySecret;
 };
 
 const getOcmcDraftClaims = async (userToken: string): Promise<void> => {
   try {
     const _cmcS2sSecret = config.get<string>('services.serviceAuthProvider.cmcS2sSecret');
-    logger.info(`cmcS2sSecret: ${_cmcS2sSecret}`);
-    logger.info(`primarySecret: ${primarySecret}`);
-    logger.info(`secondarySecret: ${secondarySecret}`);
-
+    const primarySecret = config.get<string>('services.draftStore.legacy.s2s.primarySecret');
+    const secondarySecret = config.get<string>('services.draftStore.legacy.s2s.secondarySecret');
     const cmcServiceToken = await generateServiceToken(microserviceName, _cmcS2sSecret);
 
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + userToken,
       'ServiceAuthorization': 'Bearer ' + cmcServiceToken,
-      'Secret': secretsAsHeader(),
+      'Secret': secretsAsHeader(primarySecret, secondarySecret),
     };
 
     const response: AxiosResponse<string> = await client.get(

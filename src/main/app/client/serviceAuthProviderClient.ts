@@ -50,10 +50,6 @@ const generateServiceToken = async (microservice: string, s2sSecret: string): Pr
 
     // TODO: re-use existing service access token if still valid instead of generating a new one each time
     const oneTimePassword = authenticator.generate(s2sSecret);
-    logger.info(`oneTimePassword: ${oneTimePassword}`);
-
-    const leaseUrl = `${serviceAuthProviderUrl}/lease`;
-    logger.info(`leaseUrl: ${leaseUrl}`);
 
     logger.info(`About to generate Service Authorisation Token for: ${microservice}`);
     const response: AxiosResponse<string> = await client.post(
