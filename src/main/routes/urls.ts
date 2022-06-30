@@ -72,6 +72,7 @@ export const CITIZEN_CONTACT_THEM_URL = `${DASHBOARD_URL}/:id/contact-them`;
 export const RESPONSE_CHECK_ANSWERS_URL = `${BASE_CASE_RESPONSE_URL}/check-and-send`;
 export const RESPONSE_YOUR_DEFENCE_URL = `${BASE_CASE_RESPONSE_URL}/your-defence`;
 export const CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL = `${FULL_REJECTION_URL}/you-have-paid-less`;
+export const CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL = `${FULL_REJECTION_URL}/why-do-you-disagree`;
 export const RESPONSE_INCOMPLETE_SUBMISSION_URL = `${BASE_CASE_RESPONSE_URL}/incomplete-submission`;
 export const CITIZEN_FR_AMOUNT_YOU_PAID_URL = `${BASE_CASE_RESPONSE_URL}/full-rejection/how-much-have-you-paid`;
 export const DEFENDANT_SUMMARY_URL = `${DASHBOARD_URL}/:id/defendant`;

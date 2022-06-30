@@ -1,15 +1,15 @@
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../../../main/common/models/claim';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {Claim} from '../../../../../../main/common/models/claim';
 import {
   getWhyDoYouDisagreeForm,
   saveWhyDoYouDisagreeData,
-} from '../../../../../../../main/services/features/response/admission/partialAdmission/whyDoYouDisagreeService';
+} from '../../../../../../main/services/features/response/admission/whyDoYouDisagreeService';
 
-import {REDIS_FAILURE} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {REDIS_FAILURE} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   WhyDoYouDisagree,
-} from '../../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {PartialAdmission} from '../../../../../../../main/common/models/partialAdmission';
+} from '../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
 
 
 jest.mock('../../../../../../../main/modules/draft-store');
