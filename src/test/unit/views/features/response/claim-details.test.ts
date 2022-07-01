@@ -120,9 +120,12 @@ describe('Task List View', () => {
       expect(downloadLink.href).toContain('case/1111/documents/timeline');
     });
 
-    it('should display download the claim text', () => {
+    it('should display download the claim text and link', () => {
       const subHeadings = htmlDocument.getElementsByClassName('govuk-body');
+      const downloadLink = htmlDocument.getElementById('sealed-claim-link') as HTMLAnchorElement;
       expect(subHeadings[4].innerHTML).toContain('Download the claim');
+      expect(downloadLink.innerHTML).toContain('Download claim (PDF)');
+      expect(downloadLink.href).toContain('case/1111/documents/sealed-claim');
     });
 
     it('should contain contact us detail component', () => {

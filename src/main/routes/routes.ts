@@ -72,6 +72,7 @@ import partialAdmissionPaymentOptionController
   from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
 import supportRequiredController from './features/directionsQuestionnaire/supportRequiredController';
 import vulnerabilityController from './features/directionsQuestionnaire/vulnerabilityController';
+import documentDownloadController from './features/document/documentDownloadController';
 
 export default [
   homeController,
@@ -140,5 +141,6 @@ export default [
   expertGuidanceController,
   partialAdmissionPaymentOptionController,
   supportRequiredController,
+  documentDownloadController,
   vulnerabilityController,
 ];
