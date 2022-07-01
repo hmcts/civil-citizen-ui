@@ -31,6 +31,9 @@
             {{ govukTextarea({
               name: "text",
               id: "text",
+              attributes: {
+                'aria-label' : 'why do you disagree explanation'
+              }, 
               value: form.model.text,
               errorMessage: {
                 text:t(form.errorFor('text'))
