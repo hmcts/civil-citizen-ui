@@ -72,13 +72,18 @@ export class Nunjucks {
     nunjucksEnv.addFilter('currencyFormat', currencyFormat);
     nunjucksEnv.addFilter('addDays', addDaysFilter);
     nunjucksEnv.addFilter('date', dateFilter);
-    nunjucksEnv.addGlobal('t', (key: string): string => this.i18next.t(key));
-    nunjucksEnv.addGlobal('arrayT', (keys: FormValidationError[], options?: TOptions): FormValidationError[] => {
-      for (let i = 0; i < keys.length; i++) {
-        keys[i].text = this.i18next.t(keys[i].text, {lng: 'cy'});
+    nunjucksEnv.addGlobal('t', (key: any) => {
+      if (typeof key === 'string') {
+        return this.i18next.t(key);
+      } else {
+        const array: FormValidationError[] = key;
+        for (let i = 0; i < array.length; i++) {
+          array[i].text = this.i18next.t(array[i].text);
+        }
+        return array;
       }
-      return keys;
     });
+
     nunjucksEnv.addGlobal('arrayT2', (keys: FormValidationError[], options?: TOptions): FormValidationError[] => {
       keys.map((key) => key.text = this.i18next.t(key.text, options));
       return keys;

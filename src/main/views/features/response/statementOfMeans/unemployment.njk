@@ -19,21 +19,19 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getAllErrors() %}
-
-      {% set err = arrayT(errors) %}
-
       {% set optionError = t(form.errorFor("option")) %}
       {% set otherDetailsNestedError = t(form.errorFor('otherDetails[details]')) %}
       {% set yearNestedError = t(form.errorFor('unemploymentDetails[years]')) %}
       {% set monthsNestedError = t(form.nestedErrorFor('unemploymentDetails[months]')) %}
       {% if form.hasErrors() %}
+        {% set Array = t(errors) %}
         {{ govukErrorSummary({
           "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
         {{ govukErrorSummary({
           "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
-          "errorList": arrayT(errors)
+          "errorList": errors
         }) }}
         {{ govukErrorSummary({
           "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
