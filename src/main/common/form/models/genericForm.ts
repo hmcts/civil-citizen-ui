@@ -98,6 +98,20 @@ export class GenericForm<Model> {
     this.errors = validator.validateSync(this.model as unknown as object);
   }
 
+  /**
+   * Gets parent and child errors in one array
+   * @param property - optional parameter (parent field name) to define the path to field errors
+   */
+  public getAllStringErrors(property?: string): string[] {
+    //const nestedErrors = this.getNestedErrors(property).filter(error => error !== undefined);
+    //const list = nestedErrors?.length > 0 ? this.getErrors(property).concat(nestedErrors) : this.getErrors(property);
+    const errors: string[] = [];
+    errors.push('ERRORS.VALID_INTEGER');
+    errors.push('ERRORS.DETAILS_REQUIRED');
+    errors.push('ERRORS.SELECT_AN_OPTION');
+    return errors;
+  }
+
   private getAllChildrenErrors(error: ValidationError, parentProperty?: string): FormValidationError[] {
     let formErrors: FormValidationError[] = [];
     if (error.children?.length > 0) {
@@ -111,4 +125,6 @@ export class GenericForm<Model> {
       return formErrors;
     }
   }
+
+
 }

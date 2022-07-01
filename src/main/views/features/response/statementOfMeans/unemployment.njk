@@ -19,16 +19,26 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getAllErrors() %}
-      {% set optionError = form.errorFor("option") %}
-      {% set otherDetailsNestedError = form.errorFor('otherDetails[details]') %}
-      {% set yearNestedError = form.errorFor('unemploymentDetails[years]') %}
-      {% set monthsNestedError = form.nestedErrorFor('unemploymentDetails[months]') %}
+
+      {% set err = arrayT(errors) %}
+
+      {% set optionError = t(form.errorFor("option")) %}
+      {% set otherDetailsNestedError = t(form.errorFor('otherDetails[details]')) %}
+      {% set yearNestedError = t(form.errorFor('unemploymentDetails[years]')) %}
+      {% set monthsNestedError = t(form.nestedErrorFor('unemploymentDetails[months]')) %}
       {% if form.hasErrors() %}
+        {{ govukErrorSummary({
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
+          "errorList": errors
+        }) }}
         {{ govukErrorSummary({
           "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": arrayT(errors)
         }) }}
-      {% endif %}
+        {{ govukErrorSummary({
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
+          "errorList": arrayT2(errors)
+        }) }}      {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t(heading) }}</h1>

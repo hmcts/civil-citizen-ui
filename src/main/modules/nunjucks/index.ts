@@ -16,6 +16,7 @@ import {EvidenceDetails} from '../../common/models/evidence/evidenceDetails';
 import {addDaysFilter, dateFilter} from './filters/dateFilter';
 import {SignatureType} from '../../common/models/signatureType';
 import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -71,8 +72,17 @@ export class Nunjucks {
     nunjucksEnv.addFilter('currencyFormat', currencyFormat);
     nunjucksEnv.addFilter('addDays', addDaysFilter);
     nunjucksEnv.addFilter('date', dateFilter);
-    nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
-    nunjucksEnv.addGlobal('arrayT', (keys: string[]): string[] => this.i18next.t(keys));
+    nunjucksEnv.addGlobal('t', (key: string): string => this.i18next.t(key));
+    nunjucksEnv.addGlobal('arrayT', (keys: FormValidationError[], options?: TOptions): FormValidationError[] => {
+      for (let i = 0; i < keys.length; i++) {
+        keys[i].text = this.i18next.t(keys[i].text, {lng: 'cy'});
+      }
+      return keys;
+    });
+    nunjucksEnv.addGlobal('arrayT2', (keys: FormValidationError[], options?: TOptions): FormValidationError[] => {
+      keys.map((key) => key.text = this.i18next.t(key.text, options));
+      return keys;
+    });
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
     nunjucksEnv.addGlobal('YesNo', YesNo);
     nunjucksEnv.addGlobal('ResidenceType', ResidenceType);
