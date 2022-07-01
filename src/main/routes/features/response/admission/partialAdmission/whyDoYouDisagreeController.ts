@@ -8,7 +8,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../../../../urls';
 import {WhyDoYouDisagreeForm} from '../../../../../common/models/whyDoYouDisagreeForm';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
-import { ResponseType } from '../../../../../common/form/models/responseType';
+import {ResponseType} from '../../../../../common/form/models/responseType';
 
 const whyDoYouDisagreeController = express.Router();
 const whyDoYouDisagreeViewPath = 'features/response/admission/why-do-you-disagree';
