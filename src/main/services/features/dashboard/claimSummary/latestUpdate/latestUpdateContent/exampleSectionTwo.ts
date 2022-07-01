@@ -4,6 +4,10 @@ import {SummaryRow} from '../../../../../../common/models/summaryList/summaryLis
 import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {Claim} from '../../../../../../common/models/claim';
 
+/**
+ * Mock file
+ */
+
 const rows: SummaryRow[] = [
   {
     key: {

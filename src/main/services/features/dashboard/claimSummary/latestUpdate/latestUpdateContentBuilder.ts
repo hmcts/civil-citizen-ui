@@ -36,6 +36,7 @@ export const buildResponseToClaimSection = (claim: Claim, lang: string, claimId:
   return sectionContent.flat();
 };
 
+// mock example builder
 export const buildExampleSectionOne = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {
   const sectionContent: any[] = [];
   const firstConditionalContent = getFirstConditionalContentContent(claim, lang, claimId);
@@ -43,7 +44,7 @@ export const buildExampleSectionOne = (claim: Claim, lang: string, claimId: stri
   const thirdConditionalContent = getThirdConditionalContentContent(claim, lang);
   const number = 10;
 
-  if (false) {
+  if (claim.ccdState === CaseState.PENDING_CASE_ISSUED) {
     if (number > 8) {
       sectionContent.push(firstConditionalContent);      
     }
@@ -55,14 +56,14 @@ export const buildExampleSectionOne = (claim: Claim, lang: string, claimId: stri
   }
   return sectionContent.flat();
 };
-
+// mock example builder
 export const buildExampleSectionTwo = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {
   const sectionContent:any[] = [];
   const fourthConditionalContent = getFourthConditionalContentContent(claim, lang);
   const fifthConditionalContent = getFifthConditionalContentContent(claim, lang);
   const number = 10;
 
-  if (false) {
+  if (claim.ccdState === CaseState.PENDING_CASE_ISSUED) {
     if (number > 8) {
       sectionContent.push(fourthConditionalContent);
     }

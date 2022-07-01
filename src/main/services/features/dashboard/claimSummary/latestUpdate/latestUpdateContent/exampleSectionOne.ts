@@ -3,6 +3,10 @@ import {ClaimSummaryType, ClaimSummarySection} from '../../../../../../common/fo
 // import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {Claim} from '../../../../../../common/models/claim';
 
+/**
+ * Mock file
+ */
+
 export const getFirstConditionalContentContent = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantName();
   return [
@@ -62,7 +66,7 @@ export const getSecondConditionalContentContent = (claim: Claim, lang: string): 
         classes: 'govuk-button--secondary',
       },
     },
-  ]
+  ];
 };
 
 export const getThirdConditionalContentContent = (claim: Claim, lang: string): ClaimSummarySection[] => {
@@ -97,3 +101,4 @@ export const getThirdConditionalContentContent = (claim: Claim, lang: string): C
     },
   ];
 };
+
