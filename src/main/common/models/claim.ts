@@ -32,6 +32,7 @@ import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifi
 import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
+import {CaseState} from '../form/models/claimDetails';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -72,24 +73,14 @@ export class Claim {
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
-
+  ccdState: CaseState;
 
   getClaimantName(): string {
-    return this.getName(this.applicant1);
+    return this.applicant1.partyName;
   }
 
   getDefendantName(): string {
-    return this.getName(this.respondent1);
-  }
-
-  getName( party: Party): string {
-    switch(party.type){
-      case CounterpartyType.INDIVIDUAL : return party.individualTitle + ' ' + party.individualFirstName + ' ' + party.individualLastName;
-      case CounterpartyType.SOLE_TRADER: return party.soleTraderTitle + ' ' + party.soleTraderFirstName + ' ' + party.soleTraderLastName;
-      case CounterpartyType.COMPANY:
-      case CounterpartyType.ORGANISATION:
-        return party.partyName;
-    }
+    return this.respondent1.partyName;
   }
 
   formattedResponseDeadline(): string {
@@ -215,7 +206,11 @@ export class Claim {
     }
     return undefined;
   }
+  isDefandantNotResponded(): boolean {
+    return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+  }
 }
+
 
 export interface Party {
   individualTitle?: string;

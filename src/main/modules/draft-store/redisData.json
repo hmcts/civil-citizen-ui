@@ -5,9 +5,9 @@
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
     "last_modified": "2022-03-01T13:29:24.971",
-    "state": "PENDING_CASE_ISSUED",
     "security_classification": "PUBLIC",
     "case_data": {
+      "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
@@ -42,6 +42,7 @@
         "individualTitle": "Mrs.",
         "individualFirstName": "Jane",
         "individualLastName": "Doe",
+        "partyName": "Mrs. Jane Doe",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -113,7 +114,7 @@
         "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
       },
       "specRespondent1Represented": "Yes",
-      "respondent1ResponseDeadline": "2022-05-19T15:59:59",
+      "respondent1ResponseDeadline": "2022-07-19T15:59:59",
       "applicant1OrganisationPolicy": {
         "Organisation": {
           "OrganisationID": "Q1KOKP2"
@@ -187,9 +188,9 @@
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
     "last_modified": "2022-03-01T13:29:24.971",
-    "state": "PENDING_CASE_ISSUED",
     "security_classification": "PUBLIC",
     "case_data": {
+      "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
@@ -206,6 +207,7 @@
         "soleTraderFirstName": "Jan",
         "soleTraderLastName": "Clark",
         "soleTraderTradingAs": "Gardener",
+        "partyName": "Mr. Jan Clark",
         "primaryAddress": {
           "County": "London",
           "Country": "United Kingdom",
@@ -355,9 +357,9 @@
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
     "last_modified": "2022-03-01T13:29:24.971",
-    "state": "PENDING_CASE_ISSUED",
     "security_classification": "PUBLIC",
     "case_data": {
+      "ccdState": "PENDING_CASE_ISSUED",
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
@@ -370,6 +372,7 @@
         "individualTitle": "Mr.",
         "individualFirstName": "Alex",
         "individualLastName": "Van",
+        "partyName": "Mr. Alex Van",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -386,6 +389,7 @@
         "individualTitle": "Mr.",
         "individualFirstName": "Jhon",
         "individualLastName": "Smith",
+        "partyName": "Mr. Jhon Smith",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -522,9 +526,9 @@
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
     "last_modified": "2022-03-01T13:29:24.971",
-    "state": "PENDING_CASE_ISSUED",
     "security_classification": "PUBLIC",
     "case_data": {
+      "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
@@ -536,6 +540,7 @@
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
+        "partyName": "Mr. Jan Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -551,6 +556,7 @@
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
+        "partyName": "Mr. Jan Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -697,9 +703,9 @@
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
     "last_modified": "2022-03-01T13:29:24.971",
-    "state": "PENDING_CASE_ISSUED",
     "security_classification": "PUBLIC",
     "case_data": {
+      "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
@@ -879,10 +885,9 @@
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
-    "last_modified": "2022-03-01T13:29:24.971",
-    "state": "PENDING_CASE_ISSUED",
     "security_classification": "PUBLIC",
     "case_data": {
+      "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
@@ -894,6 +899,7 @@
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
+        "partyName": "Mr. Jan Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -909,6 +915,7 @@
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
+        "partyName": "Mr. Jan Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -1055,9 +1062,9 @@
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
     "last_modified": "2022-03-01T13:29:24.971",
-    "state": "PENDING_CASE_ISSUED",
     "security_classification": "PUBLIC",
     "case_data": {
+      "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
         "code": "FEE0204",
         "version": "4",
@@ -1069,6 +1076,7 @@
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
+        "partyName": "Mr. Jan Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
@@ -1084,6 +1092,7 @@
         "individualTitle": "Mr.",
         "individualFirstName": "Jan",
         "individualLastName": "Clark",
+        "partyName": "Mr. Jan Clark",
         "primaryAddress": {
           "County": "Kent",
           "Country": "United Kingdom",
