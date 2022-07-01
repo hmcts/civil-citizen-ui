@@ -27,8 +27,11 @@ import {
 } from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
 import {ResponseType} from '../form/models/responseType';
-import {Document} from '../../common/models/document';
+import {Document} from '../../common/models/document/document';
 import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifiedStatementOfTruth';
+import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
+import {CaseDocument} from './document/caseDocument';
+import {DocumentType} from './document/documentType';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -68,6 +71,8 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
+
 
   getClaimantName(): string {
     return this.getName(this.applicant1);
@@ -197,6 +202,18 @@ export class Claim {
   }
   generatePdfFileName(): string {
     return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
+  }
+  isSystemGeneratedCaseDocumentsAvailable(): number {
+    return this.systemGeneratedCaseDocuments?.length;
+  }
+  getDocumentDetails(documentType: DocumentType): CaseDocument {
+    if (this.isSystemGeneratedCaseDocumentsAvailable()) {
+      const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
+        return document.value.documentType === documentType;
+      });
+      return filteredDocumentDetailsByType.value;
+    }
+    return undefined;
   }
 }
 

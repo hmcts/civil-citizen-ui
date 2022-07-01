@@ -13,12 +13,15 @@ services:
       host: REDIS_HOST
       port: REDIS_PORT
       tls: REDIS_TLS
+    legacy:
+      url: DRAFT_STORE_API_URL
   dmStore:
     microserviceName: MICROSERVICE_NAME
     baseUrl: DOCUMENT_MANAGEMENT_URL
   serviceAuthProvider:
     baseUrl: AUTH_PROVIDER_SERVICE_CLIENT_BASEURL
-    serviceAuthTokenGeneratorUrl : SERVICE_AUTH_TOKEN_GENERATOR_URL   
+    serviceAuthTokenGeneratorUrl: SERVICE_AUTH_TOKEN_GENERATOR_URL
+
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY

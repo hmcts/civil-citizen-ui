@@ -72,6 +72,7 @@ import partialAdmissionPaymentOptionController
   from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
 import supportRequiredController from './features/directionsQuestionnaire/supportRequiredController';
 import whyDoYouDisagreeFullRejectionController from './features/response/admission/fullRejection/whyDoYouDisagreeFullRejectionController';
+import documentDownloadController from './features/document/documentDownloadController';
 
 export default [
   homeController,
@@ -141,4 +142,5 @@ export default [
   partialAdmissionPaymentOptionController,
   supportRequiredController,
   whyDoYouDisagreeFullRejectionController,
+  documentDownloadController,
 ];
