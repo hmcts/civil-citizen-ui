@@ -1,29 +1,39 @@
 import * as express from 'express';
+import config from 'config';
+import {getLatestUpdateContent} from '../../../services/features/dashboard/claimSummary/latestUpdateService';
 import {
-  getLatestUpdateContent,
   getDocumentsContent,
-} from '../../../../main/services/features/dashboard/claimSummaryService';
+} from '../../../services/features/dashboard/claimSummary/claimSummaryService';
 import {Claim} from '../../../common/models/claim';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
+import {AppRequest} from '../../../common/models/AppRequest';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {DEFENDANT_SUMMARY_URL} from '../../urls';
+import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimSummaryController');
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res) => {
   try {
+    const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim: Claim = await getCaseDataFromStore((req.params.id));
-    const claimantName = claim.getClaimantName();
-    const defendantName = claim.getDefendantName();
-    const latestUpdateContent = getLatestUpdateContent(lang);
+    let claim: Claim = await getCaseDataFromStore(claimId);
+    if (claim.isEmpty()) {
+      claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+      if (claim) {
+        await saveDraftClaim(claimId, claim);
+      } 
+    }
+    const latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
     const documentsContent = getDocumentsContent(lang);
-    res.render(claimSummaryViewPath, { claim, claimId: req.params.id, claimantName, defendantName, latestUpdateContent, documentsContent });
+    res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent});
   } catch (error) {
     logger.error(error);
-    res.status(500).send({ error: error.message });
+    res.status(500).send({error: error.message});
   }
 });
 
