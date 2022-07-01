@@ -11,7 +11,7 @@ import {
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import {CLAIM_DETAILS_NOT_AVAILBALE, DOCUMENT_NOT_AVAILABLE,} from './errorMessageContants';
+import {CLAIM_DETAILS_NOT_AVAILBALE, DOCUMENT_NOT_AVAILABLE} from './errorMessageContants';
 import {DashboardClaimantItem} from '../../common/models/dashboard/dashboardItem';
 
 const {Logger} = require('@hmcts/nodejs-logging');
