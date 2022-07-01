@@ -48,7 +48,7 @@ describe('Why do you disagree Full Rejection Controller', () => {
           expect(res.text).toContain('Why do you disagree with the claim amount?');
         });
     });
-    test('should redirect to claim list when text is filled', async () => {
+    test('should redirect to timeline of events when text is filled', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)
