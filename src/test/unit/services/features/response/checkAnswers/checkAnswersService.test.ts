@@ -60,7 +60,6 @@ describe('Check Answers service', () => {
       //When
       const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
       //Then
-      expect(summarySections.sections.length).toBe(5);
       expect(summarySections.sections[INDEX_DETAILS_SECTION].summaryList.rows.length).toBe(5);
       expect(summarySections.sections[INDEX_DETAILS_SECTION].summaryList.rows[0].value.html).toBe(PARTY_NAME);
       expect(summarySections.sections[INDEX_DETAILS_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);
