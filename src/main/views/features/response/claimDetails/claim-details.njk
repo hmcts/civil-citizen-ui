@@ -54,10 +54,10 @@
           <p class="govuk-body">{{ claim.detailsOfClaim }}</p>
           {% if timelineRows and timelineRows.length > 0 %}
             {{ timelineSummary(timelineRows) }}
-          {% elseif pdfUrl %}
+          {% elseif timelinePdfUrl %}
             <div class="govuk-body">
               <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.TIMELINE') }}</h2>
-              <a id="timeline-link" href={{ pdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.CLAIM_DETAILS.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
+              <a id="timeline-link" href={{ timelinePdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.CLAIM_DETAILS.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
             </div>
           {% endif %}
           <p class="govuk-body">
@@ -65,7 +65,7 @@
               {{ t('COMMON.DOWNLOAD_THE_CLAIM') }}
             </span>
           </p>
-          <p class="govuk-body"><a href="#">Download claim(PDF)</a></p>
+          <p class="govuk-body"><a id="sealed-claim-link" href={{ sealedClaimPdfUrl }} rel="noreferrer noopener">{{ t('PAGES.CLAIM_DETAILS.DOWNLOAD_CLAIM') }}</a></p>
           <br>
           {{ contactUsForHelp(t) }}
         </div>
