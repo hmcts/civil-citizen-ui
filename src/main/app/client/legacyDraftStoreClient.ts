@@ -15,10 +15,17 @@ const secretsAsHeader = (primarySecret: string, secondarySecret: string): string
 
 const getOcmcDraftClaims = async (userToken: string): Promise<void> => {
   try {
-    const _cmcS2sSecret = config.get<string>('services.serviceAuthProvider.cmcS2sSecret');
+    const cmcS2sSecret = config.get<string>('services.serviceAuthProvider.cmcS2sSecret');
     const primarySecret = config.get<string>('services.draftStore.legacy.s2s.primarySecret');
     const secondarySecret = config.get<string>('services.draftStore.legacy.s2s.secondarySecret');
-    const cmcServiceToken = await generateServiceToken(microserviceName, _cmcS2sSecret);
+
+    logger.info(`cmcS2sSecret: ${cmcS2sSecret}`);
+    logger.info(`primarySecret: ${primarySecret}`);
+    logger.info(`primarySecret: ${primarySecret}`);
+
+    logger.info('About to call generateServiceToken()...');
+    const cmcServiceToken = await generateServiceToken(microserviceName, cmcS2sSecret);
+    logger.info('generateServiceToken() called successfully.');
 
     const headers = {
       'Content-Type': 'application/json',

@@ -52,6 +52,8 @@ const generateServiceToken = async (microservice: string, s2sSecret: string): Pr
     const oneTimePassword = authenticator.generate(s2sSecret);
 
     logger.info(`About to generate Service Authorisation Token for: ${microservice}`);
+    logger.info(`microservice: ${microservice}`);
+    logger.info(`s2sSecret: ${oneTimePassword}`);
     const response: AxiosResponse<string> = await client.post(
       '/lease',
       {

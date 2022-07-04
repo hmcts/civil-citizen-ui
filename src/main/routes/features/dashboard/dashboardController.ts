@@ -7,6 +7,9 @@ import {AppRequest, UserDetails} from 'models/AppRequest';
 import {CivilClaimResponse} from 'common/models/civilClaimResponse';
 import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('dashboardController');
+
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
@@ -30,7 +33,9 @@ dashboardController.get(DASHBOARD_URL, async function (req: AppRequest, res) {
   const user: UserDetails = req.session.user;
   /*This is a call to validate integration with legacy draft-store. This will have to be refined in the future
   to display the draft claims on the dashboard*/
+  logger.info('About to call getOcmcDraftClaims()...');
   await getOcmcDraftClaims(user.accessToken);
+  logger.info('getOcmcDraftClaims() called successfully.');
 
   const claimsAsClaimant: Claim[] = [];
   const claimsAsDefendant: CivilClaimResponse[] = await civilServiceClient.retrieveByDefendantId(req);
