@@ -3,6 +3,7 @@ import {
 } from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_AMOUNT_YOU_PAID_URL,
+  CITIZEN_WHY_DO_YOU_DISAGREE_URL,
 } from '../../../../../../../main/routes/urls';
 import {
   ceateClaimWithPartialAdmission,
@@ -70,7 +71,7 @@ describe('Response Details', () => {
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[3].value.html).toBe('Reasons for disagree');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[3].actions?.items[0].href).toBe(CITIZEN_AMOUNT_YOU_PAID_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[3].actions?.items[0].href).toBe(CITIZEN_WHY_DO_YOU_DISAGREE_URL.replace(':id', constVal.CLAIM_ID));
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[3].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });
 });

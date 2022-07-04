@@ -7,6 +7,7 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {
   CITIZEN_AMOUNT_YOU_PAID_URL,
+  CITIZEN_WHY_DO_YOU_DISAGREE_URL,
 } from '../../../../../routes/urls';
 import { formatDateToFullDate } from '../../../../../common/utils/dateUtils';
 
@@ -14,6 +15,7 @@ const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSW
 
 export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const yourResponseDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
+  const yourReasonsToDisagreeHref = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_URL);
 
   let yourResponseDetailsSection: SummarySection = null;
 
@@ -26,7 +28,7 @@ export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, l
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_MONEY_PAID', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(Number(claim.partialAdmission?.howMuchHaveYouPaid?.amount)), yourResponseDetailsHref, changeLabel(lang)),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', { lng: getLng(lang) }), formatDateToFullDate(claim.partialAdmission?.howMuchHaveYouPaid?.date), '', changeLabel(lang)),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED', { lng: getLng(lang) }), claim.partialAdmission?.howMuchHaveYouPaid?.text, '', changeLabel(lang)),
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', { lng: getLng(lang) }), claim.partialAdmission?.whyDoYouDisagree?.text , yourResponseDetailsHref, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', { lng: getLng(lang) }), claim.partialAdmission?.whyDoYouDisagree?.text , yourReasonsToDisagreeHref, changeLabel(lang)),
   ]);
 
   return yourResponseDetailsSection;

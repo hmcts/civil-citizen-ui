@@ -4,6 +4,7 @@ import {
 } from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_RESPONSE_TYPE_URL,
+  CITIZEN_ALREADY_PAID_URL,
 } from '../../../../../../../main/routes/urls';
 import {
   ceateClaimWithPartialAdmission,
@@ -63,7 +64,7 @@ describe('Response To Claim', () => {
 
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION_PART_ADMISSION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION_PART_ADMISSION].summaryList.rows[1].value.html).toBe('Yes');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION_PART_ADMISSION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_RESPONSE_TYPE_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION_PART_ADMISSION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_ALREADY_PAID_URL.replace(':id', constVal.CLAIM_ID));
   });
 
   it('should return not paid the claimant on response to claim when response detail section exists', async () => {
@@ -74,6 +75,6 @@ describe('Response To Claim', () => {
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION_PART_ADMISSION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION_PART_ADMISSION].summaryList.rows[1].value.html).toBe('No');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION_PART_ADMISSION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_RESPONSE_TYPE_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION_PART_ADMISSION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_ALREADY_PAID_URL.replace(':id', constVal.CLAIM_ID));
   });
 });
