@@ -497,7 +497,8 @@
       "AMOUNT": "Amount you owe",
       "PAGE_TITLE": "Behind on tax payments?",
       "REASON": "Reason",
-      "TITLE": "Are you behind on tax payments?"
+      "TITLE": "Are you behind on tax payments?",
+      "EXAMPLE": "For example National Insurance contributions, Income Tax or VAT."
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"

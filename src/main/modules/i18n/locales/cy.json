@@ -495,7 +495,8 @@
       "AMOUNT": "Swm sy’n ddyledus gennych",
       "PAGE_TITLE": "Behind on tax payments?",
       "REASON": "Rheswm",
-      "TITLE": "A ydych yn hwyr yn gwneud taliadau treth?"
+      "TITLE": "A ydych yn hwyr yn gwneud taliadau treth?",
+      "EXAMPLE": "Er enghraifft cyfraniadau Yswiriant Gwladol, Treth Incwm neu TAW."
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
