@@ -33,16 +33,19 @@ const getWhyDoYouDisagreeForm = async (claimId: string, type: ResponseType): Pro
 const saveWhyDoYouDisagreeData = async (claimId: string, form: WhyDoYouDisagree, type: ResponseType) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    if (type === ResponseType.PART_ADMISSION) {
-      if (!claim.partialAdmission) {
-        claim.partialAdmission = new PartialAdmission();
-      }
-      claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree(form.text);
-    } else if (type === ResponseType.FULL_DEFENCE) {
-      if (!claim.rejectAllOfClaim) {
-        claim.rejectAllOfClaim = new RejectAllOfClaim();
-      }
-      claim.rejectAllOfClaim.whyDoYouDisagree = new WhyDoYouDisagree(form.text);
+    switch (type) {
+      case ResponseType.PART_ADMISSION:
+        if (!claim.partialAdmission) {
+          claim.partialAdmission = new PartialAdmission();
+        }
+        claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree(form.text);
+        break;
+      case ResponseType.FULL_DEFENCE:
+        if (!claim.rejectAllOfClaim) {
+          claim.rejectAllOfClaim = new RejectAllOfClaim();
+        }
+        claim.rejectAllOfClaim.whyDoYouDisagree = new WhyDoYouDisagree(form.text);
+        break;
     }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
