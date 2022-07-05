@@ -11,7 +11,7 @@ export const config: CodeceptJS.Config = {
   ],
 
   name: 'civil-citizen-ui-functional',
-  output: 'test-results/functional',
+  output: '../../../test-results/functional',
   helpers: testConfig.helpers,
   plugins: {
     autoDelay: {
