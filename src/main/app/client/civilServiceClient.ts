@@ -101,10 +101,10 @@ export class CivilServiceClient {
 
   async getSubmitDefendantResponseEventToken(claimId: string, req: AppRequest): Promise<string> {
     const config = this.getConfig(req);
-    const userId = req.session.user.id;
+    const userId = req.session?.user?.id;
     try{
       const response: AxiosResponse<object> = await this.client.get('/cases/defendant/' + userId + '/response/submit/' + claimId +'/token/', config);
-      console.log(response.data);
+      console.log('event token ' + response.data);
       return response.data as unknown as string;
     }catch (err: unknown) {
       logger.error(err);

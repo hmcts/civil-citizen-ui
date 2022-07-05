@@ -78,6 +78,7 @@ describe('Civil Service Client', () => {
   });
   describe('retrieveDocument', () => {
     it('should download document successfully', async () => {
+      //Given
       const mockDocumentDetails = mockClaim.systemGeneratedCaseDocuments[0].value;
       const mockResponse = '<Buffer 25 50 44 73 5b 20 32 20 30 20 52 20 20 34 20 30 20 52 20>';
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
@@ -95,11 +96,25 @@ describe('Civil Service Client', () => {
       });
     });
     it('should return error', async () => {
+      //Given
       const mockDocumentDetails = mockClaim.systemGeneratedCaseDocuments[0].value;
       const mockPost = jest.fn().mockResolvedValue({status: 500});
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //Then
       await expect(civilServiceClient.retrieveDocument(mockDocumentDetails, mockedAppRequest)).rejects.toThrow(TestMessages.DOCUMENT_NOT_AVAILABLE);
+    });
+  });
+  describe('getSubmitDefendantResponseEventToken',  () => {
+    it('should return token successfully', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: 'data'});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const token = await civilServiceClient.getSubmitDefendantResponseEventToken('123', mockedAppRequest);
+      //Then
+      await expect(token).toEqual('data');
     });
   });
 });

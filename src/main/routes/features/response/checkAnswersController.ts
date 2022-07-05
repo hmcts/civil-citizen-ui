@@ -13,11 +13,17 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {AllResponseTasksCompletedGuard} from '../../guards/allResponseTasksCompletedGuard';
 import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {isFullAmountReject} from '../../../modules/claimDetailsService';
+import {AppRequest} from 'models/AppRequest';
+import config from 'config';
+import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersController');
 const checkAnswersViewPath = 'features/response/check-answers';
 const checkAnswersController = express.Router();
+
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderView(req: express.Request, res: express.Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -57,6 +63,8 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Requ
       renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(req.params.id, form.model);
+      const token: string = await civilServiceClient.getSubmitDefendantResponseEventToken(req.params.id, <AppRequest>req);
+      console.log('event token retrieved from service and logged in controller' + token);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CONFIRMATION_URL));
     }
   } catch (error) {
