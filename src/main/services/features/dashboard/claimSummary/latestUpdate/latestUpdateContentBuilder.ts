@@ -23,7 +23,7 @@ export const buildResponseToClaimSection = (claim: Claim, lang: string, claimId:
   const responseDeadlineNotPassedContent = getNotPastResponseDeadlineContent(claim, lang);
   const responseDeadlinePassedContent = getPastResponseDeadlineContent(claim, lang);
   const respondToClaimLink = getRespondToClaimLink(claimId, lang);
-  if (claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT) {
+  if (claim.isDefandantNotResponded()) {
     sectionContent.push(responseNotSubmittedTitle);
     if (claim.isDeadLinePassed()) {
       sectionContent.push(responseDeadlinePassedContent);
@@ -38,7 +38,7 @@ export const buildResponseToClaimSection = (claim: Claim, lang: string, claimId:
 
 // mock example builder
 export const buildExampleSectionOne = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {
-  const sectionContent: any[] = [];
+  const sectionContent = [];
   const firstConditionalContent = getFirstConditionalContentContent(claim, lang, claimId);
   const secondConditionalContent = getSecondConditionalContentContent(claim, lang);
   const thirdConditionalContent = getThirdConditionalContentContent(claim, lang);
@@ -58,7 +58,7 @@ export const buildExampleSectionOne = (claim: Claim, lang: string, claimId: stri
 };
 // mock example builder
 export const buildExampleSectionTwo = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {
-  const sectionContent:any[] = [];
+  const sectionContent = [];
   const fourthConditionalContent = getFourthConditionalContentContent(claim, lang);
   const fifthConditionalContent = getFifthConditionalContentContent(claim, lang);
   const number = 10;
