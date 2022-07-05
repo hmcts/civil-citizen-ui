@@ -17,7 +17,7 @@ describe('Latest Update Content Builder', () => {
     partyName: partyName,
   }; 
   const claimId = '5129';
-  const claimTaskListUrl = CLAIM_TASK_LIST_URL.replace(':id', claimId)
+  const claimTaskListUrl = CLAIM_TASK_LIST_URL.replace(':id', claimId);
   const lang = 'en';
   describe('test buildResponseToClaimSection', () => {
     it('should have responseNotSubmittedTitle and respondToClaimLink', () => {

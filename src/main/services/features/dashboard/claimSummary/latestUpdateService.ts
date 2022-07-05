@@ -8,7 +8,9 @@ import {
 
 export const getLatestUpdateContent = (claimId: string, claim: Claim, lang: string): ClaimSummaryContent[] => {
   const responseToClaimSection = buildResponseToClaimSection(claim, lang, claimId);
+  //TODO: concept section as an example, needs to be replaced with new sections to be developed 
   const exampleSectionOne = buildExampleSectionOne(claim, lang, claimId);
+  //TODO: concept section as an example, needs to be replaced with new sections to be developed 
   const exampleSectionTwo = buildExampleSectionTwo(claim, lang, claimId);
   const latestUpdateContent = [responseToClaimSection, exampleSectionOne, exampleSectionTwo];
 

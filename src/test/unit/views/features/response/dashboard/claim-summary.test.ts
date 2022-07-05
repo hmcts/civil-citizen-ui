@@ -88,15 +88,12 @@ describe('Send your response by email View', () => {
         expect(paragraphs[2].innerHTML).toContain('You can still respond to the claim before they ask for a judgment.');
       });
 
-
-
       it('should have a link to respond to claim', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
         const sectionLink =  links[3] as HTMLAnchorElement;
         expect(sectionLink.innerHTML).toContain('Respond to claim');
         expect(sectionLink.href).toEqual(CLAIM_TASK_LIST_URL);
       });
-      
     });
   });
 });

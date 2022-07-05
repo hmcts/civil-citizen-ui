@@ -36,7 +36,8 @@ export const buildResponseToClaimSection = (claim: Claim, lang: string, claimId:
   return sectionContent.flat();
 };
 
-// mock example builder
+// TODO: concept example builder, needs to be replaced with new section builder to be developed
+/* istanbul ignore next */
 export const buildExampleSectionOne = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {
   const sectionContent = [];
   const firstConditionalContent = getFirstConditionalContentContent(claim, lang, claimId);
@@ -56,7 +57,8 @@ export const buildExampleSectionOne = (claim: Claim, lang: string, claimId: stri
   }
   return sectionContent.flat();
 };
-// mock example builder
+// TODO: concept example builder, needs to be replaced with new section builder to be developed
+/* istanbul ignore next */
 export const buildExampleSectionTwo = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {
   const sectionContent = [];
   const fourthConditionalContent = getFourthConditionalContentContent(claim, lang);
