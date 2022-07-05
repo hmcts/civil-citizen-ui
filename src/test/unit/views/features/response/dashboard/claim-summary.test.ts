@@ -2,7 +2,10 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
-import {DEFENDANT_SUMMARY_URL} from '../../../../../../main/routes/urls';
+import {
+  DEFENDANT_SUMMARY_URL,
+  CLAIM_TASK_LIST_URL,
+} from '../../../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
@@ -65,5 +68,35 @@ describe('Send your response by email View', () => {
         .toContain('/case/:id/response/claim-details');
     });
 
+    it('should have a title', () => {
+      const contactUs = htmlDocument.getElementsByClassName('govuk-details__summary-text');
+      expect(contactUs[0].innerHTML).toContain('Contact us for help');
+    });
+
+    describe('Latest Update tab', () => { 
+      describe('Response to claim section', () => {
+        it('should have a title', () => {
+          const titles = htmlDocument.getElementsByClassName('govuk-heading-m');
+          expect(titles[1].innerHTML).toContain("You haven't responded to this claim");
+        });
+      });
+
+      it('should have section content paragraph for past the deadline', () => {
+        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        expect(paragraphs[0].innerHTML).toContain("You haven't responded to the claim. Mr. Jan Clark can now ask for a County Court Judgement against you.");
+        expect(paragraphs[1].innerHTML).toContain('A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.');
+        expect(paragraphs[2].innerHTML).toContain('You can still respond to the claim before they ask for a judgment.');
+      });
+
+
+
+      it('should have a link to respond to claim', () => {
+        const links = htmlDocument.getElementsByClassName('govuk-link');
+        const sectionLink =  links[3] as HTMLAnchorElement;
+        expect(sectionLink.innerHTML).toContain('Respond to claim');
+        expect(sectionLink.href).toEqual(CLAIM_TASK_LIST_URL);
+      });
+      
+    });
   });
 });
