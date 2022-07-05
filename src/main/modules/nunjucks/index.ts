@@ -67,10 +67,9 @@ export class Nunjucks {
     const currencyFormat = (value: number) => numeral.default(value);
 
     const errorSummaryTranslation = (keys: FormValidationError[], t: any) => {
-      for (let i = 0; i < keys.length; i++) {
-        keys[i].text = t(keys[i].text);
-      }
-      return keys;
+      return keys.map((key) => {
+        return ({...key, text: t(key.text)});
+      });
     };
 
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
