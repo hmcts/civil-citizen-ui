@@ -1,10 +1,11 @@
 import * as express from 'express';
-import {CivilServiceClient} from '../../../../main/app/client/civilServiceClient';
+import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import {Claim} from 'models/claim';
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest, UserDetails} from 'models/AppRequest';
 import {CivilClaimResponse} from 'common/models/civilClaimResponse';
+import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -25,14 +26,19 @@ function renderPage(res: express.Response, claimsAsClaimant: Claim[], claimDraft
 
 const dashboardController = express.Router();
 
-dashboardController.get(DASHBOARD_URL, async function (req, res) {
-  const claimsAsClaimant : Claim[] = [];
-  const claimsAsDefendant : CivilClaimResponse[]  = await civilServiceClient.retrieveByDefendantId(<AppRequest>req);
+dashboardController.get(DASHBOARD_URL, async function (req: AppRequest, res) {
+  const user: UserDetails = req.session.user;
+  /*This is a call to validate integration with legacy draft-store. This will have to be refined in the future
+  to display the draft claims on the dashboard*/
+  await getOcmcDraftClaims(user.accessToken);
+
+  const claimsAsClaimant: Claim[] = [];
+  const claimsAsDefendant: CivilClaimResponse[] = await civilServiceClient.retrieveByDefendantId(req);
   const claimDraftSaved = false;
   const responseDraftSaved = false;
   const paginationArgumentClaimant: object = {};
   const paginationArgumentDefendant: object = {};
-  renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant,responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
+  renderPage(res, claimsAsClaimant, claimDraftSaved, claimsAsDefendant, responseDraftSaved, paginationArgumentClaimant, paginationArgumentDefendant);
 });
 
 export default dashboardController;
