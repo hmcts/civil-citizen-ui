@@ -66,7 +66,7 @@ export class Nunjucks {
 
     const currencyFormat = (value: number) => numeral.default(value);
 
-    const errorSummaryTranslation = (keys: FormValidationError[], t: any) => {
+    const translateErrors = (keys: FormValidationError[], t: any) => {
       return keys.map((key) => {
         return ({...key, text: t(key.text)});
       });
@@ -79,7 +79,7 @@ export class Nunjucks {
     nunjucksEnv.addFilter('addDays', addDaysFilter);
     nunjucksEnv.addFilter('date', dateFilter);
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
-    nunjucksEnv.addGlobal('errorSummaryTranslation', errorSummaryTranslation);
+    nunjucksEnv.addGlobal('translateErrors', translateErrors);
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
     nunjucksEnv.addGlobal('YesNo', YesNo);
     nunjucksEnv.addGlobal('ResidenceType', ResidenceType);
