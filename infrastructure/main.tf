@@ -7,6 +7,11 @@ data "azurerm_key_vault" "civil_vault" {
   resource_group_name = "civil-service-${var.env}"
 }
 
+data "azurerm_key_vault" "cmc_key_vault" {
+  name = "cmc-${var.env}"
+  resource_group_name = "cmc-${var.env}"
+}
+
 data "azurerm_subnet" "core_infra_redis_subnet" {
   name                 = "core-infra-subnet-1-${var.env}"
   virtual_network_name = "core-infra-vnet-${var.env}"
