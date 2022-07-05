@@ -5,7 +5,11 @@ import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {Claim} from '../../../../../../common/models/claim';
 
 /**
- * Mock file
+ * THIS FILE IS A CONCEPT AND DOESN'T WORK
+ *
+ * The logic on this file is not the real business logic.
+ * This code is only a concept of what we should do.
+ *
  */
 
 const rows: SummaryRow[] = [
@@ -83,6 +87,7 @@ export const getFourthConditionalContentContent = (claim: Claim, lang: string): 
   return [
     {
       type: ClaimSummaryType.TITLE,
+      name: 'thirdSection/firstTitle',
       data: {
         text: 'View the responses to the order',
       },

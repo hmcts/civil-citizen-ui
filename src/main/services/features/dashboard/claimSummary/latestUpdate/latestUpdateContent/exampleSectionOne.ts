@@ -4,7 +4,11 @@ import {ClaimSummaryType, ClaimSummarySection} from '../../../../../../common/fo
 import {Claim} from '../../../../../../common/models/claim';
 
 /**
- * Mock file
+ * THIS FILE IS A CONCEPT AND DOESN'T WORK
+ *
+ * The logic on this file is not the real business logic.
+ * This code is only a concept of what we should do.
+ *
  */
 
 export const getFirstConditionalContentContent = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {
