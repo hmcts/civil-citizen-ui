@@ -1,4 +1,15 @@
 {% extends "template.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set returnLink = '<a href="/dashboard">DASHBOARD</a>' | replace('DASHBOARD', t('COMMON.DASHBOARD')) %}
+{% set techProblems = t('COMMON.RETURN_PAGE') %}
+
 {% block content %}
-  <h1 class="govuk-heading-xl">Page Not Found</h1>
+  <h1 class="govuk-heading-xl"> {{ t('ERRORS.PAGE_NOT_FOUND') }}</h1>
+  <p class="govuk-body"> {{ techProblems | replace('RETURN-PAGE', returnLink) | safe }}</p>
+
+  {{ govukButton({
+    text: t('COMMON.BUTTONS.START_AGAIN'),
+    href: '/dashboard'
+  }) }}
 {% endblock %}

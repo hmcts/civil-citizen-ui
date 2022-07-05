@@ -1,5 +1,7 @@
 {% extends "template.njk" %}
+
 {% block content %}
-  <h1 class="govuk-heading-xl">Something went wrong</h1>
+  <h1 class="govuk-heading-xl">{{ t('ERRORS.SOMETHING_WENT_WRONG') }}</h1>
+  <p class="govuk-body">{{ t('COMMON.TECHNICAL_PROBLEMS') }}</p>
   <p class="govuk-body">{{ error.message }}</p>
 {% endblock %}
