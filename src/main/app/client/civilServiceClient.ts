@@ -48,6 +48,10 @@ export class CivilServiceClient {
     const submitterId = req.session?.user?.id;
     try {
       const response = await this.client.get('/cases/claimant/' + submitterId, config);
+      console.log('Config is ' + config);
+      console.log('SubmitterId is ' + submitterId);
+      console.log('Had response of ' + response);
+      console.log('Response data is ' + response.data);
       return plainToInstance(DashboardClaimantItem, response.data as object[]);
     } catch (err) {
       console.log(err);
