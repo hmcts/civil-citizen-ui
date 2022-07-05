@@ -1,5 +1,5 @@
-import {t} from 'i18next';
 import {ClaimSummaryContent, ClaimSummaryType} from '../../../common/form/models/claimSummarySection';
+import { t } from 'i18next';
 import { getLng } from '../../../common/utils/languageToggleUtils';
 import { SummaryRow } from '../../../common/models/summaryList/summaryList';
 

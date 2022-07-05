@@ -87,7 +87,6 @@ export const getFourthConditionalContentContent = (claim: Claim, lang: string): 
   return [
     {
       type: ClaimSummaryType.TITLE,
-      name: 'thirdSection/firstTitle',
       data: {
         text: 'View the responses to the order',
       },
