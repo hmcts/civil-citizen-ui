@@ -23,11 +23,10 @@
       {% set yearNestedError = t(form.errorFor('unemploymentDetails[years]')) %}
       {% set monthsNestedError = t(form.nestedErrorFor('unemploymentDetails[months]')) %}
       {% set errors = form.getAllErrors() %}
-
       {% if form.hasErrors() %}
         {{ govukErrorSummary({
           "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
-          "errorList": errorSummaryTranslation(errors,t)
+          "errorList": errors
         }) }}
       {% endif %}
       <div class="govuk-grid-row">
