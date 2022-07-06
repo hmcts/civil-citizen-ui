@@ -2,7 +2,6 @@ import {Claim} from '../../../../../../main/common/models/claim';
 import {getLatestUpdateContent} from '../../../../../../main/services/features/dashboard/claimSummary/latestUpdateService';
 import {buildResponseToClaimSection} from '../../../../../../main/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 
-jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),

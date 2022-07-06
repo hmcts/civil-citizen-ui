@@ -46,7 +46,7 @@ export const getPastResponseDeadlineContent = (claim: Claim, lang: string): Clai
       },
     },
   ];
-}; 
+};
 
 export const getRespondToClaimLink = (claimId: string, lang: string): ClaimSummarySection => {
   return (

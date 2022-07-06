@@ -705,11 +705,11 @@ describe('Documents', () => {
     });
   });
 
-  describe('isDefandantNotResponded', () => {
+  describe('isDefendantNotResponded', () => {
     const claim = new Claim();
     it('should return false with empty claim', () => {
       //When
-      const result = claim.isDefandantNotResponded();
+      const result = claim.isDefendantNotResponded();
       //Then
       expect(result).toBe(false);
     });
@@ -717,7 +717,7 @@ describe('Documents', () => {
       //Given
       claim.ccdState = CaseState.PENDING_CASE_ISSUED;
       //When
-      const result = claim.isDefandantNotResponded();
+      const result = claim.isDefendantNotResponded();
       //Then
       expect(result).toBe(false);
     });
@@ -725,7 +725,7 @@ describe('Documents', () => {
       //Given
       claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
       //When
-      const result = claim.isDefandantNotResponded();
+      const result = claim.isDefendantNotResponded();
       //Then
       expect(result).toBe(true);
     });

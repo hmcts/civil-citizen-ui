@@ -24,6 +24,7 @@ import {
   InterestClaimUntilType,
   SameRateInterestSelection,
   SameRateInterestType,
+  CaseState,
 } from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
 import {ResponseType} from '../form/models/responseType';
@@ -32,7 +33,6 @@ import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifi
 import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
-import {CaseState} from '../form/models/claimDetails';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -206,7 +206,7 @@ export class Claim {
     }
     return undefined;
   }
-  isDefandantNotResponded(): boolean {
+  isDefendantNotResponded(): boolean {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 }

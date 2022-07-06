@@ -83,7 +83,7 @@ const rows: SummaryRow[] = [
   },
 ];
 
-export const getFourthConditionalContentContent = (claim: Claim, lang: string): ClaimSummarySection[] => {
+export const getFourthConditionalContentContent = (claim: Claim, lang: string): ClaimSummarySection[] => { //NOSONAR
   return [
     {
       type: ClaimSummaryType.TITLE,
@@ -110,7 +110,7 @@ export const getFourthConditionalContentContent = (claim: Claim, lang: string): 
   ];
 };
 
-export const getFifthConditionalContentContent = (claim: Claim, lang: string): ClaimSummarySection[] => {
+export const getFifthConditionalContentContent = (claim: Claim, lang: string): ClaimSummarySection[] => { //NOSONAR
   return [
     {
       type: ClaimSummaryType.TITLE,

@@ -23,7 +23,7 @@ export const buildResponseToClaimSection = (claim: Claim, lang: string, claimId:
   const responseDeadlineNotPassedContent = getNotPastResponseDeadlineContent(claim, lang);
   const responseDeadlinePassedContent = getPastResponseDeadlineContent(claim, lang);
   const respondToClaimLink = getRespondToClaimLink(claimId, lang);
-  if (claim.isDefandantNotResponded()) {
+  if (claim.isDefendantNotResponded()) {
     sectionContent.push(responseNotSubmittedTitle);
     if (claim.isDeadLinePassed()) {
       sectionContent.push(responseDeadlinePassedContent);
