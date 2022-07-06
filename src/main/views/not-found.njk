@@ -1,7 +1,8 @@
-{% extends "template.njk" %}
+{% extends "claim-details-tpl.njk" %}
+{% from "./macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set returnLink = '<a href="/dashboard">DASHBOARD</a>' | replace('DASHBOARD', t('COMMON.DASHBOARD')) %}
+{% set returnLink = '<a href="/dashboard">DASHBOARD</a>' | replace('DASHBOARD', t('COMMON.CIVIL_MONEY_CLAIMS')) %}
 {% set techProblems = t('COMMON.RETURN_PAGE') %}
 
 {% block content %}
@@ -12,4 +13,6 @@
     text: t('COMMON.BUTTONS.START_AGAIN'),
     href: '/dashboard'
   }) }}
+
+  {{ contactUsForHelp(t) }}
 {% endblock %}
