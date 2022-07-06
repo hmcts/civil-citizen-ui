@@ -103,7 +103,7 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
     try{
-      const response: AxiosResponse<object> = await this.client.get('/cases/defendant/' + userId + '/response/submit/' + claimId +'/token/', config);
+      const response: AxiosResponse<object> = await this.client.get(`/cases/defendant/${userId}/response/submit/${claimId}/token/`, config); // nosonar
       console.log('event token ' + response.data);
       return response.data as unknown as string;
     }catch (err: unknown) {
