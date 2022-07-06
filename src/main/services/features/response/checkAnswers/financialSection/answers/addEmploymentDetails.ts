@@ -22,7 +22,7 @@ const getTypeOfJobTranslation = (employment: Employment, lang: string | unknown)
   const tEmployed = t('PAGES.EMPLOYMENT_STATUS.EMPLOYED', { lng: getLng(lang) });
   const tSelfEmployed = t('PAGES.EMPLOYMENT_STATUS.SELF_EMPLOYED', { lng: getLng(lang) });
   const tEmployedAndSelfEmployed = t('PAGES.CHECK_YOUR_ANSWER.EMPLOYED_AND_SELF_EMPLOYED', { lng: getLng(lang) });
-  let typeOfJobs: string = '';
+  let typeOfJobs = '';
 
   const getTypeOfJob = (type: string) => type === EmploymentCategory.EMPLOYED ? tEmployed : tSelfEmployed;
   const typeOfJob: Array<string> = [];

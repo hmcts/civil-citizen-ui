@@ -25,8 +25,8 @@ const addTimeline = (claim: Claim, claimId: string, lang: string | unknown, sect
 
   for (let i = 0; i < timeline.rows.length; i++) {
     section.summaryList.rows.push(
-      summaryRow(timeline.rows[i].date, timeline.rows[i].description, yourTimelineHref, changeLabel(lang))
-    )
+      summaryRow(timeline.rows[i].date, timeline.rows[i].description, yourTimelineHref, changeLabel(lang)),
+    );
   }
 
   section.summaryList.rows.push(
@@ -45,7 +45,7 @@ const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, sect
   for (let i = 0; i < evidenceItem.length; i++) {
     section.summaryList.rows.push(
       summaryRow(evidenceItem[i].type, evidenceItem[i].description, yourEvidenceHref, changeLabel(lang)),
-    )
+    );
   }
 
   section.summaryList.rows.push(

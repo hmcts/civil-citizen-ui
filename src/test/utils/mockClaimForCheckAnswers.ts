@@ -552,7 +552,7 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid? :YesNo) => {
 
   const defendantTimeline: DefendantTimeline = new DefendantTimeline(
     [new TimelineRow('6 November 2022', 'Event 1'), new TimelineRow('7 November 2022', 'Event 2')],
-    'Comments about timeline'
+    'Comments about timeline',
   );
 
   const defendantEvidence: DefendantEvidence = new Evidence(
@@ -564,8 +564,8 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid? :YesNo) => {
       new EvidenceItem(EvidenceType.PHOTO, 'Evidence details 4'),
       new EvidenceItem(EvidenceType.RECEIPTS, 'Evidence details 5'),
       new EvidenceItem(EvidenceType.STATEMENT_OF_ACCOUNT, 'Evidence details 7'),
-      new EvidenceItem(EvidenceType.OTHER, 'Evidence details 8')
-    ]
+      new EvidenceItem(EvidenceType.OTHER, 'Evidence details 8'),
+    ],
   );
 
   const partialAdmission: PartialAdmission = {
