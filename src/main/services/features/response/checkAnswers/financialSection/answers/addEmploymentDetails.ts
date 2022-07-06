@@ -55,13 +55,6 @@ const showSelfEmploymentTaxPayments = (claim: Claim, financialSection: SummarySe
 const showEmploymentDetails = (claim: Claim, financialSection: SummarySection, employment: Employment, whoEmploysYouHref: string, selfemploymentHref: string, lang: string | unknown) => {
   const isSelfEmployedAs = claim.statementOfMeans?.selfEmployedAs;
 
-  // const getTypeOfJob = (type: string) => type === EmploymentCategory.EMPLOYED ? 'Employed' : 'Self-employed';
-  // const typeOfJob: Array<string> = [];
-  // for (const item of employment.employmentType) {
-  //   typeOfJob.push(getTypeOfJob(item));
-  // }
-  // const typeOfJobs = typeOfJob[0] + (typeOfJob.length > 1 ? (' and ' + typeOfJob[1]) : '');
-
   financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), getTypeOfJobTranslation(employment, lang), '', changeLabel(lang)));
 
   if (claim.statementOfMeans?.employers?.rows

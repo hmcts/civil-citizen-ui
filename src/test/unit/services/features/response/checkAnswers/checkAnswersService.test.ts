@@ -1,7 +1,6 @@
 import {
   getSignatureType,
   getStatementOfTruth,
-  //getSummarySections,
   resetCheckboxFields,
   saveStatementOfTruth,
 } from '../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
@@ -11,8 +10,6 @@ import {StatementOfTruthForm} from '../../../../../../main/common/form/models/st
 import {SignatureType} from '../../../../../../main/common/models/signatureType';
 import {
   createClaimWithBasicRespondentDetails,
-  // createClaimWithIndividualDetails,
-  // createClaimWithContactPersonDetails,
 } from '../../../../../utils/mockClaimForCheckAnswers';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import {QualifiedStatementOfTruth} from '../../../../../../main/common/form/models/statementOfTruth/qualifiedStatementOfTruth';
@@ -30,12 +27,7 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-// const CONTACT_PERSON = 'The Post Man';
-// const TITLE = 'Mr';
-// const FIRST_NAME = 'John';
-// const LAST_NAME = 'Richards';
-// const FULL_NAME = `${TITLE} ${FIRST_NAME} ${LAST_NAME}`;
-// const CORRESPONDENCE_ADDRESS = '24 Brook lane<br>Bristol<br>BS13SS';
+
 const expectedStatementOfTruth = {
   isFullAmountRejected: false,
   type: 'basic',
