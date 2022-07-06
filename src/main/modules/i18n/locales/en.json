@@ -209,6 +209,12 @@
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_TITLE": "Your response to the claim",
+      "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "Have you paid the claimant the amount you admit you owe?",
+      "RESPONSE_DETAILS_TITLE": "Response details",
+      "RESPONSE_DETAILS_MONEY_PAID": "How much money have you paid?",
+      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "When did you pay this amount?",
+      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED": "How did you pay the amount claimed?",
+      "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
       "SAME_ADDRESS": "Same as address",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Do you support anyone else financially?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Number of people",
@@ -491,7 +497,8 @@
       "AMOUNT": "Amount you owe",
       "PAGE_TITLE": "Behind on tax payments?",
       "REASON": "Reason",
-      "TITLE": "Are you behind on tax payments?"
+      "TITLE": "Are you behind on tax payments?",
+      "EXAMPLE": "For example National Insurance contributions, Income Tax or VAT."
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
