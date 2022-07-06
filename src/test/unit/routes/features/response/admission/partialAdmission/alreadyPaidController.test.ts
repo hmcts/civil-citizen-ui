@@ -79,5 +79,14 @@ describe('Already Paid Controller', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
+
+    it('should return status 500 when there is an error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .post(CITIZEN_ALREADY_PAID_URL).expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
   });
 });
