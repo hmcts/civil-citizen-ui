@@ -8,7 +8,6 @@ import {
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../../main/routes/urls';
 import {
-  REDIS_FAILURE,
   VALID_INTEGER,
   VALID_NUMBER_FOR_PREVIOUS_PAGE,
   VALID_POSITIVE_NUMBER,
@@ -16,6 +15,7 @@ import {
 import * as childrenDisabilityService
   from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -48,7 +48,7 @@ describe('Dependant Teenagers', () => {
         .get(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -123,7 +123,7 @@ describe('Dependant Teenagers', () => {
         .send({value: 1, maxValue: 3})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

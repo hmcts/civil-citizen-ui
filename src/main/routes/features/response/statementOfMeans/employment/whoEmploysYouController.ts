@@ -17,7 +17,7 @@ whoEmploysYouController.get(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Req
     const form = new GenericForm(employers);
     res.render(whoEmploysYouViewPath, { form });
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 });
 
@@ -42,7 +42,7 @@ whoEmploysYouController.post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Re
       }
     }
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 });
 

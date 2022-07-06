@@ -15,8 +15,6 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const sendYourResponseByEmailViewPath = 'features/response/eligibility/send-your-response-by-email';
 const sendYourResponseByEmailController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('sendYourResponseByEmailController');
 
 function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): void {
   res.render(sendYourResponseByEmailViewPath, {
@@ -28,18 +26,16 @@ function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): vo
   });
 }
 
-sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res) => {
+sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form = await getCaseDataFromStore(req.params.id);
     const feesRanges: FeeRanges = await civilServiceClient.getFeeRanges(<AppRequest>req);
     const formattedFeesRanges = formatFeesRanges(feesRanges);
     renderView(res, form, formattedFeesRanges);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
-
 
 const formatFeesRanges = (feesRanges: FeeRanges): [TableItem[]] => {
   const tableFormatFeesRanges: [TableItem[]] = [[]];
@@ -48,6 +44,5 @@ const formatFeesRanges = (feesRanges: FeeRanges): [TableItem[]] => {
   });
   return tableFormatFeesRanges;
 };
-
 
 export default sendYourResponseByEmailController;

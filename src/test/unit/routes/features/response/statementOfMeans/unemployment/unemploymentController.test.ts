@@ -87,7 +87,7 @@ describe('Unemployment', () => {
         .get(CITIZEN_UNEMPLOYED_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -196,7 +196,7 @@ describe('Unemployment', () => {
         .send({option: 'Unemployed', years: '1', months: '11'})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
