@@ -59,7 +59,7 @@ export const buildExampleSectionOne = (claim: Claim, lang: string, claimId: stri
 };
 // TODO: concept example builder, needs to be replaced with new section builder to be developed
 /* istanbul ignore next */
-export const buildExampleSectionTwo = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {
+export const buildExampleSectionTwo = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {// NOSONAR
   const sectionContent = [];
   const fourthConditionalContent = getFourthConditionalContentContent(claim, lang);
   const fifthConditionalContent = getFifthConditionalContentContent(claim, lang);

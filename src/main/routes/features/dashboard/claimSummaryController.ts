@@ -1,7 +1,7 @@
 import * as express from 'express';
 import config from 'config';
 import {getLatestUpdateContent} from '../../../services/features/dashboard/claimSummary/latestUpdateService';
-import {getDocumentsContent} from '../../../services/features/dashboard/claimSummaryService.';
+import {getDocumentsContent} from '../../../services/features/dashboard/claimSummaryService';
 import {Claim} from '../../../common/models/claim';
 import {AppRequest} from '../../../common/models/AppRequest';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
