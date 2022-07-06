@@ -18,8 +18,12 @@ Feature('Response with RejectAll');
 Before(() => {
   if(config.env == 'demo'){
     loginSteps.EnterHmctsCredentails(config.hmctsUsername, config.hmctsPassword);
+    loginSteps.EnterUserCredentials(config.username, config.password);
+  }else if(config.env == 'aat'){
+    loginSteps.EnterUserCredentials(config.PRusername, config.PRpassword);
+  }else {
+    loginSteps.EnterUserCredentials(config.username, config.password);
   }
-  loginSteps.EnterUserCredentials(config.username, config.password);
 });
 
 Scenario('Response with RejectAll and Immediate payment @citizenUI @rejectAll', () => {
