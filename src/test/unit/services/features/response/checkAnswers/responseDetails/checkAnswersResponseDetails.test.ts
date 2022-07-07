@@ -11,12 +11,12 @@ import {
   ceateClaimWithPartialAdmission,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
-import { DefendantTimeline } from '../../../../../../../main/common/form/models/timeLineOfEvents/defendantTimeline';
+import {DefendantTimeline} from '../../../../../../../main/common/form/models/timeLineOfEvents/defendantTimeline';
 import TimelineRow from '../../../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
-import { DefendantEvidence } from '../../../../../../../main/common/models/evidence/evidence';
-import { EvidenceItem } from '../../../../../../../main/common/form/models/evidence/evidenceItem';
-import { Evidence } from '../../../../../../../main/common/form/models/evidence/evidence';
-import { EvidenceType } from '../../../../../../../main/common/models/evidence/evidenceType';
+import {DefendantEvidence} from '../../../../../../../main/common/models/evidence/evidence';
+import {EvidenceItem} from '../../../../../../../main/common/form/models/evidence/evidenceItem';
+import {Evidence} from '../../../../../../../main/common/form/models/evidence/evidence';
+import {EvidenceType} from '../../../../../../../main/common/models/evidence/evidenceType';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -136,6 +136,27 @@ describe('Response Details', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[6].value.html).toBe('');
   });
 
+  it('should return empty section when timeline not added', async () => {
+    //Given
+    const claim = ceateClaimWithPartialAdmission();
+    const defendantTimeline: DefendantTimeline = new DefendantTimeline(
+      [],
+      '',
+    );
+    claim.partialAdmission = {
+      timeline: defendantTimeline,
+    };
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TIMELINE_TITLE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[4].actions?.items[0].href).toBe(CITIZEN_TIMELINE_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[4].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
+
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].value.html).toBe('');
+  });
+
   it('should return "Your evidence (optional)" on your response details section', async () => {
     //Given
     const claim = ceateClaimWithPartialAdmission();
@@ -216,5 +237,27 @@ describe('Response Details', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[10].value.html).toBe('');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[10].actions?.items[0].href).toBe(CITIZEN_EVIDENCE_URL.replace(':id', constVal.CLAIM_ID));
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[10].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
+  });
+
+
+  it('should return empty section when evidence not added', async () => {
+    //Given
+    const claim = ceateClaimWithPartialAdmission();
+    const defendantEvidence: DefendantEvidence = new Evidence(
+      '',
+      [],
+    );
+    claim.evidence = defendantEvidence;
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[8].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_TITLE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[8].actions?.items[0].href).toBe(CITIZEN_EVIDENCE_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[8].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
+
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_COMMENTS');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].value.html).toBe('');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].actions?.items[0].href).toBe(CITIZEN_EVIDENCE_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[9].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });
 });
