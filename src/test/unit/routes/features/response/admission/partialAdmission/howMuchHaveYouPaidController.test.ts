@@ -4,9 +4,6 @@ import config from 'config';
 import request from 'supertest';
 import {CITIZEN_AMOUNT_YOU_PAID_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
 import {
-  setHowMuchHaveYouPaidControllerLogger,
-} from '../../../../../../../main/routes/features/response/admission/partialAdmission/howMuchHaveYouPaidController';
-import {
   ENTER_PAYMENT_EXPLANATION,
   VALID_AMOUNT,
   VALID_DATE_IN_PAST,
@@ -18,18 +15,13 @@ import {
 import {
   mockCivilClaim,
   mockCivilClaimUndefined,
-  mockLogger,
   mockNoStatementOfMeans,
   mockRedisFailure,
 } from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
-
-
-
 
 describe('How Much Have You Paid', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -39,7 +31,6 @@ describe('How Much Have You Paid', () => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    setHowMuchHaveYouPaidControllerLogger(mockLogger);
   });
 
   describe('on Exception', () => {
@@ -49,8 +40,7 @@ describe('How Much Have You Paid', () => {
         .get(CITIZEN_AMOUNT_YOU_PAID_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
-          expect(mockLogger.error).toHaveBeenCalled();
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
 
@@ -61,8 +51,7 @@ describe('How Much Have You Paid', () => {
         .send({ amount: 50, totalClaimAmount: 110, year: '2022', month: '1', day: '31', text: 'text' })
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
-          expect(mockLogger.error).toHaveBeenCalled();
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

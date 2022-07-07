@@ -6,23 +6,14 @@ import {
   saveChildrenDisability,
 } from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import * as winston from 'winston';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
-
 
 const childrenDisabilityViewPath = 'features/response/statementOfMeans/dependants/children-disability';
 const childrenDisabilityController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-let logger = Logger.getLogger('childrenDisabilityController');
-
-export function setChildrenDisabilityControllerLogger(winstonLogger: winston.Logger) {
-  logger = winstonLogger;
-}
-
 
 childrenDisabilityController
   .get(CHILDREN_DISABILITY_URL,
-    async (req: express.Request, res: express.Response) => {
+    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       try {
         const childrenDisability : ChildrenDisability = await getChildrenDisability(req.params.id);
         const form = new GenericForm(childrenDisability);
@@ -34,13 +25,12 @@ childrenDisabilityController
           form: _form,
         });
       } catch (error) {
-        logger.error(error);
-        res.status(500).send({errorMessage: error.message, errorStack: error.stack});
+        next(error);
       }
     })
   .post(
     CHILDREN_DISABILITY_URL,
-    async (req: express.Request, res: express.Response) => {
+    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const childrenDisability: ChildrenDisability = new ChildrenDisability(req.body.option);
       const form: GenericForm<ChildrenDisability> = new GenericForm(childrenDisability);
       await form.validate();
@@ -55,8 +45,7 @@ childrenDisabilityController
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_OTHER_DEPENDANTS_URL));
         }
         catch (error) {
-          logger.error(error);
-          res.status(500).send({errorMessage: error.message, errorStack: error.stack});
+          next(error);
         }
       }
     });

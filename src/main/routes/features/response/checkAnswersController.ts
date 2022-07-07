@@ -14,8 +14,6 @@ import {AllResponseTasksCompletedGuard} from '../../guards/allResponseTasksCompl
 import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {isFullAmountReject} from '../../../modules/claimDetailsService';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('checkAnswersController');
 const checkAnswersViewPath = 'features/response/check-answers';
 const checkAnswersController = express.Router();
 
@@ -34,18 +32,17 @@ function renderView(req: express.Request, res: express.Response, form: GenericFo
 
 checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
   AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL),
-  async (req: express.Request, res: express.Response) => {
+  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       const form = new GenericForm(getStatementOfTruth(claim));
       renderView(req, res, form, claim);
     } catch (error) {
-      logger.error(error);
-      res.status(500).send({error: error.message});
+      next(error);
     }
   });
 
-checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Request, res: express.Response) => {
+checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Request, res: express.Response,next: express.NextFunction) => {
   try {
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const form = new GenericForm((req.body.type === 'qualified')
@@ -60,7 +57,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Requ
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CONFIRMATION_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 

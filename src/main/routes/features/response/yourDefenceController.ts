@@ -4,7 +4,6 @@ import {saveYourDefence} from '../../../services/features/response/yourDefenceSe
 import {getClaimantName} from '../../../services/features/response/rejectAllOfClaimService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../common/form/models/genericForm';
-
 import {Defence} from '../../../common/form/models/defence';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 
@@ -12,7 +11,7 @@ const yourDefenceViewPath = 'features/response/your-defence';
 const yourDefenceController = express.Router();
 let claimantName = '';
 
-yourDefenceController.get(RESPONSE_YOUR_DEFENCE_URL, async (req: express.Request, res: express.Response) => {
+yourDefenceController.get(RESPONSE_YOUR_DEFENCE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
     claimantName = await getClaimantName(req.params.id);
@@ -23,11 +22,11 @@ yourDefenceController.get(RESPONSE_YOUR_DEFENCE_URL, async (req: express.Request
       claimantName: claimantName,
     });
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-yourDefenceController.post(RESPONSE_YOUR_DEFENCE_URL, async (req: express.Request, res: express.Response) => {
+yourDefenceController.post(RESPONSE_YOUR_DEFENCE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
     const defence = new Defence(req.body.text);
@@ -41,10 +40,9 @@ yourDefenceController.post(RESPONSE_YOUR_DEFENCE_URL, async (req: express.Reques
     } else {
       await saveYourDefence(claimId, defence);
       res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
-
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 

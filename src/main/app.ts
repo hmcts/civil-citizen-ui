@@ -74,12 +74,12 @@ app.use((_req, res) => {
 });
 
 // error handler
-app.use((err: HTTPError, _req: express.Request, res: express.Response) => {
+app.use((err: HTTPError, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   logger.error(`${err.stack || err}`);
 
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = env === 'development' ? err : {};
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {error: res.locals.error});
 });
