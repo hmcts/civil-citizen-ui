@@ -33,7 +33,7 @@ const getTypeOfJobTranslation = (employment: Employment, lang: string | unknown)
   if (typeOfJob.length > 1) {
     typeOfJobs = tEmployedAndSelfEmployed;
   } else {
-    typeOfJobs = typeOfJob[0] + (typeOfJob.length > 1 ? (' and ' + typeOfJob[1]) : '');
+    typeOfJobs = typeOfJob[0];
   }
 
   return typeOfJobs;
