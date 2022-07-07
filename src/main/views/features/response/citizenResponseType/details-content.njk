@@ -1,5 +1,5 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-{% macro detailsContent(componentDetailItemsList) %}
+{% macro detailsContent(componentDetailItemsList, t) %}
   {% for item in componentDetailItemsList %}
     {% if item.title %}
       <h3 class="govuk-heading-m">{{ t(item.title) }}</h3>
@@ -9,7 +9,11 @@
     {% endif %}
     {% if item.content %}
       {% for content in item.content %}
-        <p class="govuk-body">{{ t(content) }}</p>
+        {% if item.formattedValues[loop.index0] %}
+          <p class="govuk-body">{{ t(content, {deadline: item.formattedValues[loop.index0]}) }}</p>
+        {% else %}
+          <p class="govuk-body">{{ t(content) }}</p>
+        {% endif %}
       {% endfor %}
     {% endif %}
   {% endfor %}

@@ -1,18 +1,16 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "./details-content.njk" import detailsContent %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
-{% from "govuk/components/details/macro.njk" import govukDetails %}
-{% from "./details-content.njk" import detailsContent %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CITIZEN_RESPONSE_TYPE.PAGE_TITLE') }}
 {% endblock %}
-
-{% set heading = 'How do you respond to the claim?' %}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -20,18 +18,18 @@
       {% set errors = form.getErrors() %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": 'There was a problem',
-          "errorList": errors
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
+          "errorList": translateErrors(errors, t)
         }) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.CITIZEN_RESPONSE_TYPE.HOW_DO_YOU_RESPOND') }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukDetails({
-              summaryText: t('Find out what each response means'),
-              html: detailsContent(componentDetailItemsList)
+              summaryText: t('PAGES.CITIZEN_RESPONSE_TYPE.RESPONSE_MEANING'),
+              html: detailsContent(componentDetailItemsList, t)
             }) }}
             {{ govukRadios({
               idPrefix: "responseType",
@@ -40,25 +38,25 @@
                 {
                   value: ResponseType.FULL_ADMISSION,
                   checked: true if form.responseType === ResponseType.FULL_ADMISSION,
-                  html: "<span class=\"govuk-!-font-weight-bold\">" + t('I admit all of the claim') + "</span>" ,
+                  html: "<span class=\"govuk-!-font-weight-bold\">" + t('COMMON.RESPONSE_TYPE.FULL_ADMISSION') + "</span>" ,
                   hint: {
-                    text: t('You agree you owe the full amount claimed.')
+                    text: t('PAGES.CITIZEN_RESPONSE_TYPE.FULL_ADMISSION_HINT')
                   }
                 },
                 {
                   value: ResponseType.PART_ADMISSION,
                   checked: true if form.responseType === ResponseType.PART_ADMISSION,
-                  html: "<span class=\"govuk-!-font-weight-bold\">" + t('I admit part of the claim') + "</span>" ,
+                  html: "<span class=\"govuk-!-font-weight-bold\">" + t('COMMON.RESPONSE_TYPE.PART_ADMISSION') + "</span>" ,
                   hint: {
-                    text: t('You agree you owe some money but not the full amount claimed.')
+                    text: t('PAGES.CITIZEN_RESPONSE_TYPE.PART_ADMISSION_HINT')
                   }
                 },
                 {
                   value: ResponseType.FULL_DEFENCE,
                   checked: true if form.responseType === ResponseType.FULL_DEFENCE,
-                  html: "<span class=\"govuk-!-font-weight-bold\">" + t('I reject all of the claim') + "</span>" ,
+                  html: "<span class=\"govuk-!-font-weight-bold\">" + t('COMMON.RESPONSE_TYPE.FULL_DEFENCE') + "</span>" ,
                   hint: {
-                    text: t("You've either paid what you believe you owe or you reject the claim.")
+                    text: t('PAGES.CITIZEN_RESPONSE_TYPE.FULL_DEFENCE_HINT')
                   }
                 }
               ],
@@ -68,7 +66,7 @@
             }) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
             </div>
