@@ -12,7 +12,7 @@ export class DashboardClaimantItem extends DashboardItem  {
   nextSteps: string;// TODO: this is only a placeholder. To be revisited in a separate story
   actions: string;// TODO: this is only a placeholder. To be revisited in a separate story
   getHref() {
-    return `/dashboard/${this.claimId}/claimant`;
+    return '#';
   }
 }
 
