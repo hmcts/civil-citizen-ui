@@ -15,9 +15,6 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {hasDisabledChildren} from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 
-
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('dependantTeenagersController');
 const dependantTeenagersViewPath = 'features/response/statementOfMeans/dependants/between_16_and_19';
 const betweenSixteenAndNineteenController = express.Router();
 
@@ -31,17 +28,16 @@ function convertToForm(req: express.Request) {
   return new BetweenSixteenAndNineteenDependants(value, maxValue);
 }
 
-betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res) => {
+betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form = await getForm(req.params.id);
     renderView(form, res);
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res) => {
+betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: express.NextFunction) => {
   const form = convertToForm(req);
   try {
     await validateForm(form);
@@ -56,8 +52,7 @@ betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async
       }
     }
   } catch (error) {
-    logger.error(`${(error as Error).stack || error}`);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 export default betweenSixteenAndNineteenController;

@@ -12,8 +12,6 @@ import _ from 'lodash';
 import { CounterpartyType } from '../../../../common/models/counterpartyType';
 
 const citizenDetailsController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('citizenDetailsController');
 
 let citizenFullName: object;
 
@@ -57,7 +55,7 @@ const redirect =  async (responseDataRedis: Respondent, req: express.Request, re
   }
 };
 
-citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     let citizenAddressModel;
     let citizenCorrespondenceAddressModel;
@@ -93,12 +91,11 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
       type: responseDataRedis?.type,
     });
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
   try {
     const citizenAddress = new CitizenAddress(
@@ -138,8 +135,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
       redirect(responseDataRedis, req, res);
     }
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 

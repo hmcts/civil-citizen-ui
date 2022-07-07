@@ -18,18 +18,16 @@ function renderView(form: HowMuchDoYouOwe, res: express.Response) {
   res.render(howMuchDoYouOweViewPath, {form: form});
 }
 
-howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, async (req:express.Request, res:express.Response) => {
+howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, async (req:express.Request, res:express.Response, next: express.NextFunction) => {
   try {
     const form = await getHowMuchDoYouOweForm(req.params.id);
     renderView(form, res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
-
 });
 
-howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, async (req:express.Request, res:express.Response) => {
-
+howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, async (req:express.Request, res:express.Response, next: express.NextFunction) => {
   try {
     const savedValues = await getHowMuchDoYouOweForm(req.params.id);
     const form = new HowMuchDoYouOwe(toNumberOrUndefined(req.body.amount), savedValues.totalAmount);
@@ -41,8 +39,8 @@ howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, async (req:express.Reque
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
-export default howMuchDoYouOweController;
 
+export default howMuchDoYouOweController;

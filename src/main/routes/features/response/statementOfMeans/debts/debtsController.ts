@@ -11,16 +11,12 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 
 const debtsViewPath = 'features/response/statementOfMeans/debts/debts';
 const debtsController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('debtsController');
 
 function renderView(form: Debts, res: express.Response): void {
-  res.render(debtsViewPath, {
-    form,
-  });
+  res.render(debtsViewPath, {form});
 }
 
-debtsController.get(CITIZEN_DEBTS_URL, async (req, res) => {
+debtsController.get(CITIZEN_DEBTS_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form: Debts = new Debts();
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
@@ -32,13 +28,12 @@ debtsController.get(CITIZEN_DEBTS_URL, async (req, res) => {
     }
     renderView(form, res);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
 debtsController.post(CITIZEN_DEBTS_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     try {
       const form: Debts = new Debts(req.body.option, transformToDebts(req));
       await validateFormNested(form);
@@ -54,8 +49,7 @@ debtsController.post(CITIZEN_DEBTS_URL,
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_MONTHLY_EXPENSES_URL));
       }
     } catch (error) {
-      logger.error(error);
-      res.status(500).send({error: error.message});
+      next(error);
     }
   });
 
