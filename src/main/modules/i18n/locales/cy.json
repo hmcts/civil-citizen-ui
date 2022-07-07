@@ -46,7 +46,7 @@
     "CONDITIONAL_CHECKBOX": {
       "PRIORITY_DEBTS": "dyledion blaenoriaeth",
       "REPAYMENT_AMOUNT": "Swm yr ad-daliadt",
-      "REPAYMENT_AMOUNT_HINT": "Dylech ond cynnwys y swm rydych yn ei dalu i glirio’r taliadau rheolaidd a fethwyd yn flaenorol"
+      "REPAYMENT_AMOUNT_HINT": "Dylech ond cynnwys y swm rydych yn ei dalu i glirio'r taliadau rheolaidd a fethwyd yn flaenorol"
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
@@ -61,8 +61,8 @@
     },
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "Rwy'n cyfaddef yr holl hawliad",
-      "FULL_DEFENCE": "I reject all of the claim",
-      "PART_ADMISSION": "I admit part of the claim"
+      "FULL_DEFENCE": "Rwy'n gwrthod yr hawliad cyfan",
+      "PART_ADMISSION": "Rwy'n cyfaddef i ran o'r hawliad"
     },
     "PAYMENT_FREQUENCY": {
       "WEEK": "Each week",
@@ -91,7 +91,7 @@
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
       "STATEMENT_OF_WORK": "statement of truth",
       "TITLE": "Statement of truth",
-      "WHEN_SATISFIED": "When you’re satisfied that your answers are accurate, you should tick to /“sign/” this statement of truth on the form."
+      "WHEN_SATISFIED": "When you're satisfied that your answers are accurate, you should tick to /“sign/” this statement of truth on the form."
     },
     "TYPES_OF_SENIOR_POSITION": {
       "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
@@ -137,7 +137,7 @@
       "TITLE": "Submit"
     },
     "YOUR_HEARING_REQUIREMENTS": {
-      "GIVE_US_DETAILS": "Give us details in case there’s a hearing",
+      "GIVE_US_DETAILS": "Give us details in case there's a hearing",
       "TITLE": "Your hearing requirements"
     }
   },
@@ -160,7 +160,7 @@
       "BANK_TYPE_OF_ACCOUNT": "Math o gyfrif",
       "BANK_BALANCE": "Cydbwysedd",
       "BANK_JOINT_ACCOUNT": "Cyfrif ar y cyd",
-      "CARER_CREDIT_DO_YOU_CLAIM": "Ydych chi’n hawlio Lwfans Gofalwr neu Gredyd Gofalwr?",
+      "CARER_CREDIT_DO_YOU_CLAIM": "Ydych chi'n hawlio Lwfans Gofalwr neu Gredyd Gofalwr?",
       "CHANGE": "Newid",
       "CHILDREN": "Plant",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Oes unrhyw blant yn byw gyda chi?",
@@ -222,8 +222,8 @@
       "JOB_TITLE": "Job title",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Ydych chi'n byw gyda phartner?",
-      "PARTNER_IS_AGED_18_OR_OVER": "Ydy’ch partner yn 18 oed neu’n hŷn?",
-      "PARTNER_DOES_RECEIVE_A_PENSION": "Ydy’ch partner yn cael pensiwn?",
+      "PARTNER_IS_AGED_18_OR_OVER": "Ydy'ch partner yn 18 oed neu'n hŷn?",
+      "PARTNER_DOES_RECEIVE_A_PENSION": "Ydy'ch partner yn cael pensiwn?",
       "PARTNER_IS_DISABLED": "Ydy'ch partner yn anabl?",
       "PARTNER_IS_SEVERELY_DISABLED": "A yw eich partner yn ddifrifol anabl?",
       "PAYMENT_FREQUENCY": "Amlder taliadau",
@@ -264,7 +264,7 @@
     "CITIZEN_DETAILS": {
       "ADDRESS": "Eich cyfeiriad",
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
-      "ADDRESS_NOT_FOUND": "We can’t find an address for that postcode.",
+      "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
       "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
       "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
@@ -294,7 +294,37 @@
       "TITLE": "Rhowch rif ffôn (dewisol)"
     },
     "CITIZEN_RESPONSE_TYPE": {
-      "PAGE_TITLE": "Your claim response"
+      "ACCEPT_OR_TRANSFER": "Gallant dderbyn y swm rydych wedi'i dalu a setlo'r hawliad, neu ofyn i'r llys drosglwyddo'r hawliad i ganolfan wrandawiadau Llys Sirol.",
+      "ADMIT_ALL": "Cyfaddef i'r hawliad cyfan",
+      "ADMIT_ALL_CANT_PAY": "Os ydych yn cyfaddef i'r hawliad cyfan ond na allwch dalu ar unwaith, gallwch gynnig talu'r hawlydd mewn rhandaliadau.",
+      "ADMIT_ALL_DEADLINE": "Mae gennych tan {{ deadline }} i gyfaddef i'r hawliad..",
+      "ADMIT_PART": "Cyfaddef i ran o'r hawliad",
+      "AGAINST_INDIVIDUAL": "Os yw'r hawliad yn erbyn chi fel unigolyn, y ganolfan wrandawiadau fydd yr un agosaf at eich cartref neu'ch busnes.",
+      "CANT_PAY_IMMEDIATELY": "Os na allwch dalu ar unwaith",
+      "CLAIMANT_ACCEPT_OFFER": "Os bydd yr hawlydd yn derbyn eich cynnig, gall ofyn i'r llys gofnodi dyfarniad llys sirol yn eich erbyn, ac anfonir gorchymyn i dalu atoch.",
+      "CLAIMANT_ACCEPT_PART_ADMISSION": "Os bydd yr hawlydd yn derbyn eich cyfaddefiad rhannol ond na allwch dalu ar unwaith, gallwch gynnig talu mewn rhandaliadau.",
+      "CLAIMANT_AGREES": "Os bydd yr hawlydd yn cytuno, gall ofyn i'r llys gofnodi dyfarniad llys sirol yn eich erbyn, ac anfonir gorchymyn i dalu atoch.",
+      "CLAIMANT_INDIVIDUAL": "Os yw'r hawlydd yn unigolyn a bod yr hawliad yn eich erbyn chi fel sefydliad, y ganolfan wrandawiadau fydd yr un agosaf at eu cartref neu eu busnes nhw.",
+      "CLAIMANT_RECEIPT": "Dylech ofyn i'r hawlydd roi derbynneb i chi.",
+      "CLAIMANT_REJECT_OFFER": "Os bydd yr hawlydd yn gwrthod eich cynnig, gall ofyn i'r llys gofnodi dyfarniad llys sirol yn eich erbyn. Yna bydd y llys yn penderfynu ar y cynllun ad-dalu.",
+      "CLAIMANT_REJECT_PART_ADMISSION": "Os byddant yn gwrthod eich cynnig, bydd y llys yn penderfynu ar gynllun ad-dalu.",
+      "FULL_ADMISSION_HINT": "Rydych yn cytuno bod y swm llawn a hawlir yn ddyledus gennych.",
+      "FULL_DEFENCE_HINT": "Rydych naill ai wedi talu'r hyn rydych yn credu sy'n ddyledus gennych neu rydych yn gwrthod yr hawliad",
+      "HEARING_CENTRE": "Lleoliad y ganolfan wrandawiadau",
+      "HOW_DO_YOU_RESPOND": "Sut ydych chi'n ymateb i'r hawliad?",
+      "IF_ADMIT_ALL": "Os ydych yn cyfaddef i'r hawliad cyfan ac eisiau ei dalu'n llawn, gan gynnwys llog a ffi'r hawliad, cysylltwch â'r hawlydd i drefnu talu.",
+      "IF_ADMIT_ALL_AND_PAY": "Os byddwch yn talu'r un amser ag y byddwch yn cyfaddef i'r hawliad, ni fyddwch yn cael Dyfarniad Llys Sirol (CCJ).",
+      "IF_PROCEED": "Os yw'n bwrw ymlaen, gall yr hawliad gael ei drosglwyddo i ganolfan wrandawiadau Llys Sirol.",
+      "PAGE_TITLE": "Your claim response",
+      "PART_ADMIT": "I gyfaddef i ran o'r hawliad, cysylltwch â'r hawlydd a thalu'r swm rydych yn credu sy'n ddyledus gennych. Yna anfonwch eich cyfaddefiad rhannol i'r llys.",
+      "PART_ADMIT_DEADLINE": "Mae gennych tan 4pm ar {{ deadline }} i gyfaddef yn rhannol i'r hawliad.",
+      "PART_ADMISSION_HINT": "Rydych yn cytuno bod rhywfaint o arian yn ddyledus gennych ond nid y swm llawn a hawlir.",
+      "PAY_IMMEDIATELY": "Talu ar unwaith",
+      "REJECT_ALL": "Gwrthod yr hawliad i gyd",
+      "REJECT_DEADLINE": "Mae gennych tan 4pm ar {{ deadline }} i wrthod yr hawliad cyfan.",
+      "REJECT_PAID": "Os ydych yn gwrthod oherwydd eich bod yn credu eich bod wedi talu'r arian, mae gan yr hawlydd {{ deadline }} i ddweud wrthych chi a'r llys p'un a yw'n bwrw ymlaen â'r hawliad.",
+      "REJECT_WHOLE_CLAIM": "Os ydych yn gwrthod yr hawliad cyfan, gall yr hawliad gael ei drosglwyddo i ganolfan wrandawiadau Llys Sirol.",
+      "RESPONSE_MEANING": "Canfod beth mae pob ymateb yn ei olygu"
     },
     "CLAIM_DETAILS": {
       "AMOUNT": "Amount",
@@ -320,7 +350,7 @@
       "CLAIM_AMOUNT": "Swm yr hawliad:",
       "CLAIM_DETAILS": "Manylion yr hawliad:",
       "CLAIM_DOCUMENTS": "Claim documents",
-      "CLAIMANT_NAME": "Enw’r hawlydd:",
+      "CLAIMANT_NAME": "Enw'r hawlydd:",
       "CLAIM_NUMBER": "Rhif yr hawliad:",
       "DOCUMENTS": "Dogfennau",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
@@ -330,7 +360,7 @@
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
-      "ADDRESS_NOT_FOUND": "We can’t find an address for that postcode.",
+      "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
       "ALL_CORRESPONDENCE": "Byddir yn anfon pob gohebiaeth i'r cyfeiriad hwn.",
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
       "COMPANY_ADDRESS": "Company address",
@@ -362,7 +392,7 @@
       "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "MONTHLY_INSTALMENT_AMOUNT": "Swm y rhandaliad bob mis",
-      "OWED_AMOUNT": "Swm sy’n ddyledus gennych",
+      "OWED_AMOUNT": "Swm sy'n ddyledus gennych",
       "PAGE_TITLE": "Any court orders?",
       "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
     },
@@ -375,7 +405,7 @@
       "MONTHLY": "Taliadau misol",
       "PAGE_TITLE": "Any debts?",
       "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
-      "TOTAL": "Cyfanswm sy’n ddyledus gennych"
+      "TOTAL": "Cyfanswm sy'n ddyledus gennych"
     },
     "DEFENDANT_TIMELINE": {
       "PAGE_TITLE": "Add your timeline of events",
@@ -402,7 +432,7 @@
       "PAGE_TITLE": "Any dependants between 16 and 19?"
     },
     "DEPENDANTS_CHILDREN_DISABILITY": {
-      "ANY_DISABLED_CHILDREN": "A oes gan unrhyw un o’r plant sy’n byw gyda chi anabledd?",
+      "ANY_DISABLED_CHILDREN": "A oes gan unrhyw un o'r plant sy'n byw gyda chi anabledd?",
       "PAGE_TITLE": "Any dependants with disability?"
     },
     "DISABILITY": {
@@ -424,12 +454,12 @@
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",
       "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the {{ otherParty }} choose.",
-      "EXPERT_REPORT": "The expert will provide a written report - they won’t usually come to court in person.",
+      "EXPERT_REPORT": "The expert will provide a written report - they won't usually come to court in person.",
       "FOR_EXAMPLE": "For example, they might allow a structural engineer to be used in a claim about building works or a mechanic in a claim about car repairs.",
-      "IF_JUDGE_ALLOWS": "If a judge allows you to use an expert, you’ll usually have to share one expert with the {{ otherParty }}.",
+      "IF_JUDGE_ALLOWS": "If a judge allows you to use an expert, you'll usually have to share one expert with the {{ otherParty }}.",
       "IF_PERMISSION": "If you get permission to use an expert",
       "IF_YOU_WIN": "If you win the case you may be able to recover a maximum of £750 of the cost you paid. A judge will rule on this at the end of the hearing.",
-      "JUDGE_ALLOW_EXPERT": "A judge will only allow you to use an expert if they believe they need the expert’s specialist knowledge.",
+      "JUDGE_ALLOW_EXPERT": "A judge will only allow you to use an expert if they believe they need the expert's specialist knowledge.",
       "JUDGE_DECIDE_COST": "The judge will also decide whether the cost of the expert is reasonable compared to the value of the claim.",
       "JUDGE_MAY_ASK": "The judge may ask one of you to make a list of 3 independent experts who can provide a written report in return for a fee.",
       "JUDGES_RESPONSIBLE_COST": "Even though you and the {{ otherParty }} share the cost of hiring the expert, judges are still responsible for keeping costs in proportion to value.",
@@ -440,15 +470,15 @@
       "PAYING_EXPERT": "Paying for the expert",
       "PROVIDE_EXTRA": "Provide any extra information the expert asks for.",
       "PROVIDE_QUESTIONS": "Provide questions for the expert to answer in a report.",
-      "RARE": "It’s rare for judges to allow you to use an expert in a small claim.",
-      "SEND_EXPERT_REPORT": "Send the expert’s report to the court (only one of you will have to do this).",
+      "RARE": "It's rare for judges to allow you to use an expert in a small claim.",
+      "SEND_EXPERT_REPORT": "Send the expert's report to the court (only one of you will have to do this).",
       "TITLE": "Using an expert in small claims",
       "USUALLY_SHARE_COST": "Usually you both share this cost.",
       "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
     },
     "EXPLANATION": {
       "PAGE_TITLE": "Explanation",
-      "TITLE": "Briefly explain why you can’t pay immediately"
+      "TITLE": "Briefly explain why you can't pay immediately"
     },
     "FINANCIAL_DETAILS": {
       "PAGE_TITLE": "Your financial details"
@@ -484,15 +514,15 @@
     },
     "PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE": {
       "PAGE_TITLE": "How much do you owe?",
-      "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
-      "TITLE": "Faint o arian ydych chi’n cyfaddef sy’n ddyledus gennych?"
+      "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi'r hawliad ac unrhyw log.",
+      "TITLE": "Faint o arian ydych chi'n cyfaddef sy'n ddyledus gennych?"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
       "PAGE_TITLE": "How much have you paid?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
-      "SUBTITLE": "Y cyfanswm a hawlir yw £{{ claimAmount }}. Mae hyn yn cynnwys ffi’r hawliad.",
+      "SUBTITLE": "Y cyfanswm a hawlir yw £{{ claimAmount }}. Mae hyn yn cynnwys ffi'r hawliad.",
       "TITLE": "Pam eich bod yn anghytuno â swm yr hawliad?"
     },
     "PARTNER": {
@@ -502,7 +532,7 @@
     },
     "PARTNER_AGE": {
       "PAGE_TITLE": "Partner's age",
-      "TITLE": "A yw eich partner yn 18 oed neu’n hŷn?"
+      "TITLE": "A yw eich partner yn 18 oed neu'n hŷn?"
     },
     "PARTNER_DISABILITY": {
       "PAGE_TITLE": "Partner with disability",
@@ -523,14 +553,14 @@
       "REPAYMENT": "Byddaf yn awgrymu cynllun ad-dalu",
       "TITLE": "Pryd ydych chi eisiau talu?",
       "TITLE_FOR_PART_ADMIT": "Pryd ydych chi eisiau talu yr £{{ amount }}?",
-      "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â’r hawlydd a thalu’r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
+      "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
     },
     "PRIORITY_DEBTS": {
       "ARREARS": "'mewn ôl-ddyled' (rydych wedi methu taliadau rheolaidd)",
       "DEBTS": "Dyledion rydych ar ei hôl hi yn eu talu",
       "DEBTS_DETAILS": "Nodwch fanylion y dyledion lle rydych:",
       "PAGE_TITLE": "Dyledion blaenoriaeth",
-      "REGULAR_PAYMENTS": "yn gwneud taliadau rheolaidd i glirio’r taliadau a fethwyd",
+      "REGULAR_PAYMENTS": "yn gwneud taliadau rheolaidd i glirio'r taliadau a fethwyd",
       "TOTAL_MONTHLY_REPAYMENTS": "Cyfanswm yr ad-daliadau misol"
     },
     "REGULAR_EXPENSES": {
@@ -551,20 +581,20 @@
       "PAGE_TITLE": "Your repayment plan"
     },
     "RESIDENCE": {
-      "ASSOCIATION_HOME": "Cartref cymdeithas dai neu’r cyngor",
-      "OWN_HOME": "Cartref rydych yn berchen arno (neu’n talu morgais arno)",
+      "ASSOCIATION_HOME": "Cartref cymdeithas dai neu'r cyngor",
+      "OWN_HOME": "Cartref rydych yn berchen arno (neu'n talu morgais arno)",
       "HOME_TYPE": "Pa fath o dŷ?",
-      "JOIN_HOME": "Cartref rydych yn berchen arno ar y cyd (neu’n talu morgais arno ar y cyd)",
+      "JOIN_HOME": "Cartref rydych yn berchen arno ar y cyd (neu'n talu morgais arno ar y cyd)",
       "OTHER": "Arall",
       "PAGE_TITLE": "Your residence",
-      "RENTAL_HOME": "Cartref rydych yn rhentu’n breifat",
-      "TITLE": "Ble ydych chi’n byw?"
+      "RENTAL_HOME": "Cartref rydych yn rhentu'n breifat",
+      "TITLE": "Ble ydych chi'n byw?"
     },
     "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
-      "AMOUNT": "Swm sy’n ddyledus gennych",
+      "AMOUNT": "Swm sy'n ddyledus gennych",
       "PAGE_TITLE": "Behind on tax payments?",
       "REASON": "Rheswm",
       "TITLE": "A ydych yn hwyr yn gwneud taliadau treth?",
@@ -582,13 +612,13 @@
       "ARRANGE_AND_PAY": "You may have to arrange and pay for interpreters except for Welsh. The court will tell you.",
       "DISABLE": "Disabled access",
       "ENTER_SIGN_LANGUAGE": "Enter the sign language you need",
-      "EXTRA_SUPPORT": "The court can’t guarantee extra support, but it will consider other needs relating to physical or mental health impairments",
+      "EXTRA_SUPPORT": "The court can't guarantee extra support, but it will consider other needs relating to physical or mental health impairments",
       "HEARING": "Hearing loop",
       "LANGUAGE": "Language interpreter",
       "OTHER": "Other support",
       "PAGE_TITLE": "Support required",
       "SIGN_LANGUAGE": "Sign language interpreter",
-      "TITLE": "Select any support you’d require for a court hearing (optional)",
+      "TITLE": "Select any support you'd require for a court hearing (optional)",
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
@@ -616,7 +646,7 @@
       "BRIEFLY": "Briefly explain why you disagree with the claim",
       "FAIL": "If you fail to dispute any part of the claim the court may assume you admit it.",
       "ACCEPT": "You should also say if you accept any parts of the claim.",
-      "TIMELINE": "Don’t give us a detailed timeline - we’ll ask for that separately.",
+      "TIMELINE": "Don't give us a detailed timeline - we'll ask for that separately.",
       "TITLE": "Why do you disagree with the claim?",
       "REASON": "Their reasons for making the claim",
       "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
@@ -630,13 +660,13 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "DATE_REQUIRED": "Enter a date",
-    "DEFENCE_REQUIRED": "You need to explain why you don’t owe the money",
+    "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
     "DETAILS_REQUIRED": "Enter details",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
     "ENTER_A_DEBT": "Enter a debt",
-    "ENTER_AN_EXPLANATION": "Enter an explanation of why you can’t pay now",
+    "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
@@ -654,31 +684,31 @@
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
-      "COUNCIL_TAX": "Nodwch faint o Dreth y Cyngor neu Dâl Cymunedol ydych chi’n ei dalu",
-      "ELECTRICITY": "Nodwch faint ydych chi’n ei dalu am drydan",
-      "GAS": "Nodwch faint ydych chi’n ei dalu am nwy",
-      "MAINTENANCE": "Nodwch faint o daliadau cynhaliaeth ydych chi’n talu",
+      "COUNCIL_TAX": "Nodwch faint o Dreth y Cyngor neu Dâl Cymunedol ydych chi'n ei dalu",
+      "ELECTRICITY": "Nodwch faint ydych chi'n ei dalu am drydan",
+      "GAS": "Nodwch faint ydych chi'n ei dalu am nwy",
+      "MAINTENANCE": "Nodwch faint o daliadau cynhaliaeth ydych chi'n talu",
       "MORTGAGE": "Nodwch faint yw eich taliadau morgais",
-      "RENT": "Nodwch faint o rent ydych chi’n ei dalu",
-      "WATER": "Nodwch faint ydych chi’n ei dalu am ddŵr"
+      "RENT": "Nodwch faint o rent ydych chi'n ei dalu",
+      "WATER": "Nodwch faint ydych chi'n ei dalu am ddŵr"
     },
     "SELECT_FREQUENCY": {
-      "COUNCIL_TAX": "Dewiswch pa mor aml ydych chi’n talu Treth y Cyngor neu Dâl Cymunedol",
-      "ELECTRICITY": "Dewiswch pa mor aml ydych chi’n talu am drydan",
-      "GAS": "Dewiswch pa mor aml ydych chi’n talu am nwy",
-      "MAINTENANCE": "Dewiswch pa mor aml ydych chi’n talu am daliadau cynhaliaeth",
-      "MORTGAGE": "Dewiswch pa mor aml ydych chi’n talu morgais",
-      "RENT": "Dewiswch pa mor aml ydych chi’n talu rhent",
-      "WATER": "Dewiswch pa mor aml ydych chi’n talu am ddŵr"
+      "COUNCIL_TAX": "Dewiswch pa mor aml ydych chi'n talu Treth y Cyngor neu Dâl Cymunedol",
+      "ELECTRICITY": "Dewiswch pa mor aml ydych chi'n talu am drydan",
+      "GAS": "Dewiswch pa mor aml ydych chi'n talu am nwy",
+      "MAINTENANCE": "Dewiswch pa mor aml ydych chi'n talu am daliadau cynhaliaeth",
+      "MORTGAGE": "Dewiswch pa mor aml ydych chi'n talu morgais",
+      "RENT": "Dewiswch pa mor aml ydych chi'n talu rhent",
+      "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
-    "SIGNER_NAME_TOO_LONG": "You’ve entered too many characters",
+    "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
-    "SIGNER_ROLE_TOO_LONG": "You’ve entered too many characters",
+    "SIGNER_ROLE_TOO_LONG": "You've entered too many characters",
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
-    "TEXT_TOO_MANY": "You’ve entered too many characters",
+    "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
@@ -709,16 +739,16 @@
     "VALID_HOUSING": "Disgrifiwch eich cartref",
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
-    "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
+    "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can't be higher than on previous page",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
-    "VALID_POSITIVE_NUMBER": "Don’t enter a negative number",
+    "VALID_POSITIVE_NUMBER": "Don't enter a negative number",
     "VALID_POSTCODE": "Rhowch y cod post",
     "VALID_REASON_REQUIRED": "Enter a reason",
-    "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy’n uwch na 0",
-    "VALID_TEXT_LENGTH": "You’ve entered too many characters",
+    "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",
+    "VALID_TEXT_LENGTH": "You've entered too many characters",
     "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
