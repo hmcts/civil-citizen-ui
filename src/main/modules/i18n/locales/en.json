@@ -21,18 +21,21 @@
     "YEAR": "Year",
     "YEARS": "Years",
     "YES": "Yes",
-    "BUTTONS": {
-      "CONTINUE": "Continue",
-      "SAVE_AND_CONTINUE": "Save and continue",
-      "START_AGAIN": "Start again",
-      "SUBMIT_RESPONSE": "Submit Response"
-    },
     "ADDRESS_FORM": {
       "ADDRESS_CHANGES_SHARED": "Any changes will be shared with the claimant when you submit your response.",
       "BUILDING_AND_STREET": "Building and street",
       "CHANGE_ADDRESS": "If your address is not correct you can change it here.",
       "POSTCODE": "Postcode",
       "TOWN_OR_CITY": "Town or city"
+    },
+    "BUTTONS": {
+      "CONTINUE": "Continue",
+      "SAVE_AND_CONTINUE": "Save and continue",
+      "START_AGAIN": "Start again",
+      "SUBMIT_RESPONSE": "Submit Response"
+    },
+    "CHECKBOX_FIELDS": {
+      "MORTGAGE": "Mortgage"
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Find out about call charges (opens in a new window)",
@@ -508,7 +511,12 @@
       "YOU_MUST_CONTACT": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
     },
     "PRIORITY_DEBTS": {
-      "PAGE_TITLE": "Priority debts"
+      "ARREARS": "'in arrears' (you've missed regular payments)",
+      "DEBTS": "Debts you're behind on",
+      "DEBTS_DETAILS": "Enter details of debts for which you're:",
+      "PAGE_TITLE": "Priority debts",
+      "REGULAR_PAYMENTS": "making regular repayments to clear the missed payments",
+      "TOTAL_MONTHLY_REPAYMENTS": "Total monthly repayments"
     },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your regular expenses"

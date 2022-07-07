@@ -21,18 +21,18 @@
     "YEAR": "Blwyddyn",
     "YEARS": "Blwyddyn",
     "YES": "Oes",
-    "BUTTONS": {
-      "CONTINUE": "Parhau",
-      "SAVE_AND_CONTINUE": "Cadw a Pharhau",
-      "START_AGAIN": "Start again",
-      "SUBMIT_RESPONSE": "Submit Response"
-    },
     "ADDRESS_FORM": {
       "ADDRESS_CHANGES_SHARED": "Bydd unrhyw newidiadau yn cael eu rhannu â'r hawlydd pan fyddwch yn cyflwyno eich ymateb.",
       "BUILDING_AND_STREET": "Adeilad a stryd",
       "CHANGE_ADDRESS": "Os nad yw eich cyfeiriad yn gywir gallwch ei newid yma.",
       "POSTCODE": "Cod post",
       "TOWN_OR_CITY": "Tref neu ddinas"
+    },
+    "BUTTONS": {
+      "CONTINUE": "Parhau",
+      "SAVE_AND_CONTINUE": "Cadw a Pharhau",
+      "START_AGAIN": "Start again",
+      "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
@@ -506,7 +506,12 @@
       "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â’r hawlydd a thalu’r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
     },
     "PRIORITY_DEBTS": {
-      "PAGE_TITLE": "Priority debts"
+      "ARREARS": "'mewn ôl-ddyled' (rydych wedi methu taliadau rheolaidd)",
+      "DEBTS": "Dyledion rydych ar ei hôl hi yn eu talu",
+      "DEBTS_DETAILS": "Nodwch fanylion y dyledion lle rydych:",
+      "PAGE_TITLE": "Dyledion blaenoriaeth",
+      "REGULAR_PAYMENTS": "yn gwneud taliadau rheolaidd i glirio’r taliadau a fethwyd",
+      "TOTAL_MONTHLY_REPAYMENTS": "Cyfanswm yr ad-daliadau misol"
     },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your regular expenses"

@@ -11,7 +11,6 @@ export const checkBoxFields = [
   {name: 'maintenance', text: 'Maintenance Payments'},
 ];
 
-
 export const schedule = {
   week: 'Week', twoWeeks: '2 weeks', fourWeeks: '4 weeks', month: 'month',
 };

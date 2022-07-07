@@ -10,24 +10,16 @@
 {% endblock %}
 
 {% block question %}
-  {% set title = t("Debts you're behind on") %}
-  {% set descriptionTitle = "Enter details of debts for which you're:" %}
-  {% set descriptionArrears = "'in arrears' (you've missed regular payments)" %}
-  {% set descriptionRegularRepayments = "making regular repayments to clear the missed payments" %}
-  {% set description %}
-
-  {% endset -%}
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-        <h1 class="govuk-fieldset__heading">Debts you're behind on</h1>
+        <h1 class="govuk-fieldset__heading"> {{ t('PAGES.PRIORITY_DEBTS.DEBTS') }}</h1>
       </legend>
       <div id="waste-hint" class="govuk-hint">
-        <p>{{ descriptionTitle }}</p>
+        <p>{{ t('PAGES.PRIORITY_DEBTS.DEBTS_DETAILS') }}</p>
         <ul>
-          <li>{{ descriptionArrears }}</li>
-          <li>{{ descriptionRegularRepayments }}</li>
+          <li>{{ t('PAGES.PRIORITY_DEBTS.ARREARS') }}</li>
+          <li>{{ t('PAGES.PRIORITY_DEBTS.REGULAR_PAYMENTS') }}</li>
         </ul>
       </div>
       <form method="post" novalidate>
@@ -49,11 +41,12 @@
           }) }}
         {% endfor %}
         <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
-          {{ t('Total monthly repayments') }}: £ <span class="total-monthly-income-expense">
+          {{ t('PAGES.PRIORITY_DEBTS.TOTAL_MONTHLY_REPAYMENTS') }}: £
+          <span class="total-monthly-income-expense">
             0
           </span>
         </p>
-        {{ saveAndContinueButton() }}
+        {{ saveAndContinueButton(t('COMMON.BUTTONS.SAVE_AND_CONTINUE')) }}
     </div>
     </form>
   </div>
