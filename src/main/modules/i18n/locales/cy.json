@@ -649,7 +649,7 @@
     "TEXT_TOO_MANY": "You’ve entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_WAS_A_PROBLEM": "Roedd Dewiswch math o gyfrif",
-    "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
+    "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
     "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
     "VALID_AMOUNT": "Enter a valid amount",
     "VALID_AMOUNT_ONE_POUND_OR_MORE": "Enter an amount of £1 or more",

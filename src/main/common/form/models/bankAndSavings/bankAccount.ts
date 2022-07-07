@@ -10,8 +10,7 @@ export class BankAccount extends Form {
     typeOfAccount?: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({
-    message: 'ERRORS.SELECT_AN_OPTION'})
+  @IsNotEmpty({message: 'ERRORS.SELECT_AN_OPTION'})
     joint?: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())

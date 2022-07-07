@@ -68,7 +68,7 @@ export class Nunjucks {
 
     const translateErrors = (keys: FormValidationError[], t: any) => {
       return keys.map((key) => {
-        return ({...key, text: t(key.text)});
+        return ({...key, text: t(key?.text)});
       });
     };
 
