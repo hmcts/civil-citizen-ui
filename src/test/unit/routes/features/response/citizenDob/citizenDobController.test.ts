@@ -44,7 +44,7 @@ describe('Citizen date of birth', () => {
         .get(DOB_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -183,7 +183,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

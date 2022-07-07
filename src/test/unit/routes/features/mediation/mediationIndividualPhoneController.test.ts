@@ -50,7 +50,7 @@ describe('on Get', () => {
       .get(CAN_WE_USE_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
 });
@@ -113,7 +113,7 @@ describe('on Post', () => {
       .send({ option: 'yes', telephoneNumber: ''})
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
 

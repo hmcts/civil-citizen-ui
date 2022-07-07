@@ -5,29 +5,25 @@ import courtOrdersService
   from '../../../../../services/features/response/statementOfMeans/courtOrders/courtOrdersService';
 import {CourtOrders} from '../../../../../common/form/models/statementOfMeans/courtOrders/courtOrders';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-
-const logger = Logger.getLogger('courtOrdersController');
 const residenceViewPath = 'features/response/statementOfMeans/courtOrders/court-orders';
 
 const courtOrdersController = express.Router();
 courtOrdersController
   .get(
     CITIZEN_COURT_ORDERS_URL,
-    async (req: express.Request, res: express.Response) => {
+    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       try {
         const courtOrders: CourtOrders = await courtOrdersService.getCourtOrders(req.params.id);
         res.render(residenceViewPath, {
           form: new GenericForm(courtOrders),
         });
       } catch (error) {
-        logger.error(`${error.stack || error}`);
-        res.status(500).send({errorMessage: error.message, errorStack: error.stack});
+        next(error);
       }
     })
   .post(
     CITIZEN_COURT_ORDERS_URL,
-    async (req: express.Request, res: express.Response) => {
+    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const courtOrders = courtOrdersService.buildCourtOrders(req.body);
       courtOrdersService.removeEmptyCourtOrders(courtOrders);
       const form = new GenericForm(courtOrders);
@@ -42,8 +38,7 @@ courtOrdersController
           await courtOrdersService.saveCourtOrders(req.params.id, courtOrders);
           res.redirect(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', req.params.id));
         } catch (error) {
-          logger.error(`${error.stack || error}`);
-          res.status(500).send({errorMessage: error.message, errorStack: error.stack});
+          next(error);
         }
       }
     });

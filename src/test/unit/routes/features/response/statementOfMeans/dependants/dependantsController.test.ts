@@ -2,7 +2,6 @@ import express from 'express';
 import nock from 'nock';
 import config from 'config';
 import {
-  REDIS_FAILURE,
   VALID_ENTER_AT_LEAST_ONE_NUMBER,
   VALID_INTEGER,
   VALID_POSITIVE_NUMBER,
@@ -16,6 +15,7 @@ import {
 import * as childrenDisabilityService
   from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 const request = require('supertest');
 const {app} = require('../../../../../../../main/app');
@@ -56,7 +56,7 @@ describe('Citizen dependants', () => {
         .get(respondentDependantsUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({errorMessage: REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -150,7 +150,7 @@ describe('Citizen dependants', () => {
         .send('under11=1')
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({errorMessage: REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

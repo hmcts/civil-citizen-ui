@@ -34,7 +34,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
         .get(CITIZEN_OWED_AMOUNT_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -128,7 +128,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
         .send({ amount: 200 })
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

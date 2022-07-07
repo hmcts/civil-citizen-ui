@@ -84,7 +84,7 @@ describe('Confirm Details page', () => {
         .get(CITIZEN_DETAILS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -98,7 +98,7 @@ describe('Confirm Details page', () => {
       .send(validDataForPost)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
 
