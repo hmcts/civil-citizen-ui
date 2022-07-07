@@ -7,9 +7,6 @@ import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-
-const logger = Logger.getLogger('citizenPhoneController');
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
 const citizenPhoneController = express.Router();
 const validator = new Validator();
@@ -18,19 +15,18 @@ function renderView(form: CitizenTelephoneNumber, res: express.Response): void {
   res.render(citizenPhoneViewPath, {form: form});
 }
 
-citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res) => {
+citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: express.NextFunction) => {
   try {
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
     const citizenTelephoneNumber = responseDataRedis?.respondent1?.telephoneNumber
       ? new CitizenTelephoneNumber(responseDataRedis.respondent1.telephoneNumber) : new CitizenTelephoneNumber();
     renderView(citizenTelephoneNumber, res);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     try {
       const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
       const errors: ValidationError[] = validator.validateSync(model);
@@ -51,8 +47,7 @@ citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
         res.redirect(redirectURL);
       }
     } catch (error) {
-      logger.error(error);
-      res.status(500).send({error: error.message});
+      next(error);
     }
   });
 

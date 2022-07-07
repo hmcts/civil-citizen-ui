@@ -33,7 +33,7 @@ describe('Why do you disagree Controller', () => {
         .get(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -65,7 +65,7 @@ describe('Why do you disagree Controller', () => {
         .send('text=Test')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

@@ -18,17 +18,17 @@ function renderView(form: SelfEmployedAsForm, res: express.Response): void {
   res.render(selfEmployedAsViewPath, {form});
 }
 
-selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL, async (req, res) => {
+selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form = await getSelfEmployedAsForm(req.params.id);
     renderView(form, res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
 selfEmployedAsController.post(CITIZEN_SELF_EMPLOYED_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     try{
       const annualTurnover = req.body.annualTurnover ? Number(req.body.annualTurnover) : undefined;
       const form: SelfEmployedAsForm = new SelfEmployedAsForm(req.body.jobTitle, annualTurnover);
@@ -42,7 +42,7 @@ selfEmployedAsController.post(CITIZEN_SELF_EMPLOYED_URL,
         res.redirect(constructResponseUrlWithIdParams(req.params.id, ON_TAX_PAYMENTS_URL));
       }
     } catch (error) {
-      res.status(500).send({error: error.message});
+      next(error);
     }
   });
 

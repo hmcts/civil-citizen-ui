@@ -16,7 +16,6 @@ const financialDetailsController = express.Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 let logger: winston.Logger = Logger.getLogger('financialDetailsController');
 
-
 export function setFinancialDetailsControllerLogger(winstonLogger: winston.Logger) {
   logger = winstonLogger;
 }
@@ -25,20 +24,18 @@ function renderView(res: express.Response, claim: Claim, claimantDetailsUrl: str
   res.render(financialDetailsViewPath, {claim: claim, claimantDetailsUrl: claimantDetailsUrl});
 }
 
-
 financialDetailsController
   .get(
-    FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+    FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       try {
         const claim: Claim = await getCaseDataFromStore(req.params.id);
         const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
         renderView(res, claim, claimantDetailsUrl);
       } catch (error) {
-        logger.error(error);
-        res.status(500).send({error: error.message});
+        next(error);
       }
     })
-  .post(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+  .post(FINANCIAL_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
       const claim: Claim = await getCaseDataFromStore(req.params.id);
@@ -56,8 +53,7 @@ financialDetailsController
         renderView(res, claim, claimantDetailsUrl);
       }
     } catch (error) {
-      logger.error(error);
-      res.status(500).send({error: error.message});
+      next(error);
     }
   });
 

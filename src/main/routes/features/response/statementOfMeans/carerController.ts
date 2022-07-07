@@ -7,25 +7,22 @@ import {validateForm} from '../../../../common/form/validators/formValidator';
 
 const carerViewPath = 'features/response/statementOfMeans/carer';
 const carerController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('carerController');
 
 function renderView(form: Carer, res: express.Response): void {
   res.render(carerViewPath, { form });
 }
 
-carerController.get(CITIZEN_CARER_URL, async (req, res) => {
+carerController.get(CITIZEN_CARER_URL, async (req, res, next: express.NextFunction) => {
   try {
     const carer: Carer = await getCarer(req.params.id);
     renderView(carer, res);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
 carerController.post(CITIZEN_CARER_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     const carer: Carer = new Carer(req.body.option);
     await validateForm(carer);
     if (carer.hasErrors()) {
@@ -35,8 +32,7 @@ carerController.post(CITIZEN_CARER_URL,
         await saveCarer(req.params.id, carer);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EMPLOYMENT_URL));
       } catch (error) {
-        logger.error(error);
-        res.status(500).send({ error: error.message });
+        next(error);
       }
     }
   });

@@ -7,7 +7,7 @@ import {
   mockCivilClaimApplicantCompanyType, mockCivilClaimApplicantIndividualType,
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
-import {REDIS_FAILURE} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -43,7 +43,7 @@ describe('Free Telephone Mediation Controller', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app).get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL).expect(res => {
         expect(res.status).toBe(500);
-        expect(res.body).toMatchObject({error: REDIS_FAILURE});
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
     });
   });
