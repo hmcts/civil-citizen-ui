@@ -22,21 +22,21 @@ const getTypeOfJobTranslation = (employment: Employment, lang: string | unknown)
   const tEmployed = t('PAGES.EMPLOYMENT_STATUS.EMPLOYED', { lng: getLng(lang) });
   const tSelfEmployed = t('PAGES.EMPLOYMENT_STATUS.SELF_EMPLOYED', { lng: getLng(lang) });
   const tEmployedAndSelfEmployed = t('PAGES.CHECK_YOUR_ANSWER.EMPLOYED_AND_SELF_EMPLOYED', { lng: getLng(lang) });
-  let typeOfJobs = '';
+  let typeOfJob = '';
 
   const getTypeOfJob = (type: string) => type === EmploymentCategory.EMPLOYED ? tEmployed : tSelfEmployed;
-  const typeOfJob: Array<string> = [];
+  const typeOfJobsArr: Array<string> = [];
   for (const item of employment.employmentType) {
-    typeOfJob.push(getTypeOfJob(item));
+    typeOfJobsArr.push(getTypeOfJob(item));
   }
 
-  if (typeOfJob.length > 1) {
-    typeOfJobs = tEmployedAndSelfEmployed;
+  if (typeOfJobsArr.length > 1) {
+    typeOfJob = tEmployedAndSelfEmployed;
   } else {
-    typeOfJobs = typeOfJob[0];
+    typeOfJob = typeOfJobsArr[0];
   }
 
-  return typeOfJobs;
+  return typeOfJob;
 };
 
 const showSelfEmploymentTaxPayments = (claim: Claim, financialSection: SummarySection, lang: string | unknown) => {
