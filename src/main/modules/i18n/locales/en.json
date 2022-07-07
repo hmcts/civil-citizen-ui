@@ -9,6 +9,7 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "COMMON": {
+    "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
     "DAY": "Day",
@@ -244,7 +245,14 @@
       "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details"
     },
     "CITIZEN_BANK_ACCOUNTS": {
-      "PAGE_TITLE": "Your bank accounts"
+      "PAGE_TITLE": "Your bank accounts",
+      "TITLE": "List your bank and savings accounts",
+      "AMOUNT_EXAMPLE": "Put a minus (-) in front of the amount if you’re overdrawn. For example £-804.45.",
+      "ADD_ANOTHER_ACCOUNT": "Add another account",
+      "YES": "Yes",
+      "NO": "No"
+
+
     },
     "CITIZEN_DETAILS": {
       "ADDRESS": "Your Address",

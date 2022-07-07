@@ -2,7 +2,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
-{% macro bankAccountRow(bankAccount, bankAccountDropDownItems, index) %}
+{% macro bankAccountRow(bankAccount, bankAccountDropDownItems, index, t) %}
   <div id="row-container govuk-grid-column-two-thirds">
     <div class="multiple-row">
       {% set errors = bankAccount.getErrors() %}
@@ -30,17 +30,17 @@
               items: [
                 {
                   value: "",
-                  text: t("Choose")
+                  text: t('COMMON.CHOOSE')
                 },
                 {
                   value: 'true',
-                  text: t("Yes"),
+                  text: t('PAGES.CITIZEN_BANK_ACCOUNTS.YES'),
                   selected: true if bankAccount.joint == 'true'
 
                 },
                 {
                   value: 'false',
-                  text: t("No"),
+                  text:  t('PAGES.CITIZEN_BANK_ACCOUNTS.NO'),
                   selected: true if bankAccount.joint == 'false'
                 }
               ]
