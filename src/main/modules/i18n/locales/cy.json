@@ -35,6 +35,20 @@
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
     },
+    "CHECKBOX_FIELDS": {
+      "COUNCIL_TAX": "Treth Cyngor",
+      "ELECTRICITY": "Trydan",
+      "GAS": "Nwy",
+      "MAINTENANCE": "Taliadau cynhaliaeth",
+      "MORTGAGE": "Morgais",
+      "RENT": "Rhent",
+      "WATER": "Dŵr"
+    },
+    "CONDITIONAL_CHECKBOX": {
+      "PRIORITY_DEBTS": "dyledion blaenoriaeth",
+      "REPAYMENT_AMOUNT": "Swm yr ad-daliadt",
+      "REPAYMENT_AMOUNT_HINT": "Dylech ond cynnwys y swm rydych yn ei dalu i glirio’r taliadau rheolaidd a fethwyd yn flaenorol"
+    },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
       "EMAIL": "E-bost",
@@ -64,6 +78,12 @@
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
+    },
+    "SCHEDULE": {
+      "FOUR_WEEKS": "4 wythnos",
+      "MONTH": "Mis",
+      "TWO_WEEKS": "Pythefnos",
+      "WEEK": "Wythnos"
     },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
@@ -639,6 +659,24 @@
     "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
+    "SELECT_AMOUNT": {
+      "COUNCIL_TAX": "Nodwch faint o Dreth y Cyngor neu Dâl Cymunedol ydych chi’n ei dalu",
+      "ELECTRICITY": "Nodwch faint ydych chi’n ei dalu am drydan",
+      "GAS": "Nodwch faint ydych chi’n ei dalu am nwy",
+      "MAINTENANCE": "Nodwch faint o daliadau cynhaliaeth ydych chi’n talu",
+      "MORTGAGE": "Nodwch faint yw eich taliadau morgais",
+      "RENT": "Nodwch faint o rent ydych chi’n ei dalu",
+      "WATER": "Nodwch faint ydych chi’n ei dalu am ddŵr"
+    },
+    "SELECT_FREQUENCY": {
+      "COUNCIL_TAX": "Dewiswch pa mor aml ydych chi’n talu Treth y Cyngor neu Dâl Cymunedol",
+      "ELECTRICITY": "Dewiswch pa mor aml ydych chi’n talu am drydan",
+      "GAS": "Dewiswch pa mor aml ydych chi’n talu am nwy",
+      "MAINTENANCE": "Dewiswch pa mor aml ydych chi’n talu am daliadau cynhaliaeth",
+      "MORTGAGE": "Dewiswch pa mor aml ydych chi’n talu morgais",
+      "RENT": "Dewiswch pa mor aml ydych chi’n talu rhent",
+      "WATER": "Dewiswch pa mor aml ydych chi’n talu am ddŵr"
+    },
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You’ve entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",

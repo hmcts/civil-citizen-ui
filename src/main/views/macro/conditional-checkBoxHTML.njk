@@ -1,7 +1,7 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
-{% macro conditionalCheckBoxHTML(debtType, debtDetails, debtErrors ) %}
+{% macro conditionalCheckBoxHTML(debtType, debtDetails, debtErrors, t) %}
   <div class="civil-amountRow">
     {{ govukInput({
       id: debtType+"-payment-amount",
@@ -15,10 +15,10 @@
       },
       classes: "govuk-!-width-one-third civil-amount",
       label: {
-        text: t("Repayment amount")
+        text: t('COMMON.CONDITIONAL_CHECKBOX.REPAYMENT_AMOUNT')
       },
       hint: {
-        text: t("Only include the amount you're paying to clear previously missed regular")
+        text: t('COMMON.CONDITIONAL_CHECKBOX.REPAYMENT_AMOUNT_HINT')
       },
       errorMessage: {
         text: t(debtErrors.amount.text)
@@ -30,7 +30,7 @@
       classes: 'civil-schedule',
       fieldset: {
         legend: {
-          text: t("priority debts"),
+          text: t('COMMON.CONDITIONAL_CHECKBOX.PRIORITY_DEBTS'),
           isPageHeading: false,
           classes: "govuk-!-width-one-third"
         }
@@ -38,26 +38,23 @@
       items: [
         {
           value: "WEEK",
-          text: t("Week"),
+          text: t('COMMON.SCHEDULE.WEEK'),
           checked:debtDetails.schedule === "WEEK"
         },
         {
           value: "TWO_WEEKS",
-          text: t("2 weeks"),
+          text: t('COMMON.SCHEDULE.TWO_WEEKS'),
           checked:debtDetails.schedule === "TWO_WEEKS"
-
         },
         {
           value: "FOUR_WEEKS",
-          text: t("4 weeks"),
+          text: t('COMMON.SCHEDULE.FOUR_WEEKS'),
           checked:debtDetails.schedule === "FOUR_WEEKS"
-
         },
         {
           value: "MONTH",
-          text: t("Month"),
+          text: t('COMMON.SCHEDULE.MONTH'),
           checked:debtDetails.schedule === "MONTH"
-
         }
       ],
       errorMessage: {

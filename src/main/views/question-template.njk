@@ -56,8 +56,8 @@
           {% block error %}
             {% if errors %}
               {{ govukErrorSummary({
-                "titleText": t("There was a problem"),
-                "errorList": errors
+                "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
+                "errorList": translateErrors(errors, t)
               }) }}
             {% endif %}
           {% endblock %}

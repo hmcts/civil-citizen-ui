@@ -31,10 +31,10 @@
             items: [
               {
                 value: checkBoxField.name,
-                text: checkBoxField.text,
+                text: t(checkBoxField.text),
                 checked: priorityDebts[checkBoxField.name].isDeclared if priorityDebts[checkBoxField.name],
                 conditional: {
-                html: conditionalCheckBoxHTML(checkBoxField.name, priorityDebts[checkBoxField.name], priorityDebtErrors[checkBoxField.name])
+                html: conditionalCheckBoxHTML(checkBoxField.name, priorityDebts[checkBoxField.name], priorityDebtErrors[checkBoxField.name], t)
               }
               }
             ]
@@ -51,5 +51,4 @@
     </form>
   </div>
   </div>
-
 {% endblock %}
