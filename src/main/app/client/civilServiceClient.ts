@@ -5,16 +5,14 @@ import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {
   CIVIL_SERVICE_CASES_URL,
+  CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
-  CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL, CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN,
+  CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import {
-  CLAIM_DETAILS_NOT_AVAILBALE,
-  DOCUMENT_NOT_AVAILABLE,
-} from './errorMessageContants';
+import {CLAIM_DETAILS_NOT_AVAILBALE, DOCUMENT_NOT_AVAILABLE,} from './errorMessageContants';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -103,7 +101,7 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
     try{
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN // nosonar
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), config);// nosonar
       console.log('event token ' + response.data);
