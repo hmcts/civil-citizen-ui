@@ -35,7 +35,18 @@
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CHECKBOX_FIELDS": {
-      "MORTGAGE": "Mortgage"
+      "COUNCIL_TAX": "Council Tax or Community Charge",
+      "ELECTRICITY": "Electricity",
+      "GAS": "Gas",
+      "MAINTENANCE": "Maintenance Payments",
+      "MORTGAGE": "Mortgage",
+      "RENT": "Rent",
+      "WATER": "Water"
+    },
+    "CONDITIONAL_CHECKBOX": {
+      "PRIORITY_DEBTS": "priority debts",
+      "REPAYMENT_AMOUNT": "Repayment amount",
+      "REPAYMENT_AMOUNT_HINT": "Only include the amount you're paying to clear previously missed regular"
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Find out about call charges (opens in a new window)",
@@ -66,6 +77,12 @@
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
+    },
+    "SCHEDULE": {
+      "FOUR_WEEKS": "4 weeks",
+      "MONTH": "month",
+      "TWO_WEEKS": "2 weeks",
+      "WEEK": "Week"
     },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
@@ -638,6 +655,24 @@
     "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_AN_OPTION": "Select an option",
+    "SELECT_AMOUNT": {
+      "COUNCIL_TAX": "Enter how much you pay for Council Tax or Community Charge",
+      "ELECTRICITY": "Enter how much you pay for Electricity",
+      "GAS": "Enter how much you pay for Gas",
+      "MAINTENANCE": "Enter how much you pay for Maintenance Payments",
+      "MORTGAGE": "Enter how much you pay for Mortgage",
+      "RENT": "Enter how much you pay for Rent",
+      "WATER": "Enter how much you pay for Water"
+    },
+    "SELECT_FREQUENCY": {
+      "COUNCIL_TAX": "Select how often you pay for Council Tax or Community Charge",
+      "ELECTRICITY": "Select how often you pay for Electricity",
+      "GAS": "Select how often you pay for Gas",
+      "MAINTENANCE": "Select how often you pay for Maintenance Payments",
+      "MORTGAGE": "Select how often you pay for Mortgage",
+      "RENT": "Select how often you pay for Rent",
+      "WATER": "Select how often you pay for Water"
+    },
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You’ve entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
@@ -665,6 +700,15 @@
     "VALID_DATE_IN_PAST": "Enter date before ",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DAY": "Enter a valid day",
+    "VALID_DEBT_AMOUNT": {
+      "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
+      "ELECTRICITY": "Enter a valid Electricity amount, maximum two decimal places",
+      "GAS": "Enter a valid Gas amount, maximum two decimal places",
+      "MAINTENANCE": "Enter a valid Maintenance Payments amount, maximum two decimal places",
+      "MORTGAGE": "Enter a valid Mortgage amount, maximum two decimal places",
+      "RENT": "Enter a valid Rent amount, maximum two decimal places",
+      "WATER": "Enter a valid Water amount, maximum two decimal places"
+    },
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_JOB_TITLE": "Enter a job title",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
