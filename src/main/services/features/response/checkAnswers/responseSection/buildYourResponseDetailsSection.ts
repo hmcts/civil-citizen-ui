@@ -23,9 +23,9 @@ const addTimeline = (claim: Claim, claimId: string, lang: string | unknown, sect
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_TITLE', { lng: getLng(lang) }), '', yourTimelineHref, changeLabel(lang)),
   );
 
-  for (let i = 0; i < timeline.rows.length; i++) {
+  for (const item of timeline.rows) {
     section.summaryList.rows.push(
-      summaryRow(timeline.rows[i].date, timeline.rows[i].description, yourTimelineHref, changeLabel(lang)),
+      summaryRow(item.date, item.description, yourTimelineHref, changeLabel(lang)),
     );
   }
 
@@ -42,9 +42,9 @@ const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, sect
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_TITLE', { lng: getLng(lang) }), '', yourEvidenceHref, changeLabel(lang)),
   );
 
-  for (let i = 0; i < evidenceItem.length; i++) {
+  for (const item of evidenceItem) {
     section.summaryList.rows.push(
-      summaryRow(evidenceItem[i].type, evidenceItem[i].description, yourEvidenceHref, changeLabel(lang)),
+      summaryRow(item.type, item.description, yourEvidenceHref, changeLabel(lang)),
     );
   }
 
