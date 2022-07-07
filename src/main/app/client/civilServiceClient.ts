@@ -12,7 +12,10 @@ import {
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
-import {CLAIM_DETAILS_NOT_AVAILBALE, DOCUMENT_NOT_AVAILABLE,} from './errorMessageContants';
+import {
+  CLAIM_DETAILS_NOT_AVAILBALE,
+  DOCUMENT_NOT_AVAILABLE,
+} from './errorMessageContants';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
