@@ -105,7 +105,7 @@ export class CivilServiceClient {
     try{
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN
         .replace(':submitterId', userId)
-        .replace(':caseId', claimId), config);
+        .replace(':caseId', claimId), config);// nosonar
       console.log('event token ' + response.data);
       return response.data as unknown as string;
     }catch (err: unknown) {
