@@ -7,7 +7,7 @@ import config from 'config';
 import {
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_FEES_RANGES,
-  CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL, CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN,
 } from '../../../../main/app/client/civilServiceUrls';
 import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
 import {mockClaim} from '../../../utils/mockClaim';
@@ -15,12 +15,12 @@ import {TestMessages} from '../../../utils/errorMessageTestConstants';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-const baseUrl:string = config.get('baseUrl');
+const baseUrl: string = config.get('baseUrl');
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 
 describe('Civil Service Client', () => {
-  describe('retrieveByDefendantId', ()=>{
+  describe('retrieveByDefendantId', () => {
     it('should retrieve cases successfully', async () => {
       //Given
       const claim = new Claim();
@@ -30,12 +30,12 @@ describe('Civil Service Client', () => {
           individualTitle: 'Mrs',
           individualLastName: 'Clark',
           individualFirstName: 'Jane',
-          type : CounterpartyType.INDIVIDUAL,
+          type: CounterpartyType.INDIVIDUAL,
         };
       claim.totalClaimAmount = 1500;
 
       const mockResponse: CivilClaimResponse = {
-        id:'1',
+        id: '1',
         case_data: claim,
       };
 
@@ -57,7 +57,7 @@ describe('Civil Service Client', () => {
       expect(actualClaims[0].case_data.applicant1?.individualLastName).toEqual('Clark');
     });
   });
-  describe('getFeeRanges', ()=>{
+  describe('getFeeRanges', () => {
     it('should return fee ranges successfully', async () => {
       //Given
       const data = require('../../../utils/mocks/feeRangesMock.json');
@@ -71,13 +71,14 @@ describe('Civil Service Client', () => {
         baseURL: baseUrl,
       });
       expect(mockGet.mock.calls[0][0]).toEqual(CIVIL_SERVICE_FEES_RANGES);
-      expect(feeRanges.value.length).toEqual(15);
+      expect(feeRanges.value.length).toBeLessThan(data.length);
       expect(feeRanges.value[0].minRange).toEqual(data[0].min_range);
       expect(feeRanges.value[0].maxRange).toEqual(data[0].max_range);
     });
   });
   describe('retrieveDocument', () => {
     it('should download document successfully', async () => {
+      //Given
       const mockDocumentDetails = mockClaim.systemGeneratedCaseDocuments[0].value;
       const mockResponse = '<Buffer 25 50 44 73 5b 20 32 20 30 20 52 20 20 34 20 30 20 52 20>';
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
@@ -95,11 +96,41 @@ describe('Civil Service Client', () => {
       });
     });
     it('should return error', async () => {
+      //Given
       const mockDocumentDetails = mockClaim.systemGeneratedCaseDocuments[0].value;
       const mockPost = jest.fn().mockResolvedValue({status: 500});
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //Then
       await expect(civilServiceClient.retrieveDocument(mockDocumentDetails, mockedAppRequest)).rejects.toThrow(TestMessages.DOCUMENT_NOT_AVAILABLE);
+    });
+  });
+  describe('getSubmitDefendantResponseEventToken', () => {
+    it('should return token successfully', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: 'data'});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      const token = await civilServiceClient.getSubmitDefendantResponseEventToken('123', mockedAppRequest);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockGet.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN
+        .replace(':submitterId', 'undefined')
+        .replace(':caseId', '123'));
+      expect(token).toEqual('data');
+    });
+    it('should throw error when there is an error with api', async () => {
+      //Given
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.getSubmitDefendantResponseEventToken('123', mockedAppRequest)).rejects.toThrow('error');
     });
   });
 });

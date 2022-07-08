@@ -61,6 +61,9 @@ describe('Response - Check answers', () => {
     mockGetSummarySections.mockImplementation(() => {
       return createClaimWithBasicRespondentDetails();
     });
+    nock('http://localhost:4000')
+      .get('/cases/defendant/undefined/response/submit/undefined/token/')
+      .reply(200, {});
   });
 
   describe('on GET', () => {
