@@ -305,7 +305,20 @@
       "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
     },
     "DASHBOARD": {
-      "PAGE_TITLE": "Smialc edam tsniaga uoy"
+      "PAGE_TITLE": "Claims made by or against you",
+      "CLAIMANT_TITLE": "Claims made by you",
+      "DEFENDANT_TITLE": "Smialc edam tsniaga uoy",
+      "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
+      "CLAIM_NUMBER": "Rhif yr hawliad",
+      "CLAIMANT_NAME" : "Enw’r hawlydd",
+      "DEFENDANT_NAME": "Defendant name",
+      "CLAIM_AMOUNT" : "Swm yr hawliad",
+      "CLAIM_STATUS" : "Status",
+      "ACTION_PROMPT" : "You need to respond before ",
+      "NEXT_STEPS" : "Next steps",
+      "DEADLINE" : "Deadline",
+      "ACTIONS" : "Actions",
+      "VIEW" : "Weiv"
     },
     "DEBTS": {
       "ADD": "Ychwanegu dyled",
