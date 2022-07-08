@@ -52,7 +52,7 @@ describe('I dont want free meditation', () => {
         .get(DONT_WANT_FREE_MEDIATION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -135,7 +135,7 @@ describe('I dont want free meditation', () => {
         .send({disagreeMediationOption: NoMediationReasonOptions.NO_DELAY_IN_HEARING, otherReason: ''})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

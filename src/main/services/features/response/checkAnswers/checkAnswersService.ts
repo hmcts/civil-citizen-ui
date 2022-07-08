@@ -7,30 +7,37 @@ import {SignatureType} from '../../../../common/models/signatureType';
 import {isCounterpartyIndividual} from '../../../../common/utils/taskList/tasks/taskListHelpers';
 import {QualifiedStatementOfTruth} from '../../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {isFullAmountReject} from '../../../../modules/claimDetailsService';
+import {ResponseType} from '../../../../common/form/models/responseType';
 
 
 import {buildYourDetailsSection} from './detailsSection/buildYourDetailsSection';
-import {buildResponseSection} from './responseSection/buildResponseSection';
+import {buildYourResponseToClaimSection} from './responseSection/buildYourResponseToClaimSection';
+import {buildYourResponsePaymentSection} from './responseSection/buildYourResponsePaymentSection';
 import {buildYourFinancialSection} from './financialSection/buildYourFinancialSection';
+import {buildYourResponseDetailsSection} from './responseSection/buildYourResponseDetailsSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
+  const responseType: string = claim.respondent1?.responseType;
+  const paymentOption: string = claim.paymentOption;
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
-      claim.paymentOption !== PaymentOptionType.IMMEDIATELY ?  buildResponseSection(claim, claimId, true, lang) : null,
-      claim.paymentOption !== PaymentOptionType.IMMEDIATELY ?  buildYourFinancialSection(claim, claimId, lang) : null,
-      buildResponseSection(claim, claimId, false, lang),
+      responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourResponseToClaimSection(claim, claimId, lang) : null,
+      responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourFinancialSection(claim, claimId, lang) : null,
+      responseType === ResponseType.PART_ADMISSION ? buildYourResponseToClaimSection(claim, claimId, lang) : null,
+      responseType === ResponseType.PART_ADMISSION ? buildYourResponseDetailsSection(claim, claimId, lang) : null,
+      responseType === ResponseType.FULL_ADMISSION ? buildYourResponsePaymentSection(claim, claimId, lang) : null,
     ],
   };
 };
 
-
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
   return buildSummarySections(claim, claimId, lang);
 };
+
 
 export const resetCheckboxFields = (statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): StatementOfTruthForm | QualifiedStatementOfTruth => {
   statementOfTruth.directionsQuestionnaireSigned = '';

@@ -5,8 +5,9 @@ import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_FEES_RANGES,
+  CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -94,6 +95,21 @@ export class CivilServiceClient {
       }
       return response.data as Buffer;
     } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async getSubmitDefendantResponseEventToken(claimId: string, req: AppRequest): Promise<string> {
+    const config = this.getConfig(req);
+    const userId = req.session?.user?.id;
+    try{
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN // nosonar
+        .replace(':submitterId', userId)
+        .replace(':caseId', claimId), config);// nosonar
+      console.log('event token ' + response.data);
+      return response.data as unknown as string;
+    }catch (err: unknown) {
       logger.error(err);
       throw err;
     }

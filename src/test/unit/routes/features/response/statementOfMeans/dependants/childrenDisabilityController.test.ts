@@ -3,19 +3,12 @@ import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../../../../main/routes/urls';
-import {
-  REDIS_FAILURE,
-  VALID_YES_NO_OPTION,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {Logger} from 'winston';
-import {
-  setChildrenDisabilityControllerLogger,
-} from '../../../../../../../main/routes/features/response/statementOfMeans/dependants/childrenDisabilityController';
+import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-
 const noStatementOfMeansMock = require('../noStatementOfMeansMock.json');
 const noChildrenDisabilityResponse: string = JSON.stringify(noStatementOfMeansMock);
 
@@ -23,10 +16,6 @@ const mockNoChildrenDisabilityDraftStore = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(noChildrenDisabilityResponse)),
 };
-const mockLogger = {
-  error: jest.fn().mockImplementation((message: string) => message),
-  info: jest.fn().mockImplementation((message: string) => message),
-} as unknown as Logger;
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -38,7 +27,6 @@ describe('Children Disability', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    setChildrenDisabilityControllerLogger(mockLogger);
   });
 
   describe('on Exception', () => {
@@ -48,8 +36,7 @@ describe('Children Disability', () => {
         .get(CHILDREN_DISABILITY_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body.errorMessage).toEqual(REDIS_FAILURE);
-          expect(mockLogger.error).toHaveBeenCalled();
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
 
@@ -61,8 +48,7 @@ describe('Children Disability', () => {
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body.errorMessage).toEqual(REDIS_FAILURE);
-          expect(mockLogger.error).toHaveBeenCalled();
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
