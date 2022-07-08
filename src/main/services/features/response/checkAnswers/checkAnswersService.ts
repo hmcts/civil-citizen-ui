@@ -23,7 +23,7 @@ const logger = Logger.getLogger('checkAnswersService');
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
   const responseType: string = claim.respondent1?.responseType;
   const paymentOption: string = claim.paymentOption;
-  const paidResponse = claim.paymentOption;
+  const paidResponse = claim.partialAdmission?.paymentIntention?.paymentOption;
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
