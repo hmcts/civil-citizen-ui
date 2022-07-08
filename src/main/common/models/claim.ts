@@ -179,7 +179,7 @@ export class Claim {
   isPartialAdmission(): boolean {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
-
+  
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }

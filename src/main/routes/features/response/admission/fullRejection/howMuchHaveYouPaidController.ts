@@ -3,7 +3,7 @@ import {
   CITIZEN_FR_AMOUNT_YOU_PAID_URL,
   CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL,
   CLAIM_TASK_LIST_URL,
-} from '../../../../../routes/urls';
+} from '../../../../urls';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import howMuchHaveYouPaidService from '../../../../../services/features/response/admission/howMuchHaveYouPaidService';
