@@ -9,6 +9,7 @@ import {
   CIVIL_SERVICE_CLAIMANT,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
+  CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN,
 } from '../../../../main/app/client/civilServiceUrls';
 import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
 import {mockClaim} from '../../../utils/mockClaim';
