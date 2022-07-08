@@ -3,6 +3,7 @@ import {join} from 'path';
 import {Express} from 'express';
 import {configure} from 'nunjucks';
 import * as numeral from '../../common/utils/currencyFormat';
+import {convertToPoundsFilter} from '../../common/utils/currencyFormat';
 import {i18n, TOptions} from 'i18next';
 import {ResponseType} from '../../common/form/models/responseType';
 import {YesNo} from '../../common/form/models/yesNo';
@@ -14,8 +15,8 @@ import {EvidenceType} from '../../common/models/evidence/evidenceType';
 import {EvidenceDetails} from '../../common/models/evidence/evidenceDetails';
 import {addDaysFilter, dateFilter} from './filters/dateFilter';
 import {SignatureType} from '../../common/models/signatureType';
-import {convertToPoundsFilter} from '../../common/utils/currencyFormat';
 import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
+import {FormValidationError} from '../../common/form/validationErrors/formValidationError';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -65,6 +66,12 @@ export class Nunjucks {
 
     const currencyFormat = (value: number) => numeral.default(value);
 
+    const translateErrors = (keys: FormValidationError[], t: any) => {
+      return keys.map((key) => {
+        return ({...key, text: t(key.text)});
+      });
+    };
+
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
@@ -72,6 +79,7 @@ export class Nunjucks {
     nunjucksEnv.addFilter('addDays', addDaysFilter);
     nunjucksEnv.addFilter('date', dateFilter);
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
+    nunjucksEnv.addGlobal('translateErrors', translateErrors);
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
     nunjucksEnv.addGlobal('YesNo', YesNo);
     nunjucksEnv.addGlobal('ResidenceType', ResidenceType);

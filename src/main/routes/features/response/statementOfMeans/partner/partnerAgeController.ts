@@ -13,8 +13,6 @@ import { constructResponseUrlWithIdParams } from '../../../../../common/utils/ur
 
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
 const partnerAgeController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerAgeController');
 const partnerAgeService = new PartnerAgeService();
 const disabilityService = new DisabilityService();
 const validator = new Validator();
@@ -23,18 +21,17 @@ function renderView(form: PartnerAge, res: express.Response): void {
   res.render(citizenPartnerAgeViewPath, { form });
 }
 
-partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, async (req, res) => {
+partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, async (req, res, next: express.NextFunction) => {
   try {
     const partnerAge = await partnerAgeService.getPartnerAge(req.params.id);
     renderView(partnerAge, res);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
 partnerAgeController.post(CITIZEN_PARTNER_AGE_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     const partnerAge: PartnerAge = new PartnerAge(req.body.option);
     const errors: ValidationError[] = validator.validateSync(partnerAge);
     if (errors?.length > 0) {
@@ -54,8 +51,7 @@ partnerAgeController.post(CITIZEN_PARTNER_AGE_URL,
           }
         }
       } catch (error) {
-        logger.error(error);
-        res.status(500).send({ error: error.message });
+        next(error);
       }
     }
   });

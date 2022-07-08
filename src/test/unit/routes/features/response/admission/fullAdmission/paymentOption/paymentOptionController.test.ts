@@ -40,7 +40,7 @@ describe('Payment Option Controller', () => {
         .get(CITIZEN_PAYMENT_OPTION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -91,7 +91,7 @@ describe('Payment Option Controller', () => {
         .send('paymentType=BY_SET_DATE')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

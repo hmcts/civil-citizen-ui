@@ -68,7 +68,7 @@ describe('on Get', () => {
       .get(CITIZEN_EVIDENCE_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
 });
@@ -163,7 +163,7 @@ describe('on Post', () => {
       .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
 });

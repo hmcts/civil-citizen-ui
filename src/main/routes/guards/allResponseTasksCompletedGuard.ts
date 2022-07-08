@@ -6,7 +6,6 @@ import assert from 'assert';
 import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
 
 export class AllResponseTasksCompletedGuard {
-
   static apply(redirectUrl: string) {
     return (req: express.Request, res: express.Response, next: express.NextFunction): void => {
       try {

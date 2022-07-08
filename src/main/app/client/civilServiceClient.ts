@@ -5,17 +5,18 @@ import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_FEES_RANGES,
+  CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
-import {DashboardDefendantItem} from '../../common/models/dashboard/dashboardItem';
 import {CaseDocument} from 'common/models/document/caseDocument';
+import {CLAIM_DETAILS_NOT_AVAILBALE, DOCUMENT_NOT_AVAILABLE} from './errorMessageContants';
 import {
-  CLAIM_DETAILS_NOT_AVAILBALE,
-  DOCUMENT_NOT_AVAILABLE,
-} from './errorMessageContants';
+  DashboardDefendantItem,
+  DashboardClaimantItem,
+} from '../../common/models/dashboard/dashboardItem';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -44,6 +45,21 @@ export class CivilServiceClient {
         'Authorization': `Bearer ${req.session?.user?.accessToken}`,
       },
     };
+  }
+
+  async getClaimsForClaimant(req: AppRequest) : Promise<DashboardClaimantItem[]>{
+    const config = this.getConfig(req);
+    const submitterId = req.session?.user?.id;
+    try {
+      const response = await this.client.get('/cases/claimant/' + submitterId, config);
+      console.log('Config is ' + config);
+      console.log('SubmitterId is ' + submitterId);
+      console.log('Had response of ' + response);
+      console.log('Response data is ' + response.data);
+      return plainToInstance(DashboardClaimantItem, response.data as object[]);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async getClaimsForDefendant(req: AppRequest): Promise <DashboardDefendantItem[]>{
@@ -106,6 +122,21 @@ export class CivilServiceClient {
       }
       return response.data as Buffer;
     } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async getSubmitDefendantResponseEventToken(claimId: string, req: AppRequest): Promise<string> {
+    const config = this.getConfig(req);
+    const userId = req.session?.user?.id;
+    try{
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN // nosonar
+        .replace(':submitterId', userId)
+        .replace(':caseId', claimId), config);// nosonar
+      console.log('event token ' + response.data);
+      return response.data as unknown as string;
+    }catch (err: unknown) {
       logger.error(err);
       throw err;
     }

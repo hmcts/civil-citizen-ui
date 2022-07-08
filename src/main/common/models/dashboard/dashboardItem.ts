@@ -10,6 +10,9 @@ export class DashboardItem {
 
 export class DashboardClaimantItem extends DashboardItem {
   status: string;// TODO: this is only a placeholder. To be revisited in a separate story
+  getHref() {
+    return '#';
+  }
 }
 
 export class DashboardDefendantItem extends DashboardItem {

@@ -36,23 +36,20 @@ const isTelephoneNumberSaved = (telephoneNumber: string, req: express.Request) =
   if (!telephoneNumber) {
     return getGenericForm(new MediationIndividualPhoneNumber(YesNo.NO, req.body.telephoneNumber));
   }
-
   return getGenericForm(new MediationIndividualPhoneNumber(req.body.option, req.body.telephoneNumber));
 };
 
-// -- GET
-mediationIndividualPhoneController.get(CAN_WE_USE_URL, async (req, res) => {
+mediationIndividualPhoneController.get(CAN_WE_USE_URL, async (req, res, next: express.NextFunction) => {
   try {
     const mediation: Mediation = await getMediation(req.params.id);
     renderView(getGenericForm(mediation.canWeUse), res, req.params.id);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-// -- POST
 mediationIndividualPhoneController.post(CAN_WE_USE_URL,
-  async (req:express.Request, res:express.Response) => {
+  async (req:express.Request, res:express.Response, next: express.NextFunction) => {
     try {
       const claim: Claim = await getCaseDataFromStore(req.params.id);
       const mediationIndividualPhoneForm: GenericForm<MediationIndividualPhoneNumber> = isTelephoneNumberSaved(claim.respondent1.telephoneNumber, req);
@@ -67,7 +64,7 @@ mediationIndividualPhoneController.post(CAN_WE_USE_URL,
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
       }
     } catch (error) {
-      res.status(500).send({error: error.message});
+      next(error);
     }
   });
 

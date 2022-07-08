@@ -61,6 +61,9 @@ describe('Response - Check answers', () => {
     mockGetSummarySections.mockImplementation(() => {
       return createClaimWithBasicRespondentDetails();
     });
+    nock('http://localhost:4000')
+      .get('/cases/defendant/undefined/response/submit/undefined/token/')
+      .reply(200, {});
   });
 
   describe('on GET', () => {
@@ -124,7 +127,7 @@ describe('Response - Check answers', () => {
         .get(respondentCheckAnswersUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -149,7 +152,7 @@ describe('Response - Check answers', () => {
         .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
