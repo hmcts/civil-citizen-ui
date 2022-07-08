@@ -10,7 +10,7 @@ const rejectAllOfClaimViewPath = 'features/response/reject-all-of-claim';
 const rejectAllOfClaimController = express.Router();
 let claimantName = '';
 
-rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: express.Request, res: express.Response) => {
+rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const rejectAllOfClaim: RejectAllOfClaim = await getRejectAllOfClaim(req.params.id);
     claimantName = await getClaimantName(req.params.id);
@@ -22,11 +22,11 @@ rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: express
       claimantName: claimantName,
     });
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: express.Request, res: express.Response) => {
+rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
     const rejectAllOfClaim = new RejectAllOfClaim(req.body.option);
@@ -47,7 +47,7 @@ rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: expres
       }
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 

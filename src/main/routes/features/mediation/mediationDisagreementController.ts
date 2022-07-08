@@ -16,8 +16,6 @@ import {CounterpartyType} from '../../../common/models/counterpartyType';
 
 const mediationDisagreementViewPath = 'features/mediation/mediation-disagreement';
 const mediationDisagreementController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('mediationDisagreementController');
 
 function renderView(form: GenericForm<FreeMediation>, res: express.Response): void {
   const alreadyPaid = Object.assign(form);
@@ -25,18 +23,17 @@ function renderView(form: GenericForm<FreeMediation>, res: express.Response): vo
   res.render(mediationDisagreementViewPath, { form });
 }
 
-mediationDisagreementController.get(MEDIATION_DISAGREEMENT_URL, async (req, res) => {
+mediationDisagreementController.get(MEDIATION_DISAGREEMENT_URL, async (req, res, next: express.NextFunction) => {
   try {
     const mediation = await getMediation(req.params.id);
     const freeMediationForm = new GenericForm(new FreeMediation(mediation.mediationDisagreement?.option));
     renderView(freeMediationForm, res);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
-mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res) => {
+mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res, next: express.NextFunction) => {
   try {
     const claim: Claim = await getCaseDataFromStore(req.params.id);
     const mediationDisagreement = new FreeMediation(req.body.option);
@@ -58,7 +55,7 @@ mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res
       }
     }
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 

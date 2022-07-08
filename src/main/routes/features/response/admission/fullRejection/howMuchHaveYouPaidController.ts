@@ -7,26 +7,19 @@ import {
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import howMuchHaveYouPaidService from '../../../../../services/features/response/admission/howMuchHaveYouPaidService';
-import * as winston from 'winston';
 import {HowMuchHaveYouPaid} from '../../../../../common/form/models/admission/howMuchHaveYouPaid';
 import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-let logger = Logger.getLogger('HowMuchHaveYouPaidController');
 const howMuchHaveYouPaidPath = 'features/response/admission/how-much-have-you-paid';
 const howMuchHaveYouPaidController = express.Router();
 const lastMonth = new Date(Date.now());
 lastMonth.setMonth(lastMonth.getMonth() - 1);
 let totalClaimAmount: number;
 
-export function setHowMuchHaveYouPaidControllerLogger(winstonLogger: winston.Logger) {
-  logger = winstonLogger;
-}
-
 howMuchHaveYouPaidController
   .get(
-    CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req: express.Request, res: express.Response) => {
+    CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       try {
         const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(req.params.id, ResponseType.FULL_DEFENCE);
         totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
@@ -38,12 +31,11 @@ howMuchHaveYouPaidController
           responseType: ResponseType.FULL_DEFENCE,
         });
       } catch (error) {
-        logger.error(error);
-        res.status(500).send({error: error.message});
+        next(error);
       }
     })
   .post(
-    CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req, res) => {
+    CITIZEN_FR_AMOUNT_YOU_PAID_URL, async (req, res, next: express.NextFunction) => {
       const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
       const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
       const paid = toNumberOrUndefined(req.body.amount);
@@ -64,10 +56,8 @@ howMuchHaveYouPaidController
           } else {
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
           }
-
         } catch (error) {
-          logger.error(error);
-          res.status(500).send({error: error.message});
+          next(error);
         }
       }
     });

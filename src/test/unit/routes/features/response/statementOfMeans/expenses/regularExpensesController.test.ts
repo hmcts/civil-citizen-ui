@@ -35,7 +35,7 @@ describe('Regular Expenses Controller', () => {
         .get(CITIZEN_MONTHLY_EXPENSES_URL)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -226,7 +226,7 @@ describe('Regular Expenses Controller', () => {
         .send({})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

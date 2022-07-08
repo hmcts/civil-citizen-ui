@@ -18,17 +18,17 @@ function renderView(form: GenericForm<WhyDoYouDisagree>, _claimAmount: number, r
   res.render(whyDoYouDisagreeViewPath, {form: form, claimAmount: _claimAmount});
 }
 
-whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res) => {
+whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form = await getWhyDoYouDisagreeForm(req.params.id, ResponseType.PART_ADMISSION);
     claimAmount = form.claimAmount;
     renderView(new GenericForm(form.whyDoYouDisagree), claimAmount, res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res) => {
+whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res, next: express.NextFunction) => {
   const whyDoYouDisagree = new WhyDoYouDisagree(req.body.text);
   const whyDoYouDisagreeForm = new WhyDoYouDisagreeForm();
   whyDoYouDisagreeForm.claimAmount = claimAmount;
@@ -43,9 +43,8 @@ whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_TIMELINE_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
-},
-);
+});
 
 export default whyDoYouDisagreeController;

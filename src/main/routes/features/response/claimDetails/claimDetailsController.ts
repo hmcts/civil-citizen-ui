@@ -14,14 +14,10 @@ import {getTotalAmountWithInterestAndFees} from '../../../../modules/claimDetail
 import {DocumentUri} from '../../../../common/models/document/documentType';
 
 const claimDetailsController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-
-const logger = Logger.getLogger('claimDetailsController');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-// -- GET Claim Details
-claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: express.Response) => {
+claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     let claim: Claim = await getCaseDataFromStore((req.params.id));
     if (claim.isEmpty()) {
@@ -46,8 +42,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, async (req: express.Request, res: 
       claim, totalAmount, interestData, timelinePdfUrl, sealedClaimPdfUrl,
     });
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 

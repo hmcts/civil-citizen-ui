@@ -14,10 +14,6 @@ import {ComponentDetailItems} from '../../../../common/form/models/componentDeta
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-
-const logger = Logger.getLogger('citizenResponseTypeController');
-
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const citizenResponseTypeController = express.Router();
 const validator = new Validator();
@@ -26,7 +22,7 @@ function renderView(form: CitizenResponseType, res: express.Response, componentD
   res.render(citizenResponseTypeViewPath, {form: form, componentDetailItemsList: componentDetailItemsList});
 }
 
-citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) => {
+citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res,next: express.NextFunction) => {
   try {
     const citizenResponseType = new CitizenResponseType();
     const claim = await getCaseDataFromStore(req.params.id);
@@ -36,13 +32,12 @@ citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res) =>
     const componentDetailItemsList = getDetailItemsList(claim);
     renderView(citizenResponseType, res, componentDetailItemsList);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
 citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     try {
       const model: CitizenResponseType = new CitizenResponseType(req.body.responseType);
       const errors: ValidationError[] = validator.validateSync(model);
@@ -74,8 +69,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
         }
       }
     } catch (error) {
-      logger.error(error);
-      res.status(500).send({error: error.message});
+      next(error);
     }
   });
 
