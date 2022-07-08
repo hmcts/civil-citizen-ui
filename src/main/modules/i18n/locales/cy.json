@@ -9,6 +9,7 @@
   "View": "Weiv",
   "Save and continue": "Cadw a Pharhau",
   "COMMON": {
+    "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
     "DAY": "Diwrnod",
@@ -259,7 +260,17 @@
       "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol"
     },
     "CITIZEN_BANK_ACCOUNTS": {
-      "PAGE_TITLE": "Your bank accounts"
+      "ACCOUNT_TYPE": "Math o gyfrif",
+      "ADD_ANOTHER": "Ychwanegu cyfrif arall",
+      "BALANCE": "Balans",
+      "BANK_AND_SAVINGS_ACCOUNTS": "Rhestrwch eich cyfrifon banc a chyfrifon cynilo",
+      "CURRENT_ACCOUNT": "Cyfrif cyfredol",
+      "EXAMPLE": "Rhowch minws (-) o flaen y swm os ydych yn eich gorddrafft. Er enghraifft -£804.45.",
+      "ISA": "ISA",
+      "JOINT_ACCOUNT": "Cyfrif ar y cyd",
+      "OTHER": "Arall",
+      "PAGE_TITLE": "Your bank accounts",
+      "SAVINGS_ACCOUNT": "Cyfrif cynilo"
     },
     "CITIZEN_DETAILS": {
       "ADDRESS": "Eich cyfeiriad",
@@ -675,7 +686,7 @@
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
-    "NUMBER_REQUIRED": "Enter a valid number",
+    "NUMBER_REQUIRED": "Rhowch rif dilys",
     "OPTION_REQUIRED": "Please select one reason",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
     "PAGE_NOT_FOUND": "Page Not Found",
@@ -711,7 +722,7 @@
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
-    "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
+    "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
     "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
     "VALID_AMOUNT": "Enter a valid amount",
     "VALID_AMOUNT_ONE_POUND_OR_MORE": "Enter an amount of £1 or more",
@@ -740,7 +751,7 @@
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can't be higher than on previous page",
-    "VALID_OPTION_SELECTION": "Select an option",
+    "VALID_OPTION_SELECTION": "Dewiswch opsiwn",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
