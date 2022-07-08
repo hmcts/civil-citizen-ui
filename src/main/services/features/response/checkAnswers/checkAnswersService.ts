@@ -15,6 +15,7 @@ import {buildYourResponseToClaimSection} from './responseSection/buildYourRespon
 import {buildYourResponsePaymentSection} from './responseSection/buildYourResponsePaymentSection';
 import {buildYourFinancialSection} from './financialSection/buildYourFinancialSection';
 import {buildYourResponseDetailsSection} from './responseSection/buildYourResponseDetailsSection';
+import {buildFreeTelephoneMediationSection} from './responseSection/buildFreeTelephoneMediationSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
@@ -22,6 +23,7 @@ const logger = Logger.getLogger('checkAnswersService');
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
   const responseType: string = claim.respondent1?.responseType;
   const paymentOption: string = claim.paymentOption;
+  const paidResponse = claim.paymentOption;
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
@@ -30,6 +32,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       responseType === ResponseType.PART_ADMISSION ? buildYourResponseToClaimSection(claim, claimId, lang) : null,
       responseType === ResponseType.PART_ADMISSION ? buildYourResponseDetailsSection(claim, claimId, lang) : null,
       responseType === ResponseType.FULL_ADMISSION ? buildYourResponsePaymentSection(claim, claimId, lang) : null,
+      responseType === ResponseType.PART_ADMISSION && paidResponse ? buildFreeTelephoneMediationSection(claim, claimId, lang) : null,
     ],
   };
 };
@@ -61,7 +64,7 @@ export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | Qualif
 };
 
 export const getSignatureType = (claim: Claim): SignatureType => {
-  return isCounterpartyIndividual(claim.respondent1) ?  SignatureType.BASIC : SignatureType.QUALIFIED;
+  return isCounterpartyIndividual(claim.respondent1) ? SignatureType.BASIC : SignatureType.QUALIFIED;
 };
 
 export const saveStatementOfTruth = async (claimId: string, defendantStatementOfTruth: StatementOfTruthForm) => {
