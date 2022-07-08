@@ -11,17 +11,17 @@ import {
 const supportRequiredController = express.Router();
 const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required';
 
-supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res) => {
+supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
   try {
     const supportRequired = await getSupportRequired(req.params.id);
     const form = new GenericForm(supportRequired);
     res.render(supportRequiredViewPath, {form});
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res) => {
+supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
     let supportRequired = new SupportRequired();
@@ -42,7 +42,7 @@ supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res) => {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 

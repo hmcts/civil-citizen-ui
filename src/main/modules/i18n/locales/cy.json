@@ -9,17 +9,22 @@
   "View": "Weiv",
   "Save and continue": "Cadw a Pharhau",
   "COMMON": {
+    "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
+    "DASHBOARD": "Dashboard",
     "DAY": "Diwrnod",
-    "NO": "Nac oes",
-    "YES": "Oes",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Mis",
     "MONTHS": "Mis",
+    "NO": "Nac oes",
+    "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
+    "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
     "YEAR": "Blwyddyn",
     "YEARS": "Blwyddyn",
+    "YES": "Oes",
     "BUTTONS": {
       "CONTINUE": "Parhau",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
+      "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {
@@ -77,7 +82,7 @@
       "TITLE": "Types of senior position"
     }
   },
-  "TASK_LIST":{
+  "TASK_LIST": {
     "APPLICATION_COMPLETE": "Application complete",
     "APPLICATION_INCOMPLETE": "Application incomplete",
     "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
@@ -209,6 +214,12 @@
       "RESPONSE_TITLE": "Eich ymateb i'r hawliad",
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
+      "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "Ydych chi wedi talu'r swm sy'n ddyledus gennych i'r hawlydd?",
+      "RESPONSE_DETAILS_TITLE": "Manylion ymateb",
+      "RESPONSE_DETAILS_MONEY_PAID": "How much money have you paid?",
+      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "Faint o arian ydych chi wedi'i dalu?",
+      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED": "Sut wnaethoch chi dalu'r swm a hawliwyd?",
+      "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Pam ydych chi'n anghytuno â'r swm a hawlir?",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Nifer y bobl",
@@ -491,7 +502,8 @@
       "AMOUNT": "Swm sy’n ddyledus gennych",
       "PAGE_TITLE": "Behind on tax payments?",
       "REASON": "Rheswm",
-      "TITLE": "A ydych yn hwyr yn gwneud taliadau treth?"
+      "TITLE": "A ydych yn hwyr yn gwneud taliadau treth?",
+      "EXAMPLE": "Er enghraifft cyfraniadau Yswiriant Gwladol, Treth Incwm neu TAW."
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
@@ -579,6 +591,7 @@
     "NUMBER_REQUIRED": "Enter a valid number",
     "OPTION_REQUIRED": "Please select one reason",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
+    "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Choose a payment frequency",
     "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
     "QUESTION_1_REQUIRED": "1. Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
@@ -589,6 +602,7 @@
     "SIGNER_NAME_TOO_LONG": "You’ve entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
     "SIGNER_ROLE_TOO_LONG": "You’ve entered too many characters",
+    "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
     "TEXT_TOO_MANY": "You’ve entered too many characters",

@@ -9,6 +9,7 @@ import {
   VALID_STRICTLY_POSITIVE_NUMBER,
   VALID_YES_NO_SELECTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 const request = require('supertest');
 const {app} = require('../../../../../../../main/app');
@@ -17,7 +18,6 @@ jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
 
 const respondentCourtOrdersUrl = CITIZEN_COURT_ORDERS_URL.replace(':id', 'aaa');
-const DRAFT_STORE_EXCEPTION = 'Draft store exception';
 const mockDraftStore = {
   get: jest.fn(() => Promise.resolve('{"id": "id", "case_data": {"statementOfMeans": {}}}')),
   set: jest.fn(() => Promise.resolve()),
@@ -25,7 +25,7 @@ const mockDraftStore = {
 
 const mockGetExceptionDraftStore = {
   get: jest.fn(() => {
-    throw new Error(DRAFT_STORE_EXCEPTION);
+    throw new Error('Draft store exception');
   }),
   set: jest.fn(() => Promise.resolve()),
 };
@@ -59,7 +59,7 @@ describe('Citizen court orders', () => {
         .get(respondentCourtOrdersUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({errorMessage: DRAFT_STORE_EXCEPTION});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -153,7 +153,7 @@ describe('Citizen court orders', () => {
         .send('rows[0][instalmentAmount]=10')
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({errorMessage: DRAFT_STORE_EXCEPTION});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
