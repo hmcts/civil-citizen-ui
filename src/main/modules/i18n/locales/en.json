@@ -457,7 +457,7 @@
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
-      "SUBTITLE": "The total amount claimed is £{{ claimAmount }}. This includes the claim fee.",
+      "SUBTITLE": "The total amount claimed is £{{ claimAmount }}. This includes the claim fee and any interest.",
       "TITLE": "Why do you disagree with the claim amount?"
     },
     "PARTNER": {
