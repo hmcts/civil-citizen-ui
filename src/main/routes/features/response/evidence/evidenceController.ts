@@ -15,7 +15,6 @@ import { GenericForm } from '../../../../common/form/models/genericForm';
 import { Claim } from '../../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 
-
 const evidenceViewPath = 'features/response/evidence/evidences';
 const evidenceController = express.Router();
 
@@ -23,7 +22,7 @@ function renderView(form: GenericForm<Evidence>, res: express.Response): void {
   res.render(evidenceViewPath, { form });
 }
 
-evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res) => {
+evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res,next: express.NextFunction) => {
   try {
     const form: Evidence = await getEvidence(req.params.id);
     if (form.evidenceItem.length < INIT_ROW_COUNT) {
@@ -31,11 +30,11 @@ evidenceController.get(CITIZEN_EVIDENCE_URL, async (req, res) => {
     }
     renderView(new GenericForm<Evidence>(form), res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-evidenceController.post(CITIZEN_EVIDENCE_URL, async (req: express.Request, res: express.Response) => {
+evidenceController.post(CITIZEN_EVIDENCE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     let form: GenericForm<Evidence>;
     form = new GenericForm(new Evidence(req.body.comment, transformToEvidences(req)));
@@ -54,10 +53,9 @@ evidenceController.post(CITIZEN_EVIDENCE_URL, async (req: express.Request, res: 
       }
     }
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
-
 
 function transformToEvidences(req: express.Request): EvidenceItem[] {
   return req.body.evidenceItem.map((item: EvidenceItem) => {

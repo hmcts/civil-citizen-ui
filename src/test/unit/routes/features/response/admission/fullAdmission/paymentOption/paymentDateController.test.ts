@@ -4,9 +4,6 @@ import config from 'config';
 import request from 'supertest';
 import {CITIZEN_PAYMENT_DATE_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../../main/routes/urls';
 import {
-  setPaymentDateControllerLogger,
-} from '../../../../../../../../main/routes/features/response/admission/fullAdmission/paymentOption/paymentDateController';
-import {
   VALID_DATE_NOT_IN_PAST,
   VALID_DAY,
   VALID_MONTH,
@@ -15,17 +12,13 @@ import {
 import {
   mockCivilClaim,
   mockCivilClaimUndefined,
-  mockLogger,
   mockNoStatementOfMeans,
   mockRedisFailure,
 } from '../../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 
-
 jest.mock('../../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../../main/modules/draft-store');
-
-
 
 describe('Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -35,7 +28,6 @@ describe('Payment date', () => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    setPaymentDateControllerLogger(mockLogger);
   });
 
   describe('on Exception', () => {
@@ -45,8 +37,7 @@ describe('Payment date', () => {
         .get(CITIZEN_PAYMENT_DATE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
-          expect(mockLogger.error).toHaveBeenCalled();
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
 
@@ -59,8 +50,7 @@ describe('Payment date', () => {
         .send('day=31')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
-          expect(mockLogger.error).toHaveBeenCalled();
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

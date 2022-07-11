@@ -54,6 +54,12 @@ import {NoMediationReason} from '../../main/common/form/models/mediation/noMedia
 import {CompanyTelephoneNumber} from '../../main/common/form/models/mediation/companyTelephoneNumber';
 import {Mediation} from '../../main/common/models/mediation/mediation';
 
+import TimelineRow from '../../main/common/form/models/timeLineOfEvents/timelineRow';
+import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
+import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
+import {DefendantEvidence} from '../../main/common/models/evidence/evidence';
+import { Evidence } from '../../main/common/form/models/evidence/evidence';
+
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
 const TITLE = 'Mr';
@@ -546,12 +552,30 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid? :YesNo) => {
   const whyDoYouDisagree: WhyDoYouDisagree = new WhyDoYouDisagree('Reasons for disagree');
   const howMuchHaveYouPaid: HowMuchHaveYouPaid = new HowMuchHaveYouPaid(param);
 
+  const defendantTimeline: DefendantTimeline = new DefendantTimeline(
+    [new TimelineRow('6 November 2022', 'Event 1'), new TimelineRow('7 November 2022', 'Event 2')],
+    'Comments about timeline',
+  );
+
+  const defendantEvidence: DefendantEvidence = new Evidence(
+    'Comments about their evidence',
+    [
+      new EvidenceItem(EvidenceType.CONTRACTS_AND_AGREEMENTS, 'Evidence details 1'),
+      new EvidenceItem(EvidenceType.CORRESPONDENCE, 'Evidence details 2'),
+      new EvidenceItem(EvidenceType.EXPERT_WITNESS, 'Evidence details 3'),
+      new EvidenceItem(EvidenceType.PHOTO, 'Evidence details 4'),
+      new EvidenceItem(EvidenceType.RECEIPTS, 'Evidence details 5'),
+      new EvidenceItem(EvidenceType.STATEMENT_OF_ACCOUNT, 'Evidence details 7'),
+      new EvidenceItem(EvidenceType.OTHER, 'Evidence details 8'),
+    ],
+  );
+
   const partialAdmission: PartialAdmission = {
     whyDoYouDisagree: whyDoYouDisagree,
     howMuchDoYouOwe: howMuchDoYouOwe,
     alreadyPaid: new AlreadyPaid(alreadyPaid || ''),
     howMuchHaveYouPaid: howMuchHaveYouPaid,
-    timeline: new DefendantTimeline(undefined, undefined),
+    timeline: defendantTimeline,
     paymentIntention: new PaymentIntention(),
   };
   claim.respondent1 = {
@@ -568,6 +592,7 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid? :YesNo) => {
     },
   };
   claim.partialAdmission = partialAdmission;
+  claim.evidence = defendantEvidence;
   return claim;
 };
 

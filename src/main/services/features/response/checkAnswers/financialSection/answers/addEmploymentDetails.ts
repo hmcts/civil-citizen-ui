@@ -18,6 +18,20 @@ import {Employment} from '../../../../../../common/models/employment';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
 
+const getTypeOfJobTranslation = (employment: Employment, lang: string | unknown): string => {
+  const tEmployed = t('PAGES.EMPLOYMENT_STATUS.EMPLOYED', { lng: getLng(lang) });
+  const tSelfEmployed = t('PAGES.EMPLOYMENT_STATUS.SELF_EMPLOYED', { lng: getLng(lang) });
+  const tEmployedAndSelfEmployed = t('PAGES.CHECK_YOUR_ANSWER.EMPLOYED_AND_SELF_EMPLOYED', { lng: getLng(lang) });
+
+  const getTypeOfJob = (type: string) => type === EmploymentCategory.EMPLOYED ? tEmployed : tSelfEmployed;
+  const typeOfJobsArr: Array<string> = [];
+  for (const item of employment.employmentType) {
+    typeOfJobsArr.push(getTypeOfJob(item));
+  }
+
+  return typeOfJobsArr.length > 1 ? tEmployedAndSelfEmployed : typeOfJobsArr[0];
+};
+
 const showSelfEmploymentTaxPayments = (claim: Claim, financialSection: SummarySection, lang: string | unknown) => {
   const taxPayments = claim.statementOfMeans?.taxPayments;
   const isBehindTaxPayments = taxPayments?.owed ? YesNo.YES : YesNo.NO;
@@ -33,14 +47,8 @@ const showSelfEmploymentTaxPayments = (claim: Claim, financialSection: SummarySe
 
 const showEmploymentDetails = (claim: Claim, financialSection: SummarySection, employment: Employment, whoEmploysYouHref: string, selfemploymentHref: string, lang: string | unknown) => {
   const isSelfEmployedAs = claim.statementOfMeans?.selfEmployedAs;
-  const getTypeOfJob = (type: string) => type === EmploymentCategory.EMPLOYED ? 'Employed' : 'Self-employed';
-  const typeOfJob: Array<string> = [];
-  for (const item of employment.employmentType) {
-    typeOfJob.push(getTypeOfJob(item));
-  }
-  const typeOfJobs = typeOfJob[0] + (typeOfJob.length > 1 ? (' and ' + typeOfJob[1]) : '');
 
-  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), typeOfJobs, '', changeLabel(lang)));
+  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_TYPE', { lng: getLng(lang) }), getTypeOfJobTranslation(employment, lang), '', changeLabel(lang)));
 
   if (claim.statementOfMeans?.employers?.rows
     && ((employment.employmentType[0] === EmploymentCategory.EMPLOYED && employment.employmentType[1] === EmploymentCategory.SELF_EMPLOYED) || employment.employmentType[0] === EmploymentCategory.EMPLOYED)) {

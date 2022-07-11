@@ -76,7 +76,7 @@ describe('rejectAllOfClaim', () => {
         .get(CITIZEN_REJECT_ALL_CLAIM_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -125,7 +125,7 @@ describe('rejectAllOfClaim', () => {
         .send({option: RejectAllOfClaimType.ALREADY_PAID})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

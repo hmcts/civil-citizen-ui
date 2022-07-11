@@ -24,7 +24,7 @@ function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLin
 }
 
 defendantTimelineController.get(CITIZEN_TIMELINE_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
       const theirTimeline = claim.timelineOfEvents;
@@ -32,11 +32,11 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
       const form = new GenericForm(getPartialAdmitTimeline(claim));
       renderView(form, theirTimeline, pdfUrl, res);
     } catch (error) {
-      res.status(500).send({error: error.message});
+      next(error);
     }
   });
 
-defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res) => {
+defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form = new GenericForm(DefendantTimeline.buildPopulatedForm(req.body.rows, req.body.comment));
     await form.validate();
@@ -49,7 +49,7 @@ defendantTimelineController.post(CITIZEN_TIMELINE_URL, async (req, res) => {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EVIDENCE_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 

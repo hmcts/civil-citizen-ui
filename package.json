@@ -63,7 +63,7 @@
     "glob": "^8.0.3",
     "govuk-frontend": "4.2.0",
     "helmet": "^5.1.0",
-    "i18next": "^21.8.11",
+    "i18next": "^21.8.12",
     "i18next-fs-backend": "^1.1.4",
     "i18next-http-middleware": "^3.1.4",
     "ioredis": "^4.28.5",
@@ -136,6 +136,7 @@
     "**/**/winston": "^3.7.2",
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
-    "got": "^11.8.5"
+    "got": "^11.8.5",
+    "moment": "^2.29.4"
   }
 }

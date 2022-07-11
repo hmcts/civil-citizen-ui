@@ -1,16 +1,24 @@
-export interface DashboardItem {
+export class DashboardItem {
+  claimId: string;
   claimNumber: string;
   claimAmount: number;
-}
-
-export interface DashboardClaimantItem extends DashboardItem {
   claimantName: string;
-  nextSteps: string;// TODO: this is only a placeholder. To be revisited in a separate story
+  defendantName: string;
   responseDeadline?: Date;
-  actions: string;// TODO: this is only a placeholder. To be revisited in a separate story
+  ocmc?: boolean;
 }
 
-export interface DashboardDefendantItem extends DashboardItem {
-  defendantName: string;
+export class DashboardClaimantItem extends DashboardItem {
   status: string;// TODO: this is only a placeholder. To be revisited in a separate story
+  getHref() {
+    return '#';
+  }
+}
+
+export class DashboardDefendantItem extends DashboardItem {
+  nextSteps: string;// TODO: this is only a placeholder. To be revisited in a separate story
+  actions: string;// TODO: this is only a placeholder. To be revisited in a separate story
+  getHref (){
+    return this.ocmc? '#' : `/dashboard/${this.claimId}/defendant`;
+  }
 }
