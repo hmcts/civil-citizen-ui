@@ -3,15 +3,14 @@ import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
 import {AppRequest, UserDetails} from 'models/AppRequest';
-import {CivilClaimResponse} from 'common/models/civilClaimResponse';
 import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
-import {DashboardClaimantItem} from 'models/dashboard/dashboardItem';
+import {DashboardDefendantItem, DashboardClaimantItem} from '../../../common/models/dashboard/dashboardItem';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderPage(res: express.Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: boolean,
-  claimsAsDefendant: CivilClaimResponse[], responseDraftSaved: boolean,
+  claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean,
   paginationArgumentClaimant: object, paginationArgumentDefendant: object): void {
 
   res.render('features/dashboard/dashboard', {
@@ -32,7 +31,7 @@ dashboardController.get(DASHBOARD_URL, async function (req: AppRequest, res) {
   to display the draft claims on the dashboard*/
   await getOcmcDraftClaims(user.accessToken);
   const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(req);
-  const claimsAsDefendant: CivilClaimResponse[] = await civilServiceClient.retrieveByDefendantId(req);
+  const claimsAsDefendant : DashboardDefendantItem[] = await civilServiceClient.getClaimsForDefendant(<AppRequest>req);
   const claimDraftSaved = false;
   const responseDraftSaved = false;
   const paginationArgumentClaimant: object = {};
