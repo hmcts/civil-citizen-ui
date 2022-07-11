@@ -58,15 +58,14 @@
         </tr>
         </thead>
         <tbody class="govuk-table__body">
-        {% for claim in claimsAsDefendant %}
-          {% set claimantDetailsUrl = '/dashboard/' + claim.id + '/defendant' %}
-          <tr class="govuk-table__row">
+        {% for item in claimsAsDefendant %}
+        <tr class="govuk-table__row">
           <td class="govuk-table__cell">
-            <a href={{claimantDetailsUrl}}> {{ claim.case_data.legacyCaseReference }} </a>
+            <a href={{ item.getHref() }}> {{ item.claimNumber }} </a>
           </td>
-          <td class="govuk-table__cell">{{ claim.case_data.applicant1.individualFirstName }} {{ claim.case_data.applicant1.individualLastName }}</td>
-          <td class="govuk-table__cell">{{ claim.case_data.formattedTotalClaimAmount() }}</td>
-          <td class="govuk-table__cell">{{ t('PAGES.DASHBOARD.ACTION_PROMPT') }}{{ claim.case_data.formattedResponseDeadline() }}</td>
+          <td class="govuk-table__cell">{{ item.claimantName }}</td>
+          <td class="govuk-table__cell">{{ item.claimAmount }}</td>
+          <td class="govuk-table__cell">{{ t('PAGES.DASHBOARD.ACTION_PROMPT') }}{{ item.responseDeadline }}</td>
         </tr>
         {% endfor %}
         </tbody>

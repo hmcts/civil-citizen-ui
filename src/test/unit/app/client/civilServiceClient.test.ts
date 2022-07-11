@@ -158,4 +158,25 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.getSubmitDefendantResponseEventToken('123', mockedAppRequest)).rejects.toThrow('error');
     });
   });
+  describe('getClaimsForDefendant', () => {
+    it('should return claims for defendant successfully', async () => {
+      //Given
+      const data = require('../../../utils/mocks/defendantClaimsMock.json');
+      const mockGet = jest.fn().mockResolvedValue({data: data});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const defendantDashboardItems = await civilServiceClient.getClaimsForDefendant(mockedAppRequest);
+
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(defendantDashboardItems.length).toEqual(1);
+      expect(defendantDashboardItems[0].defendantName).toEqual(data[0].defendantName);
+      expect(defendantDashboardItems[0].claimantName).toEqual(data[0].claimantName);
+      expect(defendantDashboardItems[0].claimNumber).toEqual(data[0].claimNumber);
+    });
+  });
 });

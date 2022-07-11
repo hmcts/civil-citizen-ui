@@ -13,7 +13,10 @@ import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
 import {CLAIM_DETAILS_NOT_AVAILBALE, DOCUMENT_NOT_AVAILABLE} from './errorMessageContants';
-import {DashboardClaimantItem} from '../../common/models/dashboard/dashboardItem';
+import {
+  DashboardDefendantItem,
+  DashboardClaimantItem,
+} from '../../common/models/dashboard/dashboardItem';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -55,6 +58,17 @@ export class CivilServiceClient {
       console.log('Response data is ' + response.data);
       return plainToInstance(DashboardClaimantItem, response.data as object[]);
     } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async getClaimsForDefendant(req: AppRequest): Promise <DashboardDefendantItem[]>{
+    const config = this.getConfig(req);
+    const submitterId = req.session?.user?.id;
+    try{
+      const response = await this.client.get('/cases/defendant/' + submitterId, config);
+      return plainToInstance(DashboardDefendantItem, response.data as object[]);
+    }catch(err){
       console.log(err);
     }
   }
