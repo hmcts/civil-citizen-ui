@@ -1,7 +1,6 @@
 import {Claim} from '../../main/common/models/claim';
 import {ResponseType} from '../../main/common/form/models/responseType';
-import PaymentOptionType
-  from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import PaymentOptionType from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {
   TransactionSchedule,
 } from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
@@ -50,6 +49,10 @@ import {PartialAdmission} from '../../main/common/models/partialAdmission';
 import {AlreadyPaid} from '../../main/common/form/models/admission/partialAdmission/alreadyPaid';
 import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/defendantTimeline';
 import {PaymentIntention} from '../../main/common/form/models/admission/partialAdmission/paymentIntention';
+import {FreeMediation} from '../../main/common/form/models/mediation/freeMediation';
+import {NoMediationReason} from '../../main/common/form/models/mediation/noMediationReason';
+import {CompanyTelephoneNumber} from '../../main/common/form/models/mediation/companyTelephoneNumber';
+import {Mediation} from '../../main/common/models/mediation/mediation';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -301,14 +304,13 @@ export const createClaimWithRegularIncome = (): Claim => {
 
 
 export const createEmployers = () => {
-  const employers = new Employers(
+
+  return new Employers(
     [
       new Employer('Version 1', 'FE Developer'),
       new Employer('Version 1', 'BE Developer'),
     ],
   );
-
-  return employers;
 };
 
 export const createClaimWithEmplymentDetails = (): Claim => {
@@ -567,4 +569,21 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid? :YesNo) => {
   };
   claim.partialAdmission = partialAdmission;
   return claim;
+};
+
+export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails('contactTest');
+  if(claim.respondent1) {
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+  }
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+
+  claim.mediation = new Mediation({option:YesNo.YES, mediationPhoneNumber: '123456'},
+    new FreeMediation(YesNo.YES),
+    new NoMediationReason('notWant', 'no'),
+    new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
+
+  return claim as Claim;
 };
