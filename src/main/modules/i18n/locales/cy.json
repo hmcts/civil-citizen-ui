@@ -108,6 +108,10 @@
         "TREASURER": "treasurer"
       },
       "TITLE": "Types of senior position"
+    },
+    "VARIATION": {
+      "YES": "Ie",
+      "NO": "Na"
     }
   },
   "TASK_LIST": {
