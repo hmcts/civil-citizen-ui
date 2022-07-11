@@ -73,7 +73,7 @@ export class Claim {
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
-  ccdState: CaseState;
+  caseState: CaseState;
 
   getClaimantName(): string {
     return this.applicant1.partyName;
@@ -207,7 +207,7 @@ export class Claim {
     return undefined;
   }
   isDefendantNotResponded(): boolean {
-    return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+    return this.caseState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 }
 

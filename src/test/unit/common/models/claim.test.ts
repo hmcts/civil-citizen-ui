@@ -715,7 +715,7 @@ describe('Documents', () => {
     });
     it('should return false with other case states', () => {
       //Given
-      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+      claim.caseState = CaseState.PENDING_CASE_ISSUED;
       //When
       const result = claim.isDefendantNotResponded();
       //Then
@@ -723,7 +723,7 @@ describe('Documents', () => {
     });
     it('should return true with case state AWAITING_RESPONDENT_ACKNOWLEDGEMENT', () => {
       //Given
-      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.caseState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
       //When
       const result = claim.isDefendantNotResponded();
       //Then

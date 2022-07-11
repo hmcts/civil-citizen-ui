@@ -10,7 +10,7 @@ import {CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
 describe('Latest Update Content Builder', () => {
   const partyName = 'Mr. John Doe';
   const claim = new Claim();
-  claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+  claim.caseState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   claim.respondent1ResponseDeadline = new Date('2022-07-29T15:59:59');
   claim.applicant1 = {
     type: CounterpartyType.INDIVIDUAL,
@@ -57,7 +57,7 @@ describe('Latest Update Content Builder', () => {
 
     it('should be empty when claim state is different from AWAITING_RESPONDENT_ACKNOWLEDGEMENT', () => {
       // Given
-      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+      claim.caseState = CaseState.PENDING_CASE_ISSUED;
       // when
       const responseToClaimSection = buildResponseToClaimSection(claim, lang, claimId);
       // Then

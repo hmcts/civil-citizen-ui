@@ -45,7 +45,7 @@ export const buildExampleSectionOne = (claim: Claim, lang: string, claimId: stri
   const thirdConditionalContent = getThirdConditionalContentContent(claim, lang);
   const number = 10;
 
-  if (claim.ccdState === CaseState.PENDING_CASE_ISSUED) {
+  if (claim.caseState === CaseState.PENDING_CASE_ISSUED) {
     if (number > 8) {
       sectionContent.push(firstConditionalContent);      
     }
@@ -65,7 +65,7 @@ export const buildExampleSectionTwo = (claim: Claim, lang: string, claimId: stri
   const fifthConditionalContent = getFifthConditionalContentContent(claim, lang);
   const number = 10;
 
-  if (claim.ccdState === CaseState.PENDING_CASE_ISSUED) {
+  if (claim.caseState === CaseState.PENDING_CASE_ISSUED) {
     if (number > 8) {
       sectionContent.push(fourthConditionalContent);
     }

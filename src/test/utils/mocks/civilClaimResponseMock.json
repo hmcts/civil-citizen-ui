@@ -7,7 +7,7 @@
   "state": "PENDING_CASE_ISSUED",
   "security_classification": "PUBLIC",
   "case_data": {
-    "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+    "caseState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
     "claimFee": {
       "code": "FEE0204",
       "version": "4",

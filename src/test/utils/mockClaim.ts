@@ -54,7 +54,7 @@ function buildMockClaim(): Claim {
   const _mockClaim: Claim = new Claim();
 
   _mockClaim.legacyCaseReference = '497MC585';
-  _mockClaim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+  _mockClaim.caseState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   _mockClaim.applicant1 = {
     individualTitle: 'Mrs',
     individualLastName: 'Clark',

@@ -63,14 +63,15 @@ export class CivilServiceClient {
   async retrieveClaimDetails(claimId: string, req: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`, config);// nosonar
-
-      console.log('incoming case details-->', response.data);
-
+      const response = await this.client.get(`/cases/${claimId}`, config);// nosonar
+      console.log('Incoming case details-->', response.data);
       if (!response.data) {
         throw new AssertionError({message: CLAIM_DETAILS_NOT_AVAILBALE});
       }
-      return Object.assign(new Claim(), response.data);
+      const claim = new Claim();
+      claim.caseState = response.data?.state;
+      console.log('CivilService Client Case state : ', claim.caseState);
+      return Object.assign(claim, response.data.case_data);
     } catch (err: unknown) {
       logger.error(err);
     }
