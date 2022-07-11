@@ -94,14 +94,4 @@ describe('Dependants Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('2');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });
-
-  // it('should return children in full-time education or training when it exists', async () => {
-  //   //Given
-  //   const claim = createClaimWithDependants(true,1,undefined,undefined,undefined);
-  //   //When
-  //   const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
-  //   //Then
-  //   expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_11');
-  //   expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].value.html).toBe('1');
-  // });
 });
