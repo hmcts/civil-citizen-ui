@@ -31,6 +31,7 @@ import { Explanation } from '../pages/explanation';
 import { RepaymentPlan } from '../pages/repaymentPlan';
 import { PartAdmitAlreadyPaid } from '../pages/partAdmitAlreadyPaid';
 import { RejectAllOfClaim } from '../pages/rejectAllOfClaim';
+import { CarerDetails } from '../pages/carerDetails';
 
 const I: I = actor();
 const taskListPage: TaskListPage = new TaskListPage();
@@ -65,6 +66,7 @@ const explanation: Explanation = new Explanation();
 const repaymentPlan: RepaymentPlan= new RepaymentPlan();
 const partAdmitAlreadyPaid: PartAdmitAlreadyPaid = new PartAdmitAlreadyPaid();
 const rejectAllOfClaim: RejectAllOfClaim = new RejectAllOfClaim();
+const selectCarerDetails: CarerDetails = new CarerDetails();
 
 export class ResponseSteps {
 
@@ -157,6 +159,13 @@ export class ResponseSteps {
       selectOtherDependantsDetails.clickYesButton();
     }else{
       selectOtherDependantsDetails.clickNoButton();
+    }
+  }
+  SelectCarerDetails(carer: string): void {
+    if(carer == 'yes'){
+      selectCarerDetails.clickYesButton();
+    }else{
+      selectCarerDetails.clickNoButton();
     }
   }
   SelectEmploymentDetails(employment: string): void {

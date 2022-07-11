@@ -20,7 +20,7 @@ export class DependantDetails {
     I.click(fields.yesButton);
     I.fillField(fields.under11, '1');
     I.fillField(fields.between11and15, '1');
-    I.fillField(fields.between16and19, '0');
+    I.fillField(fields.between16and19, '1');
     I.click(buttons.continue);
   }
   clickNoButton(): void {

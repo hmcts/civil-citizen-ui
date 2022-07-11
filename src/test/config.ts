@@ -8,10 +8,10 @@ if (!process.env.TEST_PASSWORD) {
 
 export const config = {
   TestUrl: process.env.TEST_URL || 'https://civil-citizen-ui.demo.platform.hmcts.net',
-  env: process.env.ENVIRONMENT_NAME || 'demo',
-  TestHeadlessBrowser: process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true,
+  env: process.env.ENVIRONMENT_NAME || 'local',
+  TestHeadlessBrowser: process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : false,
   TestSlowMo: 250,
-  WaitForTimeout: 10000,
+  WaitForTimeout: 20000,
   helpers: {},
   username: 'cmcclaimant23@gmail.com',
   password: defaultPassword,

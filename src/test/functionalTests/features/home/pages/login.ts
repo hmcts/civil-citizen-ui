@@ -34,5 +34,6 @@ export class LoginPage {
     I.fillField(fields.username, email);
     I.fillField(fields.password, password);
     I.click(buttons.submit);
+    I.seeInCurrentUrl('/dashboard');
   }
 }

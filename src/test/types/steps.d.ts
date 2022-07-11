@@ -23,6 +23,7 @@ declare namespace CodeceptJS {
     // @ts-ignore
     waitForElement: (locator, sec=any) => any;
     waitForVisible: (waitForVisible) => any;
+    seeInCurrentUrl : (seeInCurrentUrl) => any;
   }
 }
 

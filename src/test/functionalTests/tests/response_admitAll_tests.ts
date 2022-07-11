@@ -33,7 +33,7 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll', ()
   responseSteps.CheckAndSubmit(claimRef);
 });
 
-Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll', () => {
+Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll1', () => {
   commonSteps.EnterPersonalDetails(claimRef);
   responseSteps.EnterResponseToClaim(claimRef, admitAll);
   responseSteps.EnterPaymentOption(claimRef, bySetDate);
@@ -48,7 +48,7 @@ Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll', () =>
   responseSteps.EnterPaymentOption(claimRef, repaymentPlan);
   commonSteps.EnterFinancialDetails(claimRef);
   responseSteps.EnterRepaymentPlan(claimRef);
-  responseSteps.CheckAndSubmit(claimRef);
+  // responseSteps.CheckAndSubmit(claimRef);
 });
 
 
