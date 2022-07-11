@@ -19,10 +19,8 @@ export const addDependants = (claim: Claim, financialSection: SummarySection, cl
   financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN', { lng: getLng(lang) }), '', yourDependantsHref, changeLabel(lang)));
   financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU', { lng: getLng(lang) }), dependants.charAt(0).toUpperCase() + dependants.slice(1), yourDependantsHref, changeLabel(lang)));
 
-  if (dependants === YesNo.YES) {
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_11', { lng: getLng(lang) }), numberOfChildren.under11.toString(), '', changeLabel(lang)));
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_11_TO_15', { lng: getLng(lang) }), numberOfChildren.between11and15.toString(), '', changeLabel(lang)));
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_16_TO_19', { lng: getLng(lang) }), numberOfChildren.between11and15.toString(), '', changeLabel(lang)));
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_AGED_16_19_FT_EDUCATION', { lng: getLng(lang) }), numberOfChildrenLivingWithYou.toString(), yourDependantsHref, changeLabel(lang)));
-  }
+  if(numberOfChildren?.under11) financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_11', { lng: getLng(lang) }), numberOfChildren.under11.toString(), '', changeLabel(lang)));
+  if(numberOfChildren?.between11and15) financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_BETWEEN_11_TO_15', { lng: getLng(lang) }), numberOfChildren.between11and15.toString(), '', changeLabel(lang)));
+  if(numberOfChildren?.between16and19) financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_BETWEEN_16_TO_19', { lng: getLng(lang) }), numberOfChildren.between16and19.toString(), '', changeLabel(lang)));
+  if(numberOfChildren?.between16and19 && numberOfChildrenLivingWithYou) financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CHILDREN_AGED_16_19_FT_EDUCATION', { lng: getLng(lang) }), numberOfChildrenLivingWithYou.toString(), yourDependantsHref, changeLabel(lang)));
 };
