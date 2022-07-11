@@ -1,6 +1,7 @@
 import {IsDefined, IsIn} from 'class-validator';
 import {OPTION_REQUIRED_RESPONSE} from '../validationErrors/errorMessageConstants';
 import {HowMuchHaveYouPaid} from './admission/howMuchHaveYouPaid';
+import {WhyDoYouDisagree} from './admission/partialAdmission/whyDoYouDisagree';
 import RejectAllOfClaimType from '../../form/models/rejectAllOfClaimType';
 
 export class RejectAllOfClaim {
@@ -9,9 +10,11 @@ export class RejectAllOfClaim {
     option: string;
 
   howMuchHaveYouPaid?: HowMuchHaveYouPaid;
+  whyDoYouDisagree?: WhyDoYouDisagree;
 
-  constructor(option?: string, howMuchHaveYouPaid?: HowMuchHaveYouPaid) {
+  constructor(option?: string, howMuchHaveYouPaid?: HowMuchHaveYouPaid, whyDoYouDisagree?: WhyDoYouDisagree) {
     this.option = option;
     this.howMuchHaveYouPaid = howMuchHaveYouPaid;
+    this.whyDoYouDisagree = whyDoYouDisagree;
   }
 }

@@ -193,6 +193,7 @@
       "EMPLOYMENT_SELF_DETAILS": "Self employment details?",
       "EMPLOYMENT_SELF_JOB_TITLE": "Job title",
       "EMPLOYMENT_SELF_ANNUAL_TURNOVER": "Annual turnover",
+      "EMPLOYED_AND_SELF_EMPLOYED": "Employed and Self-employed",
       "EXPENSES_REGULAR": "Regular expenses",
       "EXPENSE_MORTGAGE": "Mortgage",
       "EXPENSE_RENT": "Rent",
@@ -256,6 +257,17 @@
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Amount you owe?",
       "TAX_PAYMENT_REASON": "Reason",
       "TITLE": "Check your answers",
+      "TIMELINE_TITLE": "Your timeline of what happened (optional)",
+      "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
+      "EVIDENCE_TITLE": "Your evidence (optional)",
+      "EVIDENCE_CONTRACTS_AND_AGREEMENTS": "Contracts and agreements",
+      "EVIDENCE_EXPERT_WITNESS": "Expert witness",
+      "EVIDENCE_CORRESPONDENCE": "Letters, emails and other correspondence",
+      "EVIDENCE_PHOTO": "Photo evidence",
+      "EVIDENCE_RECEIPTS": "Receipts",
+      "EVIDENCE_STATEMENT_OF_ACCOUNT": "Statements of account",
+      "EVIDENCE_OTHER": "Other",
+      "EVIDENCE_COMMENTS": "Comments about their evidence (optional)",
       "WHEN_PAY": "When will you pay",
       "WHEN_PAY_TITLE": "When you'll pay",
       "WHERE_DO_YOU_LIVE": "Where do you live?",
@@ -410,7 +422,20 @@
       "TITLE": "Are you paying money as a result of any court orders?"
     },
     "DASHBOARD": {
-      "PAGE_TITLE": "Claims made against you"
+      "PAGE_TITLE": "Claims made by or against you",
+      "CLAIMANT_TITLE": "Claims you've made",
+      "DEFENDANT_TITLE": "Claims made against you",
+      "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
+      "CLAIM_NUMBER": "Claim number",
+      "CLAIMANT_NAME" : "Claimant name",
+      "DEFENDANT_NAME": "Defendant name",
+      "CLAIM_AMOUNT" : "Claim amount",
+      "CLAIM_STATUS" : "Status",
+      "ACTION_PROMPT" : "You need to respond before ",
+      "NEXT_STEPS" : "Next steps",
+      "DEADLINE" : "Deadline",
+      "ACTIONS" : "Actions",
+      "VIEW" : "View"
     },
     "DEBTS": {
       "ADD": "Add a debt",
@@ -535,7 +560,7 @@
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
-      "SUBTITLE": "The total amount claimed is £{{ claimAmount }}. This includes the claim fee.",
+      "SUBTITLE": "The total amount claimed is £{{ claimAmount }}. This includes the claim fee and any interest.",
       "TITLE": "Why do you disagree with the claim amount?"
     },
     "PARTNER": {
@@ -646,6 +671,14 @@
       "TITLE": "Are you unemployed or retired?",
       "UNEMPLOYED": "Unemployed"
     },
+    "VULNERABILITY": {
+      "PAGE_TITLE": "Vulnerability questions",
+      "QUESTION_1": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
+      "QUESTION_2": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
+      "YOUR_ANSWERS": "Your answers to the questions above will enable the court and the judge, to consider what steps, adjustments or support can be arranged.",
+      "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties.",
+      "TITLE": "Vulnerability Questions"
+    },
     "WHO_EMPLOYS_YOU": {
       "PAGE_TITLE": "Your employer"
     },
@@ -694,6 +727,8 @@
     "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Choose a payment frequency",
     "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
+    "QUESTION_1_REQUIRED": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
+    "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_AN_OPTION": "Select an option",
     "SELECT_AMOUNT": {

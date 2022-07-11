@@ -4,7 +4,7 @@ import {getClaimantName} from '../../../../../services/features/response/rejectA
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 
 const youHavePaidLessController = express.Router();
-const youHavePaidLessViewPath = 'features/response/rejection/fullReject/you-have-paid-less';
+const youHavePaidLessViewPath = 'features/response/admission/fullRejection/you-have-paid-less';
 
 youHavePaidLessController.get(CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, async (req, res, next: express.NextFunction) => {
   try {
