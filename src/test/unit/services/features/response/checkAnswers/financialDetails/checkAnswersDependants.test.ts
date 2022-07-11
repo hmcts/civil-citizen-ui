@@ -36,7 +36,7 @@ describe('Dependants Details', () => {
 
   it('should return children declaration to "yes" when it exists', async () => {
     //Given
-    const claim = createClaimWithDependants(true,1,10,10,2);
+    const claim = createClaimWithDependants(true,1,undefined,undefined,undefined);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
@@ -45,9 +45,9 @@ describe('Dependants Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });
 
-  it('should return children declaration to "yes" when it exists', async () => {
+  it('should return children declaration to "no" when it exists', async () => {
     //Given
-    const claim = createClaimWithDependants(false,1,10,10,2);
+    const claim = createClaimWithDependants(false,1,undefined,undefined,undefined);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
@@ -56,7 +56,7 @@ describe('Dependants Details', () => {
 
   it('should return children under 11 when it exists', async () => {
     //Given
-    const claim = createClaimWithDependants(true,1,10,10,2);
+    const claim = createClaimWithDependants(true,1,undefined,undefined,undefined);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
@@ -66,21 +66,21 @@ describe('Dependants Details', () => {
 
   it('should return children between 11 and 15 when it exists', async () => {
     //Given
-    const claim = createClaimWithDependants(true,1,10,10,2);
+    const claim = createClaimWithDependants(true,1,10,undefined,undefined);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_11_TO_15');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CHILDREN_BETWEEN_11_TO_15');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.html).toBe('10');
   });
 
   it('should return children between 16 and 19 when it exists', async () => {
     //Given
-    const claim = createClaimWithDependants(true,1,10,10,2);
+    const claim = createClaimWithDependants(true,1,10,10,undefined);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_16_TO_19');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CHILDREN_BETWEEN_16_TO_19');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].value.html).toBe('10');
   });
 
@@ -94,4 +94,14 @@ describe('Dependants Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('2');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });
+
+  // it('should return children in full-time education or training when it exists', async () => {
+  //   //Given
+  //   const claim = createClaimWithDependants(true,1,undefined,undefined,undefined);
+  //   //When
+  //   const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+  //   //Then
+  //   expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CHILDREN_UNDER_11');
+  //   expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].value.html).toBe('1');
+  // });
 });
