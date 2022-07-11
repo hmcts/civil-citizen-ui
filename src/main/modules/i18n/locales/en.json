@@ -333,6 +333,7 @@
       "CLAIMANT_RECEIPT": "You should ask the claimant to give you a receipt.",
       "CLAIMANT_REJECT_OFFER": "If the claimant rejects your offer, they can ask the court to enter a CCJ against you. The court will then decide the repayment plan.",
       "CLAIMANT_REJECT_PART_ADMISSION": "If they reject your offer, the court will decide a repayment plan.",
+      "FULL_ADMISSION": "I admit all of the claim",
       "FULL_ADMISSION_HINT": "You agree you owe the full amount claimed.",
       "FULL_DEFENCE_HINT": "You've either paid what you believe you owe or you reject the claim.",
       "HEARING_CENTRE": "Hearing centre location",
