@@ -26,8 +26,6 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res) => {
         await saveDraftClaim(claimId, claim);
       } 
     }
-    console.log('controller-->' + claimId, claim);
-    console.log('case state-->', claim.ccdState);
     const latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
     const documentsContent = getDocumentsContent(lang);
     res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent});

@@ -9,7 +9,6 @@ import {
 } from '../../../../../services/features/response/statementOfMeans/expenses/regularExpensesService';
 import {toRegularExpenseForm} from '../../../../../common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 
-
 const regularExpensesController = express.Router();
 const regularExpensesView = 'features/response/statementOfMeans/expenses/regular-expenses';
 
@@ -17,16 +16,16 @@ function renderForm(form: GenericForm<RegularExpenses>, res: express.Response) {
   res.render(regularExpensesView, {form: form});
 }
 
-regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res) => {
+regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res, next: express.NextFunction) => {
   try {
     const model = await getRegularExpenses(req.params.id);
     renderForm(new GenericForm<RegularExpenses>(model), res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-regularExpensesController.post(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res) => {
+regularExpensesController.post(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res, next: express.NextFunction) => {
   const form = new GenericForm(toRegularExpenseForm(req));
   try {
     await form.validate();
@@ -37,7 +36,8 @@ regularExpensesController.post(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res) =>
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_MONTHLY_INCOME_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
+
 export default regularExpensesController;

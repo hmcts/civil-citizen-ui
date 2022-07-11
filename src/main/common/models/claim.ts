@@ -33,6 +33,7 @@ import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifi
 import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
+import {Vulnerability} from 'models/directionsQuestionnaire/vulnerability';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -73,6 +74,7 @@ export class Claim {
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
+  vulnerability: Vulnerability;
   ccdState: CaseState;
 
   getClaimantName(): string {
@@ -169,7 +171,7 @@ export class Claim {
   isPartialAdmission(): boolean {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
-
+  
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }
@@ -194,9 +196,11 @@ export class Claim {
   generatePdfFileName(): string {
     return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
   }
+
   isSystemGeneratedCaseDocumentsAvailable(): number {
     return this.systemGeneratedCaseDocuments?.length;
   }
+
   getDocumentDetails(documentType: DocumentType): CaseDocument {
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
