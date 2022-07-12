@@ -27,12 +27,12 @@ describe('Understanding Your Options View', () => {
   });
 
   it('should have correct page title', () => {
-    expect(htmlDocument.title).toEqual('Your money claims account - Understanding your options before respond');
+    expect(htmlDocument.title).toEqual('Your money claims account - Requesting extra time');
   });
 
   it('should have correct main header', () => {
     const header = htmlDocument.getElementsByClassName('govuk-heading-l')[0];
-    expect(header.innerHTML).toContain('Understanding your options before respond');
+    expect(header.innerHTML).toContain('Requesting extra time');
   });
 
   it('should display correct sub header', () => {
@@ -41,7 +41,7 @@ describe('Understanding Your Options View', () => {
   });
 
   it('should display unable to respond to claim before deadline paragraph', () => {
-    const expectedText = 'If you think that you will be unable to respond to a claim before this deadline, you may be able to request additional time.';
+    const expectedText = 'If you think that you will be unable to respond to a claim before this deadline, you can request more time.';
     const paragraph = htmlDocument.getElementsByClassName('govuk-body')[0];
     expect(paragraph.innerHTML).toContain(expectedText);
   });
@@ -52,13 +52,13 @@ describe('Understanding Your Options View', () => {
   });
 
   it('should display extension of up 28 days paragraph', () => {
-    const expectedText = 'If you want to request an extension of up to 28 days, contact the other party\'s legal representative.';
+    const expectedText = 'If you want to request an extension of up to 28 days, you\'ll need to ask the other party\'s legal representative directly.';
     const paragraph = htmlDocument.getElementsByClassName('govuk-body')[1];
     expect(paragraph.innerHTML).toContain(expectedText);
   });
 
   it('should display extension of more than 28 days paragraph', () => {
-    const expectedText = 'If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party\'s legal representative, you will need to make an application to the court.';
+    const expectedText = 'If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party\'s legal representative, you\'ll need to apply to the court.';
     const paragraph = htmlDocument.getElementsByClassName('govuk-body')[2];
     expect(paragraph.innerHTML).toContain(expectedText);
   });
