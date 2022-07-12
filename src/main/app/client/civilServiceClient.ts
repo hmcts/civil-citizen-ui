@@ -92,7 +92,6 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`, config);// nosonar
-
       if (!response.data) {
         throw new AssertionError({message: CLAIM_DETAILS_NOT_AVAILBALE});
       }

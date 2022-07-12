@@ -535,6 +535,14 @@
     "I_DON_T_WANT_FREE_MEDIATION": {
       "PAGE_TITLE": "I don't want free mediation"
     },
+    "LATEST_UPDATE_CONTENT": {
+      "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
+      "RESPOND_TO_CLAIM": "Respond to claim",
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
+      "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
+      "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
+      "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment."
+    },
     "MEDIATION_CAN_WE_USE": {
       "PAGE_TITLE": "Mediation - Provide a phone number"
     },
