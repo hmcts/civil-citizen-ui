@@ -39,7 +39,6 @@ companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res, n
     contactPerson,
   } = req.body;
   let companyTelephoneNumber: CompanyTelephoneNumber = null;
-  const mediation = await getMediation(req.params.id);
   if (!contactPerson) {
     companyTelephoneNumber = new CompanyTelephoneNumber(YesNo.NO, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
   } else {
@@ -47,6 +46,7 @@ companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res, n
   }
   const form = new GenericForm(companyTelephoneNumber);
   try {
+    const mediation = await getMediation(req.params.id);
     await form.validate();
     if (form.hasErrors()) {
       renderForm(form, res, contactPerson);

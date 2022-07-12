@@ -5,6 +5,7 @@ import {createClaimWithFreeTelephoneMediationSection} from '../../../../../../ut
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {CounterpartyType} from '../../../../../../../main/common/models/counterpartyType';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
+import {CompanyTelephoneNumber} from '../../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
 
 
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -57,6 +58,45 @@ describe('Free Telephone Mediation Section', () => {
     if (claim.mediation?.canWeUse) {
       claim.mediation.canWeUse = undefined;
     }
+    if (claim.respondent1) {
+      claim.respondent1.type = CounterpartyType.COMPANY;
+    }
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(1);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe('COMMON.NO');
+
+  });
+
+  it('should return response free telephone mediation with company telephone number', async () => {
+    //Given
+    const claim = createClaimWithFreeTelephoneMediationSection();
+    if (claim?.mediation) {
+      claim.mediation.canWeUse = undefined;
+      claim.mediation.mediationDisagreement = undefined;
+    }
+    if (claim.respondent1) {
+      claim.respondent1.type = CounterpartyType.COMPANY;
+    }
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(3);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE');
+
+  });
+
+  it('should return response free telephone mediation with free mediation and mediationPhoneNumber', async () => {
+    //Given
+    const claim = createClaimWithFreeTelephoneMediationSection();
+    if (claim?.mediation) {
+      claim.mediation.companyTelephoneNumber = new CompanyTelephoneNumber();
+      claim.mediation.canWeUse = undefined;
+    }
+
     if (claim.respondent1) {
       claim.respondent1.type = CounterpartyType.COMPANY;
     }
