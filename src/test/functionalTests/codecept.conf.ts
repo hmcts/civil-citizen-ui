@@ -23,6 +23,7 @@ export const config: CodeceptJS.Config = {
         'selectOption',
         'attachFile',
         'see',
+        'seeInCurrentUrl',
       ],
     },
     retryFailedStep: {
