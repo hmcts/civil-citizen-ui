@@ -38,7 +38,7 @@ describe('Support required', () => {
         .get(supportRequiredUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Select any support you’d require for a court hearing (optional)');
+          expect(res.text).toContain('Select any support you&#39;d require for a court hearing (optional)');
         });
     });
     test('should return status 500 when error thrown', async () => {
