@@ -4,6 +4,6 @@
   </div>
 {% endmacro %}
 
-{% macro saveAndContinueButton() %}
-  {{ submitButton('Save and continue', id = 'saveAndContinue') }}
+{% macro saveAndContinueButton(text) %}
+  {{ submitButton(text, id = 'saveAndContinue') }}
 {% endmacro %}
