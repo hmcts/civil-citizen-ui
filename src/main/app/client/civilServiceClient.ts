@@ -127,13 +127,17 @@ export class CivilServiceClient {
   }
 
   async submitDefendantResponseEvent(claimId: string, req: AppRequest): Promise<Claim> {
+    const claim = await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, req);
+    return claim;
+  }
+
+  async submitEvent(event: CaseEvent, claimId: string, req: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
     const data : EventDto = {
-      event: CaseEvent.DEFENDANT_RESPONSE_SPEC,
+      event:event,
       caseDataUpdate: new Map<string, string>(),
     };
-    console.log('user id ' + userId);
     try{
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
