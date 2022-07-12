@@ -25,10 +25,10 @@ export class BankAccountsDetails {
     I.selectOption(fields.accounts1, 'Current account');
     I.selectOption(fields.jointAccount1, 'Yes');
     I.fillField(fields.account1Balance, '2000');
-
-    I.selectOption(fields.accounts2, 'Saving account');
-    I.selectOption(fields.jointAccount2, 'No');
-    I.fillField(fields.account2Balance, '5000');
+    //
+    // I.selectOption(fields.accounts2, 'Saving account');
+    // I.selectOption(fields.jointAccount2, 'No');
+    // I.fillField(fields.account2Balance, '5000');
   }
 
   enterAdditionalBankAccountDetails(): void{

@@ -101,7 +101,7 @@ export class ResponseSteps {
   }
   EnterBankAccountDetails(): void {
     bankAccountDetails.enterBankAccountDetails();
-    bankAccountDetails.enterAdditionalBankAccountDetails();
+    // bankAccountDetails.enterAdditionalBankAccountDetails();
     bankAccountDetails.clickContinue();
   }
   SelectDisabilityDetails(disability: string, severeDisability: string): void {
