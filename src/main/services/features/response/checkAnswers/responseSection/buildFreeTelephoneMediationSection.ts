@@ -9,7 +9,7 @@ import {
   CAN_WE_USE_URL,
   CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
 } from '../../../../../routes/urls';
-import {YesNo, YesNoUpperCase} from '../../../../../common/form/models/yesNo';
+import {YesNoUpperCase} from '../../../../../common/form/models/yesNo';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
 
@@ -19,7 +19,9 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
   const contactNumber = claim.mediation?.companyTelephoneNumber ? claim.mediation.companyTelephoneNumber.mediationPhoneNumber : claim.respondent1.telephoneNumber;
   const contactName = claim.mediation?.companyTelephoneNumber ? claim.mediation.companyTelephoneNumber.mediationContactPerson : claim.respondent1.contactPerson;
 
-  const canWeUse = claim.mediation?.canWeUse?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+  const canWeUse = claim.mediation?.canWeUse?.option ? YesNoUpperCase.YES : claim.mediation?.mediationDisagreement?.option ? YesNoUpperCase.NO : claim.mediation?.companyTelephoneNumber ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+
+
   let freeTelephoneMediationSection: SummarySection = null;
 
   freeTelephoneMediationSection = summarySection({
