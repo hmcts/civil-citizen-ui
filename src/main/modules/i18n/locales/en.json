@@ -559,7 +559,7 @@
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
       "HOW_MUCH_EXTRA": "How much extra time can you request?",
       "PAGE_TITLE": "Understanding your options before respond",
-      "REQUEST_EXTENSION_DEFAULT": "If you want to request an extension of up to 28 days, contact the other party's legal representative",
+      "REQUEST_EXTENSION_DEFAULT": "If you want to request an extension of up to 28 days, contact the other party's legal representative.",
       "REQUEST_EXTENSION_MORE": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party's legal representative, you will need to make an application to the court.",
       "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "If you think that you will be unable to respond to a claim before this deadline, you may be able to request additional time."
     },
