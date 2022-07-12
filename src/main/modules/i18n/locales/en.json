@@ -9,17 +9,22 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "COMMON": {
-    "NO": "No",
-    "YES": "Yes",
+    "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
+    "DASHBOARD": "Dashboard",
     "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Month",
     "MONTHS": "Months",
+    "NO": "No",
+    "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
+    "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
     "YEAR": "Year",
     "YEARS": "Years",
+    "YES": "Yes",
     "BUTTONS": {
       "CONTINUE": "Continue",
       "SAVE_AND_CONTINUE": "Save and continue",
+      "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {
@@ -133,8 +138,8 @@
       "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
       "CHILDREN_UNDER_11": "Under 11",
-      "CHILDREN_UNDER_11_TO_15": "11 to 15",
-      "CHILDREN_UNDER_16_TO_19": "16 to 19",
+      "CHILDREN_BETWEEN_11_TO_15": "11 to 15",
+      "CHILDREN_BETWEEN_16_TO_19": "16 to 19",
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Number of children aged 16 to 19 full-time education or training",
       "CONTACT_PERSON": "Contact person",
       "CONTACT_NUMBER": "Contact number (optional)",
@@ -160,6 +165,7 @@
       "EMPLOYMENT_SELF_DETAILS": "Self employment details?",
       "EMPLOYMENT_SELF_JOB_TITLE": "Job title",
       "EMPLOYMENT_SELF_ANNUAL_TURNOVER": "Annual turnover",
+      "EMPLOYED_AND_SELF_EMPLOYED": "Employed and Self-employed",
       "EXPENSES_REGULAR": "Regular expenses",
       "EXPENSE_MORTGAGE": "Mortgage",
       "EXPENSE_RENT": "Rent",
@@ -209,6 +215,12 @@
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "RESPONSE_TITLE": "Your response to the claim",
+      "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "Have you paid the claimant the amount you admit you owe?",
+      "RESPONSE_DETAILS_TITLE": "Response details",
+      "RESPONSE_DETAILS_MONEY_PAID": "How much money have you paid?",
+      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "When did you pay this amount?",
+      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED": "How did you pay the amount claimed?",
+      "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
       "SAME_ADDRESS": "Same as address",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Do you support anyone else financially?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Number of people",
@@ -217,6 +229,17 @@
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Amount you owe?",
       "TAX_PAYMENT_REASON": "Reason",
       "TITLE": "Check your answers",
+      "TIMELINE_TITLE": "Your timeline of what happened (optional)",
+      "TIMELINE_COMMENTS": "Comments about their timeline (optional)",
+      "EVIDENCE_TITLE": "Your evidence (optional)",
+      "EVIDENCE_CONTRACTS_AND_AGREEMENTS": "Contracts and agreements",
+      "EVIDENCE_EXPERT_WITNESS": "Expert witness",
+      "EVIDENCE_CORRESPONDENCE": "Letters, emails and other correspondence",
+      "EVIDENCE_PHOTO": "Photo evidence",
+      "EVIDENCE_RECEIPTS": "Receipts",
+      "EVIDENCE_STATEMENT_OF_ACCOUNT": "Statements of account",
+      "EVIDENCE_OTHER": "Other",
+      "EVIDENCE_COMMENTS": "Comments about their evidence (optional)",
       "WHEN_PAY": "When will you pay",
       "WHEN_PAY_TITLE": "When you'll pay",
       "WHERE_DO_YOU_LIVE": "Where do you live?",
@@ -296,7 +319,20 @@
       "TITLE": "Are you paying money as a result of any court orders?"
     },
     "DASHBOARD": {
-      "PAGE_TITLE": "Claims made against you"
+      "PAGE_TITLE": "Claims made by or against you",
+      "CLAIMANT_TITLE": "Claims you've made",
+      "DEFENDANT_TITLE": "Claims made against you",
+      "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
+      "CLAIM_NUMBER": "Claim number",
+      "CLAIMANT_NAME" : "Claimant name",
+      "DEFENDANT_NAME": "Defendant name",
+      "CLAIM_AMOUNT" : "Claim amount",
+      "CLAIM_STATUS" : "Status",
+      "ACTION_PROMPT" : "You need to respond before ",
+      "NEXT_STEPS" : "Next steps",
+      "DEADLINE" : "Deadline",
+      "ACTIONS" : "Actions",
+      "VIEW" : "View"
     },
     "DEBTS": {
       "ADD": "Add a debt",
@@ -421,7 +457,7 @@
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
-      "SUBTITLE": "The total amount claimed is £{{ claimAmount }}. This includes the claim fee.",
+      "SUBTITLE": "The total amount claimed is £{{ claimAmount }}. This includes the claim fee and any interest.",
       "TITLE": "Why do you disagree with the claim amount?"
     },
     "PARTNER": {
@@ -491,7 +527,8 @@
       "AMOUNT": "Amount you owe",
       "PAGE_TITLE": "Behind on tax payments?",
       "REASON": "Reason",
-      "TITLE": "Are you behind on tax payments?"
+      "TITLE": "Are you behind on tax payments?",
+      "EXAMPLE": "For example National Insurance contributions, Income Tax or VAT."
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
@@ -525,6 +562,14 @@
       "RETIRED": "Retired",
       "TITLE": "Are you unemployed or retired?",
       "UNEMPLOYED": "Unemployed"
+    },
+    "VULNERABILITY": {
+      "PAGE_TITLE": "Vulnerability questions",
+      "QUESTION_1": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
+      "QUESTION_2": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
+      "YOUR_ANSWERS": "Your answers to the questions above will enable the court and the judge, to consider what steps, adjustments or support can be arranged.",
+      "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties.",
+      "TITLE": "Vulnerability Questions"
     },
     "WHO_EMPLOYS_YOU": {
       "PAGE_TITLE": "Your employer"
@@ -571,14 +616,18 @@
     "NUMBER_REQUIRED": "Enter a valid number",
     "OPTION_REQUIRED": "Please select one reason",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
+    "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Choose a payment frequency",
     "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
+    "QUESTION_1_REQUIRED": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
+    "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_AN_OPTION": "Select an option",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You’ve entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
     "SIGNER_ROLE_TOO_LONG": "You’ve entered too many characters",
+    "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
     "TEXT_TOO_MANY": "You’ve entered too many characters",

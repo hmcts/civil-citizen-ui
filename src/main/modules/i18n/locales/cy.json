@@ -9,17 +9,22 @@
   "View": "Weiv",
   "Save and continue": "Cadw a Pharhau",
   "COMMON": {
+    "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
+    "DASHBOARD": "Dashboard",
     "DAY": "Diwrnod",
-    "NO": "Nac oes",
-    "YES": "Oes",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Mis",
     "MONTHS": "Mis",
+    "NO": "Nac oes",
+    "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
+    "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
     "YEAR": "Blwyddyn",
     "YEARS": "Blwyddyn",
+    "YES": "Oes",
     "BUTTONS": {
       "CONTINUE": "Parhau",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
+      "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
     },
     "CONTACT_US_FOR_HELP": {
@@ -77,7 +82,7 @@
       "TITLE": "Types of senior position"
     }
   },
-  "TASK_LIST":{
+  "TASK_LIST": {
     "APPLICATION_COMPLETE": "Application complete",
     "APPLICATION_INCOMPLETE": "Application incomplete",
     "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
@@ -133,8 +138,8 @@
       "CHILDREN": "Plant",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Oes unrhyw blant yn byw gyda chi?",
       "CHILDREN_UNDER_11": "dan 11",
-      "CHILDREN_UNDER_11_TO_15": "11 i 15",
-      "CHILDREN_UNDER_16_TO_19": "16 i 19",
+      "CHILDREN_BETWEEN_11_TO_15": "11 i 15",
+      "CHILDREN_BETWEEN_16_TO_19": "16 i 19",
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Nifer y plant 16 i 19 oed sy'n derbyn addysg neu hyfforddiant amser llawn",
       "CONTACT_PERSON": "Cyswllt",
       "CONTACT_NUMBER": "Rhif cyswllt (dewisol)",
@@ -160,6 +165,7 @@
       "EMPLOYMENT_SELF_DETAILS": "Manylion hunangyflogaeth?",
       "EMPLOYMENT_SELF_JOB_TITLE": "Teitl swydd",
       "EMPLOYMENT_SELF_ANNUAL_TURNOVER": "Trosiant blynyddol",
+      "EMPLOYED_AND_SELF_EMPLOYED": "Cyflogedig a Hunangyflogedig",
       "EXPENSES_REGULAR": "Treuliau rheolaidd",
       "EXPENSE_MORTGAGE": "Morgais",
       "EXPENSE_RENT": "Rhent",
@@ -207,6 +213,14 @@
       "PRIORITY_DEBT_MAINTENANCE": "Cynnal a chadw",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "RESPONSE_TITLE": "Eich ymateb i'r hawliad",
+      "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
+      "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
+      "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "Ydych chi wedi talu'r swm sy'n ddyledus gennych i'r hawlydd?",
+      "RESPONSE_DETAILS_TITLE": "Manylion ymateb",
+      "RESPONSE_DETAILS_MONEY_PAID": "How much money have you paid?",
+      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "Faint o arian ydych chi wedi'i dalu?",
+      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED": "Sut wnaethoch chi dalu'r swm a hawliwyd?",
+      "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Pam ydych chi'n anghytuno â'r swm a hawlir?",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Nifer y bobl",
@@ -214,6 +228,17 @@
       "TAX_PAYMENT_ARE_YOU_BEHIND": "Ydych chi ar ei hôl hi gyda thaliadau treth?",
       "TAX_PAYMENT_AMOUNT_YOU_OWE": "Swm sydd arnoch chi?",
       "TAX_PAYMENT_REASON": "Rheswm",
+      "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
+      "TIMELINE_COMMENTS": "Sylwadau am eu llinell amser (dewisol)",
+      "EVIDENCE_TITLE": "Eich tystiolaeth (dewisol)",
+      "EVIDENCE_CONTRACTS_AND_AGREEMENTS": "Contractau a chytundebau",
+      "EVIDENCE_EXPERT_WITNESS": "Tyst arbenigol",
+      "EVIDENCE_CORRESPONDENCE": "Llythyrau, e-byst a gohebiaeth arall",
+      "EVIDENCE_PHOTO": "Tystiolaeth llun",
+      "EVIDENCE_RECEIPTS": "Derbyniadau",
+      "EVIDENCE_STATEMENT_OF_ACCOUNT": "Datganiadau cyfrifon",
+      "EVIDENCE_OTHER": "Arall",
+      "EVIDENCE_COMMENTS": "Sylwadau am eu tystiolaeth (dewisol)",
       "TITLE": "Gwiriwch eich ateb",
       "WHEN_PAY": "Pryd fyddwch chi'n talu",
       "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu",
@@ -294,7 +319,20 @@
       "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
     },
     "DASHBOARD": {
-      "PAGE_TITLE": "Smialc edam tsniaga uoy"
+      "PAGE_TITLE": "Claims made by or against you",
+      "CLAIMANT_TITLE": "Claims made by you",
+      "DEFENDANT_TITLE": "Smialc edam tsniaga uoy",
+      "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
+      "CLAIM_NUMBER": "Rhif yr hawliad",
+      "CLAIMANT_NAME" : "Enw’r hawlydd",
+      "DEFENDANT_NAME": "Defendant name",
+      "CLAIM_AMOUNT" : "Swm yr hawliad",
+      "CLAIM_STATUS" : "Status",
+      "ACTION_PROMPT" : "You need to respond before ",
+      "NEXT_STEPS" : "Next steps",
+      "DEADLINE" : "Deadline",
+      "ACTIONS" : "Actions",
+      "VIEW" : "Weiv"
     },
     "DEBTS": {
       "ADD": "Ychwanegu dyled",
@@ -489,7 +527,8 @@
       "AMOUNT": "Swm sy’n ddyledus gennych",
       "PAGE_TITLE": "Behind on tax payments?",
       "REASON": "Rheswm",
-      "TITLE": "A ydych yn hwyr yn gwneud taliadau treth?"
+      "TITLE": "A ydych yn hwyr yn gwneud taliadau treth?",
+      "EXAMPLE": "Er enghraifft cyfraniadau Yswiriant Gwladol, Treth Incwm neu TAW."
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
@@ -523,6 +562,14 @@
       "RETIRED": "Wedi ymddeol",
       "TITLE": "A ydych yn ddi-waith neu wedi ymddeol?",
       "UNEMPLOYED": "Di-waith"
+    },
+    "VULNERABILITY": {
+      "PAGE_TITLE": "Vulnerability questions",
+      "QUESTION_1": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider?",
+      "QUESTION_2": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
+      "YOUR_ANSWERS": "Your answers to the questions above will enable the court and the judge, to consider what steps, adjustments or support can be arranged.",
+      "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties.",
+      "TITLE": "Vulnerability Questions"
     },
     "WHO_EMPLOYS_YOU": {
       "PAGE_TITLE": "Your employer"
@@ -569,14 +616,18 @@
     "NUMBER_REQUIRED": "Enter a valid number",
     "OPTION_REQUIRED": "Please select one reason",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
+    "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Choose a payment frequency",
     "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
+    "QUESTION_1_REQUIRED": "1. Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
+    "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You’ve entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
     "SIGNER_ROLE_TOO_LONG": "You’ve entered too many characters",
+    "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
     "TEXT_TOO_MANY": "You’ve entered too many characters",

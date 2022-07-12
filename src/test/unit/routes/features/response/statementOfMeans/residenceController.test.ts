@@ -50,7 +50,7 @@ describe('Citizen residence', () => {
         .get(respondentResidenceUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({errorMessage: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -120,7 +120,7 @@ describe('Citizen residence', () => {
         .send('housingDetails=Palace')
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({errorMessage: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

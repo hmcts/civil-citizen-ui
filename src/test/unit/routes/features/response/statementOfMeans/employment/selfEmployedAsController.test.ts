@@ -40,7 +40,7 @@ describe('on Get', () => {
       .get(CITIZEN_SELF_EMPLOYED_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
 });
@@ -118,7 +118,7 @@ describe('on Post', () => {
       .send({jobTitle: 'Developer', annualTurnover: 70000})
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
 });

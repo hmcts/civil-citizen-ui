@@ -17,17 +17,16 @@ function renderView(form: OnTaxPayments, res: express.Response) {
   res.render(citizenOnTaxPaymentsViewPath, {form: form});
 }
 
-onTaxPaymentsController.get(ON_TAX_PAYMENTS_URL, async (req, res) => {
+onTaxPaymentsController.get(ON_TAX_PAYMENTS_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form = await getOnTaxPaymentsForm(req.params.id);
     renderView(form, res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
-
 });
 
-onTaxPaymentsController.post(ON_TAX_PAYMENTS_URL, async (req, res) => {
+onTaxPaymentsController.post(ON_TAX_PAYMENTS_URL, async (req, res, next: express.NextFunction) => {
   const form = new OnTaxPayments(req.body.option, Number(req.body.amountYouOwe), req.body.reason);
   try {
     await validateForm(form);
@@ -38,7 +37,8 @@ onTaxPaymentsController.post(ON_TAX_PAYMENTS_URL, async (req, res) => {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_COURT_ORDERS_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
+
 export default onTaxPaymentsController;

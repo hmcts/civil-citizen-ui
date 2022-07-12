@@ -17,19 +17,18 @@ function renderForm(form: GenericForm<CompanyTelephoneNumber>, res: express.Resp
   res.render(companyTelephoneNumberView, {form: form, contactPerson: contactPerson} );
 }
 
-companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, async (req, res) => {
+companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, async (req, res, next: express.NextFunction) => {
   try {
     const [contactPerson, telephoneNumberData] = await getCompanyTelephoneNumberData(req.params.id);
     const form = new GenericForm(telephoneNumberData);
     renderForm(form, res, contactPerson);
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
-companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res) => {
+companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res, next: express.NextFunction) => {
   const { option, mediationContactPerson, mediationPhoneNumber, mediationPhoneNumberConfirmation, contactPerson } = req.body;
-
   let companyTelephoneNumber: CompanyTelephoneNumber = null;
 
   if(!contactPerson){
@@ -47,7 +46,7 @@ companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res) =
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 export default companyTelephoneNumberController;

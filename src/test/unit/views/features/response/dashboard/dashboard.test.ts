@@ -55,6 +55,7 @@ describe('Dashboard page', () => {
         .get(DASHBOARD_URL + '?lang=en')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('Claims you&#39;ve made');
           expect(res.text).toContain('Claims made against you');
         });
     });
