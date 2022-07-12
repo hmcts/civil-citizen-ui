@@ -114,7 +114,7 @@
       "NO": "No"
     }
   },
-  "TASK_LIST":{
+  "TASK_LIST": {
     "APPLICATION_COMPLETE": "Application complete",
     "APPLICATION_INCOMPLETE": "Application incomplete",
     "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
@@ -212,6 +212,9 @@
       "EXPENSE_HIRE_PURCHASE": "Hire purchase",
       "EXPENSE_MOBILE_PHONE": "Mobile phone",
       "EXPENSE_MAINTENANCE": "Maintenance payments",
+      "FREE_TELEPHONE_CONTACT_NAME": "Contact name",
+      "FREE_TELEPHONE_CONTACT_NUMBER": "Contact number",
+      "FREE_TELEPHONE_MEDIATION": "Will you try free mediation",
       "FIRST_PAYMENT": "Make the first payment on",
       "FULL_NAME": "Full name",
       "INCOME_REGULAR": "Regular income",
