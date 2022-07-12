@@ -7,7 +7,7 @@ import {
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
-  CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN,
+  CIVIL_SERVICE_SUBMIT_EVENT,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -17,6 +17,8 @@ import {
   DashboardDefendantItem,
   DashboardClaimantItem,
 } from '../../common/models/dashboard/dashboardItem';
+import {EventDto} from '../../common/models/events/eventDto';
+import {CaseEvent} from '../../common/models/events/caseEvent';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -52,10 +54,6 @@ export class CivilServiceClient {
     const submitterId = req.session?.user?.id;
     try {
       const response = await this.client.get('/cases/claimant/' + submitterId, config);
-      console.log('Config is ' + config);
-      console.log('SubmitterId is ' + submitterId);
-      console.log('Had response of ' + response);
-      console.log('Response data is ' + response.data);
       return plainToInstance(DashboardClaimantItem, response.data as object[]);
     } catch (err) {
       console.log(err);
@@ -67,6 +65,7 @@ export class CivilServiceClient {
     const submitterId = req.session?.user?.id;
     try{
       const response = await this.client.get('/cases/defendant/' + submitterId, config);
+      console.log(response.data);
       return plainToInstance(DashboardDefendantItem, response.data as object[]);
     }catch(err){
       console.log(err);
@@ -127,15 +126,20 @@ export class CivilServiceClient {
     }
   }
 
-  async getSubmitDefendantResponseEventToken(claimId: string, req: AppRequest): Promise<string> {
+  async submitDefendantResponseEvent(claimId: string, req: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
+    const data : EventDto = {
+      event: CaseEvent.DEFENDANT_RESPONSE_SPEC,
+      caseDataUpdate: new Map<string, string>(),
+    };
+    console.log('user id ' + userId);
     try{
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_SUBMIT_RESPONSE_EVENT_TOKEN // nosonar
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
-        .replace(':caseId', claimId), config);// nosonar
-      console.log('event token ' + response.data);
-      return response.data as unknown as string;
+        .replace(':caseId', claimId), data, config);// nosonar
+      console.log('submitted event ' + response.data);
+      return  Object.assign(new Claim(), response.data);
     }catch (err: unknown) {
       logger.error(err);
       throw err;
