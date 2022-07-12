@@ -27,7 +27,7 @@ describe('Understanding Your Options Controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Requesting extra time');
+        expect(res.text).toContain('Understanding your options before respond');
       });
     });
 
