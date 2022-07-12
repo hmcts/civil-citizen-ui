@@ -4,9 +4,12 @@ import {CompanyTelephoneNumber} from '../../../common/form/models/mediation/comp
 import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from '../../urls';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {
-  getCompanyTelephoneNumberData, saveCompanyTelephoneNumberData,
+  getCompanyTelephoneNumberData,
+  saveCompanyTelephoneNumberData,
 } from '../../../services/features/response/mediation/companyTelephoneNumberService';
 import {YesNo} from '../../../common/form/models/yesNo';
+import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
+import {FreeMediation} from '../../../common/form/models/mediation/freeMediation';
 
 const companyTelephoneNumberController = express.Router();
 const companyTelephoneNumberView = 'features/mediation/company-telephone-number';
@@ -14,7 +17,7 @@ const companyTelephoneNumberView = 'features/mediation/company-telephone-number'
 function renderForm(form: GenericForm<CompanyTelephoneNumber>, res: express.Response, contactPerson?: string) {
   const companyTelephoneNumber = Object.assign(form);
   companyTelephoneNumber.option = form.model.option;
-  res.render(companyTelephoneNumberView, {form: form, contactPerson: contactPerson} );
+  res.render(companyTelephoneNumberView, {form: form, contactPerson: contactPerson});
 }
 
 companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, async (req, res, next: express.NextFunction) => {
@@ -28,12 +31,18 @@ companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, async (req, res, ne
 });
 
 companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res, next: express.NextFunction) => {
-  const { option, mediationContactPerson, mediationPhoneNumber, mediationPhoneNumberConfirmation, contactPerson } = req.body;
+  const {
+    option,
+    mediationContactPerson,
+    mediationPhoneNumber,
+    mediationPhoneNumberConfirmation,
+    contactPerson,
+  } = req.body;
   let companyTelephoneNumber: CompanyTelephoneNumber = null;
-
-  if(!contactPerson){
+  const mediation = await getMediation(req.params.id);
+  if (!contactPerson) {
     companyTelephoneNumber = new CompanyTelephoneNumber(YesNo.NO, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
-  } else{
+  } else {
     companyTelephoneNumber = new CompanyTelephoneNumber(option, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
   }
   const form = new GenericForm(companyTelephoneNumber);
@@ -42,6 +51,9 @@ companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res, n
     if (form.hasErrors()) {
       renderForm(form, res, contactPerson);
     } else {
+      if (mediation?.mediationDisagreement) {
+        await saveMediation(req.params.id, new FreeMediation(), 'mediationDisagreement');
+      }
       await saveCompanyTelephoneNumberData(req.params.id, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
     }

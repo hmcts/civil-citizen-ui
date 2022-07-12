@@ -16,11 +16,14 @@ const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSW
 export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const freeMediationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
   const contactNumberHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_URL);
-  const contactNumber = claim.mediation?.companyTelephoneNumber ? claim.mediation.companyTelephoneNumber.mediationPhoneNumber : claim.respondent1.telephoneNumber;
+  const contactNumber = claim.mediation?.companyTelephoneNumber ? claim.mediation.companyTelephoneNumber.mediationPhoneNumber
+    : claim.mediation?.canWeUse?.mediationPhoneNumber ? claim.mediation?.canWeUse?.mediationPhoneNumber
+      : claim.respondent1.telephoneNumber;
   const contactName = claim.mediation?.companyTelephoneNumber ? claim.mediation.companyTelephoneNumber.mediationContactPerson : claim.respondent1.contactPerson;
-
-  const canWeUse = claim.mediation?.canWeUse?.option ? YesNoUpperCase.YES : claim.mediation?.mediationDisagreement?.option ? YesNoUpperCase.NO : claim.mediation?.companyTelephoneNumber ? YesNoUpperCase.YES : YesNoUpperCase.NO;
-
+  const canWeUse = claim.mediation?.canWeUse?.option ? YesNoUpperCase.YES
+    : claim.mediation?.mediationDisagreement?.option ? YesNoUpperCase.NO
+      : claim.mediation?.companyTelephoneNumber ? YesNoUpperCase.YES
+        : YesNoUpperCase.NO;
 
   let freeTelephoneMediationSection: SummarySection = null;
 
