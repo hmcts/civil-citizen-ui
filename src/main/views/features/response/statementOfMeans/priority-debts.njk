@@ -23,12 +23,12 @@
         </ul>
       </div>
       <form method="post" novalidate>
-        {{ csrfProtection(csrfToken) }}
+        {{ csrfProtection(csrf) }}
         {% for checkBoxField in checkBoxFields %}
           {{ govukCheckboxes({
             idPrefix: checkBoxField.name,
             name: checkBoxField.name,
-            items: [
+            items: [ 
               {
                 value: checkBoxField.name,
                 text: t(checkBoxField.text),
