@@ -22,7 +22,7 @@ jest.mock('i18next', () => ({
 describe('Loans or Credit Card Debts Details', () => {
   it('should return loans or credit card debts when it exists', async () => {
     //Given
-    const claim = createClaimWithDebts();
+    const claim = createClaimWithDebts(YesNo.YES);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
@@ -39,7 +39,7 @@ describe('Loans or Credit Card Debts Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_COURT_ORDERS_TITLE);
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DEBTS_LOANS_OR_CREDIT_CARDS);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].value.html).toBe(YesNo.YES.charAt(0).toUpperCase() + YesNo.YES.slice(1));
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].value.html).toBe('COMMON.YES');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].actions?.items[0].href).toBe(CITIZEN_DEBTS_URL.replace(':id', constVal.CLAIM_ID));
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
 
@@ -72,5 +72,17 @@ describe('Loans or Credit Card Debts Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[16].value.html).toBe('£2,000');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[17].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DEBTS_MONTHLY_PAYMENTS);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[17].value.html).toBe('£10');
+  });
+
+  it('should return no loans or credit card debts when "No" option is selected ', async () => {
+     //Given
+    const claim = createClaimWithDebts(YesNo.NO);
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DEBTS_LOANS_OR_CREDIT_CARDS);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].value.html).toBe('COMMON.NO');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].actions?.items[0].href).toBe(CITIZEN_DEBTS_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });
 });

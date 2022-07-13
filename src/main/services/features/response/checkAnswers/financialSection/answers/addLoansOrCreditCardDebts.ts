@@ -8,6 +8,7 @@ import {
 } from '../../../../../../routes/urls';
 import {DebtItems} from '../../../../../../common/form/models/statementOfMeans/debts/debtItems';
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
+import {YesNoUpperCase,YesNo} from '../../../../../../common/form/models/yesNo';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
 
@@ -16,8 +17,8 @@ export const addLoansOrCreditCardDebts = (claim: Claim, financialSection: Summar
 
   if (claim.statementOfMeans?.debts?.debtsItems) {
     const debtsItems: DebtItems[] = claim.statementOfMeans.debts.debtsItems;
-    const option = claim.statementOfMeans.debts.option;
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DEBTS_LOANS_OR_CREDIT_CARDS', { lng: getLng(lang) }), option.charAt(0).toUpperCase() + option.slice(1), yourLoansOrCreditCardsDebtsHref, changeLabel(lang)));
+    const option = claim.statementOfMeans.debts.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DEBTS_LOANS_OR_CREDIT_CARDS', { lng: getLng(lang) }), t(`COMMON.${option}`, {lng: getLng(lang)}), yourLoansOrCreditCardsDebtsHref, changeLabel(lang)));
     for (let i = 0; i < debtsItems.length; i++) {
       financialSection.summaryList.rows.push(
         summaryRow((debtsItems.length > 1 ? (i + 1) + '. ' : '') + t('PAGES.CHECK_YOUR_ANSWER.DEBT', { lng: getLng(lang) }), debtsItems[i].debt, '', changeLabel(lang)),
