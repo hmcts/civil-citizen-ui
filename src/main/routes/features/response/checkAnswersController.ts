@@ -60,8 +60,8 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Requ
       renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(req.params.id, form.model);
-      const token: string = await civilServiceClient.getSubmitDefendantResponseEventToken(req.params.id, <AppRequest>req);
-      console.log('event token retrieved from service and logged in controller' + token);
+      const claim: Claim = await civilServiceClient.submitDefendantResponseEvent(req.params.id, <AppRequest>req);
+      console.log('response retrieved from service and logged in controller ' + claim);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CONFIRMATION_URL));
     }
   } catch (error) {
