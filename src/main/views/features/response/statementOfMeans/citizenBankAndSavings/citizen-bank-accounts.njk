@@ -16,15 +16,15 @@
       {% set formErrors = form.getFormErrors() %}
       {% if formErrors %}
         {{ govukErrorSummary({
-          "titleText": 'There was a problem',
-          "errorList": formErrors
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
+          "errorList": translateErrors(formErrors, t)
         }) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('List your bank and savings accounts') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.CITIZEN_BANK_ACCOUNTS.BANK_AND_SAVINGS_ACCOUNTS') }}</h1>
           <p class="govuk-body">
-            {{ t('Put a minus (-) in front of the amount if you’re overdrawn. For example £-804.45.') }}
+            {{ t('PAGES.CITIZEN_BANK_ACCOUNTS.EXAMPLE') }}
           </p>
         </div>
       </div>
@@ -32,25 +32,25 @@
         <form name="accounts" method="post" novalidate>
           {{ csrfProtection(csrf) }}
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
-            <label id="account-balance-label" class="govuk-label--s">{{ t('Type of account') }}</label>
+            <label id="account-balance-label" class="govuk-label--s">{{ t('PAGES.CITIZEN_BANK_ACCOUNTS.ACCOUNT_TYPE') }}</label>
           </div>
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
-            <label id="account-balance-label" class="govuk-label--s">{{ t('Joint account') }}</label>
+            <label id="account-balance-label" class="govuk-label--s">{{ t('PAGES.CITIZEN_BANK_ACCOUNTS.JOINT_ACCOUNT') }}</label>
           </div>
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
-            <label id="account-balance-label" class="govuk-label--s">{{ t('Balance') }}</label>
+            <label id="account-balance-label" class="govuk-label--s">{{ t('PAGES.CITIZEN_BANK_ACCOUNTS.BALANCE') }}</label>
           </div>
           {% for account in form.accounts %}
-            {{ bankAccountRow(account, bankAccountDropDownItems, loop.index0) }}
+            {{ bankAccountRow(account, bankAccountDropDownItems, loop.index0, t) }}
           {% endfor %}
           <div class="govuk-grid-column-two-thirds">
             {{ govukButton({
-              text: t("Add another account"),
+              text: t('PAGES.CITIZEN_BANK_ACCOUNTS.ADD_ANOTHER'),
               classes: "govuk-button--secondary append-row"
             }) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
             </div>
           </div>

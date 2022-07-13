@@ -25,7 +25,6 @@ describe('Explanation Controller', () => {
         .get(CITIZEN_EXPLANATION_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.EXPLANATION_TITLE);
         });
     });
     test('should return http 500 when has error', async () => {

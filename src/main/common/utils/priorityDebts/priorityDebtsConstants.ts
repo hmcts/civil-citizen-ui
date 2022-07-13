@@ -1,17 +1,16 @@
 export const checkBoxFields = [
-  {name: 'mortgage', text: 'Mortgage'},
-  {name: 'rent', text: 'Rent'},
-  {name: 'councilTax', text: 'Council Tax or Community Charge'},
-  {name: 'gas', text: 'Gas'},
-  {
-    name: 'electricity',
-    text: 'Electricity',
-  },
-  {name: 'water', text: 'Water'},
-  {name: 'maintenance', text: 'Maintenance Payments'},
+  {name: 'mortgage', text: 'COMMON.CHECKBOX_FIELDS.MORTGAGE'},
+  {name: 'rent', text: 'COMMON.CHECKBOX_FIELDS.RENT'},
+  {name: 'councilTax', text: 'COMMON.CHECKBOX_FIELDS.COUNCIL_TAX'},
+  {name: 'gas', text: 'COMMON.CHECKBOX_FIELDS.GAS'},
+  {name: 'electricity', text: 'COMMON.CHECKBOX_FIELDS.ELECTRICITY'},
+  {name: 'water', text: 'COMMON.CHECKBOX_FIELDS.WATER'},
+  {name: 'maintenance', text: 'COMMON.CHECKBOX_FIELDS.MAINTENANCE'},
 ];
 
-
 export const schedule = {
-  week: 'Week', twoWeeks: '2 weeks', fourWeeks: '4 weeks', month: 'month',
+  week: 'COMMON.SCHEDULE.WEEK',
+  twoWeeks: 'COMMON.SCHEDULE.FOUR_WEEKS',
+  fourWeeks: 'COMMON.SCHEDULE.TWO_WEEKS',
+  month: 'COMMON.SCHEDULE.MONTH',
 };

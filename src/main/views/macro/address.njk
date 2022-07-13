@@ -1,8 +1,8 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% macro addressForm(t,citizenAddress = '', addressLine1Error, addressCityError, addressPostCodeError, addressType, addressTitle) %}
-  {% set fieldSetText = t('If your address is not correct you can change it here. Any changes will be shared with the claimant when you submit your response.') %}
-  {% set textInputLabel = t('Building and street') %}
+  {% set fieldSetText = t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') + t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') %}
+  {% set textInputLabel = t('COMMON.ADDRESS_FORM.BUILDING_AND_STREET') %}
   {% set govukFormGroupError = 'govuk-form-group govuk-form-group--error' if addressLine1Error else '' %}
   {% call govukFieldset({
   legend: {
@@ -24,7 +24,7 @@
     name: addressType + "AddressLine1",
     autocomplete: addressType + "AddressLine-1",
     value: citizenAddress.primaryAddressLine1 if addressType == 'primary' else citizenAddress.correspondenceAddressLine1,
-    errorMessage: { text: addressLine1Error.isNotEmpty } if addressLine1Error else ''
+    errorMessage: { text: t(addressLine1Error.isNotEmpty) } if addressLine1Error else ''
   }) }}
     {{ govukInput({
     label: {
@@ -49,25 +49,25 @@
   </div>
   {{ govukInput({
     label: {
-      text: t('Town or city')
+      text: t('COMMON.ADDRESS_FORM.TOWN_OR_CITY')
     },
     classes: "govuk-input--width-20",
     id: addressType + "City",
     name: addressType + "City",
     autocomplete: addressType + "address-level2",
     value: citizenAddress.primaryCity if addressType == 'primary' else citizenAddress.correspondenceCity,
-    errorMessage: { text: addressCityError.isNotEmpty } if addressCityError else ''
+    errorMessage: { text: t(addressCityError.isNotEmpty) } if addressCityError else ''
   }) }}
   {{ govukInput({
     label: {
-      text: t('Postcode')
+      text: t('COMMON.ADDRESS_FORM.POSTCODE')
     },
     classes: "govuk-input--width-10",
     id: addressType + "PostCode",
     name: addressType + "PostCode",
     autocomplete: addressType + "postal-code",
     value: citizenAddress.primaryPostCode if addressType == 'primary' else citizenAddress.correspondencePostCode,
-    errorMessage: { text: addressPostCodeError.isNotEmpty or  addressPostCodeError.customInt} if addressPostCodeError else ''
+    errorMessage: { text: t(addressPostCodeError.isNotEmpty) or t(addressPostCodeError.customInt)} if addressPostCodeError else ''
   }) }}
   {% endcall %}
 {% endmacro %}

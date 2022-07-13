@@ -7,6 +7,8 @@
 {% from "./macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
+{% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language english-language' href='?lang=en'>English</a><a class='govuk-!-font-size-19 govuk-link language cymraeg-language' href='?lang=cy'>Cymraeg</a>"%}
+
 {% extends "govuk/template.njk" %}
 {% block head %}
   {% include "webpack/css.njk" %}
@@ -42,6 +44,7 @@
       text: "beta"
       },
       html: 'This is a new service – your <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen" target="_blank">feedback</a> will help us to improve it.'
+      + languageToggle
       }) }}
   </div>
 {% endblock %}
@@ -53,10 +56,10 @@
           {% block error %}
             {% if errors %}
               {{ govukErrorSummary({
-                "titleText": t("There was a problem"),
-                "errorList": errors
+                "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
+                "errorList": translateErrors(errors, t)
               }) }}
-            {% endif %} 
+            {% endif %}
           {% endblock %}
           {% block question %}
           {% endblock %}

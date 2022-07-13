@@ -3,16 +3,6 @@ import {MAX_AMOUNT_VALUE, MIN_AMOUNT_VALUE} from '../../validators/validationCon
 
 export type ScheduleOptions = 'WEEK' | 'TWO_WEEKS' | 'FOUR_WEEKS' | 'MONTH';
 
-export interface DisplayValuesForDebt {
-  mortgage: 'Mortgage';
-  rent: 'Rent';
-  councilTax: 'Council Tax or Community Charge';
-  gas: 'Gas';
-  electricity: 'Electricity';
-  water: 'Water';
-  maintenance: 'Maintenance';
-}
-
 export interface DebtValidationError {
   text: string;
   href: string;
@@ -23,12 +13,16 @@ export interface DebtDetailsError {
   schedule?: DebtValidationError;
 }
 
+const getLastElement = (translationKey: string): string => translationKey.split('.').pop();
+
 const generateErrorMessageForValidTwoDecimalNumber = (name: string): string =>
-  `Enter a valid ${name} amount, maximum two decimal places`;
+  `ERRORS.VALID_DEBT_AMOUNT.${getLastElement(name)}`;
+
 const generateErrorMessageForValidPaymentAmount = (name: string): string =>
-  `Enter how much you pay for ${name}`;
+  `ERRORS.SELECT_AMOUNT.${getLastElement(name)}`;
+
 const generateErrorMessageForValidPaymentSchedule = (name: string) =>
-  `Select how often you pay for ${name}`;
+  `ERRORS.SELECT_FREQUENCY.${getLastElement(name)}`;
 
 const withMessage = (buildErrorFn: (name: string) => string) => {
   return (args: any): string => {

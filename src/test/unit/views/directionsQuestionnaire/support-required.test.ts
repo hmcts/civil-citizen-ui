@@ -37,7 +37,7 @@ describe('Support required View', () => {
 
     it('should display header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-fieldset__legend--l');
-      expect(header[0].innerHTML).toContain('Select any support you’d require for a court hearing (optional)');
+      expect(header[0].innerHTML).toContain('Select any support you\'d require for a court hearing (optional)');
     });
 
     it('should display 5 checkboxes with various options', () => {
