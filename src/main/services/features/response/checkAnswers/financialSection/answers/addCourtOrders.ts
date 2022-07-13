@@ -18,7 +18,7 @@ export const addCourtOrders = (claim: Claim, financialSection: SummarySection, c
 
   if (courtOrders?.declared && courtOrders?.rows?.length > 0) {
     financialSection.summaryList.rows.push(
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE', {lng: getLng(lang)}), t(`COMMON.${YesNoUpperCase.YES}`, {lng: getLng(lang)}), yourCourtOrdersHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE', { lng: getLng(lang) }), t(`COMMON.${YesNoUpperCase.YES}`, { lng: getLng(lang) }), yourCourtOrdersHref, changeLabel(lang)),
     );
 
     for (const item of courtOrders.rows) {
@@ -28,7 +28,7 @@ export const addCourtOrders = (claim: Claim, financialSection: SummarySection, c
     }
   } else {
     financialSection.summaryList.rows.push(
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE', {lng: getLng(lang)}), t(`COMMON.${YesNoUpperCase.NO}`, {lng: getLng(lang)}), yourCourtOrdersHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_TITLE', { lng: getLng(lang) }), t(`COMMON.${YesNoUpperCase.NO}`, { lng: getLng(lang) }), yourCourtOrdersHref, changeLabel(lang)),
     );
   }
 };

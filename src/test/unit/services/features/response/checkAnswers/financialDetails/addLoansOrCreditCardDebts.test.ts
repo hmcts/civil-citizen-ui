@@ -75,7 +75,7 @@ describe('Loans or Credit Card Debts Details', () => {
   });
 
   it('should return no loans or credit card debts when "No" option is selected ', async () => {
-     //Given
+    //Given
     const claim = createClaimWithDebts(YesNo.NO);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');

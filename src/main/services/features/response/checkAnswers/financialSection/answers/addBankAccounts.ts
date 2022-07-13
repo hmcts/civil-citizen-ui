@@ -18,7 +18,7 @@ export const addBankAccounts = (claim: Claim, financialSection: SummarySection, 
   const yourBankAccountHref = CITIZEN_BANK_ACCOUNT_URL.replace(':id', claimId);
   if (claim.statementOfMeans?.bankAccounts) {
     const bankAccounts: CitizenBankAccount[] = claim.statementOfMeans.bankAccounts;
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.BANK_AND_SAVINGS_ACCOUNTS', {lng: getLng(lang)}), '', yourBankAccountHref, changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.BANK_AND_SAVINGS_ACCOUNTS', { lng: getLng(lang) }), '', yourBankAccountHref, changeLabel(lang)));
     for (let i = 0; i < bankAccounts.length; i++) {
       let typeOfAccount: string;
 
@@ -40,12 +40,12 @@ export const addBankAccounts = (claim: Claim, financialSection: SummarySection, 
 
       const joint = bankAccounts[i].joint === 'true' ? YesNoUpperCase.YES : YesNoUpperCase.NO;
       financialSection.summaryList.rows.push(
-        summaryRow((bankAccounts.length > 1 ? (i + 1) + '. ' : '') + t('PAGES.CHECK_YOUR_ANSWER.BANK_TYPE_OF_ACCOUNT', {lng: getLng(lang)}), typeOfAccount, yourBankAccountHref, changeLabel(lang)),
+        summaryRow((bankAccounts.length > 1 ? (i + 1) + '. ' : '') + t('PAGES.CHECK_YOUR_ANSWER.BANK_TYPE_OF_ACCOUNT', { lng: getLng(lang) }), typeOfAccount, yourBankAccountHref, changeLabel(lang)),
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.BANK_BALANCE', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(bankAccounts[i].balance)), yourBankAccountHref, changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.BANK_JOINT_ACCOUNT', {lng: getLng(lang)}), t(`COMMON.${joint}`, {lng: getLng(lang)}), yourBankAccountHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.BANK_JOINT_ACCOUNT', { lng: getLng(lang) }), t(`COMMON.${joint}`, { lng: getLng(lang) }), yourBankAccountHref, changeLabel(lang)),
       );
     }
   } else {
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.BANK_AND_SAVINGS_ACCOUNTS', {lng: getLng(lang)}), 'None', yourBankAccountHref, changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.BANK_AND_SAVINGS_ACCOUNTS', { lng: getLng(lang) }), 'None', yourBankAccountHref, changeLabel(lang)));
   }
 };
