@@ -430,6 +430,8 @@
       "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
     },
     "DASHBOARD": {
+      "DRAFT_CLAIM_NUMBER": "Hawliad drafft",
+      "DRAFT_CLAIM_NEXT_STEPS": "Parhau gyda'r hawliad",
       "PAGE_TITLE": "Claims made by or against you",
       "CLAIMANT_TITLE": "Claims made by you",
       "DEFENDANT_TITLE": "Smialc edam tsniaga uoy",

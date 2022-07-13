@@ -1,6 +1,11 @@
 import config from 'config';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {generateServiceToken} from './serviceAuthProviderClient';
+import {DashboardClaimantItem} from '../../common/models/dashboard/dashboardItem';
+import {
+  draftOcmcClaimToDashboardItem,
+  OcmcDraftData,
+} from '../../common/models/legacyDraftClaim/draftClaim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('legacyDraftStoreClient');
@@ -13,7 +18,7 @@ const secretsAsHeader = (primarySecret: string, secondarySecret: string): string
   return secondarySecret ? `${primarySecret}, ${secondarySecret}` : primarySecret;
 };
 
-const getOcmcDraftClaims = async (userToken: string): Promise<void> => {
+const getOcmcDraftClaims = async (userToken: string): Promise<DashboardClaimantItem> => {
   try {
     const _cmcS2sSecret = config.get<string>('services.serviceAuthProvider.cmcS2sSecret');
     const primarySecret = config.get<string>('services.draftStore.legacy.s2s.primarySecret');
@@ -31,8 +36,10 @@ const getOcmcDraftClaims = async (userToken: string): Promise<void> => {
       '/drafts',
       {headers},
     );
-
     logger.info(`Draft raw data retrieved from Legacy Draft Store: ${JSON.stringify(response.data)}`);
+    const draft: OcmcDraftData = response.data as unknown as OcmcDraftData;
+    console.log(draft);
+    return draftOcmcClaimToDashboardItem(draft.data[0]);
   } catch (error) {
     logger.error(error);
     throw error;

@@ -24,6 +24,24 @@
         </tr>
         </thead>
         <tbody class="govuk-table__body">
+        {% if claimDraftSaved|length %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              <a href={{ claimDraftSaved.getHref() }}> {{ t(claimDraftSaved.claimNumber) }} </a>
+            </td>
+            <td class="govuk-table__cell">-</td>
+            <td class="govuk-table__cell">-</td>
+            <td class="govuk-table__cell">
+              <a href={{ claimDraftSaved.getHref() }}>
+                {{ t(claimDraftSaved.nextSteps) }}
+              </a>
+            </td>
+            <td class="govuk-table__cell">-</td>
+            <td class="govuk-table__cell">
+              <a href={{ claimDraftSaved.getHref() }}> {{ t('PAGES.DASHBOARD.VIEW') }} </a>
+            </td>
+          </tr>
+        {% endif %}
         {% for item in claimsAsClaimant %}
           <tr class="govuk-table__row">
             <td class="govuk-table__cell">
@@ -46,7 +64,7 @@
     <div class="govuk-grid-column-full">
       <h2 class="govuk-heading-m">{{ t('PAGES.DASHBOARD.DEFENDANT_TITLE') }}</h2>
       <p class="govuk-body">
-          {{ t('PAGES.DASHBOARD.CLAIM_PROMPT') }}
+        {{ t('PAGES.DASHBOARD.CLAIM_PROMPT') }}
       </p>
       <table class="govuk-table">
         <thead class="govuk-table__head">
@@ -59,14 +77,14 @@
         </thead>
         <tbody class="govuk-table__body">
         {% for item in claimsAsDefendant %}
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell">
-            <a href={{ item.getHref() }}> {{ item.claimNumber }} </a>
-          </td>
-          <td class="govuk-table__cell">{{ item.claimantName }}</td>
-          <td class="govuk-table__cell">{{ item.claimAmount }}</td>
-          <td class="govuk-table__cell">{{ t('PAGES.DASHBOARD.ACTION_PROMPT') }}{{ item.responseDeadline }}</td>
-        </tr>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              <a href={{ item.getHref() }}> {{ item.claimNumber }} </a>
+            </td>
+            <td class="govuk-table__cell">{{ item.claimantName }}</td>
+            <td class="govuk-table__cell">{{ item.claimAmount }}</td>
+            <td class="govuk-table__cell">{{ t('PAGES.DASHBOARD.ACTION_PROMPT') }}{{ item.responseDeadline }}</td>
+          </tr>
         {% endfor %}
         </tbody>
       </table>
