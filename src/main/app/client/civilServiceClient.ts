@@ -127,8 +127,7 @@ export class CivilServiceClient {
   }
 
   async submitDefendantResponseEvent(claimId: string, req: AppRequest): Promise<Claim> {
-    const claim = await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, req);
-    return claim;
+    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, req: AppRequest): Promise<Claim> {
