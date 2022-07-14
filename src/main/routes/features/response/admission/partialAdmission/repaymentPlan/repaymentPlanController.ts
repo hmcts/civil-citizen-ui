@@ -1,22 +1,19 @@
 import * as express from 'express';
-import { RepaymentPlanForm } from '../../../../common/form/models/repaymentPlan/repaymentPlanForm';
-import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFormatter';
-import { DateFormatter } from '../../../../common/utils/dateFormatter';
+import {RepaymentPlanForm} from '../../../../../../common/form/models/repaymentPlan/repaymentPlanForm';
+import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
+import {DateFormatter} from '../../../../../../common/utils/dateFormatter';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
-} from '../../../../services/features/response/repaymentPlan/repaymentPlanService';
-import {
-  CITIZEN_REPAYMENT_PLAN,
-  CLAIM_TASK_LIST_URL,
-} from '../../../urls';
-import {validateForm} from '../../../../common/form/validators/formValidator';
+} from '../../../../../../services/features/response/repaymentPlan/repaymentPlanService';
+import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
+import {validateForm} from '../../../../../../common/form/validators/formValidator';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
 const repaymentPlanController = express.Router();
 
 function renderView(form: RepaymentPlanForm, res: express.Response): void {
-  res.render(repaymentPlanViewPath, { form, paymentExampleDate: getFirstPaymentExampleDate() });
+  res.render(repaymentPlanViewPath, {form, paymentExampleDate: getFirstPaymentExampleDate()});
 }
 
 const getFirstPaymentExampleDate = () => {
@@ -27,7 +24,7 @@ const getFirstPaymentExampleDate = () => {
   });
 };
 
-repaymentPlanController.get(CITIZEN_REPAYMENT_PLAN, async (req, res, next: express.NextFunction) => {
+repaymentPlanController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form = await getRepaymentPlanForm(req.params.id);
     renderView(form, res);
@@ -36,7 +33,7 @@ repaymentPlanController.get(CITIZEN_REPAYMENT_PLAN, async (req, res, next: expre
   }
 });
 
-repaymentPlanController.post(CITIZEN_REPAYMENT_PLAN,
+repaymentPlanController.post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const savedValues = await getRepaymentPlanForm(req.params.id);

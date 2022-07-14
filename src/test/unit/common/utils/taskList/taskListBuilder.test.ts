@@ -9,22 +9,22 @@ import {Claim} from '../../../../../main/common/models/claim';
 import {PartialAdmission} from '../../../../../main/common/models/partialAdmission';
 import {Respondent} from '../../../../../main/common/models/respondent';
 import {constructResponseUrlWithIdParams} from '../../../../../main/common/utils/urlFormatter';
-import { 
-  buildResolvingTheClaimSection, 
-  buildRespondToClaimSection, 
+import {
+  buildResolvingTheClaimSection,
+  buildRespondToClaimSection,
   buildYourHearingRequirementsSection,
 } from '../../../../../main/common/utils/taskList/taskListBuilder';
-import { 
+import {
+  CITIZEN_AMOUNT_YOU_PAID_URL,
+  CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
+  CITIZEN_OWED_AMOUNT_URL,
+  CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
+  CITIZEN_PAYMENT_OPTION_URL,
+  CITIZEN_REPAYMENT_PLAN_FULL_URL,
   CITIZEN_RESPONSE_TYPE_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_URL,
-  CITIZEN_REPAYMENT_PLAN,
   FINANCIAL_DETAILS_URL,
-  CITIZEN_PAYMENT_OPTION_URL,
-  CITIZEN_AMOUNT_YOU_PAID_URL,
-  CITIZEN_OWED_AMOUNT_URL,
-  CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
   SUPPORT_REQUIRED_URL,
-  CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
 } from '../../../../../main/routes/urls';
 
 describe('Task List Builder', () => {
@@ -32,7 +32,7 @@ describe('Task List Builder', () => {
   const lang = 'en';
   const chooseAResponseUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
   const whyDisagreeWithAmountClaimedUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_URL);
-  const repaymentPlanUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN);
+  const repaymentPlanUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_FULL_URL);
   const shareFinancialDetailsUrl = constructResponseUrlWithIdParams(claimId, FINANCIAL_DETAILS_URL);
   const decideHowYouPayUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_OPTION_URL);
   const howMuchHaveYouPaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
@@ -40,7 +40,7 @@ describe('Task List Builder', () => {
   const freeTelephoneMediationUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
   const giveUsDetailsHearingUrl = constructResponseUrlWithIdParams(claimId, SUPPORT_REQUIRED_URL);
   const whenWillYouPayUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL);
-  
+
   describe('test buildRespondToClaimSection', () => {
 
     describe('test FULL_ADMISSION', () => {
