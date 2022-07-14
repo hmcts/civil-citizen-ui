@@ -8,8 +8,8 @@ export interface DraftOcmcClaim {
 }
 
 export interface DraftClaim {
-  claimant: OcmcParty;
-  defendant: OcmcParty;
+  claimant?: OcmcParty;
+  defendant?: OcmcParty;
 }
 
 export interface OcmcParty {
