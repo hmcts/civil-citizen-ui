@@ -28,13 +28,13 @@ repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, asy
 repaymentPlanPartAdmissionController.post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
-      const savedValues = await getRepaymentPlanForm(req.params.id);
-      const form: RepaymentPlanForm = new RepaymentPlanForm(savedValues.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day);
-      await validateForm(form);
-      if (form.hasErrors()) {
-        renderView(form, res);
+      const repaymentPlan = await getRepaymentPlanForm(req.params.id);
+      const repaymentPlanForm: RepaymentPlanForm = new RepaymentPlanForm(repaymentPlan.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day);
+      await validateForm(repaymentPlanForm);
+      if (repaymentPlanForm.hasErrors()) {
+        renderView(repaymentPlanForm, res);
       } else {
-        await saveRepaymentPlanData(req.params.id, form);
+        await saveRepaymentPlanData(req.params.id, repaymentPlanForm);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
       }
     } catch (error) {
