@@ -15,7 +15,7 @@ export function dateFilter(value: string): string {
 }
 
 /**
- * This filter should be used when you want to display long format from date format dd/MM/yyyy
+ * This filter should be used when you want to display long format from date format dd-MM-yyyy
  * usage (in njk):
  * {{myDateVar | formatDate}}
  * output:
