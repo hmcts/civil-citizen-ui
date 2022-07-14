@@ -28,7 +28,7 @@
           <h1 class="govuk-heading-l">{{ t('PAGES.COURT_ORDERS.TITLE') }}</h1>
           <div data-module="moj-add-another">
             <form method="post" novalidate>
-              {{ csrfProtection(csrfToken) }}
+              {{ csrfProtection(csrf) }}
 
               {% set courtOrdersHtml %}
                 <div
