@@ -11,7 +11,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('legacyDraftStoreClient');
 
 const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
-const client: AxiosInstance = Axios.create({baseURL: draftStoreUrl});
+
 const microserviceName = config.get<string>('services.draftStore.legacy.s2s.microserviceName');
 
 const secretsAsHeader = (primarySecret: string, secondarySecret: string): string => {
@@ -19,6 +19,7 @@ const secretsAsHeader = (primarySecret: string, secondarySecret: string): string
 };
 
 const getOcmcDraftClaims = async (userToken: string): Promise<DashboardClaimantItem> => {
+  const client: AxiosInstance = Axios.create({baseURL: draftStoreUrl});
   try {
     const _cmcS2sSecret = config.get<string>('services.serviceAuthProvider.cmcS2sSecret');
     const primarySecret = config.get<string>('services.draftStore.legacy.s2s.primarySecret');

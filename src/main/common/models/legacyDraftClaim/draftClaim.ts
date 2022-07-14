@@ -4,10 +4,10 @@ export interface OcmcDraftData {
 }
 export interface DraftOcmcClaim {
   id?: string;
-  document?: DraftClaim;
+  document?: DraftClaimDetails;
 }
 
-export interface DraftClaim {
+export interface DraftClaimDetails {
   claimant?: OcmcParty;
   defendant?: OcmcParty;
 }
