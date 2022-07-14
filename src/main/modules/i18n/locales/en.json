@@ -430,8 +430,8 @@
       "TITLE": "Are you paying money as a result of any court orders?"
     },
     "DASHBOARD": {
-      "DRAFT_CLAIM_NUMBER": "Draft claim",
       "DRAFT_CLAIM_NEXT_STEPS": "Continue with claim",
+      "DRAFT_CLAIM_NUMBER": "Draft claim",
       "PAGE_TITLE": "Claims made by or against you",
       "CLAIMANT_TITLE": "Claims you've made",
       "DEFENDANT_TITLE": "Claims made against you",
