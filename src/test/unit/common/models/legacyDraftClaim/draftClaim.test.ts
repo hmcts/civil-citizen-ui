@@ -1,6 +1,6 @@
 import {
   DraftOcmcClaim,
-  draftOcmcClaimToDashboardItem
+  draftOcmcClaimToDashboardItem,
 } from '../../../../../main/common/models/legacyDraftClaim/draftClaim';
 
 describe('draftOcmcClaimToDashboardItem', () => {
