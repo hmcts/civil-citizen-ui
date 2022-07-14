@@ -30,7 +30,4 @@ functional-output/
 
 .yarn/
 .yarnrc
-src/test/output/*
-src/main/app.ts
-test-results/
 package-lock.json
