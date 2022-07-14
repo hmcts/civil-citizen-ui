@@ -10,13 +10,13 @@ import {CITIZEN_REPAYMENT_PLAN_FULL_URL, CLAIM_TASK_LIST_URL} from '../../../../
 import {validateForm} from '../../../../../../common/form/validators/formValidator';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
-const repaymentPlanController = express.Router();
+const repaymentPlanFullAdmissionController = express.Router();
 
 function renderView(form: RepaymentPlanForm, res: express.Response): void {
   res.render(repaymentPlanViewPath, {form, paymentExampleDate: getFirstPaymentExampleDate()});
 }
 
-const getFirstPaymentExampleDate = () => {
+export const getFirstPaymentExampleDate = () => {
   const date = new Date();
   DateFormatter.setMonth(date, 1);
   return DateFormatter.setDateFormat(date, 'en-GB', {
@@ -24,7 +24,7 @@ const getFirstPaymentExampleDate = () => {
   });
 };
 
-repaymentPlanController.get(CITIZEN_REPAYMENT_PLAN_FULL_URL, async (req, res, next: express.NextFunction) => {
+repaymentPlanFullAdmissionController.get(CITIZEN_REPAYMENT_PLAN_FULL_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form = await getRepaymentPlanForm(req.params.id);
     renderView(form, res);
@@ -33,7 +33,7 @@ repaymentPlanController.get(CITIZEN_REPAYMENT_PLAN_FULL_URL, async (req, res, ne
   }
 });
 
-repaymentPlanController.post(CITIZEN_REPAYMENT_PLAN_FULL_URL,
+repaymentPlanFullAdmissionController.post(CITIZEN_REPAYMENT_PLAN_FULL_URL,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const savedValues = await getRepaymentPlanForm(req.params.id);
@@ -50,4 +50,4 @@ repaymentPlanController.post(CITIZEN_REPAYMENT_PLAN_FULL_URL,
     }
   });
 
-export default repaymentPlanController;
+export default repaymentPlanFullAdmissionController;
