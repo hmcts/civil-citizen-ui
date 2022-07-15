@@ -6,6 +6,7 @@ import {app} from '../../main/app';
 import {fail} from 'assert';
 import {IGNORED_URLS} from './ignored-urls';
 import {mockCivilClaim} from '../utils/mockDraftStore';
+import CivilClaimResponseMock from '../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../main/modules/oidc');
 jest.mock('../../main/modules/draft-store');
@@ -89,6 +90,9 @@ describe('Accessibility', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    nock('http://localhost:4000')
+      .get('/cases/:id')
+      .reply(200, CivilClaimResponseMock);
   });
 
   urlsList.forEach((url) => {
