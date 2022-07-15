@@ -635,6 +635,14 @@
     "REPAYMENT_PLAN": {
       "PAGE_TITLE": "Your repayment plan"
     },
+    "REQUEST_MORE_TIME": {
+      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
+      "HOW_MUCH_ADDITIONAL_TIME": "How much additional time are you asking for?",
+      "MORE_THAN_28_DAYS": "More than 28 days",
+      "PAGE_TITLE": "Request more time",
+      "TITLE": "Request more time to respond",
+      "UP_TO_28_DAYS": "Up to 28 days"
+    },
     "RESIDENCE": {
       "ASSOCIATION_HOME": "Cartref cymdeithas dai neu'r cyngor",
       "OWN_HOME": "Cartref rydych yn berchen arno (neu'n talu morgais arno)",

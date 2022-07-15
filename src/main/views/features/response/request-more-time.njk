@@ -1,0 +1,85 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.REQUEST_MORE_TIME.PAGE_TITLE') }}
+{% endblock %}
+
+{% set upTo28DaysHtml %}
+  <p class="govuk-body">
+    {{ t('PAGES.REQUEST_MORE_TIME.SELECT_SAVE_AND_CONTACT', {claimantName : claimantName}) }}
+    {{ t('PAGES.REQUEST_MORE_TIME.NO_AGREEMENT') }}
+  </p>
+  <p class="govuk-body govuk-!-margin-top-6">{{ t('PAGES.REQUEST_MORE_TIME.IF_AGREED', {responseDeadline: responseDate}) }}</p>
+{% endset -%}
+
+{% set moreThan28DaysHtml %}
+  <p class="govuk-body govuk-!-margin-bottom-6">
+    {{ t('PAGES.REQUEST_MORE_TIME.APPLY_TO_COURT') }}
+    {{ t('PAGES.REQUEST_MORE_TIME.TELL_OTHER_PARTY') }}
+  </p>
+  <p class="govuk-body govuk-!-margin-bottom-6">
+    <a href="https://www.gov.uk/government/publications/form-n244-application-notice">{{ t('PAGES.REQUEST_MORE_TIME.DOWNLOAD_FORM') }}</a>
+    {{ t('PAGES.REQUEST_MORE_TIME.SELECT_SAVE_AND_CONTINUE') }}
+  </p>
+  <p class="govuk-body govuk-!-margin-bottom-6">{{ t('PAGES.REQUEST_MORE_TIME.EMAIL_FORM') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('PAGES.REQUEST_MORE_TIME.POST') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.BUILDING') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.PO_BOX') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.CITY') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.POSTCODE') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.TELEPHONE') }}</p>
+{% endset -%}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{  t('PAGES.REQUEST_MORE_TIME.TITLE') }}</h1>
+          <p class="govuk-body"> {{ t('PAGES.REQUEST_MORE_TIME.CURRENT_DEADLINE', {responseDeadline: responseDate}) }}</p>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% set fieldName = 'option' %}
+            {{ govukRadios({
+              idPrefix: fieldName,
+              name: fieldName,
+              fieldset: {
+                legend: {
+                  text: t('PAGES.REQUEST_MORE_TIME.HOW_MUCH_ADDITIONAL_TIME'),
+                  isPageHeading: true,
+                  classes: "govuk-fieldset__legend--m"
+                }
+              },
+              items: [
+                {
+                  value: 'up-to-28',
+                  text: t('PAGES.REQUEST_MORE_TIME.UP_TO_28_DAYS'),
+                  conditional: {
+                    html: upTo28DaysHtml
+                  }
+                },
+                {
+                  value: 'more-than-28',
+                  text: t('PAGES.REQUEST_MORE_TIME.MORE_THAN_28_DAYS'),
+                  conditional: {
+                    html: moreThan28DaysHtml
+                  }
+                }
+              ]
+            }) }}
+            {{ govukButton({
+              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+            }) }}
+            {{ contactUsForHelp(t) }}
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
