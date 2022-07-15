@@ -621,7 +621,26 @@
       "PAGE_TITLE": "Your regular expenses"
     },
     "REGULAR_INCOME": {
-      "PAGE_TITLE": "Your regular income"
+      "AMOUNT_RECEIVED" : "Amount received",
+      "BUTTON_ADD_SOURCE" : "Add another source of income",
+      "CHILD_TAX" : "Child Tax Credit",
+      "CHILD_BENEFIT" : "Child Benefit",
+      "COUNCIL_TAX": "Council Tax Support",
+      "INCOME_JOB" : "Income from your job",
+      "INCOME_SUPPORT" : "Income Support",
+      "INCLUDE_WAGES_OVERTIME_COMISSION" : "Include wages, overtime, commission, bonuses",
+      "JOBSEEKER_ALLOWANCE_INCOME" : "Jobseeker’s Allowance (income based)",
+      "JOBSEEKER_ALLOWANCE_CONTRIBUTION" : "Jobseeker’s Allowance (contribution based)",
+      "OTHER" : "Other",
+      "PAGE_TITLE": "Your regular income",
+      "PENSION" : "Pension",
+      "RECEIVED_EVERY" : "Received every",
+      "SELECT_ALL_THAT_APPLY" : "Select all that apply. The information you enter must be truthful and accurate.",
+      "SOURCE_INCOME" : "Source of income",
+      "TOTAL_MONTHLY" : "Total monthly income:",
+      "UNIVERSAL_CREDIT" : "Universal Credit",
+      "WHAT_REGULAR_INCOME" : "What regular income do you receive?",
+      "WORKING_TAX" : "Working Tax Credit"
     },
     "REJECT_ALL": {
       "FEE": "Fee",
