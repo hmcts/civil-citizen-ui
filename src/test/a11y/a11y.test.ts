@@ -66,7 +66,7 @@ function expectNoErrors(messages: PallyIssue[]): void {
 
 function testAccessibilityWithActions(url: string, actions: string[]): void {
   describe(`Page ${url}`, () => {
-    test(`should have no accessibility errors ${(actions.length) ? 'with actions': ''}`, done => {
+    test(`should have no accessibility errors ${(actions.length) ? 'with actions' : ''}`, done => {
       ensurePageCallWillSucceed(url)
         .then(() => runPally(agent.get(url).url, actions))
         .then((result: Pa11yResult) => {
@@ -90,10 +90,12 @@ describe('Accessibility', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    nock('http://localhost:4000')
-      .get('/cases/:id')
-      .reply(200, CivilClaimResponseMock);
   });
+  nock('http://localhost:4000')
+    .get('/cases/:id')
+    .reply(200, CivilClaimResponseMock)
+    .get('/cases/1645882162449409')
+    .reply(200, CivilClaimResponseMock);
 
   urlsList.forEach((url) => {
     testAccessibility(url);
