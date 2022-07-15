@@ -8,12 +8,17 @@ import {
 import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
 import {validateForm} from '../../../../../../common/form/validators/formValidator';
 import {getFirstPaymentExampleDate} from '../../fullAdmission/repaymentPlan/repaymentPlanController';
+import {ResponseType} from '../../../../../../common/form/models/responseType';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
 const repaymentPlanPartAdmissionController = express.Router();
 
 function renderView(form: RepaymentPlanForm, res: express.Response): void {
-  res.render(repaymentPlanViewPath, {form, paymentExampleDate: getFirstPaymentExampleDate()});
+  res.render(repaymentPlanViewPath, {
+    form,
+    paymentExampleDate: getFirstPaymentExampleDate(),
+    admission: ResponseType.PART_ADMISSION,
+  });
 }
 
 repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, async (req, res, next: express.NextFunction) => {

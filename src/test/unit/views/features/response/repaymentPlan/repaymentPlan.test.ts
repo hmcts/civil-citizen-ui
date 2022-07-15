@@ -186,28 +186,28 @@ describe('Repayment Plan View', () => {
     });
 
     it('should display correct error summary message with correct link for Year', () => {
-      const errorSummaryMessage = getErrorSummaryListElement(1);
+      const errorSummaryMessage = getErrorSummaryListElement(4);
       expect(errorSummaryMessage.innerHTML).toContain(VALID_YEAR);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#year');
     });
 
     it('should display correct error summary message with correct link for Month', () => {
-      const errorSummaryMessage = getErrorSummaryListElement(2);
+      const errorSummaryMessage = getErrorSummaryListElement(3);
       expect(errorSummaryMessage.innerHTML).toContain(VALID_MONTH);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#month');
     });
 
     it('should display correct error summary message with correct link form Day', () => {
-      const errorSummaryMessage = getErrorSummaryListElement(3);
+      const errorSummaryMessage = getErrorSummaryListElement(2);
       expect(errorSummaryMessage.innerHTML).toContain(VALID_DAY);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#day');
     });
 
     it('should display correct error summary message with correct link for Repayment Frequency', () => {
-      const errorSummaryMessage = getErrorSummaryListElement(4);
+      const errorSummaryMessage = getErrorSummaryListElement(1);
       expect(errorSummaryMessage.innerHTML).toContain(PAYMENT_FREQUENCY_REQUIRED);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#repaymentFrequency');
