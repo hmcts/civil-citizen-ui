@@ -260,9 +260,12 @@ elasticsearch:
     enabled: false
   ingress:
     enabled: true
+    annotations:
+      kubernetes.io/ingress.class: traefik
     path: /
-    ingressHost:
-      - es-${SERVICE_FQDN}
+    hosts:
+     - es-${SERVICE_FQDN}
+
 
 logstash:
   image:
