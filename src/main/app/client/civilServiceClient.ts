@@ -23,6 +23,11 @@ import {CaseEvent} from '../../common/models/events/caseEvent';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
+const convertCaseToClaimAndIncludeState = (caseDetails: CivilClaimResponse): Claim => {
+  const claim = Object.assign(new Claim(), caseDetails.case_data);
+  claim.ccdState = caseDetails.state;
+  return claim;
+};
 export class CivilServiceClient {
   client: AxiosInstance;
 
@@ -90,11 +95,14 @@ export class CivilServiceClient {
   async retrieveClaimDetails(claimId: string, req: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(`/cases/${claimId}`, config);// nosonar
+      const response = await this.client.get(`/cases/${claimId}`, config);// nosonar
+      console.log('Incoming case details-->', response.data);
       if (!response.data) {
         throw new AssertionError({message: CLAIM_DETAILS_NOT_AVAILBALE});
       }
-      return Object.assign(new Claim(), response.data);
+      const caseDetails: CivilClaimResponse = response.data;   
+      console.log('Converted claim-->', convertCaseToClaimAndIncludeState(caseDetails));
+      return convertCaseToClaimAndIncludeState(caseDetails);
     } catch (err: unknown) {
       logger.error(err);
     }
