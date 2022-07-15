@@ -654,7 +654,10 @@
       "TITLE": "Ble ydych chi'n byw?"
     },
     "SELF_EMPLOYED": {
-      "PAGE_TITLE": "Self employment details"
+      "ANNUAL" : "Trosiant blynyddol",
+      "JOB_TITLE" : "Teitl swydd",
+      "PAGE_TITLE": "Self employment details",
+      "TITLE": "Mewn pa fodd ydych chi’n hunangyflogedig?"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
       "AMOUNT": "Swm sy'n ddyledus gennych",

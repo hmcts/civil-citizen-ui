@@ -14,14 +14,14 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t("What are you self-employed as?") %}
+      {% set title = t('PAGES.SELF_EMPLOYED.TITLE') %}
       {% set errors = form.getErrors() %}
       {% set jobTitleError = form.getTextError(errors, 'jobTitle') %}
       {% set annualTurnoverError = form.getTextError(errors, 'annualTurnover') %}
       {% if errors %}
         {{ govukErrorSummary({
-          "titleText": "There was a problem",
-          "errorList": errors
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
+          "errorList": translateErrors(errors)
         }) }}
       {% endif %}
       <div class="govuk-grid-row">
@@ -38,7 +38,7 @@
             <div class="govuk-grid-column-one-third govuk-!-padding-0">
               {{ govukInput({
               label: {
-                text: t("Job title"),
+                text: t('PAGES.SELF_EMPLOYED.JOB_TITLE'),
                 isPageHeading: true
               },
               id: "jobTitle",
@@ -50,7 +50,7 @@
             }) }}
               {{ govukInput({
               label: {
-                text: t("Annual turnover"),
+                text: t('PAGES.SELF_EMPLOYED.ANNUAL'),
                 isPageHeading: true
               },
               id: "annualTurnover",
@@ -70,7 +70,7 @@
             {% endcall %}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

@@ -664,7 +664,10 @@
       "TITLE": "Where do you live?"
     },
     "SELF_EMPLOYED": {
-      "PAGE_TITLE": "Self employment details"
+      "ANNUAL" : "Annual Turnover",
+      "JOB_TITLE" : "Job title",
+      "PAGE_TITLE": "Self employment details",
+      "TITLE": "What are you self-employed as?"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
       "AMOUNT": "Amount you owe",
