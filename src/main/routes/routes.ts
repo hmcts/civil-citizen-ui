@@ -74,6 +74,7 @@ import supportRequiredController from './features/directionsQuestionnaire/suppor
 import vulnerabilityController from './features/directionsQuestionnaire/vulnerabilityController';
 import whyDoYouDisagreeFullRejectionController from './features/response/admission/fullRejection/whyDoYouDisagreeFullRejectionController';
 import documentDownloadController from './features/document/documentDownloadController';
+import responseDeadlineOptionsController from './features/response/responseDeadlineOptionsController';
 import understandingYourOptionsController from './features/response/understandingYourOptionsController';
 import requestMoreTimeController from './features/response/requestMoreTimeController';
 
@@ -148,5 +149,6 @@ export default [
   documentDownloadController,
   vulnerabilityController,
   understandingYourOptionsController,
+  responseDeadlineOptionsController,
   requestMoreTimeController,
 ];

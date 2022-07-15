@@ -34,6 +34,7 @@ import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocume
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
 import {Vulnerability} from 'models/directionsQuestionnaire/vulnerability';
+import {ResponseDeadline} from './responseDeadline';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -76,6 +77,7 @@ export class Claim {
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   vulnerability: Vulnerability;
   ccdState: CaseState;
+  responseDeadline: ResponseDeadline;
 
   getClaimantName(): string {
     return this.applicant1.partyName;
@@ -171,7 +173,7 @@ export class Claim {
   isPartialAdmission(): boolean {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
-  
+
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }
@@ -214,7 +216,6 @@ export class Claim {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 }
-
 
 export interface Party {
   individualTitle?: string;
