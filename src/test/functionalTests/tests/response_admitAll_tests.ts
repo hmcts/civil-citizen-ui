@@ -1,4 +1,3 @@
-import I = CodeceptJS.I
 import {config} from '../../config';
 import { ResponseSteps } from '../features/response/steps/prepareYourResponseSteps';
 import { CommonSteps } from '../features/response/steps/commonSteps';

@@ -1,5 +1,3 @@
-
-import I = CodeceptJS.I
 import { DashboardSteps } from '../features/dashboard/steps/dashboard';
 import { LoginSteps} from '../features/home/steps/login';
 import {config} from '../../config';

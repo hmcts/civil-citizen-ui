@@ -22,7 +22,6 @@ export class CommonSteps {
     responseSteps.SelectPartnerDisability('no');
     responseSteps.SelectDependantDetails('yes');
     responseSteps.SelectOtherDependantDetails('yes');
-    // responseSteps.SelectCarerDetails('yes');
     responseSteps.SelectEmploymentDetails('yes');
     responseSteps.EnterEmployerDetails();
     responseSteps.EnterSelfEmploymentDetails();
