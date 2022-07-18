@@ -671,7 +671,7 @@
     },
     "RESPONSE_DEADLINE_OPTIONS": {
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.govu.uk.",
+      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
       "FORM": "Form N244 (opens in new tab)",
       "MORE_TIME": "Do you want to request more time to respond?",
       "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",

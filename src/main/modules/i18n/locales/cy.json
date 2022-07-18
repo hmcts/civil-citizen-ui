@@ -646,7 +646,7 @@
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
       "DOWNLOAD_FORM": "Download form N244 (opens in new tab)",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.govu.uk.",
+      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
       "HOW_MUCH_ADDITIONAL_TIME": "How much additional time are you asking for?",
       "IF_AGREED": "If agreed, extra time will start from {{ responseDeadline }}",
       "MORE_THAN_28_DAYS": "More than 28 days",
@@ -671,7 +671,7 @@
     },
     "RESPONSE_DEADLINE_OPTIONS": {
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.govu.uk.",
+      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
       "FORM": "Form N244 (opens in new tab)",
       "MORE_TIME": "Do you want to request more time to respond?",
       "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",
