@@ -17,7 +17,7 @@ export const getNeedMoreTimeTask = (claim: Claim, claimId: string, language: str
 
   if (claim?.responseDeadline?.option === ResponseOptions.NO
     || claim?.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED
-    || claim?.responseDeadline.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS) {
+    || claim?.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS) {
     needMoreTimeTask.status = TaskStatus.COMPLETE;
   }
 
