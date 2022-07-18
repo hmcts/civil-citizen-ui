@@ -9,6 +9,7 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "COMMON": {
+    "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
     "DAY": "Day",
@@ -21,11 +22,32 @@
     "YEAR": "Year",
     "YEARS": "Years",
     "YES": "Yes",
+    "ADDRESS_FORM": {
+      "ADDRESS_CHANGES_SHARED": "Any changes will be shared with the claimant when you submit your response.",
+      "BUILDING_AND_STREET": "Building and street",
+      "CHANGE_ADDRESS": "If your address is not correct you can change it here.",
+      "POSTCODE": "Postcode",
+      "TOWN_OR_CITY": "Town or city"
+    },
     "BUTTONS": {
       "CONTINUE": "Continue",
       "SAVE_AND_CONTINUE": "Save and continue",
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
+    },
+    "CHECKBOX_FIELDS": {
+      "COUNCIL_TAX": "Council Tax or Community Charge",
+      "ELECTRICITY": "Electricity",
+      "GAS": "Gas",
+      "MAINTENANCE": "Maintenance Payments",
+      "MORTGAGE": "Mortgage",
+      "RENT": "Rent",
+      "WATER": "Water"
+    },
+    "CONDITIONAL_CHECKBOX": {
+      "PRIORITY_DEBTS": "priority debts",
+      "REPAYMENT_AMOUNT": "Repayment amount",
+      "REPAYMENT_AMOUNT_HINT": "Only include the amount you're paying to clear previously missed regular"
     },
     "CONTACT_US_FOR_HELP": {
       "CALL_CHARGES": "Find out about call charges (opens in a new window)",
@@ -39,7 +61,7 @@
       "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
     },
     "RESPONSE_TYPE": {
-      "FULL_ADMISSION": "I admit all the claim",
+      "FULL_ADMISSION": "I admit all of the claim",
       "FULL_DEFENCE": "I reject all of the claim",
       "PART_ADMISSION": "I admit part of the claim"
     },
@@ -57,6 +79,12 @@
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
     },
+    "SCHEDULE": {
+      "FOUR_WEEKS": "4 weeks",
+      "MONTH": "month",
+      "TWO_WEEKS": "2 weeks",
+      "WEEK": "Week"
+    },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
       "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
@@ -64,7 +92,7 @@
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
       "STATEMENT_OF_WORK": "statement of truth",
       "TITLE": "Statement of truth",
-      "WHEN_SATISFIED": "When you’re satisfied that your answers are accurate, you should tick to \"sign\" this statement of truth on the form."
+      "WHEN_SATISFIED": "When you're satisfied that your answers are accurate, you should tick to \"sign\" this statement of truth on the form."
     },
     "TYPES_OF_SENIOR_POSITION": {
       "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
@@ -80,9 +108,13 @@
         "TREASURER": "treasurer"
       },
       "TITLE": "Types of senior position"
+    },
+    "VARIATION": {
+      "YES": "Yes",
+      "NO": "No"
     }
   },
-  "TASK_LIST":{
+  "TASK_LIST": {
     "APPLICATION_COMPLETE": "Application complete",
     "APPLICATION_INCOMPLETE": "Application incomplete",
     "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
@@ -101,6 +133,7 @@
       "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
       "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
       "TITLE": "Respond to claim",
+      "VIEW_OPTIONS": "View your options before response deadline",
       "WHEN_WILL_YOU_PAY": "When will you pay the £{{ amount }}?",
       "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
       "YOUR_REPAYMENT_PLAN": "Your repayment plan"
@@ -110,7 +143,7 @@
       "TITLE": "Submit"
     },
     "YOUR_HEARING_REQUIREMENTS": {
-      "GIVE_US_DETAILS": "Give us details in case there’s a hearing",
+      "GIVE_US_DETAILS": "Give us details in case there's a hearing",
       "TITLE": "Your hearing requirements"
     }
   },
@@ -133,13 +166,13 @@
       "BANK_TYPE_OF_ACCOUNT": "Type of account",
       "BANK_BALANCE": "Balance",
       "BANK_JOINT_ACCOUNT": "Joint account",
-      "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
+      "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer's Allowance or Carer's Credit?",
       "CHANGE": "Change",
       "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
       "CHILDREN_UNDER_11": "Under 11",
-      "CHILDREN_UNDER_11_TO_15": "11 to 15",
-      "CHILDREN_UNDER_16_TO_19": "16 to 19",
+      "CHILDREN_BETWEEN_11_TO_15": "11 to 15",
+      "CHILDREN_BETWEEN_16_TO_19": "16 to 19",
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Number of children aged 16 to 19 full-time education or training",
       "CONTACT_PERSON": "Contact person",
       "CONTACT_NUMBER": "Contact number (optional)",
@@ -180,6 +213,9 @@
       "EXPENSE_HIRE_PURCHASE": "Hire purchase",
       "EXPENSE_MOBILE_PHONE": "Mobile phone",
       "EXPENSE_MAINTENANCE": "Maintenance payments",
+      "FREE_TELEPHONE_CONTACT_NAME": "Contact name",
+      "FREE_TELEPHONE_CONTACT_NUMBER": "Contact number",
+      "FREE_TELEPHONE_MEDIATION": "Will you try free mediation",
       "FIRST_PAYMENT": "Make the first payment on",
       "FULL_NAME": "Full name",
       "INCOME_REGULAR": "Regular income",
@@ -221,6 +257,7 @@
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "When did you pay this amount?",
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED": "How did you pay the amount claimed?",
       "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
+      "RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE": "How much money do you admit you owe?",
       "SAME_ADDRESS": "Same as address",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Do you support anyone else financially?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Number of people",
@@ -246,10 +283,37 @@
       "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details"
     },
     "CITIZEN_BANK_ACCOUNTS": {
-      "PAGE_TITLE": "Your bank accounts"
+      "ACCOUNT_TYPE": "Type of account",
+      "ADD_ANOTHER": "Add another account",
+      "BALANCE": "Balance",
+      "BANK_AND_SAVINGS_ACCOUNTS": "List your bank and savings accounts",
+      "CURRENT_ACCOUNT": "Current account",
+      "EXAMPLE": "Put a minus (-) in front of the amount if you’re overdrawn. For example £-804.45.",
+      "ISA": "ISA",
+      "JOINT_ACCOUNT": "Joint account",
+      "OTHER": "Other",
+      "PAGE_TITLE": "Your bank accounts",
+      "SAVINGS_ACCOUNT": "Savings account"
     },
     "CITIZEN_DETAILS": {
-      "PAGE_TITLE": "Your details"
+      "ADDRESS": "Your Address",
+      "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
+      "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
+      "ALL_CORRESPONDENCE": "All correspondence will be sent to this address.",
+      "CLAIMANT_DETAILS_PROVIDED": "Your name and address were provided by the person, business or organisation claiming from you (the claimant).",
+      "CONFIRM_YOUR_DETAILS": "Confirm your details",
+      "CORRESPONDENCE_ADDRESS": "Correspondence address",
+      "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
+      "FIND_ADDRESS": "Find address",
+      "FIRST_NAME": "First name",
+      "LAST_NAME": "Last name",
+      "MANUAL_ADDRESS": "Enter address manually",
+      "PAGE_TITLE": "Your details",
+      "PICK_ADDRESS": "Pick an address",
+      "TITLE": "Title",
+      "TRY_AGAIN": "Try again or enter the address manually.",
+      "UK_POSTCODE": "Enter a UK postcode",
+      "YES_CORRESPONDENCE": "Yes, add a correspondence address"
     },
     "CITIZEN_DOB": {
       "EXAMPLE": "For example, 31 3 1980",
@@ -264,7 +328,38 @@
       "TITLE": "Enter a phone number (optional)"
     },
     "CITIZEN_RESPONSE_TYPE": {
-      "PAGE_TITLE": "Your claim response"
+      "ACCEPT_OR_TRANSFER": "They can accept the amount you've paid and settle the claim, or ask the court to transfer the claim to a County Court hearing centre.",
+      "ADMIT_ALL": "Admit all of the claim",
+      "ADMIT_ALL_CANT_PAY": "If you admit all of the claim but can't pay immediately, you can offer to pay the claimant in instalments.",
+      "ADMIT_ALL_DEADLINE": "You have until 4pm on {{ deadline }} to admit the claim.",
+      "ADMIT_PART": "Admit part of the claim",
+      "AGAINST_INDIVIDUAL": "If the claim is against you as an individual, the hearing centre will be the nearest one to your home or business.",
+      "CANT_PAY_IMMEDIATELY": "If you can't pay immediately",
+      "CLAIMANT_ACCEPT_OFFER": "If the claimant accepts your offer, they can ask the court to enter a CCJ against you and you'll be sent an order to pay.",
+      "CLAIMANT_ACCEPT_PART_ADMISSION": "If the claimant accepts your part-admission and you can't pay immediately, you can offer to pay in instalments.",
+      "CLAIMANT_AGREES": "If the claimant agrees, they can ask court to enter a CCJ against you and you'll be sent an order to pay.",
+      "CLAIMANT_INDIVIDUAL": "If the claimant is an individual and the claim is against you as an organisation, the hearing centre will be the nearest one to their home or business.",
+      "CLAIMANT_RECEIPT": "You should ask the claimant to give you a receipt.",
+      "CLAIMANT_REJECT_OFFER": "If the claimant rejects your offer, they can ask the court to enter a CCJ against you. The court will then decide the repayment plan.",
+      "CLAIMANT_REJECT_PART_ADMISSION": "If they reject your offer, the court will decide a repayment plan.",
+      "FULL_ADMISSION": "I admit all of the claim",
+      "FULL_ADMISSION_HINT": "You agree you owe the full amount claimed.",
+      "FULL_DEFENCE_HINT": "You've either paid what you believe you owe or you reject the claim.",
+      "HEARING_CENTRE": "Hearing centre location",
+      "HOW_DO_YOU_RESPOND": "How do you respond to the claim?",
+      "IF_ADMIT_ALL": "If you admit all of the claim and want to pay it in full, including interest and claim fee, contact the claimant to arrange payment.",
+      "IF_ADMIT_ALL_AND_PAY": "If you pay at the same time as admitting the claim, you won't get a County Court Judgment (CCJ).",
+      "IF_PROCEED": "If they proceed, the claim may be transferred to a County Court hearing centre.",
+      "PAGE_TITLE": "Your claim response",
+      "PART_ADMIT": "To admit part of the claim, contact the claimant and pay the amount you believe you owe then send the court your part admission.",
+      "PART_ADMIT_DEADLINE": "You have until 4pm on {{ deadline }} to admit part of the claim.",
+      "PART_ADMISSION_HINT": "You agree you owe some money but not the full amount claimed.",
+      "PAY_IMMEDIATELY": "Pay immediately",
+      "REJECT_ALL": "Reject all of the claim",
+      "REJECT_DEADLINE": "You have until 4pm on {{ deadline }} to reject the claim.",
+      "REJECT_PAID": "If you reject because you believe you've paid the money, the claimant has 28 days to tell you and the court whether they're proceeding with the claim.",
+      "REJECT_WHOLE_CLAIM": "If you reject all of the claim, the claim may be transferred to a County Court hearing centre.",
+      "RESPONSE_MEANING": "Find out what each response means"
     },
     "CLAIM_DETAILS": {
       "AMOUNT": "Amount",
@@ -299,7 +394,25 @@
       "VIEW_CLAIM": "View claim"
     },
     "COMPANY_DETAILS": {
-      "PAGE_TITLE": "Company details"
+      "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
+      "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
+      "ALL_CORRESPONDENCE": "All correspondence will be sent to this address.",
+      "CLAIMANT_DETAILS_PROVIDED": "Your name and address were provided by the person, business or organisation claiming from you (the claimant).",
+      "COMPANY_ADDRESS": "Company address",
+      "COMPANY_NAME": "Company name",
+      "CONTACT_NAME_OPTIONAL": "Contact name (optional)",
+      "CORRESPONDENCE_ADDRESS": "Correspondence address",
+      "DIFFERENT_ADDRESS_CORRESPONDENCE": "Would you like correspondence sent to a different address?",
+      "FIND_ADDRESS": "Find address",
+      "HEADING": "Confirm your details",
+      "MANUAL_ADDRESS": "Enter address manually'",
+      "ORGANISATION_ADDRESS": "Organisation address",
+      "ORGANISATION_NAME": "Organisation name",
+      "PAGE_TITLE": "Company details",
+      "PICK_ADDRESS": "Pick an address",
+      "TRY_AGAIN": "Try again or enter the address manually.",
+      "UK_POSTCODE": "Enter a UK postcode",
+      "YES_CORRESPONDENCE": "Yes, add a correspondence address"
     },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
@@ -389,12 +502,12 @@
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",
       "COST_HIRING_EXPERT": "The cost of hiring an expert depends on which expert you and the {{ otherParty }} choose.",
-      "EXPERT_REPORT": "The expert will provide a written report - they won’t usually come to court in person.",
+      "EXPERT_REPORT": "The expert will provide a written report - they won't usually come to court in person.",
       "FOR_EXAMPLE": "For example, they might allow a structural engineer to be used in a claim about building works or a mechanic in a claim about car repairs.",
-      "IF_JUDGE_ALLOWS": "If a judge allows you to use an expert, you’ll usually have to share one expert with the {{ otherParty }}.",
+      "IF_JUDGE_ALLOWS": "If a judge allows you to use an expert, you'll usually have to share one expert with the {{ otherParty }}.",
       "IF_PERMISSION": "If you get permission to use an expert",
       "IF_YOU_WIN": "If you win the case you may be able to recover a maximum of £750 of the cost you paid. A judge will rule on this at the end of the hearing.",
-      "JUDGE_ALLOW_EXPERT": "A judge will only allow you to use an expert if they believe they need the expert’s specialist knowledge.",
+      "JUDGE_ALLOW_EXPERT": "A judge will only allow you to use an expert if they believe they need the expert's specialist knowledge.",
       "JUDGE_DECIDE_COST": "The judge will also decide whether the cost of the expert is reasonable compared to the value of the claim.",
       "JUDGE_MAY_ASK": "The judge may ask one of you to make a list of 3 independent experts who can provide a written report in return for a fee.",
       "JUDGES_RESPONSIBLE_COST": "Even though you and the {{ otherParty }} share the cost of hiring the expert, judges are still responsible for keeping costs in proportion to value.",
@@ -405,15 +518,15 @@
       "PAYING_EXPERT": "Paying for the expert",
       "PROVIDE_EXTRA": "Provide any extra information the expert asks for.",
       "PROVIDE_QUESTIONS": "Provide questions for the expert to answer in a report.",
-      "RARE": "It’s rare for judges to allow you to use an expert in a small claim.",
-      "SEND_EXPERT_REPORT": "Send the expert’s report to the court (only one of you will have to do this).",
+      "RARE": "It's rare for judges to allow you to use an expert in a small claim.",
+      "SEND_EXPERT_REPORT": "Send the expert's report to the court (only one of you will have to do this).",
       "TITLE": "Using an expert in small claims",
       "USUALLY_SHARE_COST": "Usually you both share this cost.",
       "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
     },
     "EXPLANATION": {
       "PAGE_TITLE": "Explanation",
-      "TITLE": "Briefly explain why you can’t pay immediately"
+      "TITLE": "Briefly explain why you can't pay immediately"
     },
     "FINANCIAL_DETAILS": {
       "PAGE_TITLE": "Your financial details"
@@ -426,6 +539,14 @@
     },
     "I_DON_T_WANT_FREE_MEDIATION": {
       "PAGE_TITLE": "I don't want free mediation"
+    },
+    "LATEST_UPDATE_CONTENT": {
+      "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
+      "RESPOND_TO_CLAIM": "Respond to claim",
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
+      "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
+      "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
+      "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment."
     },
     "MEDIATION_CAN_WE_USE": {
       "PAGE_TITLE": "Mediation - Provide a phone number"
@@ -484,14 +605,19 @@
     "PAYMENT_OPTION": {
       "PAGE_TITLE": "Payment option",
       "PAGE_TITLE_FOR_PART_ADMIT": "Part Admit - Payment option",
-      "REQUEST": "The claimant can request a County Court Judgment (CCJ) against you if you don’t pay immediately.",
+      "REQUEST": "The claimant can request a County Court Judgment (CCJ) against you if you don't pay immediately.",
       "REPAYMENT": "I'll suggest a repayment plan",
       "TITLE": "When do you want to pay?",
       "TITLE_FOR_PART_ADMIT": "When do you want to pay the £{{ amount }}?",
       "YOU_MUST_CONTACT": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
     },
     "PRIORITY_DEBTS": {
-      "PAGE_TITLE": "Priority debts"
+      "ARREARS": "'in arrears' (you've missed regular payments)",
+      "DEBTS": "Debts you're behind on",
+      "DEBTS_DETAILS": "Enter details of debts for which you're:",
+      "PAGE_TITLE": "Priority debts",
+      "REGULAR_PAYMENTS": "making regular repayments to clear the missed payments",
+      "TOTAL_MONTHLY_REPAYMENTS": "Total monthly repayments"
     },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your regular expenses"
@@ -542,17 +668,25 @@
       "ARRANGE_AND_PAY": "You may have to arrange and pay for interpreters except for Welsh. The court will tell you.",
       "DISABLE": "Disabled access",
       "ENTER_SIGN_LANGUAGE": "Enter the sign language you need",
-      "EXTRA_SUPPORT": "The court can’t guarantee extra support, but it will consider other needs relating to physical or mental health impairments",
+      "EXTRA_SUPPORT": "The court can't guarantee extra support, but it will consider other needs relating to physical or mental health impairments",
       "HEARING": "Hearing loop",
       "LANGUAGE": "Language interpreter",
       "OTHER": "Other support",
       "PAGE_TITLE": "Support required",
       "SIGN_LANGUAGE": "Sign language interpreter",
-      "TITLE": "Select any support you’d require for a court hearing (optional)",
+      "TITLE": "Select any support you'd require for a court hearing (optional)",
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
       "PAGE_TITLE": "Under 18"
+    },
+    "UNDERSTANDING_YOUR_OPTIONS": {
+      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
+      "HOW_MUCH_EXTRA": "How much extra time can you request?",
+      "PAGE_TITLE": "Requesting extra time",
+      "REQUEST_EXTENSION_DEFAULT": "If you want to request an extension of up to 28 days, you'll need to ask the other party's legal representative directly.",
+      "REQUEST_EXTENSION_MORE": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party's legal representative, you'll need to apply to the court.",
+      "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "If you think that you will be unable to respond to a claim before this deadline, you can request more time."
     },
     "UNEMPLOYMENT": {
       "DESCRIPTION": "How long have you been unemployed?",
@@ -584,7 +718,7 @@
       "BRIEFLY": "Briefly explain why you disagree with the claim",
       "FAIL": "If you fail to dispute any part of the claim the court may assume you admit it.",
       "ACCEPT": "You should also say if you accept any parts of the claim.",
-      "TIMELINE": "Don’t give us a detailed timeline - we’ll ask for that separately.",
+      "TIMELINE": "Don't give us a detailed timeline - we'll ask for that separately.",
       "TITLE": "Why do you disagree with the claim?",
       "REASON": "Their reasons for making the claim",
       "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
@@ -598,13 +732,13 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "DATE_REQUIRED": "Enter a date",
-    "DEFENCE_REQUIRED": "You need to explain why you don’t owe the money",
+    "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
     "DETAILS_REQUIRED": "Enter details",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
     "ENTER_A_DEBT": "Enter a debt",
-    "ENTER_AN_EXPLANATION": "Enter an explanation of why you can’t pay now",
+    "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
@@ -623,14 +757,32 @@
     "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
     "SELECT_AN_OPTION": "Select an option",
+    "SELECT_AMOUNT": {
+      "COUNCIL_TAX": "Enter how much you pay for Council Tax or Community Charge",
+      "ELECTRICITY": "Enter how much you pay for Electricity",
+      "GAS": "Enter how much you pay for Gas",
+      "MAINTENANCE": "Enter how much you pay for Maintenance Payments",
+      "MORTGAGE": "Enter how much you pay for Mortgage",
+      "RENT": "Enter how much you pay for Rent",
+      "WATER": "Enter how much you pay for Water"
+    },
+    "SELECT_FREQUENCY": {
+      "COUNCIL_TAX": "Select how often you pay for Council Tax or Community Charge",
+      "ELECTRICITY": "Select how often you pay for Electricity",
+      "GAS": "Select how often you pay for Gas",
+      "MAINTENANCE": "Select how often you pay for Maintenance Payments",
+      "MORTGAGE": "Select how often you pay for Mortgage",
+      "RENT": "Select how often you pay for Rent",
+      "WATER": "Select how often you pay for Water"
+    },
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
-    "SIGNER_NAME_TOO_LONG": "You’ve entered too many characters",
+    "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
-    "SIGNER_ROLE_TOO_LONG": "You’ve entered too many characters",
+    "SIGNER_ROLE_TOO_LONG": "You've entered too many characters",
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
-    "TEXT_TOO_MANY": "You’ve entered too many characters",
+    "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_WAS_A_PROBLEM": "There was a problem",
     "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
@@ -650,6 +802,15 @@
     "VALID_DATE_IN_PAST": "Enter date before ",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DAY": "Enter a valid day",
+    "VALID_DEBT_AMOUNT": {
+      "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
+      "ELECTRICITY": "Enter a valid Electricity amount, maximum two decimal places",
+      "GAS": "Enter a valid Gas amount, maximum two decimal places",
+      "MAINTENANCE": "Enter a valid Maintenance Payments amount, maximum two decimal places",
+      "MORTGAGE": "Enter a valid Mortgage amount, maximum two decimal places",
+      "RENT": "Enter a valid Rent amount, maximum two decimal places",
+      "WATER": "Enter a valid Water amount, maximum two decimal places"
+    },
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_JOB_TITLE": "Enter a job title",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
@@ -661,16 +822,16 @@
     "VALID_HOUSING": "Describe your housing",
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
-    "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
+    "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can't be higher than on previous page",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
-    "VALID_POSITIVE_NUMBER": "Don’t enter a negative number",
+    "VALID_POSITIVE_NUMBER": "Don't enter a negative number",
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
-    "VALID_TEXT_LENGTH": "You’ve entered too many characters",
+    "VALID_TEXT_LENGTH": "You've entered too many characters",
     "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",

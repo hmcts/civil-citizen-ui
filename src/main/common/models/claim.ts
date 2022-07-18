@@ -3,7 +3,6 @@ import currencyFormat from '../utils/currencyFormat';
 import {Respondent} from './respondent';
 import {StatementOfMeans} from './statementOfMeans';
 import {CounterpartyType} from './counterpartyType';
-import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
 import {DefendantEvidence} from './evidence/evidence';
@@ -24,6 +23,7 @@ import {
   InterestClaimUntilType,
   SameRateInterestSelection,
   SameRateInterestType,
+  CaseState,
 } from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
 import {ResponseType} from '../form/models/responseType';
@@ -74,23 +74,14 @@ export class Claim {
   specClaimTemplateDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   vulnerability: Vulnerability;
+  ccdState: CaseState;
 
   getClaimantName(): string {
-    return this.getName(this.applicant1);
+    return this.applicant1.partyName;
   }
 
   getDefendantName(): string {
-    return this.getName(this.respondent1);
-  }
-
-  getName( party: Party): string {
-    switch(party.type){
-      case CounterpartyType.INDIVIDUAL : return party.individualTitle + ' ' + party.individualFirstName + ' ' + party.individualLastName;
-      case CounterpartyType.SOLE_TRADER: return party.soleTraderTitle + ' ' + party.soleTraderFirstName + ' ' + party.soleTraderLastName;
-      case CounterpartyType.COMPANY:
-      case CounterpartyType.ORGANISATION:
-        return party.partyName;
-    }
+    return this.respondent1.partyName;
   }
 
   formattedResponseDeadline(): string {
@@ -99,10 +90,6 @@ export class Claim {
 
   formattedTotalClaimAmount(): string {
     return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
-  }
-
-  responseInDays(): NumberOfDays {
-    return this.totalClaimAmount < MAX_CLAIM_AMOUNT ? NumberOfDays.FOURTEEN : NumberOfDays.TWENTYEIGHT;
   }
 
   getRemainingDays(): number {
@@ -179,7 +166,7 @@ export class Claim {
   isPartialAdmission(): boolean {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
-  
+
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }
@@ -218,7 +205,11 @@ export class Claim {
     }
     return undefined;
   }
+  isDefendantNotResponded(): boolean {
+    return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+  }
 }
+
 
 export interface Party {
   individualTitle?: string;

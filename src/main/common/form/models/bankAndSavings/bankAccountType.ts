@@ -1,7 +1,6 @@
 import {BankAccountTypeValues} from './bankAccountTypeValues';
 
 export class BankAccountType {
-
   readonly value: BankAccountTypeValues;
   readonly text: string;
   selected: boolean;
@@ -10,5 +9,4 @@ export class BankAccountType {
     this.value = value;
     this.text = displayValue;
   }
-
 }

@@ -25,7 +25,7 @@ function transformToAccounts(req: express.Request){
 
 bankAccountsController.get(CITIZEN_BANK_ACCOUNT_URL, (req, res) => {
   bankAccountService.getBankAccounts(req.params.id).then((form:BankAccounts)=>{
-    renderView(form,  new BankAccountTypes(), res);
+    renderView(form, new BankAccountTypes(), res);
   });
 });
 

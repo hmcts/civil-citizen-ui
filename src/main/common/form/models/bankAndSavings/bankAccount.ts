@@ -1,25 +1,20 @@
 import {IsNotEmpty, IsIn, Validate, ValidateIf} from 'class-validator';
 import {Form} from '../../../form/models/form';
-import {
-  SELECT_AN_OPTION,
-  TYPE_OF_ACCOUNT_REQUIRED,
-  NUMBER_REQUIRED,
-} from '../../../form/validationErrors/errorMessageConstants';
 import {AccountBalanceValidator} from '../../../form/validators/accountBalanceValidator';
 import {BankAccountTypeValues} from '../../../form/models/bankAndSavings/bankAccountTypeValues';
 
 export class BankAccount extends Form {
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsIn(Object.values(BankAccountTypeValues), {message: TYPE_OF_ACCOUNT_REQUIRED})
+  @IsIn(Object.values(BankAccountTypeValues), {message: 'ERRORS.TYPE_OF_ACCOUNT_REQUIRED'})
     typeOfAccount?: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({message: SELECT_AN_OPTION})
+  @IsNotEmpty({message: 'ERRORS.VALID_OPTION_SELECTION'})
     joint?: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({message: NUMBER_REQUIRED})
+  @IsNotEmpty({message: 'ERRORS.NUMBER_REQUIRED'})
   @Validate(AccountBalanceValidator)
     balance?: string;
 

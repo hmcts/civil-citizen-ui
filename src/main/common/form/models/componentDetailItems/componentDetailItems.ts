@@ -10,6 +10,7 @@ export interface ComponentDetailItems {
   subtitle?: string;
   content?: string[];
   button?: AhrefButtonComponent;
+  formattedValues?: string[];
   hasDivider?: boolean | true;
 }
 
