@@ -5,3 +5,6 @@ nodejs:
 
 idam-pr:
   enabled: false
+
+elastic:
+  enabled: false
