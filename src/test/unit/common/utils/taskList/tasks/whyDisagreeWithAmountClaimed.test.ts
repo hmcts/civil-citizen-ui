@@ -1,4 +1,5 @@
 import {WhyDoYouDisagree} from '../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {ResponseType} from '../../../../../../main/common/form/models/responseType';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
 import {TaskStatus} from '../../../../../../main/common/models/taskList/TaskStatus';
@@ -26,7 +27,7 @@ describe('Why disagree with amount claimed Task', () => {
 
     it('should return incomplete task', () => {
       const claim = new Claim();
-      const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(claim, claimId, lang);
+      const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(claim, claimId, ResponseType.PART_ADMISSION, lang);
       expect(whyDisagreeWithAmountClaimedTask).toEqual(resultIncomplete);
     });
 
@@ -35,7 +36,7 @@ describe('Why disagree with amount claimed Task', () => {
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree();
       claim.partialAdmission.whyDoYouDisagree.text = 'test';
-      const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(claim, claimId, lang);
+      const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(claim, claimId, ResponseType.PART_ADMISSION, lang);
       expect(whyDisagreeWithAmountClaimedTask).toEqual(resultComplete);
     });
 
