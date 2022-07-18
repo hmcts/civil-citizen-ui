@@ -357,7 +357,7 @@
       "PAY_IMMEDIATELY": "Pay immediately",
       "REJECT_ALL": "Reject all of the claim",
       "REJECT_DEADLINE": "You have until 4pm on {{ deadline }} to reject the claim.",
-      "REJECT_PAID": "If you reject because you believe you've paid the money, the claimant has {{ deadline }} days to tell you and the court whether they're proceeding with the claim.",
+      "REJECT_PAID": "If you reject because you believe you've paid the money, the claimant has 28 days to tell you and the court whether they're proceeding with the claim.",
       "REJECT_WHOLE_CLAIM": "If you reject all of the claim, the claim may be transferred to a County Court hearing centre.",
       "RESPONSE_MEANING": "Find out what each response means"
     },

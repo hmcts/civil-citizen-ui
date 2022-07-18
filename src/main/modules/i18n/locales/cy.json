@@ -357,7 +357,7 @@
       "PAY_IMMEDIATELY": "Talu ar unwaith",
       "REJECT_ALL": "Gwrthod yr hawliad i gyd",
       "REJECT_DEADLINE": "Mae gennych tan 4pm ar {{ deadline }} i wrthod yr hawliad cyfan.",
-      "REJECT_PAID": "Os ydych yn gwrthod oherwydd eich bod yn credu eich bod wedi talu'r arian, mae gan yr hawlydd {{ deadline }} i ddweud wrthych chi a'r llys p'un a yw'n bwrw ymlaen â'r hawliad.",
+      "REJECT_PAID": "Os ydych yn gwrthod oherwydd eich bod yn credu eich bod wedi talu'r arian, mae gan yr hawlydd 28 i ddweud wrthych chi a'r llys p'un a yw'n bwrw ymlaen â'r hawliad.",
       "REJECT_WHOLE_CLAIM": "Os ydych yn gwrthod yr hawliad cyfan, gall yr hawliad gael ei drosglwyddo i ganolfan wrandawiadau Llys Sirol.",
       "RESPONSE_MEANING": "Canfod beth mae pob ymateb yn ei olygu"
     },
