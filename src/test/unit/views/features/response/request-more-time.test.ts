@@ -69,7 +69,7 @@ describe('Request More Time View', () => {
       const formLink = conditionalContent[1].getElementsByClassName('govuk-link')[0];
       expect(conditionalContent[0].innerHTML).toContain('You need to apply to the court to request more time.');
       expect(conditionalContent[1].innerHTML).toContain('select \'Save and continue\'');
-      expect(conditionalContent[2].innerHTML).toContain('Email the completed form N244 to: contact@justice.govu.uk.');
+      expect(conditionalContent[2].innerHTML).toContain('Email the completed form N244 to: contact@justice.gov.uk.');
       expect(conditionalContent[3].innerHTML).toContain('Or, you can post the completed form to:');
       expect(conditionalContent[4].innerHTML).toContain('HMCTS CMC');
       expect(conditionalContent[5].innerHTML).toContain('PO Box 12747');
