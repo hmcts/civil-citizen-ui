@@ -61,7 +61,7 @@ describe('Response Deadline Options View', () => {
       const formLink = conditionalContent[0].getElementsByClassName('govuk-link')[0];
 
       expect(conditionalContent[0].innerHTML).toContain('If your request to Mr. Jan Clark\'s legal representative for more time has been refused');
-      expect(conditionalContent[1].innerHTML).toContain('Email the completed form N244 to: contact@justice.govu.uk.');
+      expect(conditionalContent[1].innerHTML).toContain('Email the completed form N244 to: contact@justice.gov.uk.');
       expect(conditionalContent[2].innerHTML).toContain('Or, you can post the completed form to:');
       expect(conditionalContent[3].innerHTML).toContain('HMCTS CMC');
       expect(conditionalContent[4].innerHTML).toContain('PO Box 12747');
