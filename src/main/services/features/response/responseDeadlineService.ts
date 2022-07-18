@@ -38,7 +38,7 @@ export class ResponseDeadlineService {
   public async saveAdditionalTime(claimId: string, additionalTime: AdditionalTimeOptions): Promise<void> {
     try {
       const claim = await getCaseDataFromStore(claimId);
-      if(claim.responseDeadline) {
+      if (claim.responseDeadline) {
         claim.responseDeadline.additionalTime = additionalTime;
       } else {
         claim.responseDeadline = new ResponseDeadline();
