@@ -21,6 +21,7 @@ import {
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
   CITIZEN_PAYMENT_OPTION_URL,
   CITIZEN_REPAYMENT_PLAN_FULL_URL,
+  CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
   CITIZEN_RESPONSE_TYPE_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_URL,
   FINANCIAL_DETAILS_URL,
@@ -32,7 +33,8 @@ describe('Task List Builder', () => {
   const lang = 'en';
   const chooseAResponseUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
   const whyDisagreeWithAmountClaimedUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_URL);
-  const repaymentPlanUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_FULL_URL);
+  const repaymentFAPlanUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_FULL_URL);
+  const repaymentPAPlanUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_PARTIAL_URL);
   const shareFinancialDetailsUrl = constructResponseUrlWithIdParams(claimId, FINANCIAL_DETAILS_URL);
   const decideHowYouPayUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_OPTION_URL);
   const howMuchHaveYouPaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
@@ -80,7 +82,7 @@ describe('Task List Builder', () => {
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(decideHowYouPayUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(shareFinancialDetailsUrl);
-        expect(respondToClaimSection.tasks[3].url).toEqual(repaymentPlanUrl);
+        expect(respondToClaimSection.tasks[3].url).toEqual(repaymentFAPlanUrl);
       });
     });
 
@@ -135,7 +137,7 @@ describe('Task List Builder', () => {
         expect(respondToClaimSection.tasks[1].url).toEqual(shareFinancialDetailsUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(whyDisagreeWithAmountClaimedUrl);
       });
-      it('should have chooseAResponseTask, shareFinancialDetailsTask, repaymentPlanTaskand whyDisagreeWithAmountClaimedTask', () => {
+      it('should have chooseAResponseTask, shareFinancialDetailsTask, repaymentPlanTask and whyDisagreeWithAmountClaimedTask', () => {
         const claim = new Claim();
         claim.respondent1 = new Respondent();
         claim.respondent1.responseType = ResponseType.PART_ADMISSION;
@@ -148,7 +150,7 @@ describe('Task List Builder', () => {
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(shareFinancialDetailsUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(whyDisagreeWithAmountClaimedUrl);
-        expect(respondToClaimSection.tasks[3].url).toEqual(repaymentPlanUrl);
+        expect(respondToClaimSection.tasks[3].url).toEqual(repaymentPAPlanUrl);
       });
     });
 

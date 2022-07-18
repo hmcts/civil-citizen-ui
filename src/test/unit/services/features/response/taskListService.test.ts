@@ -30,8 +30,8 @@ describe('Response Task List service', () => {
   const lang = 'en';
 
   describe('none of the tasks completed', () => {
-    const caseData = mockClaim.case_data;
-
+    const jsonData = deepCopy(mockClaim.case_data);
+    const caseData = Object.assign(new Claim(), jsonData);
     const actualTaskLists = getTaskLists(claim, caseData, mockClaimId, lang);
 
     it('should return response task list', () => {
@@ -65,7 +65,8 @@ describe('Response Task List service', () => {
     const PRIMARY_ADDRESS_LINE_2 = '12 Berry street';
     const PRIMARY_ADDRESS_TOWN = 'London';
     const PRIMARY_ADDRESS_POSTCODE = 'E1 6AN';
-    const caseData = deepCopy(mockClaim.case_data);
+    const jsonData = deepCopy(mockClaim.case_data);
+    const caseData = Object.assign(new Claim(), jsonData);
     caseData.respondent1.primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
     caseData.respondent1.dateOfBirth = '15 May 1978';
     const actualTaskLists = getTaskLists(claim, caseData, mockClaimId, lang);
@@ -96,9 +97,11 @@ describe('Response Task List service', () => {
     const CORRESPONDENCE_ADDRESS_LINE_2 = 'Dean close';
     const CORRESPONDENCE_TOWN = 'Bristol';
     const CORRESPONDENCE_POSTCODE = 'BS1 4HK';
-    const caseData = deepCopy(mockClaim.case_data);
+    const jsonData = deepCopy(mockClaim.case_data);
+    const caseData = Object.assign(new Claim(), jsonData);
     caseData.respondent1.correspondenceAddress = buildAddress(CORRESPONDENCE_ADDRESS_LINE_1, CORRESPONDENCE_ADDRESS_LINE_2, CORRESPONDENCE_TOWN, CORRESPONDENCE_POSTCODE);
     caseData.respondent1.primaryAddress = {};
+    caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;
     caseData.respondent1.dateOfBirth = '15 May 1978';
     const actualTaskLists = getTaskLists(claim, caseData, mockClaimId, lang);
 
@@ -128,7 +131,7 @@ describe('Response Task List service', () => {
     caseData.respondent1 = new Respondent();
     caseData.respondent1.individualFirstName = 'Joe';
     caseData.respondent1.type = CounterpartyType.INDIVIDUAL;
-    caseData.respondent1.responseType =  ResponseType.FULL_ADMISSION;
+    caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;
     delete caseData.paymentOption;
 
     it('should display choose a response task as incomplete', () => {
@@ -205,7 +208,7 @@ describe('Response Task List service', () => {
 
     it('should display your repayment plan as complete if payment option is installments', () => {
       caseData.paymentOption = PaymentOptionType.INSTALMENTS;
-      caseData.repaymentPlan =  {
+      caseData.repaymentPlan = {
         paymentAmount: 5,
         repaymentFrequency: 'monthly',
       };
