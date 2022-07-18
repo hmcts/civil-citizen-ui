@@ -39,7 +39,7 @@ describe('on tax payments', () => {
         .get(ON_TAX_PAYMENTS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -125,7 +125,7 @@ describe('on tax payments', () => {
         .send({option: YesNo.YES, amountYouOwe: 44.4, reason: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

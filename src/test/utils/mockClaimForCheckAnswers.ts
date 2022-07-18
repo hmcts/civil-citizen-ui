@@ -1,7 +1,6 @@
 import {Claim} from '../../main/common/models/claim';
 import {ResponseType} from '../../main/common/form/models/responseType';
-import PaymentOptionType
-  from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import PaymentOptionType from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {
   TransactionSchedule,
 } from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
@@ -43,7 +42,23 @@ import {Dependants} from '../../main/common/form/models/statementOfMeans/dependa
 import {NumberOfChildren} from '../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {OtherDependants} from '../../main/common/form/models/statementOfMeans/otherDependants';
 import {Carer} from '../../main/common/form/models/statementOfMeans/carer';
+import {HowMuchDoYouOwe} from '../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../main/common/form/models/admission/howMuchHaveYouPaid';
+import {WhyDoYouDisagree} from '../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {PartialAdmission} from '../../main/common/models/partialAdmission';
+import {AlreadyPaid} from '../../main/common/form/models/admission/partialAdmission/alreadyPaid';
+import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/defendantTimeline';
+import {PaymentIntention} from '../../main/common/form/models/admission/partialAdmission/paymentIntention';
+import {FreeMediation} from '../../main/common/form/models/mediation/freeMediation';
+import {NoMediationReason} from '../../main/common/form/models/mediation/noMediationReason';
+import {CompanyTelephoneNumber} from '../../main/common/form/models/mediation/companyTelephoneNumber';
+import {Mediation} from '../../main/common/models/mediation/mediation';
 
+import TimelineRow from '../../main/common/form/models/timeLineOfEvents/timelineRow';
+import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
+import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
+import {DefendantEvidence} from '../../main/common/models/evidence/evidence';
+import { Evidence } from '../../main/common/form/models/evidence/evidence';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -173,12 +188,12 @@ export const createClaimWithNoCourtOrders = () => {
   return claim as Claim;
 };
 
-export const createClaimWithDebts = () => {
+export const createClaimWithDebts = (option:YesNo) => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const debts: Debts = new Debts();
-  debts.option = 'yes';
+  debts.option = option;
   debts.debtsItems = [
     new DebtItems('Loan 1', '1000', '10'),
   ];
@@ -295,14 +310,13 @@ export const createClaimWithRegularIncome = (): Claim => {
 
 
 export const createEmployers = () => {
-  const employers = new Employers(
+
+  return new Employers(
     [
       new Employer('Version 1', 'FE Developer'),
       new Employer('Version 1', 'BE Developer'),
     ],
   );
-
-  return employers;
 };
 
 export const createClaimWithEmplymentDetails = (): Claim => {
@@ -522,4 +536,79 @@ export const createClaimWithOtherDependants = (option: YesNo, numberOfPeople: nu
     otherDependants: otherDependants,
   };
   return claim;
+};
+
+export const ceateClaimWithPartialAdmission = (alreadyPaid? :YesNo) => {
+  const claim = new Claim();
+  const param: HowMuchHaveYouPaidParams = {};
+  param.amount = 100;
+  param.totalClaimAmount = 200;
+  param.day = '14';
+  param.month = '2';
+  param.year = '2022';
+  param.text = 'Test details';
+
+  const howMuchDoYouOwe: HowMuchDoYouOwe = new HowMuchDoYouOwe(100, 200);
+  const whyDoYouDisagree: WhyDoYouDisagree = new WhyDoYouDisagree('Reasons for disagree');
+  const howMuchHaveYouPaid: HowMuchHaveYouPaid = new HowMuchHaveYouPaid(param);
+
+  const defendantTimeline: DefendantTimeline = new DefendantTimeline(
+    [new TimelineRow('6 November 2022', 'Event 1'), new TimelineRow('7 November 2022', 'Event 2')],
+    'Comments about timeline',
+  );
+
+  const defendantEvidence: DefendantEvidence = new Evidence(
+    'Comments about their evidence',
+    [
+      new EvidenceItem(EvidenceType.CONTRACTS_AND_AGREEMENTS, 'Evidence details 1'),
+      new EvidenceItem(EvidenceType.CORRESPONDENCE, 'Evidence details 2'),
+      new EvidenceItem(EvidenceType.EXPERT_WITNESS, 'Evidence details 3'),
+      new EvidenceItem(EvidenceType.PHOTO, 'Evidence details 4'),
+      new EvidenceItem(EvidenceType.RECEIPTS, 'Evidence details 5'),
+      new EvidenceItem(EvidenceType.STATEMENT_OF_ACCOUNT, 'Evidence details 7'),
+      new EvidenceItem(EvidenceType.OTHER, 'Evidence details 8'),
+    ],
+  );
+
+  const partialAdmission: PartialAdmission = {
+    whyDoYouDisagree: whyDoYouDisagree,
+    howMuchDoYouOwe: howMuchDoYouOwe,
+    alreadyPaid: new AlreadyPaid(alreadyPaid || ''),
+    howMuchHaveYouPaid: howMuchHaveYouPaid,
+    timeline: defendantTimeline,
+    paymentIntention: new PaymentIntention(),
+  };
+  claim.respondent1 = {
+    partyName: PARTY_NAME,
+    telephoneNumber: CONTACT_NUMBER,
+    contactPerson: '',
+    dateOfBirth: new Date('2000-12-12'),
+    responseType: ResponseType.PART_ADMISSION,
+    type: CounterpartyType.INDIVIDUAL,
+    primaryAddress: {
+      AddressLine1: '23 Brook lane',
+      PostTown: 'Bristol',
+      PostCode: 'BS13SS',
+    },
+  };
+  claim.partialAdmission = partialAdmission;
+  claim.evidence = defendantEvidence;
+  return claim;
+};
+
+export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails('contactTest');
+  if(claim.respondent1) {
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+  }
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+
+  claim.mediation = new Mediation({option:YesNo.YES, mediationPhoneNumber: '123456'},
+    new FreeMediation(YesNo.YES),
+    new NoMediationReason('notWant', 'no'),
+    new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
+
+  return claim as Claim;
 };

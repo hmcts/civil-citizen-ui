@@ -25,6 +25,7 @@ import {
   VALID_TWO_DECIMAL_NUMBER,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -48,7 +49,7 @@ describe('Debts', () => {
         .get(CITIZEN_DEBTS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -62,7 +63,7 @@ describe('Debts', () => {
       .send(buildDebtFormYes())
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: REDIS_FAILURE});
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
   describe('on GET', () => {

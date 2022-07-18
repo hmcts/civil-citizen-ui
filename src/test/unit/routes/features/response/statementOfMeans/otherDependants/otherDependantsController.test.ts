@@ -102,7 +102,7 @@ describe('Other Dependants', () => {
         .get(CITIZEN_OTHER_DEPENDANTS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: TestMessages.REDIS_FAILURE });
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
 
@@ -281,7 +281,7 @@ describe('Other Dependants', () => {
         .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: TestMessages.REDIS_FAILURE });
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

@@ -36,6 +36,9 @@ describe('Dashboard page', () => {
   nock(draftStoreUrl)
     .get('/drafts')
     .reply(200, {});
+  nock('http://localhost:4000')
+    .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined')
+    .reply(200, {});
 
   beforeEach((done) => {
     testSession

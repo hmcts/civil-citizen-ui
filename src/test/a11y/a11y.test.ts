@@ -5,7 +5,6 @@ import nock from 'nock';
 import {app} from '../../main/app';
 import {fail} from 'assert';
 import {IGNORED_URLS} from './ignored-urls';
-import {urlsWithActions} from './action-urls';
 import {mockCivilClaim} from '../utils/mockDraftStore';
 
 jest.mock('../../main/modules/oidc');
@@ -79,11 +78,6 @@ function testAccessibilityWithActions(url: string, actions: string[]): void {
 }
 
 function testAccessibility(url: string): void {
-  const urlWithAction = urlsWithActions.find(item => item.url === url);
-  // if object exists we want to test it both with and without actions
-  if (urlWithAction) {
-    testAccessibilityWithActions(urlWithAction.url, urlWithAction.actions);
-  }
   testAccessibilityWithActions(url, []);
 }
 

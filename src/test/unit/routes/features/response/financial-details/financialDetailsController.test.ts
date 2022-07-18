@@ -75,7 +75,7 @@ describe('Citizen financial details', () => {
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).not.toContain('your company or organisation&#39;s most recent statement of accounts');
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -111,7 +111,7 @@ describe('Citizen financial details', () => {
         .post(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
     test('should be 404 for no caseId in path', async () => {
