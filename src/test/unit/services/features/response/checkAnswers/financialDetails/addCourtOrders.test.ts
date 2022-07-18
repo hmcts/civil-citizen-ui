@@ -4,7 +4,6 @@ import {
 import {
   CITIZEN_COURT_ORDERS_URL,
 } from '../../../../../../../main/routes/urls';
-import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {
   createClaimWithCourtOrders,
   createClaimWithNoCourtOrders,
@@ -40,7 +39,7 @@ describe('Court Orders Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_COURT_ORDERS_TITLE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].value.html).toBe(YesNo.YES.charAt(0).toUpperCase() + YesNo.YES.slice(1));
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].value.html).toBe('COMMON.YES');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].actions?.items[0].href).toBe(CITIZEN_COURT_ORDERS_URL.replace(':id', constVal.CLAIM_ID));
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
 
@@ -68,7 +67,7 @@ describe('Court Orders Details', () => {
 
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_COURT_ORDERS_TITLE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].value.html).toBe(YesNo.NO.charAt(0).toUpperCase() + YesNo.NO.slice(1));
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].value.html).toBe('COMMON.NO');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].actions?.items[0].href).toBe(CITIZEN_COURT_ORDERS_URL.replace(':id', constVal.CLAIM_ID));
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });

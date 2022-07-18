@@ -38,7 +38,7 @@ describe('Partner Details', () => {
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_PARTNER_DO_YOU_LIVE_WITH_A);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].actions?.items[0].href).toBe(CITIZEN_PARTNER_URL.replace(':id', constVal.CLAIM_ID));
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].value.html).toBe('Yes');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].value.html).toBe('COMMON.YES');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });
 
@@ -48,7 +48,7 @@ describe('Partner Details', () => {
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].value.html).toBe('No');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].value.html).toBe('COMMON.NO');
   });
 
   it('should return if your partner is aged 18 or over when it exists', async () => {
@@ -59,7 +59,7 @@ describe('Partner Details', () => {
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PARTNER_IS_AGED_18_OR_OVER');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].actions?.items[0].href).toBe(CITIZEN_PARTNER_AGE_URL.replace(':id', constVal.CLAIM_ID));
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].value.html).toBe('Yes');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].value.html).toBe('COMMON.YES');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });
 
@@ -69,7 +69,7 @@ describe('Partner Details', () => {
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].value.html).toBe('No');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].value.html).toBe('COMMON.NO');
   });
 
   it('should return if your partner receive a pension when it exists', async () => {
@@ -80,7 +80,7 @@ describe('Partner Details', () => {
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PARTNER_DOES_RECEIVE_A_PENSION');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].actions?.items[0].href).toBe(CITIZEN_PARTNER_PENSION_URL.replace(':id', constVal.CLAIM_ID));
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].value.html).toBe('Yes');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].value.html).toBe('COMMON.YES');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });
 
@@ -90,7 +90,7 @@ describe('Partner Details', () => {
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].value.html).toBe('No');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].value.html).toBe('COMMON.NO');
   });
 
   it('should return if your partner is disabled when it exists', async () => {
@@ -101,7 +101,7 @@ describe('Partner Details', () => {
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PARTNER_IS_DISABLED');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].actions?.items[0].href).toBe(CITIZEN_PARTNER_DISABILITY_URL.replace(':id', constVal.CLAIM_ID));
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.html).toBe('Yes');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.html).toBe('COMMON.YES');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });
 
@@ -111,7 +111,7 @@ describe('Partner Details', () => {
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.html).toBe('No');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.html).toBe('COMMON.NO');
   });
 
   it('should return if your partner is severely disabled when it exists', async () => {
@@ -122,7 +122,7 @@ describe('Partner Details', () => {
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.PARTNER_IS_SEVERELY_DISABLED');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].actions?.items[0].href).toBe(CITIZEN_PARTNER_SEVERE_DISABILITY_URL.replace(':id', constVal.CLAIM_ID));
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].value.html).toBe('Yes');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].value.html).toBe('COMMON.YES');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });
 
@@ -132,6 +132,6 @@ describe('Partner Details', () => {
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].value.html).toBe('No');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].value.html).toBe('COMMON.NO');
   });
 });
