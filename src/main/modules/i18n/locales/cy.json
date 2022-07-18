@@ -812,7 +812,7 @@
       "RENT": "Dewiswch pa mor aml ydych chi'n talu rhent",
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
-    "SELECT_REQUEST": "Select if you want to request more time",
+    "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
