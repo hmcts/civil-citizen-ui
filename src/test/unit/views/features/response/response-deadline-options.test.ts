@@ -96,17 +96,18 @@ describe('Response Deadline Options View', () => {
     });
 
     it('should display error summary', () => {
+      const expectedError = 'Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time';
       const errorSummaryTitle = htmlDocument.getElementsByClassName('govuk-error-summary__title')[0];
       const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-error-summary__list')[0]
         .getElementsByTagName('li')[0].getElementsByTagName('a')[0];
       expect(errorSummaryTitle.innerHTML).toContain('There was a problem');
-      expect(errorSummaryMessage.innerHTML).toContain('Select if you want to request more time');
+      expect(errorSummaryMessage.innerHTML).toContain(expectedError);
       expect(errorSummaryMessage.getAttribute('href')).toBe('#option');
     });
 
     it('should display error message', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      expect(errorMessage.innerHTML).toContain('Select if you want to request more time');
+      expect(errorMessage.innerHTML).toContain('Select if you want to request more time,');
     });
   });
 });
