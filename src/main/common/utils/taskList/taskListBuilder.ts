@@ -10,7 +10,7 @@ import {isPastDeadline} from '../dateUtils';
 import {getDecideHowYouPayTask} from './tasks/decideHowYouPay';
 import {getShareFinancialDetailsTask} from './tasks/shareFinancialDetails';
 import {getRepaymentPlanTask} from './tasks/repaymentPlan';
-import {isNotPayImmediatelyResponse} from './tasks/taskListHelpers';
+import {isFullDefenceAndNotCounterClaim, isNotPayImmediatelyResponse} from './tasks/taskListHelpers';
 import {ResponseType} from '../../../common/form/models/responseType';
 import {YesNo} from '../../../common/form/models/yesNo';
 import {getHowMuchHaveYouPaidTask} from './tasks/howMuchHaveYouPaid';
@@ -22,6 +22,9 @@ import {getWhenWillYouPayTask} from './tasks/whenWillYouPay';
 import PaymentOptionType from '../../../common/form/models/admission/paymentOption/paymentOptionType';
 import {getLng} from '../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';
+import {getTellUsHowMuchYouHavePaidTask} from './tasks/tellUsHowMuchYouHavePaid';
+import RejectAllOfClaimType from '../../form/models/rejectAllOfClaimType';
+import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithClaim';
 
 const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
@@ -45,9 +48,11 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
   const shareFinancialDetailsTask = getShareFinancialDetailsTask(caseData, claimId, lang);
   const repaymentPlanTask = getRepaymentPlanTask(caseData, claimId, lang);
   const howMuchHaveYouPaidTask = getHowMuchHaveYouPaidTask(caseData, claimId, lang);
-  const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, lang);
   const howMuchMoneyAdmitOweTask = getHowMuchMoneyAdmitOweTask(caseData, claimId, lang);
   const whenWillYouPayTask = getWhenWillYouPayTask(caseData, claimId, lang);
+  const tellUsHowMuchYouHavePaidTask = getTellUsHowMuchYouHavePaidTask(caseData, claimId, lang);
+  const tellUsWhyDisagreeWithClaimTask = getTellUsWhyDisagreeWithClaimTask(caseData, claimId, lang);
+
   tasks.push(chooseAResponseTask);
 
   if (chooseAResponseTask.status === TaskStatus.COMPLETE) {
@@ -65,6 +70,7 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
     }
 
     if (caseData.isPartialAdmission()) {
+      const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, ResponseType.PART_ADMISSION, lang);
 
       if (caseData.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
         tasks.push(howMuchHaveYouPaidTask);
@@ -87,6 +93,18 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
       tasks.splice(2, 0, whyDisagreeWithAmountClaimedTask);
     }
 
+    if (caseData.isFullDefence()) {
+      if (caseData.rejectAllOfClaim?.option === RejectAllOfClaimType.ALREADY_PAID) {
+        tasks.push(tellUsHowMuchYouHavePaidTask);
+        if (caseData.rejectAllOfClaim?.howMuchHaveYouPaid?.amount < caseData.totalClaimAmount) {
+          const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, ResponseType.FULL_DEFENCE, lang);
+          tasks.push(whyDisagreeWithAmountClaimedTask);
+        }
+      } else if (caseData.rejectAllOfClaim?.option === RejectAllOfClaimType.DISPUTE) {
+        tasks.push(tellUsWhyDisagreeWithClaimTask);
+      }
+    }
+
   }
 
   return { title: t('TASK_LIST.RESPOND_TO_CLAIM.TITLE', { lng: getLng(lang) }), tasks };
@@ -95,9 +113,14 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
 
 const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
-  const whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, lang);
 
-  if (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE) {
+  let whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, ResponseType.PART_ADMISSION, lang);
+
+  if (caseData.isFullDefence()) {
+    whyDisagreeWithAmountClaimedTask = getWhyDisagreeWithAmountClaimedTask(caseData, claimId, ResponseType.FULL_DEFENCE, lang);
+  }
+
+  if (whyDisagreeWithAmountClaimedTask.status === TaskStatus.COMPLETE || isFullDefenceAndNotCounterClaim(caseData)) {
     const freeTelephoneMediationTask = getFreeTelephoneMediationTask(caseData, claimId, lang);
     tasks.push(freeTelephoneMediationTask);
   }
@@ -107,7 +130,7 @@ const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: s
 
 const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
-  if (caseData.respondent1?.responseType === ResponseType.PART_ADMISSION) {
+  if (caseData.respondent1?.responseType === ResponseType.PART_ADMISSION || isFullDefenceAndNotCounterClaim(caseData)) {
     const giveUsDetailsHearingTask = getGiveUsDetailsHearingTask(caseData, claimId, lang);
     tasks.push(giveUsDetailsHearingTask);
   }

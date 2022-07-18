@@ -2,6 +2,7 @@ import {Claim} from '../../../models/claim';
 import {Respondent} from '../../../../common/models/respondent';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
 import PaymentOptionType from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
+import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClaimType';
 
 export const isCaseDataMissing = (caseData: Claim): boolean => {
   return !caseData;
@@ -56,3 +57,7 @@ export const isCounterpartyCompany = (respondent1: Respondent): boolean => {
 export const hasContactPersonAndCompanyPhone = (caseData: Claim): boolean => {
   return caseData.mediation?.companyTelephoneNumber?.mediationContactPerson && caseData.mediation?.companyTelephoneNumber?.mediationPhoneNumber ? true : false;
 };
+
+export const isFullDefenceAndNotCounterClaim = (caseData: Claim): boolean => {
+  return caseData.isFullDefence() && caseData.rejectAllOfClaim?.option !== RejectAllOfClaimType.COUNTER_CLAIM ? true : false;
+}

@@ -132,6 +132,8 @@
       "HOW_MUCH_HAVE_YOU_PAID": "How much have you paid",
       "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
       "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
+      "TELL_US_HOW_MUCH_YOU_HAVE_PAID": "Tell us how much you've paid",
+      "TELL_US_WHY_DISAGREE_WITH_CLAIM": "Tell us why you disagree with the claim",
       "TITLE": "Respond to claim",
       "VIEW_OPTIONS": "View your options before response deadline",
       "WHEN_WILL_YOU_PAY": "When will you pay the £{{ amount }}?",
