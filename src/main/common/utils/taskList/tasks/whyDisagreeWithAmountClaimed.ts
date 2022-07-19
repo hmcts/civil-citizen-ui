@@ -4,7 +4,7 @@ import {TaskStatus} from '../../../models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {
   CITIZEN_WHY_DO_YOU_DISAGREE_URL,
-  CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL
+  CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
 } from '../../../../routes/urls';
 import {getLng} from '../../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';

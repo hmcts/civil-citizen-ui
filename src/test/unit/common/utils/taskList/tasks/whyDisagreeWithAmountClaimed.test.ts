@@ -24,7 +24,7 @@ describe('Why disagree with amount claimed Task', () => {
 
   const resultCompletePA = { ...resultIncompletePA, status: TaskStatus.COMPLETE };
 
-  const resultIncompleteFD = { ...resultIncompletePA, url: "/case/5129/response/full-rejection/why-do-you-disagree" };
+  const resultIncompleteFD = { ...resultIncompletePA, url: '/case/5129/response/full-rejection/why-do-you-disagree' };
   const resultCompleteFD = { ...resultIncompleteFD, status: TaskStatus.COMPLETE };
 
   describe('getWhyDisagreeWithAmountClaimedTask', () => {
