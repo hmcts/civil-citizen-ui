@@ -9,14 +9,14 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CITIZEN_ALREADY_PAID_URL,
 } from '../../../../../routes/urls';
-import {YesNo} from '../../../../../common/form/models/yesNo';
+import {YesNo,YesNoUpperCase} from '../../../../../common/form/models/yesNo';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
 
 export const buildYourResponseToClaimSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const yourResponseToClaimHref = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
   const yourPaymentAdmittedToClaimantHref = constructResponseUrlWithIdParams(claimId, CITIZEN_ALREADY_PAID_URL);
-  const alreadyPaid = claim.partialAdmission?.alreadyPaid?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
+  const alreadyPaid = claim.partialAdmission?.alreadyPaid?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
   let yourResponseToClaimSection: SummarySection = null;
 
   yourResponseToClaimSection = summarySection({
@@ -27,7 +27,7 @@ export const buildYourResponseToClaimSection = (claim: Claim, claimId: string, l
   yourResponseToClaimSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', { lng: getLng(lang) }), t(`COMMON.RESPONSE_TYPE.${claim.respondent1?.responseType}`, { lng: getLng(lang) }), yourResponseToClaimHref, changeLabel(lang)));
 
   if (claim.respondent1?.responseType === ResponseType.PART_ADMISSION) {
-    yourResponseToClaimSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT', { lng: getLng(lang) }), alreadyPaid.charAt(0).toUpperCase() + alreadyPaid.slice(1), yourPaymentAdmittedToClaimantHref, changeLabel(lang)));
+    yourResponseToClaimSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT', { lng: getLng(lang) }), t(`COMMON.${alreadyPaid}`, {lng: getLng(lang)}), yourPaymentAdmittedToClaimantHref, changeLabel(lang)));
   }
 
   return yourResponseToClaimSection;
