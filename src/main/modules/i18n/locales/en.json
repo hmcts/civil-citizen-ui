@@ -78,6 +78,13 @@
       "IMMEDIATELY": "Immediately",
       "INSTALMENTS": "By instalments"
     },
+    "POSTAL_ADDRESS": {
+      "BUILDING": "HMCTS CMC",
+      "CITY": "Harlow",
+      "PO_BOX": "PO Box 12747",
+      "POSTCODE": "CM20 9RA",
+      "TELEPHONE": "Tel: 0300 123 7050"
+    },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
@@ -136,6 +143,7 @@
       "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
       "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
       "TITLE": "Respond to claim",
+      "VIEW_OPTIONS": "View your options before response deadline",
       "WHEN_WILL_YOU_PAY": "When will you pay the £{{ amount }}?",
       "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
       "YOUR_REPAYMENT_PLAN": "Your repayment plan"
@@ -259,6 +267,7 @@
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "When did you pay this amount?",
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED": "How did you pay the amount claimed?",
       "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
+      "RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE": "How much money do you admit you owe?",
       "SAME_ADDRESS": "Same as address",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Do you support anyone else financially?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Number of people",
@@ -358,7 +367,7 @@
       "PAY_IMMEDIATELY": "Pay immediately",
       "REJECT_ALL": "Reject all of the claim",
       "REJECT_DEADLINE": "You have until 4pm on {{ deadline }} to reject the claim.",
-      "REJECT_PAID": "If you reject because you believe you've paid the money, the claimant has {{ deadline }} days to tell you and the court whether they're proceeding with the claim.",
+      "REJECT_PAID": "If you reject because you believe you've paid the money, the claimant has 28 days to tell you and the court whether they're proceeding with the claim.",
       "REJECT_WHOLE_CLAIM": "If you reject all of the claim, the claim may be transferred to a County Court hearing centre.",
       "RESPONSE_MEANING": "Find out what each response means"
     },
@@ -676,6 +685,19 @@
       "RENTAL_HOME": "Private rental",
       "TITLE": "Where do you live?"
     },
+    "RESPONSE_DEADLINE_OPTIONS": {
+      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
+      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
+      "FORM": "Form N244 (opens in new tab)",
+      "MORE_TIME": "Do you want to request more time to respond?",
+      "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",
+      "OPTION_NO": "No, I do not want to request more time",
+      "OPTION_REFUSED": "My request for more time has been refused",
+      "OPTION_YES": "Yes, I want to request more time",
+      "PAGE_TITLE": "Response deadline",
+      "POST": "Or, you can post the completed form to:",
+      "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
+    },
     "SELF_EMPLOYED": {
       "ANNUAL" : "Annual Turnover",
       "JOB_TITLE" : "Job title",
@@ -712,6 +734,14 @@
     },
     "UNDER_18": {
       "PAGE_TITLE": "Under 18"
+    },
+    "UNDERSTANDING_YOUR_OPTIONS": {
+      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
+      "HOW_MUCH_EXTRA": "How much extra time can you request?",
+      "PAGE_TITLE": "Requesting extra time",
+      "REQUEST_EXTENSION_DEFAULT": "If you want to request an extension of up to 28 days, you'll need to ask the other party's legal representative directly.",
+      "REQUEST_EXTENSION_MORE": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party's legal representative, you'll need to apply to the court.",
+      "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "If you think that you will be unable to respond to a claim before this deadline, you can request more time."
     },
     "UNEMPLOYMENT": {
       "DESCRIPTION": "How long have you been unemployed?",
@@ -806,6 +836,7 @@
       "RENT": "Select how often you pay for Rent",
       "WATER": "Select how often you pay for Water"
     },
+    "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
     "TRANSACTION_SOURCE" : {
       "HOW_MUCH_INCOME" : {
         "INCOME _JOB" : "Enter how much income from your job you receive",
