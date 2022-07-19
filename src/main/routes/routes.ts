@@ -75,6 +75,7 @@ import vulnerabilityController from './features/directionsQuestionnaire/vulnerab
 import whyDoYouDisagreeFullRejectionController from './features/response/admission/fullRejection/whyDoYouDisagreeFullRejectionController';
 import documentDownloadController from './features/document/documentDownloadController';
 import understandingYourOptionsController from './features/response/understandingYourOptionsController';
+import agreedResponseDeadlineController from './features/response/agreedResponseDeadlineController';
 
 export default [
   homeController,
@@ -147,4 +148,5 @@ export default [
   documentDownloadController,
   vulnerabilityController,
   understandingYourOptionsController,
+  agreedResponseDeadlineController,
 ];
