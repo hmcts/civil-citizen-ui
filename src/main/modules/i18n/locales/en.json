@@ -75,6 +75,13 @@
       "IMMEDIATELY": "Immediately",
       "INSTALMENTS": "By instalments"
     },
+    "POSTAL_ADDRESS": {
+      "BUILDING": "HMCTS CMC",
+      "CITY": "Harlow",
+      "PO_BOX": "PO Box 12747",
+      "POSTCODE": "CM20 9RA",
+      "TELEPHONE": "Tel: 0300 123 7050"
+    },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
@@ -646,6 +653,19 @@
       "RENTAL_HOME": "Private rental",
       "TITLE": "Where do you live?"
     },
+    "RESPONSE_DEADLINE_OPTIONS": {
+      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
+      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
+      "FORM": "Form N244 (opens in new tab)",
+      "MORE_TIME": "Do you want to request more time to respond?",
+      "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",
+      "OPTION_NO": "No, I do not want to request more time",
+      "OPTION_REFUSED": "My request for more time has been refused",
+      "OPTION_YES": "Yes, I want to request more time",
+      "PAGE_TITLE": "Response deadline",
+      "POST": "Or, you can post the completed form to:",
+      "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
+    },
     "SELF_EMPLOYED": {
       "PAGE_TITLE": "Self employment details"
     },
@@ -775,6 +795,7 @@
       "RENT": "Select how often you pay for Rent",
       "WATER": "Select how often you pay for Water"
     },
+    "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
