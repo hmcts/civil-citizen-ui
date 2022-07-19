@@ -3,7 +3,6 @@ import currencyFormat from '../utils/currencyFormat';
 import {Respondent} from './respondent';
 import {StatementOfMeans} from './statementOfMeans';
 import {CounterpartyType} from './counterpartyType';
-import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
 import {DefendantEvidence} from './evidence/evidence';
@@ -91,10 +90,6 @@ export class Claim {
 
   formattedTotalClaimAmount(): string {
     return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
-  }
-
-  responseInDays(): NumberOfDays {
-    return this.totalClaimAmount < MAX_CLAIM_AMOUNT ? NumberOfDays.FOURTEEN : NumberOfDays.TWENTYEIGHT;
   }
 
   getRemainingDays(): number {

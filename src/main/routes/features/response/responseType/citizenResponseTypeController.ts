@@ -123,7 +123,7 @@ function getDetailItemsList(claim: Claim): ComponentDetailItems[] {
         'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_PAID',
         'PAGES.CITIZEN_RESPONSE_TYPE.IF_PROCEED',
       ],
-      formattedValues: [claim.formattedResponseDeadline(), '' , claim.responseInDays()],
+      formattedValues: [claim.formattedResponseDeadline()],
     },
     {
       title: 'PAGES.CITIZEN_RESPONSE_TYPE.HEARING_CENTRE',
