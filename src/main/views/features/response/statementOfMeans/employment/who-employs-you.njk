@@ -19,28 +19,28 @@
       {% set errors = form.getAllErrors() %}
       {% if errors.length > 0 %}
         {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
-          "errorList": errors
+          "titleText": t("ERRORS.THERE_WAS_A_PROBLEM"),
+          "errorList":  translateErrors(errorList, t)
         }) }}
       {% endif %}
-      <h1 class="govuk-heading-l">{{ t('Who employs you?') }}</h1>
+      <h1 class="govuk-heading-l">{{ t('PAGES.WHO_EMPLOYS_YOU.WHO_EMPLOYS') }}</h1>
       <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
         <div class="govuk-form-group-!-margin-9 {%- if errors[0].text %} govuk-form-group--error{% endif %}">
           {{ govukErrorMessage({ text:t(errors[0].text) })  }}
           {% for employer in form.model.rows %}
-            {{employerRow(employer, loop.index0, form.errorFor)}}
+            {{employerRow(employer, loop.index0, form.errorFor,t)}}
           {% endfor %}
         </div>
         <div class="govuk-form-group">
           {{ govukButton({
-            text: t("Add another job"),
+            text: t('PAGES.WHO_EMPLOYS_YOU.ADD_ANOTHER_JOB'),
             classes: "govuk-button--secondary append-row"
           }) }}
         </div>
         <div class="govuk-form-group">
           {{ govukButton({
-            text: t("Save and continue")
+            text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
           }) }}
           {{ contactUsForHelp(t) }}
         </div>

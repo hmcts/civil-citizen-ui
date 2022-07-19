@@ -16,6 +16,9 @@
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Month",
     "MONTHS": "Months",
+    "WEEK" : "Week",
+    "TWO_WEEKS" : "Two weeks",
+    "FOUR_WEEKS" : "Four weeks",
     "NO": "No",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
@@ -75,13 +78,6 @@
       "IMMEDIATELY": "Immediately",
       "INSTALMENTS": "By instalments"
     },
-    "POSTAL_ADDRESS": {
-      "BUILDING": "HMCTS CMC",
-      "CITY": "Harlow",
-      "PO_BOX": "PO Box 12747",
-      "POSTCODE": "CM20 9RA",
-      "TELEPHONE": "Tel: 0300 123 7050"
-    },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
@@ -140,7 +136,6 @@
       "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
       "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
       "TITLE": "Respond to claim",
-      "VIEW_OPTIONS": "View your options before response deadline",
       "WHEN_WILL_YOU_PAY": "When will you pay the £{{ amount }}?",
       "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
       "YOUR_REPAYMENT_PLAN": "Your repayment plan"
@@ -264,7 +259,6 @@
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "When did you pay this amount?",
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED": "How did you pay the amount claimed?",
       "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
-      "RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE": "How much money do you admit you owe?",
       "SAME_ADDRESS": "Same as address",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Do you support anyone else financially?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Number of people",
@@ -364,7 +358,7 @@
       "PAY_IMMEDIATELY": "Pay immediately",
       "REJECT_ALL": "Reject all of the claim",
       "REJECT_DEADLINE": "You have until 4pm on {{ deadline }} to reject the claim.",
-      "REJECT_PAID": "If you reject because you believe you've paid the money, the claimant has 28 days to tell you and the court whether they're proceeding with the claim.",
+      "REJECT_PAID": "If you reject because you believe you've paid the money, the claimant has {{ deadline }} days to tell you and the court whether they're proceeding with the claim.",
       "REJECT_WHOLE_CLAIM": "If you reject all of the claim, the claim may be transferred to a County Court hearing centre.",
       "RESPONSE_MEANING": "Find out what each response means"
     },
@@ -536,7 +530,16 @@
       "TITLE": "Briefly explain why you can't pay immediately"
     },
     "FINANCIAL_DETAILS": {
-      "PAGE_TITLE": "Your financial details"
+      "ASK_DETAILS_AND_SEND" : "We'll ask you for the details then we'll send them to {{ applicant1Details }} to review.",
+      "GET_APPLICANT_CONTACT_DETAILS" : "Get {{ applicant1Details }} 's contact details.",
+      "NEED_GIVE_DETAILS": "You need to give {{ applicant1Details }} details of your finances.",
+      "PAGE_TITLE": "Your financial details",
+      "SEND_STATEMENT_ACCOUNTS" : "'You need to send ' {{ applicant1Details }} your company or organisation's most recent statement of accounts.",
+      "SEND_FINANCIAL_DETAILS": "Send {{ applicant1Details }} your financial details",
+      "REJECT_PAY_SOONER" : "They can reject your proposal if they believe you can pay sooner.",
+      "REJECT_COURT_MAKE_NEW_PLAN" : "If they reject your proposal, the court will make a new plan using your financial details.",
+      "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
+      "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "'If they reject your plan, the court will make a new plan based on your financial details."
     },
     "FREE_TELEPHONE_MEDIATION": {
       "PAGE_TITLE": "Free telephone mediation"
@@ -649,7 +652,8 @@
       "TOTAL_MONTHLY" : "Total monthly income:",
       "UNIVERSAL_CREDIT" : "Universal Credit",
       "WHAT_REGULAR_INCOME" : "What regular income do you receive?",
-      "WORKING_TAX" : "Working Tax Credit"
+      "WORKING_TAX" : "Working Tax Credit",
+      "REMOVE_INCOME" : "Remove this income source"
     },
     "REJECT_ALL": {
       "FEE": "Fee",
@@ -671,19 +675,6 @@
       "PAGE_TITLE": "Your residence",
       "RENTAL_HOME": "Private rental",
       "TITLE": "Where do you live?"
-    },
-    "RESPONSE_DEADLINE_OPTIONS": {
-      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
-      "FORM": "Form N244 (opens in new tab)",
-      "MORE_TIME": "Do you want to request more time to respond?",
-      "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",
-      "OPTION_NO": "No, I do not want to request more time",
-      "OPTION_REFUSED": "My request for more time has been refused",
-      "OPTION_YES": "Yes, I want to request more time",
-      "PAGE_TITLE": "Response deadline",
-      "POST": "Or, you can post the completed form to:",
-      "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "SELF_EMPLOYED": {
       "ANNUAL" : "Annual Turnover",
@@ -722,14 +713,6 @@
     "UNDER_18": {
       "PAGE_TITLE": "Under 18"
     },
-    "UNDERSTANDING_YOUR_OPTIONS": {
-      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "HOW_MUCH_EXTRA": "How much extra time can you request?",
-      "PAGE_TITLE": "Requesting extra time",
-      "REQUEST_EXTENSION_DEFAULT": "If you want to request an extension of up to 28 days, you'll need to ask the other party's legal representative directly.",
-      "REQUEST_EXTENSION_MORE": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party's legal representative, you'll need to apply to the court.",
-      "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "If you think that you will be unable to respond to a claim before this deadline, you can request more time."
-    },
     "UNEMPLOYMENT": {
       "DESCRIPTION": "How long have you been unemployed?",
       "DETAILS": "Give details",
@@ -748,7 +731,13 @@
       "TITLE": "Vulnerability Questions"
     },
     "WHO_EMPLOYS_YOU": {
-      "PAGE_TITLE": "Your employer"
+      "PAGE_TITLE": "Your employer",
+      "WHO_EMPLOYS" : "Who employs you?",
+      "ADD_ANOTHER_JOB" : "Add another job"
+    },
+    "EMPLOYER" : {
+      "EMPLOYER_NAME" : "Employer name",
+      "JOB_TITLE" : "Job title"
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
@@ -817,7 +806,35 @@
       "RENT": "Select how often you pay for Rent",
       "WATER": "Select how often you pay for Water"
     },
-    "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
+    "TRANSACTION_SOURCE" : {
+      "HOW_MUCH_INCOME" : {
+        "INCOME _JOB" : "Enter how much income from your job you receive",
+        "UNIVERSAL_CREDIT" : "Enter how much Universal Credit you receive",
+        "JOBSEEKER_INCOME" : "Enter how much Jobseeker’s Allowance (income based) you receive",
+        "JOBSEEKER_CONTRIBUTION" : "Enter how much  Jobseeker’s Allowance (contribution based) you receive",
+        "INCOME_SUPPORT" : "Enter how much Income Support you receive",
+        "WORKING_TAX" : "Enter how much Working Tax Credit you receive",
+        "CHILD_TAX" : "Enter how much Child Tax Credit you receive",
+        "CHILD_BENEFIT" : "Enter how much Child Benefit you receive",
+        "COUNCIL_TAX" : "Enter how much Council Tax Support you receive",
+        "PENSION" : "Enter how much pension you receive",
+        "OTHER" : "Enter how much other you receive"
+      },
+      "HOW_OFTEN_RECEIVE" : {
+        "INCOME _JOB" : "Select how often you receive income from your job",
+        "UNIVERSAL_CREDIT" : "Select how often you receive Universal Credit",
+        "JOBSEEKER_INCOME" : "Select how often you receive Jobseeker’s Allowance (income based)",
+        "JOBSEEKER_CONTRIBUTION" : "Select how often you receive Jobseeker’s Allowance (contribution based)",
+        "INCOME_SUPPORT" : "Select how often you receive Income Support",
+        "WORKING_TAX" : "Select how often you receive Working Tax Credit",
+        "CHILD_TAX" : "Select how often you receive Child Tax Credit",
+        "CHILD_BENEFIT" : "Select how often you receive Child Benefit",
+        "COUNCIL_TAX" : "Select how often you receive Council Tax Support",
+        "PENSION" : "Select how often you receive pension",
+        "OTHER" : "Select how often you receive other"
+      },
+      "ENTER_OTHER_INCOME" : "Enter other income"
+    },
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",

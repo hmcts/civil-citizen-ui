@@ -1,6 +1,6 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
-{% macro employerRow(employer, index, errorFor) %}
+{% macro employerRow(employer, index, errorFor,t) %}
   <div id="row-container govuk-grid-column-two-thirds">
     <div class="multiple-row">
       <div class="govuk-form-group {%- if errors.length>0 %} govuk-form-group--error{% endif %}">
@@ -9,15 +9,15 @@
               id: 'rows[' + index + '][employerName]',
               name: 'rows[' + index + '][employerName]',
               value: employer.employerName,
-              hint: { text: t('Employer name') },
-              errorMessage: { text: errorFor('rows[' + index + '][employerName]') } if errorFor('rows[' + index + '][employerName]') else ''
+              hint: { text: t('PAGES.EMPLOYER.EMPLOYER_NAME') },
+              errorMessage: { text: t(errorFor('rows[' + index + '][employerName]')) } if t(errorFor('rows[' + index + '][employerName]')) else ''
             }) }}
           {{ govukInput({
               id: 'rows[' + index + '][jobTitle]',
               name: 'rows[' + index + '][jobTitle]',
               value: employer.jobTitle,
-              hint: { text: t('Job title') },
-              errorMessage: { text: errorFor('rows[' + index + '][jobTitle]') } if errorFor('rows[' + index + '][jobTitle]') else ''
+              hint: { text: t('PAGES.EMPLOYER.JOB_TITLE') },
+              errorMessage: { text: t(errorFor('rows[' + index + '][jobTitle]')) } if t(errorFor('rows[' + index + '][jobTitle]')) else ''
             }) }}
         </div>
       </div>

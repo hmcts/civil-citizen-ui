@@ -1,9 +1,10 @@
 import {IsDefined, IsNotEmpty, IsNumber, Max, Min, ValidateIf} from 'class-validator';
 import {TransactionSchedule} from './transactionSchedule';
-import {ExpenseType} from './expenseType';
 import {MAX_AMOUNT_VALUE} from '../../../validators/validationConstraints';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
-import {IncomeType} from './incomeType';
+import {ExpenseType} from './expenseType';
+
+
 
 export interface TransactionSourceParams {
   name?: string;
@@ -16,21 +17,67 @@ export interface TransactionSourceParams {
 export class ValidationErrors {
   static readonly NAME_REQUIRED = (_name: string, isIncome: boolean) => {
     if (isIncome) {
-      return 'Enter other income source';
+      return 'ERRORS.TRANSACTION_SOURCE.ENTER_OTHER_INCOME';
     }
     return 'Enter other expense source';
   };
   static readonly AMOUNT_REQUIRED = (name: string, isIncome: boolean) => {
     if (isIncome) {
-      return `Enter how much ${name ? name : IncomeType.OTHER} you receive`;
+      switch (name) {
+        case 'Income from your job':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.INCOME_JOB';
+        case 'Universal Credit':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.UNIVERSAL_CREDIT';
+        case 'Jobseeker’s Allowance (income based)':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.JOBSEEKER_INCOME';
+        case 'Jobseeker’s Allowance (contribution based)':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.JOBSEEKER_CONTRIBUTION';
+        case 'Income Support':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.INCOME_SUPPORT';
+        case 'Working Tax Credit':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.WORKING_TAX';
+        case 'Child Tax Credit':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.CHILD_TAX';
+        case 'Child Benefit':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.CHILD_BENEFIT';
+        case 'Council Tax Support':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.COUNCIL_TAX';
+        case 'Pension':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.PENSION';
+        default:
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.OTHER';
+      }
     }
-    return `Enter how much you pay for ${name ? name : ExpenseType.OTHER}`;
+    return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_PAY';
   };
   static readonly AMOUNT_INVALID_DECIMALS = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
   static readonly AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
   static readonly SCHEDULE_SELECT_AN_OPTION = (name: string, isIncome: boolean) => {
     if (isIncome) {
-      return `Select how often you receive ${name ? name : IncomeType.OTHER}`;
+      switch (name) {
+        case 'Income from your job':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.INCOME_JOB';
+        case 'Universal Credit':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.UNIVERSAL_CREDIT';
+        case 'Jobseeker’s Allowance (income based)':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.JOBSEEKER_INCOME';
+        case 'Jobseeker’s Allowance (contribution based)':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.JOBSEEKER_CONTRIBUTION';
+        case 'Income Support':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.INCOME_SUPPORT';
+        case 'Working Tax Credit':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.WORKING_TAX';
+        case 'Child Tax Credit':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.CHILD_TAX';
+        case 'Child Benefit':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.CHILD_BENEFIT';
+        case 'Council Tax Support':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.COUNCIL_TAX';
+        case 'Pension':
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.PENSION';
+        default:
+          return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.OTHER';
+      }
     }
     return `Select how often you pay for ${name ? name : ExpenseType.OTHER}`;
   };

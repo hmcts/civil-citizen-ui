@@ -16,6 +16,9 @@
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Mis",
     "MONTHS": "Mis",
+    "WEEK" : "Wythnos",
+    "TWO_WEEKS" : "Pythefnos",
+    "FOUR_WEEKS" : "4 wythnos",
     "NO": "Nac oes",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
@@ -75,13 +78,6 @@
       "IMMEDIATELY": "Ar unwaith",
       "INSTALMENTS": "Mewn rhandaliadau"
     },
-    "POSTAL_ADDRESS": {
-      "BUILDING": "HMCTS CMC",
-      "CITY": "Harlow",
-      "PO_BOX": "PO Box 12747",
-      "POSTCODE": "CM20 9RA",
-      "TELEPHONE": "Tel: 0300 123 7050"
-    },
     "REMAINING_TASKS": {
       "TITLE": "You still need to complete:",
       "BACK": "Back to task list"
@@ -140,7 +136,6 @@
       "HOW_MUCH_MONEY_ADMIT_OWE": "How much money do you admit you owe",
       "SHARE_YOUR_FINANCIAL_DETAILS": "Share your financial details",
       "TITLE": "Respond to claim",
-      "VIEW_OPTIONS": "View your options before response deadline",
       "WHEN_WILL_YOU_PAY": "When will you pay the £{{ amount }}?",
       "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
       "YOUR_REPAYMENT_PLAN": "Your repayment plan"
@@ -264,7 +259,6 @@
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "Faint o arian ydych chi wedi'i dalu?",
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED": "Sut wnaethoch chi dalu'r swm a hawliwyd?",
       "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Pam ydych chi'n anghytuno â'r swm a hawlir?",
-      "RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE": "Faint o arian ydych chi'n cyfaddef bod arnoch chi?",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Nifer y bobl",
@@ -364,7 +358,7 @@
       "PAY_IMMEDIATELY": "Talu ar unwaith",
       "REJECT_ALL": "Gwrthod yr hawliad i gyd",
       "REJECT_DEADLINE": "Mae gennych tan 4pm ar {{ deadline }} i wrthod yr hawliad cyfan.",
-      "REJECT_PAID": "Os ydych yn gwrthod oherwydd eich bod yn credu eich bod wedi talu'r arian, mae gan yr hawlydd 28 i ddweud wrthych chi a'r llys p'un a yw'n bwrw ymlaen â'r hawliad.",
+      "REJECT_PAID": "Os ydych yn gwrthod oherwydd eich bod yn credu eich bod wedi talu'r arian, mae gan yr hawlydd {{ deadline }} i ddweud wrthych chi a'r llys p'un a yw'n bwrw ymlaen â'r hawliad.",
       "REJECT_WHOLE_CLAIM": "Os ydych yn gwrthod yr hawliad cyfan, gall yr hawliad gael ei drosglwyddo i ganolfan wrandawiadau Llys Sirol.",
       "RESPONSE_MEANING": "Canfod beth mae pob ymateb yn ei olygu"
     },
@@ -639,7 +633,26 @@
       "PAGE_TITLE": "Your regular expenses"
     },
     "REGULAR_INCOME": {
-      "PAGE_TITLE": "Your regular income"
+      "AMOUNT_RECEIVED" : "Swm a geir",
+      "BUTTON_ADD_SOURCE" : "Ychwanegu ffynhonnell arall o incwm",
+      "CHILD_TAX" : "Credyd Treth Plant",
+      "CHILD_BENEFIT" : "Budd-dal Plant",
+      "COUNCIL_TAX": "Cefnogaeth Treth Cyngor",
+      "INCOME_JOB" : "Incwm o’ch swydd",
+      "INCOME_SUPPORT" : "Cymhorthdal Incwm",
+      "INCLUDE_WAGES_OVERTIME_COMISSION" : "Dylech gynnwys cyflog, goramser, comisiynau, bonwsau",
+      "JOBSEEKER_ALLOWANCE_INCOME" : "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
+      "JOBSEEKER_ALLOWANCE_CONTRIBUTION" : "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
+      "OTHER" : "Arall",
+      "PAGE_TITLE": "Your regular income",
+      "PENSION" : "Pensiwn",
+      "RECEIVED_EVERY" : "Bob",
+      "SELECT_ALL_THAT_APPLY" : "Dewiswch bob un sy’n berthnasol. Rhaid i’r wybodaeth rydych yn ei rhoi fod yn wir ac yn gywir.",
+      "SOURCE_INCOME" : "Ffynhonnell o incwm",
+      "TOTAL_MONTHLY" : "Cyfanswm incwm misol:",
+      "UNIVERSAL_CREDIT" : "Credyd Cynhwysol",
+      "WHAT_REGULAR_INCOME" : "Pa incwm rheolaidd ydych chi’n ei gael?",
+      "WORKING_TAX" : "Credyd Treth Gwaith"
     },
     "REJECT_ALL": {
       "FEE": "Fee",
@@ -661,19 +674,6 @@
       "PAGE_TITLE": "Your residence",
       "RENTAL_HOME": "Cartref rydych yn rhentu'n breifat",
       "TITLE": "Ble ydych chi'n byw?"
-    },
-    "RESPONSE_DEADLINE_OPTIONS": {
-      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
-      "FORM": "Form N244 (opens in new tab)",
-      "MORE_TIME": "Do you want to request more time to respond?",
-      "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",
-      "OPTION_NO": "No, I do not want to request more time",
-      "OPTION_REFUSED": "My request for more time has been refused",
-      "OPTION_YES": "Yes, I want to request more time",
-      "PAGE_TITLE": "Response deadline",
-      "POST": "Or, you can post the completed form to:",
-      "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "SELF_EMPLOYED": {
       "ANNUAL" : "Trosiant blynyddol",
@@ -712,14 +712,6 @@
     "UNDER_18": {
       "PAGE_TITLE": "Under 18"
     },
-    "UNDERSTANDING_YOUR_OPTIONS": {
-      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "HOW_MUCH_EXTRA": "How much extra time can you request?",
-      "PAGE_TITLE": "Requesting extra time",
-      "REQUEST_EXTENSION_DEFAULT": "If you want to request an extension of up to 28 days, you'll need to ask the other party's legal representative directly.",
-      "REQUEST_EXTENSION_MORE": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party's legal representative, you'll need to apply to the court.",
-      "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "If you think that you will be unable to respond to a claim before this deadline, you can request more time."
-    },
     "UNEMPLOYMENT": {
       "DESCRIPTION": "Ers faint ydych chi wedi bod yn ddi-waith?",
       "DETAILS": "Rhowch fanylion",
@@ -738,7 +730,13 @@
       "TITLE": "Vulnerability Questions"
     },
     "WHO_EMPLOYS_YOU": {
-      "PAGE_TITLE": "Your employer"
+      "PAGE_TITLE": "Your employer",
+      "WHO_EMPLOYS" : "Pwy sy’n eich cyflogi",
+      "ADD_ANOTHER_JOB" : "Ychwanegu swydd arall\n"
+    },
+    "EMPLOYER" : {
+      "EMPLOYER_NAME" : "Enw’r cyflogwr\n",
+      "JOB_TITLE" : "Teitl swydd"
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
@@ -807,7 +805,35 @@
       "RENT": "Dewiswch pa mor aml ydych chi'n talu rhent",
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
-    "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
+    "TRANSACTION_SOURCE" : {
+      "HOW_MUCH_INCOME" : {
+        "INCOME _JOB" : "Nodwch faint o incwm ydych chi’n ei gael o’ch swydd",
+        "UNIVERSAL_CREDIT" : "Nodwch faint o Gredyd Cynhwysol ydych chi’n ei gael",
+        "JOBSEEKER_INCOME" : "Nodwch faint o Lwfans Ceisio Gwaith (yn seiliedig ar incwm) ydych chi’n ei gael",
+        "JOBSEEKER_CONTRIBUTION" : "Nodwch faint o Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau) ydych chi’n ei gael",
+        "INCOME_SUPPORT" : "Nodwch faint o Gymhorthdal Incwm ydych chi’n ei gael",
+        "WORKING_TAX" : "Nodwch faint o Gredyd Treth Gwaith ydych chi’n ei gael",
+        "CHILD_TAX" : "Nodwch faint o Gredyd Treth Plant ydych chi’n ei gael",
+        "CHILD_BENEFIT" : "Nodwch faint o Fudd-dal Plant ydych chi’n ei gael",
+        "COUNCIL_TAX" : "Nodwch faint o gymorth ydych chi’n ei gael i dalu Treth y Cyngor",
+        "PENSION" : "Nodwch faint o bensiwn ydych chi’n ei gael",
+        "OTHER" : "Nodwch faint o incwm arall ydych chi’n ei gael\n"
+      },
+      "HOW_OFTEN_RECEIVE" : {
+        "INCOME _JOB" : "Dewiswch pa mor aml ydych chi’n cael incwm o’ch swydd",
+        "UNIVERSAL_CREDIT" : "Dewiswch pa mor aml ydych chi’n cael Credyd Cynhwysol",
+        "JOBSEEKER_INCOME" : "Dewiswch pa mor aml ydych chi’n cael Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
+        "JOBSEEKER_CONTRIBUTION" : "Dewiswch pa mor aml ydych chi’n cael Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
+        "INCOME_SUPPORT" : "Dewiswch pa mor aml ydych chi’n cael Cymhorthdal Incwm",
+        "WORKING_TAX" : "Dewiswch pa mor aml ydych chi’n cael Credyd Treth Gwaith",
+        "CHILD_TAX" : "Dewiswch pa mor aml ydych chi’n cael Credyd Treth Plant",
+        "CHILD_BENEFIT" : "Dewiswch pa mor aml ydych chi’n cael Budd-dal Plant",
+        "COUNCIL_TAX" : "Dewiswch pa mor aml ydych chi’n cael cymorth i dalu Treth y Cyngor",
+        "PENSION" : "Dewiswch pa mor aml ydych chi’n cael pensiwn",
+        "OTHER" : "Dewiswch pa mor aml ydych chi’n cael unrhyw incwm arall"
+      },
+      "ENTER_OTHER_INCOME" : "Tynnu'r ffynhonnell incwm hon"
+    },
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
@@ -836,10 +862,10 @@
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DAY": "Enter a valid day",
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
-    "VALID_ENTER_A_JOB_TITLE": "Enter a job title",
-    "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
+    "VALID_ENTER_A_JOB_TITLE": "Rhowch deitl swydd",
+    "VALID_ENTER_AN_EMPLOYER_NAME": "Rhowch enw cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
-    "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Enter at least one employer",
+    "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
     "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
     "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",

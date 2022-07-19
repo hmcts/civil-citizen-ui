@@ -1,6 +1,6 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% macro transactionDetails(hintAmount, property, transactionSource, labels, form, other, removeButton) %}
+{% macro transactionDetails(t,hintAmount, property, transactionSource, labels, form, other, removeButton) %}
   {% set amountValue =  '' + transactionSource.amount %}
   {% if other %}
 <div class="govuk-form-group civil-amountRow  multiple-row">
@@ -12,7 +12,7 @@
     },
     value:transactionSource.name,
     errorMessage: {
-      text: form.errorFor(property + "[name]", "model")
+      text: t(form.errorFor(property + "[name]", "model"))
     } if(form.errorFor(property + "[name]", "model"))
   }) }}
   {% else %}
@@ -36,7 +36,7 @@
       },
       spellcheck: false,
       errorMessage: {
-        text: form.errorFor(property + "[amount]", "model")
+        text: t(form.errorFor(property + "[amount]", "model"))
       } if(form.errorFor(property + "[amount]", "model"))
     }) }}
     {{ govukRadios({
@@ -51,27 +51,27 @@
       items: [
         {
           value: TransactionSchedule.WEEK,
-          text: t("Week"),
+          text: t('COMMON.WEEK'),
           checked: true if transactionSource.schedule == TransactionSchedule.WEEK
         },
         {
           value: TransactionSchedule.TWO_WEEKS,
-          text: t("Two weeks"),
+          text: t('COMMON.TWO_WEEKS'),
           checked: true if transactionSource.schedule == TransactionSchedule.TWO_WEEKS
         },
         {
           value: TransactionSchedule.FOUR_WEEKS,
-          text: "Four weeks",
+          text: t('COMMON.FOUR_WEEKS'),
           checked: true if transactionSource.schedule == TransactionSchedule.FOUR_WEEKS
         },
         {
           value: TransactionSchedule.MONTH,
-          text: t("Month"),
+          text: t('COMMON.MONTH'),
           checked: true if transactionSource.schedule == TransactionSchedule.MONTH
         }
       ],
       errorMessage: {
-        text: form.errorFor(property + "[schedule]", "model")
+        text: t(form.errorFor(property + "[schedule]", "model"))
       } if(form.hasFieldError(property + "[schedule]", "model"))
     }) }}
     {% if removeButton %}
@@ -84,6 +84,6 @@
   </div>
 
   {% endmacro %}
-  {% macro otherTransactionDetails(property, index, transactionSource, labels, form, removeButton) %}
-    {{ transactionDetails('', property +'['+index +']', transactionSource, labels, form, true, removeButton) }}
+  {% macro otherTransactionDetails(t,property, index, transactionSource, labels, form, removeButton) %}
+    {{ transactionDetails(t,'', property +'['+index +']', transactionSource, labels, form, true, removeButton) }}
   {% endmacro %}
