@@ -60,4 +60,4 @@ export const hasContactPersonAndCompanyPhone = (caseData: Claim): boolean => {
 
 export const isFullDefenceAndNotCounterClaim = (caseData: Claim): boolean => {
   return caseData.isFullDefence() && caseData.rejectAllOfClaim?.option !== RejectAllOfClaimType.COUNTER_CLAIM ? true : false;
-}
+};
