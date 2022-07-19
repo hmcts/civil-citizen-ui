@@ -26,7 +26,7 @@ agreedResponseDeadlineController
       const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
         claim = await getCaseDataFromStore(req.params.id);
-        const agreedResponseDeadline = await responseDeadlineService.getAgreedResponseDeadline(claim);
+        const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
         res.render(agreedResponseDeadlineViewPath, {
           form: new GenericForm(agreedResponseDeadline),
           nextMonth: nextMonth,
@@ -40,8 +40,9 @@ agreedResponseDeadlineController
   .post(
     AGREED_T0_MORE_TIME_URL, async (req, res, next: express.NextFunction) => {
       const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
+      const originalResponseDeadline = claim?.respondent1ResponseDeadline;
       const {year, month, day} = req.body;
-      const agreedResponseDeadlineDate = new AgreedResponseDeadline(year, month, day);
+      const agreedResponseDeadlineDate = new AgreedResponseDeadline(year, month, day, originalResponseDeadline);
       const form: GenericForm<AgreedResponseDeadline> = new GenericForm<AgreedResponseDeadline>(agreedResponseDeadlineDate);
       await form.validate();
 
@@ -55,7 +56,8 @@ agreedResponseDeadlineController
       } else {
         try {
           await responseDeadlineService.saveAgreedResponseDeadline(req.params.id, agreedResponseDeadlineDate.date);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, NEW_RESPONSE_DEADLINE_URL));
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, NEW_RESPONSE_DEADLINE_URL,
+));
         } catch (error) {
           next(error);
         }

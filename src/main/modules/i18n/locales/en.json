@@ -758,6 +758,7 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "DATE_REQUIRED": "Enter a date",
+    "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the orginal response date",
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
