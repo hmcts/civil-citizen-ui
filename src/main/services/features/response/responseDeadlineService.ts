@@ -8,9 +8,9 @@ const logger = Logger.getLogger('partialAdmissionService');
 export class ResponseDeadlineService {
   getAdditionalTime(additionalTime: string): AdditionalTimeOptions {
     switch (additionalTime) {
-      case 'up-to-28-days':
+      case AdditionalTimeOptions.UP_TO_28_DAYS:
         return AdditionalTimeOptions.UP_TO_28_DAYS;
-      case 'more-than-28-days':
+      case AdditionalTimeOptions.MORE_THAN_28_DAYS:
         return AdditionalTimeOptions.MORE_THAN_28_DAYS;
       default:
         return undefined;
