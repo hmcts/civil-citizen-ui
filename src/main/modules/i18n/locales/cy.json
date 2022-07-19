@@ -9,6 +9,7 @@
   "View": "Weiv",
   "Save and continue": "Cadw a Pharhau",
   "COMMON": {
+    "BACK": "Back",
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
@@ -152,6 +153,11 @@
       "FOR_EXAMPLE": "Er enghraifft, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Payment date",
       "TITLE": "Ar ba ddyddiad byddwch yn talu"
+    },
+    "AGREED_RESPONSE_DEADLINE": {
+      "PAGE_TITLE": "Agree more time to respond",
+      "TITLE": "You have already agreed to more time to respond",
+      "SUB_TITLE": "Enter the respond date you have agreed with {{ claimantName }}'s legal representative"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled",

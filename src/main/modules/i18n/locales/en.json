@@ -9,6 +9,7 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "COMMON": {
+    "BACK": "Back",
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
@@ -152,6 +153,11 @@
       "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Payment date",
       "TITLE": "What date will you pay on?"
+    },
+    "AGREED_RESPONSE_DEADLINE": {
+      "PAGE_TITLE": "Agree more time to respond",
+      "TITLE": "You have already agreed to more time to respond",
+      "SUB_TITLE": "Enter the respond date you have agreed with {{ claimantName }}'s legal representative"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled",
