@@ -48,7 +48,7 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
     }
   });
 
-checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Request, res: express.Response,next: express.NextFunction) => {
+checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const form = new GenericForm((req.body.type === 'qualified')

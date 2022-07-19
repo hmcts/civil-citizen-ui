@@ -1,7 +1,5 @@
 import {RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../../../main/routes/urls';
-import {
-  AllResponseTasksCompletedGuard,
-} from '../../../../main/routes/guards/allResponseTasksCompletedGuard';
+import {AllResponseTasksCompletedGuard} from '../../../../main/routes/guards/allResponseTasksCompletedGuard';
 import express from 'express';
 import {TaskStatus} from '../../../../main/common/models/taskList/TaskStatus';
 import {TaskList} from '../../../../main/common/models/taskList/taskList';

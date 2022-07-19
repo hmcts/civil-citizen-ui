@@ -23,10 +23,10 @@ import PaymentOptionType from '../../../common/form/models/admission/paymentOpti
 import {getLng} from '../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';
 
-const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId: string, lang: string): TaskList => {
+const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
   const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId, lang);
-  const needMoreTimeTask = getNeedMoreTimeTask(claim, claimId, lang);
+  const needMoreTimeTask = getNeedMoreTimeTask(caseData, claimId, lang);
 
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
   // TODO : when need more page is developed, we also need to check if the posponed deadline is passed if the defendant requested addtional time
@@ -35,7 +35,7 @@ const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId:
     tasks.push(needMoreTimeTask);
   }
 
-  return { title: t('TASK_LIST.PREPARE_YOUR_RESPONSE.TITLE', { lng: getLng(lang) }), tasks };
+  return {title: t('TASK_LIST.PREPARE_YOUR_RESPONSE.TITLE', {lng: getLng(lang)}), tasks};
 };
 
 const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
@@ -89,7 +89,7 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
 
   }
 
-  return { title: t('TASK_LIST.RESPOND_TO_CLAIM.TITLE', { lng: getLng(lang) }), tasks };
+  return {title: t('TASK_LIST.RESPOND_TO_CLAIM.TITLE', {lng: getLng(lang)}), tasks};
 };
 
 
@@ -101,7 +101,7 @@ const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: s
     const freeTelephoneMediationTask = getFreeTelephoneMediationTask(caseData, claimId, lang);
     tasks.push(freeTelephoneMediationTask);
   }
-  return { title: t('TASK_LIST.RESOLVING_THE_CLAIM.TITLE', { lng: getLng(lang) }), tasks };
+  return {title: t('TASK_LIST.RESOLVING_THE_CLAIM.TITLE', {lng: getLng(lang)}), tasks};
 };
 
 
@@ -111,7 +111,7 @@ const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, l
     const giveUsDetailsHearingTask = getGiveUsDetailsHearingTask(caseData, claimId, lang);
     tasks.push(giveUsDetailsHearingTask);
   }
-  return { title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', { lng: getLng(lang) }), tasks };
+  return {title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng: getLng(lang)}), tasks};
 };
 
 
@@ -122,7 +122,7 @@ const buildSubmitSection = (claimId: string, lang: string): TaskList => {
   const checkAndSubmitYourResponseTask = getCheckAndSubmitYourResponseTask(claimId, lang);
 
   tasks.push(checkAndSubmitYourResponseTask);
-  return { title: t('TASK_LIST.SUBMIT.TITLE', { lng: getLng(lang) }), tasks };
+  return {title: t('TASK_LIST.SUBMIT.TITLE', {lng: getLng(lang)}), tasks};
 };
 
 export {
