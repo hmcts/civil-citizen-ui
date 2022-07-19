@@ -19,7 +19,6 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res) => {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (!claim.isEmpty()) {
-      console.log('Claim Summary case state->', claim.ccdState);
       const latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
       const documentsContent = getDocumentsContent(lang);
       res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent});
