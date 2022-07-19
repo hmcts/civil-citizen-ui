@@ -10,7 +10,7 @@ import {
 } from '../../../../../../routes/urls';
 
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
-import {YesNo} from '../../../../../../common/form/models/yesNo';
+import {YesNoUpperCase} from '../../../../../../common/form/models/yesNo';
 import {EmploymentCategory} from '../../../../../../common/form/models/statementOfMeans/employment/employmentCategory';
 import {UnemploymentCategory} from '../../../../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {Unemployment} from '../../../../../../common/form/models/statementOfMeans/unemployment/unemployment';
@@ -34,14 +34,14 @@ const getTypeOfJobTranslation = (employment: Employment, lang: string | unknown)
 
 const showSelfEmploymentTaxPayments = (claim: Claim, financialSection: SummarySection, lang: string | unknown) => {
   const taxPayments = claim.statementOfMeans?.taxPayments;
-  const isBehindTaxPayments = taxPayments?.owed ? YesNo.YES : YesNo.NO;
+  const isBehindTaxPayments = taxPayments?.owed ? YesNoUpperCase.YES : YesNoUpperCase.NO;
 
   if (taxPayments?.owed) {
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_ARE_YOU_BEHIND', { lng: getLng(lang) }), isBehindTaxPayments.charAt(0).toUpperCase() + isBehindTaxPayments.slice(1), '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_ARE_YOU_BEHIND', { lng: getLng(lang) }), t(`COMMON.${isBehindTaxPayments}`, {lng: getLng(lang)}), '', changeLabel(lang)));
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_AMOUNT_YOU_OWE', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(taxPayments.amountOwed), '', changeLabel(lang)));
     financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_REASON', { lng: getLng(lang) }), taxPayments.reason, '', changeLabel(lang)));
   } else {
-    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_ARE_YOU_BEHIND', { lng: getLng(lang) }), isBehindTaxPayments.charAt(0).toUpperCase() + isBehindTaxPayments.slice(1), '', changeLabel(lang)));
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TAX_PAYMENT_ARE_YOU_BEHIND', { lng: getLng(lang) }), t(`COMMON.${isBehindTaxPayments}`, {lng: getLng(lang)}), '', changeLabel(lang)));
   }
 };
 
@@ -94,12 +94,12 @@ export const addEmploymentDetails = (claim: Claim, financialSection: SummarySect
   const whoEmploysYouHref = CITIZEN_WHO_EMPLOYS_YOU_URL.replace(':id', claimId);
   const yourSelfEmploymentHref = CITIZEN_SELF_EMPLOYED_URL.replace(':id', claimId);
   const employment = claim.statementOfMeans?.employment;
-  const hasAjob = employment?.declared ? YesNo.YES : YesNo.NO;
+  const hasAjob = employment?.declared ? YesNoUpperCase.YES : YesNoUpperCase.NO;
   const unemployment = claim.statementOfMeans?.unemployment;
 
   financialSection.summaryList.rows.push(
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_DETAILS', { lng: getLng(lang) }), '', yourEmploymentHref, changeLabel(lang)),
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_DO_YOU_HAVE_A_JOB', { lng: getLng(lang) }), hasAjob.charAt(0).toUpperCase() + hasAjob.slice(1), yourEmploymentHref, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMPLOYMENT_DO_YOU_HAVE_A_JOB', { lng: getLng(lang) }), t(`COMMON.${hasAjob}`, {lng: getLng(lang)}), yourEmploymentHref, changeLabel(lang)),
   );
 
   if (employment?.declared && employment) {

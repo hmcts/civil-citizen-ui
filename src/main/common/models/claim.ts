@@ -3,7 +3,6 @@ import currencyFormat from '../utils/currencyFormat';
 import {Respondent} from './respondent';
 import {StatementOfMeans} from './statementOfMeans';
 import {CounterpartyType} from './counterpartyType';
-import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
 import {DefendantEvidence} from './evidence/evidence';
@@ -95,10 +94,6 @@ export class Claim {
     return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
   }
 
-  responseInDays(): NumberOfDays {
-    return this.totalClaimAmount < MAX_CLAIM_AMOUNT ? NumberOfDays.FOURTEEN : NumberOfDays.TWENTYEIGHT;
-  }
-
   getRemainingDays(): number {
     const remainingDuration = convertDateToLuxonDate(this.respondent1ResponseDeadline).diff(currentDateTime(), 'days');
     return Math.trunc(remainingDuration.days);
@@ -173,7 +168,7 @@ export class Claim {
   isPartialAdmission(): boolean {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
-  
+
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }
@@ -216,7 +211,6 @@ export class Claim {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 }
-
 
 export interface Party {
   individualTitle?: string;

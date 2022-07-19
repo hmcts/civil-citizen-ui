@@ -26,7 +26,7 @@ import {t} from 'i18next';
 const buildPrepareYourResponseSection = (claim: Claim, caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
   const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId, lang);
-  const needMoreTimeTask = getNeedMoreTimeTask(claim, claimId, lang);
+  const needMoreTimeTask = getNeedMoreTimeTask(caseData, claimId, lang);
 
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
   // TODO : when need more page is developed, we also need to check if the posponed deadline is passed if the defendant requested addtional time
