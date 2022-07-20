@@ -39,7 +39,8 @@
         "AddressLine2": "Caversham House 15-17",
         "AddressLine3": "Church Road"
       },
-      "partyTypeDisplayValue": "Organisation"
+      "partyTypeDisplayValue": "Organisation",
+      "partyName": "Mr. Jan Clark"
     },
     "respondent1": {
       "dateOfBirth": "2022-03-01T13:29:24.971",
