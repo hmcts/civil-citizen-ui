@@ -25,18 +25,17 @@ jest.mock('i18next', () => ({
 
 describe('Response Task List service', () => {
   const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-  const claim = new Claim();
   const mockClaimId = '5129';
   const lang = 'en';
 
   describe('none of the tasks completed', () => {
     const caseData = mockClaim.case_data;
 
-    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId, lang);
+    const actualTaskLists = getTaskLists(caseData, mockClaimId, lang);
 
     it('should return response task list', () => {
       //when
-      const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId, lang);
+      const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang);
       const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
       const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
@@ -68,11 +67,11 @@ describe('Response Task List service', () => {
     const caseData = deepCopy(mockClaim.case_data);
     caseData.respondent1.primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
     caseData.respondent1.dateOfBirth = '15 May 1978';
-    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId, lang);
+    const actualTaskLists = getTaskLists(caseData, mockClaimId, lang);
 
     it('should return response task list', () => {
       //when
-      const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId, lang);
+      const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang);
       const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
       const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
@@ -100,11 +99,11 @@ describe('Response Task List service', () => {
     caseData.respondent1.correspondenceAddress = buildAddress(CORRESPONDENCE_ADDRESS_LINE_1, CORRESPONDENCE_ADDRESS_LINE_2, CORRESPONDENCE_TOWN, CORRESPONDENCE_POSTCODE);
     caseData.respondent1.primaryAddress = {};
     caseData.respondent1.dateOfBirth = '15 May 1978';
-    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId, lang);
+    const actualTaskLists = getTaskLists(caseData, mockClaimId, lang);
 
     it('should return response task list', () => {
       //when
-      const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId, lang);
+      const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang);
       const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
       const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
@@ -115,6 +114,7 @@ describe('Response Task List service', () => {
 
     it('should return description', () => {
       //When
+
       const description = getDescription(actualTaskLists, lang);
       //Then
       expect(actualTaskLists[0].tasks[0].description).toEqual('TASK_LIST.PREPARE_YOUR_RESPONSE.CONFIRM_YOUR_DETAILS');
@@ -128,7 +128,7 @@ describe('Response Task List service', () => {
     caseData.respondent1 = new Respondent();
     caseData.respondent1.individualFirstName = 'Joe';
     caseData.respondent1.type = CounterpartyType.INDIVIDUAL;
-    caseData.respondent1.responseType =  ResponseType.FULL_ADMISSION;
+    caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;
     delete caseData.paymentOption;
 
     it('should display choose a response task as incomplete', () => {
@@ -205,7 +205,7 @@ describe('Response Task List service', () => {
 
     it('should display your repayment plan as complete if payment option is installments', () => {
       caseData.paymentOption = PaymentOptionType.INSTALMENTS;
-      caseData.repaymentPlan =  {
+      caseData.repaymentPlan = {
         paymentAmount: 5,
         repaymentFrequency: 'monthly',
       };
