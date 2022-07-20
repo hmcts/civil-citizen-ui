@@ -1,7 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
@@ -19,10 +19,7 @@
       {% set jobTitleError = form.getTextError(errors, 'jobTitle') %}
       {% set annualTurnoverError = form.getTextError(errors, 'annualTurnover') %}
       {% if errors %}
-        {{ govukErrorSummary({
-          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
-          "errorList": translateErrors(errors)
-        }) }}
+        {{ errorSummary(errors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
@@ -46,7 +43,7 @@
               type: "text",
               value: form.jobTitle,
               autocomplete: "text",
-              errorMessage: { text: jobTitleError.isNotEmpty } if jobTitleError else ''
+              errorMessage: { text: t(jobTitleError.isNotEmpty) } if jobTitleError else ''
             }) }}
               {{ govukInput({
               label: {

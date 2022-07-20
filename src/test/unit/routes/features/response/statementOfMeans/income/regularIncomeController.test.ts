@@ -48,7 +48,7 @@ describe('Regular Income Controller', () => {
             job: {
               transactionSource:
                 {
-                  name: 'income from your job', amount: '', schedule: undefined,
+                  name: 'Income from your job', amount: '', schedule: undefined,
                 },
             },
           },
@@ -67,7 +67,7 @@ describe('Regular Income Controller', () => {
             job: {
               transactionSource:
                 {
-                  name: 'income from your job', amount: '40.666', schedule: 'WEEK',
+                  name: 'Income from your job', amount: '40.666', schedule: 'WEEK',
                 },
             },
           },
@@ -85,7 +85,7 @@ describe('Regular Income Controller', () => {
             job: {
               transactionSource:
                 {
-                  name: 'income from your job', amount: '-40.66', schedule: 'WEEK',
+                  name: 'Income from your job', amount: '-40.66', schedule: 'WEEK',
                 },
             },
           },
@@ -106,10 +106,10 @@ describe('Regular Income Controller', () => {
                   name: undefined, amount: '123.33', schedule: 'WEEK',
                 },
                 {
-                  name: 'Rental', amount: '123.33', schedule: undefined,
+                  name: 'Universal Credit', amount: '123.33', schedule: undefined,
                 },
                 {
-                  name: 'Livery', amount: '123.333', schedule: 'MONTH',
+                  name: 'Income Support', amount: '123.333', schedule: 'MONTH',
                 },
               ],
             },

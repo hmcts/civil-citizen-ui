@@ -1,5 +1,5 @@
 export enum IncomeType {
-  JOB = 'income from your job',
+  JOB = 'Income from your job',
   UNIVERSAL_CREDIT = 'Universal Credit',
   JOB_SEEKERS_ALLOWANCE_INCOME_BASED = 'Jobseeker’s Allowance (income based)',
   JOB_SEEKERS_ALLOWANCE_CONTRIBUTION_BASED = 'Jobseeker’s Allowance (contribution based)',

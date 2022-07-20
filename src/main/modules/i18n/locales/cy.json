@@ -788,7 +788,7 @@
     "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
     "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
     "AMOUNT_REQUIRED": "Rhowch swm o £1 neu fwy",
-    "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
+    "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "DATE_REQUIRED": "Enter a date",
@@ -804,7 +804,7 @@
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
-    "JOB_TITLE_REQUIRED": "Enter a job title",
+    "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
     "NAME_REQUIRED": "Please enter a name",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
     "NUMBER_REQUIRED": "Rhowch rif dilys",
@@ -838,7 +838,7 @@
     "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
     "TRANSACTION_SOURCE" : {
       "HOW_MUCH_INCOME" : {
-        "INCOME _JOB" : "Nodwch faint o incwm ydych chi’n ei gael o’ch swydd",
+        "INCOME_JOB" : "Nodwch faint o incwm ydych chi’n ei gael o’ch swydd",
         "UNIVERSAL_CREDIT" : "Nodwch faint o Gredyd Cynhwysol ydych chi’n ei gael",
         "JOBSEEKER_INCOME" : "Nodwch faint o Lwfans Ceisio Gwaith (yn seiliedig ar incwm) ydych chi’n ei gael",
         "JOBSEEKER_CONTRIBUTION" : "Nodwch faint o Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau) ydych chi’n ei gael",
@@ -851,7 +851,7 @@
         "OTHER" : "Nodwch faint o incwm arall ydych chi’n ei gael"
       },
       "HOW_OFTEN_RECEIVE" : {
-        "INCOME _JOB" : "Dewiswch pa mor aml ydych chi’n cael incwm o’ch swydd",
+        "INCOME_JOB" : "Dewiswch pa mor aml ydych chi’n cael incwm o’ch swydd",
         "UNIVERSAL_CREDIT" : "Dewiswch pa mor aml ydych chi’n cael Credyd Cynhwysol",
         "JOBSEEKER_INCOME" : "Dewiswch pa mor aml ydych chi’n cael Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
         "JOBSEEKER_CONTRIBUTION" : "Dewiswch pa mor aml ydych chi’n cael Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",

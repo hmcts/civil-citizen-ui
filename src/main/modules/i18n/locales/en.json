@@ -839,7 +839,7 @@
     "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
     "TRANSACTION_SOURCE" : {
       "HOW_MUCH_INCOME" : {
-        "INCOME _JOB" : "Enter how much income from your job you receive",
+        "INCOME_JOB" : "Enter how much income from your job you receive",
         "UNIVERSAL_CREDIT" : "Enter how much Universal Credit you receive",
         "JOBSEEKER_INCOME" : "Enter how much Jobseeker’s Allowance (income based) you receive",
         "JOBSEEKER_CONTRIBUTION" : "Enter how much  Jobseeker’s Allowance (contribution based) you receive",
@@ -852,7 +852,7 @@
         "OTHER" : "Enter how much other you receive"
       },
       "HOW_OFTEN_RECEIVE" : {
-        "INCOME _JOB" : "Select how often you receive income from your job",
+        "INCOME_JOB" : "Select how often you receive income from your job",
         "UNIVERSAL_CREDIT" : "Select how often you receive Universal Credit",
         "JOBSEEKER_INCOME" : "Select how often you receive Jobseeker’s Allowance (income based)",
         "JOBSEEKER_CONTRIBUTION" : "Select how often you receive Jobseeker’s Allowance (contribution based)",
@@ -864,7 +864,7 @@
         "PENSION" : "Select how often you receive pension",
         "OTHER" : "Select how often you receive other"
       },
-      "ENTER_OTHER_INCOME" : "Enter other income"
+      "ENTER_OTHER_INCOME" : "Enter other income source"
     },
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",

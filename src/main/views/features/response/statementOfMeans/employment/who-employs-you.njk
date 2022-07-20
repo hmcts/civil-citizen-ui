@@ -1,7 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 {% from "../../../../macro/employer.njk" import employerRow %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
@@ -18,10 +18,7 @@
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getAllErrors() %}
       {% if errors.length > 0 %}
-        {{ govukErrorSummary({
-          "titleText": t("ERRORS.THERE_WAS_A_PROBLEM"),
-          "errorList":  translateErrors(errorList, t)
-        }) }}
+        {{ errorSummary(errors, t) }}
       {% endif %}
       <h1 class="govuk-heading-l">{{ t('PAGES.WHO_EMPLOYS_YOU.WHO_EMPLOYS') }}</h1>
       <form method="post" novalidate>

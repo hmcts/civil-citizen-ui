@@ -48,7 +48,7 @@ export class ValidationErrors {
           return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.OTHER';
       }
     }
-    return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_PAY';
+    return `Enter how much you pay for ${name ? name : ExpenseType.OTHER}`;
   };
   static readonly AMOUNT_INVALID_DECIMALS = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
   static readonly AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;

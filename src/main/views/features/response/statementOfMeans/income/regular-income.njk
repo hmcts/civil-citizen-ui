@@ -1,5 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
@@ -14,46 +14,43 @@
 {% block content %}
   {% set errors = form.getAllErrors('model') %}
   {% if form.hasErrors() %}
-    {{ govukErrorSummary({
-      "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
-      "errorList":  translateErrors(errors, t)
-    }) }}
+    {{ errorSummary(errors, t) }}
   {% endif %}
   {% set rowNumberToShowRemoveButton = 2 %}
   {% set amountLabel = t('PAGES.REGULAR_INCOME.AMOUNT_RECEIVED') %}
   {% set scheduleLabel = t('PAGES.REGULAR_INCOME.RECEIVED_EVERY') %}
   {% set incomeSourceLabel = t('PAGES.REGULAR_INCOME.SOURCE_INCOME') %}
-  {% macro checkedJobHtml(sourceName) %}
+  {% set checkedJobHtml %}
     {{ transactionDetails(t,t('PAGES.REGULAR_INCOME.INCLUDE_WAGES_OVERTIME_COMISSION'), 'model[job][transactionSource]',  form.model.job.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endmacro -%}
-  {% macro checkedUniversalCreditHtml(sourceName) %}
+  {% endset -%}
+  {% set checkedUniversalCreditHtml%}
     {{ transactionDetails(t,'', 'model[universalCredit][transactionSource]',  form.model.universalCredit.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endmacro -%}
-  {% macro checkedJobseekerAllowanceIncomeHtml(sourceName) %}
+  {% endset -%}
+  {% set checkedJobseekerAllowanceIncomeHtml %}
     {{ transactionDetails(t,'', 'model[jobseekerAllowanceIncome][transactionSource]',  form.model.jobseekerAllowanceIncome.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endmacro -%}
-  {% macro checkedJobseekerAllowanceContributionHtml(sourceName) %}
+  {% endset -%}
+  {% set checkedJobseekerAllowanceContributionHtml %}
     {{ transactionDetails(t,'', 'model[jobseekerAllowanceContribution][transactionSource]', form.model.jobseekerAllowanceContribution.transactionSource,{amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endmacro -%}
-  {% macro checkedIncomeSupportHtml(sourceName) %}
+  {% endset -%}
+  {% set checkedIncomeSupportHtml %}
     {{ transactionDetails(t,'', 'model[incomeSupport][transactionSource]', form.model.incomeSupport.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endmacro -%}
-  {% macro checkedWorkingTaxCreditHtml(sourceName) %}
+  {% endset -%}
+  {% set checkedWorkingTaxCreditHtml %}
     {{ transactionDetails(t,'', 'model[workingTaxCredit][transactionSource]', form.model.workingTaxCredit.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endmacro -%}
-  {% macro checkedChildTaxCreditHtml(sourceName) %}
+  {% endset -%}
+  {% set checkedChildTaxCreditHtml %}
     {{ transactionDetails(t,'', 'model[childTaxCredit][transactionSource]', form.model.childTaxCredit.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endmacro -%}
-  {% macro checkedChildBenefitHtml(sourceName) %}
+  {% endset -%}
+  {% set checkedChildBenefitHtml %}
     {{ transactionDetails(t,'', 'model[childBenefit][transactionSource]', form.model.childBenefit.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endmacro -%}
-  {% macro checkedCouncilTaxSupportHtml(sourceName) %}
+  {% endset -%}
+  {% set checkedCouncilTaxSupportHtml %}
     {{ transactionDetails(t,'', 'model[councilTaxSupport][transactionSource]',  form.model.councilTaxSupport.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endmacro -%}
-  {% macro checkedPensionHtml(sourceName) %}
+  {% endset -%}
+  {% set checkedPensionHtml %}
     {{ transactionDetails(t,'', 'model[pension][transactionSource]',  form.model.pension.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
-  {% endmacro -%}
-  {% macro checkedOtherHtml(sourceName) %}
+  {% endset -%}
+  {% set checkedOtherHtml %}
     <div class="govuk-form-group">
       {% for transactionSource in form.model.other.transactionSources %}
         {% if form.model.other.transactionSources.length < rowNumberToShowRemoveButton %}
@@ -69,7 +66,7 @@
         classes: "govuk-button--secondary append-row"
       }) }}
     </div>
-  {% endmacro -%}
+  {% endset -%}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
@@ -95,7 +92,7 @@
                   value: "job",
                   text: t('PAGES.REGULAR_INCOME.INCOME_JOB'),
                   conditional: {
-                  html: checkedJobHtml(t('PAGES.REGULAR_INCOME.INCOME_JOB'))
+                  html: checkedJobHtml
                 },
                   checked: true if form.model.job.declared
                 },
@@ -103,7 +100,7 @@
                   value: "universalCredit",
                   text: t('PAGES.REGULAR_INCOME.UNIVERSAL_CREDIT'),
                   conditional: {
-                  html: checkedUniversalCreditHtml(t('PAGES.REGULAR_INCOME.UNIVERSAL_CREDIT'))
+                  html: checkedUniversalCreditHtml
                 },
                   checked: true if form.model.universalCredit.declared
                 },
@@ -111,7 +108,7 @@
                   value: "jobseekerAllowanceIncome",
                   text: t('PAGES.REGULAR_INCOME.JOBSEEKER_ALLOWANCE_INCOME'),
                   conditional: {
-                  html: checkedJobseekerAllowanceIncomeHtml(t('PAGES.REGULAR_INCOME.JOBSEEKER_ALLOWANCE_INCOME'))
+                  html: checkedJobseekerAllowanceIncomeHtml
                 },
                   checked: true if form.model.jobseekerAllowanceIncome.declared
                 },
@@ -119,7 +116,7 @@
                   value: "jobseekerAllowanceContribution",
                   text: t('PAGES.REGULAR_INCOME.JOBSEEKER_ALLOWANCE_CONTRIBUTION'),
                   conditional: {
-                  html: checkedJobseekerAllowanceContributionHtml(t('PAGES.REGULAR_INCOME.JOBSEEKER_ALLOWANCE_CONTRIBUTION'))
+                  html: checkedJobseekerAllowanceContributionHtml
                 },
                   checked: true if form.model.jobseekerAllowanceContribution.declared
                 },
@@ -127,7 +124,7 @@
                   value: "incomeSupport",
                   text: t('PAGES.REGULAR_INCOME.INCOME_SUPPORT'),
                   conditional: {
-                  html: checkedIncomeSupportHtml(t('PAGES.REGULAR_INCOME.INCOME_SUPPORT'))
+                  html: checkedIncomeSupportHtml
                 },
                   checked: true if form.model.incomeSupport.declared
                 },
@@ -135,7 +132,7 @@
                   value: "workingTaxCredit",
                   text: t('PAGES.REGULAR_INCOME.WORKING_TAX'),
                   conditional: {
-                  html: checkedWorkingTaxCreditHtml(t('PAGES.REGULAR_INCOME.WORKING_TAX'))
+                  html: checkedWorkingTaxCreditHtml
                 },
                   checked: true if form.model.workingTaxCredit.declared
                 },
@@ -143,7 +140,7 @@
                   value: "childTaxCredit",
                   text: t('PAGES.REGULAR_INCOME.CHILD_TAX'),
                   conditional: {
-                  html: checkedChildTaxCreditHtml(t('PAGES.REGULAR_INCOME.CHILD_TAX'))
+                  html: checkedChildTaxCreditHtml
                 },
                   checked: true if form.model.childTaxCredit.declared
                 },
@@ -151,7 +148,7 @@
                   value: "childBenefit",
                   text: t('PAGES.REGULAR_INCOME.CHILD_BENEFIT'),
                   conditional: {
-                  html: checkedChildBenefitHtml(t('PAGES.REGULAR_INCOME.CHILD_BENEFIT'))
+                  html: checkedChildBenefitHtml
                 },
                   checked: true if form.model.childBenefit.declared
                 },
@@ -159,7 +156,7 @@
                   value: "councilTaxSupport",
                   text: t('PAGES.REGULAR_INCOME.COUNCIL_TAX'),
                   conditional: {
-                  html: checkedCouncilTaxSupportHtml(t('PAGES.REGULAR_INCOME.COUNCIL_TAX'))
+                  html: checkedCouncilTaxSupportHtml
                 },
                   checked: true if form.model.councilTaxSupport.declared
                 },
@@ -167,7 +164,7 @@
                   value: "pension",
                   text: t('PAGES.REGULAR_INCOME.PENSION'),
                   conditional: {
-                  html: checkedPensionHtml(t('PAGES.REGULAR_INCOME.PENSION'))
+                  html: checkedPensionHtml
                 },
                   checked: true if form.model.pension.declared
                 },
@@ -175,7 +172,7 @@
                   value: "other",
                   text: t('PAGES.REGULAR_INCOME.OTHER'),
                   conditional: {
-                  html: checkedOtherHtml(t('PAGES.REGULAR_INCOME.OTHER'))
+                  html: checkedOtherHtml
                 },
                   checked: true if form.model.other.declared
                 }

@@ -13,7 +13,6 @@ import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../..
 import {
   VALID_ENTER_AT_LEAST_ONE_EMPLOYER,
   VALID_ENTER_AN_EMPLOYER_NAME,
-  VALID_ENTER_A_JOB_TITLE,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 const jsdom = require('jsdom');
@@ -154,7 +153,7 @@ describe('Who employs you', () => {
         .send({rows: [{employerName: 'Test', jobTitle: ''}]})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_ENTER_A_JOB_TITLE);
+          expect(res.text).toContain('ERRORS.JOB_TITLE_REQUIRED');
           expect(res.text).toContain('govuk-error-message');
         });
     });
