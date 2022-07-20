@@ -29,47 +29,37 @@ describe('rejectAllOfClaim', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+
   describe('on Get', () => {
     test('should return rejectAllOfClaim page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      const claimantName = 'Mr. Jan Clark';
-      const header = 'Why do you believe you don’t owe ' + claimantName + ' any money?';
       await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(header);
+          expect(res.text).toContain('Why do you believe you don’t owe Mr. Jan Clark any money?');
         });
     });
-    test('should return rejectAllOfClaim page successfully without claim', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
-      const claimantName = '';
-      const header = 'Why do you believe you don’t owe ' + claimantName + ' any money?';
-      await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(header);
-        });
-    });
+
     test('should return rejectAllOfClaim page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaimUnemploymentRetired;
-      const claimantName = 'Mr. Jan Clark';
-      const header = 'Why do you believe you don’t owe ' + claimantName + ' any money?';
+      const header = 'Why do you believe you don’t owe Mr. Jan Clark any money?';
       await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(header);
         });
     });
+
     test('should return rejectAllOfClaim page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      const claimantName = 'Mr. Jan Clark';
-      const header = 'Why do you believe you don’t owe ' + claimantName + ' any money?';
+      const header = 'Why do you believe you don’t owe Mr. Jan Clark any money?';
       await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(header);
         });
     });
+
     test('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
@@ -80,8 +70,10 @@ describe('rejectAllOfClaim', () => {
         });
     });
   });
+
   describe('on Post', () => {
     test('should return error message when any option is selected', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_REJECT_ALL_CLAIM_URL)
         .send()
         .expect((res) => {
@@ -100,6 +92,7 @@ describe('rejectAllOfClaim', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
+
     test('should redirect to claim task list page option ALREADY_PAID is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_REJECT_ALL_CLAIM_URL)
@@ -109,6 +102,7 @@ describe('rejectAllOfClaim', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
+
     test('should redirect to send response by email page option COUNTER_CLAIM is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app).post(CITIZEN_REJECT_ALL_CLAIM_URL)
@@ -118,6 +112,7 @@ describe('rejectAllOfClaim', () => {
           expect(res.header.location).toEqual(SEND_RESPONSE_BY_EMAIL_URL);
         });
     });
+
     test('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)

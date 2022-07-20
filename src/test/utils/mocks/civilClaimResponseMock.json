@@ -4,7 +4,7 @@
   "case_type_id": "CIVIL",
   "created_date": "2022-03-01T13:29:22.447",
   "last_modified": "2022-03-01T13:29:24.971",
-  "state": "PENDING_CASE_ISSUED",
+  "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
   "security_classification": "PUBLIC",
   "case_data": {
     "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
@@ -146,6 +146,9 @@
       "partyName": "Version 1"
     },
     "respondent1ResponseDeadline": "2022-05-15T02:59:59",
+    "responseDeadline": {
+      "agreedResponseDeadline": "2022-10-29"
+    },
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 110,
     "claimInterest": "Yes",
@@ -181,18 +184,6 @@
     "paymentDate": "2025-06-01T00:00:00.000Z",
     "defence": {
       "text": "reasons for making the claim"
-    },
-    "timelineOfEvents": [
-      {
-        "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
-        "value": {
-          "timelineDate": "2021-01-01",
-          "timelineDescription": "Test details of claim"
-        }
-      }
-    ],
-    "responseDeadline": {
-      "agreedResponseDeadline": "2022-10-29"
     },
     "systemGeneratedCaseDocuments": [
       {
