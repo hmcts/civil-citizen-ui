@@ -4,6 +4,7 @@ import {AssertionError} from 'assert';
 import {AppRequest} from '../../common/models/AppRequest';
 import {CivilClaimResponse} from '../../common/models/civilClaimResponse';
 import {
+  CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
@@ -148,4 +149,15 @@ export class CivilServiceClient {
     }
   }
 
+  async calculateExtendedResponseDeadline(extendedDeadline: Date, req: AppRequest): Promise<Date> {
+    const config = this.getConfig(req);
+    try{
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_CALCULATE_DEADLINE, extendedDeadline, config);
+      console.log(response.data);
+      return  response.data as Date;
+    }catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
 }

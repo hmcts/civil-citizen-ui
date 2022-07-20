@@ -565,6 +565,11 @@
       "PAGE_TITLE": "Free mediation disagreement",
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
     },
+    "NEW_RESPONSE_DEADLINE": {
+      "PAGE_TITLE": "New response deadline",
+      "TITLE": "4 pm on {{ responseDeadline }}",
+      "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date."
+    },
     "OTHER_DEPENDANTS": {
       "DESCRIPTION": "This can include adults and people you don't live with.",
       "DETAILS": "Give details",
