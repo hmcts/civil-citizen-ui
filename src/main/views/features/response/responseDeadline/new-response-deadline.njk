@@ -3,6 +3,10 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block content %}
+  {{ govukBackLink({
+    text: "Back",
+    href: backUrl
+  }) }}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <h1 class="govuk-heading-l">{{  t('PAGES.NEW_RESPONSE_DEADLINE.PAGE_TITLE') }}</h1>
@@ -10,7 +14,8 @@
     <p class="govuk-body">{{ t('PAGES.NEW_RESPONSE_DEADLINE.CONTENT', {claimantName : claimantName}) }}
   <div class="govuk-form-group">
     {{ govukButton({
-      text: t('COMMON.BUTTONS.CONTINUE')
+      text: t('COMMON.BUTTONS.CONTINUE'),
+      href: './task-list'
     }) }}
     {{ contactUsForHelp(t) }}
   </div>
