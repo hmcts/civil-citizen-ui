@@ -56,8 +56,7 @@ agreedResponseDeadlineController
       } else {
         try {
           await responseDeadlineService.saveAgreedResponseDeadline(req.params.id, agreedResponseDeadlineDate.date);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, NEW_RESPONSE_DEADLINE_URL,
-));
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, NEW_RESPONSE_DEADLINE_URL));
         } catch (error) {
           next(error);
         }

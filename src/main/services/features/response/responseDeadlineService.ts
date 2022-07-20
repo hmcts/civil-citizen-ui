@@ -1,6 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {ResponseDeadline, ResponseOptions} from '../../../common/form/models/responseDeadline';
-// import {AdditionalTimeOptions} from '../../../common/form/models/additionalTime';
 import {AgreedResponseDeadline} from '../../../common/form/models/agreedResponseDeadline';
 import {Claim} from '../../../common/models/claim';
 
@@ -35,6 +34,7 @@ export class ResponseDeadlineService {
         claim.responseDeadline = new ResponseDeadline();
       }
       claim.responseDeadline.agreedResponseDeadline = agreedResponseDeadline;
+      await saveDraftClaim(claimId, claim);
     } catch (error) {
       logger.error(error);
       throw error;

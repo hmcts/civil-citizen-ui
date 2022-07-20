@@ -814,6 +814,8 @@
     "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
     "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
+    "VALID_AGREED_RESPONSE_DATE": "Enter the agreed response date",
+    "VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST": "Agreed response date must be in the future",
     "VALID_AMOUNT": "Enter a valid amount",
     "VALID_AMOUNT_ONE_POUND_OR_MORE": "Enter an amount of £1 or more",
     "VALID_AT_LEAST_ONE_OPTION": "You must select at least one option",
