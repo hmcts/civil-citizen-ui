@@ -40,7 +40,6 @@ const MOCK_NEXT = jest.fn() as express.NextFunction;
 
 
 describe('Response - Incomplete Submission', () => {
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
