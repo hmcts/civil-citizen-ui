@@ -25,13 +25,20 @@ import {
   CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
   SUPPORT_REQUIRED_URL,
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
+  CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
+  CITIZEN_FR_AMOUNT_YOU_PAID_URL,
+  RESPONSE_YOUR_DEFENCE_URL,
 } from '../../../../../main/routes/urls';
+import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
+import RejectAllOfClaimType from '../../../../../main/common/form/models/rejectAllOfClaimType';
+import {HowMuchHaveYouPaid} from '../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 
 describe('Task List Builder', () => {
   const claimId = '5129';
   const lang = 'en';
   const chooseAResponseUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
   const whyDisagreeWithAmountClaimedUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_URL);
+  const whyDisagreeWithAmountClaimedFullDefenceUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL);
   const repaymentPlanUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN);
   const shareFinancialDetailsUrl = constructResponseUrlWithIdParams(claimId, FINANCIAL_DETAILS_URL);
   const decideHowYouPayUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_OPTION_URL);
@@ -40,7 +47,9 @@ describe('Task List Builder', () => {
   const freeTelephoneMediationUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
   const giveUsDetailsHearingUrl = constructResponseUrlWithIdParams(claimId, SUPPORT_REQUIRED_URL);
   const whenWillYouPayUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL);
-  
+  const tellUsHowMuchYouHavePaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FR_AMOUNT_YOU_PAID_URL);
+  const tellUsWhyDisagreeWithClaimUrl = constructResponseUrlWithIdParams(claimId, RESPONSE_YOUR_DEFENCE_URL);
+
   describe('test buildRespondToClaimSection', () => {
 
     describe('test FULL_ADMISSION', () => {
@@ -152,6 +161,42 @@ describe('Task List Builder', () => {
       });
     });
 
+    describe('test FULL_DEFENCE', () => {
+      const claim = new Claim();
+      claim.respondent1 = new Respondent();
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      
+      it('should have tellUsHowMuchYouHavePaidTask', () => {
+        claim.rejectAllOfClaim = new RejectAllOfClaim();
+        claim.rejectAllOfClaim.option = RejectAllOfClaimType.ALREADY_PAID;
+        const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
+        expect(respondToClaimSection.tasks).toHaveLength(2);
+        expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
+        expect(respondToClaimSection.tasks[1].url).toEqual(tellUsHowMuchYouHavePaidUrl);
+      });
+
+      it('should have tellUsHowMuchYouHavePaidTask and whyDisagreeWithAmountClaimedTask', () => {
+        claim.rejectAllOfClaim = new RejectAllOfClaim();
+        claim.rejectAllOfClaim.option = RejectAllOfClaimType.ALREADY_PAID;
+        claim.rejectAllOfClaim.howMuchHaveYouPaid = new HowMuchHaveYouPaid();
+        claim.totalClaimAmount = 1000;
+        claim.rejectAllOfClaim.howMuchHaveYouPaid.amount = 500;
+        const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
+        expect(respondToClaimSection.tasks).toHaveLength(3);
+        expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
+        expect(respondToClaimSection.tasks[1].url).toEqual(tellUsHowMuchYouHavePaidUrl);
+        expect(respondToClaimSection.tasks[2].url).toEqual(whyDisagreeWithAmountClaimedFullDefenceUrl);
+      });
+
+      it('should have tellUsWhyDisagreeWithClaimTask', () => {
+        claim.rejectAllOfClaim = new RejectAllOfClaim();
+        claim.rejectAllOfClaim.option = RejectAllOfClaimType.DISPUTE;
+        const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
+        expect(respondToClaimSection.tasks).toHaveLength(2);
+        expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
+        expect(respondToClaimSection.tasks[1].url).toEqual(tellUsWhyDisagreeWithClaimUrl);
+      });
+    });
   });
 
   describe('test buildResolvingTheClaimSection', () => {
@@ -160,6 +205,16 @@ describe('Task List Builder', () => {
       const respondToClaimSection = buildResolvingTheClaimSection(claim, claimId, lang);
       expect(respondToClaimSection.tasks).toHaveLength(0);
     });
+
+    it('should have freeTelephoneMediationTask if full defence', () => {
+      const claim = new Claim();
+      claim.respondent1 = new Respondent();
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      const resolvingTheClaimSection = buildResolvingTheClaimSection(claim, claimId, lang);
+      expect(resolvingTheClaimSection.tasks).toHaveLength(1);
+      expect(resolvingTheClaimSection.tasks[0].url).toEqual(freeTelephoneMediationUrl);
+    });
+
     it('should have freeTelephoneMediationTask', () => {
       const claim = new Claim();
       claim.partialAdmission = new PartialAdmission();
