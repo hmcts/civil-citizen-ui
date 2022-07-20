@@ -182,15 +182,9 @@
     "defence": {
       "text": "reasons for making the claim"
     },
-    "timelineOfEvents": [
-      {
-        "id": "97e59389-1e6a-49bf-8957-f7fccb86e838",
-        "value": {
-          "timelineDate": "2021-01-01",
-          "timelineDescription": "Test details of claim"
-        }
-      }
-    ],
+    "responseDeadline" : {
+      "agreedResponseDeadline" : "2025-06-01T00:00:00.000Z" 
+    },
     "systemGeneratedCaseDocuments": [
       {
         "id": "9e632049-ff29-44a0-bdb7-d71ec1d42e2d",

@@ -76,7 +76,7 @@ import whyDoYouDisagreeFullRejectionController from './features/response/admissi
 import documentDownloadController from './features/document/documentDownloadController';
 import responseDeadlineOptionsController from './features/response/responseDeadlineOptionsController';
 import understandingYourOptionsController from './features/response/understandingYourOptionsController';
-import agreedResponseDeadlineController from './features/response/agreedResponseDeadlineController';
+import agreedResponseDeadlineController from './features/response/responseDeadline/agreedResponseDeadlineController';
 
 export default [
   homeController,
