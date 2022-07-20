@@ -8,7 +8,6 @@ import {TaskList} from '../../../../main/common/models/taskList/taskList';
 import {Task} from '../../../../main/common/models/taskList/task';
 
 jest.mock('../../../../main/modules/oidc');
-jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../main/routes/features/response/checkAnswersController');
 jest.mock('../../../../main/services/features/response/taskListService');
