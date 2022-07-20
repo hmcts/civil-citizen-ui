@@ -18,14 +18,13 @@
       {% set title = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE.TITLE') %}
       {% set description = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE.SUBTITLE', { totalAmount: form.totalAmount }) %}
       {% set amountAsString = ''+form.amount %}
-      {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% set errors = form.getAllErrors() %}
+      {% if form.hasErrors() %}
         {{ govukErrorSummary({
           "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
-
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
