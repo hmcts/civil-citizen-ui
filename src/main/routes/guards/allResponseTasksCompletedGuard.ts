@@ -18,7 +18,6 @@ export class AllResponseTasksCompletedGuard {
     return async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
       try {
 
-        //const lang = req.query.lang ? req.query.lang : req.cookies.lang;
         const caseData: Claim = await getCaseDataFromStore(req.session.claimId);
         const taskLists = getTaskLists(caseData, req.session.claimId, 'en');
         assert(taskLists && taskLists.length > 0, 'Task list cannot be empty');
