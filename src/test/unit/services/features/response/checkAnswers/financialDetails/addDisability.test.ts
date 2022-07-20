@@ -29,6 +29,20 @@ describe('Disability Details', () => {
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_BANK_AND_SAVINGS_ACCOUNTS);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DISABILITY_ARE_YOU_DISABLED);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].value.html).toBe('COMMON.YES');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_DISABILITY_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
+  });
+
+  it('should return no disability when it exists', async () => {
+    //Given
+    const claim = createClaimWithDisability(YesNo.NO);
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_BANK_AND_SAVINGS_ACCOUNTS);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DISABILITY_ARE_YOU_DISABLED);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].value.html).toBe('COMMON.NO');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_DISABILITY_URL.replace(':id', constVal.CLAIM_ID));
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });
@@ -40,10 +54,29 @@ describe('Disability Details', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DISABILITY_ARE_YOU_DISABLED);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].value.html).toBe('COMMON.YES');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_DISABILITY_URL.replace(':id', constVal.CLAIM_ID));
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DISABILITY_ARE_YOU_SEVERELY_DISABLED);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].value.html).toBe('COMMON.YES');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CITIZEN_SEVERELY_DISABLED_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
+  });
+
+  it('should return no severe disability when it exists', async () => {
+    //Given
+    const claim = createClaimWithDisabilityAndSevereDisability(YesNo.YES, YesNo.NO);
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DISABILITY_ARE_YOU_DISABLED);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].value.html).toBe('COMMON.YES');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_DISABILITY_URL.replace(':id', constVal.CLAIM_ID));
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
+
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_DISABILITY_ARE_YOU_SEVERELY_DISABLED);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].value.html).toBe('COMMON.NO');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CITIZEN_SEVERELY_DISABLED_URL.replace(':id', constVal.CLAIM_ID));
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
   });

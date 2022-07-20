@@ -188,12 +188,12 @@ export const createClaimWithNoCourtOrders = () => {
   return claim as Claim;
 };
 
-export const createClaimWithDebts = () => {
+export const createClaimWithDebts = (option:YesNo) => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const debts: Debts = new Debts();
-  debts.option = 'yes';
+  debts.option = option;
   debts.debtsItems = [
     new DebtItems('Loan 1', '1000', '10'),
   ];
