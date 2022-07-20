@@ -25,7 +25,6 @@ jest.mock('i18next', () => ({
 
 describe('Response Task List service', () => {
   const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-  const claim = new Claim();
   const mockClaimId = '5129';
   const lang = 'en';
 
@@ -115,6 +114,7 @@ describe('Response Task List service', () => {
 
     it('should return description', () => {
       //When
+
       const description = getDescription(actualTaskLists, lang);
       //Then
       expect(actualTaskLists[0].tasks[0].description).toEqual('TASK_LIST.PREPARE_YOUR_RESPONSE.CONFIRM_YOUR_DETAILS');
