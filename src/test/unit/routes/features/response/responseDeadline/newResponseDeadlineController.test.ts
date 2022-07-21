@@ -25,7 +25,7 @@ describe('Response - New response deadline', () => {
       .post(CIVIL_SERVICE_CALCULATE_DEADLINE)
       .reply(200,  new Date(2022, 9, 31));
   });
-  test('should return new deadline date successfully', async () => {
+  it('should return new deadline date successfully', async () => {
     const extendedDate = new Date(2022, 9, 31);
     const expectedDate = '31 October 2022';
     const claim = new Claim();
@@ -45,7 +45,7 @@ describe('Response - New response deadline', () => {
         expect(res.text).toContain(claim.getClaimantName());
       });
   });
-  test('should show error when proposed extended deadline does not exist', async () =>{
+  it('should show error when proposed extended deadline does not exist', async () =>{
     const claim = new Claim();
     claim.applicant1 = {
       partyName: 'Mr. James Bond',
@@ -58,7 +58,7 @@ describe('Response - New response deadline', () => {
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
-  test('should show error when draft store throws error', async () =>{
+  it('should show error when draft store throws error', async () =>{
     mockGetCaseDataFromStore.mockImplementation(async () => {
       throw new Error(TestMessages.REDIS_FAILURE);
     });

@@ -16,18 +16,20 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 const newResponseDeadlineController = express.Router();
 const newResponseDeadlineViewPath = 'features/response/responseDeadline/new-response-deadline';
 
-newResponseDeadlineController.get(NEW_RESPONSE_DEADLINE_URL, async function(req: AppRequest, res, next: express.NextFunction) {
-  try{
+newResponseDeadlineController.get(NEW_RESPONSE_DEADLINE_URL, async function (req: AppRequest, res, next: express.NextFunction) {
+  try {
     const claim = await getCaseDataFromStore(req.params.id);
-    if(!(claim.responseDeadline?.agreedResponseDeadline)){
+    if (!claim.responseDeadline?.agreedResponseDeadline) {
       throw new Error('No extended response deadline found');
     }
     const calculatedExtendedDeadline = await civilServiceClient.calculateExtendedResponseDeadline(claim.responseDeadline?.agreedResponseDeadline, req);
 
-    res.render(newResponseDeadlineViewPath, {claimantName: claim.getClaimantName(),
+    res.render(newResponseDeadlineViewPath, {
+      claimantName: claim.getClaimantName(),
       responseDeadline: formatDateToFullDate(calculatedExtendedDeadline),
-      backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_T0_MORE_TIME_URL)});
-  }catch (error) {
+      backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_T0_MORE_TIME_URL),
+    });
+  } catch (error) {
     next(error);
   }
 });
