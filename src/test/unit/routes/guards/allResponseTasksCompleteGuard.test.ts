@@ -2,32 +2,31 @@ import {RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../../../main/routes/urls';
 import {AllResponseTasksCompletedGuard} from '../../../../main/routes/guards/allResponseTasksCompletedGuard';
 import express from 'express';
 import {TaskStatus} from '../../../../main/common/models/taskList/TaskStatus';
-import {TaskList} from '../../../../main/common/models/taskList/taskList';
 import {constructResponseUrlWithIdParams} from '../../../../main/common/utils/urlFormatter';
+import {getTaskLists, outstandingTasksFromTaskLists} from '../../../../main/services/features/response/taskListService';
+import {TaskList} from '../../../../main/common/models/taskList/taskList';
+import {Task} from '../../../../main/common/models/taskList/task';
 
 jest.mock('../../../../main/modules/oidc');
-jest.mock('../../../../main/services/features/response/checkAnswers/checkAnswersService');
+jest.mock('../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../main/routes/features/response/checkAnswersController');
+jest.mock('../../../../main/services/features/response/taskListService');
+jest.mock('../../../../main/modules/i18n');
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
+
+const mockGetTaskList = getTaskLists as jest.Mock;
+const mockOutstandingTasksFromTaskLists = outstandingTasksFromTaskLists as jest.Mock;
 
 const CLAIM_ID = 'aaa';
 const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_INCOMPLETE_SUBMISSION_URL);
-const TASK_LISTS = (taskStatus: TaskStatus) => [
-  {
-    title: 'Task List',
-    tasks: [
-      {
-        description: 'Task 1',
-        status: taskStatus,
-        url: 'some URL',
-      },
-    ],
-  },
-];
 
-const MOCK_REQUEST = (taskLists: TaskList[]) => {
+const MOCK_REQUEST = () => {
   return {
     session: {
       claimId: CLAIM_ID,
-      taskLists: taskLists,
     },
   } as express.Request;
 };
@@ -38,8 +37,8 @@ const MOCK_RESPONSE = {
 
 const MOCK_NEXT = jest.fn() as express.NextFunction;
 
-describe('Response - Incomplete Submission', () => {
 
+describe('Response - Incomplete Submission', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -48,7 +47,24 @@ describe('Response - Incomplete Submission', () => {
 
     it('should call next middleware function which will render check answers screen', async () => {
       //Given
-      const mockRequest = MOCK_REQUEST(TASK_LISTS(TaskStatus.COMPLETE));
+      const mockRequest = MOCK_REQUEST();
+      mockGetTaskList.mockImplementation(() => {
+        const taskList = [{
+          title: 'Task List',
+          tasks: [
+            {
+              description: 'Task 1',
+              status: TaskStatus.COMPLETE,
+              url: 'some URL',
+            },
+          ],
+        }];
+        return taskList;
+      });
+      mockOutstandingTasksFromTaskLists.mockImplementation(() => {
+        const outstandingTaskList: Task[] = [];
+        return outstandingTaskList;
+      });
       //When
       await AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
       //Then
@@ -56,9 +72,13 @@ describe('Response - Incomplete Submission', () => {
       expect(MOCK_NEXT).toHaveBeenCalledWith();
     });
 
-    it('should throw error if task list from session is empty', async () => {
+    it('should throw error if task list is empty', async () => {
       //Given
-      const mockRequest = MOCK_REQUEST([]);
+      const mockRequest = MOCK_REQUEST();
+      mockGetTaskList.mockImplementation(async () => {
+        const taskList: TaskList[] = [];
+        return taskList;
+      });
       //When
       await AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
       //Then
@@ -70,7 +90,30 @@ describe('Response - Incomplete Submission', () => {
 
     it('should redirect to incomplete submission when tasks incomplete status 500 when error thrown', async () => {
       //Given
-      const mockRequest = MOCK_REQUEST(TASK_LISTS(TaskStatus.INCOMPLETE));
+      const mockRequest = MOCK_REQUEST();
+      mockGetTaskList.mockImplementation(() => {
+        const taskList = [{
+          title: 'Task List',
+          tasks: [
+            {
+              description: 'Task 1',
+              status: TaskStatus.COMPLETE,
+              url: 'some URL',
+            },
+          ],
+        }];
+        return taskList;
+      });
+      mockOutstandingTasksFromTaskLists.mockImplementation(() => {
+        const outstandingTaskList = [
+          {
+            description: 'Task 1',
+            status: TaskStatus.COMPLETE,
+            url: 'some URL',
+          },
+        ];
+        return outstandingTaskList;
+      });
       //When
       await AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
       //Then

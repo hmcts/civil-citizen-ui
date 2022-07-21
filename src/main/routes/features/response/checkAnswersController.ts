@@ -10,12 +10,12 @@ import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreServi
 import {StatementOfTruthForm} from '../../../common/form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from '../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {AllResponseTasksCompletedGuard} from '../../guards/allResponseTasksCompletedGuard';
 import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {isFullAmountReject} from '../../../modules/claimDetailsService';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
+import {AllResponseTasksCompletedGuard} from '../../../routes/guards/allResponseTasksCompletedGuard';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const checkAnswersController = express.Router();
