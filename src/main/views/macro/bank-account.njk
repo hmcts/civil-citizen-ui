@@ -2,7 +2,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
-{% macro bankAccountRow(bankAccount, bankAccountDropDownItems, index, t) %}
+{% macro bankAccountRow(bankAccount, bankAccountDropDownItems, index, t, errorFor, formErrors) %}
   {% set dropdownList = bankAccountDropDownItems.all(bankAccount.typeOfAccount) %}
   {% set translatedDropdownList = [] %}
   {% for item in dropdownList %}
@@ -15,28 +15,33 @@
   {% endfor %}
   <div id="row-container govuk-grid-column-two-thirds">
     <div class="multiple-row">
-      {% set errors = bankAccount.getErrors() %}
+      {% set errors = formErrors %}
       <div class="govuk-form-group {%- if errors.length>0 %} govuk-form-group--error{% endif %}">
         {% if errors %}
           {% for error in errors %}
-            {{ govukErrorMessage({
-              text:t(error.text)
-            })| indent(2) | trim }}
+            {% if index in error.fieldName %}
+              {{ govukErrorMessage({
+                text: t(error.text)
+              })| indent(2) | trim }}
+            {% endif %}
           {% endfor %}
         {% endif %}
+        {% set typeOfAccount = 'accounts[' + index + '][typeOfAccount]' %}
+        {% set joint = 'accounts[' + index + '][joint]' %}
+        {% set balance = 'accounts[' + index + '][balance]' %}
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
           {{ govukSelect({
-            id:"accounts["+index+"][typeOfAccount]",
-            name: "accounts["+index+"][typeOfAccount]",
+            id: typeOfAccount,
+            name: typeOfAccount,
             items: translatedDropdownList,
-            classes: "govuk-grid-column-full govuk-select--error" if bankAccount.hasFieldError('typeOfAccount') else "govuk-grid-column-full"
+            classes: "govuk-grid-column-full govuk-select--error" if errorFor(typeOfAccount) else "govuk-grid-column-full"
           }) }}
         </div>
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
           {{ govukSelect({
-            id: "accounts["+index+"][joint]",
-            name: "accounts["+index+"][joint]",
-            classes: "govuk-grid-column-full govuk-select--error" if bankAccount.hasFieldError('joint') else "govuk-grid-column-full",
+            id: joint,
+            name: joint,
+            classes: "govuk-grid-column-full govuk-select--error" if errorFor(joint) else "govuk-grid-column-full",
             items: [
               {
                 value: "",
@@ -57,18 +62,17 @@
         </div>
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
           {{ govukInput({
-            id: "accounts["+index+"][balance]",
-            name: "accounts["+index+"][balance]",
+            id: balance,
+            name: balance,
             value: bankAccount.balance,
             prefix: {
               text: "£"
             },
-            classes: "govuk-grid-column-full govuk-input--error" if bankAccount.hasFieldError('balance') else "govuk-grid-column-full",
+            classes: "govuk-grid-column-full govuk-input--error" if errorFor(balance) else "govuk-grid-column-full",
             spellcheck: false
           }) }}
         </div>
       </div>
     </div>
   </div>
-
 {% endmacro %}

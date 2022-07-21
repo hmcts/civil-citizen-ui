@@ -13,8 +13,8 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set formErrors = form.getFormErrors() %}
-      {% if formErrors %}
+      {% set formErrors = form.getAllErrors() %}
+      {% if form.hasErrors() %}
         {{ errorSummary(formErrors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
@@ -37,8 +37,8 @@
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
             <label id="account-balance-label" class="govuk-label--s">{{ t('PAGES.CITIZEN_BANK_ACCOUNTS.BALANCE') }}</label>
           </div>
-          {% for account in form.accounts %}
-            {{ bankAccountRow(account, bankAccountDropDownItems, loop.index0, t) }}
+          {% for account in form.model.accounts %}
+            {{ bankAccountRow(account, bankAccountDropDownItems, loop.index0, t, form.errorFor, formErrors) }}
           {% endfor %}
           <div class="govuk-grid-column-two-thirds">
             {{ govukButton({
