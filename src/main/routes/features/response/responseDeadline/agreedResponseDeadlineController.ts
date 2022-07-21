@@ -18,7 +18,6 @@ const nextMonth = new Date();
 nextMonth.setMonth(nextMonth.getMonth() + 1);
 let claim: Claim;
 
-
 agreedResponseDeadlineController
   .get(
     AGREED_T0_MORE_TIME_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {

@@ -1,7 +1,7 @@
 import {IsDate, Max, Min, Validate, ValidateIf} from 'class-validator';
 import {OptionalDateFourDigitValidator} from '../validators/optionalDateFourDigitValidator';
 import {OptionalDateNotInPastValidator} from '../validators/optionalDateNotInPastValidator';
-import {AgreedResponseDateNotMoreThan28DaysValidator} from '../validators/agreedResponseDateNotMoreThan28DaysValidator';
+import {DateNotMoreThanDurationValidator} from '../validators/dateNotMoreThanDurationValidator';
 import {DateConverter} from '../../utils/dateConverter';
 import {toNumberOrUndefined} from '../../utils/numberConverter';
 
@@ -11,7 +11,7 @@ export class AgreedResponseDeadline {
     (o.day === undefined && o.month === undefined && o.year === undefined))
   @IsDate({message: 'ERRORS.VALID_AGREED_RESPONSE_DATE'})
   @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST'})
-  @Validate(AgreedResponseDateNotMoreThan28DaysValidator, ['originalResponseDeadline'], {message: 'ERRORS.DATE_NOT_MORE_THAN_28_DAYS'})  
+  @Validate(DateNotMoreThanDurationValidator, ['originalResponseDeadline', 28], {message: 'ERRORS.DATE_NOT_MORE_THAN_28_DAYS'})  
     date?: Date;
 
   @ValidateIf(o => o.day !== undefined)
