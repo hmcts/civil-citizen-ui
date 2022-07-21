@@ -308,7 +308,7 @@ describe('Reject Claim - Response Details', () => {
     //Given
     const claim = createClaimWithFullRejection();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[0].value.html).toBe('£100');
@@ -319,7 +319,7 @@ describe('Reject Claim - Response Details', () => {
     //Given
     const claim = createClaimWithFullRejection();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[1].value.html).toBe('14 February 2022');
@@ -330,7 +330,7 @@ describe('Reject Claim - Response Details', () => {
     //Given
     const claim = createClaimWithFullRejection();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[2].value.html).toBe('details here...');
@@ -341,7 +341,7 @@ describe('Reject Claim - Response Details', () => {
     //Given
     const claim = createClaimWithFullRejection();
     //When
-    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[3].value.html).toBe('Reasons for disagree');
