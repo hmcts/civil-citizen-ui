@@ -4,7 +4,6 @@ import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
-//import {ResponseType} from '../../../../../common/form/models/responseType';
 import RejectAllOfClaimType from '../../../../../common/form/models/rejectAllOfClaimType';
 import {
   CITIZEN_RESPONSE_TYPE_URL,
