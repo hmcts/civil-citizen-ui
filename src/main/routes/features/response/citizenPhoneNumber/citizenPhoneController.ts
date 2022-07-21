@@ -5,7 +5,7 @@ import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {GenericForm} from 'common/form/models/genericForm';
+import {GenericForm} from '../../../../common/form/models/genericForm';
 
 
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
