@@ -119,7 +119,7 @@ describe('Agreed response deadline View', () => {
 
 
 
-    it('should display correct error summary message with correct link for agreed response Date', async () => {
+    it('should display correct error summary message with correct link for agreed response Date in the past', async () => {
       await request(app)
         .post(AGREED_T0_MORE_TIME_URL)
         .send({ day: '14', month: '02', year: '2022'})
@@ -134,7 +134,7 @@ describe('Agreed response deadline View', () => {
     });
 
 
-    it('should display correct error summary message with correct link for agreed response date', async () => {
+    it('should display correct error summary message with correct link for agreed response date is more than 28 days', async () => {
       await request(app)
         .post(AGREED_T0_MORE_TIME_URL)
         .send({day: '14', month: '06', year: 2022})

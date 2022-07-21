@@ -33,7 +33,7 @@ describe('Agreed response date', () => {
   });
 
   describe('on Exception', () => {
-    test('should return http 500 when has error in the get method', async () => {
+    it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(AGREED_T0_MORE_TIME_URL)
@@ -43,7 +43,7 @@ describe('Agreed response date', () => {
         });
     });
 
-    test('should return http 500 when has error in the post method', async () => {
+    it('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(AGREED_T0_MORE_TIME_URL)
@@ -58,7 +58,7 @@ describe('Agreed response date', () => {
   });
 
   describe('on GET', () => {
-    test('should return agreed response date page', async () => {
+    it('should return agreed response date page', async () => {
       app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
       await request(app)
         .get(AGREED_T0_MORE_TIME_URL)
@@ -70,7 +70,7 @@ describe('Agreed response date', () => {
           expect(res.text).toContain('name="day" type="text"');
         });
     });
-    test('should return payment date page with payment date loaded from Redis', async () => {
+    it('should return agreed response date with payment date loaded from Redis', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(AGREED_T0_MORE_TIME_URL)
@@ -84,16 +84,7 @@ describe('Agreed response date', () => {
     });
   });
   describe('on POST', () => {
-    // mocking today's date
-    const realDate = Date;
-    beforeEach(() => {
-      global.Date.now = jest.fn(() => new Date('2022-05-20T10:20:30Z').getTime());
-    });
-
-    afterEach(() => {
-      global.Date = realDate;
-    });
-    test('should return errors on no input', async () => {
+    it('should return errors on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(AGREED_T0_MORE_TIME_URL)
@@ -105,7 +96,7 @@ describe('Agreed response date', () => {
           expect(res.text).toContain(VALID_AGREED_RESPONSE_DATE);
         });
     });
-    test('should return error on agreed date in the past', async () => {
+    it('should return error on agreed date in the past', async () => {
       await request(app)
         .post(AGREED_T0_MORE_TIME_URL)
         .send('year=1999')
@@ -117,7 +108,7 @@ describe('Agreed response date', () => {
         });
     });
 
-    test('should return error on agreed date in the past', async () => {
+    it('should return error on agreed date in the past', async () => {
       await request(app)
         .post(AGREED_T0_MORE_TIME_URL)
         .send('year=2022')
@@ -128,7 +119,7 @@ describe('Agreed response date', () => {
           expect(res.text).toContain(VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST);
         });
     });
-    test('should return error on incorrect input', async () => {
+    it('should return error on incorrect input', async () => {
       await request(app)
         .post(AGREED_T0_MORE_TIME_URL)
         .send('year=199')
@@ -139,7 +130,7 @@ describe('Agreed response date', () => {
           expect(res.text).toContain(VALID_FOUR_DIGIT_YEAR);
         });
     });
-    test('should return error on agreed response date is bigger 28 days', async () => {
+    it('should return error on agreed response date is bigger 28 days', async () => {
       await request(app)
         .post(AGREED_T0_MORE_TIME_URL)
         .send('year=2022')
@@ -151,7 +142,7 @@ describe('Agreed response date', () => {
         });
     });
 
-    test('should accept the 28th day after the original response deadline as input and redirect to next page', async () => {
+    it('should accept the 28th day after the original response deadline as input and redirect to next page', async () => {
       await request(app)
         .post(AGREED_T0_MORE_TIME_URL)
         .send('year=2022')
@@ -163,7 +154,7 @@ describe('Agreed response date', () => {
         });
     });
 
-    test('should accept the input date when it is less then 28 after original response deadline and redirect to next page', async () => {
+    it('should accept the input date when it is less then 28 after original response deadline and redirect to next page', async () => {
       await request(app)
         .post(AGREED_T0_MORE_TIME_URL)
         .send('year=2022')
