@@ -8,7 +8,7 @@ import {toNumberOrUndefined} from '../../utils/numberConverter';
 export class AgreedResponseDeadline {
 
   @ValidateIf(o => (o.day > 0 && o.day < 32 && o.month > 0 && o.month < 13 && o.year > 999) ||
-    (o.day === undefined && o.month === undefined && o.year === undefined))
+    (!o.day && !o.month && !o.year))
   @IsDate({message: 'ERRORS.VALID_AGREED_RESPONSE_DATE'})
   @Validate(dateNotBeforeReferenceDate, ['originalResponseDeadline'], {message: 'ERRORS.VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST'})
   @Validate(DateNotMoreThanDurationValidator, ['originalResponseDeadline', 28], {message: 'ERRORS.DATE_NOT_MORE_THAN_28_DAYS'})  
