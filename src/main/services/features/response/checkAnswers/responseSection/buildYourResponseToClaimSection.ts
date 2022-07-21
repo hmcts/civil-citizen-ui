@@ -25,7 +25,7 @@ const getRejectAllOfClaimOptionKey = (claim: Claim) => {
     case RejectAllOfClaimType.COUNTER_CLAIM:
       return page + 'COUNTER_CLAIM';
     default:
-      return;
+      break;
   }
 };
 
@@ -43,9 +43,9 @@ export const buildYourResponseToClaimSection = (claim: Claim, claimId: string, l
 
   yourResponseToClaimSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', { lng: getLng(lang) }), t(`COMMON.RESPONSE_TYPE.${claim.respondent1?.responseType}`, { lng: getLng(lang) }), yourResponseToClaimHref, changeLabel(lang)));
 
-  if (claim.respondent1?.responseType === ResponseType.PART_ADMISSION) {
+  if (claim.respondent1.responseType === ResponseType.PART_ADMISSION) {
     yourResponseToClaimSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT', { lng: getLng(lang) }), t(`COMMON.${alreadyPaid}`, {lng: getLng(lang)}), yourPaymentAdmittedToClaimantHref, changeLabel(lang)));
-  } else if (claim.respondent1?.responseType === ResponseType.FULL_DEFENCE) {
+  } else if (claim.respondent1.responseType === ResponseType.FULL_DEFENCE) {
     yourResponseToClaimSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM', { lng: getLng(lang) }), t(getRejectAllOfClaimOptionKey(claim), {lng: getLng(lang)}), rejectAllClaimUrl, changeLabel(lang)));
   }
 

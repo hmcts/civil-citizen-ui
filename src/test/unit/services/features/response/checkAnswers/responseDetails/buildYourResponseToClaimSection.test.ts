@@ -15,6 +15,7 @@ import {
 import PaymentOptionType from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
+import RejectAllOfClaimType from '../../../../../../../main/common/form/models/rejectAllOfClaimType';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -82,14 +83,36 @@ describe('Response To Claim', () => {
 });
 
 describe('Reject Claim', () => {
-  it('should return "I reject all of the claim" on response to claim when exists', async () => {
+  it('should return "I reject all of the claim" on response to claim when ALREADY_PAID', async () => {
     //Given
-    const claim = createClaimWithFullRejection();
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].value.html).toBe('PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.ALREADY_PAID');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_REJECT_ALL_CLAIM_URL.replace(':id', constVal.CLAIM_ID));
+  });
+
+  it('should return "I reject all of the claim" on response to claim when DISPUTE', async () => {
+    //Given
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.DISPUTE);
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].value.html).toBe('PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.DISPUTE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_REJECT_ALL_CLAIM_URL.replace(':id', constVal.CLAIM_ID));
+  });
+
+  it('should return "I reject all of the claim" on response to claim when COUNTER_CLAIM', async () => {
+    //Given
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.COUNTER_CLAIM);
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].value.html).toBe('PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.COUNTER_CLAIM');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_REJECT_ALL_CLAIM_URL.replace(':id', constVal.CLAIM_ID));
   });
 });

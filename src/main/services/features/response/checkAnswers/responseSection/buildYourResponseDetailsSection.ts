@@ -65,7 +65,7 @@ const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: str
   const yourReasonsToDisagreeHref = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_URL);
   const howMuchYouAdmitYouOweHref = constructResponseUrlWithIdParams(claimId, CITIZEN_OWED_AMOUNT_URL);
 
-  if (claim.partialAdmission?.alreadyPaid?.option === YesNo.NO) {
+  if (claim.partialAdmission.alreadyPaid?.option === YesNo.NO) {
     yourResponseDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(Number(claim.partialAdmission?.howMuchDoYouOwe.amount)), howMuchYouAdmitYouOweHref, changeLabel(lang)));
   } else {
     yourResponseDetailsSection.summaryList.rows.push(...[
@@ -100,7 +100,7 @@ export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, l
     summaryRows: [],
   });
 
-  switch(claim.respondent1?.responseType) {
+  switch(claim.respondent1.responseType) {
     case ResponseType.PART_ADMISSION:
       getSummaryRowsForPartAdmission(claim,claimId,lang,yourResponseDetailsSection);
       break;
