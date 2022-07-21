@@ -2,6 +2,7 @@ import * as express from 'express';
 import { RepaymentPlanForm } from '../../../../common/form/models/repaymentPlan/repaymentPlanForm';
 import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFormatter';
 import { DateFormatter } from '../../../../common/utils/dateFormatter';
+import {GenericForm} from '../../../../common/form/models/genericForm';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
@@ -10,12 +11,12 @@ import {
   CITIZEN_REPAYMENT_PLAN,
   CLAIM_TASK_LIST_URL,
 } from '../../../urls';
-import {validateForm} from '../../../../common/form/validators/formValidator';
+
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
 const repaymentPlanController = express.Router();
 
-function renderView(form: RepaymentPlanForm, res: express.Response): void {
+function renderView(form: GenericForm<RepaymentPlanForm>, res: express.Response): void {
   res.render(repaymentPlanViewPath, { form, paymentExampleDate: getFirstPaymentExampleDate() });
 }
 
@@ -29,8 +30,8 @@ const getFirstPaymentExampleDate = () => {
 
 repaymentPlanController.get(CITIZEN_REPAYMENT_PLAN, async (req, res, next: express.NextFunction) => {
   try {
-    const form = await getRepaymentPlanForm(req.params.id);
-    renderView(form, res);
+    const repaymentPlanForm = await getRepaymentPlanForm(req.params.id);
+    renderView(new GenericForm(repaymentPlanForm), res);
   } catch (error) {
     next(error);
   }
@@ -40,12 +41,12 @@ repaymentPlanController.post(CITIZEN_REPAYMENT_PLAN,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const savedValues = await getRepaymentPlanForm(req.params.id);
-      const form: RepaymentPlanForm = new RepaymentPlanForm(savedValues.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day);
-      await validateForm(form);
-      if (form.hasErrors()) {
-        renderView(form, res);
+      const repaymentPlanForm: GenericForm<RepaymentPlanForm> = new GenericForm(new RepaymentPlanForm(savedValues.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day));
+      repaymentPlanForm.validateSync();
+      if (repaymentPlanForm.hasErrors()) {
+        renderView(repaymentPlanForm, res);
       } else {
-        await saveRepaymentPlanData(req.params.id, form);
+        await saveRepaymentPlanData(req.params.id, repaymentPlanForm.model);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
       }
     } catch (error) {

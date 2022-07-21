@@ -1,5 +1,4 @@
 import { IsNumber, Min, Max, IsDefined, ValidateIf, Validate, IsDate, MinDate } from 'class-validator';
-import { Form } from '../form';
 import {DateConverter} from '../../../utils/dateConverter';
 import {
   PAYMENT_FREQUENCY_REQUIRED,
@@ -13,7 +12,7 @@ import {
   FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED,
 } from '../../validationErrors/errorMessageConstants';
 import { EqualToOrLessThanPropertyValueValidator } from '../../validators/equalToOrLessThanPropertyValueValidator';
-export class RepaymentPlanForm extends Form {
+export class RepaymentPlanForm{
 
   @IsDefined({ message: AMOUNT_REQUIRED })
   @IsNumber({maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
@@ -52,7 +51,6 @@ export class RepaymentPlanForm extends Form {
     month?: string,
     day?: string) {
 
-    super();
     this.totalClaimAmount = totalClaimAmount;
     this.paymentAmount = paymentAmount ? Number(paymentAmount) : undefined;
     this.repaymentFrequency = repaymentFrequency;

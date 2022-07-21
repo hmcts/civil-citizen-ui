@@ -17,19 +17,19 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("Your repayment plan") %}
-      {% set errors = form.getErrors() %}
-      {% set totalAmountClaimedText = t('The total amount claimed is £' + form.totalClaimAmount + '. This includes the claim fee and any interest.') %}
+      {% set errors = form.getAllErrors() %}
+      {% set totalAmountClaimedText = t('The total amount claimed is £' + form.model.totalClaimAmount + '. This includes the claim fee and any interest.') %}
       {% set firstPaymentExample = t('For example, ' + paymentExampleDate) %}
-      {% if errors %}
+      {% if form.hasErrors() %}
         {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}
     </main>
   </div>
   <form method="post" novalidate name="repaymentPlan">
-    {{ csrfProtection(csrf) }} <input type="hidden" class="repayment-amount" value="{{ form.totalClaimAmount }}"/>
+    {{ csrfProtection(csrf) }} <input type="hidden" class="repayment-amount" value="{{ form.model.totalClaimAmount }}"/>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         {% call govukFieldset({
@@ -60,7 +60,7 @@
             text: "£"
           },
           spellcheck: false,
-          value: form.getPaymentAmountAsString(),
+          value: form.model.getPaymentAmountAsString(),
           errorMessage: {
             text:t(form.errorFor('paymentAmount'))
           } if form.hasFieldError('paymentAmount')
@@ -79,17 +79,17 @@
           items: [
             {
               value: TransactionSchedule.WEEK,
-              checked: true if form.repaymentFrequency === TransactionSchedule.WEEK,
+              checked: true if form.model.repaymentFrequency === TransactionSchedule.WEEK,
               text: t("Each week")
             },
             {
               value: TransactionSchedule.TWO_WEEKS,
-              checked: true if form.repaymentFrequency === TransactionSchedule.TWO_WEEKS,
+              checked: true if form.model.repaymentFrequency === TransactionSchedule.TWO_WEEKS,
               text: t("Every two weeks")
             },
             {
               value: TransactionSchedule.MONTH,
-              checked: true if form.repaymentFrequency === TransactionSchedule.MONTH,
+              checked: true if form.model.repaymentFrequency === TransactionSchedule.MONTH,
               text: t("Every month")
             }
           ],
@@ -133,7 +133,7 @@
               id: "day",
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-2",
               autocomplete: "bday-day",
-              value: form.getDayAsString(),
+              value: form.model.getDayAsString(),
               max: 31
             },
             {
@@ -141,7 +141,7 @@
               id: "month",
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-2",
               autocomplete: "bday-month",
-              value: form.getMonthAsString(),
+              value: form.model.getMonthAsString(),
               max: 12
             },
             {
@@ -149,7 +149,7 @@
               id: "year",
               classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-4",
               autocomplete: "bday-year",
-              value: form.getYearAsString(),
+              value: form.model.getYearAsString(),
               max: 9999
             }
           ]
