@@ -4,7 +4,7 @@
   "case_type_id": "CIVIL",
   "created_date": "2022-03-01T13:29:22.447",
   "last_modified": "2022-03-01T13:29:24.971",
-  "state": "PENDING_CASE_ISSUED",
+  "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
   "security_classification": "PUBLIC",
   "case_data": {
     "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
@@ -182,9 +182,6 @@
     "defence": {
       "text": "reasons for making the claim"
     },
-    "responseDeadline" : {
-      "agreedResponseDeadline" : "2025-06-01T00:00:00.000Z" 
-    },
     "systemGeneratedCaseDocuments": [
       {
         "id": "9e632049-ff29-44a0-bdb7-d71ec1d42e2d",
@@ -201,6 +198,9 @@
           "createdDatetime": "2022-06-21T14:15:19"
         }
       }
-    ]
+    ],
+    "responseDeadline": {
+      "agreedResponseDeadline": "2025-06-01T00:00:00.000Z"
+    }
   }
 }
