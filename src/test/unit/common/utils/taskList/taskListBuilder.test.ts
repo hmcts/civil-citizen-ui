@@ -16,6 +16,7 @@ import {
 } from '../../../../../main/common/utils/taskList/taskListBuilder';
 import {
   CITIZEN_AMOUNT_YOU_PAID_URL,
+  CITIZEN_FR_AMOUNT_YOU_PAID_URL,
   CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
   CITIZEN_OWED_AMOUNT_URL,
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
@@ -23,13 +24,11 @@ import {
   CITIZEN_REPAYMENT_PLAN_FULL_URL,
   CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
   CITIZEN_RESPONSE_TYPE_URL,
-  CITIZEN_WHY_DO_YOU_DISAGREE_URL,
-  CITIZEN_REPAYMENT_PLAN,
-  FINANCIAL_DETAILS_URL,
-  SUPPORT_REQUIRED_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
-  CITIZEN_FR_AMOUNT_YOU_PAID_URL,
+  CITIZEN_WHY_DO_YOU_DISAGREE_URL,
+  FINANCIAL_DETAILS_URL,
   RESPONSE_YOUR_DEFENCE_URL,
+  SUPPORT_REQUIRED_URL,
 } from '../../../../../main/routes/urls';
 import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
 import RejectAllOfClaimType from '../../../../../main/common/form/models/rejectAllOfClaimType';
@@ -41,7 +40,6 @@ describe('Task List Builder', () => {
   const chooseAResponseUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
   const whyDisagreeWithAmountClaimedUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_URL);
   const whyDisagreeWithAmountClaimedFullDefenceUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL);
-  const repaymentPlanUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN);
   const repaymentFAPlanUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_FULL_URL);
   const repaymentPAPlanUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_PARTIAL_URL);
   const shareFinancialDetailsUrl = constructResponseUrlWithIdParams(claimId, FINANCIAL_DETAILS_URL);
