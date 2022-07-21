@@ -16,24 +16,17 @@ import {YesNo,YesNoUpperCase} from '../../../../../common/form/models/yesNo';
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
 
 const getRejectAllOfClaimOptionKey = (claim: Claim) => {
-  let key = '';
   switch (claim.rejectAllOfClaim?.option) {
     case RejectAllOfClaimType.ALREADY_PAID:
-      key = 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.ALREADY_PAID';
-      break;
+      return 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.ALREADY_PAID';
     case RejectAllOfClaimType.DISPUTE:
-      key = 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.DISPUTE';
-      break;
+      return 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.DISPUTE';
     case RejectAllOfClaimType.COUNTER_CLAIM:
-      key = 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.COUNTER_CLAIM';
-      break;
+      return 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.COUNTER_CLAIM';
     default:
-      break;
+      return;
   }
-
-  return key;
 };
-
 
 export const buildYourResponseToClaimSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const yourResponseToClaimHref = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
