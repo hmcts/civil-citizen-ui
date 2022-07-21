@@ -369,14 +369,14 @@
       "PART_ADMISSION_HINT": "Rydych yn cytuno bod rhywfaint o arian yn ddyledus gennych ond nid y swm llawn a hawlir.",
       "PAY_IMMEDIATELY": "Talu ar unwaith",
       "REJECT_ALL": "Gwrthod yr hawliad i gyd",
+      "REJECT_ALL_CLAIM_TYPE": {
+        "ALREADY_PAID": "Rwyf wedi talu'r hyn sy'n ddyledus gen i",
+        "COUNTER_CLAIM": "Rwy’n anghytuno â’r hawliad ac rwyf am wneud gwrth-hawliad",
+        "DISPUTE": "Rwy'n anghytuno â'r holl hawliad"
+      },
       "REJECT_DEADLINE": "Mae gennych tan 4pm ar {{ deadline }} i wrthod yr hawliad cyfan.",
       "REJECT_PAID": "Os ydych yn gwrthod oherwydd eich bod yn credu eich bod wedi talu'r arian, mae gan yr hawlydd 28 i ddweud wrthych chi a'r llys p'un a yw'n bwrw ymlaen â'r hawliad.",
       "REJECT_WHOLE_CLAIM": "Os ydych yn gwrthod yr hawliad cyfan, gall yr hawliad gael ei drosglwyddo i ganolfan wrandawiadau Llys Sirol.",
-      "REJECT_ALL_CLAIM_TYPE": {
-        "ALREADY_PAID": "Rwyf wedi talu'r hyn sy'n ddyledus gen i",
-        "DISPUTE": "Rwy'n anghytuno â'r holl hawliad",
-        "COUNTER_CLAIM": "Rwy’n anghytuno â’r hawliad ac rwyf am wneud gwrth-hawliad"
-      },
       "RESPONSE_MEANING": "Canfod beth mae pob ymateb yn ei olygu"
     },
     "CLAIM_DETAILS": {

@@ -369,14 +369,14 @@
       "PART_ADMISSION_HINT": "You agree you owe some money but not the full amount claimed.",
       "PAY_IMMEDIATELY": "Pay immediately",
       "REJECT_ALL": "Reject all of the claim",
+      "REJECT_ALL_CLAIM_TYPE": {
+        "ALREADY_PAID": "I've paid what I believe I owe",
+        "COUNTER_CLAIM": "I dispute the claim and want to make a counterclaim",
+        "DISPUTE": "I dispute all of the claim"
+      },
       "REJECT_DEADLINE": "You have until 4pm on {{ deadline }} to reject the claim.",
       "REJECT_PAID": "If you reject because you believe you've paid the money, the claimant has 28 days to tell you and the court whether they're proceeding with the claim.",
       "REJECT_WHOLE_CLAIM": "If you reject all of the claim, the claim may be transferred to a County Court hearing centre.",
-      "REJECT_ALL_CLAIM_TYPE": {
-        "ALREADY_PAID": "I've paid what I believe I owe",
-        "DISPUTE": "I dispute all of the claim",
-        "COUNTER_CLAIM": "I dispute the claim and want to make a counterclaim"
-      },
       "RESPONSE_MEANING": "Find out what each response means"
     },
     "CLAIM_DETAILS": {
