@@ -17,7 +17,7 @@ const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSW
 
 const getRejectAllOfClaimOptionKey = (claim: Claim) => {
   const page = 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.';
-  switch (claim.rejectAllOfClaim?.option) {
+  switch (claim.rejectAllOfClaim.option) {
     case RejectAllOfClaimType.ALREADY_PAID:
       return page + 'ALREADY_PAID';
     case RejectAllOfClaimType.DISPUTE:
@@ -25,7 +25,7 @@ const getRejectAllOfClaimOptionKey = (claim: Claim) => {
     case RejectAllOfClaimType.COUNTER_CLAIM:
       return page + 'COUNTER_CLAIM';
     default:
-      break;
+      return;
   }
 };
 
@@ -41,7 +41,7 @@ export const buildYourResponseToClaimSection = (claim: Claim, claimId: string, l
     summaryRows: [],
   });
 
-  yourResponseToClaimSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', { lng: getLng(lang) }), t(`COMMON.RESPONSE_TYPE.${claim.respondent1?.responseType}`, { lng: getLng(lang) }), yourResponseToClaimHref, changeLabel(lang)));
+  yourResponseToClaimSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', { lng: getLng(lang) }), t(`COMMON.RESPONSE_TYPE.${claim.respondent1.responseType}`, { lng: getLng(lang) }), yourResponseToClaimHref, changeLabel(lang)));
 
   if (claim.respondent1.responseType === ResponseType.PART_ADMISSION) {
     yourResponseToClaimSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT', { lng: getLng(lang) }), t(`COMMON.${alreadyPaid}`, {lng: getLng(lang)}), yourPaymentAdmittedToClaimantHref, changeLabel(lang)));
