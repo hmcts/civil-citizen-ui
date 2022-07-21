@@ -4,7 +4,7 @@ import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
-import {ResponseType} from '../../../../../common/form/models/responseType';
+//import {ResponseType} from '../../../../../common/form/models/responseType';
 import RejectAllOfClaimType from '../../../../../common/form/models/rejectAllOfClaimType';
 import {
   CITIZEN_RESPONSE_TYPE_URL,
@@ -41,9 +41,9 @@ export const buildYourResponseToClaimSection = (claim: Claim, claimId: string, l
 
   yourResponseToClaimSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', { lng: getLng(lang) }), t(`COMMON.RESPONSE_TYPE.${claim.respondent1.responseType}`, { lng: getLng(lang) }), yourResponseToClaimHref, changeLabel(lang)));
 
-  if (claim.respondent1.responseType === ResponseType.PART_ADMISSION) {
+  if(claim.isPartialAdmission()) {
     yourResponseToClaimSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT', { lng: getLng(lang) }), t(`COMMON.${alreadyPaid}`, {lng: getLng(lang)}), yourPaymentAdmittedToClaimantHref, changeLabel(lang)));
-  } else if (claim.respondent1.responseType === ResponseType.FULL_DEFENCE) {
+  } else if (claim.isFullDefence()) {
     yourResponseToClaimSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM', { lng: getLng(lang) }), t(getRejectAllOfClaimOptionKey(claim), {lng: getLng(lang)}), rejectAllClaimUrl, changeLabel(lang)));
   }
 
