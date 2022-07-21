@@ -24,8 +24,6 @@ const getRejectAllOfClaimOptionKey = (claim: Claim) => {
       return page + 'DISPUTE';
     case RejectAllOfClaimType.COUNTER_CLAIM:
       return page + 'COUNTER_CLAIM';
-    default:
-      return;
   }
 };
 
