@@ -16,13 +16,14 @@ import {YesNo,YesNoUpperCase} from '../../../../../common/form/models/yesNo';
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
 
 const getRejectAllOfClaimOptionKey = (claim: Claim) => {
+  const page = 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.';
   switch (claim.rejectAllOfClaim?.option) {
     case RejectAllOfClaimType.ALREADY_PAID:
-      return 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.ALREADY_PAID';
+      return page + 'ALREADY_PAID';
     case RejectAllOfClaimType.DISPUTE:
-      return 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.DISPUTE';
+      return page + 'DISPUTE';
     case RejectAllOfClaimType.COUNTER_CLAIM:
-      return 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.COUNTER_CLAIM';
+      return page + 'COUNTER_CLAIM';
     default:
       return;
   }
