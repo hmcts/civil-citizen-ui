@@ -19,8 +19,11 @@
       {% set title = t("Your repayment plan") %}
       {% set errors = form.getErrors() %}
       {% set totalAmountClaimedText = t('The total amount claimed is £' + form.totalClaimAmount + '. This includes the claim fee and any interest.') %}
+      {% set totalAmount = form.totalClaimAmount %}
+
       {% if admission %}
         {% set totalAmountClaimedText = t('You admit you owe £' + amount + '.') %}
+        {% set totalAmount = amount %}
       {% endif %}
       {% set firstPaymentExample = t('For example, ' + paymentExampleDate) %}
       {% if errors %}
@@ -32,7 +35,7 @@
     </main>
   </div>
   <form method="post" novalidate name="repaymentPlan">
-    {{ csrfProtection(csrf) }} <input type="hidden" class="repayment-amount" value="{{ form.totalClaimAmount }}"/>
+    {{ csrfProtection(csrf) }} <input type="hidden" class="repayment-amount" value="{{ totalAmount }}"/>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         {% call govukFieldset({
