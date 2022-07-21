@@ -23,7 +23,7 @@ const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSW
 
 const addTimeline = (claim: Claim, claimId: string, lang: string | unknown, section: SummarySection) => {
   const yourTimelineHref = constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL);
-  const timeline = claim.partialAdmission?.timeline ? claim.partialAdmission?.timeline : new DefendantTimeline([], '');
+  const timeline = claim.partialAdmission?.timeline ? claim.partialAdmission.timeline : new DefendantTimeline([], '');
 
   section.summaryList.rows.push(
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_TITLE', {lng: getLng(lang)}), '', yourTimelineHref, changeLabel(lang)),
