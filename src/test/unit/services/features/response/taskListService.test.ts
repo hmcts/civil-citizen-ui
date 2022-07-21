@@ -25,18 +25,16 @@ jest.mock('i18next', () => ({
 
 describe('Response Task List service', () => {
   const mockClaim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-  const claim = new Claim();
   const mockClaimId = '5129';
   const lang = 'en';
 
   describe('none of the tasks completed', () => {
-    const jsonData = deepCopy(mockClaim.case_data);
-    const caseData = Object.assign(new Claim(), jsonData);
-    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId, lang);
+    const caseData = Object.assign(new Claim(), deepCopy(mockClaim.case_data));
+    const actualTaskLists = getTaskLists(caseData, mockClaimId, lang);
 
     it('should return response task list', () => {
       //when
-      const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId, lang);
+      const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang);
       const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
       const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
@@ -65,15 +63,14 @@ describe('Response Task List service', () => {
     const PRIMARY_ADDRESS_LINE_2 = '12 Berry street';
     const PRIMARY_ADDRESS_TOWN = 'London';
     const PRIMARY_ADDRESS_POSTCODE = 'E1 6AN';
-    const jsonData = deepCopy(mockClaim.case_data);
-    const caseData = Object.assign(new Claim(), jsonData);
+    const caseData = Object.assign(new Claim(), deepCopy(mockClaim.case_data));
     caseData.respondent1.primaryAddress = buildAddress(PRIMARY_ADDRESS_LINE_1, PRIMARY_ADDRESS_LINE_2, PRIMARY_ADDRESS_TOWN, PRIMARY_ADDRESS_POSTCODE);
     caseData.respondent1.dateOfBirth = '15 May 1978';
-    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId, lang);
+    const actualTaskLists = getTaskLists(caseData, mockClaimId, lang);
 
     it('should return response task list', () => {
       //when
-      const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId, lang);
+      const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang);
       const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
       const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
@@ -97,17 +94,16 @@ describe('Response Task List service', () => {
     const CORRESPONDENCE_ADDRESS_LINE_2 = 'Dean close';
     const CORRESPONDENCE_TOWN = 'Bristol';
     const CORRESPONDENCE_POSTCODE = 'BS1 4HK';
-    const jsonData = deepCopy(mockClaim.case_data);
-    const caseData = Object.assign(new Claim(), jsonData);
+    const caseData = Object.assign(new Claim(), deepCopy(mockClaim.case_data));
     caseData.respondent1.correspondenceAddress = buildAddress(CORRESPONDENCE_ADDRESS_LINE_1, CORRESPONDENCE_ADDRESS_LINE_2, CORRESPONDENCE_TOWN, CORRESPONDENCE_POSTCODE);
     caseData.respondent1.primaryAddress = {};
     caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;
     caseData.respondent1.dateOfBirth = '15 May 1978';
-    const actualTaskLists = getTaskLists(claim, caseData, mockClaimId, lang);
+    const actualTaskLists = getTaskLists(caseData, mockClaimId, lang);
 
     it('should return response task list', () => {
       //when
-      const taskListPrepareYourResponse = buildPrepareYourResponseSection(claim, caseData, mockClaimId, lang);
+      const taskListPrepareYourResponse = buildPrepareYourResponseSection(caseData, mockClaimId, lang);
       const taskListRespondToClaim = buildRespondToClaimSection(caseData, mockClaimId, lang);
       const taskListSubmitYourResponse = buildSubmitSection(mockClaimId, lang);
       const taskGroups = [taskListPrepareYourResponse, taskListRespondToClaim, taskListSubmitYourResponse];
@@ -118,6 +114,7 @@ describe('Response Task List service', () => {
 
     it('should return description', () => {
       //When
+
       const description = getDescription(actualTaskLists, lang);
       //Then
       expect(actualTaskLists[0].tasks[0].description).toEqual('TASK_LIST.PREPARE_YOUR_RESPONSE.CONFIRM_YOUR_DETAILS');

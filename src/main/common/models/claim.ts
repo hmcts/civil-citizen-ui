@@ -169,6 +169,10 @@ export class Claim {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
 
+  isFullDefence(): boolean {
+    return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
+  }
+  
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }
