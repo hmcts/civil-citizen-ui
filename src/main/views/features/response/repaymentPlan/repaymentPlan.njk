@@ -20,7 +20,7 @@
       {% set errors = form.getErrors() %}
       {% set totalAmountClaimedText = t('The total amount claimed is £' + form.totalClaimAmount + '. This includes the claim fee and any interest.') %}
       {% if admission %}
-        {% set totalAmountClaimedText = t('You admit you owe £' + form.totalClaimAmount + '.') %}
+        {% set totalAmountClaimedText = t('You admit you owe £' + amount + '.') %}
       {% endif %}
       {% set firstPaymentExample = t('For example, ' + paymentExampleDate) %}
       {% if errors %}
