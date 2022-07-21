@@ -30,6 +30,7 @@ responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
+      console.log('get--options-', claim);
       renderView(res, new GenericForm(new ResponseDeadline(claim.responseDeadline?.option)), claim);
     }
     catch (error) {

@@ -17,11 +17,12 @@ const agreedResponseDeadlineController = express.Router();
 const nextMonth = new Date();
 nextMonth.setMonth(nextMonth.getMonth() + 1);
 let claim: Claim;
+let backLink: string;
 
 agreedResponseDeadlineController
   .get(
     AGREED_T0_MORE_TIME_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-      const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
+      backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
         claim = await getCaseDataFromStore(req.params.id);
         const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
@@ -37,7 +38,6 @@ agreedResponseDeadlineController
     })
   .post(
     AGREED_T0_MORE_TIME_URL, async (req, res, next: express.NextFunction) => {
-      const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
       const originalResponseDeadline = claim?.respondent1ResponseDeadline;
       const {year, month, day} = req.body;
       const agreedResponseDeadlineDate = new AgreedResponseDeadline(year, month, day, originalResponseDeadline);

@@ -11,7 +11,6 @@ import {
   VALID_AGREED_RESPONSE_DATE,
   VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST,
   DATE_NOT_MORE_THAN_28_DAYS,
-  // DATE_NOT_MORE_THAN_28_DAYS,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   mockCivilClaim,
@@ -123,7 +122,7 @@ describe('Agreed response date', () => {
         .post(AGREED_T0_MORE_TIME_URL)
         .send('year=2022')
         .send('month=05')
-        .send('day=19')
+        .send('day=10')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST);
