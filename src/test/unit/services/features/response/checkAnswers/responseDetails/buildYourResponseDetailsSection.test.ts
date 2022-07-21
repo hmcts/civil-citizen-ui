@@ -22,6 +22,7 @@ import {EvidenceItem} from '../../../../../../../main/common/form/models/evidenc
 import {Evidence} from '../../../../../../../main/common/form/models/evidence/evidence';
 import {EvidenceType} from '../../../../../../../main/common/models/evidence/evidenceType';
 import { YesNo } from '../../../../../../../main/common/form/models/yesNo';
+import RejectAllOfClaimType from '../../../../../../../main/common/form/models/rejectAllOfClaimType';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -306,7 +307,7 @@ describe('Partial Admit - Response Details', () => {
 describe('Reject Claim - Response Details', () => {
   it('should return "How much have you paid?" when reject claim', async () => {
     //Given
-    const claim = createClaimWithFullRejection();
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
@@ -317,7 +318,7 @@ describe('Reject Claim - Response Details', () => {
 
   it('should return "When did you pay?" when reject claim', async () => {
     //Given
-    const claim = createClaimWithFullRejection();
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
@@ -328,7 +329,7 @@ describe('Reject Claim - Response Details', () => {
 
   it('should return "How di you pay this amount?" when reject claim', async () => {
     //Given
-    const claim = createClaimWithFullRejection();
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
@@ -339,7 +340,7 @@ describe('Reject Claim - Response Details', () => {
 
   it('should return "Why do you disagree?" when reject claim', async () => {
     //Given
-    const claim = createClaimWithFullRejection();
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
