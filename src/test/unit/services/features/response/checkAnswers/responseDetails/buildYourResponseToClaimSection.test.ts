@@ -5,10 +5,12 @@ import {
 import {
   CITIZEN_RESPONSE_TYPE_URL,
   CITIZEN_ALREADY_PAID_URL,
+  CITIZEN_REJECT_ALL_CLAIM_URL,
 } from '../../../../../../../main/routes/urls';
 import {
   ceateClaimWithPartialAdmission,
   createClaimWithRespondentDetailsWithPaymentOption,
+  createClaimWithFullRejection,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import PaymentOptionType from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
@@ -76,5 +78,18 @@ describe('Response To Claim', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION_PART_ADMISSION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION_PART_ADMISSION].summaryList.rows[1].value.html).toBe('COMMON.NO');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION_PART_ADMISSION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_ALREADY_PAID_URL.replace(':id', constVal.CLAIM_ID));
+  });
+});
+
+describe('Reject Claim', () => {
+  it('should return "I reject all of the claim" on response to claim when exists', async () => {
+    //Given
+    const claim = createClaimWithFullRejection();
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].value.html).toBe('PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.ALREADY_PAID');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_REJECT_ALL_CLAIM_URL.replace(':id', constVal.CLAIM_ID));
   });
 });

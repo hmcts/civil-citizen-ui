@@ -59,6 +59,7 @@ import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
 import {DefendantEvidence} from '../../main/common/models/evidence/evidence';
 import { Evidence } from '../../main/common/form/models/evidence/evidence';
+import RejectAllOfClaimType from '../../main/common/form/models/rejectAllOfClaimType';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -611,4 +612,27 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
     new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
 
   return claim as Claim;
+};
+
+export const createClaimWithFullRejection = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  if(claim.respondent1) {
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+  }
+  claim.rejectAllOfClaim = {
+    option: RejectAllOfClaimType.ALREADY_PAID,
+    howMuchHaveYouPaid: {
+      amount: 100,
+      date: new Date('2022-02-14T00:00:00.000Z'),
+      day: 14,
+      month: 2,
+      year: 2022,
+      text: 'details here...',
+    },
+    whyDoYouDisagree: {
+      text: 'Reasons for disagree',
+    },
+  };
+  claim.paymentOption = undefined;
+  return claim;
 };
