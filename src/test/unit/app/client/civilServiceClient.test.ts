@@ -14,6 +14,7 @@ import {
 import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
+import {CaseState} from '../../../../main/common/form/models/claimDetails';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -62,6 +63,7 @@ describe('Civil Service Client', () => {
       const mockResponse: CivilClaimResponse = {
         id: '1',
         case_data: claim,
+        state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
       };
 
       const mockPost = jest.fn().mockResolvedValue({data: {cases: [mockResponse]}});
@@ -136,6 +138,7 @@ describe('Civil Service Client', () => {
       const mockResponse: CivilClaimResponse = {
         id: '1',
         case_data: new Claim(),
+        state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
       };
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
