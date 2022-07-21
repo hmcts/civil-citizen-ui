@@ -568,9 +568,9 @@
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
     },
     "NEW_RESPONSE_DEADLINE": {
+      "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
       "PAGE_TITLE": "New response deadline",
-      "TITLE": "4 pm on {{ responseDeadline }}",
-      "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date."
+      "TITLE": "4 pm on {{ responseDeadline }}"
     },
     "OTHER_DEPENDANTS": {
       "DESCRIPTION": "Gall hyn gynnwys oedolion a phobl nad ydych yn byw gyda nhw.",

@@ -1,10 +1,15 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.NEW_RESPONSE_DEADLINE.PAGE_TITLE') }}
+{% endblock %}
 
 {% block content %}
   {{ govukBackLink({
-    text: "Back",
+    text: t("COMMON.BUTTONS.BACK"),
     href: backUrl
   }) }}
 <div class="govuk-grid-row">
@@ -22,3 +27,4 @@
   </div>
 </div>
 {% endblock %}
+

@@ -205,5 +205,16 @@ describe('Civil Service Client', () => {
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_CALCULATE_DEADLINE);
       expect(calculatedDeadlineDate).toEqual(responseDeadlineDate);
     });
+    it('should throw error when there is an error with api call', async () => {
+      //Given
+      const responseDeadlineDate = new Date(2022, 10, 31);
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, mockedAppRequest)).rejects.toThrow('error');
+    });
   });
 });

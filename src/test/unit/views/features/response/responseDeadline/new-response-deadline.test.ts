@@ -54,11 +54,11 @@ describe('New response deadline view', () => {
     const continueButton = htmlDocument.getElementsByClassName('govuk-button');
     expect(continueButton[0].innerHTML).toContain('Continue');
   });
-  it('should have Contact for help', ()=>{
+  it('should have Contact for help', ()=> {
     const details = htmlDocument.getElementsByClassName('govuk-details__summary-text');
     expect(details[0].innerHTML).toContain('Contact us for help');
   });
-  it('should have Back button', ()=>{
+  it('should have Back button', ()=> {
     const backButton = htmlDocument.getElementsByClassName('govuk-back-link');
     expect(backButton[0].innerHTML).toContain('Back');
   });
