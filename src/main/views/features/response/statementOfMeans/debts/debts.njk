@@ -22,6 +22,7 @@
         text:t(form.errorFor('debtsItems'))
       }) }}
     {% endif %}
+    {% set formErrors = form.getAllErrors() %}
 
     <div class="govuk-form-group {% if form.errorFor('debtsItems') %} govuk-form-group--error  {% endif %}">
       <div class="govuk-grid-row">
@@ -37,47 +38,57 @@
         </div>
       </div>
       {% for debtsItem in form.model.debtsItems %}
-        {% set debtsErrors = form.errorFor('debtsItems['+loop.index0+']') %}
+        {% set debtsErrors = formErrors %}
+        {% set index = loop.index0 %}
       <div class="multiple-row">
-        <div class="govuk-grid-row govuk-!-padding-top-3 {% if debtsErrors %} govuk-form-group--error{% endif %} ">
-          {% for error in debtsErrors %}
-            {{ govukErrorMessage({
-              text:t(error.text)
-            }) }}
-          {% endfor %}
+        <div class="govuk-grid-row govuk-!-padding-top-3 {% if debtsErrors.length>0 %} govuk-form-group--error{% endif %} ">
+          {% if formErrors %}
+            {% for error in formErrors %}
+              {% if index in error.fieldName %}
+                {{ govukErrorMessage({
+                  text: t(error.text)
+                })| indent(2) | trim }}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {% set debt = 'debtsItems['+index+'][debt]' %}
+          {% set totalOwned = 'debtsItems['+index+'][totalOwned]' %}
+          {% set monthlyPayments = 'debtsItems['+index+'][monthlyPayments]' %}
+          {% set label = 'debtsItems[' + index + ']' %}
+
           <div class="govuk-grid-column-one-half ">
             {{ govukInput({
-              id: "debtsItems["+loop.index0+"][debt]",
-              name: "debtsItems["+loop.index0+"][debt]",
+              id: debt,
+              name: debt,
               value: debtsItem.debt,
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-select--error" if form.errorFor('debtsItems['+loop.index0+'][debt]') else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-select--error" if form.errorFor(debt) else "govuk-grid-column-full"
             }) }}
           </div>
           <div class="govuk-grid-column-one-quarter">
             {{ govukInput({
-              id: "debtsItems["+loop.index0+"][totalOwned]",
-              name: "debtsItems["+loop.index0+"][totalOwned]",
+              id: totalOwned,
+              name: totalOwned,
               value: debtsItem.totalOwned,
               type: "number",
               prefix: {
                 text: "£"
               },
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-input--error" if form.errorFor('debtsItems['+loop.index0+'][totalOwned]') else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(totalOwned) else "govuk-grid-column-full"
             }) }}
           </div>
           <div class="govuk-grid-column-one-quarter">
             {{ govukInput({
-              id: "debtsItems["+loop.index0+"][monthlyPayments]",
-              name: "debtsItems["+loop.index0+"][monthlyPayments]",
+              id: monthlyPayments,
+              name: monthlyPayments,
               value: debtsItem.monthlyPayments,
               type: "number",
               prefix: {
                 text: "£"
               },
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-input--error" if form.errorFor('debtsItems['+loop.index0+'][monthlyPayments]') else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(monthlyPayments) else "govuk-grid-column-full"
             }) }}
           </div>
         </div>
