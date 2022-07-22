@@ -16,10 +16,10 @@
       {% set title = t("Do you claim Carer’s Allowance or Carer’s Credit?") %}
       {% set id = "option" %}
       {% set name = "option" %}
-      {% set errors = form.getErrors() %}
+      {% set errors = form.getAllErrors() %}
       {% if form.hasErrors() %}
         {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
+          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
           "errorList": errors
         }) }}
       {% endif %}

@@ -5,12 +5,11 @@ import {
 } from '../../../../../common/form/validationErrors/errorMessageConstants';
 import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debts/debtItems';
 import {YesNo} from '../../../../../common/form/models/yesNo';
-import {Form} from '../../../../../common/form/models/form';
 import {AtLeastOnePopulatedRow} from '../../../../../common/form/validators/atLeastOnePopulatedRow';
 
 export const INIT_ROW_COUNT = 2;
 
-export class Debts extends Form {
+export class Debts{
   @IsDefined({message: VALID_YES_NO_OPTION})
     option?: string;
 
@@ -20,7 +19,6 @@ export class Debts extends Form {
     debtsItems?: DebtItems[] ;
 
   constructor(option?: string, debtsItems?: DebtItems[]) {
-    super();
     this.option = option;
     this.debtsItems = debtsItems || this.getInitialRows();
   }
