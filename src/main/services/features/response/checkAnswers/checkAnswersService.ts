@@ -36,7 +36,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       responseType === ResponseType.FULL_DEFENCE || responseType === ResponseType.PART_ADMISSION ? buildYourResponseDetailsSection(claim, claimId, lang) : null,
       responseType === ResponseType.PART_ADMISSION && alreadyPaidPartAdmit === YesNo.NO && paidResponse !== PaymentOptionType.IMMEDIATELY ? buildYourFinancialSection(claim, claimId, lang) : null,
       responseType === ResponseType.FULL_ADMISSION || (responseType === ResponseType.PART_ADMISSION && alreadyPaidPartAdmit === YesNo.NO) ? buildYourResponsePaymentSection(claim, claimId, lang) : null,
-      responseType === ResponseType.FULL_DEFENCE || responseType === ResponseType.PART_ADMISSION && paidResponse ? buildFreeTelephoneMediationSection(claim, claimId, lang) : null,
+      responseType === ResponseType.FULL_DEFENCE || (responseType === ResponseType.PART_ADMISSION && paidResponse) ? buildFreeTelephoneMediationSection(claim, claimId, lang) : null,
     ],
   };
 };
