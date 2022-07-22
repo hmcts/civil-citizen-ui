@@ -22,16 +22,16 @@ const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSW
 const getPaymentOption = (claim: Claim, paymentOption: string, paymentDate: Date, lang: string | unknown): string => {
   const option = t(`COMMON.PAYMENT_OPTION.${paymentOption}`, { lng: getLng(lang) });
   const getFormatDate = (option:string) => option + ': ' + formatDateToFullDate(paymentDate);
-  if (ResponseType.FULL_ADMISSION && claim.isPaymentOptionBySetDate()) {
+  if (claim.isFullAdmission() && claim.isPaymentOptionBySetDate()) {
     return getFormatDate(option);
-  } else if (ResponseType.PART_ADMISSION && claim.isPartialAdmissionPaymentOptionBySetDate()) {
+  } else if (claim.isPartialAdmission() && claim.isPartialAdmissionPaymentOptionBySetDate()) {
     return getFormatDate(option);
   }
   return option;
 };
 
 const getResponseTitle = (claim: Claim, lang: string | unknown): string => {
-  if (ResponseType.FULL_ADMISSION && claim.isPaymentOptionPayImmediately()) {
+  if (claim.isFullAdmission() && claim.isPaymentOptionPayImmediately()) {
     return t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: getLng(lang)});
   }
   return t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE', {lng: getLng(lang)});
@@ -82,10 +82,10 @@ export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, l
       break;
     case PaymentOptionType.INSTALMENTS: {
       responseSection.summaryList.rows.push(...[
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', { lng: getLng(lang) }), getPaymentOption(claim, paymentOption, paymentDate, lang), paymentOptionHref, changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', { lng: getLng(lang) }), `${currencyFormatWithNoTrailingZeros(claim.repaymentPlan?.paymentAmount)}`, repaymentPlanHref, changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', { lng: getLng(lang) }), t(`COMMON.PAYMENT_FREQUENCY.${claim.repaymentPlan?.repaymentFrequency}`, { lng: getLng(lang) }), repaymentPlanHref, changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT', { lng: getLng(lang) }), formatDateToFullDate(claim.repaymentPlan?.firstRepaymentDate), repaymentPlanHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), getPaymentOption(claim, paymentOption, paymentDate, lang), paymentOptionHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng: getLng(lang)}), `${currencyFormatWithNoTrailingZeros(claim.repaymentPlan?.paymentAmount)}`, repaymentPlanHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_FREQUENCY.${claim.repaymentPlan?.repaymentFrequency}`, {lng: getLng(lang)}), repaymentPlanHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT', {lng: getLng(lang)}), formatDateToFullDate(claim.repaymentPlan?.firstRepaymentDate), repaymentPlanHref, changeLabel(lang)),
         buildExplanationRow(claim, claimId, lang),
       ]);
     }

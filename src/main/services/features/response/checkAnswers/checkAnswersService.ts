@@ -24,9 +24,8 @@ const logger = Logger.getLogger('checkAnswersService');
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
   const responseType: string = claim.respondent1?.responseType;
   const paymentOption: string = claim.paymentOption;
-  const paymentOptionPartAdmit: string = claim.partialAdmission?.paymentIntention?.paymentOption;
   const alreadyPaidPartAdmit: string = claim.partialAdmission?.alreadyPaid?.option;
-  const paidResponse = claim.partialAdmission?.paymentIntention?.paymentOption;
+  const paidResponse: string = claim.partialAdmission?.paymentIntention?.paymentOption;
 
   return {
     sections: [
@@ -35,7 +34,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourFinancialSection(claim, claimId, lang) : null,
       responseType === ResponseType.PART_ADMISSION ? buildYourResponseToClaimSection(claim, claimId, lang) : null,
       responseType === ResponseType.FULL_DEFENCE || responseType === ResponseType.PART_ADMISSION ? buildYourResponseDetailsSection(claim, claimId, lang) : null,
-      responseType === ResponseType.PART_ADMISSION && alreadyPaidPartAdmit === YesNo.NO && paymentOptionPartAdmit !== PaymentOptionType.IMMEDIATELY ? buildYourFinancialSection(claim, claimId, lang) : null,
+      responseType === ResponseType.PART_ADMISSION && alreadyPaidPartAdmit === YesNo.NO && paidResponse !== PaymentOptionType.IMMEDIATELY ? buildYourFinancialSection(claim, claimId, lang) : null,
       responseType === ResponseType.FULL_ADMISSION || (responseType === ResponseType.PART_ADMISSION && alreadyPaidPartAdmit === YesNo.NO) ? buildYourResponsePaymentSection(claim, claimId, lang) : null,
       responseType === ResponseType.FULL_DEFENCE || responseType === ResponseType.PART_ADMISSION && paidResponse ? buildFreeTelephoneMediationSection(claim, claimId, lang) : null,
     ],

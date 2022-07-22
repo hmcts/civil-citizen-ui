@@ -621,7 +621,7 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
 
 export const createClaimWithFullRejection = (option: RejectAllOfClaimType): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  if (claim.respondent1) {
+  if(claim.respondent1) {
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
   }
   claim.rejectAllOfClaim = {
@@ -665,7 +665,7 @@ export const createClaimWithPaymentOption = (responseType:ResponseType, paymentO
   claim.partialAdmission.paymentIntention = new PaymentIntention();
   claim.partialAdmission.paymentIntention.paymentOption = paymentOption;
 
-  if (responseType === ResponseType.PART_ADMISSION && paymentOption === PaymentOptionType.BY_SET_DATE) {
+  if(responseType === ResponseType.PART_ADMISSION && paymentOption === PaymentOptionType.BY_SET_DATE) {
     claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now() + (3600 * 1000 * 24));
   }
 
