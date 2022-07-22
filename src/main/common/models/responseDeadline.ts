@@ -1,5 +1,5 @@
 import {ResponseOptions} from '../../common/form/models/responseDeadline';
-import {AdditionalTimeOptions} from '../form/models/additionalTime';
+import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
 
 export interface ResponseDeadline {
   option?: ResponseOptions,

@@ -9,7 +9,7 @@ export class AdditionalTime {
   @IsDefined({message: 'ERRORS.SELECT_ADDITIONAL_TIME'})
     option?: AdditionalTimeOptions;
 
-  constructor(responseOption?: AdditionalTimeOptions) {
-    this.option = responseOption;
+  constructor(additionalTimeOption?: AdditionalTimeOptions) {
+    this.option = additionalTimeOption;
   }
 }
