@@ -25,9 +25,11 @@ const getViewpathWithType = (type: CounterpartyType) => {
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
-function renderPageWithError(res: express.Response, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, errorList: Form, req: express.Request, respondent: Respondent, contactPerson: string, postToThisAddress: string): void {
+function renderPageWithError(res: express.Response, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, errorList: Form, req: express.Request, respondent: Respondent): void {
   const partyName = respondent?.partyName;
   const type = respondent?.type;
+  const contactPerson = respondent?.contactPerson;
+  const postToThisAddress = respondent?.postToThisAddress;
   const viewPath = getViewpathWithType(type);
   res.render(viewPath, {
     citizenFullName: citizenFullName,
@@ -131,9 +133,9 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
     }
     if ((citizenAddress?.errors?.length > 0)
       || (citizenCorrespondenceAddress?.errors?.length > 0)) {
-      renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req, responseDataRedis, contactPerson, postToThisAddress);
+      renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req, responseDataRedis);
     } else {
-      await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, contactPerson, postToThisAddress);
+      await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, postToThisAddress, contactPerson);
       redirect(responseDataRedis, req, res);
     }
   } catch (error) {

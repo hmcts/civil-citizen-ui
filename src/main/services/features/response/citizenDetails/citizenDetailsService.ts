@@ -15,7 +15,7 @@ export const getRespondentInformation = async (claimId: string): Promise<Respond
   return new Respondent();
 };
 
-export const saveRespondent = async (claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, contactPerson = '', postToThisAddress: string): Promise<void> => {
+export const saveRespondent = async (claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: string, contactPerson = ''): Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId) || new Claim();
   if (!responseData.respondent1) {
     responseData.respondent1 = new Respondent();

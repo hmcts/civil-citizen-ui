@@ -69,7 +69,7 @@ describe('Citizen details service', () => {
       });
 
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), '', YesNo.NO);
+      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, '');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, resultClaim);
@@ -85,7 +85,7 @@ describe('Citizen details service', () => {
         return mockClaim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), '', YesNo.NO);
+      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, '');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, mockClaim);
@@ -103,7 +103,7 @@ describe('Citizen details service', () => {
         return undefined;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), '', YesNo.NO);
+      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, '');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -127,7 +127,7 @@ describe('Citizen details service', () => {
         return mockClaim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new CitizenCorrespondenceAddress(), '', YesNo.NO);
+      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new CitizenCorrespondenceAddress(), YesNo.NO, '');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -148,7 +148,7 @@ describe('Citizen details service', () => {
         return claim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), '', YesNo.NO);
+      await saveRespondent(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, '');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -168,7 +168,7 @@ describe('Citizen details service', () => {
         return claim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new CitizenCorrespondenceAddress(), '', YesNo.NO);
+      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new CitizenCorrespondenceAddress(), YesNo.NO, '');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
