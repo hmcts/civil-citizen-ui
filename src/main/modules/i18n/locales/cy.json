@@ -267,6 +267,10 @@
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED": "Sut wnaethoch chi dalu'r swm a hawliwyd?",
       "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Pam ydych chi'n anghytuno â'r swm a hawlir?",
       "RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE": "Faint o arian ydych chi'n cyfaddef bod arnoch chi?",
+      "RESPONSE_DO_YOU_OWE_THE_MONEY_CLAIMED": "A oes arnoch chi'r arian a hawlir?",
+      "RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID": "Faint ydych chi wedi'i dalu?",
+      "RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT": "Sut wnaethoch chi dalu'r swm hwn?",
+      "RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM": "Pam ydych chi'n gwrthod yr holl honiad hwn?",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Nifer y bobl",
@@ -365,6 +369,11 @@
       "PART_ADMISSION_HINT": "Rydych yn cytuno bod rhywfaint o arian yn ddyledus gennych ond nid y swm llawn a hawlir.",
       "PAY_IMMEDIATELY": "Talu ar unwaith",
       "REJECT_ALL": "Gwrthod yr hawliad i gyd",
+      "REJECT_ALL_CLAIM_TYPE": {
+        "ALREADY_PAID": "Rwyf wedi talu'r hyn sy'n ddyledus gen i",
+        "COUNTER_CLAIM": "Rwy’n anghytuno â’r hawliad ac rwyf am wneud gwrth-hawliad",
+        "DISPUTE": "Rwy'n anghytuno â'r holl hawliad"
+      },
       "REJECT_DEADLINE": "Mae gennych tan 4pm ar {{ deadline }} i wrthod yr hawliad cyfan.",
       "REJECT_PAID": "Os ydych yn gwrthod oherwydd eich bod yn credu eich bod wedi talu'r arian, mae gan yr hawlydd 28 i ddweud wrthych chi a'r llys p'un a yw'n bwrw ymlaen â'r hawliad.",
       "REJECT_WHOLE_CLAIM": "Os ydych yn gwrthod yr hawliad cyfan, gall yr hawliad gael ei drosglwyddo i ganolfan wrandawiadau Llys Sirol.",
@@ -441,6 +450,8 @@
       "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
     },
     "DASHBOARD": {
+      "DRAFT_CLAIM_NEXT_STEPS": "Parhau gyda'r hawliad",
+      "DRAFT_CLAIM_NUMBER": "Hawliad drafft",
       "PAGE_TITLE": "Claims made by or against you",
       "CLAIMANT_TITLE": "Claims made by you",
       "DEFENDANT_TITLE": "Smialc edam tsniaga uoy",
@@ -645,6 +656,23 @@
     "REPAYMENT_PLAN": {
       "PAGE_TITLE": "Your repayment plan"
     },
+    "REQUEST_MORE_TIME": {
+      "APPLY_TO_COURT": "You need to apply to the court to request more time.",
+      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
+      "DOWNLOAD_FORM": "Download form N244 (opens in new tab)",
+      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
+      "HOW_MUCH_ADDITIONAL_TIME": "How much additional time are you asking for?",
+      "IF_AGREED": "If agreed, extra time will start from {{ responseDeadline }}",
+      "MORE_THAN_28_DAYS": "More than 28 days",
+      "NO_AGREEMENT": "They do not have to agree to a request for more time.",
+      "PAGE_TITLE": "Request more time",
+      "POST": "Or, you can post the completed form to:",
+      "SELECT_SAVE_AND_CONTACT": "Select 'Save and continue' and contact {{ claimantName }}'s legal representative to request this.",
+      "SELECT_SAVE_AND_CONTINUE": "and select 'Save and continue'.",
+      "TELL_OTHER_PARTY": "You'll also need to tell the other party that you have applied to the court.",
+      "TITLE": "Request more time to respond",
+      "UP_TO_28_DAYS": "Up to 28 days"
+    },
     "RESIDENCE": {
       "ASSOCIATION_HOME": "Cartref cymdeithas dai neu'r cyngor",
       "OWN_HOME": "Cartref rydych yn berchen arno (neu'n talu morgais arno)",
@@ -778,6 +806,7 @@
     "QUESTION_1_REQUIRED": "1. Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
     "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
+    "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
       "COUNCIL_TAX": "Nodwch faint o Dreth y Cyngor neu Dâl Cymunedol ydych chi'n ei dalu",

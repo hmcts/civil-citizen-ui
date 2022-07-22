@@ -9,25 +9,26 @@ import {Claim} from '../../../../../main/common/models/claim';
 import {PartialAdmission} from '../../../../../main/common/models/partialAdmission';
 import {Respondent} from '../../../../../main/common/models/respondent';
 import {constructResponseUrlWithIdParams} from '../../../../../main/common/utils/urlFormatter';
-import { 
-  buildResolvingTheClaimSection, 
-  buildRespondToClaimSection, 
+import {
+  buildResolvingTheClaimSection,
+  buildRespondToClaimSection,
   buildYourHearingRequirementsSection,
 } from '../../../../../main/common/utils/taskList/taskListBuilder';
-import { 
-  CITIZEN_RESPONSE_TYPE_URL,
-  CITIZEN_WHY_DO_YOU_DISAGREE_URL,
-  CITIZEN_REPAYMENT_PLAN,
-  FINANCIAL_DETAILS_URL,
-  CITIZEN_PAYMENT_OPTION_URL,
+import {
   CITIZEN_AMOUNT_YOU_PAID_URL,
-  CITIZEN_OWED_AMOUNT_URL,
-  CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
-  SUPPORT_REQUIRED_URL,
-  CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
-  CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
   CITIZEN_FR_AMOUNT_YOU_PAID_URL,
+  CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
+  CITIZEN_OWED_AMOUNT_URL,
+  CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
+  CITIZEN_PAYMENT_OPTION_URL,
+  CITIZEN_REPAYMENT_PLAN_FULL_URL,
+  CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
+  CITIZEN_RESPONSE_TYPE_URL,
+  CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
+  CITIZEN_WHY_DO_YOU_DISAGREE_URL,
+  FINANCIAL_DETAILS_URL,
   RESPONSE_YOUR_DEFENCE_URL,
+  SUPPORT_REQUIRED_URL,
 } from '../../../../../main/routes/urls';
 import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
 import RejectAllOfClaimType from '../../../../../main/common/form/models/rejectAllOfClaimType';
@@ -39,7 +40,8 @@ describe('Task List Builder', () => {
   const chooseAResponseUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
   const whyDisagreeWithAmountClaimedUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_URL);
   const whyDisagreeWithAmountClaimedFullDefenceUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL);
-  const repaymentPlanUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN);
+  const repaymentFAPlanUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_FULL_URL);
+  const repaymentPAPlanUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_PARTIAL_URL);
   const shareFinancialDetailsUrl = constructResponseUrlWithIdParams(claimId, FINANCIAL_DETAILS_URL);
   const decideHowYouPayUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_OPTION_URL);
   const howMuchHaveYouPaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
@@ -47,6 +49,7 @@ describe('Task List Builder', () => {
   const freeTelephoneMediationUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
   const giveUsDetailsHearingUrl = constructResponseUrlWithIdParams(claimId, SUPPORT_REQUIRED_URL);
   const whenWillYouPayUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL);
+
   const tellUsHowMuchYouHavePaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FR_AMOUNT_YOU_PAID_URL);
   const tellUsWhyDisagreeWithClaimUrl = constructResponseUrlWithIdParams(claimId, RESPONSE_YOUR_DEFENCE_URL);
 
@@ -89,7 +92,7 @@ describe('Task List Builder', () => {
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(decideHowYouPayUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(shareFinancialDetailsUrl);
-        expect(respondToClaimSection.tasks[3].url).toEqual(repaymentPlanUrl);
+        expect(respondToClaimSection.tasks[3].url).toEqual(repaymentFAPlanUrl);
       });
     });
 
@@ -144,7 +147,7 @@ describe('Task List Builder', () => {
         expect(respondToClaimSection.tasks[1].url).toEqual(shareFinancialDetailsUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(whyDisagreeWithAmountClaimedUrl);
       });
-      it('should have chooseAResponseTask, shareFinancialDetailsTask, repaymentPlanTaskand whyDisagreeWithAmountClaimedTask', () => {
+      it('should have chooseAResponseTask, shareFinancialDetailsTask, repaymentPlanTask and whyDisagreeWithAmountClaimedTask', () => {
         const claim = new Claim();
         claim.respondent1 = new Respondent();
         claim.respondent1.responseType = ResponseType.PART_ADMISSION;
@@ -157,7 +160,7 @@ describe('Task List Builder', () => {
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(shareFinancialDetailsUrl);
         expect(respondToClaimSection.tasks[2].url).toEqual(whyDisagreeWithAmountClaimedUrl);
-        expect(respondToClaimSection.tasks[3].url).toEqual(repaymentPlanUrl);
+        expect(respondToClaimSection.tasks[3].url).toEqual(repaymentPAPlanUrl);
       });
     });
 
@@ -165,7 +168,7 @@ describe('Task List Builder', () => {
       const claim = new Claim();
       claim.respondent1 = new Respondent();
       claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
-      
+
       it('should have tellUsHowMuchYouHavePaidTask', () => {
         claim.rejectAllOfClaim = new RejectAllOfClaim();
         claim.rejectAllOfClaim.option = RejectAllOfClaimType.ALREADY_PAID;

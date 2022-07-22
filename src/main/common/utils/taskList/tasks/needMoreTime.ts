@@ -6,6 +6,7 @@ import {getLng} from '../../../../common/utils/languageToggleUtils';
 import {UNDERSTANDING_RESPONSE_OPTIONS_URL} from '../../../../routes/urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {ResponseOptions} from '../../../../common/form/models/responseDeadline';
+import {AdditionalTimeOptions} from '../../../../common/form/models/additionalTime';
 
 export const getNeedMoreTimeTask = (claim: Claim, claimId: string, language: string): Task => {
   const needMoreTimeTask = {
@@ -14,7 +15,9 @@ export const getNeedMoreTimeTask = (claim: Claim, claimId: string, language: str
     status: TaskStatus.INCOMPLETE,
   };
 
-  if (claim?.responseDeadline?.option === ResponseOptions.NO || claim?.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED) {
+  if (claim?.responseDeadline?.option === ResponseOptions.NO
+    || claim?.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED
+    || claim?.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS) {
     needMoreTimeTask.status = TaskStatus.COMPLETE;
   }
 
