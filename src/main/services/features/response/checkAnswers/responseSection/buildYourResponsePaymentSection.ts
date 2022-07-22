@@ -73,12 +73,12 @@ export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, l
   switch (paymentOption) {
     case PaymentOptionType.IMMEDIATELY:
       claim.respondent1?.responseType === ResponseType.FULL_ADMISSION ?
-        responseSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', { lng: getLng(lang) }), t(`COMMON.RESPONSE_TYPE.${claim.respondent1?.responseType}`, { lng: getLng(lang) }), yourResponseHref, changeLabel(lang)))
+        responseSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', {lng: getLng(lang)}), t(`COMMON.RESPONSE_TYPE.${claim.respondent1?.responseType}`, {lng: getLng(lang)}), yourResponseHref, changeLabel(lang)))
         : null;
-      responseSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', { lng: getLng(lang) }), getPaymentOption(claim, paymentOption, paymentDate, lang), paymentOptionHref, changeLabel(lang)));
+      responseSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), getPaymentOption(claim, paymentOption, paymentDate, lang), paymentOptionHref, changeLabel(lang)));
       break;
     case PaymentOptionType.BY_SET_DATE:
-      responseSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', { lng: getLng(lang) }), getPaymentOption(claim, paymentOption, paymentDate, lang), paymentOptionHref, changeLabel(lang)), buildExplanationRow(claim, claimId, lang)]);
+      responseSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), getPaymentOption(claim, paymentOption, paymentDate, lang), paymentOptionHref, changeLabel(lang)), buildExplanationRow(claim, claimId, lang)]);
       break;
     case PaymentOptionType.INSTALMENTS: {
       responseSection.summaryList.rows.push(...[

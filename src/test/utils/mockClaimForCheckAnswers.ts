@@ -644,6 +644,8 @@ export const createClaimWithFullRejection = (option: RejectAllOfClaimType): Clai
 
 export const createClaimWithPaymentOption = (responseType:ResponseType, paymentOption: PaymentOptionType): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
+  const getDate = () => Date.now() + (3600 * 1000 * 24);
+
   if(claim.respondent1) {
     claim.respondent1.responseType = responseType;
   }
@@ -651,10 +653,10 @@ export const createClaimWithPaymentOption = (responseType:ResponseType, paymentO
   claim.repaymentPlan = {
     paymentAmount: 33,
     repaymentFrequency: TransactionSchedule.WEEK,
-    firstRepaymentDate: new Date(Date.now() + (3600 * 1000 * 24)),
+    firstRepaymentDate: new Date(getDate()),
   };
 
-  claim.paymentDate = new Date(Date.now() + (3600 * 1000 * 24));
+  claim.paymentDate = new Date(getDate());
   claim.statementOfMeans = {
     explanation: {
       text: 'Reasons cannot pay immediately',
@@ -666,7 +668,7 @@ export const createClaimWithPaymentOption = (responseType:ResponseType, paymentO
   claim.partialAdmission.paymentIntention.paymentOption = paymentOption;
 
   if(responseType === ResponseType.PART_ADMISSION && paymentOption === PaymentOptionType.BY_SET_DATE) {
-    claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now() + (3600 * 1000 * 24));
+    claim.partialAdmission.paymentIntention.paymentDate = new Date(getDate());
   }
 
   claim.partialAdmission.alreadyPaid = new AlreadyPaid(YesNo.NO);
