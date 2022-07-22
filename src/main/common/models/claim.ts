@@ -115,6 +115,10 @@ export class Claim {
     return this.paymentOption === PaymentOptionType.IMMEDIATELY;
   }
 
+  isPartialAdmissionPaymentOptionBySetDate(): boolean {
+    return this.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
+  }
+
   isInterestClaimUntilSubmitDate(): boolean {
     return this.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
   }
@@ -172,7 +176,7 @@ export class Claim {
   isFullDefence(): boolean {
     return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
   }
-  
+
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }

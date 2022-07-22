@@ -81,11 +81,11 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
         }
       }
 
-      if (caseData.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE && caseData.partialAdmission?.paymentIntention?.paymentDate) {
+      if (caseData.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE && caseData.partialAdmission?.paymentIntention?.paymentDate && caseData.partialAdmission?.alreadyPaid?.option === YesNo.NO) {
         tasks.push(shareFinancialDetailsTask);
       }
 
-      if (caseData.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS) {
+      if (caseData.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS && caseData.partialAdmission?.alreadyPaid?.option === YesNo.NO) {
         tasks.push(shareFinancialDetailsTask);
         tasks.push(repaymentPlanTask);
       }

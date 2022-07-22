@@ -96,6 +96,11 @@ export const createClaimWithRespondentDetailsWithPaymentOption = (paymentOption:
     firstRepaymentDate: new Date('2022-06-25'),
   };
   claim.paymentDate = new Date('2022-06-25');
+  claim.statementOfMeans = {
+    explanation: {
+      text: 'Reasons cannot pay immediately',
+    },
+  };
   return claim;
 };
 
@@ -614,9 +619,9 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   return claim as Claim;
 };
 
-export const createClaimWithFullRejection = (option:RejectAllOfClaimType): Claim => {
+export const createClaimWithFullRejection = (option: RejectAllOfClaimType): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  if(claim.respondent1) {
+  if (claim.respondent1) {
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
   }
   claim.rejectAllOfClaim = {
@@ -634,5 +639,42 @@ export const createClaimWithFullRejection = (option:RejectAllOfClaimType): Claim
     },
   };
   claim.paymentOption = undefined;
+  return claim;
+}
+
+export const createClaimWithPaymentOption = (responseType:ResponseType, paymentOption: PaymentOptionType): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  if(claim.respondent1) {
+    claim.respondent1.responseType = responseType;
+  }
+  claim.paymentOption = paymentOption;
+  claim.repaymentPlan = {
+    paymentAmount: 33,
+    repaymentFrequency: TransactionSchedule.WEEK,
+    firstRepaymentDate: new Date(Date.now() + (3600 * 1000 * 24)),
+  };
+
+  claim.paymentDate = new Date(Date.now() + (3600 * 1000 * 24));
+  claim.statementOfMeans = {
+    explanation: {
+      text: 'Reasons cannot pay immediately',
+    },
+  };
+
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = paymentOption;
+
+  if (responseType === ResponseType.PART_ADMISSION && paymentOption === PaymentOptionType.BY_SET_DATE) {
+    claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now() + (3600 * 1000 * 24));
+  }
+
+  claim.partialAdmission.alreadyPaid = new AlreadyPaid(YesNo.NO);
+
+  claim.mediation = new Mediation({option:YesNo.YES, mediationPhoneNumber: '123456'},
+    new FreeMediation(YesNo.YES),
+    new NoMediationReason('notWant', 'no'),
+    new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
+
   return claim;
 };
