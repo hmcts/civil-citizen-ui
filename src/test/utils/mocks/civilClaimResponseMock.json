@@ -201,6 +201,9 @@
           "createdDatetime": "2022-06-21T14:15:19"
         }
       }
-    ]
+    ],
+    "responseDeadline": {
+      "agreedResponseDeadline": "2025-06-01T00:00:00.000Z"
+    }
   }
 }
