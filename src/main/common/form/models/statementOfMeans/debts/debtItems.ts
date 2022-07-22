@@ -1,22 +1,20 @@
 import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
-import {
-  ENTER_A_DEBT, VALID_STRICTLY_POSITIVE_NUMBER,
-} from '../../../../form/validationErrors/errorMessageConstants';
+
 import {CurrencyValidator} from '../../../../../common/form/validators/currencyValidator';
 
 export class DebtItems{
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({message: ENTER_A_DEBT})
+  @IsNotEmpty({message: 'ERRORS.ENTER_A_DEBT'})
     debt: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({message: VALID_STRICTLY_POSITIVE_NUMBER})
+  @IsNotEmpty({message: 'ERRORS.VALID_STRICTLY_POSITIVE_NUMBER'})
   @Validate(CurrencyValidator)
     totalOwned: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({message: VALID_STRICTLY_POSITIVE_NUMBER})
+  @IsNotEmpty({message: 'ERRORS.VALID_STRICTLY_POSITIVE_NUMBER'})
   @Validate(CurrencyValidator)
     monthlyPayments: string;
 

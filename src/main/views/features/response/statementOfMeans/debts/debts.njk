@@ -2,7 +2,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
@@ -11,6 +10,7 @@
 {% from "../../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.DEBTS.PAGE_TITLE') }}
@@ -112,10 +112,7 @@
       {% set errors = form.getAllErrors() %}
 
       {% if form.hasErrors() %}
-        {{ govukErrorSummary({
-          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
-          "errorList": errors
-        }) }}
+        {{ errorSummary(errors,t) }}
       {% endif %}
 
       <div class="govuk-grid-row">

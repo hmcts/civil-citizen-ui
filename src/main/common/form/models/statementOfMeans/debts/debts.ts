@@ -1,8 +1,4 @@
 import {IsDefined, ValidateIf, ValidateNested} from 'class-validator';
-import {
-  ENTER_AT_LEAST_ONE_DEBT,
-  VALID_YES_NO_OPTION,
-} from '../../../../../common/form/validationErrors/errorMessageConstants';
 import {DebtItems} from '../../../../../common/form/models/statementOfMeans/debts/debtItems';
 import {YesNo} from '../../../../../common/form/models/yesNo';
 import {AtLeastOnePopulatedRow} from '../../../../../common/form/validators/atLeastOnePopulatedRow';
@@ -10,11 +6,11 @@ import {AtLeastOnePopulatedRow} from '../../../../../common/form/validators/atLe
 export const INIT_ROW_COUNT = 2;
 
 export class Debts{
-  @IsDefined({message: VALID_YES_NO_OPTION})
+  @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
     option?: string;
 
   @ValidateIf((o: Debts) => o.option === YesNo.YES)
-  @AtLeastOnePopulatedRow({message: ENTER_AT_LEAST_ONE_DEBT})
+  @AtLeastOnePopulatedRow({message: 'ERRORS.ENTER_AT_LEAST_ONE_DEBT'})
   @ValidateNested({ each: true })
     debtsItems?: DebtItems[] ;
 

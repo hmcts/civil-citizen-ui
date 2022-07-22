@@ -18,8 +18,6 @@ import {
 import {Claim} from '../../../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
 import {
-  ENTER_A_DEBT,
-  ENTER_AT_LEAST_ONE_DEBT,
   REDIS_FAILURE,
   VALID_STRICTLY_POSITIVE_NUMBER,
   VALID_TWO_DECIMAL_NUMBER,
@@ -69,8 +67,7 @@ describe('Debts', () => {
   describe('on GET', () => {
     test('should open the debts page when in redis has no data ', async () => {
       mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        return claim;
+        return new Claim();
       });
       await request(app)
         .get(CITIZEN_DEBTS_URL)
@@ -82,8 +79,7 @@ describe('Debts', () => {
     test('should open the debts page when in redis has data with option yes', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        const statementOfMeans = new StatementOfMeans();
-        claim.statementOfMeans = statementOfMeans;
+        claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormYes();
         return claim;
       });
@@ -97,8 +93,7 @@ describe('Debts', () => {
     test('should open the debts page when in redis has data with option no', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        const statementOfMeans = new StatementOfMeans();
-        claim.statementOfMeans = statementOfMeans;
+        claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormNo();
         return claim;
       });
@@ -127,7 +122,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithoutItems())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(ENTER_AT_LEAST_ONE_DEBT);
+          expect(res.text).toMatch('ERRORS.ENTER_AT_LEAST_ONE_DEBT');
         });
     });
     test('should validate when has option is yes but debt is empty ', async () => {
@@ -136,7 +131,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithDebtEmpty())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(ENTER_A_DEBT);
+          expect(res.text).toMatch('ERRORS.ENTER_A_DEBT');
         });
     });
     test('should validate when has option is yes but Total owned is invalid ', async () => {
