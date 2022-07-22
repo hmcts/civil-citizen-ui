@@ -18,12 +18,14 @@ describe('When will you pay Task', () => {
     status: TaskStatus.INCOMPLETE,
   };
 
+  const resultComplete = { ...resultIncomplete, status: TaskStatus.COMPLETE };
+
   describe('getGiveUsDetailsHearingTask', () => {
 
     it('should return incomplete task', () => {
       const claim = new Claim();
       const giveUsDetailsHearingTask = getGiveUsDetailsHearingTask(claim, claimId, lang);
-      expect(giveUsDetailsHearingTask).toEqual(resultIncomplete);
+      expect(giveUsDetailsHearingTask).toEqual(resultComplete);
     });
 
   });
