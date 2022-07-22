@@ -81,6 +81,7 @@ import documentDownloadController from './features/document/documentDownloadCont
 import responseDeadlineOptionsController from './features/response/responseDeadlineOptionsController';
 import understandingYourOptionsController from './features/response/understandingYourOptionsController';
 import requestMoreTimeController from './features/response/requestMoreTimeController';
+import agreedResponseDeadlineController from './features/response/responseDeadline/agreedResponseDeadlineController';
 
 export default [
   homeController,
@@ -156,4 +157,5 @@ export default [
   repaymentPlanPartialController,
   responseDeadlineOptionsController,
   requestMoreTimeController,
+  agreedResponseDeadlineController,
 ];
