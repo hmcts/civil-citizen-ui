@@ -61,7 +61,7 @@ export class CivilServiceClient {
       const response = await this.client.get('/cases/claimant/' + submitterId, config);
       return plainToInstance(DashboardClaimantItem, response.data as object[]);
     } catch (err) {
-      console.log(err);
+      logger.log(err);
     }
   }
 
@@ -73,7 +73,7 @@ export class CivilServiceClient {
       console.log(response.data);
       return plainToInstance(DashboardDefendantItem, response.data as object[]);
     }catch(err){
-      console.log(err);
+      logger.log(err);
     }
   }
 
@@ -99,7 +99,7 @@ export class CivilServiceClient {
       if (!response.data) {
         throw new AssertionError({message: CLAIM_DETAILS_NOT_AVAILBALE});
       }
-      const caseDetails: CivilClaimResponse = response.data;   
+      const caseDetails: CivilClaimResponse = response.data;
       return convertCaseToClaimAndIncludeState(caseDetails);
     } catch (err: unknown) {
       logger.error(err);
