@@ -80,6 +80,7 @@ import whyDoYouDisagreeFullRejectionController
 import documentDownloadController from './features/document/documentDownloadController';
 import responseDeadlineOptionsController from './features/response/responseDeadlineOptionsController';
 import understandingYourOptionsController from './features/response/understandingYourOptionsController';
+import requestMoreTimeController from './features/response/requestMoreTimeController';
 
 export default [
   homeController,
@@ -154,4 +155,5 @@ export default [
   understandingYourOptionsController,
   repaymentPlanPartialController,
   responseDeadlineOptionsController,
+  requestMoreTimeController,
 ];
