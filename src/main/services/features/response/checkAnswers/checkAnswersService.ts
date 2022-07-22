@@ -27,12 +27,12 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
-      responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourResponseToClaimSection(claim, claimId, lang) : null,
+      responseType === ResponseType.FULL_DEFENCE || responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourResponseToClaimSection(claim, claimId, lang) : null,
       responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourFinancialSection(claim, claimId, lang) : null,
       responseType === ResponseType.PART_ADMISSION ? buildYourResponseToClaimSection(claim, claimId, lang) : null,
-      responseType === ResponseType.PART_ADMISSION ? buildYourResponseDetailsSection(claim, claimId, lang) : null,
+      responseType === ResponseType.FULL_DEFENCE || responseType === ResponseType.PART_ADMISSION ? buildYourResponseDetailsSection(claim, claimId, lang) : null,
       responseType === ResponseType.FULL_ADMISSION ? buildYourResponsePaymentSection(claim, claimId, lang) : null,
-      responseType === ResponseType.PART_ADMISSION && paidResponse ? buildFreeTelephoneMediationSection(claim, claimId, lang) : null,
+      responseType === ResponseType.FULL_DEFENCE || responseType === ResponseType.PART_ADMISSION && paidResponse ? buildFreeTelephoneMediationSection(claim, claimId, lang) : null,
     ],
   };
 };
