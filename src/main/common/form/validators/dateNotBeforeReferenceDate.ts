@@ -5,7 +5,7 @@ import {getNumberOfDaysBetweenTwoDays} from '../../utils/dateUtils';
  * Validates that the input value is not a date before the reference date
  */
 @ValidatorConstraint({name: 'dateNotMoreThanDurationValidator', async: false})
-export class dateNotBeforeReferenceDate implements ValidatorConstraintInterface {
+export class DateNotBeforeReferenceDate implements ValidatorConstraintInterface {
 
   validate(inputDate: Date, validationArguments?: ValidationArguments) {
     const property = validationArguments.constraints[0];
