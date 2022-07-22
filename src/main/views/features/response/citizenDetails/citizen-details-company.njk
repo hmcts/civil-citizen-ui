@@ -1,5 +1,4 @@
 {% extends "claim-details-tpl.njk" %}
-{% set addressTitle = t('PAGES.COMPANY_DETAILS.ORGANISATION_ADDRESS') if type == 'ORGANISATION' else t('PAGES.COMPANY_DETAILS.COMPANY_ADDRESS') %}
 
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
@@ -11,6 +10,9 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
+
+{% set correspondenceAddressClass = 'govuk-visually-hidden' if postToThisAddress == 'no' else '' %}
+{% set addressTitle = t('PAGES.COMPANY_DETAILS.ORGANISATION_ADDRESS') if type == 'ORGANISATION' else t('PAGES.COMPANY_DETAILS.COMPANY_ADDRESS') %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.COMPANY_DETAILS.PAGE_TITLE') }}

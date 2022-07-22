@@ -42,7 +42,7 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
     correspondenceAddressLine1Error: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceAddressLine1') : '',
     correspondenceCityError: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceCity') : '',
     correspondencePostCodeError: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondencePostCode') : '',
-    postToThisAddress: postToThisAddress,
+    postToThisAddress,
     partyName: partyName,
     contactPerson: contactPerson,
     type: type,
@@ -62,7 +62,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
     let citizenAddressModel;
     let citizenCorrespondenceAddressModel;
     const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
-    const postToThisAddress = responseDataRedis.postToThisAddress;
+    const postToThisAddress = responseDataRedis.postToThisAddress ? responseDataRedis.postToThisAddress : YesNo.NO;
     if (!_.isEmpty(responseDataRedis)) {
       citizenAddressModel = new CitizenAddress(
         responseDataRedis.primaryAddress.AddressLine1,
