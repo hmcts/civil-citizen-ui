@@ -28,7 +28,7 @@ const getResponseTitle = (claim: Claim, lang: string | unknown): string => {
 
 const buildExplanationRow = (claim: Claim, claimId: string, lang: string | unknown): SummaryRow => {
   const explanationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_EXPLANATION_URL);
-  return summaryRow(t('PAGES.EXPLANATION.TITLE', {lng: getLng(lang)}), claim.statementOfMeans?.explanation?.text, explanationHref, changeLabel(lang));
+  return summaryRow(t('PAGES.EXPLANATION.TITLE', {lng: getLng(lang)}), claim.statementOfMeans.explanation.text, explanationHref, changeLabel(lang));
 };
 
 export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
@@ -52,8 +52,8 @@ export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, l
       repaymentPlanHref = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_FULL_URL);
       break;
     case ResponseType.PART_ADMISSION:
-      paymentOption = claim.partialAdmission?.paymentIntention?.paymentOption;
-      paymentDate = new Date(claim.partialAdmission?.paymentIntention?.paymentDate);
+      paymentOption = claim.partialAdmission.paymentIntention.paymentOption;
+      paymentDate = new Date(claim.partialAdmission.paymentIntention.paymentDate);
       paymentOptionHref = constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL);
       repaymentPlanHref = constructResponseUrlWithIdParams(claimId, CITIZEN_REPAYMENT_PLAN_PARTIAL_URL);
       break;
@@ -61,8 +61,8 @@ export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, l
 
   switch (paymentOption) {
     case PaymentOptionType.IMMEDIATELY:
-      if(claim.respondent1?.responseType === ResponseType.FULL_ADMISSION) {
-        responseSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', {lng: getLng(lang)}), t(`COMMON.RESPONSE_TYPE.${claim.respondent1?.responseType}`, {lng: getLng(lang)}), yourResponseHref, changeLabel(lang)));
+      if(claim.respondent1.responseType === ResponseType.FULL_ADMISSION) {
+        responseSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', {lng: getLng(lang)}), t(`COMMON.RESPONSE_TYPE.${claim.respondent1.responseType}`, {lng: getLng(lang)}), yourResponseHref, changeLabel(lang)));
       }
       responseSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_OPTION.${paymentOption}`, { lng: getLng(lang) }), paymentOptionHref, changeLabel(lang)));
       break;
@@ -72,9 +72,9 @@ export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, l
     case PaymentOptionType.INSTALMENTS: {
       responseSection.summaryList.rows.push(...[
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_OPTION.${paymentOption}`, { lng: getLng(lang) }), paymentOptionHref, changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng: getLng(lang)}), `${currencyFormatWithNoTrailingZeros(claim.repaymentPlan?.paymentAmount)}`, repaymentPlanHref, changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_FREQUENCY.${claim.repaymentPlan?.repaymentFrequency}`, {lng: getLng(lang)}), repaymentPlanHref, changeLabel(lang)),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT', {lng: getLng(lang)}), formatDateToFullDate(claim.repaymentPlan?.firstRepaymentDate), repaymentPlanHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng: getLng(lang)}), `${currencyFormatWithNoTrailingZeros(claim.repaymentPlan.paymentAmount)}`, repaymentPlanHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PAYMENT_FREQUENCY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_FREQUENCY.${claim.repaymentPlan.repaymentFrequency}`, {lng: getLng(lang)}), repaymentPlanHref, changeLabel(lang)),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FIRST_PAYMENT', {lng: getLng(lang)}), formatDateToFullDate(claim.repaymentPlan.firstRepaymentDate), repaymentPlanHref, changeLabel(lang)),
         buildExplanationRow(claim, claimId, lang),
       ]);
     }
