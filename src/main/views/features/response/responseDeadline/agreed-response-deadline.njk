@@ -44,7 +44,6 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.AGREED_RESPONSE_DEADLINE.TITLE') }}</h1>
-          <h2 class="govuk-heading-m">{{ t('PAGES.AGREED_RESPONSE_DEADLINE.SUB_TITLE', {  claimantName : claimantName}) }}</h1>
         </div>
       </div>
       <div class="govuk-grid-row">
@@ -59,6 +58,7 @@
                 name: "date",
                 fieldset: {
                   legend: {
+                    text: t('PAGES.AGREED_RESPONSE_DEADLINE.SUB_TITLE', {  claimantName : claimantName}),
                     isPageHeading: false,
                     classes: 'govuk-fieldset__legend--m'
                   }

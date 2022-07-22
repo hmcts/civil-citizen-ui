@@ -56,7 +56,7 @@ describe('Agreed response deadline View', () => {
     });
 
     it('should display sub title', async () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-heading-m');
+      const paragraph = htmlDocument.getElementsByClassName('govuk-fieldset__legend govuk-fieldset__legend--m');
       expect(paragraph[0].innerHTML).toContain("Enter the respond date you have agreed with Mr. Jan Clark's legal representative");
     });
 
