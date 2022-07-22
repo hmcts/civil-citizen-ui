@@ -4,8 +4,10 @@ import nock from 'nock';
 import config from 'config';
 
 import {DEFENDANT_SUMMARY_URL} from '../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {
+  mockCivilClaimUndefined,
+} from '../../../../utils/mockDraftStore';
+import CivilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -19,13 +21,16 @@ describe('Claim summary', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on GET', () => {
-    test('should return claim summary', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+
+    test('should return your claim summary from civil-service', async () => {
+      nock('http://localhost:4000')
+        .get('/cases/5129')
+        .reply(200, CivilClaimResponseMock);
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
-        .get(DEFENDANT_SUMMARY_URL)
+        .get(DEFENDANT_SUMMARY_URL.replace(':id', '5129'))
         .expect((res) => {
           expect(res.status).toBe(200);
-
           expect(res.text).toContain('Mr. Jan Clark v Version 1');
           expect(res.text).toContain('000MC009');
           expect(res.text).toContain('Latest update');
@@ -34,12 +39,13 @@ describe('Claim summary', () => {
     });
 
     test('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      nock('http://localhost:4000')
+        .get('/cases/5129')
+        .reply(200, mockCivilClaimUndefined);
       await request(app)
         .get(DEFENDANT_SUMMARY_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
         });
     });
   });

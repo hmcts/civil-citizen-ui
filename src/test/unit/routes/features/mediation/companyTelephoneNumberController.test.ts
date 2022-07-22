@@ -40,7 +40,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .get(CAN_WE_USE_COMPANY_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: TestMessages.REDIS_FAILURE });
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -115,7 +115,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         });
     });
     test('should redirect with valid input', async () => {
-      
+
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson: validName })
@@ -131,7 +131,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({ option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson: validName })
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({ error: TestMessages.REDIS_FAILURE });
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

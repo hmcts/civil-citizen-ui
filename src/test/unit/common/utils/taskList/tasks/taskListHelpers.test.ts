@@ -4,6 +4,7 @@ import {
   hasContactPersonAndCompanyPhone,
   isCounterpartyCompany,
   isCounterpartyIndividual,
+  isFullDefenceAndNotCounterClaim,
   isNotPayImmediatelyResponse,
   isPaymentOptionMissing,
   isRepaymentPlanMissing,
@@ -12,8 +13,11 @@ import {
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import { Mediation } from '../../../../../../main/common/models/mediation/mediation';
-import { CompanyTelephoneNumber } from '../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
+import {Mediation} from '../../../../../../main/common/models/mediation/mediation';
+import {CompanyTelephoneNumber} from '../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
+import {ResponseType} from '../../../../../../main/common/form/models/responseType';
+import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
+import RejectAllOfClaimType from '../../../../../../main/common/form/models/rejectAllOfClaimType';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Respondent = {
@@ -227,6 +231,28 @@ describe('Task List Helpers', () => {
       caseData.mediation.companyTelephoneNumber.mediationContactPerson = 'test';
       caseData.mediation.companyTelephoneNumber.mediationPhoneNumber = '123';
       expect(hasContactPersonAndCompanyPhone(caseData)).toEqual(true);
+    });
+  });
+
+  describe('isFullDefenceAndNotCounterClaim helper', () => {
+    it('should return false if is not fullDefence', () => {
+      caseData.respondent1 = new Respondent();
+      caseData.respondent1.responseType = ResponseType.FULL_ADMISSION;
+      expect(isFullDefenceAndNotCounterClaim(caseData)).toEqual(false);
+    });
+
+    it('should return false if rejectAllOfClaim is a counter claim', () => {
+      caseData.rejectAllOfClaim = new RejectAllOfClaim();
+      caseData.rejectAllOfClaim.option = RejectAllOfClaimType.COUNTER_CLAIM;
+      expect(isFullDefenceAndNotCounterClaim(caseData)).toEqual(false);
+    });
+    
+    it('should return true if is FullDefence And Not a CounterClaim', () => {
+      caseData.respondent1 = new Respondent();
+      caseData.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      caseData.rejectAllOfClaim = new RejectAllOfClaim();
+      caseData.rejectAllOfClaim.option = RejectAllOfClaimType.ALREADY_PAID;
+      expect(isFullDefenceAndNotCounterClaim(caseData)).toEqual(true);
     });
   });
 });

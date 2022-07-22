@@ -3,7 +3,6 @@ import currencyFormat from '../utils/currencyFormat';
 import {Respondent} from './respondent';
 import {StatementOfMeans} from './statementOfMeans';
 import {CounterpartyType} from './counterpartyType';
-import {NumberOfDays} from '../form/models/numberOfDays';
 import {RepaymentPlan} from './repaymentPlan';
 import {PartialAdmission} from './partialAdmission';
 import {DefendantEvidence} from './evidence/evidence';
@@ -17,6 +16,7 @@ import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfT
 import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
 import {SupportRequired} from '../models/directionsQuestionnaire/supportRequired';
 import {
+  CaseState,
   ClaimAmountBreakup,
   ClaimFee,
   InterestClaimFromType,
@@ -32,6 +32,8 @@ import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifi
 import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
+import {Vulnerability} from 'models/directionsQuestionnaire/vulnerability';
+import {ResponseDeadline} from './responseDeadline';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -72,24 +74,16 @@ export class Claim {
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
-
+  vulnerability: Vulnerability;
+  ccdState: CaseState;
+  responseDeadline: ResponseDeadline;
 
   getClaimantName(): string {
-    return this.getName(this.applicant1);
+    return this.applicant1.partyName;
   }
 
   getDefendantName(): string {
-    return this.getName(this.respondent1);
-  }
-
-  getName( party: Party): string {
-    switch(party.type){
-      case CounterpartyType.INDIVIDUAL : return party.individualTitle + ' ' + party.individualFirstName + ' ' + party.individualLastName;
-      case CounterpartyType.SOLE_TRADER: return party.soleTraderTitle + ' ' + party.soleTraderFirstName + ' ' + party.soleTraderLastName;
-      case CounterpartyType.COMPANY:
-      case CounterpartyType.ORGANISATION:
-        return party.partyName;
-    }
+    return this.respondent1.partyName;
   }
 
   formattedResponseDeadline(): string {
@@ -98,10 +92,6 @@ export class Claim {
 
   formattedTotalClaimAmount(): string {
     return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
-  }
-
-  responseInDays(): NumberOfDays {
-    return this.totalClaimAmount < MAX_CLAIM_AMOUNT ? NumberOfDays.FOURTEEN : NumberOfDays.TWENTYEIGHT;
   }
 
   getRemainingDays(): number {
@@ -179,6 +169,10 @@ export class Claim {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
 
+  isFullDefence(): boolean {
+    return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
+  }
+  
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }
@@ -200,12 +194,15 @@ export class Claim {
     }
     return documentId;
   }
+
   generatePdfFileName(): string {
     return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
   }
+
   isSystemGeneratedCaseDocumentsAvailable(): number {
     return this.systemGeneratedCaseDocuments?.length;
   }
+
   getDocumentDetails(documentType: DocumentType): CaseDocument {
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
@@ -215,15 +212,19 @@ export class Claim {
     }
     return undefined;
   }
+
+  isDefendantNotResponded(): boolean {
+    return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+  }
 }
 
 export interface Party {
   individualTitle?: string;
   individualLastName?: string;
   individualFirstName?: string;
-  soleTraderTitle?:string;
-  soleTraderFirstName?:string;
-  soleTraderLastName?:string;
+  soleTraderTitle?: string;
+  soleTraderFirstName?: string;
+  soleTraderLastName?: string;
   partyName?: string;
   type: CounterpartyType;
   primaryAddress?: CorrespondenceAddress;

@@ -1,0 +1,3 @@
+export enum CaseEvent {
+  DEFENDANT_RESPONSE_SPEC = 'DEFENDANT_RESPONSE_SPEC',
+}

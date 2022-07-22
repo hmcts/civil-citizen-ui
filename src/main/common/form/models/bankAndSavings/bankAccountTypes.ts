@@ -2,7 +2,7 @@ import {BankAccountType} from './bankAccountType';
 import {BankAccountTypeValues} from '../../../form/models/bankAndSavings/bankAccountTypeValues';
 
 export class BankAccountTypes{
-  readonly CHOOSE = new BankAccountType(undefined, 'Choose');
+  readonly CHOOSE = new BankAccountType(undefined, 'COMMON.CHOOSE');
   CURRENT_ACCOUNT : BankAccountType;
   SAVING_ACCOUNT :  BankAccountType;
   ISA : BankAccountType;
@@ -18,14 +18,14 @@ export class BankAccountTypes{
   }
 
   private createRequiredTypes() {
-    this.CURRENT_ACCOUNT = new BankAccountType(BankAccountTypeValues.CURRENT_ACCOUNT, 'Current account');
-    this.SAVING_ACCOUNT = new BankAccountType(BankAccountTypeValues.SAVINGS_ACCOUNT, 'Saving account');
-    this.ISA = new BankAccountType(BankAccountTypeValues.ISA, 'ISA');
-    this.OTHER = new BankAccountType(BankAccountTypeValues.OTHER, 'Other');
+    this.CURRENT_ACCOUNT = new BankAccountType(BankAccountTypeValues.CURRENT_ACCOUNT, 'PAGES.CITIZEN_BANK_ACCOUNTS.CURRENT_ACCOUNT');
+    this.SAVING_ACCOUNT = new BankAccountType(BankAccountTypeValues.SAVINGS_ACCOUNT, 'PAGES.CITIZEN_BANK_ACCOUNTS.SAVINGS_ACCOUNT');
+    this.ISA = new BankAccountType(BankAccountTypeValues.ISA, 'PAGES.CITIZEN_BANK_ACCOUNTS.ISA');
+    this.OTHER = new BankAccountType(BankAccountTypeValues.OTHER, 'PAGES.CITIZEN_BANK_ACCOUNTS.OTHER');
   }
 
   selectAndGetBankAccountTypes(value?:string): BankAccountType[] {
-    if(value){
+    if(value) {
       this.selected(value);
     }
     return this.getAllBankBankAccountTypes();

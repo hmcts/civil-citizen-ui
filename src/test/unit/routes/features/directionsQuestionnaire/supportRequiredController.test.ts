@@ -7,15 +7,14 @@ import {
   NO_LANGUAGE_ENTERED,
   NO_OTHER_SUPPORT,
   NO_SIGN_LANGUAGE_ENTERED,
-  REDIS_FAILURE,
 } from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {CLAIM_TASK_LIST_URL, SUPPORT_REQUIRED_URL} from '../../../../../main/routes/urls';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-
 
 const supportRequiredUrl = SUPPORT_REQUIRED_URL.replace(':id', 'aaa');
 
@@ -39,7 +38,7 @@ describe('Support required', () => {
         .get(supportRequiredUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Select any support you’d require for a court hearing (optional)');
+          expect(res.text).toContain('Select any support you&#39;d require for a court hearing (optional)');
         });
     });
     test('should return status 500 when error thrown', async () => {
@@ -48,7 +47,7 @@ describe('Support required', () => {
         .get(supportRequiredUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -163,7 +162,7 @@ describe('Support required', () => {
         })
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

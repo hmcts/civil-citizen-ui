@@ -26,7 +26,7 @@ describe('Priority Debts Controller', () => {
         .get(CITIZEN_PRIORITY_DEBTS_URL)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Debts you\'re behind on');
+          expect(res.text).toContain('Debts you&#39;re behind on');
         });
     });
     test('it should return 500 status code when there is an error', async () => {
@@ -35,7 +35,7 @@ describe('Priority Debts Controller', () => {
         .get(CITIZEN_PRIORITY_DEBTS_URL)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -148,7 +148,7 @@ describe('Priority Debts Controller', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

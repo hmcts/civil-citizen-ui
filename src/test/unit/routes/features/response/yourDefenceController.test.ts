@@ -6,7 +6,6 @@ import {CITIZEN_TIMELINE_URL, RESPONSE_YOUR_DEFENCE_URL} from '../../../../../ma
 import {DEFENCE_REQUIRED} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   mockCivilClaim,
-  mockCivilClaimUndefined,
   mockCivilClaimUnemploymentRetired,
   mockNoStatementOfMeans,
   mockRedisFailure,
@@ -25,36 +24,21 @@ describe('yourDefence', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on Get', () => {
+    const inset = 'Your response will be sent to Mr. Jan Clark.';
+    const header = 'Why do you disagree with the claim?';
+
     test('should return yourDefence page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      const claimantName = 'Mr. Jan Clark';
-      const inset = 'Your response will be sent to ' + claimantName + '.';
-      const header = 'Why do you disagree with the claim?';
+      await request(app).get(RESPONSE_YOUR_DEFENCE_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(header);
+          expect(res.text).toContain(inset);
+        });
+    });
 
-      await request(app).get(RESPONSE_YOUR_DEFENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(header);
-          expect(res.text).toContain(inset);
-        });
-    });
-    test('should return yourDefence page successfully without claim', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
-      const claimantName = '';
-      const inset = 'Your response will be sent to ' + claimantName + '.';
-      const header = 'Why do you disagree with the claim?';
-      await request(app).get(RESPONSE_YOUR_DEFENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(header);
-          expect(res.text).toContain(inset);
-        });
-    });
     test('should return yourDefence page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaimUnemploymentRetired;
-      const claimantName = 'Mr. Jan Clark';
-      const inset = 'Your response will be sent to ' + claimantName + '.';
-      const header = 'Why do you disagree with the claim?';
       await request(app).get(RESPONSE_YOUR_DEFENCE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -62,18 +46,21 @@ describe('yourDefence', () => {
           expect(res.text).toContain(inset);
         });
     });
+
     test('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(RESPONSE_YOUR_DEFENCE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
+
   describe('on Post', () => {
     test('should return error message when any text is filled', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(RESPONSE_YOUR_DEFENCE_URL)
         .send()
         .expect((res) => {
@@ -100,7 +87,7 @@ describe('yourDefence', () => {
         .send({text: 'Test'})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

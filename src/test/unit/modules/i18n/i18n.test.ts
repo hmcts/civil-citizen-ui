@@ -33,6 +33,8 @@ function authenticate() {
 describe('i18n test - Dashboard', () => {
 
   const citizenRoleToken: string = config.get('citizenRoleToken');
+  const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
+  const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
 
   beforeEach(() => {
     nock('http://localhost:8765')
@@ -41,6 +43,12 @@ describe('i18n test - Dashboard', () => {
     nock('http://localhost:5000')
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    nock(serviceAuthProviderUrl)
+      .post('/lease')
+      .reply(200, {});
+    nock(draftStoreUrl)
+      .get('/drafts')
+      .reply(200, {});
   });
 
   describe('on GET', () => {

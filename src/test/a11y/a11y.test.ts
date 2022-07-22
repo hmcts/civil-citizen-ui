@@ -5,8 +5,8 @@ import nock from 'nock';
 import {app} from '../../main/app';
 import {fail} from 'assert';
 import {IGNORED_URLS} from './ignored-urls';
-import {urlsWithActions} from './action-urls';
 import {mockCivilClaim} from '../utils/mockDraftStore';
+import CivilClaimResponseMock from '../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../main/modules/oidc');
 jest.mock('../../main/modules/draft-store');
@@ -66,7 +66,7 @@ function expectNoErrors(messages: PallyIssue[]): void {
 
 function testAccessibilityWithActions(url: string, actions: string[]): void {
   describe(`Page ${url}`, () => {
-    test(`should have no accessibility errors ${(actions.length) ? 'with actions': ''}`, done => {
+    test(`should have no accessibility errors ${(actions.length) ? 'with actions' : ''}`, done => {
       ensurePageCallWillSucceed(url)
         .then(() => runPally(agent.get(url).url, actions))
         .then((result: Pa11yResult) => {
@@ -79,11 +79,6 @@ function testAccessibilityWithActions(url: string, actions: string[]): void {
 }
 
 function testAccessibility(url: string): void {
-  const urlWithAction = urlsWithActions.find(item => item.url === url);
-  // if object exists we want to test it both with and without actions
-  if (urlWithAction) {
-    testAccessibilityWithActions(urlWithAction.url, urlWithAction.actions);
-  }
   testAccessibilityWithActions(url, []);
 }
 
@@ -96,6 +91,11 @@ describe('Accessibility', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+  nock('http://localhost:4000')
+    .get('/cases/:id')
+    .reply(200, CivilClaimResponseMock)
+    .get('/cases/1645882162449409')
+    .reply(200, CivilClaimResponseMock);
 
   urlsList.forEach((url) => {
     testAccessibility(url);

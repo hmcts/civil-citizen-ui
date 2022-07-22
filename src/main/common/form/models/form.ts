@@ -25,6 +25,7 @@ export class Form {
       .forEach(error => error.children
         .forEach(childError => validators.push(new FormValidationError(childError, `${item.property}[${error.property}]`))));
   }
+
   public getErrors(parentProperty?: string ): FormValidationError[] {
     if (this.hasErrors()) {
       const validators: FormValidationError[] = [];

@@ -12,6 +12,7 @@ export const getGiveUsDetailsHearingTask = (_caseData: Claim, claimId: string, l
     url: constructResponseUrlWithIdParams(claimId, SUPPORT_REQUIRED_URL),
     status: TaskStatus.INCOMPLETE,
   };
+
   // TODO: add task complete logic
   return giveUsDetailsHearingTask;
 };

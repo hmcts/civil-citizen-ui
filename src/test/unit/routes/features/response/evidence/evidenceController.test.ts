@@ -4,8 +4,8 @@ import config from 'config';
 import nock from 'nock';
 import {
   CITIZEN_EVIDENCE_URL,
-  IMPACT_OF_DISPUTE_URL,
-  CLAIM_TASK_LIST_URL} from '../../../../../../main/routes/urls';
+  CLAIM_TASK_LIST_URL,
+} from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockRedisFailure } from '../../../../../utils/mockDraftStore';
 import { EvidenceType } from '../../../../../../main/common/models/evidence/evidenceType';
@@ -68,7 +68,7 @@ describe('on Get', () => {
       .get(CITIZEN_EVIDENCE_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
 });
@@ -141,7 +141,7 @@ describe('on Post', () => {
       .send({comment: '', evidenceItem: []})
       .expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(IMPACT_OF_DISPUTE_URL);
+        expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
       });
   });
 
@@ -152,7 +152,7 @@ describe('on Post', () => {
       .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
       .expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(IMPACT_OF_DISPUTE_URL);
+        expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
       });
   });
 
@@ -163,7 +163,7 @@ describe('on Post', () => {
       .send({comment: COMMENT, evidenceItem: EVIDENCE_ITEM})
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
 });

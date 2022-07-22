@@ -3,7 +3,6 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import {CLAIM_DETAILS} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockClaim as mockResponse} from '../../../../../utils/mockClaim';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {
   mockCivilClaim,
@@ -11,6 +10,7 @@ import {
   mockRedisFailure,
   mockCivilClaimPDFTimeline,
 } from '../../../../../utils/mockDraftStore';
+import CivilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
 import {getTotalAmountWithInterestAndFees} from '../../../../../../main/modules/claimDetailsService';
 import {dateFilter} from '../../../../../../main/modules/nunjucks/filters/dateFilter';
 import {convertToPoundsFilter} from '../../../../../../main/common/utils/currencyFormat';
@@ -46,7 +46,7 @@ describe('Claim details page', () => {
     test('should return your claim details page with values from civil-service', async () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
-        .reply(200, mockResponse);
+        .reply(200, CivilClaimResponseMock);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
@@ -54,15 +54,15 @@ describe('Claim details page', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(CLAIM_DETAILS);
-          expect(res.text).toContain(mockResponse.legacyCaseReference);
-          expect(res.text).toContain(getTotalAmountWithInterestAndFees(mockResponse));
-          expect(res.text).toContain(mockResponse?.claimAmountBreakup[0].value.claimReason);
-          expect(res.text).toContain(mockResponse?.claimAmountBreakup[0].value.claimAmount);
-          expect(res.text).toContain(mockResponse?.totalInterest);
-          expect(res.text).toContain(convertToPoundsFilter(mockResponse?.claimFee.calculatedAmountInPence));
-          expect(res.text).toContain(mockResponse.detailsOfClaim);
-          expect(res.text).toContain(mockResponse?.timelineOfEvents[0].value.timelineDescription);
-          expect(res.text).toContain(dateFilter(mockResponse?.timelineOfEvents[0].value.timelineDate));
+          expect(res.text).toContain('000MC009'); // case number
+          expect(res.text).toContain('£195.00'); // tottal claim amount
+          expect(res.text).toContain('House repair'); // claim reason
+          expect(res.text).toContain('200'); // claim amount
+          expect(res.text).toContain('15'); // total interest
+          expect(res.text).toContain('70'); // claim fee
+          expect(res.text).toContain('House repair'); // details of claim
+          expect(res.text).toContain('I noticed a leak on the landing and told Mr Smith about this.'); // timeline description
+          expect(res.text).toContain('1 January 2022'); // timeline date
         });
       expect(spyRedisSave).toBeCalled();
     });
@@ -75,7 +75,7 @@ describe('Claim details page', () => {
       });
       nock('http://localhost:4000')
         .get('/cases/1111')
-        .reply(200, mockResponse);
+        .reply(200, CivilClaimResponseMock);
       app.locals.draftStoreClient = mockCivilClaim;
       const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
@@ -104,7 +104,7 @@ describe('Claim details page', () => {
       });
       nock('http://localhost:4000')
         .get('/cases/1111')
-        .reply(200, mockResponse);
+        .reply(200, CivilClaimResponseMock);
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
       const spyRedisSave = spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
@@ -123,7 +123,7 @@ describe('Claim details page', () => {
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
