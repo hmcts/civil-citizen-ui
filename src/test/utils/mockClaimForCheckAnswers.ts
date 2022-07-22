@@ -621,7 +621,7 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
 
 export const createClaimWithFullRejection = (option: RejectAllOfClaimType): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  if(claim.respondent1) {
+  if (claim.respondent1) {
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
   }
   claim.rejectAllOfClaim = {
@@ -640,7 +640,7 @@ export const createClaimWithFullRejection = (option: RejectAllOfClaimType): Clai
   };
   claim.paymentOption = undefined;
   return claim;
-}
+};
 
 export const createClaimWithPaymentOption = (responseType:ResponseType, paymentOption: PaymentOptionType): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
