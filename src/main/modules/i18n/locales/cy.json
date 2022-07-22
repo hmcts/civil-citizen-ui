@@ -165,8 +165,8 @@
     },
     "AGREED_RESPONSE_DEADLINE": {
       "PAGE_TITLE": "Agree more time to respond",
-      "TITLE": "You have already agreed to more time to respond",
-      "SUB_TITLE": "Enter the respond date you have agreed with {{ claimantName }}'s legal representative"
+      "SUB_TITLE": "Enter the respond date you have agreed with {{ claimantName }}'s legal representative",
+      "TITLE": "You have already agreed to more time to respond"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled",

@@ -7,12 +7,6 @@ import {
   NEW_RESPONSE_DEADLINE_URL,
 } from '../../../../../../main/routes/urls';
 import {
-  VALID_FOUR_DIGIT_YEAR,
-  VALID_AGREED_RESPONSE_DATE,
-  VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST,
-  DATE_NOT_MORE_THAN_28_DAYS,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {
   mockCivilClaim,
   mockCivilClaimApplicantIndividualType,
   mockRedisFailure,
@@ -49,7 +43,7 @@ describe('Agreed response date', () => {
         .post(AGREED_T0_MORE_TIME_URL)
         .send('year=9999')
         .send('month=12')
-        .send('day=31')
+        .send('day=25')
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -93,7 +87,7 @@ describe('Agreed response date', () => {
         .send('day=')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_AGREED_RESPONSE_DATE);
+          expect(res.text).toContain(TestMessages.VALID_AGREED_RESPONSE_DATE);
         });
     });
     it('should return error on agreed date in the past', async () => {
@@ -104,7 +98,7 @@ describe('Agreed response date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST);
+          expect(res.text).toContain(TestMessages.VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST);
         });
     });
 
@@ -116,7 +110,7 @@ describe('Agreed response date', () => {
         .send('day=10')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST);
+          expect(res.text).toContain(TestMessages.VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST);
         });
     });
     it('should return error on incorrect input', async () => {
@@ -127,7 +121,7 @@ describe('Agreed response date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_FOUR_DIGIT_YEAR);
+          expect(res.text).toContain(TestMessages.VALID_FOUR_DIGIT_YEAR);
         });
     });
     it('should return error on agreed response date is bigger 28 days', async () => {
@@ -138,7 +132,7 @@ describe('Agreed response date', () => {
         .send('day=13')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(DATE_NOT_MORE_THAN_28_DAYS);
+          expect(res.text).toContain(TestMessages.DATE_NOT_MORE_THAN_28_DAYS);
         });
     });
 

@@ -44,11 +44,10 @@ export class ResponseDeadlineService {
 }
 
 function setDate(date: Date): AgreedResponseDeadline {
-  const dateOfResponseDeadline = new Date(date);
   const agreedResponseDeadline = new AgreedResponseDeadline();
-  agreedResponseDeadline.date = dateOfResponseDeadline;
-  agreedResponseDeadline.year = dateOfResponseDeadline.getFullYear();
-  agreedResponseDeadline.month = dateOfResponseDeadline.getMonth() + 1;
-  agreedResponseDeadline.day = dateOfResponseDeadline.getDate();
+  agreedResponseDeadline.date = new Date(date);
+  agreedResponseDeadline.year = agreedResponseDeadline.date.getFullYear();
+  agreedResponseDeadline.month = agreedResponseDeadline.date.getMonth() + 1;
+  agreedResponseDeadline.day = agreedResponseDeadline.date.getDate();
   return agreedResponseDeadline;
 }

@@ -7,14 +7,7 @@ import {
   RESPONSE_DEADLINE_OPTIONS_URL,
 } from '../../../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import {
-  VALID_AGREED_RESPONSE_DATE,
-  VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST,
-  DATE_NOT_MORE_THAN_28_DAYS,
-  VALID_MONTH,
-  VALID_DAY,
-  VALID_FOUR_DIGIT_YEAR,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -91,11 +84,8 @@ describe('Agreed response deadline View', () => {
     });
   });
 
-
   describe('on POST', () => {
-
     const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
-
     beforeEach(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(AGREED_T0_MORE_TIME_URL).then(res => {
@@ -112,12 +102,10 @@ describe('Agreed response deadline View', () => {
 
     it('should display correct error summary message with correct link for agreed response date', () => {
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_AGREED_RESPONSE_DATE);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_AGREED_RESPONSE_DATE);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#date');
     });
-
-
 
     it('should display correct error summary message with correct link for agreed response Date in the past', async () => {
       await request(app)
@@ -128,11 +116,10 @@ describe('Agreed response deadline View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#date');
     });
-
 
     it('should display correct error summary message with correct link for agreed response date is more than 28 days', async () => {
       await request(app)
@@ -143,11 +130,10 @@ describe('Agreed response deadline View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(DATE_NOT_MORE_THAN_28_DAYS);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.DATE_NOT_MORE_THAN_28_DAYS);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#date');
     });
-
 
     it('should display correct error summary message with correct link for day', async () => {
       await request(app)
@@ -158,7 +144,7 @@ describe('Agreed response deadline View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_DAY);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_DAY);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#day');
     });
@@ -172,7 +158,7 @@ describe('Agreed response deadline View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_MONTH);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_MONTH);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#month');
     });
@@ -186,7 +172,7 @@ describe('Agreed response deadline View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_FOUR_DIGIT_YEAR);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_FOUR_DIGIT_YEAR);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#year');
     });

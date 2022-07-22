@@ -1,8 +1,5 @@
 export const VALID_PHONE_NUMBER = 'Enter a phone number in the correct format';
-export const DATE_NOT_MORE_THAN_28_DAYS = 'Agreed response date cannot be more than 28 days after the orginal response date';
 export const DATE_REQUIRED = 'Enter a date';
-export const VALID_AGREED_RESPONSE_DATE = 'Enter the agreed response date';
-export const VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST = 'Agreed response date must be in the future';
 export const VALID_DATE = 'Please enter a valid date';
 export const VALID_DATE_NOT_IN_PAST = 'Enter a date that is today or in the future';
 export const VALID_DATE_IN_PAST = 'Enter date before ';

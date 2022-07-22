@@ -4,9 +4,9 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
@@ -15,9 +15,9 @@
   {{ setPageTitle('PAGES.AGREED_RESPONSE_DEADLINE.PAGE_TITLE') }}
 {% endblock %}
 {% set hint = t('PAGES.ADMISSION_PAYMENT_DATE.FOR_EXAMPLE', {
-  nextDate: nextMonth.getDate(),
-  nextMonth: nextMonth.getMonth() + 1,
-  nextYear: nextMonth.getFullYear()
+  nextDate: today.getDate(),
+  nextMonth: today.getMonth() + 2,
+  nextYear: today.getFullYear()
 }) %}
 
 {% block content %}
@@ -29,10 +29,7 @@
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
-        {{ govukErrorSummary({
-          "titleText": t("ERRORS.THERE_WAS_A_PROBLEM"),
-          "errorList": translateErrors(errors, t)
-        }) }}
+        {{ errorSummary(errors, t) }}
         {% set errorMessages %}
         {% if errors %}
           {% for error in errors %}

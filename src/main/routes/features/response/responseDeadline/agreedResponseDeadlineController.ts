@@ -9,14 +9,11 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../../common/models/claim';
 
 const responseDeadlineService = new ResponseDeadlineService();
 const agreedResponseDeadlineViewPath = 'features/response/responseDeadline/agreed-response-deadline';
 const agreedResponseDeadlineController = express.Router();
-const nextMonth = new Date();
-nextMonth.setMonth(nextMonth.getMonth() + 1);
-let claim: Claim;
+const today = new Date();
 let backLink: string;
 
 agreedResponseDeadlineController
@@ -24,12 +21,12 @@ agreedResponseDeadlineController
     AGREED_T0_MORE_TIME_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
-        claim = await getCaseDataFromStore(req.params.id);
+        const claim = await getCaseDataFromStore(req.params.id);
         const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
         res.render(agreedResponseDeadlineViewPath, {
           form: new GenericForm(agreedResponseDeadline),
-          nextMonth: nextMonth,
-          claimantName : claim.getClaimantName(),
+          today,
+          claimantName: claim.getClaimantName(),
           backLink,
         });
       } catch (error) {
@@ -38,26 +35,27 @@ agreedResponseDeadlineController
     })
   .post(
     AGREED_T0_MORE_TIME_URL, async (req, res, next: express.NextFunction) => {
-      const originalResponseDeadline = claim?.respondent1ResponseDeadline;
       const {year, month, day} = req.body;
-      const agreedResponseDeadlineDate = new AgreedResponseDeadline(year, month, day, originalResponseDeadline);
-      const form: GenericForm<AgreedResponseDeadline> = new GenericForm<AgreedResponseDeadline>(agreedResponseDeadlineDate);
-      await form.validate();
+      try {
+        const claim = await getCaseDataFromStore(req.params.id);
+        const originalResponseDeadline = claim?.respondent1ResponseDeadline;
+        const agreedResponseDeadlineDate = new AgreedResponseDeadline(year, month, day, originalResponseDeadline);
+        const form: GenericForm<AgreedResponseDeadline> = new GenericForm<AgreedResponseDeadline>(agreedResponseDeadlineDate);
+        await form.validate();
 
-      if (form.hasErrors()) {
-        res.render(agreedResponseDeadlineViewPath, {
-          form: form,
-          nextMonth: nextMonth,
-          claimantName: claim.getClaimantName(),
-          backLink,
-        });
-      } else {
-        try {
+        if (form.hasErrors()) {
+          res.render(agreedResponseDeadlineViewPath, {
+            form,
+            today,
+            claimantName: claim.getClaimantName(),
+            backLink,
+          });
+        } else {
           await responseDeadlineService.saveAgreedResponseDeadline(req.params.id, agreedResponseDeadlineDate.date);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, NEW_RESPONSE_DEADLINE_URL));
-        } catch (error) {
-          next(error);
         }
+      } catch (error) {
+        next(error);
       }
     });
 

@@ -13,10 +13,7 @@ export class DateNotMoreThanDurationValidator implements ValidatorConstraintInte
     const referenceDate = (validationArguments.object as any)[property];
     const daysBetweenTwoDates = getNumberOfDaysBetweenTwoDays(referenceDate, inputDate);
 
-    if (inputDate !== null && daysBetweenTwoDates > duration) {
-      return false;
-    }
-    return true;
+    return !(inputDate !== null && daysBetweenTwoDates > duration);
   }
 
   defaultMessage() {
