@@ -28,7 +28,8 @@ const getResponseTitle = (claim: Claim, lang: string | unknown): string => {
 
 const buildExplanationRow = (claim: Claim, claimId: string, lang: string | unknown): SummaryRow => {
   const explanationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_EXPLANATION_URL);
-  return summaryRow(t('PAGES.EXPLANATION.TITLE', {lng: getLng(lang)}), claim.statementOfMeans.explanation.text, explanationHref, changeLabel(lang));
+  const explanationText = claim.statementOfMeans?.explanation?.text ? claim.statementOfMeans.explanation.text : '';
+  return summaryRow(t('PAGES.EXPLANATION.TITLE', {lng: getLng(lang)}), explanationText, explanationHref, changeLabel(lang));
 };
 
 export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {

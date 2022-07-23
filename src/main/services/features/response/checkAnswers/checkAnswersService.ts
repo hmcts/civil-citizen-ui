@@ -27,16 +27,61 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   const alreadyPaidPartAdmit: string = claim.partialAdmission?.alreadyPaid?.option;
   const paidResponse: string = claim.partialAdmission?.paymentIntention?.paymentOption;
 
+  const getResponseToClaim = (responseType:string) => {
+    return responseType === ResponseType.FULL_DEFENCE
+      || responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY
+      ? buildYourResponseToClaimSection(claim, claimId, lang)
+      : null;
+  }
+
+  const getResponseToClaimPA = (responseType:string) => {
+    return responseType === ResponseType.PART_ADMISSION
+      ? buildYourResponseToClaimSection(claim, claimId, lang)
+      : null;
+  }
+
+  const getResponseDetailsSection = () => {
+    return responseType === ResponseType.FULL_DEFENCE || responseType === ResponseType.PART_ADMISSION
+      ? buildYourResponseDetailsSection(claim, claimId, lang)
+      : null;
+  }
+
+  const getFinancialSectionFA = (responseType:string) => {
+    return responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY
+      ? buildYourFinancialSection(claim, claimId, lang)
+      : null;
+  }
+
+  const getFinancialSection = (responseType:string) => {
+    return responseType === ResponseType.PART_ADMISSION && alreadyPaidPartAdmit === YesNo.NO && paidResponse !== PaymentOptionType.IMMEDIATELY
+      ? buildYourFinancialSection(claim, claimId, lang)
+      : null;
+  }
+
+  const getResponsePaymentSection = () => {
+    return responseType === ResponseType.FULL_ADMISSION
+      || responseType === ResponseType.PART_ADMISSION && alreadyPaidPartAdmit === YesNo.NO
+      ? buildYourResponsePaymentSection(claim, claimId, lang)
+      : null
+  }
+
+  const getFreeTelephoneMediationSection = () => {
+    return responseType === ResponseType.FULL_DEFENCE
+      || responseType === ResponseType.PART_ADMISSION && paidResponse
+      ? buildFreeTelephoneMediationSection(claim, claimId, lang)
+      : null
+  }
+
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
-      responseType === ResponseType.FULL_DEFENCE || responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourResponseToClaimSection(claim, claimId, lang) : null,
-      responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY ? buildYourFinancialSection(claim, claimId, lang) : null,
-      responseType === ResponseType.PART_ADMISSION ? buildYourResponseToClaimSection(claim, claimId, lang) : null,
-      responseType === ResponseType.FULL_DEFENCE || responseType === ResponseType.PART_ADMISSION ? buildYourResponseDetailsSection(claim, claimId, lang) : null,
-      responseType === ResponseType.PART_ADMISSION && alreadyPaidPartAdmit === YesNo.NO && paidResponse !== PaymentOptionType.IMMEDIATELY ? buildYourFinancialSection(claim, claimId, lang) : null,
-      responseType === ResponseType.FULL_ADMISSION || (responseType === ResponseType.PART_ADMISSION && alreadyPaidPartAdmit === YesNo.NO) ? buildYourResponsePaymentSection(claim, claimId, lang) : null,
-      responseType === ResponseType.FULL_DEFENCE || (responseType === ResponseType.PART_ADMISSION && paidResponse) ? buildFreeTelephoneMediationSection(claim, claimId, lang) : null,
+      getResponseToClaim(responseType),
+      getFinancialSectionFA(responseType),
+      getResponseToClaimPA(responseType),
+      getResponseDetailsSection(),
+      getFinancialSection(responseType),
+      getResponsePaymentSection(),
+      getFreeTelephoneMediationSection(),
     ],
   };
 };
