@@ -52,7 +52,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       : null;
   };
 
-  const getFinancialSection = (responseType: string) => {
+  const getFinancialSectionPA = (responseType: string) => {
     return responseType === ResponseType.PART_ADMISSION && alreadyPaidPartAdmit === YesNo.NO && paidResponse !== PaymentOptionType.IMMEDIATELY
       ? buildYourFinancialSection(claim, claimId, lang)
       : null;
@@ -79,7 +79,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       getFinancialSectionFA(responseType),
       getResponseToClaimPA(responseType),
       getResponseDetailsSection(),
-      getFinancialSection(responseType),
+      getFinancialSectionPA(responseType),
       getResponsePaymentSection(),
       getFreeTelephoneMediationSection(),
     ],
