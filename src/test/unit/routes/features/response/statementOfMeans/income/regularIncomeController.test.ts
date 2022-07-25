@@ -60,7 +60,212 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.INCOME_JOB'));
         });
     });
-    test('it should display errors for amount when amount has more than two decimal places', async () => {
+
+    test('it should display errors when universal credit is selected but no amount or schedule are specified', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Universal Credit', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.UNIVERSAL_CREDIT'));
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.UNIVERSAL_CREDIT'));
+        });
+    });
+
+    test('it should display errors when Jobseeker income based is selected but no amount or schedule are specified', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Jobseeker’s Allowance (income based)', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.JOBSEEKER_INCOME'));
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.JOBSEEKER_INCOME'));
+        });
+    });
+
+    test('it should display errors when Jobseeker contribution is selected but no amount or schedule are specified', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Jobseeker’s Allowance (contribution based)', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.JOBSEEKER_CONTRIBUTION'));
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.JOBSEEKER_CONTRIBUTION'));
+        });
+    });
+
+    test('it should display errors when income support is selected but no amount or schedule are specified', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Income Support', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.INCOME_SUPPORT'));
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.INCOME_SUPPORT'));
+        });
+    });
+
+    test('it should display errors when Working Tax Credit is selected but no amount or schedule are specified', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Working Tax Credit', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.WORKING_TAX'));
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.WORKING_TAX'));
+        });
+    });
+
+    test('it should display errors when Child Tax Credit is selected but no amount or schedule are specified', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Child Tax Credit', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.CHILD_TAX'));
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.CHILD_TAX'));
+        });
+    });
+
+    test('it should display errors when Child Benefit is selected but no amount or schedule are specified', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Child Benefit', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.CHILD_BENEFIT'));
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.CHILD_BENEFIT'));
+        });
+    });
+
+
+    test('it should display errors when Council Tax Support is selected but no amount or schedule are specified', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Council Tax Support', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.COUNCIL_TAX'));
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.COUNCIL_TAX'));
+        });
+    });
+
+
+    test('it should display errors when Pension is selected but no amount or schedule are specified', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Pension', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.PENSION'));
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.PENSION'));
+        });
+    });
+
+
+    test('it should display errors when other is selected but no amount or schedule are specified', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Other income', amount: '', schedule: undefined,
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.OTHER'));
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.OTHER'));
+        });
+    });
+
+
+    test('it should display errors for  Income from your job amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -78,6 +283,188 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_JOB'));
         });
     });
+
+    test('it should display errors for Universal Credit amount when amount has more than two decimal places', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Universal Credit', amount: '40.666', schedule: 'WEEK',
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.UNIVERSAL_CREDIT'));
+        });
+    });
+    test('it should display errors for Jobseeker’s Allowance (income based) amount when amount has more than two decimal places', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Jobseeker’s Allowance (income based)', amount: '40.666', schedule: 'WEEK',
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.JOBSEEKER_INCOME'));
+        });
+    });
+    test('it should display errors for Jobseeker’s Allowance (contribution based) amount when amount has more than two decimal places', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Jobseeker’s Allowance (contribution based)', amount: '40.666', schedule: 'WEEK',
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.JOBSEEKER_CONTRIBUTION'));
+        });
+    });
+    test('it should display errors for Income Support amount when amount has more than two decimal places', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Income Support', amount: '40.666', schedule: 'WEEK',
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_SUPPORT'));
+        });
+    });
+    test('it should display errors for Working Tax Credit amount when amount has more than two decimal places', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Working Tax Credit', amount: '40.666', schedule: 'WEEK',
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.WORKING_TAX'));
+        });
+    });
+    test('it should display errors for Child Tax Credit amount when amount has more than two decimal places', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Child Tax Credit', amount: '40.666', schedule: 'WEEK',
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.CHILD_TAX'));
+        });
+    });
+    test('it should display errors for Child Benefit amount when amount has more than two decimal places', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Child Benefit', amount: '40.666', schedule: 'WEEK',
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.CHILD_BENEFIT'));
+        });
+    });
+    test('it should display errors for Council Tax Support amount when amount has more than two decimal places', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Council Tax Support', amount: '40.666', schedule: 'WEEK',
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.COUNCIL_TAX'));
+        });
+    });
+    test('it should display errors for Pension amount when amount has more than two decimal places', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Pension', amount: '40.666', schedule: 'WEEK',
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.PENSION'));
+        });
+    });
+    test('it should display errors for other income amount when amount has more than two decimal places', async () => {
+      await request(app)
+        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .send({
+          declared: 'job', model: {
+            job: {
+              transactionSource:
+                {
+                  name: 'Other income', amount: '40.666', schedule: 'WEEK',
+                },
+            },
+          },
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.OTHER'));
+        });
+    });
+
     test('it should display errors for amount when amount is negative', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
