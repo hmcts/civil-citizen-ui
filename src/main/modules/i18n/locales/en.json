@@ -675,13 +675,13 @@
       "PAGE_TITLE": "Your regular income",
       "PENSION" : "Pension",
       "RECEIVED_EVERY" : "Received every",
+      "REMOVE_INCOME" : "Remove this income source",
       "SELECT_ALL_THAT_APPLY" : "Select all that apply. The information you enter must be truthful and accurate.",
       "SOURCE_INCOME" : "Source of income",
       "TOTAL_MONTHLY" : "Total monthly income:",
       "UNIVERSAL_CREDIT" : "Universal Credit",
       "WHAT_REGULAR_INCOME" : "What regular income do you receive?",
-      "WORKING_TAX" : "Working Tax Credit",
-      "REMOVE_INCOME" : "Remove this income source"
+      "WORKING_TAX" : "Working Tax Credit"
     },
     "REJECT_ALL": {
       "FEE": "Fee",
@@ -797,9 +797,9 @@
       "TITLE": "Vulnerability Questions"
     },
     "WHO_EMPLOYS_YOU": {
+      "ADD_ANOTHER_JOB" : "Add another job",
       "PAGE_TITLE": "Your employer",
-      "WHO_EMPLOYS" : "Who employs you?",
-      "ADD_ANOTHER_JOB" : "Add another job"
+      "WHO_EMPLOYS" : "Who employs you?"
     },
     "EMPLOYER" : {
       "EMPLOYER_NAME" : "Employer name",
@@ -875,54 +875,54 @@
       "WATER": "Select how often you pay for Water"
     },
     "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
-    "TRANSACTION_SOURCE" : {
-      "HOW_MUCH_INCOME" : {
-        "INCOME_JOB" : "Enter how much income from your job you receive",
-        "UNIVERSAL_CREDIT" : "Enter how much Universal Credit you receive",
-        "JOBSEEKER_INCOME" : "Enter how much Jobseeker’s Allowance (income based) you receive",
-        "JOBSEEKER_CONTRIBUTION" : "Enter how much  Jobseeker’s Allowance (contribution based) you receive",
-        "INCOME_SUPPORT" : "Enter how much Income Support you receive",
-        "WORKING_TAX" : "Enter how much Working Tax Credit you receive",
-        "CHILD_TAX" : "Enter how much Child Tax Credit you receive",
-        "CHILD_BENEFIT" : "Enter how much Child Benefit you receive",
-        "COUNCIL_TAX" : "Enter how much Council Tax Support you receive",
-        "PENSION" : "Enter how much pension you receive",
-        "OTHER" : "Enter how much other you receive"
-      },
-      "HOW_OFTEN_RECEIVE" : {
-        "INCOME_JOB" : "Select how often you receive income from your job",
-        "UNIVERSAL_CREDIT" : "Select how often you receive Universal Credit",
-        "JOBSEEKER_INCOME" : "Select how often you receive Jobseeker’s Allowance (income based)",
-        "JOBSEEKER_CONTRIBUTION" : "Select how often you receive Jobseeker’s Allowance (contribution based)",
-        "INCOME_SUPPORT" : "Select how often you receive Income Support",
-        "WORKING_TAX" : "Select how often you receive Working Tax Credit",
-        "CHILD_TAX" : "Select how often you receive Child Tax Credit",
-        "CHILD_BENEFIT" : "Select how often you receive Child Benefit",
-        "COUNCIL_TAX" : "Select how often you receive Council Tax Support",
-        "PENSION" : "Select how often you receive pension",
-        "OTHER" : "Select how often you receive other"
-      },
-      "VALID_NUMBER_AMOUNT" : {
-        "INCOME_JOB" : "Enter a valid income from your job amount, maximum two decimal places",
-        "UNIVERSAL_CREDIT" : "Enter a valid Universal Credit amount, maximum two decimal places",
-        "JOBSEEKER_INCOME" : "Enter a valid Jobseeker’s Allowance (income based) amount, maximum two decimal places",
-        "JOBSEEKER_CONTRIBUTION" : "Enter a valid Jobseeker’s Allowance (contribution based) amount, maximum two decimal places",
-        "INCOME_SUPPORT" : "Enter a valid Income Support amount, maximum two decimal places",
-        "WORKING_TAX" : "Enter a valid Working Tax Credit amount, maximum two decimal places",
-        "CHILD_TAX" : "Enter a valid Child Tax Credit amount, maximum two decimal places",
-        "CHILD_BENEFIT" : "Enter a valid Child Benefit amount, maximum two decimal places",
-        "COUNCIL_TAX" : "Enter a valid Council Tax Support amount, maximum two decimal places",
-        "PENSION" : "Enter a valid pension amount, maximum two decimal places",
-        "OTHER" : "Enter a valid amount, maximum two decimal places"
-      },
-      "ENTER_OTHER_INCOME" : "Enter other income source"
-    },
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
     "SIGNER_ROLE_TOO_LONG": "You've entered too many characters",
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
+    "TRANSACTION_SOURCE" : {
+      "ENTER_OTHER_INCOME" : "Enter other income source",
+      "HOW_MUCH_INCOME" : {
+        "CHILD_TAX" : "Enter how much Child Tax Credit you receive",
+        "CHILD_BENEFIT" : "Enter how much Child Benefit you receive",
+        "COUNCIL_TAX" : "Enter how much Council Tax Support you receive",
+        "INCOME_JOB" : "Enter how much income from your job you receive",
+        "INCOME_SUPPORT" : "Enter how much Income Support you receive",
+        "JOBSEEKER_INCOME" : "Enter how much Jobseeker’s Allowance (income based) you receive",
+        "JOBSEEKER_CONTRIBUTION" : "Enter how much  Jobseeker’s Allowance (contribution based) you receive",
+        "OTHER" : "Enter how much other you receive",
+        "PENSION" : "Enter how much pension you receive",
+        "WORKING_TAX" : "Enter how much Working Tax Credit you receive",
+        "UNIVERSAL_CREDIT" : "Enter how much Universal Credit you receive"
+      },
+      "HOW_OFTEN_RECEIVE" : {
+        "CHILD_TAX" : "Select how often you receive Child Tax Credit",
+        "CHILD_BENEFIT" : "Select how often you receive Child Benefit",
+        "COUNCIL_TAX" : "Select how often you receive Council Tax Support",
+        "INCOME_JOB" : "Select how often you receive income from your job",
+        "INCOME_SUPPORT" : "Select how often you receive Income Support",
+        "JOBSEEKER_INCOME" : "Select how often you receive Jobseeker’s Allowance (income based)",
+        "JOBSEEKER_CONTRIBUTION" : "Select how often you receive Jobseeker’s Allowance (contribution based)",
+        "OTHER" : "Select how often you receive other",
+        "PENSION" : "Select how often you receive pension",
+        "UNIVERSAL_CREDIT" : "Select how often you receive Universal Credit",
+        "WORKING_TAX" : "Select how often you receive Working Tax Credit"
+      },
+      "VALID_NUMBER_AMOUNT" : {
+        "CHILD_TAX" : "Enter a valid Child Tax Credit amount, maximum two decimal places",
+        "CHILD_BENEFIT" : "Enter a valid Child Benefit amount, maximum two decimal places",
+        "COUNCIL_TAX" : "Enter a valid Council Tax Support amount, maximum two decimal places",
+        "INCOME_JOB" : "Enter a valid income from your job amount, maximum two decimal places",
+        "INCOME_SUPPORT" : "Enter a valid Income Support amount, maximum two decimal places",
+        "JOBSEEKER_INCOME" : "Enter a valid Jobseeker’s Allowance (income based) amount, maximum two decimal places",
+        "JOBSEEKER_CONTRIBUTION" : "Enter a valid Jobseeker’s Allowance (contribution based) amount, maximum two decimal places",
+        "OTHER" : "Enter a valid amount, maximum two decimal places",
+        "PENSION" : "Enter a valid pension amount, maximum two decimal places",
+        "UNIVERSAL_CREDIT" : "Enter a valid Universal Credit amount, maximum two decimal places",
+        "WORKING_TAX" : "Enter a valid Working Tax Credit amount, maximum two decimal places"
+      }
+    },
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",

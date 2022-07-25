@@ -8,6 +8,6 @@ export enum IncomeType {
   CHILD_TAX_CREDIT = 'Child Tax Credit',
   CHILD_BENEFIT = 'Child Benefit',
   COUNCIL_TAX_SUPPORT = 'Council Tax Support',
-  PENSION = 'pension',
+  PENSION = 'Pension',
   OTHER = 'other',
 }

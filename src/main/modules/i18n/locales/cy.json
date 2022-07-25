@@ -796,9 +796,9 @@
       "TITLE": "Vulnerability Questions"
     },
     "WHO_EMPLOYS_YOU": {
+      "ADD_ANOTHER_JOB" : "Ychwanegu swydd arall",
       "PAGE_TITLE": "Your employer",
-      "WHO_EMPLOYS" : "Pwy sy’n eich cyflogi",
-      "ADD_ANOTHER_JOB" : "Ychwanegu swydd arall"
+      "WHO_EMPLOYS" : "Pwy sy’n eich cyflogi"
     },
     "EMPLOYER" : {
       "EMPLOYER_NAME" : "Enw’r cyflogwr",
@@ -874,54 +874,54 @@
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
     "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
-    "TRANSACTION_SOURCE" : {
-      "HOW_MUCH_INCOME" : {
-        "INCOME_JOB" : "Nodwch faint o incwm ydych chi’n ei gael o’ch swydd",
-        "UNIVERSAL_CREDIT" : "Nodwch faint o Gredyd Cynhwysol ydych chi’n ei gael",
-        "JOBSEEKER_INCOME" : "Nodwch faint o Lwfans Ceisio Gwaith (yn seiliedig ar incwm) ydych chi’n ei gael",
-        "JOBSEEKER_CONTRIBUTION" : "Nodwch faint o Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau) ydych chi’n ei gael",
-        "INCOME_SUPPORT" : "Nodwch faint o Gymhorthdal Incwm ydych chi’n ei gael",
-        "WORKING_TAX" : "Nodwch faint o Gredyd Treth Gwaith ydych chi’n ei gael",
-        "CHILD_TAX" : "Nodwch faint o Gredyd Treth Plant ydych chi’n ei gael",
-        "CHILD_BENEFIT" : "Nodwch faint o Fudd-dal Plant ydych chi’n ei gael",
-        "COUNCIL_TAX" : "Nodwch faint o gymorth ydych chi’n ei gael i dalu Treth y Cyngor",
-        "PENSION" : "Nodwch faint o bensiwn ydych chi’n ei gael",
-        "OTHER" : "Nodwch faint o incwm arall ydych chi’n ei gael"
-      },
-      "HOW_OFTEN_RECEIVE" : {
-        "INCOME_JOB" : "Dewiswch pa mor aml ydych chi’n cael incwm o’ch swydd",
-        "UNIVERSAL_CREDIT" : "Dewiswch pa mor aml ydych chi’n cael Credyd Cynhwysol",
-        "JOBSEEKER_INCOME" : "Dewiswch pa mor aml ydych chi’n cael Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
-        "JOBSEEKER_CONTRIBUTION" : "Dewiswch pa mor aml ydych chi’n cael Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
-        "INCOME_SUPPORT" : "Dewiswch pa mor aml ydych chi’n cael Cymhorthdal Incwm",
-        "WORKING_TAX" : "Dewiswch pa mor aml ydych chi’n cael Credyd Treth Gwaith",
-        "CHILD_TAX" : "Dewiswch pa mor aml ydych chi’n cael Credyd Treth Plant",
-        "CHILD_BENEFIT" : "Dewiswch pa mor aml ydych chi’n cael Budd-dal Plant",
-        "COUNCIL_TAX" : "Dewiswch pa mor aml ydych chi’n cael cymorth i dalu Treth y Cyngor",
-        "PENSION" : "Dewiswch pa mor aml ydych chi’n cael pensiwn",
-        "OTHER" : "Dewiswch pa mor aml ydych chi’n cael unrhyw incwm arall"
-      },
-      "VALID_NUMBER_AMOUNT" : {
-        "INCOME_JOB" : "Rhowch swm dilys ar gyfer incwm o’ch swydd, dim mwy na dau le degol",
-        "UNIVERSAL_CREDIT" : "Rhowch swm dilys ar gyfer Credyd Cynhwysol, dim mwy na dau le degol",
-        "JOBSEEKER_INCOME" : "Rhowch swm dilys ar gyfer Lwfans Ceisio Gwaith (yn seiliedig ar incwm), dim mwy na dau le degol",
-        "JOBSEEKER_CONTRIBUTION" : "Rhowch swm dilys ar gyfer Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau), dim mwy na dau le degol",
-        "INCOME_SUPPORT" : "Rhowch swm dilys ar gyfer Cymhorthdal Incwm, dim mwy na dau le degol",
-        "WORKING_TAX" : "Rhowch swm dilys ar gyfer Credyd Treth Gwaith, dim mwy na dau le degol",
-        "CHILD_TAX" : "Rhowch swm dilys ar gyfer Credyd Treth Plant, dim mwy na dau le degol",
-        "CHILD_BENEFIT" : "Rhowch swm dilys ar gyfer Budd-dal Plant, dim mwy na dau le degol",
-        "COUNCIL_TAX" : "Rhowch swm dilys ar gyfer Cymorth Treth y Cyngor, dim mwy na dau le degol",
-        "PENSION" : "Rhowch swm dilys ar gyfer pensiwn, dim mwy na dau le degol",
-        "OTHER" : "Rhowch swm, dim mwy na dau le degol"
-      },
-      "ENTER_OTHER_INCOME" : "Tynnu'r ffynhonnell incwm hon"
-    },
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
     "SIGNER_ROLE_TOO_LONG": "You've entered too many characters",
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
+    "TRANSACTION_SOURCE" : {
+      "ENTER_OTHER_INCOME" : "Tynnu'r ffynhonnell incwm hon",
+      "HOW_MUCH_INCOME" : {
+        "CHILD_TAX" : "Nodwch faint o Gredyd Treth Plant ydych chi’n ei gael",
+        "CHILD_BENEFIT" : "Nodwch faint o Fudd-dal Plant ydych chi’n ei gael",
+        "COUNCIL_TAX" : "Nodwch faint o gymorth ydych chi’n ei gael i dalu Treth y Cyngor",
+        "INCOME_JOB" : "Nodwch faint o incwm ydych chi’n ei gael o’ch swydd",
+        "INCOME_SUPPORT" : "Nodwch faint o Gymhorthdal Incwm ydych chi’n ei gael",
+        "JOBSEEKER_INCOME" : "Nodwch faint o Lwfans Ceisio Gwaith (yn seiliedig ar incwm) ydych chi’n ei gael",
+        "JOBSEEKER_CONTRIBUTION" : "Nodwch faint o Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau) ydych chi’n ei gael",
+        "OTHER" : "Nodwch faint o incwm arall ydych chi’n ei gael",
+        "PENSION" : "Nodwch faint o bensiwn ydych chi’n ei gael",
+        "UNIVERSAL_CREDIT" : "Nodwch faint o Gredyd Cynhwysol ydych chi’n ei gael",
+        "WORKING_TAX" : "Nodwch faint o Gredyd Treth Gwaith ydych chi’n ei gael"
+      },
+      "VALID_NUMBER_AMOUNT" : {
+        "CHILD_TAX" : "Rhowch swm dilys ar gyfer Credyd Treth Plant, dim mwy na dau le degol",
+        "CHILD_BENEFIT" : "Rhowch swm dilys ar gyfer Budd-dal Plant, dim mwy na dau le degol",
+        "COUNCIL_TAX" : "Rhowch swm dilys ar gyfer Cymorth Treth y Cyngor, dim mwy na dau le degol",
+        "INCOME_JOB" : "Rhowch swm dilys ar gyfer incwm o’ch swydd, dim mwy na dau le degol",
+        "INCOME_SUPPORT" : "Rhowch swm dilys ar gyfer Cymhorthdal Incwm, dim mwy na dau le degol",
+        "JOBSEEKER_INCOME" : "Rhowch swm dilys ar gyfer Lwfans Ceisio Gwaith (yn seiliedig ar incwm), dim mwy na dau le degol",
+        "JOBSEEKER_CONTRIBUTION" : "Rhowch swm dilys ar gyfer Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau), dim mwy na dau le degol",
+        "OTHER" : "Rhowch swm, dim mwy na dau le degol",
+        "PENSION" : "Rhowch swm dilys ar gyfer pensiwn, dim mwy na dau le degol",
+        "UNIVERSAL_CREDIT" : "Rhowch swm dilys ar gyfer Credyd Cynhwysol, dim mwy na dau le degol",
+        "WORKING_TAX" : "Rhowch swm dilys ar gyfer Credyd Treth Gwaith, dim mwy na dau le degol"
+      },
+      "HOW_OFTEN_RECEIVE" : {
+        "CHILD_TAX" : "Dewiswch pa mor aml ydych chi’n cael Credyd Treth Plant",
+        "CHILD_BENEFIT" : "Dewiswch pa mor aml ydych chi’n cael Budd-dal Plant",
+        "COUNCIL_TAX" : "Dewiswch pa mor aml ydych chi’n cael cymorth i dalu Treth y Cyngor",
+        "INCOME_JOB" : "Dewiswch pa mor aml ydych chi’n cael incwm o’ch swydd",
+        "INCOME_SUPPORT" : "Dewiswch pa mor aml ydych chi’n cael Cymhorthdal Incwm",
+        "JOBSEEKER_INCOME" : "Dewiswch pa mor aml ydych chi’n cael Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
+        "JOBSEEKER_CONTRIBUTION" : "Dewiswch pa mor aml ydych chi’n cael Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
+        "OTHER" : "Dewiswch pa mor aml ydych chi’n cael unrhyw incwm arall",
+        "PENSION" : "Dewiswch pa mor aml ydych chi’n cael pensiwn",
+        "UNIVERSAL_CREDIT" : "Dewiswch pa mor aml ydych chi’n cael Credyd Cynhwysol",
+        "WORKING_TAX" : "Dewiswch pa mor aml ydych chi’n cael Credyd Treth Gwaith"
+      }
+    },
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
@@ -966,7 +966,7 @@
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",
     "VALID_TEXT_LENGTH": "You've entered too many characters",
-    "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
+    "VALID_TWO_DECIMAL_NUMBER": "Rhowch swm, dim mwy na dau le degol",
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",

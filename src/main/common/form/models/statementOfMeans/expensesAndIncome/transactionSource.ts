@@ -3,6 +3,7 @@ import {TransactionSchedule} from './transactionSchedule';
 import {MAX_AMOUNT_VALUE} from '../../../validators/validationConstraints';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
 import {ExpenseType} from './expenseType';
+import {IncomeType} from './incomeType';
 
 
 
@@ -24,25 +25,25 @@ export class ValidationErrors {
   static readonly AMOUNT_REQUIRED = (name: string, isIncome: boolean) => {
     if (isIncome) {
       switch (name) {
-        case 'Income from your job':
+        case IncomeType.JOB:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.INCOME_JOB';
-        case 'Universal Credit':
+        case IncomeType.UNIVERSAL_CREDIT:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.UNIVERSAL_CREDIT';
-        case 'Jobseeker’s Allowance (income based)':
+        case IncomeType.JOB_SEEKERS_ALLOWANCE_INCOME_BASED:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.JOBSEEKER_INCOME';
-        case 'Jobseeker’s Allowance (contribution based)':
+        case IncomeType.JOB_SEEKERS_ALLOWANCE_CONTRIBUTION_BASED:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.JOBSEEKER_CONTRIBUTION';
-        case 'Income Support':
+        case IncomeType.INCOME_SUPPORT:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.INCOME_SUPPORT';
-        case 'Working Tax Credit':
+        case IncomeType.WORKING_TAX_CREDIT:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.WORKING_TAX';
-        case 'Child Tax Credit':
+        case IncomeType.CHILD_TAX_CREDIT:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.CHILD_TAX';
-        case 'Child Benefit':
+        case IncomeType.CHILD_BENEFIT:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.CHILD_BENEFIT';
-        case 'Council Tax Support':
+        case IncomeType.COUNCIL_TAX_SUPPORT:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.COUNCIL_TAX';
-        case 'Pension':
+        case IncomeType.PENSION:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.PENSION';
         default:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.OTHER';
@@ -54,25 +55,25 @@ export class ValidationErrors {
   static readonly AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED = (name: string, isIncome: boolean) => {
     if (isIncome) {
       switch (name) {
-        case 'Income from your job':
+        case IncomeType.JOB:
           return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_JOB';
-        case 'Universal Credit':
+        case IncomeType.UNIVERSAL_CREDIT:
           return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.UNIVERSAL_CREDIT';
-        case 'Jobseeker’s Allowance (income based)':
+        case IncomeType.JOB_SEEKERS_ALLOWANCE_INCOME_BASED:
           return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.JOBSEEKER_INCOME';
-        case 'Jobseeker’s Allowance (contribution based)':
+        case IncomeType.JOB_SEEKERS_ALLOWANCE_CONTRIBUTION_BASED:
           return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.JOBSEEKER_CONTRIBUTION';
-        case 'Income Support':
+        case IncomeType.INCOME_SUPPORT:
           return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_SUPPORT';
-        case 'Working Tax Credit':
+        case IncomeType.WORKING_TAX_CREDIT:
           return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.WORKING_TAX';
-        case 'Child Tax Credit':
+        case IncomeType.CHILD_TAX_CREDIT:
           return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.CHILD_TAX';
-        case 'Child Benefit':
+        case IncomeType.CHILD_BENEFIT:
           return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.CHILD_BENEFIT';
-        case 'Council Tax Support':
+        case IncomeType.COUNCIL_TAX_SUPPORT:
           return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.COUNCIL_TAX';
-        case 'Pension':
+        case IncomeType.PENSION:
           return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.PENSION';
         default:
           return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.OTHER';
@@ -84,25 +85,25 @@ export class ValidationErrors {
   static readonly SCHEDULE_SELECT_AN_OPTION = (name: string, isIncome: boolean) => {
     if (isIncome) {
       switch (name) {
-        case 'Income from your job':
+        case IncomeType.JOB:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.INCOME_JOB';
-        case 'Universal Credit':
+        case IncomeType.UNIVERSAL_CREDIT:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.UNIVERSAL_CREDIT';
-        case 'Jobseeker’s Allowance (income based)':
+        case IncomeType.JOB_SEEKERS_ALLOWANCE_INCOME_BASED:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.JOBSEEKER_INCOME';
-        case 'Jobseeker’s Allowance (contribution based)':
+        case IncomeType.JOB_SEEKERS_ALLOWANCE_CONTRIBUTION_BASED:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.JOBSEEKER_CONTRIBUTION';
-        case 'Income Support':
+        case IncomeType.INCOME_SUPPORT:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.INCOME_SUPPORT';
-        case 'Working Tax Credit':
+        case IncomeType.WORKING_TAX_CREDIT:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.WORKING_TAX';
-        case 'Child Tax Credit':
+        case IncomeType.CHILD_TAX_CREDIT:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.CHILD_TAX';
-        case 'Child Benefit':
+        case IncomeType.CHILD_BENEFIT:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.CHILD_BENEFIT';
-        case 'Council Tax Support':
+        case IncomeType.COUNCIL_TAX_SUPPORT:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.COUNCIL_TAX';
-        case 'Pension':
+        case IncomeType.PENSION:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.PENSION';
         default:
           return 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.OTHER';
