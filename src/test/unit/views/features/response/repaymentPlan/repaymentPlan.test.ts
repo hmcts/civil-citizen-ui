@@ -5,14 +5,11 @@ import request from 'supertest';
 import { CITIZEN_REPAYMENT_PLAN } from '../../../../../../main/routes/urls';
 import { mockCivilClaim } from '../../../../../utils/mockDraftStore';
 import {
-  PAYMENT_FREQUENCY_REQUIRED,
-  EQUAL_INSTALMENTS_REQUIRED,
   AMOUNT_REQUIRED,
   VALID_TWO_DECIMAL_NUMBER,
   VALID_YEAR,
   VALID_MONTH,
   VALID_DAY,
-  FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED,
   VALID_FOUR_DIGIT_YEAR,
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import { DateFormatter } from '../../../../../../main/common/utils/dateFormatter';
@@ -22,6 +19,10 @@ const { JSDOM } = jsdom;
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
 
 describe('Repayment Plan View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -180,7 +181,7 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(EQUAL_INSTALMENTS_REQUIRED);
+      expect(errorSummaryMessage.innerHTML).toContain('ERRORS.EQUAL_INSTALMENTS_REQUIRED');
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#paymentAmount');
     });
@@ -208,7 +209,7 @@ describe('Repayment Plan View', () => {
 
     it('should display correct error summary message with correct link for Repayment Frequency', () => {
       const errorSummaryMessage = getErrorSummaryListElement(4);
-      expect(errorSummaryMessage.innerHTML).toContain(PAYMENT_FREQUENCY_REQUIRED);
+      expect(errorSummaryMessage.innerHTML).toContain('ERRORS.PAYMENT_FREQUENCY_REQUIRED');
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#repaymentFrequency');
     });
@@ -222,7 +223,7 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED);
+      expect(errorSummaryMessage.innerHTML).toContain('ERRORS.FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED');
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#firstRepaymentDate');
     });
