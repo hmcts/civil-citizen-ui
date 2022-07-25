@@ -51,7 +51,36 @@ export class ValidationErrors {
     return `Enter how much you pay for ${name ? name : ExpenseType.OTHER}`;
   };
   static readonly AMOUNT_INVALID_DECIMALS = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
-  static readonly AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
+  static readonly AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED = (name: string, isIncome: boolean) => {
+    if (isIncome) {
+      switch (name) {
+        case 'Income from your job':
+          return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_JOB';
+        case 'Universal Credit':
+          return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.UNIVERSAL_CREDIT';
+        case 'Jobseeker’s Allowance (income based)':
+          return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.JOBSEEKER_INCOME';
+        case 'Jobseeker’s Allowance (contribution based)':
+          return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.JOBSEEKER_CONTRIBUTION';
+        case 'Income Support':
+          return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_SUPPORT';
+        case 'Working Tax Credit':
+          return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.WORKING_TAX';
+        case 'Child Tax Credit':
+          return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.CHILD_TAX';
+        case 'Child Benefit':
+          return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.CHILD_BENEFIT';
+        case 'Council Tax Support':
+          return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.COUNCIL_TAX';
+        case 'Pension':
+          return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.PENSION';
+        default:
+          return 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.OTHER';
+      }
+    }
+    return `Enter a valid ${name} amount, maximum two decimal places`;
+
+  };
   static readonly SCHEDULE_SELECT_AN_OPTION = (name: string, isIncome: boolean) => {
     if (isIncome) {
       switch (name) {

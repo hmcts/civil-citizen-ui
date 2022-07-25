@@ -901,6 +901,19 @@
         "PENSION" : "Dewiswch pa mor aml ydych chi’n cael pensiwn",
         "OTHER" : "Dewiswch pa mor aml ydych chi’n cael unrhyw incwm arall"
       },
+      "VALID_NUMBER_AMOUNT" : {
+        "INCOME_JOB" : "Rhowch swm dilys ar gyfer incwm o’ch swydd, dim mwy na dau le degol",
+        "UNIVERSAL_CREDIT" : "Rhowch swm dilys ar gyfer Credyd Cynhwysol, dim mwy na dau le degol",
+        "JOBSEEKER_INCOME" : "Rhowch swm dilys ar gyfer Lwfans Ceisio Gwaith (yn seiliedig ar incwm), dim mwy na dau le degol",
+        "JOBSEEKER_CONTRIBUTION" : "Rhowch swm dilys ar gyfer Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau), dim mwy na dau le degol",
+        "INCOME_SUPPORT" : "Rhowch swm dilys ar gyfer Cymhorthdal Incwm, dim mwy na dau le degol",
+        "WORKING_TAX" : "Rhowch swm dilys ar gyfer Credyd Treth Gwaith, dim mwy na dau le degol",
+        "CHILD_TAX" : "Rhowch swm dilys ar gyfer Credyd Treth Plant, dim mwy na dau le degol",
+        "CHILD_BENEFIT" : "Rhowch swm dilys ar gyfer Budd-dal Plant, dim mwy na dau le degol",
+        "COUNCIL_TAX" : "Rhowch swm dilys ar gyfer Cymorth Treth y Cyngor, dim mwy na dau le degol",
+        "PENSION" : "Rhowch swm dilys ar gyfer pensiwn, dim mwy na dau le degol",
+        "OTHER" : "Rhowch swm, dim mwy na dau le degol"
+      },
       "ENTER_OTHER_INCOME" : "Tynnu'r ffynhonnell incwm hon"
     },
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
@@ -948,7 +961,7 @@
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
-    "VALID_POSITIVE_NUMBER": "Don't enter a negative number",
+    "VALID_POSITIVE_NUMBER": "Peidiwch â rhoi rhif negyddol",
     "VALID_POSTCODE": "Rhowch y cod post",
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",

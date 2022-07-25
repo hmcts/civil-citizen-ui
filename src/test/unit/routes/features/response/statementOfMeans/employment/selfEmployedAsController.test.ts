@@ -5,15 +5,12 @@ import nock from 'nock';
 import {CITIZEN_SELF_EMPLOYED_URL,ON_TAX_PAYMENTS_URL} from '../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import {
-  JOB_TITLE_REQUIRED,
-  ANNUAL_TURNOVER_REQUIRED,
-  AMOUNT_INVALID_DECIMALS,
-  VALID_POSITIVE_NUMBER,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {t} from 'i18next';
+
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
+
 
 describe('Self Employed As', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -31,7 +28,7 @@ describe('on Get', () => {
     await request(app).get(CITIZEN_SELF_EMPLOYED_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('What are you self-employed as?');
+        expect(res.text).toContain(t('PAGES.SELF_EMPLOYED.TITLE'));
       });
   });
   test('should return 500 status code when error occurs', async () => {
@@ -52,8 +49,8 @@ describe('on Post', () => {
       .send('')
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(JOB_TITLE_REQUIRED);
-        expect(res.text).toContain(ANNUAL_TURNOVER_REQUIRED);
+        expect(res.text).toContain(t('ERRORS.JOB_TITLE_REQUIRED'));
+        expect(res.text).toContain(t('ERRORS.ANNUAL_TURNOVER_REQUIRED'));
       });
   });
   test('should return errors when job title is defined and amount is not defined', async () => {
@@ -62,7 +59,7 @@ describe('on Post', () => {
       .send({jobTitle: 'Developer', annualTurnover: undefined})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(ANNUAL_TURNOVER_REQUIRED);
+        expect(res.text).toContain(t('ERRORS.ANNUAL_TURNOVER_REQUIRED'));
       });
   });
   test('should return errors when job title is defined and amount is -1', async () => {
@@ -71,7 +68,7 @@ describe('on Post', () => {
       .send({jobTitle: 'Developer', annualTurnover: -1})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_POSITIVE_NUMBER);
+        expect(res.text).toContain('enter a negative number');
       });
   });
   test('should return errors when job title is defined and amount is 0', async () => {
@@ -80,7 +77,7 @@ describe('on Post', () => {
       .send({jobTitle: 'Developer', annualTurnover: 0})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(ANNUAL_TURNOVER_REQUIRED);
+        expect(res.text).toContain(t('ERRORS.ANNUAL_TURNOVER_REQUIRED'));
       });
   });
   test('should return errors when job title is defined and amount has more than two decimal places', async () => {
@@ -89,7 +86,7 @@ describe('on Post', () => {
       .send({jobTitle: 'Developer', annualTurnover: 50.555})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(AMOUNT_INVALID_DECIMALS);
+        expect(res.text).toContain(t('ERRORS.AMOUNT_INVALID_DECIMALS'));
       });
   });
   test('should return errors when job title is not defined and amount is defined', async () => {
@@ -98,7 +95,7 @@ describe('on Post', () => {
       .send({jobTitle: undefined, annualTurnover: 70000})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(JOB_TITLE_REQUIRED);
+        expect(res.text).toContain(t('ERRORS.JOB_TITLE_REQUIRED'));
       });
   });
   test('should redirect with valid input', async () => {
@@ -118,7 +115,7 @@ describe('on Post', () => {
       .send({jobTitle: 'Developer', annualTurnover: 70000})
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
       });
   });
 });

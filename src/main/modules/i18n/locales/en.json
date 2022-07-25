@@ -902,6 +902,19 @@
         "PENSION" : "Select how often you receive pension",
         "OTHER" : "Select how often you receive other"
       },
+      "VALID_NUMBER_AMOUNT" : {
+        "INCOME_JOB" : "Enter a valid income from your job amount, maximum two decimal places",
+        "UNIVERSAL_CREDIT" : "Enter a valid Universal Credit amount, maximum two decimal places",
+        "JOBSEEKER_INCOME" : "Enter a valid Jobseeker’s Allowance (income based) amount, maximum two decimal places",
+        "JOBSEEKER_CONTRIBUTION" : "Enter a valid Jobseeker’s Allowance (contribution based) amount, maximum two decimal places",
+        "INCOME_SUPPORT" : "Enter a valid Income Support amount, maximum two decimal places",
+        "WORKING_TAX" : "Enter a valid Working Tax Credit amount, maximum two decimal places",
+        "CHILD_TAX" : "Enter a valid Child Tax Credit amount, maximum two decimal places",
+        "CHILD_BENEFIT" : "Enter a valid Child Benefit amount, maximum two decimal places",
+        "COUNCIL_TAX" : "Enter a valid Council Tax Support amount, maximum two decimal places",
+        "PENSION" : "Enter a valid pension amount, maximum two decimal places",
+        "OTHER" : "Enter a valid amount, maximum two decimal places"
+      },
       "ENTER_OTHER_INCOME" : "Enter other income source"
     },
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",

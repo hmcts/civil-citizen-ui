@@ -10,10 +10,7 @@ import {
 } from '../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import {
-  VALID_ENTER_AT_LEAST_ONE_EMPLOYER,
-  VALID_ENTER_AN_EMPLOYER_NAME,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {t} from 'i18next';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -120,7 +117,7 @@ describe('Who employs you', () => {
         .send({rows: [{employerName: '', jobTitle: ''}]})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_ENTER_AT_LEAST_ONE_EMPLOYER);
+          expect(res.text).toContain(t('ERRORS.VALID_ENTER_AT_LEAST_ONE_EMPLOYER'));
           expect(res.text).toContain('govuk-error-message');
         });
     });
@@ -140,10 +137,10 @@ describe('Who employs you', () => {
       const jobTitleInputErrors = getElementsByXPath("//input[contains(@id,'rows[0][jobTitle]')]/preceding-sibling::p[@class='govuk-error-message']", htmlDocument);
 
       expect(summaryErrors.length).toBe(1);
-      expect(summaryErrors[0].textContent).toBe(VALID_ENTER_AN_EMPLOYER_NAME);
+      expect(summaryErrors[0].textContent).toBe(t('ERRORS.VALID_ENTER_AN_EMPLOYER_NAME'));
       expect(formGroupErrors.length).toBe(0);
       expect(employerNameInputErrors.length).toBe(1);
-      expect(employerNameInputErrors[0].textContent).toContain(VALID_ENTER_AN_EMPLOYER_NAME);
+      expect(employerNameInputErrors[0].textContent).toContain(t('ERRORS.VALID_ENTER_AN_EMPLOYER_NAME'));
       expect(jobTitleInputErrors.length).toBe(0);
     });
 
@@ -153,7 +150,7 @@ describe('Who employs you', () => {
         .send({rows: [{employerName: 'Test', jobTitle: ''}]})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('ERRORS.JOB_TITLE_REQUIRED');
+          expect(res.text).toContain(t('ERRORS.JOB_TITLE_REQUIRED'));
           expect(res.text).toContain('govuk-error-message');
         });
     });
