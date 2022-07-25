@@ -1,4 +1,4 @@
-const formatBytesToKB = (bytes: number, decimals?:number): string => {
+const displayDocumentSizeInKB = (bytes: number, decimals?:number): string => {
   if(bytes === 0){
     return '0 KB';
   }
@@ -9,5 +9,5 @@ const formatBytesToKB = (bytes: number, decimals?:number): string => {
 };
 
 export {
-  formatBytesToKB,
+  displayDocumentSizeInKB,
 };
