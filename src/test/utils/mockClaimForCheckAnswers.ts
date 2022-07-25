@@ -619,7 +619,7 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   return claim as Claim;
 };
 
-export const createClaimWithFullRejection = (option: RejectAllOfClaimType): Claim => {
+export const createClaimWithFullRejection = (option: RejectAllOfClaimType, paidAmount?:number): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   if (claim.respondent1) {
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
@@ -627,7 +627,7 @@ export const createClaimWithFullRejection = (option: RejectAllOfClaimType): Clai
   claim.rejectAllOfClaim = {
     option: option,
     howMuchHaveYouPaid: {
-      amount: 100,
+      amount: paidAmount || 100,
       date: new Date('2022-02-14T00:00:00.000Z'),
       day: 14,
       month: 2,
