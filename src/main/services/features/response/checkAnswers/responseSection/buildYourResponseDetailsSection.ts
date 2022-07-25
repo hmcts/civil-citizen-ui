@@ -93,7 +93,7 @@ const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT', { lng: getLng(lang) }), claim.rejectAllOfClaim.howMuchHaveYouPaid.text, howMuchHaveYouPaidUrl, changeLabel(lang)),
   ]);
 
-  if(isPaidAmountEqulGreaterThanTotalAmount(claim)) yourResponseDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', { lng: getLng(lang) }), claim.rejectAllOfClaim.whyDoYouDisagree.text, whyDoYouDisagreeUrl, changeLabel(lang)))
+  if(isPaidAmountEqulGreaterThanTotalAmount(claim)) yourResponseDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', { lng: getLng(lang) }), claim.rejectAllOfClaim.whyDoYouDisagree.text, whyDoYouDisagreeUrl, changeLabel(lang)));
 };
 
 export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
