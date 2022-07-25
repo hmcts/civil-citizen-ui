@@ -9,6 +9,7 @@
   "View": "Weiv",
   "Save and continue": "Cadw a Pharhau",
   "COMMON": {
+    "BACK": "Back",
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
@@ -161,6 +162,11 @@
       "FOR_EXAMPLE": "Er enghraifft, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Payment date",
       "TITLE": "Ar ba ddyddiad byddwch yn talu"
+    },
+    "AGREED_RESPONSE_DEADLINE": {
+      "PAGE_TITLE": "Agree more time to respond",
+      "SUB_TITLE": "Enter the respond date you have agreed with {{ claimantName }}'s legal representative",
+      "TITLE": "You have already agreed to more time to respond"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled",
@@ -782,6 +788,7 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "DATE_REQUIRED": "Enter a date",
+    "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the orginal response date",
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
@@ -839,6 +846,8 @@
     "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
     "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
+    "VALID_AGREED_RESPONSE_DATE": "Enter the agreed response date",
+    "VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST": "Agreed response date must be in the future",
     "VALID_AMOUNT": "Enter a valid amount",
     "VALID_AMOUNT_ONE_POUND_OR_MORE": "Enter an amount of £1 or more",
     "VALID_AT_LEAST_ONE_OPTION": "You must select at least one option",
