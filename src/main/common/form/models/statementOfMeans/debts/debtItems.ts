@@ -21,7 +21,6 @@ export class DebtItems extends Form{
   @Validate(CurrencyValidator)
     monthlyPayments: string;
 
-
   constructor(debt: string, totalOwned: string, monthlyPayments: string) {
     super();
     this.debt = debt;

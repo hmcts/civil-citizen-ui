@@ -65,7 +65,6 @@ describe('Repayment Plan View', () => {
       expect(errorSummary.length).toEqual(0);
     });
 
-
     describe('Regular Payment Section', () => {
       it('should display "regular payments of" text', async () => {
         const paragraph = htmlDocument.getElementsByClassName('govuk-!-margin-0 govuk-body-m');
@@ -132,9 +131,7 @@ describe('Repayment Plan View', () => {
     });
   });
 
-
   describe('on POST', () => {
-
     const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
 
     beforeEach(async () => {

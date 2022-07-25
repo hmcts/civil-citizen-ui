@@ -12,6 +12,4 @@ export class CitizenTelephoneNumber extends Form {
     super(errors);
     this.telephoneNumber = telephoneNumber?.trim();
   }
-
-
 }

@@ -6,7 +6,6 @@ import {
   CITIZEN_WHO_EMPLOYS_YOU_URL,
   CITIZEN_SELF_EMPLOYED_URL,
 } from '../../../../../../../main/routes/urls';
-
 import {
   createClaimWithEmplymentDetails,
   createClaimWithEmployedCategory,
@@ -26,7 +25,6 @@ jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
-
 
 describe('Employed and Self-Employed Details', () => {
   it('should return employemt details when it exists', async () => {

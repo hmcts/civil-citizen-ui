@@ -227,5 +227,3 @@ function buildAddress(line1: string, line2: string, postcode: string, postTown: 
     PostTown: postTown,
   };
 }
-
-

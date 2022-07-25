@@ -3,7 +3,6 @@ import {ValidationError} from 'class-validator';
 import { Form } from '../../../../../main/common/form/models/form';
 import { DEFENDANT_POSTCODE_NOT_VALID, VALID_ADDRESS_LINE_1 } from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
-
 const ERROR_MESSAGE = 'Error message';
 const PROPERTY = 'property';
 
@@ -36,7 +35,6 @@ const _correspondenceAddressErrors = [
     constraints: { customInt: DEFENDANT_POSTCODE_NOT_VALID },
   },
 ];
-
 
 describe('Form get error message', () => {
   const form = new Form();

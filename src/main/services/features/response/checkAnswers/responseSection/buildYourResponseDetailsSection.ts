@@ -59,7 +59,6 @@ const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, sect
   );
 };
 
-
 const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: string | unknown, yourResponseDetailsSection: SummarySection) => {
   const yourResponseDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
   const yourReasonsToDisagreeHref = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_URL);

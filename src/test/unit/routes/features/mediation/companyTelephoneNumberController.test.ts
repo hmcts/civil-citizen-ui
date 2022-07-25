@@ -26,7 +26,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
       .reply(200, { id_token: citizenRoleToken });
   });
   describe('on Get', () => {
-    test('should return on company telephone number page successfully', async () => {
+    it('should return on company telephone number page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(CAN_WE_USE_COMPANY_URL)
         .expect((res) => {
@@ -34,7 +34,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           expect(res.text).toContain('Is '+civilClaimResponseMock.case_data.respondent1.contactPerson+' the right person for the mediation service to call?');
         });
     });
-    test('should return 500 status code when error occurs', async () => {
+    it('should return 500 status code when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CAN_WE_USE_COMPANY_URL)
@@ -49,7 +49,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const inValidPhoneNumber = '0123456789012345678901234567890';
     const validName = 'David';
     const inValidName = 'Daviddaviddaviddaviddaviddavido';
-    test('should return error when option is not selected', async () => {
+    it('should return error when option is not selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
@@ -59,7 +59,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           expect(res.text).toContain(VALID_YES_NO_OPTION);
         });
     });
-    test('should have errors when yes is an option, but no telephone number is provided', async () => {
+    it('should have errors when yes is an option, but no telephone number is provided', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.YES})
@@ -68,7 +68,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           expect(res.text).toContain(PHONE_NUMBER_REQUIRED);
         });
     });
-    test('should have errors when yes is an option but a long telephone number is provided', async () => {
+    it('should have errors when yes is an option but a long telephone number is provided', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.YES, mediationPhoneNumber: null, mediationContactPerson: null, mediationPhoneNumberConfirmation: inValidPhoneNumber, contactPerson: 'Test contact person' })
@@ -77,7 +77,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           expect(res.text).toContain(TEXT_TOO_MANY);
         });
     });
-    test('should have errors when no is an option, but no other thing provided', async () => {
+    it('should have errors when no is an option, but no other thing provided', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.NO})
@@ -87,7 +87,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           expect(res.text).toContain(PHONE_NUMBER_REQUIRED);
         });
     });
-    test('should have errors when no is an option, contact number is provided but no contact name', async () => {
+    it('should have errors when no is an option, contact number is provided but no contact name', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson:null   })
@@ -96,7 +96,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           expect(res.text).toContain(NAME_REQUIRED);
         });
     });
-    test('should have errors when no is an option, contact name is provided but no contact number', async () => {
+    it('should have errors when no is an option, contact name is provided but no contact number', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.NO, mediationPhoneNumber: null, mediationContactPerson: validName })
@@ -105,7 +105,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           expect(res.text).toContain(PHONE_NUMBER_REQUIRED);
         });
     });
-    test('should have errors when no is an option but both contact name and contact number are too long', async () => {
+    it('should have errors when no is an option but both contact name and contact number are too long', async () => {
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
         .send({ option: YesNo.NO, mediationPhoneNumber: inValidPhoneNumber, mediationContactPerson: inValidName })
@@ -114,7 +114,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           expect(res.text).toContain(TEXT_TOO_MANY);
         });
     });
-    test('should redirect with valid input', async () => {
+    it('should redirect with valid input', async () => {
 
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)
@@ -124,7 +124,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
-    test('should return status 500 when there is error', async () => {
+    it('should return status 500 when there is error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CAN_WE_USE_COMPANY_URL)

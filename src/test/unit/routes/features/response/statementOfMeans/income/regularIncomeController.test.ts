@@ -20,7 +20,7 @@ describe('Regular Income Controller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on GET', () => {
-    test('it should display page successfully', async () => {
+    it('it should display page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_MONTHLY_INCOME_URL)
@@ -29,7 +29,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain('What regular income do you receive?');
         });
     });
-    test('it should return status 500 when error occurs', async () => {
+    it('it should return status 500 when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_MONTHLY_INCOME_URL)
@@ -40,7 +40,7 @@ describe('Regular Income Controller', () => {
     });
   });
   describe('on POST', () => {
-    test('it should display errors when job is selected but no amount or schedule are specified', async () => {
+    it('it should display errors when job is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -59,7 +59,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(TestMessages.JOB_SCHEDULE_ERROR);
         });
     });
-    test('it should display errors for amount when amount has more than two decimal places', async () => {
+    it('it should display errors for amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -77,7 +77,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(TestMessages.JOB_CORRECT_AMOUNT);
         });
     });
-    test('it should display errors for amount when amount is negative', async () => {
+    it('it should display errors for amount when amount is negative', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -95,7 +95,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(TestMessages.JOB_CORRECT_AMOUNT);
         });
     });
-    test('it should show errors when other is selected and data for other is not correctly selected', async () => {
+    it('it should show errors when other is selected and data for other is not correctly selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -122,7 +122,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(TestMessages.OTHER_INCOME_RENTAL_SCHEDULE_ERROR);
         });
     });
-    test('it should redirect when all values are correct', async () => {
+    it('it should redirect when all values are correct', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
@@ -141,7 +141,7 @@ describe('Regular Income Controller', () => {
           expect(res.header.location).toEqual(CITIZEN_EXPLANATION_URL);
         });
     });
-    test('it should return 500 status when error occurs', async () => {
+    it('it should return 500 status when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)

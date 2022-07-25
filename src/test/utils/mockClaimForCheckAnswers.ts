@@ -27,7 +27,6 @@ import {UnemploymentCategory} from '../../main/common/form/models/statementOfMea
 import {UnemploymentDetails} from '../../main/common/form/models/statementOfMeans/unemployment/unemploymentDetails';
 import {SelfEmployedAs} from '../../main/common/models/selfEmployedAs';
 import {TaxPayments} from '../../main/common/models/taxPayments';
-
 import {Disability} from '../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {SevereDisability} from '../../main/common/form/models/statementOfMeans/severeDisability';
@@ -308,7 +307,6 @@ export const createClaimWithRegularIncome = (): Claim => {
 
   return claim as Claim;
 };
-
 
 export const createEmployers = () => {
 

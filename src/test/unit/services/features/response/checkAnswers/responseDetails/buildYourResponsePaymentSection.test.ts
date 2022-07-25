@@ -13,7 +13,6 @@ import PaymentOptionType
   from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 
-
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/i18n');

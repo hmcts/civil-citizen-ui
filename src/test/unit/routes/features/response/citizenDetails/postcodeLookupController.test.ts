@@ -62,7 +62,7 @@ describe('Postcode Lookup Controller - HTTP 500', () => {
       .get(mockPostcodePath)
       .reply(500, { status: 500, message: 'Error with OS Places service' });
   });
-  test('should return 500 as postcode incomplete', async () => {
+  it('should return 500 as postcode incomplete', async () => {
     await request(app)
       .get(POSTCODE_LOOKUP_URL + '?postcode=BT')
       .expect((res) => {
@@ -70,7 +70,6 @@ describe('Postcode Lookup Controller - HTTP 500', () => {
       });
   });
 });
-
 
 describe('Postcode Lookup Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -85,7 +84,7 @@ describe('Postcode Lookup Controller', () => {
 
   });
 
-  test('should return list of addresses', async () => {
+  it('should return list of addresses', async () => {
     await request(app)
       .get(POSTCODE_LOOKUP_URL + '?postcode=CV56GQ')
       .expect((req) => {
@@ -100,7 +99,7 @@ describe('Postcode Lookup Controller', () => {
       });
   });
 
-  test('should return 400 as postcode not provided', async () => {
+  it('should return 400 as postcode not provided', async () => {
     await request(app)
       .get(POSTCODE_LOOKUP_URL + '?postcode=')
       .expect((res) => {

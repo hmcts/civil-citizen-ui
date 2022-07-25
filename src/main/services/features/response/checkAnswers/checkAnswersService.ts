@@ -8,8 +8,6 @@ import {isCounterpartyIndividual} from '../../../../common/utils/taskList/tasks/
 import {QualifiedStatementOfTruth} from '../../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {isFullAmountReject} from '../../../../modules/claimDetailsService';
 import {ResponseType} from '../../../../common/form/models/responseType';
-
-
 import {buildYourDetailsSection} from './detailsSection/buildYourDetailsSection';
 import {buildYourResponseToClaimSection} from './responseSection/buildYourResponseToClaimSection';
 import {buildYourResponsePaymentSection} from './responseSection/buildYourResponsePaymentSection';
@@ -40,7 +38,6 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
   return buildSummarySections(claim, claimId, lang);
 };
-
 
 export const resetCheckboxFields = (statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): StatementOfTruthForm | QualifiedStatementOfTruth => {
   statementOfTruth.directionsQuestionnaireSigned = '';
