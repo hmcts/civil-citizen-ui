@@ -21,9 +21,6 @@ import {
 import PaymentOptionType from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
-import {
-  PaymentIntention,
-} from '../../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
 
 
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -78,12 +75,8 @@ describe('Response Payment Section', () => {
   });
   it('should return paid the claimant on response to claim when response financial section exists', async () => {
     //Given
-    const claim = ceateClaimWithPartialAdmission(YesNo.YES);
+    const claim = ceateClaimWithPartialAdmission(YesNo.YES, PaymentOptionType.INSTALMENTS);
     //When
-    if (claim.partialAdmission) {
-      claim.partialAdmission.paymentIntention = new PaymentIntention();
-      claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
-    }
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION_PART_ADMISSION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.BANK_AND_SAVINGS_ACCOUNTS');

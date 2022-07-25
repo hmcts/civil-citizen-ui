@@ -60,7 +60,7 @@ describe('Response To Claim', () => {
 
   it('should return paid the claimant on response to claim when response detail section exists', async () => {
     //Given
-    const claim = ceateClaimWithPartialAdmission(YesNo.YES);
+    const claim = ceateClaimWithPartialAdmission(YesNo.YES, PaymentOptionType.INSTALMENTS);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
