@@ -52,5 +52,12 @@ export const enum TestMessages {
   FEES_BASED_ON_AMOUNT = 'The fee is based on the amount you`re claiming, including interest.',
   DO_NOT_CREATE_CLAIM_IF_COUNTERCLAIM = 'Do not create a new claim if you want to counterclaim. Use form N9B.',
   EXPERT_GUIDANCE_TITLE = 'Using an expert in small claims',
-  DOCUMENT_NOT_AVAILABLE = 'Document is not available.'
+  DOCUMENT_NOT_AVAILABLE = 'Document is not available.',
+  DATE_NOT_MORE_THAN_28_DAYS = 'Agreed response date cannot be more than 28 days after the orginal response date',
+  VALID_AGREED_RESPONSE_DATE = 'Enter the agreed response date',
+  VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST = 'Agreed response date must be in the future',
+  VALID_DAY = 'Enter a valid day',
+  VALID_MONTH = 'Enter a valid month',
+  VALID_YEAR = 'Enter a valid year',
+  VALID_FOUR_DIGIT_YEAR = 'Enter a 4 digit year',
 }

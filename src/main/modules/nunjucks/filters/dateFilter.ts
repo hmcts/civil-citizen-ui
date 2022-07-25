@@ -14,6 +14,19 @@ export function dateFilter(value: string): string {
   return date.toLocaleString(DateTime.DATE_FULL, {locale: 'en-gb'});
 }
 
+/**
+ * This filter should be used when you want to display long format from date format dd-MM-yyyy
+ * usage (in njk):
+ * {{myDateVar | formatDate}}
+ * output:
+ *   6 April 2018
+ * @param value
+ */
+export function formatDate(value:string): string {
+  const date = DateTime.fromFormat(value, 'dd-MM-yyyy');
+  return date.toLocaleString(DateTime.DATE_FULL, {locale: 'en-gb'});
+}
+
 
 /* *
  * This filter should be used when you need to dynamically modify a date. The keyword 'now' may be given as

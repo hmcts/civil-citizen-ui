@@ -1,25 +1,25 @@
 import {TaskStatus} from '../../../common/models/taskList/TaskStatus';
 import {TaskList} from '../../../common/models/taskList/taskList';
-import {Claim} from '../../../common/models/claim';
 import {
   buildPrepareYourResponseSection,
+  buildResolvingTheClaimSection,
   buildRespondToClaimSection,
   buildSubmitSection,
   buildYourHearingRequirementsSection,
-  buildResolvingTheClaimSection,
 } from '../../../common/utils/taskList/taskListBuilder';
 import {Task} from '../../../common/models/taskList/task';
 import {getLng} from '../../../common/utils/languageToggleUtils';
 import {t} from 'i18next';
+import {Claim} from '../../../common/models/claim';
 
 let completed = 0;
 let total = 0;
 
-const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId: string, lang: string) => {
+const getTaskLists = (caseData: Claim, currentClaimId: string, lang: string) => {
 
   // TASK BUILDER
   // TODO : depending on the defendant's response type (full admission/partial admission/ rejection) we need to build new taskLists and include them in the taskGroups array
-  const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(claim, caseData, currentClaimId, lang);
+  const taskListPrepareYourResponse: TaskList = buildPrepareYourResponseSection(caseData, currentClaimId, lang);
   const taskListRespondToClaim: TaskList = buildRespondToClaimSection(caseData, currentClaimId, lang);
   const taskListResolvingTheClaim: TaskList = buildResolvingTheClaimSection(caseData, currentClaimId, lang);
   const taskListYourHearingRequirements: TaskList = buildYourHearingRequirementsSection(caseData, currentClaimId, lang);
@@ -35,12 +35,12 @@ const getTaskLists = (claim: Claim, caseData: Claim, currentClaimId: string, lan
   return filteredTaskGroups;
 };
 
-const outstandingTasksFromCase = (claim: Claim, claimId: string, lang: string): Task[] => {
-  return outstandingTasksFromTaskLists(getTaskLists(claim, claim, claimId, lang));
+const outstandingTasksFromCase = (caseData: Claim, claimId: string, lang: string): Task[] => {
+  return outstandingTasksFromTaskLists(getTaskLists(caseData, claimId, lang));
 };
 
 const isOutstanding = (task: Task): boolean => {
-  return task.status !== TaskStatus.COMPLETE && !task.isCheckTask ;
+  return task.status !== TaskStatus.COMPLETE && !task.isCheckTask;
 };
 
 const outstandingTasksFromTaskLists = (taskLists: TaskList[]): Task[] => {
@@ -61,12 +61,12 @@ const calculateTotalAndCompleted = (taskLists: TaskList[]) => {
 
 const getTitle = (taskLists: TaskList[], lang: string) => {
   calculateTotalAndCompleted(taskLists);
-  return completed < total ? t('TASK_LIST.APPLICATION_INCOMPLETE', { lng: getLng(lang) }) : t('TASK_LIST.APPLICATION_COMPLETE', { lng: getLng(lang) });
+  return completed < total ? t('TASK_LIST.APPLICATION_INCOMPLETE', {lng: getLng(lang)}) : t('TASK_LIST.APPLICATION_COMPLETE', {lng: getLng(lang)});
 };
 
 const getDescription = (taskLists: TaskList[], lang: string) => {
   calculateTotalAndCompleted(taskLists);
-  return  t('TASK_LIST.COMPLETED_SECTIONS', { completed, total, lng: getLng(lang) });
+  return t('TASK_LIST.COMPLETED_SECTIONS', {completed, total, lng: getLng(lang)});
 };
 
 const countCompletedTasks = (taskList: TaskList) => {

@@ -11,7 +11,7 @@ export class ResponseDeadline {
   @IsDefined({message: 'ERRORS.SELECT_REQUEST'})
     option?: ResponseOptions;
 
-  constructor(responseOption: ResponseOptions) {
+  constructor(responseOption?: ResponseOptions) {
     this.option = responseOption;
   }
 }
