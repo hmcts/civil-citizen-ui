@@ -27,15 +27,15 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   const alreadyPaidPartAdmit: string = claim.partialAdmission?.alreadyPaid?.option;
   const paidResponse: string = claim.partialAdmission?.paymentIntention?.paymentOption;
 
-  const getResponseToClaim = (responseType: string) => {
-    return responseType === ResponseType.FULL_DEFENCE
-      || responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY
+  const getResponseToClaim = (_responseType: string) => {
+    return _responseType === ResponseType.FULL_DEFENCE
+      || _responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY
       ? buildYourResponseToClaimSection(claim, claimId, lang)
       : null;
   };
 
-  const getResponseToClaimPA = (responseType: string) => {
-    return responseType === ResponseType.PART_ADMISSION
+  const getResponseToClaimPA = (_responseType: string) => {
+    return _responseType === ResponseType.PART_ADMISSION
       ? buildYourResponseToClaimSection(claim, claimId, lang)
       : null;
   };
@@ -46,14 +46,14 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
       : null;
   };
 
-  const getFinancialSectionFA = (responseType: string) => {
-    return responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY
+  const getFinancialSectionFA = (_responseType: string) => {
+    return _responseType === ResponseType.FULL_ADMISSION && paymentOption !== PaymentOptionType.IMMEDIATELY
       ? buildYourFinancialSection(claim, claimId, lang)
       : null;
   };
 
-  const getFinancialSectionPA = (responseType: string) => {
-    return responseType === ResponseType.PART_ADMISSION && alreadyPaidPartAdmit === YesNo.NO && paidResponse !== PaymentOptionType.IMMEDIATELY
+  const getFinancialSectionPA = (_responseType: string) => {
+    return _responseType === ResponseType.PART_ADMISSION && alreadyPaidPartAdmit === YesNo.NO && paidResponse !== PaymentOptionType.IMMEDIATELY
       ? buildYourFinancialSection(claim, claimId, lang)
       : null;
   };

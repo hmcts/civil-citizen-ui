@@ -45,7 +45,7 @@ export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, l
   });
 
 
-  switch (claim.respondent1?.responseType) {
+  switch (claim.respondent1.responseType) {
     case ResponseType.FULL_ADMISSION:
       paymentOption = claim.paymentOption;
       paymentDate = new Date(claim.paymentDate);
