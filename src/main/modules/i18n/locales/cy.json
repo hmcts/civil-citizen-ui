@@ -9,6 +9,7 @@
   "View": "Weiv",
   "Save and continue": "Cadw a Pharhau",
   "COMMON": {
+    "BACK": "Back",
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
@@ -162,6 +163,11 @@
       "PAGE_TITLE": "Payment date",
       "TITLE": "Ar ba ddyddiad byddwch yn talu"
     },
+    "AGREED_RESPONSE_DEADLINE": {
+      "PAGE_TITLE": "Agree more time to respond",
+      "SUB_TITLE": "Enter the respond date you have agreed with {{ claimantName }}'s legal representative",
+      "TITLE": "You have already agreed to more time to respond"
+    },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled",
       "TITLE": "A oes gennych anabledd difrifol?"
@@ -267,6 +273,10 @@
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED": "Sut wnaethoch chi dalu'r swm a hawliwyd?",
       "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Pam ydych chi'n anghytuno â'r swm a hawlir?",
       "RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE": "Faint o arian ydych chi'n cyfaddef bod arnoch chi?",
+      "RESPONSE_DO_YOU_OWE_THE_MONEY_CLAIMED": "A oes arnoch chi'r arian a hawlir?",
+      "RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID": "Faint ydych chi wedi'i dalu?",
+      "RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT": "Sut wnaethoch chi dalu'r swm hwn?",
+      "RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM": "Pam ydych chi'n gwrthod yr holl honiad hwn?",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Nifer y bobl",
@@ -365,6 +375,11 @@
       "PART_ADMISSION_HINT": "Rydych yn cytuno bod rhywfaint o arian yn ddyledus gennych ond nid y swm llawn a hawlir.",
       "PAY_IMMEDIATELY": "Talu ar unwaith",
       "REJECT_ALL": "Gwrthod yr hawliad i gyd",
+      "REJECT_ALL_CLAIM_TYPE": {
+        "ALREADY_PAID": "Rwyf wedi talu'r hyn sy'n ddyledus gen i",
+        "COUNTER_CLAIM": "Rwy’n anghytuno â’r hawliad ac rwyf am wneud gwrth-hawliad",
+        "DISPUTE": "Rwy'n anghytuno â'r holl hawliad"
+      },
       "REJECT_DEADLINE": "Mae gennych tan 4pm ar {{ deadline }} i wrthod yr hawliad cyfan.",
       "REJECT_PAID": "Os ydych yn gwrthod oherwydd eich bod yn credu eich bod wedi talu'r arian, mae gan yr hawlydd 28 i ddweud wrthych chi a'r llys p'un a yw'n bwrw ymlaen â'r hawliad.",
       "REJECT_WHOLE_CLAIM": "Os ydych yn gwrthod yr hawliad cyfan, gall yr hawliad gael ei drosglwyddo i ganolfan wrandawiadau Llys Sirol.",
@@ -775,6 +790,7 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "DATE_REQUIRED": "Enter a date",
+    "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the orginal response date",
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
@@ -832,6 +848,8 @@
     "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
     "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
+    "VALID_AGREED_RESPONSE_DATE": "Enter the agreed response date",
+    "VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST": "Agreed response date must be in the future",
     "VALID_AMOUNT": "Enter a valid amount",
     "VALID_AMOUNT_ONE_POUND_OR_MORE": "Enter an amount of £1 or more",
     "VALID_AT_LEAST_ONE_OPTION": "You must select at least one option",
