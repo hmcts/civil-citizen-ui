@@ -62,7 +62,7 @@ export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, l
 
   switch (paymentOption) {
     case PaymentOptionType.IMMEDIATELY:
-      if(claim.respondent1.responseType === ResponseType.FULL_ADMISSION) {
+      if(claim.isFullAdmission()) {
         responseSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY', {lng: getLng(lang)}), t(`COMMON.RESPONSE_TYPE.${claim.respondent1.responseType}`, {lng: getLng(lang)}), yourResponseHref, changeLabel(lang)));
       }
       responseSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_OPTION.${paymentOption}`, { lng: getLng(lang) }), paymentOptionHref, changeLabel(lang)));
