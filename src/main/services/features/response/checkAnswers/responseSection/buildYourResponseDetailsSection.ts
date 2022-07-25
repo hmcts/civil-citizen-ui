@@ -59,6 +59,8 @@ const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, sect
   );
 };
 
+const isPaidAmountEqulGreaterThanTotalAmount = (claim:Claim) => claim.rejectAllOfClaim.howMuchHaveYouPaid.amount < claim.totalClaimAmount ? true : false;
+
 
 const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: string | unknown, yourResponseDetailsSection: SummarySection) => {
   const yourResponseDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
@@ -89,8 +91,9 @@ const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(Number(claim.rejectAllOfClaim.howMuchHaveYouPaid.amount)), howMuchHaveYouPaidUrl, changeLabel(lang)),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', { lng: getLng(lang) }), formatDateToFullDate(claim.rejectAllOfClaim.howMuchHaveYouPaid.date), howMuchHaveYouPaidUrl, changeLabel(lang)),
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT', { lng: getLng(lang) }), claim.rejectAllOfClaim.howMuchHaveYouPaid.text, howMuchHaveYouPaidUrl, changeLabel(lang)),
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', { lng: getLng(lang) }), claim.rejectAllOfClaim.whyDoYouDisagree.text, whyDoYouDisagreeUrl, changeLabel(lang)),
   ]);
+
+  if(isPaidAmountEqulGreaterThanTotalAmount(claim)) yourResponseDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', { lng: getLng(lang) }), claim.rejectAllOfClaim.whyDoYouDisagree.text, whyDoYouDisagreeUrl, changeLabel(lang)))
 };
 
 export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
@@ -103,15 +106,19 @@ export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, l
 
   switch(claim.respondent1.responseType) {
     case ResponseType.PART_ADMISSION:
-      getSummaryRowsForPartAdmission(claim,claimId,lang,yourResponseDetailsSection);
+      getSummaryRowsForPartAdmission(claim, claimId, lang, yourResponseDetailsSection);
+      addTimeline(claim, claimId, lang, yourResponseDetailsSection);
+      addEvidence(claim, claimId, lang, yourResponseDetailsSection);
       break;
     case ResponseType.FULL_DEFENCE:
-      getSummaryRowsForFullReject(claim,claimId,lang,yourResponseDetailsSection);
+      getSummaryRowsForFullReject(claim, claimId, lang, yourResponseDetailsSection);
+      if (isPaidAmountEqulGreaterThanTotalAmount(claim)) {
+        addTimeline(claim, claimId, lang, yourResponseDetailsSection);
+        addEvidence(claim, claimId, lang, yourResponseDetailsSection);
+      }
       break;
   }
 
-  addTimeline(claim, claimId, lang, yourResponseDetailsSection);
-  addEvidence(claim, claimId, lang, yourResponseDetailsSection);
 
   return yourResponseDetailsSection;
 };

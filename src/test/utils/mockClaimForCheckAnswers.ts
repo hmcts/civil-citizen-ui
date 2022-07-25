@@ -638,6 +638,7 @@ export const createClaimWithFullRejection = (option: RejectAllOfClaimType): Clai
       text: 'Reasons for disagree',
     },
   };
+  claim.totalClaimAmount = 1000,
   claim.paymentOption = undefined;
   return claim;
 };
