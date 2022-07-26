@@ -825,6 +825,15 @@
     "VALID_DATE_IN_PAST": "Enter date before ",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DAY": "Enter a valid day",
+    "VALID_DEBT_AMOUNT": {
+      "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
+      "ELECTRICITY": "Enter a valid Electricity amount, maximum two decimal places",
+      "GAS": "Enter a valid Gas amount, maximum two decimal places",
+      "MAINTENANCE": "Enter a valid Maintenance Payments amount, maximum two decimal places",
+      "MORTGAGE": "Enter a valid Mortgage amount, maximum two decimal places",
+      "RENT": "Enter a valid Rent amount, maximum two decimal places",
+      "WATER": "Enter a valid Water amount, maximum two decimal places"
+    },
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_JOB_TITLE": "Enter a job title",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
