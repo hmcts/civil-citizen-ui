@@ -88,10 +88,13 @@
       "BACK": "Back to task list"
     },
     "SCHEDULE": {
-      "FOUR_WEEKS": "Four weeks",
-      "MONTH": "Month",
-      "TWO_WEEKS": "Two weeks",
-      "WEEK": "Week"
+      "FOUR_WEEKS": "4 weeks",
+      "MONTH": "month",
+      "TWO_WEEKS": "2 weeks",
+      "WEEK": "Week",
+      "TWO_WEEKS_LETTERS" : "Two weeks",
+      "FOUR_WEEKS_LETTERS" : "Four weeks",
+      "MONTH_UPPER_CASE" : "Month"
     },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
@@ -890,8 +893,8 @@
         "JOBSEEKER_CONTRIBUTION" : "Enter how much  Jobseeker’s Allowance (contribution based) you receive",
         "OTHER" : "Enter how much other you receive",
         "PENSION" : "Enter how much pension you receive",
-        "WORKING_TAX" : "Enter how much Working Tax Credit you receive",
-        "UNIVERSAL_CREDIT" : "Enter how much Universal Credit you receive"
+        "UNIVERSAL_CREDIT" : "Enter how much Universal Credit you receive",
+        "WORKING_TAX" : "Enter how much Working Tax Credit you receive"
       },
       "HOW_OFTEN_RECEIVE" : {
         "CHILD_TAX" : "Select how often you receive Child Tax Credit",
