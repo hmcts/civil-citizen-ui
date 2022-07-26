@@ -14,18 +14,18 @@ export class RepaymentPlanForm{
   @MinDate(new Date(Date.now()), { message: 'ERRORS.FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED'})
     firstRepaymentDate?: Date;
 
-  @IsDefined({ message: 'ERRORS.VALID_YEAR' })
-  @Min(1000, { message: 'ERRORS.VALID_FOUR_DIGIT_YEAR' })
-  @Max(9999,{message:'ERRORS.VALID_YEAR'})
-    year?: number;
+  @Min(1,{message:'ERRORS.VALID_DAY' })
+  @Max(31,{message:'ERRORS.VALID_DAY' })
+    day?: number;
 
   @Min(1,{message:'ERRORS.VALID_MONTH' })
   @Max(12,{message:'ERRORS.VALID_MONTH' })
     month?: number;
 
-  @Min(1,{message:'ERRORS.VALID_DAY' })
-  @Max(31,{message:'ERRORS.VALID_DAY' })
-    day?: number;
+  @IsDefined({ message: 'ERRORS.VALID_YEAR' })
+  @Min(1000, { message: 'ERRORS.VALID_FOUR_DIGIT_YEAR' })
+  @Max(9999,{message:'ERRORS.VALID_YEAR'})
+    year?: number;
 
   @IsDefined({ message: 'ERRORS.PAYMENT_FREQUENCY_REQUIRED' })
     repaymentFrequency?: string;

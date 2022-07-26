@@ -3,14 +3,13 @@ import * as express from 'express';
 import {RepaymentPlanForm} from '../../../../../../common/form/models/repaymentPlan/repaymentPlanForm';
 import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
 import {DateFormatter} from '../../../../../../common/utils/dateFormatter';
-import {GenericForm} from 'common/form/models/genericForm';
+import {GenericForm} from '../../../../../../common/form/models/genericForm';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
 } from '../../../../../../services/features/response/repaymentPlan/repaymentPlanService';
 
 import {CITIZEN_REPAYMENT_PLAN_FULL_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
-import {validateForm} from '../../../../../../common/form/validators/formValidator';
 import {getCaseDataFromStore} from '../../../../../../modules/draft-store/draftStoreService';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
@@ -48,7 +47,7 @@ repaymentPlanFullAdmissionController.post(CITIZEN_REPAYMENT_PLAN_FULL_URL,
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await saveRepaymentPlanData(req.params.id, form);
+        await saveRepaymentPlanData(req.params.id, form.model);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
       }
     } catch (error) {
