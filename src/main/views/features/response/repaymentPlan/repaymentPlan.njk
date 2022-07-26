@@ -19,7 +19,7 @@
       {% set title = t("Your repayment plan") %}
       {% set errors = form.getAllErrors() %}
       {% set totalAmountClaimedText = t('The total amount claimed is £' + form.model.totalClaimAmount + '. This includes the claim fee and any interest.') %}
-      {% set totalAmount = form.totalClaimAmount %}
+      {% set totalAmount = form.model.totalClaimAmount %}
 
       {% if admission %}
         {% set totalAmountClaimedText = t('You admit you owe £' + amount + '.') %}
