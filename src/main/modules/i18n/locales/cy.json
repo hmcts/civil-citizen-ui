@@ -567,7 +567,7 @@
       "REJECT_PAY_SOONER" : "Gallant wrthod eich cynnig os ydynt yn credu y gallwch dalu’n gynt.",
       "REJECT_COURT_MAKE_NEW_PLAN" : "Os byddant yn gwrthod eich cynnig, bydd y llys yn llunio cynllun newydd gan ddefnyddio eich manylion ariannol.",
       "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
-      "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "'If they reject your plan, the court will make a new plan based on your financial details."
+      "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
     "FREE_TELEPHONE_MEDIATION": {
       "PAGE_TITLE": "Free telephone mediation"

@@ -567,7 +567,7 @@
       "REJECT_PAY_SOONER" : "They can reject your proposal if they believe you can pay sooner.",
       "REJECT_COURT_MAKE_NEW_PLAN" : "If they reject your proposal, the court will make a new plan using your financial details.",
       "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
-      "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "'If they reject your plan, the court will make a new plan based on your financial details."
+      "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
     "FREE_TELEPHONE_MEDIATION": {
       "PAGE_TITLE": "Free telephone mediation"
