@@ -7,7 +7,6 @@ import {SignatureType} from '../../../../common/models/signatureType';
 import {isCounterpartyIndividual} from '../../../../common/utils/taskList/tasks/taskListHelpers';
 import {QualifiedStatementOfTruth} from '../../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {isFullAmountReject} from '../../../../modules/claimDetailsService';
-import {ResponseType} from '../../../../common/form/models/responseType';
 import {buildYourDetailsSection} from './detailsSection/buildYourDetailsSection';
 import {buildYourResponseToClaimSection} from './responseSection/buildYourResponseToClaimSection';
 import {buildYourResponsePaymentSection} from './responseSection/buildYourResponsePaymentSection';
