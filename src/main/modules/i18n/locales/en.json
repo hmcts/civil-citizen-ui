@@ -17,9 +17,6 @@
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "MONTH": "Month",
     "MONTHS": "Months",
-    "WEEK" : "Week",
-    "TWO_WEEKS" : "Two weeks",
-    "FOUR_WEEKS" : "Four weeks",
     "NO": "No",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
@@ -91,9 +88,9 @@
       "BACK": "Back to task list"
     },
     "SCHEDULE": {
-      "FOUR_WEEKS": "4 weeks",
-      "MONTH": "month",
-      "TWO_WEEKS": "2 weeks",
+      "FOUR_WEEKS": "Four weeks",
+      "MONTH": "Month",
+      "TWO_WEEKS": "Two weeks",
       "WEEK": "Week"
     },
     "STATEMENT_OF_TRUTH": {

@@ -51,22 +51,22 @@
       items: [
         {
           value: TransactionSchedule.WEEK,
-          text: t('COMMON.WEEK'),
+          text: t('COMMON.SCHEDULE.WEEK'),
           checked: true if transactionSource.schedule == TransactionSchedule.WEEK
         },
         {
           value: TransactionSchedule.TWO_WEEKS,
-          text: t('COMMON.TWO_WEEKS'),
+          text: t('COMMON.SCHEDULE.TWO_WEEKS'),
           checked: true if transactionSource.schedule == TransactionSchedule.TWO_WEEKS
         },
         {
           value: TransactionSchedule.FOUR_WEEKS,
-          text: t('COMMON.FOUR_WEEKS'),
+          text: t('COMMON.SCHEDULE.FOUR_WEEKS'),
           checked: true if transactionSource.schedule == TransactionSchedule.FOUR_WEEKS
         },
         {
           value: TransactionSchedule.MONTH,
-          text: t('COMMON.MONTH'),
+          text: t('COMMON.SCHEDULE.MONTH'),
           checked: true if transactionSource.schedule == TransactionSchedule.MONTH
         }
       ],
@@ -87,3 +87,4 @@
   {% macro otherTransactionDetails(t,property, index, transactionSource, labels, form, removeButton) %}
     {{ transactionDetails(t,'', property +'['+index +']', transactionSource, labels, form, true, removeButton) }}
   {% endmacro %}
+</div>
