@@ -1,16 +1,16 @@
 import * as express from 'express';
-import { RepaymentPlanForm } from '../../../../common/form/models/repaymentPlan/repaymentPlanForm';
-import { constructResponseUrlWithIdParams } from '../../../../common/utils/urlFormatter';
-import { DateFormatter } from '../../../../common/utils/dateFormatter';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import { RepaymentPlanForm } from 'common/form/models/repaymentPlan/repaymentPlanForm';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { DateFormatter } from 'common/utils/dateFormatter';
+import {GenericForm} from 'common/form/models/genericForm';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
-} from '../../../../services/features/response/repaymentPlan/repaymentPlanService';
+} from '../../../../../../services/features/response/repaymentPlan/repaymentPlanService';
 import {
   CITIZEN_REPAYMENT_PLAN,
   CLAIM_TASK_LIST_URL,
-} from '../../../urls';
+} from '../../../../../urls';
 
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';

@@ -48,7 +48,7 @@ import contactThemController from './features/dashboard/contactThemController';
 import howMuchDoYouOweController from './features/response/admission/partialAdmission/howMuchDoYouOweController';
 import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
 import whyDoYouDisagreeController from './features/response/admission/partialAdmission/whyDoYouDisagreeController';
-import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
+import repaymentPlanController from './features/response/admission/fullAdmission/repaymentPlan/repaymentPlanController';
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
 import mediationIndividualPhoneController from './features/mediation/mediationIndividualPhoneController';
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
