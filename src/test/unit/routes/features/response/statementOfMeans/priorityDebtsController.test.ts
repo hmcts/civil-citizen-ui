@@ -20,7 +20,7 @@ describe('Priority Debts Controller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on GET', () => {
-    it('it should display page successfully', async () => {
+    it('should display page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_PRIORITY_DEBTS_URL)
@@ -29,7 +29,7 @@ describe('Priority Debts Controller', () => {
           expect(res.text).toContain('Debts you&#39;re behind on');
         });
     });
-    it('it should return 500 status code when there is an error', async () => {
+    it('should return 500 status code when there is an error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_PRIORITY_DEBTS_URL)
@@ -40,7 +40,7 @@ describe('Priority Debts Controller', () => {
     });
   });
   describe('on POST', () => {
-    it('it should show errors when gas is selected but no amount or schedule selected', async () => {
+    it('should show errors when gas is selected but no amount or schedule selected', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
@@ -54,7 +54,7 @@ describe('Priority Debts Controller', () => {
           expect(res.text).toContain(TestMessages.GAS_SCHEDULE_ERROR);
         });
     });
-    it('it should show errors when gas and water are selected but no amount or schedule selected', async () => {
+    it('should show errors when gas and water are selected but no amount or schedule selected', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
@@ -73,7 +73,7 @@ describe('Priority Debts Controller', () => {
           expect(res.text).toContain(TestMessages.WATER_AMOUNT_ERROR);
         });
     });
-    it('it should show errors when gas is selected but no schedule selected', async () => {
+    it('should show errors when gas is selected but no schedule selected', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
@@ -86,7 +86,7 @@ describe('Priority Debts Controller', () => {
           expect(res.text).toContain(TestMessages.GAS_SCHEDULE_ERROR);
         });
     });
-    it('it should show errors when gas is selected and amount is negative', async () => {
+    it('should show errors when gas is selected and amount is negative', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
@@ -99,7 +99,7 @@ describe('Priority Debts Controller', () => {
           expect(res.text).toContain(TestMessages.GAS_CORRECT_AMOUNT_ERROR);
         });
     });
-    it('it should show errors when gas is selected and amount has three decimal places', async () => {
+    it('should show errors when gas is selected and amount has three decimal places', async () => {
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({
@@ -112,7 +112,7 @@ describe('Priority Debts Controller', () => {
           expect(res.text).toContain(TestMessages.GAS_CORRECT_AMOUNT_ERROR);
         });
     });
-    it('it should redirect when no data is selected', async () => {
+    it('should redirect when no data is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
@@ -122,7 +122,7 @@ describe('Priority Debts Controller', () => {
           expect(res.header.location).toEqual(CITIZEN_DEBTS_URL);
         });
     });
-    it('it should redirect when correct data is selected', async () => {
+    it('should redirect when correct data is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
@@ -137,7 +137,7 @@ describe('Priority Debts Controller', () => {
         });
     });
 
-    it('it should return status 500 when error occurs', async () => {
+    it('should return status 500 when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)

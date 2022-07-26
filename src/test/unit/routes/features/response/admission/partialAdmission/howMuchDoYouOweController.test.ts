@@ -41,7 +41,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
 
   describe('on POST', () => {
     // mock totalClaimAmount is £110
-    it('it should show errors when no amount is provided', async () => {
+    it('should show errors when no amount is provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -51,7 +51,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
         });
     });
-    it('it should show errors when amount 0 is provided', async () => {
+    it('should show errors when amount 0 is provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -61,7 +61,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
         });
     });
-    it('it should show errors when more than 2 decimals provided', async () => {
+    it('should show errors when more than 2 decimals provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -71,7 +71,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
         });
     });
-    it('it should show errors when negative amount is provided', async () => {
+    it('should show errors when negative amount is provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -81,7 +81,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
         });
     });
-    it('it should show errors when non-numeric amount is provided', async () => {
+    it('should show errors when non-numeric amount is provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -91,7 +91,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
         });
     });
-    it('it should show errors when provided amount is bigger than Claim amount', async () => {
+    it('should show errors when provided amount is bigger than Claim amount', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -101,7 +101,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
         });
     });
-    it('it should show errors when provided amount is equal to Claim amount', async () => {
+    it('should show errors when provided amount is equal to Claim amount', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
