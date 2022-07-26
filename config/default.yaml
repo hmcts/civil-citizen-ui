@@ -25,7 +25,7 @@ services:
       key:
       tls: false
     legacy:
-      url: 'http://localhost:8800'
+      url: 'http://localhost:8765'
       s2s:
         microserviceName: 'cmc'
         primarySecret: 'not-a-real-primary-secret'

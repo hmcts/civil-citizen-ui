@@ -58,7 +58,7 @@ import TimelineRow from '../../main/common/form/models/timeLineOfEvents/timeline
 import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
 import {DefendantEvidence} from '../../main/common/models/evidence/evidence';
-import {Evidence} from '../../main/common/form/models/evidence/evidence';
+import { Evidence } from '../../main/common/form/models/evidence/evidence';
 import RejectAllOfClaimType from '../../main/common/form/models/rejectAllOfClaimType';
 
 const CONTACT_PERSON = 'The Post Man';
@@ -96,6 +96,11 @@ export const createClaimWithRespondentDetailsWithPaymentOption = (paymentOption:
     firstRepaymentDate: new Date('2022-06-25'),
   };
   claim.paymentDate = new Date('2022-06-25');
+  claim.statementOfMeans = {
+    explanation: {
+      text: 'Reasons cannot pay immediately',
+    },
+  };
   return claim;
 };
 
@@ -189,7 +194,7 @@ export const createClaimWithNoCourtOrders = () => {
   return claim as Claim;
 };
 
-export const createClaimWithDebts = (option: YesNo) => {
+export const createClaimWithDebts = (option:YesNo) => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
@@ -481,7 +486,7 @@ export const createClaimWithEmployedCategory = (): Claim => {
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.EMPLOYED];
-  const employment: Employment = {declared: true, employmentType: employmentType};
+  const employment: Employment = { declared: true, employmentType: employmentType };
 
   claim.statementOfMeans = {
     employment: employment,
@@ -496,9 +501,9 @@ export const createClaimWithSelfEmployedAndTaxBehind = (): Claim => {
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.SELF_EMPLOYED];
-  const employment: Employment = {declared: true, employmentType: employmentType};
-  const selfEmployedAs: SelfEmployedAs = {jobTitle: 'Developer', annualTurnover: 50000};
-  const taxPayments: TaxPayments = {owed: true, amountOwed: 200, reason: 'Tax payment reasons'};
+  const employment: Employment = { declared: true, employmentType: employmentType };
+  const selfEmployedAs: SelfEmployedAs = { jobTitle: 'Developer', annualTurnover: 50000 };
+  const taxPayments: TaxPayments = { owed: true, amountOwed: 200, reason: 'Tax payment reasons'};
 
   claim.statementOfMeans = {
     employment: employment,
@@ -514,9 +519,9 @@ export const createClaimWithSelfEmployedNoTaxBehind = (): Claim => {
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.SELF_EMPLOYED];
-  const employment: Employment = {declared: true, employmentType: employmentType};
-  const selfEmployedAs: SelfEmployedAs = {jobTitle: 'Developer', annualTurnover: 50000};
-  const taxPayments: TaxPayments = {owed: false, amountOwed: undefined, reason: ''};
+  const employment: Employment = { declared: true, employmentType: employmentType };
+  const selfEmployedAs: SelfEmployedAs = { jobTitle: 'Developer', annualTurnover: 50000 };
+  const taxPayments: TaxPayments = { owed: false, amountOwed: undefined, reason: ''};
 
   claim.statementOfMeans = {
     employment: employment,
@@ -575,7 +580,7 @@ export const createClaimWithUnemploymentCategoryOTHER = (): Claim => {
   return claim as Claim;
 };
 
-export const createClaimWithDisability = (option: YesNo): Claim => {
+export const createClaimWithDisability = (option:YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: Disability = new Disability(option);
@@ -587,7 +592,7 @@ export const createClaimWithDisability = (option: YesNo): Claim => {
   return claim;
 };
 
-export const createClaimWithDisabilityAndSevereDisability = (optionDisability: YesNo, optionSevereDisability: YesNo): Claim => {
+export const createClaimWithDisabilityAndSevereDisability = (optionDisability:YesNo,optionSevereDisability:YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: Disability = new Disability(optionDisability);
@@ -599,7 +604,7 @@ export const createClaimWithDisabilityAndSevereDisability = (optionDisability: Y
   return claim;
 };
 
-export const createClaimWithResidence = (value: string, displayValue: string): Claim => {
+export const createClaimWithResidence = (value:string, displayValue:string): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const residence: Residence = new Residence(new ResidenceType(value, displayValue), '');
@@ -646,10 +651,10 @@ export const createClaimWithCohabiting = (
   return claim;
 };
 
-export const createClaimWithDependants = (declared: boolean, under11?: number, between11and15?: number, between16and19?: number, numberOfChildrenLivingWithYou?: number): Claim => {
+export const createClaimWithDependants = (declared: boolean, under11?:number, between11and15?:number, between16and19?:number, numberOfChildrenLivingWithYou?:number): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const numberOfChildren: NumberOfChildren = new NumberOfChildren(under11, between11and15, between16and19);
+  const numberOfChildren: NumberOfChildren = new NumberOfChildren(under11,between11and15,between16and19);
   const dependants: Dependants = new Dependants(declared, numberOfChildren);
   claim.statementOfMeans = {
     dependants: dependants,
@@ -668,7 +673,7 @@ export const createClaimWithCarer = (option: YesNo): Claim => {
   return claim;
 };
 
-export const createClaimWithOtherDependants = (option: YesNo, numberOfPeople: number, details: string): Claim => {
+export const createClaimWithOtherDependants = (option: YesNo, numberOfPeople: number, details:string): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const otherDependants: OtherDependants = new OtherDependants(option, numberOfPeople, details);
@@ -678,7 +683,7 @@ export const createClaimWithOtherDependants = (option: YesNo, numberOfPeople: nu
   return claim;
 };
 
-export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptionType?: PaymentOptionType) => {
+export const ceateClaimWithPartialAdmission = (alreadyPaid? :YesNo) => {
   const claim = new Claim();
   const param: HowMuchHaveYouPaidParams = {};
   param.amount = 100;
@@ -740,14 +745,14 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
 
 export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails('contactTest');
-  if (claim.respondent1) {
+  if(claim.respondent1) {
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
   }
   claim.partialAdmission = new PartialAdmission();
   claim.partialAdmission.paymentIntention = new PaymentIntention();
   claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
 
-  claim.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '123456'},
+  claim.mediation = new Mediation({option:YesNo.YES, mediationPhoneNumber: '123456'},
     new FreeMediation(YesNo.YES),
     new NoMediationReason('notWant', 'no'),
     new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
@@ -755,7 +760,7 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   return claim as Claim;
 };
 
-export const createClaimWithFullRejection = (option: RejectAllOfClaimType): Claim => {
+export const createClaimWithFullRejection = (option: RejectAllOfClaimType, paidAmount?:number): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   if (claim.respondent1) {
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
@@ -763,7 +768,7 @@ export const createClaimWithFullRejection = (option: RejectAllOfClaimType): Clai
   claim.rejectAllOfClaim = {
     option: option,
     howMuchHaveYouPaid: {
-      amount: 100,
+      amount: paidAmount || 100,
       date: new Date('2022-02-14T00:00:00.000Z'),
       day: 14,
       month: 2,
@@ -774,6 +779,46 @@ export const createClaimWithFullRejection = (option: RejectAllOfClaimType): Clai
       text: 'Reasons for disagree',
     },
   };
+  claim.totalClaimAmount = 1000,
   claim.paymentOption = undefined;
+  return claim;
+};
+
+export const createClaimWithPaymentOption = (responseType:ResponseType, paymentOption: PaymentOptionType): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  const getDate = () => Date.now() + (3600 * 1000 * 24);
+
+  if(claim.respondent1) {
+    claim.respondent1.responseType = responseType;
+  }
+  claim.paymentOption = paymentOption;
+  claim.repaymentPlan = {
+    paymentAmount: 33,
+    repaymentFrequency: TransactionSchedule.WEEK,
+    firstRepaymentDate: new Date(getDate()),
+  };
+
+  claim.paymentDate = new Date(getDate());
+  claim.statementOfMeans = {
+    explanation: {
+      text: 'Reasons cannot pay immediately',
+    },
+  };
+
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = paymentOption;
+
+  if(responseType === ResponseType.PART_ADMISSION && paymentOption === PaymentOptionType.BY_SET_DATE) {
+    claim.partialAdmission.paymentIntention.paymentDate = new Date(getDate());
+  }
+
+  claim.partialAdmission.alreadyPaid = new AlreadyPaid(YesNo.NO);
+
+  claim.mediation = new Mediation({option:YesNo.YES, mediationPhoneNumber: '123456'},
+    new FreeMediation(YesNo.YES),
+    new NoMediationReason('notWant', 'no'),
+    new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
+
   return claim;
 };
