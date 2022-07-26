@@ -5,17 +5,7 @@ import nock from 'nock';
 import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
-import {
-  AMOUNT_REQUIRED,
-  EQUAL_INSTALMENTS_REQUIRED,
-  FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED,
-  PAYMENT_FREQUENCY_REQUIRED,
-  VALID_DAY,
-  VALID_FOUR_DIGIT_YEAR,
-  VALID_MONTH,
-  VALID_TWO_DECIMAL_NUMBER,
-  VALID_YEAR,
-} from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../../main/modules/draft-store');
@@ -58,11 +48,11 @@ describe('on Post', () => {
       .send('')
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(AMOUNT_REQUIRED);
-        expect(res.text).toContain(VALID_YEAR);
-        expect(res.text).toContain(VALID_MONTH);
-        expect(res.text).toContain(VALID_DAY);
-        expect(res.text).toContain(PAYMENT_FREQUENCY_REQUIRED);
+        expect(res.text).toContain(t('ERRORS.AMOUNT_REQUIRED'));
+        expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
+        expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
+        expect(res.text).toContain(t('ERRORS.VALID_DAY'));
+        expect(res.text).toContain(t('ERRORS.PAYMENT_FREQUENCY_REQUIRED'));
       });
   });
   test('should return errors when payment amount is defined and frequency, day, month, year are not defined', async () => {
@@ -72,10 +62,10 @@ describe('on Post', () => {
       .send({paymentAmount: '1000', day: '', month: '', year: ''})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_YEAR);
-        expect(res.text).toContain(VALID_MONTH);
-        expect(res.text).toContain(VALID_DAY);
-        expect(res.text).toContain(PAYMENT_FREQUENCY_REQUIRED);
+        expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
+        expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
+        expect(res.text).toContain(t('ERRORS.VALID_DAY'));
+        expect(res.text).toContain(t('ERRORS.PAYMENT_FREQUENCY_REQUIRED'));
       });
   });
   test('should return errors when payment amount and frequency are defined and day, month, year are not defined', async () => {
@@ -85,9 +75,9 @@ describe('on Post', () => {
       .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '', month: '', year: ''})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_YEAR);
-        expect(res.text).toContain(VALID_MONTH);
-        expect(res.text).toContain(VALID_DAY);
+        expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
+        expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
+        expect(res.text).toContain(t('ERRORS.VALID_DAY'));
       });
   });
   test('should return errors when payment amount, frequency and day are defined and month, year are not defined', async () => {
@@ -97,8 +87,8 @@ describe('on Post', () => {
       .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '1', month: '', year: ''})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_YEAR);
-        expect(res.text).toContain(VALID_MONTH);
+        expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
+        expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
       });
   });
   test('should return errors when payment amount, frequency, day and month are defined and year is not defined', async () => {
@@ -108,7 +98,7 @@ describe('on Post', () => {
       .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '1', month: '11', year: ''})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_YEAR);
+        expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
       });
   });
 
@@ -119,9 +109,9 @@ describe('on Post', () => {
       .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '0', month: '0', year: '0'})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_DAY);
-        expect(res.text).toContain(VALID_MONTH);
-        expect(res.text).toContain(VALID_FOUR_DIGIT_YEAR);
+        expect(res.text).toContain(t('ERRORS.VALID_DAY'));
+        expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
+        expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
       });
   });
 
@@ -132,7 +122,7 @@ describe('on Post', () => {
       .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973'})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED);
+        expect(res.text).toContain(t('ERRORS.FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED'));
       });
   });
 
@@ -143,7 +133,7 @@ describe('on Post', () => {
       .send({paymentAmount: '', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(AMOUNT_REQUIRED);
+        expect(res.text).toContain(t('ERRORS.AMOUNT_REQUIRED'));
       });
   });
 
@@ -154,7 +144,7 @@ describe('on Post', () => {
       .send({paymentAmount: '-1', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(AMOUNT_REQUIRED);
+        expect(res.text).toContain(t('ERRORS.AMOUNT_REQUIRED'));
       });
   });
 
@@ -165,7 +155,7 @@ describe('on Post', () => {
       .send({paymentAmount: '10000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(EQUAL_INSTALMENTS_REQUIRED);
+        expect(res.text).toContain(t('ERRORS.EQUAL_INSTALMENTS_REQUIRED'));
       });
   });
 
@@ -176,7 +166,7 @@ describe('on Post', () => {
       .send({paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(VALID_TWO_DECIMAL_NUMBER);
+        expect(res.text).toContain(t('ERRORS.VALID_TWO_DECIMAL_NUMBER'));
       });
   });
 
