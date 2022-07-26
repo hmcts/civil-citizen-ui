@@ -13,12 +13,12 @@ import {
   CITIZEN_DEPENDANTS_URL,
   CITIZEN_DISABILITY_URL,
   CITIZEN_EMPLOYMENT_URL,
+  CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
   CITIZEN_PARTNER_URL,
   CITIZEN_PAYMENT_OPTION_URL,
+  CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
   CITIZEN_RESIDENCE_URL,
   CITIZEN_RESPONSE_TYPE_URL,
-  CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
-  CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
 } from '../../../../../../../main/routes/urls';
 import PaymentOptionType from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
@@ -166,8 +166,9 @@ describe('Response Payment Section - PART ADMIT', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[4].value.html).toBe('Reasons cannot pay immediately');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[1].key.text).toBe('PAGES.EXPLANATION.TITLE');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].value.html).toContain('COMMON.PAYMENT_OPTION.BY_SET_DATE: 25 June 2022');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].value.html).toContain('COMMON.PAYMENT_OPTION.INSTALMENTS');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS');
+
   });
   it('should return paid the claimant on response to claim when response financial section exists', async () => {
     //Given
