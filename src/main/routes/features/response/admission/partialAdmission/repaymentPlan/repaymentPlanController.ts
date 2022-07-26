@@ -1,52 +1,53 @@
 import * as express from 'express';
-import { RepaymentPlanForm } from 'common/form/models/repaymentPlan/repaymentPlanForm';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { DateFormatter } from 'common/utils/dateFormatter';
-import {GenericForm} from 'common/form/models/genericForm';
+import {RepaymentPlanForm} from '../../../../../../common/form/models/repaymentPlan/repaymentPlanForm';
+import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
 } from '../../../../../../services/features/response/repaymentPlan/repaymentPlanService';
-import {
-  CITIZEN_REPAYMENT_PLAN,
-  CLAIM_TASK_LIST_URL,
-} from '../../../../../urls';
+import {GenericForm} from 'common/form/models/genericForm';
+import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
+import {getFirstPaymentExampleDate} from '../../fullAdmission/repaymentPlan/repaymentPlanController';
+import {ResponseType} from '../../../../../../common/form/models/responseType';
+import {getCaseDataFromStore} from '../../../../../../modules/draft-store/draftStoreService';
 
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
-const repaymentPlanController = express.Router();
+const repaymentPlanPartAdmissionController = express.Router();
+let amount: number;
 
-function renderView(form: GenericForm<RepaymentPlanForm>, res: express.Response): void {
-  res.render(repaymentPlanViewPath, { form, paymentExampleDate: getFirstPaymentExampleDate() });
-}
-
-const getFirstPaymentExampleDate = () => {
-  const date = new Date();
-  DateFormatter.setMonth(date, 1);
-  return DateFormatter.setDateFormat(date, 'en-GB', {
-    day: 'numeric', month: '2-digit', year: 'numeric',
+function renderView(form: GenericForm<RepaymentPlanForm>, res: express.Response, amount: number): void {
+  res.render(repaymentPlanViewPath, {
+    form,
+    paymentExampleDate: getFirstPaymentExampleDate(),
+    amount,
+    admission: ResponseType.PART_ADMISSION,
   });
-};
+}
 
 repaymentPlanController.get(CITIZEN_REPAYMENT_PLAN, async (req, res, next: express.NextFunction) => {
   try {
-    const repaymentPlanForm = await getRepaymentPlanForm(req.params.id);
-    renderView(new GenericForm(repaymentPlanForm), res);
+    const claim = await getCaseDataFromStore(req.params.id);
+    amount = claim.partialAdmissionPaymentAmount();
+    const form = await getRepaymentPlanForm(claim);
+    renderView(new GenericForm(form), res, amount);
   } catch (error) {
     next(error);
   }
 });
 
-repaymentPlanController.post(CITIZEN_REPAYMENT_PLAN,
+
+repaymentPlanPartAdmissionController.post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
-      const savedValues = await getRepaymentPlanForm(req.params.id);
-      const repaymentPlanForm: GenericForm<RepaymentPlanForm> = new GenericForm(new RepaymentPlanForm(savedValues.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day));
+      const claim = await getCaseDataFromStore(req.params.id);
+      const repaymentPlan = await getRepaymentPlanForm(claim);
+      const repaymentPlanForm: GenericForm<RepaymentPlanForm> = new GenericForm(new RepaymentPlanForm(repaymentPlan.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day));
       repaymentPlanForm.validateSync();
       if (repaymentPlanForm.hasErrors()) {
-        renderView(repaymentPlanForm, res);
+        renderView(repaymentPlanForm, res, amount);
       } else {
-        await saveRepaymentPlanData(req.params.id, repaymentPlanForm.model);
+        await saveRepaymentPlanData(req.params.id, repaymentPlanForm);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
       }
     } catch (error) {
@@ -54,4 +55,6 @@ repaymentPlanController.post(CITIZEN_REPAYMENT_PLAN,
     }
   });
 
-export default repaymentPlanController;
+
+export default repaymentPlanPartAdmissionController;
+

@@ -7,7 +7,7 @@
   "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
   "security_classification": "PUBLIC",
   "case_data": {
-    "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT", 
+    "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
     "claimFee": {
       "code": "FEE0204",
       "version": "4",
@@ -146,6 +146,9 @@
       "partyName": "Version 1"
     },
     "respondent1ResponseDeadline": "2022-05-15T02:59:59",
+    "responseDeadline": {
+      "agreedResponseDeadline": "2022-10-29"
+    },
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 110,
     "claimInterest": "Yes",
@@ -198,6 +201,9 @@
           "createdDatetime": "2022-06-21T14:15:19"
         }
       }
-    ]
+    ],
+    "responseDeadline": {
+      "agreedResponseDeadline": "2025-06-01T00:00:00.000Z"
+    }
   }
 }

@@ -2,13 +2,12 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
-import { CITIZEN_REPAYMENT_PLAN } from '../../../../../../main/routes/urls';
-import { mockCivilClaim } from '../../../../../utils/mockDraftStore';
-import { DateFormatter } from '../../../../../../main/common/utils/dateFormatter';
+import {CITIZEN_REPAYMENT_PLAN_FULL_URL} from '../../../../../../main/routes/urls';
+import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {DateFormatter} from '../../../../../../main/common/utils/dateFormatter';
 import {t} from 'i18next';
-
 const jsdom = require('jsdom');
-const { JSDOM } = jsdom;
+const {JSDOM} = jsdom;
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -24,7 +23,7 @@ describe('Repayment Plan View', () => {
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CITIZEN_REPAYMENT_PLAN).then(res => {
+      await request(app).get(CITIZEN_REPAYMENT_PLAN_FULL_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
       });
@@ -125,11 +124,11 @@ describe('Repayment Plan View', () => {
 
   describe('on POST', () => {
 
-    const getErrorSummaryListElement = (index:number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
+    const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
 
     beforeEach(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).post(CITIZEN_REPAYMENT_PLAN).then(res => {
+      await request(app).post(CITIZEN_REPAYMENT_PLAN_FULL_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
       });
@@ -149,8 +148,8 @@ describe('Repayment Plan View', () => {
 
     it('should display correct error summary message with correct link for Payment Amount with more than 2 decimal digits', async () => {
       await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN)
-        .send({ paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040' })
+        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
+        .send({paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
         .then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -163,8 +162,8 @@ describe('Repayment Plan View', () => {
 
     it('should display correct error summary message with correct link for Payment Amount greater than Total Claim Amount', async () => {
       await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN)
-        .send({ paymentAmount: '1000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040' })
+        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
+        .send({paymentAmount: '1000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
         .then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -176,28 +175,28 @@ describe('Repayment Plan View', () => {
     });
 
     it('should display correct error summary message with correct link for Year', () => {
-      const errorSummaryMessage = getErrorSummaryListElement(1);
+      const errorSummaryMessage = getErrorSummaryListElement(4);
       expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_YEAR'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#year');
     });
 
     it('should display correct error summary message with correct link for Month', () => {
-      const errorSummaryMessage = getErrorSummaryListElement(2);
+      const errorSummaryMessage = getErrorSummaryListElement(3);
       expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_MONTH'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#month');
     });
 
     it('should display correct error summary message with correct link form Day', () => {
-      const errorSummaryMessage = getErrorSummaryListElement(3);
+      const errorSummaryMessage = getErrorSummaryListElement(2);
       expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_DAY'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#day');
     });
 
     it('should display correct error summary message with correct link for Repayment Frequency', () => {
-      const errorSummaryMessage = getErrorSummaryListElement(4);
+      const errorSummaryMessage = getErrorSummaryListElement(1);
       expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.PAYMENT_FREQUENCY_REQUIRED'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#repaymentFrequency');
@@ -205,8 +204,8 @@ describe('Repayment Plan View', () => {
 
     it('should display correct error summary message with correct link for First Repayment Date', async () => {
       await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN)
-        .send({ paymentAmount: '100', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973' })
+        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
+        .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973'})
         .then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
@@ -219,8 +218,8 @@ describe('Repayment Plan View', () => {
 
     it('should display correct error summary message with correct link for Year less than 4 digits', async () => {
       await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN)
-        .send({ paymentAmount: '100', repaymentFrequency: 'WEEK', day: '01', month: '01', year: '0' })
+        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
+        .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '01', month: '01', year: '0'})
         .then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;

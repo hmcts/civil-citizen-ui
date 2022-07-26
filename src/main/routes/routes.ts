@@ -49,6 +49,8 @@ import howMuchDoYouOweController from './features/response/admission/partialAdmi
 import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
 import whyDoYouDisagreeController from './features/response/admission/partialAdmission/whyDoYouDisagreeController';
 import repaymentPlanController from './features/response/admission/fullAdmission/repaymentPlan/repaymentPlanController';
+import repaymentPlanPartialController
+  from './features/response/admission/partialAdmission/repaymentPlan/repaymentPlanController';
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
 import mediationIndividualPhoneController from './features/mediation/mediationIndividualPhoneController';
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
@@ -58,7 +60,8 @@ import sendYourResponseByEmailController from './features/response/eligibility/s
 import freeTelephoneMediationController from './features/mediation/freeTelephoneMediationController';
 import rejectAllOfClaimController from './features/response/rejectAllOfClaimController';
 import defendantTimelineController from './features/response/timelineOfEvents/defendantTimelineController';
-import theirPdfTimelineDownloadController from './features/response/timelineOfEvents/theirPdfTimelineDownloadController';
+import theirPdfTimelineDownloadController
+  from './features/response/timelineOfEvents/theirPdfTimelineDownloadController';
 import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
 import evidenceController from './features/response/evidence/evidenceController';
 import checkAnswersController from './features/response/checkAnswersController';
@@ -72,10 +75,14 @@ import partialAdmissionPaymentOptionController
   from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
 import supportRequiredController from './features/directionsQuestionnaire/supportRequiredController';
 import vulnerabilityController from './features/directionsQuestionnaire/vulnerabilityController';
-import whyDoYouDisagreeFullRejectionController from './features/response/admission/fullRejection/whyDoYouDisagreeFullRejectionController';
+import whyDoYouDisagreeFullRejectionController
+  from './features/response/admission/fullRejection/whyDoYouDisagreeFullRejectionController';
 import documentDownloadController from './features/document/documentDownloadController';
-import responseDeadlineOptionsController from './features/response/responseDeadlineOptionsController';
+import responseDeadlineOptionsController from './features/response/responseDeadline/responseDeadlineOptionsController';
 import understandingYourOptionsController from './features/response/understandingYourOptionsController';
+import newDeadlineResponseController from './features/response/responseDeadline/newResponseDeadlineController';
+import requestMoreTimeController from './features/response/requestMoreTimeController';
+import agreedResponseDeadlineController from './features/response/responseDeadline/agreedResponseDeadlineController';
 
 export default [
   homeController,
@@ -148,5 +155,9 @@ export default [
   documentDownloadController,
   vulnerabilityController,
   understandingYourOptionsController,
+  repaymentPlanPartialController,
   responseDeadlineOptionsController,
+  requestMoreTimeController,
+  agreedResponseDeadlineController,
+  newDeadlineResponseController,
 ];
