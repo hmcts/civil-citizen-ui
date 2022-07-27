@@ -1,8 +1,7 @@
-import {IsNotEmpty, Validate, ValidationError} from 'class-validator';
-import { Form } from './form';
+import {IsNotEmpty, Validate} from 'class-validator';
 import {PostcodeValidator} from '../validators/postcodeValidator';
 
-export class CitizenAddress extends Form {
+export class CitizenAddress {
   @IsNotEmpty({message: 'ERRORS.VALID_ADDRESS_LINE_1'})
     primaryAddressLine1?: string;
   primaryAddressLine2?: string;
@@ -18,9 +17,7 @@ export class CitizenAddress extends Form {
     primaryAddressLine2?: string,
     primaryAddressLine3?: string,
     primaryCity?: string,
-    primaryPostCode?: string,
-    errors?: ValidationError[]) {
-    super(errors);
+    primaryPostCode?: string) {
     this.primaryAddressLine1 = primaryAddressLine1;
     this.primaryAddressLine2 = primaryAddressLine2;
     this.primaryAddressLine3 = primaryAddressLine3;

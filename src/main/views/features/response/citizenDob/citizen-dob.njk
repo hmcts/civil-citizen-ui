@@ -18,10 +18,10 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% if form.hasErrors() %}
         {{ govukErrorSummary({
-          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
-          "errorList": errors
+          'titleText': t('ERRORS.THERE_WAS_A_PROBLEM'),
+          'errorList': errors
         }) }}
       {% endif %}
       <div class="govuk-grid-row">
@@ -33,12 +33,7 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <div class="govuk-form-group {% if errors %} govuk-form-group--error{% endif %}">
-              {% if errors %}
-                {% for error in errors %}
-                  <span class="govuk-error-message">{{ t(error.text) }}</span>
-                {% endfor %}
-              {% endif %}
+            <div class="govuk-form-group">
               {{ govukDateInput({
                 id: "birthDate",
                 type: "number",
@@ -55,7 +50,7 @@
                 },
                 errorMessage: {
                   html: errorMessage
-                } if errors,
+                } if form.hasErrors(),
                 items: [
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",

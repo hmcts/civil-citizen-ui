@@ -12,6 +12,12 @@
 
 {% set correspondenceAddressClass = '' if postToThisAddress == 'yes' else 'govuk-visually-hidden' %}
 {% set addressTitle = t('PAGES.CITIZEN_DETAILS.ADDRESS') %}
+{% set citizenAddressErrors = citizenAddress.getAllErrors() %}
+
+{% if citizenCorrespondenceAddress %}
+  {% set citizenCorrespondenceAddressErrors = citizenCorrespondenceAddress.getAllErrors() %}
+  {% set citizenAddressErrors = citizenAddressErrors.concat(citizenCorrespondenceAddress.getAllErrors()) %}
+{% endif %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CITIZEN_DETAILS.PAGE_TITLE') }}
@@ -21,8 +27,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if errorList.length > 0 %}
-          {{ errorSummary(errorList, t) }}
+        {% if citizenAddressErrors %}
+          {{ errorSummary(citizenAddressErrors, t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
@@ -34,39 +40,38 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.TITLE') }}</h2>
-          <p class="govuk-body">{{ citizenFullName.individualTitle }}</p>
+          <p class="govuk-body">{{ respondent.individualTitle }}</p>
           <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.FIRST_NAME') }}</h2>
-          <p class="govuk-body">{{ citizenFullName.individualFirstName }}</p>
+          <p class="govuk-body">{{ respondent.individualFirstName }}</p>
           <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.LAST_NAME') }}</h2>
-          <p class="govuk-body">{{ citizenFullName.individualLastName }}</p>
+          <p class="govuk-body">{{ respondent.individualLastName }}</p>
           <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
             {{ csrfProtection(csrf) }}
             {{ addressForm(
               t,
-              citizenAddress = citizenAddress,
-              addressLine1Error = addressLine1Error,
-              addressCityError = addressCityError,
-              addressPostCodeError = addressPostCodeError,
+              citizenAddress,
+              citizenCorrespondenceAddress,
               addressType = 'primary',
               addressTitle = addressTitle
-              ) }}
-            {% set noHtml %}
-            {% endset -%}
+            ) }}
             {% set correspondenceAddressHtml %}
-            <div class="govuk-form-group" id="postcode">
-              <p class="govuk-label govuk-!-margin-bottom-5">{{ t('PAGES.CITIZEN_DETAILS.ALL_CORRESPONDENCE') + t('PAGES.CITIZEN_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
-              <label class="govuk-label" for="postcode">
-                {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
-              </label>
-              <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
-                {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
-              </div>
-              <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
-              <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
-                {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
-              </button>
-              <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
-                {{ govukSelect({
+              <div class="govuk-form-group" id="postcode">
+                <p
+                  class="govuk-label govuk-!-margin-bottom-5">{{ t('PAGES.CITIZEN_DETAILS.ALL_CORRESPONDENCE') + t('PAGES.CITIZEN_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
+                <label class="govuk-label" for="postcode">
+                  {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
+                </label>
+                <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
+                  {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
+                </div>
+                <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text"
+                       autocomplete="postal-code"/>
+                <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button"
+                        id="findAddressButton">
+                  {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
+                </button>
+                <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
+                  {{ govukSelect({
                     id: "correspondenceAddressList",
                     name: "correspondenceAddressList",
                     label: {
@@ -74,61 +79,54 @@
                     },
                     items: []
                   }) }}
+                </div>
               </div>
-            </div>
-            {% if postToThisAddress == 'no' %}
               <div>
-                <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
+                <a id="enterAddressManually" aria-controls="enterAddressManually" href="#"
+                   class="govuk-body govuk-link">
                   {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
                 </a>
               </div>
-            {% endif %}
-            <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
-              {{ addressForm(
-              t,
-              citizenAddress = citizenCorrespondenceAddress,
-              addressLine1Error = correspondenceAddressLine1Error,
-              addressCityError = correspondenceCityError,
-              addressPostCodeError = correspondencePostCodeError,
-              addressType = 'correspondence',
-              addressTitle = addressTitle
-              ) }}
-            </div>
+              <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
+                {{ addressForm(
+                  t,
+                  citizenCorrespondenceAddress = citizenCorrespondenceAddress,
+                  addressType = 'correspondence',
+                  addressTitle = addressTitle
+                ) }}
+              </div>
             {% endset -%}
             <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.CORRESPONDENCE_ADDRESS') }}</h2>
             {{ govukRadios({
-                  idPrefix: "postToThisAddress",
-                  name: "postToThisAddress",
-                  fieldset: {
-                    legend: {
-                      text: t('PAGES.CITIZEN_DETAILS.DIFFERENT_ADDRESS_CORRESPONDENCE'),
-                      isPageHeading: false
-                    }
-                  },
-                  items: [
-                    {
-                      value: "no",
-                      text: t('COMMON.NO'),
-                      checked: true,
-                      conditional: {
-                        html: noHtml
-                      }
-                    },
-                    {
-                      value: "yes",
-                      checked: true if postToThisAddress == 'yes' else false,
-                      text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
-                      conditional: {
-                        html: correspondenceAddressHtml
-                      }
-                    }
-                  ]
-                }) }}
+              idPrefix: "postToThisAddress",
+              name: "postToThisAddress",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.CITIZEN_DETAILS.DIFFERENT_ADDRESS_CORRESPONDENCE'),
+                  isPageHeading: false
+                }
+              },
+              items: [
+                {
+                  value: "no",
+                  text: t('COMMON.NO'),
+                  checked: true
+                },
+                {
+                  value: "yes",
+                  checked: false if citizenCorrespondenceAddress.model.isEmpty() else true,
+                  text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
+                  conditional: {
+                  html: correspondenceAddressHtml
+                }
+                }
+              ]
+            }) }}
             {{ govukButton({
-                  text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
-                }) }}
+              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+            }) }}
             {{ contactUsForHelp(t) }}
-          </div>
+        </div>
         </form>
       </div>
     </main>

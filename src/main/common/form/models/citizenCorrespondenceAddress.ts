@@ -1,14 +1,13 @@
-import {IsNotEmpty, Validate, ValidationError} from 'class-validator';
+import {IsNotEmpty, Validate} from 'class-validator';
 import {
   DEFENDANT_POSTCODE_NOT_VALID,
   VALID_CORRESPONDENCE_ADDRESS_LINE_1,
   VALID_CORRESPONDENCE_CITY,
   VALID_CORRESPONDENCE_POSTCODE,
 } from '../validationErrors/errorMessageConstants';
-import { Form } from './form';
 import {PostcodeValidator} from '../../../common/form/validators/postcodeValidator';
 
-export class CitizenCorrespondenceAddress extends Form {
+export class CitizenCorrespondenceAddress {
   @IsNotEmpty({message: VALID_CORRESPONDENCE_ADDRESS_LINE_1})
     correspondenceAddressLine1?: string;
   correspondenceAddressLine2?: string;
@@ -24,9 +23,7 @@ export class CitizenCorrespondenceAddress extends Form {
     correspondenceAddressLine2?: string,
     correspondenceAddressLine3?: string,
     correspondenceCity?: string,
-    correspondencePostCode?: string,
-    errors?: ValidationError[]) {
-    super(errors);
+    correspondencePostCode?: string) {
     this.correspondenceAddressLine1 = correspondenceAddressLine1;
     this.correspondenceAddressLine2 = correspondenceAddressLine2;
     this.correspondenceAddressLine3 = correspondenceAddressLine3;

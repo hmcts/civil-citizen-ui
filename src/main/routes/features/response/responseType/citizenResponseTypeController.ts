@@ -5,7 +5,6 @@ import {
   CITIZEN_RESPONSE_TYPE_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../urls';
-import {ValidationError, Validator} from 'class-validator';
 import {Respondent} from '../../../../common/models/respondent';
 import {Claim} from '../../../../common/models/claim';
 import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
@@ -13,21 +12,21 @@ import {ResponseType} from '../../../../common/form/models/responseType';
 import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {GenericForm} from '../../../../common/form/models/genericForm';
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const citizenResponseTypeController = express.Router();
-const validator = new Validator();
 
-function renderView(form: CitizenResponseType, res: express.Response, componentDetailItemsList?: ComponentDetailItems[]): void {
+function renderView(form: GenericForm<CitizenResponseType>, res: express.Response, componentDetailItemsList?: ComponentDetailItems[]): void {
   res.render(citizenResponseTypeViewPath, {form: form, componentDetailItemsList: componentDetailItemsList});
 }
 
 citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res,next: express.NextFunction) => {
   try {
-    const citizenResponseType = new CitizenResponseType();
+    const citizenResponseType = new GenericForm(new CitizenResponseType());
     const claim = await getCaseDataFromStore(req.params.id);
     if (claim.respondent1?.responseType) {
-      citizenResponseType.responseType = claim.respondent1.responseType;
+      citizenResponseType.model.responseType = claim.respondent1.responseType;
     }
     const componentDetailItemsList = getDetailItemsList(claim);
     renderView(citizenResponseType, res, componentDetailItemsList);
@@ -39,22 +38,21 @@ citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res,nex
 citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
   async (req, res, next: express.NextFunction) => {
     try {
-      const model: CitizenResponseType = new CitizenResponseType(req.body.responseType);
-      const errors: ValidationError[] = validator.validateSync(model);
-      if (errors?.length > 0) {
-        model.errors = errors;
+      const model: GenericForm<CitizenResponseType> = new GenericForm<CitizenResponseType>(new CitizenResponseType(req.body.responseType));
+      await model.validate();
+      if (model.hasErrors()) {
         renderView(model, res);
       } else {
         const claim = await getCaseDataFromStore(req.params.id) || new Claim();
         if (claim.respondent1) {
-          claim.respondent1.responseType = model.responseType;
+          claim.respondent1.responseType = model.model.responseType;
         } else {
           const respondent = new Respondent();
-          respondent.responseType = model.responseType;
+          respondent.responseType = model.model.responseType;
           claim.respondent1 = respondent;
         }
         await saveDraftClaim(req.params.id, claim);
-        switch (model.responseType) {
+        switch (model.model.responseType) {
           case ResponseType.PART_ADMISSION:
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_ALREADY_PAID_URL));
             break;

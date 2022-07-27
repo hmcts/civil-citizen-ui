@@ -16,7 +16,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
@@ -59,7 +59,7 @@
               ],
               errorMessage: {
                 html: t(errors[0].text)
-              } if errors
+              } if form.hasErrors()
             }) }}
             <div class="govuk-form-group">
               {{ govukButton({
