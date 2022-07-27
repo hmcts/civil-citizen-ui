@@ -413,6 +413,8 @@
       "CLAIMANT_NAME": "Claimant name:",
       "CLAIM_NUMBER": "Claim number:",
       "DOCUMENTS": "Documents",
+      "DOCUMENT_CREATED": "Created:",
+      "DOWNLOAD_CLAIM": "Download claim",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "DOWNLOAD_RESPONSE": "Download response",
       "LATEST_UPDATE": "Latest update",
