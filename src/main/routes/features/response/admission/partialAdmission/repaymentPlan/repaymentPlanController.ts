@@ -28,7 +28,7 @@ repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, asy
   try {
     const claim = await getCaseDataFromStore(req.params.id);
     amount = claim.partialAdmissionPaymentAmount();
-    const form = await getRepaymentPlanForm(claim);
+    const form = getRepaymentPlanForm(claim);
     renderView(form, res, amount);
   } catch (error) {
     next(error);
@@ -39,7 +39,7 @@ repaymentPlanPartAdmissionController.post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
-      const repaymentPlan = await getRepaymentPlanForm(claim);
+      const repaymentPlan = getRepaymentPlanForm(claim);
       const repaymentPlanForm: RepaymentPlanForm = new RepaymentPlanForm(repaymentPlan.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day);
       await validateForm(repaymentPlanForm);
       if (repaymentPlanForm.hasErrors()) {

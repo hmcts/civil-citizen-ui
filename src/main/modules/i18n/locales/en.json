@@ -9,6 +9,7 @@
   "View": "View",
   "Save and continue": "Save and continue",
   "COMMON": {
+    "BACK": "Back",
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
@@ -30,6 +31,7 @@
       "TOWN_OR_CITY": "Town or city"
     },
     "BUTTONS": {
+      "BACK": "Back",
       "CONTINUE": "Continue",
       "SAVE_AND_CONTINUE": "Save and continue",
       "START_AGAIN": "Start again",
@@ -162,6 +164,11 @@
       "PAGE_TITLE": "Payment date",
       "TITLE": "What date will you pay on?"
     },
+    "AGREED_RESPONSE_DEADLINE": {
+      "PAGE_TITLE": "Agree more time to respond",
+      "SUB_TITLE": "Enter the respond date you have agreed with {{ claimantName }}'s legal representative",
+      "TITLE": "You have already agreed to more time to respond"
+    },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled",
       "TITLE": "Are you severely disabled?"
@@ -267,6 +274,10 @@
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED": "How did you pay the amount claimed?",
       "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
       "RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE": "How much money do you admit you owe?",
+      "RESPONSE_DO_YOU_OWE_THE_MONEY_CLAIMED": "Do you owe the money claimed?",
+      "RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID": "How much have you paid?",
+      "RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT": "How did you pay this amount?",
+      "RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM": "Why do you reject all of this claim?",
       "SAME_ADDRESS": "Same as address",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Do you support anyone else financially?",
       "SUPPORT_NUMBER_OF_PEOPLE": "Number of people",
@@ -365,6 +376,11 @@
       "PART_ADMISSION_HINT": "You agree you owe some money but not the full amount claimed.",
       "PAY_IMMEDIATELY": "Pay immediately",
       "REJECT_ALL": "Reject all of the claim",
+      "REJECT_ALL_CLAIM_TYPE": {
+        "ALREADY_PAID": "I've paid what I believe I owe",
+        "COUNTER_CLAIM": "I dispute the claim and want to make a counterclaim",
+        "DISPUTE": "I dispute all of the claim"
+      },
       "REJECT_DEADLINE": "You have until 4pm on {{ deadline }} to reject the claim.",
       "REJECT_PAID": "If you reject because you believe you've paid the money, the claimant has 28 days to tell you and the court whether they're proceeding with the claim.",
       "REJECT_WHOLE_CLAIM": "If you reject all of the claim, the claim may be transferred to a County Court hearing centre.",
@@ -397,6 +413,8 @@
       "CLAIMANT_NAME": "Claimant name:",
       "CLAIM_NUMBER": "Claim number:",
       "DOCUMENTS": "Documents",
+      "DOCUMENT_CREATED": "Created:",
+      "DOWNLOAD_CLAIM": "Download claim",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "DOWNLOAD_RESPONSE": "Download response",
       "LATEST_UPDATE": "Latest update",
@@ -568,6 +586,11 @@
     "MEDIATION_DISAGREEMENT": {
       "PAGE_TITLE": "Free mediation disagreement",
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+    },
+    "NEW_RESPONSE_DEADLINE": {
+      "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
+      "PAGE_TITLE": "New response deadline",
+      "TITLE": "4 pm on {{ responseDeadline }}"
     },
     "OTHER_DEPENDANTS": {
       "DESCRIPTION": "This can include adults and people you don't live with.",
@@ -773,6 +796,7 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "DATE_REQUIRED": "Enter a date",
+    "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the orginal response date",
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
@@ -830,6 +854,8 @@
     "THERE_WAS_A_PROBLEM": "There was a problem",
     "TYPE_OF_ACCOUNT_REQUIRED": "Select a type of account",
     "VALID_ADDRESS_LINE_1": "Enter first address line",
+    "VALID_AGREED_RESPONSE_DATE": "Enter the agreed response date",
+    "VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST": "Agreed response date must be in the future",
     "VALID_AMOUNT": "Enter a valid amount",
     "VALID_AMOUNT_ONE_POUND_OR_MORE": "Enter an amount of £1 or more",
     "VALID_AT_LEAST_ONE_OPTION": "You must select at least one option",

@@ -172,7 +172,7 @@ export class Claim {
   isFullDefence(): boolean {
     return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
   }
-  
+
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }
@@ -199,8 +199,8 @@ export class Claim {
     return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
   }
 
-  isSystemGeneratedCaseDocumentsAvailable(): number {
-    return this.systemGeneratedCaseDocuments?.length;
+  isSystemGeneratedCaseDocumentsAvailable(): boolean {
+    return this.systemGeneratedCaseDocuments?.length > 0;
   }
 
   getDocumentDetails(documentType: DocumentType): CaseDocument {

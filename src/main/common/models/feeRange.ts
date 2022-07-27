@@ -73,5 +73,3 @@ export class FlatAmount {
     this.amount = amount;
   }
 }
-
-

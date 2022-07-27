@@ -22,7 +22,7 @@ describe('Send your response by email', () => {
   });
 
   describe('on GET', () => {
-    test('should return send your response by email page', async () => {
+    it('should return send your response by email page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(SEND_RESPONSE_BY_EMAIL_URL)
@@ -37,7 +37,7 @@ describe('Send your response by email', () => {
           expect(res.text).toContain('Telephone');
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(SEND_RESPONSE_BY_EMAIL_URL)
