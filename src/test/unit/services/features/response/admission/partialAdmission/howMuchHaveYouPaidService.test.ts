@@ -73,7 +73,7 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(howMuchHaveYouPaid.year).toBeUndefined();
       expect(howMuchHaveYouPaid.month).toBeUndefined();
       expect(howMuchHaveYouPaid.day).toBeUndefined();
-      expect(howMuchHaveYouPaid.date).toBeNull();
+      expect(howMuchHaveYouPaid.date).toBeUndefined();
       expect(howMuchHaveYouPaid.text).toBeUndefined();
     });
     it('should return undefined when case_data, but no howMuchHaveYouPaid, retrieved', async () => {
@@ -91,7 +91,7 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(howMuchHaveYouPaid.year).toBeUndefined();
       expect(howMuchHaveYouPaid.month).toBeUndefined();
       expect(howMuchHaveYouPaid.day).toBeUndefined();
-      expect(howMuchHaveYouPaid.date).toBeNull();
+      expect(howMuchHaveYouPaid.date).toBeUndefined();
       expect(howMuchHaveYouPaid.text).toBeUndefined();
     });
     it('should return HowMuchHaveYouPaid when HowMuchHaveYouPaid Partial Admission retrieved', async () => {

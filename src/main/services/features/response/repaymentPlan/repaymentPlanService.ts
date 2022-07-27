@@ -5,7 +5,7 @@ import {Claim} from '../../../../common/models/claim';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
 
-const getRepaymentPlanForm = async (claim: Claim) => {
+const getRepaymentPlanForm = (claim: Claim) => {
   try {
     const totalClaimAmount = claim.totalClaimAmount;
     if (claim.repaymentPlan) {
