@@ -27,7 +27,6 @@ export function formatDate(value:string): string {
   return date.toLocaleString(DateTime.DATE_FULL, {locale: 'en-gb'});
 }
 
-
 /* *
  * This filter should be used when you need to dynamically modify a date. The keyword 'now' may be given as
  * input to generate dates relative to the current date.
@@ -56,5 +55,3 @@ export function addDaysFilter(value: string, num: number): DateTime {
   }
   return date.plus({days: num});
 }
-
-

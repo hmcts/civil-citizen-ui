@@ -21,7 +21,7 @@ describe('Bank Accounts and Savings', ()=>{
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on Get', ()=>{
-    test('should return accounts page successfully', async () =>{
+    it('should return accounts page successfully', async () =>{
       await request(app).get(CITIZEN_BANK_ACCOUNT_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -30,7 +30,7 @@ describe('Bank Accounts and Savings', ()=>{
     });
   });
   describe('on Post', ()=> {
-    test('should return error when type of account is not specified', async ()=>{
+    it('should return error when type of account is not specified', async ()=>{
       const data = {
         accounts: [
           {
@@ -52,7 +52,7 @@ describe('Bank Accounts and Savings', ()=>{
           expect(res.text).toContain(TYPE_OF_ACCOUNT_REQUIRED);
         });
     });
-    test('should return error when joint is not specified', async ()=>{
+    it('should return error when joint is not specified', async ()=>{
       const data = {
         accounts: [
           {
@@ -74,7 +74,7 @@ describe('Bank Accounts and Savings', ()=>{
           expect(res.text).toContain(SELECT_AN_OPTION);
         });
     });
-    test('should return error when balance is not specified', async ()=>{
+    it('should return error when balance is not specified', async ()=>{
       const data = {
         accounts: [
           {
@@ -96,7 +96,7 @@ describe('Bank Accounts and Savings', ()=>{
           expect(res.text).toContain(NUMBER_REQUIRED);
         });
     });
-    test('should return error when balance has more than two decimal places', async ()=>{
+    it('should return error when balance has more than two decimal places', async ()=>{
       const data = {
         accounts: [
           {
@@ -118,7 +118,7 @@ describe('Bank Accounts and Savings', ()=>{
           expect(res.text).toContain(VALID_TWO_DECIMAL_NUMBER);
         });
     });
-    test('should return error when balance for input is 00', async ()=>{
+    it('should return error when balance for input is 00', async ()=>{
       const data = {
         accounts: [
           {
@@ -140,7 +140,7 @@ describe('Bank Accounts and Savings', ()=>{
           expect(res.text).toContain(NUMBER_REQUIRED);
         });
     });
-    test('should should redirect when no validation errors', async ()=>{
+    it('should should redirect when no validation errors', async ()=>{
       const data = {
         accounts: [
           {

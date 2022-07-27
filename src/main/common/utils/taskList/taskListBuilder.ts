@@ -110,7 +110,6 @@ const buildRespondToClaimSection = (caseData: Claim, claimId: string, lang: stri
   return {title: t('TASK_LIST.RESPOND_TO_CLAIM.TITLE', {lng: getLng(lang)}), tasks};
 };
 
-
 const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
 
@@ -127,7 +126,6 @@ const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: s
   return {title: t('TASK_LIST.RESOLVING_THE_CLAIM.TITLE', {lng: getLng(lang)}), tasks};
 };
 
-
 const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
   if (caseData.respondent1?.responseType === ResponseType.PART_ADMISSION || isFullDefenceAndNotCounterClaim(caseData)) {
@@ -136,7 +134,6 @@ const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, l
   }
   return {title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng: getLng(lang)}), tasks};
 };
-
 
 const buildSubmitSection = (claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];

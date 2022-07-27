@@ -31,7 +31,6 @@ const eMockWithFullAdmission = {
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithFullAdmission)),
 };
 
-
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -43,7 +42,7 @@ describe('Repayment Plan', () => {
 });
 
 describe('on Get', () => {
-  test('should return on your evidence list page successfully', async () => {
+  it('should return on your evidence list page successfully', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app).get(CITIZEN_EVIDENCE_URL)
       .expect((res) => {
@@ -52,7 +51,7 @@ describe('on Get', () => {
       });
   });
 
-  test('should return on your evidence list page successfully when less than 4 items saved', async () => {
+  it('should return on your evidence list page successfully when less than 4 items saved', async () => {
     app.locals.draftStoreClient = mockWithLessThaFourEvidence;
     await request(app)
       .get(CITIZEN_EVIDENCE_URL)
@@ -62,7 +61,7 @@ describe('on Get', () => {
       });
   });
 
-  test('should return 500 status code when error occurs', async () => {
+  it('should return 500 status code when error occurs', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
       .get(CITIZEN_EVIDENCE_URL)
@@ -90,7 +89,7 @@ describe('on Post', () => {
     { 'type': null, 'description': ''},
   ];
 
-  test('should return errors when comment max length is greater than 99000 characters', async () => {
+  it('should return errors when comment max length is greater than 99000 characters', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_EVIDENCE_URL)
@@ -101,7 +100,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should return errors when description max length is greater than 99000 characters', async () => {
+  it('should return errors when description max length is greater than 99000 characters', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_EVIDENCE_URL)
@@ -112,7 +111,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should redirect with empties input and redirect to task list', async () => {
+  it('should redirect with empties input and redirect to task list', async () => {
     app.locals.draftStoreClient = mockWithLessThaFourEvidence;
     await request(app)
       .post(CITIZEN_EVIDENCE_URL)
@@ -123,7 +122,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should redirect with correct input and redirect to task list', async () => {
+  it('should redirect with correct input and redirect to task list', async () => {
     app.locals.draftStoreClient = mockWithLessThaFourEvidence;
     await request(app)
       .post(CITIZEN_EVIDENCE_URL)
@@ -134,7 +133,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should redirect with empties input and redirect to impact of dispute', async () => {
+  it('should redirect with empties input and redirect to impact of dispute', async () => {
     app.locals.draftStoreClient = eMockWithFullAdmission;
     await request(app)
       .post(CITIZEN_EVIDENCE_URL)
@@ -145,7 +144,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should redirect with correct input and redirect to impact of dispute', async () => {
+  it('should redirect with correct input and redirect to impact of dispute', async () => {
     app.locals.draftStoreClient = eMockWithFullAdmission;
     await request(app)
       .post(CITIZEN_EVIDENCE_URL)
@@ -156,7 +155,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should return status 500 when there is error', async () => {
+  it('should return status 500 when there is error', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
       .post(CITIZEN_EVIDENCE_URL)

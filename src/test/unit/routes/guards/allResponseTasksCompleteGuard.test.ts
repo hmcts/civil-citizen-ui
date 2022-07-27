@@ -37,7 +37,6 @@ const MOCK_RESPONSE = {
 
 const MOCK_NEXT = jest.fn() as express.NextFunction;
 
-
 describe('Response - Incomplete Submission', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -49,7 +48,7 @@ describe('Response - Incomplete Submission', () => {
       //Given
       const mockRequest = MOCK_REQUEST();
       mockGetTaskList.mockImplementation(() => {
-        const taskList = [{
+        return [{
           title: 'Task List',
           tasks: [
             {
@@ -59,7 +58,6 @@ describe('Response - Incomplete Submission', () => {
             },
           ],
         }];
-        return taskList;
       });
       mockOutstandingTasksFromTaskLists.mockImplementation(() => {
         const outstandingTaskList: Task[] = [];
@@ -92,7 +90,7 @@ describe('Response - Incomplete Submission', () => {
       //Given
       const mockRequest = MOCK_REQUEST();
       mockGetTaskList.mockImplementation(() => {
-        const taskList = [{
+        return [{
           title: 'Task List',
           tasks: [
             {
@@ -102,17 +100,15 @@ describe('Response - Incomplete Submission', () => {
             },
           ],
         }];
-        return taskList;
       });
       mockOutstandingTasksFromTaskLists.mockImplementation(() => {
-        const outstandingTaskList = [
+        return [
           {
             description: 'Task 1',
             status: TaskStatus.COMPLETE,
             url: 'some URL',
           },
         ];
-        return outstandingTaskList;
       });
       //When
       await AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);

@@ -61,7 +61,6 @@ const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, sect
 
 const isPaidAmountEqulGreaterThanTotalAmount = (claim:Claim) => claim.rejectAllOfClaim.howMuchHaveYouPaid.amount < claim.totalClaimAmount ? true : false;
 
-
 const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: string | unknown, yourResponseDetailsSection: SummarySection) => {
   const yourResponseDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
   const yourReasonsToDisagreeHref = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_URL);
@@ -118,7 +117,6 @@ export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, l
       }
       break;
   }
-
 
   return yourResponseDetailsSection;
 };

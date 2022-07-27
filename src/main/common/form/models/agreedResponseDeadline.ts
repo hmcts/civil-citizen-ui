@@ -11,13 +11,12 @@ export class AgreedResponseDeadline {
     (!o.day && !o.month && !o.year))
   @IsDate({message: 'ERRORS.VALID_AGREED_RESPONSE_DATE'})
   @Validate(DateNotBeforeReferenceDate, ['originalResponseDeadline'], {message: 'ERRORS.VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST'})
-  @Validate(DateNotMoreThanDurationValidator, ['originalResponseDeadline', 28], {message: 'ERRORS.DATE_NOT_MORE_THAN_28_DAYS'})  
+  @Validate(DateNotMoreThanDurationValidator, ['originalResponseDeadline', 28], {message: 'ERRORS.DATE_NOT_MORE_THAN_28_DAYS'})
     date?: Date;
 
   @Min(1, {message: 'ERRORS.VALID_DAY'})
   @Max(31, {message: 'ERRORS.VALID_DAY'})
     day: number;
-
 
   @Min(1, {message: 'ERRORS.VALID_MONTH'})
   @Max(12, {message: 'ERRORS.VALID_MONTH'})
@@ -26,9 +25,9 @@ export class AgreedResponseDeadline {
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
   @Max(9999, {message: 'ERRORS.VALID_YEAR'})
     year: number;
-    
+
   originalResponseDeadline: Date;
-    
+
   constructor(year?: string, month?: string, day?: string, originalResponseDeadline?: Date) {
     this.date = DateConverter.convertToDate(year, month, day);
     this.year = toNumberOrUndefined(year);

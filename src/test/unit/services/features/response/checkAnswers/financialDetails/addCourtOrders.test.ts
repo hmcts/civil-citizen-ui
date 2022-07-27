@@ -18,7 +18,6 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-
 describe('Court Orders Details', () => {
   it('should return court orders when it exists', async () => {
     //Given

@@ -12,7 +12,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
-
 describe('defendantTimelineService', () => {
   describe('getPartialAdmitTimeline', () => {
     it('should return defendant timeline from claim when it exists', () => {

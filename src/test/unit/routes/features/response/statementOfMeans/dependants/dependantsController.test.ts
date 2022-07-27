@@ -42,7 +42,7 @@ describe('Citizen dependants', () => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 
-    test('should return dependants page', async () => {
+    it('should return dependants page', async () => {
       await request(app)
         .get(respondentDependantsUrl)
         .expect((res: Response) => {
@@ -50,7 +50,7 @@ describe('Citizen dependants', () => {
           expect(res.text).toContain('Do any children live with you?');
         });
     });
-    test('should return status 500 when error thrown', async () => {
+    it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(respondentDependantsUrl)
@@ -65,7 +65,7 @@ describe('Citizen dependants', () => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 
-    test('when Yes option,under11 field filled in, hasDisabledChildren returns false, should redirect to Other Dependants screen', async () => {
+    it('when Yes option,under11 field filled in, hasDisabledChildren returns false, should redirect to Other Dependants screen', async () => {
       mockHasDisabledChildren.mockImplementation(() => {
         return false;
       });
@@ -79,7 +79,7 @@ describe('Citizen dependants', () => {
         });
     });
 
-    test('when Yes option and under11 field filled in, hasDisabledChildren returns true, should redirect to Other Dependants screen', async () => {
+    it('when Yes option and under11 field filled in, hasDisabledChildren returns true, should redirect to Other Dependants screen', async () => {
       mockHasDisabledChildren.mockImplementation(() => {
         return true;
       });
@@ -92,7 +92,7 @@ describe('Citizen dependants', () => {
           expect(res.get('location')).toBe(CHILDREN_DISABILITY_URL.replace(':id', 'aaa'));
         });
     });
-    test('when Yes option and between16and19 field filled in should redirect to Dependants Education screen', async () => {
+    it('when Yes option and between16and19 field filled in should redirect to Dependants Education screen', async () => {
       await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
@@ -102,7 +102,7 @@ describe('Citizen dependants', () => {
           expect(res.get('location')).toBe(CITIZEN_DEPENDANTS_EDUCATION_URL.replace(':id', 'aaa'));
         });
     });
-    test('should show error when Yes option and no number is filled in', async () => {
+    it('should show error when Yes option and no number is filled in', async () => {
       await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
@@ -112,7 +112,7 @@ describe('Citizen dependants', () => {
           expect(res.text).toContain(VALID_ENTER_AT_LEAST_ONE_NUMBER);
         });
     });
-    test('should show error when Yes option and invalid under11 input', async () => {
+    it('should show error when Yes option and invalid under11 input', async () => {
       await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
@@ -122,7 +122,7 @@ describe('Citizen dependants', () => {
           expect(res.text).toMatch(VALID_POSITIVE_NUMBER);
         });
     });
-    test('should show error when Yes option and invalid between11and15 input', async () => {
+    it('should show error when Yes option and invalid between11and15 input', async () => {
       await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
@@ -132,7 +132,7 @@ describe('Citizen dependants', () => {
           expect(res.text).toMatch(VALID_POSITIVE_NUMBER);
         });
     });
-    test('should show error when Yes option and invalid between16and19 input', async () => {
+    it('should show error when Yes option and invalid between16and19 input', async () => {
       await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')
@@ -142,7 +142,7 @@ describe('Citizen dependants', () => {
           expect(res.text).toMatch(VALID_INTEGER);
         });
     });
-    test('should status 500 when error thrown', async () => {
+    it('should status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(respondentDependantsUrl)
