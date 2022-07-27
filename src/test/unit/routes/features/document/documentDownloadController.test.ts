@@ -25,7 +25,7 @@ describe('Document download controller', () => {
       app.locals.draftStoreClient = undefined;
     });
 
-    test('should download the pdf successfully', async () => {
+    it('should download the pdf successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
       const mockDownloadPDFDocument = jest.spyOn(documentUtils, 'downloadPDF');
       await request(app)
@@ -35,7 +35,7 @@ describe('Document download controller', () => {
           expect(mockDownloadPDFDocument).toBeCalled();
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CASE_DOCUMENT_DOWNLOAD_URL)

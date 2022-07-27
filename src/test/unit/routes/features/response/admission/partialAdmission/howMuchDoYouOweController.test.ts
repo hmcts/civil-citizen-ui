@@ -19,7 +19,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
   });
 
   describe('on GET', () => {
-    test('should display page successfully', async () => {
+    it('should display page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_OWED_AMOUNT_URL)
@@ -28,7 +28,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain('How much money do you admit you owe?');
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_OWED_AMOUNT_URL)
@@ -41,7 +41,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
 
   describe('on POST', () => {
     // mock totalClaimAmount is £110
-    test('it should show errors when no amount is provided', async () => {
+    it('should show errors when no amount is provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -51,7 +51,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
         });
     });
-    test('it should show errors when amount 0 is provided', async () => {
+    it('should show errors when amount 0 is provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -61,7 +61,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
         });
     });
-    test('it should show errors when more than 2 decimals provided', async () => {
+    it('should show errors when more than 2 decimals provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -71,7 +71,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
         });
     });
-    test('it should show errors when negative amount is provided', async () => {
+    it('should show errors when negative amount is provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -81,7 +81,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
         });
     });
-    test('it should show errors when non-numeric amount is provided', async () => {
+    it('should show errors when non-numeric amount is provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -91,7 +91,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
         });
     });
-    test('it should show errors when provided amount is bigger than Claim amount', async () => {
+    it('should show errors when provided amount is bigger than Claim amount', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -101,7 +101,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
         });
     });
-    test('it should show errors when provided amount is equal to Claim amount', async () => {
+    it('should show errors when provided amount is equal to Claim amount', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -111,7 +111,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.text).toContain(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
         });
     });
-    test('should redirect page when proper amount provided', async () => {
+    it('should redirect page when proper amount provided', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)
@@ -121,7 +121,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_OWED_AMOUNT_URL)

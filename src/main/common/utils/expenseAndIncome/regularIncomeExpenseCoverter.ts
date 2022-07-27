@@ -35,7 +35,6 @@ function getValueFromRequest(key: string, req: express.Request, isIncome: boolea
   return Transaction.buildPopulatedForm(req.body.model[key].transactionSource.name, req.body.model[key].transactionSource.amount, req.body.model[key].transactionSource.schedule, isIncome);
 }
 
-
 function updateFormWithResponseData(key: string, req: express.Request, transactionModel: RegularExpenses | RegularIncome, income: boolean) {
   transactionModel[key] = getValueFromRequest(key, req, income);
 }

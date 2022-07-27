@@ -27,7 +27,7 @@ describe('Under 18 Contact court', ()=> {
   });
 
   describe('on Get', () => {
-    test('should return under 18 contact cort page', async () => {
+    it('should return under 18 contact cort page', async () => {
       await request(app)
         .get(AGE_ELIGIBILITY_URL)
         .expect((res) => {

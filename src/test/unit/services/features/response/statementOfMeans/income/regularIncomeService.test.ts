@@ -9,7 +9,6 @@ import Transaction from '../../../../../../../main/common/form/models/statementO
 import {
   TransactionSchedule,
 } from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import RegularIncome
   from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularIncome';

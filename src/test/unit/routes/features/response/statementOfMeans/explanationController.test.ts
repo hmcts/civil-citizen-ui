@@ -19,7 +19,7 @@ describe('Explanation Controller', () => {
   });
 
   describe('on GET', () => {
-    test('should return explanation page', async () => {
+    it('should return explanation page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_EXPLANATION_URL)
@@ -27,7 +27,7 @@ describe('Explanation Controller', () => {
           expect(res.status).toBe(200);
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_EXPLANATION_URL)
@@ -39,7 +39,7 @@ describe('Explanation Controller', () => {
   });
 
   describe('on POST', () => {
-    test('should redirect to claim task list page', async () => {
+    it('should redirect to claim task list page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_EXPLANATION_URL)
@@ -49,7 +49,7 @@ describe('Explanation Controller', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
-    test('should return error on incorrect input', async () => {
+    it('should return error on incorrect input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_EXPLANATION_URL)
@@ -59,7 +59,7 @@ describe('Explanation Controller', () => {
           expect(res.text).toContain(TestMessages.EXPLANATION_ERROR);
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_EXPLANATION_URL)

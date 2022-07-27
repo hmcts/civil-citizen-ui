@@ -16,6 +16,7 @@ import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfT
 import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
 import {SupportRequired} from '../models/directionsQuestionnaire/supportRequired';
 import {
+  CaseState,
   ClaimAmountBreakup,
   ClaimFee,
   InterestClaimFromType,
@@ -23,7 +24,6 @@ import {
   InterestClaimUntilType,
   SameRateInterestSelection,
   SameRateInterestType,
-  CaseState,
 } from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
 import {ResponseType} from '../form/models/responseType';
@@ -172,7 +172,7 @@ export class Claim {
   isFullDefence(): boolean {
     return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
   }
-  
+
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }
@@ -194,12 +194,13 @@ export class Claim {
     }
     return documentId;
   }
+
   generatePdfFileName(): string {
     return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
   }
 
-  isSystemGeneratedCaseDocumentsAvailable(): number {
-    return this.systemGeneratedCaseDocuments?.length;
+  isSystemGeneratedCaseDocumentsAvailable(): boolean {
+    return this.systemGeneratedCaseDocuments?.length > 0;
   }
 
   getDocumentDetails(documentType: DocumentType): CaseDocument {
@@ -211,6 +212,7 @@ export class Claim {
     }
     return undefined;
   }
+
   isDefendantNotResponded(): boolean {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
@@ -220,9 +222,9 @@ export interface Party {
   individualTitle?: string;
   individualLastName?: string;
   individualFirstName?: string;
-  soleTraderTitle?:string;
-  soleTraderFirstName?:string;
-  soleTraderLastName?:string;
+  soleTraderTitle?: string;
+  soleTraderFirstName?: string;
+  soleTraderLastName?: string;
   partyName?: string;
   type: CounterpartyType;
   primaryAddress?: CorrespondenceAddress;

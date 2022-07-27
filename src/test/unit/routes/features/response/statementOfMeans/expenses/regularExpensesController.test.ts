@@ -20,7 +20,7 @@ describe('Regular Expenses Controller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on GET', () => {
-    test('it should display page successfully', async () => {
+    it('should display page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_MONTHLY_EXPENSES_URL)
@@ -29,7 +29,7 @@ describe('Regular Expenses Controller', () => {
           expect(res.text).toContain('What are your regular expenses?');
         });
     });
-    test('it should return 500 status code when there is an error', async () => {
+    it('should return 500 status code when there is an error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_MONTHLY_EXPENSES_URL)
@@ -40,7 +40,7 @@ describe('Regular Expenses Controller', () => {
     });
   });
   describe('on POST', () => {
-    test('it should show errors when mortgage is selected but no amount or schedule selected', async () => {
+    it('should show errors when mortgage is selected but no amount or schedule selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
         .send({
@@ -59,7 +59,7 @@ describe('Regular Expenses Controller', () => {
           expect(res.text).toContain(TestMessages.MORTGAGE_SCHEDULE_ERROR);
         });
     });
-    test('it should show errors when mortgage and rent are selected but no amount or schedule selected', async () => {
+    it('should show errors when mortgage and rent are selected but no amount or schedule selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
         .send({
@@ -86,7 +86,7 @@ describe('Regular Expenses Controller', () => {
           expect(res.text).toContain(TestMessages.RENT_SCHEDULE_ERROR);
         });
     });
-    test('it should show errors when mortgage is selected but no schedule selected', async () => {
+    it('should show errors when mortgage is selected but no schedule selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
         .send({
@@ -104,7 +104,7 @@ describe('Regular Expenses Controller', () => {
           expect(res.text).toContain(TestMessages.MORTGAGE_SCHEDULE_ERROR);
         });
     });
-    test('it should show errors when mortgage is selected and amount is negative', async () => {
+    it('should show errors when mortgage is selected and amount is negative', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
         .send({
@@ -122,7 +122,7 @@ describe('Regular Expenses Controller', () => {
           expect(res.text).toContain(TestMessages.MORTGAGE_CORRECT_AMOUNT_ERROR);
         });
     });
-    test('it should show errors when mortgage is selected and amount has three decimal places', async () => {
+    it('should show errors when mortgage is selected and amount has three decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
         .send({
@@ -140,7 +140,7 @@ describe('Regular Expenses Controller', () => {
           expect(res.text).toContain(TestMessages.MORTGAGE_CORRECT_AMOUNT_ERROR);
         });
     });
-    test('it should show errors when other is selected and data for other is not correctly selected', async () => {
+    it('should show errors when other is selected and data for other is not correctly selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
         .send({
@@ -167,7 +167,7 @@ describe('Regular Expenses Controller', () => {
           expect(res.text).toContain(TestMessages.OTHER_EXPENSE_DOG_SCHEDULE_ERROR);
         });
     });
-    test('it should redirect when no data is selected', async () => {
+    it('should redirect when no data is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
@@ -177,7 +177,7 @@ describe('Regular Expenses Controller', () => {
           expect(res.header.location).toEqual(CITIZEN_MONTHLY_INCOME_URL);
         });
     });
-    test('it should redirect when correct data is selected', async () => {
+    it('should redirect when correct data is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
@@ -196,7 +196,7 @@ describe('Regular Expenses Controller', () => {
           expect(res.header.location).toEqual(CITIZEN_MONTHLY_INCOME_URL);
         });
     });
-    test('it should redirect when correct data for other expenses', async () => {
+    it('should redirect when correct data for other expenses', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)
@@ -219,7 +219,7 @@ describe('Regular Expenses Controller', () => {
           expect(res.header.location).toEqual(CITIZEN_MONTHLY_INCOME_URL);
         });
     });
-    test('it should return status 500 when error occurs', async () => {
+    it('should return status 500 when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_MONTHLY_EXPENSES_URL)

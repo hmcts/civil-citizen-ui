@@ -29,7 +29,7 @@ describe('Mediation Disagreement', () => {
   });
 
   describe('on GET', () => {
-    test('should return mediation disagreement page', async () => {
+    it('should return mediation disagreement page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(MEDIATION_DISAGREEMENT_URL)
@@ -38,7 +38,7 @@ describe('Mediation Disagreement', () => {
           expect(res.text).toContain(TestMessages.MEDIATION_DISAGREEMENT);
         });
     });
-    test('should return mediation disagreement page when mediation has mediationDisagreement', async () => {
+    it('should return mediation disagreement page when mediation has mediationDisagreement', async () => {
       applicantTypeMock.case_data.mediation.mediationDisagreement = { option: YesNo.YES};
       const mediationMock: string = JSON.stringify(applicantTypeMock);
       const mockRedisWithMediationProperties = {
@@ -53,7 +53,7 @@ describe('Mediation Disagreement', () => {
           expect(res.text).toContain(TestMessages.MEDIATION_DISAGREEMENT);
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(MEDIATION_DISAGREEMENT_URL)
@@ -65,7 +65,7 @@ describe('Mediation Disagreement', () => {
   });
 
   describe('on POST', () => {
-    test('should redirect page when NO', async () => {
+    it('should redirect page when NO', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
@@ -75,7 +75,7 @@ describe('Mediation Disagreement', () => {
           expect(res.header.location).toEqual(DONT_WANT_FREE_MEDIATION_URL);
         });
     });
-    test('should redirect page when YES and applicant type is INDIVIDUAL', async () => {
+    it('should redirect page when YES and applicant type is INDIVIDUAL', async () => {
       applicantTypeMock.case_data.respondent1.type = CounterpartyType.INDIVIDUAL;
       const individualTypeMock: string = JSON.stringify(applicantTypeMock);
       const mockRedisIndividual = {
@@ -92,7 +92,7 @@ describe('Mediation Disagreement', () => {
           expect(res.header.location).toEqual(CAN_WE_USE_URL);
         });
     });
-    test('should redirect page when YES and applicant type is SOLE TRADER', async () => {
+    it('should redirect page when YES and applicant type is SOLE TRADER', async () => {
       applicantTypeMock.case_data.respondent1.type = CounterpartyType.SOLE_TRADER;
       const soleTraderTypeMock: string = JSON.stringify(applicantTypeMock);
       const mockRedisSoleTrader = {
@@ -108,7 +108,7 @@ describe('Mediation Disagreement', () => {
           expect(res.header.location).toEqual(CAN_WE_USE_URL);
         });
     });
-    test('should redirect page when YES and applicant type is ORGANISATION', async () => {
+    it('should redirect page when YES and applicant type is ORGANISATION', async () => {
       applicantTypeMock.case_data.respondent1.type = CounterpartyType.ORGANISATION;
       const organisationTypeMock: string = JSON.stringify(applicantTypeMock);
       const mockRedisOrganisation = {
@@ -124,7 +124,7 @@ describe('Mediation Disagreement', () => {
           expect(res.header.location).toEqual(CAN_WE_USE_COMPANY_URL);
         });
     });
-    test('should redirect page when YES and applicant type is COMPANY', async () => {
+    it('should redirect page when YES and applicant type is COMPANY', async () => {
       applicantTypeMock.case_data.respondent1.type = CounterpartyType.COMPANY;
       const companyTypeMock: string = JSON.stringify(applicantTypeMock);
       const mockRedisCompany = {
@@ -140,7 +140,7 @@ describe('Mediation Disagreement', () => {
           expect(res.header.location).toEqual(CAN_WE_USE_COMPANY_URL);
         });
     });
-    test('should return error on incorrect input', async () => {
+    it('should return error on incorrect input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)
@@ -150,7 +150,7 @@ describe('Mediation Disagreement', () => {
           expect(res.text).toContain(VALID_YES_NO_OPTION);
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(MEDIATION_DISAGREEMENT_URL)

@@ -96,8 +96,7 @@ describe('Citizen details service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const resultClaim = new Claim();
-      const respondentResult = new Respondent();
-      resultClaim.respondent1 = respondentResult;
+      resultClaim.respondent1 = new Respondent();
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
       mockGetCaseData.mockImplementation(async () => {
         return undefined;
