@@ -83,6 +83,8 @@ import understandingYourOptionsController from './features/response/understandin
 import newDeadlineResponseController from './features/response/responseDeadline/newResponseDeadlineController';
 import requestMoreTimeController from './features/response/requestMoreTimeController';
 import agreedResponseDeadlineController from './features/response/responseDeadline/agreedResponseDeadlineController';
+import determinationWithoutHearingController
+  from './features/directionsQuestionnaire/determinationWithoutHearingController';
 
 export default [
   homeController,
@@ -160,4 +162,5 @@ export default [
   requestMoreTimeController,
   agreedResponseDeadlineController,
   newDeadlineResponseController,
+  determinationWithoutHearingController,
 ];

@@ -32,10 +32,9 @@ import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifi
 import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
-import {Vulnerability} from 'models/directionsQuestionnaire/vulnerability';
+import {Vulnerability} from '../models/directionsQuestionnaire/vulnerability';
 import {ResponseDeadline} from './responseDeadline';
-
-export const MAX_CLAIM_AMOUNT = 10000;
+import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
 
 export class Claim {
   legacyCaseReference: string;
@@ -77,6 +76,7 @@ export class Claim {
   vulnerability: Vulnerability;
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
+  determinationWithoutHearing: DeterminationWithoutHearing;
 
   getClaimantName(): string {
     return this.applicant1.partyName;

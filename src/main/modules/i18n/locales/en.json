@@ -510,6 +510,13 @@
       "ANY_DISABLED_CHILDREN": "Are any of the children that live with you disabled?",
       "PAGE_TITLE": "Any dependants with disability?"
     },
+    "DETERMINATION_WITHOUT_HEARING": {
+      "CLAIM_DETERMINATION_WITHOUT_HEARING": "Do you consider that this claim is suitable for determination without a hearing,",
+      "IE": "i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?",
+      "PAGE_TITLE": "Determination without Hearing Questions",
+      "TELL_US_WHY": "Tell us why",
+      "TITLE": "Determination without hearing"
+    },
     "DISABILITY": {
       "PAGE_TITLE": "Are you disabled?",
       "TITLE": "Are you disabled?"
@@ -846,6 +853,7 @@
     "SIGNER_ROLE_TOO_LONG": "You've entered too many characters",
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
+    "TELL_US_WHY": "Please tell us why",
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
