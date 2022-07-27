@@ -36,7 +36,6 @@ describe('Dashboard page', () => {
   });
 
   describe('on GET', () => {
-
     beforeEach((done) => {
       testSession
         .get('/oauth2/callback')
@@ -50,7 +49,7 @@ describe('Dashboard page', () => {
         });
     });
 
-    test('should return dashboard page in english', async () => {
+    it('should return dashboard page in english', async () => {
       await testSession
         .get(DASHBOARD_URL + '?lang=en')
         .expect((res: Response) => {
@@ -60,7 +59,7 @@ describe('Dashboard page', () => {
         });
     });
 
-    test('should return dashboard page in cymraeg', async () => {
+    it('should return dashboard page in cymraeg', async () => {
       await testSession
         .get(DASHBOARD_URL + '?lang=cy')
         .expect((res: Response) => {

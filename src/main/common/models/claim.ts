@@ -172,7 +172,7 @@ export class Claim {
   isFullDefence(): boolean {
     return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
   }
-  
+
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }

@@ -179,7 +179,10 @@
         "AddressLine2": "21",
         "AddressLine3": "Church Road"
       },
-      "specRespondentCorrespondenceAddressRequired": "Yes"
+      "specRespondentCorrespondenceAddressRequired": "Yes",
+      "responseDeadline": {
+        "agreedResponseDeadline": "2022-10-29"
+      }
     }
   },
   {

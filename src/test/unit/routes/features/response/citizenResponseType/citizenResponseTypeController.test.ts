@@ -27,7 +27,7 @@ describe('Citizen response type', () => {
   });
 
   describe('on Exception', () => {
-    test('should return http 500 when has error in the get method', async () => {
+    it('should return http 500 when has error in the get method', async () => {
       mockGetCaseData.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
@@ -40,7 +40,7 @@ describe('Citizen response type', () => {
     });
   });
 
-  test('should return http 500 when has error in the post method', async () => {
+  it('should return http 500 when has error in the post method', async () => {
     mockGetCaseData.mockImplementation(async () => {
       throw new Error(TestMessages.REDIS_FAILURE);
     });
@@ -54,7 +54,7 @@ describe('Citizen response type', () => {
   });
 
   describe('on GET', () => {
-    test('should return empty citizen response type page', async () => {
+    it('should return empty citizen response type page', async () => {
       mockGetCaseData.mockImplementation(async () => new Claim());
       await request(app)
         .get(CITIZEN_RESPONSE_TYPE_URL)
@@ -64,7 +64,7 @@ describe('Citizen response type', () => {
         });
     });
 
-    test('should return citizen response type page with all information from redis', async () => {
+    it('should return citizen response type page with all information from redis', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         const respondent1 = new Respondent();
@@ -82,7 +82,7 @@ describe('Citizen response type', () => {
   });
 
   describe('on POST', () => {
-    test('should return error on incorrect input', async () => {
+    it('should return error on incorrect input', async () => {
       await request(app)
         .post(CITIZEN_RESPONSE_TYPE_URL)
         .send('')
@@ -92,7 +92,7 @@ describe('Citizen response type', () => {
         });
     });
 
-    test('should redirect page when correct input', async () => {
+    it('should redirect page when correct input', async () => {
       await request(app)
         .post(CITIZEN_RESPONSE_TYPE_URL)
         .send('responseType=test')
@@ -101,7 +101,7 @@ describe('Citizen response type', () => {
         });
     });
 
-    test('should redirect page when correct input when has information on redis', async () => {
+    it('should redirect page when correct input when has information on redis', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         const respondent1 = new Respondent();
@@ -117,7 +117,7 @@ describe('Citizen response type', () => {
         });
     });
 
-    test('should redirect page when correct input when dont have information on redis of respondent1', async () => {
+    it('should redirect page when correct input when dont have information on redis of respondent1', async () => {
       mockGetCaseData.mockImplementation(async () => undefined);
       await request(app)
         .post(CITIZEN_RESPONSE_TYPE_URL)
@@ -128,7 +128,7 @@ describe('Citizen response type', () => {
         });
     });
 
-    test('should redirect page when user selects I admit part of the claim ', async () => {
+    it('should redirect page when user selects I admit part of the claim ', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         const respondent1 = new Respondent();
@@ -145,7 +145,7 @@ describe('Citizen response type', () => {
         });
     });
 
-    test('should redirect to task list page when user selects I admit all of the claim', async () => {
+    it('should redirect to task list page when user selects I admit all of the claim', async () => {
       await request(app)
         .post(CITIZEN_RESPONSE_TYPE_URL)
         .send('responseType=FULL_ADMISSION')
@@ -155,7 +155,7 @@ describe('Citizen response type', () => {
         });
     });
 
-    test('should redirect to reject claim page when user selects I reject all of the claim', async () => {
+    it('should redirect to reject claim page when user selects I reject all of the claim', async () => {
       await request(app)
         .post(CITIZEN_RESPONSE_TYPE_URL)
         .send('responseType=FULL_DEFENCE')

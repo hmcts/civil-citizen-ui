@@ -1,6 +1,5 @@
 import {DateConverter} from '../../../../main/common/utils/dateConverter';
 
-
 describe('Convert to valid Date', () => {
   it('should convert to valid date successfully with valid input', () => {
     //Given

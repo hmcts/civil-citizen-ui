@@ -27,7 +27,6 @@ import {UnemploymentCategory} from '../../main/common/form/models/statementOfMea
 import {UnemploymentDetails} from '../../main/common/form/models/statementOfMeans/unemployment/unemploymentDetails';
 import {SelfEmployedAs} from '../../main/common/models/selfEmployedAs';
 import {TaxPayments} from '../../main/common/models/taxPayments';
-
 import {Disability} from '../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {SevereDisability} from '../../main/common/form/models/statementOfMeans/severeDisability';
@@ -96,6 +95,11 @@ export const createClaimWithRespondentDetailsWithPaymentOption = (paymentOption:
     firstRepaymentDate: new Date('2022-06-25'),
   };
   claim.paymentDate = new Date('2022-06-25');
+  claim.statementOfMeans = {
+    explanation: {
+      text: 'Reasons cannot pay immediately',
+    },
+  };
   return claim;
 };
 
@@ -308,7 +312,6 @@ export const createClaimWithRegularIncome = (): Claim => {
 
   return claim as Claim;
 };
-
 
 export const createEmployers = () => {
 
@@ -614,15 +617,15 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   return claim as Claim;
 };
 
-export const createClaimWithFullRejection = (option:RejectAllOfClaimType): Claim => {
+export const createClaimWithFullRejection = (option: RejectAllOfClaimType, paidAmount?:number): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
-  if(claim.respondent1) {
+  if (claim.respondent1) {
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
   }
   claim.rejectAllOfClaim = {
     option: option,
     howMuchHaveYouPaid: {
-      amount: 100,
+      amount: paidAmount || 100,
       date: new Date('2022-02-14T00:00:00.000Z'),
       day: 14,
       month: 2,
@@ -633,6 +636,46 @@ export const createClaimWithFullRejection = (option:RejectAllOfClaimType): Claim
       text: 'Reasons for disagree',
     },
   };
+  claim.totalClaimAmount = 1000,
   claim.paymentOption = undefined;
+  return claim;
+};
+
+export const createClaimWithPaymentOption = (responseType:ResponseType, paymentOption: PaymentOptionType): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  const getDate = () => Date.now() + (3600 * 1000 * 24);
+
+  if(claim.respondent1) {
+    claim.respondent1.responseType = responseType;
+  }
+  claim.paymentOption = paymentOption;
+  claim.repaymentPlan = {
+    paymentAmount: 33,
+    repaymentFrequency: TransactionSchedule.WEEK,
+    firstRepaymentDate: new Date(getDate()),
+  };
+
+  claim.paymentDate = new Date(getDate());
+  claim.statementOfMeans = {
+    explanation: {
+      text: 'Reasons cannot pay immediately',
+    },
+  };
+
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = paymentOption;
+
+  if(responseType === ResponseType.PART_ADMISSION && paymentOption === PaymentOptionType.BY_SET_DATE) {
+    claim.partialAdmission.paymentIntention.paymentDate = new Date(getDate());
+  }
+
+  claim.partialAdmission.alreadyPaid = new AlreadyPaid(YesNo.NO);
+
+  claim.mediation = new Mediation({option:YesNo.YES, mediationPhoneNumber: '123456'},
+    new FreeMediation(YesNo.YES),
+    new NoMediationReason('notWant', 'no'),
+    new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
+
   return claim;
 };

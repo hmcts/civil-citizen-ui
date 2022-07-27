@@ -36,7 +36,7 @@ describe('Repayment Plan', () => {
 });
 
 describe('on Get', () => {
-  test('should return on mediation confirm your telephone number repayment plan page successfully', async () => {
+  it('should return on mediation confirm your telephone number repayment plan page successfully', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app).get(CAN_WE_USE_URL)
       .expect((res) => {
@@ -44,7 +44,7 @@ describe('on Get', () => {
         expect(res.text).toContain('Confirm your telephone number');
       });
   });
-  test('should return 500 status code when error occurs', async () => {
+  it('should return 500 status code when error occurs', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
       .get(CAN_WE_USE_URL)
@@ -56,7 +56,7 @@ describe('on Get', () => {
 });
 
 describe('on Post', () => {
-  test('should return error when no input text is filled', async () => {
+  it('should return error when no input text is filled', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CAN_WE_USE_URL)
@@ -66,7 +66,7 @@ describe('on Post', () => {
         expect(res.text).toContain(VALID_YES_NO_OPTION);
       });
   });
-  test('should return errors when "NO" option selected and telephone number is undefined ', async () => {
+  it('should return errors when "NO" option selected and telephone number is undefined ', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CAN_WE_USE_URL)
@@ -76,7 +76,7 @@ describe('on Post', () => {
         expect(res.text).toContain(PHONE_NUMBER_REQUIRED);
       });
   });
-  test('should return errors when "NO" option selected and telephone number max length is greater than 30 characters ', async () => {
+  it('should return errors when "NO" option selected and telephone number max length is greater than 30 characters ', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CAN_WE_USE_URL)
@@ -86,7 +86,7 @@ describe('on Post', () => {
         expect(res.text).toContain(VALID_TEXT_LENGTH);
       });
   });
-  test('should redirect with valid input', async () => {
+  it('should redirect with valid input', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CAN_WE_USE_URL)
@@ -96,7 +96,7 @@ describe('on Post', () => {
         expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
       });
   });
-  test('should redirect with input option equal to "yes" ', async () => {
+  it('should redirect with input option equal to "yes" ', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CAN_WE_USE_URL)
@@ -106,7 +106,7 @@ describe('on Post', () => {
         expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
       });
   });
-  test('should return status 500 when there is error', async () => {
+  it('should return status 500 when there is error', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
       .post(CAN_WE_USE_URL)
@@ -118,7 +118,7 @@ describe('on Post', () => {
   });
 
   describe('Enter Phone Number Screen', () => {
-    test('should redirect with valid input', async () => {
+    it('should redirect with valid input', async () => {
       app.locals.draftStoreClient = mockWithoutRespondentPhone;
       await request(app)
         .post(CAN_WE_USE_URL)

@@ -38,7 +38,6 @@ export const saveFormToDraftStore = async (claimId: string, form: BetweenSixteen
   }
 };
 
-
 const getMaxValue = (claim: Claim): number | undefined => {
   if (claim?.statementOfMeans?.dependants?.numberOfChildren) {
     return Number(claim.statementOfMeans.dependants.numberOfChildren.between16and19);

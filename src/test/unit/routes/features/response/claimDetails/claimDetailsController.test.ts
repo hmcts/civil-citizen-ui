@@ -30,7 +30,7 @@ describe('Claim details page', () => {
   });
 
   describe('on Get', () => {
-    test('should return your claim details page with default values', async () => {
+    it('should return your claim details page with default values', async () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(400);
@@ -43,7 +43,7 @@ describe('Claim details page', () => {
           expect(res.text).toContain(TestMessages.CLAIM_NUMBER);
         });
     });
-    test('should return your claim details page with values from civil-service', async () => {
+    it('should return your claim details page with values from civil-service', async () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
@@ -66,7 +66,7 @@ describe('Claim details page', () => {
         });
       expect(spyRedisSave).toBeCalled();
     });
-    test('should retrieve claim from redis when claim exists in redis', async () => {
+    it('should retrieve claim from redis when claim exists in redis', async () => {
       const mockGetClaimById = jest.fn().mockImplementation(() => {
         return {};
       });
@@ -95,7 +95,7 @@ describe('Claim details page', () => {
       expect(spyRedisSave).not.toBeCalled();
       expect(mockGetClaimById).not.toBeCalled();
     });
-    test('should display Download and view their Timeline', async () => {
+    it('should display Download and view their Timeline', async () => {
       const mockGetClaimById = jest.fn().mockImplementation(() => {
         return {};
       });
@@ -117,7 +117,7 @@ describe('Claim details page', () => {
       expect(spyRedisSave).not.toBeCalled();
       expect(mockGetClaimById).not.toBeCalled();
     });
-    test('should return 500 status when there is error', async () => {
+    it('should return 500 status when there is error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get('/case/1111/response/claim-details')

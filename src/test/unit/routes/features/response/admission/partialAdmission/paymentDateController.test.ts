@@ -31,7 +31,7 @@ describe('Payment date', () => {
   });
 
   describe('on Exception', () => {
-    test('should return http 500 when has error in the get method', async () => {
+    it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
@@ -41,7 +41,7 @@ describe('Payment date', () => {
         });
     });
 
-    test('should return http 500 when has error in the post method', async () => {
+    it('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
@@ -56,7 +56,7 @@ describe('Payment date', () => {
   });
 
   describe('on GET', () => {
-    test('should return payment date page', async () => {
+    it('should return payment date page', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
@@ -68,7 +68,7 @@ describe('Payment date', () => {
           expect(res.text).toContain('name="day" type="text"');
         });
     });
-    test('should return payment date page with payment date loaded from Redis', async () => {
+    it('should return payment date page with payment date loaded from Redis', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
@@ -82,7 +82,7 @@ describe('Payment date', () => {
     });
   });
   describe('on POST', () => {
-    test('should create a new claim if redis gives undefined', async () => {
+    it('should create a new claim if redis gives undefined', async () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
@@ -94,7 +94,7 @@ describe('Payment date', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
-    test('should return errors on no input', async () => {
+    it('should return errors on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
@@ -108,7 +108,7 @@ describe('Payment date', () => {
           expect(res.text).toContain(VALID_YEAR);
         });
     });
-    test('should return error on date in the past', async () => {
+    it('should return error on date in the past', async () => {
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
         .send('year=1999')
@@ -119,7 +119,7 @@ describe('Payment date', () => {
           expect(res.text).toContain(VALID_DATE_NOT_IN_PAST);
         });
     });
-    test('should return error on incorrect input', async () => {
+    it('should return error on incorrect input', async () => {
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
         .send('year=')
@@ -130,7 +130,7 @@ describe('Payment date', () => {
           expect(res.text).toContain(VALID_YEAR);
         });
     });
-    test('should accept a future date', async () => {
+    it('should accept a future date', async () => {
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
         .send('year=9999')
@@ -140,7 +140,7 @@ describe('Payment date', () => {
           expect(res.status).toBe(302);
         });
     });
-    test('should redirect to claim task list page on valid payment date', async () => {
+    it('should redirect to claim task list page on valid payment date', async () => {
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
         .send('year=9999')

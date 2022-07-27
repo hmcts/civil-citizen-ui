@@ -22,7 +22,6 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-
 describe('Partner Details', () => {
 
   it('should return if you live with a partner when it exists', async () => {

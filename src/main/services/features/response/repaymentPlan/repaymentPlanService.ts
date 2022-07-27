@@ -42,7 +42,6 @@ const saveRepaymentPlanData = async (claimId: string, form: RepaymentPlanForm) =
   }
 };
 
-
 const getClaim = async (claimId: string): Promise<Claim> => {
   const claim = await getCaseDataFromStore(claimId);
   if (!claim.repaymentPlan) {
@@ -54,7 +53,6 @@ const getClaim = async (claimId: string): Promise<Claim> => {
   }
   return claim;
 };
-
 
 export {
   getRepaymentPlanForm,

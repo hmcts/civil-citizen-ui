@@ -2,7 +2,6 @@ import {
   NumberOfChildren,
 } from '../../../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 
-
 describe('Number Of Children model tests', () => {
   it('should have no children when all undefined', () => {
     //Given
