@@ -9,6 +9,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
       <h2 class="govuk-heading-m">{{ t('PAGES.DASHBOARD.CLAIMANT_TITLE') }}</h2>
+      <a href={{ item && item.getHref() }}> make a new claim </a>
       <p class="govuk-body">
         {{ t('PAGES.DASHBOARD.CLAIM_PROMPT') }}
       </p>
@@ -27,32 +28,32 @@
         {% if claimDraftSaved|length %}
           <tr class="govuk-table__row">
             <td class="govuk-table__cell">
-              <a href={{ claimDraftSaved.getHref() }}> {{ t(claimDraftSaved.claimNumber) }} </a>
+              <a href={{ claimDraftSaved && claimDraftSaved.getHref() }}> {{ t(claimDraftSaved.claimNumber) }} </a>
             </td>
             <td class="govuk-table__cell">-</td>
             <td class="govuk-table__cell">-</td>
             <td class="govuk-table__cell">
-              <a href={{ claimDraftSaved.getHref() }}>
-                {{ t(claimDraftSaved.nextSteps) }}
+              <a href={{ claimDraftSaved && claimDraftSaved.getHref() }}>
+                {{ t(claimDraftSaved && claimDraftSaved.nextSteps) }}
               </a>
             </td>
             <td class="govuk-table__cell">-</td>
             <td class="govuk-table__cell">
-              <a href={{ claimDraftSaved.getHref() }}> {{ t('PAGES.DASHBOARD.VIEW') }} </a>
+              <a href={{ claimDraftSaved && claimDraftSaved.getHref() }}> {{ t('PAGES.DASHBOARD.VIEW') }} </a>
             </td>
           </tr>
         {% endif %}
         {% for item in claimsAsClaimant %}
           <tr class="govuk-table__row">
             <td class="govuk-table__cell">
-              <a href={{ item.getHref() }}> {{ item.claimNumber }} </a>
+              <a href={{ item && item.getHref() }}> {{ item && item.claimNumber }} </a>
             </td>
-            <td class="govuk-table__cell">{{ item.defendantName }}</td>
-            <td class="govuk-table__cell">£{{ item.claimAmount }}</td>
-            <td class="govuk-table__cell">{{ item.nextSteps }}</td>
-            <td class="govuk-table__cell">{{ item.responseDeadline | formatDate }}</td>
+            <td class="govuk-table__cell">{{ item && item.defendantName }}</td>
+            <td class="govuk-table__cell">£{{ item && item.claimAmount }}</td>
+            <td class="govuk-table__cell">{{ item && item.nextSteps }}</td>
+            <td class="govuk-table__cell">{{ item && item.responseDeadline | formatDate }}</td>
             <td class="govuk-table__cell">
-              <a href={{ item.getHref() }}> {{ t('PAGES.DASHBOARD.VIEW') }} </a>
+              <a href={{ item && item.getHref() }}> {{ t('PAGES.DASHBOARD.VIEW') }} </a>
             </td>
           </tr>
         {% endfor %}
@@ -79,11 +80,11 @@
         {% for item in claimsAsDefendant %}
           <tr class="govuk-table__row">
             <td class="govuk-table__cell">
-              <a href={{ item.getHref() }}> {{ item.claimNumber }} </a>
+              <a href={{ item && item.getHref() }}> {{ item.claimNumber }} </a>
             </td>
-            <td class="govuk-table__cell">{{ item.claimantName }}</td>
-            <td class="govuk-table__cell">£{{ item.claimAmount }}</td>
-            <td class="govuk-table__cell">{{ t('PAGES.DASHBOARD.ACTION_PROMPT') }}{{ item.responseDeadline | formatDate }}</td>
+            <td class="govuk-table__cell">{{ item && item.claimantName }}</td>
+            <td class="govuk-table__cell">£{{ item && item.claimAmount }}</td>
+            <td class="govuk-table__cell">{{ t('PAGES.DASHBOARD.ACTION_PROMPT') }}{{ item && item.responseDeadline | formatDate }}</td>
           </tr>
         {% endfor %}
         </tbody>

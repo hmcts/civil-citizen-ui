@@ -47,7 +47,4 @@ describe('Convert to valid Date', () => {
     //Then
     expect(result.toDateString()).toBe('Invalid Date');
   });
-
-  
-
 });
