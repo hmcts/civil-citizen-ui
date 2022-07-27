@@ -806,7 +806,7 @@
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
     "ERROR": "Error",
-    "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first PRUEBA payment date in the future",
+    "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",

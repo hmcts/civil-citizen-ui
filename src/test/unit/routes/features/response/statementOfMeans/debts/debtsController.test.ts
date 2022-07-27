@@ -19,8 +19,6 @@ import {Claim} from '../../../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
 import {
   REDIS_FAILURE,
-  VALID_STRICTLY_POSITIVE_NUMBER,
-  VALID_TWO_DECIMAL_NUMBER,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
@@ -141,7 +139,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithTotalOwnedInvalid())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_TWO_DECIMAL_NUMBER);
+          expect(res.text).toMatch(t('ERRORS.VALID_TWO_DECIMAL_NUMBER'));
         });
     });
 
@@ -151,7 +149,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithTotalOwnedZero())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_STRICTLY_POSITIVE_NUMBER);
+          expect(res.text).toMatch(t('ERRORS.VALID_STRICTLY_POSITIVE_NUMBER'));
         });
     });
     test('should validate when has option is yes but Total owned is empty ', async () => {
@@ -160,7 +158,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithTotalOwnedEmpty())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_STRICTLY_POSITIVE_NUMBER);
+          expect(res.text).toMatch(t('ERRORS.VALID_STRICTLY_POSITIVE_NUMBER'));
         });
     });
 
@@ -187,8 +185,7 @@ describe('Debts', () => {
     test('should should redirect to when option is yes when has data on redis', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        const statementOfMeans = new StatementOfMeans();
-        claim.statementOfMeans = statementOfMeans;
+        claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormYes();
         return claim;
       });
