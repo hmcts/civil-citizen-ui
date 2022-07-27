@@ -54,7 +54,7 @@ describe('Dashboard page', () => {
   });
 
   describe('on GET', () => {
-    test('should return dashboard page', async () => {
+    it('should return dashboard page', async () => {
       console.log(JSON.stringify(testSession));
       await testSession
         .get(DASHBOARD_URL)

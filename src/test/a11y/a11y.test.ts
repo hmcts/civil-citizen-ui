@@ -67,7 +67,7 @@ function expectNoErrors(messages: PallyIssue[]): void {
 
 function testAccessibilityWithActions(url: string, actions: string[]): void {
   describe(`Page ${url}`, () => {
-    test(`should have no accessibility errors ${(actions.length) ? 'with actions' : ''}`, done => {
+    it(`should have no accessibility errors ${(actions.length) ? 'with actions' : ''}`, done => {
       ensurePageCallWillSucceed(url)
         .then(() => runPally(agent.get(url).url, actions))
         .then((result: Pa11yResult) => {

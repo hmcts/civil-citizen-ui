@@ -3,7 +3,6 @@ import {
 } from '../../../../../../../main/common/form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
 import {Validator} from 'class-validator';
 
-
 describe('Dependant Teenagers form validation', () => {
   const validator = new Validator();
   it('should have errors when value is more than maxvalue', () => {

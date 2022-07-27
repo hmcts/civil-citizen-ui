@@ -25,7 +25,6 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
-
 describe('Response To Claim', () => {
   const resultExpected = (summarySections: SummarySections) => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].actions?.items.length).toBe(1);

@@ -25,7 +25,7 @@ describe('on tax payments', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on Get', () => {
-    test('should return on tax payment page successfully', async () => {
+    it('should return on tax payment page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(ON_TAX_PAYMENTS_URL)
         .expect((res) => {
@@ -33,7 +33,7 @@ describe('on tax payments', () => {
           expect(res.text).toContain('Are you behind on tax payments?');
         });
     });
-    test('should return 500 status code when error occurs', async () => {
+    it('should return 500 status code when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(ON_TAX_PAYMENTS_URL)
@@ -44,7 +44,7 @@ describe('on tax payments', () => {
     });
   });
   describe('on Post', () => {
-    test('should return error when no option is not selected', async () => {
+    it('should return error when no option is not selected', async () => {
       await request(app)
         .post(ON_TAX_PAYMENTS_URL)
         .send('')
@@ -53,7 +53,7 @@ describe('on tax payments', () => {
           expect(res.text).toContain(VALID_YES_NO_SELECTION);
         });
     });
-    test('should return errors when no option yes is selected and amount and reason are not defined', async () => {
+    it('should return errors when no option yes is selected and amount and reason are not defined', async () => {
       await request(app)
         .post(ON_TAX_PAYMENTS_URL)
         .send({option: YesNo.YES, amountYouOwe: null, reason: undefined})
@@ -63,7 +63,7 @@ describe('on tax payments', () => {
           expect(res.text).toContain(VALID_REASON_REQUIRED);
         });
     });
-    test('should return errors when option yes is selected and amount is 0', async () => {
+    it('should return errors when option yes is selected and amount is 0', async () => {
       await request(app)
         .post(ON_TAX_PAYMENTS_URL)
         .send({option: YesNo.YES, amountYouOwe: 0, reason: 'reason'})
@@ -72,7 +72,7 @@ describe('on tax payments', () => {
           expect(res.text).toContain(VALID_OWED_AMOUNT_REQUIRED);
         });
     });
-    test('should return errors when option yes is selected and amount is -1', async () => {
+    it('should return errors when option yes is selected and amount is -1', async () => {
       await request(app)
         .post(ON_TAX_PAYMENTS_URL)
         .send({option: YesNo.YES, amountYouOwe: -1, reason: 'reason'})
@@ -81,7 +81,7 @@ describe('on tax payments', () => {
           expect(res.text).toContain(VALID_OWED_AMOUNT_REQUIRED);
         });
     });
-    test('should return errors when option yes is selected and amount is abc', async () => {
+    it('should return errors when option yes is selected and amount is abc', async () => {
       await request(app)
         .post(ON_TAX_PAYMENTS_URL)
         .send({option: YesNo.YES, amountYouOwe: 'abc', reason: 'reason'})
@@ -90,7 +90,7 @@ describe('on tax payments', () => {
           expect(res.text).toContain(VALID_TWO_DECIMAL_NUMBER);
         });
     });
-    test('should return errors when option yes is selected and amount has more than two decimal places', async () => {
+    it('should return errors when option yes is selected and amount has more than two decimal places', async () => {
       await request(app)
         .post(ON_TAX_PAYMENTS_URL)
         .send({option: YesNo.YES, amountYouOwe: 44.4444, reason: 'reason'})
@@ -99,7 +99,7 @@ describe('on tax payments', () => {
           expect(res.text).toContain(VALID_TWO_DECIMAL_NUMBER);
         });
     });
-    test('should return errors when option yes is selected and reason is not selected', async () => {
+    it('should return errors when option yes is selected and reason is not selected', async () => {
       await request(app)
         .post(ON_TAX_PAYMENTS_URL)
         .send({option: YesNo.YES, amountYouOwe: 44.44, reason: ''})
@@ -108,7 +108,7 @@ describe('on tax payments', () => {
           expect(res.text).toContain(VALID_REASON_REQUIRED);
         });
     });
-    test('should redirect with valid input', async () => {
+    it('should redirect with valid input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(ON_TAX_PAYMENTS_URL)
@@ -118,7 +118,7 @@ describe('on tax payments', () => {
           expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
         });
     });
-    test('should return status 500 when there is error', async () => {
+    it('should return status 500 when there is error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(ON_TAX_PAYMENTS_URL)

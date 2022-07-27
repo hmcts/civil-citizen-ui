@@ -20,7 +20,7 @@ describe('Carer', () => {
   });
 
   describe('on GET', () => {
-    test('should return citizen carer page', async () => {
+    it('should return citizen carer page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_CARER_URL)
@@ -29,7 +29,7 @@ describe('Carer', () => {
           expect(res.text).toContain(TestMessages.CLAIM_CARER);
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_CARER_URL)
@@ -41,7 +41,7 @@ describe('Carer', () => {
   });
 
   describe('on POST', () => {
-    test('should redirect page when "no"', async () => {
+    it('should redirect page when "no"', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_CARER_URL)
@@ -51,7 +51,7 @@ describe('Carer', () => {
           expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
         });
     });
-    test('should redirect page when "yes"', async () => {
+    it('should redirect page when "yes"', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_CARER_URL)
@@ -61,7 +61,7 @@ describe('Carer', () => {
           expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
         });
     });
-    test('should return error on incorrect input', async () => {
+    it('should return error on incorrect input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_CARER_URL)
@@ -71,7 +71,7 @@ describe('Carer', () => {
           expect(res.text).toContain(VALID_YES_NO_OPTION);
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_CARER_URL)
