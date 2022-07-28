@@ -5,8 +5,6 @@ import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/
 import {ExpenseType} from './expenseType';
 import {IncomeType} from './incomeType';
 
-
-
 export interface TransactionSourceParams {
   name?: string;
   amount?: number;
