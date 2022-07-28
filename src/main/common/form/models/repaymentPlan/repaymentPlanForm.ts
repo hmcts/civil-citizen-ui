@@ -43,7 +43,6 @@ export class RepaymentPlanForm extends Form {
   @Max(9999, {message: VALID_YEAR})
     year?: number;
 
-
   totalClaimAmount?: number;
 
   constructor(

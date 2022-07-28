@@ -415,6 +415,8 @@
       "CLAIMANT_NAME": "Enw'r hawlydd:",
       "CLAIM_NUMBER": "Rhif yr hawliad:",
       "DOCUMENTS": "Dogfennau",
+      "DOCUMENT_CREATED": "Creu:",
+      "DOWNLOAD_CLAIM": "Download claim",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
       "LATEST_UPDATE": "Diweddariad diweddaraf",
@@ -595,6 +597,11 @@
     "MEDIATION_DISAGREEMENT": {
       "PAGE_TITLE": "Free mediation disagreement",
       "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+    },
+    "NEW_RESPONSE_DEADLINE": {
+      "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
+      "PAGE_TITLE": "New response deadline",
+      "TITLE": "4 pm on {{ responseDeadline }}"
     },
     "OTHER_DEPENDANTS": {
       "DESCRIPTION": "Gall hyn gynnwys oedolion a phobl nad ydych yn byw gyda nhw.",

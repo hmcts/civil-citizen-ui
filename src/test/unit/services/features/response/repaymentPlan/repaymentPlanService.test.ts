@@ -25,7 +25,7 @@ describe('Replayment Plan Service', () => {
       //Given
 
       //When
-      const form = await getRepaymentPlanForm(new Claim());
+      const form = getRepaymentPlanForm(new Claim());
       //Then
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
@@ -45,12 +45,12 @@ describe('Replayment Plan Service', () => {
       };
 
       //When
-      const form = await getRepaymentPlanForm(claim);
+      const form = getRepaymentPlanForm(claim);
       //Then
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
       expect(form.repaymentFrequency).toBe('');
-      expect(form.firstRepaymentDate).toBeNull();
+      expect(form.firstRepaymentDate?.toDateString()).toBe('Invalid Date');
     });
 
     it('should return populated form when repayment plan exists', async () => {
@@ -65,7 +65,7 @@ describe('Replayment Plan Service', () => {
       };
 
       //When
-      const form = await getRepaymentPlanForm(claim);
+      const form = getRepaymentPlanForm(claim);
 
       //Then
       expect(form.totalClaimAmount).toBeTruthy();

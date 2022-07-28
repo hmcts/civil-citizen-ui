@@ -31,7 +31,7 @@ describe('Repayment Plan', () => {
 });
 
 describe('on Get', () => {
-  test('should return on your repayment plan page successfully', async () => {
+  it('should return on your repayment plan page successfully', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app).get(CITIZEN_REPAYMENT_PLAN_FULL_URL)
       .expect((res) => {
@@ -39,7 +39,7 @@ describe('on Get', () => {
         expect(res.text).toContain('Your repayment plan');
       });
   });
-  test('should return 500 status code when error occurs', async () => {
+  it('should return 500 status code when error occurs', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
       .get(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -51,7 +51,7 @@ describe('on Get', () => {
 });
 
 describe('on Post', () => {
-  test('should return error when no input text is filled', async () => {
+  it('should return error when no input text is filled', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -65,7 +65,7 @@ describe('on Post', () => {
         expect(res.text).toContain(PAYMENT_FREQUENCY_REQUIRED);
       });
   });
-  test('should return errors when payment amount is defined and frequency, day, month, year are not defined', async () => {
+  it('should return errors when payment amount is defined and frequency, day, month, year are not defined', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -78,7 +78,7 @@ describe('on Post', () => {
         expect(res.text).toContain(PAYMENT_FREQUENCY_REQUIRED);
       });
   });
-  test('should return errors when payment amount and frequency are defined and day, month, year are not defined', async () => {
+  it('should return errors when payment amount and frequency are defined and day, month, year are not defined', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -90,7 +90,7 @@ describe('on Post', () => {
         expect(res.text).toContain(VALID_DAY);
       });
   });
-  test('should return errors when payment amount, frequency and day are defined and month, year are not defined', async () => {
+  it('should return errors when payment amount, frequency and day are defined and month, year are not defined', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -101,7 +101,7 @@ describe('on Post', () => {
         expect(res.text).toContain(VALID_MONTH);
       });
   });
-  test('should return errors when payment amount, frequency, day and month are defined and year is not defined', async () => {
+  it('should return errors when payment amount, frequency, day and month are defined and year is not defined', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -112,7 +112,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should return errors when payment amount, frequency, day, month and year is 0', async () => {
+  it('should return errors when payment amount, frequency, day, month and year is 0', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -125,7 +125,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should return errors when payment amount, frequency, day, month and year is in the past', async () => {
+  it('should return errors when payment amount, frequency, day, month and year is in the past', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -136,7 +136,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should return errors when payment amount is not defined', async () => {
+  it('should return errors when payment amount is not defined', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -147,7 +147,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should return errors when payment amount is -1', async () => {
+  it('should return errors when payment amount is -1', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -158,7 +158,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should return errors when payment amount is not less equal than the total amount cliam', async () => {
+  it('should return errors when payment amount is not less equal than the total amount cliam', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -169,7 +169,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should return errors when payment amount has more than two decimal places', async () => {
+  it('should return errors when payment amount has more than two decimal places', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -180,7 +180,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should redirect with valid input', async () => {
+  it('should redirect with valid input', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -190,7 +190,7 @@ describe('on Post', () => {
         expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
       });
   });
-  test('should redirect with valid input with two weeks frequency', async () => {
+  it('should redirect with valid input with two weeks frequency', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -200,7 +200,7 @@ describe('on Post', () => {
         expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
       });
   });
-  test('should redirect with valid input with every month frequency', async () => {
+  it('should redirect with valid input with every month frequency', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
@@ -211,7 +211,7 @@ describe('on Post', () => {
       });
   });
 
-  test('should return status 500 when there is error', async () => {
+  it('should return status 500 when there is error', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)

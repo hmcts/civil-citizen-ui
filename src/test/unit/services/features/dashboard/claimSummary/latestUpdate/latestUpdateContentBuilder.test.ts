@@ -6,7 +6,6 @@ import {CounterpartyType} from '../../../../../../../main/common/models/counterp
 import {ClaimSummaryType} from '../../../../../../../main/common/form/models/claimSummarySection';
 import {CLAIM_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
 
-
 describe('Latest Update Content Builder', () => {
   const partyName = 'Mr. John Doe';
   const claim = new Claim();
@@ -15,7 +14,7 @@ describe('Latest Update Content Builder', () => {
   claim.applicant1 = {
     type: CounterpartyType.INDIVIDUAL,
     partyName: partyName,
-  }; 
+  };
   const claimId = '5129';
   const claimTaskListUrl = CLAIM_TASK_LIST_URL.replace(':id', claimId);
   const lang = 'en';

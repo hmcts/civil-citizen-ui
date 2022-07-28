@@ -1,10 +1,7 @@
-
-
 import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../../../common/models/claim';
 import {t} from 'i18next';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
-
 import {addBankAccounts} from './answers/addBankAccounts';
 import {addDisability} from './answers/addDisability';
 import {addResidence} from './answers/addResidence';

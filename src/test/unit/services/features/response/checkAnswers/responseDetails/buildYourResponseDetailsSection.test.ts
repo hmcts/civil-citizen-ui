@@ -249,7 +249,6 @@ describe('Partial Admit - Response Details', () => {
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[10].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
     });
 
-
     it('should return empty section when evidence not added', async () => {
       //Given
       const claim = ceateClaimWithPartialAdmission(YesNo.YES);
@@ -347,5 +346,16 @@ describe('Reject Claim - Response Details', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[3].value.html).toBe('Reasons for disagree');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[3].actions?.items[0].href).toBe(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL.replace(':id', constVal.CLAIM_ID));
+  });
+
+  it('should not return "Why do you disagree?" when payment amount is equal to total cliam amount', async () => {
+    //Given
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID, 1000);
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[0].value.html).toBe('£1,000');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_FR_AMOUNT_YOU_PAID_URL.replace(':id', constVal.CLAIM_ID));
   });
 });

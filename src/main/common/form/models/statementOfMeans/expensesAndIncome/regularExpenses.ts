@@ -71,7 +71,6 @@ export class RegularExpenses {
 
   [key: string]: Transaction | OtherTransaction;
 
-
   constructor(expenseParams?: ExpenseParams) {
     this.mortgage = expenseParams?.mortgage;
     this.rent = expenseParams?.rent;
