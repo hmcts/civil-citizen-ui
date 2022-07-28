@@ -6,6 +6,7 @@ import {CITIZEN_DEBTS_URL} from '../../../../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {
+  buildDebtFormUndefined,
   buildDebtFormYesWithDebtEmpty,
   buildDebtFormYesWithoutItems,
   buildDebtFormYesWithTotalOwnedInvalidAndNoMonthlyPaymentsAndNoDebt,
@@ -145,6 +146,18 @@ describe('Debts View', () => {
         .toContain('#debtsItems[0][totalOwned]');
       expect(errorSummary.getElementsByTagName('a')[4].getAttribute('href'))
         .toContain('#debtsItems[0][monthlyPayments]');
+    });
+
+    it('should display error message for radios carer', async () => {
+      await request(app)
+        .post(CITIZEN_DEBTS_URL)
+        .send(buildDebtFormUndefined())
+        .then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
+      expect(errorMessage.innerHTML).toContain('Choose option: Yes or No');
     });
 
   });
