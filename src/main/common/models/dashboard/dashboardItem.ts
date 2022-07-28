@@ -14,7 +14,7 @@ export class DashboardItem {
   url: string;
 
   getHref (){
-    return this.ocmc? `${ocmcBaseUrl}${this.url.replace(':claimId', this.claimId)}` : this.url;
+    return this.ocmc? `${ocmcBaseUrl}${this.url.replace(':claimId', this.claimId)}` : this.url.replace(':claimId', this.claimId);
   }
 }
 
