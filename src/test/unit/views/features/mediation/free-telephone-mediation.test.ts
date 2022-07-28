@@ -7,11 +7,12 @@ import {
   mockCivilClaimApplicantCompanyType,
   mockCivilClaimApplicantIndividualType,
 } from '../../../../utils/mockDraftStore';
+import {t} from 'i18next';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const govukBodyClass = 'govuk-body';
-const pageTitle = 'Free telephone mediation';
+const pageTitle = 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -36,12 +37,12 @@ describe('Free Telephone Mediation View', () => {
     });
 
     it('should have correct page title', () => {
-      expect(htmlDocument.title).toEqual(`Your money claims account - ${pageTitle}`);
+      expect(htmlDocument.title).toEqual(`Your money claims account - ${t(pageTitle)}`);
     });
 
     it('should display header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
-      expect(header[0].innerHTML).toContain(pageTitle);
+      expect(header[0].innerHTML).toContain(t(pageTitle));
     });
 
     it('should display two h2 headers', () => {

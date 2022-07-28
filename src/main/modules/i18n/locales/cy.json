@@ -560,7 +560,23 @@
       "PAGE_TITLE": "Your financial details"
     },
     "FREE_TELEPHONE_MEDIATION": {
-      "PAGE_TITLE": "Free telephone mediation"
+      "AUTOMATICALLY_REGISTERED" : "Rydym wedi eich cofrestru’n awtomatig i gael gwasanaeth cyfryngu dros y ffôn am ddim gan Gwasanaeth Llysoedd a Thribiwnlysoedd EM.",
+      "CLAIMANT_MUST_AGREE" : "Rhaid i’r hawlydd gytuno i’r cyfryngu. Byddwn yn cysylltu â chi o fewn 28 diwrnod ar ôl cael cadarnhad gan yr hawlydd i drefnu apwyntiad am ddim.",
+      "EITHER_PARTY_BREAKS_TERMS" : "Os bydd y naill barti neu’r llall yn torri telerau’r cytundeb, gall y parti arall fynd i’r llys i ofyn am ddyfarniad neu wrandawiad.",
+      "FIND_OUT_MORE" : "Rhagor o wybodaeth am y ",
+      "HOW_WORKS" : "Sut mae cyfryngu am ddim yn gweithio",
+      "LAST_LESS_AN_HOUR" : "Ni fydd eich apwyntiad cyfryngu yn para am fwy nag awr.",
+      "MEDIATION_SUCCESSFUL" : "Os yw’r cyfryngu yn llwyddiannus, byddwch yn gwneud cytundeb llafar dros y ffôn. Mae’r cytundeb hwn yn rwymol gyfreithiol, sy’n golygu bod rhaid i chi gydymffurfio ag ef. Byddwch yn cael gwybod telerau’r cytundeb mewn dogfen - gelwir hyn yn gytundeb setlo.",
+      "MEDIATION_IS_CONFIDENTIAL": "Mae cyfryngu yn gwbl gyfrinachol ac ni fydd unrhyw beth a ddywedir yn ystod y cyfryngu yn cael ei ddefnyddio mewn achos llys os na fydd modd setlo’r anghydfod. Bydd y cyfryngwr yn siarad â’r ddau barti ar wahân; nid galwad ffôn cynhadledd ydyw.",
+      "MEDIATION_FAILS" : "Os bydd y cyfryngu yn methu a bod angen cynnal gwrandawiad llys, ni ellir cyfeirio at yr hyn a ddigwyddodd yn y cyfryngu yn y llys.",
+      "MEDIATION_QUICKER" : "Gall cyfryngu fod yn gyflymach, yn rhatach ac achosi llai o straen na mynd i’r llys.",
+      "NO_AGREE" : "Nid wyf yn cytuno i gyfryngu am ddim",
+      "NEUTRAL_MEDIATOR_LISTEN" : "Bydd cyfryngwyr hyfforddedig, niwtral o Wasanaeth Llysoedd a Thribiwnlysoedd EM yn gwrando ar eich safbwyntiau ac yn eich helpu i setlo eich anghydfod.",
+      "NO_WAIT_COURT_HEARING" : "Ni fydd rhaid i chi aros yn hirach am wrandawiad llys os byddwch yn dewis cyfryngu.",
+      "OPENS_IN_NEW_TAB" : "gwasanaeth cyfryngu dros y ffôn am ddim (yn agor mewn ffenestr newydd).",
+      "PAGE_TITLE": "Free telephone mediation",
+      "REACHING_SETTLEMENT" : "Setlo’r anghydfod",
+      "TITLE" : "Gwasanaeth cyfryngu dros y ffôn am ddim"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
