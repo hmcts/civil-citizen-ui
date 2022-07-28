@@ -684,7 +684,15 @@
       "PAGE_TITLE": "Reject all of claim"
     },
     "REPAYMENT_PLAN": {
-      "PAGE_TITLE": "Your repayment plan"
+      "ADMIT_YOU_OWE": "You admit you owe £{{amount}}.",
+      "FIRST_PAYMENT" : "When will you make the first payment?",
+      "FOR_EXAMPLE" : "For example, ",
+      "HOW_OFTEN_PAYMENTS" : "How often you'll make payments",
+      "LENGTH" : "Length of repayment plan",
+      "PAGE_TITLE": "Your repayment plan",
+      "REGULAR_PAYMENTS": "Regular payments of",
+      "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
+      "TITLE": "Your repayment plan"
     },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",

@@ -67,9 +67,9 @@
       "PART_ADMISSION": "Rwy'n cyfaddef i ran o'r hawliad"
     },
     "PAYMENT_FREQUENCY": {
-      "WEEK": "Each week",
-      "TWO_WEEKS": "Every two weeks",
-      "MONTH": "Every month"
+      "WEEK": "Pob wythnos",
+      "TWO_WEEKS": "Pob pythefnos",
+      "MONTH": "Pob mis"
     },
     "PAYMENT_OPTION": {
       "BY_SET_DATE": "Erbyn dyddiad penodol",
