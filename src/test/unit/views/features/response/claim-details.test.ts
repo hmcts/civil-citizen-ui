@@ -11,7 +11,6 @@ import {getTotalAmountWithInterestAndFees} from '../../../../../main/modules/cla
 import {dateFilter} from '../../../../../main/modules/nunjucks/filters/dateFilter';
 import {convertToPoundsFilter} from '../../../../../main/common/utils/currencyFormat';
 
-
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
@@ -96,7 +95,6 @@ describe('Task List View', () => {
       expect(subHeadings[0].innerHTML).toContain('Reason for claim');
       expect(claimReason.innerHTML).toContain(claim.case_data.detailsOfClaim);
     });
-
 
     it('should display Timeline, Date and What happened headings and time line of events', () => {
       const subHeadings = htmlDocument.getElementsByClassName('govuk-heading-s');

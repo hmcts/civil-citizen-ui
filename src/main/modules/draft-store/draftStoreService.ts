@@ -6,7 +6,6 @@ import {isUndefined} from 'lodash';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 
-
 /**
  * Gets civil claim response object with claim from draft store
  * @param claimId

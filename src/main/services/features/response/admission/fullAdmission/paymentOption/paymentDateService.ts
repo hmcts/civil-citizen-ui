@@ -7,7 +7,6 @@ import {PaymentIntention} from '../../../../../../common/form/models/admission/p
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentDateService');
 
-
 class PaymentDateService {
 
   public async getPaymentDate(claimId: string, responseType: ResponseType): Promise<PaymentDate> {
@@ -52,7 +51,6 @@ class PaymentDateService {
   }
 
   private setDate(claimPaymentDate: Date): PaymentDate {
-
     const dateOfPayment = new Date(claimPaymentDate);
     const paymentDate = new PaymentDate();
     paymentDate.date = dateOfPayment;
@@ -60,7 +58,6 @@ class PaymentDateService {
     paymentDate.month = dateOfPayment.getMonth() + 1;
     paymentDate.day = dateOfPayment.getDate();
     return paymentDate;
-
   }
 
 }

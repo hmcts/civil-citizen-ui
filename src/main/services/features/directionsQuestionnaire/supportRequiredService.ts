@@ -4,7 +4,6 @@ import {SupportRequired} from '../../../common/models/directionsQuestionnaire/su
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
 
-
 export const getSupportRequired = async (claimId: string): Promise<SupportRequired> => {
   try {
     let supportRequired;

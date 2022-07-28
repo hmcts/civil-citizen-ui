@@ -87,3 +87,4 @@ export const UNDERSTANDING_RESPONSE_OPTIONS_URL = `${BASE_CASE_RESPONSE_URL}/und
 export const RESPONSE_DEADLINE_OPTIONS_URL = `${BASE_CASE_RESPONSE_URL}/response-deadline-options`;
 export const AGREED_T0_MORE_TIME_URL = `${BASE_CASE_RESPONSE_URL}/agreed-to-more-time`;
 export const REQUEST_MORE_TIME_URL = `${BASE_CASE_RESPONSE_URL}/request-more-time`;
+export const NEW_RESPONSE_DEADLINE_URL =  `${BASE_CASE_RESPONSE_URL}/new-response-deadline`;

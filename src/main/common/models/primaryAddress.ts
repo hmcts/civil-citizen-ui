@@ -7,5 +7,3 @@ export interface PrimaryAddress {
   AddressLine2?: string;
   AddressLine3?: string;
 }
-
-

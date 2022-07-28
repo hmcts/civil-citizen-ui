@@ -4,8 +4,6 @@ import {
 import {
   CITIZEN_BANK_ACCOUNT_URL,
 } from '../../../../../../../main/routes/urls';
-
-//import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {
   createClaimWithOneBankAccount,
   createClaimWithBankAccounts,
@@ -16,7 +14,6 @@ import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import PaymentOptionType
   from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 
-
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/i18n');
@@ -24,7 +21,6 @@ jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
-
 
 describe('Banck Account Details', () => {
 
