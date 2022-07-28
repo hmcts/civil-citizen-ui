@@ -14,14 +14,17 @@ import {CounterpartyType} from '../../../../../common/models/counterpartyType';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
 
-const getContactNumber = (claim:Claim,type:string) => {
+const getContactNumber = (claim: Claim, type: string) => {
+  const mediationPhoneNumber = (mediationPhoneNumber:string) => mediationPhoneNumber ? mediationPhoneNumber : claim.respondent1.telephoneNumber;
   switch (type) {
     case CounterpartyType.ORGANISATION:
+      return mediationPhoneNumber(claim.mediation.companyTelephoneNumber.mediationPhoneNumber);
     case CounterpartyType.COMPANY:
-      return claim.mediation?.companyTelephoneNumber?.mediationPhoneNumber ? claim.mediation.companyTelephoneNumber.mediationPhoneNumber : claim.respondent1.telephoneNumber;
+      return mediationPhoneNumber(claim.mediation.companyTelephoneNumber.mediationPhoneNumber);
     case CounterpartyType.SOLE_TRADER:
+      return mediationPhoneNumber(claim.mediation.canWeUse.mediationPhoneNumber);
     case CounterpartyType.INDIVIDUAL:
-      return claim.mediation?.canWeUse?.mediationPhoneNumber ? claim.mediation.canWeUse.mediationPhoneNumber : claim.respondent1.telephoneNumber;
+      return mediationPhoneNumber(claim.mediation.canWeUse.mediationPhoneNumber);
   }
 };
 
@@ -48,7 +51,7 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
       const contactNameHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_COMPANY_URL);
       freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NAME', {lng: getLng(lang)}), `${contactName}`, contactNameHref, changeLabel(lang)));
     }
-    freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NUMBER', {lng: getLng(lang)}), `${getContactNumber(claim,claim.respondent1.type)}`, contactNumberHref, changeLabel(lang)));
+    freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NUMBER', {lng: getLng(lang)}), getContactNumber(claim,claim.respondent1.type), contactNumberHref, changeLabel(lang)));
   }
   return freeTelephoneMediationSection;
 };
