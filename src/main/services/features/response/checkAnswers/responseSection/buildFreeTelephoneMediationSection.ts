@@ -15,7 +15,7 @@ import {CounterpartyType} from '../../../../../common/models/counterpartyType';
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
 
 const getContactNumber = (claim: Claim, type: string) => {
-  const mediationPhoneNumber = (mediationPhoneNumber:string) => mediationPhoneNumber ? mediationPhoneNumber : claim.respondent1.telephoneNumber;
+  const mediationPhoneNumber = (_mediationPhoneNumber:string) => _mediationPhoneNumber ? _mediationPhoneNumber : claim.respondent1.telephoneNumber;
   switch (type) {
     case CounterpartyType.ORGANISATION:
       return mediationPhoneNumber(claim.mediation.companyTelephoneNumber.mediationPhoneNumber);
