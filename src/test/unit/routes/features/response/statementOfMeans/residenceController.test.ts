@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import express from 'express';
 const request = require('supertest');
 const {app} = require('../../../../../../main/app');
@@ -104,7 +103,7 @@ describe('Citizen residence', () => {
         .send(`housingDetails=${tooLongHousingDetails}`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(_.escape(TestMessages.TEXT_TOO_MANY));
+          expect(res.text).toContain('You&#39;ve entered too many characters');
         });
     });
 
