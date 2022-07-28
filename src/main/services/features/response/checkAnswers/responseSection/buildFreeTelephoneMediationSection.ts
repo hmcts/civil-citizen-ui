@@ -14,21 +14,20 @@ import {CounterpartyType} from '../../../../../common/models/counterpartyType';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
 
+const getContactNumber = (claim:Claim,type:string) => {
+  switch (type) {
+    case CounterpartyType.ORGANISATION:
+    case CounterpartyType.COMPANY:
+      return claim.mediation?.companyTelephoneNumber?.mediationPhoneNumber ? claim.mediation.companyTelephoneNumber.mediationPhoneNumber : claim.respondent1.telephoneNumber;
+    case CounterpartyType.SOLE_TRADER:
+    case CounterpartyType.INDIVIDUAL:
+      return claim.mediation?.canWeUse?.mediationPhoneNumber ? claim.mediation.canWeUse.mediationPhoneNumber : claim.respondent1.telephoneNumber;
+  }
+};
+
 export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const freeMediationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
   const contactNumberHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_URL);
-
-  let contactNumber = '';
-  switch (claim.respondent1.type) {
-    case CounterpartyType.ORGANISATION:
-    case CounterpartyType.COMPANY:
-      contactNumber = claim.mediation?.companyTelephoneNumber?.mediationPhoneNumber ? claim.mediation.companyTelephoneNumber.mediationPhoneNumber : claim.respondent1.telephoneNumber;
-      break;
-    case CounterpartyType.SOLE_TRADER:
-    case CounterpartyType.INDIVIDUAL:
-      contactNumber = claim.mediation?.canWeUse?.mediationPhoneNumber ? claim.mediation.canWeUse.mediationPhoneNumber : claim.respondent1.telephoneNumber;
-      break;
-  }
 
   const contactName = claim.mediation?.companyTelephoneNumber?.mediationContactPerson ? claim.mediation.companyTelephoneNumber.mediationContactPerson : claim.respondent1.contactPerson;
   const canWeUse = claim.mediation?.canWeUse?.option ? YesNoUpperCase.YES
@@ -49,7 +48,7 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
       const contactNameHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_COMPANY_URL);
       freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NAME', {lng: getLng(lang)}), `${contactName}`, contactNameHref, changeLabel(lang)));
     }
-    freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NUMBER', {lng: getLng(lang)}), `${contactNumber}`, contactNumberHref, changeLabel(lang)));
+    freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NUMBER', {lng: getLng(lang)}), `${getContactNumber(claim,claim.respondent1.type)}`, contactNumberHref, changeLabel(lang)));
   }
   return freeTelephoneMediationSection;
 };
