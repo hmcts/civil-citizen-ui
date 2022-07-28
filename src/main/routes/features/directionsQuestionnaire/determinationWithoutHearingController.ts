@@ -22,7 +22,7 @@ determinationWithoutHearingController
     try {
       renderView(new GenericForm(await getDeterminationWithoutHearing(req.params.id)), res);
     } catch (error) {
-      next();
+      next(error);
     }
   });
 
@@ -41,7 +41,7 @@ determinationWithoutHearingController
         res.redirect(constructResponseUrlWithIdParams(claimId, SUPPORT_REQUIRED_URL));
       }
     } catch (error) {
-      next();
+      next(error);
     }
   });
 
