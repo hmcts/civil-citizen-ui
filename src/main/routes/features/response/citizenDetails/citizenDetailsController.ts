@@ -28,9 +28,11 @@ const getViewpathWithType = (type: CounterpartyType) => {
   return CITIZEN_DETAILS_VIEW_PATH;
 };
 
-function renderPageWithError(res: express.Response, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, errorList: Form, req: express.Request, respondent: Respondent, contactPerson: string): void {
+function renderPageWithError(res: express.Response, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, errorList: Form, req: express.Request, respondent: Respondent): void {
   const partyName = respondent?.partyName;
   const type = respondent?.type;
+  const contactPerson = respondent?.contactPerson;
+  const postToThisAddress = respondent?.postToThisAddress;
   const viewPath = getViewpathWithType(type);
   res.render(viewPath, {
     citizenFullName: citizenFullName,
@@ -43,7 +45,7 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
     correspondenceAddressLine1Error: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceAddressLine1') : '',
     correspondenceCityError: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondenceCity') : '',
     correspondencePostCodeError: req.body.postToThisAddress == YesNo.YES ? errorList.getTextError(citizenCorrespondenceAddress.getErrors(), 'correspondencePostCode') : '',
-    postToThisAddress: req.body.postToThisAddress,
+    postToThisAddress,
     partyName: partyName,
     contactPerson: contactPerson,
     type: type,
@@ -63,6 +65,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
     let citizenAddressModel;
     let citizenCorrespondenceAddressModel;
     const responseDataRedis: Respondent = await getRespondentInformation(req.params.id);
+    const postToThisAddress = responseDataRedis.postToThisAddress ? responseDataRedis.postToThisAddress : YesNo.NO;
     if (!_.isEmpty(responseDataRedis)) {
       citizenAddressModel = new CitizenAddress(
         responseDataRedis.primaryAddress.AddressLine1,
@@ -88,7 +91,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
       citizenFullName: citizenFullName,
       citizenAddress: citizenAddressModel,
       citizenCorrespondenceAddress: citizenCorrespondenceAddressModel,
-      postToThisAddress: citizenCorrespondenceAddressModel ? YesNo.YES : YesNo.NO,
+      postToThisAddress: postToThisAddress,
       partyName: responseDataRedis?.partyName,
       contactPerson: responseDataRedis?.contactPerson,
       type: responseDataRedis?.type,
@@ -118,10 +121,11 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
     );
 
     const contactPerson = req.body.contactPerson;
+    const postToThisAddress = req.body.postToThisAddress;
 
     const validator = new Validator();
     const errorList = new Form();
-    if (req.body.postToThisAddress === YesNo.YES) {
+    if (postToThisAddress === YesNo.YES) {
       citizenAddress.errors = validator.validateSync(citizenAddress);
       citizenCorrespondenceAddress.errors = validator.validateSync(citizenCorrespondenceAddress);
       errorList.errors = citizenAddress.errors.concat(citizenCorrespondenceAddress.errors);
@@ -132,9 +136,9 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
     }
     if ((citizenAddress?.errors?.length > 0)
       || (citizenCorrespondenceAddress?.errors?.length > 0)) {
-      renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req, responseDataRedis, contactPerson);
+      renderPageWithError(res, citizenAddress, citizenCorrespondenceAddress, errorList, req, responseDataRedis);
     } else {
-      await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, contactPerson);
+      await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, postToThisAddress, contactPerson);
       redirect(responseDataRedis, req, res);
     }
   } catch (error) {
