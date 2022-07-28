@@ -29,7 +29,6 @@ export const VALID_HOUSING = 'Describe your housing';
 export const VALID_TEXT_LENGTH = 'You’ve entered too many characters';
 export const VALID_OPTION_SELECTION = 'Select an option';
 export const REDIS_FAILURE = 'Redis DraftStore failure.';
-export const VALID_PAYMENT_OPTION = 'Choose a payment option';
 export const VALID_INTEGER = 'Enter a numeric, for example 3';
 export const VALID_POSITIVE_NUMBER = 'Don’t enter a negative number';
 export const VALID_STRICTLY_POSITIVE_NUMBER = 'Enter a number higher than 0';

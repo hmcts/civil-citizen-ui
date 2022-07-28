@@ -5,8 +5,8 @@ import {app} from '../../../../../../main/app';
 import {mockRedisWithPaymentAmount, mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import civilClaimResponseWithAdmittedPaymentAmountMock from '../../../../../utils/mocks/civilClaimResponseWithAdmittedPaymentAmountMock.json';
 import {CITIZEN_PAYMENT_OPTION_URL, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL} from '../../../../../../main/routes/urls';
-import {VALID_PAYMENT_OPTION} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -80,14 +80,14 @@ describe('Payment Option View', () => {
     it('should display correct error summary message with correct link', () => {
       const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
         .getElementsByTagName('li')[0];
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_PAYMENT_OPTION);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_PAYMENT_OPTION);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#paymentType');
     });
 
     it('should display correct error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      expect(errorMessage.innerHTML).toContain(VALID_PAYMENT_OPTION);
+      expect(errorMessage.innerHTML).toContain(TestMessages.VALID_PAYMENT_OPTION);
     });
   });
 });
