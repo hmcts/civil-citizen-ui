@@ -777,7 +777,6 @@ export const createClaimWithNoTelephoneMediationProvided = (counterpartyType:Cou
   return claim as Claim;
 };
 
-
 export const createClaimWithFullRejection = (option: RejectAllOfClaimType, paidAmount?: number): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   if (claim.respondent1) {

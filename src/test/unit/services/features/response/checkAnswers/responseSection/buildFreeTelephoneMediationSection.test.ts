@@ -3,7 +3,7 @@ import {
 } from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {
   createClaimWithFreeTelephoneMediationSection,
-  createClaimWithNoTelephoneMediationProvided
+  createClaimWithNoTelephoneMediationProvided,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {CounterpartyType} from '../../../../../../../main/common/models/counterpartyType';
@@ -125,7 +125,7 @@ describe('Free Telephone Mediation Section', () => {
 
   describe('Free Telephone Mediation Section - INDIVIDUAL/SOLE_TRADER/COMPANY/ORGANISATION', () => {
 
-    const getExpectedResultForCompanyAndOrganisation = (summarySections:SummarySections, contactName:string,contactNumber:string) => {
+    const getExpectedResultForCompanyAndOrganisation = (summarySections: SummarySections, contactName: string, contactNumber: string) => {
       expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(3);
       expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe(constVal.PAGES_FREE_TELEPHONE_MEDIATION_PAGE_TITLE);
       expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_MEDIATION);
@@ -134,15 +134,15 @@ describe('Free Telephone Mediation Section', () => {
       expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].value.html).toBe(contactName);
       expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[2].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_CONTACT_NUMBER);
       expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[2].value.html).toBe(contactNumber);
-    }
+    };
 
-    const getExpectedResultForIndividualAndSoleTrader = (summarySections:SummarySections, contactNumber:string) => {
+    const getExpectedResultForIndividualAndSoleTrader = (summarySections: SummarySections, contactNumber: string) => {
       expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe(constVal.PAGES_FREE_TELEPHONE_MEDIATION_PAGE_TITLE);
       expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_MEDIATION);
       expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe(constVal.COMMON_YES);
       expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_CONTACT_NUMBER);
       expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].value.html).toBe(contactNumber);
-    }
+    };
 
     it('should return response free telephone mediation with free mediation and contact name and number when counter part type is COMPANY', async () => {
       //Given
