@@ -121,7 +121,7 @@ describe('Mediation Disagreement View', () => {
 
     it('should display error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      expect(errorMessage.innerHTML).toContain('Choose option: Yes or No');
+      expect(errorMessage.innerHTML).toContain('Error: Yes or No');
     });
   });
 });
