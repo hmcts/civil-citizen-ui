@@ -11,7 +11,6 @@ import {getFirstPaymentExampleDate} from '../../fullAdmission/repaymentPlan/repa
 import {ResponseType} from '../../../../../../common/form/models/responseType';
 import {getCaseDataFromStore} from '../../../../../../modules/draft-store/draftStoreService';
 
-
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
 const repaymentPlanPartAdmissionController = express.Router();
 let amount: number;
@@ -36,7 +35,6 @@ repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, asy
   }
 });
 
-
 repaymentPlanPartAdmissionController.post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
@@ -55,6 +53,4 @@ repaymentPlanPartAdmissionController.post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
     }
   });
 
-
 export default repaymentPlanPartAdmissionController;
-

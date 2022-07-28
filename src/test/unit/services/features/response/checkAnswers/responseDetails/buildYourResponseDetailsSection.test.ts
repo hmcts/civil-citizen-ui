@@ -249,7 +249,6 @@ describe('Partial Admit - Response Details', () => {
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[10].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
     });
 
-
     it('should return empty section when evidence not added', async () => {
       //Given
       const claim = ceateClaimWithPartialAdmission(YesNo.YES);

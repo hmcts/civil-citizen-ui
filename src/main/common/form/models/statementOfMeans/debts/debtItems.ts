@@ -18,7 +18,6 @@ export class DebtItems{
   @Validate(CurrencyValidator)
     monthlyPayments: string;
 
-
   constructor(debt: string, totalOwned: string, monthlyPayments: string) {
     this.debt = debt;
     this.totalOwned = totalOwned;

@@ -10,7 +10,6 @@ import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreSe
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
-
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const newResponseDeadlineController = express.Router();

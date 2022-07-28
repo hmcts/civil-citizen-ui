@@ -1,5 +1,4 @@
 import * as express from 'express';
-
 import {RepaymentPlanForm} from '../../../../../../common/form/models/repaymentPlan/repaymentPlanForm';
 import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
 import {DateFormatter} from '../../../../../../common/utils/dateFormatter';
@@ -8,7 +7,6 @@ import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
 } from '../../../../../../services/features/response/repaymentPlan/repaymentPlanService';
-
 import {CITIZEN_REPAYMENT_PLAN_FULL_URL, CLAIM_TASK_LIST_URL} from '../../../../../urls';
 import {getCaseDataFromStore} from '../../../../../../modules/draft-store/draftStoreService';
 

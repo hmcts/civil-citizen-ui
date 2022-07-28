@@ -412,6 +412,8 @@
       "CLAIMANT_NAME": "Enw'r hawlydd:",
       "CLAIM_NUMBER": "Rhif yr hawliad:",
       "DOCUMENTS": "Dogfennau",
+      "DOCUMENT_CREATED": "Creu:",
+      "DOWNLOAD_CLAIM": "Download claim",
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
       "LATEST_UPDATE": "Diweddariad diweddaraf",

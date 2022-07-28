@@ -6,7 +6,6 @@ import {CorrespondenceAddress} from '../../../../common/models/correspondenceAdd
 import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 
-
 export const getRespondentInformation = async (claimId: string): Promise<Respondent> => {
   const responseData = await getCaseDataFromStore(claimId);
   if (responseData?.respondent1) {

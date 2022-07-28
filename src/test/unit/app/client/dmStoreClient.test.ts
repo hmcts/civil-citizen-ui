@@ -3,7 +3,6 @@ import axios, {AxiosInstance} from 'axios';
 import config from 'config';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 
-
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
@@ -33,5 +32,3 @@ describe('DM Store Client', () => {
     await expect(dmStoreClient.retrieveDocumentByDocumentId(mockDecumentId)).rejects.toThrow(TestMessages.DOCUMENT_NOT_AVAILABLE);
   });
 });
-
-

@@ -199,8 +199,8 @@ export class Claim {
     return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
   }
 
-  isSystemGeneratedCaseDocumentsAvailable(): number {
-    return this.systemGeneratedCaseDocuments?.length;
+  isSystemGeneratedCaseDocumentsAvailable(): boolean {
+    return this.systemGeneratedCaseDocuments?.length > 0;
   }
 
   getDocumentDetails(documentType: DocumentType): CaseDocument {

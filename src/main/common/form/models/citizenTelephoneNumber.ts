@@ -9,6 +9,4 @@ export class CitizenTelephoneNumber{
   constructor(telephoneNumber?: string) {
     this.telephoneNumber = telephoneNumber?.trim();
   }
-
-
 }
