@@ -8,16 +8,18 @@ import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {
   CITIZEN_AMOUNT_YOU_PAID_URL,
   CITIZEN_EVIDENCE_URL,
-  CITIZEN_TIMELINE_URL,
-  CITIZEN_WHY_DO_YOU_DISAGREE_URL,
-  CITIZEN_OWED_AMOUNT_URL,
   CITIZEN_FR_AMOUNT_YOU_PAID_URL,
+  CITIZEN_OWED_AMOUNT_URL,
+  CITIZEN_TIMELINE_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
+  CITIZEN_WHY_DO_YOU_DISAGREE_URL,
+  RESPONSE_YOUR_DEFENCE_URL,
 } from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {DefendantTimeline} from '../../../../../common/form/models/timeLineOfEvents/defendantTimeline';
 import {YesNo} from '../../../../../common/form/models/yesNo';
 import {ResponseType} from '../../../../../common/form/models/responseType';
+import RejectAllOfClaimType from '../../../../../common/form/models/rejectAllOfClaimType';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
 
@@ -58,8 +60,11 @@ const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, sect
     summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_COMMENTS', {lng: getLng(lang)}), claim.evidence?.comment, yourEvidenceHref, changeLabel(lang)),
   );
 };
-
-const isPaidAmountEqulGreaterThanTotalAmount = (claim:Claim) => claim.rejectAllOfClaim.howMuchHaveYouPaid.amount < claim.totalClaimAmount ? true : false;
+const isPaidAmountEqulGreaterThanTotalAmount = (claim: Claim) => {
+  const amount = claim?.rejectAllOfClaim?.howMuchHaveYouPaid?.amount ? claim.rejectAllOfClaim.howMuchHaveYouPaid.amount : 0;
+  const totalClaimAmount = claim?.totalClaimAmount ? claim.totalClaimAmount : 0;
+  return amount < totalClaimAmount ? true : false;
+};
 
 const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: string | unknown, yourResponseDetailsSection: SummarySection) => {
   const yourResponseDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_AMOUNT_YOU_PAID_URL);
@@ -68,31 +73,33 @@ const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: str
   const howMuchDoYouOweAmount = claim.partialAdmission.howMuchDoYouOwe?.amount ? claim.partialAdmission.howMuchDoYouOwe.amount : undefined;
 
   if (claim.partialAdmission.alreadyPaid?.option === YesNo.NO) {
-    yourResponseDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(Number(howMuchDoYouOweAmount)), howMuchYouAdmitYouOweHref, changeLabel(lang)));
+    yourResponseDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(howMuchDoYouOweAmount)), howMuchYouAdmitYouOweHref, changeLabel(lang)));
   } else {
     yourResponseDetailsSection.summaryList.rows.push(...[
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_MONEY_PAID', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(Number(claim.partialAdmission.howMuchHaveYouPaid?.amount)), yourResponseDetailsHref, changeLabel(lang)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', { lng: getLng(lang) }), formatDateToFullDate(claim.partialAdmission.howMuchHaveYouPaid?.date), '', changeLabel(lang)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED', { lng: getLng(lang) }), claim.partialAdmission.howMuchHaveYouPaid?.text, '', changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_MONEY_PAID', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(claim.partialAdmission.howMuchHaveYouPaid?.amount)), yourResponseDetailsHref, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.partialAdmission.howMuchHaveYouPaid?.date), '', changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED', {lng: getLng(lang)}), claim.partialAdmission.howMuchHaveYouPaid?.text, '', changeLabel(lang)),
     ]);
   }
 
   yourResponseDetailsSection.summaryList.rows.push(...[
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', { lng: getLng(lang) }), claim.partialAdmission.whyDoYouDisagree?.text, yourReasonsToDisagreeHref, changeLabel(lang)),
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', {lng: getLng(lang)}), claim.partialAdmission.whyDoYouDisagree?.text, yourReasonsToDisagreeHref, changeLabel(lang)),
   ]);
 };
 
 const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string | unknown, yourResponseDetailsSection: SummarySection) => {
   const howMuchHaveYouPaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FR_AMOUNT_YOU_PAID_URL);
-  const whyDoYouDisagreeUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL);
-
-  yourResponseDetailsSection.summaryList.rows.push(...[
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(Number(claim.rejectAllOfClaim.howMuchHaveYouPaid.amount)), howMuchHaveYouPaidUrl, changeLabel(lang)),
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', { lng: getLng(lang) }), formatDateToFullDate(claim.rejectAllOfClaim.howMuchHaveYouPaid.date), howMuchHaveYouPaidUrl, changeLabel(lang)),
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT', { lng: getLng(lang) }), claim.rejectAllOfClaim.howMuchHaveYouPaid.text, howMuchHaveYouPaidUrl, changeLabel(lang)),
-  ]);
-
-  if(isPaidAmountEqulGreaterThanTotalAmount(claim)) yourResponseDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', { lng: getLng(lang) }), claim.rejectAllOfClaim.whyDoYouDisagree.text, whyDoYouDisagreeUrl, changeLabel(lang)));
+  const rejectUrl = claim.rejectAllOfClaim.option == RejectAllOfClaimType.DISPUTE ? RESPONSE_YOUR_DEFENCE_URL : CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL;
+  const whyDoYouDisagreeUrl = constructResponseUrlWithIdParams(claimId, rejectUrl);
+  const disagreeText = claim?.rejectAllOfClaim?.whyDoYouDisagree?.text ? claim.rejectAllOfClaim.whyDoYouDisagree.text : claim.rejectAllOfClaim?.defence?.text;
+  if (claim.rejectAllOfClaim.option !== RejectAllOfClaimType.DISPUTE) {
+    yourResponseDetailsSection.summaryList.rows.push(...[
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(claim.rejectAllOfClaim.howMuchHaveYouPaid.amount)), howMuchHaveYouPaidUrl, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.rejectAllOfClaim.howMuchHaveYouPaid.date), howMuchHaveYouPaidUrl, changeLabel(lang)),
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT', {lng: getLng(lang)}), claim.rejectAllOfClaim.howMuchHaveYouPaid.text, howMuchHaveYouPaidUrl, changeLabel(lang)),
+    ]);
+  }
+  if (isPaidAmountEqulGreaterThanTotalAmount(claim)) yourResponseDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', {lng: getLng(lang)}), disagreeText, whyDoYouDisagreeUrl, changeLabel(lang)));
 };
 
 export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
@@ -103,7 +110,7 @@ export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, l
     summaryRows: [],
   });
 
-  switch(claim.respondent1.responseType) {
+  switch (claim.respondent1.responseType) {
     case ResponseType.PART_ADMISSION:
       getSummaryRowsForPartAdmission(claim, claimId, lang, yourResponseDetailsSection);
       addTimeline(claim, claimId, lang, yourResponseDetailsSection);

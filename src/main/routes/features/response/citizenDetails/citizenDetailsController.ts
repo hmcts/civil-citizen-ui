@@ -1,15 +1,18 @@
 import * as express from 'express';
 import {Validator} from 'class-validator';
 import {Form} from '../../../../common/form/models/form';
-import {CITIZEN_DETAILS_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../urls';
+import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from '../../../urls';
 import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {Respondent} from '../../../../common/models/respondent';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {YesNo} from '../../../../common/form/models/yesNo';
-import {getRespondentInformation, saveRespondent} from '../../../../services/features/response/citizenDetails/citizenDetailsService';
+import {
+  getRespondentInformation,
+  saveRespondent,
+} from '../../../../services/features/response/citizenDetails/citizenDetailsService';
 import _ from 'lodash';
-import { CounterpartyType } from '../../../../common/models/counterpartyType';
+import {CounterpartyType} from '../../../../common/models/counterpartyType';
 
 const citizenDetailsController = express.Router();
 
@@ -47,7 +50,7 @@ function renderPageWithError(res: express.Response, citizenAddress: CitizenAddre
   });
 }
 
-const redirect =  async (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
+const redirect = async (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
   if (responseDataRedis?.type === CounterpartyType.SOLE_TRADER || responseDataRedis?.type === CounterpartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
@@ -68,7 +71,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
         responseDataRedis.primaryAddress.PostTown,
         responseDataRedis.primaryAddress.PostCode);
       citizenCorrespondenceAddressModel = responseDataRedis.correspondenceAddress ? new CitizenCorrespondenceAddress(
-        responseDataRedis.correspondenceAddress.AddressLine1,
+        responseDataRedis?.correspondenceAddress ? responseDataRedis.correspondenceAddress.AddressLine1 : 'undefined',
         responseDataRedis.correspondenceAddress.AddressLine2,
         responseDataRedis.correspondenceAddress.AddressLine3,
         responseDataRedis.correspondenceAddress.PostTown,

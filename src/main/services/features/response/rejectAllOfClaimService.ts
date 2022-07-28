@@ -23,7 +23,7 @@ export const saveRejectAllOfClaim = async (claimId: string, form: RejectAllOfCla
     if (!claim.rejectAllOfClaim) {
       claim.rejectAllOfClaim = new RejectAllOfClaim();
     }
-    claim.rejectAllOfClaim.option = form.option;
+    claim.rejectAllOfClaim = form;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
