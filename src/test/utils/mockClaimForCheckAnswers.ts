@@ -741,10 +741,11 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
   return claim;
 };
 
-export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
+export const createClaimWithFreeTelephoneMediationSection = (counterpartyType:CounterpartyType): Claim => {
   const claim = createClaimWithBasicRespondentDetails('contactTest');
   if (claim.respondent1) {
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.respondent1.type = counterpartyType;
   }
   claim.partialAdmission = new PartialAdmission();
   claim.partialAdmission.paymentIntention = new PaymentIntention();

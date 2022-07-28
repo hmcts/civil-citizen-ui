@@ -19,20 +19,20 @@ describe('Free Telephone Mediation Section', () => {
 
   it('should return response free telephone mediation with free mediation and contact number', async () => {
     //When
-    const claim = createClaimWithFreeTelephoneMediationSection();
+    const claim = createClaimWithFreeTelephoneMediationSection(CounterpartyType.INDIVIDUAL);
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(2);
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe('COMMON.YES');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NUMBER');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe(constVal.PAGES_FREE_TELEPHONE_MEDIATION_PAGE_TITLE);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_MEDIATION);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe(constVal.COMMON_YES);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_CONTACT_NUMBER);
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].value.html).toBe('123456');
 
   });
   it('should return response free telephone mediation with free mediation and contact name and contact number', async () => {
     //Given
-    const claim = createClaimWithFreeTelephoneMediationSection();
+    const claim = createClaimWithFreeTelephoneMediationSection(CounterpartyType.INDIVIDUAL);
     if (claim.respondent1) {
       claim.respondent1.type = CounterpartyType.COMPANY;
     }
@@ -40,17 +40,17 @@ describe('Free Telephone Mediation Section', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(3);
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe('COMMON.YES');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NAME');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe(constVal.PAGES_FREE_TELEPHONE_MEDIATION_PAGE_TITLE);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_MEDIATION);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe(constVal.COMMON_YES);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_CONTACT_NAME);
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].value.html).toBe('userTest');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NUMBER');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[2].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_CONTACT_NUMBER);
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[2].value.html).toBe('123456');
   });
   it('should return response free telephone mediation with free mediation and contact name', async () => {
     //Given
-    const claim = createClaimWithFreeTelephoneMediationSection();
+    const claim = createClaimWithFreeTelephoneMediationSection(CounterpartyType.INDIVIDUAL);
     if (claim.mediation?.mediationDisagreement) {
       claim.mediation.mediationDisagreement.option = YesNo.NO;
     }
@@ -64,15 +64,15 @@ describe('Free Telephone Mediation Section', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(1);
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe('COMMON.NO');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe(constVal.PAGES_FREE_TELEPHONE_MEDIATION_PAGE_TITLE);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_MEDIATION);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe(constVal.COMMON_NO);
 
   });
 
   it('should return response free telephone mediation with company telephone number', async () => {
     //Given
-    const claim = createClaimWithFreeTelephoneMediationSection();
+    const claim = createClaimWithFreeTelephoneMediationSection(CounterpartyType.INDIVIDUAL);
     if (claim?.mediation) {
       claim.mediation.canWeUse = undefined;
       claim.mediation.mediationDisagreement = undefined;
@@ -84,13 +84,13 @@ describe('Free Telephone Mediation Section', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(3);
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe(constVal.PAGES_FREE_TELEPHONE_MEDIATION_PAGE_TITLE);
 
   });
 
   it('should return response free telephone mediation with free mediation and mediationPhoneNumber', async () => {
     //Given
-    const claim = createClaimWithFreeTelephoneMediationSection();
+    const claim = createClaimWithFreeTelephoneMediationSection(CounterpartyType.INDIVIDUAL);
     if (claim?.mediation) {
       claim.mediation.companyTelephoneNumber = new CompanyTelephoneNumber();
       claim.mediation.canWeUse = undefined;
@@ -103,15 +103,15 @@ describe('Free Telephone Mediation Section', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(1);
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION');
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe('COMMON.NO');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe(constVal.PAGES_FREE_TELEPHONE_MEDIATION_PAGE_TITLE);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_MEDIATION);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe(constVal.COMMON_NO);
 
   });
 
   it('should return only the title', async () => {
     //When
-    const claim = createClaimWithFreeTelephoneMediationSection();
+    const claim = createClaimWithFreeTelephoneMediationSection(CounterpartyType.INDIVIDUAL);
     claim.mediation = undefined;
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
@@ -119,4 +119,35 @@ describe('Free Telephone Mediation Section', () => {
 
   });
 
+  describe('Free Telephone Mediation Section - COMPANY/ORGANISATION', () => {
+    it('should return response free telephone mediation with free mediation and contact name and number when counter part type is COMPANY', async () => {
+      //When
+      const claim = createClaimWithFreeTelephoneMediationSection(CounterpartyType.COMPANY);
+      const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+      //Then
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(3);
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe(constVal.PAGES_FREE_TELEPHONE_MEDIATION_PAGE_TITLE);
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_MEDIATION);
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe(constVal.COMMON_YES);
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_CONTACT_NAME);
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].value.html).toBe('userTest');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[2].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_CONTACT_NUMBER);
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[2].value.html).toBe('123456');
+    });
+
+    it('should return response free telephone mediation with free mediation and contact name and number when counter part type is ORGANISATION', async () => {
+      //When
+      const claim = createClaimWithFreeTelephoneMediationSection(CounterpartyType.ORGANISATION);
+      const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+      //Then
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(3);
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe(constVal.PAGES_FREE_TELEPHONE_MEDIATION_PAGE_TITLE);
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_MEDIATION);
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[0].value.html).toBe(constVal.COMMON_YES);
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_CONTACT_NAME);
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[1].value.html).toBe('userTest');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[2].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_FREE_TELEPHONE_CONTACT_NUMBER);
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows[2].value.html).toBe('123456');
+    });
+  });
 });
