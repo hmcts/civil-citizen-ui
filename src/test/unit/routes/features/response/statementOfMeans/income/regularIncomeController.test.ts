@@ -21,7 +21,7 @@ describe('Regular Income Controller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on GET', () => {
-    test('it should display page successfully', async () => {
+    test('should display page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_MONTHLY_INCOME_URL)
@@ -41,7 +41,7 @@ describe('Regular Income Controller', () => {
     });
   });
   describe('on POST', () => {
-    test('it should display errors when job is selected but no amount or schedule are specified', async () => {
+    test('should display errors when job is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -61,7 +61,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-    test('it should display errors when universal credit is selected but no amount or schedule are specified', async () => {
+    test('should display errors when universal credit is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -81,7 +81,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-    test('it should display errors when Jobseeker income based is selected but no amount or schedule are specified', async () => {
+    test('should display errors when Jobseeker income based is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -101,7 +101,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-    test('it should display errors when Jobseeker contribution is selected but no amount or schedule are specified', async () => {
+    test('should display errors when Jobseeker contribution is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -121,7 +121,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-    test('it should display errors when income support is selected but no amount or schedule are specified', async () => {
+    test('should display errors when income support is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -141,7 +141,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-    test('it should display errors when Working Tax Credit is selected but no amount or schedule are specified', async () => {
+    test('should display errors when Working Tax Credit is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -161,7 +161,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-    test('it should display errors when Child Tax Credit is selected but no amount or schedule are specified', async () => {
+    test('should display errors when Child Tax Credit is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -181,7 +181,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-    test('it should display errors when Child Benefit is selected but no amount or schedule are specified', async () => {
+    test('should display errors when Child Benefit is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -201,8 +201,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-
-    test('it should display errors when Council Tax Support is selected but no amount or schedule are specified', async () => {
+    test('should display errors when Council Tax Support is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -222,8 +221,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-
-    test('it should display errors when Pension is selected but no amount or schedule are specified', async () => {
+    test('should display errors when Pension is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -243,8 +241,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-
-    test('it should display errors when other is selected but no amount or schedule are specified', async () => {
+    test('should display errors when other is selected but no amount or schedule are specified', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -264,8 +261,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-
-    test('it should display errors for  Income from your job amount when amount has more than two decimal places', async () => {
+    test('should display errors for  Income from your job amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -284,7 +280,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-    test('it should display errors for Universal Credit amount when amount has more than two decimal places', async () => {
+    test('should display errors for Universal Credit amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -302,7 +298,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.UNIVERSAL_CREDIT'));
         });
     });
-    test('it should display errors for Jobseeker’s Allowance (income based) amount when amount has more than two decimal places', async () => {
+    test('should display errors for Jobseeker’s Allowance (income based) amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -320,7 +316,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.JOBSEEKER_INCOME'));
         });
     });
-    test('it should display errors for Jobseeker’s Allowance (contribution based) amount when amount has more than two decimal places', async () => {
+    test('should display errors for Jobseeker’s Allowance (contribution based) amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -338,7 +334,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.JOBSEEKER_CONTRIBUTION'));
         });
     });
-    test('it should display errors for Income Support amount when amount has more than two decimal places', async () => {
+    test('should display errors for Income Support amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -356,7 +352,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_SUPPORT'));
         });
     });
-    test('it should display errors for Working Tax Credit amount when amount has more than two decimal places', async () => {
+    test('should display errors for Working Tax Credit amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -374,7 +370,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.WORKING_TAX'));
         });
     });
-    test('it should display errors for Child Tax Credit amount when amount has more than two decimal places', async () => {
+    test('should display errors for Child Tax Credit amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -392,7 +388,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.CHILD_TAX'));
         });
     });
-    test('it should display errors for Child Benefit amount when amount has more than two decimal places', async () => {
+    test('should display errors for Child Benefit amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -410,7 +406,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.CHILD_BENEFIT'));
         });
     });
-    test('it should display errors for Council Tax Support amount when amount has more than two decimal places', async () => {
+    test('should display errors for Council Tax Support amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -428,7 +424,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.COUNCIL_TAX'));
         });
     });
-    test('it should display errors for Pension amount when amount has more than two decimal places', async () => {
+    test('should display errors for Pension amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -446,7 +442,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.PENSION'));
         });
     });
-    test('it should display errors for other income amount when amount has more than two decimal places', async () => {
+    test('should display errors for other income amount when amount has more than two decimal places', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -465,7 +461,7 @@ describe('Regular Income Controller', () => {
         });
     });
 
-    test('it should display errors for amount when amount is negative', async () => {
+    test('should display errors for amount when amount is negative', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -483,7 +479,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_JOB'));
         });
     });
-    test('it should show errors when other is selected and data for other is not correctly selected', async () => {
+    test('should show errors when other is selected and data for other is not correctly selected', async () => {
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
         .send({
@@ -510,7 +506,7 @@ describe('Regular Income Controller', () => {
           expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_SUPPORT'));
         });
     });
-    test('it should redirect when all values are correct', async () => {
+    test('should redirect when all values are correct', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
@@ -529,7 +525,7 @@ describe('Regular Income Controller', () => {
           expect(res.header.location).toEqual(CITIZEN_EXPLANATION_URL);
         });
     });
-    test('it should return 500 status when error occurs', async () => {
+    test('should return 500 status when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_MONTHLY_INCOME_URL)
