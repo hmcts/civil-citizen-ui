@@ -69,7 +69,6 @@ describe('Citizen Phone View', () => {
       expect(errorSummary.length).toEqual(0);
     });
 
-
   });
 
   describe('on POST', () => {
@@ -82,7 +81,6 @@ describe('Citizen Phone View', () => {
         htmlDocument = dom.window.document;
       });
     });
-
 
     it('should display correct error summary message with correct link for telephone error', async () => {
       await request(app)

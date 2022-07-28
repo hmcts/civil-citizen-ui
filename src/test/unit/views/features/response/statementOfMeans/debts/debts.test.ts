@@ -81,7 +81,6 @@ describe('Debts View', () => {
       expect(errorSummary.length).toEqual(0);
     });
 
-
   });
 
   describe('on POST', () => {
@@ -147,8 +146,6 @@ describe('Debts View', () => {
       expect(errorSummary.getElementsByTagName('a')[4].getAttribute('href'))
         .toContain('#debtsItems[0][monthlyPayments]');
     });
-
-
 
   });
 

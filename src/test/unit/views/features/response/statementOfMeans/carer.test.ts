@@ -58,7 +58,6 @@ describe('Carer View', () => {
       expect(errorSummary.length).toEqual(0);
     });
 
-
   });
 
   describe('on POST', () => {
