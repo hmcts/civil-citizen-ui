@@ -14,12 +14,7 @@ residenceController
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       try {
         const residence: Residence = await residenceService.getResidence(req.params.id);
-        // Jira/CIV-1711 : prevent displaying unnecessary error message on view
-        const residenceDetails = new GenericForm(residence);
-        const errors = residenceDetails.getErrors().length ? residenceDetails.getErrors() :null;
-        res.render(residenceViewPath, {
-          form: new GenericForm(residence), errors,
-        });
+        res.render(residenceViewPath, {form: new GenericForm(residence)});
       } catch (error) {
         next(error);
       }
@@ -31,9 +26,7 @@ residenceController
       const form: GenericForm<Residence> = residenceService.validateResidence(residence);
 
       if (form.hasErrors()) {
-        res.render(residenceViewPath, {
-          form: form,
-        });
+        res.render(residenceViewPath, {form});
       } else {
         try {
           await residenceService.saveResidence(req.params.id, residence);

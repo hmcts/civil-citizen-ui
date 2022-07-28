@@ -40,7 +40,7 @@ export const enum TestMessages {
   VALID_YES_NO_OPTION = 'Choose option: Yes or No',
   PHONE_NUMBER_REQUIRED = 'Please enter a phone number',
   NAME_REQUIRED = 'Please enter a name',
-  TEXT_TOO_MANY = 'You’ve entered too many characters',
+  TEXT_TOO_MANY = 'You\'ve entered too many characters',
   VALID_YES_NO_SELECTION = 'Please select yes or no',
   MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
   MEDIATION_I_DONT_WANT_FREE = 'I do not agree to free mediation',
@@ -56,6 +56,8 @@ export const enum TestMessages {
   VALID_MONTH = 'Enter a valid month',
   VALID_YEAR = 'Enter a valid year',
   VALID_FOUR_DIGIT_YEAR = 'Enter a 4 digit year',
+  VALID_HOUSING = 'Describe your housing',
+  VALID_OPTION_SELECTION = 'Select an option',
   VALID_PAYMENT_OPTION = 'Choose a payment option',
-  VALID_PHONE_NUMBER = 'Enter a phone number in the correct format'
+  VALID_PHONE_NUMBER = 'Enter a phone number in the correct format',
 }

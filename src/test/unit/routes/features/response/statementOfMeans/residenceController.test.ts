@@ -1,13 +1,9 @@
+import _ from 'lodash';
 import express from 'express';
 const request = require('supertest');
 const {app} = require('../../../../../../main/app');
 import nock from 'nock';
 import config from 'config';
-import {
-  VALID_HOUSING,
-  VALID_OPTION_SELECTION,
-  VALID_TEXT_LENGTH,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../../../../main/routes/urls';
 import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
@@ -75,7 +71,7 @@ describe('Citizen residence', () => {
         .send('type=')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_OPTION_SELECTION);
+          expect(res.text).toContain(TestMessages.VALID_OPTION_SELECTION);
         });
     });
 
@@ -86,7 +82,7 @@ describe('Citizen residence', () => {
         .send('housingDetails=')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_HOUSING);
+          expect(res.text).toContain(TestMessages.VALID_HOUSING);
         });
     });
 
@@ -108,7 +104,7 @@ describe('Citizen residence', () => {
         .send(`housingDetails=${tooLongHousingDetails}`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_TEXT_LENGTH);
+          expect(res.text).toContain(_.escape(TestMessages.TEXT_TOO_MANY));
         });
     });
 
