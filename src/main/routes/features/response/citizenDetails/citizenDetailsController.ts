@@ -87,7 +87,9 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
     ));
 
     await citizenAddress.validate();
-    await citizenCorrespondenceAddress.validate();
+    if (req.body.postToThisAddress === YesNo.YES) {
+      await citizenCorrespondenceAddress.validate();
+    }
 
     if (citizenAddress.hasErrors() || citizenCorrespondenceAddress.hasErrors()) {
       renderPage(res, req, responseDataRedis, citizenAddress, citizenCorrespondenceAddress);

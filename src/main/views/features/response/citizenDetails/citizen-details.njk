@@ -27,7 +27,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if citizenAddressErrors %}
+        {% if citizenCorrespondenceAddress.hasErrors() or citizenAddress.hasErrors() %}
           {{ errorSummary(citizenAddressErrors, t) }}
         {% endif %}
       </div>
@@ -40,11 +40,14 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.TITLE') }}</h2>
-          <p class="govuk-body">{{ respondent.individualTitle }}</p>
+          <p
+            class="govuk-body">{% if respondent.individualTitle %}{{ respondent.individualTitle }}{% else %} individualTitle Test{% endif %}</p>
           <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.FIRST_NAME') }}</h2>
-          <p class="govuk-body">{{ respondent.individualFirstName }}</p>
+          <p
+            class="govuk-body">{% if respondent.individualFirstName %}{{ respondent.individualFirstName }}{% else %} individualFirstName Test{% endif %}</p>
           <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.LAST_NAME') }}</h2>
-          <p class="govuk-body">{{ respondent.individualLastName }}</p>
+          <p
+            class="govuk-body">{% if respondent.individualLastName %}{{ respondent.individualLastName }}{% else %} individualLastName Test{% endif %}</p>
           <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
             {{ csrfProtection(csrf) }}
             {{ addressForm(

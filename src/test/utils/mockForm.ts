@@ -3,25 +3,26 @@ import {CitizenCorrespondenceAddress} from '../../main/common/form/models/citize
 import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
+import {GenericForm} from '../../main/common/form/models/genericForm';
 
-export const buildCitizenAddress = (): CitizenAddress => {
+export const buildCitizenAddress = (): GenericForm<CitizenAddress> => {
   const citizenAddress =  new CitizenAddress();
   citizenAddress.primaryAddressLine1 = 'primaryAddressLine1';
   citizenAddress.primaryAddressLine2 = 'primaryAddressLine2';
   citizenAddress.primaryAddressLine3 = 'primaryAddressLine3';
   citizenAddress.primaryPostCode = 'primaryPostCode';
   citizenAddress.primaryCity = 'primaryCity';
-  return  citizenAddress;
+  return  new GenericForm<CitizenAddress>(citizenAddress);
 };
 
-export const buildCitizenCorrespondenceAddress = () : CitizenCorrespondenceAddress => {
+export const buildCitizenCorrespondenceAddress = () : GenericForm<CitizenCorrespondenceAddress> => {
   const citizenCorrespondenceAddress = new CitizenCorrespondenceAddress();
   citizenCorrespondenceAddress.correspondenceAddressLine1 = 'correspondenceAddressLine1';
   citizenCorrespondenceAddress.correspondenceAddressLine2 = 'correspondenceAddressLine2';
   citizenCorrespondenceAddress.correspondenceAddressLine3 = 'correspondenceAddressLine3';
   citizenCorrespondenceAddress.correspondenceCity = 'correspondenceCity';
   citizenCorrespondenceAddress.correspondencePostCode = 'correspondencePostCode';
-  return citizenCorrespondenceAddress;
+  return new GenericForm<CitizenCorrespondenceAddress>(citizenCorrespondenceAddress);
 };
 
 export const buildDebtFormYes = () : Debts => {
@@ -56,14 +57,14 @@ export const buildDebtFormYesWithDebtEmpty = () : Debts => {
 export const buildDebtFormYesWithTotalOwnedInvalid = () : Debts => {
   const items : DebtItems[] = [];
   items.push(new DebtItems('test', '-10', '1.00'));
-  return new Debts(YesNo.YES,items); 
+  return new Debts(YesNo.YES,items);
 };
 
 export const buildDebtFormYesWithTotalOwnedZero = () : Debts => {
   const items : DebtItems[] = [];
   items.push(new DebtItems('test', '0', '1.00'));
   return new Debts(YesNo.YES,items);
-  
+
 };
 export const buildDebtFormYesWithTotalOwnedEmpty = () : Debts => {
   const items : DebtItems[] = [];

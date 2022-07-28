@@ -12,6 +12,15 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
+% set correspondenceAddressClass = '' if postToThisAddress == 'yes' else 'govuk-visually-hidden' %}
+{% set addressTitle = t('PAGES.CITIZEN_DETAILS.ADDRESS') %}
+{% set citizenAddressErrors = citizenAddress.getAllErrors() %}
+
+{% if citizenCorrespondenceAddress %}
+  {% set citizenCorrespondenceAddressErrors = citizenCorrespondenceAddress.getAllErrors() %}
+  {% set citizenAddressErrors = citizenAddressErrors.concat(citizenCorrespondenceAddress.getAllErrors()) %}
+{% endif %}
+
 {% block pageTitle %}
   {{ setPageTitle('PAGES.COMPANY_DETAILS.PAGE_TITLE') }}
 {% endblock %}
@@ -20,8 +29,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if errorList.length > 0 %}
-          {{ errorSummary(errorList, t) }}
+        {% if citizenCorrespondenceAddress.hasErrors() or citizenAddress.hasErrors() %}
+          {{ errorSummary(citizenAddressErrors, t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
@@ -51,29 +60,29 @@
             }) }}
             {{ addressForm(
               t,
-              citizenAddress = citizenAddress,
-              addressLine1Error = addressLine1Error,
-              addressCityError = addressCityError,
-              addressPostCodeError = addressPostCodeError,
+              citizenAddress,
+              citizenCorrespondenceAddress,
               addressType = 'primary',
-              addressTitle= addressTitle) }}
-            {% set noHtml %}
-            {% endset -%}
+              addressTitle = addressTitle
+            ) }}
             {% set correspondenceAddressHtml %}
-            <div class="govuk-form-group" id="postcode">
-              <p class="govuk-label govuk-!-margin-bottom-5">{{ t('PAGES.COMPANY_DETAILS.ALL_CORRESPONDENCE') + t('PAGES.COMPANY_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
-              <label class="govuk-label" for="postcode">
-                {{ t('PAGES.COMPANY_DETAILS.UK_POSTCODE') }}
-              </label>
-              <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
-                {{ t('PAGES.COMPANY_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.COMPANY_DETAILS.TRY_AGAIN') }}
-              </div>
-              <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
-              <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
-                {{ t('PAGES.COMPANY_DETAILS.FIND_ADDRESS') }}
-              </button>
-              <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
-                {{ govukSelect({
+              <div class="govuk-form-group" id="postcode">
+                <p
+                  class="govuk-label govuk-!-margin-bottom-5">{{ t('PAGES.COMPANY_DETAILS.ALL_CORRESPONDENCE') + t('PAGES.COMPANY_DETAILS.ADDRESS_FOR_SERVICE') }}</p>
+                <label class="govuk-label" for="postcode">
+                  {{ t('PAGES.COMPANY_DETAILS.UK_POSTCODE') }}
+                </label>
+                <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
+                  {{ t('PAGES.COMPANY_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.COMPANY_DETAILS.TRY_AGAIN') }}
+                </div>
+                <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text"
+                       autocomplete="postal-code"/>
+                <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button"
+                        id="findAddressButton">
+                  {{ t('PAGES.COMPANY_DETAILS.FIND_ADDRESS') }}
+                </button>
+                <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
+                  {{ govukSelect({
                     id: "correspondenceAddressList",
                     name: "correspondenceAddressList",
                     label: {
@@ -81,25 +90,22 @@
                     },
                     items: []
                   }) }}
+                </div>
               </div>
-            </div>
-            {% if postToThisAddress == 'no' %}
               <div>
-                <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
+                <a id="enterAddressManually" aria-controls="enterAddressManually" href="#"
+                   class="govuk-body govuk-link">
                   {{ t('PAGES.COMPANY_DETAILS.MANUAL_ADDRESS') }}
                 </a>
               </div>
-            {% endif %}
-            <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
-              {{ addressForm(
-              t,
-              citizenAddress = citizenCorrespondenceAddress,
-              addressLine1Error = correspondenceAddressLine1Error,
-              addressCityError = correspondenceCityError,
-              addressPostCodeError = correspondencePostCodeError,
-              addressType = 'correspondence',
-              addressTitle= addressTitle) }}
-            </div>
+              <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
+                {{ addressForm(
+                  t,
+                  citizenCorrespondenceAddress = citizenCorrespondenceAddress,
+                  addressType = 'correspondence',
+                  addressTitle = addressTitle
+                ) }}
+              </div>
             {% endset -%}
             <h2 class="govuk-heading-m">{{ t('PAGES.COMPANY_DETAILS.CORRESPONDENCE_ADDRESS') }}</h2>
             {{ govukRadios({
@@ -115,27 +121,24 @@
                 {
                   value: "no",
                   text: t("COMMON.NO"),
-                  checked: true,
-                  conditional: {
-                    html: noHtml
-                  }
+                  checked: true
                 },
                 {
                   value: "yes",
-                  checked: true if postToThisAddress == 'yes' else false,
+                  checked: false if citizenCorrespondenceAddress.model.isEmpty() else true,
                   text: t('PAGES.COMPANY_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
-                    html: correspondenceAddressHtml
-                  }
+                  html: correspondenceAddressHtml
+                }
                 }
               ]
             }) }}
 
             {{ govukButton({
-                  text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
-                }) }}
+              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+            }) }}
             {{ contactUsForHelp(t) }}
-          </div>
+        </div>
         </form>
       </div>
     </main>
