@@ -1,11 +1,7 @@
+import _ from 'lodash';
 import express from 'express';
 import nock from 'nock';
 import config from 'config';
-import {
-  VALID_ENTER_AT_LEAST_ONE_NUMBER,
-  VALID_INTEGER,
-  VALID_POSITIVE_NUMBER,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   CHILDREN_DISABILITY_URL,
   CITIZEN_DEPENDANTS_EDUCATION_URL,
@@ -109,7 +105,7 @@ describe('Citizen dependants', () => {
         .send('under11=')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_ENTER_AT_LEAST_ONE_NUMBER);
+          expect(res.text).toContain('Enter a number for at least one field');
         });
     });
     it('should show error when Yes option and invalid under11 input', async () => {
@@ -119,7 +115,7 @@ describe('Citizen dependants', () => {
         .send('under11=-1')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_POSITIVE_NUMBER);
+          expect(res.text).toContain(_.escape('Don\'t enter a negative number'));
         });
     });
     it('should show error when Yes option and invalid between11and15 input', async () => {
@@ -129,7 +125,7 @@ describe('Citizen dependants', () => {
         .send('between11and15=-1')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_POSITIVE_NUMBER);
+          expect(res.text).toContain(_.escape('Don\'t enter a negative number'));
         });
     });
     it('should show error when Yes option and invalid between16and19 input', async () => {
@@ -139,7 +135,7 @@ describe('Citizen dependants', () => {
         .send('between16and19=1.5')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_INTEGER);
+          expect(res.text).toContain('Enter a numeric, for example 3');
         });
     });
     it('should status 500 when error thrown', async () => {

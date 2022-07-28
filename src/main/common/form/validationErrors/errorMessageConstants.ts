@@ -37,7 +37,6 @@ export const VALID_BETWEEN_NUMBERS_0_11 = 'Enter a number between 0 and 11';
 export const VALID_BETWEEN_NUMBERS_0_80 = 'Enter a number between 0 and 80';
 export const VALID_NUMBER_FOR_PREVIOUS_PAGE = 'Number can’t be higher than on previous page';
 export const VALID_YES_NO_SELECTION = 'Please select yes or no';
-export const VALID_ENTER_AT_LEAST_ONE_NUMBER = 'Enter a number for at least one field';
 export const AMOUNT_INVALID_DECIMALS = 'Enter a valid amount, maximum two decimal places';
 export const JOB_TITLE_REQUIRED = 'Enter a job title';
 export const ANNUAL_TURNOVER_REQUIRED = 'Are you sure this is a valid value?';
