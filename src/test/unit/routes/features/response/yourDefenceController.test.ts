@@ -9,6 +9,7 @@ import {
   mockCivilClaimUnemploymentRetired,
   mockNoStatementOfMeans,
   mockRedisFailure,
+  mockRedisFullAdmission,
 } from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
@@ -80,6 +81,15 @@ describe('yourDefence', () => {
         });
     });
 
+    it('should redirect to timeline page option text is fill and rejectAllOfClaim no exist', async () => {
+      app.locals.draftStoreClient = mockRedisFullAdmission;
+      await request(app).post(RESPONSE_YOUR_DEFENCE_URL)
+        .send({text: 'Test'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_TIMELINE_URL);
+        });
+    });
     it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)

@@ -61,8 +61,8 @@ const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, sect
   );
 };
 const isPaidAmountEqulGreaterThanTotalAmount = (claim: Claim) => {
-  const amount = claim?.rejectAllOfClaim?.howMuchHaveYouPaid?.amount ? claim.rejectAllOfClaim.howMuchHaveYouPaid.amount : 0;
-  const totalClaimAmount = claim?.totalClaimAmount ? claim.totalClaimAmount : 0;
+  const amount = claim.rejectAllOfClaim.howMuchHaveYouPaid?.amount ? claim.rejectAllOfClaim.howMuchHaveYouPaid.amount : 0;
+  const totalClaimAmount = claim.totalClaimAmount ? claim.totalClaimAmount : 0;
   return amount < totalClaimAmount ? true : false;
 };
 
@@ -91,7 +91,7 @@ const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string
   const howMuchHaveYouPaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FR_AMOUNT_YOU_PAID_URL);
   const rejectUrl = claim.rejectAllOfClaim.option == RejectAllOfClaimType.DISPUTE ? RESPONSE_YOUR_DEFENCE_URL : CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL;
   const whyDoYouDisagreeUrl = constructResponseUrlWithIdParams(claimId, rejectUrl);
-  const disagreeText = claim?.rejectAllOfClaim?.whyDoYouDisagree?.text ? claim.rejectAllOfClaim.whyDoYouDisagree.text : claim.rejectAllOfClaim?.defence?.text;
+  const disagreeText = claim.rejectAllOfClaim.whyDoYouDisagree?.text ? claim.rejectAllOfClaim.whyDoYouDisagree.text : claim.rejectAllOfClaim.defence?.text;
   if (claim.rejectAllOfClaim.option !== RejectAllOfClaimType.DISPUTE) {
     yourResponseDetailsSection.summaryList.rows.push(...[
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(claim.rejectAllOfClaim.howMuchHaveYouPaid.amount)), howMuchHaveYouPaidUrl, changeLabel(lang)),
