@@ -10,7 +10,6 @@ import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
-import {Defence} from '../form/models/defence';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
 import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
@@ -48,7 +47,6 @@ export class Claim {
   detailsOfClaim: string;
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
-  defence?: Defence;
   paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;

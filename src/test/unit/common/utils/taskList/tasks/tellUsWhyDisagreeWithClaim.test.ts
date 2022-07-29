@@ -1,7 +1,10 @@
 import {Defence} from '../../../../../../main/common/form/models/defence';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {TaskStatus} from '../../../../../../main/common/models/taskList/TaskStatus';
-import {getTellUsWhyDisagreeWithClaimTask} from '../../../../../../main/common/utils/taskList/tasks/tellUsWhyDisagreeWithClaim';
+import {
+  getTellUsWhyDisagreeWithClaimTask,
+} from '../../../../../../main/common/utils/taskList/tasks/tellUsWhyDisagreeWithClaim';
+import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -19,7 +22,7 @@ describe('Tell us why you disagree with the claim Task', () => {
     status: TaskStatus.INCOMPLETE,
   };
 
-  const resultComplete = { ...resultIncomplete, status: TaskStatus.COMPLETE };
+  const resultComplete = {...resultIncomplete, status: TaskStatus.COMPLETE};
 
   describe('getTellUsWhyDisagreeWithClaimTask', () => {
     const claim = new Claim();
@@ -30,8 +33,10 @@ describe('Tell us why you disagree with the claim Task', () => {
     });
 
     it('should return complete task', () => {
-      claim.defence = new Defence();
-      claim.defence.text = 'test';
+      claim.rejectAllOfClaim = new RejectAllOfClaim();
+      claim.rejectAllOfClaim.defence = new Defence();
+      claim.rejectAllOfClaim.defence.text = 'test';
+
       const howMuchMoneyAdmitOweTask = getTellUsWhyDisagreeWithClaimTask(claim, claimId, lang);
       expect(howMuchMoneyAdmitOweTask).toEqual(resultComplete);
     });
