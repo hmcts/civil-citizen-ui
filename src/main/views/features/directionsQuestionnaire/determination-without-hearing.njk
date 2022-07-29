@@ -1,0 +1,63 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.DETERMINATION_WITHOUT_HEARING.TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        <div class="govuk-grid-row">
+          {{ errorSummary(form.getErrors(), t) }}
+        </div>
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.DETERMINATION_WITHOUT_HEARING.PAGE_TITLE') }}</h1>
+          <p class="govuk-body">
+            <span class="govuk-!-font-weight-bold">
+              {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARING') }}
+            </span>
+            {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.IE') }}
+          </p>
+
+          <form method="post" novalidate autocomplete="off">
+            {{ csrfProtection(csrf) }}
+
+            {% set noHtml %}
+              {{ govukTextarea({
+                name: "reasonForHearing",
+                id: "reasonForHearing",
+                value: form.model.reasonForHearing,
+                label: {
+                  text: t('PAGES.DETERMINATION_WITHOUT_HEARING.TELL_US_WHY')
+                },
+                errorMessage: {
+                  html: t(form.errorFor("reasonForHearing"))
+                } if form.hasFieldError("reasonForHearing")
+              }) }}
+            {% endset %}
+
+            {{ yesNoRadioButton(t, 'isDeterminationWithoutHearing', 'isDeterminationWithoutHearing', '', form, '', {noHtml: noHtml}) }}
+
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

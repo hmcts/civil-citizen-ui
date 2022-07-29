@@ -7,10 +7,8 @@ import {DocumentUri} from '../../../../../../main/common/models/document/documen
 
 describe('Claim document content builder', ()=>{
   it('should return json with document size in KB and link to download the pdf', ()=>{
-    //Given
-    const claim = mockClaim;
     //When
-    const claimDocumentSection = buildDownloadSealedClaimSection(claim, '1', 'eng');
+    const claimDocumentSection = buildDownloadSealedClaimSection(mockClaim, '1', 'eng');
     //Then
     expect(claimDocumentSection).not.toBeUndefined();
     expect(claimDocumentSection.data?.href).toBe(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1').replace(':documentType', DocumentUri.SEALED_CLAIM));
