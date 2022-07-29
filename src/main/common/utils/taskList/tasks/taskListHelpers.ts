@@ -55,7 +55,7 @@ export const isCounterpartyCompany = (respondent1: Respondent): boolean => {
 };
 
 export const hasContactPersonAndCompanyPhone = (caseData: Claim): boolean => {
-  return caseData.mediation?.companyTelephoneNumber?.mediationContactPerson && caseData.mediation?.companyTelephoneNumber?.mediationPhoneNumber ? true : false;
+  return !!(caseData.mediation?.companyTelephoneNumber?.mediationContactPerson && caseData.mediation?.companyTelephoneNumber?.mediationPhoneNumber);
 };
 
 export const isFullDefenceAndNotCounterClaim = (caseData: Claim): boolean => {

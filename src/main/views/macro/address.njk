@@ -1,6 +1,6 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
-{% macro addressForm(t,citizenAddress = '', addressLine1Error, addressCityError, addressPostCodeError, addressType, addressTitle) %}
+{% macro addressForm(t,citizenAddress, citizenCorrespondenceAddress, addressType, addressTitle) %}
   {% set fieldSetText = t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') + t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') %}
   {% set textInputLabel = t('COMMON.ADDRESS_FORM.BUILDING_AND_STREET') %}
   {% set govukFormGroupError = 'govuk-form-group govuk-form-group--error' if addressLine1Error else '' %}
@@ -23,8 +23,9 @@
     id: addressType + "AddressLine1",
     name: addressType + "AddressLine1",
     autocomplete: addressType + "AddressLine-1",
-    value: citizenAddress.primaryAddressLine1 if addressType == 'primary' else citizenAddress.correspondenceAddressLine1,
-    errorMessage: { text: t(addressLine1Error.isNotEmpty) } if addressLine1Error else ''
+    value: citizenAddress.model.primaryAddressLine1 if addressType == 'primary' else citizenCorrespondenceAddress.model.correspondenceAddressLine1,
+    errorMessage: { text: t(citizenAddress.errorFor('primaryAddressLine1')) } if (addressType == 'primary' and citizenAddress.errorFor('primaryAddressLine1'))
+      else ({ text: t(citizenCorrespondenceAddress.errorFor('correspondenceAddressLine1')) } if (addressType == 'correspondence' and citizenCorrespondenceAddress.errorFor('correspondenceAddressLine1')))
   }) }}
     {{ govukInput({
     label: {
@@ -34,7 +35,7 @@
     id: addressType + "AddressLine2",
     name: addressType + "AddressLine2",
     autocomplete: addressType + "AddressLine-2",
-    value: citizenAddress.primaryAddressLine2 if addressType == 'primary' else citizenAddress.correspondenceAddressLine2
+    value: citizenAddress.model.primaryAddressLine2 if addressType == 'primary' else citizenCorrespondenceAddress.model.correspondenceAddressLine2
   }) }}
     {{ govukInput({
     label: {
@@ -44,7 +45,7 @@
     id: addressType + "AddressLine3",
     name: addressType + "AddressLine3",
     autocomplete: addressType + "AddressLine-3",
-    value: citizenAddress.primaryAddressLine3 if addressType == 'primary' else citizenAddress.correspondenceAddressLine3
+    value: citizenAddress.model.primaryAddressLine3 if addressType == 'primary' else citizenCorrespondenceAddress.model.correspondenceAddressLine3
   }) }}
   </div>
   {{ govukInput({
@@ -55,8 +56,9 @@
     id: addressType + "City",
     name: addressType + "City",
     autocomplete: addressType + "address-level2",
-    value: citizenAddress.primaryCity if addressType == 'primary' else citizenAddress.correspondenceCity,
-    errorMessage: { text: t(addressCityError.isNotEmpty) } if addressCityError else ''
+    value: citizenAddress.model.primaryCity if addressType == 'primary' else citizenCorrespondenceAddress.model.correspondenceCity,
+    errorMessage: { text: t(citizenAddress.errorFor('primaryCity')) } if (addressType == 'primary' and citizenAddress.errorFor('primaryCity'))
+    else ({ text: t(citizenCorrespondenceAddress.errorFor('correspondenceCity')) } if (addressType == 'correspondence' and citizenCorrespondenceAddress.errorFor('correspondenceCity')))
   }) }}
   {{ govukInput({
     label: {
@@ -66,8 +68,9 @@
     id: addressType + "PostCode",
     name: addressType + "PostCode",
     autocomplete: addressType + "postal-code",
-    value: citizenAddress.primaryPostCode if addressType == 'primary' else citizenAddress.correspondencePostCode,
-    errorMessage: { text: t(addressPostCodeError.isNotEmpty) or t(addressPostCodeError.customInt)} if addressPostCodeError else ''
+    value: citizenAddress.model.primaryPostCode if addressType == 'primary' else citizenCorrespondenceAddress.model.correspondencePostCode,
+    errorMessage: { text: t(citizenAddress.errorFor('primaryPostCode')) } if (addressType == 'primary' and citizenAddress.errorFor('primaryPostCode'))
+    else ({ text: t(citizenCorrespondenceAddress.errorFor('correspondencePostCode')) } if (addressType == 'correspondence' and citizenCorrespondenceAddress.errorFor('correspondencePostCode')))
   }) }}
   {% endcall %}
 {% endmacro %}

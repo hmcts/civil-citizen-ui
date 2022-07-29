@@ -9,6 +9,7 @@ import {buildCitizenAddress, buildCitizenCorrespondenceAddress} from '../../../.
 import {Claim} from '../../../../../../main/common/models/claim';
 import {CitizenCorrespondenceAddress} from '../../../../../../main/common/form/models/citizenCorrespondenceAddress';
 import { YesNo } from '../../../../../../main/common/form/models/yesNo';
+import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -57,8 +58,8 @@ describe('Citizen details service', () => {
       const respondentResult = new Respondent();
       respondentResult.primaryAddress = buildPrimaryAddress();
       respondentResult.correspondenceAddress = buildCorrespondenceAddress();
-      respondentResult.contactPerson = '';
       respondentResult.postToThisAddress = YesNo.NO;
+      respondentResult.contactPerson = '';
       const resultClaim = new Claim();
       resultClaim.respondent1 = respondentResult;
       resultClaim.respondent1ResponseDeadline = new Date('2022-01-24T15:59:59');
@@ -126,7 +127,7 @@ describe('Citizen details service', () => {
         return mockClaim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new CitizenCorrespondenceAddress(), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress()), YesNo.NO, '');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -167,7 +168,7 @@ describe('Citizen details service', () => {
         return claim;
       });
       //when
-      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new CitizenCorrespondenceAddress(), YesNo.NO, '');
+      await saveRespondent(CLAIM_ID, buildCitizenAddress(), new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress()), YesNo.NO, '');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
