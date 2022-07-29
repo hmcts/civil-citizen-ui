@@ -6,6 +6,7 @@ import {CorrespondenceAddress} from '../../../../common/models/correspondenceAdd
 import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 import {GenericForm} from '../../../../common/form/models/genericForm';
+import {YesNo} from 'common/form/models/yesNo';
 
 export const getRespondentInformation = async (claimId: string): Promise<Respondent> => {
   const responseData = await getCaseDataFromStore(claimId);
@@ -15,7 +16,7 @@ export const getRespondentInformation = async (claimId: string): Promise<Respond
   return new Respondent();
 };
 
-export const saveRespondent = async (claimId: string, citizenAddress: GenericForm<CitizenAddress>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, postToThisAddress: string, contactPerson = ''): Promise<void> => {
+export const saveRespondent = async (claimId: string, citizenAddress: GenericForm<CitizenAddress>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, postToThisAddress: YesNo, contactPerson = ''): Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId) || new Claim();
   if (!responseData.respondent1) {
     responseData.respondent1 = new Respondent();

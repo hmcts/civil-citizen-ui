@@ -10,7 +10,7 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
-{% set correspondenceAddressClass = 'govuk-visually-hidden' if postToThisAddress == 'no' else '' %}
+{% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% set addressTitle = t('PAGES.CITIZEN_DETAILS.ADDRESS') %}
 {% set citizenAddressErrors = citizenAddress.getAllErrors() %}
 
@@ -111,13 +111,13 @@
               },
               items: [
                 {
-                  value: "no",
+                  value: YesNo.NO,
                   text: t('COMMON.NO'),
-                  checked: true
+                  checked: false if respondent.postToThisAddress == YesNo.YES else true
                 },
                 {
-                  value: "yes",
-                  checked: false if citizenCorrespondenceAddress.model.isEmpty() else true,
+                  value: YesNo.YES,
+                  checked: true if respondent.postToThisAddress == YesNo.YES else false,
                   text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
                   html: correspondenceAddressHtml

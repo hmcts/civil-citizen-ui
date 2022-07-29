@@ -28,14 +28,12 @@ function renderPage(res: express.Response, req: express.Request, respondent: Res
   const partyName = respondent?.partyName;
   const type = respondent?.type;
   const contactPerson = respondent?.contactPerson;
-  const postToThisAddress = respondent?.postToThisAddress ? respondent.postToThisAddress : YesNo.NO;
 
   const viewPath = getViewpathWithType(type);
   res.render(viewPath, {
     respondent,
     citizenAddress,
     citizenCorrespondenceAddress,
-    postToThisAddress: postToThisAddress,
     partyName: partyName,
     contactPerson: contactPerson,
     type: type,
@@ -96,6 +94,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: express.Request, 
     await citizenAddress.validate();
     if (req.body.postToThisAddress === YesNo.YES) {
       await citizenCorrespondenceAddress.validate();
+      responseDataRedis.postToThisAddress = YesNo.YES;
     }
 
     if (citizenAddress.hasErrors() || citizenCorrespondenceAddress.hasErrors()) {
