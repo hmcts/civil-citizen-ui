@@ -3,7 +3,7 @@ import nock from 'nock';
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {
-  AGREED_T0_MORE_TIME_URL,
+  AGREED_TO_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL,
 } from '../../../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
@@ -26,7 +26,7 @@ describe('Agreed response deadline View', () => {
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(AGREED_T0_MORE_TIME_URL).then(res => {
+      await request(app).get(AGREED_TO_MORE_TIME_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
       });
@@ -88,7 +88,7 @@ describe('Agreed response deadline View', () => {
     const getErrorSummaryListElement = (index: number) => htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0].getElementsByTagName('li')[index];
     beforeEach(async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).post(AGREED_T0_MORE_TIME_URL).then(res => {
+      await request(app).post(AGREED_TO_MORE_TIME_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
       });
@@ -109,7 +109,7 @@ describe('Agreed response deadline View', () => {
 
     it('should display correct error summary message with correct link for agreed response Date in the past', async () => {
       await request(app)
-        .post(AGREED_T0_MORE_TIME_URL)
+        .post(AGREED_TO_MORE_TIME_URL)
         .send({ day: '14', month: '02', year: '2022'})
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -123,7 +123,7 @@ describe('Agreed response deadline View', () => {
 
     it('should display correct error summary message with correct link for agreed response date is more than 28 days', async () => {
       await request(app)
-        .post(AGREED_T0_MORE_TIME_URL)
+        .post(AGREED_TO_MORE_TIME_URL)
         .send({day: '14', month: '06', year: 2022})
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -137,7 +137,7 @@ describe('Agreed response deadline View', () => {
 
     it('should display correct error summary message with correct link for day', async () => {
       await request(app)
-        .post(AGREED_T0_MORE_TIME_URL)
+        .post(AGREED_TO_MORE_TIME_URL)
         .send({day: '35', month: '06', year: 2022})
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -151,7 +151,7 @@ describe('Agreed response deadline View', () => {
 
     it('should display correct error summary message with correct link for month', async () => {
       await request(app)
-        .post(AGREED_T0_MORE_TIME_URL)
+        .post(AGREED_TO_MORE_TIME_URL)
         .send({day: '12', month: '13', year: 2022})
         .then(res => {
           const dom = new JSDOM(res.text);
@@ -165,7 +165,7 @@ describe('Agreed response deadline View', () => {
 
     it('should display correct error summary message with correct link for Year less than 4 digits', async () => {
       await request(app)
-        .post(AGREED_T0_MORE_TIME_URL)
+        .post(AGREED_TO_MORE_TIME_URL)
         .send({day: '01', month: '01', year: '999'})
         .then(res => {
           const dom = new JSDOM(res.text);

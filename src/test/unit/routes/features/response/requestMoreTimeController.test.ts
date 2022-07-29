@@ -12,6 +12,7 @@ import {ResponseDeadline} from '../../../../../main/common/form/models/responseD
 import {AdditionalTimeOptions} from '../../../../../main/common/form/models/additionalTime';
 import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -66,9 +67,7 @@ describe('Request More Time Controller', () => {
     });
 
     it('should render error page on redis failure error', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app).get(REQUEST_MORE_TIME_URL).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
