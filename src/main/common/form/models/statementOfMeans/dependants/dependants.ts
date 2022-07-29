@@ -1,21 +1,16 @@
 import {IsDefined, ValidateIf, ValidateNested} from 'class-validator';
-
 import {boolean, isBooleanable} from 'boolean';
-import {
-  VALID_ENTER_AT_LEAST_ONE_NUMBER,
-  VALID_YES_NO_SELECTION,
-} from '../../../validationErrors/errorMessageConstants';
 import {NumberOfChildren} from './numberOfChildren';
 import {AtLeastOneFieldIsPopulated} from '../../../validators/atLeastOneFieldIsPopulated';
 
 export class Dependants {
 
-  @IsDefined({message: VALID_YES_NO_SELECTION})
+  @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
     declared?: boolean;
 
   @ValidateIf((d: Dependants) => d.declared === true)
   @ValidateNested()
-  @AtLeastOneFieldIsPopulated({message: VALID_ENTER_AT_LEAST_ONE_NUMBER})
+  @AtLeastOneFieldIsPopulated({message: 'ERRORS.VALID_ENTER_AT_LEAST_ONE_NUMBER'})
     numberOfChildren?: NumberOfChildren;
 
   constructor(declared?: boolean, numberOfChildren?: NumberOfChildren) {

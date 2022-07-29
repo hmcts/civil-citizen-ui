@@ -2,9 +2,6 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {
-  VALID_PHONE_NUMBER,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -66,7 +63,7 @@ describe('Citizen phone number', () => {
         .send('telephoneNumber=abc')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_PHONE_NUMBER);
+          expect(res.text).toContain(TestMessages.VALID_PHONE_NUMBER);
         });
     });
     it('should return error on input with interior spaces', async () => {
@@ -75,7 +72,7 @@ describe('Citizen phone number', () => {
         .send('telephoneNumber=123 456')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_PHONE_NUMBER);
+          expect(res.text).toContain(TestMessages.VALID_PHONE_NUMBER);
         });
     });
     it('should accept input with trailing whitespaces', async () => {
