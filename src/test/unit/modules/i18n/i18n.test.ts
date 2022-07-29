@@ -35,11 +35,15 @@ describe('i18n test - Dashboard', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
   const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
-
+  const civilServiceUrl = config.get<string>('services.civilService.url');
+  const data = require('../../../utils/mocks/defendantClaimsMock.json');
   beforeEach(() => {
-    nock('http://localhost:8765')
-      .get('/cases')
-      .reply(200, []);
+    nock(civilServiceUrl)
+      .get('/cases/defendant/123')
+      .reply(200, {data: data});
+    nock(civilServiceUrl)
+      .get('/cases/claimant/123')
+      .reply(200, {data: data});
     nock('http://localhost:5000')
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
