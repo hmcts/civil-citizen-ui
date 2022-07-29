@@ -49,7 +49,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
   };
 
   const getFinancialSectionPA = () => {
-    return claim.isPartialAdmission() && alreadyPaidPartAdmit === YesNo.NO && paidResponse !== PaymentOptionType.IMMEDIATELY
+    return claim.isPartialAdmission() && paidResponse !== PaymentOptionType.IMMEDIATELY
       ? buildYourFinancialSection(claim, claimId, lang)
       : null;
   };

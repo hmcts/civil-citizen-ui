@@ -20,7 +20,7 @@ claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res) => {
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (!claim.isEmpty()) {
       const latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
-      const documentsContent = getDocumentsContent(lang);
+      const documentsContent = getDocumentsContent(claim, claimId, lang);
       res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent});
     }
   } catch (error) {
