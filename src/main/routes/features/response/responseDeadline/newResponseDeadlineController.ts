@@ -2,7 +2,7 @@ import * as express from 'express';
 import config from 'config';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {
-  AGREED_T0_MORE_TIME_URL,
+  AGREED_TO_MORE_TIME_URL,
   NEW_RESPONSE_DEADLINE_URL,
 } from '../../../urls';
 import {AppRequest} from '../../../../common/models/AppRequest';
@@ -27,7 +27,7 @@ newResponseDeadlineController.get(NEW_RESPONSE_DEADLINE_URL, async function (req
     res.render(newResponseDeadlineViewPath, {
       claimantName: claim.getClaimantName(),
       responseDeadline: formatDateToFullDate(calculatedExtendedDeadline),
-      backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_T0_MORE_TIME_URL),
+      backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_TO_MORE_TIME_URL),
     });
   } catch (error) {
     next(error);

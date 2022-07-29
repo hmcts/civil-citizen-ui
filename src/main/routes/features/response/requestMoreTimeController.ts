@@ -6,6 +6,7 @@ import {Claim} from '../../../common/models/claim';
 import {AdditionalTime, AdditionalTimeOptions} from '../../../common/form/models/additionalTime';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {ResponseDeadlineService} from '../../../services/features/response/responseDeadlineService';
+import {deadLineGuard} from '../../../routes/guards/deadLineGuard';
 
 const requestMoreTimeController = express.Router();
 const requestMoreTimeViewPath = 'features/response/request-more-time';
@@ -22,7 +23,7 @@ function renderView(res: express.Response, form: GenericForm<AdditionalTime>, cl
   });
 }
 
-requestMoreTimeController.get(REQUEST_MORE_TIME_URL,
+requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
@@ -32,7 +33,7 @@ requestMoreTimeController.get(REQUEST_MORE_TIME_URL,
     }
   });
 
-requestMoreTimeController.post(REQUEST_MORE_TIME_URL,
+requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const selectedOption = responseDeadlineService.getAdditionalTime(req.body.option);
