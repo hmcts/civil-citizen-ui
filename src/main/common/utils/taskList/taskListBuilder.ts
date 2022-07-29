@@ -3,7 +3,7 @@ import {TaskList} from '../../models/taskList/taskList';
 import {Claim} from '../../models/claim';
 import {TaskStatus} from '../../models/taskList/TaskStatus';
 import {getConfirmYourDetailsTask} from './tasks/confirmYourDetails';
-import {getNeedMoreTimeTask} from './tasks/needMoreTime';
+import {getViewOptionsBeforeDeadlineTask} from './tasks/viewOptionsBeforeDeadline';
 import {getChooseAResponseTask} from './tasks/chooseAResponse';
 import {getCheckAndSubmitYourResponseTask} from './tasks/checkAndSubmitYourResponse';
 import {isPastDeadline} from '../dateUtils';
@@ -29,13 +29,13 @@ import {getTellUsWhyDisagreeWithClaimTask} from './tasks/tellUsWhyDisagreeWithCl
 const buildPrepareYourResponseSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
   const tasks: Task[] = [];
   const confirmYourDetailsTask = getConfirmYourDetailsTask(caseData, claimId, lang);
-  const needMoreTimeTask = getNeedMoreTimeTask(caseData, claimId, lang);
+  const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, claimId, lang);
 
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
   // TODO : when need more page is developed, we also need to check if the posponed deadline is passed if the defendant requested addtional time
   tasks.push(confirmYourDetailsTask);
-  if (!isDeadlinePassed) {
-    tasks.push(needMoreTimeTask);
+  if (!isDeadlinePassed || viewOptionsBeforeDeadlineTask.status === TaskStatus.COMPLETE) {
+    tasks.push(viewOptionsBeforeDeadlineTask);
   }
 
   return {title: t('TASK_LIST.PREPARE_YOUR_RESPONSE.TITLE', {lng: getLng(lang)}), tasks};
