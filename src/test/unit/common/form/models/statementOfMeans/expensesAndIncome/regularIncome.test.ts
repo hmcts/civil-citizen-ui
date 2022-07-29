@@ -3,7 +3,6 @@ import RegularIncome
   from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {IncomeType} from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/incomeType';
 import Transaction from '../../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transaction';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 describe('Regular Income', () => {
   describe('Validation', () => {
@@ -24,7 +23,7 @@ describe('Regular Income', () => {
       await form.validate();
       //Then
       expect(form.hasErrors()).toBeTruthy();
-      expect(form.errorFor('job[transactionSource][amount]')).toBe(TestMessages.JOB_AMOUNT_ERROR);
+      expect(form.errorFor('job[transactionSource][amount]')).toBe('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.INCOME_JOB');
     });
   });
 });

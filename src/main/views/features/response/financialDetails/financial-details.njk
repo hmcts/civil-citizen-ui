@@ -12,41 +12,41 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
     {% set applicant1Details = claim.getClaimantName() %}
-      <h2 class="govuk-heading-l">{{ t('Send ') }}  {{ applicant1Details }} {{ t(' your financial details') }}</h2>
+      <h2 class="govuk-heading-l">{{t('PAGES.FINANCIAL_DETAILS.SEND_FINANCIAL_DETAILS', { applicant1Details: applicant1Details })}}</h2>
 
       {% set defendantType = claim.respondent1.type %}
       {% if (defendantType == CounterpartyType.INDIVIDUAL or defendantType == CounterpartyType.SOLE_TRADER) %}
         <p class="govuk-body">
-          {{ t('You need to give ') }} {{ applicant1Details }} {{ t(' details of your finances.') }}
+          {{t('PAGES.FINANCIAL_DETAILS.NEED_GIVE_DETAILS', { applicant1Details: applicant1Details })}}
         </p>
         <p class="govuk-body">
-          {{ t("We'll ask you for the details then we'll send them to ") }} {{ applicant1Details }} {{ t(' to review.') }}
+          {{t('PAGES.FINANCIAL_DETAILS.ASK_DETAILS_AND_SEND', { applicant1Details: applicant1Details })}}
         </p>
         <p class="govuk-body">
-          {{ t('They can reject your proposal if they believe you can pay sooner.') }}
+          {{t('PAGES.FINANCIAL_DETAILS.REJECT_COURT_MAKE_NEW_PLAN')}}
         </p>
         <p class="govuk-body">
-          {{ t('If they reject your proposal, the court will make a new plan using your financial details.') }}
+          {{t('PAGES.FINANCIAL_DETAILS.REJECT_PAY_SOONER')}}
         </p>
       {% elseif (defendantType == CounterpartyType.COMPANY or defendantType == CounterpartyType.ORGANISATION) %}
         <p class="govuk-body">
-          {{ t('You need to send ') }} {{ applicant1Details }} {{ t(" your company or organisation's most recent statement of accounts.") }}
+           {{t('PAGES.FINANCIAL_DETAILS.SEND_STATEMENT_ACCOUNTS', { applicant1Details: applicant1Details })}}
         </p>
         <p class="govuk-body">
-          {{ t("They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.") }}
+          {{t('PAGES.FINANCIAL_DETAILS.REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN')}}
         </p>
         <p class="govuk-body">
-          {{ t('If they reject your plan, the court will make a new plan based on your financial details.') }}
+           {{t('PAGES.FINANCIAL_DETAILS.REJECT_COURT_MAKE_NEW_PLAN_BASED')}}
         </p>
         <p class="govuk-body">
-          <a href="{{claimantDetailsUrl}}">{{ t('Get ') }} {{ applicant1Details }}{{ t("'s contact details.") }}</a>
+          <a href="{{claimantDetailsUrl}}">{{t('PAGES.FINANCIAL_DETAILS.GET_APPLICANT_CONTACT_DETAILS', { applicant1Details: applicant1Details })}}</a>
         </p>
       {% endif %}
       <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
         <div class="govuk-form-group">
           {{ govukButton({
-          text: t('Continue')
+          text: t('COMMON.BUTTONS.CONTINUE')
           }) }}
           {{ contactUsForHelp(t) }}
         </div>
