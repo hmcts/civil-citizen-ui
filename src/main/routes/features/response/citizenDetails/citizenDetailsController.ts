@@ -74,7 +74,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: express.Request, r
         responseDataRedis.primaryAddress.PostTown,
         responseDataRedis.primaryAddress.PostCode);
       citizenCorrespondenceAddressModel = responseDataRedis.correspondenceAddress ? new CitizenCorrespondenceAddress(
-        responseDataRedis?.correspondenceAddress ? responseDataRedis.correspondenceAddress.AddressLine1 : 'undefined',
+        responseDataRedis.correspondenceAddress.AddressLine1,
         responseDataRedis.correspondenceAddress.AddressLine2,
         responseDataRedis.correspondenceAddress.AddressLine3,
         responseDataRedis.correspondenceAddress.PostTown,
