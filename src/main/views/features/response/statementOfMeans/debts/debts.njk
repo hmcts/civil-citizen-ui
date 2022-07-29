@@ -2,15 +2,15 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
-{% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.DEBTS.PAGE_TITLE') }}
@@ -22,8 +22,9 @@
         text:t(form.errorFor('debtsItems'))
       }) }}
     {% endif %}
+    {% set formErrors = form.getAllErrors() %}
 
-    <div class="govuk-form-group {% if form.getTextError(form.getErrors(),'debtsItems') %} govuk-form-group--error  {% endif %}">
+    <div class="govuk-form-group {% if form.errorFor('debtsItems') %} govuk-form-group--error  {% endif %}">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-half">
           <label id="account-balance-label"
@@ -36,48 +37,58 @@
           <label id="account-balance-label" class="govuk-label--s">{{ t('PAGES.DEBTS.MONTHLY') }}</label>
         </div>
       </div>
-      {% for debtsItem in form.debtsItems %}
-        {% set debtsErrors = debtsItem.getErrors() %}
+      {% for debtsItem in form.model.debtsItems %}
+        {% set debtsErrors = formErrors %}
+        {% set index = loop.index0 %}
       <div class="multiple-row">
-        <div class="govuk-grid-row govuk-!-padding-top-3 {% if debtsErrors %} govuk-form-group--error{% endif %} ">
-          {% for error in debtsErrors %}
-            {{ govukErrorMessage({
-              text:t(error.text)
-            }) }}
-          {% endfor %}
+        <div class="govuk-grid-row govuk-!-padding-top-3 {% if debtsErrors.length>0 %} govuk-form-group--error{% endif %} ">
+          {% if formErrors %}
+            {% for error in formErrors %}
+              {% if index in error.fieldName %}
+                {{ govukErrorMessage({
+                  text: t(error.text)
+                })| indent(2) | trim }}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {% set debt = 'debtsItems['+index+'][debt]' %}
+          {% set totalOwned = 'debtsItems['+index+'][totalOwned]' %}
+          {% set monthlyPayments = 'debtsItems['+index+'][monthlyPayments]' %}
+          {% set label = 'debtsItems[' + index + ']' %}
+
           <div class="govuk-grid-column-one-half ">
             {{ govukInput({
-              id: "debtsItems["+loop.index0+"][debt]",
-              name: "debtsItems["+loop.index0+"][debt]",
+              id: debt,
+              name: debt,
               value: debtsItem.debt,
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-select--error" if debtsItem.hasFieldError('debt') else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-select--error" if form.errorFor(debt) else "govuk-grid-column-full"
             }) }}
           </div>
           <div class="govuk-grid-column-one-quarter">
             {{ govukInput({
-              id: "debtsItems["+loop.index0+"][totalOwned]",
-              name: "debtsItems["+loop.index0+"][totalOwned]",
+              id: totalOwned,
+              name: totalOwned,
               value: debtsItem.totalOwned,
               type: "number",
               prefix: {
                 text: "£"
               },
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-input--error" if debtsItem.hasFieldError('totalOwned') else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(totalOwned) else "govuk-grid-column-full"
             }) }}
           </div>
           <div class="govuk-grid-column-one-quarter">
             {{ govukInput({
-              id: "debtsItems["+loop.index0+"][monthlyPayments]",
-              name: "debtsItems["+loop.index0+"][monthlyPayments]",
+              id: monthlyPayments,
+              name: monthlyPayments,
               value: debtsItem.monthlyPayments,
               type: "number",
               prefix: {
                 text: "£"
               },
               spellcheck: false,
-              classes: "govuk-grid-column-full govuk-input--error" if debtsItem.hasFieldError('monthlyPayments') else "govuk-grid-column-full"
+              classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(monthlyPayments) else "govuk-grid-column-full"
             }) }}
           </div>
         </div>
@@ -98,13 +109,10 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t('PAGES.DEBTS.TITLE') %}
-      {% set errors = form.getErrors() %}
+      {% set errors = form.getAllErrors() %}
 
-      {% if errors %}
-        {{ govukErrorSummary({
-          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
-          "errorList": errors
-        }) }}
+      {% if form.hasErrors() %}
+        {{ errorSummary(errors,t) }}
       {% endif %}
 
       <div class="govuk-grid-row">

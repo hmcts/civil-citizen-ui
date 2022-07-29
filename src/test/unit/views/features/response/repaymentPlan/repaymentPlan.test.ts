@@ -4,19 +4,8 @@ import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {CITIZEN_REPAYMENT_PLAN_FULL_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import {
-  AMOUNT_REQUIRED,
-  EQUAL_INSTALMENTS_REQUIRED,
-  FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED,
-  PAYMENT_FREQUENCY_REQUIRED,
-  VALID_DAY,
-  VALID_FOUR_DIGIT_YEAR,
-  VALID_MONTH,
-  VALID_TWO_DECIMAL_NUMBER,
-  VALID_YEAR,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {DateFormatter} from '../../../../../../main/common/utils/dateFormatter';
-
+import {t} from 'i18next';
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
@@ -149,7 +138,7 @@ describe('Repayment Plan View', () => {
 
     it('should display correct error summary message with correct link for Payment Amount', () => {
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(AMOUNT_REQUIRED);
+      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.AMOUNT_REQUIRED'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#paymentAmount');
     });
@@ -163,7 +152,7 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_TWO_DECIMAL_NUMBER);
+      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_TWO_DECIMAL_NUMBER'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#paymentAmount');
     });
@@ -177,37 +166,37 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(EQUAL_INSTALMENTS_REQUIRED);
+      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.EQUAL_INSTALMENTS_REQUIRED'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#paymentAmount');
     });
 
     it('should display correct error summary message with correct link for Year', () => {
       const errorSummaryMessage = getErrorSummaryListElement(4);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_YEAR);
+      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.PAYMENT_FREQUENCY_REQUIRED'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#year');
+        .toContain('#repaymentFrequency');
     });
 
     it('should display correct error summary message with correct link for Month', () => {
       const errorSummaryMessage = getErrorSummaryListElement(3);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_MONTH);
+      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_YEAR'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#month');
+        .toContain('#year');
     });
 
     it('should display correct error summary message with correct link form Day', () => {
       const errorSummaryMessage = getErrorSummaryListElement(2);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_DAY);
+      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_MONTH'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#day');
+        .toContain('#month');
     });
 
     it('should display correct error summary message with correct link for Repayment Frequency', () => {
       const errorSummaryMessage = getErrorSummaryListElement(1);
-      expect(errorSummaryMessage.innerHTML).toContain(PAYMENT_FREQUENCY_REQUIRED);
+      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_DAY'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
-        .toContain('#repaymentFrequency');
+        .toContain('#day');
     });
 
     it('should display correct error summary message with correct link for First Repayment Date', async () => {
@@ -219,7 +208,7 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED);
+      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#firstRepaymentDate');
     });
@@ -233,7 +222,7 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_FOUR_DIGIT_YEAR);
+      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#year');
     });

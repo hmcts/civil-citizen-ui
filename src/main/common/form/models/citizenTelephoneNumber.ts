@@ -1,15 +1,12 @@
 import {OptionalIntegerValidator} from '../validators/optionalIntegerValidator';
-import {Validate, ValidationError} from 'class-validator';
-import {VALID_PHONE_NUMBER} from '../validationErrors/errorMessageConstants';
-import {Form} from './form';
+import {Validate} from 'class-validator';
 
-export class CitizenTelephoneNumber extends Form {
+export class CitizenTelephoneNumber{
 
-  @Validate(OptionalIntegerValidator, {message: VALID_PHONE_NUMBER})
+  @Validate(OptionalIntegerValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
     telephoneNumber?: string;
 
-  constructor(telephoneNumber?: string, errors?: ValidationError[]) {
-    super(errors);
+  constructor(telephoneNumber?: string) {
     this.telephoneNumber = telephoneNumber?.trim();
   }
 }

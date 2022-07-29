@@ -56,15 +56,22 @@ export const buildDebtFormYesWithDebtEmpty = () : Debts => {
 export const buildDebtFormYesWithTotalOwnedInvalid = () : Debts => {
   const items : DebtItems[] = [];
   items.push(new DebtItems('test', '-10', '1.00'));
-  return new Debts(YesNo.YES,items); 
+  return new Debts(YesNo.YES,items);
+};
+
+export const buildDebtFormYesWithTotalOwnedInvalidAndNoMonthlyPaymentsAndNoDebt = () : Debts => {
+  const items : DebtItems[] = [];
+  items.push(new DebtItems('','-10',''));
+  return new Debts(YesNo.YES,items);
 };
 
 export const buildDebtFormYesWithTotalOwnedZero = () : Debts => {
   const items : DebtItems[] = [];
   items.push(new DebtItems('test', '0', '1.00'));
   return new Debts(YesNo.YES,items);
-  
+
 };
+
 export const buildDebtFormYesWithTotalOwnedEmpty = () : Debts => {
   const items : DebtItems[] = [];
   items.push(new DebtItems('test', '', '1.00'));
