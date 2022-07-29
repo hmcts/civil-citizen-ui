@@ -38,21 +38,21 @@ citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res,nex
 citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
   async (req, res, next: express.NextFunction) => {
     try {
-      const model: GenericForm<CitizenResponseType> = new GenericForm<CitizenResponseType>(new CitizenResponseType(req.body.responseType));
-      await model.validate();
-      if (model.hasErrors()) {
-        renderView(model, res);
+      const formResponseType: GenericForm<CitizenResponseType> = new GenericForm<CitizenResponseType>(new CitizenResponseType(req.body.responseType));
+      await formResponseType.validate();
+      if (formResponseType.hasErrors()) {
+        renderView(formResponseType, res);
       } else {
         const claim = await getCaseDataFromStore(req.params.id) || new Claim();
         if (claim.respondent1) {
-          claim.respondent1.responseType = model.model.responseType;
+          claim.respondent1.responseType = formResponseType.model.responseType;
         } else {
           const respondent = new Respondent();
-          respondent.responseType = model.model.responseType;
+          respondent.responseType = formResponseType.model.responseType;
           claim.respondent1 = respondent;
         }
         await saveDraftClaim(req.params.id, claim);
-        switch (model.model.responseType) {
+        switch (formResponseType.model.responseType) {
           case ResponseType.PART_ADMISSION:
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_ALREADY_PAID_URL));
             break;

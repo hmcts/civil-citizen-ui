@@ -1,5 +1,4 @@
 {% extends "claim-details-tpl.njk" %}
-{% set heading = t('Confirm your details') %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -9,6 +8,7 @@
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CITIZEN_DOB.PAGE_TITLE') }}
@@ -19,10 +19,7 @@
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
-        {{ govukErrorSummary({
-          'titleText': t('ERRORS.THERE_WAS_A_PROBLEM'),
-          'errorList': errors
-        }) }}
+        {{ errorSummary(errors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -33,7 +30,12 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <div class="govuk-form-group">
+            <div class="govuk-form-group {% if form.hasErrors() %} govuk-form-group--error{% endif %}">
+              {% if form.hasErrors() %}
+                {% for error in errors %}
+                  <span class="govuk-error-message">{{ t(error.text) }}</span>
+                {% endfor %}
+              {% endif %}
               {{ govukDateInput({
                 id: "birthDate",
                 type: "number",
@@ -49,7 +51,7 @@
                   text: t('PAGES.CITIZEN_DOB.EXAMPLE')
                 },
                 errorMessage: {
-                  html: errorMessage
+                  text: errorMessage
                 } if form.hasErrors(),
                 items: [
                   {
@@ -79,7 +81,7 @@
                 ]
               }) }}
             </div>
-            {{ govukButton({ text: t("Save and continue") }) }}
+            {{ govukButton({ text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE") }) }}
           </form>
         </div>
       </div>
