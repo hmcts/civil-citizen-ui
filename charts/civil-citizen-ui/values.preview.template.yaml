@@ -245,6 +245,7 @@ elastic:
   enabled: true
 
 elasticsearch:
+  releaseNameOverride: ${SERVICE_NAME}-es
   clusterName: "es"
   imageTag: "7.17.1"
   replicas: 1
