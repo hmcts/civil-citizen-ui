@@ -741,10 +741,11 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
   return claim;
 };
 
-export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
+export const createClaimWithFreeTelephoneMediationSection = (counterpartyType:CounterpartyType): Claim => {
   const claim = createClaimWithBasicRespondentDetails('contactTest');
   if (claim.respondent1) {
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.respondent1.type = counterpartyType;
   }
   claim.partialAdmission = new PartialAdmission();
   claim.partialAdmission.paymentIntention = new PaymentIntention();
@@ -754,6 +755,24 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
     new FreeMediation(YesNo.YES),
     new NoMediationReason('notWant', 'no'),
     new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
+
+  return claim as Claim;
+};
+
+export const createClaimWithNoTelephoneMediationProvided = (counterpartyType:CounterpartyType): Claim => {
+  const claim = createClaimWithBasicRespondentDetails('contactTest');
+  if (claim.respondent1) {
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.respondent1.type = counterpartyType;
+  }
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+
+  claim.mediation = new Mediation({option: YesNo.NO, mediationPhoneNumber: ''},
+    new FreeMediation(YesNo.NO),
+    new NoMediationReason('notWant', 'no'),
+    new CompanyTelephoneNumber(YesNo.NO, '', '', ''));
 
   return claim as Claim;
 };

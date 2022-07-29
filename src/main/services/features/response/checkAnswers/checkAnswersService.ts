@@ -63,7 +63,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string | unkn
 
   const getFreeTelephoneMediationSection = () => {
     return claim.isFullDefence()
-      || claim.isPartialAdmission() && paidResponse
+      || claim.isPartialAdmission()
       ? buildFreeTelephoneMediationSection(claim, claimId, lang)
       : null;
   };
