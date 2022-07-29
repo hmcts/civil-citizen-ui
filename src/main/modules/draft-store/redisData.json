@@ -114,7 +114,7 @@
         "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
       },
       "specRespondent1Represented": "Yes",
-      "respondent1ResponseDeadline": "2022-07-29T15:59:59",
+      "respondent1ResponseDeadline": "2022-08-01T15:59:59",
       "applicant1OrganisationPolicy": {
         "Organisation": {
           "OrganisationID": "Q1KOKP2"
@@ -179,10 +179,7 @@
         "AddressLine2": "21",
         "AddressLine3": "Church Road"
       },
-      "specRespondentCorrespondenceAddressRequired": "Yes",
-      "responseDeadline": {
-        "agreedResponseDeadline": "2022-10-29"
-      }
+      "specRespondentCorrespondenceAddressRequired": "Yes"
     }
   },
   {
@@ -294,7 +291,7 @@
         "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
       },
       "specRespondent1Represented": "Yes",
-      "respondent1ResponseDeadline": "2022-05-12T15:59:59",
+      "respondent1ResponseDeadline": "2022-08-05T15:59:59",
       "applicant1OrganisationPolicy": {
         "Organisation": {
           "OrganisationID": "Q1KOKP2"
@@ -1368,7 +1365,7 @@
         "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
       },
       "specRespondent1Represented": "Yes",
-      "respondent1ResponseDeadline": "2022-07-29T15:59:59",
+      "respondent1ResponseDeadline": "2022-07-25T15:59:59",
       "applicant1OrganisationPolicy": {
         "Organisation": {
           "OrganisationID": "Q1KOKP2"
@@ -1433,7 +1430,10 @@
         "AddressLine2": "21",
         "AddressLine3": "Church Road"
       },
-      "specRespondentCorrespondenceAddressRequired": "Yes"
+      "specRespondentCorrespondenceAddressRequired": "Yes",
+      "responseDeadline":{
+        "option":"no"
+      }
     }
   },
   {
