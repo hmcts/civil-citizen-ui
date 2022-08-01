@@ -36,6 +36,9 @@ describe('Dashboard page', () => {
   nock(draftStoreUrl)
     .get('/drafts')
     .reply(200, {});
+  nock('http://localhost:4000')
+    .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined')
+    .reply(200, {});
 
   beforeEach((done) => {
     testSession
@@ -51,8 +54,7 @@ describe('Dashboard page', () => {
   });
 
   describe('on GET', () => {
-    test('should return dashboard page', async () => {
-      // console.log(`authenticatedSession: ${authenticatedSession}`);
+    it('should return dashboard page', async () => {
       console.log(JSON.stringify(testSession));
       await testSession
         .get(DASHBOARD_URL)

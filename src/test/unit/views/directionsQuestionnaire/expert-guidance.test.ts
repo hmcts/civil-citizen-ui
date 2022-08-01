@@ -40,7 +40,7 @@ describe('Send your response by email View', () => {
     });
 
     it('should display first paragraph', () => {
-      expect(paragraphs[0].innerHTML).toContain('It’s rare for judges to allow you to use an expert in a small claim.');
+      expect(paragraphs[0].innerHTML).toContain('It\'s rare for judges to allow you to use an expert in a small claim.');
       expect(paragraphs[1].innerHTML).toContain('You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.');
       expect(paragraphs[2].innerHTML).toContain('The judge will also decide whether the cost of the expert is reasonable compared to the value of the claim.');
       expect(paragraphs[3].innerHTML).toContain('Even though you and the claimant share the cost of hiring the expert, judges are still responsible for keeping costs in proportion to value.');
@@ -49,10 +49,10 @@ describe('Send your response by email View', () => {
     it('should display When an expert is allowed paragraph', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-m');
       expect(header[0].innerHTML).toContain('When an expert is allowed');
-      expect(paragraphs[4].innerHTML).toContain('A judge will only allow you to use an expert if they believe they need the expert’s specialist knowledge.');
+      expect(paragraphs[4].innerHTML).toContain('A judge will only allow you to use an expert if they believe they need the expert\'s specialist knowledge.');
       expect(paragraphs[5].innerHTML).toContain('For example, they might allow a structural engineer to be used in a claim about building works or a mechanic in a claim about car repairs.');
-      expect(paragraphs[6].innerHTML).toContain('If a judge allows you to use an expert, you’ll usually have to share one expert with the claimant.');
-      expect(paragraphs[7].innerHTML).toContain('The expert will provide a written report - they won’t usually come to court in person.');
+      expect(paragraphs[6].innerHTML).toContain('If a judge allows you to use an expert, you\'ll usually have to share one expert with the claimant.');
+      expect(paragraphs[7].innerHTML).toContain('The expert will provide a written report - they won\'t usually come to court in person.');
     });
 
     it('should display Paying for the expert paragraph', () => {
@@ -73,7 +73,7 @@ describe('Send your response by email View', () => {
       expect(list[0].innerHTML).toContain('Provide questions for the expert to answer in a report.');
       expect(list[1].innerHTML).toContain('Provide any extra information the expert asks for.');
       expect(list[2].innerHTML).toContain('Pay the expert - you usually both share this cost.');
-      expect(list[3].innerHTML).toContain('Send the expert’s report to the court (only one of you will have to do this).');
+      expect(list[3].innerHTML).toContain('Send the expert\'s report to the court (only one of you will have to do this).');
     });
 
     it('should display Continue button', () => {

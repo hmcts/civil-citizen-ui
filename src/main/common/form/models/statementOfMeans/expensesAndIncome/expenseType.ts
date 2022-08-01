@@ -14,5 +14,3 @@ export enum ExpenseType {
   HIRE_PURCHASES = 'hire purchase',
   MOBILE_PHONE = 'mobile phone',
 }
-
-

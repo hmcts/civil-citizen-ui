@@ -52,8 +52,8 @@ describe('i18n test - Dashboard', () => {
   });
 
   describe('on GET', () => {
-    test('Authenticate Callback', authenticate());
-    test('should return English dashboard page, when no lang param', async () => {
+    it('Authenticate Callback', authenticate());
+    it('should return English dashboard page, when no lang param', async () => {
       await agent
         .get('/dashboard')
         .expect((res: Response) => {
@@ -61,7 +61,7 @@ describe('i18n test - Dashboard', () => {
           expect(res.text).toContain('Claims made against you');
         });
     });
-    test('should return English dashboard page, when lang param is en', async () => {
+    it('should return English dashboard page, when lang param is en', async () => {
       await agent
         .get('/dashboard/?lang=en')
         .expect((res: Response) => {
@@ -69,7 +69,7 @@ describe('i18n test - Dashboard', () => {
           expect(res.text).toContain('Claims made against you');
         });
     });
-    test('should return Welsh dashboard page, when lang param is cy', async () => {
+    it('should return Welsh dashboard page, when lang param is cy', async () => {
       await agent
         .get('/dashboard/?lang=cy')
         .expect((res: Response) => {

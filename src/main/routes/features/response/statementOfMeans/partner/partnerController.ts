@@ -8,26 +8,23 @@ import { constructResponseUrlWithIdParams } from '../../../../../common/utils/ur
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner';
 const partnerController = express.Router();
 const cohabitingService = new CohabitingService();
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerController');
 const validator = new Validator();
 
 function renderView(form: Cohabiting, res: express.Response): void {
   res.render(partnerViewPath, { form });
 }
 
-partnerController.get(CITIZEN_PARTNER_URL, async (req, res) => {
+partnerController.get(CITIZEN_PARTNER_URL, async (req, res, next: express.NextFunction) => {
   try {
     const cohabiting = await cohabitingService.getCohabiting(req.params.id);
     renderView(cohabiting, res);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
 partnerController.post(CITIZEN_PARTNER_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     const cohabiting: Cohabiting = new Cohabiting(req.body.option);
     const errors: ValidationError[] = validator.validateSync(cohabiting);
     if (errors?.length > 0) {
@@ -42,8 +39,7 @@ partnerController.post(CITIZEN_PARTNER_URL,
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
         }
       } catch (error) {
-        logger.error(error);
-        res.status(500).send({ error: error.message });
+        next(error);
       }
     }
   });

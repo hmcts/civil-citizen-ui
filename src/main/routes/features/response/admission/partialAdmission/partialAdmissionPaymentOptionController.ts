@@ -18,7 +18,6 @@ import {ResponseType} from '../../../../../common/form/models/responseType';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const partialAdmissionPaymentOptionController = express.Router();
-
 const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';
 
 function renderView(form: GenericForm<PaymentOption>, res: express.Response, amount :number) {
@@ -34,7 +33,7 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: express.R
 }
 let admittedPaymentAmount : number;
 
-partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, async (req, res) => {
+partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, async (req, res, next: express.NextFunction) => {
   const claimId = req.params.id;
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
@@ -46,11 +45,11 @@ partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OP
       renderView(new GenericForm(paymentOption), res, admittedPaymentAmount);
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-partialAdmissionPaymentOptionController.post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, async (req, res) => {
+partialAdmissionPaymentOptionController.post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, async (req, res, next: express.NextFunction) => {
   const claimId = req.params.id;
   const paymentOption = new PaymentOption(req.body.paymentType);
   const form = new GenericForm(paymentOption);
@@ -63,7 +62,7 @@ partialAdmissionPaymentOptionController.post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_O
       redirectToNextPage(claimId, form.model, res);
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 

@@ -3,40 +3,36 @@ import {CITIZEN_CARER_URL, CITIZEN_EMPLOYMENT_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {Carer} from '../../../../common/form/models/statementOfMeans/carer';
 import {getCarer, saveCarer} from '../../../../services/features/response/statementOfMeans/carerService';
-import {validateForm} from '../../../../common/form/validators/formValidator';
+import {GenericForm} from '../../../../common/form/models/genericForm';
 
 const carerViewPath = 'features/response/statementOfMeans/carer';
 const carerController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('carerController');
 
-function renderView(form: Carer, res: express.Response): void {
+function renderView(form: GenericForm<Carer>, res: express.Response): void {
   res.render(carerViewPath, { form });
 }
 
-carerController.get(CITIZEN_CARER_URL, async (req, res) => {
+carerController.get(CITIZEN_CARER_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const carer: Carer = await getCarer(req.params.id);
-    renderView(carer, res);
+    const carerForm: Carer = await getCarer(req.params.id);
+    renderView(new GenericForm(carerForm), res);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
 carerController.post(CITIZEN_CARER_URL,
-  async (req, res) => {
-    const carer: Carer = new Carer(req.body.option);
-    await validateForm(carer);
-    if (carer.hasErrors()) {
-      renderView(carer, res);
+  async (req, res, next: express.NextFunction) => {
+    const carerForm: GenericForm<Carer> = new GenericForm(new Carer(req.body.option));
+    carerForm.validateSync();
+    if (carerForm.hasErrors()) {
+      renderView(carerForm, res);
     } else {
       try {
-        await saveCarer(req.params.id, carer);
+        await saveCarer(req.params.id, carerForm.model);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EMPLOYMENT_URL));
       } catch (error) {
-        logger.error(error);
-        res.status(500).send({ error: error.message });
+        next(error);
       }
     }
   });

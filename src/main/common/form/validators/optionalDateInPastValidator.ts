@@ -12,7 +12,7 @@ export class OptionalDateInPastValidator implements ValidatorConstraintInterface
 
   validate(inputDate: Date) {
     // Don't check if inputDate is null i.e. invalid, @IsDate check should catch this
-    if (inputDate === null) {
+    if (inputDate === null || inputDate.toDateString() === 'Invalid Date') {
       return true;
     }
     const today = new Date(Date.now());

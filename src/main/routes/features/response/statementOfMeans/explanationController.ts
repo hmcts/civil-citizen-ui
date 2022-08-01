@@ -7,21 +7,18 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 
 const explanationViewPath = 'features/response/statementOfMeans/explanation';
 const explanationController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('explanationController');
 
-explanationController.get(CITIZEN_EXPLANATION_URL, async (req, res) => {
+explanationController.get(CITIZEN_EXPLANATION_URL, async (req, res, next: express.NextFunction) => {
   try {
     const explanation: Explanation = await getExplanation(req.params.id);
     res.render(explanationViewPath, { form: new GenericForm(explanation) });
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
 explanationController.post(CITIZEN_EXPLANATION_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     const explanation: Explanation = new Explanation(req.body.text);
     const form: GenericForm<Explanation> = new GenericForm(explanation);
     await form.validate();
@@ -32,8 +29,7 @@ explanationController.post(CITIZEN_EXPLANATION_URL,
         await saveExplanation(req.params.id, explanation);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
       } catch (error) {
-        logger.error(error);
-        res.status(500).send({ error: error.message });
+        next(error);
       }
     }
   });

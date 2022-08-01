@@ -9,13 +9,15 @@
       "type": "INDIVIDUAL",
       "individualTitle": "Mr.",
       "individualFirstName": "Jan",
-      "individualLastName": "Clark"
+      "individualLastName": "Clark",
+      "partyName": "Mr. Jan Clark"
     },
     "respondent1": {
       "type": "INDIVIDUAL",
       "individualTitle": "Mr.",
       "individualFirstName": "Joe",
-      "individualLastName": "Doe"
+      "individualLastName": "Doe",
+      "partyName": "Mr. Joe Doe"
     }
   }
 }

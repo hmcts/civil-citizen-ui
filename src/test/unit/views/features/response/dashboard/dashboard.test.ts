@@ -36,7 +36,6 @@ describe('Dashboard page', () => {
   });
 
   describe('on GET', () => {
-
     beforeEach((done) => {
       testSession
         .get('/oauth2/callback')
@@ -50,16 +49,17 @@ describe('Dashboard page', () => {
         });
     });
 
-    test('should return dashboard page in english', async () => {
+    it('should return dashboard page in english', async () => {
       await testSession
         .get(DASHBOARD_URL + '?lang=en')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('Claims you&#39;ve made');
           expect(res.text).toContain('Claims made against you');
         });
     });
 
-    test('should return dashboard page in cymraeg', async () => {
+    it('should return dashboard page in cymraeg', async () => {
       await testSession
         .get(DASHBOARD_URL + '?lang=cy')
         .expect((res: Response) => {

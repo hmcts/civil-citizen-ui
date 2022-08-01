@@ -61,6 +61,9 @@ describe('Response - Check answers', () => {
     mockGetSummarySections.mockImplementation(() => {
       return createClaimWithBasicRespondentDetails();
     });
+    nock('http://localhost:4000')
+      .get('/cases/defendant/undefined/response/submit/undefined/token/')
+      .reply(200, {});
   });
 
   describe('on GET', () => {
@@ -99,7 +102,7 @@ describe('Response - Check answers', () => {
       expect(fullName[0].textContent?.trim()).toBe(PARTY_NAME);
 
     });
-    test('should pass english translation via query', async () => {
+    it('should pass english translation via query', async () => {
       await testSession.get(respondentCheckAnswersUrl)
         .query({lang: 'en'})
         .expect((res: Response) => {
@@ -107,7 +110,7 @@ describe('Response - Check answers', () => {
           expect(res.text).toContain(checkYourAnswerEng);
         });
     });
-    test('should pass cy translation via query', async () => {
+    it('should pass cy translation via query', async () => {
       await testSession.get(respondentCheckAnswersUrl)
         .query({lang: 'cy'})
         .expect((res: Response) => {
@@ -124,12 +127,12 @@ describe('Response - Check answers', () => {
         .get(respondentCheckAnswersUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
   describe('on Post', () => {
-    test('should return errors when form is incomplete', async () => {
+    it('should return errors when form is incomplete', async () => {
       const data = {signed: ''};
       await request(app)
         .post(respondentCheckAnswersUrl)
@@ -139,7 +142,7 @@ describe('Response - Check answers', () => {
           expect(res.text).toContain(STATEMENT_OF_TRUTH_REQUIRED_MESSAGE);
         });
     });
-    test('should return 500 when error in service', async () => {
+    it('should return 500 when error in service', async () => {
       mockSaveStatementOfTruth.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
@@ -149,7 +152,7 @@ describe('Response - Check answers', () => {
         .send(data)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

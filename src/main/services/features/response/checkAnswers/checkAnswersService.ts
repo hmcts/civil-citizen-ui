@@ -7,26 +7,80 @@ import {SignatureType} from '../../../../common/models/signatureType';
 import {isCounterpartyIndividual} from '../../../../common/utils/taskList/tasks/taskListHelpers';
 import {QualifiedStatementOfTruth} from '../../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {isFullAmountReject} from '../../../../modules/claimDetailsService';
-
-
 import {buildYourDetailsSection} from './detailsSection/buildYourDetailsSection';
-import {buildResponseSection} from './responseSection/buildResponseSection';
+import {buildYourResponseToClaimSection} from './responseSection/buildYourResponseToClaimSection';
+import {buildYourResponsePaymentSection} from './responseSection/buildYourResponsePaymentSection';
 import {buildYourFinancialSection} from './financialSection/buildYourFinancialSection';
+import {buildYourResponseDetailsSection} from './responseSection/buildYourResponseDetailsSection';
+import {buildFreeTelephoneMediationSection} from './responseSection/buildFreeTelephoneMediationSection';
+import {YesNo} from '../../../../common/form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
 const buildSummarySections = (claim: Claim, claimId: string, lang: string | unknown): SummarySections => {
+  const paymentOption: string = claim.paymentOption;
+  const alreadyPaidPartAdmit: string = claim.partialAdmission?.alreadyPaid?.option;
+  const paidResponse: string = claim.partialAdmission?.paymentIntention?.paymentOption;
+
+  const getResponseToClaim = () => {
+    return claim.isFullDefence()
+      || claim.isFullAdmission() && paymentOption !== PaymentOptionType.IMMEDIATELY
+      ? buildYourResponseToClaimSection(claim, claimId, lang)
+      : null;
+  };
+
+  const getResponseToClaimPA = () => {
+    return claim.isPartialAdmission()
+      ? buildYourResponseToClaimSection(claim, claimId, lang)
+      : null;
+  };
+
+  const getResponseDetailsSection = () => {
+    return claim.isFullDefence() || claim.isPartialAdmission()
+      ? buildYourResponseDetailsSection(claim, claimId, lang)
+      : null;
+  };
+
+  const getFinancialSectionFA = () => {
+    return claim.isFullAdmission() && paymentOption !== PaymentOptionType.IMMEDIATELY
+      ? buildYourFinancialSection(claim, claimId, lang)
+      : null;
+  };
+
+  const getFinancialSectionPA = () => {
+    return claim.isPartialAdmission() && paidResponse !== PaymentOptionType.IMMEDIATELY
+      ? buildYourFinancialSection(claim, claimId, lang)
+      : null;
+  };
+
+  const getResponsePaymentSection = () => {
+    return claim.isFullAdmission()
+      || claim.isPartialAdmission() && alreadyPaidPartAdmit === YesNo.NO
+      ? buildYourResponsePaymentSection(claim, claimId, lang)
+      : null;
+  };
+
+  const getFreeTelephoneMediationSection = () => {
+    return claim.isFullDefence()
+      || claim.isPartialAdmission() && paidResponse
+      ? buildFreeTelephoneMediationSection(claim, claimId, lang)
+      : null;
+  };
+
   return {
     sections: [
       buildYourDetailsSection(claim, claimId, lang),
-      claim.paymentOption !== PaymentOptionType.IMMEDIATELY ?  buildResponseSection(claim, claimId, true, lang) : null,
-      claim.paymentOption !== PaymentOptionType.IMMEDIATELY ?  buildYourFinancialSection(claim, claimId, lang) : null,
-      buildResponseSection(claim, claimId, false, lang),
+      getResponseToClaim(),
+      getFinancialSectionFA(),
+      getResponseToClaimPA(),
+      getResponseDetailsSection(),
+      getFinancialSectionPA(),
+      getResponsePaymentSection(),
+      getFreeTelephoneMediationSection(),
     ],
   };
 };
-
 
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string | unknown): SummarySections => {
   return buildSummarySections(claim, claimId, lang);
@@ -54,7 +108,7 @@ export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | Qualif
 };
 
 export const getSignatureType = (claim: Claim): SignatureType => {
-  return isCounterpartyIndividual(claim.respondent1) ?  SignatureType.BASIC : SignatureType.QUALIFIED;
+  return isCounterpartyIndividual(claim.respondent1) ? SignatureType.BASIC : SignatureType.QUALIFIED;
 };
 
 export const saveStatementOfTruth = async (claimId: string, defendantStatementOfTruth: StatementOfTruthForm) => {

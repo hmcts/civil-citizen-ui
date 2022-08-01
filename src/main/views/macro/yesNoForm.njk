@@ -5,6 +5,8 @@ To include html on when no is selected add htmlNo parameter
 for example {noHtml:'<span>you clicked on no</span>' #}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% macro yesNoRadioButton(t, id, name, title, form, description, params) %}
+  {% set yes = params.yes if params.yes else 'COMMON.YES' %}
+  {% set no = params.no if params.no else 'COMMON.NO' %}
   {% set errors = form.getErrors() %}
   {{ govukRadios({
     idPrefix: id,
@@ -16,7 +18,7 @@ for example {noHtml:'<span>you clicked on no</span>' #}
         isPageHeading: true,
         classes: "govuk-fieldset__legend--l"
       }
-    },
+    } if title,
     hint: {
       text: description
     },
@@ -24,7 +26,7 @@ for example {noHtml:'<span>you clicked on no</span>' #}
       {
         value: YesNo.YES,
         checked: true if form.option=="yes" else false,
-        html: "<span>" + t('COMMON.YES') + "</span>",
+        html: "<span>" + t(yes) + "</span>",
         conditional:{
         html: params.yesHtml
       }
@@ -32,7 +34,7 @@ for example {noHtml:'<span>you clicked on no</span>' #}
       {
         value: YesNo.NO,
         checked: true if form.option=="no" else false,
-        html: "<span>" + t('COMMON.NO') + "</span>",
+        html: "<span>" + t(no) + "</span>",
         conditional:{
         html: params.noHtml
       }

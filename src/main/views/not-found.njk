@@ -1,4 +1,18 @@
-{% extends "template.njk" %}
+{% extends "claim-details-tpl.njk" %}
+{% from "./macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set returnLink = '<a href="/dashboard">DASHBOARD</a>' | replace('DASHBOARD', t('COMMON.CIVIL_MONEY_CLAIMS')) %}
+{% set techProblems = t('COMMON.RETURN_PAGE') %}
+
 {% block content %}
-  <h1 class="govuk-heading-xl">Page Not Found</h1>
+  <h1 class="govuk-heading-xl"> {{ t('ERRORS.PAGE_NOT_FOUND') }}</h1>
+  <p class="govuk-body"> {{ techProblems | replace('RETURN-PAGE', returnLink) | safe }}</p>
+
+  {{ govukButton({
+    text: t('COMMON.BUTTONS.START_AGAIN'),
+    href: '/dashboard'
+  }) }}
+
+  {{ contactUsForHelp(t) }}
 {% endblock %}

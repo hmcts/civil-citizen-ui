@@ -15,15 +15,17 @@ describe('When will you pay Task', () => {
   const resultIncomplete = {
     description: 'TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS',
     url: '/case/5129/directions-questionnaire/support-required',
-    status: TaskStatus.INCOMPLETE,
+    status: TaskStatus.COMPLETE,
   };
+
+  const resultComplete = { ...resultIncomplete, status: TaskStatus.COMPLETE };
 
   describe('getGiveUsDetailsHearingTask', () => {
 
     it('should return incomplete task', () => {
       const claim = new Claim();
       const giveUsDetailsHearingTask = getGiveUsDetailsHearingTask(claim, claimId, lang);
-      expect(giveUsDetailsHearingTask).toEqual(resultIncomplete);
+      expect(giveUsDetailsHearingTask).toEqual(resultComplete);
     });
 
   });

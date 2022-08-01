@@ -93,7 +93,7 @@ describe('Check answers View', () => {
       });
 
       it('should display sign the statement paragraph', () => {
-        const expectedParagraph = 'When you’re satisfied that your answers are accurate, you should tick to "sign" this statement of truth on the form.';
+        const expectedParagraph = 'When you\'re satisfied that your answers are accurate, you should tick to "sign" this statement of truth on the form.';
         const paragraph = htmlDocument.getElementsByClassName('govuk-body')[1];
         expect(paragraph.innerHTML).toContain(expectedParagraph);
       });

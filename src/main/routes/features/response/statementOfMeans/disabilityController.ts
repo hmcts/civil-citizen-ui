@@ -7,8 +7,6 @@ import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlForm
 
 const citizenDisabilityViewPath = 'features/response/statementOfMeans/disability';
 const disabilityController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('disabilityController');
 const disabilityService = new DisabilityService();
 const validator = new Validator();
 
@@ -16,18 +14,17 @@ function renderView(form: Disability, res: express.Response): void {
   res.render(citizenDisabilityViewPath, { form });
 }
 
-disabilityController.get(CITIZEN_DISABILITY_URL, async (req, res) => {
+disabilityController.get(CITIZEN_DISABILITY_URL, async (req, res, next: express.NextFunction) => {
   try {
     const disability = await disabilityService.getDisability(req.params.id);
     renderView(disability, res);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
 disabilityController.post(CITIZEN_DISABILITY_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     const disability: Disability = new Disability(req.body.option);
     const errors: ValidationError[] = validator.validateSync(disability);
     if (errors?.length > 0) {
@@ -42,8 +39,7 @@ disabilityController.post(CITIZEN_DISABILITY_URL,
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_RESIDENCE_URL));
         }
       } catch (error) {
-        logger.error(error);
-        res.status(500).send({ error: error.message });
+        next(error);
       }
     }
   });

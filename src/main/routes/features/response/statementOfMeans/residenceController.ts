@@ -5,16 +5,13 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ResidenceType} from '../../../../common/form/models/statementOfMeans/residenceType';
 import residenceService from '../../../../services/features/response/statementOfMeans/residence/residenceService';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-
-const logger = Logger.getLogger('residenceController');
 const residenceViewPath = 'features/response/statementOfMeans/residence';
 
 const residenceController = express.Router();
 residenceController
   .get(
     CITIZEN_RESIDENCE_URL,
-    async (req: express.Request, res: express.Response) => {
+    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       try {
         const residence: Residence = await residenceService.getResidence(req.params.id);
         // Jira/CIV-1711 : prevent displaying unnecessary error message on view
@@ -24,13 +21,12 @@ residenceController
           form: new GenericForm(residence), errors,
         });
       } catch (error) {
-        logger.error(`${error.stack || error}`);
-        res.status(500).send({errorMessage: error.message, errorStack: error.stack});
+        next(error);
       }
     })
   .post(
     CITIZEN_RESIDENCE_URL,
-    async (req: express.Request, res: express.Response) => {
+    async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       const residence = residenceService.buildResidence(ResidenceType.valueOf(req.body.type), req.body.housingDetails);
       const form: GenericForm<Residence> = residenceService.validateResidence(residence);
 
@@ -43,8 +39,7 @@ residenceController
           await residenceService.saveResidence(req.params.id, residence);
           res.redirect(CITIZEN_PARTNER_URL.replace(':id', req.params.id));
         } catch (error) {
-          logger.error(`${error.stack || error}`);
-          res.status(500).send({errorMessage: error.message, errorStack: error.stack});
+          next(error);
         }
       }
     });

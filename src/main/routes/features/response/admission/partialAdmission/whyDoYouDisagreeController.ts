@@ -3,31 +3,32 @@ import {WhyDoYouDisagree} from '../../../../../common/form/models/admission/part
 import {
   getWhyDoYouDisagreeForm,
   saveWhyDoYouDisagreeData,
-} from '../../../../../services/features/response/admission/partialAdmission/whyDoYouDisagreeService';
+} from '../../../../../services/features/response/admission/whyDoYouDisagreeService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../../../../urls';
 import {WhyDoYouDisagreeForm} from '../../../../../common/models/whyDoYouDisagreeForm';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {ResponseType} from '../../../../../common/form/models/responseType';
 
 const whyDoYouDisagreeController = express.Router();
-const whyDoYouDisagreeViewPath = 'features/response/admission/partialAdmission/why-do-you-disagree';
+const whyDoYouDisagreeViewPath = 'features/response/admission/why-do-you-disagree';
 let claimAmount: number;
 
 function renderView(form: GenericForm<WhyDoYouDisagree>, _claimAmount: number, res: express.Response) {
   res.render(whyDoYouDisagreeViewPath, {form: form, claimAmount: _claimAmount});
 }
 
-whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res) => {
+whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const form = await getWhyDoYouDisagreeForm(req.params.id);
+    const form = await getWhyDoYouDisagreeForm(req.params.id, ResponseType.PART_ADMISSION);
     claimAmount = form.claimAmount;
     renderView(new GenericForm(form.whyDoYouDisagree), claimAmount, res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res) => {
+whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res, next: express.NextFunction) => {
   const whyDoYouDisagree = new WhyDoYouDisagree(req.body.text);
   const whyDoYouDisagreeForm = new WhyDoYouDisagreeForm();
   whyDoYouDisagreeForm.claimAmount = claimAmount;
@@ -38,13 +39,12 @@ whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res
     if (form.hasErrors() || form.hasNestedErrors()) {
       renderView(form, whyDoYouDisagreeForm.claimAmount, res);
     } else {
-      await saveWhyDoYouDisagreeData(req.params.id, form.model);
+      await saveWhyDoYouDisagreeData(req.params.id, form.model, ResponseType.PART_ADMISSION);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_TIMELINE_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
-},
-);
+});
 
 export default whyDoYouDisagreeController;
