@@ -14,7 +14,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% if errors.length %}
         {{ errorSummary(errors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
