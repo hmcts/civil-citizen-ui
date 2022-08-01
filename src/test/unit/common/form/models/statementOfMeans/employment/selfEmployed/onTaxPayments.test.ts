@@ -110,6 +110,4 @@ describe('on tax payment model', () => {
       expect(errors?.length).toBe(1);
     });
   });
-
-
 });

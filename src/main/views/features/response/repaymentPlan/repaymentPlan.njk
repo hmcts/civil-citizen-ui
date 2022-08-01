@@ -4,10 +4,10 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.REPAYMENT_PLAN.PAGE_TITLE') }}
@@ -17,19 +17,23 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t("Your repayment plan") %}
-      {% set errors = form.getErrors() %}
-      {% set totalAmountClaimedText = t('The total amount claimed is £' + form.totalClaimAmount + '. This includes the claim fee and any interest.') %}
+      {% set errors = form.getAllErrors() %}
+      {% set totalAmountClaimedText = t('The total amount claimed is £' + form.model.totalClaimAmount + '. This includes the claim fee and any interest.') %}
+      {% set totalAmount = form.model.totalClaimAmount %}
+
+      {% if admission %}
+        {% set totalAmountClaimedText = t('You admit you owe £' + amount + '.') %}
+        {% set totalAmount = amount %}
+      {% endif %}
+
       {% set firstPaymentExample = t('For example, ' + paymentExampleDate) %}
-      {% if errors %}
-        {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
-          "errorList": errors
-        }) }}
+      {% if form.hasErrors() %}
+        {{ errorSummary(errors,t) }}
       {% endif %}
     </main>
   </div>
   <form method="post" novalidate name="repaymentPlan">
-    {{ csrfProtection(csrf) }} <input type="hidden" class="repayment-amount" value="{{ form.totalClaimAmount }}"/>
+    {{ csrfProtection(csrf) }} <input type="hidden" class="repayment-amount" value="{{ totalAmount }}"/>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         {% call govukFieldset({
@@ -60,7 +64,7 @@
             text: "£"
           },
           spellcheck: false,
-          value: form.getPaymentAmountAsString(),
+          value: form.model.getPaymentAmountAsString(),
           errorMessage: {
             text:t(form.errorFor('paymentAmount'))
           } if form.hasFieldError('paymentAmount')
@@ -79,17 +83,17 @@
           items: [
             {
               value: TransactionSchedule.WEEK,
-              checked: true if form.repaymentFrequency === TransactionSchedule.WEEK,
+              checked: true if form.model.repaymentFrequency === TransactionSchedule.WEEK,
               text: t("Each week")
             },
             {
               value: TransactionSchedule.TWO_WEEKS,
-              checked: true if form.repaymentFrequency === TransactionSchedule.TWO_WEEKS,
+              checked: true if form.model.repaymentFrequency === TransactionSchedule.TWO_WEEKS,
               text: t("Every two weeks")
             },
             {
               value: TransactionSchedule.MONTH,
-              checked: true if form.repaymentFrequency === TransactionSchedule.MONTH,
+              checked: true if form.model.repaymentFrequency === TransactionSchedule.MONTH,
               text: t("Every month")
             }
           ],
@@ -133,7 +137,7 @@
               id: "day",
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-2",
               autocomplete: "bday-day",
-              value: form.getDayAsString(),
+              value: form.model.getDayAsString(),
               max: 31
             },
             {
@@ -141,7 +145,7 @@
               id: "month",
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-2",
               autocomplete: "bday-month",
-              value: form.getMonthAsString(),
+              value: form.model.getMonthAsString(),
               max: 12
             },
             {
@@ -149,7 +153,7 @@
               id: "year",
               classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-4",
               autocomplete: "bday-year",
-              value: form.getYearAsString(),
+              value: form.model.getYearAsString(),
               max: 9999
             }
           ]

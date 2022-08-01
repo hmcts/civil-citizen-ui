@@ -25,7 +25,7 @@ const DRAFT_STORE_SAVE_ERROR = 'draft store save error';
 
 describe('Court Orders service', () => {
   describe('Serialisation', () => {
-    test('should set declared to true when \'Yes\' option is selected', async () => {
+    it('should set declared to true when \'Yes\' option is selected', async () => {
       //Given
       const value = {
         declared: 'yes',
@@ -35,7 +35,7 @@ describe('Court Orders service', () => {
       //Then
       expect(courtOrders.declared).toBe(true);
     });
-    test('should set declared to false when \'No\' option is selected', async () => {
+    it('should set declared to false when \'No\' option is selected', async () => {
       //Given
       const value = {declared: 'no'};
       //When
@@ -43,7 +43,7 @@ describe('Court Orders service', () => {
       //Then
       expect(courtOrders.declared).toBe(false);
     });
-    test('should set declared to undefined when no option is selected', async () => {
+    it('should set declared to undefined when no option is selected', async () => {
       //Given
       const value = {};
       //When
@@ -51,13 +51,13 @@ describe('Court Orders service', () => {
       //Then
       expect(courtOrders.declared).toBe(undefined);
     });
-    test('should set courtOrders object to undefined when the form input value is undefined', async () => {
+    it('should set courtOrders object to undefined when the form input value is undefined', async () => {
       //Given
       const courtOrders = courtOrdersService.buildCourtOrders(undefined);
       //Then
       expect(courtOrders).toBeUndefined();
     });
-    test('should set rows attribute of courtOrders object to undefined when the rows unspecified in form', async () => {
+    it('should set rows attribute of courtOrders object to undefined when the rows unspecified in form', async () => {
       //Given
       const value = {
         declared: 'yes',
@@ -69,7 +69,7 @@ describe('Court Orders service', () => {
     });
   });
   describe('Validation', () => {
-    test('should raise any error if declared is unspecified', async () => {
+    it('should raise any error if declared is unspecified', async () => {
       //Given
       const courtOrders = new CourtOrders(undefined);
       const form = new GenericForm(courtOrders);
@@ -83,7 +83,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
-    test('should not raise any error if declared is false and rows unspecified', async () => {
+    it('should not raise any error if declared is false and rows unspecified', async () => {
       //Given
       const courtOrders = new CourtOrders(false, undefined);
       const form = new GenericForm(courtOrders);
@@ -92,7 +92,7 @@ describe('Court Orders service', () => {
       //Then
       expect(form.getErrors().length).toBe(0);
     });
-    test('should raise an error if declared true and rows are empty', async () => {
+    it('should raise an error if declared true and rows are empty', async () => {
       //Given
       const courtOrders = new CourtOrders(true, []);
       const form = new GenericForm(courtOrders);
@@ -106,7 +106,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
-    test('should raise an error if declared true and claim number is empty', async () => {
+    it('should raise an error if declared true and claim number is empty', async () => {
       //Given
       const rows = [
         new CourtOrder(120, 10, ''),
@@ -122,7 +122,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
-    test('should raise an error if declared true and the amount is unspecified', async () => {
+    it('should raise an error if declared true and the amount is unspecified', async () => {
       //Given
       const rows = [
         new CourtOrder(undefined, 1, 'abc1'),
@@ -138,7 +138,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows[0][amount]')).toBe(VALID_AMOUNT_ONE_POUND_OR_MORE);
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
-    test('should raise an error if declared true and the amount is less than 1', async () => {
+    it('should raise an error if declared true and the amount is less than 1', async () => {
       //Given
       const rows = [
         new CourtOrder(.99, 1, 'abc1'),
@@ -154,7 +154,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows[0][amount]')).toBe(VALID_AMOUNT_ONE_POUND_OR_MORE);
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
-    test('should raise an error if declared true and the amount has more than 2 decimals', async () => {
+    it('should raise an error if declared true and the amount has more than 2 decimals', async () => {
       //Given
       const rows = [
         new CourtOrder(1.001, 1, 'abc1'),
@@ -170,7 +170,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows[0][amount]')).toBe(VALID_TWO_DECIMAL_NUMBER);
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
-    test('should raise an error if declared true and the instalment amount is unspecified', async () => {
+    it('should raise an error if declared true and the instalment amount is unspecified', async () => {
       //Given
       const rows = [
         new CourtOrder(1, undefined, 'abc1'),
@@ -186,7 +186,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
       expect(form.errorFor('rows[0][instalmentAmount]')).toBe(VALID_STRICTLY_POSITIVE_NUMBER);
     });
-    test('should not raise an error if declared true and the instalment amount is 0', async () => {
+    it('should not raise an error if declared true and the instalment amount is 0', async () => {
       //Given
       const rows = [
         new CourtOrder(1, 0, 'abc1'),
@@ -202,7 +202,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
-    test('should raise an error if declared true and the instalment amount has more than 2 decimals', async () => {
+    it('should raise an error if declared true and the instalment amount has more than 2 decimals', async () => {
       //Given
       const rows = [
         new CourtOrder(1, 0.001, 'abc1'),
@@ -218,7 +218,7 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
       expect(form.errorFor('rows[0][instalmentAmount]')).toBe(VALID_TWO_DECIMAL_NUMBER);
     });
-    test('should raise an error if declared true and none of the total and instalment amounts aren\'t specified', async () => {
+    it('should raise an error if declared true and none of the total and instalment amounts aren\'t specified', async () => {
       //Given
       const rows = [
         new CourtOrder(undefined, undefined, 'abc1'),
@@ -237,7 +237,7 @@ describe('Court Orders service', () => {
   });
   describe('Remove Empty Court Orders', () => {
 
-    test('should remove empty court orders form submitted form', async () => {
+    it('should remove empty court orders form submitted form', async () => {
       //Given
       const courtOrder: CourtOrder = new CourtOrder(120, 10, 'abc1');
       const emptyCourtOrder: CourtOrder = new CourtOrder(undefined, undefined, undefined);
@@ -258,7 +258,7 @@ describe('Court Orders service', () => {
   });
   describe('Get Court Orders', () => {
 
-    test('should return court orders from draft store if present', async () => {
+    it('should return court orders from draft store if present', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         return createClaimWithCourtOrders();
@@ -273,7 +273,7 @@ describe('Court Orders service', () => {
   });
   describe('Save Court Orders', () => {
 
-    test('should return court orders from draft store if present', async () => {
+    it('should return court orders from draft store if present', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         return new Claim();
@@ -289,7 +289,7 @@ describe('Court Orders service', () => {
       jest.clearAllMocks();
     });
 
-    test('should throw error when retrieving data from draft store fails', async () => {
+    it('should throw error when retrieving data from draft store fails', async () => {
       //When
       mockGetCaseDataFromStore.mockImplementation(async () => {
         throw new Error(DRAFT_STORE_GET_ERROR);
@@ -299,7 +299,7 @@ describe('Court Orders service', () => {
         courtOrdersService.getCourtOrders('claimId')).rejects.toThrow(DRAFT_STORE_GET_ERROR);
     });
 
-    test('should throw error when saving data to draft store fails', async () => {
+    it('should throw error when saving data to draft store fails', async () => {
       //When
       mockGetCaseDataFromStore.mockImplementation(async () => {
         return {statementOfMeans: {}};

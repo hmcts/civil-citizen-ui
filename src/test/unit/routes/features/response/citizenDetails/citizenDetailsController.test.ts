@@ -76,7 +76,7 @@ describe('Confirm Details page', () => {
 
   });
   describe('on Exception', () => {
-    test('should return http 500 when has error in the get method', async () => {
+    it('should return http 500 when has error in the get method', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
@@ -84,12 +84,12 @@ describe('Confirm Details page', () => {
         .get(CITIZEN_DETAILS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
 
-  test('should return http 500 when has error in the post method', async () => {
+  it('should return http 500 when has error in the post method', async () => {
     mockSaveRespondent.mockImplementation(async () => {
       throw new Error(TestMessages.REDIS_FAILURE);
     });
@@ -98,11 +98,11 @@ describe('Confirm Details page', () => {
       .send(validDataForPost)
       .expect((res) => {
         expect(res.status).toBe(500);
-        expect(res.body).toEqual({error: TestMessages.REDIS_FAILURE});
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
   });
 
-  test('should return your details page with empty information', async () => {
+  it('should return your details page with empty information', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return new Respondent();
     });
@@ -114,7 +114,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('should return your details page with information', async () => {
+  it('should return your details page with information', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondent();
     });
@@ -126,7 +126,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('should return your details page with information without correspondent address', async () => {
+  it('should return your details page with information without correspondent address', async () => {
     const buildClaimOfRespondentWithoutCorrespondent = (): Respondent => {
       claim.respondent1 = new Respondent();
       claim.respondent1.individualTitle = 'individualTitle';
@@ -146,7 +146,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('should return your details company page', async () => {
+  it('should return your details company page', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(CounterpartyType.COMPANY);
     });
@@ -159,7 +159,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('should return your details organisation page', async () => {
+  it('should return your details organisation page', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
     });
@@ -172,7 +172,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should redirect on correct primary address', async () => {
+  it('POST/Citizen details - should redirect on correct primary address', async () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -193,7 +193,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should redirect on correct correspondence address', async () => {
+  it('POST/Citizen details - should redirect on correct correspondence address', async () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -214,7 +214,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should return error on empty primary address line', async () => {
+  it('POST/Citizen details - should return error on empty primary address line', async () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -236,7 +236,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should return error on empty primary city', async () => {
+  it('POST/Citizen details - should return error on empty primary city', async () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -258,7 +258,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should return error on empty primary postcode', async () => {
+  it('POST/Citizen details - should return error on empty primary postcode', async () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -280,7 +280,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should return error on empty correspondence address line', async () => {
+  it('POST/Citizen details - should return error on empty correspondence address line', async () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -302,7 +302,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should return error on empty correspondence city', async () => {
+  it('POST/Citizen details - should return error on empty correspondence city', async () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -324,7 +324,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should return error on empty correspondence postcode', async () => {
+  it('POST/Citizen details - should return error on empty correspondence postcode', async () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -346,7 +346,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should return error on no input', async () => {
+  it('POST/Citizen details - should return error on no input', async () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -373,7 +373,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should return error on input for primary address when postToThisAddress is set to NO', async () => {
+  it('POST/Citizen details - should return error on input for primary address when postToThisAddress is set to NO', async () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -397,7 +397,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should return error on input for correspondence address when postToThisAddress is set to YES', async () => {
+  it('POST/Citizen details - should return error on input for correspondence address when postToThisAddress is set to YES', async () => {
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -421,7 +421,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should display organisation details and return errors when postToThisAddress is set to YES', async () => {
+  it('POST/Citizen details - should display organisation details and return errors when postToThisAddress is set to YES', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
     });
@@ -450,7 +450,7 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('POST/Citizen details - should display company details and return errors when postToThisAddress is set to YES', async () => {
+  it('POST/Citizen details - should display company details and return errors when postToThisAddress is set to YES', async () => {
     mockGetRespondentInformation.mockImplementation(async () => {
       return buildClaimOfRespondentType(CounterpartyType.COMPANY);
     });
@@ -479,7 +479,10 @@ describe('Confirm Details page', () => {
       });
   });
 
-  test('get/Citizen details - should return test variable when there is no data on redis and civil-service', async () => {
+  it('get/Citizen details - should return test variable when there is no data on redis and civil-service', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return new Respondent();
+    });
     await request(app)
       .get('/case/1111/response/your-details')
       .expect((res) => {
@@ -490,7 +493,7 @@ describe('Confirm Details page', () => {
   });
 
   describe('Redirect to Phone or DOB screen', () => {
-    test('should redirect to confirm phone screen if respondent type is COMPANY', async () => {
+    it('should redirect to confirm phone screen if respondent type is COMPANY', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
         return buildClaimOfRespondentType(CounterpartyType.COMPANY);
       });
@@ -502,7 +505,7 @@ describe('Confirm Details page', () => {
           expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
         });
     });
-    test('should redirect to confirm phone screen if respondent type is ORGANISATION', async () => {
+    it('should redirect to confirm phone screen if respondent type is ORGANISATION', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
         return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
       });
@@ -514,7 +517,7 @@ describe('Confirm Details page', () => {
           expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
         });
     });
-    test('should redirect to confirm DOB screen if respondent type is INDIVIDUAL', async () => {
+    it('should redirect to confirm DOB screen if respondent type is INDIVIDUAL', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
         return buildClaimOfRespondentType(CounterpartyType.INDIVIDUAL);
       });
@@ -526,7 +529,7 @@ describe('Confirm Details page', () => {
           expect(res.header.location).toEqual(DOB_URL);
         });
     });
-    test('should redirect to confirm DOB screen if respondent type is SOLE TRADER', async () => {
+    it('should redirect to confirm DOB screen if respondent type is SOLE TRADER', async () => {
       mockGetRespondentInformation.mockImplementation(async () => {
         return buildClaimOfRespondentType(CounterpartyType.SOLE_TRADER);
       });

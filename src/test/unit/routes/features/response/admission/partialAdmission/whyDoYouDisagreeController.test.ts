@@ -18,7 +18,7 @@ describe('Why do you disagree Controller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on Get', () => {
-    test('should return Why do you disagree page successfully', async () => {
+    it('should return Why do you disagree page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
@@ -27,18 +27,18 @@ describe('Why do you disagree Controller', () => {
           expect(res.text).toContain('Why do you disagree with the claim amount?');
         });
     });
-    test('should return status 500 when there is an error', async () => {
+    it('should return status 500 when there is an error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
   describe('on Post', () => {
-    test('should validate when text is not fill', async () => {
+    it('should validate when text is not fill', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
@@ -48,7 +48,7 @@ describe('Why do you disagree Controller', () => {
           expect(res.text).toContain('Why do you disagree with the claim amount?');
         });
     });
-    test('should redirect to claim list when text is filled', async () => {
+    it('should redirect to claim list when text is filled', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
@@ -58,14 +58,14 @@ describe('Why do you disagree Controller', () => {
           expect(res.header.location).toEqual(CITIZEN_TIMELINE_URL);
         });
     });
-    test('should return 500 status when there is error', async () => {
+    it('should return 500 status when there is error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
         .send('text=Test')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

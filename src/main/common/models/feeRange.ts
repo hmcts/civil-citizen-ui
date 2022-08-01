@@ -6,7 +6,7 @@ export class FeeRanges {
   value: FeeRange[];
 
   constructor(value: FeeRange[]) {
-    this.value = value.sort(this.compare).filter((element: FeeRange, i : number) => !element.equals(value[i-1]));
+    this.value = [...value].sort(this.compare).filter((element: FeeRange, i : number) => !element.equals(value[i-1]));
   }
 
   compare(element1: FeeRange, element2: FeeRange) {
@@ -73,5 +73,3 @@ export class FlatAmount {
     this.amount = amount;
   }
 }
-
-

@@ -2,7 +2,6 @@ import {HowMuchHaveYouPaid} from '../../../../../../../main/common/form/models/a
 import {Validator} from 'class-validator';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-
 const validator = new Validator();
 describe('Partial Admit - How much have you paid? model', () => {
   describe('amount validation', () => {

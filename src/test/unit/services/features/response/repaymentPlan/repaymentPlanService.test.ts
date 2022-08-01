@@ -23,11 +23,9 @@ describe('Replayment Plan Service', () => {
   describe('getRepaymentPlanForm', () => {
     it('should get empty form when no data exist', async () => {
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
+
       //When
-      const form = await getRepaymentPlanForm('123');
+      const form = getRepaymentPlanForm(new Claim());
       //Then
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
@@ -39,38 +37,35 @@ describe('Replayment Plan Service', () => {
 
     it('should get empty form when repayment plan does not exist', async () => {
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.repaymentPlan = {
-          paymentAmount: undefined,
-          repaymentFrequency: '',
-          firstRepaymentDate: undefined,
-        };
-        return claim;
-      });
+      const claim = new Claim();
+      claim.repaymentPlan = {
+        paymentAmount: undefined,
+        repaymentFrequency: '',
+        firstRepaymentDate: undefined,
+      };
+
       //When
-      const form = await getRepaymentPlanForm('123');
+      const form = getRepaymentPlanForm(claim);
       //Then
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
       expect(form.repaymentFrequency).toBe('');
-      expect(form.firstRepaymentDate).toBeNull();
+      expect(form.firstRepaymentDate?.toDateString()).toBe('Invalid Date');
     });
 
     it('should return populated form when repayment plan exists', async () => {
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
-        claim.repaymentPlan = {
-          paymentAmount: PAYMENT_AMOUNT,
-          repaymentFrequency: REPAYMENT_FREQUENCY,
-          firstRepaymentDate: FIRST_PAYMENT_DATE,
-        };
-        return claim;
-      });
+
+      const claim = new Claim();
+      claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
+      claim.repaymentPlan = {
+        paymentAmount: PAYMENT_AMOUNT,
+        repaymentFrequency: REPAYMENT_FREQUENCY,
+        firstRepaymentDate: FIRST_PAYMENT_DATE,
+      };
+
       //When
-      const form = await getRepaymentPlanForm('123');
+      const form = getRepaymentPlanForm(claim);
 
       //Then
       expect(form.totalClaimAmount).toBeTruthy();
@@ -78,14 +73,6 @@ describe('Replayment Plan Service', () => {
       expect(form.paymentAmount).toBe(PAYMENT_AMOUNT);
       expect(form.repaymentFrequency).toBe(REPAYMENT_FREQUENCY);
       expect(form.firstRepaymentDate).toStrictEqual(FIRST_PAYMENT_DATE);
-    });
-    it('should rethrow error when error occurs', async () => {
-      //When
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(getRepaymentPlanForm('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 

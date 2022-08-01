@@ -1,45 +1,33 @@
 import { IsNumber, Min, Max, IsDefined, ValidateIf, Validate, IsDate, MinDate } from 'class-validator';
-import { Form } from '../form';
 import {DateConverter} from '../../../utils/dateConverter';
-import {
-  PAYMENT_FREQUENCY_REQUIRED,
-  EQUAL_INSTALMENTS_REQUIRED,
-  AMOUNT_REQUIRED,
-  VALID_TWO_DECIMAL_NUMBER,
-  VALID_YEAR,
-  VALID_MONTH,
-  VALID_DAY,
-  VALID_FOUR_DIGIT_YEAR,
-  FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED,
-} from '../../validationErrors/errorMessageConstants';
 import { EqualToOrLessThanPropertyValueValidator } from '../../validators/equalToOrLessThanPropertyValueValidator';
-export class RepaymentPlanForm extends Form {
+export class RepaymentPlanForm{
 
-  @IsDefined({ message: AMOUNT_REQUIRED })
-  @IsNumber({maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
-  @Min(1, { message: AMOUNT_REQUIRED })
-  @Validate(EqualToOrLessThanPropertyValueValidator, ['totalClaimAmount', 'strictComparision'], { message: EQUAL_INSTALMENTS_REQUIRED })
+  @IsDefined({ message: 'ERRORS.AMOUNT_REQUIRED' })
+  @IsNumber({maxDecimalPlaces: 2}, {message: 'ERRORS.VALID_TWO_DECIMAL_NUMBER'})
+  @Min(1, { message: 'ERRORS.AMOUNT_REQUIRED' })
+  @Validate(EqualToOrLessThanPropertyValueValidator, ['totalClaimAmount', 'strictComparision'], { message: 'ERRORS.EQUAL_INSTALMENTS_REQUIRED' })
     paymentAmount?: number;
 
   @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
-  @IsDate({ message: FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED })
-  @MinDate(new Date(Date.now()), { message: FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED})
+  @IsDate({ message: 'ERRORS.FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED' })
+  @MinDate(new Date(Date.now()), { message: 'ERRORS.FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED'})
     firstRepaymentDate?: Date;
 
-  @IsDefined({ message: VALID_YEAR })
-  @Min(1000, { message: VALID_FOUR_DIGIT_YEAR })
-  @Max(9999,{message:VALID_YEAR})
-    year?: number;
-
-  @Min(1,{message:VALID_MONTH })
-  @Max(12,{message:VALID_MONTH })
-    month?: number;
-
-  @Min(1,{message:VALID_DAY })
-  @Max(31,{message:VALID_DAY })
+  @Min(1,{message:'ERRORS.VALID_DAY' })
+  @Max(31,{message:'ERRORS.VALID_DAY' })
     day?: number;
 
-  @IsDefined({ message: PAYMENT_FREQUENCY_REQUIRED })
+  @Min(1,{message:'ERRORS.VALID_MONTH' })
+  @Max(12,{message:'ERRORS.VALID_MONTH' })
+    month?: number;
+
+  @IsDefined({ message: 'ERRORS.VALID_YEAR' })
+  @Min(1000, { message: 'ERRORS.VALID_FOUR_DIGIT_YEAR' })
+  @Max(9999,{message:'ERRORS.VALID_YEAR'})
+    year?: number;
+
+  @IsDefined({ message: 'ERRORS.PAYMENT_FREQUENCY_REQUIRED' })
     repaymentFrequency?: string;
 
   totalClaimAmount?: number;
@@ -52,7 +40,6 @@ export class RepaymentPlanForm extends Form {
     month?: string,
     day?: string) {
 
-    super();
     this.totalClaimAmount = totalClaimAmount;
     this.paymentAmount = paymentAmount ? Number(paymentAmount) : undefined;
     this.repaymentFrequency = repaymentFrequency;

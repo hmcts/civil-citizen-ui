@@ -18,7 +18,7 @@ const tooLongSignerName: string = Array(SIGNER_NAME_MAX_LENGTH + 2).join('a');
 const tooLongSignerRole: string = Array(SIGNER_ROLE_MAX_LENGTH + 2).join('a');
 
 describe('Qualified Statement of Truth form validation', () => {
-  test('should fail when signed is false', () => {
+  it('should fail when signed is false', () => {
     //Given
     const form = new GenericForm(new QualifiedStatementOfTruth(false,''));
     //When
@@ -32,7 +32,7 @@ describe('Qualified Statement of Truth form validation', () => {
     expect(form.errorFor('signerRole')).toBe(SIGNER_ROLE_REQUIRED);
   });
 
-  test('should fail when signer name and/or role is empty', () => {
+  it('should fail when signer name and/or role is empty', () => {
     //Given
     const form = new GenericForm(new QualifiedStatementOfTruth(false, 'true', 'false', '', ''));
     //When
@@ -46,7 +46,7 @@ describe('Qualified Statement of Truth form validation', () => {
     expect(form.errorFor('signerRole')).toBe(SIGNER_ROLE_REQUIRED);
   });
 
-  test('should fail when signer name and/or role has only spaces', () => {
+  it('should fail when signer name and/or role has only spaces', () => {
     //Given
     const form = new GenericForm(new QualifiedStatementOfTruth(false,'true', 'false', ' ', ' '));
     //When
@@ -60,7 +60,7 @@ describe('Qualified Statement of Truth form validation', () => {
     expect(form.errorFor('signerRole')).toBe(SIGNER_ROLE_REQUIRED);
   });
 
-  test('should fail when signer name and/or role is too long', () => {
+  it('should fail when signer name and/or role is too long', () => {
     //Given
     const form = new GenericForm(new QualifiedStatementOfTruth(false,'true', 'false', tooLongSignerName, tooLongSignerRole));
     //When

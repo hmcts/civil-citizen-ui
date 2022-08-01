@@ -21,7 +21,7 @@ describe('I dont want free meditation', () => {
   });
 
   describe('on GET', () => {
-    test('should return I dont want free meditation page', async () => {
+    it('should return I dont want free meditation page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(DONT_WANT_FREE_MEDIATION_URL)
@@ -30,7 +30,7 @@ describe('I dont want free meditation', () => {
           expect(res.text).toContain(TestMessages.MEDIATION_I_DONT_WANT_FREE);
         });
     });
-    test('should return mediation disagreement page when mediation has mediationDisagreement', async () => {
+    it('should return mediation disagreement page when mediation has mediationDisagreement', async () => {
       app.locals.draftStoreClient = mockRedisWithMediationProperties;
       await request(app)
         .get(DONT_WANT_FREE_MEDIATION_URL)
@@ -46,19 +46,19 @@ describe('I dont want free meditation', () => {
           expect(res.text).toContain('You have chosen not to try free mediation. Please tell us why:');
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(DONT_WANT_FREE_MEDIATION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
 
   describe('on POST', () => {
-    test('should redirect page when OTHER', async () => {
+    it('should redirect page when OTHER', async () => {
       app.locals.draftStoreClient = mockRedisWithMediationProperties;
       await request(app)
         .post(DONT_WANT_FREE_MEDIATION_URL)
@@ -68,7 +68,7 @@ describe('I dont want free meditation', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
-    test('should redirect page when NOT_SURE', async () => {
+    it('should redirect page when NOT_SURE', async () => {
       app.locals.draftStoreClient = mockRedisWithMediationProperties;
       await request(app)
         .post(DONT_WANT_FREE_MEDIATION_URL)
@@ -78,7 +78,7 @@ describe('I dont want free meditation', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
-    test('should redirect page when WOULD_NOT_SOLVE', async () => {
+    it('should redirect page when WOULD_NOT_SOLVE', async () => {
       app.locals.draftStoreClient = mockRedisWithMediationProperties;
       await request(app)
         .post(DONT_WANT_FREE_MEDIATION_URL)
@@ -88,7 +88,7 @@ describe('I dont want free meditation', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
-    test('should redirect page when JUDGE_TO_DECIDE', async () => {
+    it('should redirect page when JUDGE_TO_DECIDE', async () => {
       app.locals.draftStoreClient = mockRedisWithMediationProperties;
       await request(app)
         .post(DONT_WANT_FREE_MEDIATION_URL)
@@ -98,7 +98,7 @@ describe('I dont want free meditation', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
-    test('should redirect page when ALREADY_TRIED', async () => {
+    it('should redirect page when ALREADY_TRIED', async () => {
       app.locals.draftStoreClient = mockRedisWithMediationProperties;
       await request(app)
         .post(DONT_WANT_FREE_MEDIATION_URL)
@@ -108,7 +108,7 @@ describe('I dont want free meditation', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
-    test('should redirect page when NO_DELAY_IN_HEARING', async () => {
+    it('should redirect page when NO_DELAY_IN_HEARING', async () => {
       app.locals.draftStoreClient = mockRedisWithMediationProperties;
       await request(app)
         .post(DONT_WANT_FREE_MEDIATION_URL)
@@ -118,7 +118,7 @@ describe('I dont want free meditation', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
-    test('should return error on incorrect input', async () => {
+    it('should return error on incorrect input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(DONT_WANT_FREE_MEDIATION_URL)
@@ -128,14 +128,14 @@ describe('I dont want free meditation', () => {
           expect(res.text).toContain(OPTION_REQUIRED);
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(DONT_WANT_FREE_MEDIATION_URL)
         .send({disagreeMediationOption: NoMediationReasonOptions.NO_DELAY_IN_HEARING, otherReason: ''})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

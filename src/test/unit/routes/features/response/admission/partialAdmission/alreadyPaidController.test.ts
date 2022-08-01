@@ -2,15 +2,13 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../../main/app';
-import {
-  REDIS_FAILURE,
-  VALID_YES_NO_SELECTION,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {VALID_YES_NO_SELECTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   CITIZEN_ALREADY_PAID_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -42,7 +40,7 @@ describe('Already Paid Controller', () => {
       await request(app)
         .get(CITIZEN_ALREADY_PAID_URL).expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

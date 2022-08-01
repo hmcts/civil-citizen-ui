@@ -14,8 +14,6 @@ import {
   saveEmploymentData,
 } from '../../../../../services/features/response/statementOfMeans/employment/employmentService';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('employmentStatusController');
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
 const employmentStatusController = express.Router();
 
@@ -39,17 +37,16 @@ function redirectToEmployersPage(form: EmploymentForm, claimId: string, res: exp
   }
 }
 
-employmentStatusController.get(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
+employmentStatusController.get(CITIZEN_EMPLOYMENT_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form = await getEmploymentForm(req.params.id);
     renderView(form, res);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
+employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, async (req, res, next: express.NextFunction) => {
   const form = new EmploymentForm(req.body.option, EmploymentForm.convertToArray(req.body.employmentCategory));
   try {
     await validateForm(form);
@@ -60,8 +57,7 @@ employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, async (req, res) => {
       redirectToNextPage(form, req.params.id, res);
     }
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
