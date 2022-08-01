@@ -37,10 +37,10 @@
                 {% endfor %}
               {% endif %}
               {{ govukDateInput({
-                id: "birthDate",
+                id: "dateOfBirth",
                 type: "number",
                 inputmode: "numeric",
-                name: "birthDate",
+                name: "dateOfBirth",
                 fieldset: {
                   legend: {
                     isPageHeading: false,
@@ -50,9 +50,6 @@
                 hint: {
                   text: t('PAGES.CITIZEN_DOB.EXAMPLE')
                 },
-                errorMessage: {
-                  text: errorMessage
-                } if form.hasErrors(),
                 items: [
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
