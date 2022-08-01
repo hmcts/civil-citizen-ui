@@ -18,8 +18,9 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
   const contactNumberHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_URL);
 
   const contactNumber = claim.mediation?.companyTelephoneNumber ? claim.mediation.companyTelephoneNumber.mediationPhoneNumber
-    : claim.mediation?.canWeUse?.mediationPhoneNumber ? claim.mediation.canWeUse.mediationPhoneNumber
+    : claim.mediation?.canWeUse?.mediationPhoneNumber ? claim.mediation?.canWeUse?.mediationPhoneNumber
       : claim.respondent1.telephoneNumber;
+
   const contactName = claim.mediation?.companyTelephoneNumber ? claim.mediation.companyTelephoneNumber.mediationContactPerson : claim.respondent1.contactPerson;
 
   const canWeUse = claim.mediation?.canWeUse?.option ? YesNoUpperCase.YES

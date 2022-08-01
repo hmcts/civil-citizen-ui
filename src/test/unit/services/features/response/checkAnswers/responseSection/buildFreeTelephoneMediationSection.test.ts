@@ -21,7 +21,7 @@ describe('Free Telephone Mediation Section', () => {
 
   it('should return response free telephone mediation with free mediation and contact number', async () => {
     //When
-    const claim = createClaimWithFreeTelephoneMediationSection(YesNo.YES,CounterpartyType.INDIVIDUAL);
+    const claim = createClaimWithFreeTelephoneMediationSection();
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(2);
@@ -35,7 +35,7 @@ describe('Free Telephone Mediation Section', () => {
 
   it('should return response free telephone mediation with free mediation and contact name and contact number', async () => {
     //Given
-    const claim = createClaimWithFreeTelephoneMediationSection(YesNo.YES,CounterpartyType.INDIVIDUAL);
+    const claim = createClaimWithFreeTelephoneMediationSection();
     if (claim.respondent1) {
       claim.respondent1.type = CounterpartyType.COMPANY;
     }
@@ -53,7 +53,7 @@ describe('Free Telephone Mediation Section', () => {
   });
   it('should return response free telephone mediation with free mediation and contact name', async () => {
     //Given
-    const claim = createClaimWithFreeTelephoneMediationSection(YesNo.YES,CounterpartyType.INDIVIDUAL);
+    const claim = createClaimWithFreeTelephoneMediationSection();
     if (claim.mediation?.mediationDisagreement) {
       claim.mediation.mediationDisagreement.option = YesNo.NO;
     }
@@ -75,7 +75,7 @@ describe('Free Telephone Mediation Section', () => {
 
   it('should return response free telephone mediation with company telephone number', async () => {
     //Given
-    const claim = createClaimWithFreeTelephoneMediationSection(YesNo.YES,CounterpartyType.INDIVIDUAL);
+    const claim = createClaimWithFreeTelephoneMediationSection();
     if (claim?.mediation) {
       claim.mediation.canWeUse = undefined;
       claim.mediation.mediationDisagreement = undefined;
@@ -93,7 +93,7 @@ describe('Free Telephone Mediation Section', () => {
 
   it('should return response free telephone mediation with free mediation and mediationPhoneNumber', async () => {
     //Given
-    const claim = createClaimWithFreeTelephoneMediationSection(YesNo.YES,CounterpartyType.INDIVIDUAL);
+    const claim = createClaimWithFreeTelephoneMediationSection();
     if (claim?.mediation) {
       claim.mediation.companyTelephoneNumber = new CompanyTelephoneNumber();
       claim.mediation.canWeUse = undefined;
@@ -114,7 +114,7 @@ describe('Free Telephone Mediation Section', () => {
 
   it('should return only the title', async () => {
     //When
-    const claim = createClaimWithFreeTelephoneMediationSection(YesNo.YES,CounterpartyType.INDIVIDUAL);
+    const claim = createClaimWithFreeTelephoneMediationSection();
     claim.mediation = undefined;
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then

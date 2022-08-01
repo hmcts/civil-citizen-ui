@@ -741,17 +741,16 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
   return claim;
 };
 
-export const createClaimWithFreeTelephoneMediationSection = (option: YesNo, counterpartyType:CounterpartyType): Claim => {
+export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails('contactTest');
   if (claim.respondent1) {
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.respondent1.type = counterpartyType;
   }
   claim.partialAdmission = new PartialAdmission();
   claim.partialAdmission.paymentIntention = new PaymentIntention();
   claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
 
-  claim.mediation = new Mediation({option: option, mediationPhoneNumber: '123456'},
+  claim.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '123456'},
     new FreeMediation(YesNo.YES),
     new NoMediationReason('notWant', 'no'),
     new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
