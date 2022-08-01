@@ -18,7 +18,7 @@
     <main class="govuk-main-wrapper" role="main">
       {% set title = t('PAGES.REPAYMENT_PLAN.TITLE') %}
       {% set errors = form.getAllErrors() %}
-      {% set totalAmountClaimedText =  t('PAGES.REPAYMENT_PLAN.SUBTITLE',{totalAmount: form.totalClaimAmount}) %}
+      {% set totalAmountClaimedText =  t('PAGES.REPAYMENT_PLAN.SUBTITLE',{totalAmount: form.model.totalClaimAmount}) %}
       {% set totalAmount = form.model.totalClaimAmount %}
 
       {% if admission %}
