@@ -16,6 +16,7 @@ import {DraftStoreClient} from './modules/draft-store';
 import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {TaskList} from './common/models/taskList/taskList';
+import {AgreedResponseDeadline} from './common/form/models/agreedResponseDeadline';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const { setupDev } = require('./development');
@@ -36,6 +37,7 @@ declare module 'express-session' {
   interface Session {
     claimId: string;
     taskLists: TaskList[];
+    newDeadlineDate: AgreedResponseDeadline;
   }
 }
 
