@@ -480,6 +480,9 @@ describe('Confirm Details page', () => {
   });
 
   it('get/Citizen details - should return test variable when there is no data on redis and civil-service', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return new Respondent();
+    });
     await request(app)
       .get('/case/1111/response/your-details')
       .expect((res) => {

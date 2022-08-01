@@ -10,7 +10,7 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
-{% set correspondenceAddressClass = '' if postToThisAddress == 'yes' else 'govuk-visually-hidden' %}
+{% set correspondenceAddressClass = 'govuk-visually-hidden' if postToThisAddress == 'no' else '' %}
 {% set addressTitle = t('PAGES.CITIZEN_DETAILS.ADDRESS') %}
 
 {% block pageTitle %}

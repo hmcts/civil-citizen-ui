@@ -3,18 +3,18 @@ import {Respondent} from '../../../../common/models/respondent';
 import {CounterpartyType} from '../../../../common/models/counterpartyType';
 import PaymentOptionType from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClaimType';
+import {YesNo} from '../../../../common/form/models/yesNo';
 
 export const isCaseDataMissing = (caseData: Claim): boolean => {
   return !caseData;
 };
 
-export const isBothCorrespondenceAndPrimaryAddressMissing = (respondent1: Respondent): boolean => {
-  return !respondent1?.correspondenceAddress && !respondent1?.primaryAddress;
+export const hasCorrespondenceAndPrimaryAddress = (respondent1: Respondent): boolean => {
+  return !!(respondent1?.primaryAddress && (respondent1?.postToThisAddress === YesNo.NO || respondent1?.correspondenceAddress));
 };
 
-export const isDOBMissing = (respondent1: Respondent): boolean => {
-  // check DOB if the defendant type is individual
-  return respondent1?.type === CounterpartyType.INDIVIDUAL && !respondent1?.dateOfBirth ;
+export const hasDateOfBirthIfIndividual = (respondent1: Respondent): boolean => {
+  return !!(respondent1?.type !== CounterpartyType.INDIVIDUAL || (respondent1?.type === CounterpartyType.INDIVIDUAL && respondent1?.dateOfBirth));
 };
 
 export const isResponseTypeMissing = (respondent1: Respondent): boolean => {
