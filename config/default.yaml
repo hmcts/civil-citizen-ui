@@ -37,6 +37,8 @@ services:
     baseUrl: 'http://localhost:4502'
     serviceAuthTokenGeneratorUrl : '/testing-support/lease'
     cmcS2sSecret: 'AAAAAAAAAAAAAAAA'
+  cmc:
+    url: 'https://localhost:3000'
 health:
   timeout: 5000
   deadline: 15000

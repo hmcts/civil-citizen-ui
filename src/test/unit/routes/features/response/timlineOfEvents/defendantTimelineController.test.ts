@@ -25,7 +25,7 @@ describe('defendant timeline controller', () => {
     afterEach(() => {
       app.locals.draftStoreClient = undefined;
     });
-    test('should display the page successfully', async () => {
+    it('should display the page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_TIMELINE_URL)
@@ -37,7 +37,7 @@ describe('defendant timeline controller', () => {
           expect(res.text).toContain('Add another event');
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_TIMELINE_URL)
@@ -54,7 +54,7 @@ describe('defendant timeline controller', () => {
     afterEach(() => {
       app.locals.draftStoreClient = undefined;
     });
-    test('should return error message when date is entered but no description', async () => {
+    it('should return error message when date is entered but no description', async () => {
       const data = {
         rows: [
           {
@@ -71,7 +71,7 @@ describe('defendant timeline controller', () => {
           expect(res.text).toContain(DESCRIPTION_REQUIRED);
         });
     });
-    test('should return error message when date is empty and description is defined', async () => {
+    it('should return error message when date is empty and description is defined', async () => {
       const data = {
         rows: [
           {
@@ -88,7 +88,7 @@ describe('defendant timeline controller', () => {
           expect(res.text).toContain(DATE_REQUIRED);
         });
     });
-    test('should redirect when no errors', async () => {
+    it('should redirect when no errors', async () => {
       const data = {
         rows: [
           {
@@ -105,7 +105,7 @@ describe('defendant timeline controller', () => {
           expect(res.header.location).toContain(CITIZEN_EVIDENCE_URL);
         });
     });
-    test('should return http 500 on redis error', async () => {
+    it('should return http 500 on redis error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       const data = {
         rows: [

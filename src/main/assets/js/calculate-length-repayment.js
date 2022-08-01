@@ -25,7 +25,6 @@
   const repaymentLength = document.querySelector('.repayment-length');
   let frequencyVal = null;
 
-
   if (repaymentFrequency) {
     repaymentInstalments.addEventListener('keyup', () => {
       getRepaymentSchedule(frequencyVal);

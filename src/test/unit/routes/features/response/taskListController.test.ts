@@ -18,7 +18,7 @@ describe('Claimant details', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on GET', () => {
-    test('should return contact claimant details from claim', async () => {
+    it('should return contact claimant details from claim', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CLAIM_TASK_LIST_URL)
@@ -38,7 +38,7 @@ describe('Claimant details', () => {
         });
     });
 
-    test('should return http 500 when has error in the get method', async () => {
+    it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CLAIM_TASK_LIST_URL)

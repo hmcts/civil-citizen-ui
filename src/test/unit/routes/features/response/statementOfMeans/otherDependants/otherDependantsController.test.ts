@@ -74,7 +74,7 @@ describe('Other Dependants', () => {
   });
 
   describe('on GET', () => {
-    test('should return other dependants page', async () => {
+    it('should return other dependants page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -84,7 +84,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should show "Number of people and Give details" section when "yes"', async () => {
+    it('should show "Number of people and Give details" section when "yes"', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -96,7 +96,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should return error when Cannot read property \'numberOfPeople\' and \'details\' of undefined', async () => {
+    it('should return error when Cannot read property \'numberOfPeople\' and \'details\' of undefined', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -106,7 +106,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should return empty OtherDependants object', async () => {
+    it('should return empty OtherDependants object', async () => {
       app.locals.draftStoreClient = mockWithoutOtherDependents;
       await request(app)
         .get(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -118,7 +118,7 @@ describe('Other Dependants', () => {
   });
 
   describe('on POST', () => {
-    test('should return error when radio box is not selected', async () => {
+    it('should return error when radio box is not selected', async () => {
       app.locals.draftStoreClient = mockCivilClaimOptionNo;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -129,7 +129,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should redirect when "no" is selected', async () => {
+    it('should redirect when "no" is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -140,7 +140,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should redirect when "yes" is selected and number of people and details are valid', async () => {
+    it('should redirect when "yes" is selected and number of people and details are valid', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -151,7 +151,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should redirect employment page when defendant is disabled and severely disabled', async () => {
+    it('should redirect employment page when defendant is disabled and severely disabled', async () => {
       app.locals.draftStoreClient = mockWithSeverelyDisabledDefendant;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -162,7 +162,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should redirect employment page when partner is selected and disabled', async () => {
+    it('should redirect employment page when partner is selected and disabled', async () => {
       app.locals.draftStoreClient = mockWithDisabledPartner;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -173,7 +173,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should redirect employment page when children is existing and any of them is disabled', async () => {
+    it('should redirect employment page when children is existing and any of them is disabled', async () => {
       app.locals.draftStoreClient = mockWithDisabledChildren;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -184,7 +184,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should redirect when disability, cohabiting and childrenDisability are "no"', async () => {
+    it('should redirect when disability, cohabiting and childrenDisability are "no"', async () => {
       app.locals.draftStoreClient = mockWithOption1ToRedirectToCarer;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -195,7 +195,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should redirect when disability, cohabiting are "no" and partnerDisability is "yes"', async () => {
+    it('should redirect when disability, cohabiting are "no" and partnerDisability is "yes"', async () => {
       app.locals.draftStoreClient = mockWithOption2ToRedirectToCarer;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -206,7 +206,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should return error when number of people is undefined', async () => {
+    it('should return error when number of people is undefined', async () => {
       app.locals.draftStoreClient = mockRedisException;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -217,7 +217,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should return error when number of people is 0', async () => {
+    it('should return error when number of people is 0', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -228,7 +228,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should return error when number of people is valid details is undefined', async () => {
+    it('should return error when number of people is valid details is undefined', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -239,7 +239,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should return error when number of people and details are undefined', async () => {
+    it('should return error when number of people and details are undefined', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -251,7 +251,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should return error when number of people is 0 details is undefined', async () => {
+    it('should return error when number of people is 0 details is undefined', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -263,7 +263,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should save when we dont have information on redis', async () => {
+    it('should save when we dont have information on redis', async () => {
       app.locals.draftStoreClient = mockWithoutOtherDependents;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
@@ -274,7 +274,7 @@ describe('Other Dependants', () => {
         });
     });
 
-    test('should throw an error when call redis', async () => {
+    it('should throw an error when call redis', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)

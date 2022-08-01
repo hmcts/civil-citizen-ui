@@ -146,6 +146,9 @@
       "partyName": "Version 1"
     },
     "respondent1ResponseDeadline": "2022-05-15T02:59:59",
+    "responseDeadline": {
+      "agreedResponseDeadline": "2022-10-29"
+    },
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 110,
     "claimInterest": "Yes",

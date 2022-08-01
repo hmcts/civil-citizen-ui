@@ -7,6 +7,7 @@ import {fail} from 'assert';
 import {IGNORED_URLS} from './ignored-urls';
 import {mockCivilClaim} from '../utils/mockDraftStore';
 import CivilClaimResponseMock from '../utils/mocks/civilClaimResponseMock.json';
+import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../main/app/client/civilServiceUrls';
 
 jest.mock('../../main/modules/oidc');
 jest.mock('../../main/modules/draft-store');
@@ -66,7 +67,7 @@ function expectNoErrors(messages: PallyIssue[]): void {
 
 function testAccessibilityWithActions(url: string, actions: string[]): void {
   describe(`Page ${url}`, () => {
-    test(`should have no accessibility errors ${(actions.length) ? 'with actions' : ''}`, done => {
+    it(`should have no accessibility errors ${(actions.length) ? 'with actions' : ''}`, done => {
       ensurePageCallWillSucceed(url)
         .then(() => runPally(agent.get(url).url, actions))
         .then((result: Pa11yResult) => {
@@ -90,6 +91,9 @@ describe('Accessibility', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    nock('http://localhost:4000')
+      .post(CIVIL_SERVICE_CALCULATE_DEADLINE)
+      .reply(200,  new Date(2022, 9, 31));
   });
   nock('http://localhost:4000')
     .get('/cases/:id')

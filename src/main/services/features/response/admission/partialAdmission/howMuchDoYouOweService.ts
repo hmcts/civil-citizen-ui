@@ -20,10 +20,7 @@ export const getHowMuchDoYouOweForm = async (claimId: string): Promise<HowMuchDo
   }
 };
 
-export const saveHowMuchDoYouOweData = async (
-  claimId: string,
-  form: HowMuchDoYouOwe,
-) => {
+export const saveHowMuchDoYouOweData = async (claimId: string, form: HowMuchDoYouOwe) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (!claim.partialAdmission) {
@@ -32,7 +29,7 @@ export const saveHowMuchDoYouOweData = async (
     claim.partialAdmission.howMuchDoYouOwe = form;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
-    logger.error(`${error.stack || error}`);
+    logger.error(error);
     throw error;
   }
 };

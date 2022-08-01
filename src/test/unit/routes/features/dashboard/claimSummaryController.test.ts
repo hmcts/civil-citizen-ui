@@ -21,8 +21,7 @@ describe('Claim summary', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on GET', () => {
-
-    test('should return your claim summary from civil-service', async () => {
+    it('should return your claim summary from civil-service', async () => {
       nock('http://localhost:4000')
         .get('/cases/5129')
         .reply(200, CivilClaimResponseMock);
@@ -38,7 +37,7 @@ describe('Claim summary', () => {
         });
     });
 
-    test('should return http 500 when has error in the get method', async () => {
+    it('should return http 500 when has error in the get method', async () => {
       nock('http://localhost:4000')
         .get('/cases/5129')
         .reply(200, mockCivilClaimUndefined);
