@@ -102,7 +102,7 @@
     "jest": "^25.1.0",
     "jest-junit": "^14.0.0",
     "mini-css-extract-plugin": "^2.6.1",
-    "nock": "^13.2.8",
+    "nock": "^13.2.9",
     "nodemon": "^2.0.18",
     "pa11y": "^6.2.3",
     "playwright": "^1.23.1",
