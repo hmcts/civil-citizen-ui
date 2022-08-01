@@ -10,7 +10,7 @@ describe('Latest Update Content Builder', () => {
   const partyName = 'Mr. John Doe';
   const claim = new Claim();
   claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-  claim.respondent1ResponseDeadline = new Date('2022-07-29T15:59:59');
+  claim.respondent1ResponseDeadline = new Date('2023-07-29T15:59:59');
   claim.applicant1 = {
     type: CounterpartyType.INDIVIDUAL,
     partyName: partyName,
@@ -40,7 +40,7 @@ describe('Latest Update Content Builder', () => {
     });
     it('should have responseDeadlinePassedContent when defendant not responded after dead line', () => {
       // Given
-      const expectedNow = DateTime.local(2022, 8, 1, 23, 0, 0);
+      const expectedNow = DateTime.local(2023, 8, 1, 23, 0, 0);
       Settings.now = () => expectedNow.toMillis();
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, lang, claimId);
