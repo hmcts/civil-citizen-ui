@@ -63,7 +63,7 @@ const addEvidence = (claim: Claim, claimId: string, lang: string | unknown, sect
 const isPaidAmountEqulGreaterThanTotalAmount = (claim: Claim) => {
   const amount = claim.rejectAllOfClaim.howMuchHaveYouPaid?.amount ? claim.rejectAllOfClaim.howMuchHaveYouPaid.amount : 0;
   const totalClaimAmount = claim.totalClaimAmount ? claim.totalClaimAmount : 0;
-  return amount < totalClaimAmount ? true : false;
+  return !!(amount < totalClaimAmount);
 };
 
 const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: string | unknown, yourResponseDetailsSection: SummarySection) => {
