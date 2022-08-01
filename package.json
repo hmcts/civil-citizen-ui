@@ -28,7 +28,7 @@
     "@hmcts/nodejs-healthcheck": "^1.7.1",
     "@hmcts/nodejs-logging": "^4.0.2",
     "@hmcts/os-places-client": "^1.1.7",
-    "@hmcts/properties-volume": "^0.0.13",
+    "@hmcts/properties-volume": "^0.0.14",
     "@ministryofjustice/frontend": "^1.4.2",
     "@types/config": "^0.0.41",
     "@types/cookie-parser": "^1.4.3",
