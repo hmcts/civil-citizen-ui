@@ -18,14 +18,11 @@ import {
 import {Claim} from '../../../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
 import {
-  ENTER_A_DEBT,
-  ENTER_AT_LEAST_ONE_DEBT,
   REDIS_FAILURE,
-  VALID_STRICTLY_POSITIVE_NUMBER,
-  VALID_TWO_DECIMAL_NUMBER,
   VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -69,8 +66,7 @@ describe('Debts', () => {
   describe('on GET', () => {
     it('should open the debts page when in redis has no data ', async () => {
       mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        return claim;
+        return new Claim();
       });
       await request(app)
         .get(CITIZEN_DEBTS_URL)
@@ -82,8 +78,7 @@ describe('Debts', () => {
     it('should open the debts page when in redis has data with option yes', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        const statementOfMeans = new StatementOfMeans();
-        claim.statementOfMeans = statementOfMeans;
+        claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormYes();
         return claim;
       });
@@ -97,8 +92,7 @@ describe('Debts', () => {
     it('should open the debts page when in redis has data with option no', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        const statementOfMeans = new StatementOfMeans();
-        claim.statementOfMeans = statementOfMeans;
+        claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormNo();
         return claim;
       });
@@ -127,7 +121,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithoutItems())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(ENTER_AT_LEAST_ONE_DEBT);
+          expect(res.text).toMatch(t('ERRORS.ENTER_AT_LEAST_ONE_DEBT'));
         });
     });
     it('should validate when has option is yes but debt is empty ', async () => {
@@ -136,7 +130,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithDebtEmpty())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(ENTER_A_DEBT);
+          expect(res.text).toMatch(t('ERRORS.ENTER_A_DEBT'));
         });
     });
     it('should validate when has option is yes but Total owned is invalid ', async () => {
@@ -145,7 +139,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithTotalOwnedInvalid())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_TWO_DECIMAL_NUMBER);
+          expect(res.text).toMatch(t('ERRORS.VALID_TWO_DECIMAL_NUMBER'));
         });
     });
 
@@ -155,7 +149,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithTotalOwnedZero())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_STRICTLY_POSITIVE_NUMBER);
+          expect(res.text).toMatch(t('ERRORS.VALID_STRICTLY_POSITIVE_NUMBER'));
         });
     });
     it('should validate when has option is yes but Total owned is empty ', async () => {
@@ -164,7 +158,7 @@ describe('Debts', () => {
         .send(buildDebtFormYesWithTotalOwnedEmpty())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_STRICTLY_POSITIVE_NUMBER);
+          expect(res.text).toMatch(t('ERRORS.VALID_STRICTLY_POSITIVE_NUMBER'));
         });
     });
 
@@ -191,8 +185,7 @@ describe('Debts', () => {
     it('should should redirect to when option is yes when has data on redis', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        const statementOfMeans = new StatementOfMeans();
-        claim.statementOfMeans = statementOfMeans;
+        claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormYes();
         return claim;
       });
@@ -208,8 +201,7 @@ describe('Debts', () => {
     it('should should redirect to when option is no when has data on redis', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
-        const statementOfMeans = new StatementOfMeans();
-        claim.statementOfMeans = statementOfMeans;
+        claim.statementOfMeans = new StatementOfMeans();
         claim.statementOfMeans.debts = buildDebtFormNo();
         return claim;
       });
