@@ -13,9 +13,9 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set errors = form.getAllErrors() %}
-      {% if form.hasErrors() %}
-        {{ errorSummary(errors,t) }}
+      {% set errors = form.getErrors() %}
+      {% if errors %}
+        {{ errorSummary(errors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -37,12 +37,11 @@
                 errorMessage: {
                   html: t(errors[0].text)
                 } if form.hasErrors()
-
               }) }}
             </div>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
             </div>
           </form>
