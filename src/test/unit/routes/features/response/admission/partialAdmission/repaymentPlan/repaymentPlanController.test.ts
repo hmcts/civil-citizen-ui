@@ -184,7 +184,7 @@ describe('on Post', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL)
-      .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '1', month: '08', year: '2022'})
+      .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '1', month: '08', year: '2023'})
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -194,7 +194,7 @@ describe('on Post', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL)
-      .send({paymentAmount: '100', repaymentFrequency: 'TWO_WEEKS', day: '1', month: '08', year: '2022'})
+      .send({paymentAmount: '100', repaymentFrequency: 'TWO_WEEKS', day: '1', month: '08', year: '2023'})
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -204,7 +204,7 @@ describe('on Post', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL)
-      .send({paymentAmount: '100', repaymentFrequency: 'MONTH', day: '1', month: '08', year: '2022'})
+      .send({paymentAmount: '100', repaymentFrequency: 'MONTH', day: '1', month: '08', year: '2023'})
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
