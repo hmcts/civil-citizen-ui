@@ -13,9 +13,9 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set errors = form.getErrors() %}
-      {% if errors %}
-        {{ errorSummary(errors, t) }}
+      {% set errors = form.getAllErrors() %}
+      {% if form.hasErrors() %}
+        {{ errorSummary(errors,t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -26,8 +26,7 @@
           </p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {% set error = form.getErrors() %}
-            <div class="govuk-form-group {% if error %} govuk-form-group--error{% endif %}">
+            <div class="govuk-form-group {%- if errors[0].text %} govuk-form-group--error{% endif %}">
               {{ govukInput({
                 id: "telephoneNumber",
                 name: "telephoneNumber",
@@ -37,13 +36,13 @@
                 },
                 errorMessage: {
                   html: t(errors[0].text)
-                } if errors
+                } if form.hasErrors()
 
               }) }}
             </div>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t("Save and continue")
               }) }}
             </div>
           </form>
