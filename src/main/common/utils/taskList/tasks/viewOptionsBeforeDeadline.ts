@@ -16,10 +16,15 @@ export const getViewOptionsBeforeDeadlineTask = (claim: Claim, claimId: string, 
     status: TaskStatus.INCOMPLETE,
   };
 
+  const isDeadlinePassed = isPastDeadline(claim.respondent1ResponseDeadline);
+
   switch (claim.responseDeadline?.option) {
     case ResponseOptions.YES:
       if (claim.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS) {
         viewOptionsBeforeDeadlineTask.status = TaskStatus.COMPLETE;
+        if(isDeadlinePassed){
+          viewOptionsBeforeDeadlineTask.url = "#";
+        }
       }
       break;
     case ResponseOptions.ALREADY_AGREED:
@@ -30,23 +35,19 @@ export const getViewOptionsBeforeDeadlineTask = (claim: Claim, claimId: string, 
       break;
     case ResponseOptions.REQUEST_REFUSED:
       viewOptionsBeforeDeadlineTask.status = TaskStatus.COMPLETE;
+      if(isDeadlinePassed){
+        viewOptionsBeforeDeadlineTask.url = "#";
+      }
       break;
     case ResponseOptions.NO:
       viewOptionsBeforeDeadlineTask.status = TaskStatus.COMPLETE;
+      if(isDeadlinePassed){
+        viewOptionsBeforeDeadlineTask.url = "#";
+      }
       break;
     default:
       viewOptionsBeforeDeadlineTask.status = TaskStatus.INCOMPLETE;
       break;
-  }
-
-  const isDeadlinePassed = isPastDeadline(claim.respondent1ResponseDeadline);
-
-  if (isDeadlinePassed && viewOptionsBeforeDeadlineTask.status === TaskStatus.COMPLETE && (
-    claim.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS
-    || claim.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED
-    || claim.responseDeadline?.option === ResponseOptions.NO
-  )) {
-    viewOptionsBeforeDeadlineTask.url = "#";
   }
 
   return viewOptionsBeforeDeadlineTask;
