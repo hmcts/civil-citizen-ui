@@ -35,11 +35,15 @@ describe('i18n test - Dashboard', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
   const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
-
+  const civilServiceUrl = config.get<string>('services.civilService.url');
+  const data = require('../../../utils/mocks/defendantClaimsMock.json');
   beforeEach(() => {
-    nock('http://localhost:8765')
-      .get('/cases')
-      .reply(200, []);
+    nock(civilServiceUrl)
+      .get('/cases/defendant/123')
+      .reply(200, {data: data});
+    nock(civilServiceUrl)
+      .get('/cases/claimant/123')
+      .reply(200, {data: data});
     nock('http://localhost:5000')
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -52,8 +56,8 @@ describe('i18n test - Dashboard', () => {
   });
 
   describe('on GET', () => {
-    test('Authenticate Callback', authenticate());
-    test('should return English dashboard page, when no lang param', async () => {
+    it('Authenticate Callback', authenticate());
+    it('should return English dashboard page, when no lang param', async () => {
       await agent
         .get('/dashboard')
         .expect((res: Response) => {
@@ -61,7 +65,7 @@ describe('i18n test - Dashboard', () => {
           expect(res.text).toContain('Claims made against you');
         });
     });
-    test('should return English dashboard page, when lang param is en', async () => {
+    it('should return English dashboard page, when lang param is en', async () => {
       await agent
         .get('/dashboard/?lang=en')
         .expect((res: Response) => {
@@ -69,7 +73,7 @@ describe('i18n test - Dashboard', () => {
           expect(res.text).toContain('Claims made against you');
         });
     });
-    test('should return Welsh dashboard page, when lang param is cy', async () => {
+    it('should return Welsh dashboard page, when lang param is cy', async () => {
       await agent
         .get('/dashboard/?lang=cy')
         .expect((res: Response) => {

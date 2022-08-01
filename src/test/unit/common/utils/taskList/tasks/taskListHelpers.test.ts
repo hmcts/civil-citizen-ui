@@ -2,6 +2,8 @@ import {Claim} from '../../../../../../main/common/models/claim';
 import {
   financialDetailsShared,
   hasContactPersonAndCompanyPhone,
+  hasCorrespondenceAndPrimaryAddress,
+  hasDateOfBirthIfIndividual,
   isCounterpartyCompany,
   isCounterpartyIndividual,
   isFullDefenceAndNotCounterClaim,
@@ -18,6 +20,7 @@ import {CompanyTelephoneNumber} from '../../../../../../main/common/form/models/
 import {ResponseType} from '../../../../../../main/common/form/models/responseType';
 import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
 import RejectAllOfClaimType from '../../../../../../main/common/form/models/rejectAllOfClaimType';
+import { YesNo } from '../../../../../../main/common/form/models/yesNo';
 
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Respondent = {
@@ -253,6 +256,67 @@ describe('Task List Helpers', () => {
       caseData.rejectAllOfClaim = new RejectAllOfClaim();
       caseData.rejectAllOfClaim.option = RejectAllOfClaimType.ALREADY_PAID;
       expect(isFullDefenceAndNotCounterClaim(caseData)).toEqual(true);
+    });
+  });
+
+  describe('hasDateOfBirthIfIndividual helper', () => {
+    it('should return false if individual', () => {
+      caseData.respondent1 = new Respondent();
+      caseData.respondent1.type = CounterpartyType.INDIVIDUAL;
+      expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(false);
+    });
+
+    it('should return true if individual and has dateOfBirth', () => {
+      caseData.respondent1 = new Respondent();
+      caseData.respondent1.type = CounterpartyType.INDIVIDUAL;
+      caseData.respondent1.dateOfBirth = new Date();
+      expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(true);
+    });
+
+    it('should return true if is not individual', () => {
+      caseData.respondent1 = new Respondent();
+      caseData.respondent1.type = CounterpartyType.ORGANISATION;
+      expect(hasDateOfBirthIfIndividual(caseData.respondent1)).toEqual(true);
+    });
+  });
+
+  describe('hasCorrespondenceAndPrimaryAddress helper', () => {
+    const adress = {
+      County: 'test',
+      Country: 'test',
+      PostCode: 'test',
+      PostTown: 'test',
+      AddressLine1: 'test',
+      AddressLine2: 'test',
+      AddressLine3: 'test',
+    };
+
+    it('should return false if only has primaryAdress', () => {
+      caseData.respondent1 = new Respondent();
+      caseData.respondent1.primaryAddress = adress;
+      expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(false);
+    });
+
+    it('should return false if has primaryAdress, YES and doesnt has correspondenceAdress', () => {
+      caseData.respondent1 = new Respondent();
+      caseData.respondent1.primaryAddress = adress;
+      caseData.respondent1.postToThisAddress = YesNo.YES;
+      expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(false);
+    });
+
+    it('should return true if has primaryAdress and NO', () => {
+      caseData.respondent1 = new Respondent();
+      caseData.respondent1.primaryAddress = adress;
+      caseData.respondent1.postToThisAddress = YesNo.NO;
+      expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(true);
+    });
+    
+    it('should return true if has primaryAdress, YES and has correspondenceAdress', () => {
+      caseData.respondent1 = new Respondent();
+      caseData.respondent1.primaryAddress = adress;
+      caseData.respondent1.postToThisAddress = YesNo.YES;
+      caseData.respondent1.correspondenceAddress = adress;
+      expect(hasCorrespondenceAndPrimaryAddress(caseData.respondent1)).toEqual(true);
     });
   });
 });

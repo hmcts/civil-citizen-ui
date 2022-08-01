@@ -31,7 +31,7 @@ describe('rejectAllOfClaim', () => {
   });
 
   describe('on Get', () => {
-    test('should return rejectAllOfClaim page successfully', async () => {
+    it('should return rejectAllOfClaim page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
         .expect((res) => {
@@ -40,7 +40,7 @@ describe('rejectAllOfClaim', () => {
         });
     });
 
-    test('should return rejectAllOfClaim page successfully', async () => {
+    it('should return rejectAllOfClaim page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaimUnemploymentRetired;
       const header = 'Why do you believe you don’t owe Mr. Jan Clark any money?';
       await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
@@ -50,7 +50,7 @@ describe('rejectAllOfClaim', () => {
         });
     });
 
-    test('should return rejectAllOfClaim page successfully', async () => {
+    it('should return rejectAllOfClaim page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const header = 'Why do you believe you don’t owe Mr. Jan Clark any money?';
       await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
@@ -60,7 +60,7 @@ describe('rejectAllOfClaim', () => {
         });
     });
 
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_REJECT_ALL_CLAIM_URL)
@@ -72,7 +72,7 @@ describe('rejectAllOfClaim', () => {
   });
 
   describe('on Post', () => {
-    test('should return error message when any option is selected', async () => {
+    it('should return error message when any option is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_REJECT_ALL_CLAIM_URL)
         .send()
@@ -83,7 +83,7 @@ describe('rejectAllOfClaim', () => {
         });
     });
 
-    test('should redirect to claim task list page option DISPUTE is selected', async () => {
+    it('should redirect to claim task list page option DISPUTE is selected', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app).post(CITIZEN_REJECT_ALL_CLAIM_URL)
         .send({option: RejectAllOfClaimType.DISPUTE})
@@ -93,7 +93,7 @@ describe('rejectAllOfClaim', () => {
         });
     });
 
-    test('should redirect to claim task list page option ALREADY_PAID is selected', async () => {
+    it('should redirect to claim task list page option ALREADY_PAID is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(CITIZEN_REJECT_ALL_CLAIM_URL)
         .send({option: RejectAllOfClaimType.ALREADY_PAID})
@@ -103,7 +103,7 @@ describe('rejectAllOfClaim', () => {
         });
     });
 
-    test('should redirect to send response by email page option COUNTER_CLAIM is selected', async () => {
+    it('should redirect to send response by email page option COUNTER_CLAIM is selected', async () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app).post(CITIZEN_REJECT_ALL_CLAIM_URL)
         .send({option: RejectAllOfClaimType.COUNTER_CLAIM})
@@ -113,7 +113,7 @@ describe('rejectAllOfClaim', () => {
         });
     });
 
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_REJECT_ALL_CLAIM_URL)

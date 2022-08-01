@@ -11,7 +11,6 @@ import {
 } from '../../../../../../../../main/common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 
-
 jest.mock('../../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../../main/modules/draft-store/draftStoreService');
 

@@ -7,7 +7,6 @@ import {CounterpartyType} from '../../../../../../../main/common/models/counterp
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {CompanyTelephoneNumber} from '../../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
 
-
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/i18n');

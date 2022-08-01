@@ -7,7 +7,8 @@ const nock = require('nock');
 const session = require('supertest-session');
 const citizenRoleToken: string = config.get('citizenRoleToken');
 const testSession = session(app);
-
+const civilServiceUrl = config.get<string>('services.civilService.url');
+const data = require('../../../../../utils/mocks/defendantClaimsMock.json');
 jest.mock('../../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
@@ -30,13 +31,18 @@ describe('Dashboard page', () => {
     nock(serviceAuthProviderUrl)
       .post('/lease')
       .reply(200, {});
+    nock(civilServiceUrl)
+      .get('/cases/defendant/undefined')
+      .reply(200, {data: data});
+    nock(civilServiceUrl)
+      .get('/cases/claimant/undefined')
+      .reply(200, {data: data});
     nock(draftStoreUrl)
       .get('/drafts')
       .reply(200, {});
   });
 
   describe('on GET', () => {
-
     beforeEach((done) => {
       testSession
         .get('/oauth2/callback')
@@ -50,7 +56,7 @@ describe('Dashboard page', () => {
         });
     });
 
-    test('should return dashboard page in english', async () => {
+    it('should return dashboard page in english', async () => {
       await testSession
         .get(DASHBOARD_URL + '?lang=en')
         .expect((res: Response) => {
@@ -60,7 +66,7 @@ describe('Dashboard page', () => {
         });
     });
 
-    test('should return dashboard page in cymraeg', async () => {
+    it('should return dashboard page in cymraeg', async () => {
       await testSession
         .get(DASHBOARD_URL + '?lang=cy')
         .expect((res: Response) => {

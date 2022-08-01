@@ -40,7 +40,6 @@ describe('Send your response by email View', () => {
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
       paragraphs = htmlDocument.getElementsByClassName(govukBodyClass);
-
     });
 
     it('should display title and description', () => {

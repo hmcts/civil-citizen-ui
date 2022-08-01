@@ -5,8 +5,6 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 
-
-
 @ValidatorConstraint()
 export class AtLeastOnePopulatedRowConstraint implements ValidatorConstraintInterface {
 

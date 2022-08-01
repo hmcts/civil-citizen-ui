@@ -78,8 +78,9 @@ import vulnerabilityController from './features/directionsQuestionnaire/vulnerab
 import whyDoYouDisagreeFullRejectionController
   from './features/response/admission/fullRejection/whyDoYouDisagreeFullRejectionController';
 import documentDownloadController from './features/document/documentDownloadController';
-import responseDeadlineOptionsController from './features/response/responseDeadlineOptionsController';
+import responseDeadlineOptionsController from './features/response/responseDeadline/responseDeadlineOptionsController';
 import understandingYourOptionsController from './features/response/understandingYourOptionsController';
+import newDeadlineResponseController from './features/response/responseDeadline/newResponseDeadlineController';
 import requestMoreTimeController from './features/response/requestMoreTimeController';
 import agreedResponseDeadlineController from './features/response/responseDeadline/agreedResponseDeadlineController';
 
@@ -158,4 +159,5 @@ export default [
   responseDeadlineOptionsController,
   requestMoreTimeController,
   agreedResponseDeadlineController,
+  newDeadlineResponseController,
 ];

@@ -20,7 +20,8 @@ const request = require('supertest');
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
 const testSession = session(app);
-
+const civilServiceUrl = config.get<string>('services.civilService.url');
+const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
@@ -61,7 +62,13 @@ describe('Response - Check answers', () => {
     mockGetSummarySections.mockImplementation(() => {
       return createClaimWithBasicRespondentDetails();
     });
-    nock('http://localhost:4000')
+    nock(civilServiceUrl)
+      .get('/cases/defendant/123')
+      .reply(200, {data: data});
+    nock(civilServiceUrl)
+      .get('/cases/claimant/123')
+      .reply(200, {data: data});
+    nock(civilServiceUrl)
       .get('/cases/defendant/undefined/response/submit/undefined/token/')
       .reply(200, {});
   });
@@ -102,7 +109,7 @@ describe('Response - Check answers', () => {
       expect(fullName[0].textContent?.trim()).toBe(PARTY_NAME);
 
     });
-    test('should pass english translation via query', async () => {
+    it('should pass english translation via query', async () => {
       await testSession.get(respondentCheckAnswersUrl)
         .query({lang: 'en'})
         .expect((res: Response) => {
@@ -110,7 +117,7 @@ describe('Response - Check answers', () => {
           expect(res.text).toContain(checkYourAnswerEng);
         });
     });
-    test('should pass cy translation via query', async () => {
+    it('should pass cy translation via query', async () => {
       await testSession.get(respondentCheckAnswersUrl)
         .query({lang: 'cy'})
         .expect((res: Response) => {
@@ -132,7 +139,7 @@ describe('Response - Check answers', () => {
     });
   });
   describe('on Post', () => {
-    test('should return errors when form is incomplete', async () => {
+    it('should return errors when form is incomplete', async () => {
       const data = {signed: ''};
       await request(app)
         .post(respondentCheckAnswersUrl)
@@ -142,7 +149,7 @@ describe('Response - Check answers', () => {
           expect(res.text).toContain(STATEMENT_OF_TRUTH_REQUIRED_MESSAGE);
         });
     });
-    test('should return 500 when error in service', async () => {
+    it('should return 500 when error in service', async () => {
       mockSaveStatementOfTruth.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });

@@ -391,7 +391,6 @@ describe('Claim isChildrenDisabled', () => {
   });
 });
 
-
 describe('Claim get claimant and defendant names by type', () => {
   const claimCompany =  Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantCompany)).case_data);
   const claimIndividual =  Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantIndividual)).case_data);
@@ -667,7 +666,7 @@ describe('Documents', () => {
   });
 
   describe('isSystemGeneratedCaseDocumentsAvailable', () => {
-    
+
     it('should return false with empty claim', () => {
       //Given
       const claim = new Claim();

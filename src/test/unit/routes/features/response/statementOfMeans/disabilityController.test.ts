@@ -24,7 +24,7 @@ describe('Disability', () => {
   });
 
   describe('on GET', () => {
-    test('should return citizen disability page', async () => {
+    it('should return citizen disability page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_DISABILITY_URL)
@@ -33,7 +33,7 @@ describe('Disability', () => {
           expect(res.text).toContain(TestMessages.ARE_YOU_DISABLED);
         });
     });
-    test('should show disability page when haven´t statementOfMeans', async () => {
+    it('should show disability page when haven´t statementOfMeans', async () => {
       app.locals.draftStoreClient = mockCivilClaimOptionNo;
       await request(app)
         .get(CITIZEN_DISABILITY_URL)
@@ -42,7 +42,7 @@ describe('Disability', () => {
           expect(res.status).toBe(200);
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_DISABILITY_URL)
@@ -54,7 +54,7 @@ describe('Disability', () => {
   });
 
   describe('on POST', () => {
-    test('should redirect page when "no"', async () => {
+    it('should redirect page when "no"', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
@@ -64,7 +64,7 @@ describe('Disability', () => {
           expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
         });
     });
-    test('should return error on incorrect input', async () => {
+    it('should return error on incorrect input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
@@ -74,7 +74,7 @@ describe('Disability', () => {
           expect(res.text).toContain(VALID_YES_NO_OPTION);
         });
     });
-    test('should redirect page when "no" and haven´t statementOfMeans', async () => {
+    it('should redirect page when "no" and haven´t statementOfMeans', async () => {
       app.locals.draftStoreClient = mockCivilClaimOptionNo;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
@@ -84,7 +84,7 @@ describe('Disability', () => {
           expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
         });
     });
-    test('should redirect page when "yes"', async () => {
+    it('should redirect page when "yes"', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
@@ -94,7 +94,7 @@ describe('Disability', () => {
           expect(res.header.location).toEqual(CITIZEN_SEVERELY_DISABLED_URL);
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_DISABILITY_URL)

@@ -9,7 +9,6 @@ import {NumberOfChildren} from '../../../../../common/form/models/statementOfMea
 const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('childrenDisabilityService');
 
-
 export function setChildrenDisabilityServiceLogger(winstonLogger: winston.Logger) {
   logger = winstonLogger;
 }
@@ -32,10 +31,8 @@ export const isDefendantDisabledButNotSeverely = (statementOfMeans: StatementOfM
 };
 
 export const isDefendantPartnerDisabled = (statementOfMeans: StatementOfMeans): boolean => {
-  // Note that no ? needed on statementOfMeans in 2nd condition, as false && means it's never evaluated
   return statementOfMeans?.cohabiting?.option === YesNo.YES && statementOfMeans.partnerDisability?.option === YesNo.YES;
 };
-
 
 export const getChildrenDisability = async (claimId: string): Promise<ChildrenDisability> => {
   try {
@@ -68,8 +65,3 @@ export const saveChildrenDisability = async (claimId: string, childrenDisability
     throw error;
   }
 };
-
-
-
-
-

@@ -16,7 +16,6 @@ import {mockClaim} from '../../../../../../../utils/mockClaim';
 import {ResponseType} from '../../../../../../../../main/common/form/models/responseType';
 import {Claim} from '../../../../../../../../main/common/models/claim';
 
-
 jest.mock('../../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -30,7 +29,7 @@ const DRAFT_STORE_SAVE_ERROR = 'draft store save error';
 
 describe('Payment Date service', () => {
   describe('Serialisation', () => {
-    test('should keep the form input values unchanged after validation', async () => {
+    it('should keep the form input values unchanged after validation', async () => {
       //Given
       const paymentDate = new PaymentDate('2040', '1', '1');
       //Then
@@ -38,7 +37,7 @@ describe('Payment Date service', () => {
       expect(paymentDate.month).toBe(1);
       expect(paymentDate.year).toBe(2040);
     });
-    test('should keep the form input values unchanged after validation', async () => {
+    it('should keep the form input values unchanged after validation', async () => {
       //Given
       const paymentDate = new PaymentDate('--', '-', '&');
       //Then
@@ -52,7 +51,7 @@ describe('Payment Date service', () => {
     afterEach(() => {
       jest.clearAllMocks();
     });
-    test('should return empty PaymentDate when nothing retrieved', async () => {
+    it('should return empty PaymentDate when nothing retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -64,7 +63,7 @@ describe('Payment Date service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(paymentDate).toBeUndefined();
     });
-    test('should return undefined when case_data, but no paymentDate, retrieved', async () => {
+    it('should return undefined when case_data, but no paymentDate, retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -76,7 +75,7 @@ describe('Payment Date service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(paymentDate).toBeUndefined();
     });
-    test('should return PaymentDate when date retrieved', async () => {
+    it('should return PaymentDate when date retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -98,7 +97,7 @@ describe('Payment Date service', () => {
       expect(paymentDate).toEqual(mockPaymentDate);
     });
 
-    test('should save paymentDate when nothing in Redis draft store', async () => {
+    it('should save paymentDate when nothing in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
@@ -112,7 +111,7 @@ describe('Payment Date service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
 
-    test('should return empty PaymentDate when nothing retrieved partAdmission', async () => {
+    it('should return empty PaymentDate when nothing retrieved partAdmission', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -124,7 +123,7 @@ describe('Payment Date service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(paymentDate).toBeUndefined();
     });
-    test('should return undefined when case_data, but no paymentDate, retrieved partAdmission', async () => {
+    it('should return undefined when case_data, but no paymentDate, retrieved partAdmission', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -136,7 +135,7 @@ describe('Payment Date service', () => {
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(paymentDate).toBeUndefined();
     });
-    test('should return PaymentDate when date retrieved partAdmission', async () => {
+    it('should return PaymentDate when date retrieved partAdmission', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -158,7 +157,7 @@ describe('Payment Date service', () => {
       expect(paymentDate).toEqual(mockPaymentDate);
     });
 
-    test('should save paymentDate when case_data, but no paymentDate, in Redis draft store', async () => {
+    it('should save paymentDate when case_data, but no paymentDate, in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {case_data: {}};
@@ -172,7 +171,7 @@ describe('Payment Date service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
 
-    test('should add payment intention to the partial admission object if partial admission is already defined', async () => {
+    it('should add payment intention to the partial admission object if partial admission is already defined', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {partialAdmission: {foo: 'blah'}};
       });
@@ -183,7 +182,7 @@ describe('Payment Date service', () => {
       expect(spySaveDraftClaim).toHaveBeenCalledWith('claimId', expectedParam);
     });
 
-    test('should initialise partial admission object if partial admission is not defined', async () => {
+    it('should initialise partial admission object if partial admission is not defined', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {};
       });
@@ -194,7 +193,7 @@ describe('Payment Date service', () => {
       expect(spySaveDraftClaim).toHaveBeenCalledWith('claimId', expectedParam);
     });
 
-    test('should save paymentDate when case_data, but no paymentDate, in Redis draft store partAdmission', async () => {
+    it('should save paymentDate when case_data, but no paymentDate, in Redis draft store partAdmission', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {case_data: {}};
@@ -208,7 +207,7 @@ describe('Payment Date service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
 
-    test('should save paymentDate when claim in Redis draft store fullAdmission', async () => {
+    it('should save paymentDate when claim in Redis draft store fullAdmission', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return mockClaim;
@@ -222,7 +221,7 @@ describe('Payment Date service', () => {
       expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
     });
 
-    test('should save paymentDate when claim in Redis draft store partAdmission', async () => {
+    it('should save paymentDate when claim in Redis draft store partAdmission', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return mockClaim;
@@ -238,7 +237,7 @@ describe('Payment Date service', () => {
   });
 
   describe('Validation', () => {
-    test('should raise an error if nothing specified for date', async () => {
+    it('should raise an error if nothing specified for date', async () => {
       //Given
       paymentDate = new PaymentDate(undefined, undefined, undefined);
       //When
@@ -254,7 +253,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[2].constraints).toEqual({max: VALID_YEAR});
 
     });
-    test('should raise an error if no year', async () => {
+    it('should raise an error if no year', async () => {
       //Given
       paymentDate = new PaymentDate(undefined, '12', '1');
       //When
@@ -265,7 +264,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('year');
       expect(form.getErrors()[0].constraints).toEqual({max: VALID_YEAR});
     });
-    test('should raise an error if no month', async () => {
+    it('should raise an error if no month', async () => {
       //Given
       paymentDate = new PaymentDate('9999', undefined, '1');
       //When
@@ -276,7 +275,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('month');
       expect(form.getErrors()[0].constraints).toEqual({min: VALID_MONTH, max: VALID_MONTH});
     });
-    test('should raise an error if no day', async () => {
+    it('should raise an error if no day', async () => {
       //Given
       paymentDate = new PaymentDate('9999', '12', undefined);
       //When
@@ -287,7 +286,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('day');
       expect(form.getErrors()[0].constraints).toEqual({min: VALID_DAY, max: VALID_DAY});
     });
-    test('should raise an error asking for 4 digits, if year is only 1 digit', async () => {
+    it('should raise an error asking for 4 digits, if year is only 1 digit', async () => {
       //Given
       paymentDate = new PaymentDate('2', '12', '1');
       //When
@@ -299,7 +298,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: VALID_FOUR_DIGIT_YEAR});
     });
     test;
-    test('should raise an error asking for 4 digits, if year is only 2 digits', async () => {
+    it('should raise an error asking for 4 digits, if year is only 2 digits', async () => {
       //Given
       paymentDate = new PaymentDate('23', '12', '1');
       //When
@@ -310,7 +309,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('year');
       expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: VALID_FOUR_DIGIT_YEAR});
     });
-    test('should raise an error asking for 4 digits, if year is only 3 digits', async () => {
+    it('should raise an error asking for 4 digits, if year is only 3 digits', async () => {
       //Given
       paymentDate = new PaymentDate('202', '12', '1');
       //When
@@ -321,7 +320,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('year');
       expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: VALID_FOUR_DIGIT_YEAR});
     });
-    test('should raise an error if date in the past', async () => {
+    it('should raise an error if date in the past', async () => {
       //Given
       paymentDate = new PaymentDate('1990', '12', '1');
       //When
@@ -332,7 +331,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('date');
       expect(form.getErrors()[0].constraints).toEqual({customDate: VALID_DATE_NOT_IN_PAST});
     });
-    test('should raise an error if month greater than 12', async () => {
+    it('should raise an error if month greater than 12', async () => {
       //Given
       paymentDate = new PaymentDate('2040', '13', '1');
       //When
@@ -343,7 +342,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('month');
       expect(form.getErrors()[0].constraints).toEqual({max: VALID_MONTH});
     });
-    test('should raise an error if month less than 1', async () => {
+    it('should raise an error if month less than 1', async () => {
       //Given
       paymentDate = new PaymentDate('2040', '0', '1');
       //When
@@ -354,7 +353,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('month');
       expect(form.getErrors()[0].constraints).toEqual({min: VALID_MONTH});
     });
-    test('should raise an error if day greater than 31', async () => {
+    it('should raise an error if day greater than 31', async () => {
       //Given
       paymentDate = new PaymentDate('2040', '12', '32');
       //When
@@ -365,7 +364,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('day');
       expect(form.getErrors()[0].constraints).toEqual({max: VALID_DAY});
     });
-    test('should raise an error if day less than 1', async () => {
+    it('should raise an error if day less than 1', async () => {
       //Given
       paymentDate = new PaymentDate('2040', '12', '-1');
       //When
@@ -376,7 +375,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('day');
       expect(form.getErrors()[0].constraints).toEqual({min: VALID_DAY});
     });
-    test('should not raise an error if date in future', async () => {
+    it('should not raise an error if date in future', async () => {
       //Given
       paymentDate = new PaymentDate('9999', '12', '31');
       //When
@@ -385,7 +384,7 @@ describe('Payment Date service', () => {
       //Then
       expect(form.getErrors().length).toBe(0);
     });
-    test('should raise an error if yesterday specified for date', async () => {
+    it('should raise an error if yesterday specified for date', async () => {
       //Given
       const yesterday: Date = new Date(Date.now() - 1000 * 60 * 60 * 24);
       paymentDate = new PaymentDate(yesterday.getFullYear().toString(), (yesterday.getMonth() + 1).toString(), yesterday.getDate().toString());
@@ -397,7 +396,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].property).toBe('date');
       expect(form.getErrors()[0].constraints).toEqual({customDate: VALID_DATE_NOT_IN_PAST});
     });
-    test('should not raise an error if today specified for date', async () => {
+    it('should not raise an error if today specified for date', async () => {
       //Given
       const today: Date = new Date(Date.now());
       paymentDate = new PaymentDate(today.getFullYear().toString(), (today.getMonth() + 1).toString(), today.getDate().toString());
@@ -413,7 +412,7 @@ describe('Payment Date service', () => {
       jest.clearAllMocks();
     });
 
-    test('should throw error when retrieving data from draft store fails', async () => {
+    it('should throw error when retrieving data from draft store fails', async () => {
       //When
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(DRAFT_STORE_GET_ERROR);
@@ -423,7 +422,7 @@ describe('Payment Date service', () => {
         paymentDateService.getPaymentDate('claimId', ResponseType.FULL_ADMISSION)).rejects.toThrow(DRAFT_STORE_GET_ERROR);
     });
 
-    test('should throw error when saving data to draft store fails', async () => {
+    it('should throw error when saving data to draft store fails', async () => {
       //When
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {case_data: {paymentDate: {}}};

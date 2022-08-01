@@ -3,16 +3,19 @@ import {
   getSummarySections,
 } from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {
-  CITIZEN_RESPONSE_TYPE_URL,
   CITIZEN_ALREADY_PAID_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,
+  CITIZEN_RESPONSE_TYPE_URL,
 } from '../../../../../../../main/routes/urls';
 import {
   ceateClaimWithPartialAdmission,
-  createClaimWithRespondentDetailsWithPaymentOption,
   createClaimWithFullRejection,
+  createClaimWithRespondentDetailsWithPaymentOption,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import PaymentOptionType from '../../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {
+  PaymentIntention,
+} from '../../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import RejectAllOfClaimType from '../../../../../../../main/common/form/models/rejectAllOfClaimType';
@@ -24,7 +27,6 @@ jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
-
 
 describe('Response To Claim', () => {
   const resultExpected = (summarySections: SummarySections) => {
@@ -57,7 +59,7 @@ describe('Response To Claim', () => {
 
   it('should return paid the claimant on response to claim when response detail section exists', async () => {
     //Given
-    const claim = ceateClaimWithPartialAdmission(YesNo.YES);
+    const claim = ceateClaimWithPartialAdmission(YesNo.YES, PaymentOptionType.INSTALMENTS);
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
@@ -74,6 +76,10 @@ describe('Response To Claim', () => {
     //Given
     const claim = ceateClaimWithPartialAdmission(YesNo.NO);
     //When
+    if (claim.partialAdmission) {
+      claim.partialAdmission.paymentIntention = new PaymentIntention();
+      claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+    }
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION_PART_ADMISSION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT');
