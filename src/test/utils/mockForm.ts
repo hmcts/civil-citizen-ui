@@ -60,6 +60,12 @@ export const buildDebtFormYesWithTotalOwnedInvalid = () : Debts => {
   return new Debts(YesNo.YES,items);
 };
 
+export const buildDebtFormYesWithTotalOwnedInvalidAndNoMonthlyPaymentsAndNoDebt = () : Debts => {
+  const items : DebtItems[] = [];
+  items.push(new DebtItems('','-10',''));
+  return new Debts(YesNo.YES,items);
+};
+
 export const buildDebtFormYesWithTotalOwnedZero = () : Debts => {
   const items : DebtItems[] = [];
   items.push(new DebtItems('test', '0', '1.00'));
