@@ -88,3 +88,4 @@ export const RESPONSE_DEADLINE_OPTIONS_URL = `${BASE_CASE_RESPONSE_URL}/response
 export const AGREED_T0_MORE_TIME_URL = `${BASE_CASE_RESPONSE_URL}/agreed-to-more-time`;
 export const REQUEST_MORE_TIME_URL = `${BASE_CASE_RESPONSE_URL}/request-more-time`;
 export const NEW_RESPONSE_DEADLINE_URL =  `${BASE_CASE_RESPONSE_URL}/new-response-deadline`;
+export const DETERMINATION_WITHOUT_HEARING_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/determination-without-hearing`;
