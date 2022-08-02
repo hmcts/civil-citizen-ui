@@ -104,7 +104,7 @@
           <p class="govuk-body">
             <strong>{{ t('PAGES.REPAYMENT_PLAN.LENGTH') }}</strong>
           </p>
-          <p class="govuk-body repayment-length"></p>
+          <p class="govuk-body repayment-length"> <a class="govuk-body">HOLA</a>
         </div>
       </div>
     </div>
@@ -132,7 +132,7 @@
           } if (form.hasFieldError('firstRepaymentDate') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
           items: [
             {
-              name: "day",
+              name: t('COMMON.DAY'),
               id: "day",
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-2",
               autocomplete: "bday-day",
@@ -140,7 +140,7 @@
               max: 31
             },
             {
-              name: "month",
+              name: t('COMMON.MONTH'),
               id: "month",
               classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-2",
               autocomplete: "bday-month",
@@ -148,7 +148,7 @@
               max: 12
             },
             {
-              name: "year",
+              name: t('COMMON.YEAR'),
               id: "year",
               classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') or form.hasFieldError('firstRepaymentDate') else "govuk-input--width-4",
               autocomplete: "bday-year",
