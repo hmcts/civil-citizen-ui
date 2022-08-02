@@ -1,6 +1,6 @@
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim} from '../modules/draft-store/draftStoreService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
 import * as express from 'express';
