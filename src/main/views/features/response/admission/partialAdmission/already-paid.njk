@@ -17,8 +17,8 @@
         {% set errors = form.getErrors() %}
         {% if form.hasErrors() %}
           {{ govukErrorSummary({
-            'titleText': t('ERRORS.THERE_WAS_A_PROBLEM'),
-            'errorList': errors
+            titleText: t('ERRORS.THERE_WAS_A_PROBLEM'),
+            errorList: translateErrors(errors, t)
           }) }}
         {% endif %}
       </div>
