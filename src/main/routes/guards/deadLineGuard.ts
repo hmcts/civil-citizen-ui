@@ -7,7 +7,7 @@ import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
 import {getViewOptionsBeforeDeadlineTask} from '../../common/utils/taskList/tasks/viewOptionsBeforeDeadline';
 import {TaskStatus} from '../../common/models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
-import {CLAIM_TASK_LIST_URL} from 'routes/urls';
+import {CLAIM_TASK_LIST_URL} from '../../routes/urls';
 
 export const deadLineGuard = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
@@ -27,21 +27,21 @@ const isUnauthorized = async (req: express.Request) => {
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
   const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, req.params.id, 'en');
 
-  if (isDeadlinePassed && viewOptionsBeforeDeadlineTask.status === TaskStatus.COMPLETE &&
-    ((caseData.responseDeadline?.option === ResponseOptions.YES && caseData.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS)
-      || caseData.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED
-      || caseData.responseDeadline?.option === ResponseOptions.NO)
-  ) {
+  const isTaskComplete = viewOptionsBeforeDeadlineTask.status === TaskStatus.COMPLETE ? true : false; 
+  const isDeadlineExtended = caseData.responseDeadline?.option === ResponseOptions.ALREADY_AGREED && caseData.responseDeadline?.agreedResponseDeadline; 
+  const isMoreThan28Days = caseData.responseDeadline?.option === ResponseOptions.YES && caseData.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS; 
+  const isRequestRefused = caseData.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED ? true : false; 
+  const isResponseNo = caseData.responseDeadline?.option === ResponseOptions.NO ? true : false; 
+  
+  if (isDeadlinePassed && isTaskComplete && (isMoreThan28Days || isRequestRefused || isResponseNo)) {
     return true;
   }
 
-  if (viewOptionsBeforeDeadlineTask.status === TaskStatus.COMPLETE
-    && caseData.responseDeadline?.option === ResponseOptions.ALREADY_AGREED
-    && caseData.responseDeadline?.agreedResponseDeadline) {
+  if (isTaskComplete && isDeadlineExtended) {
     return true;
   }
 
-  if (isDeadlinePassed && viewOptionsBeforeDeadlineTask.status === TaskStatus.INCOMPLETE) {
+  if (isDeadlinePassed && !isTaskComplete) {
     return true;
   }
 
