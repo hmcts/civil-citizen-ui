@@ -11,7 +11,6 @@ import {Claim} from '../../../../../../../main/common/models/claim';
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 
-
 describe('Bank account service', () => {
   it('should return empty bank account rows when data for bank accounts does not exist draft store', async () => {
     //Given

@@ -3,7 +3,6 @@ import {
   saveSupportRequired,
 } from '../../../../../main/services/features/directionsQuestionnaire/supportRequiredService';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-
 import {
   NO_LANGUAGE_ENTERED,
   TEXT_TOO_LONG,
@@ -21,7 +20,7 @@ const DRAFT_STORE_SAVE_ERROR = 'draft store save error';
 
 describe('Support Required service', () => {
   describe('Validation', () => {
-    test('should not raise any error if no support option selected', async () => {
+    it('should not raise any error if no support option selected', async () => {
       //Given
       const supportRequired = new SupportRequired(false, undefined, false, undefined, false, false ,false, undefined);
       //When
@@ -30,7 +29,7 @@ describe('Support Required service', () => {
       //Then
       expect(form.getErrors().length).toBe(0);
     });
-    test('should raise an error if languageSelected is true and languageInterpreted undefined', async () => {
+    it('should raise an error if languageSelected is true and languageInterpreted undefined', async () => {
       //Given
       const supportRequired = new SupportRequired(true, undefined, false, undefined, false, false ,false, undefined);
       //When
@@ -41,7 +40,7 @@ describe('Support Required service', () => {
       expect(form.getErrors()[0].property).toBe('languageInterpreted');
       expect(form.getErrors()[0].constraints).toEqual({isDefined: NO_LANGUAGE_ENTERED, maxLength: TEXT_TOO_LONG, isNotEmpty : NO_LANGUAGE_ENTERED});
     });
-    test('should raise an error if languageSelected is true and languageInterpreted empty', async () => {
+    it('should raise an error if languageSelected is true and languageInterpreted empty', async () => {
       //Given
       const supportRequired = new SupportRequired(true, '', false, undefined, false, false ,false, undefined);
       //When
@@ -52,7 +51,7 @@ describe('Support Required service', () => {
       expect(form.getErrors()[0].property).toBe('languageInterpreted');
       expect(form.getErrors()[0].constraints).toEqual({isNotEmpty: NO_LANGUAGE_ENTERED});
     });
-    test('should raise no error if languageSelected true and languageInterpreted is specified', async () => {
+    it('should raise no error if languageSelected true and languageInterpreted is specified', async () => {
       //Given
       const supportRequired = new SupportRequired(true, 'Croatian', false, undefined, false, false ,false, undefined);
       //When
@@ -66,7 +65,7 @@ describe('Support Required service', () => {
         jest.clearAllMocks();
       });
 
-      test('should throw error when retrieving data from draft store fails', async () => {
+      it('should throw error when retrieving data from draft store fails', async () => {
       //When
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           throw new Error(DRAFT_STORE_GET_ERROR);
@@ -76,7 +75,7 @@ describe('Support Required service', () => {
           getSupportRequired('claimId')).rejects.toThrow(DRAFT_STORE_GET_ERROR);
       });
 
-      test('should return empty SupportRequired when case_data, but no supportRequired, retrieved', async () => {
+      it('should return empty SupportRequired when case_data, but no supportRequired, retrieved', async () => {
         //Given
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           return {case_data: {}};
@@ -88,7 +87,7 @@ describe('Support Required service', () => {
         expect(supportRequired).toEqual(new SupportRequired());
       });
 
-      test('should throw error when saving data to draft store fails', async () => {
+      it('should throw error when saving data to draft store fails', async () => {
       //When
         mockGetCaseDataFromDraftStore.mockImplementation(async () => {
           return {case_data: {supportRequired: {}}};

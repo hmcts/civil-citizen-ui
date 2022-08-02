@@ -22,7 +22,6 @@ const today = new Date(Date.now()).toLocaleDateString('en-GB', {
   day: 'numeric', month: 'long', year: 'numeric',
 });
 
-
 export interface HowMuchHaveYouPaidParams {
   amount?: number;
   totalClaimAmount?: number;
@@ -50,7 +49,6 @@ export class HowMuchHaveYouPaid {
   @Min(1, {message: VALID_DAY})
   @Max(31, {message: VALID_DAY})
     day: number;
-
 
   @Min(1, {message: VALID_MONTH})
   @Max(12, {message: VALID_MONTH})

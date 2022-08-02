@@ -5,9 +5,8 @@ import {Claim} from '../../../../common/models/claim';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
 
-const getRepaymentPlanForm = async (claimId: string) => {
+const getRepaymentPlanForm = (claim: Claim) => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
     const totalClaimAmount = claim.totalClaimAmount;
     if (claim.repaymentPlan) {
       const repaymentPlan = claim.repaymentPlan;
@@ -43,7 +42,6 @@ const saveRepaymentPlanData = async (claimId: string, form: RepaymentPlanForm) =
   }
 };
 
-
 const getClaim = async (claimId: string): Promise<Claim> => {
   const claim = await getCaseDataFromStore(claimId);
   if (!claim.repaymentPlan) {
@@ -55,7 +53,6 @@ const getClaim = async (claimId: string): Promise<Claim> => {
   }
   return claim;
 };
-
 
 export {
   getRepaymentPlanForm,

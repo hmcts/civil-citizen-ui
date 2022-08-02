@@ -34,7 +34,7 @@ describe('How Much Have You Paid', () => {
   });
 
   describe('on Exception', () => {
-    test('should return http 500 when has error in the get method', async () => {
+    it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_AMOUNT_YOU_PAID_URL)
@@ -44,7 +44,7 @@ describe('How Much Have You Paid', () => {
         });
     });
 
-    test('should return http 500 when has error in the post method', async () => {
+    it('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
@@ -57,7 +57,7 @@ describe('How Much Have You Paid', () => {
   });
 
   describe('on GET', () => {
-    test('should return how much have you paid page', async () => {
+    it('should return how much have you paid page', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .get(CITIZEN_AMOUNT_YOU_PAID_URL)
@@ -66,7 +66,7 @@ describe('How Much Have You Paid', () => {
           expect(res.text).toContain('How much have you paid the claimant?');
         });
     });
-    test('should return how much have you paid with payment amount loaded from Redis', async () => {
+    it('should return how much have you paid with payment amount loaded from Redis', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_AMOUNT_YOU_PAID_URL)
@@ -81,7 +81,7 @@ describe('How Much Have You Paid', () => {
     });
   });
   describe('on POST', () => {
-    test('should create a new claim if redis gives undefined', async () => {
+    it('should create a new claim if redis gives undefined', async () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
@@ -91,7 +91,7 @@ describe('How Much Have You Paid', () => {
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
         });
     });
-    test('should return errors on no input', async () => {
+    it('should return errors on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
@@ -105,7 +105,7 @@ describe('How Much Have You Paid', () => {
           expect(res.text).toContain(ENTER_PAYMENT_EXPLANATION);
         });
     });
-    test('should return error on date in future', async () => {
+    it('should return error on date in future', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
@@ -115,7 +115,7 @@ describe('How Much Have You Paid', () => {
           expect(res.text).toContain(VALID_DATE_IN_PAST);
         });
     });
-    test('should return error for a 2 digit year', async () => {
+    it('should return error for a 2 digit year', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)
@@ -125,7 +125,7 @@ describe('How Much Have You Paid', () => {
           expect(res.text).toContain(VALID_FOUR_DIGIT_YEAR);
         });
     });
-    test('should redirect to claim task list page on valid amount, date in past, text', async () => {
+    it('should redirect to claim task list page on valid amount, date in past, text', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_AMOUNT_YOU_PAID_URL)

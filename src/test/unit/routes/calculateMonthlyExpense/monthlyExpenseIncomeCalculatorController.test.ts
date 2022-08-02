@@ -8,7 +8,6 @@ jest.mock('.../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
 
-
 describe('Monthly income expense calculator controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -18,7 +17,7 @@ describe('Monthly income expense calculator controller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on POST', () => {
-    test('should calculate amount successfully', async () => {
+    it('should calculate amount successfully', async () => {
       await request(app).post(TOTAL_AMOUNT_CALCULATION_URL)
         .send([{amount: '100', schedule: 'MONTH'}, {amount: '10', schedule: 'MONTH'}])
         .expect((res) => {

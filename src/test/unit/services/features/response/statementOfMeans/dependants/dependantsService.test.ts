@@ -21,7 +21,7 @@ const DRAFT_STORE_SAVE_ERROR = 'draft store save error';
 
 describe('Dependants service', () => {
   describe('Serialisation', () => {
-    test('should set declared to true when Yes option is selected', async () => {
+    it('should set declared to true when Yes option is selected', async () => {
       //Given
       const declared = 'yes';
       //When
@@ -29,7 +29,7 @@ describe('Dependants service', () => {
       //Then
       expect(dependants.declared).toBe(true);
     });
-    test('should set declared to false when `No` option is selected', async () => {
+    it('should set declared to false when `No` option is selected', async () => {
       //Given
       const declared = 'no';
       //When
@@ -37,7 +37,7 @@ describe('Dependants service', () => {
       //Then
       expect(dependants.declared).toBe(false);
     });
-    test('should set declared to undefined when no option is selected', async () => {
+    it('should set declared to undefined when no option is selected', async () => {
       //Given
       const declared: unknown = null;
       //When
@@ -45,7 +45,7 @@ describe('Dependants service', () => {
       //Then
       expect(dependants.declared).toBe(undefined);
     });
-    test('should keep the form input values unchanged after validation', async () => {
+    it('should keep the form input values unchanged after validation', async () => {
       //Given
       const dependants = dependantsService.buildDependants('yes', '0', '0', '0');
       //Then
@@ -54,7 +54,7 @@ describe('Dependants service', () => {
       expect(dependants.numberOfChildren?.between11and15).toBe(0);
       expect(dependants.numberOfChildren?.between16and19).toBe(0);
     });
-    test('should keep the form input values unchanged after validation', async () => {
+    it('should keep the form input values unchanged after validation', async () => {
       //Given
       const dependants = dependantsService.buildDependants('yes', '--', '-', '+');
       //Then
@@ -65,7 +65,7 @@ describe('Dependants service', () => {
     });
   });
   describe('Validation', () => {
-    test('should not raise any error if declared is false and number of children unspecified', async () => {
+    it('should not raise any error if declared is false and number of children unspecified', async () => {
       //Given
       const dependants = new Dependants(false, undefined);
       //When
@@ -73,7 +73,7 @@ describe('Dependants service', () => {
       //Then
       expect(form.getErrors().length).toBe(0);
     });
-    test('should raise any error if declared is true and number of children unspecified', async () => {
+    it('should raise any error if declared is true and number of children unspecified', async () => {
       //Given
       const dependants = new Dependants(true, undefined);
       //When
@@ -81,7 +81,7 @@ describe('Dependants service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
     });
-    test('should raise an error if declared is true and none of the age ranges is specified', async () => {
+    it('should raise an error if declared is true and none of the age ranges is specified', async () => {
       //Given
       const numberOfChildren = new NumberOfChildren(undefined, undefined, undefined);
       const dependants = new Dependants(true, numberOfChildren);
@@ -92,7 +92,7 @@ describe('Dependants service', () => {
       expect(form.getErrors()[0].property).toBe('numberOfChildren');
       expect(form.getErrors()[0].constraints).toEqual({AtLeastOneFieldIsPopulatedConstraint: VALID_ENTER_AT_LEAST_ONE_NUMBER});
     });
-    test('should raise no error if declared true and one age range is specified', async () => {
+    it('should raise no error if declared true and one age range is specified', async () => {
       //Given
       const numberOfChildren = new NumberOfChildren(1, undefined, undefined);
       const dependants = new Dependants(true, numberOfChildren);
@@ -101,7 +101,7 @@ describe('Dependants service', () => {
       //Then
       expect(form.getErrors().length).toBe(0);
     });
-    test('should raise an error if declared true and one age range has a negative value', async () => {
+    it('should raise an error if declared true and one age range has a negative value', async () => {
       //Given
       const numberOfChildren = new NumberOfChildren(-1, undefined, undefined);
       const dependants = new Dependants(true, numberOfChildren);
@@ -114,7 +114,7 @@ describe('Dependants service', () => {
       expect(form.getNestedErrors()[0].property).toBe('numberOfChildren[under11]');
       expect(form.getNestedErrors()[0].constraints).toEqual({min: VALID_POSITIVE_NUMBER});
     });
-    test('should raise an error if declared true and one age range has a decimal value', async () => {
+    it('should raise an error if declared true and one age range has a decimal value', async () => {
       //Given
       const numberOfChildren = new NumberOfChildren(undefined, 1.5, undefined);
       const dependants = new Dependants(true, numberOfChildren);
@@ -127,7 +127,7 @@ describe('Dependants service', () => {
       expect(form.getNestedErrors()[0].property).toBe('numberOfChildren[between11and15]');
       expect(form.getNestedErrors()[0].constraints).toEqual({isInt: VALID_INTEGER});
     });
-    test('should raise 3 errors if declared true and 3 age ranges aren\'t valid', async () => {
+    it('should raise 3 errors if declared true and 3 age ranges aren\'t valid', async () => {
       //Given
       const numberOfChildren = new NumberOfChildren(-1, 1.5, -2);
       const dependants = new Dependants(true, numberOfChildren);
@@ -151,7 +151,7 @@ describe('Dependants service', () => {
       jest.clearAllMocks();
     });
 
-    test('should throw error when retrieving data from draft store fails', async () => {
+    it('should throw error when retrieving data from draft store fails', async () => {
       //When
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(DRAFT_STORE_GET_ERROR);
@@ -161,7 +161,7 @@ describe('Dependants service', () => {
         dependantsService.getDependants('claimId')).rejects.toThrow(DRAFT_STORE_GET_ERROR);
     });
 
-    test('should throw error when saving data to draft store fails', async () => {
+    it('should throw error when saving data to draft store fails', async () => {
       //When
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {case_data: {statementOfMeans: {}}};
@@ -175,20 +175,20 @@ describe('Dependants service', () => {
     });
   });
   describe('Redirection Logic', () => {
-    test('should redirect to other dependants screen', async () => {
+    it('should redirect to other dependants screen', async () => {
       //Given
       const dependants = new Dependants(true);
       //Then
       expect(dependants.hasChildrenBetween16and19()).toBe(false);
     });
-    test('should redirect to dependants education screen when number of children between 16 and 19 is  0', async () => {
+    it('should redirect to dependants education screen when number of children between 16 and 19 is  0', async () => {
       //Given
       const numberOfChildren = new NumberOfChildren(undefined, undefined, 0);
       const dependants = new Dependants(true, numberOfChildren);
       //Then
       expect(dependants.hasChildrenBetween16and19()).toBe(false);
     });
-    test('should redirect to dependants education screen when number of children between 16 and 19 is greater than 0', async () => {
+    it('should redirect to dependants education screen when number of children between 16 and 19 is greater than 0', async () => {
       //Given
       const numberOfChildren = new NumberOfChildren(undefined, undefined, 1);
       const dependants = new Dependants(true, numberOfChildren);
