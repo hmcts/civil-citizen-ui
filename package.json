@@ -133,7 +133,6 @@
     "**/**/winston": "^3.7.2",
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
-    "glob-parent": "^6.0.1",
-    "moment": "^2.29.4"
+    "glob-parent": "^6.0.1"
   }
 }
