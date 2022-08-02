@@ -53,6 +53,7 @@ nodejs:
     DOCUMENT_MANAGEMENT_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     DRAFT_STORE_API_URL: http://draft-store-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    OCMC_URL: https://moneyclaims.{{ .Values.global.environment }}.platform.hmcts.net
   autoscaling:
     enabled: false
     maxReplicas: 16

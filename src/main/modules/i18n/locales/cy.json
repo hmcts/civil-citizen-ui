@@ -31,6 +31,7 @@
       "TOWN_OR_CITY": "Tref neu ddinas"
     },
     "BUTTONS": {
+      "BACK": "Back",
       "CONTINUE": "Parhau",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "START_AGAIN": "Start again",
@@ -511,6 +512,13 @@
       "ANY_DISABLED_CHILDREN": "A oes gan unrhyw un o'r plant sy'n byw gyda chi anabledd?",
       "PAGE_TITLE": "Any dependants with disability?"
     },
+    "DETERMINATION_WITHOUT_HEARING": {
+      "CLAIM_DETERMINATION_WITHOUT_HEARING": "Do you consider that this claim is suitable for determination without a hearing,",
+      "IE": "i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?",
+      "PAGE_TITLE": "Determination without Hearing Questions",
+      "TELL_US_WHY": "Tell us why",
+      "TITLE": "Determination without hearing"
+    },
     "DISABILITY": {
       "PAGE_TITLE": "A oes gennych anabledd?",
       "TITLE": "A oes gennych anabledd?"
@@ -847,6 +855,7 @@
     "SIGNER_ROLE_TOO_LONG": "You've entered too many characters",
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
+    "TELL_US_WHY": "Please tell us why",
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
@@ -870,6 +879,15 @@
     "VALID_DATE_IN_PAST": "Enter date before ",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DAY": "Enter a valid day",
+    "VALID_DEBT_AMOUNT": {
+      "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
+      "ELECTRICITY": "Enter a valid Electricity amount, maximum two decimal places",
+      "GAS": "Enter a valid Gas amount, maximum two decimal places",
+      "MAINTENANCE": "Enter a valid Maintenance Payments amount, maximum two decimal places",
+      "MORTGAGE": "Enter a valid Mortgage amount, maximum two decimal places",
+      "RENT": "Enter a valid Rent amount, maximum two decimal places",
+      "WATER": "Enter a valid Water amount, maximum two decimal places"
+    },
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_JOB_TITLE": "Enter a job title",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
