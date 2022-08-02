@@ -683,7 +683,15 @@
       "PAGE_TITLE": "Reject all of claim"
     },
     "REPAYMENT_PLAN": {
-      "PAGE_TITLE": "Your repayment plan"
+      "ADMIT_YOU_OWE": "Rydych yn cyfaddef bod arnoch chi £{{amount}}.",
+      "FIRST_PAYMENT" : "Pryd fyddwch chi’n gwneud y taliad cyntaf?",
+      "FOR_EXAMPLE" : "Er enghraifft, ",
+      "HOW_OFTEN_PAYMENTS" : "Pa mor aml y byddwch chi’n gwneud y taliadau hyn",
+      "LENGTH" : "Hyd y cynllun ad-dalu",
+      "PAGE_TITLE": "Your repayment plan",
+      "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
+      "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
+      "TITLE": "Eich cynllun ad-dalu"
     },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",

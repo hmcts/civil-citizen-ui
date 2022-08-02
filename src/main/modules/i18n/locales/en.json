@@ -687,7 +687,7 @@
       "ADMIT_YOU_OWE": "You admit you owe £{{amount}}.",
       "FIRST_PAYMENT" : "When will you make the first payment?",
       "FOR_EXAMPLE" : "For example, ",
-      "HOW_OFTEN_PAYMENTS" : "How often you'll make payments",
+      "HOW_OFTEN_PAYMENTS" : "How often you'll make these payments",
       "LENGTH" : "Length of repayment plan",
       "PAGE_TITLE": "Your repayment plan",
       "REGULAR_PAYMENTS": "Regular payments of",
