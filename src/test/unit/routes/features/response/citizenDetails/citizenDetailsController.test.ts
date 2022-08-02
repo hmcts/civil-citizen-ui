@@ -194,6 +194,9 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should redirect on correct correspondence address', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -215,6 +218,9 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on empty primary address line', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(CounterpartyType.INDIVIDUAL);
+    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -281,6 +287,9 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on empty correspondence address line', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -303,6 +312,9 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on empty correspondence city', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -325,6 +337,9 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on empty correspondence postcode', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -347,6 +362,9 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on no input', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -398,6 +416,9 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on input for correspondence address when postToThisAddress is set to YES', async () => {
+    mockGetRespondentInformation.mockImplementation(async () => {
+      return buildClaimOfRespondentType(CounterpartyType.ORGANISATION);
+    });
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
