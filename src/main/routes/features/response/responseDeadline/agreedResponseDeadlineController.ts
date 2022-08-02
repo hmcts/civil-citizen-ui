@@ -52,7 +52,7 @@ agreedResponseDeadlineController
             backLink,
           });
         } else {
-          req.session.newDeadlineDate = agreedResponseDeadlineDate;
+          res.cookie('newDeadlineDate', agreedResponseDeadlineDate);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, NEW_RESPONSE_DEADLINE_URL));
         }
       } catch (error) {

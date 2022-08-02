@@ -11,8 +11,8 @@ import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreSe
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
-import {GenericForm} from 'common/form/models/genericForm';
-import {AgreedResponseDeadline} from 'common/form/models/agreedResponseDeadline';
+import {GenericForm} from '../../../../common/form/models/genericForm';
+import {AgreedResponseDeadline} from '../../../../common/form/models/agreedResponseDeadline';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -23,10 +23,10 @@ const responseDeadlineService = new ResponseDeadlineService();
 newResponseDeadlineController.get(NEW_RESPONSE_DEADLINE_URL, async function (req: AppRequest, res, next: express.NextFunction) {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
-    if (!req.session.newDeadlineDate) {
+    if (!req.cookies.newDeadlineDate) {
       throw new Error('No extended response deadline found');
     }
-    const calculatedExtendedDeadline = await civilServiceClient.calculateExtendedResponseDeadline(req.session.newDeadlineDate.date, req);
+    const calculatedExtendedDeadline = await civilServiceClient.calculateExtendedResponseDeadline(req.cookies.newDeadlineDate.date, req);
 
     res.render(newResponseDeadlineViewPath, {
       claimantName: claim.getClaimantName(),
@@ -40,7 +40,7 @@ newResponseDeadlineController.get(NEW_RESPONSE_DEADLINE_URL, async function (req
 
 newResponseDeadlineController.post(NEW_RESPONSE_DEADLINE_URL, async function (req: express.Request, res: express.Response, next: express.NextFunction) {
   try {
-    const newDeadlineDate = req.session.newDeadlineDate;
+    const newDeadlineDate = req.cookies.newDeadlineDate;
     const form: GenericForm<AgreedResponseDeadline> = new GenericForm<AgreedResponseDeadline>(newDeadlineDate);
     await form.validate();
     if (!form.hasErrors()) {
