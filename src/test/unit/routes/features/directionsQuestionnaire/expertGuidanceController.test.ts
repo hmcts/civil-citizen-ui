@@ -17,7 +17,7 @@ describe('Using an expert in small claims', () => {
   });
 
   describe('on GET', () => {
-    test('should return Using an expert in small claims page', async () => {
+    it('should return Using an expert in small claims page', async () => {
       await request(app)
         .get(EXPERT_GUIDANCE_URL)
         .expect((res) => {
@@ -28,7 +28,7 @@ describe('Using an expert in small claims', () => {
   });
 
   describe('on POST', () => {
-    test('should redirect to Permission for expert page', async () => {
+    it('should redirect to Permission for expert page', async () => {
       await request(app)
         .post(EXPERT_GUIDANCE_URL)
         .expect((res) => {

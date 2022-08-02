@@ -1,4 +1,3 @@
-
 import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../../../common/models/claim';
 import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
@@ -13,7 +12,6 @@ import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {PrimaryAddress} from '../../../../../common/models/primaryAddress';
 import {CorrespondenceAddress} from '../../../../../common/models/correspondenceAddress';
-
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', { lng: getLng(lang) });
 

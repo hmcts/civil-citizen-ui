@@ -10,12 +10,12 @@ import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
-import {Defence} from '../form/models/defence';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
 import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
 import {SupportRequired} from '../models/directionsQuestionnaire/supportRequired';
 import {
+  CaseState,
   ClaimAmountBreakup,
   ClaimFee,
   InterestClaimFromType,
@@ -23,7 +23,6 @@ import {
   InterestClaimUntilType,
   SameRateInterestSelection,
   SameRateInterestType,
-  CaseState,
 } from '../form/models/claimDetails';
 import {YesNo} from '../form/models/yesNo';
 import {ResponseType} from '../form/models/responseType';
@@ -33,6 +32,7 @@ import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocume
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
 import {Vulnerability} from 'models/directionsQuestionnaire/vulnerability';
+import {ResponseDeadline} from './responseDeadline';
 
 export const MAX_CLAIM_AMOUNT = 10000;
 
@@ -47,7 +47,6 @@ export class Claim {
   detailsOfClaim: string;
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
-  defence?: Defence;
   paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;
@@ -75,6 +74,7 @@ export class Claim {
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   vulnerability: Vulnerability;
   ccdState: CaseState;
+  responseDeadline: ResponseDeadline;
 
   getClaimantName(): string {
     return this.applicant1.partyName;
@@ -167,6 +167,10 @@ export class Claim {
     return this.respondent1?.responseType === ResponseType.PART_ADMISSION;
   }
 
+  isFullDefence(): boolean {
+    return this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
+  }
+
   isFullAdmissionPaymentOptionExists(): boolean {
     return this.paymentOption?.length > 0;
   }
@@ -188,12 +192,13 @@ export class Claim {
     }
     return documentId;
   }
+
   generatePdfFileName(): string {
     return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
   }
 
-  isSystemGeneratedCaseDocumentsAvailable(): number {
-    return this.systemGeneratedCaseDocuments?.length;
+  isSystemGeneratedCaseDocumentsAvailable(): boolean {
+    return this.systemGeneratedCaseDocuments?.length > 0;
   }
 
   getDocumentDetails(documentType: DocumentType): CaseDocument {
@@ -205,19 +210,19 @@ export class Claim {
     }
     return undefined;
   }
+
   isDefendantNotResponded(): boolean {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 }
 
-
 export interface Party {
   individualTitle?: string;
   individualLastName?: string;
   individualFirstName?: string;
-  soleTraderTitle?:string;
-  soleTraderFirstName?:string;
-  soleTraderLastName?:string;
+  soleTraderTitle?: string;
+  soleTraderFirstName?: string;
+  soleTraderLastName?: string;
   partyName?: string;
   type: CounterpartyType;
   primaryAddress?: CorrespondenceAddress;

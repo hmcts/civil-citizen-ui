@@ -33,7 +33,7 @@ describe('Support required', () => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 
-    test('should return supportRequired page', async () => {
+    it('should return supportRequired page', async () => {
       await request(app)
         .get(supportRequiredUrl)
         .expect((res: Response) => {
@@ -41,7 +41,7 @@ describe('Support required', () => {
           expect(res.text).toContain('Select any support you&#39;d require for a court hearing (optional)');
         });
     });
-    test('should return status 500 when error thrown', async () => {
+    it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(supportRequiredUrl)
@@ -56,7 +56,7 @@ describe('Support required', () => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 
-    test('when languageSelected checked, and languageInterpreted provided, should redirect to claim task list screen', async () => {
+    it('when languageSelected checked, and languageInterpreted provided, should redirect to claim task list screen', async () => {
       await request(app)
         .post(supportRequiredUrl)
         .send({
@@ -69,7 +69,7 @@ describe('Support required', () => {
         });
     });
 
-    test('when signLanguageSelected checked, and signLanguageInterpreted provided, should redirect to claim task list screen', async () => {
+    it('when signLanguageSelected checked, and signLanguageInterpreted provided, should redirect to claim task list screen', async () => {
       await request(app)
         .post(supportRequiredUrl)
         .send({
@@ -82,7 +82,7 @@ describe('Support required', () => {
         });
     });
 
-    test('when otherSupportSelected checked, and otherSupport provided, should redirect to claim task list screen', async () => {
+    it('when otherSupportSelected checked, and otherSupport provided, should redirect to claim task list screen', async () => {
       await request(app)
         .post(supportRequiredUrl)
         .send({
@@ -95,8 +95,7 @@ describe('Support required', () => {
         });
     });
 
-
-    test('should show error when languageSelected is checked and no languageInterpreted is provided', async () => {
+    it('should show error when languageSelected is checked and no languageInterpreted is provided', async () => {
       await request(app)
         .post(supportRequiredUrl)
         .send({
@@ -109,7 +108,7 @@ describe('Support required', () => {
         });
     });
 
-    test('should show error when signLanguageSelected is checked and no signLanguageInterpreted is provided', async () => {
+    it('should show error when signLanguageSelected is checked and no signLanguageInterpreted is provided', async () => {
       await request(app)
         .post(supportRequiredUrl)
         .send({
@@ -122,7 +121,7 @@ describe('Support required', () => {
         });
     });
 
-    test('should show errors when languageSelected, signLanguageSelected and otherSupportSelected are checked but no information is provided', async () => {
+    it('should show errors when languageSelected, signLanguageSelected and otherSupportSelected are checked but no information is provided', async () => {
       await request(app)
         .post(supportRequiredUrl)
         .send({
@@ -139,7 +138,7 @@ describe('Support required', () => {
         });
     });
 
-    test('should show errors when otherSupportSelected is checked and no otherSupport is provided', async () => {
+    it('should show errors when otherSupportSelected is checked and no otherSupport is provided', async () => {
       await request(app)
         .post(supportRequiredUrl)
         .send({
@@ -152,7 +151,7 @@ describe('Support required', () => {
         });
     });
 
-    test('should status 500 when error thrown', async () => {
+    it('should status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(supportRequiredUrl)

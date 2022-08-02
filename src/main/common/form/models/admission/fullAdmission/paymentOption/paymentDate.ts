@@ -23,7 +23,6 @@ export class PaymentDate {
   @Max(31,{message:VALID_DAY })
     day: number;
 
-
   @Min(1,{message:VALID_MONTH })
   @Max(12,{message:VALID_MONTH })
     month: number;

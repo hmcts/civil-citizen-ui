@@ -96,7 +96,6 @@
     resetFormInput(postcodeId);
   };
 
-
   // -- ENTER ADDRESS MANUALLY
   if (addressManuallyLink) {
     // -- Keep Correspondence Address form visible if values availabel
@@ -111,7 +110,6 @@
         isAddressManuallyEntered();
       });
   }
-
 
   // -- FIND ADDRESS BUTTON
   if (findAddressButton) {

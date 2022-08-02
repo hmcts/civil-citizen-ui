@@ -27,7 +27,6 @@ import {UnemploymentCategory} from '../../main/common/form/models/statementOfMea
 import {UnemploymentDetails} from '../../main/common/form/models/statementOfMeans/unemployment/unemploymentDetails';
 import {SelfEmployedAs} from '../../main/common/models/selfEmployedAs';
 import {TaxPayments} from '../../main/common/models/taxPayments';
-
 import {Disability} from '../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {SevereDisability} from '../../main/common/form/models/statementOfMeans/severeDisability';
@@ -58,7 +57,8 @@ import TimelineRow from '../../main/common/form/models/timeLineOfEvents/timeline
 import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
 import {DefendantEvidence} from '../../main/common/models/evidence/evidence';
-import { Evidence } from '../../main/common/form/models/evidence/evidence';
+import {Evidence} from '../../main/common/form/models/evidence/evidence';
+import RejectAllOfClaimType from '../../main/common/form/models/rejectAllOfClaimType';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -95,6 +95,11 @@ export const createClaimWithRespondentDetailsWithPaymentOption = (paymentOption:
     firstRepaymentDate: new Date('2022-06-25'),
   };
   claim.paymentDate = new Date('2022-06-25');
+  claim.statementOfMeans = {
+    explanation: {
+      text: 'Reasons cannot pay immediately',
+    },
+  };
   return claim;
 };
 
@@ -188,7 +193,7 @@ export const createClaimWithNoCourtOrders = () => {
   return claim as Claim;
 };
 
-export const createClaimWithDebts = (option:YesNo) => {
+export const createClaimWithDebts = (option: YesNo) => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
@@ -248,25 +253,102 @@ export const createClaimWithRegularExpenses = (): Claim => {
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const otherExpenses: TransactionSource[] = [
-    new TransactionSource({ name: 'Expenses 1', amount: 1000, schedule: TransactionSchedule.TWO_WEEKS, isIncome: false, nameRequired: true }),
-    new TransactionSource({ name: 'Expenses 2', amount: 2000, schedule: TransactionSchedule.MONTH, isIncome: false, nameRequired: true }),
+    new TransactionSource({
+      name: 'Expenses 1',
+      amount: 1000,
+      schedule: TransactionSchedule.TWO_WEEKS,
+      isIncome: false,
+      nameRequired: true,
+    }),
+    new TransactionSource({
+      name: 'Expenses 2',
+      amount: 2000,
+      schedule: TransactionSchedule.MONTH,
+      isIncome: false,
+      nameRequired: true,
+    }),
   ];
 
   const expense_regular: RegularExpenses = new RegularExpenses(
     {
-      mortgage: new Transaction(true, new TransactionSource({ name: 'mortgage', amount: 1000, schedule: TransactionSchedule.WEEK, isIncome: false })),
-      rent: new Transaction(true, new TransactionSource({ name: 'rent', amount: 300, schedule: TransactionSchedule.WEEK, isIncome: false })),
-      gas: new Transaction(true, new TransactionSource({ name: 'gas', amount: 100, schedule: TransactionSchedule.TWO_WEEKS, isIncome: false })),
-      councilTax: new Transaction(true, new TransactionSource({ name: 'councilTax', amount: 10000, schedule: TransactionSchedule.FOUR_WEEKS, isIncome: false })),
-      electricity: new Transaction(true, new TransactionSource({ name: 'electricity', amount: 100, schedule: TransactionSchedule.FOUR_WEEKS, isIncome: false })),
-      water: new Transaction(true, new TransactionSource({ name: 'water', amount: 400, schedule: TransactionSchedule.TWO_WEEKS, isIncome: false })),
-      travel: new Transaction(true, new TransactionSource({ name: 'travel', amount: 500, schedule: TransactionSchedule.MONTH, isIncome: false })),
-      schoolCosts: new Transaction(true, new TransactionSource({ name: 'school costs (include clothing)', amount: 600, schedule: TransactionSchedule.WEEK, isIncome: false })),
-      foodAndHousekeeping: new Transaction(true, new TransactionSource({ name: 'food and housekeeping', amount: 700, schedule: TransactionSchedule.MONTH, isIncome: false })),
-      tvAndBroadband: new Transaction(true, new TransactionSource({ name: 'TV and broadband', amount: 500.50, schedule: TransactionSchedule.FOUR_WEEKS, isIncome: false })),
-      hirePurchase: new Transaction(true, new TransactionSource({ name: 'hire purchase', amount: 44.40, schedule: TransactionSchedule.TWO_WEEKS, isIncome: false })),
-      mobilePhone: new Transaction(true, new TransactionSource({ name: 'mobile phone', amount: 25, schedule: TransactionSchedule.TWO_WEEKS, isIncome: false })),
-      maintenance: new Transaction(true, new TransactionSource({ name: 'maintenance payments', amount: 120, schedule: TransactionSchedule.TWO_WEEKS, isIncome: false })),
+      mortgage: new Transaction(true, new TransactionSource({
+        name: 'mortgage',
+        amount: 1000,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: false,
+      })),
+      rent: new Transaction(true, new TransactionSource({
+        name: 'rent',
+        amount: 300,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: false,
+      })),
+      gas: new Transaction(true, new TransactionSource({
+        name: 'gas',
+        amount: 100,
+        schedule: TransactionSchedule.TWO_WEEKS,
+        isIncome: false,
+      })),
+      councilTax: new Transaction(true, new TransactionSource({
+        name: 'councilTax',
+        amount: 10000,
+        schedule: TransactionSchedule.FOUR_WEEKS,
+        isIncome: false,
+      })),
+      electricity: new Transaction(true, new TransactionSource({
+        name: 'electricity',
+        amount: 100,
+        schedule: TransactionSchedule.FOUR_WEEKS,
+        isIncome: false,
+      })),
+      water: new Transaction(true, new TransactionSource({
+        name: 'water',
+        amount: 400,
+        schedule: TransactionSchedule.TWO_WEEKS,
+        isIncome: false,
+      })),
+      travel: new Transaction(true, new TransactionSource({
+        name: 'travel',
+        amount: 500,
+        schedule: TransactionSchedule.MONTH,
+        isIncome: false,
+      })),
+      schoolCosts: new Transaction(true, new TransactionSource({
+        name: 'school costs (include clothing)',
+        amount: 600,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: false,
+      })),
+      foodAndHousekeeping: new Transaction(true, new TransactionSource({
+        name: 'food and housekeeping',
+        amount: 700,
+        schedule: TransactionSchedule.MONTH,
+        isIncome: false,
+      })),
+      tvAndBroadband: new Transaction(true, new TransactionSource({
+        name: 'TV and broadband',
+        amount: 500.50,
+        schedule: TransactionSchedule.FOUR_WEEKS,
+        isIncome: false,
+      })),
+      hirePurchase: new Transaction(true, new TransactionSource({
+        name: 'hire purchase',
+        amount: 44.40,
+        schedule: TransactionSchedule.TWO_WEEKS,
+        isIncome: false,
+      })),
+      mobilePhone: new Transaction(true, new TransactionSource({
+        name: 'mobile phone',
+        amount: 25,
+        schedule: TransactionSchedule.TWO_WEEKS,
+        isIncome: false,
+      })),
+      maintenance: new Transaction(true, new TransactionSource({
+        name: 'maintenance payments',
+        amount: 120,
+        schedule: TransactionSchedule.TWO_WEEKS,
+        isIncome: false,
+      })),
       other: new OtherTransaction(true, otherExpenses),
     });
 
@@ -282,22 +364,84 @@ export const createClaimWithRegularIncome = (): Claim => {
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const otherIncome: TransactionSource[] = [
-    new TransactionSource({ name: 'Income 1', amount: 1000, schedule: TransactionSchedule.TWO_WEEKS, isIncome: true, nameRequired: true }),
-    new TransactionSource({ name: 'Income 2', amount: 2000, schedule: TransactionSchedule.MONTH, isIncome: true, nameRequired: true }),
+    new TransactionSource({
+      name: 'Income 1',
+      amount: 1000,
+      schedule: TransactionSchedule.TWO_WEEKS,
+      isIncome: true,
+      nameRequired: true,
+    }),
+    new TransactionSource({
+      name: 'Income 2',
+      amount: 2000,
+      schedule: TransactionSchedule.MONTH,
+      isIncome: true,
+      nameRequired: true,
+    }),
   ];
 
   const income_regular: RegularIncome = new RegularIncome(
     {
-      job: new Transaction(true, new TransactionSource({ name: 'job', amount: 1000, schedule: TransactionSchedule.WEEK, isIncome: true })),
-      universalCredit: new Transaction(true, new TransactionSource({ name: 'universalCredit', amount: 200, schedule: TransactionSchedule.WEEK, isIncome: true })),
-      jobseekerAllowanceIncome: new Transaction(true, new TransactionSource({ name: 'jobseekerAllowanceIncome', amount: 300, schedule: TransactionSchedule.WEEK, isIncome: true })),
-      jobseekerAllowanceContribution: new Transaction(true, new TransactionSource({ name: 'jobseekerAllowanceContribution', amount: 350.50, schedule: TransactionSchedule.WEEK, isIncome: true })),
-      incomeSupport: new Transaction(true, new TransactionSource({ name: 'incomeSupport', amount: 475.33, schedule: TransactionSchedule.WEEK, isIncome: true })),
-      workingTaxCredit: new Transaction(true, new TransactionSource({ name: 'workingTaxCredit', amount: 400.70, schedule: TransactionSchedule.WEEK, isIncome: true })),
-      childTaxCredit: new Transaction(true, new TransactionSource({ name: 'childTaxCredit', amount: 550.50, schedule: TransactionSchedule.WEEK, isIncome: true })),
-      childBenefit: new Transaction(true, new TransactionSource({ name: 'childBenefit', amount: 600, schedule: TransactionSchedule.WEEK, isIncome: true })),
-      councilTaxSupport: new Transaction(true, new TransactionSource({ name: 'councilTaxSupport', amount: 10, schedule: TransactionSchedule.WEEK, isIncome: true })),
-      pension: new Transaction(true, new TransactionSource({ name: 'pension', amount: 247, schedule: TransactionSchedule.WEEK, isIncome: true })),
+      job: new Transaction(true, new TransactionSource({
+        name: 'job',
+        amount: 1000,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: true,
+      })),
+      universalCredit: new Transaction(true, new TransactionSource({
+        name: 'universalCredit',
+        amount: 200,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: true,
+      })),
+      jobseekerAllowanceIncome: new Transaction(true, new TransactionSource({
+        name: 'jobseekerAllowanceIncome',
+        amount: 300,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: true,
+      })),
+      jobseekerAllowanceContribution: new Transaction(true, new TransactionSource({
+        name: 'jobseekerAllowanceContribution',
+        amount: 350.50,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: true,
+      })),
+      incomeSupport: new Transaction(true, new TransactionSource({
+        name: 'incomeSupport',
+        amount: 475.33,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: true,
+      })),
+      workingTaxCredit: new Transaction(true, new TransactionSource({
+        name: 'workingTaxCredit',
+        amount: 400.70,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: true,
+      })),
+      childTaxCredit: new Transaction(true, new TransactionSource({
+        name: 'childTaxCredit',
+        amount: 550.50,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: true,
+      })),
+      childBenefit: new Transaction(true, new TransactionSource({
+        name: 'childBenefit',
+        amount: 600,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: true,
+      })),
+      councilTaxSupport: new Transaction(true, new TransactionSource({
+        name: 'councilTaxSupport',
+        amount: 10,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: true,
+      })),
+      pension: new Transaction(true, new TransactionSource({
+        name: 'pension',
+        amount: 247,
+        schedule: TransactionSchedule.WEEK,
+        isIncome: true,
+      })),
       other: new OtherTransaction(true, otherIncome),
     });
 
@@ -307,7 +451,6 @@ export const createClaimWithRegularIncome = (): Claim => {
 
   return claim as Claim;
 };
-
 
 export const createEmployers = () => {
 
@@ -324,8 +467,8 @@ export const createClaimWithEmplymentDetails = (): Claim => {
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.EMPLOYED, EmploymentCategory.SELF_EMPLOYED];
-  const employment: Employment = { declared: true, employmentType: employmentType };
-  const selfEmployedAs: SelfEmployedAs = { jobTitle: 'Developer', annualTurnover: 50000 };
+  const employment: Employment = {declared: true, employmentType: employmentType};
+  const selfEmployedAs: SelfEmployedAs = {jobTitle: 'Developer', annualTurnover: 50000};
 
   claim.statementOfMeans = {
     employment: employment,
@@ -341,7 +484,7 @@ export const createClaimWithEmployedCategory = (): Claim => {
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.EMPLOYED];
-  const employment: Employment = { declared: true, employmentType: employmentType };
+  const employment: Employment = {declared: true, employmentType: employmentType};
 
   claim.statementOfMeans = {
     employment: employment,
@@ -356,9 +499,9 @@ export const createClaimWithSelfEmployedAndTaxBehind = (): Claim => {
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.SELF_EMPLOYED];
-  const employment: Employment = { declared: true, employmentType: employmentType };
-  const selfEmployedAs: SelfEmployedAs = { jobTitle: 'Developer', annualTurnover: 50000 };
-  const taxPayments: TaxPayments = { owed: true, amountOwed: 200, reason: 'Tax payment reasons'};
+  const employment: Employment = {declared: true, employmentType: employmentType};
+  const selfEmployedAs: SelfEmployedAs = {jobTitle: 'Developer', annualTurnover: 50000};
+  const taxPayments: TaxPayments = {owed: true, amountOwed: 200, reason: 'Tax payment reasons'};
 
   claim.statementOfMeans = {
     employment: employment,
@@ -374,9 +517,9 @@ export const createClaimWithSelfEmployedNoTaxBehind = (): Claim => {
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
 
   const employmentType: EmploymentCategory[] = [EmploymentCategory.SELF_EMPLOYED];
-  const employment: Employment = { declared: true, employmentType: employmentType };
-  const selfEmployedAs: SelfEmployedAs = { jobTitle: 'Developer', annualTurnover: 50000 };
-  const taxPayments: TaxPayments = { owed: false, amountOwed: undefined, reason: ''};
+  const employment: Employment = {declared: true, employmentType: employmentType};
+  const selfEmployedAs: SelfEmployedAs = {jobTitle: 'Developer', annualTurnover: 50000};
+  const taxPayments: TaxPayments = {owed: false, amountOwed: undefined, reason: ''};
 
   claim.statementOfMeans = {
     employment: employment,
@@ -435,7 +578,7 @@ export const createClaimWithUnemploymentCategoryOTHER = (): Claim => {
   return claim as Claim;
 };
 
-export const createClaimWithDisability = (option:YesNo): Claim => {
+export const createClaimWithDisability = (option: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: Disability = new Disability(option);
@@ -447,7 +590,7 @@ export const createClaimWithDisability = (option:YesNo): Claim => {
   return claim;
 };
 
-export const createClaimWithDisabilityAndSevereDisability = (optionDisability:YesNo,optionSevereDisability:YesNo): Claim => {
+export const createClaimWithDisabilityAndSevereDisability = (optionDisability: YesNo, optionSevereDisability: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: Disability = new Disability(optionDisability);
@@ -459,7 +602,7 @@ export const createClaimWithDisabilityAndSevereDisability = (optionDisability:Ye
   return claim;
 };
 
-export const createClaimWithResidence = (value:string, displayValue:string): Claim => {
+export const createClaimWithResidence = (value: string, displayValue: string): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const residence: Residence = new Residence(new ResidenceType(value, displayValue), '');
@@ -506,10 +649,10 @@ export const createClaimWithCohabiting = (
   return claim;
 };
 
-export const createClaimWithDependants = (declared: boolean, under11?:number, between11and15?:number, between16and19?:number, numberOfChildrenLivingWithYou?:number): Claim => {
+export const createClaimWithDependants = (declared: boolean, under11?: number, between11and15?: number, between16and19?: number, numberOfChildrenLivingWithYou?: number): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const numberOfChildren: NumberOfChildren = new NumberOfChildren(under11,between11and15,between16and19);
+  const numberOfChildren: NumberOfChildren = new NumberOfChildren(under11, between11and15, between16and19);
   const dependants: Dependants = new Dependants(declared, numberOfChildren);
   claim.statementOfMeans = {
     dependants: dependants,
@@ -528,7 +671,7 @@ export const createClaimWithCarer = (option: YesNo): Claim => {
   return claim;
 };
 
-export const createClaimWithOtherDependants = (option: YesNo, numberOfPeople: number, details:string): Claim => {
+export const createClaimWithOtherDependants = (option: YesNo, numberOfPeople: number, details: string): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const otherDependants: OtherDependants = new OtherDependants(option, numberOfPeople, details);
@@ -538,7 +681,7 @@ export const createClaimWithOtherDependants = (option: YesNo, numberOfPeople: nu
   return claim;
 };
 
-export const ceateClaimWithPartialAdmission = (alreadyPaid? :YesNo) => {
+export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptionType?: PaymentOptionType) => {
   const claim = new Claim();
   const param: HowMuchHaveYouPaidParams = {};
   param.amount = 100;
@@ -593,22 +736,87 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid? :YesNo) => {
   };
   claim.partialAdmission = partialAdmission;
   claim.evidence = defendantEvidence;
+  claim.partialAdmission.paymentIntention?.paymentOption ? paymentOptionType : undefined;
+
   return claim;
 };
 
 export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   const claim = createClaimWithBasicRespondentDetails('contactTest');
-  if(claim.respondent1) {
+  if (claim.respondent1) {
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
   }
   claim.partialAdmission = new PartialAdmission();
   claim.partialAdmission.paymentIntention = new PaymentIntention();
   claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
 
-  claim.mediation = new Mediation({option:YesNo.YES, mediationPhoneNumber: '123456'},
+  claim.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '123456'},
     new FreeMediation(YesNo.YES),
     new NoMediationReason('notWant', 'no'),
     new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
 
   return claim as Claim;
+};
+
+export const createClaimWithFullRejection = (option: RejectAllOfClaimType, paidAmount?: number): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  if (claim.respondent1) {
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+  }
+  claim.rejectAllOfClaim = {
+    option: option,
+    howMuchHaveYouPaid: {
+      amount: paidAmount || 100,
+      date: new Date('2022-02-14T00:00:00.000Z'),
+      day: 14,
+      month: 2,
+      year: 2022,
+      text: 'details here...',
+    },
+    whyDoYouDisagree: {
+      text: 'Reasons for disagree',
+    },
+  };
+  claim.totalClaimAmount = 1000,
+  claim.paymentOption = undefined;
+  return claim;
+};
+
+export const createClaimWithPaymentOption = (responseType: ResponseType, paymentOption: PaymentOptionType): Claim => {
+  const claim = createClaimWithBasicRespondentDetails();
+  const getDate = () => Date.now() + (3600 * 1000 * 24);
+
+  if (claim.respondent1) {
+    claim.respondent1.responseType = responseType;
+  }
+  claim.paymentOption = paymentOption;
+  claim.repaymentPlan = {
+    paymentAmount: 33,
+    repaymentFrequency: TransactionSchedule.WEEK,
+    firstRepaymentDate: new Date(getDate()),
+  };
+
+  claim.paymentDate = new Date(getDate());
+  claim.statementOfMeans = {
+    explanation: {
+      text: 'Reasons cannot pay immediately',
+    },
+  };
+
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = paymentOption;
+
+  if (responseType === ResponseType.PART_ADMISSION && paymentOption === PaymentOptionType.BY_SET_DATE) {
+    claim.partialAdmission.paymentIntention.paymentDate = new Date(getDate());
+  }
+
+  claim.partialAdmission.alreadyPaid = new AlreadyPaid(YesNo.NO);
+
+  claim.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '123456'},
+    new FreeMediation(YesNo.YES),
+    new NoMediationReason('notWant', 'no'),
+    new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
+
+  return claim;
 };

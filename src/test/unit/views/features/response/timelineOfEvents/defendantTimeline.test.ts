@@ -12,7 +12,6 @@ jest.mock('../../../../../../main/modules/draft-store');
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
-
 describe('defendant timeline view', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

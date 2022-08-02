@@ -1,0 +1,88 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.RESPONSE_DEADLINE_OPTIONS.PAGE_TITLE') }}
+{% endblock %}
+
+{% set refusalHtml %}
+  {% set formLink = '<a href="https://www.gov.uk/government/publications/form-n244-application-notice"
+  class="govuk-link" target="_blank" rel="noopener noreferrer">FORM_NAME</a>'
+    | replace('FORM_NAME', t('PAGES.RESPONSE_DEADLINE_OPTIONS.FORM'))%}
+  <p class="govuk-body">
+    {{  t('PAGES.RESPONSE_DEADLINE_OPTIONS.REQUEST_REFUSED', {claimantName : claimantName}) }} {{ formLink | safe}}.
+  </p>
+  <p class="govuk-body govuk-!-margin-top-6">{{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.EMAIL_FORM') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.POST') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.BUILDING') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.PO_BOX') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.CITY') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.POSTCODE') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.TELEPHONE') }}</p>
+{% endset -%}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        {% if form.hasErrors() %}
+          {{ errorSummary(form.getErrors(), t) }}
+        {% endif %}
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.PAGE_TITLE') }}</h1>
+          <h2 class="govuk-heading-m">{{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.CURRENT_DEADLINE', {responseDeadline: responseDate}) }}</h2>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% set fieldName = 'option' %}
+            {{ govukRadios({
+              idPrefix: fieldName,
+              name: fieldName,
+              fieldset: {
+                legend: {
+                  text: t('PAGES.RESPONSE_DEADLINE_OPTIONS.MORE_TIME'),
+                  isPageHeading: true,
+                  classes: "govuk-fieldset__legend--m"
+                }
+              },
+              errorMessage: {
+                text: t(form.errorFor(fieldName))
+              } if form.hasFieldError(fieldName),
+              items: [
+                {
+                  value: 'yes',
+                  text: t('PAGES.RESPONSE_DEADLINE_OPTIONS.OPTION_YES')
+                },
+                {
+                  value: 'already-agreed',
+                  text: t('PAGES.RESPONSE_DEADLINE_OPTIONS.OPTION_AGREED', {claimantName : claimantName})
+                },
+                {
+                  value: 'request-refused',
+                  text: t('PAGES.RESPONSE_DEADLINE_OPTIONS.OPTION_REFUSED'),
+                  conditional: {
+                    html: refusalHtml
+                  }
+                },
+                {
+                  value: 'no',
+                  text: t('PAGES.RESPONSE_DEADLINE_OPTIONS.OPTION_NO')
+                }
+              ]
+            }) }}
+            {{ govukButton({
+              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+            }) }}
+            {{ contactUsForHelp(t) }}
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

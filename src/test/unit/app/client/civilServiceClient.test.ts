@@ -5,6 +5,7 @@ import * as requestModels from '../../../../main/common/models/AppRequest';
 import {CivilClaimResponse} from '../../../../main/common/models/civilClaimResponse';
 import config from 'config';
 import {
+  CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIMANT,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
@@ -14,6 +15,7 @@ import {
 import {CounterpartyType} from '../../../../main/common/models/counterpartyType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
+import {CaseState} from '../../../../main/common/form/models/claimDetails';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -62,6 +64,7 @@ describe('Civil Service Client', () => {
       const mockResponse: CivilClaimResponse = {
         id: '1',
         case_data: claim,
+        state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
       };
 
       const mockPost = jest.fn().mockResolvedValue({data: {cases: [mockResponse]}});
@@ -136,6 +139,7 @@ describe('Civil Service Client', () => {
       const mockResponse: CivilClaimResponse = {
         id: '1',
         case_data: new Claim(),
+        state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
       };
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
@@ -181,6 +185,36 @@ describe('Civil Service Client', () => {
       expect(defendantDashboardItems[0].defendantName).toEqual(data[0].defendantName);
       expect(defendantDashboardItems[0].claimantName).toEqual(data[0].claimantName);
       expect(defendantDashboardItems[0].claimNumber).toEqual(data[0].claimNumber);
+    });
+  });
+  describe('calculateExtendedResponseDeadline', () => {
+    it('should return calculated deadline date successfully', async () =>{
+      //Given
+      const responseDeadlineDate = new Date(2022, 10, 31);
+      const mockPost = jest.fn().mockResolvedValue({data: responseDeadlineDate});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const calculatedDeadlineDate = await civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, mockedAppRequest);
+
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_CALCULATE_DEADLINE);
+      expect(calculatedDeadlineDate).toEqual(responseDeadlineDate);
+    });
+    it('should throw error when there is an error with api call', async () => {
+      //Given
+      const responseDeadlineDate = new Date(2022, 10, 31);
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.calculateExtendedResponseDeadline(responseDeadlineDate, mockedAppRequest)).rejects.toThrow('error');
     });
   });
 });

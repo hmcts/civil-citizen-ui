@@ -13,7 +13,7 @@ import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/un
 import {TransactionSchedule} from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {EvidenceType} from '../../common/models/evidence/evidenceType';
 import {EvidenceDetails} from '../../common/models/evidence/evidenceDetails';
-import {addDaysFilter, dateFilter} from './filters/dateFilter';
+import {addDaysFilter, dateFilter, formatDate} from './filters/dateFilter';
 import {SignatureType} from '../../common/models/signatureType';
 import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
 import {FormValidationError} from '../../common/form/validationErrors/formValidationError';
@@ -78,6 +78,7 @@ export class Nunjucks {
     nunjucksEnv.addFilter('currencyFormat', currencyFormat);
     nunjucksEnv.addFilter('addDays', addDaysFilter);
     nunjucksEnv.addFilter('date', dateFilter);
+    nunjucksEnv.addFilter('formatDate', formatDate);
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
     nunjucksEnv.addGlobal('translateErrors', translateErrors);
     nunjucksEnv.addGlobal('ResponseType', ResponseType);

@@ -32,7 +32,7 @@ export const buildResponseToClaimSection = (claim: Claim, lang: string, claimId:
     }
     sectionContent.push(respondToClaimLink);
   }
-  
+
   return sectionContent.flat();
 };
 
@@ -47,11 +47,11 @@ export const buildExampleSectionOne = (claim: Claim, lang: string, claimId: stri
 
   if (claim.ccdState === CaseState.PENDING_CASE_ISSUED) {
     if (number > 8) {
-      sectionContent.push(firstConditionalContent);      
+      sectionContent.push(firstConditionalContent);
     }
     if (number < 8) {
       sectionContent.push(secondConditionalContent);
-      
+
     }
     sectionContent.push(thirdConditionalContent);
   }
@@ -76,5 +76,3 @@ export const buildExampleSectionTwo = (claim: Claim, lang: string, claimId: stri
   }
   return sectionContent.flat();
 };
-
-
