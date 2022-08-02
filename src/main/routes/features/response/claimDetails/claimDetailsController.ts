@@ -8,7 +8,7 @@ import {Claim} from '../../../../common/models/claim';
 import {getInterestDetails} from '../../../../common/utils/interestUtils';
 import {getTotalAmountWithInterestAndFees} from '../../../../modules/claimDetailsService';
 import {DocumentUri} from '../../../../common/models/document/documentType';
-import {getClaimById} from 'modules/utilityService';
+import {getClaimById} from '../../../../modules/utilityService';
 
 const claimDetailsController = express.Router();
 

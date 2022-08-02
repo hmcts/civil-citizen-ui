@@ -4,7 +4,7 @@ import {getDescription, getTaskLists, getTitle} from '../../../services/features
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
-import {getClaimById} from 'modules/utilityService';
+import {getClaimById} from '../../../modules/utilityService';
 
 const taskListViewPath = 'features/response/task-list';
 const taskListController = express.Router();

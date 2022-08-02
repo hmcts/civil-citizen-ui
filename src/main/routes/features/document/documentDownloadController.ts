@@ -7,7 +7,7 @@ import {convertToDocumentType} from '../../../common/utils/documentTypeConverter
 import {AppRequest} from '../../../common/models/AppRequest';
 import {DocumentType} from '../../../common/models/document/documentType';
 import {Claim} from 'models/claim';
-import {getClaimById} from 'modules/utilityService';
+import {getClaimById} from '../../../modules/utilityService';
 
 const documentDownloadController = express.Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
