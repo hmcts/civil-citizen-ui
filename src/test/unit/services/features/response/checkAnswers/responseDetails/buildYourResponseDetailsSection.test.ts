@@ -3,15 +3,18 @@ import {
 } from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {
   CITIZEN_AMOUNT_YOU_PAID_URL,
-  CITIZEN_WHY_DO_YOU_DISAGREE_URL,
-  CITIZEN_TIMELINE_URL,
   CITIZEN_EVIDENCE_URL,
-  CITIZEN_OWED_AMOUNT_URL,
   CITIZEN_FR_AMOUNT_YOU_PAID_URL,
+  CITIZEN_OWED_AMOUNT_URL,
+  CITIZEN_REJECT_ALL_CLAIM_URL,
+  CITIZEN_RESPONSE_TYPE_URL,
+  CITIZEN_TIMELINE_URL,
   CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL,
+  CITIZEN_WHY_DO_YOU_DISAGREE_URL,
 } from '../../../../../../../main/routes/urls';
 import {
   ceateClaimWithPartialAdmission,
+  createClaimWithBasicRespondentDetails,
   createClaimWithFullRejection,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
@@ -21,8 +24,14 @@ import {DefendantEvidence} from '../../../../../../../main/common/models/evidenc
 import {EvidenceItem} from '../../../../../../../main/common/form/models/evidence/evidenceItem';
 import {Evidence} from '../../../../../../../main/common/form/models/evidence/evidence';
 import {EvidenceType} from '../../../../../../../main/common/models/evidence/evidenceType';
-import { YesNo } from '../../../../../../../main/common/form/models/yesNo';
+import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import RejectAllOfClaimType from '../../../../../../../main/common/form/models/rejectAllOfClaimType';
+import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
+import {RejectAllOfClaim} from '../../../../../../../main/common/form/models/rejectAllOfClaim';
+import {
+  WhyDoYouDisagree,
+} from '../../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {Defence} from '../../../../../../../main/common/form/models/defence';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -358,4 +367,90 @@ describe('Reject Claim - Response Details', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[0].value.html).toBe('£1,000');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_FR_AMOUNT_YOU_PAID_URL.replace(':id', constVal.CLAIM_ID));
   });
+  it('should return your response details section without totalClaimAmount and amount', async () => {
+    //Given
+    const claim = createClaimWithBasicRespondentDetails();
+    if (claim?.respondent1) {
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      claim.rejectAllOfClaim = new RejectAllOfClaim();
+      claim.rejectAllOfClaim.option = RejectAllOfClaimType.DISPUTE;
+    }
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE');
+
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].value.html).toBe('COMMON.RESPONSE_TYPE.FULL_DEFENCE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_RESPONSE_TYPE_URL.replace(':id', constVal.CLAIM_ID));
+
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].value.html).toBe('PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.DISPUTE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_REJECT_ALL_CLAIM_URL.replace(':id', constVal.CLAIM_ID));
+
+  });
+  it('should return your response details section with totalClaimAmount and amount', async () => {
+    //Given
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.DISPUTE, 100);
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE');
+
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].value.html).toBe('COMMON.RESPONSE_TYPE.FULL_DEFENCE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_RESPONSE_TYPE_URL.replace(':id', constVal.CLAIM_ID));
+
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].value.html).toBe('PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.DISPUTE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_REJECT_ALL_CLAIM_URL.replace(':id', constVal.CLAIM_ID));
+  });
+  it('should return your response details section with rejection text', async () => {
+    //Given
+    const claim = createClaimWithBasicRespondentDetails();
+    if (claim?.respondent1) {
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      claim.rejectAllOfClaim = new RejectAllOfClaim();
+      claim.rejectAllOfClaim.option = RejectAllOfClaimType.DISPUTE;
+      claim.rejectAllOfClaim.whyDoYouDisagree = new WhyDoYouDisagree('test');
+    }
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE');
+
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].value.html).toBe('COMMON.RESPONSE_TYPE.FULL_DEFENCE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_RESPONSE_TYPE_URL.replace(':id', constVal.CLAIM_ID));
+
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].value.html).toBe('PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.DISPUTE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_REJECT_ALL_CLAIM_URL.replace(':id', constVal.CLAIM_ID));
+
+  });
+
+  it('should return your response details section with defence text', async () => {
+    //Given
+    const claim = createClaimWithBasicRespondentDetails();
+    if (claim?.respondent1) {
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      claim.rejectAllOfClaim = new RejectAllOfClaim();
+      claim.rejectAllOfClaim.option = RejectAllOfClaimType.DISPUTE;
+      claim.rejectAllOfClaim.defence = new Defence('test');
+    }
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE');
+
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.OWE_MONEY');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].value.html).toBe('COMMON.RESPONSE_TYPE.FULL_DEFENCE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_RESPONSE_TYPE_URL.replace(':id', constVal.CLAIM_ID));
+
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].value.html).toBe('PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.DISPUTE');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_REJECT_ALL_CLAIM_URL.replace(':id', constVal.CLAIM_ID));
+
+  });
+
 });

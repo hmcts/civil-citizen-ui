@@ -35,7 +35,7 @@ yourDefenceController.post(RESPONSE_YOUR_DEFENCE_URL, async (req: express.Reques
         claimantName: claim.getClaimantName(),
       });
     } else {
-      await saveYourDefence(claimId, defence);
+      await saveYourDefence(claim, claimId, defence);
       res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
     }
   } catch (error) {
