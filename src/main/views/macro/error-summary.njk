@@ -1,0 +1,10 @@
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% macro errorSummary(errors, t) %}
+{% if errors %}
+{{ govukErrorSummary({
+    titleText: t('ERRORS.THERE_WAS_A_PROBLEM'),
+    errorList: translateErrors(errors, t)
+    }) }}
+{% endif %}
+{% endmacro %}

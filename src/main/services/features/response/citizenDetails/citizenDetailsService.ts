@@ -6,7 +6,6 @@ import {CorrespondenceAddress} from '../../../../common/models/correspondenceAdd
 import {CitizenAddress} from '../../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../../common/form/models/citizenCorrespondenceAddress';
 
-
 export const getRespondentInformation = async (claimId: string): Promise<Respondent> => {
   const responseData = await getCaseDataFromStore(claimId);
   if (responseData?.respondent1) {
@@ -15,12 +14,13 @@ export const getRespondentInformation = async (claimId: string): Promise<Respond
   return new Respondent();
 };
 
-export const saveRespondent = async (claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, contactPerson = ''): Promise<void> => {
+export const saveRespondent = async (claimId: string, citizenAddress: CitizenAddress, citizenCorrespondenceAddress: CitizenCorrespondenceAddress, postToThisAddress: string, contactPerson = ''): Promise<void> => {
   const responseData = await getCaseDataFromStore(claimId) || new Claim();
   if (!responseData.respondent1) {
     responseData.respondent1 = new Respondent();
   }
   responseData.respondent1.contactPerson = contactPerson;
+  responseData.respondent1.postToThisAddress = postToThisAddress;
   responseData.respondent1.primaryAddress = buildPrimaryAddress(citizenAddress);
   responseData.respondent1.correspondenceAddress = citizenCorrespondenceAddress.isEmpty() ? undefined : buildCorrespondenceAddress(citizenCorrespondenceAddress);
 

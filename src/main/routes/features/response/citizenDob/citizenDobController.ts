@@ -8,9 +8,6 @@ import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilit
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('citizenDobController');
-
 const citizenDobController = express.Router();
 const validator = new Validator();
 
@@ -26,7 +23,7 @@ function redirectToNextPage(req: express.Request, res: express.Response, dob: Da
   }
 }
 
-citizenDobController.get(DOB_URL, async (req: express.Request, res: express.Response) => {
+citizenDobController.get(DOB_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const citizenDob = new CitizenDob();
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
@@ -38,12 +35,11 @@ citizenDobController.get(DOB_URL, async (req: express.Request, res: express.Resp
     }
     renderView(res, citizenDob);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-citizenDobController.post(DOB_URL, async (req, res) => {
+citizenDobController.post(DOB_URL, async (req, res, next: express.NextFunction) => {
   const { year, month, day } = req.body;
   try {
     const citizenDob = new CitizenDob(year, month, day);
@@ -63,8 +59,7 @@ citizenDobController.post(DOB_URL, async (req, res) => {
       redirectToNextPage(req, res, claim.respondent1.dateOfBirth);
     }
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 

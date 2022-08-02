@@ -42,7 +42,7 @@ describe('Citizen financial details', () => {
   });
 
   describe('on GET', () => {
-    test('should return individual financial details page', async () => {
+    it('should return individual financial details page', async () => {
       mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimIndividual)),
@@ -55,7 +55,7 @@ describe('Citizen financial details', () => {
           expect(res.text).toContain('details of your finances');
         });
     });
-    test('should return organisation financial details page', async () => {
+    it('should return organisation financial details page', async () => {
       mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimOrganisation)),
@@ -68,20 +68,20 @@ describe('Citizen financial details', () => {
           expect(res.text).toContain('your company or organisation&#39;s most recent statement of accounts');
         });
     });
-    test('should not match expected string, and log error, if draft store fails to return anything', async () => {
+    it('should not match expected string, and log error, if draft store fails to return anything', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).not.toContain('your company or organisation&#39;s most recent statement of accounts');
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
 
   describe('on POST', () => {
-    test('should redirect for individual', async () => {
+    it('should redirect for individual', async () => {
       mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimIndividual)),
@@ -93,7 +93,7 @@ describe('Citizen financial details', () => {
           expect(res.status).toBe(302);
         });
     });
-    test('should redirect for organisation', async () => {
+    it('should redirect for organisation', async () => {
       mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimOrganisation)),
@@ -105,16 +105,16 @@ describe('Citizen financial details', () => {
           expect(res.status).toBe(302);
         });
     });
-    test('should not redirect, and log error, if draft store fails to return anything', async () => {
+    it('should not redirect, and log error, if draft store fails to return anything', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
-    test('should be 404 for no caseId in path', async () => {
+    it('should be 404 for no caseId in path', async () => {
       mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimOrganisation)),
@@ -126,7 +126,7 @@ describe('Citizen financial details', () => {
           expect(res.status).toBe(404);
         });
     });
-    test('should be error for no respondent type in JSON', async () => {
+    it('should be error for no respondent type in JSON', async () => {
       mockDraftStore = {
         set: jest.fn(() => Promise.resolve({data: {}})),
         get: jest.fn(() => Promise.resolve(claimIndividualNoType)),

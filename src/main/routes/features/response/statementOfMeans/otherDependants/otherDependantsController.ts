@@ -13,29 +13,24 @@ import {getCaseDataFromStore} from '../../../../../modules/draft-store/draftStor
 
 const citizenOtherDependantsViewPath = 'features/response/statementOfMeans/otherDependants/other-dependants';
 const otherDependantsController = express.Router();
-
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('otherDependantsController');
-
 const otherDependantsService = new OtherDependantsService();
 
 function renderView(form: OtherDependants, res: express.Response): void {
   res.render(citizenOtherDependantsViewPath, {form});
 }
 
-otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res) => {
+otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res, next: express.NextFunction) => {
   try {
     const response = await otherDependantsService.getOtherDependants(req.params.id);
     const otherDependants = response ? new OtherDependants(response.option, response.numberOfPeople, response.details) : new OtherDependants();
     renderView(otherDependants, res);
   } catch (error) {
-    logger.error(`${error.stack || error}`);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
 otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     try{
       const otherDependants: OtherDependants = new OtherDependants(
         req.body.option, req.body.numberOfPeople, req.body.details);
@@ -49,15 +44,12 @@ otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
         const claim: Claim = await getCaseDataFromStore(req.params.id);
         if (claim.isDefendantSeverelyDisabledOrDependentsDisabled()) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EMPLOYMENT_URL));
-         
         } else {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_CARER_URL));
-          
         }
       }
     } catch (error) {
-      logger.error(`${error.stack || error}`);
-      res.status(500).send({error: error.message});
+      next(error);
     }
   });
 

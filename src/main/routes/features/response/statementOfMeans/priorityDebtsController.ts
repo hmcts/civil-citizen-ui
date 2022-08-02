@@ -14,14 +14,11 @@ import {
 } from '../../../../common/utils/priorityDebts/priorityDebtsConvertors';
 
 const priorityDebtsController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('debtsController');
-
 const debtsViewPath = 'features/response/statementOfMeans/priority-debts';
 
 priorityDebtsController.get(
   CITIZEN_PRIORITY_DEBTS_URL,
-  async (req: express.Request, res: express.Response) => {
+  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const savedValues = await getPriorityDebts(req.params.id);
       res.render(debtsViewPath, {
@@ -29,15 +26,14 @@ priorityDebtsController.get(
         checkBoxFields,
       });
     } catch (error) {
-      logger.error(`${(error as Error).stack || error}`);
-      res.status(500).send({error: error.message});
+      next(error);
     }
   },
 );
 
 priorityDebtsController.post(
   CITIZEN_PRIORITY_DEBTS_URL,
-  async (req: express.Request, res: express.Response) => {
+  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const convertedDebtValues = convertRequestBodyToForm(req);
 
     try {
@@ -59,8 +55,7 @@ priorityDebtsController.post(
         );
       }
     } catch (error) {
-      logger.error(`${(error as Error).stack || error}`);
-      res.status(500).send({error: error.message});
+      next(error);
     }
   },
 );

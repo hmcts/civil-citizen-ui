@@ -5,19 +5,19 @@ import {EXPERT_GUIDANCE_URL, PERMISSION_FOR_EXPERT_URL} from '../../urls';
 const expertGuidanceController = express.Router();
 const expertGuidanceViewPath = 'features/directionsQuestionnaire/expert-guidance';
 
-expertGuidanceController.get(EXPERT_GUIDANCE_URL, async (_req, res) => {
+expertGuidanceController.get(EXPERT_GUIDANCE_URL, async (_req, res, next: express.NextFunction) => {
   try {
     res.render(expertGuidanceViewPath);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-expertGuidanceController.post(EXPERT_GUIDANCE_URL, async (req, res) => {
+expertGuidanceController.post(EXPERT_GUIDANCE_URL, async (req, res, next: express.NextFunction) => {
   try {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, PERMISSION_FOR_EXPERT_URL));
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 

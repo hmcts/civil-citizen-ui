@@ -15,7 +15,6 @@ export class OtherDependantsService {
   public async getOtherDependants(claimId: string) {
     try {
       const civilClaimResponse = await getDraftClaimFromStore(claimId);
-      logger.info(civilClaimResponse);
       if (get(civilClaimResponse, 'case_data.statementOfMeans.otherDependants')) {
         return civilClaimResponse.case_data.statementOfMeans.otherDependants;
       }

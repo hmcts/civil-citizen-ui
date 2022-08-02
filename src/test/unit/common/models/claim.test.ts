@@ -24,6 +24,7 @@ import {PaymentIntention} from '../../../../main/common/form/models/admission/pa
 import PaymentOptionType from '../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {DocumentType} from '../../../../main/common/models/document/documentType';
+import {CaseState} from '../../../../main/common/form/models/claimDetails';
 
 describe('Claim isInterestClaimUntilSubmitDate', () => {
   const claim = new Claim();
@@ -390,7 +391,6 @@ describe('Claim isChildrenDisabled', () => {
   });
 });
 
-
 describe('Claim get claimant and defendant names by type', () => {
   const claimCompany =  Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantCompany)).case_data);
   const claimIndividual =  Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantIndividual)).case_data);
@@ -666,7 +666,7 @@ describe('Documents', () => {
   });
 
   describe('isSystemGeneratedCaseDocumentsAvailable', () => {
-    
+
     it('should return false with empty claim', () => {
       //Given
       const claim = new Claim();
@@ -701,6 +701,32 @@ describe('Documents', () => {
       const result = claim.getDocumentDetails(DocumentType.SEALED_CLAIM);
       //Then
       expect(result).toBe(mockClaim.systemGeneratedCaseDocuments[0].value);
+    });
+  });
+
+  describe('isDefendantNotResponded', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isDefendantNotResponded();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with other case states', () => {
+      //Given
+      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+      //When
+      const result = claim.isDefendantNotResponded();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state AWAITING_RESPONDENT_ACKNOWLEDGEMENT', () => {
+      //Given
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      //When
+      const result = claim.isDefendantNotResponded();
+      //Then
+      expect(result).toBe(true);
     });
   });
 });

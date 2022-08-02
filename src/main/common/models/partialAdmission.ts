@@ -13,5 +13,3 @@ export class PartialAdmission {
   timeline?: DefendantTimeline;
   paymentIntention?: PaymentIntention;
 }
-
-

@@ -7,9 +7,7 @@ import {
 } from '../../form/validationErrors/errorMessageConstants';
 import {FREE_TEXT_MAX_LENGTH} from '../../form/validators/validationConstraints';
 
-
 export class SupportRequired {
-
   disabledAccessSelected?: boolean;
   hearingLoopSelected?: boolean;
   signLanguageSelected?: boolean;
@@ -20,7 +18,6 @@ export class SupportRequired {
   @IsDefined({message: NO_SIGN_LANGUAGE_ENTERED})
   @IsNotEmpty({message: NO_SIGN_LANGUAGE_ENTERED})
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
-
     signLanguageInterpreted?: string;
 
   @ValidateIf(o => o.languageSelected)
@@ -33,7 +30,6 @@ export class SupportRequired {
   @IsDefined({message: NO_OTHER_SUPPORT})
   @IsNotEmpty({message: NO_OTHER_SUPPORT})
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
-
     otherSupport?: string;
 
   constructor(languageSelected?: boolean, languageInterpreted?: string, signLanguageSelected?: boolean, signLanguageInterpreted?: string, hearingLoopSelected?: boolean, disabledAccessSelected?: boolean, otherSupportSelected?: boolean, otherSupport?: string) {
@@ -46,5 +42,4 @@ export class SupportRequired {
     this.otherSupportSelected = otherSupportSelected;
     this.otherSupport = otherSupport;
   }
-
 }

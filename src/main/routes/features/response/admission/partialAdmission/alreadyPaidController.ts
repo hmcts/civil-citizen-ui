@@ -15,16 +15,16 @@ function renderView(form: GenericForm<AlreadyPaid>, res: express.Response): void
   res.render(citizenAlreadyPaidViewPath, {form});
 }
 
-alreadyPaidController.get(CITIZEN_ALREADY_PAID_URL, async (req, res) => {
+alreadyPaidController.get(CITIZEN_ALREADY_PAID_URL, async (req, res, next: express.NextFunction) => {
   try {
     const alreadyPaidForm = new GenericForm(new AlreadyPaid(await partialAdmissionService.getClaimAlreadyPaid(req.params.id)));
     renderView(alreadyPaidForm , res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-alreadyPaidController.post(CITIZEN_ALREADY_PAID_URL, async (req, res) => {
+alreadyPaidController.post(CITIZEN_ALREADY_PAID_URL, async (req, res, next: express.NextFunction) => {
   try {
     const alreadyPaidForm = new GenericForm(new AlreadyPaid(req.body.option));
     await alreadyPaidForm.validate();
@@ -36,7 +36,7 @@ alreadyPaidController.post(CITIZEN_ALREADY_PAID_URL, async (req, res) => {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 

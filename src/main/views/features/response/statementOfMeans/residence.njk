@@ -24,7 +24,7 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.RESIDENCE.TITLE') }}</h1>
           <form method="post" novalidate>
-            {{ csrfProtection(csrfToken) }}
+            {{ csrfProtection(csrf) }}
 
             {% set typeError = form.errorFor('type') %}
             <div class="govuk-form-group {% if errors %} govuk-form-group--error {% endif %}">

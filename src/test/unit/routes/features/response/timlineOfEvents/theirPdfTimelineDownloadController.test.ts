@@ -23,7 +23,7 @@ describe('Their PDF timeline controller', () => {
       app.locals.draftStoreClient = undefined;
     });
 
-    test('should display the pdf successfully', async () => {
+    it('should display the pdf successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
       const mockDisplayPDFDocument = jest.spyOn(documentUtils, 'displayPDF');
       await request(app)
@@ -33,13 +33,13 @@ describe('Their PDF timeline controller', () => {
           expect(mockDisplayPDFDocument).toBeCalled();
         });
     });
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get('/case/1111/documents/timeline')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

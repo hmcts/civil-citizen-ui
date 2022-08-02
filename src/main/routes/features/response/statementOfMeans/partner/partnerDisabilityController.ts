@@ -11,28 +11,24 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner-disability';
 const partnerDisabilityController = express.Router();
-
 const partnerDisabilityService = new PartnerDisabilityService();
-const { Logger } = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partnerDisabilityController');
 const validator = new Validator();
 
 function renderView(form: PartnerDisability, res: express.Response): void {
   res.render(partnerViewPath, {form});
 }
 
-partnerDisabilityController.get(CITIZEN_PARTNER_DISABILITY_URL, async (req, res) => {
+partnerDisabilityController.get(CITIZEN_PARTNER_DISABILITY_URL, async (req, res, next: express.NextFunction) => {
   try {
     const partnerDisability = await partnerDisabilityService.getPartnerDisability(req.params.id);
     renderView(partnerDisability, res);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
 partnerDisabilityController.post(CITIZEN_PARTNER_DISABILITY_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     const partnerDisability: PartnerDisability = new PartnerDisability(req.body.option);
 
     const errors: ValidationError[] = validator.validateSync(partnerDisability);
@@ -48,8 +44,7 @@ partnerDisabilityController.post(CITIZEN_PARTNER_DISABILITY_URL,
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
         }
       } catch (error) {
-        logger.error(error);
-        res.status(500).send({ error: error.message });
+        next(error);
       }
     }
   });

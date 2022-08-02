@@ -4,6 +4,7 @@ import {CounterpartyType} from './counterpartyType';
 
 export class Respondent {
   primaryAddress: PrimaryAddress;
+  postToThisAddress?: string;
   correspondenceAddress?: CorrespondenceAddress;
   individualTitle?: string;
   individualLastName?: string;

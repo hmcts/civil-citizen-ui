@@ -10,6 +10,7 @@ import {
   InterestClaimOptions,
   InterestClaimUntilType,
   SameRateInterestType,
+  CaseState,
 } from '../../main/common/form/models/claimDetails';
 
 export const buildPrimaryAddress = (): PrimaryAddress => {
@@ -37,6 +38,7 @@ export const buildRespondent1 = (): Respondent => {
   respondent.individualTitle = 'Mrs.';
   respondent.individualLastName = 'Mary';
   respondent.individualFirstName = 'Richards';
+  respondent.partyName = 'Mrs Richards Mary';
   respondent.telephoneNumber = '0208339922';
   respondent.dateOfBirth = new Date('2022-01-24T15:59:59');
   respondent.responseType = '';
@@ -52,11 +54,13 @@ function buildMockClaim(): Claim {
   const _mockClaim: Claim = new Claim();
 
   _mockClaim.legacyCaseReference = '497MC585';
+  _mockClaim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   _mockClaim.applicant1 = {
     individualTitle: 'Mrs',
     individualLastName: 'Clark',
     individualFirstName: 'Jane',
     type: CounterpartyType.INDIVIDUAL,
+    partyName: 'Mrs Jane Clark',
   };
   _mockClaim.statementOfMeans = {
     childrenDisability: {

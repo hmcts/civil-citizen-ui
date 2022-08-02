@@ -8,22 +8,20 @@ import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlF
 
 const regularIncomeController = express.Router();
 
-export default regularIncomeController;
-
 function renderView(form: GenericForm<RegularIncome>, res: express.Response) {
   res.render('features/response/statementOfMeans/income/regular-income', {form: form});
 }
 
-regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL, async (req, res) => {
+regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL, async (req, res,next: express.NextFunction) => {
   try {
     const model = await getRegularIncome(req.params.id);
     renderView(new GenericForm<RegularIncome>(model), res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-regularIncomeController.post(CITIZEN_MONTHLY_INCOME_URL, async (req, res) => {
+regularIncomeController.post(CITIZEN_MONTHLY_INCOME_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form = new GenericForm(toRegularIncomeForm(req));
     await form.validate();
@@ -34,6 +32,8 @@ regularIncomeController.post(CITIZEN_MONTHLY_INCOME_URL, async (req, res) => {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EXPLANATION_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
+
+export default regularIncomeController;

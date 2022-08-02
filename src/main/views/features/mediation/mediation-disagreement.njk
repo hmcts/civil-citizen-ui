@@ -1,8 +1,8 @@
 {% extends "claim-details-tpl.njk" %}
 
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
@@ -13,7 +13,7 @@
 
 {% block content %}
   {% set yesHtml %}
-  <p class="govuk-body">{{ t("We'll ask the claimant if they'll try free mediation. If they say no, the claim will go to a hearing.") }}</p>
+    <p class="govuk-body">{{ t("We'll ask the claimant if they'll try free mediation. If they say no, the claim will go to a hearing.") }}</p>
   {% endset -%}
 
   <div class="govuk-width-container">
@@ -62,11 +62,8 @@
               {{ contactUsForHelp(t) }}
             </div>
           </form>
-
         </div>
       </div>
-
     </main>
   </div>
-
 {% endblock %}
