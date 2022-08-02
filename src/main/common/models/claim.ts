@@ -10,7 +10,6 @@ import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from '../form/models/rejectAllOfClaim';
 import {CorrespondenceAddress} from './correspondenceAddress';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
-import {Defence} from '../form/models/defence';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
 import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
@@ -32,10 +31,9 @@ import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifi
 import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
-import {Vulnerability} from 'models/directionsQuestionnaire/vulnerability';
+import {Vulnerability} from '../models/directionsQuestionnaire/vulnerability';
 import {ResponseDeadline} from './responseDeadline';
-
-export const MAX_CLAIM_AMOUNT = 10000;
+import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
 
 export class Claim {
   legacyCaseReference: string;
@@ -48,7 +46,6 @@ export class Claim {
   detailsOfClaim: string;
   respondent1?: Respondent;
   statementOfMeans?: StatementOfMeans;
-  defence?: Defence;
   paymentOption?: PaymentOptionType;
   repaymentPlan?: RepaymentPlan;
   paymentDate?: Date;
@@ -77,6 +74,7 @@ export class Claim {
   vulnerability: Vulnerability;
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
+  determinationWithoutHearing: DeterminationWithoutHearing;
 
   getClaimantName(): string {
     return this.applicant1.partyName;
@@ -199,8 +197,8 @@ export class Claim {
     return `${this.legacyCaseReference}-${this.specClaimTemplateDocumentFiles?.document_filename}`;
   }
 
-  isSystemGeneratedCaseDocumentsAvailable(): number {
-    return this.systemGeneratedCaseDocuments?.length;
+  isSystemGeneratedCaseDocumentsAvailable(): boolean {
+    return this.systemGeneratedCaseDocuments?.length > 0;
   }
 
   getDocumentDetails(documentType: DocumentType): CaseDocument {

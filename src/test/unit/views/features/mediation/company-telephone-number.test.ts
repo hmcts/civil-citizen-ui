@@ -61,7 +61,6 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
       expect(errorSummary.length).toEqual(0);
     });
 
-
     describe('Yes Section', () => {
       it('should display "Confirm telephone number" text', async () => {
         const paragraph = htmlDocument.getElementsByClassName('govuk-label');

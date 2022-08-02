@@ -7,7 +7,7 @@ import {
 } from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 describe('Statement of Truth form validation', () => {
-  test('should fail when not signed', () => {
+  it('should fail when not signed', () => {
     //Given
     const form = new GenericForm(new StatementOfTruthForm(false, undefined, ''));
     //When
@@ -22,7 +22,7 @@ describe('Statement of Truth form validation', () => {
     expect(form.errorFor('signerRole')).toBeUndefined();
   });
 
-  test('should pass when basic signature type and direction questionnaire not signed', () => {
+  it('should pass when basic signature type and direction questionnaire not signed', () => {
     //Given
     const form = new GenericForm(new StatementOfTruthForm(false, SignatureType.BASIC, 'true', 'false'));
     //When
@@ -31,7 +31,7 @@ describe('Statement of Truth form validation', () => {
     expect(form.hasErrors()).toBe(false);
   });
 
-  test('should pass when direction questionnaire is signed', () => {
+  it('should pass when direction questionnaire is signed', () => {
     //Given
     const form = new GenericForm(new StatementOfTruthForm(false, SignatureType.QUALIFIED, 'true', 'true'));
     //When
@@ -40,7 +40,7 @@ describe('Statement of Truth form validation', () => {
     expect(form.hasErrors()).toBe(false);
   });
 
-  test('should pass when direction questionnaire is not signed', () => {
+  it('should pass when direction questionnaire is not signed', () => {
     //Given
     const form = new GenericForm(new StatementOfTruthForm(true, SignatureType.QUALIFIED, 'true', undefined));
     //When

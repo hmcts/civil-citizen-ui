@@ -34,7 +34,7 @@ describe('Dependant Teenagers', () => {
   });
   describe('on GET', () => {
     app.locals.draftStoreClient = mockCivilClaim;
-    test('should return dependent teenagers page', async () => {
+    it('should return dependent teenagers page', async () => {
       await request(app)
         .get(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .expect((res) => {
@@ -42,7 +42,7 @@ describe('Dependant Teenagers', () => {
           expect(res.text).toContain(EXPECTED_TEXT);
         });
     });
-    test('should return 500 error code when there is an error', async () => {
+    it('should return 500 error code when there is an error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_DEPENDANTS_EDUCATION_URL)
@@ -54,7 +54,7 @@ describe('Dependant Teenagers', () => {
   });
   describe('on POST', () => {
     app.locals.draftStoreClient = mockCivilClaim;
-    test('should show error when no number is added', async () => {
+    it('should show error when no number is added', async () => {
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send('')
@@ -63,7 +63,7 @@ describe('Dependant Teenagers', () => {
           expect(res.text).toContain(VALID_INTEGER);
         });
     });
-    test('should show error when number is negative', async () => {
+    it('should show error when number is negative', async () => {
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: -1, maxValue: 3})
@@ -72,7 +72,7 @@ describe('Dependant Teenagers', () => {
           expect(res.text).toContain(VALID_POSITIVE_NUMBER);
         });
     });
-    test('should show error when number is decimal', async () => {
+    it('should show error when number is decimal', async () => {
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: 1.3, maxValue: 3})
@@ -81,7 +81,7 @@ describe('Dependant Teenagers', () => {
           expect(res.text).toContain(VALID_INTEGER);
         });
     });
-    test('should show error when number is greater than maxValue', async () => {
+    it('should show error when number is greater than maxValue', async () => {
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: 4, maxValue: 3})
@@ -90,7 +90,7 @@ describe('Dependant Teenagers', () => {
           expect(res.text).toContain(VALID_NUMBER_FOR_PREVIOUS_PAGE);
         });
     });
-    test('should redirect to other dependants when hasDisabledChildren returns false and no errors', async () => {
+    it('should redirect to other dependants when hasDisabledChildren returns false and no errors', async () => {
       mockHasDisabledChildren.mockImplementation(() => {
         return false;
       });
@@ -103,7 +103,7 @@ describe('Dependant Teenagers', () => {
           expect(res.header.location).toEqual(CITIZEN_OTHER_DEPENDANTS_URL);
         });
     });
-    test('should redirect to other dependants when hasDisabledChildren returns true and no errors', async () => {
+    it('should redirect to other dependants when hasDisabledChildren returns true and no errors', async () => {
       mockHasDisabledChildren.mockImplementation(() => {
         return true;
       });
@@ -116,7 +116,7 @@ describe('Dependant Teenagers', () => {
           expect(res.header.location).toEqual(CHILDREN_DISABILITY_URL);
         });
     });
-    test('should return 500 code when there is an error', async () => {
+    it('should return 500 code when there is an error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)

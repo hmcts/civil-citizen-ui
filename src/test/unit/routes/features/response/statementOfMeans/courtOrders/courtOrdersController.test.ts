@@ -45,7 +45,7 @@ describe('Citizen court orders', () => {
       app.locals.draftStoreClient = mockDraftStore;
     });
 
-    test('should return court orders page', async () => {
+    it('should return court orders page', async () => {
       await request(app)
         .get(respondentCourtOrdersUrl)
         .expect((res: Response) => {
@@ -53,7 +53,7 @@ describe('Citizen court orders', () => {
           expect(res.text).toContain('Are you paying money as a result of any court orders?');
         });
     });
-    test('should return status 500 when error thrown', async () => {
+    it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockGetExceptionDraftStore;
       await request(app)
         .get(respondentCourtOrdersUrl)
@@ -68,7 +68,7 @@ describe('Citizen court orders', () => {
       app.locals.draftStoreClient = mockDraftStore;
     });
 
-    test('when Yes option and one court order fully filled in, should redirect to Debts screen', async () => {
+    it('when Yes option and one court order fully filled in, should redirect to Debts screen', async () => {
       await request(app)
         .post(respondentCourtOrdersUrl)
         .send('declared=yes')
@@ -81,7 +81,7 @@ describe('Citizen court orders', () => {
         });
     });
 
-    test('when no option selected should show an error', async () => {
+    it('when no option selected should show an error', async () => {
       await request(app)
         .post(respondentCourtOrdersUrl)
         .send('_csrf=')
@@ -91,7 +91,7 @@ describe('Citizen court orders', () => {
         });
     });
 
-    test('when Yes option and an empty court order, should show an error', async () => {
+    it('when Yes option and an empty court order, should show an error', async () => {
       await request(app)
         .post(respondentCourtOrdersUrl)
         .send('declared=yes')
@@ -104,7 +104,7 @@ describe('Citizen court orders', () => {
         });
     });
 
-    test('when Yes option and missing court order claim number, should show an error', async () => {
+    it('when Yes option and missing court order claim number, should show an error', async () => {
       await request(app)
         .post(respondentCourtOrdersUrl)
         .send('declared=yes')
@@ -117,7 +117,7 @@ describe('Citizen court orders', () => {
         });
     });
 
-    test('when Yes option and missing court order claim amount, should show an error', async () => {
+    it('when Yes option and missing court order claim amount, should show an error', async () => {
       await request(app)
         .post(respondentCourtOrdersUrl)
         .send('declared=yes')
@@ -130,7 +130,7 @@ describe('Citizen court orders', () => {
         });
     });
 
-    test('when Yes option and missing court order claim instalment amount, should show an error', async () => {
+    it('when Yes option and missing court order claim instalment amount, should show an error', async () => {
       await request(app)
         .post(respondentCourtOrdersUrl)
         .send('declared=yes')
@@ -143,7 +143,7 @@ describe('Citizen court orders', () => {
         });
     });
 
-    test('should status 500 when error thrown', async () => {
+    it('should status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockGetExceptionDraftStore;
       await request(app)
         .post(respondentCourtOrdersUrl)

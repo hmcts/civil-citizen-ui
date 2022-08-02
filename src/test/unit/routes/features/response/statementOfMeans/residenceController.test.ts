@@ -35,7 +35,7 @@ describe('Citizen residence', () => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 
-    test('should return residence page', async () => {
+    it('should return residence page', async () => {
       await agent
         .get(respondentResidenceUrl)
         .expect((res: Response) => {
@@ -44,7 +44,7 @@ describe('Citizen residence', () => {
         });
     });
 
-    test('should return status 500 when error thrown', async () => {
+    it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await agent
         .get(respondentResidenceUrl)
@@ -59,7 +59,7 @@ describe('Citizen residence', () => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 
-    test('should redirect when OWN_HOME option selected', async () => {
+    it('should redirect when OWN_HOME option selected', async () => {
       await agent
         .post(respondentResidenceUrl)
         .send('type=OWN_HOME')
@@ -69,7 +69,7 @@ describe('Citizen residence', () => {
         });
     });
 
-    test('should return error when no option selected', async () => {
+    it('should return error when no option selected', async () => {
       await agent
         .post(respondentResidenceUrl)
         .send('type=')
@@ -79,7 +79,7 @@ describe('Citizen residence', () => {
         });
     });
 
-    test('should return error when type is \'Other\' and housing details not provided', async () => {
+    it('should return error when type is \'Other\' and housing details not provided', async () => {
       await agent
         .post(respondentResidenceUrl)
         .send('type=OTHER')
@@ -90,7 +90,7 @@ describe('Citizen residence', () => {
         });
     });
 
-    test('should redirect when type is \'Other\' and housing details are provided', async () => {
+    it('should redirect when type is \'Other\' and housing details are provided', async () => {
       await agent
         .post(respondentResidenceUrl)
         .send('type=OTHER')
@@ -101,7 +101,7 @@ describe('Citizen residence', () => {
         });
     });
 
-    test('should return error when type is \'Other\' and housing details are too long', async () => {
+    it('should return error when type is \'Other\' and housing details are too long', async () => {
       await agent
         .post(respondentResidenceUrl)
         .send('type=OTHER')
@@ -112,7 +112,7 @@ describe('Citizen residence', () => {
         });
     });
 
-    test('should status 500 when error thrown', async () => {
+    it('should status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await agent
         .post(respondentResidenceUrl)

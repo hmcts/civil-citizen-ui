@@ -10,7 +10,7 @@ const token =
   'RvcmlhbiIsInVpZCI6IjEyMyJ9.KaDIFSDdD3ZIYCl_qavvYbQ3a4abk47iBOZhB1-9mUQ';
 
 describe('getUserDetails', () => {
-  test('should exchange a code for a token and decode a JWT to get the user details', async () => {
+  it('should exchange a code for a token and decode a JWT to get the user details', async () => {
     mockedAxios.post.mockResolvedValue({
       data: {
         access_token: token,

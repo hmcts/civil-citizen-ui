@@ -44,6 +44,4 @@ export class DefendantTimeline {
       this.rows = this.rows.filter(row => row.isAtLeastOneFieldPopulated());
     }
   }
-
-
 }

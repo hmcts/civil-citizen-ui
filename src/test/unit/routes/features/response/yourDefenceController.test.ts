@@ -9,6 +9,7 @@ import {
   mockCivilClaimUnemploymentRetired,
   mockNoStatementOfMeans,
   mockRedisFailure,
+  mockRedisFullAdmission,
 } from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
@@ -27,7 +28,7 @@ describe('yourDefence', () => {
     const inset = 'Your response will be sent to Mr. Jan Clark.';
     const header = 'Why do you disagree with the claim?';
 
-    test('should return yourDefence page successfully', async () => {
+    it('should return yourDefence page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(RESPONSE_YOUR_DEFENCE_URL)
         .expect((res) => {
@@ -37,7 +38,7 @@ describe('yourDefence', () => {
         });
     });
 
-    test('should return yourDefence page successfully', async () => {
+    it('should return yourDefence page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaimUnemploymentRetired;
       await request(app).get(RESPONSE_YOUR_DEFENCE_URL)
         .expect((res) => {
@@ -47,7 +48,7 @@ describe('yourDefence', () => {
         });
     });
 
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(RESPONSE_YOUR_DEFENCE_URL)
@@ -59,7 +60,7 @@ describe('yourDefence', () => {
   });
 
   describe('on Post', () => {
-    test('should return error message when any text is filled', async () => {
+    it('should return error message when any text is filled', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).post(RESPONSE_YOUR_DEFENCE_URL)
         .send()
@@ -70,7 +71,7 @@ describe('yourDefence', () => {
         });
     });
 
-    test('should redirect to timeline page option text is fill', async () => {
+    it('should redirect to timeline page option text is fill', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app).post(RESPONSE_YOUR_DEFENCE_URL)
         .send({text: 'Test'})
@@ -80,7 +81,16 @@ describe('yourDefence', () => {
         });
     });
 
-    test('should return http 500 when has error', async () => {
+    it('should redirect to timeline page option text is fill and rejectAllOfClaim no exist', async () => {
+      app.locals.draftStoreClient = mockRedisFullAdmission;
+      await request(app).post(RESPONSE_YOUR_DEFENCE_URL)
+        .send({text: 'Test'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CITIZEN_TIMELINE_URL);
+        });
+    });
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(RESPONSE_YOUR_DEFENCE_URL)

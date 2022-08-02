@@ -17,6 +17,3 @@ export const convertFromForm = (employmentForm: EmploymentForm): Employment => {
     };
   }
 };
-
-
-

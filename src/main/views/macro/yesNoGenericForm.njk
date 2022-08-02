@@ -1,0 +1,47 @@
+{# This macro has params that include conditional html to show on yes or no.
+To include html on yes add htmlYes in parameter
+for example {yesHtml:'<span>you clicked on yes</span>'}
+To include html on when no is selected add htmlNo parameter
+for example {noHtml:'<span>you clicked on no</span>' #}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% macro yesNoRadioButton(t, id, name, title, form, description, params) %}
+  {% set yes = params.yes if params.yes else 'COMMON.YES' %}
+  {% set no = params.no if params.no else 'COMMON.NO' %}
+  {% set errors = form.getAllErrors() %}
+  {{ govukRadios({
+    idPrefix: id,
+    name: name,
+    classes: params.classes,
+    fieldset: {
+      legend: {
+        text: title,
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--l"
+      }
+    } if title,
+    hint: {
+      text: description
+    },
+    items: [
+      {
+        value: YesNo.YES,
+        checked: true if form.model.option=="yes" else false,
+        html: "<span>" + t(yes) + "</span>",
+        conditional:{
+        html: params.yesHtml
+      }
+      },
+      {
+        value: YesNo.NO,
+        checked: true if form.model.option=="no" else false,
+        html: "<span>" + t(no) + "</span>",
+        conditional:{
+        html: params.noHtml
+      }
+      }
+    ],
+    errorMessage: {
+      html: t(form.errorFor(name))
+    } if form.hasFieldError(name)
+  }) }}
+{% endmacro %}

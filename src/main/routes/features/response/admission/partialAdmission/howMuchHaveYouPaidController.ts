@@ -13,7 +13,6 @@ const lastMonth = new Date(Date.now());
 lastMonth.setMonth(lastMonth.getMonth() - 1);
 let totalClaimAmount: number;
 
-
 howMuchHaveYouPaidController
   .get(
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
