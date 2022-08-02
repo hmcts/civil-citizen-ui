@@ -14,8 +14,6 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 
 const citizenDetailsController = express.Router();
 
-let citizenFullName: object;
-
 const CITIZEN_DETAILS_COMPANY_VIEW_PATH = 'features/response/citizenDetails/citizen-details-company';
 const CITIZEN_DETAILS_VIEW_PATH = 'features/response/citizenDetails/citizen-details';
 
