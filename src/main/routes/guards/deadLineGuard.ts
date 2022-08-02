@@ -27,11 +27,11 @@ const isUnauthorized = async (req: express.Request) => {
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
   const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, req.params.id, 'en');
 
-  const isTaskComplete = viewOptionsBeforeDeadlineTask.status === TaskStatus.COMPLETE ? true : false; 
+  const isTaskComplete = viewOptionsBeforeDeadlineTask.status === TaskStatus.COMPLETE; 
   const isDeadlineExtended = caseData.responseDeadline?.option === ResponseOptions.ALREADY_AGREED && caseData.responseDeadline?.agreedResponseDeadline; 
   const isMoreThan28Days = caseData.responseDeadline?.option === ResponseOptions.YES && caseData.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS; 
-  const isRequestRefused = caseData.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED ? true : false; 
-  const isResponseNo = caseData.responseDeadline?.option === ResponseOptions.NO ? true : false; 
+  const isRequestRefused = caseData.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED; 
+  const isResponseNo = caseData.responseDeadline?.option === ResponseOptions.NO; 
   
   if (isDeadlinePassed && isTaskComplete && (isMoreThan28Days || isRequestRefused || isResponseNo)) {
     return true;
