@@ -13,7 +13,7 @@ import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/un
 import {TransactionSchedule} from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {EvidenceType} from '../../common/models/evidence/evidenceType';
 import {EvidenceDetails} from '../../common/models/evidence/evidenceDetails';
-import {addDaysFilter, dateFilter, formatDate} from './filters/dateFilter';
+import {addDaysFilter, dateFilter, formatDate, addDaysFilterTranslated} from './filters/dateFilter';
 import {SignatureType} from '../../common/models/signatureType';
 import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
 import {FormValidationError} from '../../common/form/validationErrors/formValidationError';
@@ -66,9 +66,16 @@ export class Nunjucks {
 
     const currencyFormat = (value: number) => numeral.default(value);
 
-    const translateErrors = (keys: FormValidationError[], t: any) => {
+    const translateErrors = (keys: FormValidationError[], t: any, formatValues: any[]) => {
       return keys.map((key) => {
-        return ({...key, text: t(key?.text)});
+        const formatValue = formatValues.find(v => v.keyError === key.text);
+        if(formatValue){
+          const translation = t(key.text);
+          const replaced = translation.replace(formatValue.keyToReplace, formatValue.valueToReplace);
+          return ({...key, text: replaced});
+        }else{
+          return ({...key, text: t(key?.text)});
+        }
       });
     };
 
@@ -77,6 +84,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
     nunjucksEnv.addFilter('currencyFormat', currencyFormat);
     nunjucksEnv.addFilter('addDays', addDaysFilter);
+    nunjucksEnv.addFilter('addDaysTranslated', addDaysFilterTranslated);
     nunjucksEnv.addFilter('date', dateFilter);
     nunjucksEnv.addFilter('formatDate', formatDate);
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));

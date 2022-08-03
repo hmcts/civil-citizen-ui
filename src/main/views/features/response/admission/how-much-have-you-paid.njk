@@ -1,6 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
@@ -15,22 +15,24 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t("How much have you paid the claimant?") %}
+      {% set dateToday = "now" | addDaysTranslated(0, t) %}
+      {% set title = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID.TITLE') %}
       {% if responseType==="FULL_DEFENCE" %}
-        {% set title = t("How much have you paid?") %}
+        {% set title = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID.HOW_MUCH') %}
       {% endif %}
-      {% set description = t("The total amount claimed is £CLAIMAMOUNT. This includes the claim fee and any interest.")  | replace ("CLAIMAMOUNT", totalClaimAmount)  %}
+      {% set description = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID.TOTAL_CLAIMED', {totalClaimAmount : totalClaimAmount}) %}
       {% set amountAsString = '' + form.model.amount %}
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
-        {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
-          "errorList": errors
-        }) }}
+        {{ errorSummary(errors,t,[{keyError:'ERRORS.VALID_DATE_IN_PAST',keyToReplace:'{{dateToday}}',valueToReplace:dateToday}]) }}
         {% set dateErrorMessages %}
           {% if errors %}
            {% if form.hasFieldError('date') %}
-             <span class="govuk-error-message">{{ t(form.errorFor('date')) }}</span>
+             {% if form.errorFor('date') == 'ERRORS.VALID_DATE_IN_PAST' %}
+               <span class="govuk-error-message">{{ t(form.errorFor('date'),{dateToday: dateToday}) }}</span>
+             {% else %}
+               <span class="govuk-error-message">{{ t(form.errorFor('date')) }}</span>
+             {% endif %}
            {% endif %}
             {% if form.hasFieldError('day') %}
               <span class="govuk-error-message">{{ t(form.errorFor('day')) }}</span>
@@ -65,7 +67,7 @@
                 text: "£"
               },
               label: {
-                text: t("How much have you paid?"),
+                text: t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID.HOW_MUCH'),
                 classes: "govuk-label--s",
                 isPageHeading: true
               },
@@ -82,13 +84,13 @@
                 name: "date",
                 fieldset: {
                   legend: {
-                    text: t("When did you pay this amount?"),
+                    text: t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID.WHEN_DID'),
                     isPageHeading: false,
                     classes: 'govuk-fieldset__legend--s'
                   }
                 },
                 hint: {
-                  text: t("For example, " + lastMonth.getDate() + " " + (lastMonth.getMonth() + 1) + " " + lastMonth.getFullYear())
+                  text: t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID.FOR_EXAMPLE') + lastMonth.getDate() + " " + (lastMonth.getMonth() + 1) + " " + lastMonth.getFullYear()
                 },
                 errorMessage: {
                   html: dateErrorMessages
@@ -97,7 +99,7 @@
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if (form.hasFieldError('day') or form.hasFieldError('date')) else "govuk-input--width-2",
                     id: "day",
-                    label: "Day",
+                    label: t('COMMON.DAY'),
                     name: "day",
                     value: form.model.day,
                     max: 31
@@ -105,7 +107,7 @@
                   {
                     classes:"govuk-input--width-2 govuk-input--error" if (form.hasFieldError('month') or form.hasFieldError('date')) else "govuk-input--width-2",
                     id: "month",
-                    label: "Month",
+                    label: t('COMMON.MONTH'),
                     name: "month",
                     value: form.model.month,
                     max: 12
@@ -113,7 +115,7 @@
                   {
                     classes: "govuk-input--width-4 govuk-input--error" if (form.hasFieldError('year') or form.hasFieldError('date')) else "govuk-input--width-4",
                     id: "year",
-                    label: "Year",
+                    label: t('COMMON.YEAR'),
                     name: "year",
                     value: form.model.year,
                     max: 9999
@@ -128,7 +130,7 @@
                 value: form.model.text,
                 classes:"govuk-!-width-three-quarters",
                 label: {
-                  text: t("How did you pay this amount?"),
+                  text: t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID.HOW_DID'),
                   classes: "govuk-label--s"
                 },
                 errorMessage: {
@@ -138,7 +140,7 @@
             </div>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

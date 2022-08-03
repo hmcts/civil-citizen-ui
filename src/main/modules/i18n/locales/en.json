@@ -62,6 +62,20 @@
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
     },
+    "MONTH_NAMES": {
+      "APRIL": "April",
+      "AUGUST": "August",
+      "DECEMBER": "December",
+      "FEBRUARY": "February",
+      "JANUARY": "January",
+      "JULY": "July",
+      "JUNE": "June",
+      "MARCH": "March",
+      "MAY": "May",
+      "NOVEMBER": "November",
+      "OCTOBER": "October",
+      "SEPTEMBER": "September"
+    },
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "I admit all of the claim",
       "FULL_DEFENCE": "I reject all of the claim",
@@ -615,7 +629,13 @@
       "TITLE": "How much money do you admit you owe?"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
-      "PAGE_TITLE": "How much have you paid?"
+      "FOR_EXAMPLE": "For example, ",
+      "HOW_DID": "How did you pay this amount?",
+      "HOW_MUCH": "How much have you paid?",
+      "PAGE_TITLE": "How much have you paid?",
+      "TITLE": "How much have you paid the claimant?",
+      "TOTAL_CLAIMED" : "The total amount claimed is £{{totalClaimAmount}}. This includes the claim fee and any interest.",
+      "WHEN_DID": "When did you pay this amount?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
@@ -876,7 +896,7 @@
     "VALID_CORRESPONDENCE_CITY": "Enter correspondence town/city",
     "VALID_CORRESPONDENCE_POSTCODE": "Enter correspondence address postcode",
     "VALID_DATE": "Please enter a valid date",
-    "VALID_DATE_IN_PAST": "Enter date before ",
+    "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DAY": "Enter a valid day",
     "VALID_DEBT_AMOUNT": {
