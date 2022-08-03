@@ -9,9 +9,9 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 /**
- * Gets civil claim response object with claim from draft store
- * @param claimId
- * @returns claim from redis or undefined when no there is no data for claim id
+ * Gets the claim from draft store and if not existing then gets it from ccd.
+ * @param claimId, req
+ * @returns claim
  */
 export const getClaimById = async (claimId: string, req: express.Request): Promise<Claim> => {
   let claim: Claim = await getCaseDataFromStore(claimId);
