@@ -2,8 +2,8 @@ import * as express from 'express';
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
-import {AppRequest} from 'models/AppRequest';
-//import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
+import {AppRequest, UserDetails} from 'models/AppRequest';
+import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
 import {DashboardClaimantItem, DashboardDefendantItem} from '../../../common/models/dashboard/dashboardItem';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -26,12 +26,12 @@ function renderPage(res: express.Response, claimsAsClaimant: DashboardClaimantIt
 const dashboardController = express.Router();
 
 dashboardController.get(DASHBOARD_URL, async function (req: AppRequest, res) {
-  //const user: UserDetails = req.session.user;
+  const user: UserDetails = req.session.user;
   /*This is a call to validate integration with legacy draft-store. This will have to be refined in the future
   to display the draft claims on the dashboard*/
   const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(req);
   const claimsAsDefendant : DashboardDefendantItem[] = await civilServiceClient.getClaimsForDefendant(<AppRequest>req);
-  const claimDraftSaved : any = undefined;
+  const claimDraftSaved = await getOcmcDraftClaims(user.accessToken);
   const responseDraftSaved = false;
   const paginationArgumentClaimant: object = {};
   const paginationArgumentDefendant: object = {};
