@@ -42,7 +42,6 @@ export const AMOUNT_INVALID_DECIMALS = 'Enter a valid amount, maximum two decima
 export const JOB_TITLE_REQUIRED = 'Enter a job title';
 export const ANNUAL_TURNOVER_REQUIRED = 'Are you sure this is a valid value?';
 export const VALID_OWED_AMOUNT_REQUIRED = 'Enter a valid amount owed';
-export const VALID_VALUE = 'Are you sure this is a valid value?';
 export const VALID_REASON_REQUIRED = 'Enter a reason';
 export const VALID_DISAGREE_REASON_REQUIRED = 'Enter text explaining why do you disagree';
 export const VALID_ENTER_AN_EMPLOYER_NAME = 'Enter an employer name';
