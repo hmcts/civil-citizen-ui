@@ -23,7 +23,7 @@ export const getViewOptionsBeforeDeadlineTask = (claim: Claim, claimId: string, 
       if (claim.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS) {
         viewOptionsBeforeDeadlineTask.status = TaskStatus.COMPLETE;
         if(isDeadlinePassed){
-          viewOptionsBeforeDeadlineTask.url = "#";
+          viewOptionsBeforeDeadlineTask.url = '#';
         }
       }
       break;
@@ -36,13 +36,13 @@ export const getViewOptionsBeforeDeadlineTask = (claim: Claim, claimId: string, 
     case ResponseOptions.REQUEST_REFUSED:
       viewOptionsBeforeDeadlineTask.status = TaskStatus.COMPLETE;
       if(isDeadlinePassed){
-        viewOptionsBeforeDeadlineTask.url = "#";
+        viewOptionsBeforeDeadlineTask.url = '#';
       }
       break;
     case ResponseOptions.NO:
       viewOptionsBeforeDeadlineTask.status = TaskStatus.COMPLETE;
       if(isDeadlinePassed){
-        viewOptionsBeforeDeadlineTask.url = "#";
+        viewOptionsBeforeDeadlineTask.url = '#';
       }
       break;
     default:

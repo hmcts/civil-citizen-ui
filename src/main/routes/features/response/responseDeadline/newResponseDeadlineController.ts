@@ -46,7 +46,7 @@ newResponseDeadlineController.post(NEW_RESPONSE_DEADLINE_URL, async function (re
     await form.validate();
     if (!form.hasErrors()) {
       await responseDeadlineService.saveAgreedResponseDeadline(req.params.id, newDeadlineDate.date);
-    } 
+    }
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
   } catch (error) {
     next(error);

@@ -11,7 +11,7 @@ import {CLAIM_TASK_LIST_URL} from '../../routes/urls';
 
 export const deadLineGuard = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
-    const unauthorized = await isUnauthorized(req)
+    const unauthorized = await isUnauthorized(req);
     if (unauthorized) {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
     } else {
@@ -46,4 +46,4 @@ const isUnauthorized = async (req: express.Request) => {
   }
 
   return false;
-}
+};

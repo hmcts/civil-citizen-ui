@@ -149,7 +149,7 @@ function buildMockClaim(): Claim {
   _mockClaim.respondent1ResponseDeadline = new Date('2022-08-20T00:00:00');
   _mockClaim.responseDeadline = {
     option: ResponseOptions.YES,
-    additionalTime: AdditionalTimeOptions.MORE_THAN_28_DAYS
+    additionalTime: AdditionalTimeOptions.MORE_THAN_28_DAYS,
   };
 
   _mockClaim.isPaymentOptionPayImmediately = (): boolean => false;
