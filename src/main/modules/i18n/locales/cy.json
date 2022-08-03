@@ -629,7 +629,13 @@
       "TITLE": "Faint o arian ydych chi'n cyfaddef sy'n ddyledus gennych?"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
-      "PAGE_TITLE": "How much have you paid?"
+      "FOR_EXAMPLE": "Er enghraifft,",
+      "HOW_DID": "Sut y gwnaethoch dalu’r swm hwn?",
+      "HOW_MUCH": "Faint ydych chi wedi talu?",
+      "PAGE_TITLE": "How much have you paid?",
+      "TITLE": "Faint ydych chi wedi ei dalu i’r hawlydd?",
+      "TOTAL_CLAIMED" : "Y cyfanswm a hawlir yw £{{totalClaimAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
+      "WHEN_DID": "Pryd y gwnaethoch dalu’r swm hwn?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
