@@ -7,7 +7,8 @@ const nock = require('nock');
 const session = require('supertest-session');
 const citizenRoleToken: string = config.get('citizenRoleToken');
 const testSession = session(app);
-
+const civilServiceUrl = config.get<string>('services.civilService.url');
+const data = require('../../../../../utils/mocks/defendantClaimsMock.json');
 jest.mock('../../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
@@ -30,6 +31,12 @@ describe('Dashboard page', () => {
     nock(serviceAuthProviderUrl)
       .post('/lease')
       .reply(200, {});
+    nock(civilServiceUrl)
+      .get('/cases/defendant/undefined')
+      .reply(200, {data: data});
+    nock(civilServiceUrl)
+      .get('/cases/claimant/undefined')
+      .reply(200, {data: data});
     nock(draftStoreUrl)
       .get('/drafts')
       .reply(200, {});
