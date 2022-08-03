@@ -23,10 +23,11 @@ const responseDeadlineService = new ResponseDeadlineService();
 newResponseDeadlineController.get(NEW_RESPONSE_DEADLINE_URL, async function (req: AppRequest, res, next: express.NextFunction) {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
-    if (!req.cookies.newDeadlineDate) {
+    const agreedResponseDeadline = claim.responseDeadline.agreedResponseDeadline ? claim.responseDeadline.agreedResponseDeadline : req.cookies.newDeadlineDate.date;
+    if (!agreedResponseDeadline) {
       throw new Error('No extended response deadline found');
     }
-    const calculatedExtendedDeadline = await civilServiceClient.calculateExtendedResponseDeadline(req.cookies.newDeadlineDate.date, req);
+    const calculatedExtendedDeadline = await civilServiceClient.calculateExtendedResponseDeadline(agreedResponseDeadline, req);
 
     res.render(newResponseDeadlineViewPath, {
       claimantName: claim.getClaimantName(),

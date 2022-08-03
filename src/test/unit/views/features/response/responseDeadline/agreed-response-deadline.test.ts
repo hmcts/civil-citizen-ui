@@ -124,7 +124,7 @@ describe('Agreed response deadline View', () => {
     it('should display correct error summary message with correct link for agreed response date is more than 28 days', async () => {
       await request(app)
         .post(AGREED_TO_MORE_TIME_URL)
-        .send({day: '14', month: '06', year: 2022})
+        .send({day: '14', month: '12', year: 2050})
         .then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;

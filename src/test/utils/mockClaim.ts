@@ -12,6 +12,8 @@ import {
   SameRateInterestType,
   CaseState,
 } from '../../main/common/form/models/claimDetails';
+import {ResponseOptions} from '../../main/common/form/models/responseDeadline';
+import {AdditionalTimeOptions} from '../../main/common/form/models/additionalTime';
 
 export const buildPrimaryAddress = (): PrimaryAddress => {
   return {
@@ -144,6 +146,11 @@ function buildMockClaim(): Claim {
       },
     },
   ];
+  _mockClaim.respondent1ResponseDeadline = new Date('2022-08-20T00:00:00');
+  _mockClaim.responseDeadline = {
+    option: ResponseOptions.YES,
+    additionalTime: AdditionalTimeOptions.MORE_THAN_28_DAYS
+  };
 
   _mockClaim.isPaymentOptionPayImmediately = (): boolean => false;
   _mockClaim.isPaymentOptionBySetDate = (): boolean => false;
