@@ -797,11 +797,11 @@
   },
   "ERRORS": {
     "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
-    "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
+    "AMOUNT_LESS_THAN_CLAIMED": "Nodwch werth sy'n llai na'r swm a hawlir",
     "AMOUNT_REQUIRED": "Rhowch swm o £1 neu fwy",
     "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
     "CLAIM_DETAILS": "Claim details",
-    "CLAIM_VALID_AMOUNT": "Enter a valid amount",
+    "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
     "DATE_REQUIRED": "Enter a date",
     "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the orginal response date",
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
