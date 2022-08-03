@@ -2,7 +2,7 @@ import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {getCaseDataFromStore, saveDraftClaim} from '../modules/draft-store/draftStoreService';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
-import {Claim} from 'models/claim';
+import {Claim} from '../../main/common/models/claim';
 import * as express from 'express';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
