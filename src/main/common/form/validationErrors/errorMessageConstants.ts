@@ -7,7 +7,6 @@ export const VALID_DAY = 'Enter a valid day';
 export const VALID_MONTH = 'Enter a valid month';
 export const VALID_YEAR = 'Enter a valid year';
 export const VALID_FOUR_DIGIT_YEAR = 'Enter a 4 digit year';
-export const VALID_FREE_TEXT_DATE_LENGTH = 'Enter a date no longer than $constraint1 characters';
 export const VALID_ADDRESS_LINE_1 = 'Enter first address line';
 export const VALID_CITY = 'Enter a valid town/city';
 export const VALID_POSTCODE = 'Enter address postcode';

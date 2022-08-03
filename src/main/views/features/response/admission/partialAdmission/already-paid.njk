@@ -5,6 +5,7 @@
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "../../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.PARTIAL_ADMISSION_ALREADY_PAID.PAGE_TITLE') }}
@@ -16,10 +17,7 @@
       <div class="govuk-grid-row">
         {% set errors = form.getErrors() %}
         {% if form.hasErrors() %}
-          {{ govukErrorSummary({
-            titleText: t('ERRORS.THERE_WAS_A_PROBLEM'),
-            errorList: translateErrors(errors, t)
-          }) }}
+          {{ errorSummary(errors, t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
