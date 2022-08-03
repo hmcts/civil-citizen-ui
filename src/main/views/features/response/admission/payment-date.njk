@@ -4,7 +4,7 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
@@ -20,10 +20,7 @@
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
-        {{ govukErrorSummary({
-          "titleText": t("ERRORS.THERE_WAS_A_PROBLEM"),
-          "errorList": errors
-        }) }}
+        {{ errorSummary(errors, t) }}
         {% set errorMessages %}
           {% if errors %}
             {% for error in errors %}
@@ -87,7 +84,9 @@
                 ]
               }) }}
             </div>
-            {{ govukButton({ text: t("Save and continue") }) }}
+            {{ govukButton({ 
+              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+            }) }}
           </form>
         </div>
       </div>
