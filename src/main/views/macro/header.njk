@@ -1,0 +1,25 @@
+{% from 'govuk/components/header/macro.njk' import govukHeader %}
+
+{% macro headerComponent(t, user) %}
+  {% block header %}
+    {% set loginToggle = 'COMMON.HEADER.SIGN_OUT' if user else 'COMMON.HEADER.SIGN_IN' %}
+    {{ govukHeader({
+      homepageUrl: 'https://www.gov.uk',
+      containerClasses: 'govuk-width-container',
+      serviceName:  t('COMMON.HEADER.MONEY_CLAIMS'),
+      serviceUrl: '/dashboard',
+      navigationClasses: 'govuk-!-display-inline float-right',
+      navigation: [
+        {
+          href: '/dashboard',
+          text: t('COMMON.HEADER.MY_ACCOUNT'),
+          active: false
+        },
+        {
+          href: '#',
+          text: t(loginToggle)
+        }
+      ]
+    }) }}
+  {% endblock %}
+{% endmacro %}
