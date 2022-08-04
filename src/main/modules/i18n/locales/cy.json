@@ -62,6 +62,12 @@
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
     },
+    "HEADER": {
+      "MONEY_CLAIMS": "Money Claims",
+      "MY_ACCOUNT": "My account",
+      "SIGN_IN": "Mewngofnodi",
+      "SIGN_OUT": "Sign out"
+    },
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "Rwy'n cyfaddef yr holl hawliad",
       "FULL_DEFENCE": "Rwy'n gwrthod yr hawliad cyfan",

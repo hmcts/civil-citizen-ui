@@ -62,6 +62,12 @@
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
     },
+    "HEADER": {
+      "MONEY_CLAIMS": "Money Claims",
+      "MY_ACCOUNT": "My account",
+      "SIGN_IN": "Sign in",
+      "SIGN_OUT": "Sign out"
+    },
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "I admit all of the claim",
       "FULL_DEFENCE": "I reject all of the claim",
