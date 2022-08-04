@@ -34,7 +34,7 @@
             <p class="govuk-body-m">{{ paragraph }}</p>
             <div data-module="moj-add-another" class="select-toggle">
               {% for row in form.model.evidenceItem %}
-                {{ evidence(loop.index0, row, form.errorFor, description) }}
+                {{ evidence(loop.index0, row, form.errorFor, description, t) }}
               {% else %}
                 {{ evidence(0, '', '', description) }}
               {% endfor %}

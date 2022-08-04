@@ -2,7 +2,7 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% macro evidence(evidenceIndex, evidenceValue, errorFor, description) %}
+{% macro evidence(evidenceIndex, evidenceValue, errorFor, description, t) %}
   {% call govukFieldset({
       classes: 'moj-add-another__item',
       legend: {
@@ -55,12 +55,12 @@
       },
       {
         value: EvidenceType.STATEMENT_OF_ACCOUNT,
-        text: t(('PAGES.EVIDENCE.STATEMENT_OF_ACCOUNT'),
+        text: t('PAGES.EVIDENCE.STATEMENT_OF_ACCOUNT'),
         selected: true if evidenceValue.type === EvidenceType.STATEMENT_OF_ACCOUNT else false
       },
       {
         value: EvidenceType.OTHER,
-        text: t(('PAGES.EVIDENCE.OTHER'),
+        text: t('PAGES.EVIDENCE.OTHER'),
         selected: true if evidenceValue.type === EvidenceType.OTHER else false
       }
     ]
@@ -68,7 +68,7 @@
   <div class="panel panel-border-narrow {{ '' if evidenceValue.type else 'govuk-visually-hidden' }}">
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.CONTRACTS_AND_AGREEMENTS %} govuk-visually-hidden {% endif
       %}">{{ t(description) }}
-      {{ t(EvidenceDetails.CONTRACTS_AND_AGREEMENTS_DETAILS) }}</span>
+      {{  t(EvidenceDetails.CONTRACTS_AND_AGREEMENTS) }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.EXPERT_WITNESS %} govuk-visually-hidden {% endif %}">{{ t(description) }}
       {{ t(EvidenceDetails.EXPERT_WITNESS_DETAILS) }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.CORRESPONDENCE %} govuk-visually-hidden {% endif %}">{{ t(description) }}

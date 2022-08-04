@@ -549,7 +549,21 @@
       "TITLE": "A oes gennych swydd?"
     },
     "EVIDENCE": {
-      "PAGE_TITLE": "List your evidence"
+      "ADD_MORE": "Ychwanegu mwy o dystiolaeth",
+      "CONTRACTS_AND_AGREEMENTS": "Contractau a chytundebau",
+      "CORRESPONDENCE": "Llythyrau, negeseuon e-bost a gohebiaeth arall",
+      "DESCRIBE": "Describe this evidence in more detail (optional). ",
+      "EVIDENCE": "Tystiolaeth",
+      "EXPERT_WITNESS": "Tyst arbenigol",
+      "LIST_ANY": "Rhestrwch unrhyw rannau o'u tystiolaeth rydych chi'n anghytuno â nhw (dewisol)",
+      "OTHER": "Arall",
+      "PAGE_TITLE": "List your evidence",
+      "PHOTO": "Tystiolaeth lluniau",
+      "RECEIPTS": "Derbynebau",
+      "STATEMENT_OF_ACCOUNT": "Datganiadau o gyfrifon",
+      "SUBTITLE": "Rhestru eich tystiolaeth (dewisol)",
+      "TELL_US": "Dywedwch wrthym am unrhyw dystiolaeth rydych eisiau ei darparu. Nid oes rhaid i chi anfon unrhyw dystiolaeth atom nawr. Os bydd eich achos yn mynd i wrandawiad llys, ac nid yw’n cael ei setlo, bydd arnoch angen darparu tystiolaeth.",
+      "TITLE": "Rhestru eich tystiolaeth"
     },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
