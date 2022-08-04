@@ -17,9 +17,9 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% if contactPerson %}
-        {% set title = t("Is CONTACTPERSON the right person for the mediation service to call?") | replace("CONTACTPERSON", contactPerson) %}
+        {% set title = t("PAGES.MEDIATION_COMPANY_PHONE.TITLE_WITH_PERSON", { contactPerson : contactPerson }) %}
       {% else %}
-        {% set title = t("Who should the mediation service call?") %}
+        {% set title = t("PAGES.MEDIATION_COMPANY_PHONE.TITLE") %}
       {% endif %}
 
       {% set id = "option" %}
@@ -48,7 +48,7 @@
       {% endset -%}
 
       {% set noHtml %}
-      {{ canWeUseCompanyInputs(form) }}
+      {{ canWeUseCompanyInputs(form, t) }}
       {% endset -%}
 
       <div class="govuk-grid-row">
@@ -63,10 +63,12 @@
               {{ yesNoRadioButton(t,id,name,'',form,'',{yesHtml:yesHtml, noHtml:noHtml}) }}
             {% else %}
               {{ yesNoRadioButton(t,id,name,'',form,'',{classes:"govuk-!-display-none"}) }}
-              {{ canWeUseCompanyInputs(form) }}
+              {{ canWeUseCompanyInputs(form, t) }}
             {% endif %}
             <div class="govuk-form-group">
-              {{ govukButton({ text: t("Save and continue") }) }}
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
               {{ contactUsForHelp(t) }}
             </form>
           </div>
