@@ -23,7 +23,7 @@ export class OidcMiddleware {
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
-        req.session.user = await getUserDetails(redirectUri, req.query.code);
+        req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
         if (req.session.user?.roles?.includes(citizenRole)) {
           return res.redirect(DASHBOARD_URL);
         }
@@ -34,7 +34,7 @@ export class OidcMiddleware {
     });
 
     app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
-      req.session.user = undefined;
+      req.session.user = app.locals.user = undefined;
       res.redirect(SIGN_IN_URL);
     });
 
