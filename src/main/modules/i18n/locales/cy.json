@@ -591,8 +591,20 @@
       "PAGE_TITLE": "Mediation - Provide company contact number"
     },
     "MEDIATION_DISAGREEMENT": {
+      "ADVANTAGES_OF_FREE_MEDIATION": "Manteision cyfryngu am ddim",
+      "CAN_BE_USED_IN_COURT": "mae’n gyfrinachol ac ni ellir defnyddio unrhyw beth a ddywedir neu a wneir yn ystod cyfryngu yn y llys",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_1": "gall cyfryngu olygu y gellir osgoi gwneud",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_2": "Dyfarniad Llys Sirol (yn agor mewn ffenestr newydd)",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_3": "yn eich erbyn",
+      "IF_YOU_CHOOSE_NOT": "Os byddwch yn dewis peidio â rhoi cyfle i gyfryngu, ni ellir newid hyn unwaith y bydd eich ymateb wedi’i gyflwyno.",
+      "IT_GIVES_YOU_CONTROL": "mae’n rhoi rheolaeth i chi dros sut bydd eich anghydfod yn cael ei setlo; nid yw hynny’n bosibl trwy fynd i’r llys",
+      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "Mae yna lawer o fanteision i gyfryngu am ddim, gan gynnwys:",
+      "MEDIATION_CAN_BE": "gall cyfryngu fod yn broses gyflymach a rhatach na mynd i'r llys",
+      "MEDIATION_DISAGREEMENT": "Mi wnaethoch ddewis i beidio â chael cyfryngu am ddim",
       "PAGE_TITLE": "Free mediation disagreement",
-      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+      "THE_CLAIM_WILL_CONTINUE": "Bydd yr hawliad yn parhau ac efallai y bydd rhaid ichi fynychu gwrandawiad.",
+      "THE_MEDIATOR_SPEAKS": "bydd y cyfryngwr yn siarad â bob ochr ar wahân, ni fyddwch yn siarad â’r parti arall yn ystod y cyfryngu",
+      "WILL_YOU_CHANGE_YOUR_DECISION": "A wnewch chi newid eich penderfyniad a rhoi cyfle i gyfryngu am ddim?"
     },
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",

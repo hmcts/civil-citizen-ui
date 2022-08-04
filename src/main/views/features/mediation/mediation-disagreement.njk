@@ -31,26 +31,28 @@
         <div class="govuk-grid-column-two-thirds">
 
           <div class="govuk-!-margin-bottom-8">
-            <h1 class="govuk-heading-l">{{t('You chose not to try free mediation')}}</h1>
-            <p class="govuk-body">{{ t('The claim will continue and you may have to go to a hearing.') }}</p>
+            <h1 class="govuk-heading-l">{{t('PAGES.MEDIATION_DISAGREEMENT.MEDIATION_DISAGREEMENT')}}</h1>
+            <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.THE_CLAIM_WILL_CONTINUE') }}</p>
           </div>
 
           <div class="govuk-!-margin-bottom-8">
-            <h2 class="govuk-heading-m">{{ t('Advantages of free mediation') }}</h2>
+            <h2 class="govuk-heading-m">{{ t('PAGES.MEDIATION_DISAGREEMENT.ADVANTAGES_OF_FREE_MEDIATION') }}</h2>
             <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.MANY_ADVANTAGES_TO_FREE_MEDIATION') }}</p>
             <ul class="govuk-list govuk-list--bullet">
-              <li>{{ t('mediation can be quicker and cheaper than going to court') }}</li>
-              <li>{{ t('the mediator speaks to each side separately, you do not speak to the other party during mediation') }}</li>
-              <li>{{ t('it gives you control over how your dispute is settled, which is not possible by going to court') }}</li>
-              <li>{{ t("it's confidential and nothing said or done during mediation can be used in court") }}</li>
-              <li>{{ t('mediation can avoid a ') }}
-                <a target="_blank" rel="noreferrer noopener" href="https://www.gov.uk/county-court-judgments-ccj-for-debt">{{  t('County Court Judgment (opens in a new tab)') }}</a>
-                {{ t(' being made against you') }}</li>
+              <li>{{ t('PAGES.MEDIATION_DISAGREEMENT.MEDIATION_CAN_BE') }}</li>
+              <li>{{ t('PAGES.MEDIATION_DISAGREEMENT.THE_MEDIATOR_SPEAKS') }}</li>
+              <li>{{ t('PAGES.MEDIATION_DISAGREEMENT.IT_GIVES_YOU_CONTROL') }}</li>
+              <li>{{ t('PAGES.MEDIATION_DISAGREEMENT.CAN_BE_USED_IN_COURT') }}</li>
+              <li>{{ t('PAGES.MEDIATION_DISAGREEMENT.COUNT_COURT_JUDGMENT_SENTENCE_LINK_1 ') }}
+                <a target="_blank" rel="noreferrer noopener" href="https://www.gov.uk/county-court-judgments-ccj-for-debt">
+                  {{  t('PAGES.MEDIATION_DISAGREEMENT.COUNT_COURT_JUDGMENT_SENTENCE_LINK_2') }}
+                </a>
+                {{ t(' PAGES.MEDIATION_DISAGREEMENT.COUNT_COURT_JUDGMENT_SENTENCE_LINK_3') }}</li>
             </ul>
           </div>
 
-          <h2 class="govuk-heading-m">{{ t('Will you change your decision and try free mediation?') }}</h2>
-          <p class="govuk-body">{{ t('If you choose not to try mediation this cannot be changed once your response is submitted.') }}</p>
+          <h2 class="govuk-heading-m">{{ t('PAGES.MEDIATION_DISAGREEMENT.WILL_YOU_CHANGE_YOUR_DECISION') }}</h2>
+          <p class="govuk-body">{{ t('PAGES.MEDIATION_DISAGREEMENT.IF_YOU_CHOOSE_NOT') }}</p>
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}

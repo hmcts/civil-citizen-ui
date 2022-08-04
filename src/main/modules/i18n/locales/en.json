@@ -591,8 +591,20 @@
       "PAGE_TITLE": "Mediation - Provide company contact number"
     },
     "MEDIATION_DISAGREEMENT": {
+      "ADVANTAGES_OF_FREE_MEDIATION": "Advantages of free mediation",
+      "CAN_BE_USED_IN_COURT": "it’s confidential and nothing said or done during mediation can be used in court",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_1": "mediation can avoid a",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_2": "County Court Judgment (opens in a new tab)",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_3": "being made against you",
+      "IF_YOU_CHOOSE_NOT": "If you choose not to try mediation this cannot be changed once your response is submitted.",
+      "IT_GIVES_YOU_CONTROL": "it gives you control over how your dispute is settled, which is not possible by going to court",
+      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:",
+      "MEDIATION_CAN_BE": "mediation can be quicker and cheaper than going to court",
+      "MEDIATION_DISAGREEMENT": "You chose not to try free mediation",
       "PAGE_TITLE": "Free mediation disagreement",
-      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+      "THE_CLAIM_WILL_CONTINUE": "The claim will continue and you may have to go to a hearing.",
+      "THE_MEDIATOR_SPEAKS": "the mediator speaks to each side separately, you do not speak to the other party during mediation",
+      "WILL_YOU_CHANGE_YOUR_DECISION": "Will you change your decision and try free mediation?"
     },
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
