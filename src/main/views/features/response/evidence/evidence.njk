@@ -15,7 +15,7 @@
     id: "evidenceItem[" + evidenceIndex + "][type]",
     name: "evidenceItem[" + evidenceIndex + "][type]",
     label: {
-      text: t("Evidence"),
+      text: t('PAGES.EVIDENCE.EVIDENCE'),
       classes: "govuk-visually-hidden"
     },
     attributes: {
@@ -30,37 +30,37 @@
       },
       {
         value: EvidenceType.CONTRACTS_AND_AGREEMENTS,
-        text: t(EvidenceType.CONTRACTS_AND_AGREEMENTS),
+        text: t('PAGES.EVIDENCE.CONTRACTS_AND_AGREEMENTS'),
         selected: true if evidenceValue.type === EvidenceType.CONTRACTS_AND_AGREEMENTS else false
       },
       {
         value: EvidenceType.EXPERT_WITNESS,
-        text: t(EvidenceType.EXPERT_WITNESS),
+        text: t('PAGES.EVIDENCE.EXPERT_WITNESS'),
         selected: true if evidenceValue.type === EvidenceType.EXPERT_WITNESS else false
       },
       {
         value: EvidenceType.CORRESPONDENCE,
-        text: t(EvidenceType.CORRESPONDENCE),
+        text: t('PAGES.EVIDENCE.CORRESPONDENCE'),
         selected: true if evidenceValue.type ===  EvidenceType.CORRESPONDENCE else false
       },
       {
         value: EvidenceType.PHOTO,
-        text: t(EvidenceType.PHOTO),
+        text: t('PAGES.EVIDENCE.PHOTO'),
         selected: true if evidenceValue.type === EvidenceType.PHOTO else false
       },
       {
         value: EvidenceType.RECEIPTS,
-        text: t(EvidenceType.RECEIPTS),
+        text: t('PAGES.EVIDENCE.RECEIPTS'),
         selected: true if evidenceValue.type === EvidenceType.RECEIPTS else false
       },
       {
         value: EvidenceType.STATEMENT_OF_ACCOUNT,
-        text: t(EvidenceType.STATEMENT_OF_ACCOUNT),
+        text: t(('PAGES.EVIDENCE.STATEMENT_OF_ACCOUNT'),
         selected: true if evidenceValue.type === EvidenceType.STATEMENT_OF_ACCOUNT else false
       },
       {
         value: EvidenceType.OTHER,
-        text: t(EvidenceType.OTHER),
+        text: t(('PAGES.EVIDENCE.OTHER'),
         selected: true if evidenceValue.type === EvidenceType.OTHER else false
       }
     ]
