@@ -600,7 +600,11 @@
       "PAGE_TITLE": "Mediation - Provide a phone number"
     },
     "MEDIATION_COMPANY_PHONE": {
-      "PAGE_TITLE": "Mediation - Provide company contact number"
+      "ENTER_PHONE_NUMBER" : "Enter this person’s phone number, including extension if required",
+      "FOR_EXAMPLE" : "For example, 02012346788 ext. 153",
+      "PAGE_TITLE": "Mediation - Provide company contact number",
+      "TITLE": "Who should the mediation service call?",
+      "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
     },
     "MEDIATION_DISAGREEMENT": {
       "PAGE_TITLE": "Free mediation disagreement",
