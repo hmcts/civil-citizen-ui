@@ -1,8 +1,8 @@
 import {IsDefined, IsNotEmpty, IsNumber, Max, Min, ValidateIf} from 'class-validator';
 import {TransactionSchedule} from './transactionSchedule';
-import {ExpenseType} from './expenseType';
 import {MAX_AMOUNT_VALUE} from '../../../validators/validationConstraints';
 import {ScheduledAmount} from '../../../../utils/calculateMonthlyIncomeExpenses/monthlyIncomeExpensesCalculator';
+import {ExpenseType} from './expenseType';
 import {IncomeType} from './incomeType';
 
 export interface TransactionSourceParams {
@@ -16,24 +16,60 @@ export interface TransactionSourceParams {
 export class ValidationErrors {
   static readonly NAME_REQUIRED = (_name: string, isIncome: boolean) => {
     if (isIncome) {
-      return 'Enter other income source';
+      return 'ERRORS.TRANSACTION_SOURCE.ENTER_OTHER_INCOME';
     }
     return 'Enter other expense source';
   };
-  static readonly AMOUNT_REQUIRED = (name: string, isIncome: boolean) => {
+  static readonly AMOUNT_REQUIRED = (sourceName: string, isIncome: boolean) => {
+    const HOW_MUCH_INCOME_KEY = 'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.';
     if (isIncome) {
-      return `Enter how much ${name ? name : IncomeType.OTHER} you receive`;
+      return HOW_MUCH_INCOME_KEY.concat(ValidationErrors.getTransalationKey(sourceName));
     }
-    return `Enter how much you pay for ${name ? name : ExpenseType.OTHER}`;
+    return `Enter how much you pay for ${sourceName ? sourceName : ExpenseType.OTHER}`;
   };
   static readonly AMOUNT_INVALID_DECIMALS = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
-  static readonly AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED = (name: string) => `Enter a valid ${name} amount, maximum two decimal places`;
-  static readonly SCHEDULE_SELECT_AN_OPTION = (name: string, isIncome: boolean) => {
+  static readonly AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED = (sourceName: string, isIncome: boolean) => {
+    const VALID_NUMBER_AMOUNT_KEY = 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.';
     if (isIncome) {
-      return `Select how often you receive ${name ? name : IncomeType.OTHER}`;
+      return VALID_NUMBER_AMOUNT_KEY.concat(ValidationErrors.getTransalationKey(sourceName));
     }
-    return `Select how often you pay for ${name ? name : ExpenseType.OTHER}`;
+    return `Enter a valid ${sourceName} amount, maximum two decimal places`;
+
   };
+  static readonly SCHEDULE_SELECT_AN_OPTION = (sourceName: string, isIncome: boolean) => {
+    const HOW_OFTEN_RECEIVE_KEY = 'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.';
+    if (isIncome) {
+      return HOW_OFTEN_RECEIVE_KEY.concat(ValidationErrors.getTransalationKey(sourceName));
+    }
+    return `Select how often you pay for ${sourceName ? sourceName : ExpenseType.OTHER}`;
+  };
+
+  private static getTransalationKey(sourceName?: string): string{
+    switch (sourceName) {
+      case IncomeType.JOB:
+        return 'INCOME_JOB';
+      case IncomeType.UNIVERSAL_CREDIT:
+        return 'UNIVERSAL_CREDIT';
+      case IncomeType.JOB_SEEKERS_ALLOWANCE_INCOME_BASED:
+        return 'JOBSEEKER_INCOME';
+      case IncomeType.JOB_SEEKERS_ALLOWANCE_CONTRIBUTION_BASED:
+        return 'JOBSEEKER_CONTRIBUTION';
+      case IncomeType.INCOME_SUPPORT:
+        return 'INCOME_SUPPORT';
+      case IncomeType.WORKING_TAX_CREDIT:
+        return 'WORKING_TAX';
+      case IncomeType.CHILD_TAX_CREDIT:
+        return 'CHILD_TAX';
+      case IncomeType.CHILD_BENEFIT:
+        return 'CHILD_BENEFIT';
+      case IncomeType.COUNCIL_TAX_SUPPORT:
+        return 'COUNCIL_TAX';
+      case IncomeType.PENSION:
+        return 'PENSION';
+      default:
+        return 'OTHER';
+    }
+  }
 
   static withMessage(buildErrorFn: (name?: string, isIncome?: boolean) => string) {
     return (args: any): string => {
