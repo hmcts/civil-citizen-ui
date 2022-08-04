@@ -92,7 +92,10 @@
       "FOUR_WEEKS": "4 wythnos",
       "MONTH": "Mis",
       "TWO_WEEKS": "Pythefnos",
-      "WEEK": "Wythnos"
+      "WEEK": "Wythnos",
+      "TWO_WEEKS_LETTERS" : "Pythefnos",
+      "FOUR_WEEKS_LETTERS" : "4 wythnos",
+      "MONTH_UPPER_CASE" : "Mis"
     },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
@@ -565,7 +568,16 @@
       "TITLE": "Briefly explain why you can't pay immediately"
     },
     "FINANCIAL_DETAILS": {
-      "PAGE_TITLE": "Your financial details"
+      "ASK_DETAILS_AND_SEND" : "Byddwn yn eich gofyn am y manylion ac yna byddwn yn eu hanfon at {{ applicant1Details }} i’w hadolygu.",
+      "GET_APPLICANT_CONTACT_DETAILS" : "Get {{ applicant1Details }} 's contact details.",
+      "NEED_GIVE_DETAILS": "Mae arnoch angen rhoi eich manylion ariannol i {{ applicant1Details }}.",
+      "PAGE_TITLE": "Your financial details",
+      "SEND_STATEMENT_ACCOUNTS" : "'You need to send ' {{ applicant1Details }} your company or organisation's most recent statement of accounts.",
+      "SEND_FINANCIAL_DETAILS": "Anfonwch eich manylion ariannol at {{ applicant1Details }}.",
+      "REJECT_PAY_SOONER" : "Gallant wrthod eich cynnig os ydynt yn credu y gallwch dalu’n gynt.",
+      "REJECT_COURT_MAKE_NEW_PLAN" : "Os byddant yn gwrthod eich cynnig, bydd y llys yn llunio cynllun newydd gan ddefnyddio eich manylion ariannol.",
+      "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
+      "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED" : "Rydym wedi eich cofrestru’n awtomatig i gael gwasanaeth cyfryngu dros y ffôn am ddim gan Gwasanaeth Llysoedd a Thribiwnlysoedd EM.",
@@ -680,7 +692,27 @@
       "PAGE_TITLE": "Your regular expenses"
     },
     "REGULAR_INCOME": {
-      "PAGE_TITLE": "Your regular income"
+      "AMOUNT_RECEIVED" : "Swm a geir",
+      "BUTTON_ADD_SOURCE" : "Ychwanegu ffynhonnell arall o incwm",
+      "CHILD_TAX" : "Credyd Treth Plant",
+      "CHILD_BENEFIT" : "Budd-dal Plant",
+      "COUNCIL_TAX": "Cefnogaeth Treth Cyngor",
+      "INCOME_JOB" : "Incwm o’ch swydd",
+      "INCOME_SUPPORT" : "Cymhorthdal Incwm",
+      "INCLUDE_WAGES_OVERTIME_COMISSION" : "Dylech gynnwys cyflog, goramser, comisiynau, bonwsau",
+      "JOBSEEKER_ALLOWANCE_INCOME" : "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
+      "JOBSEEKER_ALLOWANCE_CONTRIBUTION" : "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
+      "OTHER" : "Arall",
+      "PAGE_TITLE": "Your regular income",
+      "PENSION" : "Pensiwn",
+      "RECEIVED_EVERY" : "Bob",
+      "REMOVE_INCOME" : "Tynnu'r ffynhonnell incwm hon",
+      "SELECT_ALL_THAT_APPLY" : "Dewiswch bob un sy’n berthnasol. Rhaid i’r wybodaeth rydych yn ei rhoi fod yn wir ac yn gywir.",
+      "SOURCE_INCOME" : "Ffynhonnell o incwm",
+      "TOTAL_MONTHLY" : "Cyfanswm incwm misol:",
+      "UNIVERSAL_CREDIT" : "Credyd Cynhwysol",
+      "WHAT_REGULAR_INCOME" : "Pa incwm rheolaidd ydych chi’n ei gael?",
+      "WORKING_TAX" : "Credyd Treth Gwaith"
     },
     "REJECT_ALL": {
       "FEE": "Fee",
@@ -742,7 +774,10 @@
       "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "SELF_EMPLOYED": {
-      "PAGE_TITLE": "Self employment details"
+      "ANNUAL" : "Trosiant blynyddol",
+      "JOB_TITLE" : "Teitl swydd",
+      "PAGE_TITLE": "Self employment details",
+      "TITLE": "Mewn pa fodd ydych chi’n hunangyflogedig?"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
       "AMOUNT": "Swm sy'n ddyledus gennych",
@@ -801,7 +836,13 @@
       "TITLE": "Vulnerability Questions"
     },
     "WHO_EMPLOYS_YOU": {
-      "PAGE_TITLE": "Your employer"
+      "ADD_ANOTHER_JOB" : "Ychwanegu swydd arall",
+      "PAGE_TITLE": "Your employer",
+      "WHO_EMPLOYS" : "Pwy sy’n eich cyflogi"
+    },
+    "EMPLOYER" : {
+      "EMPLOYER_NAME" : "Enw’r cyflogwr",
+      "JOB_TITLE" : "Teitl swydd"
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
@@ -823,7 +864,7 @@
     "AMOUNT_INVALID_DECIMALS": "Rhowch swm, dim mwy na dau le degol",
     "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
     "AMOUNT_REQUIRED": "Rhowch swm o £1 neu fwy",
-    "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
+    "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "DATE_REQUIRED": "Enter a date",
@@ -840,7 +881,7 @@
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
-    "JOB_TITLE_REQUIRED": "Enter a job title",
+    "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
     "NAME_REQUIRED": "Please enter a name",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
     "NUMBER_REQUIRED": "Rhowch rif dilys",
@@ -880,6 +921,48 @@
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "TELL_US_WHY": "Please tell us why",
+    "TRANSACTION_SOURCE" : {
+      "ENTER_OTHER_INCOME" : "Tynnu'r ffynhonnell incwm hon",
+      "HOW_MUCH_INCOME" : {
+        "CHILD_TAX" : "Nodwch faint o Gredyd Treth Plant ydych chi’n ei gael",
+        "CHILD_BENEFIT" : "Nodwch faint o Fudd-dal Plant ydych chi’n ei gael",
+        "COUNCIL_TAX" : "Nodwch faint o gymorth ydych chi’n ei gael i dalu Treth y Cyngor",
+        "INCOME_JOB" : "Nodwch faint o incwm ydych chi’n ei gael o’ch swydd",
+        "INCOME_SUPPORT" : "Nodwch faint o Gymhorthdal Incwm ydych chi’n ei gael",
+        "JOBSEEKER_INCOME" : "Nodwch faint o Lwfans Ceisio Gwaith (yn seiliedig ar incwm) ydych chi’n ei gael",
+        "JOBSEEKER_CONTRIBUTION" : "Nodwch faint o Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau) ydych chi’n ei gael",
+        "OTHER" : "Nodwch faint o incwm arall ydych chi’n ei gael",
+        "PENSION" : "Nodwch faint o bensiwn ydych chi’n ei gael",
+        "UNIVERSAL_CREDIT" : "Nodwch faint o Gredyd Cynhwysol ydych chi’n ei gael",
+        "WORKING_TAX" : "Nodwch faint o Gredyd Treth Gwaith ydych chi’n ei gael"
+      },
+      "HOW_OFTEN_RECEIVE" : {
+        "CHILD_TAX" : "Dewiswch pa mor aml ydych chi’n cael Credyd Treth Plant",
+        "CHILD_BENEFIT" : "Dewiswch pa mor aml ydych chi’n cael Budd-dal Plant",
+        "COUNCIL_TAX" : "Dewiswch pa mor aml ydych chi’n cael cymorth i dalu Treth y Cyngor",
+        "INCOME_JOB" : "Dewiswch pa mor aml ydych chi’n cael incwm o’ch swydd",
+        "INCOME_SUPPORT" : "Dewiswch pa mor aml ydych chi’n cael Cymhorthdal Incwm",
+        "JOBSEEKER_INCOME" : "Dewiswch pa mor aml ydych chi’n cael Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
+        "JOBSEEKER_CONTRIBUTION" : "Dewiswch pa mor aml ydych chi’n cael Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
+        "OTHER" : "Dewiswch pa mor aml ydych chi’n cael unrhyw incwm arall",
+        "PENSION" : "Dewiswch pa mor aml ydych chi’n cael pensiwn",
+        "UNIVERSAL_CREDIT" : "Dewiswch pa mor aml ydych chi’n cael Credyd Cynhwysol",
+        "WORKING_TAX" : "Dewiswch pa mor aml ydych chi’n cael Credyd Treth Gwaith"
+      },
+      "VALID_NUMBER_AMOUNT" : {
+        "CHILD_TAX" : "Rhowch swm dilys ar gyfer Credyd Treth Plant, dim mwy na dau le degol",
+        "CHILD_BENEFIT" : "Rhowch swm dilys ar gyfer Budd-dal Plant, dim mwy na dau le degol",
+        "COUNCIL_TAX" : "Rhowch swm dilys ar gyfer Cymorth Treth y Cyngor, dim mwy na dau le degol",
+        "INCOME_JOB" : "Rhowch swm dilys ar gyfer incwm o’ch swydd, dim mwy na dau le degol",
+        "INCOME_SUPPORT" : "Rhowch swm dilys ar gyfer Cymhorthdal Incwm, dim mwy na dau le degol",
+        "JOBSEEKER_INCOME" : "Rhowch swm dilys ar gyfer Lwfans Ceisio Gwaith (yn seiliedig ar incwm), dim mwy na dau le degol",
+        "JOBSEEKER_CONTRIBUTION" : "Rhowch swm dilys ar gyfer Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau), dim mwy na dau le degol",
+        "OTHER" : "Rhowch swm, dim mwy na dau le degol",
+        "PENSION" : "Rhowch swm dilys ar gyfer pensiwn, dim mwy na dau le degol",
+        "UNIVERSAL_CREDIT" : "Rhowch swm dilys ar gyfer Credyd Cynhwysol, dim mwy na dau le degol",
+        "WORKING_TAX" : "Rhowch swm dilys ar gyfer Credyd Treth Gwaith, dim mwy na dau le degol"
+      }
+    },
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
@@ -913,10 +996,10 @@
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
-    "VALID_ENTER_A_JOB_TITLE": "Enter a job title",
-    "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
+    "VALID_ENTER_A_JOB_TITLE": "Rhowch deitl swydd",
+    "VALID_ENTER_AN_EMPLOYER_NAME": "Rhowch enw cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
-    "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Enter at least one employer",
+    "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
     "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
     "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
@@ -928,11 +1011,11 @@
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
-    "VALID_POSITIVE_NUMBER": "Don't enter a negative number",
+    "VALID_POSITIVE_NUMBER": "Peidiwch â rhoi rhif negyddol",
     "VALID_POSTCODE": "Rhowch y cod post",
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",
-    "VALID_TEXT_LENGTH": "You've entered too many characters",
+    "VALID_TEXT_LENGTH": "Rydych wedi defnyddio gormod o nodau",
     "VALID_TWO_DECIMAL_NUMBER": "Rhowch swm, dim mwy na dau le degol",
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
