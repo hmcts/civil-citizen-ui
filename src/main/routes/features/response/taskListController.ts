@@ -2,9 +2,9 @@ import * as express from 'express';
 import {CLAIM_DETAILS_URL, CLAIM_TASK_LIST_URL} from '../../urls';
 import {getDescription, getTaskLists, getTitle} from '../../../services/features/response/taskListService';
 import {Claim} from '../../../common/models/claim';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
+import {getClaimById} from '../../../modules/utilityService';
 
 const taskListViewPath = 'features/response/task-list';
 const taskListController = express.Router();
@@ -13,7 +13,7 @@ taskListController.get(CLAIM_TASK_LIST_URL, async (req: AppRequest, res, next) =
   try {
     const currentClaimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const caseData: Claim = await getCaseDataFromStore(currentClaimId);
+    const caseData: Claim = await getClaimById(currentClaimId, req);
     const taskLists = getTaskLists(caseData, currentClaimId, lang);
 
     req.session.claimId = currentClaimId;
