@@ -68,14 +68,15 @@ export class Nunjucks {
 
     const translateErrors = (keys: FormValidationError[], t: any, formatValues: any[]) => {
       return keys.map((key) => {
-        const formatValue = formatValues.find(v => v.keyError === key.text);
-        if(formatValue){
-          const translation = t(key.text);
-          const replaced = translation.replace(formatValue.keyToReplace, formatValue.valueToReplace);
-          return ({...key, text: replaced});
-        }else{
-          return ({...key, text: t(key?.text)});
+        if(formatValues){
+          const formatValue = formatValues.find(v => v.keyError === key.text);
+          if(formatValue){
+            const translation = t(key.text);
+            const replaced = translation.replace(formatValue.keyToReplace, formatValue.valueToReplace);
+            return ({...key, text: replaced});
+          }
         }
+        return ({...key, text: t(key?.text)});
       });
     };
 

@@ -68,17 +68,17 @@
   <div class="panel panel-border-narrow {{ '' if evidenceValue.type else 'govuk-visually-hidden' }}">
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.CONTRACTS_AND_AGREEMENTS %} govuk-visually-hidden {% endif
       %}">{{ t(description) }}
-      {{  t(EvidenceDetails.CONTRACTS_AND_AGREEMENTS) }}</span>
+      {{  t('PAGES.EVIDENCE.EVIDENCE_DETAILS.CONTRACTS_AND_AGREEMENTS') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.EXPERT_WITNESS %} govuk-visually-hidden {% endif %}">{{ t(description) }}
-      {{ t(EvidenceDetails.EXPERT_WITNESS_DETAILS) }}</span>
+      {{ t('PAGES.EVIDENCE.EVIDENCE_DETAILS.EXPERT_WITNESS') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.CORRESPONDENCE %} govuk-visually-hidden {% endif %}">{{ t(description) }}
-      {{ t(EvidenceDetails.CORRESPONDENCE_DETAILS) }}</span>
+      {{ t('PAGES.EVIDENCE.EVIDENCE_DETAILS.CORRESPONDENCE') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.PHOTO %} govuk-visually-hidden {% endif %}">{{ t(description) }}
-      {{ t(EvidenceDetails.PHOTO_DETAILS) }}</span>
+      {{ t('PAGES.EVIDENCE.EVIDENCE_DETAILS.PHOTO') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.RECEIPTS %} govuk-visually-hidden {% endif %}">{{ t(description) }}
-      {{ t(EvidenceDetails.RECEIPTS_DETAILS) }}</span>
+      {{ t('PAGES.EVIDENCE.EVIDENCE_DETAILS.RECEIPTS') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.STATEMENT_OF_ACCOUNT %} govuk-visually-hidden {% endif %}">{{ t(description) }}
-      {{ t(EvidenceDetails.STATEMENT_OF_ACCOUNT_DETAILS) }}</span>
+      {{ t('PAGES.EVIDENCE.EVIDENCE_DETAILS.STATEMENT_OF_ACCOUNT') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.OTHER %} govuk-visually-hidden {% endif %}">{{ t(description) }}</span>
     {{ govukTextarea({
       name: "evidenceItem[" + evidenceIndex + "][description]",

@@ -550,8 +550,8 @@
     },
     "EVIDENCE": {
       "ADD_MORE": "Add more evidence",
-      "CONTRACTS_AND_AGREEMENTS": "Contract and agreements",
-      "CORRESPONDENCE": "Letters, email and other correspondence",
+      "CONTRACTS_AND_AGREEMENTS": "Contracts and agreements",
+      "CORRESPONDENCE": "Letters, emails and other correspondence",
       "DESCRIBE": "Describe this evidence in more detail (optional). ",
       "EVIDENCE": "Evidence",
       "EXPERT_WITNESS": "Expert witness",
@@ -563,7 +563,15 @@
       "STATEMENT_OF_ACCOUNT": "Statements of account",
       "SUBTITLE": "List your evidence (optional)",
       "TELL_US": "Tell us about any evidence you wish to provide. You do not need to send us any evidence now. If your case goes to a court hearing, and is not settled, you will need to provide evidence.",
-      "TITLE": "List your evidence"
+      "TITLE": "List your evidence",
+      "EVIDENCE_DETAILS": {
+        "CONTRACTS_AND_AGREEMENTS": "For example, a signed contract.",
+        "CORRESPONDENCE": "For example, a letter from the other party.",
+        "EXPERT_WITNESS": "For example, a surveyor's report.",
+        "PHOTO": "For example, a photo of the work you carried out.",
+        "RECEIPTS": "For example, a receipt showing the amount you've paid.",
+        "STATEMENT_OF_ACCOUNT": "For example, a bank statement showing the amount you've paid."
+      }
     },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
