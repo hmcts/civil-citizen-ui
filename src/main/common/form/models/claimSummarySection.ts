@@ -20,6 +20,7 @@ export interface ClaimSummaryItem {
   html?: string;
   subtitle?: string;
   rows?: SummaryRow[];
+  variables?: any;
 }
 
 /**
