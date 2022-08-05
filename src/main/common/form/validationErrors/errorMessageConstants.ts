@@ -24,7 +24,6 @@ export const VALID_TWO_DECIMAL_NUMBER = 'Enter a valid amount, maximum two decim
 export const SELECT_AN_OPTION = 'Select an option';
 export const NUMBER_OF_PEOPLE_REQUIRED = 'Enter a numeric, for example 3';
 export const DETAILS_REQUIRED = 'Enter details';
-export const VALID_AT_LEAST_ONE_OPTION = 'You must select at least one option';
 export const VALID_HOUSING = 'Describe your housing';
 export const VALID_TEXT_LENGTH = 'You’ve entered too many characters';
 export const VALID_OPTION_SELECTION = 'Select an option';
