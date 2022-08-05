@@ -16,11 +16,10 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 claimSummaryController.get([DEFENDANT_SUMMARY_URL], async (req, res) => {
   try {
     const claimId = req.params.id;
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (!claim.isEmpty()) {
-      const latestUpdateContent = getLatestUpdateContent(claimId, claim, lang);
-      const documentsContent = getDocumentsContent(claim, claimId, lang);
+      const latestUpdateContent = getLatestUpdateContent(claimId, claim);
+      const documentsContent = getDocumentsContent(claim, claimId);
       res.render(claimSummaryViewPath, {claim, claimId, latestUpdateContent, documentsContent});
     }
   } catch (error) {
