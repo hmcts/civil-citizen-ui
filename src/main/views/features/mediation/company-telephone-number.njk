@@ -57,7 +57,7 @@
             {{ csrfProtection(csrf) }}
             <input type="hidden" name="contactPerson" value="{{contactPerson}}">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 class="govuk-fieldset__heading">{{ t(title) }}</h1>
+              <h1 class="govuk-fieldset__heading">{{ title }}</h1>
             </legend>
             {% if contactPerson %}
               {{ yesNoRadioButton(t,id,name,'',form,'',{yesHtml:yesHtml, noHtml:noHtml}) }}
