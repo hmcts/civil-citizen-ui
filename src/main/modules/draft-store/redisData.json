@@ -888,9 +888,7 @@
       "specRespondentCorrespondenceAddressRequired": "Yes",
       "responseDeadline":{
         "option": "yes",
-        "additionalTime": {
-          "option": "more-than-28-days"
-        }
+        "additionalTime": "more-than-28-days"
       }
     }
   },
@@ -1791,9 +1789,7 @@
       "specRespondentCorrespondenceAddressRequired": "Yes",
       "responseDeadline":{
         "option": "already-agreed",
-        "additionalTime": {
-          "option": "more-than-28-days"
-        },
+        "additionalTime": "more-than-28-days",
         "agreedResponseDeadline": "2022-08-30T15:59:59"
       }
     }
