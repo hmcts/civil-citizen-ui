@@ -98,7 +98,10 @@
       "FOUR_WEEKS": "4 weeks",
       "MONTH": "month",
       "TWO_WEEKS": "2 weeks",
-      "WEEK": "Week"
+      "WEEK": "Week",
+      "TWO_WEEKS_LETTERS" : "Two weeks",
+      "FOUR_WEEKS_LETTERS" : "Four weeks",
+      "MONTH_UPPER_CASE" : "Month"
     },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
@@ -472,15 +475,15 @@
       "DEFENDANT_TITLE": "Claims made against you",
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
       "CLAIM_NUMBER": "Claim number",
-      "CLAIMANT_NAME" : "Claimant name",
+      "CLAIMANT_NAME": "Claimant name",
       "DEFENDANT_NAME": "Defendant name",
-      "CLAIM_AMOUNT" : "Claim amount",
-      "CLAIM_STATUS" : "Status",
-      "ACTION_PROMPT" : "You need to respond before ",
-      "NEXT_STEPS" : "Next steps",
-      "DEADLINE" : "Deadline",
-      "ACTIONS" : "Actions",
-      "VIEW" : "View"
+      "CLAIM_AMOUNT": "Claim amount",
+      "CLAIM_STATUS": "Status",
+      "ACTION_PROMPT": "You need to respond before ",
+      "NEXT_STEPS": "Next steps",
+      "DEADLINE": "Deadline",
+      "ACTIONS": "Actions",
+      "VIEW": "View"
     },
     "DEBTS": {
       "ADD": "Add a debt",
@@ -571,7 +574,16 @@
       "TITLE": "Briefly explain why you can't pay immediately"
     },
     "FINANCIAL_DETAILS": {
-      "PAGE_TITLE": "Your financial details"
+      "ASK_DETAILS_AND_SEND" : "We'll ask you for the details then we'll send them to {{ applicant1Details }} to review.",
+      "GET_APPLICANT_CONTACT_DETAILS" : "Get {{ applicant1Details }} 's contact details.",
+      "NEED_GIVE_DETAILS": "You need to give {{ applicant1Details }} details of your finances.",
+      "PAGE_TITLE": "Your financial details",
+      "SEND_STATEMENT_ACCOUNTS" : "'You need to send ' {{ applicant1Details }} your company or organisation's most recent statement of accounts.",
+      "SEND_FINANCIAL_DETAILS": "Send {{ applicant1Details }} your financial details",
+      "REJECT_PAY_SOONER" : "They can reject your proposal if they believe you can pay sooner.",
+      "REJECT_COURT_MAKE_NEW_PLAN" : "If they reject your proposal, the court will make a new plan using your financial details.",
+      "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
+      "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
     "FREE_TELEPHONE_MEDIATION": {
       "PAGE_TITLE": "Free telephone mediation"
@@ -670,7 +682,27 @@
       "PAGE_TITLE": "Your regular expenses"
     },
     "REGULAR_INCOME": {
-      "PAGE_TITLE": "Your regular income"
+      "AMOUNT_RECEIVED" : "Amount received",
+      "BUTTON_ADD_SOURCE" : "Add another source of income",
+      "CHILD_TAX" : "Child Tax Credit",
+      "CHILD_BENEFIT" : "Child Benefit",
+      "COUNCIL_TAX": "Council Tax Support",
+      "INCOME_JOB" : "Income from your job",
+      "INCOME_SUPPORT" : "Income Support",
+      "INCLUDE_WAGES_OVERTIME_COMISSION" : "Include wages, overtime, commission, bonuses",
+      "JOBSEEKER_ALLOWANCE_INCOME" : "Jobseeker’s Allowance (income based)",
+      "JOBSEEKER_ALLOWANCE_CONTRIBUTION" : "Jobseeker’s Allowance (contribution based)",
+      "OTHER" : "Other",
+      "PAGE_TITLE": "Your regular income",
+      "PENSION" : "Pension",
+      "RECEIVED_EVERY" : "Received every",
+      "REMOVE_INCOME" : "Remove this income source",
+      "SELECT_ALL_THAT_APPLY" : "Select all that apply. The information you enter must be truthful and accurate.",
+      "SOURCE_INCOME" : "Source of income",
+      "TOTAL_MONTHLY" : "Total monthly income:",
+      "UNIVERSAL_CREDIT" : "Universal Credit",
+      "WHAT_REGULAR_INCOME" : "What regular income do you receive?",
+      "WORKING_TAX" : "Working Tax Credit"
     },
     "REJECT_ALL": {
       "FEE": "Fee",
@@ -724,7 +756,10 @@
       "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "SELF_EMPLOYED": {
-      "PAGE_TITLE": "Self employment details"
+      "ANNUAL" : "Annual Turnover",
+      "JOB_TITLE" : "Job title",
+      "PAGE_TITLE": "Self employment details",
+      "TITLE": "What are you self-employed as?"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
       "AMOUNT": "Amount you owe",
@@ -783,7 +818,13 @@
       "TITLE": "Vulnerability Questions"
     },
     "WHO_EMPLOYS_YOU": {
-      "PAGE_TITLE": "Your employer"
+      "ADD_ANOTHER_JOB" : "Add another job",
+      "PAGE_TITLE": "Your employer",
+      "WHO_EMPLOYS" : "Who employs you?"
+    },
+    "EMPLOYER" : {
+      "EMPLOYER_NAME" : "Employer name",
+      "JOB_TITLE" : "Job title"
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
@@ -862,6 +903,48 @@
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "TELL_US_WHY": "Please tell us why",
+    "TRANSACTION_SOURCE" : {
+      "ENTER_OTHER_INCOME" : "Enter other income source",
+      "HOW_MUCH_INCOME" : {
+        "CHILD_TAX" : "Enter how much Child Tax Credit you receive",
+        "CHILD_BENEFIT" : "Enter how much Child Benefit you receive",
+        "COUNCIL_TAX" : "Enter how much Council Tax Support you receive",
+        "INCOME_JOB" : "Enter how much income from your job you receive",
+        "INCOME_SUPPORT" : "Enter how much Income Support you receive",
+        "JOBSEEKER_INCOME" : "Enter how much Jobseeker’s Allowance (income based) you receive",
+        "JOBSEEKER_CONTRIBUTION" : "Enter how much  Jobseeker’s Allowance (contribution based) you receive",
+        "OTHER" : "Enter how much other you receive",
+        "PENSION" : "Enter how much pension you receive",
+        "UNIVERSAL_CREDIT" : "Enter how much Universal Credit you receive",
+        "WORKING_TAX" : "Enter how much Working Tax Credit you receive"
+      },
+      "HOW_OFTEN_RECEIVE" : {
+        "CHILD_TAX" : "Select how often you receive Child Tax Credit",
+        "CHILD_BENEFIT" : "Select how often you receive Child Benefit",
+        "COUNCIL_TAX" : "Select how often you receive Council Tax Support",
+        "INCOME_JOB" : "Select how often you receive income from your job",
+        "INCOME_SUPPORT" : "Select how often you receive Income Support",
+        "JOBSEEKER_INCOME" : "Select how often you receive Jobseeker’s Allowance (income based)",
+        "JOBSEEKER_CONTRIBUTION" : "Select how often you receive Jobseeker’s Allowance (contribution based)",
+        "OTHER" : "Select how often you receive other",
+        "PENSION" : "Select how often you receive pension",
+        "UNIVERSAL_CREDIT" : "Select how often you receive Universal Credit",
+        "WORKING_TAX" : "Select how often you receive Working Tax Credit"
+      },
+      "VALID_NUMBER_AMOUNT" : {
+        "CHILD_TAX" : "Enter a valid Child Tax Credit amount, maximum two decimal places",
+        "CHILD_BENEFIT" : "Enter a valid Child Benefit amount, maximum two decimal places",
+        "COUNCIL_TAX" : "Enter a valid Council Tax Support amount, maximum two decimal places",
+        "INCOME_JOB" : "Enter a valid income from your job amount, maximum two decimal places",
+        "INCOME_SUPPORT" : "Enter a valid Income Support amount, maximum two decimal places",
+        "JOBSEEKER_INCOME" : "Enter a valid Jobseeker’s Allowance (income based) amount, maximum two decimal places",
+        "JOBSEEKER_CONTRIBUTION" : "Enter a valid Jobseeker’s Allowance (contribution based) amount, maximum two decimal places",
+        "OTHER" : "Enter a valid amount, maximum two decimal places",
+        "PENSION" : "Enter a valid pension amount, maximum two decimal places",
+        "UNIVERSAL_CREDIT" : "Enter a valid Universal Credit amount, maximum two decimal places",
+        "WORKING_TAX" : "Enter a valid Working Tax Credit amount, maximum two decimal places"
+      }
+    },
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",

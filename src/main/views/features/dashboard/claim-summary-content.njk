@@ -1,13 +1,13 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "./item-content.njk" import itemContent %}
 
-{% macro claimSummaryContent(content) %}
+{% macro claimSummaryContent(content,t) %}
 
   <div class="govuk-grid-row govuk-!-margin-top-0">
     <div class="govuk-!-margin-3">
       {% if content.contentSections %}
         {% for section in content.contentSections %}
-          {{ itemContent(section) }}
+          {{ itemContent(section,t) }}
         {% endfor %}
       {% endif %}
       {% if content.hasDivider === true %}
