@@ -16,15 +16,11 @@
   {% if content.type === ClaimSummaryType.SUBTITLE %}
     <h3 class="govuk-heading-s">{{ t(content.data.text) }}</h3>
   {% endif %}
-  {% set key = '' %}
-  {% set value = '' %}
-  {% set other = '' %}
-  {% set object = '' %}
   {% if content.type === ClaimSummaryType.PARAGRAPH %}
+    {% set object = '' %}
     {% if content.data.variables %}
         {% set object = content.data.variables %}
     {% endif %}
-    object: {{ object|dump }}
     <p class="govuk-body">{{ t(content.data.text,object)}}</p>
   {% endif %}
 
