@@ -588,12 +588,14 @@
     },
     "I_DON_T_WANT_FREE_MEDIATION": {
       "ALREADY_TRIED": "I have already tried to resolve the dispute with the other party, with no success",
+      "ANY_INFORMATION_YOU_PROVIDE": "Any information you provide is used solely by HM Courts and Tribunals Service to help us improve our services. Your answers have no impact on the progress or outcome of your case, or on any contact you have with HM Courts and Tribunals Service.",
       "DO_NOT_AGREE_TO_FREE_MEDIATION": "I do not agree to free mediation",
       "JUDGE_TO_DECIDE": "I want a judge to make a decision on the dispute",
       "NO_DELAY_IN_HEARING": "I do not want to delay getting a hearing",
       "NOT_SURE": "I am not sure what would happen in mediation",
       "OTHER": "Another reason (please specify)",
       "PAGE_TITLE": "I don't want free mediation",
+      "SKIP_THIS_SECTION": "Skip this section",
       "WOULD_NOT_SOLVE": "I do not think mediation would solve the dispute",
       "YOU_HAVE_CHOSEN_TELL_US_WHY": "You have chosen not to try free mediation. Please tell us why:"
     },
