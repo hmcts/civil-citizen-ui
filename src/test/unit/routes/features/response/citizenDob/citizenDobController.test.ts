@@ -2,7 +2,6 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {VALID_FOUR_DIGIT_YEAR} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {AGE_ELIGIBILITY_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -117,7 +116,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_FOUR_DIGIT_YEAR);
+          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
         });
     });
     it('should accept a valid input', async () => {

@@ -1,5 +1,4 @@
 import {Min, Max, Validate, IsDate, ValidateIf} from 'class-validator';
-import {VALID_FOUR_DIGIT_YEAR} from '../validationErrors/errorMessageConstants';
 import {DateConverter} from '../../../common/utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from '../validators/optionalDateNotInFutureValidator';
 import {OptionalDateFourDigitValidator} from '../validators/optionalDateFourDigitValidator';
@@ -12,7 +11,7 @@ export class CitizenDob {
     dateOfBirth?: Date;
 
   @Min(1872,{message:'ERRORS.VALID_YEAR'})
-  @Validate(OptionalDateFourDigitValidator, {message: VALID_FOUR_DIGIT_YEAR})
+  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
     year: number;
 
   @Min(1,{message:'ERRORS.VALID_MONTH'})
