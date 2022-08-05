@@ -580,13 +580,22 @@
       "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
     "FREE_TELEPHONE_MEDIATION": {
+      "DO_NOT_AGREE_TO_FREE_MEDIATION": "Nid wyf yn cytuno i gyfryngu am ddim",
       "PAGE_TITLE": "Free telephone mediation"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
     },
     "I_DON_T_WANT_FREE_MEDIATION": {
-      "PAGE_TITLE": "I don't want free mediation"
+      "ALREADY_TRIED": "Rwyf eisoes wedi ceisio datrys yr anghydfod gyda’r parti arall, yn aflwyddiannus",
+      "DO_NOT_AGREE_TO_FREE_MEDIATION": "Nid wyf yn cytuno i gyfryngu am ddim",
+      "JUDGE_TO_DECIDE": "Rwyf eisiau i farnwr wneud penderfyniad ynghylch yr anghydfod",
+      "NO_DELAY_IN_HEARING": "Nid wyf eisiau unrhyw oedi gyda chael gwrandawiad",
+      "NOT_SURE": "Nid wyf yn siŵr beth fyddai’n digwydd yn y cyfryngu",
+      "OTHER": "Rheswm arall (rhowch fanylion)",
+      "PAGE_TITLE": "I don't want free mediation",
+      "WOULD_NOT_SOLVE": "Nid wyf yn credu y byddai cyfryngu yn datrys yr anghydfod",
+      "YOU_HAVE_CHOSEN_TELL_US_WHY": "Rydych wedi dewis peidio â rhoi cyfle i gyfryngu am ddim. Dywedwch wrthym pam:"
     },
     "LATEST_UPDATE_CONTENT": {
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",

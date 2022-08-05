@@ -44,7 +44,6 @@ export const VALID_REASON_REQUIRED = 'Enter a reason';
 export const VALID_DISAGREE_REASON_REQUIRED = 'Enter text explaining why do you disagree';
 export const VALID_ENTER_AT_LEAST_ONE_EMPLOYER = 'Enter at least one employer';
 export const ENTER_PAYMENT_EXPLANATION = 'Enter text explaining how you paid';
-export const AMOUNT_REQUIRED = 'Enter an amount of £1 or more';
 export const CLAIM_VALID_AMOUNT = 'Enter a valid amount';
 export const VALID_ENTER_AT_LEAST_ONE_COURT_ORDER = 'Enter at least one court order';
 export const VALID_AMOUNT_ONE_POUND_OR_MORE = 'Enter an amount of £1 or more';
