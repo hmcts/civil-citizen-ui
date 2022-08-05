@@ -2,25 +2,37 @@
 
 {% macro headerComponent(t, user) %}
   {% block header %}
-    {% set loginToggle = 'COMMON.HEADER.SIGN_OUT' if user else 'COMMON.HEADER.SIGN_IN' %}
-    {% set loginToggleURL = '/logout' if user else '/login' %}
+    {% set %}
+      {% if user %}
+        {% set navigationList = [
+          {
+            href: '/dashboard',
+            text: t('COMMON.HEADER.MY_ACCOUNT'),
+            active: false
+          },
+          {
+            href: '/logout',
+            text: t('COMMON.HEADER.SIGN_OUT'),
+            active: false
+          }
+        ] %}
+      {% else %}
+        {% set navigationList = [
+          {
+            href: '/login',
+            text: t('COMMON.HEADER.SIGN_IN'),
+            active: false
+          }
+        ] %}
+      {% endif %}
+    {% endset %}
     {{ govukHeader({
       homepageUrl: 'https://www.gov.uk',
       containerClasses: 'govuk-width-container',
       serviceName:  t('COMMON.HEADER.MONEY_CLAIMS'),
       serviceUrl: '/dashboard',
       navigationClasses: 'govuk-!-display-inline float-right',
-      navigation: [
-        {
-          href: '/dashboard',
-          text: t('COMMON.HEADER.MY_ACCOUNT'),
-          active: false
-        },
-        {
-          href: loginToggleURL,
-          text: t(loginToggle)
-        }
-      ]
+      navigation: navigationList
     }) }}
   {% endblock %}
 {% endmacro %}
