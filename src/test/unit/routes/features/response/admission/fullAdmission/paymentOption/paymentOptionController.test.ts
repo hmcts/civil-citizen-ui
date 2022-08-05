@@ -7,7 +7,6 @@ import {
   CITIZEN_PAYMENT_OPTION_URL,
   CLAIM_TASK_LIST_URL,
 } from '../../../../../../../../main/routes/urls';
-import {VALID_PAYMENT_OPTION} from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 
@@ -54,7 +53,7 @@ describe('Payment Option Controller', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_PAYMENT_OPTION);
+          expect(res.text).toContain(TestMessages.VALID_PAYMENT_OPTION);
         });
     });
     it('should redirect to claim list when immediately option is selected', async () => {
