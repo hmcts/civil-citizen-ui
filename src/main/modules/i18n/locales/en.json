@@ -469,15 +469,15 @@
       "DEFENDANT_TITLE": "Claims made against you",
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
       "CLAIM_NUMBER": "Claim number",
-      "CLAIMANT_NAME" : "Claimant name",
+      "CLAIMANT_NAME": "Claimant name",
       "DEFENDANT_NAME": "Defendant name",
-      "CLAIM_AMOUNT" : "Claim amount",
-      "CLAIM_STATUS" : "Status",
-      "ACTION_PROMPT" : "You need to respond before ",
-      "NEXT_STEPS" : "Next steps",
-      "DEADLINE" : "Deadline",
-      "ACTIONS" : "Actions",
-      "VIEW" : "View"
+      "CLAIM_AMOUNT": "Claim amount",
+      "CLAIM_STATUS": "Status",
+      "ACTION_PROMPT": "You need to respond before ",
+      "NEXT_STEPS": "Next steps",
+      "DEADLINE": "Deadline",
+      "ACTIONS": "Actions",
+      "VIEW": "View"
     },
     "DEBTS": {
       "ADD": "Add a debt",
