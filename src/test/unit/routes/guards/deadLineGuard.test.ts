@@ -10,7 +10,7 @@ jest.mock('../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
-const MOCK_REQUEST = { params: { id: "123" } } as unknown as express.Request;
+const MOCK_REQUEST = { params: { id: '123' } } as unknown as express.Request;
 const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as express.Response;
 const MOCK_NEXT = jest.fn() as express.NextFunction;
 
