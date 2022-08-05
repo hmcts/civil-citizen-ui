@@ -40,7 +40,6 @@ export const VALID_YES_NO_SELECTION = 'Please select yes or no';
 export const VALID_ENTER_AT_LEAST_ONE_NUMBER = 'Enter a number for at least one field';
 export const VALID_OWED_AMOUNT_REQUIRED = 'Enter a valid amount owed';
 export const VALID_REASON_REQUIRED = 'Enter a reason';
-export const VALID_DISAGREE_REASON_REQUIRED = 'Enter text explaining why do you disagree';
 export const VALID_ENTER_AT_LEAST_ONE_EMPLOYER = 'Enter at least one employer';
 export const ENTER_PAYMENT_EXPLANATION = 'Enter text explaining how you paid';
 export const AMOUNT_REQUIRED = 'Enter an amount of £1 or more';
