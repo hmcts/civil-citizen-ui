@@ -909,7 +909,7 @@
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Enter at least one employer",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
     "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
-    "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
+    "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
