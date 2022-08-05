@@ -1001,7 +1001,7 @@
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
-    "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
+    "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
     "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
     "VALID_INTEGER": "Enter a numeric, for example 3",
