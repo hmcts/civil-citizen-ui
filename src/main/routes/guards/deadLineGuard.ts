@@ -10,6 +10,7 @@ import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter'
 import {CLAIM_TASK_LIST_URL} from '../../routes/urls';
 
 export const deadLineGuard = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  debugger;
   try {
     const unauthorized = await isUnauthorized(req);
     if (unauthorized) {
@@ -22,7 +23,8 @@ export const deadLineGuard = async (req: express.Request, res: express.Response,
   }
 };
 
-const isUnauthorized = async (req: express.Request) => {
+export const isUnauthorized = async (req: express.Request) => {
+  debugger;
   const caseData: Claim = await getCaseDataFromStore(req.params.id);
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
   const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, req.params.id, 'en');
