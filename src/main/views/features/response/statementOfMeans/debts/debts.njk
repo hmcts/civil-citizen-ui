@@ -11,62 +11,57 @@
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../../macro/error-summary.njk" import errorSummary %}
-
 {% block pageTitle %}
   {{ setPageTitle('PAGES.DEBTS.PAGE_TITLE') }}
 {% endblock %}
-
-  {% set yesHtml %}
-    {% if form.hasFieldError('debtsItems') %}
-      {{ govukErrorMessage({
+{% set yesHtml %}
+{% if form.hasFieldError('debtsItems') %}
+  {{ govukErrorMessage({
         text:t(form.errorFor('debtsItems'))
       }) }}
-    {% endif %}
-    {% set formErrors = form.getAllErrors() %}
-
-    <div class="govuk-form-group {% if form.errorFor('debtsItems') %} govuk-form-group--error  {% endif %}">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-one-half">
-          <label id="account-balance-label"
-                 class="govuk-label--s">{{ t('PAGES.DEBTS.LIST') }}</label>
-        </div>
-        <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
-          <label id="account-balance-label" class="govuk-label--s ">{{ t('PAGES.DEBTS.TOTAL') }}</label>
-        </div>
-        <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
-          <label id="account-balance-label" class="govuk-label--s">{{ t('PAGES.DEBTS.MONTHLY') }}</label>
-        </div>
-      </div>
-      {% for debtsItem in form.model.debtsItems %}
-        {% set debtsErrors = formErrors %}
-        {% set index = loop.index0 %}
-      <div class="multiple-row">
-        <div class="govuk-grid-row govuk-!-padding-top-3 {% if debtsErrors.length>0 %} govuk-form-group--error{% endif %} ">
-          {% if formErrors %}
-            {% for error in formErrors %}
-              {% if index in error.fieldName %}
-                {{ govukErrorMessage({
+{% endif %}
+{% set formErrors = form.getAllErrors() %}
+<div class="govuk-form-group {% if form.errorFor('debtsItems') %} govuk-form-group--error  {% endif %}">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      <label id="account-balance-label" class="govuk-label--s">{{ t('PAGES.DEBTS.LIST') }}</label>
+    </div>
+    <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
+      <label id="account-balance-label" class="govuk-label--s ">{{ t('PAGES.DEBTS.TOTAL') }}</label>
+    </div>
+    <div class="govuk-grid-column-one-quarter govuk-!-text-align-right">
+      <label id="account-balance-label" class="govuk-label--s">{{ t('PAGES.DEBTS.MONTHLY') }}</label>
+    </div>
+  </div>
+  {% for debtsItem in form.model.debtsItems %}
+    {% set debtsErrors = formErrors %}
+    {% set index = loop.index0 %}
+    <div class="multiple-row">
+      <div class="govuk-grid-row govuk-!-padding-top-3 {% if debtsErrors.length>0 %} govuk-form-group--error{% endif %} ">
+        {% if formErrors %}
+          {% for error in formErrors %}
+            {% if index in error.fieldName %}
+              {{ govukErrorMessage({
                   text: t(error.text)
                 })| indent(2) | trim }}
-              {% endif %}
-            {% endfor %}
-          {% endif %}
-          {% set debt = 'debtsItems['+index+'][debt]' %}
-          {% set totalOwned = 'debtsItems['+index+'][totalOwned]' %}
-          {% set monthlyPayments = 'debtsItems['+index+'][monthlyPayments]' %}
-          {% set label = 'debtsItems[' + index + ']' %}
-
-          <div class="govuk-grid-column-one-half ">
-            {{ govukInput({
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        {% set debt = 'debtsItems['+index+'][debt]' %}
+        {% set totalOwned = 'debtsItems['+index+'][totalOwned]' %}
+        {% set monthlyPayments = 'debtsItems['+index+'][monthlyPayments]' %}
+        {% set label = 'debtsItems[' + index + ']' %}
+        <div class="govuk-grid-column-one-half ">
+          {{ govukInput({
               id: debt,
               name: debt,
               value: debtsItem.debt,
               spellcheck: false,
               classes: "govuk-grid-column-full govuk-select--error" if form.errorFor(debt) else "govuk-grid-column-full"
             }) }}
-          </div>
-          <div class="govuk-grid-column-one-quarter">
-            {{ govukInput({
+        </div>
+        <div class="govuk-grid-column-one-quarter">
+          {{ govukInput({
               id: totalOwned,
               name: totalOwned,
               value: debtsItem.totalOwned,
@@ -77,9 +72,9 @@
               spellcheck: false,
               classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(totalOwned) else "govuk-grid-column-full"
             }) }}
-          </div>
-          <div class="govuk-grid-column-one-quarter">
-            {{ govukInput({
+        </div>
+        <div class="govuk-grid-column-one-quarter">
+          {{ govukInput({
               id: monthlyPayments,
               name: monthlyPayments,
               value: debtsItem.monthlyPayments,
@@ -90,38 +85,34 @@
               spellcheck: false,
               classes: "govuk-grid-column-full govuk-input--error" if form.errorFor(monthlyPayments) else "govuk-grid-column-full"
             }) }}
-          </div>
         </div>
       </div>
-      {% endfor %}
     </div>
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        {{ govukButton({
+  {% endfor %}
+</div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    {{ govukButton({
           text: t('PAGES.DEBTS.ADD'),
           classes: "govuk-button--secondary append-row"
         }) }}
-      </div>
-    </div>
-  {% endset %}
-
+  </div>
+</div>
+{% endset %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set title = t('PAGES.DEBTS.TITLE') %}
       {% set errors = form.getAllErrors() %}
-
       {% if form.hasErrors() %}
         {{ errorSummary(errors,t) }}
       {% endif %}
-
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           {{ csrfProtection(csrf) }}
           <h1 class="govuk-heading-l">{{ title }}</h1>
         </div>
       </div>
-
       <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
         <div class="govuk-grid-row">
@@ -129,7 +120,6 @@
             {{ yesNoRadioButton(t,'debtsRadio','option','', form,'',{yesHtml:yesHtml}) }}
           </div>
         </div>
-
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-two-thirds">
             {{ govukButton({
@@ -138,7 +128,6 @@
           </div>
         </div>
       </form>
-
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           {{ contactUsForHelp(t) }}

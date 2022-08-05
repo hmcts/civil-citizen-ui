@@ -1,16 +1,14 @@
 {% extends "claim-details-tpl.njk" %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "../../../../macro/page-title.njk" import setPageTitle %}
-
 {% block pageTitle %}
   {{ setPageTitle('PAGES.EMPLOYMENT_STATUS.PAGE_TITLE') }}
 {% endblock %}
-
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -19,13 +17,10 @@
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if errors %}
-        {{ govukErrorSummary({
-          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
-          "errorList": errors
-        }) }}
+        {{ errorSummary(errors, t) }}
       {% endif %}
       {% set yesHtml %}
-        {{ govukCheckboxes({
+      {{ govukCheckboxes({
           idPrefix: "employmentCategory",
           name: "employmentCategory",
           fieldset: {
