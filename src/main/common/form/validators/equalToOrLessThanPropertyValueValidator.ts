@@ -1,5 +1,4 @@
 import {ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {VALID_NUMBER_FOR_PREVIOUS_PAGE} from '../validationErrors/errorMessageConstants';
 import {Form} from '../../form/models/form';
 
 /**
@@ -9,7 +8,7 @@ import {Form} from '../../form/models/form';
 @ValidatorConstraint({name: 'equalOrLessToPropertyValue'})
 export class EqualToOrLessThanPropertyValueValidator implements ValidatorConstraintInterface {
   defaultMessage(): string {
-    return VALID_NUMBER_FOR_PREVIOUS_PAGE;
+    return 'ERRORS.VALID_NUMBER_FOR_PREVIOUS_PAGE';
   }
 
   /**
