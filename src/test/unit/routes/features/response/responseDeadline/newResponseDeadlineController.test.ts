@@ -48,14 +48,11 @@ describe('Response - New response deadline', () => {
           expect(res.text).toContain(claim.getClaimantName());
         });
     });
-    it('should show error when proposed extended deadline does not exist', async () => {
+    it('should throw error when agreedResponseDeadline does not exist', async () => {
       const claim = new Claim();
-      claim.applicant1 = {
-        partyName: 'Mr. James Bond',
-        type: CounterpartyType.INDIVIDUAL,
-      };
       mockGetCaseDataFromStore.mockImplementation(async () => claim);
       await request(app).get(NEW_RESPONSE_DEADLINE_URL)
+        .set('Cookie', ['newDeadlineDate='])
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -81,7 +78,7 @@ describe('Response - New response deadline', () => {
       mockGetCaseDataFromStore.mockImplementation(async () => claim);
       await request(app)
         .post(NEW_RESPONSE_DEADLINE_URL)
-        .set('Cookie', [`newDeadlineDate=j%3A%7B%22date%22%3A%222022-08-21T22%3A00%3A00.000Z%22%2C%22year%22%3A2022%2C%22month%22%3A8%2C%22day%22%3A22%2C%22originalResponseDeadline%22%3A%222022-08-20T15%3A59%3A59%22%7D`])
+        .set('Cookie', ['newDeadlineDate=j%3A%7B%22date%22%3A%222022-08-21T22%3A00%3A00.000Z%22%2C%22year%22%3A2022%2C%22month%22%3A8%2C%22day%22%3A22%2C%22originalResponseDeadline%22%3A%222022-08-20T15%3A59%3A59%22%7D'])
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_TASK_LIST_URL);

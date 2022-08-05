@@ -76,6 +76,14 @@ describe('Agreed response date', () => {
           expect(res.text).toContain('name="day" type="text" value="1"');
         });
     });
+    it('should show error when draft store throws error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app).get(AGREED_TO_MORE_TIME_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
   });
   describe('on POST', () => {
     it('should return errors on no input', async () => {
@@ -157,6 +165,14 @@ describe('Agreed response date', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(NEW_RESPONSE_DEADLINE_URL);
+        });
+    });
+    it('should show error when draft store throws error', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app).post(AGREED_TO_MORE_TIME_URL)
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
