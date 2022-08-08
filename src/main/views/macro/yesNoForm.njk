@@ -5,8 +5,8 @@ To include html on when no is selected add htmlNo parameter
 for example {noHtml:'<span>you clicked on no</span>' #}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% macro yesNoRadioButton(t, id, name, title, form, description, params) %}
-  {% set yes = params.yes if params.yes else 'COMMON.YES' %}
-  {% set no = params.no if params.no else 'COMMON.NO' %}
+  {% set yes = params.yes if params.yes else 'COMMON.VARIATION.YES' %}
+  {% set no = params.no if params.no else 'COMMON.VARIATION.NO' %}
   {% set errors = form.getErrors() %}
   {{ govukRadios({
     idPrefix: id,
