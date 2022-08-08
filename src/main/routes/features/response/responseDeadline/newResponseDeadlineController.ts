@@ -2,7 +2,7 @@ import * as express from 'express';
 import config from 'config';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {
-  AGREED_T0_MORE_TIME_URL,
+  AGREED_T0_MORE_TIME_URL, CLAIM_TASK_LIST_URL,
   NEW_RESPONSE_DEADLINE_URL,
 } from '../../../urls';
 import {AppRequest} from '../../../../common/models/AppRequest';
@@ -28,6 +28,16 @@ newResponseDeadlineController.get(NEW_RESPONSE_DEADLINE_URL, async function (req
       responseDeadline: formatDateToFullDate(calculatedExtendedDeadline),
       backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_T0_MORE_TIME_URL),
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+newResponseDeadlineController.post(NEW_RESPONSE_DEADLINE_URL, async (req, res, next: express.NextFunction) => {
+  try {
+    const extensionDate = req.body.agreedResponseDeadline;
+    await civilServiceClient.submitAgreedResponseExtensionDateEvent(req.params.id, extensionDate, <AppRequest>req);
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
   } catch (error) {
     next(error);
   }

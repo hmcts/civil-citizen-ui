@@ -14,10 +14,7 @@ import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
 import {CLAIM_DETAILS_NOT_AVAILBALE, DOCUMENT_NOT_AVAILABLE} from './errorMessageContants';
-import {
-  DashboardDefendantItem,
-  DashboardClaimantItem,
-} from '../../common/models/dashboard/dashboardItem';
+import {DashboardClaimantItem, DashboardDefendantItem,} from '../../common/models/dashboard/dashboardItem';
 import {EventDto} from '../../common/models/events/eventDto';
 import {CaseEvent} from '../../common/models/events/caseEvent';
 
@@ -133,15 +130,19 @@ export class CivilServiceClient {
   }
 
   async submitDefendantResponseEvent(claimId: string, req: AppRequest): Promise<Claim> {
-    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, req);
+    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, new Map<string, string>(), req);
   }
 
-  async submitEvent(event: CaseEvent, claimId: string, req: AppRequest): Promise<Claim> {
+  async submitAgreedResponseExtensionDateEvent(claimId: string, extensionDate:string, req: AppRequest): Promise<Claim> {
+    return await this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, new Map<string, string>(), req);
+  }
+
+  async submitEvent(event: CaseEvent, claimId: string, update: Map<string, string>, req: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
     const data : EventDto = {
       event:event,
-      caseDataUpdate: new Map<string, string>(),
+      caseDataUpdate: update,
     };
     try{
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
