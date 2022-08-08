@@ -1,4 +1,4 @@
-import {ClaimSummaryType, ClaimSummarySection} from '../../../../../../common/form/models/claimSummarySection';
+import {ClaimSummarySection, ClaimSummaryType} from '../../../../../../common/form/models/claimSummarySection';
 import {Claim} from '../../../../../../common/models/claim';
 
 /**
@@ -9,7 +9,7 @@ import {Claim} from '../../../../../../common/models/claim';
  *
  */
 
-export const getFirstConditionalContentContent = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => { //NOSONAR
+export const getFirstConditionalContentContent = (claim: Claim, claimId: string): ClaimSummarySection[] => { //NOSONAR
   const claimantName = claim.getClaimantName();
   return [
     {
@@ -46,7 +46,7 @@ export const getFirstConditionalContentContent = (claim: Claim, lang: string, cl
   ];
 };
 
-export const getSecondConditionalContentContent = (claim: Claim, lang: string): ClaimSummarySection[] => { //NOSONAR
+export const getSecondConditionalContentContent = (claim: Claim): ClaimSummarySection[] => { //NOSONAR
   return [
     {
       type: ClaimSummaryType.TITLE,
@@ -71,7 +71,7 @@ export const getSecondConditionalContentContent = (claim: Claim, lang: string): 
   ];
 };
 
-export const getThirdConditionalContentContent = (claim: Claim, lang: string): ClaimSummarySection[] => { //NOSONAR
+export const getThirdConditionalContentContent = (claim: Claim): ClaimSummarySection[] => { //NOSONAR
   return [
     {
       type: ClaimSummaryType.TITLE,
