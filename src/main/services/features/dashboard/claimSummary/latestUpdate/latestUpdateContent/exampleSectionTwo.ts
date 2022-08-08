@@ -1,7 +1,5 @@
-import {t} from 'i18next';
-import {ClaimSummaryType, ClaimSummarySection} from '../../../../../../common/form/models/claimSummarySection';
+import {ClaimSummarySection, ClaimSummaryType} from '../../../../../../common/form/models/claimSummarySection';
 import {SummaryRow} from '../../../../../../common/models/summaryList/summaryList';
-import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {Claim} from '../../../../../../common/models/claim';
 
 /**
@@ -83,7 +81,7 @@ const rows: SummaryRow[] = [
   },
 ];
 
-export const getFourthConditionalContentContent = (claim: Claim, lang: string): ClaimSummarySection[] => { //NOSONAR
+export const getFourthConditionalContentContent = (claim: Claim): ClaimSummarySection[] => { //NOSONAR
   return [
     {
       type: ClaimSummaryType.TITLE,
@@ -110,18 +108,18 @@ export const getFourthConditionalContentContent = (claim: Claim, lang: string): 
   ];
 };
 
-export const getFifthConditionalContentContent = (claim: Claim, lang: string): ClaimSummarySection[] => { //NOSONAR
+export const getFifthConditionalContentContent = (claim: Claim): ClaimSummarySection[] => { //NOSONAR
   return [
     {
       type: ClaimSummaryType.TITLE,
       data: {
-        text: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
+        text: 'PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE',
       },
     },
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
+        text: 'PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE',
       },
     },
     {
