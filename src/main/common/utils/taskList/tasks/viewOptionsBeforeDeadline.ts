@@ -34,11 +34,6 @@ export const getViewOptionsBeforeDeadlineTask = (claim: Claim, claimId: string, 
       }
       break;
     case ResponseOptions.REQUEST_REFUSED:
-      viewOptionsBeforeDeadlineTask.status = TaskStatus.COMPLETE;
-      if(isDeadlinePassed){
-        viewOptionsBeforeDeadlineTask.url = '#';
-      }
-      break;
     case ResponseOptions.NO:
       viewOptionsBeforeDeadlineTask.status = TaskStatus.COMPLETE;
       if(isDeadlinePassed){
