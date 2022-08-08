@@ -16,6 +16,7 @@ export class OidcMiddleware {
     const citizenRole: string = config.get('services.idam.citizenRole');
     const scope: string = config.get('services.idam.scope');
     const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri)+scope;
+    const idamSignOutUrl = config.get('services.idam.url') + '/o/endSession';
 
     app.get(SIGN_IN_URL, (_req: AppRequest, res: Response) => {
       res.redirect(idamUrlLogin);
@@ -33,9 +34,16 @@ export class OidcMiddleware {
       }
     });
 
-    app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
-      req.session.user = app.locals.user = undefined;
-      res.redirect(SIGN_IN_URL);
+    app.get(SIGN_OUT_URL, (req: AppRequest, res:Response) => {
+      const params = new URLSearchParams({
+        'id_token_hint': req.session.user.idToken,
+        'post_logout_redirect_uri': req.protocol + '://' + req.headers.host + DASHBOARD_URL,
+      });
+
+      req.session.destroy(() => {
+        app.locals.user = undefined;
+        res.redirect(idamSignOutUrl + '?' + params.toString());
+      });
     });
 
     app.get('/', (_req: AppRequest, res: Response) => {
