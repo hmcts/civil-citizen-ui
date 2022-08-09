@@ -37,7 +37,7 @@ export class OidcMiddleware {
     app.get(SIGN_OUT_URL, (req: AppRequest, res:Response) => {
       const params = new URLSearchParams({
         'id_token_hint': req.session.user?.idToken,
-        'post_logout_redirect_uri': req.protocol + '://' + req.headers.host + DASHBOARD_URL,
+        'post_logout_redirect_uri': config.get('services.civilService.url') + DASHBOARD_URL,
       });
 
       req.session = app.locals.user = undefined;
@@ -49,13 +49,14 @@ export class OidcMiddleware {
     });
 
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
-      if (req.session.user) {
-        if (req.session?.user?.roles?.includes(citizenRole)) {
-          return next();
-        }
-        return res.redirect(DASHBOARD_URL);
-      }
-      res.redirect(SIGN_IN_URL);
+      return next();
+      // if (req.session.user) {
+      //   if (req.session?.user?.roles?.includes(citizenRole)) {
+      //     return next();
+      //   }
+      //   return res.redirect(DASHBOARD_URL);
+      // }
+      // res.redirect(SIGN_IN_URL);
     });
   }
 }
