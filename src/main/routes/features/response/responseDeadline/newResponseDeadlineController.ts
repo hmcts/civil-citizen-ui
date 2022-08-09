@@ -10,7 +10,7 @@ import {AppRequest} from '../../../../common/models/AppRequest';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
+import {ResponseDeadlineService, setDate} from '../../../../services/features/response/responseDeadlineService';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {AgreedResponseDeadline} from '../../../../common/form/models/agreedResponseDeadline';
 
@@ -41,11 +41,13 @@ newResponseDeadlineController.get(NEW_RESPONSE_DEADLINE_URL, async function (req
 
 newResponseDeadlineController.post(NEW_RESPONSE_DEADLINE_URL, async function (req: express.Request, res: express.Response, next: express.NextFunction) {
   try {
-    const newDeadlineDate = req.cookies.newDeadlineDate;
-    const form: GenericForm<AgreedResponseDeadline> = new GenericForm<AgreedResponseDeadline>(newDeadlineDate);
+    const claim = await getCaseDataFromStore(req.params.id);
+    const agreedResponseDeadlineDate = claim.responseDeadline?.agreedResponseDeadline ? claim.responseDeadline?.agreedResponseDeadline : req.cookies?.newDeadlineDate?.date;
+    const agreedResponseDeadline: AgreedResponseDeadline = setDate(agreedResponseDeadlineDate);
+    const form: GenericForm<AgreedResponseDeadline> = new GenericForm<AgreedResponseDeadline>(agreedResponseDeadline);
     await form.validate();
     if (!form.hasErrors()) {
-      await responseDeadlineService.saveAgreedResponseDeadline(req.params.id, newDeadlineDate.date);
+      await responseDeadlineService.saveAgreedResponseDeadline(req.params.id, agreedResponseDeadlineDate);
     }
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
   } catch (error) {
