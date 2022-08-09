@@ -16,8 +16,8 @@ export class OidcMiddleware {
     const citizenRole: string = config.get('services.idam.citizenRole');
     const scope: string = config.get('services.idam.scope');
     const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri)+scope;
-    const idamSignOutUrl = loginUrl.replace('/login', '/o/endSession');
-    const applicationUrl = redirectUri.replace('/oauth2/callback', DASHBOARD_URL);
+    const idamSignOutUrl = config.get('services.idam.terminateSessionURL');
+    const applicationUrl = config.get('services.idam.signOutCallBackURL');
 
     app.get(SIGN_IN_URL, (_req: AppRequest, res: Response) => {
       res.redirect(idamUrlLogin);
