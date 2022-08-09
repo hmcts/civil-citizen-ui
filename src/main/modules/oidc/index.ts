@@ -17,7 +17,7 @@ export class OidcMiddleware {
     const scope: string = config.get('services.idam.scope');
     const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri)+scope;
     const idamSignOutUrl = config.get('services.idam.url') + '/o/endSession';
-    const applicationUrl =  redirectUri.split('/')[0];
+    const applicationUrl =  loginUrl.split('/')[0];
 
     app.get(SIGN_IN_URL, (_req: AppRequest, res: Response) => {
       res.redirect(idamUrlLogin);
