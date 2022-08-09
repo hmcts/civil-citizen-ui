@@ -2,6 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import Module from 'module';
 import {DASHBOARD_URL} from '../../../../../../main/routes/urls';
+import ocmcDraftDataMock from '../../../../../utils/mocks/ocmcDraftDataMock.json';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -37,9 +38,6 @@ describe('Dashboard page', () => {
     nock(civilServiceUrl)
       .get('/cases/claimant/undefined')
       .reply(200, {data: data});
-    nock(draftStoreUrl)
-      .get('/drafts')
-      .reply(200, {});
   });
 
   describe('on GET', () => {
@@ -57,6 +55,9 @@ describe('Dashboard page', () => {
     });
 
     it('should return dashboard page in english', async () => {
+      nock(draftStoreUrl)
+        .get('/drafts')
+        .reply(200, ocmcDraftDataMock);
       await testSession
         .get(DASHBOARD_URL + '?lang=en')
         .expect((res: Response) => {
@@ -67,11 +68,38 @@ describe('Dashboard page', () => {
     });
 
     it('should return dashboard page in cymraeg', async () => {
+      nock(draftStoreUrl)
+        .get('/drafts')
+        .reply(200, ocmcDraftDataMock);
       await testSession
         .get(DASHBOARD_URL + '?lang=cy')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Smialc edam tsniaga uoy');
+        });
+    });
+
+    it('should not display Make a new money claim link when there is a draft claim', async () => {
+      nock(draftStoreUrl)
+        .get('/drafts')
+        .reply(200, ocmcDraftDataMock);
+      await testSession
+        .get(DASHBOARD_URL + '?lang=en')
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain('Make a new money claim');
+        });
+    });
+
+    it('should display Make a new money claim link when there is no draft claim', async () => {
+      nock(draftStoreUrl)
+        .get('/drafts')
+        .reply(200, {});
+      await testSession
+        .get(DASHBOARD_URL + '?lang=en')
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Make a new money claim');
         });
     });
   });
