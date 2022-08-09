@@ -19,7 +19,6 @@ import {Claim} from '../../../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
 import {
   REDIS_FAILURE,
-  VALID_YES_NO_OPTION,
 } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
@@ -112,7 +111,7 @@ describe('Debts', () => {
         .send(buildDebtFormUndefined())
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toMatch(VALID_YES_NO_OPTION);
+          expect(res.text).toMatch(t('ERRORS.VALID_YES_NO_OPTION'));
         });
     });
     it('should validate when has option is yes but there is no fields selected ', async () => {

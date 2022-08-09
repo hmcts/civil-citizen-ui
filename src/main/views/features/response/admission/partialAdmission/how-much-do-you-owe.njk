@@ -1,12 +1,12 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
-{% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE.PAGE_TITLE') }}
@@ -17,13 +17,10 @@
     <main class="govuk-main-wrapper" role="main">
       {% set title = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE.TITLE') %}
       {% set description = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_DO_YOU_OWE.SUBTITLE', { totalAmount: form.model.totalAmount }) %}
-      {% set amountAsString = ''+form.model.amount %}
+      {% set amountAsString = '' + form.model.amount %}
       {% set errors = form.getAllErrors() %}
       {% if form.hasErrors() %}
-        {{ govukErrorSummary({
-          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
-          "errorList": errors
-        }) }}
+        {{ errorSummary(errors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -45,15 +42,15 @@
               },
               classes: "govuk-!-width-two-thirds",
               hint : {
-                text: t(description)
+                text: description
               },
               errorMessage: {
-                text:t(form.errorFor('amount'))
+                text: t(form.errorFor('amount'))
               } if form.hasFieldError('amount')
             }) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
           </form>
