@@ -12,12 +12,10 @@ services:
   idam:
     url: 'http://localhost:5000'
     authorizationURL: 'http://localhost:9002/login'
-    terminateSessionURL: 'http://localhost:9002/o/endSession'
     tokenURL: 'http://localhost:5000/o/token'
     clientID: 'civil_citizen_ui'
     clientSecret: 'citizen-ui-secret'
     callbackURL: 'http://localhost:3001/oauth2/callback'
-    signOutCallBackURL: 'http://localhost:3001/dashboard'
     citizenRole: 'citizen'
     scope: '&scope=profile%20openid%20roles%20manage-user%20create-user%20search-user'
   draftStore:
