@@ -41,6 +41,7 @@ nodejs:
         - citizen-draft-store-secondary
   environment:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
+    IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
     ORDNANCE_SURVEY_API_KEY: ${ORDNANCE_SURVEY_API_KEY}
 civil-service:
@@ -76,6 +77,7 @@ civil-service:
       IDAM_CLIENT_REDIRECT_URI: https://civil-ccd-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/oauth2/callback
       IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
       IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net
+      IDAM_END_SESSION_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o/endSession
       IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       MANAGE_CASE_UI_BASE_URL: https://manage-case.{{ .Values.global.environment }}.platform.hmcts.net
       SPRING_SECURITY_ENABLED: true
