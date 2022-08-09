@@ -7,19 +7,20 @@ import {getOcmcDraftClaims} from '../../../app/client/legacyDraftStoreClient';
 import {DashboardClaimantItem, DashboardDefendantItem} from '../../../common/models/dashboard/dashboardItem';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const ocmcBaseUrl = config.get<string>('services.cmc.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderPage(res: express.Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
   claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean,
   paginationArgumentClaimant: object, paginationArgumentDefendant: object): void {
-
   res.render('features/dashboard/dashboard', {
-    claimsAsClaimant: claimsAsClaimant,
-    claimDraftSaved: claimDraftSaved,
-    claimsAsDefendant: claimsAsDefendant,
-    responseDraftSaved: responseDraftSaved,
-    paginationArgumentClaimant: paginationArgumentClaimant,
-    paginationArgumentDefendant: paginationArgumentDefendant,
+    claimsAsClaimant,
+    claimDraftSaved,
+    claimsAsDefendant,
+    responseDraftSaved,
+    paginationArgumentClaimant,
+    paginationArgumentDefendant,
+    newOcmcClaimUrl: `${ocmcBaseUrl}/eligibility`,
   });
 }
 

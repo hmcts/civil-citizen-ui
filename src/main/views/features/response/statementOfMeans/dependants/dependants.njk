@@ -1,11 +1,11 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.DEPENDANTS.PAGE_TITLE') }}
@@ -21,10 +21,7 @@
       {% set between11and15Error = form.nestedErrorFor('numberOfChildren[between11and15]') %}
       {% set between16and19Error = form.nestedErrorFor('numberOfChildren[between16and19]') %}
       {% if form.hasErrors() %}
-        {{ govukErrorSummary({
-          "titleText": t('There was a problem'),
-          "errorList": errors
-        }) }}
+        {{ errorSummary(errors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -89,7 +86,7 @@
               items: [
                 {
                   value: YesNo.YES,
-                  text: t('COMMON.YES'),
+                  text: t('COMMON.VARIATION.YES'),
                   checked: form.model.declared === true,
                   conditional: {
                     html: numberOfChildrenHtml
@@ -97,18 +94,18 @@
                 },
                 {
                   value: YesNo.NO,
-                  text: t('COMMON.NO'),
+                  text: t('COMMON.VARIATION.NO'),
                   checked: form.model.declared === false
                 }
               ],
               errorMessage: {
-                text: declaredError
+                text: t(declaredError)
               } if declaredError
             }) }}
 
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
             </div>
           </form>
