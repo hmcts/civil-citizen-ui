@@ -7,7 +7,8 @@ import {SIGN_OUT_URL} from '../../../../main/routes/urls';
 describe('OIDC middleware', () => {
   describe('Sign out', () => {
     const citizenRoleToken: string = config.get('citizenRoleToken');
-    const idamServiceUrl: string = config.get('services.idam.url');
+    const idamServiceUrl: string = config.get('services.idam.authorizationURL');
+    const signOutUrl = idamServiceUrl.replace('/login', '/o/endSession');
 
     beforeEach(() => {
       nock(idamServiceUrl)
@@ -21,7 +22,7 @@ describe('OIDC middleware', () => {
     });
 
     it('should unset user', async () => {
-      await request(app).get(SIGN_OUT_URL).expect((res) => {
+      await request(app).get(SIGN_OUT_URL).expect(() => {
         expect(app.locals.user).toBeUndefined();
       });
     });
@@ -29,7 +30,7 @@ describe('OIDC middleware', () => {
     it('should redirect to idam sign out', async () => {
       await request(app).get(SIGN_OUT_URL).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.text).toContain(idamServiceUrl + '/o/endSession');
+        expect(res.text).toContain(signOutUrl);
       });
     });
   });
