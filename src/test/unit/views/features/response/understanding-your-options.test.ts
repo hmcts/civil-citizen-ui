@@ -37,7 +37,7 @@ describe('Understanding Your Options View', () => {
 
   it('should display correct sub header', () => {
     const header = htmlDocument.getElementsByClassName('govuk-heading-m')[0];
-    expect(header.innerHTML).toContain('Current response deadline: 4pm on 15 May 2022');
+    expect(header.innerHTML).toContain('Current response deadline: 4pm on 15 May 2025');
   });
 
   it('should display unable to respond to claim before deadline paragraph', () => {

@@ -41,7 +41,7 @@ describe('Request More Time View', () => {
 
     it('should display current response deadline sub header', () => {
       const subHeader = htmlDocument.getElementsByClassName('govuk-body');
-      expect(subHeader[0].innerHTML).toContain('Current response deadline: 4pm on 15 May 2022');
+      expect(subHeader[0].innerHTML).toContain('Current response deadline: 4pm on 15 May 2025');
     });
 
     it('should display request more time sub header', () => {
@@ -60,7 +60,7 @@ describe('Request More Time View', () => {
       const conditionalContent = htmlDocument.getElementsByClassName('govuk-radios__conditional')[0]
         .getElementsByClassName('govuk-body');
       expect(conditionalContent[0].innerHTML).toContain('Select \'Save and continue\' and contact Mr. Jan Clark\'s legal representative to request this.');
-      expect(conditionalContent[1].innerHTML).toContain('If agreed, extra time will start from 15 May 2022');
+      expect(conditionalContent[1].innerHTML).toContain('If agreed, extra time will start from 15 May 2025');
     });
 
     it('should display radio button 2 conditional', () => {
