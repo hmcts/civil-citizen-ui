@@ -2,7 +2,7 @@ import {IsDefined, IsIn, MaxLength, ValidateIf} from 'class-validator';
 import NoMediationReasonOptions from './noMediationReasonOptions';
 
 export class NoMediationReason {
-  @IsDefined({message: 'ERRORS.OPTION_REQUIRE'})
+  @IsDefined({message: 'ERRORS.OPTION_REQUIRED'})
   @IsIn(Object.values(NoMediationReasonOptions), {message: 'ERRORS.OPTION_REQUIRED'})
     iDoNotWantMediationReason?: string;
 
