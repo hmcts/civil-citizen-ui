@@ -1,6 +1,6 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-{% macro timelineRow(timelineModel, index, form) %}
+{% macro timelineRow(timelineModel, index, form, t) %}
   <div id="row-container">
     <div class="multiple-row">
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
@@ -11,7 +11,7 @@
           classes: "govuk-grid-column-full",
           spellcheck: false,
           errorMessage: {
-            text: form.errorFor("rows["+index+"][date]")
+            text: t(form.errorFor("rows["+index+"][date]"))
           } if form.hasFieldError( "rows["+index+"][date]")
         }) }}
       </div>
@@ -23,7 +23,7 @@
           classes: "govuk-grid-column-full",
           spellcheck: false,
           errorMessage: {
-            text: form.errorFor("rows["+index+"][description]")
+            text: t(form.errorFor("rows["+index+"][description]"))
           } if form.hasFieldError( "rows["+index+"][description]")
         }) }}
       </div>

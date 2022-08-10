@@ -3,8 +3,8 @@ import nock from 'nock';
 import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import {CITIZEN_ALREADY_PAID_URL} from '../../../../../../../main/routes/urls';
-import {VALID_YES_NO_SELECTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
+import {t} from 'i18next';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -78,14 +78,14 @@ describe('Already Paid View', () => {
     it('should display correct error summary message with correct link', () => {
       const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
         .getElementsByTagName('li')[0];
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_YES_NO_SELECTION);
+      expect(errorSummaryMessage.innerHTML).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#option');
     });
 
     it('should display correct error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      expect(errorMessage.innerHTML).toContain(VALID_YES_NO_SELECTION);
+      expect(errorMessage.innerHTML).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
     });
   });
 });
