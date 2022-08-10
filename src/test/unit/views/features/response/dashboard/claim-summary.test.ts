@@ -24,6 +24,8 @@ describe('Send your response by email View', () => {
 
   const mockId = '5129';
 
+  CivilClaimResponseMock.case_data.respondent1ResponseDeadline = '2022-01-01';
+
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')

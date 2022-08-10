@@ -6,7 +6,10 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/timeline-row.njk" import timelineRow %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
-{% set title = 'Add your timeline of events' %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+
+
+{% set title = 'PAGES.DEFENDANT_TIMELINE.PAGE_TITLE' %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.DEFENDANT_TIMELINE.PAGE_TITLE') }}
@@ -17,34 +20,32 @@
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getAllErrors() %}
       {% if errors.length > 0 %}
-        {{ govukErrorSummary({
-          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
-          "errorList": errors
-        }) }}
+        {{ errorSummary(errors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t(title) }}</h1>
           <div class="govuk-description-block govuk-body">
-            <h2 class="govuk-heading-s">{{ t('Their timeline') }}</h2>
+            <h2 class="govuk-heading-s">{{ t('PAGES.DEFENDANT_TIMELINE.THEIR_TIMELINE') }}</h2>
             <table class="govuk-table">
               {% if theirTimeline.length %}
-                <thead class="govuk-table__head">
-                  <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header">{{ t('PAGES.DEFENDANT_TIMELINE.DATE') }}</th>
-                    <th scope="col" class="govuk-table__header">{{ t('PAGES.DEFENDANT_TIMELINE.WHAT_HAPPENED') }}</th>
-                  </tr>
-                </thead>
-                <tbody class="govuk-table__body">
-                  {% for event in theirTimeline %}
-                    <tr class="govuk-table__row">
-                      <td class="govuk-table__cell">{{ event.value.timelineDate | date }}</td>
-                      <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
-                    </tr>
-                  {% endfor %}
-                {% elseif pdfUrl %}
-                  <a id="timeline-link" href={{ pdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.DEFENDANT_TIMELINE.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
-                {% endif %}
+              <thead class="govuk-table__head">
+              <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">{{ t('PAGES.DEFENDANT_TIMELINE.DATE') }}</th>
+                <th scope="col" class="govuk-table__header">{{ t('PAGES.DEFENDANT_TIMELINE.WHAT_HAPPENED') }}</th>
+              </tr>
+              </thead>
+              <tbody class="govuk-table__body">
+              {% for event in theirTimeline %}
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">{{ event.value.timelineDate | date }}</td>
+                  <td class="govuk-table__cell">{{ event.value.timelineDescription }}</td>
+                </tr>
+              {% endfor %}
+              {% elseif pdfUrl %}
+                <a id="timeline-link" href={{ pdfUrl }} target="_blank" rel="noreferrer noopener"
+                   class="govuk-link">{{ t('PAGES.DEFENDANT_TIMELINE.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
+              {% endif %}
               </tbody>
             </table>
           </div>
@@ -60,7 +61,7 @@
                 {{ t('PAGES.DEFENDANT_TIMELINE.DATE') }}
               </label>
               <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
-                {{ t('PAGES.DEFENDANT_TIMELINE.FOR_EXAMPLE', { sixMonthAgo: 'now' | addDays(-180) | date }) }}
+                {{ t('PAGES.DEFENDANT_TIMELINE.FOR_EXAMPLE', { sixMonthAgo: "now" | addDaysTranslated(-180, t) }) }}
               </p>
             </div>
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
@@ -69,7 +70,7 @@
                 class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('PAGES.DEFENDANT_TIMELINE.YOU_MIGHT_HAVE_SIGNED_A_CONTRACT') }}</p>
             </div>
             {% for timeline in form.model.rows %}
-              {{ timelineRow(timeline, loop.index0, form) }}
+              {{ timelineRow(timeline, loop.index0, form, t) }}
             {% endfor %}
 
             {{ govukButton({
@@ -88,12 +89,12 @@
               classes: "govuk-grid-column-full",
               spellcheck: false,
               errorMessage: {
-                text: form.errorFor("comment")
+                text: t(form.errorFor("comment"))
               } if form.hasFieldError( "comment")
             }) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
               }) }}
               {{ contactUsForHelp(t) }}
             </div>
