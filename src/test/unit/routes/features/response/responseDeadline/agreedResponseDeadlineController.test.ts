@@ -140,7 +140,7 @@ describe('Agreed response date', () => {
         .send('day=13')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Agreed response date cannot be more than 28 days after the original response date');
+          expect(res.text).toContain(TestMessages.DATE_NOT_MORE_THAN_28_DAYS);
         });
     });
 
