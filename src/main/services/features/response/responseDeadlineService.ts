@@ -76,7 +76,7 @@ export class ResponseDeadlineService {
   }
 }
 
-function setDate(date: Date): AgreedResponseDeadline {
+export function setDate(date: Date): AgreedResponseDeadline {
   const agreedResponseDeadline = new AgreedResponseDeadline();
   agreedResponseDeadline.date = new Date(date);
   agreedResponseDeadline.year = agreedResponseDeadline.date.getFullYear();
