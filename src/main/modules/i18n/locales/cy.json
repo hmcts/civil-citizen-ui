@@ -600,12 +600,12 @@
       "PAGE_TITLE": "Mediation - Provide a phone number"
     },
     "MEDIATION_COMPANY_PHONE": {
-      "CONFIRM_TELEPHONE_NUMBER": "Confirm telephone number",
+      "CONFIRM_TELEPHONE_NUMBER": "Cadarnhau'r rhif ffôn",
       "ENTER_PHONE_NUMBER": "Rhowch rif ffôn yr unigolyn hwn, gan gynnwys rhif estyniad os oes angen",
       "FOR_EXAMPLE": "Er enghraifft, 02012346788 est. 153",
       "PAGE_TITLE": "Mediation - Provide company contact number",
       "TITLE": "Pwy ddylai'r gwasanaeth cyfryngu ei ffonio?",
-      "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
+      "TITLE_WITH_PERSON": "Ai {{ contactPerson }} yw'r un y dylai'r gwasanaeth cyfryngu ei ffonio?"
     },
     "MEDIATION_DISAGREEMENT": {
       "PAGE_TITLE": "Free mediation disagreement",
