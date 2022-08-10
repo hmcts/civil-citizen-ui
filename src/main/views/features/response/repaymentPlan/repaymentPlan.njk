@@ -8,11 +8,9 @@
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
-
 {% block pageTitle %}
   {{ setPageTitle('PAGES.REPAYMENT_PLAN.PAGE_TITLE') }}
 {% endblock %}
-
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -20,12 +18,10 @@
       {% set errors = form.getAllErrors() %}
       {% set totalAmountClaimedText = t('The total amount claimed is £' + form.model.totalClaimAmount + '. This includes the claim fee and any interest.') %}
       {% set totalAmount = form.model.totalClaimAmount %}
-
       {% if admission %}
         {% set totalAmountClaimedText = t('You admit you owe £' + amount + '.') %}
         {% set totalAmount = amount %}
       {% endif %}
-
       {% set firstPaymentExample = t('For example, ' + paymentExampleDate) %}
       {% if form.hasErrors() %}
         {{ errorSummary(errors,t) }}
@@ -105,7 +101,17 @@
           <p class="govuk-body">
             <strong>{{ t('Length of repayment plan') }}</strong>
           </p>
-          <p class="govuk-body repayment-length"></p>
+          <div class="govuk-body repayment-length">
+            <span id="numberOfInstalments"></span>
+            <div class="schedule">
+              <span id="week" class="hide">{{ t('COMMON.SCHEDULE.WEEK_LOWER_CASE') }}</span>
+              <span id="weeks" class="hide">{{ t('COMMON.SCHEDULE.WEEKS_LOWER_CASE') }}</span>
+              <span id="two-weeks" class="hide">{{ t('COMMON.SCHEDULE.TWO_WEEKS') }}</span>
+              <span id="month" class="hide">{{ t('COMMON.SCHEDULE.MONTH_LOWER_CASE') }}</span>
+              <span id="months" class="hide">{{ t('COMMON.SCHEDULE.MONTHS_LOWER_CASE') }}</span>
+              <span id="two-months" class="hide">{{ t('COMMON.SCHEDULE.TWO_MONTHS_LOWER_CASE') }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
