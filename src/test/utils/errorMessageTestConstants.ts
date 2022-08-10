@@ -54,7 +54,10 @@ export const enum TestMessages {
   VALID_YEAR = 'Enter a valid year',
   VALID_FOUR_DIGIT_YEAR = 'Enter a 4 digit year',
   VALID_HOUSING = 'Describe your housing',
+  VALID_INTEGER = 'Enter a numeric, for example 3',
+  VALID_NUMBER_FOR_PREVIOUS_PAGE = 'Number can’t be higher than on previous page',
   VALID_OPTION_SELECTION = 'Select an option',
   VALID_PAYMENT_OPTION = 'Choose a payment option',
   VALID_PHONE_NUMBER = 'Enter a phone number in the correct format',
+  VALID_POSITIVE_NUMBER = 'Don’t enter a negative number'
 }

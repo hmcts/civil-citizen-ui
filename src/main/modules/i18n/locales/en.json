@@ -1009,7 +1009,7 @@
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
-    "VALID_POSITIVE_NUMBER": "Don't enter a negative number",
+    "VALID_POSITIVE_NUMBER": "Don’t enter a negative number",
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
