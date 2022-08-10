@@ -85,10 +85,8 @@ describe('Mediation Disagreement View', () => {
 
     it('should display yes/no radio buttons', () => {
       const radios = htmlDocument.getElementsByClassName('govuk-radios__item');
-      const conditional = htmlDocument.getElementsByClassName('govuk-radios__conditional')[0];
       expect(radios[0].innerHTML).toContain('Yes');
       expect(radios[1].innerHTML).toContain('No');
-      expect(conditional.innerHTML).toContain('We\'ll ask the claimant if they\'ll try free mediation. If they say no, the claim will go to a hearing.');
     });
 
     it('should display save and continue button', () => {
@@ -116,12 +114,12 @@ describe('Mediation Disagreement View', () => {
       expect(errorSummary.getElementsByClassName('govuk-error-summary__title')[0].innerHTML)
         .toContain('There was a problem');
       expect(errorSummary.getElementsByClassName('govuk-list govuk-error-summary__list')[0].innerHTML)
-        .toContain('Choose option: Yes or No');
+        .toContain('Please select yes or no');
     });
 
     it('should display error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      expect(errorMessage.innerHTML).toContain('Yes or No');
+      expect(errorMessage.innerHTML).toContain('Please select yes or no');
     });
   });
 });
