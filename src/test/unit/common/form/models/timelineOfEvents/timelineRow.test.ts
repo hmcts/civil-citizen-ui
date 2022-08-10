@@ -1,9 +1,5 @@
 import TimelineRow from '../../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {Validator} from 'class-validator';
-import {
-  DATE_REQUIRED,
-  DESCRIPTION_REQUIRED,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 describe('TimeLineRow', () => {
   describe('atLeastOneRowPopulated', () => {
@@ -33,7 +29,7 @@ describe('TimeLineRow', () => {
       const errors = validator.validateSync(timelineRow);
       //Then
       expect(errors.length).toBe(1);
-      expect(errors[0].constraints?.isDefined).toBe(DESCRIPTION_REQUIRED);
+      expect(errors[0].constraints?.isDefined).toBe('ERRORS.DESCRIPTION_REQUIRED');
     });
     it('should return error when description is populated but not date', () => {
       //Given
@@ -42,7 +38,7 @@ describe('TimeLineRow', () => {
       const errors = validator.validateSync(timelineRow);
       //Then
       expect(errors.length).toBe(1);
-      expect(errors[0].constraints?.isNotEmpty).toBe(DATE_REQUIRED);
+      expect(errors[0].constraints?.isNotEmpty).toBe('ERRORS.DATE_REQUIRED');
     });
     it('should not have errors when empty form', () => {
       //Given

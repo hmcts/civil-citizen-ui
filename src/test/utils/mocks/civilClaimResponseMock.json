@@ -145,10 +145,7 @@
       "contactPerson": "Felipe",
       "partyName": "Version 1"
     },
-    "respondent1ResponseDeadline": "2022-05-15T02:59:59",
-    "responseDeadline": {
-      "agreedResponseDeadline": "2022-10-29"
-    },
+    "respondent1ResponseDeadline": "2025-05-15T02:59:59",
     "legacyCaseReference": "000MC009",
     "totalClaimAmount": 110,
     "claimInterest": "Yes",
