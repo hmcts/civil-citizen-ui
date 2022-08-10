@@ -866,7 +866,7 @@
   "ERRORS": {
     "AMOUNT_INVALID_DECIMALS": "Rhowch swm, dim mwy na dau le degol",
     "AMOUNT_LESS_THAN_CLAIMED": "Nodwch werth sy'n llai na'r swm a hawlir",
-    "AMOUNT_REQUIRED": "Rhowch swm o £1 neu fwy",
+    "AMOUNT_REQUIRED": "Nodwch swm o £1 neu fwy",
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
