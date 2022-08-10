@@ -211,11 +211,11 @@ describe('Other Dependants', () => {
         });
     });
 
-    it('should return error when number of people is 0', async () => {
+    it('should return error when number of people is negative', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'yes', numberOfPeople: '0', details: '' })
+        .send({ option: 'yes', numberOfPeople: '-1', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.VALID_STRICTLY_POSITIVE_NUMBER);
@@ -252,7 +252,7 @@ describe('Other Dependants', () => {
         .send({ option: 'yes', numberOfPeople: '0', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_STRICTLY_POSITIVE_NUMBER);
+          expect(res.text).toContain(TestMessages.NUMBER_OF_PEOPLE_REQUIRED);
           expect(res.text).toContain(TestMessages.DETAILS_REQUIRED);
         });
     });
