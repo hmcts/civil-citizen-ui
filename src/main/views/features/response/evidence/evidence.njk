@@ -25,7 +25,7 @@
     items: [
       {
         value: "",
-        text: t("-- Please make a selection --"),
+        text: t('PAGES.EVIDENCE.MAKE_SELECTION'),
         selected: false if evidenceValue.type else true
       },
       {
@@ -85,7 +85,7 @@
       id: "evidenceItem[" + evidenceIndex + "][description]",
       value: evidenceValue.description,
       label: {
-        text: 'Description',
+        text: t('PAGES.EVIDENCE.DESCRIPTION'),
         classes: 'govuk-visually-hidden'
       },
       attributes: {
