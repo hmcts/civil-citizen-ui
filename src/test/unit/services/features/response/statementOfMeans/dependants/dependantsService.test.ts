@@ -5,11 +5,6 @@ import {Dependants} from '../../../../../../../main/common/form/models/statement
 import {
   NumberOfChildren,
 } from '../../../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
-import {
-  VALID_ENTER_AT_LEAST_ONE_NUMBER,
-  VALID_INTEGER,
-  VALID_POSITIVE_NUMBER,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -90,7 +85,7 @@ describe('Dependants service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('numberOfChildren');
-      expect(form.getErrors()[0].constraints).toEqual({AtLeastOneFieldIsPopulatedConstraint: VALID_ENTER_AT_LEAST_ONE_NUMBER});
+      expect(form.getErrors()[0].constraints).toEqual({AtLeastOneFieldIsPopulatedConstraint: 'ERRORS.VALID_ENTER_AT_LEAST_ONE_NUMBER'});
     });
     it('should raise no error if declared true and one age range is specified', async () => {
       //Given
@@ -112,7 +107,7 @@ describe('Dependants service', () => {
       expect(form.getErrors()[0].property).toBe('numberOfChildren');
       expect(form.getErrors()[0].constraints).toBeUndefined();
       expect(form.getNestedErrors()[0].property).toBe('numberOfChildren[under11]');
-      expect(form.getNestedErrors()[0].constraints).toEqual({min: VALID_POSITIVE_NUMBER});
+      expect(form.getNestedErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_POSITIVE_NUMBER'});
     });
     it('should raise an error if declared true and one age range has a decimal value', async () => {
       //Given
@@ -125,7 +120,7 @@ describe('Dependants service', () => {
       expect(form.getErrors()[0].property).toBe('numberOfChildren');
       expect(form.getErrors()[0].constraints).toBeUndefined();
       expect(form.getNestedErrors()[0].property).toBe('numberOfChildren[between11and15]');
-      expect(form.getNestedErrors()[0].constraints).toEqual({isInt: VALID_INTEGER});
+      expect(form.getNestedErrors()[0].constraints).toEqual({isInt: 'ERRORS.VALID_INTEGER'});
     });
     it('should raise 3 errors if declared true and 3 age ranges aren\'t valid', async () => {
       //Given
@@ -139,11 +134,11 @@ describe('Dependants service', () => {
       expect(form.getErrors()[0].constraints).toBeUndefined();
       expect(form.getNestedErrors().length).toBe(3);
       expect(form.getNestedErrors()[0].property).toBe('numberOfChildren[under11]');
-      expect(form.getNestedErrors()[0].constraints).toEqual({min: VALID_POSITIVE_NUMBER});
+      expect(form.getNestedErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_POSITIVE_NUMBER'});
       expect(form.getNestedErrors()[1].property).toBe('numberOfChildren[between11and15]');
-      expect(form.getNestedErrors()[1].constraints).toEqual({isInt: VALID_INTEGER});
+      expect(form.getNestedErrors()[1].constraints).toEqual({isInt: 'ERRORS.VALID_INTEGER'});
       expect(form.getNestedErrors()[2].property).toBe('numberOfChildren[between16and19]');
-      expect(form.getNestedErrors()[2].constraints).toEqual({min: VALID_POSITIVE_NUMBER});
+      expect(form.getNestedErrors()[2].constraints).toEqual({min: 'ERRORS.VALID_POSITIVE_NUMBER'});
     });
   });
   describe('Exception Handling', () => {
