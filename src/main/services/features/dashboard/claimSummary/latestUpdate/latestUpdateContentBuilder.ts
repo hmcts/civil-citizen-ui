@@ -2,10 +2,10 @@ import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection} from '../../../../../common/form/models/claimSummarySection';
 import {CaseState} from '../../../../../common/form/models/claimDetails';
 import {
-  getResponseNotSubmittedTitle,
   getNotPastResponseDeadlineContent,
   getPastResponseDeadlineContent,
   getRespondToClaimLink,
+  getResponseNotSubmittedTitle,
 } from './latestUpdateContent/responseToClaimSection';
 import {
   getFirstConditionalContentContent,
@@ -13,16 +13,16 @@ import {
   getThirdConditionalContentContent,
 } from './latestUpdateContent/exampleSectionOne';
 import {
-  getFourthConditionalContentContent,
   getFifthConditionalContentContent,
+  getFourthConditionalContentContent,
 } from './latestUpdateContent/exampleSectionTwo';
 
-export const buildResponseToClaimSection = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {
+export const buildResponseToClaimSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   const sectionContent = [];
-  const responseNotSubmittedTitle = getResponseNotSubmittedTitle(lang);
-  const responseDeadlineNotPassedContent = getNotPastResponseDeadlineContent(claim, lang);
-  const responseDeadlinePassedContent = getPastResponseDeadlineContent(claim, lang);
-  const respondToClaimLink = getRespondToClaimLink(claimId, lang);
+  const responseNotSubmittedTitle = getResponseNotSubmittedTitle();
+  const responseDeadlineNotPassedContent = getNotPastResponseDeadlineContent(claim);
+  const responseDeadlinePassedContent = getPastResponseDeadlineContent(claim);
+  const respondToClaimLink = getRespondToClaimLink(claimId);
   if (claim.isDefendantNotResponded()) {
     sectionContent.push(responseNotSubmittedTitle);
     if (claim.isDeadLinePassed()) {
@@ -38,11 +38,11 @@ export const buildResponseToClaimSection = (claim: Claim, lang: string, claimId:
 
 // TODO: concept example builder, needs to be replaced with new section builder to be developed
 /* istanbul ignore next */
-export const buildExampleSectionOne = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {
+export const buildExampleSectionOne = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   const sectionContent = [];
-  const firstConditionalContent = getFirstConditionalContentContent(claim, lang, claimId);
-  const secondConditionalContent = getSecondConditionalContentContent(claim, lang);
-  const thirdConditionalContent = getThirdConditionalContentContent(claim, lang);
+  const firstConditionalContent = getFirstConditionalContentContent(claim, claimId);
+  const secondConditionalContent = getSecondConditionalContentContent(claim);
+  const thirdConditionalContent = getThirdConditionalContentContent(claim);
   const number = 10;
 
   if (claim.ccdState === CaseState.PENDING_CASE_ISSUED) {
@@ -59,10 +59,10 @@ export const buildExampleSectionOne = (claim: Claim, lang: string, claimId: stri
 };
 // TODO: concept example builder, needs to be replaced with new section builder to be developed
 /* istanbul ignore next */
-export const buildExampleSectionTwo = (claim: Claim, lang: string, claimId: string): ClaimSummarySection[] => {// NOSONAR
+export const buildExampleSectionTwo = (claim: Claim, claimId: string): ClaimSummarySection[] => {// NOSONAR
   const sectionContent = [];
-  const fourthConditionalContent = getFourthConditionalContentContent(claim, lang);
-  const fifthConditionalContent = getFifthConditionalContentContent(claim, lang);
+  const fourthConditionalContent = getFourthConditionalContentContent(claim);
+  const fifthConditionalContent = getFifthConditionalContentContent(claim);
   const number = 10;
 
   if (claim.ccdState === CaseState.PENDING_CASE_ISSUED) {

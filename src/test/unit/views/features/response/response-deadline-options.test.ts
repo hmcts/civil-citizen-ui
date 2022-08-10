@@ -38,7 +38,7 @@ describe('Response Deadline Options View', () => {
 
     it('should display current response deadline sub header', () => {
       const subHeader = htmlDocument.getElementsByClassName('govuk-heading-m');
-      expect(subHeader[0].innerHTML).toContain('Current response deadline: 4pm on 15 May 2022');
+      expect(subHeader[0].innerHTML).toContain('Current response deadline: 4pm on 15 May 2025');
     });
 
     it('should display request more time sub header', () => {
