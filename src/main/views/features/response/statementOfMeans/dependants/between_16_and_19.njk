@@ -14,7 +14,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% if form.hasErrors() %}
         {{ govukErrorSummary({
           "titleText": t("There was a problem"),
           "errorList": errors
@@ -36,7 +36,7 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <input type="hidden" name="maxValue" value="{{ form.maxValue | default(0) }}"/>
+            <input type="hidden" name="maxValue" value="{{ form.model.maxValue | default(0) }}"/>
             {{ govukInput({
               label: {
                 text: t('Enter number')
@@ -44,7 +44,7 @@
               classes: "govuk-input--width-5",
               id: "value",
               name: "value",
-              value: form.value,
+              value: form.model.value,
               type: "number",
               inputmode: "numeric",
               spellcheck: false,
