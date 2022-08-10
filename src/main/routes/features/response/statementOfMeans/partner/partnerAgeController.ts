@@ -44,7 +44,7 @@ partnerAgeController.post(CITIZEN_PARTNER_AGE_URL,
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_PENSION_URL));
         } else {
           const disability = await disabilityService.getDisability(req.params.id);
-          if (disability.option == 'yes') {
+          if (disability.model.option == 'yes') {
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DISABILITY_URL));
           } else {
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));

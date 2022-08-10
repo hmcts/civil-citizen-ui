@@ -30,8 +30,7 @@ function convertToForm(req: express.Request): GenericForm<BetweenSixteenAndNinet
 
 betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const form = await getForm(req.params.id);
-    renderView(form, res);
+    renderView(await getForm(req.params.id), res);
   } catch (error) {
     next(error);
   }
