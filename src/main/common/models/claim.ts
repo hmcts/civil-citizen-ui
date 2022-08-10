@@ -75,6 +75,7 @@ export class Claim {
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
   determinationWithoutHearing: DeterminationWithoutHearing;
+  respondentSolicitor1AgreedDeadlineExtension?:Date;
 
   getClaimantName(): string {
     return this.applicant1.partyName;

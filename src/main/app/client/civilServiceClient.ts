@@ -14,8 +14,11 @@ import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
 import {CLAIM_DETAILS_NOT_AVAILBALE, DOCUMENT_NOT_AVAILABLE} from './errorMessageContants';
-import {DashboardClaimantItem, DashboardDefendantItem,} from '../../common/models/dashboard/dashboardItem';
-import {EventDto} from '../../common/models/events/eventDto';
+import {
+  DashboardClaimantItem,
+  DashboardDefendantItem,
+} from '../../common/models/dashboard/dashboardItem';
+import {ClaimUpdate, EventDto} from '../../common/models/events/eventDto';
 import {CaseEvent} from '../../common/models/events/caseEvent';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -130,20 +133,21 @@ export class CivilServiceClient {
   }
 
   async submitDefendantResponseEvent(claimId: string, req: AppRequest): Promise<Claim> {
-    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, new Map<string, string>(), req);
+    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, undefined, req);
   }
 
-  async submitAgreedResponseExtensionDateEvent(claimId: string, extensionDate:string, req: AppRequest): Promise<Claim> {
-    return await this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, new Map<string, string>(), req);
+  async submitAgreedResponseExtensionDateEvent(claimId: string, updatedClaim:ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return await this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, updatedClaim, req);
   }
 
-  async submitEvent(event: CaseEvent, claimId: string, update: Map<string, string>, req: AppRequest): Promise<Claim> {
+  async submitEvent(event: CaseEvent, claimId: string, updatedClaim?:ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
     const data : EventDto = {
       event:event,
-      caseDataUpdate: update,
+      caseDataUpdate: updatedClaim,
     };
+    console.log(data);
     try{
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
