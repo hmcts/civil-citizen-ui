@@ -63,6 +63,20 @@
       "WEB_CHAT_NO_ADVISORS": "Nid oes cynghorwyr ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen.",
       "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
     },
+    "MONTH_NAMES": {
+      "APRIL": "Ebrill",
+      "AUGUST": "Awst",
+      "DECEMBER": "Rhagfyr",
+      "FEBRUARY": "Chwefror",
+      "JANUARY": "Ionawr",
+      "JULY": "Gorffennaf",
+      "JUNE": "Mehefin",
+      "MARCH": "Mawrth",
+      "MAY": "Mai",
+      "NOVEMBER": "Tachwedd",
+      "OCTOBER": "Hydref",
+      "SEPTEMBER": "Medi"
+    },
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "Rwy'n cyfaddef yr holl hawliad",
       "FULL_DEFENCE": "Rwy'n gwrthod yr hawliad cyfan",
@@ -271,7 +285,7 @@
       "RESPONSE_TITLE": "Eich ymateb i'r hawliad",
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
-      "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "Ydych chi wedi talu'r swm sy'n ddyledus gennych i'r hawlydd?",
+      "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "A ydych wedi talu’r hawlydd y swm rydych chi’n cyfaddef sy’n ddyledus gennych?",
       "RESPONSE_DETAILS_TITLE": "Manylion ymateb",
       "RESPONSE_DETAILS_MONEY_PAID": "How much money have you paid?",
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "Faint o arian ydych chi wedi'i dalu?",
@@ -407,7 +421,7 @@
       "REASON_FOR_CLAIM": "Reason for claim",
       "TIMELINE": "Timeline",
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
-      "WHAT_HAPPENED": "What happened"
+      "WHAT_HAPPENED": "Beth ddigwyddodd"
     },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "Am hawliad",
@@ -491,17 +505,17 @@
       "TOTAL": "Cyfanswm sy'n ddyledus gennych"
     },
     "DEFENDANT_TIMELINE": {
-      "PAGE_TITLE": "Add your timeline of events",
-      "THEIR_TIMELINE": "Their timeline",
-      "DATE": "Date",
-      "WHAT_HAPPENED": "What happened",
+      "PAGE_TITLE": "Ychwanegu eich amserlen digwyddiadau",
+      "THEIR_TIMELINE": "Eu llinell amser",
+      "DATE": "Dyddiad",
+      "WHAT_HAPPENED": "Beth ddigwyddodd",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view their Timeline",
-      "ADD_YOUR_TIMELINE": "Add your timeline of events (optional)",
-      "INCLUDE_DATES_IF_YOU_KNOW": "Include dates if you know them.",
-      "FOR_EXAMPLE": "For example, {{ sixMonthAgo }}",
-      "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "For example, you might have signed a contract",
-      "ADD_ANOTHER_EVENT": "Add another event",
-      "ADD_ANY_COMMENTS": "Add any comments about their timeline (optional)"
+      "ADD_YOUR_TIMELINE": "Ychwanegu eich amserlen digwyddiadau (dewisol)",
+      "INCLUDE_DATES_IF_YOU_KNOW": "Rhowch ddyddiadau os ydych yn eu gwybod.",
+      "FOR_EXAMPLE": "Er enghraifft, {{ sixMonthAgo }}",
+      "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "Er enghraifft, efallai eich bod wedi llofnodi contract",
+      "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
+      "ADD_ANY_COMMENTS": "Ychwanegu unrhyw sylwadau am eu hamserlen (dewisol)"
     },
     "DEPENDANTS": {
       "GROUP11": "11 i 15",
@@ -871,11 +885,11 @@
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
-    "DATE_REQUIRED": "Enter a date",
-    "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the original response date",
+    "DATE_REQUIRED": "Nodwch ddyddiad",
+    "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the orginal response date",
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
-    "DESCRIPTION_REQUIRED": "Enter a description of what happened",
+    "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
     "ENTER_A_DEBT": "Rhowch fanylion y ddyled",
@@ -1006,7 +1020,7 @@
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Rhowch rif ar gyfer o leiaf un maes",
     "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
-    "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
+    "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
     "VALID_MONTH": "Rhowch fis dilys",
