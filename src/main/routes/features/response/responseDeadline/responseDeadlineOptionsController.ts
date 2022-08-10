@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {
-  AGREED_T0_MORE_TIME_URL,
+  AGREED_TO_MORE_TIME_URL,
   CLAIM_TASK_LIST_URL,
   REQUEST_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL,
@@ -11,6 +11,7 @@ import {ResponseDeadline, ResponseOptions} from '../../../../common/form/models/
 import {Claim} from '../../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
+import {deadLineGuard} from '../../../../routes/guards/deadLineGuard';
 
 const responseDeadlineOptionsController = express.Router();
 const responseDeadlineOptionsViewPath = 'features/response/response-deadline-options';
@@ -26,7 +27,7 @@ function renderView(res: express.Response, form: GenericForm<ResponseDeadline>, 
   });
 }
 
-responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL,
+responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGuard, 
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);
@@ -37,7 +38,7 @@ responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL,
     }
   });
 
-responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL,
+responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGuard,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       let responseOption;
@@ -47,7 +48,7 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL,
       switch (req.body['option']) {
         case 'already-agreed':
           responseOption = ResponseOptions.ALREADY_AGREED;
-          redirectUrl = constructResponseUrlWithIdParams(claimId, AGREED_T0_MORE_TIME_URL);
+          redirectUrl = constructResponseUrlWithIdParams(claimId, AGREED_TO_MORE_TIME_URL);
           break;
         case 'no':
           responseOption = ResponseOptions.NO;
