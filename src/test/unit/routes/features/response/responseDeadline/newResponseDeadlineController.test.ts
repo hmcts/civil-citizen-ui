@@ -78,6 +78,8 @@ describe('Response - New response deadline', () => {
       nock(citizenBaseUrl)
         .post('/cases/:id/citizen/undefined/event')
         .reply(200, {});
+      mockGetCaseDataFromStore.mockImplementation(async () => new Claim());
+
       await request(app).post(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
           expect(res.status).toBe(302);
