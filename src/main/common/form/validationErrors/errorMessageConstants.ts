@@ -33,7 +33,6 @@ export const VALID_BETWEEN_NUMBERS_0_11 = 'Enter a number between 0 and 11';
 export const VALID_BETWEEN_NUMBERS_0_80 = 'Enter a number between 0 and 80';
 export const VALID_NUMBER_FOR_PREVIOUS_PAGE = 'Number can’t be higher than on previous page';
 export const VALID_YES_NO_SELECTION = 'Please select yes or no';
-export const VALID_ENTER_AT_LEAST_ONE_NUMBER = 'Enter a number for at least one field';
 export const VALID_OWED_AMOUNT_REQUIRED = 'Enter a valid amount owed';
 export const VALID_REASON_REQUIRED = 'Enter a reason';
 export const VALID_ENTER_AT_LEAST_ONE_EMPLOYER = 'Enter at least one employer';
