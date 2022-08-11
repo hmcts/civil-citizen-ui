@@ -7,7 +7,8 @@ import {AppRequest} from '../../../../common/models/AppRequest';
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {
-  getClaimExtendedResponseDeadline, submitExtendedResponseDeadline
+  getClaimWithExtendedResponseDeadline,
+  submitExtendedResponseDeadline,
 } from '../../../../services/features/response/responseDeadline/extendResponseDeadlineService';
 
 const newResponseDeadlineController = express.Router();
@@ -16,7 +17,7 @@ const newResponseDeadlineViewPath = 'features/response/responseDeadline/new-resp
 newResponseDeadlineController
   .get(NEW_RESPONSE_DEADLINE_URL, async function (req: AppRequest, res, next: express.NextFunction) {
     try {
-      const claim = await getClaimExtendedResponseDeadline(req.params.id, req);
+      const claim = await getClaimWithExtendedResponseDeadline(req.params.id, req);
       res.render(newResponseDeadlineViewPath, {
         claimantName: claim.getClaimantName(),
         responseDeadline: formatDateToFullDate(claim.respondentSolicitor1AgreedDeadlineExtension),

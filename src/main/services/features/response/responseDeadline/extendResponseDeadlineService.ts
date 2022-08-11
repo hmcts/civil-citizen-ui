@@ -7,7 +7,7 @@ import {Claim} from '../../../../common/models/claim';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-const getClaimExtendedResponseDeadline = async (claimId: string, req: AppRequest): Promise<Claim> => {
+const getClaimWithExtendedResponseDeadline = async (claimId: string, req: AppRequest): Promise<Claim> => {
   const claim = await getCaseDataFromStore(claimId);
   if (!claim.responseDeadline?.agreedResponseDeadline) {
     throw new Error('No extended response deadline found');
@@ -26,7 +26,7 @@ const submitExtendedResponseDeadline = async (claimId:string, req:AppRequest) =>
 };
 
 export {
-  getClaimExtendedResponseDeadline,
+  getClaimWithExtendedResponseDeadline,
   submitExtendedResponseDeadline,
 };
 
