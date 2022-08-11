@@ -21,7 +21,7 @@ newResponseDeadlineController
       const claim = await getClaimWithExtendedResponseDeadline(req);
       res.render(newResponseDeadlineViewPath, {
         claimantName: claim.getClaimantName(),
-        responseDeadline: formatDateToFullDate(claim.respondentSolicitor1AgreedDeadlineExtension),
+        responseDeadline: formatDateToFullDate(claim.responseDeadline.calculatedResponseDeadline),
         backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_TO_MORE_TIME_URL),
       });
     } catch (error) {
