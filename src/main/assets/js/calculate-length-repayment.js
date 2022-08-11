@@ -26,12 +26,12 @@
 
   const instalmentsContainer = document.querySelector('#numberOfInstalments');
   const scheduleContainer = document.querySelector('.schedule');
-  const weekContainer = document.querySelector('#week');
-  const weeksContainer = document.querySelector('#weeks');
-  const twoWeeksContainer = document.querySelector('#two-weeks');
-  const monthContainer = document.querySelector('#month');
-  const monthsContainer = document.querySelector('#months');
-  const twoMonthsContainer = document.querySelector('#two-months');
+  const weekContainer = document.querySelector('#week_schedule');
+  const weeksContainer = document.querySelector('#weeks_schedule');
+  const twoWeeksContainer = document.querySelector('#two-weeks_schedule');
+  const monthContainer = document.querySelector('#month_schedule');
+  const monthsContainer = document.querySelector('#months_schedule');
+  const twoMonthsContainer = document.querySelector('#two-months_schedule');
   const CLASS_HIDE = 'hide';
 
   const hideAll = () => {
