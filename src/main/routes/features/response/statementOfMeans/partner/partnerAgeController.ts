@@ -5,7 +5,7 @@ import {
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../urls';
-import { PartnerAge } from '../../../../../common/form/models/statementOfMeans/partner/partnerAge';
+import {PartnerAge} from '../../../../../common/form/models/statementOfMeans/partner/partnerAge';
 import { ValidationError, Validator } from 'class-validator';
 import { PartnerAgeService } from '../../../../../services/features/response/statementOfMeans/partner/partnerAgeService';
 import { DisabilityService } from '../../../../../services/features/response/statementOfMeans/disabilityService';
