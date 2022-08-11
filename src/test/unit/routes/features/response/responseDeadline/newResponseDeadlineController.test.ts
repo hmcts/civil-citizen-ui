@@ -15,6 +15,7 @@ import {CounterpartyType} from '../../../../../../main/common/models/counterpart
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -54,6 +55,7 @@ describe('Response - New response deadline', () => {
         });
     });
     it('should show error when proposed extended deadline does not exist', async () =>{
+      claim.responseDeadline.agreedResponseDeadline = undefined;
       mockGetCaseDataFromStore.mockImplementation(async () => claim);
       await request(app).get(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
