@@ -74,7 +74,7 @@ describe('Deadline Guard', () => {
     //Then
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
-  it('should responde authorized', async () => {
+  it('should respond authorized', async () => {
     //Given
     const mockClaim = new Claim();
     mockGetCaseData.mockImplementation(async () => mockClaim);
