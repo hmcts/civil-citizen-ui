@@ -7,7 +7,10 @@ import {
 } from '../../../../../../main/app/client/civilServiceUrls';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
-import {CLAIM_TASK_LIST_URL, NEW_RESPONSE_DEADLINE_URL} from '../../../../../../main/routes/urls';
+import {
+  CLAIM_TASK_LIST_URL,
+  NEW_RESPONSE_DEADLINE_URL,
+} from '../../../../../../main/routes/urls';
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
@@ -26,7 +29,7 @@ describe('Response - New response deadline', () => {
       .reply(200, {id_token: citizenRoleToken});
     nock(citizenBaseUrl)
       .post(CIVIL_SERVICE_CALCULATE_DEADLINE)
-      .reply(200,  new Date(2022, 9, 31));
+      .reply(200, new Date(2022, 9, 31));
   });
   describe('On Get', ()=>{
     it('should return new deadline date successfully', async () => {
@@ -41,7 +44,6 @@ describe('Response - New response deadline', () => {
         agreedResponseDeadline : extendedDate,
       };
       mockGetCaseDataFromStore.mockImplementation(async () => claim);
-
       await request(app).get(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);

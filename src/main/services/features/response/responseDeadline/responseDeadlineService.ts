@@ -1,8 +1,8 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
-import {ResponseDeadline, ResponseOptions} from '../../../common/form/models/responseDeadline';
-import {AdditionalTimeOptions} from '../../../common/form/models/additionalTime';
-import {AgreedResponseDeadline} from '../../../common/form/models/agreedResponseDeadline';
-import {Claim} from '../../../common/models/claim';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {ResponseDeadline, ResponseOptions} from 'common/form/models/responseDeadline';
+import {AdditionalTimeOptions} from 'common/form/models/additionalTime';
+import {AgreedResponseDeadline} from 'common/form/models/agreedResponseDeadline';
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -76,7 +76,7 @@ export class ResponseDeadlineService {
   }
 }
 
-function setDate(date: Date): AgreedResponseDeadline {
+export function setDate(date: Date): AgreedResponseDeadline {
   const agreedResponseDeadline = new AgreedResponseDeadline();
   agreedResponseDeadline.date = new Date(date);
   agreedResponseDeadline.year = agreedResponseDeadline.date.getFullYear();

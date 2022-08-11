@@ -7,22 +7,35 @@ import {Claim} from '../../../../common/models/claim';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-const getClaimWithExtendedResponseDeadline = async (claimId: string, req: AppRequest): Promise<Claim> => {
-  const claim = await getCaseDataFromStore(claimId);
-  if (!claim.responseDeadline?.agreedResponseDeadline) {
-    throw new Error('No extended response deadline found');
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('partialAdmissionService');
+
+const getClaimWithExtendedResponseDeadline = async (req: AppRequest): Promise<Claim> => {
+  try{
+    const claim = await getCaseDataFromStore(req.params.id);
+    if (!claim.responseDeadline?.agreedResponseDeadline) {
+      throw new Error('No extended response deadline found');
+    }
+    claim.responseDeadline.calculatedResponseDeadline = await civilServiceClient.calculateExtendedResponseDeadline(claim.responseDeadline?.agreedResponseDeadline, req);
+    await saveDraftClaim(req.params.id, claim);
+    return claim;
+  }catch(error) {
+    logger.error(error);
+    throw error;
   }
-  const calculatedExtendedDeadline = await civilServiceClient.calculateExtendedResponseDeadline(claim.responseDeadline?.agreedResponseDeadline, req);
-  claim.respondentSolicitor1AgreedDeadlineExtension = calculatedExtendedDeadline;
-  await saveDraftClaim(claimId, claim);
-  return claim;
 };
 
-const submitExtendedResponseDeadline = async (claimId:string, req:AppRequest) => {
-  const claim  = await getCaseDataFromStore(claimId);
-  await civilServiceClient.submitAgreedResponseExtensionDateEvent(claimId, {respondentSolicitor1AgreedDeadlineExtension: claim.respondentSolicitor1AgreedDeadlineExtension}, req);
-  claim.respondent1ResponseDeadline = claim.respondentSolicitor1AgreedDeadlineExtension;
-  await saveDraftClaim(claimId, claim);
+const submitExtendedResponseDeadline = async (req:AppRequest) => {
+  try{
+    const claim  = await getCaseDataFromStore(req.params.id);
+    await civilServiceClient.submitAgreedResponseExtensionDateEvent(req.params.id, {respondentSolicitor1AgreedDeadlineExtension: claim.responseDeadline.calculatedResponseDeadline}, req);
+    claim.respondent1ResponseDeadline = claim.responseDeadline.calculatedResponseDeadline;
+    claim.respondentSolicitor1AgreedDeadlineExtension = claim.responseDeadline.calculatedResponseDeadline;
+    await saveDraftClaim(req.params.id, claim);
+  }catch(error) {
+    logger.error(error);
+    throw error;
+  }
 };
 
 export {
