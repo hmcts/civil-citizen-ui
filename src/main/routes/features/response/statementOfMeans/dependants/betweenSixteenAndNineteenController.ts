@@ -39,7 +39,7 @@ betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, async 
 betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, async (req, res, next: express.NextFunction) => {
   const form = convertToForm(req);
   try {
-    await form.validateSync();
+    form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
