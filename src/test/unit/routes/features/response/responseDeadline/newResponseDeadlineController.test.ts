@@ -23,6 +23,16 @@ describe('Response - New response deadline', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   const citizenBaseUrl: string = config.get('services.civilService.url');
+  const extendedDate = new Date(2022, 9, 31);
+  const claim = new Claim();
+  claim.applicant1 = {
+    partyName: 'Mr. James Bond',
+    type: CounterpartyType.INDIVIDUAL,
+  };
+  claim.responseDeadline = {
+    agreedResponseDeadline : extendedDate,
+    calculatedResponseDeadline: extendedDate,
+  };
   beforeEach(() => {
     nock(idamServiceUrl)
       .post('/o/token')
@@ -33,16 +43,8 @@ describe('Response - New response deadline', () => {
   });
   describe('On Get', ()=>{
     it('should return new deadline date successfully', async () => {
-      const extendedDate = new Date(2022, 9, 31);
       const expectedDate = '31 October 2022';
-      const claim = new Claim();
-      claim.applicant1 = {
-        partyName: 'Mr. James Bond',
-        type: CounterpartyType.INDIVIDUAL,
-      };
-      claim.responseDeadline = {
-        agreedResponseDeadline : extendedDate,
-      };
+
       mockGetCaseDataFromStore.mockImplementation(async () => claim);
       await request(app).get(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
@@ -80,7 +82,7 @@ describe('Response - New response deadline', () => {
       nock(citizenBaseUrl)
         .post('/cases/:id/citizen/undefined/event')
         .reply(200, {});
-      mockGetCaseDataFromStore.mockImplementation(async () => new Claim());
+      mockGetCaseDataFromStore.mockImplementation(async () => claim);
 
       await request(app).post(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {

@@ -3,6 +3,8 @@ import config from 'config';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {AppRequest} from '../../../../common/models/AppRequest';
 import {Claim} from '../../../../common/models/claim';
+import {getViewOptionsBeforeDeadlineTask} from '../../../../common/utils/taskList/tasks/viewOptionsBeforeDeadline';
+import {TaskStatus} from '../../../../common/models/taskList/TaskStatus';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -28,10 +30,13 @@ const getClaimWithExtendedResponseDeadline = async (req: AppRequest): Promise<Cl
 const submitExtendedResponseDeadline = async (req:AppRequest) => {
   try{
     const claim  = await getCaseDataFromStore(req.params.id);
-    await civilServiceClient.submitAgreedResponseExtensionDateEvent(req.params.id, {respondentSolicitor1AgreedDeadlineExtension: claim.responseDeadline.calculatedResponseDeadline}, req);
-    claim.respondent1ResponseDeadline = claim.responseDeadline.calculatedResponseDeadline;
-    claim.respondentSolicitor1AgreedDeadlineExtension = claim.responseDeadline.calculatedResponseDeadline;
-    await saveDraftClaim(req.params.id, claim);
+    const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(claim, req.params.id, 'en');
+    if(viewOptionsBeforeDeadlineTask.status === TaskStatus.INCOMPLETE){
+      await civilServiceClient.submitAgreedResponseExtensionDateEvent(req.params.id, {respondentSolicitor1AgreedDeadlineExtension: claim.responseDeadline.calculatedResponseDeadline}, req);
+      claim.respondent1ResponseDeadline = claim.responseDeadline.calculatedResponseDeadline;
+      claim.respondentSolicitor1AgreedDeadlineExtension = claim.responseDeadline.calculatedResponseDeadline;
+      await saveDraftClaim(req.params.id, claim);
+    }
   }catch(error) {
     logger.error(error);
     throw error;
