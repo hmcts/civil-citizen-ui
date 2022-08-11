@@ -57,7 +57,9 @@ export const enum TestMessages {
   VALID_INTEGER = 'Enter a numeric, for example 3',
   VALID_NUMBER_FOR_PREVIOUS_PAGE = 'Number can’t be higher than on previous page',
   VALID_OPTION_SELECTION = 'Select an option',
+  VALID_OWED_AMOUNT_REQUIRED = 'Enter a valid amount owed',
   VALID_PAYMENT_OPTION = 'Choose a payment option',
   VALID_PHONE_NUMBER = 'Enter a phone number in the correct format',
-  VALID_POSITIVE_NUMBER = 'Don’t enter a negative number'
+  VALID_POSITIVE_NUMBER = 'Don’t enter a negative number',
+  VALID_REASON_REQUIRED = 'Enter a reason'
 }
