@@ -54,11 +54,6 @@ describe('Response - New response deadline', () => {
         });
     });
     it('should show error when proposed extended deadline does not exist', async () =>{
-      const claim = new Claim();
-      claim.applicant1 = {
-        partyName: 'Mr. James Bond',
-        type: CounterpartyType.INDIVIDUAL,
-      };
       mockGetCaseDataFromStore.mockImplementation(async () => claim);
       await request(app).get(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
