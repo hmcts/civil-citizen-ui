@@ -7,12 +7,6 @@ import {
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../../main/routes/urls';
-import {
-  DETAILS_REQUIRED,
-  VALID_STRICTLY_POSITIVE_NUMBER,
-  NUMBER_OF_PEOPLE_REQUIRED,
-  VALID_YES_NO_OPTION,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../../../test/utils/errorMessageTestConstants';
 import {mockCivilClaim, mockCivilClaimOptionNo, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import severelyDisabledDefendantMock from './severelyDisabledDefendantMock.json';
@@ -125,7 +119,7 @@ describe('Other Dependants', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_OPTION);
+          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
         });
     });
 
@@ -213,18 +207,18 @@ describe('Other Dependants', () => {
         .send({ option: 'yes', numberOfPeople: '', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NUMBER_OF_PEOPLE_REQUIRED);
+          expect(res.text).toContain(TestMessages.NUMBER_OF_PEOPLE_REQUIRED);
         });
     });
 
-    it('should return error when number of people is 0', async () => {
+    it('should return error when number of people is negative', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'yes', numberOfPeople: '0', details: '' })
+        .send({ option: 'yes', numberOfPeople: '-1', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_STRICTLY_POSITIVE_NUMBER);
+          expect(res.text).toContain(TestMessages.VALID_STRICTLY_POSITIVE_NUMBER);
         });
     });
 
@@ -235,7 +229,7 @@ describe('Other Dependants', () => {
         .send({ option: 'yes', numberOfPeople: '1', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(DETAILS_REQUIRED);
+          expect(res.text).toContain(TestMessages.DETAILS_REQUIRED);
         });
     });
 
@@ -246,8 +240,8 @@ describe('Other Dependants', () => {
         .send({ option: 'yes', numberOfPeople: '', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NUMBER_OF_PEOPLE_REQUIRED);
-          expect(res.text).toContain(DETAILS_REQUIRED);
+          expect(res.text).toContain(TestMessages.NUMBER_OF_PEOPLE_REQUIRED);
+          expect(res.text).toContain(TestMessages.DETAILS_REQUIRED);
         });
     });
 
@@ -258,8 +252,8 @@ describe('Other Dependants', () => {
         .send({ option: 'yes', numberOfPeople: '0', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_STRICTLY_POSITIVE_NUMBER);
-          expect(res.text).toContain(DETAILS_REQUIRED);
+          expect(res.text).toContain(TestMessages.NUMBER_OF_PEOPLE_REQUIRED);
+          expect(res.text).toContain(TestMessages.DETAILS_REQUIRED);
         });
     });
 
