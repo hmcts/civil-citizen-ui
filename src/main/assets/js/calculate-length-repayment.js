@@ -65,20 +65,19 @@
         numberOfInstalments > 2 ? containerThree.classList.remove(CLASS_HIDE) : containerThree.classList.add(CLASS_HIDE);
       };
 
+      hideAll();
+
       switch (val) {
         case 'WEEK':
-          hideAll();
           getNumberOfInstalments();
           toggleSchedule(weekContainer, twoWeeksContainer, weeksContainer);
           break;
         case 'TWO_WEEKS':
-          hideAll();
           numberOfInstalments = numberOfInstalments * 2;
           getNumberOfInstalments();
           toggleSchedule(weekContainer, twoWeeksContainer, weeksContainer);
           break;
         case 'MONTH':
-          hideAll();
           getNumberOfInstalments();
           toggleSchedule(monthContainer, twoMonthsContainer, monthsContainer);
           break;
