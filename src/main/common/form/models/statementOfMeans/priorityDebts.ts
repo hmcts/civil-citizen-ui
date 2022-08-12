@@ -1,5 +1,4 @@
 import {ValidateIf, ValidateNested} from 'class-validator';
-import {Form} from '../form';
 import {PriorityDebtDetails, DebtDetailsError} from './priorityDebtDetails';
 
 export type DebtType =
@@ -21,7 +20,7 @@ export interface DebtsError {
   maintenance?: DebtDetailsError;
 }
 
-export class PriorityDebts extends Form {
+export class PriorityDebts {
   @ValidateIf((o: PriorityDebts) => o.mortgage?.populated)
   @ValidateNested()
     mortgage?: PriorityDebtDetails;
@@ -59,7 +58,6 @@ export class PriorityDebts extends Form {
     water?: PriorityDebtDetails,
     maintenance?: PriorityDebtDetails,
   ) {
-    super();
     this.mortgage = mortgage;
     this.rent = rent;
     this.councilTax = councilTax;
