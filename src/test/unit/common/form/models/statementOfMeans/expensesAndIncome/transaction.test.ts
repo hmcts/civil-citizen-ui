@@ -13,15 +13,15 @@ describe('Transaction', () => {
   describe('Validation', () => {
     it('should have errors when the declared is true', async () => {
       //Given
-      const form = new Transaction(true, new TransactionSource({name: 'rent'}));
+      const form = new Transaction(true, new TransactionSource({name: 'Universal Credit'}));
       //When
       const errors = await validator.validate(form);
       //Then
       expect(errors.length).toBe(1);
       expect(errors[0].children?.length).toBe(2);
       if (errors[0].children) {
-        expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.RENT_AMOUNT_ERROR);
-        expect(errors[0].children[1].constraints?.isDefined).toBe(TestMessages.RENT_SCHEDULE_ERROR);
+        expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.UNIVERSAL_CREDIT_AMOUNT_ERROR);
+        expect(errors[0].children[1].constraints?.isDefined).toBe(TestMessages.UNIVERSAL_CREDIT_SCHEDULE_ERROR);
       }
     });
     it('should not have errors when declared is false', async () => {
@@ -46,14 +46,14 @@ describe('Transaction', () => {
     });
     it('should have one nested error when declared is true and schedule  is not set', async () => {
       //Given
-      const form = new Transaction(true, new TransactionSource({name: 'rent', schedule: TransactionSchedule.MONTH}));
+      const form = new Transaction(true, new TransactionSource({name: 'Universal Credit', schedule: TransactionSchedule.MONTH}));
       //When
       const errors = await validator.validate(form);
       //Then
       expect(errors.length).toBe(1);
       expect(errors[0].children?.length).toBe(1);
       if (errors[0].children) {
-        expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.RENT_AMOUNT_ERROR);
+        expect(errors[0].children[0].constraints?.isDefined).toBe(TestMessages.UNIVERSAL_CREDIT_AMOUNT_ERROR);
       }
     });
   });

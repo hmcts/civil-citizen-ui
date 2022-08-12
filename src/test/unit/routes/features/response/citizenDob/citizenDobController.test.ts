@@ -2,10 +2,10 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {VALID_DATE, VALID_DAY, VALID_FOUR_DIGIT_YEAR, VALID_MONTH, VALID_YEAR} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {AGE_ELIGIBILITY_URL, DOB_URL, CITIZEN_PHONE_NUMBER_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -70,9 +70,9 @@ describe('Citizen date of birth', () => {
         .send('day=')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_DAY);
-          expect(res.text).toContain(VALID_MONTH);
-          expect(res.text).toContain(VALID_YEAR);
+          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
+          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
+          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
         });
     });
     it('should return error on year less than 1872', async () => {
@@ -83,7 +83,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YEAR);
+          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
         });
     });
     it('should return error on empty year', async () => {
@@ -94,7 +94,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YEAR);
+          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
         });
     });
     it('should return error on future date', async () => {
@@ -105,7 +105,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_DATE);
+          expect(res.text).toContain(t('ERRORS.VALID_DATE'));
         });
     });
     it('should return error 4 digit year', async () => {
@@ -116,7 +116,7 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_FOUR_DIGIT_YEAR);
+          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
         });
     });
     it('should accept a valid input', async () => {

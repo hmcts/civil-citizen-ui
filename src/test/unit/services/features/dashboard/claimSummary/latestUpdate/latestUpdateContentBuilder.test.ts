@@ -1,6 +1,8 @@
 import {DateTime, Settings} from 'luxon';
 import {Claim} from '../../../../../../../main/common/models/claim';
-import {buildResponseToClaimSection} from '../../../../../../../main/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
+import {
+  buildResponseToClaimSection,
+} from '../../../../../../../main/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContentBuilder';
 import {CaseState} from '../../../../../../../main/common/form/models/claimDetails';
 import {CounterpartyType} from '../../../../../../../main/common/models/counterpartyType';
 import {ClaimSummaryType} from '../../../../../../../main/common/form/models/claimSummarySection';
@@ -10,18 +12,20 @@ describe('Latest Update Content Builder', () => {
   const partyName = 'Mr. John Doe';
   const claim = new Claim();
   claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-  claim.respondent1ResponseDeadline = new Date('2023-07-29T15:59:59');
+  claim.respondent1ResponseDeadline = new Date('2022-07-29T15:59:59');
   claim.applicant1 = {
     type: CounterpartyType.INDIVIDUAL,
     partyName: partyName,
   };
   const claimId = '5129';
   const claimTaskListUrl = CLAIM_TASK_LIST_URL.replace(':id', claimId);
-  const lang = 'en';
   describe('test buildResponseToClaimSection', () => {
     it('should have responseNotSubmittedTitle and respondToClaimLink', () => {
+      // Given
+      const expectedNow = DateTime.local(2022, 7, 1, 23, 0, 0);
+      Settings.now = () => expectedNow.toMillis();
       // When
-      const responseToClaimSection = buildResponseToClaimSection(claim, lang, claimId);
+      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
       // Then
       expect(responseToClaimSection).toHaveLength(3);
       expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
@@ -34,16 +38,16 @@ describe('Latest Update Content Builder', () => {
       const expectedNow = DateTime.local(2022, 6, 1, 23, 0, 0);
       Settings.now = () => expectedNow.toMillis();
       // When
-      const responseToClaimSection = buildResponseToClaimSection(claim, lang, claimId);
+      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
       // Then
       expect(responseToClaimSection[1].type).toEqual(ClaimSummaryType.PARAGRAPH);
     });
     it('should have responseDeadlinePassedContent when defendant not responded after dead line', () => {
       // Given
-      const expectedNow = DateTime.local(2023, 8, 1, 23, 0, 0);
+      const expectedNow = DateTime.local(2022, 8, 1, 23, 0, 0);
       Settings.now = () => expectedNow.toMillis();
       // When
-      const responseToClaimSection = buildResponseToClaimSection(claim, lang, claimId);
+      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
       // Then
       expect(responseToClaimSection).toHaveLength(5);
       expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
@@ -58,7 +62,7 @@ describe('Latest Update Content Builder', () => {
       // Given
       claim.ccdState = CaseState.PENDING_CASE_ISSUED;
       // when
-      const responseToClaimSection = buildResponseToClaimSection(claim, lang, claimId);
+      const responseToClaimSection = buildResponseToClaimSection(claim, claimId);
       // Then
       expect(responseToClaimSection).toHaveLength(0);
     });

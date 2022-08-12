@@ -7,7 +7,6 @@ import {
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../../../../main/routes/urls';
-import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {
   mockCivilClaim,
@@ -16,6 +15,7 @@ import {
   mockCivilClaimOptionNo,
   mockRedisFailure,
 } from '../../../../../../utils/mockDraftStore';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -123,7 +123,7 @@ describe('Partner Pension', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_OPTION);
+          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_OPTION'));
         });
     });
 
