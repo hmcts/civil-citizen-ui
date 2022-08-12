@@ -60,12 +60,11 @@
       const getNumberOfInstalments = () => instalmentsContainer.innerHTML = numberOfInstalments === 1 || numberOfInstalments > 2 ? numberOfInstalments : '';
 
       const toggleSchedule = (containerOne, containerTwo, containerThree) => {
+        hideAll();
         numberOfInstalments === 1 ? containerOne.classList.remove(CLASS_HIDE) : containerOne.classList.add(CLASS_HIDE);
         numberOfInstalments === 2 ? containerTwo.classList.remove(CLASS_HIDE) : containerTwo.classList.add(CLASS_HIDE);
         numberOfInstalments > 2 ? containerThree.classList.remove(CLASS_HIDE) : containerThree.classList.add(CLASS_HIDE);
       };
-
-      hideAll();
 
       switch (val) {
         case 'WEEK':
