@@ -1,7 +1,6 @@
 import { CompanyTelephoneNumber } from '../../../../../../main/common/form/models/mediation/companyTelephoneNumber';
 import { Validator } from 'class-validator';
 import { YesNo } from '../../../../../../main/common/form/models/yesNo';
-import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 
 describe('Mediation - Company or Organisation - Confirm telephone number', () => {
   const validator = new Validator();
@@ -16,7 +15,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const errors = validator.validateSync(form);
     //Then
     expect(errors.length).toBe(1);
-    expect(errors[0].constraints?.isDefined).toBe(TestMessages.VALID_YES_NO_OPTION);
+    expect(errors[0].constraints?.isDefined).toBe('ERRORS.VALID_YES_NO_OPTION');
   });
   it('should have errors when yes is an option, but no telephone number is provided', () => {
     //Given
@@ -25,7 +24,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const errors = validator.validateSync(form);
     //Then
     expect(errors.length).toBe(1);
-    expect(errors[0].constraints?.isDefined).toBe(TestMessages.PHONE_NUMBER_REQUIRED);
+    expect(errors[0].constraints?.isDefined).toBe('ERRORS.PHONE_NUMBER_REQUIRED');
   });
   it('should have errors when yes is an option but a long telephone number is provided', () => {
     //Given
@@ -35,7 +34,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const errors = validator.validateSync(form);
     //Then
     expect(errors.length).toBe(1);
-    expect(errors[0].constraints?.maxLength).toBe(TestMessages.TEXT_TOO_MANY);
+    expect(errors[0].constraints?.maxLength).toBe('ERRORS.TEXT_TOO_MANY');
   });
   it('should have no errors when yes is an option but a telephone number is provided', () => {
     //Given
@@ -53,8 +52,8 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const errors = validator.validateSync(form);
     //Then
     expect(errors.length).toBe(2);
-    expect(errors[0].constraints?.isDefined).toBe(TestMessages.NAME_REQUIRED);
-    expect(errors[1].constraints?.isDefined).toBe(TestMessages.PHONE_NUMBER_REQUIRED);
+    expect(errors[0].constraints?.isDefined).toBe('ERRORS.NAME_REQUIRED');
+    expect(errors[1].constraints?.isDefined).toBe('ERRORS.PHONE_NUMBER_REQUIRED');
   });
   it('should have errors when no is an option, contact number is provided but no contact name', () => {
     //Given
@@ -64,7 +63,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const errors = validator.validateSync(form);
     //Then
     expect(errors.length).toBe(1);
-    expect(errors[0].constraints?.isDefined).toBe(TestMessages.NAME_REQUIRED);
+    expect(errors[0].constraints?.isDefined).toBe('ERRORS.NAME_REQUIRED');
   });
   it('should have errors when no is an option, contact name is provided but no contact number', () => {
     //Given
@@ -74,7 +73,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const errors = validator.validateSync(form);
     //Then
     expect(errors.length).toBe(1);
-    expect(errors[0].constraints?.isDefined).toBe(TestMessages.PHONE_NUMBER_REQUIRED);
+    expect(errors[0].constraints?.isDefined).toBe('ERRORS.PHONE_NUMBER_REQUIRED');
   });
   it('should have errors when no is an option but both contact name and contact number are too long', () => {
     //Given
@@ -83,8 +82,8 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     const errors = validator.validateSync(form);
     //Then
     expect(errors.length).toBe(2);
-    expect(errors[0].constraints?.maxLength).toBe(TestMessages.TEXT_TOO_MANY);
-    expect(errors[1].constraints?.maxLength).toBe(TestMessages.TEXT_TOO_MANY);
+    expect(errors[0].constraints?.maxLength).toBe('ERRORS.TEXT_TOO_MANY');
+    expect(errors[1].constraints?.maxLength).toBe('ERRORS.TEXT_TOO_MANY');
   });
   it('should have no errors when no is an option when both contact name and number is provided as valid', () => {
     //Given

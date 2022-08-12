@@ -69,7 +69,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({ option: YesNo.YES, mediationPhoneNumber: null, mediationContactPerson: null, mediationPhoneNumberConfirmation: inValidPhoneNumber, contactPerson: 'Test contact person' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.TEXT_TOO_MANY);
+          expect(res.text).toContain('You&#39;ve entered too many characters');
         });
     });
     it('should have errors when no is an option, but no other thing provided', async () => {
@@ -106,7 +106,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({ option: YesNo.NO, mediationPhoneNumber: inValidPhoneNumber, mediationContactPerson: inValidName })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.TEXT_TOO_MANY);
+          expect(res.text).toContain('You&#39;ve entered too many characters');
         });
     });
     it('should redirect with valid input', async () => {

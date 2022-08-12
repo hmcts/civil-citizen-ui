@@ -65,7 +65,7 @@ describe('yourDefence', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.DEFENCE_REQUIRED);
+          expect(res.text).toContain('You need to explain why you don&#39;t owe the money');
           expect(res.text).toContain('govuk-error-message');
         });
     });
