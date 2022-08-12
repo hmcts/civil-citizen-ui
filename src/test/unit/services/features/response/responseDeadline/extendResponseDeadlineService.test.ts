@@ -57,15 +57,6 @@ describe('Extend ResponseDeadline Service', ()=>{
       //Then
       expect(spy).not.toHaveBeenCalled();
     });
-    it('should rethrow exception when there is an error with civil service', async ()=>{
-      //Given
-      nock(citizenBaseUrl)
-        .post('/cases/1/citizen/undefined/event')
-        .reply(500, {error: 'error'});
-      mockGetCaseDataFromStore.mockImplementation(async () => claim);
-      //Then
-      await expect(submitExtendedResponseDeadline(mockedAppRequest)).rejects.toThrow('Request failed with status code 500');
-    });
     it('should rethrow exception when redis throws exception', async ()=>{
       //Given
       mockGetCaseDataFromStore.mockImplementation( async () => {
