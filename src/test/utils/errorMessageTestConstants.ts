@@ -47,6 +47,7 @@ export const enum TestMessages {
   EXPERT_GUIDANCE_TITLE = 'Using an expert in small claims',
   DOCUMENT_NOT_AVAILABLE = 'Document is not available.',
   DATE_NOT_MORE_THAN_28_DAYS = 'Agreed response date cannot be more than 28 days after the original response date',
+  DETAILS_REQUIRED = 'Enter details',
   VALID_AGREED_RESPONSE_DATE = 'Enter the agreed response date',
   VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST = 'Agreed response date must be in the future',
   VALID_DAY = 'Enter a valid day',
@@ -61,5 +62,6 @@ export const enum TestMessages {
   VALID_PAYMENT_OPTION = 'Choose a payment option',
   VALID_PHONE_NUMBER = 'Enter a phone number in the correct format',
   VALID_POSITIVE_NUMBER = 'Don’t enter a negative number',
-  VALID_REASON_REQUIRED = 'Enter a reason'
+  VALID_REASON_REQUIRED = 'Enter a reason',
+  VALID_STRICTLY_POSITIVE_NUMBER = 'Enter a number higher than 0',
 }
