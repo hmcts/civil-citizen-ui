@@ -26,23 +26,22 @@ partnerPensionController.get(CITIZEN_PARTNER_PENSION_URL, async (req, res, next:
   }
 });
 
-partnerPensionController.post(CITIZEN_PARTNER_PENSION_URL,
-  async (req, res, next: express.NextFunction) => {
+partnerPensionController.post(CITIZEN_PARTNER_PENSION_URL, async (req, res, next: express.NextFunction) => {
+  try {
     const form: GenericForm<PartnerPension> = new GenericForm(new PartnerPension(req.body.option));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      try {
-        await partnerPensionService.savePartnerPension(req.params.id, form);
-        const disability = await disabilityService.getDisability(req.params.id);
-        (disability.option == 'no')
-          ? res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL))
-          : res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DISABILITY_URL));
-      } catch (error) {
-        next(error);
-      }
+      await partnerPensionService.savePartnerPension(req.params.id, form);
+      const disability = await disabilityService.getDisability(req.params.id);
+      (disability.option == 'no')
+        ? res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL))
+        : res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DISABILITY_URL));
     }
-  });
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default partnerPensionController;
