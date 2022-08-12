@@ -1002,7 +1002,7 @@
     "VALID_DATE": "Please enter a valid date",
     "VALID_DATE_IN_PAST": "Enter date before ",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
-    "VALID_DAY": "Rhowch ddydd dilys",
+    "VALID_DAY": "Rhowch ddiwrnod dilys",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
       "ELECTRICITY": "Enter a valid Electricity amount, maximum two decimal places",
