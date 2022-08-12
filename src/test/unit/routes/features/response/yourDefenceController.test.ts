@@ -3,7 +3,6 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {CITIZEN_TIMELINE_URL, RESPONSE_YOUR_DEFENCE_URL} from '../../../../../main/routes/urls';
-import {DEFENCE_REQUIRED} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   mockCivilClaim,
   mockCivilClaimUnemploymentRetired,
@@ -66,7 +65,7 @@ describe('yourDefence', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(DEFENCE_REQUIRED);
+          expect(res.text).toContain(TestMessages.DEFENCE_REQUIRED);
           expect(res.text).toContain('govuk-error-message');
         });
     });
