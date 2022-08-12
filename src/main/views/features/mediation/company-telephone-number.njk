@@ -8,6 +8,7 @@
 {% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "../../macro/canWeUseCompanyInputs.njk" import canWeUseCompanyInputs %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.MEDIATION_COMPANY_PHONE.PAGE_TITLE') }}
@@ -26,10 +27,7 @@
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if errors.length %}
-        {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
-          "errorList": errors
-        }) }}
+        {{ errorSummary(errors, t) }}
       {% endif %}
 
       {% set yesHtml %}
