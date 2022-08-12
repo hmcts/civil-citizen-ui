@@ -8,6 +8,7 @@ import {CounterpartyType} from '../../../../../../main/common/models/counterpart
 import nock from 'nock';
 import config from 'config';
 import {ResponseOptions} from '../../../../../../main/common/form/models/responseDeadline';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -55,6 +56,23 @@ describe('Extend ResponseDeadline Service', ()=>{
       await submitExtendedResponseDeadline(mockedAppRequest);
       //Then
       expect(spy).not.toHaveBeenCalled();
+    });
+    it('should rethrow exception when there is an error with civil service', async ()=>{
+      //Given
+      nock(citizenBaseUrl)
+        .post('/cases/1/citizen/undefined/event')
+        .reply(500, {error: 'error'});
+      mockGetCaseDataFromStore.mockImplementation(async () => claim);
+      //Then
+      await expect(submitExtendedResponseDeadline(mockedAppRequest)).rejects.toThrow('Request failed with status code 500');
+    });
+    it('should rethrow exception when redis throws exception', async ()=>{
+      //Given
+      mockGetCaseDataFromStore.mockImplementation( async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      //Then
+      await expect(submitExtendedResponseDeadline(mockedAppRequest)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
