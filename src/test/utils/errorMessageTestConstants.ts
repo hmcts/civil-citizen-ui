@@ -59,7 +59,7 @@ export const enum TestMessages {
   VALID_OPTION_SELECTION = 'Select an option',
   VALID_PAYMENT_OPTION = 'Choose a payment option',
   VALID_PHONE_NUMBER = 'Enter a phone number in the correct format',
-  TEXT400_TOO_LONG = 'Reason must be 400 characters or fewer',
-  DEFENCE_REQUIRED = 'You need to explain why you don’t owe the money',
+  VALID_POSITIVE_NUMBER = 'Don’t enter a negative number',
+  VALID_REASON_REQUIRED = 'Enter a reason',
   VALID_STRICTLY_POSITIVE_NUMBER = 'Enter a number higher than 0',
 }
