@@ -20,7 +20,7 @@
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
       {% endif %}
       {% set yesHtml %}
@@ -36,7 +36,7 @@
           },
           classes: "govuk-input--width-5 govuk-input--error" if form.hasFieldError('amountYouOwe') else "govuk-input--width-5",
           spellcheck: false,
-          value: form.getAmountYouOweAsString(),
+          value: form.model.getAmountYouOweAsString(),
           errorMessage: {
             text:t(form.errorFor('amountYouOwe'))
           } if form.hasFieldError('amountYouOwe')
@@ -47,7 +47,7 @@
           label: {
             text: t('PAGES.SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS.REASON')
           },
-          value: form.reason,
+          value: form.model.reason,
           errorMessage: {
             text: t(form.errorFor('reason'))
           } if form.hasFieldError('reason')
