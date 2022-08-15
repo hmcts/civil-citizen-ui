@@ -207,7 +207,7 @@ describe('Other Dependants', () => {
         .send({ option: 'yes', numberOfPeople: '', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.NUMBER_OF_PEOPLE_REQUIRED);
+          expect(res.text).toContain(TestMessages.VALID_INTEGER);
         });
     });
 
@@ -240,7 +240,7 @@ describe('Other Dependants', () => {
         .send({ option: 'yes', numberOfPeople: '', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.NUMBER_OF_PEOPLE_REQUIRED);
+          expect(res.text).toContain(TestMessages.VALID_INTEGER);
           expect(res.text).toContain(TestMessages.DETAILS_REQUIRED);
         });
     });
@@ -252,7 +252,7 @@ describe('Other Dependants', () => {
         .send({ option: 'yes', numberOfPeople: '0', details: '' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.NUMBER_OF_PEOPLE_REQUIRED);
+          expect(res.text).toContain(TestMessages.VALID_INTEGER);
           expect(res.text).toContain(TestMessages.DETAILS_REQUIRED);
         });
     });
