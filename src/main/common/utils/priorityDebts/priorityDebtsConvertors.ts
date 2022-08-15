@@ -1,15 +1,15 @@
 import * as express from 'express';
 import {ValidationError} from 'class-validator';
-
 import {PriorityDebts, DebtType, DebtsError} from '../../../common/form/models/statementOfMeans/priorityDebts';
 import { PriorityDebtDetails, DebtDetailsError, DebtValidationError } from '../../form/models/statementOfMeans/priorityDebtDetails';
 import {checkBoxFields} from './priorityDebtsConstants';
+import {GenericForm} from '../../../common/form/models/genericForm';
 
-export const convertToForm = (debts: PriorityDebts): PriorityDebts => {
+export const convertToForm = (debts: PriorityDebts): GenericForm<PriorityDebts> => {
   if (debts) {
     const {mortgage, rent, councilTax, gas, electricity, water, maintenance} =
       debts;
-    return new PriorityDebts(
+    return new GenericForm(new PriorityDebts(
       mortgage,
       rent,
       councilTax,
@@ -17,35 +17,35 @@ export const convertToForm = (debts: PriorityDebts): PriorityDebts => {
       electricity,
       water,
       maintenance,
-    );
+    ));
   }
-  return new PriorityDebts();
+  return new GenericForm(new PriorityDebts());
 };
 
 const convertDebtNameToDisplay = (name: string) => {
   return checkBoxFields.find((field) => field.name === name)?.text;
 };
 
-export const convertRequestBodyToForm = (req: express.Request): PriorityDebts => {
-  const convertedData: PriorityDebts = new PriorityDebts();
+export const convertRequestBodyToForm = (req: express.Request): GenericForm<PriorityDebts> => {
+  const convertedData: GenericForm<PriorityDebts> = new GenericForm(new PriorityDebts());
   checkBoxFields
     .map((field) => field.name)
     .forEach((fieldName: DebtType) => {
       Object.keys(req.body).forEach((key) => {
         if (key === fieldName) {
-          convertedData[fieldName] = new PriorityDebtDetails();
+          convertedData.model[fieldName] = new PriorityDebtDetails();
         }
         if (
           key.includes(fieldName) &&
           req.body[key] &&
-          convertedData[fieldName]
+          convertedData.model[fieldName]
         ) {
-          convertedData[fieldName].isDeclared = true;
-          convertedData[fieldName].name = convertDebtNameToDisplay(fieldName);
+          convertedData.model[fieldName].isDeclared = true;
+          convertedData.model[fieldName].name = convertDebtNameToDisplay(fieldName);
           if (key.includes('amount')) {
-            convertedData[fieldName].amount = Number(req.body[key]);
+            convertedData.model[fieldName].amount = Number(req.body[key]);
           } else if (key.includes('schedule')) {
-            convertedData[fieldName].schedule = req.body[key];
+            convertedData.model[fieldName].schedule = req.body[key];
           }
         }
       });
