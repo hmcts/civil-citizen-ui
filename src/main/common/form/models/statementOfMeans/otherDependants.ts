@@ -17,7 +17,7 @@ export class OtherDependants extends Form {
   constructor(option?: string, numberOfPeople?: number, details?:string, errors?: ValidationError[]) {
     super(errors);
     this.option = option;
-    this.numberOfPeople = numberOfPeople;
+    this.numberOfPeople = Math.floor(numberOfPeople);
     this.details = details;
   }
 }
