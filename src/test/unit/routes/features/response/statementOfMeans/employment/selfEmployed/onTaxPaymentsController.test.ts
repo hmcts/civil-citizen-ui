@@ -5,12 +5,6 @@ import nock from 'nock';
 import {CITIZEN_COURT_ORDERS_URL, ON_TAX_PAYMENTS_URL} from '../../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
-import {
-  VALID_OWED_AMOUNT_REQUIRED,
-  VALID_REASON_REQUIRED,
-  VALID_TWO_DECIMAL_NUMBER,
-  VALID_YES_NO_SELECTION,
-} from '../../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {YesNo} from '../../../../../../../../main/common/form/models/yesNo';
 
 jest.mock('../../../../../../../../main/modules/oidc');
@@ -50,7 +44,7 @@ describe('on tax payments', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_SELECTION);
+          expect(res.text).toContain(TestMessages.VALID_YES_NO_SELECTION);
         });
     });
     it('should return errors when no option yes is selected and amount and reason are not defined', async () => {
@@ -59,8 +53,8 @@ describe('on tax payments', () => {
         .send({option: YesNo.YES, amountYouOwe: null, reason: undefined})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_OWED_AMOUNT_REQUIRED);
-          expect(res.text).toContain(VALID_REASON_REQUIRED);
+          expect(res.text).toContain(TestMessages.VALID_OWED_AMOUNT_REQUIRED);
+          expect(res.text).toContain(TestMessages.VALID_REASON_REQUIRED);
         });
     });
     it('should return errors when option yes is selected and amount is 0', async () => {
@@ -69,7 +63,7 @@ describe('on tax payments', () => {
         .send({option: YesNo.YES, amountYouOwe: 0, reason: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_OWED_AMOUNT_REQUIRED);
+          expect(res.text).toContain(TestMessages.VALID_OWED_AMOUNT_REQUIRED);
         });
     });
     it('should return errors when option yes is selected and amount is -1', async () => {
@@ -78,7 +72,7 @@ describe('on tax payments', () => {
         .send({option: YesNo.YES, amountYouOwe: -1, reason: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_OWED_AMOUNT_REQUIRED);
+          expect(res.text).toContain(TestMessages.VALID_OWED_AMOUNT_REQUIRED);
         });
     });
     it('should return errors when option yes is selected and amount is abc', async () => {
@@ -87,7 +81,7 @@ describe('on tax payments', () => {
         .send({option: YesNo.YES, amountYouOwe: 'abc', reason: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_TWO_DECIMAL_NUMBER);
+          expect(res.text).toContain(TestMessages.VALID_TWO_DECIMAL_NUMBER);
         });
     });
     it('should return errors when option yes is selected and amount has more than two decimal places', async () => {
@@ -96,7 +90,7 @@ describe('on tax payments', () => {
         .send({option: YesNo.YES, amountYouOwe: 44.4444, reason: 'reason'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_TWO_DECIMAL_NUMBER);
+          expect(res.text).toContain(TestMessages.VALID_TWO_DECIMAL_NUMBER);
         });
     });
     it('should return errors when option yes is selected and reason is not selected', async () => {
@@ -105,7 +99,7 @@ describe('on tax payments', () => {
         .send({option: YesNo.YES, amountYouOwe: 44.44, reason: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_REASON_REQUIRED);
+          expect(res.text).toContain(TestMessages.VALID_REASON_REQUIRED);
         });
     });
     it('should redirect with valid input', async () => {

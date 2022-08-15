@@ -1,9 +1,8 @@
-import {Form} from '../../form';
 import {YesNo} from '../../yesNo';
 import {IsDefined, ValidateIf} from 'class-validator';
 import {EmploymentCategory} from './employmentCategory';
 
-export class EmploymentForm extends Form {
+export class EmploymentForm {
   @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
     option: YesNo;
   @ValidateIf(o => o.optionYesDefined())
@@ -11,7 +10,6 @@ export class EmploymentForm extends Form {
     employmentCategory: EmploymentCategory[];
 
   constructor(option?: YesNo, employmentCategory?: EmploymentCategory[]) {
-    super();
     this.option = option;
     this.employmentCategory = employmentCategory;
   }
