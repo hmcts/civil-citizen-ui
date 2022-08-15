@@ -2,6 +2,7 @@
   "data": [
     {
       "id": "1",
+      "type": "claim",
       "document": {
         "claimant": {
           "partyDetails": {
