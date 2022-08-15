@@ -35,7 +35,7 @@ partnerPensionController.post(CITIZEN_PARTNER_PENSION_URL, async (req, res, next
     } else {
       await partnerPensionService.savePartnerPension(req.params.id, form);
       const disability = await disabilityService.getDisability(req.params.id);
-      (disability.option == 'no')
+      (disability.model.option == 'no')
         ? res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL))
         : res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DISABILITY_URL));
     }
