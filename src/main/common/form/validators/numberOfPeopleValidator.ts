@@ -6,10 +6,7 @@ export class NumberOfPeopleValidator implements ValidatorConstraintInterface {
 
   validate(value: number) {
     this.numericValue = value;
-    if (!value || value == 0) {
-      return false;
-    }
-    return true;
+    return !(!value || value <= 0);
   }
 
   defaultMessage() {
