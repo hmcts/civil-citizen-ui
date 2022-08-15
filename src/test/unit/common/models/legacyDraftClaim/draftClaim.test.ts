@@ -8,6 +8,7 @@ describe('draftOcmcClaimToDashboardItem', () => {
     //Given
     const draftClaim: DraftOcmcClaim = {
       id: '1',
+      type:'claim',
       document: {
         claimant:{
           partyDetails:{
@@ -24,6 +25,29 @@ describe('draftOcmcClaimToDashboardItem', () => {
     expect(dashboardItem?.ocmc).toBeTruthy();
     expect(dashboardItem?.draft).toBeTruthy();
     expect(dashboardItem?.claimId).toBe('draft');
+  });
+  it('should return undefined when ocmc type is response', () =>{
+    //Given
+    const draftResponse: DraftOcmcClaim = {
+      id: '1',
+      type:'response',
+      document: {
+        claimant:{
+          partyDetails:{
+            name: 'John Smith',
+          },
+        },
+        defendant:{
+          partyDetails:{
+            name: 'Jane Smith',
+          },
+        },
+      },
+    };
+    //When
+    const dashboardItem = draftOcmcClaimToDashboardItem(draftResponse);
+    //Then
+    expect(dashboardItem).toBeUndefined();
   });
   it('should return undefined when ocmc claim is undefined', ()=> {
     //When

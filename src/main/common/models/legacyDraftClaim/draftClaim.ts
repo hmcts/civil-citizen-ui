@@ -4,6 +4,7 @@ export interface OcmcDraftData {
 }
 export interface DraftOcmcClaim {
   id?: string;
+  type?: string;
   document?: DraftClaimDetails;
 }
 
@@ -21,7 +22,7 @@ export interface PartyDetails {
 }
 
 export function draftOcmcClaimToDashboardItem(ocmcClaim?: DraftOcmcClaim): DashboardClaimantItem | undefined{
-  if(ocmcClaim?.id && ocmcClaim?.document){
+  if(ocmcClaim?.id && ocmcClaim.type === 'claim' && ocmcClaim?.document){
     const draftClaim = new DashboardClaimantItem();
     draftClaim.claimId = 'draft';
     draftClaim.draft = true;
