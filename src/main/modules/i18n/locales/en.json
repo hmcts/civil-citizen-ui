@@ -532,7 +532,12 @@
       "UNDER": "Under 11"
     },
     "DEPENDANTS_BETWEEN_16_AND_19": {
-      "PAGE_TITLE": "Any dependants between 16 and 19?"
+      "ENTER_NUMBER": "Enter number",
+      "FULL_TIME_EDUCATION": "in full-time education or training",
+      "HOW_MANY": "How many are both",
+      "PAGE_TITLE": "Any dependants between 16 and 19?",
+      "SINGLE": "single (unmarried and not in a civil partnership)",
+      "TITLE": "Children aged 16 to 19 living with you"
     },
     "DEPENDANTS_CHILDREN_DISABILITY": {
       "ANY_DISABLED_CHILDREN": "Are any of the children that live with you disabled?",
@@ -1010,7 +1015,7 @@
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
-    "VALID_POSITIVE_NUMBER": "Don't enter a negative number",
+    "VALID_POSITIVE_NUMBER": "Don’t enter a negative number",
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
