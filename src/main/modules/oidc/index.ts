@@ -27,6 +27,8 @@ export class OidcMiddleware {
     });
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
+      logger.info('Callback');
+      logger.info('callback query code type', typeof req.query.code);
       if (typeof req.query.code === 'string') {
         req.session.user = await getUserDetails(redirectUri, req.query.code);
         app.locals.user = await getUserDetails(redirectUri, req.query.code);
