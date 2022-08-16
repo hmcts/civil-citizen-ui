@@ -602,8 +602,24 @@
       "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
     "FREE_TELEPHONE_MEDIATION": {
+      "AUTOMATICALLY_REGISTERED" : "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
+      "CLAIMANT_MUST_AGREE" : "The claimant must agree to mediation. We'll contact you within 28 days after the claimant's confirmation, to arrange a free appointment.",
       "DO_NOT_AGREE_TO_FREE_MEDIATION": "I do not agree to free mediation",
-      "PAGE_TITLE": "Free telephone mediation"
+      "EITHER_PARTY_BREAKS_TERMS" : "If either party breaks the terms the other party can go to court to ask for a judgment or hearing.",
+      "FIND_OUT_MORE" : "Find out more about ",
+      "HOW_WORKS" : "How free mediation works",
+      "LAST_LESS_AN_HOUR" : "Your mediation appointment will last for no more than an hour.",
+      "MEDIATION_SUCCESSFUL" : "If mediation is successful, you'll make a verbal agreement over the phone. This is legally binding which means that you must comply with it. You will be given the terms of the agreement in a document – this is called a settlement agreement.",
+      "MEDIATION_IS_CONFIDENTIAL": "Mediation is confidential, and nothing said in the mediation can be used in court proceedings if the dispute cannot be settled. The mediator speaks to each party separately, this is not a conference call.",
+      "MEDIATION_FAILS" : "If mediation fails and a court hearing is needed, what happened during the mediation appointment cannot be mentioned in court.",
+      "MEDIATION_QUICKER" : "Mediation can be quicker, cheaper and less stressful than going to court.",
+      "NO_AGREE" : "I do not agree to free mediation",
+      "NEUTRAL_MEDIATOR_LISTEN" : "A trained, neutral mediator from HM Courts and Tribunals Service will listen to your views and help you to negotiate a settlement of your dispute.",
+      "NO_WAIT_COURT_HEARING" : "You will not have to wait longer for a court hearing if you choose mediation.",
+      "OPENS_IN_NEW_TAB" : "free telephone mediation (opens in new tab).",
+      "PAGE_TITLE": "Free telephone mediation",
+      "REACHING_SETTLEMENT" : "Reaching a settlement",
+      "TITLE" : "Free telephone mediation"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
@@ -754,7 +770,15 @@
       "PAGE_TITLE": "Reject all of claim"
     },
     "REPAYMENT_PLAN": {
-      "PAGE_TITLE": "Your repayment plan"
+      "ADMIT_YOU_OWE": "You admit you owe £{{amount}}.",
+      "FIRST_PAYMENT" : "When will you make the first payment?",
+      "FOR_EXAMPLE" : "For example, ",
+      "HOW_OFTEN_PAYMENTS" : "How often you'll make these payments",
+      "LENGTH" : "Length of repayment plan",
+      "PAGE_TITLE": "Your repayment plan",
+      "REGULAR_PAYMENTS": "Regular payments of",
+      "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
+      "TITLE": "Your repayment plan"
     },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",
