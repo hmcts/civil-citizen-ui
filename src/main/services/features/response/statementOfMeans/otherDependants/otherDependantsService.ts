@@ -33,15 +33,16 @@ export class OtherDependantsService {
       if (!claim.statementOfMeans) {
         claim.statementOfMeans = new StatementOfMeans();
       }
-
-      (otherDependants.model.option === YesNo.YES)
-        ? claim.statementOfMeans.otherDependants = otherDependants.model
-        : claim.statementOfMeans.otherDependants = new OtherDependants(otherDependants.model.option);
+      claim.statementOfMeans.otherDependants = this.setOtherDependants(otherDependants);
 
       await saveDraftClaim(claimId, claim);
     } catch (error) {
       logger.error(`${error.stack || error}`);
       throw error;
     }
+  }
+
+  public setOtherDependants(otherDependants: GenericForm<OtherDependants>): OtherDependants {
+    return otherDependants.model.option === YesNo.YES ? otherDependants.model : new OtherDependants(otherDependants.model.option);
   }
 }
