@@ -558,7 +558,32 @@
       "TITLE": "Do you have a job?"
     },
     "EVIDENCE": {
-      "PAGE_TITLE": "List your evidence"
+      "ADD_MORE": "Add more evidence",
+      "CONTRACTS_AND_AGREEMENTS": "Contracts and agreements",
+      "CORRESPONDENCE": "Letters, emails and other correspondence",
+      "DESCRIBE": "Describe this evidence in more detail (optional). ",
+      "DESCRIPTION": "Description",
+      "EVIDENCE": "Evidence",
+      "EVIDENCE_DETAILS": {
+        "CONTRACTS_AND_AGREEMENTS": "For example, a signed contract.",
+        "CORRESPONDENCE": "For example, a letter from the other party.",
+        "EXPERT_WITNESS": "For example, a surveyor's report.",
+        "PHOTO": "For example, a photo of the work you carried out.",
+        "RECEIPTS": "For example, a receipt showing the amount you've paid.",
+        "STATEMENT_OF_ACCOUNT": "For example, a bank statement showing the amount you've paid."
+      },
+      "EVIDENCE_LIST": "Evidence Type List",
+      "EXPERT_WITNESS": "Expert witness",
+      "LIST_ANY": "List any parts of their evidence you disagree with (optional)",
+      "MAKE_SELECTION": "-- Please make a selection --",
+      "OTHER": "Other",
+      "PAGE_TITLE": "List your evidence",
+      "PHOTO": "Photo evidence",
+      "RECEIPTS": "Receipts",
+      "STATEMENT_OF_ACCOUNT": "Statements of account",
+      "SUBTITLE": "List your evidence (optional)",
+      "TELL_US": "Tell us about any evidence you wish to provide. You do not need to send us any evidence now. If your case goes to a court hearing, and is not settled, you will need to provide evidence.",
+      "TITLE": "List your evidence"
     },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
@@ -603,7 +628,23 @@
       "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
     "FREE_TELEPHONE_MEDIATION": {
-      "PAGE_TITLE": "Free telephone mediation"
+      "AUTOMATICALLY_REGISTERED" : "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
+      "CLAIMANT_MUST_AGREE" : "The claimant must agree to mediation. We'll contact you within 28 days after the claimant's confirmation, to arrange a free appointment.",
+      "EITHER_PARTY_BREAKS_TERMS" : "If either party breaks the terms the other party can go to court to ask for a judgment or hearing.",
+      "FIND_OUT_MORE" : "Find out more about ",
+      "HOW_WORKS" : "How free mediation works",
+      "LAST_LESS_AN_HOUR" : "Your mediation appointment will last for no more than an hour.",
+      "MEDIATION_SUCCESSFUL" : "If mediation is successful, you'll make a verbal agreement over the phone. This is legally binding which means that you must comply with it. You will be given the terms of the agreement in a document – this is called a settlement agreement.",
+      "MEDIATION_IS_CONFIDENTIAL": "Mediation is confidential, and nothing said in the mediation can be used in court proceedings if the dispute cannot be settled. The mediator speaks to each party separately, this is not a conference call.",
+      "MEDIATION_FAILS" : "If mediation fails and a court hearing is needed, what happened during the mediation appointment cannot be mentioned in court.",
+      "MEDIATION_QUICKER" : "Mediation can be quicker, cheaper and less stressful than going to court.",
+      "NO_AGREE" : "I do not agree to free mediation",
+      "NEUTRAL_MEDIATOR_LISTEN" : "A trained, neutral mediator from HM Courts and Tribunals Service will listen to your views and help you to negotiate a settlement of your dispute.",
+      "NO_WAIT_COURT_HEARING" : "You will not have to wait longer for a court hearing if you choose mediation.",
+      "OPENS_IN_NEW_TAB" : "free telephone mediation (opens in new tab).",
+      "PAGE_TITLE": "Free telephone mediation",
+      "REACHING_SETTLEMENT" : "Reaching a settlement",
+      "TITLE" : "Free telephone mediation"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
@@ -650,7 +691,13 @@
       "TITLE": "How much money do you admit you owe?"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
-      "PAGE_TITLE": "How much have you paid?"
+      "FOR_EXAMPLE": "For example, ",
+      "HOW_DID": "How did you pay this amount?",
+      "HOW_MUCH": "How much have you paid?",
+      "PAGE_TITLE": "How much have you paid?",
+      "TITLE": "How much have you paid the claimant?",
+      "TOTAL_CLAIMED" : "The total amount claimed is £{{totalClaimAmount}}. This includes the claim fee and any interest.",
+      "WHEN_DID": "When did you pay this amount?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
@@ -730,7 +777,15 @@
       "PAGE_TITLE": "Reject all of claim"
     },
     "REPAYMENT_PLAN": {
-      "PAGE_TITLE": "Your repayment plan"
+      "ADMIT_YOU_OWE": "You admit you owe £{{amount}}.",
+      "FIRST_PAYMENT" : "When will you make the first payment?",
+      "FOR_EXAMPLE" : "For example, ",
+      "HOW_OFTEN_PAYMENTS" : "How often you'll make these payments",
+      "LENGTH" : "Length of repayment plan",
+      "PAGE_TITLE": "Your repayment plan",
+      "REGULAR_PAYMENTS": "Regular payments of",
+      "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
+      "TITLE": "Your repayment plan"
     },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",
@@ -982,7 +1037,7 @@
     "VALID_CORRESPONDENCE_CITY": "Enter correspondence town/city",
     "VALID_CORRESPONDENCE_POSTCODE": "Enter correspondence address postcode",
     "VALID_DATE": "Please enter a valid date",
-    "VALID_DATE_IN_PAST": "Enter date before ",
+    "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DAY": "Enter a valid day",
     "VALID_DEBT_AMOUNT": {
