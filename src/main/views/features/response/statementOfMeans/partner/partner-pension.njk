@@ -14,9 +14,8 @@
       {% set title = t('PAGES.PARTNER_PENSION.TITLE') %}
       {% set id = "partnerPension" %}
       {% set name = "option" %}
-      {% set errors = form.getErrors() %}
-      {% if errors %}
-        {{ errorSummary(errors, t) }}
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">

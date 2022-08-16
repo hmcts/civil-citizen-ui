@@ -7,30 +7,32 @@ import {
   CITIZEN_WHO_EMPLOYS_YOU_URL,
   CITIZEN_UNEMPLOYED_URL,
 } from '../../../../../routes/urls';
-import {validateForm} from '../../../../../common/form/validators/formValidator';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {
   getEmploymentForm,
   saveEmploymentData,
 } from '../../../../../services/features/response/statementOfMeans/employment/employmentService';
+import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
 const employmentStatusController = express.Router();
 
-function renderView(form: EmploymentForm, res: express.Response): void {
-  res.render(citizenEmploymentStatusViewPath, {form: form, EmploymentCategory: EmploymentCategory});
+function renderView(employmentForm: GenericForm<EmploymentForm>, res: express.Response): void {
+  const form = Object.assign(employmentForm);
+  form.option = employmentForm.model.option;
+  res.render(citizenEmploymentStatusViewPath, {form, EmploymentCategory: EmploymentCategory});
 }
 
-function redirectToNextPage(form: EmploymentForm, claimId: string, res: express.Response) {
-  if (form.optionYesDefined()) {
+function redirectToNextPage(form: GenericForm<EmploymentForm>, claimId: string, res: express.Response) {
+  if (form.model.optionYesDefined()) {
     redirectToEmployersPage(form, claimId, res);
   } else {
     res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_UNEMPLOYED_URL));
   }
 }
 
-function redirectToEmployersPage(form: EmploymentForm, claimId: string, res: express.Response) {
-  if (form.isSelfEmployed()) {
+function redirectToEmployersPage(form: GenericForm<EmploymentForm>, claimId: string, res: express.Response) {
+  if (form.model.isSelfEmployed()) {
     res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
   } else {
     res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_WHO_EMPLOYS_YOU_URL));
@@ -47,9 +49,9 @@ employmentStatusController.get(CITIZEN_EMPLOYMENT_URL, async (req, res, next: ex
 });
 
 employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, async (req, res, next: express.NextFunction) => {
-  const form = new EmploymentForm(req.body.option, EmploymentForm.convertToArray(req.body.employmentCategory));
+  const form = new GenericForm(new EmploymentForm(req.body.option, EmploymentForm.convertToArray(req.body.employmentCategory)));
   try {
-    await validateForm(form);
+    form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
