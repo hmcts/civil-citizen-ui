@@ -557,7 +557,32 @@
       "TITLE": "A oes gennych swydd?"
     },
     "EVIDENCE": {
-      "PAGE_TITLE": "List your evidence"
+      "ADD_MORE": "Ychwanegu mwy o dystiolaeth",
+      "CONTRACTS_AND_AGREEMENTS": "Contractau a chytundebau",
+      "CORRESPONDENCE": "Llythyrau, negeseuon e-bost a gohebiaeth arall",
+      "DESCRIBE": "Disgrifiwch y dystiolaeth hon yn fanylach (dewisol). ",
+      "DESCRIPTION": "Disgrifiad",
+      "EVIDENCE": "Tystiolaeth",
+      "EVIDENCE_DETAILS": {
+        "CONTRACTS_AND_AGREEMENTS": "Er enghraifft, contract wedi ei lofnodi.",
+        "CORRESPONDENCE": "Er enghraifft, llythyr gan y parti arall.",
+        "EXPERT_WITNESS": "Er enghraifft, adroddiad syrfewr.",
+        "PHOTO": "Er enghraifft, llun o'r gwaith a wnaed.",
+        "RECEIPTS": "Er enghraifft, derbynneb yn dangos y swm y gwnaethoch ei dalu.",
+        "STATEMENT_OF_ACCOUNT": "Er enghraifft, cyfriflen banc yn dangos y swm y gwnaethoch ei dalu."
+      },
+      "EVIDENCE_LIST": "Rhestr o fathau o dystiolaeth",
+      "EXPERT_WITNESS": "Tyst arbenigol",
+      "LIST_ANY": "Rhestrwch unrhyw rannau o'u tystiolaeth rydych chi'n anghytuno â nhw (dewisol)",
+      "MAKE_SELECTION": "-- Dewiswch opsiwn --",
+      "OTHER": "Arall",
+      "PAGE_TITLE": "List your evidence",
+      "PHOTO": "Tystiolaeth lluniau",
+      "RECEIPTS": "Derbynebau",
+      "STATEMENT_OF_ACCOUNT": "Datganiadau o gyfrifon",
+      "SUBTITLE": "Rhestru eich tystiolaeth (dewisol)",
+      "TELL_US": "Dywedwch wrthym am unrhyw dystiolaeth rydych eisiau ei darparu. Nid oes rhaid i chi anfon unrhyw dystiolaeth atom nawr. Os bydd eich achos yn mynd i wrandawiad llys, ac nid yw’n cael ei setlo, bydd arnoch angen darparu tystiolaeth.",
+      "TITLE": "Rhestru eich tystiolaeth"
     },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
@@ -665,7 +690,13 @@
       "TITLE": "Faint o arian ydych chi'n cyfaddef sy'n ddyledus gennych?"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
-      "PAGE_TITLE": "How much have you paid?"
+      "FOR_EXAMPLE": "Er enghraifft,",
+      "HOW_DID": "Sut y gwnaethoch dalu’r swm hwn?",
+      "HOW_MUCH": "Faint ydych chi wedi talu?",
+      "PAGE_TITLE": "How much have you paid?",
+      "TITLE": "Faint ydych chi wedi ei dalu i’r hawlydd?",
+      "TOTAL_CLAIMED" : "Y cyfanswm a hawlir yw £{{totalClaimAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
+      "WHEN_DID": "Pryd y gwnaethoch dalu’r swm hwn?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
@@ -899,7 +930,7 @@
     "ENTER_A_DEBT": "Rhowch fanylion y ddyled",
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
-    "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
+    "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
     "EQUAL_INSTALMENTS_REQUIRED": "Rhowch swm dilys i'w dalu fesul rhan",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
@@ -993,8 +1024,8 @@
     "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
     "VALID_AGREED_RESPONSE_DATE": "Enter the agreed response date",
     "VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST": "Agreed response date must be in the future",
-    "VALID_AMOUNT": "Enter a valid amount",
-    "VALID_AMOUNT_ONE_POUND_OR_MORE": "\"Nodwch swm o £1 neu fwy",
+    "VALID_AMOUNT": "Nodwch swm dilys",
+    "VALID_AMOUNT_ONE_POUND_OR_MORE": "Nodwch swm o £1 neu fwy",
     "VALID_AT_LEAST_ONE_OPTION": "Rhaid i chi ddewis o leiaf un opsiwn",
     "VALID_BETWEEN_NUMBERS_0_11": "Enter a number between 0 and 11",
     "VALID_BETWEEN_NUMBERS_0_80": "Enter a number between 0 and 80",
@@ -1005,7 +1036,7 @@
     "VALID_CORRESPONDENCE_CITY": "Rhowch enw tref/dinas ar gyfer gohebiaeth",
     "VALID_CORRESPONDENCE_POSTCODE": "Rhowch god post y cyfeiriad ar gyfer gohebiaeth",
     "VALID_DATE": "Please enter a valid date",
-    "VALID_DATE_IN_PAST": "Enter date before ",
+    "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DAY": "Rhowch ddiwrnod dilys",
     "VALID_DEBT_AMOUNT": {
