@@ -556,7 +556,7 @@
       "CONTRACTS_AND_AGREEMENTS": "Contractau a chytundebau",
       "CORRESPONDENCE": "Llythyrau, negeseuon e-bost a gohebiaeth arall",
       "DESCRIBE": "Disgrifiwch y dystiolaeth hon yn fanylach (dewisol). ",
-      "DESCRIPTION": "Disgrifiad opsiwn",
+      "DESCRIPTION": "Disgrifiad",
       "EVIDENCE": "Tystiolaeth",
       "EVIDENCE_DETAILS": {
         "CONTRACTS_AND_AGREEMENTS": "Er enghraifft, contract wedi ei lofnodi.",
@@ -569,7 +569,7 @@
       "EVIDENCE_LIST": "Rhestr o fathau o dystiolaeth",
       "EXPERT_WITNESS": "Tyst arbenigol",
       "LIST_ANY": "Rhestrwch unrhyw rannau o'u tystiolaeth rydych chi'n anghytuno â nhw (dewisol)",
-      "MAKE_SELECTION": "-- Dewiswch --",
+      "MAKE_SELECTION": "-- Dewiswch opsiwn --",
       "OTHER": "Arall",
       "PAGE_TITLE": "List your evidence",
       "PHOTO": "Tystiolaeth lluniau",
