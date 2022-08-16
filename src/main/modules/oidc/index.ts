@@ -27,15 +27,16 @@ export class OidcMiddleware {
     });
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
-      logger.info('Callback');
-      logger.info('callback query code type', req.query.code);
+      logger.info('callback url');
       if (typeof req.query.code === 'string') {
         req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
         if (req.session.user?.roles?.includes(citizenRole)) {
           return res.redirect(DASHBOARD_URL);
         }
+        logger.info('missing citizen role');
         return res.redirect(UNAUTHORISED_URL);
       } else {
+        logger.info('missing query code');
         res.redirect(DASHBOARD_URL);
       }
     });
@@ -55,16 +56,14 @@ export class OidcMiddleware {
     });
 
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
-      logger.info('middleware');
       if (req.session.user) {
-        logger.info('have session user', req.session.user);
-        logger.info('user roles', req.session?.user?.roles?.includes(citizenRole));
         if (req.session?.user?.roles?.includes(citizenRole)) {
-          logger.info('includes citizen role');
           return next();
         }
+        logger.info('user missing citizen role');
         return res.redirect(DASHBOARD_URL);
       }
+      logger.info('session user not set');
       res.redirect(SIGN_IN_URL);
     });
   }
