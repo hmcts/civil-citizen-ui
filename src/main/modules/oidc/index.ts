@@ -4,6 +4,9 @@ import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 import {SIGN_IN_URL, SIGN_OUT_URL, CALLBACK_URL, DASHBOARD_URL, UNAUTHORISED_URL} from '../../routes/urls';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('auth');
+
 /**
  * Adds the oidc middleware to add oauth authentication
  */
@@ -50,8 +53,12 @@ export class OidcMiddleware {
     });
 
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
+      logger.info('middleware');
       if (req.session.user) {
+        logger.info('have session user', req.session.user);
+        logger.info('user roles', req.session?.user?.roles?.includes(citizenRole));
         if (req.session?.user?.roles?.includes(citizenRole)) {
+          logger.info('includes citizen role');
           return next();
         }
         return res.redirect(DASHBOARD_URL);
