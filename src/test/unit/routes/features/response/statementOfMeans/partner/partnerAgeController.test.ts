@@ -8,7 +8,6 @@ import {
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../../../../main/routes/urls';
-import { VALID_YES_NO_OPTION } from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim, mockCivilClaimUndefined, mockNoStatementOfMeans, mockCivilClaimOptionNo, mockRedisFailure } from '../../../../../../utils/mockDraftStore';
 
@@ -80,7 +79,7 @@ describe('Partner Age', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_OPTION);
+          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
         });
     });
     it('should redirect page when "yes"', async () => {

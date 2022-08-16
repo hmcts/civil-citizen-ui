@@ -31,22 +31,22 @@ describe('Repayment Plan View', () => {
 
     it('should display header', async () => {
       const header = htmlDocument.getElementsByClassName('govuk-fieldset__heading');
-      expect(header[0].innerHTML).toContain('Your repayment plan');
+      expect(header[0].innerHTML).toContain(t('PAGES.REPAYMENT_PLAN.TITLE'));
     });
 
     it('should display total amount claimed text', async () => {
       const paragraph = htmlDocument.getElementsByClassName('govuk-body-m');
-      expect(paragraph[0].innerHTML).toContain('The total amount claimed is £110. This includes the claim fee and any interest.');
+      expect(paragraph[0].innerHTML).toContain(t('PAGES.REPAYMENT_PLAN.SUBTITLE',{totalAmount: '110'}));
     });
 
     it('should display save and continue button', () => {
       const buttons = htmlDocument.getElementsByClassName('govuk-button');
-      expect(buttons[0].innerHTML).toContain('Save and continue');
+      expect(buttons[0].innerHTML).toContain(t('COMMON.BUTTONS.SAVE_AND_CONTINUE'));
     });
 
     it('should contain contact us detail component', () => {
       const contactUs = htmlDocument.getElementsByClassName('govuk-details__summary-text');
-      expect(contactUs[0].innerHTML).toContain('Contact us for help');
+      expect(contactUs[0].innerHTML).toContain(t('COMMON.CONTACT_US_FOR_HELP.TITLE'));
     });
 
     it('should not display error summary component', () => {
@@ -57,11 +57,11 @@ describe('Repayment Plan View', () => {
     describe('Regular Payment Section', () => {
       it('should display "regular payments of" text', async () => {
         const paragraph = htmlDocument.getElementsByClassName('govuk-!-margin-0 govuk-body-m');
-        expect(paragraph[0].innerHTML).toContain('Regular payments of:');
+        expect(paragraph[0].innerHTML).toContain(t('PAGES.REPAYMENT_PLAN.REGULAR_PAYMENTS') + ':');
       });
       it('should display hint text', async () => {
         const hint = htmlDocument.getElementsByClassName('govuk-hint');
-        expect(hint[0].innerHTML).toContain('For example, £200');
+        expect(hint[0].innerHTML).toContain(t('PAGES.REPAYMENT_PLAN.FOR_EXAMPLE') + '£200');
       });
       it('should display payment amount input text', async () => {
         const prefix = htmlDocument.getElementsByClassName('govuk-input__prefix');
@@ -76,12 +76,12 @@ describe('Repayment Plan View', () => {
         const header = htmlDocument.getElementsByClassName('govuk-fieldset__heading');
         const radios = htmlDocument.getElementsByClassName('govuk-radios__input');
         const labels = htmlDocument.getElementsByClassName('govuk-radios__label');
-        expect(header[1].innerHTML).toContain('How often you\'ll make payments');
+        expect(header[1].innerHTML).toContain(t('PAGES.REPAYMENT_PLAN.HOW_OFTEN_PAYMENTS'));
         expect(radios.length).toEqual(3);
         expect(labels.length).toEqual(3);
-        expect(labels[0].innerHTML).toContain('Each week');
-        expect(labels[1].innerHTML).toContain('Every two weeks');
-        expect(labels[2].innerHTML).toContain('Every month');
+        expect(labels[0].innerHTML).toContain(t('COMMON.PAYMENT_FREQUENCY.WEEK'));
+        expect(labels[1].innerHTML).toContain(t('COMMON.PAYMENT_FREQUENCY.TWO_WEEKS'));
+        expect(labels[2].innerHTML).toContain(t('COMMON.PAYMENT_FREQUENCY.MONTH'));
       });
     });
 
@@ -90,7 +90,7 @@ describe('Repayment Plan View', () => {
         const paragraph = htmlDocument.getElementsByClassName('govuk-body');
         const strongTag = htmlDocument.getElementsByTagName('strong');
         expect(strongTag).not.toBeNull();
-        expect(paragraph[0].innerHTML).toContain('Length of repayment plan');
+        expect(paragraph[0].innerHTML).toContain(t('PAGES.REPAYMENT_PLAN.LENGTH'));
       });
     });
 
@@ -108,9 +108,9 @@ describe('Repayment Plan View', () => {
         const hint = htmlDocument.getElementsByClassName('govuk-hint');
         const dateInput = htmlDocument.getElementsByClassName('govuk-date-input__input');
         const dateLabel = htmlDocument.getElementsByClassName('govuk-date-input__label');
-        expect(paragraph[2].innerHTML).toContain('When will you make the first payment?');
+        expect(paragraph[2].innerHTML).toContain(t('PAGES.REPAYMENT_PLAN.FIRST_PAYMENT'));
         expect(hint).toBeDefined();
-        expect(hint[1].innerHTML).toContain('For example, ' + getFirstPaymentExampleDate());
+        expect(hint[1].innerHTML).toContain(t('PAGES.REPAYMENT_PLAN.FOR_EXAMPLE') + getFirstPaymentExampleDate());
         expect(dateInput.length).toEqual(3);
         expect(dateLabel.length).toEqual(3);
         expect(dateLabel[0].innerHTML).toContain('Day');
