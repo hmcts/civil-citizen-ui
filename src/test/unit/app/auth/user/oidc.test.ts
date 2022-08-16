@@ -25,6 +25,7 @@ describe('getUserDetails', () => {
       givenName: 'John',
       familyName: 'Dorian',
       id: '123',
+      idToken: token,
       roles: undefined,
     });
   });
