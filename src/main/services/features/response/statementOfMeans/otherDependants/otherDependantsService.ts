@@ -6,6 +6,7 @@ import {
 } from '../../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {get} from 'lodash';
+import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('otherDependantsService');
@@ -25,13 +26,13 @@ export class OtherDependantsService {
     }
   }
 
-  public async saveOtherDependants(claimId: string, otherDependants: OtherDependants) {
+  public async saveOtherDependants(claimId: string, otherDependants: GenericForm<OtherDependants>) {
     try {
       const claim = await getCaseDataFromStore(claimId);
       if (!claim.statementOfMeans) {
         claim.statementOfMeans = new StatementOfMeans();
       }
-      claim.statementOfMeans.otherDependants = otherDependants;
+      claim.statementOfMeans.otherDependants = otherDependants.model;
       await saveDraftClaim(claimId, claim);
     } catch (error) {
       logger.error(`${error.stack || error}`);
