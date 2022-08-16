@@ -5,16 +5,17 @@ import {
   CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
 } from '../../../../urls';
 import {PartnerDisability} from '../../../../../common/form/models/statementOfMeans/partner/partnerDisability';
-import {ValidationError,Validator} from 'class-validator';
 import {PartnerDisabilityService} from '../../../../../services/features/response/statementOfMeans/partner/partnerDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner-disability';
 const partnerDisabilityController = express.Router();
 const partnerDisabilityService = new PartnerDisabilityService();
-const validator = new Validator();
 
-function renderView(form: PartnerDisability, res: express.Response): void {
+function renderView(partnerDisability: GenericForm<PartnerDisability>, res: express.Response): void {
+  const form = Object.assign(partnerDisability);
+  form.option = partnerDisability.model.option;
   res.render(partnerViewPath, {form});
 }
 
@@ -29,23 +30,19 @@ partnerDisabilityController.get(CITIZEN_PARTNER_DISABILITY_URL, async (req, res,
 
 partnerDisabilityController.post(CITIZEN_PARTNER_DISABILITY_URL,
   async (req, res, next: express.NextFunction) => {
-    const partnerDisability: PartnerDisability = new PartnerDisability(req.body.option);
-
-    const errors: ValidationError[] = validator.validateSync(partnerDisability);
-    if (errors?.length > 0) {
-      partnerDisability.errors = errors;
-      renderView(partnerDisability, res);
-    } else {
-      try {
-        await partnerDisabilityService.savePartnerDisability(req.params.id, partnerDisability);
-        if (partnerDisability.option == 'yes') {
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_SEVERE_DISABILITY_URL));
-        } else {
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
-        }
-      } catch (error) {
-        next(error);
+    try {
+      const form: GenericForm<PartnerDisability> = new GenericForm(new PartnerDisability(req.body.option));
+      form.validateSync();
+      if (form.hasErrors()) {
+        renderView(form, res);
+      } else {
+        await partnerDisabilityService.savePartnerDisability(req.params.id, form);
+        form.model.option == 'yes'
+          ? res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_SEVERE_DISABILITY_URL))
+          : res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
       }
+    } catch (error) {
+      next(error);
     }
   });
 

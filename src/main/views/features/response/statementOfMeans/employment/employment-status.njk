@@ -16,7 +16,7 @@
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
-      {% if errors %}
+      {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
       {% endif %}
       {% set yesHtml %}
@@ -35,12 +35,12 @@
             {
               value: EmploymentCategory.EMPLOYED,
               text: t('PAGES.EMPLOYMENT_STATUS.EMPLOYED'),
-              checked: true if form.hasEmploymentCategory(EmploymentCategory.EMPLOYED)
+              checked: true if form.model.hasEmploymentCategory(EmploymentCategory.EMPLOYED)
             },
             {
               value: EmploymentCategory.SELF_EMPLOYED,
               text: t('PAGES.EMPLOYMENT_STATUS.SELF_EMPLOYED'),
-              checked: true if form.hasEmploymentCategory(EmploymentCategory.SELF_EMPLOYED)
+              checked: true if form.model.hasEmploymentCategory(EmploymentCategory.SELF_EMPLOYED)
             }
           ],
           errorMessage: {
