@@ -119,12 +119,12 @@ describe('Mediation Disagreement View', () => {
       expect(errorSummary.getElementsByClassName('govuk-error-summary__title')[0].innerHTML)
         .toContain('There was a problem');
       expect(errorSummary.getElementsByClassName('govuk-list govuk-error-summary__list')[0].innerHTML)
-        .toContain('Please select yes or no');
+        .toContain('Choose option: Yes or No');
     });
 
     it('should display error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      expect(errorMessage.innerHTML).toContain('Please select yes or no');
+      expect(errorMessage.innerHTML).toContain('Choose option: Yes or No');
     });
   });
 });

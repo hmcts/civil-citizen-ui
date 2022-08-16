@@ -140,7 +140,7 @@ describe('Mediation Disagreement', () => {
         .send()
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Please select yes or no');
+          expect(res.text).toContain('Choose option: Yes or No');
         });
     });
     it('should return http 500 when has error', async () => {
