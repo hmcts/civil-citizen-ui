@@ -4,6 +4,7 @@ import {
 } from '../../../../../../common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
 import {Claim} from '../../../../../../common/models/claim';
 import {StatementOfMeans} from '../../../../../../common/models/statementOfMeans';
+import {GenericForm} from '../../../../../../common/form/models/genericForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
@@ -13,19 +14,19 @@ const getSelfEmployedAsForm = async (claimId: string) => {
     const claim = await getCaseDataFromStore(claimId);
     if (claim?.statementOfMeans?.selfEmployedAs) {
       const selfEmployedAs = claim.statementOfMeans.selfEmployedAs;
-      return new SelfEmployedAsForm(selfEmployedAs.jobTitle, selfEmployedAs.annualTurnover);
+      return new GenericForm(new SelfEmployedAsForm(selfEmployedAs.jobTitle, selfEmployedAs.annualTurnover));
     }
-    return new SelfEmployedAsForm();
+    return new GenericForm(new SelfEmployedAsForm());
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-const saveSelfEmployedAsData = async (claimId: string, form: SelfEmployedAsForm) => {
+const saveSelfEmployedAsData = async (claimId: string, form: GenericForm<SelfEmployedAsForm>) => {
   try {
     const claim = await getClaim(claimId);
-    claim.statementOfMeans.selfEmployedAs = form;
+    claim.statementOfMeans.selfEmployedAs = form.model;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

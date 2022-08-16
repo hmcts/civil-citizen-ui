@@ -9,59 +9,59 @@
 {% endblock %}
 
 {% block content %}
-  {% set insetText1 = t('Mediation can be quicker, cheaper and less stressful than going to court.') %}
-  {% set insetText2 = t('You will not have to wait longer for a court hearing if you choose mediation.') %}
+  {% set insetText1 = t('PAGES.FREE_TELEPHONE_MEDIATION.MEDIATION_QUICKER') %}
+  {% set insetText2 = t('PAGES.FREE_TELEPHONE_MEDIATION.NO_WAIT_COURT_HEARING') %}
   {% set redirectPath = './can-we-use-company' if isBusiness else './can-we-use' %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l govuk-!-margin-bottom-1">{{ t('Free telephone mediation') }}</h1>
+          <h1 class="govuk-heading-l govuk-!-margin-bottom-1">{{ t('PAGES.FREE_TELEPHONE_MEDIATION.TITLE') }}</h1>
           <p class="govuk-body">
-            {{ t('We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.')}}
+            {{ t('PAGES.FREE_TELEPHONE_MEDIATION.AUTOMATICALLY_REGISTERED')}}
           </p>
-          <h2 class="govuk-heading-m">{{ t('How free mediation works') }}</h2>
+          <h2 class="govuk-heading-m">{{ t('PAGES.FREE_TELEPHONE_MEDIATION.HOW_WORKS') }}</h2>
           <p class="govuk-body">
-            {{ t('A trained, neutral mediator from HM Courts and Tribunals Service will listen to your views and help you to negotiate a settlement of your dispute.') }}
+            {{ t('PAGES.FREE_TELEPHONE_MEDIATION.NEUTRAL_MEDIATOR_LISTEN') }}
           </p>
           {{ govukInsetText({
             text: insetText1
           }) }}
           <p class="govuk-body">
-            {{ t('Mediation is confidential, and nothing said in the mediation can be used in court proceedings if the dispute cannot be settled. The mediator speaks to each party separately, this is not a conference call.') }}
+            {{ t('PAGES.FREE_TELEPHONE_MEDIATION.MEDIATION_IS_CONFIDENTIAL') }}
           </p>
           <p class="govuk-body">
-            {{ t('The claimant must agree to mediation. We\'ll contact you within 28 days after the claimant\'s confirmation, to arrange a free appointment.')}}
+            {{ t('PAGES.FREE_TELEPHONE_MEDIATION.CLAIMANT_MUST_AGREE')}}
           </p>
-          <p class="govuk-body">{{ t('Your mediation appointment will last for no more than an hour.') }}</p>
+          <p class="govuk-body">{{ t('PAGES.FREE_TELEPHONE_MEDIATION.LAST_LESS_AN_HOUR') }}</p>
           <p class="govuk-body">
-            {{ t('Find out more about ') }}
+            {{ t('PAGES.FREE_TELEPHONE_MEDIATION.FIND_OUT_MORE') }}
             <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://www.gov.uk/guidance/small-claims-mediation-service">
-              {{  t('free telephone mediation (opens in new tab).') }}
+              {{  t('PAGES.FREE_TELEPHONE_MEDIATION.OPENS_IN_NEW_TAB') }}
             </a>
           </p>
-          <h2 class="govuk-heading-m">{{ t('Reaching a settlement') }}</h2>
+          <h2 class="govuk-heading-m">{{ t('PAGES.FREE_TELEPHONE_MEDIATION.REACHING_SETTLEMENT') }}</h2>
           <p class="govuk-body">
-            {{ t('If mediation is successful, you\'ll make a verbal agreement over the phone. This is legally binding which means that you must comply with it. You will be given the terms of the agreement in a document – this is called a settlement agreement.') }}
+            {{ t('PAGES.FREE_TELEPHONE_MEDIATION.MEDIATION_SUCCESSFUL') }}
           </p>
           <p class="govuk-body">
-            {{ t('If either party breaks the terms the other party can go to court to ask for a judgment or hearing.') }}
+            {{ t('PAGES.FREE_TELEPHONE_MEDIATION.EITHER_PARTY_BREAKS_TERMS') }}
           </p>
           <p class="govuk-body">
-            {{ t('If mediation fails and a court hearing is needed, what happened during the mediation appointment cannot be mentioned in court.') }}
+            {{ t('PAGES.FREE_TELEPHONE_MEDIATION.MEDIATION_FAILS') }}
           </p>
           {{ govukInsetText({
             text: insetText2
           }) }}
           <div class="form-group">
             {{ govukButton({
-              text: t('Continue'),
+              text: t('COMMON.BUTTONS.CONTINUE'),
               href: redirectPath
             }) }}
           </div>
           <p class="govuk-body">
             <a class="govuk-link" href="./mediation-disagreement">
-              {{t('I do not agree to free mediation')}}
+              {{t('PAGES.FREE_TELEPHONE_MEDIATION.NO_AGREE')}}
             </a>
           </p>
         </div>
