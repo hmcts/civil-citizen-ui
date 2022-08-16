@@ -4,9 +4,6 @@ import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
 import {SIGN_IN_URL, SIGN_OUT_URL, CALLBACK_URL, DASHBOARD_URL, UNAUTHORISED_URL} from '../../routes/urls';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('auth');
-
 /**
  * Adds the oidc middleware to add oauth authentication
  */
@@ -27,16 +24,13 @@ export class OidcMiddleware {
     });
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
-      logger.info('callback url');
       if (typeof req.query.code === 'string') {
         req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
         if (req.session.user?.roles?.includes(citizenRole)) {
           return res.redirect(DASHBOARD_URL);
         }
-        logger.info('missing citizen role');
         return res.redirect(UNAUTHORISED_URL);
       } else {
-        logger.info('missing query code');
         res.redirect(DASHBOARD_URL);
       }
     });
@@ -60,10 +54,8 @@ export class OidcMiddleware {
         if (req.session?.user?.roles?.includes(citizenRole)) {
           return next();
         }
-        logger.info('user missing citizen role');
         return res.redirect(DASHBOARD_URL);
       }
-      logger.info('session user not set');
       res.redirect(SIGN_IN_URL);
     });
   }
