@@ -1,9 +1,8 @@
 import {IsDefined, IsNotEmpty, IsNumber, Max, MaxLength, Min, ValidateIf} from 'class-validator';
 import {YesNo} from '../../../yesNo';
-import {Form} from '../../../form';
 import {FREE_TEXT_MAX_LENGTH, MAX_AMOUNT_VALUE, MIN_AMOUNT_VALUE} from '../../../../validators/validationConstraints';
 
-export class OnTaxPayments extends Form {
+export class OnTaxPayments {
   @IsDefined({message: 'ERRORS.VALID_YES_NO_SELECTION'})
     option: YesNo;
 
@@ -21,7 +20,6 @@ export class OnTaxPayments extends Form {
     reason: string;
 
   constructor(option?: YesNo, amount?: number, reason?: string) {
-    super();
     this.option = option;
     this.amountYouOwe = amount;
     this.reason = reason;
