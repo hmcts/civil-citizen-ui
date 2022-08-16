@@ -7,11 +7,6 @@ import {
   CITIZEN_DEPENDANTS_EDUCATION_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from '../../../../../../../main/routes/urls';
-import {
-  VALID_INTEGER,
-  VALID_NUMBER_FOR_PREVIOUS_PAGE,
-  VALID_POSITIVE_NUMBER,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import * as childrenDisabilityService
   from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
@@ -60,7 +55,7 @@ describe('Dependant Teenagers', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_INTEGER);
+          expect(res.text).toContain(TestMessages.VALID_INTEGER);
         });
     });
     it('should show error when number is negative', async () => {
@@ -69,7 +64,7 @@ describe('Dependant Teenagers', () => {
         .send({value: -1, maxValue: 3})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_POSITIVE_NUMBER);
+          expect(res.text).toContain(TestMessages.VALID_POSITIVE_NUMBER);
         });
     });
     it('should show error when number is decimal', async () => {
@@ -78,7 +73,7 @@ describe('Dependant Teenagers', () => {
         .send({value: 1.3, maxValue: 3})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_INTEGER);
+          expect(res.text).toContain(TestMessages.VALID_INTEGER);
         });
     });
     it('should show error when number is greater than maxValue', async () => {
@@ -87,7 +82,7 @@ describe('Dependant Teenagers', () => {
         .send({value: 4, maxValue: 3})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_NUMBER_FOR_PREVIOUS_PAGE);
+          expect(res.text).toContain(TestMessages.VALID_NUMBER_FOR_PREVIOUS_PAGE);
         });
     });
     it('should redirect to other dependants when hasDisabledChildren returns false and no errors', async () => {

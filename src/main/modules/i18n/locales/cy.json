@@ -526,7 +526,12 @@
       "UNDER": "Dan 11"
     },
     "DEPENDANTS_BETWEEN_16_AND_19": {
-      "PAGE_TITLE": "Any dependants between 16 and 19?"
+      "ENTER_NUMBER": "Enter number",
+      "FULL_TIME_EDUCATION": "in full-time education or training",
+      "HOW_MANY": "How many are both",
+      "PAGE_TITLE": "Any dependants between 16 and 19?",
+      "SINGLE": "single (unmarried and not in a civil partnership)",
+      "TITLE": "Children aged 16 to 19 living with you"
     },
     "DEPENDANTS_CHILDREN_DISABILITY": {
       "ANY_DISABLED_CHILDREN": "A oes gan unrhyw un o'r plant sy'n byw gyda chi anabledd?",

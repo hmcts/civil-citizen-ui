@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import express from 'express';
 import nock from 'nock';
 import config from 'config';
@@ -115,7 +114,7 @@ describe('Citizen dependants', () => {
         .send('under11=-1')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(_.escape('Don\'t enter a negative number'));
+          expect(res.text).toContain(TestMessages.VALID_POSITIVE_NUMBER);
         });
     });
     it('should show error when Yes option and invalid between11and15 input', async () => {
@@ -125,7 +124,7 @@ describe('Citizen dependants', () => {
         .send('between11and15=-1')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(_.escape('Don\'t enter a negative number'));
+          expect(res.text).toContain(TestMessages.VALID_POSITIVE_NUMBER);
         });
     });
     it('should show error when Yes option and invalid between16and19 input', async () => {
