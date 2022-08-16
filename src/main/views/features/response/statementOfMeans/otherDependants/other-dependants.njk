@@ -20,11 +20,8 @@
       {% set description = t('PAGES.OTHER_DEPENDANTS.DESCRIPTION') %}
       {% set id = "option" %}
       {% set name = "option" %}
-      {% set errors = form.getErrors() %}
-      {% set numberOfPeopleError = form.getTextError(errors, 'numberOfPeople') %}
-      {% set detailsError = form.getTextError(errors, 'details') %}
-      {% if errors %}
-        {{ errorSummary(errors, t) }}
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -40,8 +37,10 @@
                 label: {
                   text: t('PAGES.OTHER_DEPENDANTS.NUMBER')
                 },
-                value: form.numberOfPeople,
-                errorMessage: { text: t(numberOfPeopleError.customZeroOrMinOnePerson) } if numberOfPeopleError else ''
+                value: form.model.numberOfPeople,
+                errorMessage: {
+                  text: t(form.errorFor('numberOfPeople'))
+                } if form.hasFieldError('numberOfPeople')
               }) }}
             {{ govukTextarea({
                 name: "details",
@@ -49,8 +48,10 @@
                 label: {
                   text: t('PAGES.OTHER_DEPENDANTS.DETAILS')
                 },
-                value: form.details,
-                errorMessage: { text: t(detailsError.isNotEmpty) } if detailsError else ''
+                value: form.model.details,
+                errorMessage: {
+                  text: t(form.errorFor('details'))
+                } if form.hasFieldError('details')
               }) }}
             {% endset %}
             {{ yesNoRadioButton(t, id, name, title , form, description, {yesHtml:yesHtml, yes: 'COMMON.VARIATION.YES', no: 'COMMON.VARIATION.NO'}) }}

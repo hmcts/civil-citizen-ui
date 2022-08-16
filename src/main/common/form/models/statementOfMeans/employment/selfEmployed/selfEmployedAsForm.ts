@@ -1,9 +1,7 @@
-import { ValidationError, IsNotEmpty, IsNumber, Min, Max, IsDefined } from 'class-validator';
-import {Form} from '../../../form';
+import { IsNotEmpty, IsNumber, Min, Max, IsDefined } from 'class-validator';
 import { MAX_AMOUNT_VALUE } from '../../../../validators/validationConstraints';
 
-export class SelfEmployedAsForm extends Form {
-
+export class SelfEmployedAsForm {
   @IsNotEmpty({message: 'ERRORS.JOB_TITLE_REQUIRED'})
     jobTitle?: string;
 
@@ -13,8 +11,7 @@ export class SelfEmployedAsForm extends Form {
   @Max(MAX_AMOUNT_VALUE, {message: 'ERRORS.ANNUAL_TURNOVER_REQUIRED'})
     annualTurnover?: number;
 
-  constructor(jobTitle?: string, annualTurnover?: number, errors?: ValidationError[]) {
-    super(errors);
+  constructor(jobTitle?: string, annualTurnover?: number) {
     this.jobTitle = jobTitle;
     this.annualTurnover = annualTurnover;
   }
