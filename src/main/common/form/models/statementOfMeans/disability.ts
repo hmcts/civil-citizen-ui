@@ -1,4 +1,3 @@
-import {Form} from '../../../form/models/form';
 import {IsDefined} from 'class-validator';
 
 export class Disability {
