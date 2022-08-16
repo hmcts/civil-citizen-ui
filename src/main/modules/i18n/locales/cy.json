@@ -430,6 +430,7 @@
       "CLAIM_DOCUMENTS": "Claim documents",
       "CLAIMANT_NAME": "Enw'r hawlydd:",
       "CLAIM_NUMBER": "Rhif yr hawliad:",
+      "CLAIMANT_RESPONSE": "Ymateb y Hawlydd",
       "DOCUMENTS": "Dogfennau",
       "DOCUMENT_CREATED": "Creu:",
       "DOWNLOAD_CLAIM": "Download claim",
@@ -1036,7 +1037,7 @@
     "VALID_CORRESPONDENCE_CITY": "Rhowch enw tref/dinas ar gyfer gohebiaeth",
     "VALID_CORRESPONDENCE_POSTCODE": "Rhowch god post y cyfeiriad ar gyfer gohebiaeth",
     "VALID_DATE": "Rhowch ddyddiad dilys",
-    "VALID_DATE_IN_PAST": "Enter date before ",
+    "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
     "VALID_DAY": "Rhowch ddydd dilys",
     "VALID_DEBT_AMOUNT": {
