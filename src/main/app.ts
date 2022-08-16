@@ -62,7 +62,6 @@ app.use((_req, res, next) => {
     'Cache-Control',
     'no-cache, max-age=0, must-revalidate, no-store',
   );
-  res.setHeader('maxHeaderSize', '40960');
   next();
 });
 if (env !== 'test') {
