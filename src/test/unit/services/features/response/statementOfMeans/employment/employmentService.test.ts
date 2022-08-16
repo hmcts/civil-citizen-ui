@@ -10,6 +10,7 @@ import {
 } from '../../../../../../../main/common/form/models/statementOfMeans/employment/employmentCategory';
 import {EmploymentForm} from '../../../../../../../main/common/form/models/statementOfMeans/employment/employmentForm';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
+import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -24,7 +25,7 @@ describe('employment service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
-      expect(result.option).toBeUndefined();
+      expect(result.model.option).toBeUndefined();
     });
     it('should return populated form model when data exists', async () => {
       //Given
@@ -39,8 +40,8 @@ describe('employment service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(result).not.toBeNull();
-      expect(result.option).toBeTruthy();
-      expect(result.employmentCategory.length).toBe(1);
+      expect(result.model.option).toBeTruthy();
+      expect(result.model.employmentCategory.length).toBe(1);
     });
   });
   describe('save employment data', () => {
@@ -48,7 +49,7 @@ describe('employment service', () => {
       //Given
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveEmploymentData('123', new EmploymentForm(YesNo.YES, [EmploymentCategory.EMPLOYED]));
+      await saveEmploymentData('123', new GenericForm(new EmploymentForm(YesNo.YES, [EmploymentCategory.EMPLOYED])));
       //Then
       expect(spySave).toBeCalled();
     });

@@ -1,11 +1,11 @@
-import {IsDefined, ValidationError} from 'class-validator';
 import {Form} from '../../../form/models/form';
-export class Disability extends Form {
+import {IsDefined} from 'class-validator';
+
+export class Disability {
   @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
     option?: string;
 
-  constructor(disablity?: string, errors?: ValidationError[]) {
-    super(errors);
-    this.option = disablity;
+  constructor(disability?: string) {
+    this.option = disability;
   }
 }
