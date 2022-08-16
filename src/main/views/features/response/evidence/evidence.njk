@@ -2,11 +2,11 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% macro evidence(evidenceIndex, evidenceValue, errorFor, description) %}
+{% macro evidence(evidenceIndex, evidenceValue, errorFor, description, t) %}
   {% call govukFieldset({
       classes: 'moj-add-another__item',
       legend: {
-        text: t('Evidence Type List'),
+        text: t('PAGES.EVIDENCE.EVIDENCE_LIST'),
         classes: 'moj-add-another__title govuk-fieldset__legend--m govuk-visually-hidden',
         isPageHeading: false
       }
@@ -15,7 +15,7 @@
     id: "evidenceItem[" + evidenceIndex + "][type]",
     name: "evidenceItem[" + evidenceIndex + "][type]",
     label: {
-      text: t("Evidence"),
+      text: t('PAGES.EVIDENCE.EVIDENCE'),
       classes: "govuk-visually-hidden"
     },
     attributes: {
@@ -25,42 +25,42 @@
     items: [
       {
         value: "",
-        text: t("-- Please make a selection --"),
+        text: t('PAGES.EVIDENCE.MAKE_SELECTION'),
         selected: false if evidenceValue.type else true
       },
       {
         value: EvidenceType.CONTRACTS_AND_AGREEMENTS,
-        text: t(EvidenceType.CONTRACTS_AND_AGREEMENTS),
+        text: t('PAGES.EVIDENCE.CONTRACTS_AND_AGREEMENTS'),
         selected: true if evidenceValue.type === EvidenceType.CONTRACTS_AND_AGREEMENTS else false
       },
       {
         value: EvidenceType.EXPERT_WITNESS,
-        text: t(EvidenceType.EXPERT_WITNESS),
+        text: t('PAGES.EVIDENCE.EXPERT_WITNESS'),
         selected: true if evidenceValue.type === EvidenceType.EXPERT_WITNESS else false
       },
       {
         value: EvidenceType.CORRESPONDENCE,
-        text: t(EvidenceType.CORRESPONDENCE),
+        text: t('PAGES.EVIDENCE.CORRESPONDENCE'),
         selected: true if evidenceValue.type ===  EvidenceType.CORRESPONDENCE else false
       },
       {
         value: EvidenceType.PHOTO,
-        text: t(EvidenceType.PHOTO),
+        text: t('PAGES.EVIDENCE.PHOTO'),
         selected: true if evidenceValue.type === EvidenceType.PHOTO else false
       },
       {
         value: EvidenceType.RECEIPTS,
-        text: t(EvidenceType.RECEIPTS),
+        text: t('PAGES.EVIDENCE.RECEIPTS'),
         selected: true if evidenceValue.type === EvidenceType.RECEIPTS else false
       },
       {
         value: EvidenceType.STATEMENT_OF_ACCOUNT,
-        text: t(EvidenceType.STATEMENT_OF_ACCOUNT),
+        text: t('PAGES.EVIDENCE.STATEMENT_OF_ACCOUNT'),
         selected: true if evidenceValue.type === EvidenceType.STATEMENT_OF_ACCOUNT else false
       },
       {
         value: EvidenceType.OTHER,
-        text: t(EvidenceType.OTHER),
+        text: t('PAGES.EVIDENCE.OTHER'),
         selected: true if evidenceValue.type === EvidenceType.OTHER else false
       }
     ]
@@ -68,24 +68,24 @@
   <div class="panel panel-border-narrow {{ '' if evidenceValue.type else 'govuk-visually-hidden' }}">
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.CONTRACTS_AND_AGREEMENTS %} govuk-visually-hidden {% endif
       %}">{{ t(description) }}
-      {{ t(EvidenceDetails.CONTRACTS_AND_AGREEMENTS_DETAILS) }}</span>
+      {{  t('PAGES.EVIDENCE.EVIDENCE_DETAILS.CONTRACTS_AND_AGREEMENTS') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.EXPERT_WITNESS %} govuk-visually-hidden {% endif %}">{{ t(description) }}
-      {{ t(EvidenceDetails.EXPERT_WITNESS_DETAILS) }}</span>
+      {{ t('PAGES.EVIDENCE.EVIDENCE_DETAILS.EXPERT_WITNESS') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.CORRESPONDENCE %} govuk-visually-hidden {% endif %}">{{ t(description) }}
-      {{ t(EvidenceDetails.CORRESPONDENCE_DETAILS) }}</span>
+      {{ t('PAGES.EVIDENCE.EVIDENCE_DETAILS.CORRESPONDENCE') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.PHOTO %} govuk-visually-hidden {% endif %}">{{ t(description) }}
-      {{ t(EvidenceDetails.PHOTO_DETAILS) }}</span>
+      {{ t('PAGES.EVIDENCE.EVIDENCE_DETAILS.PHOTO') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.RECEIPTS %} govuk-visually-hidden {% endif %}">{{ t(description) }}
-      {{ t(EvidenceDetails.RECEIPTS_DETAILS) }}</span>
+      {{ t('PAGES.EVIDENCE.EVIDENCE_DETAILS.RECEIPTS') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.STATEMENT_OF_ACCOUNT %} govuk-visually-hidden {% endif %}">{{ t(description) }}
-      {{ t(EvidenceDetails.STATEMENT_OF_ACCOUNT_DETAILS) }}</span>
+      {{ t('PAGES.EVIDENCE.EVIDENCE_DETAILS.STATEMENT_OF_ACCOUNT') }}</span>
     <span class="govuk-body {% if evidenceValue.type !== EvidenceType.OTHER %} govuk-visually-hidden {% endif %}">{{ t(description) }}</span>
     {{ govukTextarea({
       name: "evidenceItem[" + evidenceIndex + "][description]",
       id: "evidenceItem[" + evidenceIndex + "][description]",
       value: evidenceValue.description,
       label: {
-        text: 'Description',
+        text: t('PAGES.EVIDENCE.DESCRIPTION'),
         classes: 'govuk-visually-hidden'
       },
       attributes: {
