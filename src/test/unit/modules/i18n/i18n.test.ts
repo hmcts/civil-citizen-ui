@@ -1,4 +1,5 @@
 import config from 'config';
+import express from 'express';
 
 const request = require('supertest');
 const nock = require('nock');
@@ -19,6 +20,15 @@ jest.mock('ioredis', () => {
     };
   });
 });
+
+function authenticate() {
+  return () =>
+    agent.get('/oauth2/callback')
+      .query('code=ABC')
+      .then((res: express.Response) => {
+        expect(res.status).toBe(302);
+      });
+}
 
 describe('i18n test - Dashboard', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -45,28 +55,30 @@ describe('i18n test - Dashboard', () => {
   });
 
   describe('on GET', () => {
+    it('Authenticate Callback', authenticate());
+
     it('should return English dashboard page, when no lang param', async () => {
       await agent
         .get('/dashboard')
         .expect((res: Response) => {
-          expect(res.status).toBe(302);
-          // expect(res.text).toContain('Claims made against you');
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Claims made against you');
         });
     });
     it('should return English dashboard page, when lang param is en', async () => {
       await agent
         .get('/dashboard/?lang=en')
         .expect((res: Response) => {
-          expect(res.status).toBe(302);
-          // expect(res.text).toContain('Claims made against you');
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Claims made against you');
         });
     });
     it('should return Welsh dashboard page, when lang param is cy', async () => {
       await agent
         .get('/dashboard/?lang=cy')
         .expect((res: Response) => {
-          expect(res.status).toBe(302);
-          // expect(res.text).toContain('Smialc edam tsniaga uoy');
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Smialc edam tsniaga uoy');
         });
     });
   });
