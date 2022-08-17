@@ -1,5 +1,4 @@
 import * as express from 'express';
-import {validateForm} from '../../../../common/form/validators/formValidator';
 import {CITIZEN_DEBTS_URL, CITIZEN_PRIORITY_DEBTS_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {checkBoxFields} from '../../../../common/utils/priorityDebts/priorityDebtsConstants';
@@ -34,25 +33,21 @@ priorityDebtsController.get(
 priorityDebtsController.post(
   CITIZEN_PRIORITY_DEBTS_URL,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const convertedDebtValues = convertRequestBodyToForm(req);
-
     try {
-      await validateForm(convertedDebtValues);
-
-      if (convertedDebtValues.hasErrors()) {
-        const priorityDebtErrors = formatFormErrors(convertedDebtValues.errors);
+      const form = convertRequestBodyToForm(req);
+      await form.validate();
+      if (form.hasErrors()) {
+        const priorityDebtErrors = formatFormErrors(form.getErrors());
         const errorList = listFormErrors(priorityDebtErrors);
         res.render(debtsViewPath, {
-          priorityDebts: convertedDebtValues,
+          priorityDebts: form,
           priorityDebtErrors,
           errors: errorList,
           checkBoxFields,
         });
       } else {
-        await savePriorityDebts(req.params.id, convertedDebtValues);
-        res.redirect(
-          constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEBTS_URL),
-        );
+        await savePriorityDebts(req.params.id, form);
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEBTS_URL));
       }
     } catch (error) {
       next(error);

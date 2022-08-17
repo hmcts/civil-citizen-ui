@@ -2,7 +2,7 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
@@ -16,17 +16,14 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set titleH1 = t("List your evidence") %}
-      {% set titleH2 = t("List your evidence (optional)") %}
-      {% set paragraph = t("Tell us about any evidence you wish to provide. You do not need to send us any evidence now. If your case goes to a court hearing, and is not settled, you will need to provide evidence.") %}
-      {% set description = t("Describe this evidence in more detail (optional). ") %}
+      {% set titleH1 = t('PAGES.EVIDENCE.TITLE') %}
+      {% set titleH2 = t('PAGES.EVIDENCE.SUBTITLE') %}
+      {% set paragraph = t('PAGES.EVIDENCE.TELL_US') %}
+      {% set description = t('PAGES.EVIDENCE.DESCRIBE') %}
       {% set errors = form.getAllErrors() %}
       {% set commentError = form.errorFor('comment') %}
       {% if errors.length > 0 %}
-        {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
-          "errorList": errors
-        }) }}
+        {{ errorSummary(errors,t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <form method="post" novalidate>
@@ -37,13 +34,13 @@
             <p class="govuk-body-m">{{ paragraph }}</p>
             <div data-module="moj-add-another" class="select-toggle">
               {% for row in form.model.evidenceItem %}
-                {{ evidence(loop.index0, row, form.errorFor, description) }}
+                {{ evidence(loop.index0, row, form.errorFor, description, t) }}
               {% else %}
                 {{ evidence(0, '', '', description) }}
               {% endfor %}
               <div class="moj-button-action">
                 {{ govukButton({
-                    text: t('Add more evidence'),
+                    text: t('PAGES.EVIDENCE.ADD_MORE'),
                     classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4'
                   }) }}
               </div>
@@ -53,16 +50,16 @@
                 id: "comment",
                 value: form.model.comment,
                 label: {
-                  text: t("List any parts of their evidence you disagree with (optional)"),
+                  text: t('PAGES.EVIDENCE.LIST_ANY'),
                   classes: "govuk-label--s"
                 },
                 errorMessage: {
-                  text: commentError
+                  text: t(commentError)
                 } if commentError
               }) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
             </div>
