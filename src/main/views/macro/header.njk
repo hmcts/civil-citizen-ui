@@ -1,0 +1,32 @@
+{% from 'govuk/components/header/macro.njk' import govukHeader %}
+
+{% macro headerComponent(t, user) %}
+  {% set navigationList = [
+    {
+      href: '/dashboard',
+      text: t('COMMON.HEADER.MY_ACCOUNT'),
+      active: false
+    },
+    {
+      href: '/logout',
+      text: t('COMMON.HEADER.SIGN_OUT'),
+      active: false
+    }
+  ] if user else [
+    {
+      href: '/login',
+      text: t('COMMON.HEADER.SIGN_IN'),
+      active: false
+    }
+  ] %}
+  {% block header %}
+    {{ govukHeader({
+      homepageUrl: 'https://www.gov.uk',
+      containerClasses: 'govuk-width-container',
+      serviceName:  t('COMMON.HEADER.MONEY_CLAIMS'),
+      serviceUrl: '/dashboard',
+      navigationClasses: 'govuk-!-display-inline float-right',
+      navigation: navigationList
+    }) }}
+  {% endblock %}
+{% endmacro %}
