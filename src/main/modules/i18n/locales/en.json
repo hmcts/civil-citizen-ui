@@ -60,7 +60,28 @@
       "TELEPHONE": "Telephone",
       "WEB_CHAT": "Web chat",
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
+      "WEB_CHAT_NO_ADVISORS": "No Advisors are currently available, Come back later.",
       "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
+    },
+    "HEADER": {
+      "MONEY_CLAIMS": "Money Claims",
+      "MY_ACCOUNT": "My account",
+      "SIGN_IN": "Sign in",
+      "SIGN_OUT": "Sign out"
+    },
+    "MONTH_NAMES": {
+      "APRIL": "April",
+      "AUGUST": "August",
+      "DECEMBER": "December",
+      "FEBRUARY": "February",
+      "JANUARY": "January",
+      "JULY": "July",
+      "JUNE": "June",
+      "MARCH": "March",
+      "MAY": "May",
+      "NOVEMBER": "November",
+      "OCTOBER": "October",
+      "SEPTEMBER": "September"
     },
     "RESPONSE_TYPE": {
       "FULL_ADMISSION": "I admit all of the claim",
@@ -92,7 +113,10 @@
       "FOUR_WEEKS": "4 weeks",
       "MONTH": "month",
       "TWO_WEEKS": "2 weeks",
-      "WEEK": "Week"
+      "WEEK": "Week",
+      "TWO_WEEKS_LETTERS" : "Two weeks",
+      "FOUR_WEEKS_LETTERS" : "Four weeks",
+      "MONTH_UPPER_CASE" : "Month"
     },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
@@ -271,7 +295,7 @@
       "RESPONSE_DETAILS_TITLE": "Response details",
       "RESPONSE_DETAILS_MONEY_PAID": "How much money have you paid?",
       "RESPONSE_DETAILS_WHEN_DID_YOU_PAY": "When did you pay this amount?",
-      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUT_CLAIMED": "How did you pay the amount claimed?",
+      "RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUNT_CLAIMED": "How did you pay the amount claimed?",
       "RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
       "RESPONSE_DETAILS_HOW_MUCH_YOU_ADMIT_YOU_OWE": "How much money do you admit you owe?",
       "RESPONSE_DO_YOU_OWE_THE_MONEY_CLAIMED": "Do you owe the money claimed?",
@@ -459,22 +483,24 @@
       "TITLE": "Are you paying money as a result of any court orders?"
     },
     "DASHBOARD": {
+      "ACTIONS": "Actions",
+      "ACTION_PROMPT": "You need to respond before ",
+      "CLAIM_AMOUNT": "Claim amount",
+      "CLAIMANT_NAME": "Claimant name",
+      "CLAIM_NUMBER": "Claim number",
+      "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
+      "CLAIM_STATUS": "Status",
+      "CLAIMANT_TITLE": "Claims you've made",
+      "DEADLINE": "Deadline",
+      "DEFENDANT_NAME": "Defendant name",
+      "DEFENDANT_TITLE": "Claims made against you",
       "DRAFT_CLAIM_NEXT_STEPS": "Continue with claim",
       "DRAFT_CLAIM_NUMBER": "Draft claim",
+      "MAKE_A_NEW_CLAIM": "Make a new money claim",
+      "NEXT_STEPS": "Next steps",
       "PAGE_TITLE": "Claims made by or against you",
-      "CLAIMANT_TITLE": "Claims you've made",
-      "DEFENDANT_TITLE": "Claims made against you",
-      "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
-      "CLAIM_NUMBER": "Claim number",
-      "CLAIMANT_NAME" : "Claimant name",
-      "DEFENDANT_NAME": "Defendant name",
-      "CLAIM_AMOUNT" : "Claim amount",
-      "CLAIM_STATUS" : "Status",
-      "ACTION_PROMPT" : "You need to respond before ",
-      "NEXT_STEPS" : "Next steps",
-      "DEADLINE" : "Deadline",
-      "ACTIONS" : "Actions",
-      "VIEW" : "View"
+      "TITLE" : "Your money claims account",
+      "VIEW": "View"
     },
     "DEBTS": {
       "ADD": "Add a debt",
@@ -506,7 +532,12 @@
       "UNDER": "Under 11"
     },
     "DEPENDANTS_BETWEEN_16_AND_19": {
-      "PAGE_TITLE": "Any dependants between 16 and 19?"
+      "ENTER_NUMBER": "Enter number",
+      "FULL_TIME_EDUCATION": "in full-time education or training",
+      "HOW_MANY": "How many are both",
+      "PAGE_TITLE": "Any dependants between 16 and 19?",
+      "SINGLE": "single (unmarried and not in a civil partnership)",
+      "TITLE": "Children aged 16 to 19 living with you"
     },
     "DEPENDANTS_CHILDREN_DISABILITY": {
       "ANY_DISABLED_CHILDREN": "Are any of the children that live with you disabled?",
@@ -532,7 +563,32 @@
       "TITLE": "Do you have a job?"
     },
     "EVIDENCE": {
-      "PAGE_TITLE": "List your evidence"
+      "ADD_MORE": "Add more evidence",
+      "CONTRACTS_AND_AGREEMENTS": "Contracts and agreements",
+      "CORRESPONDENCE": "Letters, emails and other correspondence",
+      "DESCRIBE": "Describe this evidence in more detail (optional). ",
+      "DESCRIPTION": "Description",
+      "EVIDENCE": "Evidence",
+      "EVIDENCE_DETAILS": {
+        "CONTRACTS_AND_AGREEMENTS": "For example, a signed contract.",
+        "CORRESPONDENCE": "For example, a letter from the other party.",
+        "EXPERT_WITNESS": "For example, a surveyor's report.",
+        "PHOTO": "For example, a photo of the work you carried out.",
+        "RECEIPTS": "For example, a receipt showing the amount you've paid.",
+        "STATEMENT_OF_ACCOUNT": "For example, a bank statement showing the amount you've paid."
+      },
+      "EVIDENCE_LIST": "Evidence Type List",
+      "EXPERT_WITNESS": "Expert witness",
+      "LIST_ANY": "List any parts of their evidence you disagree with (optional)",
+      "MAKE_SELECTION": "-- Please make a selection --",
+      "OTHER": "Other",
+      "PAGE_TITLE": "List your evidence",
+      "PHOTO": "Photo evidence",
+      "RECEIPTS": "Receipts",
+      "STATEMENT_OF_ACCOUNT": "Statements of account",
+      "SUBTITLE": "List your evidence (optional)",
+      "TELL_US": "Tell us about any evidence you wish to provide. You do not need to send us any evidence now. If your case goes to a court hearing, and is not settled, you will need to provide evidence.",
+      "TITLE": "List your evidence"
     },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
@@ -565,10 +621,35 @@
       "TITLE": "Briefly explain why you can't pay immediately"
     },
     "FINANCIAL_DETAILS": {
-      "PAGE_TITLE": "Your financial details"
+      "ASK_DETAILS_AND_SEND" : "We'll ask you for the details then we'll send them to {{ applicant1Details }} to review.",
+      "GET_APPLICANT_CONTACT_DETAILS" : "Get {{ applicant1Details }} 's contact details.",
+      "NEED_GIVE_DETAILS": "You need to give {{ applicant1Details }} details of your finances.",
+      "PAGE_TITLE": "Your financial details",
+      "SEND_STATEMENT_ACCOUNTS" : "'You need to send ' {{ applicant1Details }} your company or organisation's most recent statement of accounts.",
+      "SEND_FINANCIAL_DETAILS": "Send {{ applicant1Details }} your financial details",
+      "REJECT_PAY_SOONER" : "They can reject your proposal if they believe you can pay sooner.",
+      "REJECT_COURT_MAKE_NEW_PLAN" : "If they reject your proposal, the court will make a new plan using your financial details.",
+      "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
+      "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
     "FREE_TELEPHONE_MEDIATION": {
-      "PAGE_TITLE": "Free telephone mediation"
+      "AUTOMATICALLY_REGISTERED" : "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
+      "CLAIMANT_MUST_AGREE" : "The claimant must agree to mediation. We'll contact you within 28 days after the claimant's confirmation, to arrange a free appointment.",
+      "EITHER_PARTY_BREAKS_TERMS" : "If either party breaks the terms the other party can go to court to ask for a judgment or hearing.",
+      "FIND_OUT_MORE" : "Find out more about ",
+      "HOW_WORKS" : "How free mediation works",
+      "LAST_LESS_AN_HOUR" : "Your mediation appointment will last for no more than an hour.",
+      "MEDIATION_SUCCESSFUL" : "If mediation is successful, you'll make a verbal agreement over the phone. This is legally binding which means that you must comply with it. You will be given the terms of the agreement in a document – this is called a settlement agreement.",
+      "MEDIATION_IS_CONFIDENTIAL": "Mediation is confidential, and nothing said in the mediation can be used in court proceedings if the dispute cannot be settled. The mediator speaks to each party separately, this is not a conference call.",
+      "MEDIATION_FAILS" : "If mediation fails and a court hearing is needed, what happened during the mediation appointment cannot be mentioned in court.",
+      "MEDIATION_QUICKER" : "Mediation can be quicker, cheaper and less stressful than going to court.",
+      "NO_AGREE" : "I do not agree to free mediation",
+      "NEUTRAL_MEDIATOR_LISTEN" : "A trained, neutral mediator from HM Courts and Tribunals Service will listen to your views and help you to negotiate a settlement of your dispute.",
+      "NO_WAIT_COURT_HEARING" : "You will not have to wait longer for a court hearing if you choose mediation.",
+      "OPENS_IN_NEW_TAB" : "free telephone mediation (opens in new tab).",
+      "PAGE_TITLE": "Free telephone mediation",
+      "REACHING_SETTLEMENT" : "Reaching a settlement",
+      "TITLE" : "Free telephone mediation"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
@@ -615,7 +696,13 @@
       "TITLE": "How much money do you admit you owe?"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
-      "PAGE_TITLE": "How much have you paid?"
+      "FOR_EXAMPLE": "For example, ",
+      "HOW_DID": "How did you pay this amount?",
+      "HOW_MUCH": "How much have you paid?",
+      "PAGE_TITLE": "How much have you paid?",
+      "TITLE": "How much have you paid the claimant?",
+      "TOTAL_CLAIMED" : "The total amount claimed is £{{totalClaimAmount}}. This includes the claim fee and any interest.",
+      "WHEN_DID": "When did you pay this amount?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
@@ -664,7 +751,27 @@
       "PAGE_TITLE": "Your regular expenses"
     },
     "REGULAR_INCOME": {
-      "PAGE_TITLE": "Your regular income"
+      "AMOUNT_RECEIVED" : "Amount received",
+      "BUTTON_ADD_SOURCE" : "Add another source of income",
+      "CHILD_TAX" : "Child Tax Credit",
+      "CHILD_BENEFIT" : "Child Benefit",
+      "COUNCIL_TAX": "Council Tax Support",
+      "INCOME_JOB" : "Income from your job",
+      "INCOME_SUPPORT" : "Income Support",
+      "INCLUDE_WAGES_OVERTIME_COMISSION" : "Include wages, overtime, commission, bonuses",
+      "JOBSEEKER_ALLOWANCE_INCOME" : "Jobseeker’s Allowance (income based)",
+      "JOBSEEKER_ALLOWANCE_CONTRIBUTION" : "Jobseeker’s Allowance (contribution based)",
+      "OTHER" : "Other",
+      "PAGE_TITLE": "Your regular income",
+      "PENSION" : "Pension",
+      "RECEIVED_EVERY" : "Received every",
+      "REMOVE_INCOME" : "Remove this income source",
+      "SELECT_ALL_THAT_APPLY" : "Select all that apply. The information you enter must be truthful and accurate.",
+      "SOURCE_INCOME" : "Source of income",
+      "TOTAL_MONTHLY" : "Total monthly income:",
+      "UNIVERSAL_CREDIT" : "Universal Credit",
+      "WHAT_REGULAR_INCOME" : "What regular income do you receive?",
+      "WORKING_TAX" : "Working Tax Credit"
     },
     "REJECT_ALL": {
       "FEE": "Fee",
@@ -675,7 +782,15 @@
       "PAGE_TITLE": "Reject all of claim"
     },
     "REPAYMENT_PLAN": {
-      "PAGE_TITLE": "Your repayment plan"
+      "ADMIT_YOU_OWE": "You admit you owe £{{amount}}.",
+      "FIRST_PAYMENT" : "When will you make the first payment?",
+      "FOR_EXAMPLE" : "For example, ",
+      "HOW_OFTEN_PAYMENTS" : "How often you'll make these payments",
+      "LENGTH" : "Length of repayment plan",
+      "PAGE_TITLE": "Your repayment plan",
+      "REGULAR_PAYMENTS": "Regular payments of",
+      "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
+      "TITLE": "Your repayment plan"
     },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",
@@ -718,7 +833,10 @@
       "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "SELF_EMPLOYED": {
-      "PAGE_TITLE": "Self employment details"
+      "ANNUAL" : "Annual Turnover",
+      "JOB_TITLE" : "Job title",
+      "PAGE_TITLE": "Self employment details",
+      "TITLE": "What are you self-employed as?"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
       "AMOUNT": "Amount you owe",
@@ -777,7 +895,13 @@
       "TITLE": "Vulnerability Questions"
     },
     "WHO_EMPLOYS_YOU": {
-      "PAGE_TITLE": "Your employer"
+      "ADD_ANOTHER_JOB" : "Add another job",
+      "PAGE_TITLE": "Your employer",
+      "WHO_EMPLOYS" : "Who employs you?"
+    },
+    "EMPLOYER" : {
+      "EMPLOYER_NAME" : "Employer name",
+      "JOB_TITLE" : "Job title"
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
@@ -803,7 +927,7 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "DATE_REQUIRED": "Enter a date",
-    "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the orginal response date",
+    "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the original response date",
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
@@ -856,6 +980,48 @@
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "TELL_US_WHY": "Please tell us why",
+    "TRANSACTION_SOURCE" : {
+      "ENTER_OTHER_INCOME" : "Enter other income source",
+      "HOW_MUCH_INCOME" : {
+        "CHILD_TAX" : "Enter how much Child Tax Credit you receive",
+        "CHILD_BENEFIT" : "Enter how much Child Benefit you receive",
+        "COUNCIL_TAX" : "Enter how much Council Tax Support you receive",
+        "INCOME_JOB" : "Enter how much income from your job you receive",
+        "INCOME_SUPPORT" : "Enter how much Income Support you receive",
+        "JOBSEEKER_INCOME" : "Enter how much Jobseeker’s Allowance (income based) you receive",
+        "JOBSEEKER_CONTRIBUTION" : "Enter how much  Jobseeker’s Allowance (contribution based) you receive",
+        "OTHER" : "Enter how much other you receive",
+        "PENSION" : "Enter how much pension you receive",
+        "UNIVERSAL_CREDIT" : "Enter how much Universal Credit you receive",
+        "WORKING_TAX" : "Enter how much Working Tax Credit you receive"
+      },
+      "HOW_OFTEN_RECEIVE" : {
+        "CHILD_TAX" : "Select how often you receive Child Tax Credit",
+        "CHILD_BENEFIT" : "Select how often you receive Child Benefit",
+        "COUNCIL_TAX" : "Select how often you receive Council Tax Support",
+        "INCOME_JOB" : "Select how often you receive income from your job",
+        "INCOME_SUPPORT" : "Select how often you receive Income Support",
+        "JOBSEEKER_INCOME" : "Select how often you receive Jobseeker’s Allowance (income based)",
+        "JOBSEEKER_CONTRIBUTION" : "Select how often you receive Jobseeker’s Allowance (contribution based)",
+        "OTHER" : "Select how often you receive other",
+        "PENSION" : "Select how often you receive pension",
+        "UNIVERSAL_CREDIT" : "Select how often you receive Universal Credit",
+        "WORKING_TAX" : "Select how often you receive Working Tax Credit"
+      },
+      "VALID_NUMBER_AMOUNT" : {
+        "CHILD_TAX" : "Enter a valid Child Tax Credit amount, maximum two decimal places",
+        "CHILD_BENEFIT" : "Enter a valid Child Benefit amount, maximum two decimal places",
+        "COUNCIL_TAX" : "Enter a valid Council Tax Support amount, maximum two decimal places",
+        "INCOME_JOB" : "Enter a valid income from your job amount, maximum two decimal places",
+        "INCOME_SUPPORT" : "Enter a valid Income Support amount, maximum two decimal places",
+        "JOBSEEKER_INCOME" : "Enter a valid Jobseeker’s Allowance (income based) amount, maximum two decimal places",
+        "JOBSEEKER_CONTRIBUTION" : "Enter a valid Jobseeker’s Allowance (contribution based) amount, maximum two decimal places",
+        "OTHER" : "Enter a valid amount, maximum two decimal places",
+        "PENSION" : "Enter a valid pension amount, maximum two decimal places",
+        "UNIVERSAL_CREDIT" : "Enter a valid Universal Credit amount, maximum two decimal places",
+        "WORKING_TAX" : "Enter a valid Working Tax Credit amount, maximum two decimal places"
+      }
+    },
     "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
@@ -876,7 +1042,7 @@
     "VALID_CORRESPONDENCE_CITY": "Enter correspondence town/city",
     "VALID_CORRESPONDENCE_POSTCODE": "Enter correspondence address postcode",
     "VALID_DATE": "Please enter a valid date",
-    "VALID_DATE_IN_PAST": "Enter date before ",
+    "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DAY": "Enter a valid day",
     "VALID_DEBT_AMOUNT": {
@@ -899,12 +1065,12 @@
     "VALID_HOUSING": "Describe your housing",
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
-    "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can't be higher than on previous page",
+    "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
-    "VALID_POSITIVE_NUMBER": "Don't enter a negative number",
+    "VALID_POSITIVE_NUMBER": "Don’t enter a negative number",
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",

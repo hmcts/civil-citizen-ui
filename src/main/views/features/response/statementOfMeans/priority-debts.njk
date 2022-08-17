@@ -32,9 +32,9 @@
               {
                 value: checkBoxField.name,
                 text: t(checkBoxField.text),
-                checked: priorityDebts[checkBoxField.name].isDeclared if priorityDebts[checkBoxField.name],
+                checked: priorityDebts.model[checkBoxField.name].isDeclared if priorityDebts.model[checkBoxField.name],
                 conditional: {
-                html: conditionalCheckBoxHTML(checkBoxField.name, priorityDebts[checkBoxField.name], priorityDebtErrors[checkBoxField.name], t)
+                html: conditionalCheckBoxHTML(checkBoxField.name, priorityDebts.model[checkBoxField.name], priorityDebtErrors[checkBoxField.name], t)
               }
               }
             ]

@@ -13,6 +13,7 @@ import {
 } from '../../../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {Dependants} from '../../../../../../../main/common/form/models/statementOfMeans/dependants/dependants';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -23,7 +24,7 @@ describe('dependent teenagers service test', () => {
       //Given
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveFormToDraftStore('123', new BetweenSixteenAndNineteenDependants(3, 4));
+      await saveFormToDraftStore('123', new GenericForm(new BetweenSixteenAndNineteenDependants(3, 4)));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -34,7 +35,8 @@ describe('dependent teenagers service test', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveFormToDraftStore('123', new BetweenSixteenAndNineteenDependants(3, 4))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveFormToDraftStore('123', new GenericForm(new BetweenSixteenAndNineteenDependants(3, 4))))
+        .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
   describe('getForm', () => {
@@ -44,7 +46,7 @@ describe('dependent teenagers service test', () => {
       //When
       const form = await getForm('123');
       //Then
-      expect(form.value).toBeUndefined();
+      expect(form.model.value).toBeUndefined();
       expect(spy).toBeCalled();
     });
     it('should get form with maxValue set from data when data from previous page exists', async () => {
@@ -56,8 +58,8 @@ describe('dependent teenagers service test', () => {
       //When
       const form = await getForm('123');
       //Then
-      expect(form.value).toBeUndefined();
-      expect(form.maxValue).toBe(4);
+      expect(form.model.value).toBeUndefined();
+      expect(form.model.maxValue).toBe(4);
     });
     it('should get form with maxValue and value set from data when data exists', async () => {
       //Given
@@ -69,8 +71,8 @@ describe('dependent teenagers service test', () => {
       //When
       const form = await getForm('123');
       //Then
-      expect(form.value).toBe(3);
-      expect(form.maxValue).toBe(4);
+      expect(form.model.value).toBe(3);
+      expect(form.model.maxValue).toBe(4);
       expect(spy).toBeCalled();
     });
     it('should rethrow error when error occurs', async () => {
