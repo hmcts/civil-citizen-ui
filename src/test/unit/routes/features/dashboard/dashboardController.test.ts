@@ -15,7 +15,7 @@ jest.mock('../../../../../main/app/auth/user/oidc', () => ({
 }));
 
 export const USER_DETAILS = {
-  accessToken: citizenRoleToken,
+  idToken: citizenRoleToken,
   roles: ['citizen'],
 };
 

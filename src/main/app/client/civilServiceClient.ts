@@ -50,7 +50,7 @@ export class CivilServiceClient {
     return {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${req.session?.user?.accessToken}`,
+        'Authorization': `Bearer ${req.session?.user?.idToken}`,
       },
     };
   }

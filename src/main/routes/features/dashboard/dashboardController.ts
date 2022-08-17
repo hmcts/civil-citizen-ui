@@ -32,7 +32,7 @@ dashboardController.get(DASHBOARD_URL, async function (req: AppRequest, res) {
   to display the draft claims on the dashboard*/
   const claimsAsClaimant : DashboardClaimantItem[] = await civilServiceClient.getClaimsForClaimant(req);
   const claimsAsDefendant : DashboardDefendantItem[] = await civilServiceClient.getClaimsForDefendant(<AppRequest>req);
-  const claimDraftSaved = await getOcmcDraftClaims(user.accessToken);
+  const claimDraftSaved = await getOcmcDraftClaims(user.idToken);
   const responseDraftSaved = false;
   const paginationArgumentClaimant: object = {};
   const paginationArgumentDefendant: object = {};

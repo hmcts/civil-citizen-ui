@@ -17,7 +17,6 @@ export const getUserDetails = async (
   const jwt: IdTokenJwtPayload = jwt_decode(response.data.id_token);
 
   return {
-    accessToken: response.data.access_token,
     idToken: response.data.id_token,
     id: jwt.uid,
     email: jwt.sub,
