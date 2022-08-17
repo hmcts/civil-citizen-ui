@@ -66,8 +66,16 @@ export class Nunjucks {
 
     const currencyFormat = (value: number) => numeral.default(value);
 
-    const translateErrors = (keys: FormValidationError[], t: any) => {
+    const translateErrors = (keys: FormValidationError[], t: (key:string) => string, formatValues: { keyError: string,keyToReplace: string, valueToReplace: string }[]) => {
       return keys.map((key) => {
+        if(formatValues){
+          const formatValue = formatValues.find(v => v.keyError === key.text);
+          if(formatValue){
+            const translation = t(key.text);
+            const replaced = translation.replace(formatValue.keyToReplace, formatValue.valueToReplace);
+            return ({...key, text: replaced});
+          }
+        }
         return ({...key, text: t(key?.text)});
       });
     };
