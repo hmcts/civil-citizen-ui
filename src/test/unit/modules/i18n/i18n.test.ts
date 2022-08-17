@@ -1,5 +1,5 @@
-import express from 'express';
 import config from 'config';
+import express from 'express';
 
 const request = require('supertest');
 const nock = require('nock');
@@ -31,7 +31,6 @@ function authenticate() {
 }
 
 describe('i18n test - Dashboard', () => {
-
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
   const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
@@ -57,6 +56,7 @@ describe('i18n test - Dashboard', () => {
 
   describe('on GET', () => {
     it('Authenticate Callback', authenticate());
+
     it('should return English dashboard page, when no lang param', async () => {
       await agent
         .get('/dashboard')

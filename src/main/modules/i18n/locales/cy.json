@@ -9,7 +9,7 @@
   "View": "Weiv",
   "Save and continue": "Cadw a Pharhau",
   "COMMON": {
-    "BACK": "Back",
+    "BACK": "Yn ol",
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
@@ -62,6 +62,12 @@
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_NO_ADVISORS": "Nid oes cynghorwyr ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen.",
       "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
+    },
+    "HEADER": {
+      "MONEY_CLAIMS": "Money Claims",
+      "MY_ACCOUNT": "My account",
+      "SIGN_IN": "Mewngofnodi",
+      "SIGN_OUT": "Sign out"
     },
     "MONTH_NAMES": {
       "APRIL": "Ebrill",
@@ -184,8 +190,8 @@
     },
     "AGREED_RESPONSE_DEADLINE": {
       "PAGE_TITLE": "Agree more time to respond",
-      "SUB_TITLE": "Enter the respond date you have agreed with {{ claimantName }}'s legal representative",
-      "TITLE": "You have already agreed to more time to respond"
+      "SUB_TITLE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno â chynrychiolydd cyfreithiol {{ claimantName }}",
+      "TITLE": "Rydych eisoes wedi cytuno i ragor o amser i ymateb"
     },
     "ARE_YOU_SEVERELY_DISABLED": {
       "PAGE_TITLE": "Severely disabled",
@@ -630,6 +636,7 @@
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED" : "Rydym wedi eich cofrestru’n awtomatig i gael gwasanaeth cyfryngu dros y ffôn am ddim gan Gwasanaeth Llysoedd a Thribiwnlysoedd EM.",
       "CLAIMANT_MUST_AGREE" : "Rhaid i’r hawlydd gytuno i’r cyfryngu. Byddwn yn cysylltu â chi o fewn 28 diwrnod ar ôl cael cadarnhad gan yr hawlydd i drefnu apwyntiad am ddim.",
+      "DO_NOT_AGREE_TO_FREE_MEDIATION": "Nid wyf yn cytuno i gyfryngu am ddim",
       "EITHER_PARTY_BREAKS_TERMS" : "Os bydd y naill barti neu’r llall yn torri telerau’r cytundeb, gall y parti arall fynd i’r llys i ofyn am ddyfarniad neu wrandawiad.",
       "FIND_OUT_MORE" : "Rhagor o wybodaeth am y ",
       "HOW_WORKS" : "Sut mae cyfryngu am ddim yn gweithio",
@@ -650,7 +657,18 @@
       "TITLE": "You need to complete all sections before you submit your response"
     },
     "I_DON_T_WANT_FREE_MEDIATION": {
-      "PAGE_TITLE": "I don't want free mediation"
+      "ALREADY_TRIED": "Rwyf eisoes wedi ceisio datrys yr anghydfod gyda’r parti arall, yn aflwyddiannus",
+      "ANY_INFORMATION_YOU_PROVIDE": "Any information you provide is used solely by HM Courts and Tribunals Service to help us improve our services. Your answers have no impact on the progress or outcome of your case, or on any contact you have with HM Courts and Tribunals Service.",
+      "DO_NOT_AGREE_TO_FREE_MEDIATION": "Nid wyf yn cytuno i gyfryngu am ddim",
+      "ENTER_YOUR_REASON_HERE": "Enter your reason here",
+      "JUDGE_TO_DECIDE": "Rwyf eisiau i farnwr wneud penderfyniad ynghylch yr anghydfod",
+      "NO_DELAY_IN_HEARING": "Nid wyf eisiau unrhyw oedi gyda chael gwrandawiad",
+      "NOT_SURE": "Nid wyf yn siŵr beth fyddai’n digwydd yn y cyfryngu",
+      "OTHER": "Rheswm arall (rhowch fanylion)",
+      "PAGE_TITLE": "I don't want free mediation",
+      "SKIP_THIS_SECTION": "Hepgor yr adran hon",
+      "WOULD_NOT_SOLVE": "Nid wyf yn credu y byddai cyfryngu yn datrys yr anghydfod",
+      "YOU_HAVE_CHOSEN_TELL_US_WHY": "Rydych wedi dewis peidio â rhoi cyfle i gyfryngu am ddim. Dywedwch wrthym pam:"
     },
     "LATEST_UPDATE_CONTENT": {
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
@@ -667,8 +685,21 @@
       "PAGE_TITLE": "Mediation - Provide company contact number"
     },
     "MEDIATION_DISAGREEMENT": {
+      "ADVANTAGES_OF_FREE_MEDIATION": "Manteision cyfryngu am ddim",
+      "CAN_BE_USED_IN_COURT": "mae’n gyfrinachol ac ni ellir defnyddio unrhyw beth a ddywedir neu a wneir yn ystod cyfryngu yn y llys",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_1": "gall cyfryngu olygu y gellir osgoi gwneud",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_2": "Dyfarniad Llys Sirol (yn agor mewn ffenestr newydd)",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_3": "yn eich erbyn",
+      "IF_YOU_CHOOSE_NOT": "Os byddwch yn dewis peidio â rhoi cyfle i gyfryngu, ni ellir newid hyn unwaith y bydd eich ymateb wedi’i gyflwyno.",
+      "IT_GIVES_YOU_CONTROL": "mae’n rhoi rheolaeth i chi dros sut bydd eich anghydfod yn cael ei setlo; nid yw hynny’n bosibl trwy fynd i’r llys",
+      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "Mae yna lawer o fanteision i gyfryngu am ddim, gan gynnwys:",
+      "MEDIATION_CAN_BE": "gall cyfryngu fod yn broses gyflymach a rhatach na mynd i'r llys",
+      "MEDIATION_DISAGREEMENT": "Mi wnaethoch ddewis i beidio â chael cyfryngu am ddim",
       "PAGE_TITLE": "Free mediation disagreement",
-      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+      "THE_CLAIM_WILL_CONTINUE": "Bydd yr hawliad yn parhau ac efallai y bydd rhaid ichi fynychu gwrandawiad.",
+      "THE_MEDIATOR_SPEAKS": "bydd y cyfryngwr yn siarad â bob ochr ar wahân, ni fyddwch yn siarad â’r parti arall yn ystod y cyfryngu",
+      "WELL_ASK_THE_CLAIMANT": "Byddwn yn gofyn i'r cleient a yw am roi cynnig ar gyfryngu am ddim. Os bydd yn gwrthod, bydd yr hawliad yn mynd i wrandawiad.",
+      "WILL_YOU_CHANGE_YOUR_DECISION": "A wnewch chi newid eich penderfyniad a rhoi cyfle i gyfryngu am ddim?"
     },
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
@@ -865,12 +896,12 @@
       "PAGE_TITLE": "Under 18"
     },
     "UNDERSTANDING_YOUR_OPTIONS": {
-      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "HOW_MUCH_EXTRA": "How much extra time can you request?",
-      "PAGE_TITLE": "Requesting extra time",
-      "REQUEST_EXTENSION_DEFAULT": "If you want to request an extension of up to 28 days, you'll need to ask the other party's legal representative directly.",
-      "REQUEST_EXTENSION_MORE": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party's legal representative, you'll need to apply to the court.",
-      "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "If you think that you will be unable to respond to a claim before this deadline, you can request more time."
+      "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
+      "HOW_MUCH_EXTRA": "Faint o amser ychwanegol y gallwch wneud cais amdano?",
+      "PAGE_TITLE": "Gwneud cais am ragor o amser",
+      "REQUEST_EXTENSION_DEFAULT": "Os ydych eisiau gwneud cais am estyniad o hyd at 28 diwrnod, bydd angen i chi ofyn yn uniongyrchol i gynrychiolydd cyfreithiol y parti arall.",
+      "REQUEST_EXTENSION_MORE": "Os ydych eisiau gwneud cais am estyniad o fwy na 28 diwrnod, neu os yw eich cais am estyniad wedi’i wrthod gan gynrychiolydd cyfreithiol y parti arall, bydd angen i chi wneud cais i’r llys.",
+      "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "Os ydych yn credu na fyddwch yn gallu ymateb i hawliad cyn y terfyn amser hwn, gallwch wneud cais am ragor o amser."
     },
     "UNEMPLOYMENT": {
       "DESCRIPTION": "Ers faint ydych chi wedi bod yn ddi-waith?",
@@ -922,7 +953,7 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
     "DATE_REQUIRED": "Nodwch ddyddiad",
-    "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the orginal response date",
+    "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
@@ -939,7 +970,7 @@
     "NAME_REQUIRED": "Please enter a name",
     "NUMBER_OF_PEOPLE_REQUIRED": "Rhowch rif, er enghraifft 3",
     "NUMBER_REQUIRED": "Rhowch rif dilys",
-    "OPTION_REQUIRED": "Please select one reason",
+    "OPTION_REQUIRED": "Dewiswch un rheswm",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
     "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Dewiswch amlder talu",
@@ -1017,14 +1048,14 @@
         "WORKING_TAX" : "Rhowch swm dilys ar gyfer Credyd Treth Gwaith, dim mwy na dau le degol"
       }
     },
-    "TEXT_TOO_LONG": "Reason must be 500 characters or fewer",
+    "TEXT_TOO_LONG": "Rhaid i'r rheswm fod yn 500 llythyren neu lai.",
     "TEXT_TOO_MANY": "You've entered too many characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
     "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
-    "VALID_AGREED_RESPONSE_DATE": "Enter the agreed response date",
-    "VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST": "Agreed response date must be in the future",
+    "VALID_AGREED_RESPONSE_DATE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno",
+    "VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST": "Rhaid i’r dyddiad ymateb yr ydych wedi’i gytuno fod yn y dyfodol",
     "VALID_AMOUNT": "Nodwch swm dilys",
     "VALID_AMOUNT_ONE_POUND_OR_MORE": "Nodwch swm o £1 neu fwy",
     "VALID_AT_LEAST_ONE_OPTION": "Rhaid i chi ddewis o leiaf un opsiwn",
