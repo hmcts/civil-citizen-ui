@@ -5,7 +5,7 @@ import {app} from '../../../../../main/app';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {
-  AGREED_T0_MORE_TIME_URL,
+  AGREED_TO_MORE_TIME_URL,
   CLAIM_TASK_LIST_URL,
   REQUEST_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL,
@@ -13,6 +13,7 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
 import {ResponseOptions} from '../../../../../main/common/form/models/responseDeadline';
+import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -63,9 +64,7 @@ describe('Response Deadline Options Controller', () => {
     });
 
     it('should render error page on redis failure error', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+      app.locals.draftStoreClient = mockRedisFailure;
       await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -110,7 +109,7 @@ describe('Response Deadline Options Controller', () => {
         mockGetCaseData.mockImplementation(async () => mockClaim);
         await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL).send({'option': 'already-agreed'}).expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe(AGREED_T0_MORE_TIME_URL);
+          expect(res.header.location).toBe(AGREED_TO_MORE_TIME_URL);
         });
       });
 
