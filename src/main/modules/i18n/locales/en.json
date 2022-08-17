@@ -63,6 +63,12 @@
       "WEB_CHAT_NO_ADVISORS": "No Advisors are currently available, Come back later.",
       "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
     },
+    "HEADER": {
+      "MONEY_CLAIMS": "Money Claims",
+      "MY_ACCOUNT": "My account",
+      "SIGN_IN": "Sign in",
+      "SIGN_OUT": "Sign out"
+    },
     "MONTH_NAMES": {
       "APRIL": "April",
       "AUGUST": "August",
