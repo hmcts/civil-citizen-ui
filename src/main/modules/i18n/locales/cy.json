@@ -682,7 +682,12 @@
       "PAGE_TITLE": "Mediation - Provide a phone number"
     },
     "MEDIATION_COMPANY_PHONE": {
-      "PAGE_TITLE": "Mediation - Provide company contact number"
+      "CONFIRM_TELEPHONE_NUMBER": "Cadarnhau'r rhif ffôn",
+      "ENTER_PHONE_NUMBER": "Rhowch rif ffôn yr unigolyn hwn, gan gynnwys rhif estyniad os oes angen",
+      "FOR_EXAMPLE": "Er enghraifft, 02012346788 est. 153",
+      "PAGE_TITLE": "Mediation - Provide company contact number",
+      "TITLE": "Pwy ddylai'r gwasanaeth cyfryngu ei ffonio?",
+      "TITLE_WITH_PERSON": "Ai {{ contactPerson }} yw'r un y dylai'r gwasanaeth cyfryngu ei ffonio?"
     },
     "MEDIATION_DISAGREEMENT": {
       "ADVANTAGES_OF_FREE_MEDIATION": "Manteision cyfryngu am ddim",
@@ -936,13 +941,13 @@
       "IF_CLAIMANT_REJECTS": "If CLAIMANT_NAME rejects your explanation you might have to go to a hearing."
     },
     "YOUR_DEFENCE": {
-      "BRIEFLY": "Briefly explain why you disagree with the claim",
-      "FAIL": "If you fail to dispute any part of the claim the court may assume you admit it.",
-      "ACCEPT": "You should also say if you accept any parts of the claim.",
-      "TIMELINE": "Don't give us a detailed timeline - we'll ask for that separately.",
-      "TITLE": "Why do you disagree with the claim?",
-      "REASON": "Their reasons for making the claim",
-      "CLAIMANT": "Your response will be sent to {{ claimantFullName }}."
+      "BRIEFLY": "Eglurwch yn fyr pam yr ydych chi’n anghytuno â’r hawliad",
+      "FAIL": "Os na fyddwch yn anghytuno ag unrhyw ran o’r hawliad, gallai’r llys gymryd eich bod yn derbyn yr hawliad.",
+      "ACCEPT": "Dylech ddweud hefyd os ydych chi’n derbyn unrhyw ran o’r hawliad.",
+      "TIMELINE": "Peidiwch â rhoi amserlen fanwl inni – byddwn yn gofyn am amserlen ar wahân.",
+      "TITLE": "Pam ydych chi’n anghytuno â’r hawliad?",
+      "REASON": "Eu rhesymau dros wneud yr hawliad",
+      "CLAIMANT": "Anfonir eich ymateb at {{ claimantFullName }}."
     }
   },
   "ERRORS": {
@@ -954,7 +959,7 @@
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
-    "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
+    "DEFENCE_REQUIRED": "Mae angen ichi egluro pam nad oes arian yn ddyledus gennych",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
@@ -967,14 +972,14 @@
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
-    "NAME_REQUIRED": "Please enter a name",
+    "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
     "NUMBER_OF_PEOPLE_REQUIRED": "Rhowch rif, er enghraifft 3",
     "NUMBER_REQUIRED": "Rhowch rif dilys",
     "OPTION_REQUIRED": "Dewiswch un rheswm",
     "OPTION_REQUIRED_RESPONSE": "Please select a response",
     "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Dewiswch amlder talu",
-    "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
+    "PHONE_NUMBER_REQUIRED": "Nodwch rif ffôn",
     "QUESTION_1_REQUIRED": "1. Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
     "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
@@ -1050,7 +1055,7 @@
     },
     "TEXT_TOO_LONG": "Rhaid i'r rheswm fod yn 500 llythyren neu lai.",
     "TEXT_TOO_MANY": "You've entered too many characters",
-    "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
+    "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
     "THERE_WAS_A_PROBLEM": "Roedd problem",
     "TYPE_OF_ACCOUNT_REQUIRED": "Dewiswch math o gyfrif",
     "VALID_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad",
