@@ -1,0 +1,25 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/external-link.njk" import externalLink %}
+
+{% block content %}
+
+  {% set legacyServiceUrl = 'https://www.moneyclaim.gov.uk/web/mcol/welcome' %}
+  {% set n1FormUrl = 'https://formfinder.hmctsformfinder.justice.gov.uk/n1-eng.pdf' %}
+  {% set reason = 'aaa' %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">{{ t('You can’t use this service') }}</h1>
+      {% switch reason %}
+        {% case 'aaa' %}
+          <p class="govuk-body">{{ t('This service is for claims of £25,000 or less.') }}</p>
+          <p class="govuk-body">{{ t('For claims between £25,001 and £100,000 you might be able to ') }} {{externalLink(t, 'use Money Claim Online (MCOL)', legacyServiceUrl) }}</p>
+          <p class="govuk-body">{{ t('You can also claim by paper. ')}} {{externalLink(t, 'Download a paper form', n1FormUrl)}} {{ t('complete it and return it to make your claim.') }}</p>
+        {% case 'bbb' %}
+          BAZ
+        {% default %}
+          NEITHER BAR NOR BAZ
+      {% endswitch %}
+    </div>
+  </div>
+{% endblock %}
