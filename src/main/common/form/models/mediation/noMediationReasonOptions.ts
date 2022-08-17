@@ -1,10 +1,10 @@
 enum NoMediationReasonOptions {
-  ALREADY_TRIED = 'I have already tried to resolve the dispute with the other party, with no success',
-  NOT_SURE = 'I am not sure what would happen in mediation',
-  WOULD_NOT_SOLVE = 'I do not think mediation would solve the dispute',
-  NO_DELAY_IN_HEARING = 'I do not want to delay getting a hearing',
-  JUDGE_TO_DECIDE = 'I want a judge to make a decision on the dispute',
-  OTHER = 'Another reason (please specify)',
+  ALREADY_TRIED = 'PAGES.I_DON_T_WANT_FREE_MEDIATION.ALREADY_TRIED',
+  NOT_SURE = 'PAGES.I_DON_T_WANT_FREE_MEDIATION.NOT_SURE',
+  WOULD_NOT_SOLVE = 'PAGES.I_DON_T_WANT_FREE_MEDIATION.WOULD_NOT_SOLVE',
+  NO_DELAY_IN_HEARING = 'PAGES.I_DON_T_WANT_FREE_MEDIATION.NO_DELAY_IN_HEARING',
+  JUDGE_TO_DECIDE = 'PAGES.I_DON_T_WANT_FREE_MEDIATION.JUDGE_TO_DECIDE',
+  OTHER = 'PAGES.I_DON_T_WANT_FREE_MEDIATION.OTHER'
 }
 
 export default NoMediationReasonOptions;
