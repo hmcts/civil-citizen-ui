@@ -20,11 +20,11 @@ describe('getUserDetails', () => {
 
     const result = await getUserDetails('https://localhost/oauth2/callback', '123');
     expect(result).toStrictEqual({
+      accessToken: token,
       email: 'test@test.com',
       givenName: 'John',
       familyName: 'Dorian',
       id: '123',
-      idToken: token,
       roles: undefined,
     });
   });

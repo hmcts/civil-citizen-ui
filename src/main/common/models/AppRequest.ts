@@ -17,7 +17,7 @@ export interface AppSession extends Session {
 }
 
 export interface UserDetails {
-  idToken: string;
+  accessToken: string;
   id: string;
   email: string;
   givenName: string;
