@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import 'dayjs/locale/cy';
 import currencyFormat from '../utils/currencyFormat';
 import {Respondent} from './respondent';
 import {StatementOfMeans} from './statementOfMeans';
@@ -34,6 +35,7 @@ import {DocumentType} from './document/documentType';
 import {Vulnerability} from '../models/directionsQuestionnaire/vulnerability';
 import {ResponseDeadline} from './responseDeadline';
 import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
+import {getLng} from '../../common/utils/languageToggleUtils';
 
 export class Claim {
   legacyCaseReference: string;
@@ -84,8 +86,8 @@ export class Claim {
     return this.respondent1.partyName;
   }
 
-  formattedResponseDeadline(): string {
-    return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).format('DD MMMM YYYY') : '';
+  formattedResponseDeadline(lng?: string): string {
+    return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).locale(getLng(lng)).format('DD MMMM YYYY') : '';
   }
 
   formattedTotalClaimAmount(): string {
