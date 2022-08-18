@@ -1,10 +1,9 @@
 {% from "../../../macro/external-link.njk" import externalLink %}
-
-{% set legacyServiceUrl = 'https://www.moneyclaim.gov.uk/web/mcol/welcome' %}
+{% import "external-urls.njk" as externalURLs %}
 
 <p class="govuk-body">{{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.YOU_NEED_TO_KNOW_AMOUNT') }}</p>
 <p class="govuk-body">
   {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.CANT_CALCULATE_THE_AMOUNT') }}
-  {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.N1_PAPER_FORM', n1FormUrl, true) }}.
+  {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.N1_PAPER_FORM', externalURLs.n1FormUrl, true) }}.
 </p>
 {% include "macro/paper-form-address.njk"%}
