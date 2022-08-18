@@ -13,7 +13,7 @@ export const convertToNotEligibleReason = (reason: string): NotEligibleReason =>
     case 'under-18-defendant':
       return NotEligibleReason.UNDER_18_DEFENDANT;
     case 'multiple-claimants':
-      return NotEligibleReason.MULTIPLE_DEFENDANTS;
+      return NotEligibleReason.MULTIPLE_CLAIMANTS;
     case 'multiple-defendants':
       return NotEligibleReason.MULTIPLE_DEFENDANTS;
     case 'help-with-fees':
