@@ -14,19 +14,17 @@ import {deadLineGuard} from '../../../../routes/guards/deadLineGuard';
 const responseDeadlineService = new ResponseDeadlineService();
 const agreedResponseDeadlineViewPath = 'features/response/responseDeadline/agreed-response-deadline';
 const agreedResponseDeadlineController = express.Router();
-const today = new Date();
-let backLink: string;
 
 agreedResponseDeadlineController
   .get(
     AGREED_TO_MORE_TIME_URL, deadLineGuard, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-      backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
+      const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
         const claim = await getCaseDataFromStore(req.params.id);
         const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
         res.render(agreedResponseDeadlineViewPath, {
           form: new GenericForm(agreedResponseDeadline),
-          today,
+          today: new Date(),
           claimantName: claim.getClaimantName(),
           backLink,
         });
@@ -37,6 +35,7 @@ agreedResponseDeadlineController
   .post(
     AGREED_TO_MORE_TIME_URL, deadLineGuard, async (req, res, next: express.NextFunction) => {
       const {year, month, day} = req.body;
+      const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
         const claim = await getCaseDataFromStore(req.params.id);
         const originalResponseDeadline = claim?.respondent1ResponseDeadline;
@@ -47,7 +46,7 @@ agreedResponseDeadlineController
         if (form.hasErrors()) {
           res.render(agreedResponseDeadlineViewPath, {
             form,
-            today,
+            today: new Date(),
             claimantName: claim.getClaimantName(),
             backLink,
           });

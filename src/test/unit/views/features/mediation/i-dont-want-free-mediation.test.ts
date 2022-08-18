@@ -54,7 +54,7 @@ describe('I Dont Want Free Mediation View', () => {
       expect(radios[2].innerHTML).toContain('I do not think mediation would solve the dispute');
       expect(radios[3].innerHTML).toContain('I do not want to delay getting a hearing');
       expect(radios[4].innerHTML).toContain('I want a judge to make a decision on the dispute');
-      expect(radios[5].innerHTML).toContain('Another reason (please specify)');
+      expect(radios[5].innerHTML).toContain('PAGES.I_DON_T_WANT_FREE_MEDIATION.OTHER');
       expect(conditional.innerHTML).toContain('Enter your reason here');
     });
 
