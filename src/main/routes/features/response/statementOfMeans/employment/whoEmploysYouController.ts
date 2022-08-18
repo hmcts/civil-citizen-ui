@@ -31,10 +31,10 @@ whoEmploysYouController.post(CITIZEN_WHO_EMPLOYS_YOU_URL, async (req: express.Re
       res.render(whoEmploysYouViewPath, { form });
     } else {
       await saveEmployers(claimId, employers);
-      const employment: EmploymentForm = await getEmploymentForm(claimId);
-      if (employment.isEmployed()) {
+      const employment: GenericForm<EmploymentForm> = await getEmploymentForm(claimId);
+      if (employment.model.isEmployed()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
-      } else if (employment.isEmployedAndSelfEmployed()) {
+      } else if (employment.model.isEmployedAndSelfEmployed()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
       } else {
         res.status(500);

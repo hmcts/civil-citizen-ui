@@ -5,31 +5,32 @@ import {
 import {convertFromYesNo, convertToYesNo} from '../../../../../../common/utils/yesNoOptionConverter';
 import {Claim} from '../../../../../../common/models/claim';
 import {StatementOfMeans} from '../../../../../../common/models/statementOfMeans';
+import {GenericForm} from '../../../../../../common/form/models/genericForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('onTaxPaymentsService');
 
-const getOnTaxPaymentsForm = async (claimId: string): Promise<OnTaxPayments> => {
+const getOnTaxPaymentsForm = async (claimId: string): Promise<GenericForm<OnTaxPayments>> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (claim?.statementOfMeans?.taxPayments) {
       const taxPayments = claim.statementOfMeans.taxPayments;
-      return new OnTaxPayments(convertToYesNo(taxPayments.owed), taxPayments.amountOwed, taxPayments.reason);
+      return new GenericForm(new OnTaxPayments(convertToYesNo(taxPayments.owed), taxPayments.amountOwed, taxPayments.reason));
     }
-    return new OnTaxPayments();
+    return new GenericForm(new OnTaxPayments());
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-const saveTaxPaymentsData = async (claimId: string, form: OnTaxPayments) => {
+const saveTaxPaymentsData = async (claimId: string, form: GenericForm<OnTaxPayments>) => {
   try {
     const claim = await getClaim(claimId);
     claim.statementOfMeans.taxPayments = {
-      owed: convertFromYesNo(form.option),
-      amountOwed: form.amountYouOwe,
-      reason: form.reason,
+      owed: convertFromYesNo(form.model.option),
+      amountOwed: form.model.amountYouOwe,
+      reason: form.model.reason,
     };
     await saveDraftClaim(claimId, claim);
   } catch (error) {

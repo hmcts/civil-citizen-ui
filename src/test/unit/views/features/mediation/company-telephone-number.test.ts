@@ -147,7 +147,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.TEXT_TOO_MANY);
+      expect(errorSummaryMessage.innerHTML).toContain("You've entered too many characters");
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#mediationPhoneNumberConfirmation');
     });
@@ -200,7 +200,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.TEXT_TOO_MANY);
+      expect(errorSummaryMessage.innerHTML).toContain("You've entered too many characters");
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#mediationContactPerson');
     });
@@ -214,7 +214,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(1);
-      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.TEXT_TOO_MANY);
+      expect(errorSummaryMessage.innerHTML).toContain("You've entered too many characters");
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#mediationPhoneNumber');
     });
