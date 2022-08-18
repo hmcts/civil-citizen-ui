@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import currencyFormat from '../utils/currencyFormat';
 import {Respondent} from './respondent';
 import {StatementOfMeans} from './statementOfMeans';
 import {CounterpartyType} from './counterpartyType';
@@ -86,10 +85,6 @@ export class Claim {
 
   formattedResponseDeadline(): string {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).format('DD MMMM YYYY') : '';
-  }
-
-  formattedTotalClaimAmount(): string {
-    return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
   }
 
   getRemainingDays(): number {

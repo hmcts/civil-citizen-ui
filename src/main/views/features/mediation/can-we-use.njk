@@ -2,9 +2,9 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "../../macro/telephone.njk" import telephone %}
 {% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
@@ -17,18 +17,14 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t("Confirm your telephone number") %}
-      {% set titleEnterPhone = t("Enter a phone number") %}
-      {% set pText = t("Can the mediation service use " + respondentTelNumber  + " to call you?") %}
-      {% set pTextEnterPhone = t("Enter the number for a direct line the mediation service can use. We won't give the number to anyone else.") %}
+      {% set title = t('PAGES.MEDIATION_CAN_WE_USE.CONFIRM_YOUR_NUMBER') %}
+      {% set titleEnterPhone = t('PAGES.MEDIATION_CAN_WE_USE.ENTER_PHONE_NUMBER') %}
+      {% set pText = t('PAGES.MEDIATION_CAN_WE_USE.CAN_MEDIATION_USE', {respondentTelNumber: respondentTelNumber}) %}
+      {% set pTextEnterPhone = t('PAGES.MEDIATION_CAN_WE_USE.ENTER_PHONE_FOR_DIRECT_LINE') + t('PAGES.MEDIATION_CAN_WE_USE.WONT_GIVE_NUMBER')%}
       {% set id = "option" %}
       {% set name = "option" %}
-      {% set errors = form.getErrors() %}
-      {% if errors.length > 0 %}
-        {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
-          "errorList": errors
-        }) }}
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <form method="post" novalidate>
@@ -46,7 +42,8 @@
                   type: "number",
                   autocomplete: "number",
                   classes: "govuk-!-width-two-thirds",
-                  label: pTextEnterPhone}) }}
+                  label: pTextEnterPhone})
+              }}
               {% endset %}
               {{ yesNoRadioButton(t,id,name,'',form,'',{noHtml:noHtml}) }}
             {% else %}
@@ -56,11 +53,12 @@
                   value: form.model.mediationPhoneNumber,
                   autocomplete: "number",
                   classes: "govuk-!-width-two-thirds",
-                  label: ''}) }}
+                  label: ''})
+              }}
             {% endif %}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

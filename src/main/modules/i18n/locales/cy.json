@@ -679,7 +679,12 @@
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment."
     },
     "MEDIATION_CAN_WE_USE": {
-      "PAGE_TITLE": "Mediation - Provide a phone number"
+      "CAN_MEDIATION_USE": "A all y gwasanaeth cyfryngu ddefnyddio’r rhif {{ respondentTelNumber }} i’ch ffonio?",
+      "CONFIRM_YOUR_NUMBER": "Cadarnhewch eich rhif ffôn",
+      "ENTER_PHONE_NUMBER": "Rhowch rif ffôn",
+      "ENTER_PHONE_FOR_DIRECT_LINE": "Nodwch rif ffôn uniongyrchol gall y gwasanaeth cyfryngu ei ddefnyddio i gysylltu â chi.",
+      "PAGE_TITLE": "Mediation - Provide a phone number",
+      "WONT_GIVE_NUMBER": "Ni fyddwn yn rhoi'r rhif i rywun arall."
     },
     "MEDIATION_COMPANY_PHONE": {
       "CONFIRM_TELEPHONE_NUMBER": "Cadarnhau'r rhif ffôn",

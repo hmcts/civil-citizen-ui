@@ -678,7 +678,12 @@
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment."
     },
     "MEDIATION_CAN_WE_USE": {
-      "PAGE_TITLE": "Mediation - Provide a phone number"
+      "CAN_MEDIATION_USE": "Can the mediation service use {{ respondentTelNumber }} to call you?",
+      "CONFIRM_YOUR_NUMBER": "Confirm your telephone number",
+      "ENTER_PHONE_NUMBER": "Enter a phone number",
+      "ENTER_PHONE_FOR_DIRECT_LINE": "Enter the number for a direct line the mediation service can use.",
+      "PAGE_TITLE": "Mediation - Provide a phone number",
+      "WONT_GIVE_NUMBER": "We won't give the number to anyone else."
     },
     "MEDIATION_COMPANY_PHONE": {
       "CONFIRM_TELEPHONE_NUMBER" : "Confirm telephone number",
