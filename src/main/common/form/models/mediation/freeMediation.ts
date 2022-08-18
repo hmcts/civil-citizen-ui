@@ -1,8 +1,7 @@
 import {IsDefined} from 'class-validator';
-import {VALID_YES_NO_OPTION} from '../../validationErrors/errorMessageConstants';
 
 export class FreeMediation {
-  @IsDefined({ message: VALID_YES_NO_OPTION })
+  @IsDefined({ message: 'ERRORS.VALID_YES_NO_OPTION' })
     option?: string;
 
   constructor(option?: string) {

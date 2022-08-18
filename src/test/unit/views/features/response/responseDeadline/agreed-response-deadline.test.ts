@@ -130,7 +130,7 @@ describe('Agreed response deadline View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.DATE_NOT_MORE_THAN_28_DAYS);
+      expect(errorSummaryMessage.innerHTML).toContain('Agreed response date cannot be more than 28 days after the original response date');
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#date');
     });
