@@ -17,7 +17,7 @@ import {addDaysFilter, dateFilter, formatDate, addDaysFilterTranslated} from './
 import {SignatureType} from '../../common/models/signatureType';
 import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
 import {FormValidationError} from '../../common/form/validationErrors/formValidationError';
-import { NotEligibleReason } from '../../common/form/models/eligibility/NotEligibleReason';
+import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibleReason';
 
 const packageDotJson = require('../../../../package.json');
 

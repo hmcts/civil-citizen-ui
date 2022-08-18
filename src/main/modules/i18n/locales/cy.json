@@ -636,7 +636,7 @@
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED" : "Rydym wedi eich cofrestru’n awtomatig i gael gwasanaeth cyfryngu dros y ffôn am ddim gan Gwasanaeth Llysoedd a Thribiwnlysoedd EM.",
       "CLAIMANT_MUST_AGREE" : "Rhaid i’r hawlydd gytuno i’r cyfryngu. Byddwn yn cysylltu â chi o fewn 28 diwrnod ar ôl cael cadarnhad gan yr hawlydd i drefnu apwyntiad am ddim.",
-      "DO_NOT_AGREE_TO_FREE_MEDIATION ": "Nid wyf yn cytuno i gyfryngu am ddim",
+      "DO_NOT_AGREE_TO_FREE_MEDIATION": "Nid wyf yn cytuno i gyfryngu am ddim",
       "EITHER_PARTY_BREAKS_TERMS" : "Os bydd y naill barti neu’r llall yn torri telerau’r cytundeb, gall y parti arall fynd i’r llys i ofyn am ddyfarniad neu wrandawiad.",
       "FIND_OUT_MORE" : "Rhagor o wybodaeth am y ",
       "HOW_WORKS" : "Sut mae cyfryngu am ddim yn gweithio",
@@ -944,7 +944,7 @@
       "PAGE_TITLE": "Your employer",
       "WHO_EMPLOYS" : "Pwy sy’n eich cyflogi"
     },
-    "EMPLOYER": {
+    "EMPLOYER" : {
       "EMPLOYER_NAME" : "Enw’r cyflogwr",
       "JOB_TITLE" : "Teitl swydd"
     },
