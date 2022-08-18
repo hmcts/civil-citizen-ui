@@ -436,6 +436,7 @@
       "CLAIM_DOCUMENTS": "Claim documents",
       "CLAIMANT_NAME": "Claimant name:",
       "CLAIM_NUMBER": "Claim number:",
+      "CLAIMANT_RESPONSE": "Claimant Response:",
       "DOCUMENTS": "Documents",
       "DOCUMENT_CREATED": "Created:",
       "DOWNLOAD_CLAIM": "Download claim",
@@ -655,7 +656,18 @@
       "TITLE": "You need to complete all sections before you submit your response"
     },
     "I_DON_T_WANT_FREE_MEDIATION": {
-      "PAGE_TITLE": "I don't want free mediation"
+      "ALREADY_TRIED": "I have already tried to resolve the dispute with the other party, with no success",
+      "ANY_INFORMATION_YOU_PROVIDE": "Any information you provide is used solely by HM Courts and Tribunals Service to help us improve our services. Your answers have no impact on the progress or outcome of your case, or on any contact you have with HM Courts and Tribunals Service.",
+      "DO_NOT_AGREE_TO_FREE_MEDIATION": "I do not agree to free mediation",
+      "ENTER_YOUR_REASON_HERE": "Enter your reason here",
+      "JUDGE_TO_DECIDE": "I want a judge to make a decision on the dispute",
+      "NO_DELAY_IN_HEARING": "I do not want to delay getting a hearing",
+      "NOT_SURE": "I am not sure what would happen in mediation",
+      "OTHER": "Another reason (please specify)",
+      "PAGE_TITLE": "I don't want free mediation",
+      "SKIP_THIS_SECTION": "Skip this section",
+      "WOULD_NOT_SOLVE": "I do not think mediation would solve the dispute",
+      "YOU_HAVE_CHOSEN_TELL_US_WHY": "You have chosen not to try free mediation. Please tell us why:"
     },
     "LATEST_UPDATE_CONTENT": {
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
@@ -669,11 +681,29 @@
       "PAGE_TITLE": "Mediation - Provide a phone number"
     },
     "MEDIATION_COMPANY_PHONE": {
-      "PAGE_TITLE": "Mediation - Provide company contact number"
+      "CONFIRM_TELEPHONE_NUMBER" : "Confirm telephone number",
+      "ENTER_PHONE_NUMBER" : "Enter this person’s phone number, including extension if required",
+      "FOR_EXAMPLE" : "For example, 02012346788 ext. 153",
+      "PAGE_TITLE": "Mediation - Provide company contact number",
+      "TITLE": "Who should the mediation service call?",
+      "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
     },
     "MEDIATION_DISAGREEMENT": {
+      "ADVANTAGES_OF_FREE_MEDIATION": "Advantages of free mediation",
+      "CAN_BE_USED_IN_COURT": "it's confidential and nothing said or done during mediation can be used in court",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_1": "mediation can avoid a",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_2": "County Court Judgment (opens in a new tab)",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_3": "being made against you",
+      "IF_YOU_CHOOSE_NOT": "If you choose not to try mediation this cannot be changed once your response is submitted.",
+      "IT_GIVES_YOU_CONTROL": "it gives you control over how your dispute is settled, which is not possible by going to court",
+      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:",
+      "MEDIATION_CAN_BE": "mediation can be quicker and cheaper than going to court",
+      "MEDIATION_DISAGREEMENT": "You chose not to try free mediation",
       "PAGE_TITLE": "Free mediation disagreement",
-      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+      "THE_CLAIM_WILL_CONTINUE": "The claim will continue and you may have to go to a hearing.",
+      "THE_MEDIATOR_SPEAKS": "the mediator speaks to each side separately, you do not speak to the other party during mediation",
+      "WELL_ASK_THE_CLAIMANT": "We'll ask the claimant if they'll try free mediation. If they say no, the claim will go to a hearing.",
+      "WILL_YOU_CHANGE_YOUR_DECISION": "Will you change your decision and try free mediation?"
     },
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
