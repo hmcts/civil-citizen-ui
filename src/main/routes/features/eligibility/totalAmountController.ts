@@ -13,7 +13,8 @@ const totalAmountViewPath = 'features/eligibility/total-amount';
 
 totalAmountController.get(ELIGIBILITY_CLAIM_VALUE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
-    const form = new GenericForm(new TotalAmount())
+    const totalAmount = req.cookies['total_amount'] ? req.cookies['total_amount'] : undefined;
+    const form = new GenericForm(new TotalAmount(totalAmount))
     res.render(totalAmountViewPath, { form });
   } catch (error) {
     next(error);
@@ -28,6 +29,7 @@ totalAmountController.post(ELIGIBILITY_CLAIM_VALUE_URL, async (req: express.Requ
     if (form.hasErrors()) {
       res.render(totalAmountViewPath, { form });
     } else {
+      res.cookie('total_amount', req.body.totalAmount)
       switch (totalAmount.option) {
         case TotalAmountOptions.OVER_25000:
           res.redirect(ELIGIBILITY_NOT_ELIGIBLE_URL + '?reason=claim-value-over-25000');

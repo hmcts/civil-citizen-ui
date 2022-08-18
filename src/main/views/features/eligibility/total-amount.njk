@@ -33,15 +33,18 @@
               items: [
                 {
                   value: 'over-25000',
-                  text: t('PAGES.ELIGIBILITY.TOTAL_AMOUNT.OVER_25000')
+                  text: t('PAGES.ELIGIBILITY.TOTAL_AMOUNT.OVER_25000'),
+                  checked: form.model.option === 'over-25000'
                 },
                 {
                   value: 'less-25000',
-                  text: t('PAGES.ELIGIBILITY.TOTAL_AMOUNT.25000_OR_LESS')
+                  text: t('PAGES.ELIGIBILITY.TOTAL_AMOUNT.25000_OR_LESS'),
+                  checked: form.model.option === 'less-25000'
                 },
                 {
                   value: 'unknow',
-                  text: t('PAGES.ELIGIBILITY.TOTAL_AMOUNT.DONT_KNOW')
+                  text: t('PAGES.ELIGIBILITY.TOTAL_AMOUNT.DONT_KNOW'),
+                  checked: form.model.option === 'unknow'
                 }
               ],
               errorMessage: {
