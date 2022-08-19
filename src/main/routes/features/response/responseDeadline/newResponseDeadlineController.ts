@@ -23,6 +23,7 @@ const responseDeadlineService = new ResponseDeadlineService();
 newResponseDeadlineController.get(NEW_RESPONSE_DEADLINE_URL, async function (req: AppRequest, res, next: express.NextFunction) {
   try {
     const claim = await getCaseDataFromStore(req.params.id);
+    const language = req.query.lang ? req.query.lang : req.cookies.lang;
     const agreedResponseDeadline = claim.responseDeadline?.agreedResponseDeadline ? claim.responseDeadline?.agreedResponseDeadline : req.cookies?.newDeadlineDate?.date;
     if (!agreedResponseDeadline) {
       throw new Error('No extended response deadline found');
@@ -31,7 +32,7 @@ newResponseDeadlineController.get(NEW_RESPONSE_DEADLINE_URL, async function (req
 
     res.render(newResponseDeadlineViewPath, {
       claimantName: claim.getClaimantName(),
-      responseDeadline: formatDateToFullDate(calculatedExtendedDeadline),
+      responseDeadline: formatDateToFullDate(calculatedExtendedDeadline, true, language),
       backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_TO_MORE_TIME_URL),
     });
   } catch (error) {
