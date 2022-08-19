@@ -18,8 +18,8 @@ function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Re
 }
 
 singleDefendantController.get(ELIGIBILITY_SINGLE_DEFENDANT_URL, (req, res) => {
-  const parsedCookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : undefined;
-  const singleDefendant = parsedCookie?.singleDefendant;
+  const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : undefined;
+  const singleDefendant = cookie?.singleDefendant;
   const genericYesNoForm = new GenericForm(new GenericYesNo(singleDefendant));
   renderView(genericYesNoForm, res);
 });
@@ -31,9 +31,9 @@ singleDefendantController.post(ELIGIBILITY_SINGLE_DEFENDANT_URL, (req, res) => {
   if (genericYesNoForm.hasErrors()) {
     renderView(genericYesNoForm, res);
   } else {
-    const parsedCookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
-    parsedCookie.singleDefendant = genericYesNoForm.model.option;
-    res.cookie('eligibility', parsedCookie);
+    const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
+    cookie.singleDefendant = genericYesNoForm.model.option;
+    res.cookie('eligibility', cookie);
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(NOT_ELIGIBLE_URL + '?reason=multiple-defendants')
       : res.redirect(ELIGIBILITY_DEFENDANT_ADDRESS_URL);
