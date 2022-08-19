@@ -20,10 +20,10 @@ export const isPastDeadline = (deadline: Date | string) => {
 };
 
 export const formatDateToFullDate = (date: Date, isDays?: boolean, lng?: string): string => {
-  const dateTime = convertDateToLuxonDate(date);
   if (isDays) {
-    return dayjs(dateTime.toLocaleString(DateTime.DATE_FULL, {locale: 'en-gb'})).locale(getLng(lng)).format('DD MMMM YYYY');
+    return dayjs(date).locale(getLng(lng)).format('DD MMMM YYYY');
   }
+  const dateTime = convertDateToLuxonDate(date);
   return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: 'en-gb'});
 };
 
