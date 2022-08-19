@@ -9,6 +9,9 @@ import {
 } from '../../../../../../main/routes/urls';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
+
 describe('Single Defendant Controller', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
   const citizenRoleToken: string = config.get('citizenRoleToken');
