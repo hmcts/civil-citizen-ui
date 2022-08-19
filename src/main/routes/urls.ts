@@ -92,4 +92,4 @@ export const NEW_RESPONSE_DEADLINE_URL =  `${BASE_CASE_RESPONSE_URL}/new-respons
 export const DETERMINATION_WITHOUT_HEARING_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/determination-without-hearing`;
 export const ELIGIBILITY_SINGLE_DEFENDANT_URL = `${BASE_ELIGIBILITY_URL}/single-defendant`;
 export const ELIGIBILITY_DEFENDANT_ADDRESS_URL = `${BASE_ELIGIBILITY_URL}/defendant-address`;
-export const NOT_ELIGIBLE_URL = `${BASE_ELIGIBILITY_URL}/not-eligible`;
+export const NOT_ELIGIBLE_FOR_THIS_SERVICE_URL = `${BASE_ELIGIBILITY_URL}/not-eligible`;

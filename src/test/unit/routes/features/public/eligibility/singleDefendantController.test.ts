@@ -5,7 +5,7 @@ import {app} from '../../../../../../main/app';
 import {
   ELIGIBILITY_DEFENDANT_ADDRESS_URL,
   ELIGIBILITY_SINGLE_DEFENDANT_URL,
-  NOT_ELIGIBLE_URL,
+  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../../../main/routes/urls';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 
@@ -59,7 +59,7 @@ describe('Single Defendant Controller', () => {
     it('should redirect to not eligible page if single radio selection is yes', async () => {
       await request(app).post(ELIGIBILITY_SINGLE_DEFENDANT_URL).send({option: YesNo.YES}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(NOT_ELIGIBLE_URL + '?reason=multiple-defendants');
+        expect(res.header.location).toBe(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=multiple-defendants');
       });
     });
 

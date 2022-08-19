@@ -2,7 +2,7 @@ import * as express from 'express';
 import {
   ELIGIBILITY_DEFENDANT_ADDRESS_URL,
   ELIGIBILITY_SINGLE_DEFENDANT_URL,
-  NOT_ELIGIBLE_URL,
+  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
@@ -35,7 +35,7 @@ singleDefendantController.post(ELIGIBILITY_SINGLE_DEFENDANT_URL, (req, res) => {
     cookie.singleDefendant = genericYesNoForm.model.option;
     res.cookie('eligibility', cookie);
     genericYesNoForm.model.option === YesNo.YES
-      ? res.redirect(NOT_ELIGIBLE_URL + '?reason=multiple-defendants')
+      ? res.redirect(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=multiple-defendants')
       : res.redirect(ELIGIBILITY_DEFENDANT_ADDRESS_URL);
   }
 });
