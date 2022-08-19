@@ -2,7 +2,7 @@ import * as express from 'express';
 import {
   ELIGIBILITY_DEFENDANT_ADDRESS_URL,
   ELIGIBILITY_SINGLE_DEFENDANT_URL,
-  NOT_ELIGIBLE_URL
+  NOT_ELIGIBLE_URL,
 } from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
@@ -18,8 +18,9 @@ function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Re
 }
 
 singleDefendantController.get(ELIGIBILITY_SINGLE_DEFENDANT_URL, (req, res) => {
-  // get cookie value
-  const genericYesNoForm = new GenericForm(new GenericYesNo());
+  const parsedCookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : undefined;
+  const singleDefendant = parsedCookie?.singleDefendant;
+  const genericYesNoForm = new GenericForm(new GenericYesNo(singleDefendant));
   renderView(genericYesNoForm, res);
 });
 
@@ -30,7 +31,9 @@ singleDefendantController.post(ELIGIBILITY_SINGLE_DEFENDANT_URL, (req, res) => {
   if (genericYesNoForm.hasErrors()) {
     renderView(genericYesNoForm, res);
   } else {
-    // save cookieValue
+    const parsedCookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
+    parsedCookie.singleDefendant = genericYesNoForm.model.option;
+    res.cookie('eligibility', parsedCookie);
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(NOT_ELIGIBLE_URL + '?reason=multiple-defendants')
       : res.redirect(ELIGIBILITY_DEFENDANT_ADDRESS_URL);
