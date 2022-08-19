@@ -6,6 +6,7 @@
 {% from "../../macro/expandableSection.njk" import expandableSection %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -20,14 +21,11 @@
         '<p class="govuk-body">' + t('PAGES.YOUR_DEFENCE.TIMELINE') + '</p>'
       %}
       {% if form.hasErrors() %}
-        {{ govukErrorSummary({
-          "titleText": t('ERRORS.THERE_WAS_A_PROBLEM'),
-          "errorList": errors
-        }) }}
+        {{ errorSummary(errors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
+          <h1 class="govuk-heading-l">{{ heading }}</h1>
           <div class="govuk-description-block govuk-body">
             {{ expandableSection(label = t('PAGES.YOUR_DEFENCE.REASON'), content = theirReason, id = 'summaryContent') }}
           </div>
@@ -56,7 +54,7 @@
 
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

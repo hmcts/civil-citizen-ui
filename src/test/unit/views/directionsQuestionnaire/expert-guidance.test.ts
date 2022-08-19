@@ -69,7 +69,7 @@ describe('Send your response by email View', () => {
       expect(paragraphs[11].innerHTML).toContain('The judge may ask one of you to make a list of 3 independent experts who can provide a written report in return for a fee.');
       expect(paragraphs[12].innerHTML).toContain('You must avoid discussing the case in detail with the 3 experts.');
       expect(paragraphs[13].innerHTML).toContain('The other party then chooses one expert from the list. After that, you both need to follow these steps');
-      const list = htmlDocument.getElementsByTagName('li');
+      const list = htmlDocument.getElementsByClassName('govuk-list--number')[0].getElementsByTagName('li');
       expect(list[0].innerHTML).toContain('Provide questions for the expert to answer in a report.');
       expect(list[1].innerHTML).toContain('Provide any extra information the expert asks for.');
       expect(list[2].innerHTML).toContain('Pay the expert - you usually both share this cost.');
