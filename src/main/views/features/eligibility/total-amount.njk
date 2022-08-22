@@ -32,19 +32,19 @@
               name: "totalAmount",
               items: [
                 {
-                  value: 'over-25000',
+                  value: TotalAmountOptions.OVER_25000,
                   text: t('PAGES.ELIGIBILITY_TOTAL_AMOUNT.OVER_25000'),
-                  checked: form.model.option === 'over-25000'
+                  checked: form.model.option === TotalAmountOptions.OVER_25000
                 },
                 {
-                  value: 'less-25000',
+                  value: TotalAmountOptions.LESS_25000,
                   text: t('PAGES.ELIGIBILITY_TOTAL_AMOUNT.25000_OR_LESS'),
-                  checked: form.model.option === 'less-25000'
+                  checked: form.model.option === TotalAmountOptions.LESS_25000
                 },
                 {
-                  value: 'unknow',
+                  value: TotalAmountOptions.UNKNOW,
                   text: t('PAGES.ELIGIBILITY_TOTAL_AMOUNT.DONT_KNOW'),
-                  checked: form.model.option === 'unknow'
+                  checked: form.model.option === TotalAmountOptions.UNKNOW
                 }
               ],
               errorMessage: {
