@@ -3,8 +3,7 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  ELIGIBILITY_CLAIM_VALUE_URL,
-  ELIGIBILITY_URL,
+  BASE_ELIGIBILITY_URL,
 } from '../../../../../main/routes/urls';
 import {t} from 'i18next';
 
@@ -22,7 +21,7 @@ describe('Try the new online service', () => {
   describe('on GET', () => {
     it('should return Try the new online service page', async () => {
       await request(app)
-        .get(ELIGIBILITY_URL)
+        .get(BASE_ELIGIBILITY_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.TRY_NEW_SERVICE.TITLE'));
@@ -30,14 +29,4 @@ describe('Try the new online service', () => {
     });
   });
 
-  describe('on POST', () => {
-    it('should redirect to Claim Amount Page', async () => {
-      await request(app)
-        .post(ELIGIBILITY_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(ELIGIBILITY_CLAIM_VALUE_URL);
-        });
-    });
-  });
 });

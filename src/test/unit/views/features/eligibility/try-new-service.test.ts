@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../main/app';
 import request from 'supertest';
-import {ELIGIBILITY_URL} from '../../../../../main/routes/urls';
+import {BASE_ELIGIBILITY_URL} from '../../../../../main/routes/urls';
 import {t} from 'i18next';
 
 const jsdom = require('jsdom');
@@ -25,7 +25,7 @@ describe('Try the new online service View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).get(ELIGIBILITY_URL);
+      const response = await request(app).get(BASE_ELIGIBILITY_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
       paragraphs = htmlDocument.getElementsByClassName(govukBodyClass);
