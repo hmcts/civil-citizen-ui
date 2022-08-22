@@ -36,7 +36,7 @@ defendantAddressEligibilityController.post(ELIGIBILITY_DEFENDANT_ADDRESS_URL, (r
     res.cookie('eligibility', cookie);
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(ELIGIBILITY_CLAIM_TYPE_URL)
-      : res.redirect(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=not-eligible-address');
+      : res.redirect(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=defendant-address');
   }
 });
 

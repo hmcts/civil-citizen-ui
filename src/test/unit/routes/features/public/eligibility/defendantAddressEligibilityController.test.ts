@@ -59,7 +59,7 @@ describe('Single Defendant Controller', () => {
     it('should redirect to not eligible page if address question radio selection is no', async () => {
       await request(app).post(ELIGIBILITY_DEFENDANT_ADDRESS_URL).send({option: YesNo.NO}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=not-eligible-address');
+        expect(res.header.location).toBe(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=defendant-address');
       });
     });
 
