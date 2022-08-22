@@ -8,6 +8,7 @@
 {% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "../../macro/canWeUseCompanyInputs.njk" import canWeUseCompanyInputs %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.MEDIATION_COMPANY_PHONE.PAGE_TITLE') }}
@@ -17,19 +18,16 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% if contactPerson %}
-        {% set title = t("Is CONTACTPERSON the right person for the mediation service to call?") | replace("CONTACTPERSON", contactPerson) %}
+        {% set title = t("PAGES.MEDIATION_COMPANY_PHONE.TITLE_WITH_PERSON", { contactPerson : contactPerson }) %}
       {% else %}
-        {% set title = t("Who should the mediation service call?") %}
+        {% set title = t("PAGES.MEDIATION_COMPANY_PHONE.TITLE") %}
       {% endif %}
 
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getErrors() %}
       {% if errors.length %}
-        {{ govukErrorSummary({
-          "titleText": t("There was a problem"),
-          "errorList": errors
-        }) }}
+        {{ errorSummary(errors, t) }}
       {% endif %}
 
       {% set yesHtml %}
@@ -37,7 +35,7 @@
           id: "mediationPhoneNumberConfirmation",
           name: "mediationPhoneNumberConfirmation",
           classes: "govuk-!-width-two-thirds",
-          label: { text: t("Confirm telephone number") },
+          label: { text: t("PAGES.MEDIATION_COMPANY_PHONE.CONFIRM_TELEPHONE_NUMBER") },
           type: "text",
           spellcheck: false,
           value: form.model.mediationPhoneNumberConfirmation,
@@ -48,7 +46,7 @@
       {% endset -%}
 
       {% set noHtml %}
-      {{ canWeUseCompanyInputs(form) }}
+      {{ canWeUseCompanyInputs(form, t) }}
       {% endset -%}
 
       <div class="govuk-grid-row">
@@ -57,16 +55,18 @@
             {{ csrfProtection(csrf) }}
             <input type="hidden" name="contactPerson" value="{{contactPerson}}">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 class="govuk-fieldset__heading">{{ t(title) }}</h1>
+              <h1 class="govuk-fieldset__heading">{{ title }}</h1>
             </legend>
             {% if contactPerson %}
               {{ yesNoRadioButton(t,id,name,'',form,'',{yesHtml:yesHtml, noHtml:noHtml}) }}
             {% else %}
               {{ yesNoRadioButton(t,id,name,'',form,'',{classes:"govuk-!-display-none"}) }}
-              {{ canWeUseCompanyInputs(form) }}
+              {{ canWeUseCompanyInputs(form, t) }}
             {% endif %}
             <div class="govuk-form-group">
-              {{ govukButton({ text: t("Save and continue") }) }}
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
               {{ contactUsForHelp(t) }}
             </form>
           </div>

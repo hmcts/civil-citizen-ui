@@ -2,7 +2,7 @@ import * as express from 'express';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {
   ELIGIBILITY_CLAIM_VALUE_URL,
-  ELIGIBILITY_NOT_ELIGIBLE_URL,
+  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_SINGLE_DEFENDANT_URL,
 } from '../../../routes/urls';
 import {TotalAmount} from '../../../common/models/eligibility/totalAmount';
@@ -29,13 +29,13 @@ totalAmountController.post(ELIGIBILITY_CLAIM_VALUE_URL, async (req: express.Requ
     res.cookie('eligibility', cookie);
     switch (totalAmount.option) {
       case TotalAmountOptions.OVER_25000:
-        res.redirect(ELIGIBILITY_NOT_ELIGIBLE_URL + '?reason=claim-value-over-25000');
+        res.redirect(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=claim-value-over-25000');
         break;
       case TotalAmountOptions.LESS_25000:
         res.redirect(ELIGIBILITY_SINGLE_DEFENDANT_URL);
         break;
       case TotalAmountOptions.UNKNOW:
-        res.redirect(ELIGIBILITY_NOT_ELIGIBLE_URL + '?reason=claim-value-not-known');
+        res.redirect(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=claim-value-not-known');
         break;
     }
   }

@@ -86,6 +86,8 @@ import agreedResponseDeadlineController from './features/response/responseDeadli
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/determinationWithoutHearingController';
 import totalAmountController from './features/eligibility/totalAmountController';
+import notEligibleController
+  from './features/eligibility/notEligibleController';
 
 export default [
   homeController,
@@ -165,4 +167,5 @@ export default [
   newDeadlineResponseController,
   determinationWithoutHearingController,
   totalAmountController,
+  notEligibleController,
 ];

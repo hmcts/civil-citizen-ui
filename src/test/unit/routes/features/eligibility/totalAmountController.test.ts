@@ -4,7 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
   ELIGIBILITY_CLAIM_VALUE_URL,
-  ELIGIBILITY_NOT_ELIGIBLE_URL,
+  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_SINGLE_DEFENDANT_URL,
 } from '../../../../../main/routes/urls';
 
@@ -40,7 +40,7 @@ describe('Response Deadline Options Controller', () => {
     it('should render not eligible page when radio over-25000 is selected', async () => {
       await request(app).post(ELIGIBILITY_CLAIM_VALUE_URL).send({ 'totalAmount': 'over-25000' }).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(ELIGIBILITY_NOT_ELIGIBLE_URL + '?reason=claim-value-over-25000');
+        expect(res.header.location).toBe(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=claim-value-over-25000');
       });
     });
 
@@ -54,7 +54,7 @@ describe('Response Deadline Options Controller', () => {
     it('should render not eligible page when radio unknow is selected', async () => {
       await request(app).post(ELIGIBILITY_CLAIM_VALUE_URL).send({ 'totalAmount': 'unknow' }).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(ELIGIBILITY_NOT_ELIGIBLE_URL + '?reason=claim-value-not-known');
+        expect(res.header.location).toBe(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=claim-value-not-known');
       });
     });
   });

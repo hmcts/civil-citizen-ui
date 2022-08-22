@@ -5,12 +5,7 @@ import nock from 'nock';
 import {CAN_WE_USE_COMPANY_URL, CLAIM_TASK_LIST_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {
-  PHONE_NUMBER_REQUIRED,
-  NAME_REQUIRED,
-  TEXT_TOO_MANY,
-  VALID_YES_NO_OPTION,
-} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
+import {VALID_YES_NO_OPTION} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
@@ -65,7 +60,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({ option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(PHONE_NUMBER_REQUIRED);
+          expect(res.text).toContain(TestMessages.PHONE_NUMBER_REQUIRED);
         });
     });
     it('should have errors when yes is an option but a long telephone number is provided', async () => {
@@ -74,7 +69,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({ option: YesNo.YES, mediationPhoneNumber: null, mediationContactPerson: null, mediationPhoneNumberConfirmation: inValidPhoneNumber, contactPerson: 'Test contact person' })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TEXT_TOO_MANY);
+          expect(res.text).toContain('You&#39;ve entered too many characters');
         });
     });
     it('should have errors when no is an option, but no other thing provided', async () => {
@@ -83,8 +78,8 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({ option: YesNo.NO})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NAME_REQUIRED);
-          expect(res.text).toContain(PHONE_NUMBER_REQUIRED);
+          expect(res.text).toContain(TestMessages.NAME_REQUIRED);
+          expect(res.text).toContain(TestMessages.PHONE_NUMBER_REQUIRED);
         });
     });
     it('should have errors when no is an option, contact number is provided but no contact name', async () => {
@@ -93,7 +88,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({ option: YesNo.NO, mediationPhoneNumber: validPhoneNumber, mediationContactPerson:null   })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(NAME_REQUIRED);
+          expect(res.text).toContain(TestMessages.NAME_REQUIRED);
         });
     });
     it('should have errors when no is an option, contact name is provided but no contact number', async () => {
@@ -102,7 +97,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({ option: YesNo.NO, mediationPhoneNumber: null, mediationContactPerson: validName })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(PHONE_NUMBER_REQUIRED);
+          expect(res.text).toContain(TestMessages.PHONE_NUMBER_REQUIRED);
         });
     });
     it('should have errors when no is an option but both contact name and contact number are too long', async () => {
@@ -111,7 +106,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         .send({ option: YesNo.NO, mediationPhoneNumber: inValidPhoneNumber, mediationContactPerson: inValidName })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TEXT_TOO_MANY);
+          expect(res.text).toContain('You&#39;ve entered too many characters');
         });
     });
     it('should redirect with valid input', async () => {
