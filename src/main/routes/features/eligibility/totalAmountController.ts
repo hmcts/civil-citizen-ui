@@ -7,6 +7,8 @@ import {
 } from '../../../routes/urls';
 import {TotalAmount} from '../../../common/models/eligibility/totalAmount';
 import {TotalAmountOptions} from '../../../common/models/eligibility/totalAmountOptions';
+import {constructUrlWithNotEligibleReson} from '../../../common/utils/urlFormatter';
+import {NotEligibleReason} from '../../../common/form/models/eligibility/NotEligibleReason';
 
 const totalAmountController = express.Router();
 const totalAmountViewPath = 'features/eligibility/total-amount';
@@ -29,13 +31,13 @@ totalAmountController.post(ELIGIBILITY_CLAIM_VALUE_URL, async (req: express.Requ
     res.cookie('eligibility', cookie);
     switch (totalAmount.option) {
       case TotalAmountOptions.OVER_25000:
-        res.redirect(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=claim-value-over-25000');
+        res.redirect(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000));
         break;
       case TotalAmountOptions.LESS_25000:
         res.redirect(ELIGIBILITY_SINGLE_DEFENDANT_URL);
         break;
-      case TotalAmountOptions.UNKNOW:
-        res.redirect(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=claim-value-not-known');
+      case TotalAmountOptions.UNKNOWN:
+        res.redirect(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_NOT_KNOWN));
         break;
     }
   }
