@@ -63,6 +63,12 @@
       "WEB_CHAT_NO_ADVISORS": "No Advisors are currently available, Come back later.",
       "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
     },
+    "HEADER": {
+      "MONEY_CLAIMS": "Money Claims",
+      "MY_ACCOUNT": "My account",
+      "SIGN_IN": "Sign in",
+      "SIGN_OUT": "Sign out"
+    },
     "MONTH_NAMES": {
       "APRIL": "April",
       "AUGUST": "August",
@@ -110,7 +116,12 @@
       "WEEK": "Week",
       "TWO_WEEKS_LETTERS" : "Two weeks",
       "FOUR_WEEKS_LETTERS" : "Four weeks",
-      "MONTH_UPPER_CASE" : "Month"
+      "MONTH_UPPER_CASE" : "Month",
+      "WEEK_LOWER_CASE": "week",
+      "WEEKS_LOWER_CASE": "weeks",
+      "MONTH_LOWER_CASE": "month",
+      "MONTHS_LOWER_CASE": "months",
+      "TWO_MONTHS_LOWER_CASE": "2 months"
     },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
@@ -430,6 +441,7 @@
       "CLAIM_DOCUMENTS": "Claim documents",
       "CLAIMANT_NAME": "Claimant name:",
       "CLAIM_NUMBER": "Claim number:",
+      "CLAIMANT_RESPONSE": "Claimant Response:",
       "DOCUMENTS": "Documents",
       "DOCUMENT_CREATED": "Created:",
       "DOWNLOAD_CLAIM": "Download claim",
@@ -557,7 +569,32 @@
       "TITLE": "Do you have a job?"
     },
     "EVIDENCE": {
-      "PAGE_TITLE": "List your evidence"
+      "ADD_MORE": "Add more evidence",
+      "CONTRACTS_AND_AGREEMENTS": "Contracts and agreements",
+      "CORRESPONDENCE": "Letters, emails and other correspondence",
+      "DESCRIBE": "Describe this evidence in more detail (optional). ",
+      "DESCRIPTION": "Description",
+      "EVIDENCE": "Evidence",
+      "EVIDENCE_DETAILS": {
+        "CONTRACTS_AND_AGREEMENTS": "For example, a signed contract.",
+        "CORRESPONDENCE": "For example, a letter from the other party.",
+        "EXPERT_WITNESS": "For example, a surveyor's report.",
+        "PHOTO": "For example, a photo of the work you carried out.",
+        "RECEIPTS": "For example, a receipt showing the amount you've paid.",
+        "STATEMENT_OF_ACCOUNT": "For example, a bank statement showing the amount you've paid."
+      },
+      "EVIDENCE_LIST": "Evidence Type List",
+      "EXPERT_WITNESS": "Expert witness",
+      "LIST_ANY": "List any parts of their evidence you disagree with (optional)",
+      "MAKE_SELECTION": "-- Please make a selection --",
+      "OTHER": "Other",
+      "PAGE_TITLE": "List your evidence",
+      "PHOTO": "Photo evidence",
+      "RECEIPTS": "Receipts",
+      "STATEMENT_OF_ACCOUNT": "Statements of account",
+      "SUBTITLE": "List your evidence (optional)",
+      "TELL_US": "Tell us about any evidence you wish to provide. You do not need to send us any evidence now. If your case goes to a court hearing, and is not settled, you will need to provide evidence.",
+      "TITLE": "List your evidence"
     },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
@@ -624,7 +661,18 @@
       "TITLE": "You need to complete all sections before you submit your response"
     },
     "I_DON_T_WANT_FREE_MEDIATION": {
-      "PAGE_TITLE": "I don't want free mediation"
+      "ALREADY_TRIED": "I have already tried to resolve the dispute with the other party, with no success",
+      "ANY_INFORMATION_YOU_PROVIDE": "Any information you provide is used solely by HM Courts and Tribunals Service to help us improve our services. Your answers have no impact on the progress or outcome of your case, or on any contact you have with HM Courts and Tribunals Service.",
+      "DO_NOT_AGREE_TO_FREE_MEDIATION": "I do not agree to free mediation",
+      "ENTER_YOUR_REASON_HERE": "Enter your reason here",
+      "JUDGE_TO_DECIDE": "I want a judge to make a decision on the dispute",
+      "NO_DELAY_IN_HEARING": "I do not want to delay getting a hearing",
+      "NOT_SURE": "I am not sure what would happen in mediation",
+      "OTHER": "Another reason (please specify)",
+      "PAGE_TITLE": "I don't want free mediation",
+      "SKIP_THIS_SECTION": "Skip this section",
+      "WOULD_NOT_SOLVE": "I do not think mediation would solve the dispute",
+      "YOU_HAVE_CHOSEN_TELL_US_WHY": "You have chosen not to try free mediation. Please tell us why:"
     },
     "LATEST_UPDATE_CONTENT": {
       "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
@@ -638,16 +686,48 @@
       "PAGE_TITLE": "Mediation - Provide a phone number"
     },
     "MEDIATION_COMPANY_PHONE": {
-      "PAGE_TITLE": "Mediation - Provide company contact number"
+      "CONFIRM_TELEPHONE_NUMBER" : "Confirm telephone number",
+      "ENTER_PHONE_NUMBER" : "Enter this person’s phone number, including extension if required",
+      "FOR_EXAMPLE" : "For example, 02012346788 ext. 153",
+      "PAGE_TITLE": "Mediation - Provide company contact number",
+      "TITLE": "Who should the mediation service call?",
+      "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
     },
     "MEDIATION_DISAGREEMENT": {
+      "ADVANTAGES_OF_FREE_MEDIATION": "Advantages of free mediation",
+      "CAN_BE_USED_IN_COURT": "it's confidential and nothing said or done during mediation can be used in court",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_1": "mediation can avoid a",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_2": "County Court Judgment (opens in a new tab)",
+      "COUNT_COURT_JUDGMENT_SENTENCE_LINK_3": "being made against you",
+      "IF_YOU_CHOOSE_NOT": "If you choose not to try mediation this cannot be changed once your response is submitted.",
+      "IT_GIVES_YOU_CONTROL": "it gives you control over how your dispute is settled, which is not possible by going to court",
+      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:",
+      "MEDIATION_CAN_BE": "mediation can be quicker and cheaper than going to court",
+      "MEDIATION_DISAGREEMENT": "You chose not to try free mediation",
       "PAGE_TITLE": "Free mediation disagreement",
-      "MANY_ADVANTAGES_TO_FREE_MEDIATION": "There are many advantages to free mediation, including:"
+      "THE_CLAIM_WILL_CONTINUE": "The claim will continue and you may have to go to a hearing.",
+      "THE_MEDIATOR_SPEAKS": "the mediator speaks to each side separately, you do not speak to the other party during mediation",
+      "WELL_ASK_THE_CLAIMANT": "We'll ask the claimant if they'll try free mediation. If they say no, the claim will go to a hearing.",
+      "WILL_YOU_CHANGE_YOUR_DECISION": "Will you change your decision and try free mediation?"
     },
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4 pm on {{ responseDeadline }}"
+    },
+    "NOT_ELIGIBLE_FOR_SERVICE":{
+      "CANT_CALCULATE_THE_AMOUNT" : "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
+      "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
+      "CLAIM_BY_PAPER": "You can also claim by paper. ",
+      "DOWNLOAD_PAPER_FORM": "Download a paper form",
+      "FOR_CLAIMS_LESS_THAN_25000": "This service is for claims of £25,000 or less.",
+      "FOR_CLAIMS_BETWEEN_25001_AND_100000": "For claims between £25,001 and £100,000 you might be able to ",
+      "N1_PAPER_FORM" : "N1 paper form",
+      "OPENS_IN_A_NEW_WINDOW": "(opens in a new window)",
+      "PAGE_TITLE": "You can’t use this service",
+      "USE_MCOL": "use Money Claim Online (MCOL)",
+      "WHERE_TO_SEND_PAPER_FORMS": "Where to send paper forms",
+      "YOU_NEED_TO_KNOW_AMOUNT" : "You need to know the claim amount to use this service."
     },
     "OTHER_DEPENDANTS": {
       "DESCRIPTION": "This can include adults and people you don't live with.",
@@ -665,7 +745,13 @@
       "TITLE": "How much money do you admit you owe?"
     },
     "PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID": {
-      "PAGE_TITLE": "How much have you paid?"
+      "FOR_EXAMPLE": "For example, ",
+      "HOW_DID": "How did you pay this amount?",
+      "HOW_MUCH": "How much have you paid?",
+      "PAGE_TITLE": "How much have you paid?",
+      "TITLE": "How much have you paid the claimant?",
+      "TOTAL_CLAIMED" : "The total amount claimed is £{{totalClaimAmount}}. This includes the claim fee and any interest.",
+      "WHEN_DID": "When did you pay this amount?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
@@ -1005,7 +1091,7 @@
     "VALID_CORRESPONDENCE_CITY": "Enter correspondence town/city",
     "VALID_CORRESPONDENCE_POSTCODE": "Enter correspondence address postcode",
     "VALID_DATE": "Please enter a valid date",
-    "VALID_DATE_IN_PAST": "Enter date before ",
+    "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DAY": "Enter a valid day",
     "VALID_DEBT_AMOUNT": {

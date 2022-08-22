@@ -79,17 +79,34 @@
   input {
     display: none;
 
-    &:checked + .expandable {
+    &:checked+.expandable {
       height: auto;
     }
 
-    &:checked ~ .more {
+    &:checked~.more {
       display: none;
     }
 
-    &:checked ~ .less {
+    &:checked~.less {
       display: block;
     }
   }
+}
+
+.repayment-length {
+  display: flex;
+
+  .schedule {
+    min-height: 30px;
+    padding-left: 5px;
+
+    .hide {
+      display: none;
+    }
+  }
+}
+
+.float-right {
+  float: right;
 }
 
