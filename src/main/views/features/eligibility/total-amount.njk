@@ -8,16 +8,16 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.ELIGIBILITY.TOTAL_AMOUNT.TITLE') }}
+  {{ setPageTitle('PAGES.ELIGIBILITY_TOTAL_AMOUNT.TITLE') }}
 {% endblock %}
 
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      <h1 class="govuk-heading-l">{{ t('PAGES.ELIGIBILITY.TOTAL_AMOUNT.TITLE') }}</h1>
-      <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY.TOTAL_AMOUNT.INCLUDE_AMOUNT') }}</p>
+      <h1 class="govuk-heading-l">{{ t('PAGES.ELIGIBILITY_TOTAL_AMOUNT.TITLE') }}</h1>
+      <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_TOTAL_AMOUNT.INCLUDE_AMOUNT') }}</p>
 
-      {% set title = t("PAGES.ELIGIBILITY.TOTAL_AMOUNT.TITLE") %}
+      {% set title = t("PAGES.ELIGIBILITY_TOTAL_AMOUNT.TITLE") %}
 
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
@@ -33,17 +33,17 @@
               items: [
                 {
                   value: 'over-25000',
-                  text: t('PAGES.ELIGIBILITY.TOTAL_AMOUNT.OVER_25000'),
+                  text: t('PAGES.ELIGIBILITY_TOTAL_AMOUNT.OVER_25000'),
                   checked: form.model.option === 'over-25000'
                 },
                 {
                   value: 'less-25000',
-                  text: t('PAGES.ELIGIBILITY.TOTAL_AMOUNT.25000_OR_LESS'),
+                  text: t('PAGES.ELIGIBILITY_TOTAL_AMOUNT.25000_OR_LESS'),
                   checked: form.model.option === 'less-25000'
                 },
                 {
                   value: 'unknow',
-                  text: t('PAGES.ELIGIBILITY.TOTAL_AMOUNT.DONT_KNOW'),
+                  text: t('PAGES.ELIGIBILITY_TOTAL_AMOUNT.DONT_KNOW'),
                   checked: form.model.option === 'unknow'
                 }
               ],

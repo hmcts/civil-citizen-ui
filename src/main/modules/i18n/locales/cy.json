@@ -560,14 +560,12 @@
       "PAGE_TITLE": "A oes gennych anabledd?",
       "TITLE": "A oes gennych anabledd?"
     },
-    "ELIGIBILITY": {
-      "TOTAL_AMOUNT": {
-        "TITLE": "Total amount you're claiming",
-        "INCLUDE_AMOUNT": "If you're claiming interest, include that in the amount",
-        "OVER_25000": "Over £25,000",
-        "25000_OR_LESS": "£25,000 or less",
-        "DONT_KNOW": "I don't know the amount"
-      }
+    "ELIGIBILITY_TOTAL_AMOUNT": {
+      "DONT_KNOW": "I don't know the amount",
+      "INCLUDE_AMOUNT": "If you're claiming interest, include that in the amount",
+      "OVER_25000": "Over £25,000",
+      "TITLE": "Total amount you're claiming",
+      "25000_OR_LESS": "£25,000 or less"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
