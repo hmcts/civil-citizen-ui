@@ -85,6 +85,8 @@ import requestMoreTimeController from './features/response/requestMoreTimeContro
 import agreedResponseDeadlineController from './features/response/responseDeadline/agreedResponseDeadlineController';
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/determinationWithoutHearingController';
+import notEligibleController
+  from './features/eligibility/notEligibleController';
 import defendantAddressEligibiilityController
   from './features/public/eligibility/defendantAddressEligibiilityController';
 
@@ -165,5 +167,6 @@ export default [
   agreedResponseDeadlineController,
   newDeadlineResponseController,
   determinationWithoutHearingController,
+  notEligibleController,
   defendantAddressEligibiilityController,
 ];
