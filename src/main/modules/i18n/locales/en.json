@@ -116,7 +116,12 @@
       "WEEK": "Week",
       "TWO_WEEKS_LETTERS" : "Two weeks",
       "FOUR_WEEKS_LETTERS" : "Four weeks",
-      "MONTH_UPPER_CASE" : "Month"
+      "MONTH_UPPER_CASE" : "Month",
+      "WEEK_LOWER_CASE": "week",
+      "WEEKS_LOWER_CASE": "weeks",
+      "MONTH_LOWER_CASE": "month",
+      "MONTHS_LOWER_CASE": "months",
+      "TWO_MONTHS_LOWER_CASE": "2 months"
     },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
