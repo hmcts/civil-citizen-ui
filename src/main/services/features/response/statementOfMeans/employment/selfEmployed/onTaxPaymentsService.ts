@@ -6,6 +6,7 @@ import {convertFromYesNo, convertToYesNo} from '../../../../../../common/utils/y
 import {Claim} from '../../../../../../common/models/claim';
 import {StatementOfMeans} from '../../../../../../common/models/statementOfMeans';
 import {GenericForm} from '../../../../../../common/form/models/genericForm';
+import {YesNo} from '../../../../../../common/form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('onTaxPaymentsService');
@@ -32,6 +33,11 @@ const saveTaxPaymentsData = async (claimId: string, form: GenericForm<OnTaxPayme
       amountOwed: form.model.amountYouOwe,
       reason: form.model.reason,
     };
+    if (form.model.option === YesNo.NO) {
+      logger.info('Removing the amountOwed and reason values');
+      claim.statementOfMeans.taxPayments.amountOwed = undefined;
+      claim.statementOfMeans.taxPayments.reason = undefined;
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
