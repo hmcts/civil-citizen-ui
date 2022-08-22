@@ -86,7 +86,7 @@ import agreedResponseDeadlineController from './features/response/responseDeadli
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/determinationWithoutHearingController';
 import defendantAddressEligibiilityController
-  from "routes/features/public/eligibility/defendantAddressEligibiilityController";
+  from './features/public/eligibility/defendantAddressEligibiilityController';
 
 export default [
   homeController,
