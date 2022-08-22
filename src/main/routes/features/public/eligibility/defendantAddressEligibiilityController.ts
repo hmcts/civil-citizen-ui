@@ -18,8 +18,8 @@ function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Re
 }
 
 defendantAddressEligibilityController.get(ELIGIBILITY_DEFENDANT_ADDRESS_URL, (req, res) => {
-  const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : undefined;
-  const eligibleDefendantAddress = cookie?.eligibleDefendantAddress;
+  const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
+  const eligibleDefendantAddress = cookie.eligibleDefendantAddress;
   const genericYesNoForm = new GenericForm(new GenericYesNo(eligibleDefendantAddress));
   renderView(genericYesNoForm, res);
 });
