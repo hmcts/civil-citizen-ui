@@ -560,6 +560,11 @@
       "PAGE_TITLE": "Are you disabled?",
       "TITLE": "Are you disabled?"
     },
+    "ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT": {
+      "LIST_OF_GOVERNMENT": "",
+      "PAGE_TITLE": "Claim against government",
+      "TITLE": "Are you claiming against a government department?"
+    },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
       "EMPLOYED": "Employed",

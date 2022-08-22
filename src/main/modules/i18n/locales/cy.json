@@ -560,6 +560,10 @@
       "PAGE_TITLE": "A oes gennych anabledd?",
       "TITLE": "A oes gennych anabledd?"
     },
+    "ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT": {
+      "PAGE_TITLE": "Claim against government",
+      "TITLE": "Are you claiming against a government department?"
+    },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
       "EMPLOYED": "Cyflogedig",
