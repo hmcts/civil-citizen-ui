@@ -1,5 +1,5 @@
-import {IsDefined} from "class-validator";
-import {TotalAmountOptions} from "./totalAmountOptions";
+import {IsDefined} from 'class-validator';
+import {TotalAmountOptions} from './totalAmountOptions';
 
 export class TotalAmount {
 
