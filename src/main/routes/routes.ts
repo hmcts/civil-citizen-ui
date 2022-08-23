@@ -90,6 +90,7 @@ import notEligibleController
 import singleDefendantController from './features/public/eligibility/singleDefendantController';
 import defendantAddressEligibilityController
   from './features/public/eligibility/defendantAddressEligibilityController';
+import defendantAgeEligibilityController from './features/public/eligibility/defendantAgeEligibilityController';
 
 export default [
   homeController,
@@ -171,4 +172,5 @@ export default [
   notEligibleController,
   singleDefendantController,
   defendantAddressEligibilityController,
+  defendantAgeEligibilityController,
 ];

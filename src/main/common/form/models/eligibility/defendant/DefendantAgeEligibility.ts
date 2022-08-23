@@ -1,10 +1,11 @@
 import {IsDefined} from 'class-validator';
+import {AgeEligibilityOptions} from './AgeEligibilityOptions';
 
 export class DefendantAgeEligibility {
   @IsDefined({message: 'ERRORS.DEFENDANT_AGE_REQUIRED'})
-    options:AgeEligibilityOptions;
+    option?:AgeEligibilityOptions;
 
-  constructor(options: AgeEligibilityOptions) {
-    this.options = options;
+  constructor(option: AgeEligibilityOptions) {
+    this.option = option;
   }
 }
