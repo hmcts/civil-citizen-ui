@@ -10,7 +10,7 @@ const {JSDOM} = jsdom;
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
-describe('Single Defendant View', () => {
+describe('Claim Against Government View', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

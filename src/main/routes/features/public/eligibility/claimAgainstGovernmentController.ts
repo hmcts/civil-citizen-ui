@@ -1,12 +1,14 @@
 import * as express from 'express';
 import {
-  ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,
   ELIGIBILITY_DEFENDANT_AGE_URL,
+  ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {YesNo} from '../../../../common/form/models/yesNo';
+import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
+import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
 
 const claimAgainstGovernmentController = express.Router();
 const defendantEligibilityViewPath = 'features/public/eligibility/claim-against-government';
@@ -36,7 +38,7 @@ claimAgainstGovernmentController.post(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, (re
     res.cookie('eligibility', cookie);
     genericYesNoForm.model.option === YesNo.NO
       ? res.redirect(ELIGIBILITY_DEFENDANT_AGE_URL)
-      : res.redirect(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=government-department');
+      : res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.GOVERNMENT_DEPARTMENT));
   }
 });
 

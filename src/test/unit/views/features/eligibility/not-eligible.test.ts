@@ -5,7 +5,7 @@ import request from 'supertest';
 import {NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../../../main/routes/urls';
 import * as externalURLs from '../../../../utils/externalURLs';
 import {NotEligibleReason} from '../../../../../main/common/form/models/eligibility/NotEligibleReason';
-import {constructUrlWithNotEligibleReson} from '../../../../../main/common/utils/urlFormatter';
+import {constructUrlWithNotEligibleReason} from '../../../../../main/common/utils/urlFormatter';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -45,7 +45,7 @@ describe("You can't use this servicve View", () => {
 
     describe('Reason is claim value over 25000', () => {
       beforeEach(async () => {
-        await request(app).get(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000)).then(res => {
+        await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
         });
@@ -82,7 +82,7 @@ describe("You can't use this servicve View", () => {
 
     describe('Reason is claim value not known', () => {
       beforeEach(async () => {
-        await request(app).get(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_NOT_KNOWN)).then(res => {
+        await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_NOT_KNOWN)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
         });
