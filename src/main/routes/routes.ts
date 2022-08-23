@@ -89,6 +89,7 @@ import notEligibleController
   from './features/eligibility/notEligibleController';
 import claimantAddressEligibilityController
   from './features/public/eligibility/claimantAddressEligibilityController';
+import singleDefendantController from './features/public/eligibility/singleDefendantController';
 
 export default [
   homeController,
@@ -169,4 +170,5 @@ export default [
   determinationWithoutHearingController,
   notEligibleController,
   claimantAddressEligibilityController,
+  singleDefendantController,
 ];
