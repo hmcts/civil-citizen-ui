@@ -560,6 +560,10 @@
       "PAGE_TITLE": "A oes gennych anabledd?",
       "TITLE": "A oes gennych anabledd?"
     },
+    "ELIGIBILITY_SINGLE_DEFENDANT": {
+      "PAGE_TITLE": "Individual or Multiparty Claim",
+      "TITLE": "Is this claim against more than one person or organisation?"
+    },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
       "EMPLOYED": "Cyflogedig",
