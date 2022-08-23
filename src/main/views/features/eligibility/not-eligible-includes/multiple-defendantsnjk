@@ -1,0 +1,14 @@
+{% from "../../../macro/external-link.njk" import externalLink %}
+{% import "external-urls.njk" as externalURLs %}
+
+<p class="govuk-body">{{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.MORE_THAN_ONE_PERSON_ORG') }}</p>
+<p class="govuk-body">
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.USE') }}
+  {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.MCOL_ONLINE', externalURLs.legacyServiceUrl, true) }}.
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.AGAINST_TWO_PEOPLE_ORG') }}
+</p>
+<p class="govuk-body">
+  {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.DOWNLOAD_PAPER_FORM', externalURLs.n1FormCprPart7Url, true) }}.
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.AGAINST_THREE_OR_MORE_PEOPLE_ORG') }}
+</p>
+{% include "macro/paper-form-address.njk"%}
