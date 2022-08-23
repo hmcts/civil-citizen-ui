@@ -32,7 +32,7 @@ defendantAddressEligibilityController.post(ELIGIBILITY_DEFENDANT_ADDRESS_URL, (r
     renderView(genericYesNoForm, res);
   } else {
     const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
-    cookie.singleDefendant = genericYesNoForm.model.option;
+    cookie.eligibleDefendantAddress = genericYesNoForm.model.option;
     res.cookie('eligibility', cookie);
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(ELIGIBILITY_CLAIM_TYPE_URL)
