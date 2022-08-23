@@ -730,19 +730,19 @@
       "DOWNLOAD_PAPER_FORM": "Download a paper form",
       "FOR_CLAIMS_LESS_THAN_25000": "This service is for claims of £25,000 or less.",
       "FOR_CLAIMS_BETWEEN_25001_AND_100000": "For claims between £25,001 and £100,000 you might be able to ",
+      "MULTIPLE_DEFENDANTS": {
+        "AGAINST_THREE_OR_MORE_PEOPLE_ORG": "for claims against 3 or more people or organisations. Complete and return the form to make your claim.",
+        "AGAINST_TWO_PEOPLE_ORG": "for claims against 2 people or organisations.",
+        "MCOL_ONLINE": "Money Claim Online (MCOL)",
+        "MORE_THAN_ONE_PERSON_ORG": "You can’t use this service if this claim is against more than one person or organisation.",
+        "USE": "Use "
+      },
       "N1_PAPER_FORM" : "N1 paper form",
       "OPENS_IN_A_NEW_WINDOW": "(opens in a new window)",
       "PAGE_TITLE": "You can’t use this service",
       "USE_MCOL": "use Money Claim Online (MCOL)",
       "WHERE_TO_SEND_PAPER_FORMS": "Where to send paper forms",
-      "YOU_NEED_TO_KNOW_AMOUNT" : "You need to know the claim amount to use this service.",
-      "MULTIPLE_DEFENDANTS": {
-        "MORE_THAN_ONE_PERSON_ORG": "You can’t use this service if this claim is against more than one person or organisation.",
-        "AGAINST_TWO_PEOPLE_ORG": "for claims against 2 people or organisations.",
-        "AGAINST_THREE_OR_MORE_PEOPLE_ORG": "for claims against 3 or more people or organisations. Complete and return the form to make your claim.",
-        "USE": "Use ",
-        "MCOL_ONLINE": "Money Claim Online (MCOL)"
-      }
+      "YOU_NEED_TO_KNOW_AMOUNT" : "You need to know the claim amount to use this service."
     },
     "OTHER_DEPENDANTS": {
       "DESCRIPTION": "This can include adults and people you don't live with.",
