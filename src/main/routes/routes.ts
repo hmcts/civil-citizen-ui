@@ -87,7 +87,8 @@ import determinationWithoutHearingController
   from './features/directionsQuestionnaire/determinationWithoutHearingController';
 import notEligibleController
   from './features/eligibility/notEligibleController';
-import claimAgainstGovernmentController  from './features/public/eligibility/claimAgainstGovernmentController';
+import claimAgainstGovernmentController from './features/public/eligibility/claimAgainstGovernmentController';
+
 export default [
   homeController,
   dashboardController,
