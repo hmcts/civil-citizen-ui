@@ -724,7 +724,13 @@
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
     "NOT_ELIGIBLE_FOR_SERVICE":{
-      "CANT_CALCULATE_THE_AMOUNT" : "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
+      "TENANCY_DEPOSIT": {
+        "NOT_USED_FOR_TENANCY_DEPOSIT": "You can’t make a claim for a tenancy deposit using this service.",
+        "GET": "Get",
+        "HELP_TO_RESOLVE_YOUR_DISPUTE": "help to resolve your dispute",
+        "WITH_A_LANLORD_OR_TENANT": "with a landlord or tenant."
+      },
+      "CANT_CALCULATE_THE_AMOUNT": "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
       "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "CLAIM_BY_PAPER": "You can also claim by paper. ",
       "DOWNLOAD_PAPER_FORM": "Download a paper form",
