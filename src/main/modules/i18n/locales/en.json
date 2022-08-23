@@ -560,6 +560,9 @@
       "PAGE_TITLE": "Are you disabled?",
       "TITLE": "Are you disabled?"
     },
+    "ELIGIBILITY_DEFENDANT_AGE": {
+      "PAGE_TITLE": ""
+    },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
       "EMPLOYED": "Employed",
@@ -978,6 +981,7 @@
     "DATE_REQUIRED": "Enter a date",
     "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the original response date",
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
+    "DEFENDANT_AGE_REQUIRED": "Select yes, no, or company/organisation",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
     "DETAILS_REQUIRED": "Enter details",

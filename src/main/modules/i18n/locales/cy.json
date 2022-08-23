@@ -979,6 +979,7 @@
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
     "DEFENCE_REQUIRED": "Mae angen ichi egluro pam nad oes arian yn ddyledus gennych",
+    "DEFENDANT_AGE_REQUIRED": "Select yes, no, or company/organisation",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
