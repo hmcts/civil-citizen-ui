@@ -565,6 +565,10 @@
       "PAGE_TITLE": "Government department",
       "TITLE": "Are you claiming against a government department?"
     },
+    "ELIGIBILITY_DEFENDANT_ADDRESS": {
+      "PAGE_TITLE": "Defendant Address in England or Wales",
+      "TITLE": "Does the person or organisation you’re claiming against have a postal address in England or Wales?"
+    },
     "ELIGIBILITY_SINGLE_DEFENDANT": {
       "PAGE_TITLE": "Individual or Multiparty Claim",
       "TITLE": "Is this claim against more than one person or organisation?"
