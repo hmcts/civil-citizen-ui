@@ -145,7 +145,7 @@ describe("You can't use this servicve View", () => {
         expect(legacyServiceLink.innerHTML).toContain('Money Claim Online (MCOL)');
         expect(legacyServiceLink.href).toEqual(externalURLs.legacyServiceUrl);
         expect(n1FormLink.innerHTML).toContain('Download a paper form');
-        expect(n1FormLink.href).toEqual(externalURLs.n1FormCprPart7Url);
+        expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
       });
     });
   });
