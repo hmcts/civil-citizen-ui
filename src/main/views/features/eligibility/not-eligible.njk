@@ -14,6 +14,8 @@
         {% include "features/eligibility/not-eligible-includes/claim-value-over-25000.njk"%}
       {% elseif reason === NotEligibleReason.CLAIM_VALUE_NOT_KNOWN %}
         {% include "features/eligibility/not-eligible-includes/claim-value-not-known.njk"%}
+      {% elseif reason === NotEligibleReason.DEFENDANT_ADDRESS %}
+        {% include "features/eligibility/not-eligible-includes/defendant-address.njk"%}
       {% endif %}
       {{ contactUsForHelp(t) }}
     </div>
