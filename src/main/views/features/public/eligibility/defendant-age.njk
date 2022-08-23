@@ -48,7 +48,10 @@
                   text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.COMPANY_ORGANISATION'),
                   checked: true if form.model.option == AgeEligibilityOptions.NOT_APPLICABLE
                 }
-              ]
+              ],
+              errorMessage: {
+                html: t(form.errorFor('option'))
+              } if form.hasFieldError('option')
             }) }}
             <div class="govuk-form-group">
               {{ govukButton({

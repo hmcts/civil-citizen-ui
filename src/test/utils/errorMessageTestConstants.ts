@@ -39,6 +39,7 @@ export const enum TestMessages {
   NAME_REQUIRED = 'Please enter a name',
   TEXT_TOO_MANY = 'You’ve entered too many characters',
   VALID_YES_NO_SELECTION = 'Please select yes or no',
+  VALID_DEFENDENT_AGE_ELIGIBILITY = 'Select yes, no, or company/organisation',
   MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
   MEDIATION_I_DONT_WANT_FREE = 'I do not agree to free mediation',
   SEND_YOUR_RESPONSE_BY_EMAIL = 'Reject all of the claim and counterclaim',
