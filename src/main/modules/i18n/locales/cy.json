@@ -560,6 +560,12 @@
       "PAGE_TITLE": "A oes gennych anabledd?",
       "TITLE": "A oes gennych anabledd?"
     },
+    "ELIGIBILITY_CLAIM_TYPE": {
+      "A_CLIENT": "A client - I'm their solicitor",
+      "JUST_MYSELF": "Just my self or my organisation",
+      "MORE_THAN_ONE_PERSON_OR_ORGANISATION": "More than one person or organisation",
+      "TITLE": "Who are you making the claim for?"
+    },
     "ELIGIBILITY_TOTAL_AMOUNT": {
       "DONT_KNOW": "I don't know the amount",
       "INCLUDE_AMOUNT": "If you're claiming interest, include that in the amount",
