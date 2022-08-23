@@ -89,6 +89,9 @@ import totalAmountController from './features/eligibility/totalAmountController'
 import claimTypeController from './features/eligibility/claimTypeController';
 import notEligibleController
   from './features/eligibility/notEligibleController';
+import singleDefendantController from './features/public/eligibility/singleDefendantController';
+import defendantAddressEligibilityController
+  from './features/public/eligibility/defendantAddressEligibilityController';
 
 export default [
   homeController,
@@ -170,4 +173,6 @@ export default [
   totalAmountController,
   claimTypeController,
   notEligibleController,
+  singleDefendantController,
+  defendantAddressEligibilityController,
 ];

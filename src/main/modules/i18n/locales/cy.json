@@ -566,6 +566,14 @@
       "MORE_THAN_ONE_PERSON_OR_ORGANISATION": "More than one person or organisation",
       "TITLE": "Who are you making the claim for?"
     },
+    "ELIGIBILITY_DEFENDANT_ADDRESS": {
+      "PAGE_TITLE": "Defendant Address in England or Wales",
+      "TITLE": "Does the person or organisation you’re claiming against have a postal address in England or Wales?"
+    },
+    "ELIGIBILITY_SINGLE_DEFENDANT": {
+      "PAGE_TITLE": "Individual or Multiparty Claim",
+      "TITLE": "Is this claim against more than one person or organisation?"
+    },
     "ELIGIBILITY_TOTAL_AMOUNT": {
       "DONT_KNOW": "I don't know the amount",
       "INCLUDE_AMOUNT": "If you're claiming interest, include that in the amount",
