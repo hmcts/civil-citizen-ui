@@ -87,6 +87,7 @@ import determinationWithoutHearingController
   from './features/directionsQuestionnaire/determinationWithoutHearingController';
 import notEligibleController
   from './features/eligibility/notEligibleController';
+import singleDefendantController from './features/public/eligibility/singleDefendantController';
 import claimAgainstGovernmentController from './features/public/eligibility/claimAgainstGovernmentController';
 
 export default [
@@ -167,5 +168,6 @@ export default [
   newDeadlineResponseController,
   determinationWithoutHearingController,
   notEligibleController,
+  singleDefendantController,
   claimAgainstGovernmentController,
 ];

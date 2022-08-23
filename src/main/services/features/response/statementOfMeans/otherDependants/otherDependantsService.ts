@@ -7,6 +7,7 @@ import {
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {get} from 'lodash';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {YesNo} from '../../../../../common/form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('otherDependantsService');
@@ -32,11 +33,16 @@ export class OtherDependantsService {
       if (!claim.statementOfMeans) {
         claim.statementOfMeans = new StatementOfMeans();
       }
-      claim.statementOfMeans.otherDependants = otherDependants.model;
+      claim.statementOfMeans.otherDependants = this.setOtherDependants(otherDependants);
+
       await saveDraftClaim(claimId, claim);
     } catch (error) {
       logger.error(`${error.stack || error}`);
       throw error;
     }
+  }
+
+  public setOtherDependants(otherDependants: GenericForm<OtherDependants>): OtherDependants {
+    return otherDependants.model.option === YesNo.YES ? otherDependants.model : new OtherDependants(otherDependants.model.option);
   }
 }
