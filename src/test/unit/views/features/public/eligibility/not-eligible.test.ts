@@ -10,8 +10,8 @@ import {constructUrlWithNotEligibleReson} from '../../../../../../main/common/ut
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe("You can't use this servicve View", () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
