@@ -17,6 +17,7 @@ import {addDaysFilter, dateFilter, formatDate, addDaysFilterTranslated} from './
 import {SignatureType} from '../../common/models/signatureType';
 import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
 import {FormValidationError} from '../../common/form/validationErrors/formValidationError';
+import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibleReason';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -101,6 +102,7 @@ export class Nunjucks {
     nunjucksEnv.addFilter('pennies2pounds', convertToPoundsFilter);
     nunjucksEnv.addGlobal('SignatureType', SignatureType);
     nunjucksEnv.addGlobal('ClaimSummaryType', ClaimSummaryType);
+    nunjucksEnv.addGlobal('NotEligibleReason', NotEligibleReason);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;
