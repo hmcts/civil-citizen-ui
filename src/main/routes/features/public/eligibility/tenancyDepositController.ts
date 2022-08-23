@@ -20,7 +20,7 @@ function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Re
 }
 
 tenancyDepositController.get(ELIGIBILITY_TENANCY_DEPOSIT_URL, (req, res) => {
-  const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : undefined;
+  const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
   const tenancyDeposit = cookie?.tenancyDeposit;
   const genericYesNoForm = new GenericForm(new GenericYesNo(tenancyDeposit));
   renderView(genericYesNoForm, res);
