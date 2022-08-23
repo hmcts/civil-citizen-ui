@@ -17,16 +17,16 @@ function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Re
   res.render(claimantEligibilityViewPath, {form});
 }
 
-claimantAddressEligibilityController.get(ELIGIBILITY_CLAIMANT_ADDRESS_URL, (req, res) => {
+claimantAddressEligibilityController.get(ELIGIBILITY_CLAIMANT_ADDRESS_URL, (req: express.Request, res: express.Response) => {
   const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
   const eligibleClaimantAddress = cookie.eligibleClaimantAddress;
   const genericYesNoForm = new GenericForm(new GenericYesNo(eligibleClaimantAddress));
   renderView(genericYesNoForm, res);
 });
 
-claimantAddressEligibilityController.post(ELIGIBILITY_CLAIMANT_ADDRESS_URL, (req, res) => {
+claimantAddressEligibilityController.post(ELIGIBILITY_CLAIMANT_ADDRESS_URL, async (req: express.Request, res: express.Response) => {
   const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
-  genericYesNoForm.validateSync();
+  await genericYesNoForm.validate();
 
   if (genericYesNoForm.hasErrors()) {
     renderView(genericYesNoForm, res);
