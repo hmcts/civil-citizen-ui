@@ -561,7 +561,11 @@
       "TITLE": "Are you disabled?"
     },
     "ELIGIBILITY_DEFENDANT_AGE": {
-      "PAGE_TITLE": ""
+      "COMPANY_ORAGINSATION": "I'm claiming against a company or organisation",
+      "NO": "No",
+      "PAGE_TITLE": "Defendant Age Eligibility",
+      "TITLE": "Do you believe the person you’re claiming against is 18 or over?",
+      "YES": "Yes"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
