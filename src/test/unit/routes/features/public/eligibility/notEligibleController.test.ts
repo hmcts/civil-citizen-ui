@@ -1,9 +1,9 @@
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../../../main/routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../../../../main/routes/urls';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
 

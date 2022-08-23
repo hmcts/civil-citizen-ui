@@ -1,19 +1,19 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../../main/app';
 import request from 'supertest';
-import {NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../../../main/routes/urls';
-import * as externalURLs from '../../../../utils/externalURLs';
-import {NotEligibleReason} from '../../../../../main/common/form/models/eligibility/NotEligibleReason';
-import {constructUrlWithNotEligibleReson} from '../../../../../main/common/utils/urlFormatter';
+import {NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../../../../main/routes/urls';
+import * as externalURLs from '../../../../../utils/externalURLs';
+import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
+import {constructUrlWithNotEligibleReson} from '../../../../../../main/common/utils/urlFormatter';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
-describe("You can't use this servicve View", () => {
+describe("You can't use this service View", () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
@@ -113,4 +113,38 @@ describe("You can't use this servicve View", () => {
     });
   });
 
+  describe('Reason is claim on behalf', () => {
+    beforeEach(async () => {
+      await request(app).get(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_ON_BEHALF)).then(res => {
+        const dom = new JSDOM(res.text);
+        htmlDocument = dom.window.document;
+      });
+    });
+
+    it('should display paragraphs', async () => {
+      const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+      expect(paragraphs[0].innerHTML).toContain('This service is currently for claimants representing themselves.');
+      expect(paragraphs[1].innerHTML).toContain('If you’re a legal representative');
+    });
+
+    it('should display address title and address', () => {
+      const addressTitle = htmlDocument.getElementsByClassName('govuk-heading-m');
+      const address = htmlDocument.getElementsByClassName('govuk-summary-list');
+      expect(addressTitle[0].innerHTML).toContain('Where to send paper forms');
+      expect(address[0].innerHTML).toContain('County Court Money Claims Centre');
+      expect(address[0].innerHTML).toContain('PO Box 527');
+      expect(address[0].innerHTML).toContain('Salford');
+      expect(address[0].innerHTML).toContain('M5 0BY');
+    });
+
+    it('should have external links', () => {
+      const links = htmlDocument.getElementsByClassName('govuk-link');
+      const legacyServiceLink = links[3] as HTMLAnchorElement;
+      const n1FormLink = links[4] as HTMLAnchorElement;
+      expect(legacyServiceLink.innerHTML).toContain('use the Money Claim Online (MCOL) service');
+      expect(n1FormLink.innerHTML).toContain('download a paper form (opens in a new window)');
+      expect(legacyServiceLink.href).toEqual(externalURLs.legacyServiceUrl);
+      expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
+    });
+  });
 });
