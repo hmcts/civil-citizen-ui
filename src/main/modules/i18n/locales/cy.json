@@ -560,6 +560,10 @@
       "PAGE_TITLE": "A oes gennych anabledd?",
       "TITLE": "A oes gennych anabledd?"
     },
+    "ELIGIBILITY_DEFENDANT_ADDRESS": {
+      "PAGE_TITLE": "Defendant Address in England or Wales",
+      "TITLE": "Does the person or organisation you’re claiming against have a postal address in England or Wales?"
+    },
     "ELIGIBILITY_DEFENDANT_AGE": {
       "COMPANY_ORGANISATION": "I'm claiming against a company or organisation",
       "NO": "No",

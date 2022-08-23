@@ -7,7 +7,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT.PAGE_TITLE') }}
+  {{ setPageTitle('PAGES.ELIGIBILITY_DEFENDANT_AGE.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -36,15 +36,17 @@
                 {
                   value: AgeEligibilityOptions.YES,
                   text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.YES'),
-                  checked:
+                  checked:true if form.model.option == AgeEligibilityOptions.YES
                 },
                 {
                   value: AgeEligibilityOptions.NO,
-                  text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.NO')
+                  text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.NO'),
+                  checked: true if form.model.option == AgeEligibilityOptions.NO
                 },
                 {
                   value: AgeEligibilityOptions.NOT_APPLICABLE,
-                  text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.COMPANY_ORGANISATION')
+                  text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.COMPANY_ORGANISATION'),
+                  checked: true if form.model.option == AgeEligibilityOptions.NOT_APPLICABLE
                 }
               ]
             }) }}
