@@ -88,6 +88,8 @@ import determinationWithoutHearingController
 import notEligibleController
   from './features/public/eligibility/notEligibleController';
 import singleDefendantController from './features/public/eligibility/singleDefendantController';
+import defendantAddressEligibilityController
+  from './features/public/eligibility/defendantAddressEligibilityController';
 import tenancyDepositController from './features/public/eligibility/tenancyDepositController';
 
 export default [
@@ -169,5 +171,6 @@ export default [
   determinationWithoutHearingController,
   notEligibleController,
   singleDefendantController,
+  defendantAddressEligibilityController,
   tenancyDepositController,
 ];
