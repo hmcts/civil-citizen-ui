@@ -20,7 +20,6 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT.TITLE') }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukRadios({
@@ -28,27 +27,24 @@
               name: "option",
               fieldset: {
                 legend: {
-                  text: t("Where do you live?"),
+                  text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.TITLE'),
                   isPageHeading: true,
                   classes: "govuk-fieldset__legend--l"
                 }
               },
               items: [
                 {
-                  value: "england",
-                  text: "England"
+                  value: AgeEligibilityOptions.YES,
+                  text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.YES'),
+                  checked:
                 },
                 {
-                  value: "scotland",
-                  text: "Scotland"
+                  value: AgeEligibilityOptions.NO,
+                  text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.NO')
                 },
                 {
-                  value: "wales",
-                  text: "Wales"
-                },
-                {
-                  value: "northern-ireland",
-                  text: "Northern Ireland"
+                  value: AgeEligibilityOptions.NOT_APPLICABLE,
+                  text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.COMPANY_ORGANISATION')
                 }
               ]
             }) }}
