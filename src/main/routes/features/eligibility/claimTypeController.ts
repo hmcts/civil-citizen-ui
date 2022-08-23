@@ -21,7 +21,7 @@ claimTypeController.get(ELIGIBILITY_CLAIM_TYPE_URL, (req: express.Request, res: 
 
 claimTypeController.post(ELIGIBILITY_CLAIM_TYPE_URL, async (req: express.Request, res: express.Response) => {
   const claimType = new ClaimType(req.body.claimType);
-  const form = new GenericForm(ClaimType);
+  const form = new GenericForm(claimType);
   await form.validate();
   if (form.hasErrors()) {
     res.render(claimTypeViewPath, { form });
