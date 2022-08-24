@@ -95,3 +95,5 @@ export const ELIGIBILITY_CLAIM_VALUE_URL = `${BASE_ELIGIBILITY_URL}/claim-value`
 export const ELIGIBILITY_SINGLE_DEFENDANT_URL = `${BASE_ELIGIBILITY_URL}/single-defendant`;
 export const ELIGIBILITY_DEFENDANT_ADDRESS_URL = `${BASE_ELIGIBILITY_URL}/defendant-address`;
 export const ELIGIBILITY_CLAIM_TYPE_URL = `${BASE_ELIGIBILITY_URL}/claim-type`;
+export const ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL = `${BASE_ELIGIBILITY_URL}/government-department`;
+export const ELIGIBILITY_TENANCY_DEPOSIT_URL = `${BASE_ELIGIBILITY_URL}/claim-is-for-tenancy-deposit`;
