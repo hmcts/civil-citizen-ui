@@ -1,17 +1,17 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../../main/app';
 import request from 'supertest';
-import {NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../../../main/routes/urls';
-import * as externalURLs from '../../../../utils/externalURLs';
-import {NotEligibleReason} from '../../../../../main/common/form/models/eligibility/NotEligibleReason';
-import {constructUrlWithNotEligibleReason} from '../../../../../main/common/utils/urlFormatter';
+import {NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../../../../main/routes/urls';
+import * as externalURLs from '../../../../../utils/externalURLs';
+import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
+import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe("You can't use this servicve View", () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
