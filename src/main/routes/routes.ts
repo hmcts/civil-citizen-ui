@@ -86,10 +86,12 @@ import agreedResponseDeadlineController from './features/response/responseDeadli
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/determinationWithoutHearingController';
 import notEligibleController
-  from './features/eligibility/notEligibleController';
+  from './features/public/eligibility/notEligibleController';
 import singleDefendantController from './features/public/eligibility/singleDefendantController';
 import defendantAddressEligibilityController
   from './features/public/eligibility/defendantAddressEligibilityController';
+import tryNewServiceController from './features/public/eligibility/tryNewServiceController';
+import tenancyDepositController from './features/public/eligibility/tenancyDepositController';
 import claimAgainstGovernmentController from './features/public/eligibility/claimAgainstGovernmentController';
 
 export default [
@@ -173,4 +175,6 @@ export default [
   singleDefendantController,
   claimAgainstGovernmentController,
   defendantAddressEligibilityController,
+  tryNewServiceController,
+  tenancyDepositController,
 ];
