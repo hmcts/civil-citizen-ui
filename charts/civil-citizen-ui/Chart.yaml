@@ -32,7 +32,7 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
   - name: camunda-bpm
-    version: 0.0.25
+    version: 0.0.26
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: camunda-bpm.enabled
   - name: elasticsearch
