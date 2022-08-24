@@ -20,7 +20,7 @@
       {% set title = t('PAGES.MEDIATION_CAN_WE_USE.CONFIRM_YOUR_NUMBER') %}
       {% set titleEnterPhone = t('PAGES.MEDIATION_CAN_WE_USE.ENTER_PHONE_NUMBER') %}
       {% set pText = t('PAGES.MEDIATION_CAN_WE_USE.CAN_MEDIATION_USE', {respondentTelNumber: respondentTelNumber}) %}
-      {% set pTextEnterPhone = t('PAGES.MEDIATION_CAN_WE_USE.ENTER_PHONE_FOR_DIRECT_LINE') + t('PAGES.MEDIATION_CAN_WE_USE.WONT_GIVE_NUMBER')%}
+      {% set pTextEnterPhone = t('PAGES.MEDIATION_CAN_WE_USE.ENTER_PHONE_FOR_DIRECT_LINE') + ' ' t('PAGES.MEDIATION_CAN_WE_USE.WONT_GIVE_NUMBER')%}
       {% set id = "option" %}
       {% set name = "option" %}
       {% if form.hasErrors() %}
