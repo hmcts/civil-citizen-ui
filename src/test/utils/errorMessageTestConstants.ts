@@ -34,7 +34,6 @@ export const enum TestMessages {
   VALID_TWO_DECIMAL_NUMBER = 'Enter a valid amount, maximum two decimal places',
   ENTER_VALID_AMOUNT = 'Enter a valid amount',
   AMOUNT_LESS_THAN_CLAIMED = 'Enter a value less than the amount claimed',
-  VALID_YES_NO_OPTION = 'Choose option: Yes or No',
   PHONE_NUMBER_REQUIRED = 'Please enter a phone number',
   NAME_REQUIRED = 'Please enter a name',
   TEXT_TOO_MANY = 'You’ve entered too many characters',
@@ -64,5 +63,7 @@ export const enum TestMessages {
   VALID_POSITIVE_NUMBER = 'Don’t enter a negative number',
   VALID_REASON_REQUIRED = 'Enter a reason',
   VALID_STRICTLY_POSITIVE_NUMBER = 'Enter a number higher than 0',
+  VALID_TEXT_LENGTH = 'You’ve entered too many characters',
+  VALID_YES_NO_OPTION = 'Choose option: Yes or No',
   PAGE_NOT_FOUND = 'Page Not Found'
 }
