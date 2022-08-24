@@ -726,9 +726,9 @@
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "TENANCY_DEPOSIT": {
-        "NOT_USED_FOR_TENANCY_DEPOSIT": "You can’t make a claim for a tenancy deposit using this service.",
         "GET": "Get",
         "HELP_TO_RESOLVE_YOUR_DISPUTE": "help to resolve your dispute",
+        "NOT_USED_FOR_TENANCY_DEPOSIT": "You can’t make a claim for a tenancy deposit using this service.",
         "WITH_A_LANLORD_OR_TENANT": "with a landlord or tenant."
       },
       "CANT_CALCULATE_THE_AMOUNT": "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
@@ -916,6 +916,9 @@
       "PAGE_TITLE": "Your task list",
       "HEADER": "Respond to a money claim",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+    },
+    "TENANCY_DEPOSIT": {
+      "TITLE": "Is your claim for a tenancy deposit?"
     },
     "TRY_NEW_SERVICE": {
       "PAGE_TITLE": "Try the new online service",
