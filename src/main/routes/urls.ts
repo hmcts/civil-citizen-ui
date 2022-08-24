@@ -1,5 +1,5 @@
 const BASE_CASE_URL = '/case/:id';
-const BASE_ELIGIBILITY_URL = '/eligibility';
+export const BASE_ELIGIBILITY_URL = '/eligibility';
 const BASE_CASE_RESPONSE_URL = `${BASE_CASE_URL}/response`;
 const STATEMENT_OF_MEANS_URL = `${BASE_CASE_RESPONSE_URL}/statement-of-means`;
 const MEDIATION_URL = `${BASE_CASE_URL}/mediation`;
@@ -91,6 +91,7 @@ export const REQUEST_MORE_TIME_URL = `${BASE_CASE_RESPONSE_URL}/request-more-tim
 export const NEW_RESPONSE_DEADLINE_URL =  `${BASE_CASE_RESPONSE_URL}/new-response-deadline`;
 export const DETERMINATION_WITHOUT_HEARING_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/determination-without-hearing`;
 export const NOT_ELIGIBLE_FOR_THIS_SERVICE_URL = `${BASE_ELIGIBILITY_URL}/not-eligible`;
+export const ELIGIBILITY_CLAIM_VALUE_URL = `${BASE_ELIGIBILITY_URL}/claim-value`;
 export const ELIGIBILITY_SINGLE_DEFENDANT_URL = `${BASE_ELIGIBILITY_URL}/single-defendant`;
 export const ELIGIBILITY_DEFENDANT_ADDRESS_URL = `${BASE_ELIGIBILITY_URL}/defendant-address`;
 export const ELIGIBILITY_CLAIMANT_ADDRESS_URL = `${BASE_ELIGIBILITY_URL}/claimant-address`;

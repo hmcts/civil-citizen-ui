@@ -86,12 +86,13 @@ import agreedResponseDeadlineController from './features/response/responseDeadli
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/determinationWithoutHearingController';
 import notEligibleController
-  from './features/eligibility/notEligibleController';
+  from './features/public/eligibility/notEligibleController';
 import claimantAddressEligibilityController
   from './features/public/eligibility/claimantAddressEligibilityController';
 import singleDefendantController from './features/public/eligibility/singleDefendantController';
 import defendantAddressEligibilityController
   from './features/public/eligibility/defendantAddressEligibilityController';
+import tryNewServiceController from './features/public/eligibility/tryNewServiceController';
 
 export default [
   homeController,
@@ -174,4 +175,5 @@ export default [
   claimantAddressEligibilityController,
   singleDefendantController,
   defendantAddressEligibilityController,
+  tryNewServiceController,
 ];
