@@ -1,8 +1,8 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../../main/app';
 import request from 'supertest';
-import {BASE_ELIGIBILITY_URL} from '../../../../../main/routes/urls';
+import {BASE_ELIGIBILITY_URL} from '../../../../../../main/routes/urls';
 import {t} from 'i18next';
 
 const jsdom = require('jsdom');
@@ -10,8 +10,8 @@ const {JSDOM} = jsdom;
 const govukBodyClass = 'govuk-body';
 const pageTitle = 'PAGES.TRY_NEW_SERVICE.PAGE_TITLE';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Try the new online service View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
