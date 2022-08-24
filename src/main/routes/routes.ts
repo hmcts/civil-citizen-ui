@@ -91,6 +91,7 @@ import singleDefendantController from './features/public/eligibility/singleDefen
 import defendantAddressEligibilityController
   from './features/public/eligibility/defendantAddressEligibilityController';
 import tryNewServiceController from './features/public/eligibility/tryNewServiceController';
+import tenancyDepositController from './features/public/eligibility/tenancyDepositController';
 import defendantAgeEligibilityController from './features/public/eligibility/defendantAgeEligibilityController';
 
 export default [
@@ -174,5 +175,6 @@ export default [
   singleDefendantController,
   defendantAddressEligibilityController,
   tryNewServiceController,
+  tenancyDepositController,
   defendantAgeEligibilityController,
 ];

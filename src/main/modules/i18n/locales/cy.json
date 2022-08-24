@@ -918,6 +918,9 @@
       "HEADER": "Respond to a money claim",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
     },
+    "TENANCY_DEPOSIT": {
+      "TITLE": "Is your claim for a tenancy deposit?"
+    },
     "TRY_NEW_SERVICE": {
       "PAGE_TITLE": "Try the new online service",
       "TITLE": "Try the new online service",
