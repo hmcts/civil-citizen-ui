@@ -7,6 +7,7 @@ import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../../../../main
 import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {VALID_TEXT_LENGTH} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -103,7 +104,7 @@ describe('Citizen residence', () => {
         .send(`housingDetails=${tooLongHousingDetails}`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('You&#39;ve entered too many characters');
+          expect(res.text).toContain(VALID_TEXT_LENGTH);
         });
     });
 

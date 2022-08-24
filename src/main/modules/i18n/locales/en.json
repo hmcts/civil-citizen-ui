@@ -1142,7 +1142,7 @@
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
-    "VALID_TEXT_LENGTH": "You've entered too many characters",
+    "VALID_TEXT_LENGTH": "You’ve entered too many characters",
     "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
