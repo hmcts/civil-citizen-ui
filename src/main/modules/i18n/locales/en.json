@@ -723,7 +723,7 @@
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
-    "NOT_ELIGIBLE_FOR_SERVICE":{
+    "NOT_ELIGIBLE_FOR_SERVICE": {
       "CANT_CALCULATE_THE_AMOUNT" : "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
       "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "CLAIM_BY_PAPER": "You can also claim by paper. ",
@@ -916,6 +916,15 @@
       "PAGE_TITLE": "Your task list",
       "HEADER": "Respond to a money claim",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+    },
+    "TENANCY_DEPOSIT": {
+      "TITLE": "Is your claim for a tenancy deposit?"
+    },
+    "TRY_NEW_SERVICE": {
+      "PAGE_TITLE": "Try the new online service",
+      "TITLE": "Try the new online service",
+      "WE_ARE_BUILDING": "We are building a new service. Different designs are being tested and changed based on feedback from users.",
+      "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service."
     },
     "SUPPORT_REQUIRED": {
       "ARRANGE_AND_PAY": "You may have to arrange and pay for interpreters except for Welsh. The court will tell you.",
