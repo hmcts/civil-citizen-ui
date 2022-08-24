@@ -143,7 +143,7 @@ describe("You can't use this service View", () => {
       const legacyServiceLink = links[3] as HTMLAnchorElement;
       const n1FormLink = links[4] as HTMLAnchorElement;
       expect(legacyServiceLink.innerHTML).toContain('use the Money Claim Online (MCOL) service');
-      expect(n1FormLink.innerHTML).toContain('download a paper form (opens in a new window)');
+      expect(n1FormLink.innerHTML).toContain('download a paper form');
       expect(legacyServiceLink.href).toEqual(externalURLs.legacyServiceUrl);
       expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
     });
