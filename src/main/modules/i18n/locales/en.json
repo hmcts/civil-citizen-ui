@@ -730,7 +730,7 @@
       "CLAIM_ON_BEHALF": {
         "CURRENTLY_SERVICE" : "This service is currently for claimants representing themselves.",
         "COMPLETE_RETURN": ", complete and return it to make your claim.",
-        "DOWNLOAD_PAPER_LINK": "download a paper form (opens in a new window)",
+        "DOWNLOAD_PAPER_LINK": "download a paper form",
         "LEGAL_REPRESENTATIVE" : "If you’re a legal representative ",
         "MCOL_LINK": "use the Money Claim Online (MCOL) service",
         "OR": " or "
