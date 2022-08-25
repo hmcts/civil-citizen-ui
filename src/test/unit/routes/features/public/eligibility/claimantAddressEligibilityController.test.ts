@@ -9,7 +9,7 @@ import {
 } from '../../../../../../main/routes/urls';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {t} from 'i18next';
-import {constructUrlWithNotEligibleReson} from '../../../../../../main/common/utils/urlFormatter';
+import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
 import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -62,7 +62,7 @@ describe('Claimant Address Eligibility Controller', () => {
     it('should redirect to not eligible page if address question radio selection is no', async () => {
       await request(app).post(ELIGIBILITY_CLAIMANT_ADDRESS_URL).send({option: YesNo.NO}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIMANT_ADDRESS));
+        expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIMANT_ADDRESS));
       });
     });
 
