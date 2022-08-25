@@ -1,18 +1,18 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {NotEligibleReason} from '../../../../../main/common/form/models/eligibility/NotEligibleReason';
-import {ClaimTypeOptions} from '../../../../../main/common/models/eligibility/claimTypeOptions';
+import {app} from '../../../../../../main/app';
+import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
+import {ClaimTypeOptions} from '../../../../../../main/common/models/eligibility/claimTypeOptions';
 import {t} from 'i18next';
-import {constructUrlWithNotEligibleReson} from '../../../../../main/common/utils/urlFormatter';
+import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
 import {
   ELIGIBILITY_CLAIM_TYPE_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_CLAIMANT_ADDRESS_URL,
-} from '../../../../../main/routes/urls';
+} from '../../../../../../main/routes/urls';
 
-jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/oidc');
 
 describe('Response Deadline Options Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -60,13 +60,13 @@ describe('Response Deadline Options Controller', () => {
     it('should render not eligible page when radio more-than-one-person-or-organisation is selected', async () => {
       await request(app).post(ELIGIBILITY_CLAIM_TYPE_URL).send({ 'claimType': ClaimTypeOptions.MORE_THAN_ONE_PERSON_OR_ORGANISATION }).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_TYPE_MORE_THAN_ONE));
+        expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_TYPE_MORE_THAN_ONE));
       });
     });
 
     it('should redirect and set cookie value', async () => {
       app.request.cookies = {eligibility: {foo: 'blah'}};
-      await request(app).post(ELIGIBILITY_CLAIMANT_ADDRESS_URL).send({option: ClaimTypeOptions.JUST_MYSELF}).expect((res) => {
+      await request(app).post(ELIGIBILITY_CLAIM_TYPE_URL).send({claimType: ClaimTypeOptions.JUST_MYSELF}).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(ELIGIBILITY_CLAIMANT_ADDRESS_URL);
         expect(app.request.cookies.eligibility.claimType).toBe(ClaimTypeOptions.JUST_MYSELF);
@@ -74,8 +74,8 @@ describe('Response Deadline Options Controller', () => {
     });
 
     it('should redirect and update cookie value', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah', eligibleClaimantAddress: ClaimTypeOptions.A_CLIENT}};
-      await request(app).post(ELIGIBILITY_CLAIMANT_ADDRESS_URL).send({option: ClaimTypeOptions.A_CLIENT}).expect((res) => {
+      app.request.cookies = {eligibility: {foo: 'blah', claimType: ClaimTypeOptions.A_CLIENT}};
+      await request(app).post(ELIGIBILITY_CLAIM_TYPE_URL).send({claimType: ClaimTypeOptions.A_CLIENT}).expect((res) => {
         expect(res.status).toBe(302);
         expect(app.request.cookies.eligibility.claimType).toBe(ClaimTypeOptions.A_CLIENT);
       });
@@ -91,7 +91,7 @@ describe('Response Deadline Options Controller', () => {
     it('should render not eligible page when radio unknow is selected', async () => {
       await request(app).post(ELIGIBILITY_CLAIM_TYPE_URL).send({ 'claimType': ClaimTypeOptions.A_CLIENT }).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_TYPE_A_CLIENT));
+        expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_TYPE_A_CLIENT));
       });
     });
   });
