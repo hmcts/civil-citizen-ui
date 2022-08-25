@@ -1,44 +1,45 @@
 import * as express from 'express';
 import {
+  ELIGIBILITY_DEFENDANT_AGE_URL,
   ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,
-  ELIGIBILITY_TENANCY_DEPOSIT_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {YesNo} from '../../../../common/form/models/yesNo';
-import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
 import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
+import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
 
-const tenancyDepositController = express.Router();
-const tenancyDepositViewPath = 'features/public/eligibility/tenancy-deposit';
+const claimAgainstGovernmentController = express.Router();
+const defendantEligibilityViewPath = 'features/public/eligibility/claim-against-government';
 
 function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Response): void {
   const form = Object.assign(genericYesNoForm);
   form.option = genericYesNoForm.model.option;
-  res.render(tenancyDepositViewPath, {form});
+  res.render(defendantEligibilityViewPath, {form});
 }
 
-tenancyDepositController.get(ELIGIBILITY_TENANCY_DEPOSIT_URL, (req, res) => {
+claimAgainstGovernmentController.get(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, (req, res) => {
   const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
-  const tenancyDeposit = cookie?.tenancyDeposit;
-  const genericYesNoForm = new GenericForm(new GenericYesNo(tenancyDeposit));
+  const governmentDepartment = cookie.governmentDepartment;
+  const genericYesNoForm = new GenericForm(new GenericYesNo(governmentDepartment));
   renderView(genericYesNoForm, res);
 });
 
-tenancyDepositController.post(ELIGIBILITY_TENANCY_DEPOSIT_URL, (req, res) => {
+claimAgainstGovernmentController.post(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, async (req, res) => {
   const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
-  genericYesNoForm.validateSync();
+  await genericYesNoForm.validate();
+
   if (genericYesNoForm.hasErrors()) {
     renderView(genericYesNoForm, res);
   } else {
     const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
-    cookie.tenancyDeposit = genericYesNoForm.model.option;
+    cookie.governmentDepartment = genericYesNoForm.model.option;
     res.cookie('eligibility', cookie);
-    genericYesNoForm.model.option === YesNo.YES
-      ? res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_IS_FOR_TENANCY_DEPOSIT))
-      : res.redirect(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL);
+    genericYesNoForm.model.option === YesNo.NO
+      ? res.redirect(ELIGIBILITY_DEFENDANT_AGE_URL)
+      : res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.GOVERNMENT_DEPARTMENT));
   }
 });
 
-export default tenancyDepositController;
+export default claimAgainstGovernmentController;
