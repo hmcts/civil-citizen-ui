@@ -560,6 +560,11 @@
       "PAGE_TITLE": "A oes gennych anabledd?",
       "TITLE": "A oes gennych anabledd?"
     },
+    "ELIGIBILITY_CLAIMANT_ADDRESS" : {
+      "PAGE_TITLE": "Do you have a postal address in the UK?",
+      "TITLE": "Do you have a postal address in the UK?",
+      "UK_MADE_UP": "The UK is made up of England and Wales."
+    },
     "ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT": {
       "LIST_OF_GOVERNMENT": "See list of government departments (opens in a new window).",
       "PAGE_TITLE": "Government department",
