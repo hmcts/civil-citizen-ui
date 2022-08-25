@@ -1,5 +1,4 @@
-const englishLanguage = document.getElementsByClassName('english-language');
-const cymraegLanguage = document.getElementsByClassName('cymraeg-language');
+const language = document.getElementsByClassName('language');
 
 const getCookie = (name) => {
   const cookies = document.cookie.split(';');
@@ -14,26 +13,29 @@ const getCookie = (name) => {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-  debugger;
-  const currentQuery = window.location.search;
+  const query = window.location.search;
   const lang = getCookie('lang');
+  let updatedQuery;
   if (lang === 'cy') {
-    const updatedQuery = currentQuery.includes('lang')
-      ? currentQuery.replace('lang=cy', 'lang=en')
-      : currentQuery
-      ? currentQuery + '&&lang=en'
-        : '?lang=en';
-    englishLanguage[0].href = updatedQuery;
-    englishLanguage[0].className = 'govuk-!-font-size-19 govuk-link language';
-    cymraegLanguage[0].className = 'govuk-!-display-none';
+    if (query.includes('lang=cy')) {
+      updatedQuery = query.replace('lang=cy', 'lang=en');
+    } else if (query) {
+      updatedQuery = query + '&&lang=en';
+    } else if (!query) {
+      updatedQuery = '?lang=en';
+    }
+    language[0].textContent = 'English';
+    language[0].href= updatedQuery;
   } else {
-    const updatedQuery = currentQuery.includes('lang')
-      ? currentQuery.replace('lang=en", "lang=cy')
-      : currentQuery
-        ? currentQuery + '&&lang=cy'
-        : '?lang=cy';
-    englishLanguage[0].className = 'govuk-!-display-none';
-    cymraegLanguage[0].href = updatedQuery;
-    cymraegLanguage[0].className = 'govuk-!-font-size-19 govuk-link language';
+    if (query.includes('lang=en')) {
+      updatedQuery = query.replace('lang=en', 'lang=cy');
+    } else if (query) {
+      updatedQuery = query + '&&lang=cy';
+    } else if (!query) {
+      updatedQuery = '?lang=cy';
+    }
+    language[0].textContent = 'Welsh';
+    language[0].href = updatedQuery;
   }
 });
+
