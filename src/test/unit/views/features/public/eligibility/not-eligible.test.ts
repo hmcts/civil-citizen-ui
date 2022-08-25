@@ -113,6 +113,41 @@ describe("You can't use this service View", () => {
       });
     });
 
+    describe('Reason is defendant address', () => {
+      beforeEach(async () => {
+        await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.DEFENDANT_ADDRESS)).then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      });
+
+      it('should display paragraphs', async () => {
+        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        expect(paragraphs[0].innerHTML).toContain('You can only use this service to claim against a person or organisation with an address in England or Wales.');
+        expect(paragraphs[1].innerHTML).toContain('Depending on where you’ll be sending the claim, you might be able to claim using a paper form.');
+      });
+
+      it('should display address title and address', () => {
+        const addressTitle = htmlDocument.getElementsByClassName('govuk-heading-m');
+        const address = htmlDocument.getElementsByClassName('govuk-summary-list');
+        expect(addressTitle[0].innerHTML).toContain('Where to send paper forms');
+        expect(address[0].innerHTML).toContain('County Court Money Claims Centre');
+        expect(address[0].innerHTML).toContain('PO Box 527');
+        expect(address[0].innerHTML).toContain('Salford');
+        expect(address[0].innerHTML).toContain('M5 0BY');
+      });
+
+      it('should have external links', () => {
+        const links = htmlDocument.getElementsByClassName('govuk-link');
+        const n1FormLink = links[3] as HTMLAnchorElement;
+        const n510FormLink = links[4] as HTMLAnchorElement;
+        expect(n1FormLink.innerHTML).toContain('Download the paper form N1');
+        expect(n510FormLink.innerHTML).toContain('form N510');
+        expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
+        expect(n510FormLink.href).toEqual(externalURLs.n510Url);
+      });
+    });
+
     describe('Reason is more than one person or organisation ', () => {
       beforeEach(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.MULTIPLE_DEFENDANTS)).then(res => {
@@ -150,7 +185,42 @@ describe("You can't use this service View", () => {
       });
     });
 
-    describe('Reason is claim for tenancy deposit', () => {
+    describe('Reason is claim on behalf', () => {
+      beforeEach(async () => {
+        await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_ON_BEHALF)).then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      });
+
+      it('should display paragraphs', async () => {
+        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        expect(paragraphs[0].innerHTML).toContain('This service is currently for claimants representing themselves.');
+        expect(paragraphs[1].innerHTML).toContain('If you’re a legal representative');
+      });
+
+      it('should display address title and address', () => {
+        const addressTitle = htmlDocument.getElementsByClassName('govuk-heading-m');
+        const address = htmlDocument.getElementsByClassName('govuk-summary-list');
+        expect(addressTitle[0].innerHTML).toContain('Where to send paper forms');
+        expect(address[0].innerHTML).toContain('County Court Money Claims Centre');
+        expect(address[0].innerHTML).toContain('PO Box 527');
+        expect(address[0].innerHTML).toContain('Salford');
+        expect(address[0].innerHTML).toContain('M5 0BY');
+      });
+
+      it('should have external links', () => {
+        const links = htmlDocument.getElementsByClassName('govuk-link');
+        const legacyServiceLink = links[3] as HTMLAnchorElement;
+        const n1FormLink = links[4] as HTMLAnchorElement;
+        expect(legacyServiceLink.innerHTML).toContain('use the Money Claim Online (MCOL) service');
+        expect(n1FormLink.innerHTML).toContain('download a paper form');
+        expect(legacyServiceLink.href).toEqual(externalURLs.legacyServiceUrl);
+        expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
+      });
+    });
+    
+     describe('Reason is claim for tenancy deposit', () => {
       beforeEach(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_IS_FOR_TENANCY_DEPOSIT)).then(res => {
           const dom = new JSDOM(res.text);
@@ -171,41 +241,6 @@ describe("You can't use this service View", () => {
         expect(tenancyServiceUrl.innerHTML).toContain('help to resolve your dispute');
         expect(tenancyServiceUrl.href).toEqual(externalURLs.tenancyServiceUrl);
       });
-    });
-  });
-
-  describe('Reason is claim on behalf', () => {
-    beforeEach(async () => {
-      await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_ON_BEHALF)).then(res => {
-        const dom = new JSDOM(res.text);
-        htmlDocument = dom.window.document;
-      });
-    });
-
-    it('should display paragraphs', async () => {
-      const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
-      expect(paragraphs[0].innerHTML).toContain('This service is currently for claimants representing themselves.');
-      expect(paragraphs[1].innerHTML).toContain('If you’re a legal representative');
-    });
-
-    it('should display address title and address', () => {
-      const addressTitle = htmlDocument.getElementsByClassName('govuk-heading-m');
-      const address = htmlDocument.getElementsByClassName('govuk-summary-list');
-      expect(addressTitle[0].innerHTML).toContain('Where to send paper forms');
-      expect(address[0].innerHTML).toContain('County Court Money Claims Centre');
-      expect(address[0].innerHTML).toContain('PO Box 527');
-      expect(address[0].innerHTML).toContain('Salford');
-      expect(address[0].innerHTML).toContain('M5 0BY');
-    });
-
-    it('should have external links', () => {
-      const links = htmlDocument.getElementsByClassName('govuk-link');
-      const legacyServiceLink = links[3] as HTMLAnchorElement;
-      const n1FormLink = links[4] as HTMLAnchorElement;
-      expect(legacyServiceLink.innerHTML).toContain('use the Money Claim Online (MCOL) service');
-      expect(n1FormLink.innerHTML).toContain('download a paper form');
-      expect(legacyServiceLink.href).toEqual(externalURLs.legacyServiceUrl);
-      expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
     });
   });
 });
