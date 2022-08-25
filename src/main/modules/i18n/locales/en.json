@@ -573,6 +573,10 @@
       "PAGE_TITLE": "Individual or Multiparty Claim",
       "TITLE": "Is this claim against more than one person or organisation?"
     },
+    "ELIGIBILITY_OVER_18_CLAIMANT": {
+      "PAGE_TITLE": "Are you 18 or over?",
+      "TITLE": "Are you 18 or over"
+    },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
       "EMPLOYED": "Employed",

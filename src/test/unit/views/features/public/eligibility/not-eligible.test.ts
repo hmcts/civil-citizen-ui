@@ -115,7 +115,7 @@ describe("You can't use this servicve View", () => {
 
     describe('Reason is more than one person or organisation ', () => {
       beforeEach(async () => {
-        await request(app).get(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.MULTIPLE_DEFENDANTS)).then(res => {
+        await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.MULTIPLE_DEFENDANTS)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
         });
