@@ -16,6 +16,8 @@
         {% include "features/public/eligibility/not-eligible-includes/claim-value-not-known.njk"%}
       {% elseif reason === NotEligibleReason.CLAIM_ON_BEHALF %}
         {% include "features/public/eligibility/not-eligible-includes/claim-on-behalf.njk"%}
+      {% elseif reason === NotEligibleReason.MULTIPLE_DEFENDANTS %}
+        {% include "features/public/eligibility/not-eligible-includes/multiple-defendants.njk"%}
       {% endif %}
       {{ contactUsForHelp(t) }}
     </div>

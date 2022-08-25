@@ -9,7 +9,7 @@ import {
 } from '../../../../../../main/routes/urls';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
-import {constructUrlWithNotEligibleReson} from '../../../../../../main/common/utils/urlFormatter';
+import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -57,7 +57,7 @@ describe('Tenancy Deposit Controller', () => {
     it('should redirect to not eligible page if radio selection is yes', async () => {
       const res = await request(app).post(ELIGIBILITY_TENANCY_DEPOSIT_URL).send({option: YesNo.YES});
       expect(res.status).toBe(302);
-      expect(res.header.location).toBe(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_IS_FOR_TENANCY_DEPOSIT));
+      expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_IS_FOR_TENANCY_DEPOSIT));
     });
 
     it('should redirect and set cookie value if radio selection is no', async () => {
