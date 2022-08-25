@@ -139,7 +139,7 @@ describe("You can't use this servicve View", () => {
         expect(address[0].innerHTML).toContain('M5 0BY');
       });
 
-      it('should have external links available', () => {
+      it('should have external links', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
         const legacyServiceLink = links[3] as HTMLAnchorElement;
         const n1FormLink = links[4] as HTMLAnchorElement;
