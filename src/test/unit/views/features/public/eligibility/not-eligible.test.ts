@@ -112,6 +112,19 @@ describe("You can't use this servicve View", () => {
         expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
       });
     });
-  });
 
+    describe('Reason is no UK address', () => {
+      beforeEach(async () => {
+        await request(app).get(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIMANT_ADDRESS)).then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      });
+
+      it('should display paragraphs', async () => {
+        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        expect(paragraphs[0].innerHTML).toContain('You need to have an address in the UK to make a money claim.');
+      });
+    });
+  });
 });

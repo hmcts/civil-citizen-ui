@@ -728,6 +728,9 @@
       "CANT_CALCULATE_THE_AMOUNT": "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
       "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "CLAIM_BY_PAPER": "You can also claim by paper. ",
+      "CLAIMANT_ADDRESS": {
+        "NEED_UK_ADDRESS": "You need to have an address in the UK to make a money claim."
+      },
       "DOWNLOAD_PAPER_FORM": "Download a paper form",
       "FOR_CLAIMS_LESS_THAN_25000": "This service is for claims of £25,000 or less.",
       "FOR_CLAIMS_BETWEEN_25001_AND_100000": "For claims between £25,001 and £100,000 you might be able to ",
