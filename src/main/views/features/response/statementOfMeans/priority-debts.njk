@@ -45,21 +45,19 @@
                   html: conditionalCheckBoxHTML(checkBoxField.name, priorityDebts.model[checkBoxField.name], priorityDebtErrors[checkBoxField.name], t)
                   }
                 }]
-          }) }}
+              }) }}
             {% endfor %}
             <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
               {{ t('PAGES.PRIORITY_DEBTS.TOTAL_MONTHLY_REPAYMENTS') }}: £
-          <span class="total-monthly-income-expense">
-            0
-          </span>
+              <span class="total-monthly-income-expense">0</span>
             </p>
             {{ govukButton({
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
             }) }}
             {{ contactUsForHelp(t) }}
-          </div>
-        </form>
+          </form>
+        <div/>
       </div>
-    </div>
-  {% endblock %}
-  
+    </main>
+  </div>
+{% endblock %}
