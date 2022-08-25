@@ -50,7 +50,6 @@ export class OidcMiddleware {
     });
 
     app.use((req: AppRequest, res: Response, next: NextFunction) => {
-      return next();
       if (req.session.user) {
         if (req.session?.user?.roles?.includes(citizenRole)) {
           return next();

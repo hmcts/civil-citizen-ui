@@ -679,7 +679,7 @@
       "NO_WAIT_COURT_HEARING" : "You will not have to wait longer for a court hearing if you choose mediation.",
       "OPENS_IN_NEW_TAB" : "free telephone mediation (opens in new tab).",
       "PAGE_TITLE": "Free telephone mediation",
-      "REACHING_SETTLEMENT": "Reaching a settlement",
+      "REACHING_SETTLEMENT" : "Reaching a settlement",
       "TITLE" : "Free telephone mediation"
     },
     "INCOMPLETE_SUBMISSION": {
@@ -866,7 +866,7 @@
       "TOTAL_MONTHLY" : "Total monthly income:",
       "UNIVERSAL_CREDIT" : "Universal Credit",
       "WHAT_REGULAR_INCOME" : "What regular income do you receive?",
-      "WORKING_TAX ": "Working Tax Credit"
+      "WORKING_TAX" : "Working Tax Credit"
     },
     "REJECT_ALL": {
       "FEE": "Fee",
@@ -928,7 +928,7 @@
       "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "SELF_EMPLOYED": {
-      "ANNUAL":  "Annual Turnover",
+      "ANNUAL" :  "Annual Turnover",
       "JOB_TITLE" : "Job title",
       "PAGE_TITLE": "Self employment details",
       "TITLE": "What are you self-employed as?"
@@ -1004,7 +1004,7 @@
       "WHO_EMPLOYS" : "Who employs you?"
     },
     "EMPLOYER" : {
-      "EMPLOYER_NAME ": "Employer name",
+      "EMPLOYER_NAME" : "Employer name",
       "JOB_TITLE" : "Job title"
     },
     "YOU_HAVE_PAID_LESS": {
