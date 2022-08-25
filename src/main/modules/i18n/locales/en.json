@@ -741,12 +741,6 @@
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
-      "TENANCY_DEPOSIT": {
-        "GET": "Get",
-        "HELP_TO_RESOLVE_YOUR_DISPUTE": "help to resolve your dispute",
-        "NOT_USED_FOR_TENANCY_DEPOSIT": "You can’t make a claim for a tenancy deposit using this service.",
-        "WITH_A_LANLORD_OR_TENANT": "with a landlord or tenant."
-      },
       "CANT_CALCULATE_THE_AMOUNT": "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
       "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "CLAIM_BY_PAPER": "You can also claim by paper. ",
@@ -772,6 +766,12 @@
       "OPENS_IN_A_NEW_WINDOW": "(opens in a new window)",
       "PAGE_TITLE": "You can’t use this service",
       "USE_MCOL": "use Money Claim Online (MCOL)",
+      "TENANCY_DEPOSIT": {
+        "GET": "Get",
+        "HELP_TO_RESOLVE_YOUR_DISPUTE": "help to resolve your dispute",
+        "NOT_USED_FOR_TENANCY_DEPOSIT": "You can’t make a claim for a tenancy deposit using this service.",
+        "WITH_A_LANLORD_OR_TENANT": "with a landlord or tenant."
+      },
       "WHERE_TO_SEND_PAPER_FORMS": "Where to send paper forms",
       "YOU_NEED_TO_KNOW_AMOUNT": "You need to know the claim amount to use this service."
     },
