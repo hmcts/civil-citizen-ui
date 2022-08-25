@@ -560,6 +560,16 @@
       "PAGE_TITLE": "Are you disabled?",
       "TITLE": "Are you disabled?"
     },
+    "ELIGIBILITY_CLAIMANT_ADDRESS" : {
+      "PAGE_TITLE": "Do you have a postal address in the UK?",
+      "TITLE": "Do you have a postal address in the UK?",
+      "UK_MADE_UP": "The UK is made up of England and Wales."
+    },
+    "ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT": {
+      "LIST_OF_GOVERNMENT": "See list of government departments (opens in a new window).",
+      "PAGE_TITLE": "Government department",
+      "TITLE": "Are you claiming against a government department?"
+    },
     "ELIGIBILITY_DEFENDANT_ADDRESS": {
       "PAGE_TITLE": "Defendant Address in England or Wales",
       "TITLE": "Does the person or organisation you’re claiming against have a postal address in England or Wales?"
@@ -567,6 +577,13 @@
     "ELIGIBILITY_SINGLE_DEFENDANT": {
       "PAGE_TITLE": "Individual or Multiparty Claim",
       "TITLE": "Is this claim against more than one person or organisation?"
+    },
+    "ELIGIBILITY_TOTAL_AMOUNT": {
+      "DONT_KNOW": "I don't know the amount",
+      "INCLUDE_AMOUNT": "If you're claiming interest, include that in the amount",
+      "OVER_25000": "Over £25,000",
+      "TITLE": "Total amount you're claiming",
+      "25000_OR_LESS": "£25,000 or less"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
@@ -735,9 +752,24 @@
       "CANT_CALCULATE_THE_AMOUNT" : "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
       "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "CLAIM_BY_PAPER": "You can also claim by paper. ",
+      "CLAIM_ON_BEHALF": {
+        "CURRENTLY_SERVICE" : "This service is currently for claimants representing themselves.",
+        "COMPLETE_RETURN": ", complete and return it to make your claim.",
+        "DOWNLOAD_PAPER_LINK": "download a paper form",
+        "LEGAL_REPRESENTATIVE" : "If you’re a legal representative ",
+        "MCOL_LINK": "use the Money Claim Online (MCOL) service",
+        "OR": " or "
+      },
       "DOWNLOAD_PAPER_FORM": "Download a paper form",
       "FOR_CLAIMS_LESS_THAN_25000": "This service is for claims of £25,000 or less.",
       "FOR_CLAIMS_BETWEEN_25001_AND_100000": "For claims between £25,001 and £100,000 you might be able to ",
+      "MULTIPLE_DEFENDANTS": {
+        "AGAINST_THREE_OR_MORE_PEOPLE_ORG": "for claims against 3 or more people or organisations. Complete and return the form to make your claim.",
+        "AGAINST_TWO_PEOPLE_ORG": "for claims against 2 people or organisations.",
+        "MCOL_ONLINE": "Money Claim Online (MCOL)",
+        "MORE_THAN_ONE_PERSON_ORG": "You can’t use this service if this claim is against more than one person or organisation.",
+        "USE": "Use "
+      },
       "N1_PAPER_FORM" : "N1 paper form",
       "OPENS_IN_A_NEW_WINDOW": "(opens in a new window)",
       "PAGE_TITLE": "You can’t use this service",
