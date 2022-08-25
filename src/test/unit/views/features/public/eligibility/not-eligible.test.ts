@@ -5,7 +5,7 @@ import request from 'supertest';
 import {NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../../../../main/routes/urls';
 import * as externalURLs from '../../../../../utils/externalURLs';
 import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
-import {constructUrlWithNotEligibleReson} from '../../../../../../main/common/utils/urlFormatter';
+import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -14,6 +14,7 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
 describe("You can't use this servicve View", () => {
+  // TODO: remove this once paths become publicly available as mocking the response token will not be needed
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
@@ -45,7 +46,7 @@ describe("You can't use this servicve View", () => {
 
     describe('Reason is claim value over 25000', () => {
       beforeEach(async () => {
-        await request(app).get(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000)).then(res => {
+        await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
         });
@@ -82,7 +83,7 @@ describe("You can't use this servicve View", () => {
 
     describe('Reason is claim value not known', () => {
       beforeEach(async () => {
-        await request(app).get(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_NOT_KNOWN)).then(res => {
+        await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_NOT_KNOWN)).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
         });
@@ -111,6 +112,42 @@ describe("You can't use this servicve View", () => {
         expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
       });
     });
-  });
 
+    describe('Reason is more than one person or organisation ', () => {
+      beforeEach(async () => {
+        await request(app).get(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.MULTIPLE_DEFENDANTS)).then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      });
+
+      it('should display paragraphs', async () => {
+        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        expect(paragraphs[0].innerHTML).toContain('You can’t use this service if this claim is against more than one person or organisation.');
+        expect(paragraphs[1].innerHTML).toContain('Use ');
+        expect(paragraphs[1].innerHTML).toContain('for claims against 2 people or organisations.');
+        expect(paragraphs[2].innerHTML).toContain('for claims against 3 or more people or organisations. Complete and return the form to make your claim.');
+      });
+
+      it('should display address title and address', () => {
+        const addressTitle = htmlDocument.getElementsByClassName('govuk-heading-m');
+        const address = htmlDocument.getElementsByClassName('govuk-summary-list');
+        expect(addressTitle[0].innerHTML).toContain('Where to send paper forms');
+        expect(address[0].innerHTML).toContain('County Court Money Claims Centre');
+        expect(address[0].innerHTML).toContain('PO Box 527');
+        expect(address[0].innerHTML).toContain('Salford');
+        expect(address[0].innerHTML).toContain('M5 0BY');
+      });
+
+      it('should have external links', () => {
+        const links = htmlDocument.getElementsByClassName('govuk-link');
+        const legacyServiceLink = links[3] as HTMLAnchorElement;
+        const n1FormLink = links[4] as HTMLAnchorElement;
+        expect(legacyServiceLink.innerHTML).toContain('Money Claim Online (MCOL)');
+        expect(legacyServiceLink.href).toEqual(externalURLs.legacyServiceUrl);
+        expect(n1FormLink.innerHTML).toContain('Download a paper form');
+        expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
+      });
+    });
+  });
 });

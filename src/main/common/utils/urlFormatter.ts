@@ -4,7 +4,7 @@ export function constructResponseUrlWithIdParams(id: string, path: string): stri
   return path.replace(/(:id)/i, id);
 }
 
-export function constructUrlWithNotEligibleReson(path: string, reason: NotEligibleReason): string {
+export function constructUrlWithNotEligibleReason(path: string, reason: NotEligibleReason): string {
   return `${path}?reason=${reason}`;
 }
 
