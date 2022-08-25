@@ -72,8 +72,8 @@ describe("You can't use this service View", () => {
 
       it('should have external links', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
-        const legacyServiceLink = links[3] as HTMLAnchorElement;
-        const n1FormLink = links[4] as HTMLAnchorElement;
+        const legacyServiceLink = links[2] as HTMLAnchorElement;
+        const n1FormLink = links[3] as HTMLAnchorElement;
         expect(legacyServiceLink.innerHTML).toContain('use Money Claim Online (MCOL)');
         expect(legacyServiceLink.href).toEqual(externalURLs.legacyServiceUrl);
         expect(n1FormLink.innerHTML).toContain('Download a paper form');
@@ -107,7 +107,7 @@ describe("You can't use this service View", () => {
 
       it('should have external links', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
-        const n1FormLink = links[3] as HTMLAnchorElement;
+        const n1FormLink = links[2] as HTMLAnchorElement;
         expect(n1FormLink.innerHTML).toContain('N1 paper form');
         expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
       });
@@ -139,8 +139,8 @@ describe("You can't use this service View", () => {
 
       it('should have external links', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
-        const n1FormLink = links[3] as HTMLAnchorElement;
-        const n510FormLink = links[4] as HTMLAnchorElement;
+        const n1FormLink = links[2] as HTMLAnchorElement;
+        const n510FormLink = links[3] as HTMLAnchorElement;
         expect(n1FormLink.innerHTML).toContain('Download the paper form N1');
         expect(n510FormLink.innerHTML).toContain('form N510');
         expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
@@ -176,8 +176,8 @@ describe("You can't use this service View", () => {
 
       it('should have external links', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
-        const legacyServiceLink = links[3] as HTMLAnchorElement;
-        const n1FormLink = links[4] as HTMLAnchorElement;
+        const legacyServiceLink = links[2] as HTMLAnchorElement;
+        const n1FormLink = links[3] as HTMLAnchorElement;
         expect(legacyServiceLink.innerHTML).toContain('Money Claim Online (MCOL)');
         expect(legacyServiceLink.href).toEqual(externalURLs.legacyServiceUrl);
         expect(n1FormLink.innerHTML).toContain('Download a paper form');
@@ -211,8 +211,8 @@ describe("You can't use this service View", () => {
 
       it('should have external links', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
-        const legacyServiceLink = links[3] as HTMLAnchorElement;
-        const n1FormLink = links[4] as HTMLAnchorElement;
+        const legacyServiceLink = links[2] as HTMLAnchorElement;
+        const n1FormLink = links[3] as HTMLAnchorElement;
         expect(legacyServiceLink.innerHTML).toContain('use the Money Claim Online (MCOL) service');
         expect(n1FormLink.innerHTML).toContain('download a paper form');
         expect(legacyServiceLink.href).toEqual(externalURLs.legacyServiceUrl);
@@ -247,11 +247,10 @@ describe("You can't use this service View", () => {
 
       it('should have external links', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
-        const n1FormLink = links[3] as HTMLAnchorElement;
+        const n1FormLink = links[2] as HTMLAnchorElement;
         expect(n1FormLink.innerHTML).toContain('Download a paper form');
         expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
       });
     });
-
   });
 });
