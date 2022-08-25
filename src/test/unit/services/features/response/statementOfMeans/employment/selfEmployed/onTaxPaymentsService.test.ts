@@ -102,6 +102,21 @@ describe('On Tax Payments Service', () => {
       //Then
       expect(spySave).toBeCalled();
     });
+    it('should remove the existing reason and amountOwed values when option changed to no', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const savedMockClaim = new Claim();
+      savedMockClaim.statementOfMeans = new StatementOfMeans();
+      savedMockClaim.statementOfMeans.taxPayments = {owed: false, reason: undefined, amountOwed: undefined};
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveTaxPaymentsData('123', new GenericForm(new OnTaxPayments(YesNo.NO, AMOUNT_OWED, REASON)));
+      //Then
+      expect(spySave).toBeCalled();
+      expect(spySave).toBeCalledWith('123', savedMockClaim);
+    });
     it('should rethrow error when error occurs on get claim', async () => {
       //When
       mockGetCaseData.mockImplementation(async () => {

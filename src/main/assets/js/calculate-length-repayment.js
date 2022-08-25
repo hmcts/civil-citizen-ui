@@ -36,7 +36,7 @@
 
   const hideAll = () => {
     if (scheduleContainer?.children.length > 0) {
-      for (let i = 0; i < scheduleContainer.children.length; i++) {
+      for (let i = 0; i < scheduleContainer?.children.length; i++) {
         scheduleContainer.children[i].classList.add(CLASS_HIDE);
       }
     }

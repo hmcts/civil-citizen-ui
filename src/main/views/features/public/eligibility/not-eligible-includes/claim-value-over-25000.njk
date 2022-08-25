@@ -1,14 +1,14 @@
-{% from "../../../macro/external-link.njk" import externalLink %}
+{% from "../../../../macro/external-link.njk" import externalLink %}
 {% import "external-urls.njk" as externalURLs %}
 
 <p class="govuk-body">{{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.FOR_CLAIMS_LESS_THAN_25000') }}</p>
 <p class="govuk-body">
-  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.FOR_CLAIMS_BETWEEN_25001_AND_100000') }} 
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.FOR_CLAIMS_BETWEEN_25001_AND_100000') }}
   {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.USE_MCOL', externalURLs.legacyServiceUrl, true) }}
 </p>
 <p class="govuk-body">
-  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.CLAIM_BY_PAPER') }} 
-  {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.DOWNLOAD_PAPER_FORM', externalURLs.n1FormUrl, true) }} 
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.CLAIM_BY_PAPER') }}
+  {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.DOWNLOAD_PAPER_FORM', externalURLs.n1FormUrl, true) }}
   {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.COMPLETE_AND_RETURN_PAPER_FORM') }}
 </p>
 {% include "macro/paper-form-address.njk"%}
