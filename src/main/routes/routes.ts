@@ -88,6 +88,8 @@ import determinationWithoutHearingController
 import totalAmountController from './features/public/eligibility/totalAmountController';
 import notEligibleController
   from './features/public/eligibility/notEligibleController';
+import claimantAddressEligibilityController
+  from './features/public/eligibility/claimantAddressEligibilityController';
 import singleDefendantController from './features/public/eligibility/singleDefendantController';
 import defendantAddressEligibilityController
   from './features/public/eligibility/defendantAddressEligibilityController';
@@ -174,6 +176,7 @@ export default [
   determinationWithoutHearingController,
   totalAmountController,
   notEligibleController,
+  claimantAddressEligibilityController,
   singleDefendantController,
   claimAgainstGovernmentController,
   defendantAddressEligibilityController,
