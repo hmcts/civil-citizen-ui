@@ -19,8 +19,8 @@ function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Re
 
 claimantOver18EligibilityController.get(ELIGIBILITY_CLAIMANT_OVER_18_URL, (req, res) => {
   const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
-  const over18 = cookie.over18;
-  const genericYesNoForm = new GenericForm(new GenericYesNo(over18));
+  const claimantOver18 = cookie.claimantOver18;
+  const genericYesNoForm = new GenericForm(new GenericYesNo(claimantOver18));
   renderView(genericYesNoForm, res);
 });
 
@@ -32,7 +32,7 @@ claimantOver18EligibilityController.post(ELIGIBILITY_CLAIMANT_OVER_18_URL, (req,
     renderView(genericYesNoForm, res);
   } else {
     const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
-    cookie.over18 = genericYesNoForm.model.option;
+    cookie.claimantOver18 = genericYesNoForm.model.option;
     res.cookie('eligibility', cookie);
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(ELIGIBILITY_HELP_WITH_FEES)
