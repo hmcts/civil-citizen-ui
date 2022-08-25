@@ -11,7 +11,7 @@ const getCookie = (name) => {
   return '';
 };
 
-function getUpdateQuery(query, language) {
+function getUpdatedQuery(query, language) {
   const toggleLang = language === 'en' ? 'cy' : 'en';
   if (query.includes('lang')) {
     return query.replace(`lang=${language}`, `lang=${toggleLang}`);
@@ -23,13 +23,10 @@ function getUpdateQuery(query, language) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  const query = window.location.search;
   const lang = getCookie('lang');
-  let updatedQuery = getUpdateQuery(query, lang);
+  const query = window.location.search;
+  const toggleLangText = lang === 'en' ? 'Welsh' :'English';
+  let updatedQuery = getUpdatedQuery(query, lang);
   languageElement[0].href = updatedQuery;
-  if (lang === 'cy') {
-    languageElement[0].textContent = 'English';
-  } else {
-    languageElement[0].textContent = 'Welsh';
-  }
+  languageElement[0].textContent = toggleLangText;
 });
