@@ -1,15 +1,15 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
-import {ELIGIBILITY_CLAIM_VALUE_URL} from '../../../../../main/routes/urls';
+import {app} from '../../../../../../main/app';
+import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {ELIGIBILITY_CLAIM_VALUE_URL} from '../../../../../../main/routes/urls';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Total Amount View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -28,7 +28,7 @@ describe('Total Amount View', () => {
     });
 
     it('should have title set', () => {
-      expect(htmlDocument.title).toContain("Your money claims account - Total amount you're claiming");
+      expect(htmlDocument.title).toContain('Your money claims account - Total amount you\'re claiming');
     });
 
     it('should display header', () => {

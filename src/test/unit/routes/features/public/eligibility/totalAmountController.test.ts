@@ -1,17 +1,17 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {NotEligibleReason} from '../../../../../main/common/form/models/eligibility/NotEligibleReason';
-import {TotalAmountOptions} from '../../../../../main/common/models/eligibility/totalAmountOptions';
-import {constructUrlWithNotEligibleReson} from '../../../../../main/common/utils/urlFormatter';
+import {app} from '../../../../../../main/app';
+import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
+import {TotalAmountOptions} from '../../../../../../main/common/models/eligibility/totalAmountOptions';
+import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
 import {
   ELIGIBILITY_CLAIM_VALUE_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_SINGLE_DEFENDANT_URL,
-} from '../../../../../main/routes/urls';
+} from '../../../../../../main/routes/urls';
 
-jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/oidc');
 
 describe('Response Deadline Options Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -43,7 +43,7 @@ describe('Response Deadline Options Controller', () => {
     it('should render not eligible page when radio over-25000 is selected', async () => {
       await request(app).post(ELIGIBILITY_CLAIM_VALUE_URL).send({ 'totalAmount': TotalAmountOptions.OVER_25000 }).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000));
+        expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000));
       });
     });
 
@@ -57,7 +57,7 @@ describe('Response Deadline Options Controller', () => {
     it('should render not eligible page when radio unknow is selected', async () => {
       await request(app).post(ELIGIBILITY_CLAIM_VALUE_URL).send({ 'totalAmount': TotalAmountOptions.UNKNOWN }).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(constructUrlWithNotEligibleReson(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_NOT_KNOWN));
+        expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_NOT_KNOWN));
       });
     });
   });
