@@ -20,6 +20,8 @@
         {% include "features/public/eligibility/not-eligible-includes/multiple-defendants.njk"%}
       {% elseif reason === NotEligibleReason.DEFENDANT_ADDRESS %}
         {% include "features/public/eligibility/not-eligible-includes/defendant-address.njk"%}
+      {% elseif reason === NotEligibleReason.CLAIM_IS_FOR_TENANCY_DEPOSIT %}
+        {% include "features/public/eligibility/not-eligible-includes/claim-for-tenancy-deposit.njk"%}
       {% endif %}
       {{ contactUsForHelp(t) }}
     </div>
