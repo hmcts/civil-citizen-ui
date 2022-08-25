@@ -219,5 +219,28 @@ describe("You can't use this service View", () => {
         expect(n1FormLink.href).toEqual(externalURLs.n1FormUrl);
       });
     });
+
+    describe('Reason is claim for tenancy deposit', () => {
+      beforeEach(async () => {
+        await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_IS_FOR_TENANCY_DEPOSIT)).then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      });
+
+      it('should display paragraphs', async () => {
+        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        expect(paragraphs[0].innerHTML).toContain('You can’t make a claim for a tenancy deposit using this service.');
+        expect(paragraphs[1].innerHTML).toContain('Get');
+        expect(paragraphs[1].innerHTML).toContain('with a landlord or tenant.');
+      });
+
+      it('should have external links', () => {
+        const links = htmlDocument.getElementsByClassName('govuk-link');
+        const tenancyServiceUrl = links[3] as HTMLAnchorElement;
+        expect(tenancyServiceUrl.innerHTML).toContain('help to resolve your dispute');
+        expect(tenancyServiceUrl.href).toEqual(externalURLs.tenancyServiceUrl);
+      });
+    });
   });
 });
