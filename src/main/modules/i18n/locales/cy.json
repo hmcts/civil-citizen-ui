@@ -597,6 +597,10 @@
       "TITLE": "Total amount you're claiming",
       "25000_OR_LESS": "£25,000 or less"
     },
+    "ELIGIBILITY_OVER_18_CLAIMANT": {
+      "PAGE_TITLE": "Are you 18 or over?",
+      "TITLE": "Are you 18 or over?"
+    },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
       "EMPLOYED": "Cyflogedig",
