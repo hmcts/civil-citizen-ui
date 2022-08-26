@@ -1,0 +1,67 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.ELIGIBILITY_DEFENDANT_AGE.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        {% if form.hasErrors() %}
+          {{ errorSummary(form.getErrors(), t) }}
+        {% endif %}
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ govukRadios({
+              idPrefix: "defendant-age-eligibility",
+              name: "option",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.TITLE'),
+                  isPageHeading: true,
+                  classes: "govuk-fieldset__legend--l"
+                }
+              },
+              items: [
+                {
+                  value: AgeEligibilityOptions.YES,
+                  text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.YES'),
+                  checked:true if form.model.option == AgeEligibilityOptions.YES
+                },
+                {
+                  value: AgeEligibilityOptions.NO,
+                  text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.NO'),
+                  checked: true if form.model.option == AgeEligibilityOptions.NO
+                },
+                {
+                  value: AgeEligibilityOptions.NOT_APPLICABLE,
+                  text: t('PAGES.ELIGIBILITY_DEFENDANT_AGE.COMPANY_ORGANISATION'),
+                  checked: true if form.model.option == AgeEligibilityOptions.NOT_APPLICABLE
+                }
+              ],
+              errorMessage: {
+                html: t(form.errorFor('option'))
+              } if form.hasFieldError('option')
+            }) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
