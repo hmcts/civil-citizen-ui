@@ -14,7 +14,7 @@ import {
 
 jest.mock('../../../../../../main/modules/oidc');
 
-describe('Response Deadline Options Controller', () => {
+describe('Claim Type Options Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
