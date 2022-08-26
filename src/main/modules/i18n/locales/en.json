@@ -574,6 +574,13 @@
       "PAGE_TITLE": "Defendant Address in England or Wales",
       "TITLE": "Does the person or organisation you’re claiming against have a postal address in England or Wales?"
     },
+    "ELIGIBILITY_DEFENDANT_AGE": {
+      "COMPANY_ORGANISATION": "I'm claiming against a company or organisation",
+      "NO": "No",
+      "PAGE_TITLE": "Defendant Age Eligibility",
+      "TITLE": "Do you believe the person you’re claiming against is 18 or over?",
+      "YES": "Yes"
+    },
     "ELIGIBILITY_SINGLE_DEFENDANT": {
       "PAGE_TITLE": "Individual or Multiparty Claim",
       "TITLE": "Is this claim against more than one person or organisation?"
@@ -1044,6 +1051,7 @@
     "DATE_REQUIRED": "Enter a date",
     "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the original response date",
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
+    "DEFENDANT_AGE_REQUIRED": "Select yes, no, or company/organisation",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
     "DETAILS_REQUIRED": "Enter details",
