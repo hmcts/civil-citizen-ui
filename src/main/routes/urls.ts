@@ -98,4 +98,6 @@ export const ELIGIBILITY_CLAIMANT_ADDRESS_URL = `${BASE_ELIGIBILITY_URL}/claiman
 export const ELIGIBILITY_TENANCY_DEPOSIT_URL = `${BASE_ELIGIBILITY_URL}/claim-is-for-tenancy-deposit`;
 export const ELIGIBILITY_CLAIM_TYPE_URL = `${BASE_ELIGIBILITY_URL}/claim-type`;
 export const ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL = `${BASE_ELIGIBILITY_URL}/government-department`;
+export const ELIGIBILITY_HELP_WITH_FEES_URL = `${BASE_ELIGIBILITY_URL}/help-with-fees`;
+export const ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL = `${BASE_ELIGIBILITY_URL}/information-about-help-with-fees`;
 export const ELIGIBILITY_DEFENDANT_AGE_URL = `${BASE_ELIGIBILITY_URL}/defendant-age`;
