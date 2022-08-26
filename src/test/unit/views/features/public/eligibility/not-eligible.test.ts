@@ -270,7 +270,7 @@ describe("You can't use this service View", () => {
 
       it('should have external links', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
-        const tenancyServiceUrl = links[3] as HTMLAnchorElement;
+        const tenancyServiceUrl = links[2] as HTMLAnchorElement;
         expect(tenancyServiceUrl.innerHTML).toContain('help to resolve your dispute');
         expect(tenancyServiceUrl.href).toEqual(externalURLs.tenancyServiceUrl);
       });
