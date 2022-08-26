@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {
-  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, ELIGIBILITY_CLAIMANT_OVER_18_URL, ELIGIBILITY_HELP_WITH_FEES,
+  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, ELIGIBILITY_CLAIMANT_AGE_URL, ELIGIBILITY_HELP_WITH_FEES,
 } from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
@@ -17,14 +17,14 @@ function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Re
   res.render(over18EligibilityViewPath, {form});
 }
 
-claimantOver18EligibilityController.get(ELIGIBILITY_CLAIMANT_OVER_18_URL, (req, res) => {
+claimantOver18EligibilityController.get(ELIGIBILITY_CLAIMANT_AGE_URL, (req, res) => {
   const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
   const claimantOver18 = cookie.claimantOver18;
   const genericYesNoForm = new GenericForm(new GenericYesNo(claimantOver18));
   renderView(genericYesNoForm, res);
 });
 
-claimantOver18EligibilityController.post(ELIGIBILITY_CLAIMANT_OVER_18_URL, (req, res) => {
+claimantOver18EligibilityController.post(ELIGIBILITY_CLAIMANT_AGE_URL, (req, res) => {
   const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
   genericYesNoForm.validateSync();
 
