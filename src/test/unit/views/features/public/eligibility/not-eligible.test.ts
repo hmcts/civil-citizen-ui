@@ -276,7 +276,6 @@ describe("You can't use this service View", () => {
       });
     });
 
-
     describe('Reason is no UK address', () => {
       beforeEach(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIMANT_ADDRESS)).then(res => {
