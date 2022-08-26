@@ -753,6 +753,10 @@
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
+      "ABLE_TO_GET_AN_ADVICE": {
+        "1": "You might be able to get advice from organisations like ",
+        "2": " about making a claim."
+      },
       "DEFENDANT_ADDRESS": {
         "AND": "and",
         "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES":"You can only use this service to claim against a person or organisation with an address in England or Wales.",
