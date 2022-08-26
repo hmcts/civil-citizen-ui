@@ -746,7 +746,15 @@
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
-    "NOT_ELIGIBLE_FOR_SERVICE": {
+    "NOT_ELIGIBLE_FOR_SERVICE":{
+      "DEFENDANT_ADDRESS": {
+        "AND": "and",
+        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES":"You can only use this service to claim against a person or organisation with an address in England or Wales.",
+        "COMPLETE_FORMS_AND_RETURN": ". Complete the forms and return them to make your claim.",
+        "DOWNLOAD_PAPER_FORM_N1": "Download the paper form N1",
+        "FORM_N510": "form N510",
+        "USING_PAPER_FORM": "Depending on where you’ll be sending the claim, you might be able to claim using a paper form."
+      },
       "CANT_CALCULATE_THE_AMOUNT" : "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
       "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "CLAIM_BY_PAPER": "You can also claim by paper. ",
@@ -761,6 +769,9 @@
       "DOWNLOAD_PAPER_FORM": "Download a paper form",
       "FOR_CLAIMS_LESS_THAN_25000": "This service is for claims of £25,000 or less.",
       "FOR_CLAIMS_BETWEEN_25001_AND_100000": "For claims between £25,001 and £100,000 you might be able to ",
+      "MULTIPLE_CLAIMANTS": {
+        "CANT_USE_IF_MULTIPLE_CLAIMANTS": "You can’t use this service if more than one person or organisation is making the claim."
+      },
       "MULTIPLE_DEFENDANTS": {
         "AGAINST_THREE_OR_MORE_PEOPLE_ORG": "for claims against 3 or more people or organisations. Complete and return the form to make your claim.",
         "AGAINST_TWO_PEOPLE_ORG": "for claims against 2 people or organisations.",
