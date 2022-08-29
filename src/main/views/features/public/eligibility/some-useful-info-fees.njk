@@ -1,0 +1,50 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+
+
+ELIGIBILITY_USEFUL_INFO_FEES": {
+      "TITLE": "Some useful information about Help with Fees",
+      "HELP_WITH_FEES": "Help with Fees...",
+      "CONTINUE_HELP_WITH_FEES": "Do you wish to continue to make a Help with Fees Application"
+    },
+
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        {% if form.hasErrors() %}
+          {{ errorSummary(form.getErrors(), t) }}
+        {% endif %}
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.TITLE')}}</h1>
+          <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.HELP_WITH_FEES_INTRO') }}</p>
+          <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.HELP_WITH_FEES') }}</p>
+          <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.HELP_WITH_FEES_ADVICE') }}</p>
+          <p class="govuk-heading-m">{{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.CONTINUE_HELP_WITH_FEES') }}</p>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline'}) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
