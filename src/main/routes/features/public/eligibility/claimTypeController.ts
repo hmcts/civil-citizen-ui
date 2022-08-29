@@ -31,7 +31,7 @@ claimTypeController.post(ELIGIBILITY_CLAIM_TYPE_URL, async (req: express.Request
     res.cookie('eligibility', cookie);
     switch (claimType.option) {
       case ClaimTypeOptions.MORE_THAN_ONE_PERSON_OR_ORGANISATION:
-        res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_TYPE_MORE_THAN_ONE));
+        res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.MULTIPLE_CLAIMANTS));
         break;
       case ClaimTypeOptions.JUST_MYSELF:
         res.redirect(ELIGIBILITY_CLAIMANT_ADDRESS_URL);

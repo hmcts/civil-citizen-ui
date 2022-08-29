@@ -60,7 +60,7 @@ describe('Claim Type Options Controller', () => {
     it('should render not eligible page when radio more-than-one-person-or-organisation is selected', async () => {
       await request(app).post(ELIGIBILITY_CLAIM_TYPE_URL).send({ 'claimType': ClaimTypeOptions.MORE_THAN_ONE_PERSON_OR_ORGANISATION }).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_TYPE_MORE_THAN_ONE));
+        expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.MULTIPLE_CLAIMANTS));
       });
     });
 
