@@ -5,6 +5,7 @@
 {% from "../../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
+{% from "../../../macro/external-link.njk" import externalLink %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.ELIGIBILITY_HWF_REFERENCE.PAGE_TITLE') }}
@@ -14,8 +15,15 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set noHtml %}
-        <h3 class="govuk-heading-s">Decide whether to apply for Help with Fees</h3>
-        <p class="govuk-body">{{ t('PAGES.TRY_NEW_SERVICE.WE_ARE_BUILDING') }}</p>
+
+        <h3 class="govuk-heading-s">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.DECIDE') }}</h3>
+        <p class="govuk-body">
+          {{ externalLink(t, 'PAGES.ELIGIBILITY_HWF_REFERENCE.APPLY_FOR_HELP_LINK', externalURLs.feesHelpUri, true) }}
+          {{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.MAKE_CLAIM_USING') }}
+        </p>
+        <p class="govuk-body">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.WHEN_YOU_APPLY') }}</p>
+        <p class="govuk-body">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.MAKE_A_NOTE') }}</p>
+        <p class="govuk-body">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.WILL_NEED') }}</p>
       {% endset -%}
       <div class="govuk-grid-row">
         {% if form.hasErrors() %}
