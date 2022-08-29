@@ -100,4 +100,7 @@ export const ELIGIBILITY_CLAIM_TYPE_URL = `${BASE_ELIGIBILITY_URL}/claim-type`;
 export const ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL = `${BASE_ELIGIBILITY_URL}/government-department`;
 export const ELIGIBILITY_DEFENDANT_AGE_URL = `${BASE_ELIGIBILITY_URL}/defendant-age`;
 export const ELIGIBILITY_HELP_WITH_FEES = `${BASE_ELIGIBILITY_URL}/help-with-fees`;
+export const ELIGIBILITY_HELP_WITH_FEES_REFERENCE = `${BASE_ELIGIBILITY_URL}/help-with-fees-reference`;
+export const ELIGIBILITY_HWF_ELIGIBLE_REFERENCE = `${BASE_ELIGIBILITY_URL}/hwf-eligible-reference`;
+export const ELIGIBILITY_HWF_ELIGIBLE = `${BASE_ELIGIBILITY_URL}/hwf-eligible`;
 export const ELIGIBILITY_CLAIMANT_AGE_URL = `${BASE_ELIGIBILITY_URL}/over-18`;
