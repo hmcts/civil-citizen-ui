@@ -9,7 +9,7 @@ const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 jest.mock('../../../../../../main/modules/oidc');
 
-describe('Eligibility Tenancy Deposit View', () => {
+describe('Some useful information about Help with Fees View', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
