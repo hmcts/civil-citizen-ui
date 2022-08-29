@@ -37,7 +37,7 @@ claimTypeController.post(ELIGIBILITY_CLAIM_TYPE_URL, async (req: express.Request
         res.redirect(ELIGIBILITY_CLAIMANT_ADDRESS_URL);
         break;
       case ClaimTypeOptions.A_CLIENT:
-        res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_TYPE_A_CLIENT));
+        res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_ON_BEHALF));
         break;
     }
   }
