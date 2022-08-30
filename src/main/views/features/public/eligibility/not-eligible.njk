@@ -24,6 +24,8 @@
         {% include "features/public/eligibility/not-eligible-includes/defendant-address.njk"%}
       {% elseif reason === NotEligibleReason.CLAIM_IS_FOR_TENANCY_DEPOSIT %}
         {% include "features/public/eligibility/not-eligible-includes/claim-for-tenancy-deposit.njk"%}
+      {% elseif reason === NotEligibleReason.GOVERNMENT_DEPARTMENT %}
+        {% include "features/public/eligibility/not-eligible-includes/government-department.njk"%}
       {% endif %}
       {{ contactUsForHelp(t) }}
     </div>

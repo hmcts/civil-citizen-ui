@@ -741,6 +741,10 @@
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
     "NOT_ELIGIBLE_FOR_SERVICE":{
+      "CLAIM_AGAINST_GOVERNMENT": {
+        "CANT_USE_SERVICE": "You can't use this service to claim against",
+        "GOVERNMENT_DEPARTMENTS": "government departments"
+      },
       "DEFENDANT_ADDRESS": {
         "AND": "and",
         "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES":"You can only use this service to claim against a person or organisation with an address in England or Wales.",
