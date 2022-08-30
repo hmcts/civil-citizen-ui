@@ -570,6 +570,12 @@
       "PAGE_TITLE": "Government department",
       "TITLE": "Are you claiming against a government department?"
     },
+    "ELIGIBILITY_CLAIM_TYPE": {
+      "A_CLIENT": "A client - I'm their solicitor",
+      "JUST_MYSELF": "Just my self or my organisation",
+      "MORE_THAN_ONE_PERSON_OR_ORGANISATION": "More than one person or organisation",
+      "TITLE": "Who are you making the claim for?"
+    },
     "ELIGIBILITY_DEFENDANT_ADDRESS": {
       "PAGE_TITLE": "Defendant Address in England or Wales",
       "TITLE": "Does the person or organisation you’re claiming against have a postal address in England or Wales?"

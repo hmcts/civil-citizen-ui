@@ -86,6 +86,7 @@ import agreedResponseDeadlineController from './features/response/responseDeadli
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/determinationWithoutHearingController';
 import totalAmountController from './features/public/eligibility/totalAmountController';
+import claimTypeController from './features/public/eligibility/claimTypeController';
 import notEligibleController
   from './features/public/eligibility/notEligibleController';
 import claimantAddressEligibilityController
@@ -179,6 +180,7 @@ export default [
   newDeadlineResponseController,
   determinationWithoutHearingController,
   totalAmountController,
+  claimTypeController,
   notEligibleController,
   claimantAddressEligibilityController,
   singleDefendantController,
