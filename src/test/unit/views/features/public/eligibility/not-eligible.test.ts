@@ -91,8 +91,8 @@ describe("You can't use this service View", () => {
 
       it('should display paragraphs', async () => {
         const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
-        expect(paragraphs[0].innerHTML).toContain('You can’t use this service to claim against');
-        expect(paragraphs[1].innerHTML).toContain('complete it and return it to make your claim');
+        expect(paragraphs[0].innerHTML).toContain('You can\'t use this service to claim against');
+        expect(paragraphs[1].innerHTML).toContain(', complete it and return it to make your claim');
       });
 
       it('should display address title and address', () => {
