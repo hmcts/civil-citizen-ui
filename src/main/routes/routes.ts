@@ -98,6 +98,7 @@ import tenancyDepositController from './features/public/eligibility/tenancyDepos
 import claimAgainstGovernmentController from './features/public/eligibility/claimAgainstGovernmentController';
 import claimantOver18EligibilityController from './features/public/eligibility/claimantOver18EligibilityController';
 import defendantAgeEligibilityController from './features/public/eligibility/defendantAgeEligibilityController';
+import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
 
 export default [
   homeController,
@@ -186,4 +187,5 @@ export default [
   tenancyDepositController,
   claimantOver18EligibilityController,
   defendantAgeEligibilityController,
+  applyForHelpWithFeesController,
 ];
