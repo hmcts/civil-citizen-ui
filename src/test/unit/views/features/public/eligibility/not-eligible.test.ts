@@ -220,6 +220,30 @@ describe("You can't use this service View", () => {
       });
     });
 
+    describe('Reason is claimant under 18', () => {
+      beforeEach(async () => {
+        await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_CLAIMANT)).then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      });
+
+      it('should display paragraphs', async () => {
+        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        expect(paragraphs[0].innerHTML).toContain('You need to be 18 or over to use this service.');
+        expect(paragraphs[1].innerHTML).toContain('You might be able to get advice from organisations like');
+        expect(paragraphs[1].innerHTML).toContain('Citizens Advice');
+        expect(paragraphs[1].innerHTML).toContain('about making a claim.');
+      });
+
+      it('should have external links', () => {
+        const links = htmlDocument.getElementsByClassName('govuk-link');
+        const n1FormLink = links[3] as HTMLAnchorElement;
+        expect(n1FormLink.innerHTML).toContain('Citizens Advice');
+        expect(n1FormLink.href).toEqual(externalURLs.citizensAdviceUrl);
+      });
+    });
+
     describe('Reason multiple claimants', () => {
       beforeEach(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.MULTIPLE_CLAIMANTS)).then(res => {
@@ -287,6 +311,39 @@ describe("You can't use this service View", () => {
       it('should display paragraphs', async () => {
         const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
         expect(paragraphs[0].innerHTML).toContain('You need to have an address in the UK to make a money claim.');
+      });
+    });
+
+    describe('Reason defendant under 18', () => {
+      beforeEach(async () => {
+        await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_DEFENDANT)).then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      });
+
+      it('should display paragraphs', async () => {
+        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        expect(paragraphs[0].innerHTML).toContain('You can only use this service to claim against a defendant who’s 18 or over.');
+        expect(paragraphs[1].innerHTML).toContain('You might be able to get advice from organisations like ');
+        expect(paragraphs[1].innerHTML).toContain('about making a claim.');
+      });
+
+      it('should display address title and address', () => {
+        const addressTitle = htmlDocument.getElementsByClassName('govuk-heading-m');
+        const address = htmlDocument.getElementsByClassName('govuk-summary-list');
+        expect(addressTitle[0].innerHTML).toContain('Where to send paper forms');
+        expect(address[0].innerHTML).toContain('County Court Money Claims Centre');
+        expect(address[0].innerHTML).toContain('PO Box 527');
+        expect(address[0].innerHTML).toContain('Salford');
+        expect(address[0].innerHTML).toContain('M5 0BY');
+      });
+
+      it('should have external links', () => {
+        const links = htmlDocument.getElementsByClassName('govuk-link');
+        const citizenAdvicesContactUsLink = links[3] as HTMLAnchorElement;
+        expect(citizenAdvicesContactUsLink.innerHTML).toContain('Citizens Advice');
+        expect(citizenAdvicesContactUsLink.href).toEqual(externalURLs.citizenAdviceContactUsUrl);
       });
     });
   });
