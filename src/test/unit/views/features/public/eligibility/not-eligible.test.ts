@@ -299,6 +299,21 @@ describe("You can't use this service View", () => {
         expect(tenancyServiceUrl.href).toEqual(externalURLs.tenancyServiceUrl);
       });
     });
+
+    describe('Reason is no UK address', () => {
+      beforeEach(async () => {
+        await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIMANT_ADDRESS)).then(res => {
+          const dom = new JSDOM(res.text);
+          htmlDocument = dom.window.document;
+        });
+      });
+
+      it('should display paragraphs', async () => {
+        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        expect(paragraphs[0].innerHTML).toContain('You need to have an address in the UK to make a money claim.');
+      });
+    });
+
     describe('Reason defendant under 18', () => {
       beforeEach(async () => {
         await request(app).get(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_DEFENDANT)).then(res => {
@@ -331,6 +346,5 @@ describe("You can't use this service View", () => {
         expect(citizenAdvicesContactUsLink.href).toEqual(externalURLs.citizenAdviceContactUsUrl);
       });
     });
-
   });
 });

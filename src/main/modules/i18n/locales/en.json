@@ -793,6 +793,9 @@
         "MCOL_LINK": "use the Money Claim Online (MCOL) service",
         "OR": " or "
       },
+      "CLAIMANT_ADDRESS": {
+        "NEED_UK_ADDRESS": "You need to have an address in the UK to make a money claim."
+      },
       "CLAIMANT_UNDER_18": {
         "CANT_USE_IF_UNDER_18": "You need to be 18 or over to use this service."
       },
