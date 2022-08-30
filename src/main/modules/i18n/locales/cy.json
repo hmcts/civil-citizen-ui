@@ -744,7 +744,8 @@
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "CLAIM_AGAINST_GOVERNMENT": {
         "CANT_USE_SERVICE": "You can’t use this service to claim against",
-        "GOVERNMENT_DEPARTMENTS": "government departments"
+        "GOVERNMENT_DEPARTMENTS": "government departments",
+        "COMMA_COMPLETE_RETURN": ", complete it and return it to make your claim"
       },
       "DEFENDANT_ADDRESS": {
         "AND": "and",
