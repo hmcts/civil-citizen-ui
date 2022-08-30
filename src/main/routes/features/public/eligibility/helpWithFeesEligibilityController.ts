@@ -1,14 +1,12 @@
 import * as express from 'express';
 import {
-  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_HELP_WITH_FEES_URL,
   ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL,
+  ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {YesNo} from '../../../../common/form/models/yesNo';
-import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
-import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
 
 const helpWithFeesEligibilityController = express.Router();
 const helpWithFeesEligibilityViewPath = 'features/public/eligibility/help-with-fees';
@@ -38,7 +36,7 @@ helpWithFeesEligibilityController.post(ELIGIBILITY_HELP_WITH_FEES_URL, async (re
     res.cookie('eligibility', cookie);
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL)
-      : res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.HELP_WITH_FEES));
+      : res.redirect(ELIGIBLE_FOR_THIS_SERVICE_URL);
   }
 });
 

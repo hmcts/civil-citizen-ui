@@ -3,14 +3,12 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {
-  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_HELP_WITH_FEES_URL,
   ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL,
+  ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../../../main/routes/urls';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {t} from 'i18next';
-import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
-import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -59,10 +57,10 @@ describe('Help With Fees Eligibility Controller', () => {
       });
     });
 
-    it('should redirect to not eligible page if help with fees selection is no', async () => {
+    it('should redirect to eligible page if help with fees selection is no', async () => {
       await request(app).post(ELIGIBILITY_HELP_WITH_FEES_URL).send({option: YesNo.NO}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.HELP_WITH_FEES));
+        expect(res.header.location).toBe(ELIGIBLE_FOR_THIS_SERVICE_URL);
       });
     });
 
