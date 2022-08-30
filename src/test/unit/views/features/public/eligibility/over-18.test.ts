@@ -2,15 +2,18 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {ELIGIBILITY_DEFENDANT_ADDRESS_URL} from '../../../../../../main/routes/urls';
+import {ELIGIBILITY_CLAIMANT_AGE_URL} from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
+const pageTitle = 'PAGES.ELIGIBILITY_OVER_18_CLAIMANT.PAGE_TITLE';
+
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
-describe('Defendant Address Eligibility View', () => {
+describe('Over 18 View', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -21,18 +24,18 @@ describe('Defendant Address Eligibility View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).get(ELIGIBILITY_DEFENDANT_ADDRESS_URL);
+      const response = await request(app).get(ELIGIBILITY_CLAIMANT_AGE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });
 
     it('should have correct page title', () => {
-      expect(htmlDocument.title).toEqual('Your money claims account - Defendant Address in England or Wales');
+      expect(htmlDocument.title).toEqual(`Your money claims account - ${t(pageTitle)}`);
     });
 
     it('should display header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
-      expect(header[0].innerHTML).toContain('Does the person or organisation you’re claiming against have a postal address in England or Wales?');
+      expect(header[0].innerHTML).toContain(t('PAGES.ELIGIBILITY_OVER_18_CLAIMANT.TITLE'));
     });
 
     it('should display 2 radio buttons with yes and no options', () => {
@@ -64,7 +67,7 @@ describe('Defendant Address Eligibility View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).post(ELIGIBILITY_DEFENDANT_ADDRESS_URL);
+      const response = await request(app).post(ELIGIBILITY_CLAIMANT_AGE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });
