@@ -581,6 +581,11 @@
       "TITLE": "Do you believe the person you’re claiming against is 18 or over?",
       "YES": "Yes"
     },
+    "ELIGIBILITY_HELP_WITH_FEES" : {
+      "PAGE_TITLE": "Do you need help paying your court fee?",
+      "TITLE": "Do you need help paying your court fee?",
+      "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits."
+    },
     "ELIGIBILITY_SINGLE_DEFENDANT": {
       "PAGE_TITLE": "Individual or Multiparty Claim",
       "TITLE": "Is this claim against more than one person or organisation?"
