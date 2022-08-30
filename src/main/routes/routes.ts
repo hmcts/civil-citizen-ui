@@ -93,9 +93,12 @@ import claimantAddressEligibilityController
 import singleDefendantController from './features/public/eligibility/singleDefendantController';
 import defendantAddressEligibilityController
   from './features/public/eligibility/defendantAddressEligibilityController';
+import helpWithFeesEligibilityController
+  from './features/public/eligibility/helpWithFeesEligibilityController';
 import tryNewServiceController from './features/public/eligibility/tryNewServiceController';
 import tenancyDepositController from './features/public/eligibility/tenancyDepositController';
 import claimAgainstGovernmentController from './features/public/eligibility/claimAgainstGovernmentController';
+import claimantOver18EligibilityController from './features/public/eligibility/claimantOver18EligibilityController';
 import defendantAgeEligibilityController from './features/public/eligibility/defendantAgeEligibilityController';
 
 export default [
@@ -181,7 +184,9 @@ export default [
   singleDefendantController,
   claimAgainstGovernmentController,
   defendantAddressEligibilityController,
+  helpWithFeesEligibilityController,
   tryNewServiceController,
   tenancyDepositController,
+  claimantOver18EligibilityController,
   defendantAgeEligibilityController,
 ];

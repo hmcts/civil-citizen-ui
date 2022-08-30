@@ -581,6 +581,11 @@
       "TITLE": "Do you believe the person you’re claiming against is 18 or over?",
       "YES": "Yes"
     },
+    "ELIGIBILITY_HELP_WITH_FEES" : {
+      "PAGE_TITLE": "Do you need help paying your court fee?",
+      "TITLE": "Do you need help paying your court fee?",
+      "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits."
+    },
     "ELIGIBILITY_SINGLE_DEFENDANT": {
       "PAGE_TITLE": "Individual or Multiparty Claim",
       "TITLE": "Is this claim against more than one person or organisation?"
@@ -591,6 +596,10 @@
       "OVER_25000": "Over £25,000",
       "TITLE": "Total amount you're claiming",
       "25000_OR_LESS": "£25,000 or less"
+    },
+    "ELIGIBILITY_OVER_18_CLAIMANT": {
+      "PAGE_TITLE": "Are you 18 or over?",
+      "TITLE": "Are you 18 or over?"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
@@ -756,6 +765,12 @@
         "DOWNLOAD_PAPER_FORM_N1": "Download the paper form N1",
         "FORM_N510": "form N510",
         "USING_PAPER_FORM": "Depending on where you’ll be sending the claim, you might be able to claim using a paper form."
+      },
+      "DEFENDANT_UNDER_18" : {
+        "ABOUT_MAKING_CLAIM" : " about making a claim.",
+        "CAN_ONLY_USE" : "You can only use this service to claim against a defendant who’s 18 or over.",
+        "CITIZENS_ADVICE" : "Citizens Advice",
+        "MIGHT_ABLE" : "You might be able to get advice from organisations like "
       },
       "CANT_CALCULATE_THE_AMOUNT": "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
       "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
