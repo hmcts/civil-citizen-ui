@@ -36,7 +36,7 @@ claimantOver18EligibilityController.post(ELIGIBILITY_CLAIMANT_AGE_URL, (req, res
     res.cookie('eligibility', cookie);
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(ELIGIBILITY_HELP_WITH_FEES)
-      : res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18));
+      : res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_CLAIMANT));
   }
 });
 
