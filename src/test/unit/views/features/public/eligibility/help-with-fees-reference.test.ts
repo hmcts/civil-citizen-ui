@@ -2,15 +2,21 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {ELIGIBILITY_DEFENDANT_ADDRESS_URL} from '../../../../../../main/routes/urls';
+import {
+  ELIGIBILITY_HELP_WITH_FEES_REFERENCE,
+} from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
+import * as externalURLs from '../../../../../utils/externalURLs';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
+const pageTitle = 'PAGES.ELIGIBILITY_HWF_REFERENCE.PAGE_TITLE';
+
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
-describe('Defendant Address Eligibility View', () => {
+describe('Help with fees reference view', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -21,18 +27,23 @@ describe('Defendant Address Eligibility View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).get(ELIGIBILITY_DEFENDANT_ADDRESS_URL);
+      const response = await request(app).get(ELIGIBILITY_HELP_WITH_FEES_REFERENCE);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });
 
     it('should have correct page title', () => {
-      expect(htmlDocument.title).toEqual('Your money claims account - Defendant Address in England or Wales');
+      expect(htmlDocument.title).toEqual(`Your money claims account - ${t(pageTitle)}`);
     });
 
     it('should display header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
-      expect(header[0].innerHTML).toContain('Does the person or organisation you’re claiming against have a postal address in England or Wales?');
+      expect(header[0].innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.TITLE'));
+    });
+
+    it('should display include help text', () => {
+      const subHeader = htmlDocument.getElementsByClassName('govuk-body-m');
+      expect(subHeader[0].innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.ALREADY_APPLIED'));
     });
 
     it('should display 2 radio buttons with yes and no options', () => {
@@ -44,7 +55,7 @@ describe('Defendant Address Eligibility View', () => {
 
     it('should display Save and continue button', () => {
       const buttons = htmlDocument.getElementsByClassName('govuk-button');
-      expect(buttons[0].innerHTML).toContain('Save and continue');
+      expect(buttons[0].innerHTML).toContain(t('COMMON.BUTTONS.SAVE_AND_CONTINUE'));
     });
 
     it('should contain Contact us detail component', () => {
@@ -56,6 +67,27 @@ describe('Defendant Address Eligibility View', () => {
       const errorSummary = htmlDocument.getElementsByClassName('govuk-error-summary');
       expect(errorSummary.length).toEqual(0);
     });
+
+    describe('No Section', () => {
+      it('should display no section title', async () => {
+        const title = htmlDocument.getElementsByClassName('govuk-heading-s');
+        expect(title[0].innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.DECIDE'));
+      });
+      it('should display paragraphs', async () => {
+        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        expect(paragraphs[0].innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.MAKE_CLAIM_USING'));
+        expect(paragraphs[1].innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.WHEN_YOU_APPLY'));
+        expect(paragraphs[2].innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.MAKE_A_NOTE'));
+        expect(paragraphs[3].innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.WILL_NEED'));
+      });
+      it('should have external links', () => {
+        const links = htmlDocument.getElementsByClassName('govuk-link');
+        const feelsHelpUrl = links[3] as HTMLAnchorElement;
+        expect(feelsHelpUrl.innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.APPLY_FOR_HELP_LINK'));
+        expect(feelsHelpUrl.href).toEqual(externalURLs.feesHelpUri);
+      });
+
+    });
   });
 
   describe('on POST', () => {
@@ -64,7 +96,7 @@ describe('Defendant Address Eligibility View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).post(ELIGIBILITY_DEFENDANT_ADDRESS_URL);
+      const response = await request(app).post(ELIGIBILITY_HELP_WITH_FEES_REFERENCE);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });

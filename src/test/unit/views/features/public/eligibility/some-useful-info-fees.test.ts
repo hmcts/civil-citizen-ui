@@ -2,15 +2,14 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {ELIGIBILITY_DEFENDANT_ADDRESS_URL} from '../../../../../../main/routes/urls';
+import {ELIGIBILITY_INFORMATION_FEES_URL} from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 
-describe('Defendant Address Eligibility View', () => {
+describe('Some useful information about Help with Fees View', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -21,18 +20,27 @@ describe('Defendant Address Eligibility View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).get(ELIGIBILITY_DEFENDANT_ADDRESS_URL);
+      const response = await request(app).get(ELIGIBILITY_INFORMATION_FEES_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });
 
     it('should have correct page title', () => {
-      expect(htmlDocument.title).toEqual('Your money claims account - Defendant Address in England or Wales');
+      expect(htmlDocument.title).toEqual('Your money claims account - Some useful information about Help with Fees');
     });
 
     it('should display header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
-      expect(header[0].innerHTML).toContain('Does the person or organisation you’re claiming against have a postal address in England or Wales?');
+      expect(header[0].innerHTML).toContain('Some useful information about Help with Fees');
+    });
+
+    it('should display texts', () => {
+      const body = htmlDocument.getElementsByClassName('govuk-body-m');
+      const subtitle = htmlDocument.getElementsByClassName('govuk-heading-m');
+      expect(body[0].innerHTML).toContain('Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.');
+      expect(body[1].innerHTML).toContain('If you want to apply for Help with Fees, you will complete an online form in a new window. This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process. (NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number). You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court. This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued. The claim will stop here unless you change your mind within 95 days.');
+      expect(body[2].innerHTML).toContain('You may be asked by the court to email evidence in support of your application before your claim is issued.');
+      expect(subtitle[0].innerHTML).toContain('Do you wish to continue to make a Help with Fees Application?');
     });
 
     it('should display 2 radio buttons with yes and no options', () => {
@@ -64,7 +72,7 @@ describe('Defendant Address Eligibility View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).post(ELIGIBILITY_DEFENDANT_ADDRESS_URL);
+      const response = await request(app).post(ELIGIBILITY_INFORMATION_FEES_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });
