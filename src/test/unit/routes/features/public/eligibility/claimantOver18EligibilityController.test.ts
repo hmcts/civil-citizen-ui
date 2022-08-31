@@ -60,7 +60,7 @@ describe('Claimant Over 18 Eligibility Controller', () => {
     it('should redirect to not eligible page if address question radio selection is no', async () => {
       await request(app).post(ELIGIBILITY_CLAIMANT_AGE_URL).send({option: YesNo.NO}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18));
+        expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_CLAIMANT));
       });
     });
 

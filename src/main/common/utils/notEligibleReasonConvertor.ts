@@ -9,7 +9,7 @@ export const convertToNotEligibleReason = (reason: string): NotEligibleReason =>
     case 'claim-value-over-25000':
       return NotEligibleReason.CLAIM_VALUE_OVER_25000;
     case 'under-18':
-      return NotEligibleReason.UNDER_18;
+      return NotEligibleReason.UNDER_18_CLAIMANT;
     case 'under-18-defendant':
       return NotEligibleReason.UNDER_18_DEFENDANT;
     case 'multiple-claimants':
