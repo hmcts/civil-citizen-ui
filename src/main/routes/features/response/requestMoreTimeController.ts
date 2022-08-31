@@ -5,7 +5,7 @@ import {GenericForm} from '../../../common/form/models/genericForm';
 import {Claim} from '../../../common/models/claim';
 import {AdditionalTime, AdditionalTimeOptions} from '../../../common/form/models/additionalTime';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {ResponseDeadlineService} from '../../../services/features/response/responseDeadlineService';
+import {ResponseDeadlineService} from '../../../services/features/response/responseDeadline/responseDeadlineService';
 import {deadLineGuard} from '../../../routes/guards/deadLineGuard';
 
 const requestMoreTimeController = express.Router();

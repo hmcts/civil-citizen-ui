@@ -10,7 +10,7 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ResponseDeadline, ResponseOptions} from '../../../../common/form/models/responseDeadline';
 import {Claim} from '../../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
+import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadline/responseDeadlineService';
 import {deadLineGuard} from '../../../../routes/guards/deadLineGuard';
 
 const responseDeadlineOptionsController = express.Router();
@@ -27,7 +27,7 @@ function renderView(res: express.Response, form: GenericForm<ResponseDeadline>, 
   });
 }
 
-responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGuard, 
+responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGuard,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(req.params.id);

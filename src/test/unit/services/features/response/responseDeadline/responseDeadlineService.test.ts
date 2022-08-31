@@ -1,13 +1,13 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {ResponseDeadlineService} from '../../../../../main/services/features/response/responseDeadlineService';
-import {ResponseOptions} from '../../../../../main/common/form/models/responseDeadline';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {AdditionalTimeOptions} from '../../../../../main/common/form/models/additionalTime';
-import {mockClaim} from '../../../../utils/mockClaim';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {Claim} from '../../../../../../main/common/models/claim';
+import {ResponseDeadlineService} from '../../../../../../main/services/features/response/responseDeadline/responseDeadlineService';
+import {ResponseOptions} from '../../../../../../main/common/form/models/responseDeadline';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {AdditionalTimeOptions} from '../../../../../../main/common/form/models/additionalTime';
+import {mockClaim} from '../../../../../utils/mockClaim';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const responseDeadlineService = new ResponseDeadlineService();
 
@@ -93,15 +93,19 @@ describe('Response Deadline Service', () => {
 
   describe('saveAdditionalTime', () => {
     it('should save successfully if additional time object is not defined', async () => {
+      //Given
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
       await responseDeadlineService.saveAdditionalTime('validClaimId', AdditionalTimeOptions.UP_TO_28_DAYS);
+      //Then
       expect(spySave).toBeCalled();
     });
 
     it('should save successfully if additional time object is defined', async () => {
+      //Given
       const claim = new Claim();
       claim.responseDeadline = {
         option: undefined,
@@ -111,29 +115,38 @@ describe('Response Deadline Service', () => {
         return claim;
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
       await responseDeadlineService.saveAdditionalTime('validClaimId', AdditionalTimeOptions.MORE_THAN_28_DAYS);
+      //Then
       expect(spySave).toBeCalled();
     });
 
     it('should save successfully for valid additional time', async () => {
+      //Given
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
       await responseDeadlineService.saveAdditionalTime('validClaimId', AdditionalTimeOptions.MORE_THAN_28_DAYS);
+      //Then
       expect(spySave).toBeCalled();
     });
 
     it('should save successfully for valid additional time', async () => {
+      //Given
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
       await responseDeadlineService.saveAdditionalTime('validClaimId', AdditionalTimeOptions.UP_TO_28_DAYS);
+      //Then
       expect(spySave).toBeCalled();
     });
 
     it('should fail when redis throws an error', async () => {
+      //Given
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
       });
@@ -141,6 +154,7 @@ describe('Response Deadline Service', () => {
       mockSaveDraftClaim.mockImplementationOnce(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
+      //Then
       await expect(responseDeadlineService.saveAdditionalTime('validClaimId', AdditionalTimeOptions.UP_TO_28_DAYS))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
@@ -150,7 +164,7 @@ describe('Response Deadline Service', () => {
     it('should return undefined when empty claim retrieved', async () => {
       // Given
       const claim = new Claim();
-      // When 
+      // When
       const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
       // Then
       expect(agreedResponseDeadline).toBeUndefined();
