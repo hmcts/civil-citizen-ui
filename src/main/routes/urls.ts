@@ -106,4 +106,6 @@ export const ELIGIBILITY_HELP_WITH_FEES_REFERENCE = `${BASE_ELIGIBILITY_URL}/hel
 export const ELIGIBILITY_HWF_ELIGIBLE_REFERENCE = `${BASE_ELIGIBILITY_URL}/hwf-eligible-reference`;
 export const ELIGIBILITY_HWF_ELIGIBLE = `${BASE_ELIGIBILITY_URL}/hwf-eligible`;
 export const ELIGIBILITY_CLAIMANT_AGE_URL = `${BASE_ELIGIBILITY_URL}/over-18`;
+export const ELIGIBILITY_INFORMATION_FEES_URL = `${BASE_ELIGIBILITY_URL}/information-about-help-with-fees`;
+export const ELIGIBILITY_APPLY_HELP_FEES_URL = `${BASE_ELIGIBILITY_URL}/apply-for-help-with-fees`;
 export const ELIGIBLE_FOR_THIS_SERVICE_URL = `${BASE_ELIGIBILITY_URL}/eligible`;
