@@ -86,6 +86,7 @@ import agreedResponseDeadlineController from './features/response/responseDeadli
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/determinationWithoutHearingController';
 import totalAmountController from './features/public/eligibility/totalAmountController';
+import claimTypeController from './features/public/eligibility/claimTypeController';
 import notEligibleController
   from './features/public/eligibility/notEligibleController';
 import claimantAddressEligibilityController
@@ -101,6 +102,8 @@ import claimAgainstGovernmentController from './features/public/eligibility/clai
 import claimantOver18EligibilityController from './features/public/eligibility/claimantOver18EligibilityController';
 import defendantAgeEligibilityController from './features/public/eligibility/defendantAgeEligibilityController';
 import someUsefulInfoFeesController from './features/public/eligibility/someUsefulInfoFeesController';
+import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
+import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
 
 export default [
   homeController,
@@ -180,6 +183,7 @@ export default [
   newDeadlineResponseController,
   determinationWithoutHearingController,
   totalAmountController,
+  claimTypeController,
   notEligibleController,
   claimantAddressEligibilityController,
   singleDefendantController,
@@ -191,4 +195,6 @@ export default [
   claimantOver18EligibilityController,
   defendantAgeEligibilityController,
   someUsefulInfoFeesController,
+  applyForHelpWithFeesController,
+  helpWithFeesReferenceController,
 ];

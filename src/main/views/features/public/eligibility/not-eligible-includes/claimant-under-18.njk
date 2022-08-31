@@ -1,0 +1,9 @@
+{% from "../../../../macro/external-link.njk" import externalLink %}
+{% import "external-urls.njk" as externalURLs %}
+
+<p class="govuk-body">{{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.CLAIMANT_UNDER_18.CANT_USE_IF_UNDER_18') }}</p>
+<p class="govuk-body">
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.ABLE_TO_GET_AN_ADVICE.1') }},
+  {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.CITIZENS_ADVICE', externalURLs.citizensAdviceUrl, true) }},
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.ABLE_TO_GET_AN_ADVICE.2') }}
+</p>

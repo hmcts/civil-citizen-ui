@@ -1,0 +1,11 @@
+{% from "../../../../macro/external-link.njk" import externalLink %}
+{% import "external-urls.njk" as externalURLs %}
+
+<p class="govuk-body">{{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.DEFENDANT_UNDER_18.CAN_ONLY_USE') }}</p>
+<p class="govuk-body">
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.DEFENDANT_UNDER_18.MIGHT_ABLE') }}
+  {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.DEFENDANT_UNDER_18.CITIZENS_ADVICE', externalURLs.citizenAdviceContactUsUrl, true) }}
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.DEFENDANT_UNDER_18.ABOUT_MAKING_CLAIM') }}
+</p>
+
+{% include "macro/paper-form-address.njk"%}
