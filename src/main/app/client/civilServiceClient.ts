@@ -132,8 +132,8 @@ export class CivilServiceClient {
     }
   }
 
-  async submitDefendantResponseEvent(claimId: string, req: AppRequest): Promise<Claim> {
-    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, undefined, req);
+  async submitDefendantResponseEvent(claimId: string, updatedClaim:ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, updatedClaim, req);
   }
 
   async submitAgreedResponseExtensionDateEvent(claimId: string, updatedClaim:ClaimUpdate, req: AppRequest): Promise<Claim> {
