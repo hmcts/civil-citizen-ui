@@ -238,7 +238,7 @@ describe("You can't use this service View", () => {
 
       it('should have external links', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
-        const n1FormLink = links[3] as HTMLAnchorElement;
+        const n1FormLink = links[2] as HTMLAnchorElement;
         expect(n1FormLink.innerHTML).toContain('Citizens Advice');
         expect(n1FormLink.href).toEqual(externalURLs.citizensAdviceUrl);
       });
@@ -341,7 +341,7 @@ describe("You can't use this service View", () => {
 
       it('should have external links', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
-        const citizenAdvicesContactUsLink = links[3] as HTMLAnchorElement;
+        const citizenAdvicesContactUsLink = links[2] as HTMLAnchorElement;
         expect(citizenAdvicesContactUsLink.innerHTML).toContain('Citizens Advice');
         expect(citizenAdvicesContactUsLink.href).toEqual(externalURLs.citizenAdviceContactUsUrl);
       });
