@@ -560,6 +560,16 @@
       "PAGE_TITLE": "A oes gennych anabledd?",
       "TITLE": "A oes gennych anabledd?"
     },
+    "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES" : {
+      "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect ooooof ",
+      "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a number related to a different claim. If you don’t have a Help with Fees number for this claim, please follow the instructions below.",
+      "PARAGRAPH2": "If you need to use the paper Help with Fees application rather than the online version, you will not be able to use Online Civil Money Claims to issue your claim.",
+      "PARAGRAPH3": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.",
+      "PARAGRAPH4": "When you have completed your Help with Fees application, you will be given a reference number. Please note the number and keep it safe. You will need it later in the claim process. Then return to this page and click the Save and continue box below so that you can start the claim.",
+      "PLEASE_NOTE": "Please Note:",
+      "THIS_CLAIM": "THIS CLAIM",
+      "TITLE": "Apply For Help With Fees"
+    },
     "ELIGIBILITY_CLAIMANT_ADDRESS" : {
       "PAGE_TITLE": "Do you have a postal address in the UK?",
       "TITLE": "Do you have a postal address in the UK?",
@@ -569,6 +579,12 @@
       "LIST_OF_GOVERNMENT": "See list of government departments (opens in a new window).",
       "PAGE_TITLE": "Government department",
       "TITLE": "Are you claiming against a government department?"
+    },
+    "ELIGIBILITY_CLAIM_TYPE": {
+      "A_CLIENT": "A client - I'm their solicitor",
+      "JUST_MYSELF": "Just my self or my organisation",
+      "MORE_THAN_ONE_PERSON_OR_ORGANISATION": "More than one person or organisation",
+      "TITLE": "Who are you making the claim for?"
     },
     "ELIGIBILITY_DEFENDANT_ADDRESS": {
       "PAGE_TITLE": "Defendant Address in England or Wales",
@@ -580,6 +596,11 @@
       "PAGE_TITLE": "Defendant Age Eligibility",
       "TITLE": "Do you believe the person you’re claiming against is 18 or over?",
       "YES": "Yes"
+    },
+    "ELIGIBILITY_HELP_WITH_FEES" : {
+      "PAGE_TITLE": "Do you need help paying your court fee?",
+      "TITLE": "Do you need help paying your court fee?",
+      "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits."
     },
     "ELIGIBILITY_HWF_REFERENCE": {
       "ALREADY_APPLIED": "You’ll only have one if you’ve already applied for Help with Fees in respect of this claim.",
@@ -764,6 +785,10 @@
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
+      "ABLE_TO_GET_AN_ADVICE": {
+        "1": "You might be able to get advice from organisations like ",
+        "2": " about making a claim."
+      },
       "DEFENDANT_ADDRESS": {
         "AND": "and",
         "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES":"You can only use this service to claim against a person or organisation with an address in England or Wales.",
@@ -771,6 +796,12 @@
         "DOWNLOAD_PAPER_FORM_N1": "Download the paper form N1",
         "FORM_N510": "form N510",
         "USING_PAPER_FORM": "Depending on where you’ll be sending the claim, you might be able to claim using a paper form."
+      },
+      "DEFENDANT_UNDER_18" : {
+        "ABOUT_MAKING_CLAIM" : " about making a claim.",
+        "CAN_ONLY_USE" : "You can only use this service to claim against a defendant who’s 18 or over.",
+        "CITIZENS_ADVICE" : "Citizens Advice",
+        "MIGHT_ABLE" : "You might be able to get advice from organisations like "
       },
       "CANT_CALCULATE_THE_AMOUNT": "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
       "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
@@ -782,6 +813,12 @@
         "LEGAL_REPRESENTATIVE" : "If you’re a legal representative ",
         "MCOL_LINK": "use the Money Claim Online (MCOL) service",
         "OR": " or "
+      },
+      "CLAIMANT_ADDRESS": {
+        "NEED_UK_ADDRESS": "You need to have an address in the UK to make a money claim."
+      },
+      "CLAIMANT_UNDER_18": {
+        "CANT_USE_IF_UNDER_18": "You need to be 18 or over to use this service."
       },
       "DOWNLOAD_PAPER_FORM": "Download a paper form",
       "FOR_CLAIMS_LESS_THAN_25000": "This service is for claims of £25,000 or less.",
