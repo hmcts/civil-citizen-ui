@@ -1090,6 +1090,11 @@
       "EMPLOYER_NAME" : "Employer name",
       "JOB_TITLE" : "Job title"
     },
+    "YOU_CAN_USE_SERVICE": {
+      "PAGE_TITLE": "You can use this service",
+      "TITLE": "You can use this service",
+      "BASED_ON_ANSWERS": "Based on your answers you can make a money claim using this service."
+    },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
       "HEADER": "You've paid less than the total claim amount",
