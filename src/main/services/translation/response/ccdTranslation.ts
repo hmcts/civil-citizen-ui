@@ -4,6 +4,7 @@ import {toCCDPaymentOption} from '../../../common/models/ccdResponse/paymentOpti
 
 export const translateDraftResponseToCCD = (claim: Claim): CCDResponse => {
   return {
+    respondent1: claim.respondent1,
     paymentTypeSelection : toCCDPaymentOption(claim.paymentOption),
   };
 };
