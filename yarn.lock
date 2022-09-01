@@ -2311,12 +2311,7 @@ acorn@^7.1.0, acorn@^7.4.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
-acorn@^8.4.1, acorn@^8.5.0, acorn@^8.7.1:
-  version "8.7.1"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.7.1.tgz#0197122c843d1bf6d0a5e83220a788f278f63c30"
-  integrity sha512-Xx54uLJQZ19lKygFXOWsscKUbsBZW0CPykPhVQdhIeIwrbPmJzqeASDInc8nKBnp/JT6igTs82qPXz069H8I/A==
-
-acorn@^8.8.0:
+acorn@^8.4.1, acorn@^8.5.0, acorn@^8.7.1, acorn@^8.8.0:
   version "8.8.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.8.0.tgz#88c0187620435c7f6015803f5539dae05a9dbea8"
   integrity sha512-QOxyigPVrpZ2GXT+PFyZTl6TtOFc5egxHIP9IlQ+RbupQuX4RkT/Bee4/kQuC02Xkzg84JcT7oLYtDIQxp+v7w==
@@ -3293,10 +3288,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha512-RpAVKQA5T63xEj6/giIbUEtZwJ4UFIc3ZtvEkiaUERylqe8xb5IvqcgOurZLahv93CLKfxcw5YI+DZcUBRyLXA==
 
-codeceptjs@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/codeceptjs/-/codeceptjs-3.3.4.tgz#65597a7347d63ba2cdc09e1edab49c4274b288d1"
-  integrity sha512-UpF3t2iXWOzNY914zhTIaLZJxves65JToPJ0iDRB+uLfS7L6rIPIfhvY800JE4YQSstIyR4xy2PZdQDZr3Zcng==
+codeceptjs@^3.3.5:
+  version "3.3.5"
+  resolved "https://registry.yarnpkg.com/codeceptjs/-/codeceptjs-3.3.5.tgz#19656d20a199f006d0568b37a06f0990a466ea53"
+  integrity sha512-ieyqJ+EfFdb9YMp+z5viWpjfhUWwPfEEaoZxHNhFw+V+6xj8RApKvUJ3KnXWH6wjhff+YfID0tU6ZTDpVssbRA==
   dependencies:
     "@codeceptjs/configure" "^0.8.0"
     "@codeceptjs/helper" "^1.0.2"
