@@ -3,8 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {
-  FIRST_CONTACT_ACCESS_DENIED,
-  // FIRST_CONTACT_CLAIM_REFERENCE,
+  FIRST_CONTACT_ACCESS_DENIED_URL,
 } from '../../../../../../main/routes/urls';
 
 const jsdom = require('jsdom');
@@ -22,7 +21,7 @@ describe('First Contact Access Denied View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).get(FIRST_CONTACT_ACCESS_DENIED);
+      const response = await request(app).get(FIRST_CONTACT_ACCESS_DENIED_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });
