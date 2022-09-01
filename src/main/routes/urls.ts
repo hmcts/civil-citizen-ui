@@ -1,6 +1,7 @@
 const BASE_CASE_URL = '/case/:id';
 export const BASE_ELIGIBILITY_URL = '/eligibility';
 const BASE_CASE_RESPONSE_URL = `${BASE_CASE_URL}/response`;
+const BASE_FIRST_CONTACT_URL = '/first-contact';
 const STATEMENT_OF_MEANS_URL = `${BASE_CASE_RESPONSE_URL}/statement-of-means`;
 const MEDIATION_URL = `${BASE_CASE_URL}/mediation`;
 const DIRECTIONS_QUESTIONNAIRE_URL = `${BASE_CASE_URL}/directions-questionnaire`;
@@ -109,3 +110,5 @@ export const ELIGIBILITY_CLAIMANT_AGE_URL = `${BASE_ELIGIBILITY_URL}/over-18`;
 export const ELIGIBILITY_INFORMATION_FEES_URL = `${BASE_ELIGIBILITY_URL}/information-about-help-with-fees`;
 export const ELIGIBILITY_APPLY_HELP_FEES_URL = `${BASE_ELIGIBILITY_URL}/apply-for-help-with-fees`;
 export const ELIGIBLE_FOR_THIS_SERVICE_URL = `${BASE_ELIGIBILITY_URL}/eligible`;
+export const FIRST_CONTACT_PIN_URL = `${BASE_FIRST_CONTACT_URL}/pin`;
+export const FIRST_CONTACT_CLAIM_SUMMARY_URL = `${BASE_FIRST_CONTACT_URL}/claim-summary`;

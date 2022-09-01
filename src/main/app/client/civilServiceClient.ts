@@ -9,6 +9,7 @@ import {
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_SUBMIT_EVENT,
+  CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -20,6 +21,8 @@ import {
 } from '../../common/models/dashboard/dashboardItem';
 import {EventDto} from '../../common/models/events/eventDto';
 import {CaseEvent} from '../../common/models/events/caseEvent';
+// TODO: delete this import when no mock needed
+import { mockClaim } from '../../../test/utils/mockClaim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -112,6 +115,19 @@ export class CivilServiceClient {
     try{
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_RANGES, config);
       return new FeeRanges(plainToInstance(FeeRange, response.data as object[]));
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async verifyPin(req: AppRequest, pin: string): Promise<Claim> {
+    const config = this.getConfig(req);
+    try {
+      // TODO: this is a mock response
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL, pin, config);
+      console.log(response);
+      return mockClaim;
     } catch (err: unknown) {
       logger.error(err);
       throw err;
