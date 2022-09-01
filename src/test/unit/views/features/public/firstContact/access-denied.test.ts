@@ -32,9 +32,7 @@ describe('First Contact Access Denied View', () => {
 
     it('should have correct page title', () => {
       const hyperlink = htmlDocument.getElementById('claimReferenceUrl');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      expect(hyperlink.getAttribute('href')).toContain('/first-contact/claim-reference');
+      expect(hyperlink?.getAttribute('href')).toContain('/first-contact/claim-reference');
     });
 
     it('should display header', () => {
