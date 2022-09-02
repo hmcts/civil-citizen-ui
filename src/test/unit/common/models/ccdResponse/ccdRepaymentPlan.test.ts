@@ -1,6 +1,6 @@
 import {
   CCDRepaymentPlanFrequency,
-  toCCDRepaymentPlan
+  toCCDRepaymentPlan,
 } from '../../../../../main/common/models/ccdResponse/ccdRepaymentPlan';
 import {RepaymentPlan} from '../../../../../main/common/models/repaymentPlan';
 
