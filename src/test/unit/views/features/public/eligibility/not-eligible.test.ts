@@ -107,8 +107,8 @@ describe("You can't use this service View", () => {
 
       it('should have external links', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
-        const governmentDepartmentsLink = links[3] as HTMLAnchorElement;
-        const n1FormLink = links[4] as HTMLAnchorElement;
+        const governmentDepartmentsLink = links[2] as HTMLAnchorElement;
+        const n1FormLink = links[3] as HTMLAnchorElement;
         expect(governmentDepartmentsLink.innerHTML).toContain('government departments');
         expect(n1FormLink.innerHTML).toContain('Download a paper form');
         expect(governmentDepartmentsLink.href).toEqual(externalURLs.governmentDepartmentsUrl);
