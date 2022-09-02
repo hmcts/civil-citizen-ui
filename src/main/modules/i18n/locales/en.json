@@ -801,6 +801,22 @@
         "1": "You might be able to get advice from organisations like ",
         "2": " about making a claim."
       },
+      "CANT_CALCULATE_THE_AMOUNT" : "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
+      "CLAIM_AGAINST_GOVERNMENT": {
+        "CANT_USE_SERVICE": "You can't use this service to claim against",
+        "COMMA_COMPLETE_RETURN": ", complete it and return it to make your claim",
+        "GOVERNMENT_DEPARTMENTS": "government departments"
+      },
+      "CLAIM_BY_PAPER": "You can also claim by paper. ",
+      "CLAIM_ON_BEHALF": {
+        "CURRENTLY_SERVICE" : "This service is currently for claimants representing themselves.",
+        "COMPLETE_RETURN": ", complete and return it to make your claim.",
+        "DOWNLOAD_PAPER_LINK": "download a paper form",
+        "LEGAL_REPRESENTATIVE" : "If you’re a legal representative ",
+        "MCOL_LINK": "use the Money Claim Online (MCOL) service",
+        "OR": " or "
+      },
+      "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "DEFENDANT_ADDRESS": {
         "AND": "and",
         "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES":"You can only use this service to claim against a person or organisation with an address in England or Wales.",
@@ -815,18 +831,7 @@
         "CITIZENS_ADVICE" : "Citizens Advice",
         "MIGHT_ABLE" : "You might be able to get advice from organisations like "
       },
-      "CANT_CALCULATE_THE_AMOUNT" : "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
-      "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "CITIZENS_ADVICE": "Citizens Advice",
-      "CLAIM_BY_PAPER": "You can also claim by paper. ",
-      "CLAIM_ON_BEHALF": {
-        "CURRENTLY_SERVICE" : "This service is currently for claimants representing themselves.",
-        "COMPLETE_RETURN": ", complete and return it to make your claim.",
-        "DOWNLOAD_PAPER_LINK": "download a paper form",
-        "LEGAL_REPRESENTATIVE" : "If you’re a legal representative ",
-        "MCOL_LINK": "use the Money Claim Online (MCOL) service",
-        "OR": " or "
-      },
       "CLAIMANT_ADDRESS": {
         "NEED_UK_ADDRESS": "You need to have an address in the UK to make a money claim."
       },

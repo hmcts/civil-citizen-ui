@@ -30,6 +30,8 @@
         {% include "features/public/eligibility/not-eligible-includes/claimant-address.njk"%}
       {% elseif reason === NotEligibleReason.UNDER_18_DEFENDANT %}
         {% include "features/public/eligibility/not-eligible-includes/under-18-defendant.njk"%}
+      {% elseif reason === NotEligibleReason.GOVERNMENT_DEPARTMENT %}
+        {% include "features/public/eligibility/not-eligible-includes/government-department.njk"%}
       {% endif %}
       {{ contactUsForHelp(t) }}
     </div>
