@@ -1,17 +1,17 @@
 import PaymentOptionType from '../../form/models/admission/paymentOption/paymentOptionType';
 
-export enum PaymentOptionCCD {
+export enum CCDPaymentOption {
   IMMEDIATELY = 'IMMEDIATELY',
   SET_DATE = 'SET_DATE',
   REPAYMENT_PLAN = 'REPAYMENT_PLAN'
 }
 
-export const toCCDPaymentOption = (paymentOptionType: PaymentOptionType) : PaymentOptionCCD => {
+export const toCCDPaymentOption = (paymentOptionType: PaymentOptionType) : CCDPaymentOption => {
   switch(paymentOptionType) {
     case PaymentOptionType.INSTALMENTS:
-      return PaymentOptionCCD.REPAYMENT_PLAN;
+      return CCDPaymentOption.REPAYMENT_PLAN;
     case PaymentOptionType.BY_SET_DATE:
-      return PaymentOptionCCD.SET_DATE;
-    default: return PaymentOptionCCD.IMMEDIATELY;
+      return CCDPaymentOption.SET_DATE;
+    default: return CCDPaymentOption.IMMEDIATELY;
   }
 };
