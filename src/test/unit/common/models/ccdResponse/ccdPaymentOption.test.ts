@@ -1,5 +1,5 @@
 import PaymentOptionType from '../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {CcdPaymentOption, toCCDPaymentOption} from '../../../../../main/common/models/ccdResponse/paymentOptionCCD';
+import {CCDPaymentOption, toCCDPaymentOption} from '../../../../../main/common/models/ccdResponse/ccdPaymentOption';
 
 describe('translate payment option to ccd version', ()=> {
   it('should translate pay immediately to ccd version', ()=> {
@@ -8,7 +8,7 @@ describe('translate payment option to ccd version', ()=> {
     //When
     const result = toCCDPaymentOption(immediately);
     //Then
-    expect(result).toBe(CcdPaymentOption.IMMEDIATELY);
+    expect(result).toBe(CCDPaymentOption.IMMEDIATELY);
   });
   it('should translate pay by set date option', ()=> {
     //Given
@@ -16,7 +16,7 @@ describe('translate payment option to ccd version', ()=> {
     //When
     const result = toCCDPaymentOption(bySetDate);
     //Then
-    expect(result).toBe(CcdPaymentOption.SET_DATE);
+    expect(result).toBe(CCDPaymentOption.SET_DATE);
   });
   it('should translate pay by instalments', ()=> {
     //Given
@@ -24,6 +24,6 @@ describe('translate payment option to ccd version', ()=> {
     //When
     const result = toCCDPaymentOption(byInstallments);
     //Then
-    expect(result).toBe(CcdPaymentOption.REPAYMENT_PLAN);
+    expect(result).toBe(CCDPaymentOption.REPAYMENT_PLAN);
   });
 });
