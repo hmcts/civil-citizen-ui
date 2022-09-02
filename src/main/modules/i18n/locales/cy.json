@@ -602,6 +602,17 @@
       "TITLE": "Do you need help paying your court fee?",
       "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits."
     },
+    "ELIGIBILITY_HWF_REFERENCE": {
+      "ALREADY_APPLIED": "You’ll only have one if you’ve already applied for Help with Fees in respect of this claim.",
+      "APPLY_FOR_HELP_LINK": "Apply for Help with Fees",
+      "DECIDE": "Decide whether to apply for Help with Fees",
+      "MAKE_A_NOTE": "Make a note of the Help with Fees number when you make an application.",
+      "MAKE_CLAIM_USING": " and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.",
+      "PAGE_TITLE": "Do you have a Help With Fees reference number?",
+      "TITLE": "Do you have a Help With Fees reference number?",
+      "WHEN_YOU_APPLY": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.",
+      "WILL_NEED": "You will need this number to make your claim when you are returned to this service."
+    },
     "ELIGIBILITY_SINGLE_DEFENDANT": {
       "PAGE_TITLE": "Individual or Multiparty Claim",
       "TITLE": "Is this claim against more than one person or organisation?"
@@ -616,6 +627,13 @@
     "ELIGIBILITY_OVER_18_CLAIMANT": {
       "PAGE_TITLE": "Are you 18 or over?",
       "TITLE": "Are you 18 or over?"
+    },
+    "ELIGIBILITY_USEFUL_INFO_FEES": {
+      "CONTINUE_HELP_WITH_FEES": "Do you wish to continue to make a Help with Fees Application?",
+      "HELP_WITH_FEES": "If you want to apply for Help with Fees, you will complete an online form in a new window. This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process. (NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number). You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court. This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued. The claim will stop here unless you change your mind within 95 days.",
+      "HELP_WITH_FEES_ADVICE": "You may be asked by the court to email evidence in support of your application before your claim is issued.",
+      "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
+      "TITLE": "Some useful information about Help with Fees"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
@@ -778,6 +796,22 @@
         "1": "You might be able to get advice from organisations like ",
         "2": " about making a claim."
       },
+      "CANT_CALCULATE_THE_AMOUNT": "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
+      "CLAIM_AGAINST_GOVERNMENT": {
+        "CANT_USE_SERVICE": "You can’t use this service to claim against",
+        "COMMA_COMPLETE_RETURN": ", complete it and return it to make your claim",
+        "GOVERNMENT_DEPARTMENTS": "government departments"
+      },
+      "CLAIM_BY_PAPER": "You can also claim by paper. ",
+      "CLAIM_ON_BEHALF": {
+        "CURRENTLY_SERVICE" : "This service is currently for claimants representing themselves.",
+        "COMPLETE_RETURN": ", complete and return it to make your claim.",
+        "DOWNLOAD_PAPER_LINK": "download a paper form",
+        "LEGAL_REPRESENTATIVE" : "If you’re a legal representative ",
+        "MCOL_LINK": "use the Money Claim Online (MCOL) service",
+        "OR": " or "
+      },
+      "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "DEFENDANT_ADDRESS": {
         "AND": "and",
         "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES":"You can only use this service to claim against a person or organisation with an address in England or Wales.",
@@ -791,17 +825,6 @@
         "CAN_ONLY_USE" : "You can only use this service to claim against a defendant who’s 18 or over.",
         "CITIZENS_ADVICE" : "Citizens Advice",
         "MIGHT_ABLE" : "You might be able to get advice from organisations like "
-      },
-      "CANT_CALCULATE_THE_AMOUNT": "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
-      "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
-      "CLAIM_BY_PAPER": "You can also claim by paper. ",
-      "CLAIM_ON_BEHALF": {
-        "CURRENTLY_SERVICE" : "This service is currently for claimants representing themselves.",
-        "COMPLETE_RETURN": ", complete and return it to make your claim.",
-        "DOWNLOAD_PAPER_LINK": "download a paper form",
-        "LEGAL_REPRESENTATIVE" : "If you’re a legal representative ",
-        "MCOL_LINK": "use the Money Claim Online (MCOL) service",
-        "OR": " or "
       },
       "CLAIMANT_ADDRESS": {
         "NEED_UK_ADDRESS": "You need to have an address in the UK to make a money claim."
