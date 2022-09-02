@@ -713,6 +713,12 @@
       "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
       "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
+    "FIRST_CONTACT_CLAIM_REFERENCE": {
+      "CLAIM_NUMBER": "Claim number",
+      "ENTER_CLAIM": "Enter the claim number from the email or letter we sent you.",
+      "PAGE_TITLE": "Enter your claim number",
+      "TITLE": "Enter your claim number"
+    },
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED" : "Rydym wedi eich cofrestru’n awtomatig i gael gwasanaeth cyfryngu dros y ffôn am ddim gan Gwasanaeth Llysoedd a Thribiwnlysoedd EM.",
       "CLAIMANT_MUST_AGREE" : "Rhaid i’r hawlydd gytuno i’r cyfryngu. Byddwn yn cysylltu â chi o fewn 28 diwrnod ar ôl cael cadarnhad gan yr hawlydd i drefnu apwyntiad am ddim.",
