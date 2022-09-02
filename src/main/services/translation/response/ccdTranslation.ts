@@ -8,5 +8,6 @@ export const translateDraftResponseToCCD = (claim: Claim): CCDResponse => {
     respondent1: claim.respondent1,
     paymentTypeSelection : toCCDPaymentOption(claim.paymentOption),
     respondent1RepaymentPlan: toCCDRepaymentPlan(claim.repaymentPlan),
+    repaymentDate: claim.paymentDate,
   };
 };

@@ -6,6 +6,6 @@ import {CCDRepaymentPlan} from './ccdRepaymentPlan';
 export interface CCDResponse extends ClaimUpdate{
   respondent1?: Respondent
   paymentTypeSelection?: CCDPaymentOption;
-  respondent1RepaymentPlan?: CCDRepaymentPlan
-
+  respondent1RepaymentPlan?: CCDRepaymentPlan;
+  repaymentDate?: Date;
 }
