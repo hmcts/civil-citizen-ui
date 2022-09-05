@@ -1,21 +1,10 @@
-// import {getSubmitConfirmationContent} from '../../../../../../main/services/features/response/submitConfirmation/submitConfirmationService';
-// import {CorrespondenceAddress} from '../../../../../../main/common/models/correspondenceAddress';
 import {Claim} from '../../../../../../main/common/models/claim';
-// import {getDescription, getTaskLists, getTitle} from '../../../../../../main/services/features/response/taskListService';
-// import {getSubmitConfirmationContent} from '../../../../../../main/services/features/response/submitConfirmation/submitConfirmationService';
-// import {
-//   buildPrepareYourResponseSection,
-//   buildRespondToClaimSection,
-//   buildSubmitSection,
-// } from '../../../../../../main/common/utils/taskList/taskListBuilder';
 import {
   buildSubmitStatus,
   buildNextStepsSection,
 } from '../../../../../../main/services/features/response/submitConfirmation/submitConfirmationBuilder/submitConfirmationBuilder';
 import {getNextStepsTitle} from '../../../../../../main/services/features/response/submitConfirmation/submitConfirmationBuilder/admissionSubmitConfirmationContent';
 import {ResponseType} from '../../../../../../main/common/form/models/responseType';
-// import {TaskStatus} from '../../../../../../main/common/models/taskList/TaskStatus';
-// import {deepCopy} from '../../../../../utils/deepCopy';
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
@@ -27,7 +16,6 @@ jest.mock('i18next', () => ({
 }));
 
 describe('Submit Confirmation service', () => {
-  // const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
   const mockClaimId = '5129';
   const lang = 'en';
 

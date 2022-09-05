@@ -73,14 +73,14 @@ describe('Submit Confirmation View', () => {
         expect(nextStepsList[0].getElementsByTagName('li')[1].innerHTML).toContain('any cheques or bank transfers are clear in their account by the deadline');
         expect(nextStepsList[0].getElementsByTagName('li')[2].innerHTML).toContain('you get a receipt for any payments');
         expect(nextStepsList[0].getElementsByTagName('li')[3].innerHTML).toContain('they tell the court that you’ve paid')
-        expect(links[3].innerHTML).toContain('Contact Mr. Jan Clark');
+        expect(links[2].innerHTML).toContain('Contact Mr. Jan Clark');
         expect(paragraphs[2].innerHTML).toContain('if you need their payment details.');
       });
     });
 
     it('should display survey link', () => {
       const links = htmlDocument.getElementsByClassName('govuk-link');
-      const surveyLink = links[4] as HTMLAnchorElement;
+      const surveyLink = links[3] as HTMLAnchorElement;
       expect(surveyLink.innerHTML).toContain('What did you think of this service?');
       expect(surveyLink.href).toContain(externalURLs.smartSurveyUrl);
     });

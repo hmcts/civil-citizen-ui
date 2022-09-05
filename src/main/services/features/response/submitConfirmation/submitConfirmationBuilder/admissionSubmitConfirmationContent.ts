@@ -1,6 +1,4 @@
 import {t} from 'i18next';
-import dayjs from 'dayjs';
-import 'dayjs/locale/cy';
 
 import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
@@ -105,7 +103,9 @@ export function getNextStepsTitle():ClaimSummarySection[] {
 export function getFAPayImmediatelyNextSteps(claimId: string, claim: Claim, lang: string): ClaimSummarySection[]{
   const claimantName = claim.getClaimantName();
   // TODO : submission day + 5 days
-  const immediatePaymentDeadline = dayjs().add(5, 'day').locale(lang).format('DD MMMM YYYY');
+  const today = new Date();
+  today.setDate(today.getDate() + 5);
+  const immediatePaymentDeadline = formatDateToFullDate(today, lang);
   return [
     {
       type: ClaimSummaryType.HTML,
