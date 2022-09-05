@@ -98,7 +98,7 @@
     "eslint": "^8.23.0",
     "html-webpack-plugin": "^5.5.0",
     "ioredis-mock": "^7.4.0",
-    "jest": "^25.1.0",
+    "jest": "^25.5.4",
     "jest-junit": "^14.0.1",
     "mini-css-extract-plugin": "^2.6.1",
     "nock": "^13.2.9",
