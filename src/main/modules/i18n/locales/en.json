@@ -1021,6 +1021,24 @@
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
     },
+    "SUBMIT_CONFIRMATION": {
+      "FA_PAY_IMMEDIATELY": {
+        "BANK_TRANSFERS_CLEAR_IN_THEIR_ACC": "any cheques or bank transfers are clear in their account by the deadline",
+        "CONTACT_CLAIMANT": "Contact {{ claimantName }}",
+        "IF_NEED_THEIR_DETAILS": " if you need their payment details.",
+        "MAKE_SURE_THAT": "You need to make sure that",
+        "RECEIPT_FOR_PAYMENTS": "you get a receipt for any payments",
+        "THEY_CAN_REQUEST_CCJ": "they get the money by {{ paymentDate }} - they can request a County Court Judgment against you if not",
+        "THEY_CALL_COURT_FOR_YOU_PAID": "they tell the court that you’ve paid",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ll pay immediately."
+      },
+      "CLAIM_NUMBER": "Claim number",
+      "GO_TO_ACCOUNT": "Go to your account",
+      "PAGE_TITLE": "Submit Confirmation",
+      "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
+      "YOUR_OPINION_OF_SERVICE": "What did you think of this service?",
+      "WHAT_HAPPENS_NEXT": "What happens next"
+    },
     "TASK_LIST": {
       "PAGE_TITLE": "Your task list",
       "HEADER": "Respond to a money claim",

@@ -1,0 +1,13 @@
+{% from "../../../../macro/external-link.njk" import externalLink %}
+{% import "external-urls.njk" as externalURLs %}
+
+<p class="govuk-body">
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.CLAIM_AGAINST_GOVERNMENT.CANT_USE_SERVICE') }}
+  {{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.CLAIM_AGAINST_GOVERNMENT.GOVERNMENT_DEPARTMENTS', externalURLs.governmentDepartmentsUrl, true) }}
+</p>
+<p class="govuk-body">
+  <span>{{ externalLink(t, 'PAGES.NOT_ELIGIBLE_FOR_SERVICE.DOWNLOAD_PAPER_FORM', externalURLs.n1FormUrl, true) }}</span>
+  {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.CLAIM_AGAINST_GOVERNMENT.COMMA_COMPLETE_RETURN') }}
+</p>
+
+{% include "macro/paper-form-address.njk"%}
