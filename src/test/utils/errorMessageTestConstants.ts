@@ -45,12 +45,17 @@ export const enum TestMessages {
   SEND_YOUR_RESPONSE_BY_EMAIL = 'Reject all of the claim and counterclaim',
   FEES_BASED_ON_AMOUNT = 'The fee is based on the amount you`re claiming, including interest.',
   DO_NOT_CREATE_CLAIM_IF_COUNTERCLAIM = 'Do not create a new claim if you want to counterclaim. Use form N9B.',
-  EXPERT_GUIDANCE_TITLE = 'Using an expert in small claims',
-  DOCUMENT_NOT_AVAILABLE = 'Document is not available.',
   DATE_NOT_MORE_THAN_28_DAYS = 'Agreed response date cannot be more than 28 days after the original response date',
   DETAILS_REQUIRED = 'Enter details',
+  DOCUMENT_NOT_AVAILABLE = 'Document is not available.',
+  EQUAL_INSTALMENTS_REQUIRED = 'Enter a valid amount for equal instalments',
+  EXPERT_GUIDANCE_TITLE = 'Using an expert in small claims',
+  FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED = 'Enter a first payment date in the future',
+  PAGE_NOT_FOUND = 'Page Not Found',
+  PAYMENT_FREQUENCY_REQUIRED = 'Choose a payment frequency',
   VALID_AGREED_RESPONSE_DATE = 'Enter the agreed response date',
   VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST = 'Agreed response date must be in the future',
+  VALID_AMOUNT_ONE_POUND_OR_MORE = 'Enter an amount of £1 or more',
   VALID_DAY = 'Enter a valid day',
   VALID_MONTH = 'Enter a valid month',
   VALID_YEAR = 'Enter a valid year',
@@ -64,6 +69,5 @@ export const enum TestMessages {
   VALID_PHONE_NUMBER = 'Enter a phone number in the correct format',
   VALID_POSITIVE_NUMBER = 'Don’t enter a negative number',
   VALID_REASON_REQUIRED = 'Enter a reason',
-  VALID_STRICTLY_POSITIVE_NUMBER = 'Enter a number higher than 0',
-  PAGE_NOT_FOUND = 'Page Not Found'
+  VALID_STRICTLY_POSITIVE_NUMBER = 'Enter a number higher than 0'
 }
