@@ -736,6 +736,11 @@
       "SUPPORT_CLAIM_FEES_URL": "Money claim fees ",
       "SUPPORT_CONTACT_US_URL": "Contact us "
     },
+    "FIRST_CONTACT_ACCESS_DENIED": {
+      "CLICK_HERE": "Click here to try again",
+      "THERE_WAS_AN_ERROR": "There was an error during your last operation. Please try again later.",
+      "TITLE": "You are not authorised to view the claim!"
+    },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
       "CLAIM_NUMBER": "Claim number",
       "ENTER_CLAIM": "Enter the claim number from the email or letter we sent you.",
