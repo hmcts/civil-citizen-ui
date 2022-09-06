@@ -105,6 +105,7 @@ import someUsefulInfoFeesController from './features/public/eligibility/someUsef
 import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
 import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
 import accessDeniedController from './features/public/firstContact/accessDeniedController';
+import claimReferenceController from './features/public/firstContact/claimReferenceController';
 
 export default [
   homeController,
@@ -199,4 +200,5 @@ export default [
   applyForHelpWithFeesController,
   helpWithFeesReferenceController,
   accessDeniedController,
+  claimReferenceController,
 ];
