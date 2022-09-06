@@ -14,10 +14,10 @@ import {
 import {ClaimResponseStatus} from '../../../../../common/models/claimResponseStatus';
 
 export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): ClaimSummarySection[] {
-  const FAPAyImmediatelyStatus = getFAPAyImmediatelyStatus(claim);
+  const FAPAyImmediatelyStatus = getFAPAyImmediatelyStatus(claim, lang);
   const FAPayByDateStatus = getFAPayByDateStatus(claim, lang);
-  const FAPayByInstallmentsStatus = getFAPayByInstallmentsStatus(claim);
-  const contactYouStatement = getContactYouStatement(claim);
+  const FAPayByInstallmentsStatus = getFAPayByInstallmentsStatus(claim, lang);
+  const contactYouStatement = getContactYouStatement(lang);
   const financialDetails = getfinancialDetails(claimId, claim, lang);
   
   switch (claim.responseStatus) {

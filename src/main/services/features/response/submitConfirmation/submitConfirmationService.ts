@@ -5,7 +5,7 @@ import {getNextStepsTitle} from './submitConfirmationBuilder/admissionSubmitConf
 
 export const getSubmitConfirmationContent = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
   const submitStatusSection = buildSubmitStatus(claimId, claim, lang);
-  const nextStepsTitle = getNextStepsTitle();
+  const nextStepsTitle = getNextStepsTitle(lang);
   const nextStepsSection = buildNextStepsSection(claimId, claim, lang);
   return [submitStatusSection, nextStepsTitle, nextStepsSection].flat();
 };
