@@ -31,6 +31,7 @@ pinController.get(FIRST_CONTACT_PIN_URL, (req: express.Request, res: express.Res
   const cookie = req.cookies['firstContact'] ? req.cookies['firstContact'] : {};
   cookie.claimReference = '000MC000';
   res.cookie('firstContact', cookie);
+
   renderView(pinForm, res);
 });
 
@@ -38,8 +39,6 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: express.Request, res: expr
   try {
     // STEP 1: call service an get claim
     const cookie = req.cookies['firstContact'] ? req.cookies['firstContact'] : {};
-    console.log(cookie);
-    
     const response: AxiosResponse = await civilServiceClient.verifyPin(<AppRequest>req, req.body.pin, cookie.claimReference);
 
     if (response.status === 401) {

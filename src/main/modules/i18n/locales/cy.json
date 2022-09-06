@@ -925,6 +925,14 @@
       "REGULAR_PAYMENTS": "yn gwneud taliadau rheolaidd i glirio'r taliadau a fethwyd",
       "TOTAL_MONTHLY_REPAYMENTS": "Cyfanswm yr ad-daliadau misol"
     },
+    "PIN":{
+      "CONTACT_US": "contact us",
+      "CHECK_SECURITY_CODE": "Check the security code is the one we sent you. You can",
+      "FIND_PIN": "You can find it on the email or letter we sent you.",
+      "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
+      "SECURITY_CODE": "Security code",
+      "TITLE": "Enter security code"
+    },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your regular expenses"
     },
