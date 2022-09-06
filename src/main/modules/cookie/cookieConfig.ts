@@ -24,13 +24,12 @@ cookieManager.on('UserPreferencesSaved', (preferences: Preferences) => {
 
 const config = {
   userPreferences: {
-    cookieName: 'court-and-tribunal-hearings-cookie-preferences',
+    cookieName: 'money-claims-cookie-preferences',
   },
   cookieManifest: [
     {
       categoryName: 'essential',
       optional: false,
-      // TODO: list all essential cookies we set across application
       cookies: [
         'citizen-ui-session',
         'citizen-ui-session.sig',
