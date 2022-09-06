@@ -15,7 +15,7 @@ const repaymentPlan = 'repaymentPlan';
 Feature('Response with AdmitAll');
 
 Before(() => {
-  loginSteps.EnterUserCredentials(config.username, config.password);
+  loginSteps.EnterUserCredentials(config.Username, config.Password);
 });
 
 Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @test', () => {

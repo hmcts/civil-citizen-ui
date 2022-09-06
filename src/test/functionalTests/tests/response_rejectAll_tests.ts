@@ -16,7 +16,7 @@ const repaymentPlan = 'repaymentPlan';
 Feature('Response with RejectAll');
 
 Before(() => {
-  loginSteps.EnterUserCredentials(config.username, config.password);
+  loginSteps.EnterUserCredentials(config.Username, config.Password);
 });
 
 Scenario('Response with RejectAll and Immediate payment @citizenUI @rejectAll', () => {

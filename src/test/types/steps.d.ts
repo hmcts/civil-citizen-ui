@@ -13,7 +13,7 @@ declare namespace CodeceptJS {
   export interface I {
     amOnPage: (amOnPage) => any;
     click: (click) => any;
-    fillField: (locator: string | object, value: string) => any;
+    fillField: (locator: string | object, value: string | undefined) => any;
     // @ts-ignore
     see: (text, context=any) => any;
     waitForText: (waitForText) => any;

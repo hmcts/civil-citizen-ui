@@ -15,7 +15,7 @@ const repaymentPlan = 'repaymentPlan';
 Feature('Response with PartAdmit');
 
 Before(() => {
-  loginSteps.EnterUserCredentials(config.username, config.password);
+  loginSteps.EnterUserCredentials(config.Username, config.Password);
 });
 
 Scenario('Response with PartAdmit and Immediate payment @citizenUI @partAdmit', () => {

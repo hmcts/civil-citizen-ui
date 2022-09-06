@@ -5,8 +5,6 @@ const I: I = actor();
 const fields = {
   username: 'input[id="username"]',
   password: 'input[id="password"]',
-  hmctsUsername: 'input[type="email"]',
-  hmctsPassword: 'input[type="password"]',
 };
 const buttons = {
   submit: 'input.button',
@@ -19,7 +17,7 @@ export class LoginPage {
     I.amOnPage('/');
   }
 
-  login (email: string, password: string): void {
+  login (email: string | undefined, password: string | undefined): void {
     I.waitForVisible(fields.username);
     I.fillField(fields.username, email);
     I.fillField(fields.password, password);
