@@ -33,6 +33,7 @@
     "BUTTONS": {
       "BACK": "Back",
       "CONTINUE": "Continue",
+      "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE_AND_CONTINUE": "Save and continue",
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
@@ -62,6 +63,11 @@
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_NO_ADVISORS": "No Advisors are currently available, Come back later.",
       "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
+    },
+    "EVIDENCE_SUMMARY": {
+      "TITLE": "Evidence",
+      "ROW_TYPE": "Type",
+      "ROW_DESCRIPTION": "Description"
     },
     "HEADER": {
       "MONEY_CLAIMS": "Money Claims",
@@ -730,6 +736,24 @@
       "SUPPORT_CLAIM_FEES_URL": "Money claim fees ",
       "SUPPORT_CONTACT_US_URL": "Contact us "
     },
+    "FIRST_CONTACT_CLAIM_REFERENCE": {
+      "CLAIM_NUMBER": "Claim number",
+      "ENTER_CLAIM": "Enter the claim number from the email or letter we sent you.",
+      "PAGE_TITLE": "Enter your claim number",
+      "TITLE": "Enter your claim number"
+    },
+    "FIRST_CONTACT_CLAIM_SUMMARY": {
+      "CLAIM_AMOUNT": "Claim amount",
+      "CLAIM_NUMBER": "Claim number",
+      "FIND_OUT": "Find out about how we use and store your ",
+      "HEADER": "Claim details",
+      "PAGE_TITLE": "Claim details",
+      "PERSONAL_INFORMATION": "personal information",
+      "PERSONAL_INFORMATION_USAGE": "How we use and store your personal information",
+      "REASON_FOR_CLAIM": "Reason for claim:",
+      "THIS_CLAIM_INFORMATION": "This claim contains personal information about you that {{ claimant }} has provided, for example your name and address.",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
+    },
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED" : "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
       "CLAIMANT_MUST_AGREE" : "The claimant must agree to mediation. We'll contact you within 28 days after the claimant's confirmation, to arrange a free appointment.",
@@ -1129,6 +1153,7 @@
     "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
     "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
     "CLAIM_DETAILS": "Claim details",
+    "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "DATE_REQUIRED": "Enter a date",
     "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the original response date",
@@ -1243,6 +1268,7 @@
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Enter a valid town/city",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
+    "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Enter first correspondence address line",
     "VALID_CORRESPONDENCE_CITY": "Enter correspondence town/city",
     "VALID_CORRESPONDENCE_POSTCODE": "Enter correspondence address postcode",
