@@ -1,6 +1,6 @@
 import {Claim} from '../../../../common/models/claim';
 import {ClaimSummarySection} from '../../../../common/form/models/claimSummarySection';
-import {buildSubmitStatus, buildNextStepsSection} from './submitConfirmationBuilder/submitConfirmationBuilder'
+import {buildSubmitStatus, buildNextStepsSection} from './submitConfirmationBuilder/submitConfirmationBuilder';
 import {getNextStepsTitle} from './submitConfirmationBuilder/admissionSubmitConfirmationContent';
 
 export const getSubmitConfirmationContent = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {

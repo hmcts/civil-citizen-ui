@@ -72,7 +72,7 @@ describe('Submit Confirmation View', () => {
         expect(nextStepsList[0].getElementsByTagName('li')[0].innerHTML).toContain(`they get the money by ${immediatePaymentDeadLline} - they can request a County Court Judgment against you if not`);
         expect(nextStepsList[0].getElementsByTagName('li')[1].innerHTML).toContain('any cheques or bank transfers are clear in their account by the deadline');
         expect(nextStepsList[0].getElementsByTagName('li')[2].innerHTML).toContain('you get a receipt for any payments');
-        expect(nextStepsList[0].getElementsByTagName('li')[3].innerHTML).toContain('they tell the court that you’ve paid')
+        expect(nextStepsList[0].getElementsByTagName('li')[3].innerHTML).toContain('they tell the court that you’ve paid');
         expect(links[2].innerHTML).toContain('Contact Mr. Jan Clark');
         expect(paragraphs[2].innerHTML).toContain('if you need their payment details.');
       });
