@@ -774,8 +774,6 @@ describe('Documents', () => {
       //Then
       expect(result).toBe(true);
     });
-
-
   });
 });
 
