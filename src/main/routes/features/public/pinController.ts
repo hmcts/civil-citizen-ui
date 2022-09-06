@@ -52,7 +52,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: express.Request, res: expr
       cookie.claimId = response.data.id;
       cookie.pinVerified = YesNo.YES;
       // STEP 4: redirect to next page
-      res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL)
+      res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
     }
   } catch (error) {
     next(error);
