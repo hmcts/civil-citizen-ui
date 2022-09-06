@@ -104,6 +104,8 @@ import defendantAgeEligibilityController from './features/public/eligibility/def
 import someUsefulInfoFeesController from './features/public/eligibility/someUsefulInfoFeesController';
 import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
 import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
+import helpWithFeesCanUseServiceController
+  from './features/public/eligibility/helpWithFeesCanUseServiceController';
 
 export default [
   homeController,
@@ -197,4 +199,5 @@ export default [
   someUsefulInfoFeesController,
   applyForHelpWithFeesController,
   helpWithFeesReferenceController,
+  helpWithFeesCanUseServiceController,
 ];
