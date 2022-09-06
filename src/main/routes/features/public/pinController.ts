@@ -26,12 +26,6 @@ function renderView(pinForm: GenericForm<PinType>, res: express.Response): void 
 
 pinController.get(FIRST_CONTACT_PIN_URL, (req: express.Request, res: express.Response) => {
   const pinForm = new GenericForm(new PinType(req.body.pin));
-
-  // TODO: mock cookike claim reference number
-  const cookie = req.cookies['firstContact'] ? req.cookies['firstContact'] : {};
-  cookie.claimReference = '000MC000';
-  res.cookie('firstContact', cookie);
-
   renderView(pinForm, res);
 });
 
@@ -40,18 +34,17 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: express.Request, res: expr
     // STEP 1: call service an get claim
     const cookie = req.cookies['firstContact'] ? req.cookies['firstContact'] : {};
     const response: AxiosResponse = await civilServiceClient.verifyPin(<AppRequest>req, req.body.pin, cookie.claimReference);
-
-    if (response.status === 401) {
-      return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
-    }
-
     const pin = response.status === 400 ? '' : req.body.pin;
     const pinForm = new GenericForm(new PinType(pin));
-    pinForm.validateSync();
+    await pinForm.validate();
 
     if (pinForm.hasErrors()) {
       renderView(pinForm, res);
     } else {
+
+      if (response.status === 401) {
+        return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
+      }
       // STEP 2: save claim in redis
       await saveDraftClaim(response.data.id, response.data.case_data);
       // STEP 3: save pinValidate = yes in cookies
