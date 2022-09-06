@@ -4,13 +4,13 @@ import {
   FIRST_CONTACT_PIN_URL,
   FIRST_CONTACT_ACCESS_DENIED_URL,
   FIRST_CONTACT_CLAIM_SUMMARY_URL,
-} from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {PinType} from '../../../common/models/pin';
-import {CivilServiceClient} from '../../../app/client/civilServiceClient';
-import {AppRequest} from '../../../common/models/AppRequest';
-import {YesNo} from '../../../common/form/models/yesNo';
-import {saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
+} from '../../../urls';
+import {GenericForm} from '../../../../common/form/models/genericForm';
+import {PinType} from '../../../../common/models/firstContact/pin';
+import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
+import {AppRequest} from '../../../../common/models/AppRequest';
+import {YesNo} from '../../../../common/form/models/yesNo';
+import {saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {AxiosResponse} from 'axios';
 
 const pinController = express.Router();

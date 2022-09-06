@@ -105,7 +105,7 @@ import someUsefulInfoFeesController from './features/public/eligibility/someUsef
 import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
 import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
 import claimReferenceController from './features/public/firstContact/claimReferenceController';
-import pinController from './features/public/pinController';
+import pinController from './features/public/firstContact/pinController';
 
 export default [
   homeController,
