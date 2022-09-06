@@ -1,8 +1,8 @@
-import {IsDefined} from 'class-validator';
+import {IsNotEmpty} from 'class-validator';
 
 export class PinType {
 
-  @IsDefined({ message: 'ERRORS.ENTER_VALID_SECURITY_CODE' })
+  @IsNotEmpty({ message: 'ERRORS.ENTER_VALID_SECURITY_CODE' })
     pin?: string;
 
   constructor(pin?: string) {
