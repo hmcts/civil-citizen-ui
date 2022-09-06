@@ -13,7 +13,7 @@ export const config = {
   WaitForTimeout: 20000,
   helpers: {},
   username: process.env.CITIZEN_USERNAME || '',
-  password: process.env.CITIZEN_PASSWORD || ''
+  password: process.env.CITIZEN_PASSWORD || '',
 };
 
 config.helpers = {

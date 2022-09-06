@@ -17,7 +17,6 @@ const fields = {
   correspondencePostCode: 'input[id="correspondencePostCode"]',
 };
 
-
 const buttons = {
   saveAndContinue: 'button.govuk-button',
 };

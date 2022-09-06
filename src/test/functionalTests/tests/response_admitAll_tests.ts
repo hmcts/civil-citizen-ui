@@ -42,5 +42,3 @@ Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll', () =>
   responseSteps.EnterRepaymentPlan(claimRef);
   responseSteps.CheckAndSubmit(claimRef);
 });
-
-

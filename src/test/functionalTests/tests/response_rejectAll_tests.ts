@@ -46,5 +46,3 @@ Scenario('Response with RejectAll and Repayment plan @citizenUI @rejectAll', () 
   responseSteps.EnterRepaymentPlan(claimRef);
   responseSteps.CheckAndSubmit(claimRef);
 });
-
-

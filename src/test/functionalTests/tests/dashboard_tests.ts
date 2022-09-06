@@ -8,7 +8,7 @@ const loginSteps: LoginSteps = new LoginSteps();
 Feature('Verify Dashboard page');
 
 Before(() => {
-    loginSteps.EnterUserCredentials(config.username, config.password);
+  loginSteps.EnterUserCredentials(config.username, config.password);
 });
 
 Scenario('Verify the content in the Dashboard page @citizenUI', () => {
