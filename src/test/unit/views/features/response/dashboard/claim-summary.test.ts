@@ -24,6 +24,8 @@ describe('Send your response by email View', () => {
 
   const mockId = '5129';
 
+  CivilClaimResponseMock.case_data.respondent1ResponseDeadline = '2022-01-01';
+
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -96,7 +98,7 @@ describe('Send your response by email View', () => {
 
       it('should have a link to respond to claim', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
-        const sectionLink = links[3] as HTMLAnchorElement;
+        const sectionLink = links[2] as HTMLAnchorElement;
         expect(sectionLink.innerHTML).toContain('Respond to claim');
         expect(sectionLink.href).toEqual(CLAIM_TASK_LIST_URL.replace(':id', mockId));
       });

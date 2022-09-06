@@ -1,7 +1,6 @@
 import {DefendantTimeline} from '../../../../../../main/common/form/models/timeLineOfEvents/defendantTimeline';
 import TimelineRow from '../../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
-import {DESCRIPTION_REQUIRED} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 describe('defendant timeline', () => {
   describe('validation', () => {
@@ -13,7 +12,7 @@ describe('defendant timeline', () => {
       await form.validate();
       //Then
       expect(form.hasErrors()).toBeTruthy();
-      expect(form.errorFor('rows[0][description]')).toBe(DESCRIPTION_REQUIRED);
+      expect(form.errorFor('rows[0][description]')).toBe('ERRORS.DESCRIPTION_REQUIRED');
     });
     it('should not have errors when row fields are empty', async () => {
       //Given

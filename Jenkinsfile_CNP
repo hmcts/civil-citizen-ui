@@ -87,9 +87,9 @@ withPipeline(type, product, component) {
         """
         env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
         env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-        env.CIVIL_SERVICE_URL="http://civil-service-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+        env.CIVIL_SERVICE_URL="https://civil-service-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
         env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-        env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+        env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.service.core-compute-preview.internal"
         env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
     }
 

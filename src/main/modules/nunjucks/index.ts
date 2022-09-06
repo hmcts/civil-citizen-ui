@@ -13,10 +13,14 @@ import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/un
 import {TransactionSchedule} from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {EvidenceType} from '../../common/models/evidence/evidenceType';
 import {EvidenceDetails} from '../../common/models/evidence/evidenceDetails';
-import {addDaysFilter, dateFilter, formatDate} from './filters/dateFilter';
+import {addDaysFilter, dateFilter, formatDate, addDaysFilterTranslated} from './filters/dateFilter';
 import {SignatureType} from '../../common/models/signatureType';
 import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
 import {FormValidationError} from '../../common/form/validationErrors/formValidationError';
+import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibleReason';
+import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOptions';
+import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
+import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -66,8 +70,16 @@ export class Nunjucks {
 
     const currencyFormat = (value: number) => numeral.default(value);
 
-    const translateErrors = (keys: FormValidationError[], t: any) => {
+    const translateErrors = (keys: FormValidationError[], t: (key:string) => string, formatValues: { keyError: string,keyToReplace: string, valueToReplace: string }[]) => {
       return keys.map((key) => {
+        if(formatValues){
+          const formatValue = formatValues.find(v => v.keyError === key.text);
+          if(formatValue){
+            const translation = t(key.text);
+            const replaced = translation.replace(formatValue.keyToReplace, formatValue.valueToReplace);
+            return ({...key, text: replaced});
+          }
+        }
         return ({...key, text: t(key?.text)});
       });
     };
@@ -77,6 +89,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
     nunjucksEnv.addFilter('currencyFormat', currencyFormat);
     nunjucksEnv.addFilter('addDays', addDaysFilter);
+    nunjucksEnv.addFilter('addDaysTranslated', addDaysFilterTranslated);
     nunjucksEnv.addFilter('date', dateFilter);
     nunjucksEnv.addFilter('formatDate', formatDate);
     nunjucksEnv.addGlobal('t', (key: string, options?: TOptions): string => this.i18next.t(key, options));
@@ -92,6 +105,10 @@ export class Nunjucks {
     nunjucksEnv.addFilter('pennies2pounds', convertToPoundsFilter);
     nunjucksEnv.addGlobal('SignatureType', SignatureType);
     nunjucksEnv.addGlobal('ClaimSummaryType', ClaimSummaryType);
+    nunjucksEnv.addGlobal('NotEligibleReason', NotEligibleReason);
+    nunjucksEnv.addGlobal('AgeEligibilityOptions', AgeEligibilityOptions);
+    nunjucksEnv.addGlobal('TotalAmountOptions', TotalAmountOptions);
+    nunjucksEnv.addGlobal('ClaimTypeOptions', ClaimTypeOptions);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

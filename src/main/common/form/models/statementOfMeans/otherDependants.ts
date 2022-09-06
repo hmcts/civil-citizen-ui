@@ -1,12 +1,8 @@
-import {IsDefined, IsNotEmpty, ValidateIf, Validate, ValidationError} from 'class-validator';
-import {Form} from '../../../form/models/form';
-import {
-  VALID_YES_NO_OPTION,
-  DETAILS_REQUIRED,
-} from '../../../form/validationErrors/errorMessageConstants';
+import {IsDefined, IsNotEmpty, ValidateIf, Validate} from 'class-validator';
 import {NumberOfPeopleValidator} from '../../../form/validators/numberOfPeopleValidator';
-export class OtherDependants extends Form {
-  @IsDefined({message: VALID_YES_NO_OPTION})
+
+export class OtherDependants {
+  @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
     option?: string;
 
   @ValidateIf(o => (o.option === 'yes'))
@@ -14,13 +10,12 @@ export class OtherDependants extends Form {
     numberOfPeople?: number;
 
   @ValidateIf(o => o.option === 'yes')
-  @IsNotEmpty({ message: DETAILS_REQUIRED })
+  @IsNotEmpty({ message: 'ERRORS.DETAILS_REQUIRED' })
     details?: string;
 
-  constructor(option?: string, numberOfPeople?: number, details?:string, errors?: ValidationError[]) {
-    super(errors);
+  constructor(option?: string, numberOfPeople?: number, details?:string) {
     this.option = option;
-    this.numberOfPeople = numberOfPeople;
+    this.numberOfPeople = Math.floor(numberOfPeople);
     this.details = details;
   }
 }

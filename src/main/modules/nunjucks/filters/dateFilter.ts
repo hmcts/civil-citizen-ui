@@ -55,3 +55,16 @@ export function addDaysFilter(value: string, num: number): DateTime {
   }
   return date.plus({days: num});
 }
+
+export function addDaysFilterTranslated(value: string, num: number, t: (key:string) => string): string {
+  let date = DateTime.now();
+
+  if (value === 'now') {
+    date = DateTime.now();
+  }
+
+  date.plus({days: num});
+  const month = t('COMMON.MONTH_NAMES.' + date.monthLong.toUpperCase());
+
+  return (date.day + ' ' + month + ' ' + date.year);
+}

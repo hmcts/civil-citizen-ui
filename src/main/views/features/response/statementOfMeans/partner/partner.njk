@@ -17,9 +17,8 @@
       {% set description = t('PAGES.PARTNER.EXAMPLE') %}
       {% set id = "option" %}
       {% set name = "option" %}
-      {% set errors = form.getErrors() %}
-      {% if errors %}
-        {{ errorSummary(errors, t) }}
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">

@@ -1,9 +1,7 @@
-const englishLanguage = document.getElementsByClassName('english-language');
-const cymraegLanguage = document.getElementsByClassName('cymraeg-language');
+const languageElement = document.getElementsByClassName('language');
 
 const getCookie = (name) => {
   const cookies = document.cookie.split(';');
-
   for (let i = 0; i < cookies.length; i++) {
     let c = cookies[i].trim().split('=');
     if (c[0] === name) {
@@ -13,13 +11,22 @@ const getCookie = (name) => {
   return '';
 };
 
+function getUpdatedQuery(query, language) {
+  const toggleLang = language === 'en' ? 'cy' : 'en';
+  if (query.includes('lang')) {
+    return query.replace(`lang=${language}`, `lang=${toggleLang}`);
+  } else if (query) {
+    return `${query}&&lang=${toggleLang}`;
+  } else if (!query) {
+    return `?lang=${toggleLang}`;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   const lang = getCookie('lang');
-  if (lang === 'cy') {
-    englishLanguage[0].className = 'govuk-!-font-size-19 govuk-link language';
-    cymraegLanguage[0].className = 'govuk-!-display-none';
-  } else {
-    englishLanguage[0].className = 'govuk-!-display-none';
-    cymraegLanguage[0].className = 'govuk-!-font-size-19 govuk-link language';
-  }
+  const query = window.location.search;
+  const toggleLangText = lang === 'en' ? 'Cymraeg' :'English';
+  let updatedQuery = getUpdatedQuery(query, lang);
+  languageElement[0].href = updatedQuery;
+  languageElement[0].textContent = toggleLangText;
 });
