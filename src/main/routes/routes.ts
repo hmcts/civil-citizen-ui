@@ -25,7 +25,6 @@ import partnerPensionController from './features/response/statementOfMeans/partn
 import paymentOptionController from './features/response/admission/fullAdmission/paymentOption/paymentOptionController';
 import paymentDateController from './features/response/admission/fullAdmission/paymentOption/paymentDateController';
 import paymentDatePAController from './features/response/admission/partialAdmission/paymentDateController';
-
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
@@ -105,6 +104,7 @@ import someUsefulInfoFeesController from './features/public/eligibility/someUsef
 import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
 import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
 import claimReferenceController from './features/public/firstContact/claimReferenceController';
+import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
 import submitComfirmationController from './features/response/submitComfirmationController';
 
 export default [
@@ -200,5 +200,6 @@ export default [
   applyForHelpWithFeesController,
   helpWithFeesReferenceController,
   claimReferenceController,
+  firstContactClaimSummaryController,
   submitComfirmationController,
 ];
