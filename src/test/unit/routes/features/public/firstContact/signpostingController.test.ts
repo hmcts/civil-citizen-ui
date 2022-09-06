@@ -6,6 +6,8 @@ import {
   FIRST_CONTACT_SIGNPOSTING_URL,
 } from '../../../../../../main/routes/urls';
 
+jest.mock('../../../../../../main/modules/oidc');
+
 describe('Signposting Controller', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
   const citizenRoleToken: string = config.get('citizenRoleToken');
