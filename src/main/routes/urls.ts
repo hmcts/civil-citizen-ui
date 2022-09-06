@@ -2,7 +2,6 @@ const BASE_CASE_URL = '/case/:id';
 export const BASE_ELIGIBILITY_URL = '/eligibility';
 const BASE_FIRST_CONTACT_URL = '/first-contact';
 const BASE_CASE_RESPONSE_URL = `${BASE_CASE_URL}/response`;
-const BASE_FIRST_CONTACT_URL = '/first-contact';
 const STATEMENT_OF_MEANS_URL = `${BASE_CASE_RESPONSE_URL}/statement-of-means`;
 const MEDIATION_URL = `${BASE_CASE_URL}/mediation`;
 const DIRECTIONS_QUESTIONNAIRE_URL = `${BASE_CASE_URL}/directions-questionnaire`;
