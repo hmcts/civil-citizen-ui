@@ -713,6 +713,12 @@
       "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
       "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
+    "FIRST_CONTACT_CLAIM_REFERENCE": {
+      "CLAIM_NUMBER": "Claim number",
+      "ENTER_CLAIM": "Enter the claim number from the email or letter we sent you.",
+      "PAGE_TITLE": "Enter your claim number",
+      "TITLE": "Enter your claim number"
+    },
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED" : "Rydym wedi eich cofrestru’n awtomatig i gael gwasanaeth cyfryngu dros y ffôn am ddim gan Gwasanaeth Llysoedd a Thribiwnlysoedd EM.",
       "CLAIMANT_MUST_AGREE" : "Rhaid i’r hawlydd gytuno i’r cyfryngu. Byddwn yn cysylltu â chi o fewn 28 diwrnod ar ôl cael cadarnhad gan yr hawlydd i drefnu apwyntiad am ddim.",
@@ -1152,6 +1158,7 @@
     "AMOUNT_REQUIRED": "Nodwch swm o £1 neu fwy",
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
     "CLAIM_DETAILS": "Claim details",
+    "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
@@ -1266,6 +1273,7 @@
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
+    "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad ar gyfer gohebiaeth",
     "VALID_CORRESPONDENCE_CITY": "Rhowch enw tref/dinas ar gyfer gohebiaeth",
     "VALID_CORRESPONDENCE_POSTCODE": "Rhowch god post y cyfeiriad ar gyfer gohebiaeth",

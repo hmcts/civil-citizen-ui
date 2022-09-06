@@ -713,6 +713,12 @@
       "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
       "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
+    "FIRST_CONTACT_CLAIM_REFERENCE": {
+      "CLAIM_NUMBER": "Claim number",
+      "ENTER_CLAIM": "Enter the claim number from the email or letter we sent you.",
+      "PAGE_TITLE": "Enter your claim number",
+      "TITLE": "Enter your claim number"
+    },
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED" : "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
       "CLAIMANT_MUST_AGREE" : "The claimant must agree to mediation. We'll contact you within 28 days after the claimant's confirmation, to arrange a free appointment.",
@@ -1152,6 +1158,7 @@
     "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
     "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
     "CLAIM_DETAILS": "Claim details",
+    "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "DATE_REQUIRED": "Enter a date",
     "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the original response date",
@@ -1266,6 +1273,7 @@
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Enter a valid town/city",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
+    "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Enter first correspondence address line",
     "VALID_CORRESPONDENCE_CITY": "Enter correspondence town/city",
     "VALID_CORRESPONDENCE_POSTCODE": "Enter correspondence address postcode",
