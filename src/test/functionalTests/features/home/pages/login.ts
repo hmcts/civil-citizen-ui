@@ -19,16 +19,6 @@ export class LoginPage {
     I.amOnPage('/');
   }
 
-  loginhmcts(email: string, password: string): void {
-    I.waitForVisible(fields.hmctsUsername);
-    I.fillField(fields.hmctsUsername, email);
-    I.click(buttons.hmctsSignIn);
-    I.waitForVisible(fields.hmctsPassword);
-    I.fillField(fields.hmctsPassword, password);
-    I.click(buttons.hmctsSignIn);
-    I.click(buttons.hmctsSignIn);
-  }
-
   login (email: string, password: string): void {
     I.waitForVisible(fields.username);
     I.fillField(fields.username, email);
