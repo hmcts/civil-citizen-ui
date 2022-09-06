@@ -32,11 +32,12 @@ const config = {
       optional: false,
       // TODO: list all essential cookies we set across application
       cookies: [
-        'i18next',
-        'firstContact',
+        'citizen-ui-session',
+        'citizen-ui-session.sig',
         'eligibility',
-        'session.sig',
-        'session',
+        'firstContact',
+        'lang',
+        'newDeadlineDate',
       ],
     },
     {
