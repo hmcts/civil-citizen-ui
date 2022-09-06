@@ -36,7 +36,7 @@ describe('Submit Confirmation service', () => {
     });
 
     it('should display what happens next title', () => {
-      const nextStepsTitle = getNextStepsTitle();
+      const nextStepsTitle = getNextStepsTitle(lang);
       expect(nextStepsTitle[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');      
     });
 
