@@ -1165,6 +1165,11 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
+"@hmcts/cookie-manager@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@hmcts/cookie-manager/-/cookie-manager-1.0.0.tgz#06a850f3854aebccf3948081e2d7071b36c60cd5"
+  integrity sha512-NLG4OY41oXp4pNKNznmpRZ7nAvmavoaOAWrRN6er+i6lVoZFY7B1yWv2R80b5n7l6cGPpT7THNoC7FPFHRaFgg==
+
 "@hmcts/info-provider@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@hmcts/info-provider/-/info-provider-1.0.0.tgz#4d9c9d21a0510d0bfb85a6835745952b9744c159"
