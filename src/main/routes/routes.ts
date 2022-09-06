@@ -106,7 +106,7 @@ import applyForHelpWithFeesController from './features/public/eligibility/applyF
 import accessDeniedController from './features/public/firstContact/accessDeniedController';
 import claimReferenceController from './features/public/firstContact/claimReferenceController';
 import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
-import hwfEligibleController from 'routes/features/public/eligibility/hwfEligibleController';
+import eligibleController from 'routes/features/public/eligibility/eligibleController';
 
 export default [
   homeController,
@@ -203,5 +203,5 @@ export default [
   accessDeniedController,
   claimReferenceController,
   firstContactClaimSummaryController,
-  hwfEligibleController,
+  eligibleController,
 ];

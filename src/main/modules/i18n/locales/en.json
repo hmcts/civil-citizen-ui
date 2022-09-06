@@ -1125,6 +1125,9 @@
         "PAY_COURT" : "You will have to pay court fees unless you are eligible for Help with Fees. ",
         "HELP_WITH_FEES" : "Find out more about Help with Fees (opens in a new window)"
       },
+      "HWF_ELIGIBLE_REFERENCE" : {
+        "REMEMBER" : "Remember that you will not know about the fee until we have processed your Help with Fees application. Your claim will only be issued after Help with Fees is confirmed, or the fee is paid."
+      },
       "PAGE_TITLE" : "You can use this service",
       "TITLE" : "You can use this service"
     },

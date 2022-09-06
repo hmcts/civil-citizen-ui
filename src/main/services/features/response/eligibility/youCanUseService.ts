@@ -1,13 +1,21 @@
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../common/form/models/claimSummarySection';
 import {feesHelpUri} from '../../../../../test/utils/externalURLs';
 import {t} from 'i18next';
-import {YouCanUseReason} from 'common/form/models/eligibility/YouCanUseReason';
+import {ELIGIBILITY_HWF_ELIGIBLE, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE, ELIGIBLE_FOR_THIS_SERVICE_URL} from 'routes/urls';
 
-export const getYouCanUseContent = (reason: YouCanUseReason, lang: string): ClaimSummarySection[] => {
+export const getYouCanUseContent = (reason: string, lang: string): ClaimSummarySection[] => {
   switch (reason){
-    case YouCanUseReason.HWF_ELIGIBLE:{
+    case ELIGIBILITY_HWF_ELIGIBLE:{
       return getYouCanUseHWFEligible(lang);
     }
+    case ELIGIBILITY_HWF_ELIGIBLE_REFERENCE:{
+      return getYouCanUseHWFEligibleReference();
+    }
+    case ELIGIBLE_FOR_THIS_SERVICE_URL:{
+      return [];
+    }
+    default:
+      return [];
   }
 };
 
@@ -17,9 +25,20 @@ export function getYouCanUseHWFEligible(lang: string): ClaimSummarySection[] {
       type: ClaimSummaryType.LINK,
       data: {
         href: feesHelpUri,
-        textBefore: t('PAGES.YOU_CAN_USE.HWF_ELIGIBLE.PAY_COURT'),
+        textBefore: t('PAGES.YOU_CAN_USE.HWF_ELIGIBLE.PAY_COURT', {lng: lang}),
         text: t('PAGES.YOU_CAN_USE.HWF_ELIGIBLE.HELP_WITH_FEES', {lng: lang}),
         textAfter : '.',
+      },
+    },
+  ];
+}
+
+export function getYouCanUseHWFEligibleReference(): ClaimSummarySection[] {
+  return [
+    {
+      type: ClaimSummaryType.PARAGRAPH,
+      data: {
+        text: 'PAGES.YOU_CAN_USE.HWF_ELIGIBLE_REFERENCE.REMEMBER',
       },
     },
   ];
