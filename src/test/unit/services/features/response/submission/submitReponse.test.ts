@@ -33,8 +33,8 @@ describe('Submit response to ccd', ()=>{
     //Then
     expect(spyOnTranslation).toHaveBeenCalled();
     if(!nock.isDone()) {
-      fail('did not submit event to civil service');
       nock.cleanAll();
+      fail('did not submit event to civil service');
     }
   });
   it('should rethrow error when there is an error with redis', async () =>{
