@@ -157,7 +157,7 @@ ccd:
   global:
     ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
     ccdDataStoreUrl: https://ccd-data-store-api-${SERVICE_NAME}.service.core-compute-preview.internal
-    ccdDefinitionStoreUrl: https://ccd-definition-store-civil-${SERVICE_NAME}.service.core-compute-preview.internal
+    ccdDefinitionStoreUrl: https://ccd-definition-store-${SERVICE_NAME}.service.core-compute-preview.internal
     ccdUserProfileUrl: http://${SERVICE_NAME}-ccd-user-profile-api
     dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
     idamApiUrl: https://idam-api.aat.platform.hmcts.net
