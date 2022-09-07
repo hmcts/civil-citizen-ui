@@ -41,6 +41,7 @@ export const enum TestMessages {
   VALID_YES_NO_SELECTION = 'Please select yes or no',
   VALID_DEFENDENT_AGE_ELIGIBILITY = 'Select yes, no, or company/organisation',
   MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
+  COMPLETING_CLAIM = 'Get the details right',
   MEDIATION_I_DONT_WANT_FREE = 'I do not agree to free mediation',
   SEND_YOUR_RESPONSE_BY_EMAIL = 'Reject all of the claim and counterclaim',
   FEES_BASED_ON_AMOUNT = 'The fee is based on the amount you`re claiming, including interest.',
