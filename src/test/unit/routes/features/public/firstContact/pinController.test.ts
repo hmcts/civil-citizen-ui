@@ -25,8 +25,6 @@ describe('Respond to Claim - Pin Controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-
-
   });
 
   describe('on GET', () => {
