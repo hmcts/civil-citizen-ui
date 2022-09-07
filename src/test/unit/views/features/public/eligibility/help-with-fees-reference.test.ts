@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {
-  ELIGIBILITY_HELP_WITH_FEES_REFERENCE,
+  ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL,
 } from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
@@ -27,7 +27,7 @@ describe('Help with fees reference view', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).get(ELIGIBILITY_HELP_WITH_FEES_REFERENCE);
+      const response = await request(app).get(ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });
@@ -96,7 +96,7 @@ describe('Help with fees reference view', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).post(ELIGIBILITY_HELP_WITH_FEES_REFERENCE);
+      const response = await request(app).post(ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });

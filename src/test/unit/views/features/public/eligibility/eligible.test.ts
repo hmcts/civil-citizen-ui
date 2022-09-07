@@ -2,8 +2,8 @@ import config from 'config';
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {
-  ELIGIBILITY_HWF_ELIGIBLE,
-  ELIGIBILITY_HWF_ELIGIBLE_REFERENCE,
+  ELIGIBILITY_HWF_ELIGIBLE_URL,
+  ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,
   ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../../../main/routes/urls';
 import * as externalURLs from '../../../../../utils/externalURLs';
@@ -35,7 +35,7 @@ describe('You can use this service View', () => {
 
     describe('HWF Eligible', () => {
       beforeEach(async () => {
-        await request(app).get(ELIGIBILITY_HWF_ELIGIBLE).then(res => {
+        await request(app).get(ELIGIBILITY_HWF_ELIGIBLE_URL).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
         });
@@ -71,7 +71,7 @@ describe('You can use this service View', () => {
 
     describe('HWF Eligible Reference', () => {
       beforeEach(async () => {
-        await request(app).get(ELIGIBILITY_HWF_ELIGIBLE_REFERENCE).then(res => {
+        await request(app).get(ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
         });

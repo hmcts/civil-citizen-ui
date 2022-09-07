@@ -1,14 +1,14 @@
 import {ClaimSummarySection, ClaimSummaryType} from '../../../common/form/models/claimSummarySection';
 import {feesHelpUri} from '../../../../test/utils/externalURLs';
 import {t} from 'i18next';
-import {ELIGIBILITY_HWF_ELIGIBLE, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE, ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../routes/urls';
+import {ELIGIBILITY_HWF_ELIGIBLE_URL, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL, ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../routes/urls';
 
 export const getYouCanUseContent = (reason: string, lang: string): ClaimSummarySection[] => {
   switch (reason){
-    case ELIGIBILITY_HWF_ELIGIBLE:{
+    case ELIGIBILITY_HWF_ELIGIBLE_URL:{
       return getYouCanUseHWFEligible(lang);
     }
-    case ELIGIBILITY_HWF_ELIGIBLE_REFERENCE:{
+    case ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL:{
       return getYouCanUseHWFEligibleReference();
     }
     case ELIGIBLE_FOR_THIS_SERVICE_URL:{
