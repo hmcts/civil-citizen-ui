@@ -36,7 +36,7 @@ describe('NotEligibleReason converter', () => {
     //When
     const result = convertToNotEligibleReason('under-18');
     //Then
-    expect(result).toBe(NotEligibleReason.UNDER_18);
+    expect(result).toBe(NotEligibleReason.UNDER_18_CLAIMANT);
   });
   it('should return UNDER_18_DEFENDANT', () => {
     //When

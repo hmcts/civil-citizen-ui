@@ -25,7 +25,6 @@ import partnerPensionController from './features/response/statementOfMeans/partn
 import paymentOptionController from './features/response/admission/fullAdmission/paymentOption/paymentOptionController';
 import paymentDateController from './features/response/admission/fullAdmission/paymentOption/paymentDateController';
 import paymentDatePAController from './features/response/admission/partialAdmission/paymentDateController';
-
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
@@ -86,6 +85,7 @@ import agreedResponseDeadlineController from './features/response/responseDeadli
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/determinationWithoutHearingController';
 import totalAmountController from './features/public/eligibility/totalAmountController';
+import claimTypeController from './features/public/eligibility/claimTypeController';
 import notEligibleController
   from './features/public/eligibility/notEligibleController';
 import claimantAddressEligibilityController
@@ -93,10 +93,19 @@ import claimantAddressEligibilityController
 import singleDefendantController from './features/public/eligibility/singleDefendantController';
 import defendantAddressEligibilityController
   from './features/public/eligibility/defendantAddressEligibilityController';
+import helpWithFeesEligibilityController
+  from './features/public/eligibility/helpWithFeesEligibilityController';
 import tryNewServiceController from './features/public/eligibility/tryNewServiceController';
 import tenancyDepositController from './features/public/eligibility/tenancyDepositController';
 import claimAgainstGovernmentController from './features/public/eligibility/claimAgainstGovernmentController';
+import claimantOver18EligibilityController from './features/public/eligibility/claimantOver18EligibilityController';
 import defendantAgeEligibilityController from './features/public/eligibility/defendantAgeEligibilityController';
+import someUsefulInfoFeesController from './features/public/eligibility/someUsefulInfoFeesController';
+import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
+import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
+import accessDeniedController from './features/public/firstContact/accessDeniedController';
+import claimReferenceController from './features/public/firstContact/claimReferenceController';
+import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
 
 export default [
   homeController,
@@ -176,12 +185,21 @@ export default [
   newDeadlineResponseController,
   determinationWithoutHearingController,
   totalAmountController,
+  claimTypeController,
   notEligibleController,
   claimantAddressEligibilityController,
   singleDefendantController,
   claimAgainstGovernmentController,
   defendantAddressEligibilityController,
+  helpWithFeesEligibilityController,
   tryNewServiceController,
   tenancyDepositController,
+  claimantOver18EligibilityController,
   defendantAgeEligibilityController,
+  someUsefulInfoFeesController,
+  applyForHelpWithFeesController,
+  helpWithFeesReferenceController,
+  accessDeniedController,
+  claimReferenceController,
+  firstContactClaimSummaryController,
 ];
