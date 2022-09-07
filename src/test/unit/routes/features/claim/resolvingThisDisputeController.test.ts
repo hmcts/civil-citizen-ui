@@ -5,11 +5,8 @@ import config from 'config';
 import {
   CLAIM_RESOLVING_DISPUTE_URL,
 } from '../../../../../main/routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Resolving Dispute', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,12 +19,11 @@ describe('Resolving Dispute', () => {
 
   describe('on GET', () => {
     it('should return resolving dispute page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CLAIM_RESOLVING_DISPUTE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.RESOLVING_DISPUTE);
+          expect(res.text).toContain('Try to resolve the dispute');
         });
     });
   });

@@ -421,24 +421,6 @@
       "REJECT_WHOLE_CLAIM": "Os ydych yn gwrthod yr hawliad cyfan, gall yr hawliad gael ei drosglwyddo i ganolfan wrandawiadau Llys Sirol.",
       "RESPONSE_MEANING": "Canfod beth mae pob ymateb yn ei olygu"
     },
-    "CLAIM_JOURNEY": {
-      "RESOLVE_THE_DISPUTE": {
-        "P1": {
-          "BEFORE_YOU_CLAIM": "Before you claim you should:",
-          "CONSIDER_MEDIATION": "consider mediation",
-          "TALK_TO_THE_PERSON": "talk to the person or organisation you want to claim against"
-        },
-        "P2": {
-          "HEADING": "Talk to the person or organisation",
-          "MAKE_A_CLAIM": "explaining you'll make a claim against them if they don't follow your timetable",
-          "SUGGESTING_TIMETABLE": "suggesting timetable with actions you want them to take",
-          "TELLING_THEM_WHY": "telling them why you intend to make a claim against them",
-          "TRY_TO_RESOLVE": "Try to resolve the dispute by:"
-        },
-        "PAGE_TITLE": "Try to resolve the dispute",
-        "TITLE": "Try to resolve the dispute"
-      }
-    },
     "CLAIM_DETAILS": {
       "AMOUNT": "Amount",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
@@ -457,6 +439,24 @@
       "TIMELINE": "Timeline",
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
       "WHAT_HAPPENED": "Beth ddigwyddodd"
+    },
+    "CLAIM_JOURNEY": {
+      "RESOLVE_THE_DISPUTE": {
+        "P1": {
+          "BEFORE_YOU_CLAIM": "Before you claim you should:",
+          "CONSIDER_MEDIATION": "consider mediation",
+          "TALK_TO_THE_PERSON": "talk to the person or organisation you want to claim against"
+        },
+        "P2": {
+          "HEADING": "Talk to the person or organisation",
+          "MAKE_A_CLAIM": "explaining you'll make a claim against them if they don't follow your timetable",
+          "SUGGESTING_TIMETABLE": "suggesting timetable with actions you want them to take",
+          "TELLING_THEM_WHY": "telling them why you intend to make a claim against them",
+          "TRY_TO_RESOLVE": "Try to resolve the dispute by:"
+        },
+        "PAGE_TITLE": "Try to resolve the dispute",
+        "TITLE": "Try to resolve the dispute"
+      }
     },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "Am hawliad",

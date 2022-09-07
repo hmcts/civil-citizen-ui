@@ -53,7 +53,6 @@ export const enum TestMessages {
   FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED = 'Enter a first payment date in the future',
   PAGE_NOT_FOUND = 'Page Not Found',
   PAYMENT_FREQUENCY_REQUIRED = 'Choose a payment frequency',
-  RESOLVING_DISPUTE = 'Try to resolve the dispute',
   VALID_AGREED_RESPONSE_DATE = 'Enter the agreed response date',
   VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST = 'Agreed response date must be in the future',
   VALID_AMOUNT_ONE_POUND_OR_MORE = 'Enter an amount of £1 or more',

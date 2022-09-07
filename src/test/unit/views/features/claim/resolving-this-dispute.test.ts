@@ -3,7 +3,6 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {CLAIM_RESOLVING_DISPUTE_URL} from '../../../../../main/routes/urls';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 
 const jsdom = require('jsdom');
@@ -11,7 +10,6 @@ const {JSDOM} = jsdom;
 const pageTitle = 'PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.PAGE_TITLE';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Resolving Dispute View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -21,7 +19,6 @@ describe('Resolving Dispute View', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
   });
 
   describe('on GET', () => {
