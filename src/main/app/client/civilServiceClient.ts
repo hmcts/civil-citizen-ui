@@ -9,7 +9,7 @@ import {
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_SUBMIT_EVENT,
-  // CIVIL_SERVICEm_VALIDATE_PIN_URL,
+  // CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
