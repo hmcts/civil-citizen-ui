@@ -82,7 +82,7 @@ describe('Help with fees reference view', () => {
       });
       it('should have external links', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
-        const feelsHelpUrl = links[3] as HTMLAnchorElement;
+        const feelsHelpUrl = links[2] as HTMLAnchorElement;
         expect(feelsHelpUrl.innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.APPLY_FOR_HELP_LINK'));
         expect(feelsHelpUrl.href).toEqual(externalURLs.feesHelpUri);
       });
