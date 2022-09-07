@@ -33,6 +33,7 @@
     "BUTTONS": {
       "BACK": "Back",
       "CONTINUE": "Continue",
+      "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE_AND_CONTINUE": "Save and continue",
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
@@ -75,6 +76,11 @@
       "REJECT_BUTTON": "Reject additional cookies",
       "TITLE": "Cookies on Money Claims",
       "VIEW_COOKIES": "View cookies"
+    },
+    "EVIDENCE_SUMMARY": {
+      "TITLE": "Evidence",
+      "ROW_TYPE": "Type",
+      "ROW_DESCRIPTION": "Description"
     },
     "HEADER": {
       "MONEY_CLAIMS": "Money Claims",
@@ -726,11 +732,28 @@
       "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
       "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
+    "FIRST_CONTACT_ACCESS_DENIED": {
+      "CLICK_HERE": "Click here to try again",
+      "THERE_WAS_AN_ERROR": "There was an error during your last operation. Please try again later.",
+      "TITLE": "You are not authorised to view the claim!"
+    },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
       "CLAIM_NUMBER": "Claim number",
       "ENTER_CLAIM": "Enter the claim number from the email or letter we sent you.",
       "PAGE_TITLE": "Enter your claim number",
       "TITLE": "Enter your claim number"
+    },
+    "FIRST_CONTACT_CLAIM_SUMMARY": {
+      "CLAIM_AMOUNT": "Claim amount",
+      "CLAIM_NUMBER": "Claim number",
+      "FIND_OUT": "Find out about how we use and store your ",
+      "HEADER": "Claim details",
+      "PAGE_TITLE": "Claim details",
+      "PERSONAL_INFORMATION": "personal information",
+      "PERSONAL_INFORMATION_USAGE": "How we use and store your personal information",
+      "REASON_FOR_CLAIM": "Reason for claim:",
+      "THIS_CLAIM_INFORMATION": "This claim contains personal information about you that {{ claimant }} has provided, for example your name and address.",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
     },
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED" : "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
