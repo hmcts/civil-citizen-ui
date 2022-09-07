@@ -47,6 +47,9 @@ describe('Submit response to ccd', ()=>{
   });
   it('should rethrow error when civil service returns 500', async () =>{
     //Given
+    mockGetCaseData.mockImplementation(async () => {
+      return claim;
+    });
     nock(citizenBaseUrl)
       .post('/cases/1/citizen/undefined/event')
       .reply(500, {error:'error'});
