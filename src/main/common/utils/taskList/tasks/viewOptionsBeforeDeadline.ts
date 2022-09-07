@@ -28,7 +28,7 @@ export const getViewOptionsBeforeDeadlineTask = (claim: Claim, claimId: string, 
       }
       break;
     case ResponseOptions.ALREADY_AGREED:
-      if (claim.respondentSolicitor1AgreedDeadlineExtension) {
+      if (claim.responseDeadline?.agreedResponseDeadline) {
         viewOptionsBeforeDeadlineTask.status = TaskStatus.COMPLETE;
         viewOptionsBeforeDeadlineTask.url = constructResponseUrlWithIdParams(claimId, NEW_RESPONSE_DEADLINE_URL);
       }

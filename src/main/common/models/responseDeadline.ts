@@ -5,5 +5,4 @@ export interface ResponseDeadline {
   option?: ResponseOptions,
   additionalTime?: AdditionalTimeOptions,
   agreedResponseDeadline?: Date,
-  calculatedResponseDeadline?: Date
 }

@@ -7,7 +7,7 @@ import {
 } from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadline/responseDeadlineService';
+import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {deadLineGuard} from '../../../../routes/guards/deadLineGuard';
 
@@ -51,7 +51,7 @@ agreedResponseDeadlineController
             backLink,
           });
         } else {
-          await responseDeadlineService.saveAgreedResponseDeadline(req.params.id, agreedResponseDeadlineDate.date);
+          res.cookie('newDeadlineDate', agreedResponseDeadlineDate);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, NEW_RESPONSE_DEADLINE_URL));
         }
       } catch (error) {

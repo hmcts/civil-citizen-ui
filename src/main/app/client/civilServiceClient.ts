@@ -132,12 +132,8 @@ export class CivilServiceClient {
     }
   }
 
-  async submitDefendantResponseEvent(claimId: string, req: AppRequest): Promise<Claim> {
-    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, undefined, req);
-  }
-
-  async submitAgreedResponseExtensionDateEvent(claimId: string, updatedClaim:ClaimUpdate, req: AppRequest): Promise<Claim> {
-    return await this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, updatedClaim, req);
+  async submitDefendantResponseEvent(claimId: string, updatedClaim:ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, updatedClaim, req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?:ClaimUpdate, req?: AppRequest): Promise<Claim> {

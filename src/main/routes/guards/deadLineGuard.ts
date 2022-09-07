@@ -1,7 +1,9 @@
 import express from 'express';
 import {Claim} from '../../common/models/claim';
 import {getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
+import {ResponseOptions} from '../../common/form/models/responseDeadline';
 import {isPastDeadline} from '../../common/utils/dateUtils';
+import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
 import {getViewOptionsBeforeDeadlineTask} from '../../common/utils/taskList/tasks/viewOptionsBeforeDeadline';
 import {TaskStatus} from '../../common/models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
@@ -26,14 +28,22 @@ export const isUnauthorized = async (req: express.Request) => {
   const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, req.params.id, 'en');
 
   const isTaskComplete = viewOptionsBeforeDeadlineTask.status === TaskStatus.COMPLETE;
-  const isTaskForExtendingDeadLineCompletedWithExtentedDeadline = isTaskComplete && caseData.isDeadlineExtended();
-  const isResponseDeadlineExtensionNotQualified = caseData.isRequestToExtendDeadlineRefused() || caseData.isResponseToExtendDeadlineNo() || caseData.hasRespondentAskedForMoreThan28Days();
-  const responseIsPastDeadlineAndDeadlineNotExtendedAfterCompletingDeadlineTask = isDeadlinePassed && isTaskComplete && isResponseDeadlineExtensionNotQualified;
-  const responseIsPastdeadlineAndDeadlineExtensionTaskNotCompleted = isDeadlinePassed && !isTaskComplete;
-  if (responseIsPastDeadlineAndDeadlineNotExtendedAfterCompletingDeadlineTask
-    || isTaskForExtendingDeadLineCompletedWithExtentedDeadline
-  || responseIsPastdeadlineAndDeadlineExtensionTaskNotCompleted) {
+  const isDeadlineExtended = caseData.responseDeadline?.option === ResponseOptions.ALREADY_AGREED && caseData.responseDeadline?.agreedResponseDeadline;
+  const isMoreThan28Days = caseData.responseDeadline?.option === ResponseOptions.YES && caseData.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
+  const isRequestRefused = caseData.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED;
+  const isResponseNo = caseData.responseDeadline?.option === ResponseOptions.NO;
+
+  if (isDeadlinePassed && isTaskComplete && (isMoreThan28Days || isRequestRefused || isResponseNo)) {
     return true;
   }
+
+  if (isTaskComplete && isDeadlineExtended) {
+    return true;
+  }
+
+  if (isDeadlinePassed && !isTaskComplete) {
+    return true;
+  }
+
   return false;
 };
