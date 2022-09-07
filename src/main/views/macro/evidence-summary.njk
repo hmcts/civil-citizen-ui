@@ -1,0 +1,28 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% macro evidenceSummary(evidenceRows, t) %}
+  {% set tableRows = [] %}
+  {% for row in evidenceRows %}
+    {% set _ = tableRows.push([
+      {text: row.type},
+      {text: row.description}
+    ]) %}
+  {% endfor %}
+
+  {{ govukTable({
+    caption: t('COMMON.EVIDENCE_SUMMARY.TITLE'),
+    captionClasses: "govuk-heading-s",
+    firstCellIsHeader: false,
+    head: [
+      {
+        text: t('COMMON.EVIDENCE_SUMMARY.ROW_TYPE'),
+        classes: 'govuk-!-width-one-half'
+      },
+      {
+        text: t('COMMON.EVIDENCE_SUMMARY.ROW_DESCRIPTION'),
+        classes: 'govuk-!-width-one-half'
+      }
+    ],
+    rows: tableRows if evidenceRows.length
+  }) }}
+{% endmacro %}
