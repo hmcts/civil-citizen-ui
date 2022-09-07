@@ -16,7 +16,6 @@ declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 mockedAppRequest.params = {id:'1'};
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-//const mockSaveCaseDataFromStore = draftStoreService.saveDraftClaim as jest.Mock;
 const claim = new Claim();
 claim.applicant1 = {
   partyName: 'Mr. James Bond',

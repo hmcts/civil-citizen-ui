@@ -65,5 +65,6 @@ export const enum TestMessages {
   VALID_POSITIVE_NUMBER = 'Don’t enter a negative number',
   VALID_REASON_REQUIRED = 'Enter a reason',
   VALID_STRICTLY_POSITIVE_NUMBER = 'Enter a number higher than 0',
-  PAGE_NOT_FOUND = 'Page Not Found'
+  PAGE_NOT_FOUND = 'Page Not Found',
+  REQUEST_FAILED = 'Request failed with status code 500',
 }
