@@ -5,7 +5,6 @@ import config from 'config';
 import {
   CLAIM_COMPLETING_CLAIM_URL,
 } from '../../../../../main/routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -25,7 +24,7 @@ describe('Completing Claim', () => {
         .get(CLAIM_COMPLETING_CLAIM_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.COMPLETING_CLAIM);
+          expect(res.text).toContain('Get the details right');
         });
     });
   });
