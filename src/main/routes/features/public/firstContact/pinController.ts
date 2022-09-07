@@ -45,6 +45,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: express.Request, res: expr
       await saveDraftClaim(response.data.id, response.data.case_data);
       cookie.claimId = response.data.id;
       cookie.pinVerified = YesNo.YES;
+      res.cookie('firstContact', cookie);
       res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
     }
   } catch (error) {

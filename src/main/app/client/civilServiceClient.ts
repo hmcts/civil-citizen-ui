@@ -120,7 +120,6 @@ export class CivilServiceClient {
   }
 
   async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<AxiosResponse> {
-    // const config = this.getConfig(req);
     try {
       // const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL
       // .replace(':caseReference', caseReference), pin, config);
@@ -139,6 +138,8 @@ export class CivilServiceClient {
         mockResponse.status = 200;
       } else if(caseReference === '111MC111' && pin === '1111'){
         mockResponse.status = 400;
+      } else if(caseReference === 'error' && pin === 'error'){
+        mockResponse.status = 500;
       }
       return mockResponse;
     } catch (err: unknown) {
