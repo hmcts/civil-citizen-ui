@@ -7,7 +7,6 @@ import {
 } from '../../../../../main/routes/urls';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 
 describe('Completing Claim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
