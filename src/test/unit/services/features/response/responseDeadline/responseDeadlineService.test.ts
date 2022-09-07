@@ -1,6 +1,6 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
-import {ResponseDeadlineService} from '../../../../../../main/services/features/response/responseDeadline/responseDeadlineService';
+import {ResponseDeadlineService} from '../../../../../../main/services/features/response/responseDeadlineService';
 import {ResponseOptions} from '../../../../../../main/common/form/models/responseDeadline';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {AdditionalTimeOptions} from '../../../../../../main/common/form/models/additionalTime';
