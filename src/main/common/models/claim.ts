@@ -34,8 +34,6 @@ import {DocumentType} from './document/documentType';
 import {Vulnerability} from '../models/directionsQuestionnaire/vulnerability';
 import {ResponseDeadline} from './responseDeadline';
 import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
-import {ResponseOptions} from '../form/models/responseDeadline';
-import {AdditionalTimeOptions} from '../form/models/additionalTime';
 
 export class Claim {
   legacyCaseReference: string;
@@ -77,7 +75,6 @@ export class Claim {
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
   determinationWithoutHearing: DeterminationWithoutHearing;
-  respondentSolicitor1AgreedDeadlineExtension?:Date;
 
   getClaimantName(): string {
     return this.applicant1.partyName;
@@ -217,23 +214,6 @@ export class Claim {
   isDefendantNotResponded(): boolean {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
-
-  isDeadlineExtended(): boolean {
-    return this.respondentSolicitor1AgreedDeadlineExtension && this.responseDeadline?.option === ResponseOptions.ALREADY_AGREED;
-  }
-
-  hasRespondentAskedForMoreThan28Days(): boolean {
-    return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
-  }
-
-  isRequestToExtendDeadlineRefused(): boolean {
-    return this.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED;
-  }
-
-  isResponseToExtendDeadlineNo(): boolean {
-    return this.responseDeadline?.option === ResponseOptions.NO;
-  }
-
 }
 
 export interface Party {
