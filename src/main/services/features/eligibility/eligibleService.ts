@@ -1,7 +1,7 @@
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../common/form/models/claimSummarySection';
-import {feesHelpUri} from '../../../../../test/utils/externalURLs';
+import {ClaimSummarySection, ClaimSummaryType} from '../../../common/form/models/claimSummarySection';
+import {feesHelpUri} from '../../../../test/utils/externalURLs';
 import {t} from 'i18next';
-import {ELIGIBILITY_HWF_ELIGIBLE, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE, ELIGIBLE_FOR_THIS_SERVICE_URL} from 'routes/urls';
+import {ELIGIBILITY_HWF_ELIGIBLE, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE, ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../routes/urls';
 
 export const getYouCanUseContent = (reason: string, lang: string): ClaimSummarySection[] => {
   switch (reason){
@@ -14,8 +14,6 @@ export const getYouCanUseContent = (reason: string, lang: string): ClaimSummaryS
     case ELIGIBLE_FOR_THIS_SERVICE_URL:{
       return [];
     }
-    default:
-      return [];
   }
 };
 
