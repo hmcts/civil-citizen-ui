@@ -15,8 +15,10 @@ export const submitResponse = async (req : AppRequest): Promise<Claim> => {
   try{
     const claim = await getCaseDataFromStore(req.params.id);
     const ccdResponse = translateDraftResponseToCCD(claim);
+    console.log(ccdResponse);
     return await civilServiceClient.submitDefendantResponseEvent(req.params.id, ccdResponse, req);
   }catch(err){
     logger.error(err);
+    throw err;
   }
 };

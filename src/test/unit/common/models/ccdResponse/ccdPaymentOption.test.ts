@@ -16,7 +16,7 @@ describe('translate payment option to ccd version', ()=> {
     //When
     const result = toCCDPaymentOption(bySetDate);
     //Then
-    expect(result).toBe(CCDPaymentOption.SET_DATE);
+    expect(result).toBe(CCDPaymentOption.BY_SET_DATE);
   });
   it('should translate pay by instalments', ()=> {
     //Given

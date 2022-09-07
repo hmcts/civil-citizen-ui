@@ -2,7 +2,9 @@ import PaymentOptionType from '../../../../../main/common/form/models/admission/
 import {Claim} from '../../../../../main/common/models/claim';
 import {translateDraftResponseToCCD} from '../../../../../main/services/translation/response/ccdTranslation';
 import {CCDPaymentOption} from '../../../../../main/common/models/ccdResponse/ccdPaymentOption';
-import {CCDRepaymentPlanFrequency} from "../../../../../main/common/models/ccdResponse/ccdRepaymentPlan";
+import {CCDRepaymentPlanFrequency} from '../../../../../main/common/models/ccdResponse/ccdRepaymentPlan';
+import {Respondent} from '../../../../../main/common/models/respondent';
+import {ResponseType} from '../../../../../main/common/form/models/responseType';
 
 describe('translate response to ccd version', ()=> {
   it('should translate payment option to ccd', ()=> {
@@ -12,7 +14,7 @@ describe('translate response to ccd version', ()=> {
     //When
     const ccdResponse = translateDraftResponseToCCD(claim);
     //Then
-    expect(ccdResponse.paymentTypeSelection).toBe(CCDPaymentOption.SET_DATE);
+    expect(ccdResponse.defenceAdmitPartPaymentTimeRouteRequired).toBe(CCDPaymentOption.BY_SET_DATE);
   });
   it('should translate repayment plan to ccd', () => {
     //Given
@@ -30,13 +32,14 @@ describe('translate response to ccd version', ()=> {
     expect(ccdResponse.respondent1RepaymentPlan?.firstRepaymentDate).toBe(claim.repaymentPlan.firstRepaymentDate);
     expect(ccdResponse.respondent1RepaymentPlan?.paymentAmount).toBe(claim.repaymentPlan.paymentAmount);
   });
-  it('should translate payment date to ccd', () => {
+  it('should translate response type to CCD', ()=>{
     //Given
     const claim = new Claim();
-    claim.paymentDate = new Date();
+    claim.respondent1 = new Respondent();
+    claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
     //When
     const ccdResponse = translateDraftResponseToCCD(claim);
     //Then
-    expect(ccdResponse.repaymentDate).toBe(claim.paymentDate);
-  });
+    expect(ccdResponse.respondent1ClaimResponseTypeForSpec).toBe(ResponseType.FULL_ADMISSION);
+  })
 });

@@ -21,16 +21,20 @@ const toCCDRepaymentPlanFrequency = (frequency: string): CCDRepaymentPlanFrequen
       return CCDRepaymentPlanFrequency.ONCE_TWO_WEEKS;
     case 'FOUR_WEEKS':
       return CCDRepaymentPlanFrequency.ONCE_FOUR_WEEKS;
-    default:
+    case 'MONTH':
       return CCDRepaymentPlanFrequency.ONCE_ONE_MONTH;
+    default:
+      return undefined;
   }
 };
 
 export const toCCDRepaymentPlan = (repaymentPlan: RepaymentPlan): CCDRepaymentPlan => {
-  return {
-    paymentAmount: repaymentPlan?.paymentAmount,
-    repaymentFrequency: toCCDRepaymentPlanFrequency(repaymentPlan?.repaymentFrequency),
-    firstRepaymentDate: repaymentPlan?.firstRepaymentDate,
-  };
+  if (repaymentPlan) {
+    return {
+      paymentAmount: repaymentPlan?.paymentAmount,
+      repaymentFrequency: toCCDRepaymentPlanFrequency(repaymentPlan?.repaymentFrequency),
+      firstRepaymentDate: repaymentPlan?.firstRepaymentDate,
+    };
+  }
 };
 
