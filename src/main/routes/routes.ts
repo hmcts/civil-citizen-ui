@@ -25,7 +25,6 @@ import partnerPensionController from './features/response/statementOfMeans/partn
 import paymentOptionController from './features/response/admission/fullAdmission/paymentOption/paymentOptionController';
 import paymentDateController from './features/response/admission/fullAdmission/paymentOption/paymentDateController';
 import paymentDatePAController from './features/response/admission/partialAdmission/paymentDateController';
-
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
@@ -101,7 +100,12 @@ import tenancyDepositController from './features/public/eligibility/tenancyDepos
 import claimAgainstGovernmentController from './features/public/eligibility/claimAgainstGovernmentController';
 import claimantOver18EligibilityController from './features/public/eligibility/claimantOver18EligibilityController';
 import defendantAgeEligibilityController from './features/public/eligibility/defendantAgeEligibilityController';
+import someUsefulInfoFeesController from './features/public/eligibility/someUsefulInfoFeesController';
+import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
 import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
+import accessDeniedController from './features/public/firstContact/accessDeniedController';
+import claimReferenceController from './features/public/firstContact/claimReferenceController';
+import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
 
 export default [
   homeController,
@@ -192,5 +196,10 @@ export default [
   tenancyDepositController,
   claimantOver18EligibilityController,
   defendantAgeEligibilityController,
+  someUsefulInfoFeesController,
   applyForHelpWithFeesController,
+  helpWithFeesReferenceController,
+  accessDeniedController,
+  claimReferenceController,
+  firstContactClaimSummaryController,
 ];

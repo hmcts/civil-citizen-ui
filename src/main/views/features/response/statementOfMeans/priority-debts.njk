@@ -1,54 +1,63 @@
-{% extends "question-template.njk" %}
+{% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "macro/csrf.njk" import csrfProtection %}
-{% from "../../../macro/buttons.njk" import saveAndContinueButton %}
 {% from "../../../macro/conditional-checkBoxHTML.njk" import conditionalCheckBoxHTML %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.PRIORITY_DEBTS.PAGE_TITLE') }}
 {% endblock %}
 
-{% block question %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-        <h1 class="govuk-fieldset__heading"> {{ t('PAGES.PRIORITY_DEBTS.DEBTS') }}</h1>
-      </legend>
-      <div id="waste-hint" class="govuk-hint">
-        <p>{{ t('PAGES.PRIORITY_DEBTS.DEBTS_DETAILS') }}</p>
-        <ul>
-          <li>{{ t('PAGES.PRIORITY_DEBTS.ARREARS') }}</li>
-          <li>{{ t('PAGES.PRIORITY_DEBTS.REGULAR_PAYMENTS') }}</li>
-        </ul>
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        {% if errors.length %}
+          {{ errorSummary(errors, t) }}
+        {% endif %}
       </div>
-      <form method="post" novalidate>
-        {{ csrfProtection(csrf) }}
-        {% for checkBoxField in checkBoxFields %}
-          {{ govukCheckboxes({
-            idPrefix: checkBoxField.name,
-            name: checkBoxField.name,
-            items: [
-              {
-                value: checkBoxField.name,
-                text: t(checkBoxField.text),
-                checked: priorityDebts.model[checkBoxField.name].isDeclared if priorityDebts.model[checkBoxField.name],
-                conditional: {
-                html: conditionalCheckBoxHTML(checkBoxField.name, priorityDebts.model[checkBoxField.name], priorityDebtErrors[checkBoxField.name], t)
-              }
-              }
-            ]
-          }) }}
-        {% endfor %}
-        <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
-          {{ t('PAGES.PRIORITY_DEBTS.TOTAL_MONTHLY_REPAYMENTS') }}: £
-          <span class="total-monthly-income-expense">
-            0
-          </span>
-        </p>
-        {{ saveAndContinueButton(t('COMMON.BUTTONS.SAVE_AND_CONTINUE')) }}
-    </div>
-    </form>
-  </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading"> {{ t('PAGES.PRIORITY_DEBTS.DEBTS') }}</h1>
+          </legend>
+          <div id="waste-hint" class="govuk-hint">
+            <p>{{ t('PAGES.PRIORITY_DEBTS.DEBTS_DETAILS') }}</p>
+            <ul>
+              <li>{{ t('PAGES.PRIORITY_DEBTS.ARREARS') }}</li>
+              <li>{{ t('PAGES.PRIORITY_DEBTS.REGULAR_PAYMENTS') }}</li>
+            </ul>
+          </div>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% for checkBoxField in checkBoxFields %}
+              {{ govukCheckboxes({
+                idPrefix: checkBoxField.name,
+                name: checkBoxField.name,
+                items: [{
+                  value: checkBoxField.name,
+                  text: t(checkBoxField.text),
+                  checked: priorityDebts.model[checkBoxField.name].isDeclared if priorityDebts.model[checkBoxField.name],
+                  conditional: {
+                  html: conditionalCheckBoxHTML(checkBoxField.name, priorityDebts.model[checkBoxField.name], priorityDebtErrors[checkBoxField.name], t)
+                  }
+                }]
+              }) }}
+            {% endfor %}
+            <p class="govuk-fieldset__legend govuk-fieldset__legend--m" role="status" aria-live="polite">
+              {{ t('PAGES.PRIORITY_DEBTS.TOTAL_MONTHLY_REPAYMENTS') }}: £
+              <span class="total-monthly-income-expense">0</span>
+            </p>
+            {{ govukButton({
+              text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+            }) }}
+            {{ contactUsForHelp(t) }}
+          </form>
+        <div/>
+      </div>
+    </main>
   </div>
 {% endblock %}
