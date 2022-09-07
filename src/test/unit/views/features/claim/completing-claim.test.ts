@@ -3,7 +3,6 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {CLAIM_COMPLETING_CLAIM_URL} from '../../../../../main/routes/urls';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -19,7 +18,6 @@ describe('Completing Claim View', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
   });
 
   describe('on GET', () => {

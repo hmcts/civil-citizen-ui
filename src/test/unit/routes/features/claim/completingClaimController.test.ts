@@ -6,7 +6,6 @@ import {
   CLAIM_COMPLETING_CLAIM_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -22,7 +21,6 @@ describe('Completing Claim', () => {
 
   describe('on GET', () => {
     it('should return completing claim page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CLAIM_COMPLETING_CLAIM_URL)
         .expect((res) => {
