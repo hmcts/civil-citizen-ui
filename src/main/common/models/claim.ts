@@ -221,7 +221,7 @@ export class Claim {
   }
 
   isBusiness(): boolean {
-    return this.respondent1.type === CounterpartyType.COMPANY || this.respondent1.type === CounterpartyType.ORGANISATION;
+    return this.respondent1?.type === CounterpartyType.COMPANY || this.respondent1?.type === CounterpartyType.ORGANISATION;
   }
 
   get responseStatus(): ClaimResponseStatus {
