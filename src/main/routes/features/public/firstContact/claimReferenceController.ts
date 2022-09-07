@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {
-  FIRST_CONTACT_CLAIM_PIN_URL,
+  FIRST_CONTACT_PIN_URL,
   FIRST_CONTACT_CLAIM_REFERENCE_URL,
 } from '../../../../routes/urls';
 import {ClaimReference} from '../../../../common/models/firstContact/claimReference';
@@ -25,7 +25,7 @@ claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, async (req: exp
     const cookie = req.cookies['firstContact'] ? req.cookies['firstContact'] : {};
     cookie.claimReference = req.body.claimReferenceValue;
     res.cookie('firstContact', cookie);
-    res.redirect(FIRST_CONTACT_CLAIM_PIN_URL);
+    res.redirect(FIRST_CONTACT_PIN_URL);
   }
 },
 );
