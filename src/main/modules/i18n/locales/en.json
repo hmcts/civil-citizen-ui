@@ -36,7 +36,8 @@
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE_AND_CONTINUE": "Save and continue",
       "START_AGAIN": "Start again",
-      "SUBMIT_RESPONSE": "Submit Response"
+      "SUBMIT_RESPONSE": "Submit Response",
+      "READ_CONFIRMATION": "I confirm I've read this"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX": "Council Tax or Community Charge",
@@ -420,6 +421,24 @@
       "REJECT_PAID": "If you reject because you believe you've paid the money, the claimant has 28 days to tell you and the court whether they're proceeding with the claim.",
       "REJECT_WHOLE_CLAIM": "If you reject all of the claim, the claim may be transferred to a County Court hearing centre.",
       "RESPONSE_MEANING": "Find out what each response means"
+    },
+    "CLAIM_JOURNEY": {
+      "RESOLVE_THE_DISPUTE": {
+        "P1": {
+          "BEFORE_YOU_CLAIM": "Before you claim you should:",
+          "CONSIDER_MEDIATION": "consider mediation",
+          "TALK_TO_THE_PERSON": "talk to the person or organisation you want to claim against"
+        },
+        "P2": {
+          "HEADING": "Talk to the person or organisation",
+          "MAKE_A_CLAIM": "explaining you'll make a claim against them if they don't follow your timetable",
+          "SUGGESTING_TIMETABLE": "suggesting timetable with actions you want them to take",
+          "TELLING_THEM_WHY": "telling them why you intend to make a claim against them",
+          "TRY_TO_RESOLVE": "Try to resolve the dispute by:"
+        },
+        "PAGE_TITLE": "Try to resolve the dispute",
+        "TITLE": "Try to resolve the dispute"
+      }
     },
     "CLAIM_DETAILS": {
       "AMOUNT": "Amount",

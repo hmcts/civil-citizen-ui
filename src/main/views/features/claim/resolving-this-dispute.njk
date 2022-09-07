@@ -1,0 +1,39 @@
+{% extends "claim-details-tpl.njk" %}
+
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.PAGE_TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.TITLE') }}</h1>
+          <p class="govuk-body">{{ t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.P1.BEFORE_YOU_CLAIM') }}</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>{{ t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.P1.TALK_TO_THE_PERSON') }}</li>
+            <li>{{ t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.P1.CONSIDER_MEDIATION') }}</li>
+          </ul>
+
+          <h2 class="govuk-heading-m">{{ t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.P2.HEADING') }}</h2>
+          <p class="govuk-body">{{ t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.P2.TRY_TO_RESOLVE') }}</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>{{ t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.P2.TELLING_THEM_WHY') }}</li>
+            <li>{{ t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.P2.SUGGESTING_TIMETABLE') }}</li>
+            <li>{{ t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.P2.MAKE_A_CLAIM') }}</li>
+          </ul>
+          {{ govukButton({
+            text: t("COMMON.BUTTONS.READ_CONFIRMATION"),
+            href: urlNextView
+          }) }}
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
