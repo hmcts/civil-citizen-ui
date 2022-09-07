@@ -33,6 +33,7 @@
     "BUTTONS": {
       "BACK": "Back",
       "CONTINUE": "Parhau",
+      "READ_CONFIRMATION": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "START_AGAIN": "Start again",

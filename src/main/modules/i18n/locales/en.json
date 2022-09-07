@@ -33,11 +33,11 @@
     "BUTTONS": {
       "BACK": "Back",
       "CONTINUE": "Continue",
+      "READ_CONFIRMATION": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE_AND_CONTINUE": "Save and continue",
       "START_AGAIN": "Start again",
-      "SUBMIT_RESPONSE": "Submit Response",
-      "READ_CONFIRMATION": "I confirm I've read this"
+      "SUBMIT_RESPONSE": "Submit Response"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX": "Council Tax or Community Charge",
