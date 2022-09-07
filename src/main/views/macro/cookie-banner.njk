@@ -1,0 +1,85 @@
+{% from "govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
+
+{% macro cookieBanner(t) %}
+  {% set changeLink %}
+    <a class="govuk-link" href="/cookie-policy">{{ t('COMMON.COOKIE_BANNER.CHANGE_LINK') }}</a>
+  {% endset %}
+
+  {% set html %}
+    <p class="govuk-body">{{ t('COMMON.COOKIE_BANNER.ESSENTIAL_COOKIES_MESSAGE') }}</p>
+    <p class="govuk-body">{{ t('COMMON.COOKIE_BANNER.ADDITIONAL_COOKIES_MESSAGE') }}</p>
+  {% endset %}
+
+  {% set acceptHtml %}
+    <p class="govuk-body">
+      {{ t('COMMON.COOKIE_BANNER.COOKIES_ACCEPTED') }}
+      {{ t('COMMON.COOKIE_BANNER.CHANGE') | replace('CHANGE_HTML', changeLink) | safe }}
+    </p>
+  {% endset %}
+
+  {% set rejectHtml %}
+    <p class="govuk-body">
+      {{ t('COMMON.COOKIE_BANNER.COOKIES_REJECTED') }}
+      {{ t('COMMON.COOKIE_BANNER.CHANGE') | replace('CHANGE_HTML', changeLink) | safe }}
+    </p>
+  {% endset %}
+
+  {{ govukCookieBanner({
+    classes: 'cookie-banner',
+    ariaLabel: t('COMMON.COOKIE_BANNER.TITLE'),
+    hidden: true,
+    messages: [
+      {
+        classes: 'cookie-banner-message',
+        headingText: t('COMMON.COOKIE_BANNER.TITLE'),
+        html: html,
+        actions: [
+        {
+          classes: 'cookie-banner-accept-button',
+          text: t('COMMON.COOKIE_BANNER.ACCEPT_BUTTON'),
+          type: 'button',
+          attributes: {
+          id: 'cookie-banner-accept-button'
+        }
+        },
+        {
+          classes: 'cookie-banner-reject-button',
+          text: t('COMMON.COOKIE_BANNER.REJECT_BUTTON'),
+          type: 'button'
+        },
+        {
+          text: t('COMMON.COOKIE_BANNER.VIEW_COOKIES'),
+          href: '/cookie-policy'
+        }
+      ]
+      },
+      {
+        classes: 'cookie-banner-accept-message',
+        html: acceptHtml,
+        role: 'alert',
+        hidden: true,
+        actions: [
+        {
+          classes: 'cookie-banner-hide-button',
+          text: t('COMMON.COOKIE_BANNER.HIDE_THIS_MESSAGE'),
+          attributes: {
+          id: 'cookie-banner-hide-button'
+        }
+        }
+      ]
+      },
+      {
+        classes: 'cookie-banner-reject-message',
+        html: rejectHtml,
+        role: 'alert',
+        hidden: true,
+        actions: [
+        {
+          classes: 'cookie-banner-hide-button',
+          text: t('COMMON.COOKIE_BANNER.HIDE_THIS_MESSAGE')
+        }
+      ]
+      }
+    ]
+  }) }}
+{% endmacro %}
