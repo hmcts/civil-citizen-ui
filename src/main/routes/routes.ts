@@ -106,6 +106,7 @@ import applyForHelpWithFeesController from './features/public/eligibility/applyF
 import signpostingController from './features/public/firstContact/signpostingController';
 import accessDeniedController from './features/public/firstContact/accessDeniedController';
 import claimReferenceController from './features/public/firstContact/claimReferenceController';
+import pinController from './features/public/firstContact/pinController';
 import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
 
 export default [
@@ -203,5 +204,6 @@ export default [
   signpostingController,
   accessDeniedController,
   claimReferenceController,
+  pinController,
   firstContactClaimSummaryController,
 ];
