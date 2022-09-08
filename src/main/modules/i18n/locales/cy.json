@@ -732,6 +732,23 @@
       "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
       "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
+    "FIRST_CONTACT_SIGNPOSTING": {
+      "SUBTITLE": "If you don't respond",
+      "TITLE": "Respond to a money claim",
+      "PAGE_TITLE": "Respond to a money claim",
+      "PARAGRAPH_1": "You have 19 days to respond to the claim from the date the court issued it.",
+      "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
+      "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
+      "PARAGRAPH_4_CCJ_URL": "County Court Judgment (CCJ) ",
+      "PARAGRAPH_4_PART_1": "The claimant can apply for a",
+      "PARAGRAPH_4_PART_2": "against you if you don't respond before the deadline.",
+      "PARAGRAPH_5": "They can use a CCJ to get the money from you, for example by applying to the court to send bailiffs to your home or business.",
+      "PARAGRAPH_6": "A CCJ may make it harder to get credit, such as a mobile phone contract, credit card or mortgage.",
+      "START_NOW": "Start now",
+      "SUPPORT": "Support",
+      "SUPPORT_CLAIM_FEES_URL": "Money claim fees ",
+      "SUPPORT_CONTACT_US_URL": "Contact us "
+    },
     "FIRST_CONTACT_ACCESS_DENIED": {
       "CLICK_HERE": "Click here to try again",
       "THERE_WAS_AN_ERROR": "There was an error during your last operation. Please try again later.",
