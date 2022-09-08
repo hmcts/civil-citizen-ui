@@ -106,6 +106,7 @@ import applyForHelpWithFeesController from './features/public/eligibility/applyF
 import accessDeniedController from './features/public/firstContact/accessDeniedController';
 import claimReferenceController from './features/public/firstContact/claimReferenceController';
 import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
+import claimantPartyTypeController from './features/public/claim/claimantPartyTypeController';
 
 export default [
   homeController,
@@ -202,4 +203,5 @@ export default [
   accessDeniedController,
   claimReferenceController,
   firstContactClaimSummaryController,
+  claimantPartyTypeController,
 ];
