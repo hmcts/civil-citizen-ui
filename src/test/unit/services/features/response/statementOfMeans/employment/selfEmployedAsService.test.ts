@@ -9,6 +9,7 @@ import {
   SelfEmployedAsForm,
 } from '../../../../../../../main/common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -26,8 +27,8 @@ describe('Self Employed Service', () => {
       const form = await getSelfEmployedAsForm('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(form.jobTitle).toBeUndefined();
-      expect(form.annualTurnover).toBeUndefined();
+      expect(form.model.jobTitle).toBeUndefined();
+      expect(form.model.annualTurnover).toBeUndefined();
     });
     it('should return an empty form when selfEmployedAs does not exist', async () => {
       //Given
@@ -39,8 +40,8 @@ describe('Self Employed Service', () => {
       //When
       const form = await getSelfEmployedAsForm('123');
       //Then
-      expect(form.jobTitle).toBeUndefined();
-      expect(form.annualTurnover).toBeUndefined();
+      expect(form.model.jobTitle).toBeUndefined();
+      expect(form.model.annualTurnover).toBeUndefined();
     });
     it('should return an empty form when when statement of means does not exist', async () => {
       //Given
@@ -50,8 +51,8 @@ describe('Self Employed Service', () => {
       //When
       const form = await getSelfEmployedAsForm('123');
       //Then
-      expect(form.jobTitle).toBeUndefined();
-      expect(form.annualTurnover).toBeUndefined();
+      expect(form.model.jobTitle).toBeUndefined();
+      expect(form.model.annualTurnover).toBeUndefined();
     });
     it('should return populated form when selfEmployedAs exist', async () => {
       //Given
@@ -61,8 +62,8 @@ describe('Self Employed Service', () => {
       //When
       const form = await getSelfEmployedAsForm('123');
       //Then
-      expect(form.jobTitle).toBe(JOB_TITLE);
-      expect(form.annualTurnover).toBe(ANNUAL_TURNOVER);
+      expect(form.model.jobTitle).toBe(JOB_TITLE);
+      expect(form.model.annualTurnover).toBe(ANNUAL_TURNOVER);
     });
     it('should rethrow error when error occurs', async () => {
       //When
@@ -82,7 +83,7 @@ describe('Self Employed Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveSelfEmployedAsData('123', new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER));
+      await saveSelfEmployedAsData('123', new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER)));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -93,7 +94,7 @@ describe('Self Employed Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveSelfEmployedAsData('123', new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER));
+      await saveSelfEmployedAsData('123', new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER)));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -103,7 +104,8 @@ describe('Self Employed Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveSelfEmployedAsData('123', new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveSelfEmployedAsData('123', new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER))))
+        .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
     it('should rethrow error when error occurs on save claim', async () => {
       //Given
@@ -112,7 +114,8 @@ describe('Self Employed Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveSelfEmployedAsData('123', new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveSelfEmployedAsData('123', new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER))))
+        .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 

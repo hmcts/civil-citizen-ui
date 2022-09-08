@@ -1,18 +1,15 @@
-import {Form} from '../../form';
 import {YesNo} from '../../yesNo';
 import {IsDefined, ValidateIf} from 'class-validator';
-import {VALID_AT_LEAST_ONE_OPTION, VALID_YES_NO_OPTION} from '../../../validationErrors/errorMessageConstants';
 import {EmploymentCategory} from './employmentCategory';
 
-export class EmploymentForm extends Form {
-  @IsDefined({message: VALID_YES_NO_OPTION})
+export class EmploymentForm {
+  @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
     option: YesNo;
   @ValidateIf(o => o.optionYesDefined())
-  @IsDefined({message: VALID_AT_LEAST_ONE_OPTION})
+  @IsDefined({message: 'ERRORS.VALID_AT_LEAST_ONE_OPTION'})
     employmentCategory: EmploymentCategory[];
 
   constructor(option?: YesNo, employmentCategory?: EmploymentCategory[]) {
-    super();
     this.option = option;
     this.employmentCategory = employmentCategory;
   }

@@ -7,7 +7,6 @@ import {ResponseType} from '../../../../common/form/models/responseType';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('howMuchHaveYouPaidService');
 
-
 class HowMuchHaveYouPaidService {
 
   public async getHowMuchHaveYouPaid(claimId: string, type: ResponseType): Promise<HowMuchHaveYouPaid> {
@@ -24,7 +23,6 @@ class HowMuchHaveYouPaidService {
           claim.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount = totalClaimAmount;
           return claim.rejectAllOfClaim.howMuchHaveYouPaid;
         }
-
       }
       return new HowMuchHaveYouPaid({totalClaimAmount: totalClaimAmount});
     } catch (error) {

@@ -8,12 +8,9 @@ import {
   CITIZEN_UNEMPLOYED_URL,
   CITIZEN_WHO_EMPLOYS_YOU_URL,
 } from '../../../../../../../main/routes/urls';
-import {
-  VALID_AT_LEAST_ONE_OPTION,
-  VALID_YES_NO_OPTION,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -41,7 +38,7 @@ describe('Employment status', () => {
         .get(CITIZEN_EMPLOYMENT_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -52,7 +49,7 @@ describe('Employment status', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_OPTION);
+          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_OPTION'));
           expect(res.text).toContain(TestMessages.GOVUK_ERROR_MESSAGE);
         });
     });
@@ -61,7 +58,7 @@ describe('Employment status', () => {
         .send('option=yes')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_AT_LEAST_ONE_OPTION);
+          expect(res.text).toContain(t('ERRORS.VALID_AT_LEAST_ONE_OPTION'));
         });
     });
     it('should redirect to employers page when option is yes and employment type is self-employed', async () => {
@@ -103,7 +100,7 @@ describe('Employment status', () => {
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({ error: TestMessages.REDIS_FAILURE });
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

@@ -79,17 +79,43 @@
   input {
     display: none;
 
-    &:checked + .expandable {
+    &:checked+.expandable {
       height: auto;
     }
 
-    &:checked ~ .more {
+    &:checked~.more {
       display: none;
     }
 
-    &:checked ~ .less {
+    &:checked~.less {
       display: block;
     }
   }
 }
 
+.repayment-length {
+  display: flex;
+
+  .schedule {
+    min-height: 30px;
+    padding-left: 5px;
+
+    .hide {
+      display: none;
+    }
+  }
+}
+
+.float-right {
+  float: right;
+}
+
+@mixin top-bordered($color, $width, $margin, $padding) {
+  border-top: $width solid govuk-colour($color);
+  margin: $margin;
+  padding: $padding;
+}
+
+.border-top {
+  @include top-bordered('blue', 10px, 0, 5px 0 0 0);
+}

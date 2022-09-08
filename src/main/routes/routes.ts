@@ -25,7 +25,6 @@ import partnerPensionController from './features/response/statementOfMeans/partn
 import paymentOptionController from './features/response/admission/fullAdmission/paymentOption/paymentOptionController';
 import paymentDateController from './features/response/admission/fullAdmission/paymentOption/paymentDateController';
 import paymentDatePAController from './features/response/admission/partialAdmission/paymentDateController';
-
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
@@ -48,7 +47,9 @@ import contactThemController from './features/dashboard/contactThemController';
 import howMuchDoYouOweController from './features/response/admission/partialAdmission/howMuchDoYouOweController';
 import courtOrdersController from './features/response/statementOfMeans/courtOrders/courtOrdersController';
 import whyDoYouDisagreeController from './features/response/admission/partialAdmission/whyDoYouDisagreeController';
-import repaymentPlanController from './features/response/repaymentPlan/repaymentPlanController';
+import repaymentPlanController from './features/response/admission/fullAdmission/repaymentPlan/repaymentPlanController';
+import repaymentPlanPartialController
+  from './features/response/admission/partialAdmission/repaymentPlan/repaymentPlanController';
 import regularIncomeController from './features/response/statementOfMeans/income/regularIncomeController';
 import mediationIndividualPhoneController from './features/mediation/mediationIndividualPhoneController';
 import howMuchHaveYouPaidController from './features/response/admission/partialAdmission/howMuchHaveYouPaidController';
@@ -58,20 +59,55 @@ import sendYourResponseByEmailController from './features/response/eligibility/s
 import freeTelephoneMediationController from './features/mediation/freeTelephoneMediationController';
 import rejectAllOfClaimController from './features/response/rejectAllOfClaimController';
 import defendantTimelineController from './features/response/timelineOfEvents/defendantTimelineController';
-import theirPdfTimelineDownloadController from './features/response/timelineOfEvents/theirPdfTimelineDownloadController';
+import theirPdfTimelineDownloadController
+  from './features/response/timelineOfEvents/theirPdfTimelineDownloadController';
 import iDontWantFreeMediationController from './features/mediation/iDontWantFreeMediationController';
 import evidenceController from './features/response/evidence/evidenceController';
 import checkAnswersController from './features/response/checkAnswersController';
-import youHavePaidLessController from './features/response/rejection/fullReject/youHavePaidLessController';
+import youHavePaidLessController from './features/response/admission/fullRejection/youHavePaidLessController';
 import yourDefenceController from './features/response/yourDefenceController';
 import incompleteSubmissionController from './features/response/incompleteSubmissionController';
-import howMuchHaveYouPaidFRController from './features/response/rejection/fullReject/howMuchHaveYouPaidController';
+import howMuchHaveYouPaidFRController from './features/response/admission/fullRejection/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/expertGuidanceController';
 import partialAdmissionPaymentOptionController
   from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
 import supportRequiredController from './features/directionsQuestionnaire/supportRequiredController';
+import vulnerabilityController from './features/directionsQuestionnaire/vulnerabilityController';
+import whyDoYouDisagreeFullRejectionController
+  from './features/response/admission/fullRejection/whyDoYouDisagreeFullRejectionController';
 import documentDownloadController from './features/document/documentDownloadController';
+import responseDeadlineOptionsController from './features/response/responseDeadline/responseDeadlineOptionsController';
+import understandingYourOptionsController from './features/response/understandingYourOptionsController';
+import newDeadlineResponseController from './features/response/responseDeadline/newResponseDeadlineController';
+import requestMoreTimeController from './features/response/requestMoreTimeController';
+import agreedResponseDeadlineController from './features/response/responseDeadline/agreedResponseDeadlineController';
+import determinationWithoutHearingController
+  from './features/directionsQuestionnaire/determinationWithoutHearingController';
+import totalAmountController from './features/public/eligibility/totalAmountController';
+import claimTypeController from './features/public/eligibility/claimTypeController';
+import notEligibleController
+  from './features/public/eligibility/notEligibleController';
+import claimantAddressEligibilityController
+  from './features/public/eligibility/claimantAddressEligibilityController';
+import singleDefendantController from './features/public/eligibility/singleDefendantController';
+import defendantAddressEligibilityController
+  from './features/public/eligibility/defendantAddressEligibilityController';
+import helpWithFeesEligibilityController
+  from './features/public/eligibility/helpWithFeesEligibilityController';
+import tryNewServiceController from './features/public/eligibility/tryNewServiceController';
+import tenancyDepositController from './features/public/eligibility/tenancyDepositController';
+import claimAgainstGovernmentController from './features/public/eligibility/claimAgainstGovernmentController';
+import claimantOver18EligibilityController from './features/public/eligibility/claimantOver18EligibilityController';
+import defendantAgeEligibilityController from './features/public/eligibility/defendantAgeEligibilityController';
+import someUsefulInfoFeesController from './features/public/eligibility/someUsefulInfoFeesController';
+import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
+import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
+import signpostingController from './features/public/firstContact/signpostingController';
+import accessDeniedController from './features/public/firstContact/accessDeniedController';
+import claimReferenceController from './features/public/firstContact/claimReferenceController';
+import pinController from './features/public/firstContact/pinController';
+import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
 
 export default [
   homeController,
@@ -140,5 +176,34 @@ export default [
   expertGuidanceController,
   partialAdmissionPaymentOptionController,
   supportRequiredController,
+  whyDoYouDisagreeFullRejectionController,
   documentDownloadController,
+  vulnerabilityController,
+  understandingYourOptionsController,
+  repaymentPlanPartialController,
+  responseDeadlineOptionsController,
+  requestMoreTimeController,
+  agreedResponseDeadlineController,
+  newDeadlineResponseController,
+  determinationWithoutHearingController,
+  totalAmountController,
+  claimTypeController,
+  notEligibleController,
+  claimantAddressEligibilityController,
+  singleDefendantController,
+  claimAgainstGovernmentController,
+  defendantAddressEligibilityController,
+  helpWithFeesEligibilityController,
+  tryNewServiceController,
+  tenancyDepositController,
+  claimantOver18EligibilityController,
+  defendantAgeEligibilityController,
+  someUsefulInfoFeesController,
+  applyForHelpWithFeesController,
+  helpWithFeesReferenceController,
+  signpostingController,
+  accessDeniedController,
+  claimReferenceController,
+  pinController,
+  firstContactClaimSummaryController,
 ];

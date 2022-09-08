@@ -42,6 +42,7 @@
               {% set noHtml %}
               {{ telephone(form, {id: "telephoneNumber",
                   name: "telephoneNumber",
+                  value: form.model.mediationPhoneNumber,
                   type: "number",
                   autocomplete: "number",
                   classes: "govuk-!-width-two-thirds",
@@ -52,6 +53,7 @@
               {{ telephone(form, {id: "telephoneNumber",
                   name: "telephoneNumber",
                   type: "number",
+                  value: form.model.mediationPhoneNumber,
                   autocomplete: "number",
                   classes: "govuk-!-width-two-thirds",
                   label: ''}) }}

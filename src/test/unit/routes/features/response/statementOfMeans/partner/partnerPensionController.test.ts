@@ -7,7 +7,6 @@ import {
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
 } from '../../../../../../../main/routes/urls';
-import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {
   mockCivilClaim,
@@ -16,6 +15,7 @@ import {
   mockCivilClaimOptionNo,
   mockRedisFailure,
 } from '../../../../../../utils/mockDraftStore';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -30,7 +30,7 @@ describe('Partner Pension', () => {
   });
 
   describe('on GET', () => {
-    test('should return citizen partner pension page', async () => {
+    it('should return citizen partner pension page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_PARTNER_PENSION_URL)
@@ -40,7 +40,7 @@ describe('Partner Pension', () => {
         });
     });
 
-    test('should show partner pension page when haven´t statementOfMeans', async () => {
+    it('should show partner pension page when haven´t statementOfMeans', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .get(CITIZEN_PARTNER_PENSION_URL)
@@ -50,19 +50,19 @@ describe('Partner Pension', () => {
         });
     });
 
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_PARTNER_PENSION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
 
   describe('on POST', () => {
-    test('should create a new claim if redis gives undefined', async () => {
+    it('should create a new claim if redis gives undefined', async () => {
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
@@ -72,7 +72,7 @@ describe('Partner Pension', () => {
         });
     });
 
-    test('should redirect page when "no" and defendant disabled = yes', async () => {
+    it('should redirect page when "no" and defendant disabled = yes', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
@@ -83,7 +83,7 @@ describe('Partner Pension', () => {
         });
     });
 
-    test('should redirect page when "no" and defendant disabled = no', async () => {
+    it('should redirect page when "no" and defendant disabled = no', async () => {
       app.locals.draftStoreClient = mockCivilClaimOptionNo;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
@@ -94,7 +94,7 @@ describe('Partner Pension', () => {
         });
     });
 
-    test('should redirect page when "yes" and defendant disabled = no', async () => {
+    it('should redirect page when "yes" and defendant disabled = no', async () => {
       app.locals.draftStoreClient = mockCivilClaimOptionNo;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
@@ -105,7 +105,7 @@ describe('Partner Pension', () => {
         });
     });
 
-    test('should redirect page when "yes" and defendant disabled = yes', async () => {
+    it('should redirect page when "yes" and defendant disabled = yes', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
@@ -116,18 +116,18 @@ describe('Partner Pension', () => {
         });
     });
 
-    test('should return error on incorrect input', async () => {
+    it('should return error on incorrect input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_OPTION);
+          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_OPTION'));
         });
     });
 
-    test('should redirect partner disability page when "no" and haven´t statementOfMeans', async () => {
+    it('should redirect partner disability page when "no" and haven´t statementOfMeans', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
@@ -138,14 +138,14 @@ describe('Partner Pension', () => {
         });
     });
 
-    test('should return http 500 when has error', async () => {
+    it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

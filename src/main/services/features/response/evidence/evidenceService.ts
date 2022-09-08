@@ -43,7 +43,6 @@ const getClaim = async (claimId: string): Promise<Claim> => {
   return claim;
 };
 
-
 export {
   getEvidence,
   saveEvidence,

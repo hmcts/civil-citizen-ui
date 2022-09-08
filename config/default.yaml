@@ -11,25 +11,36 @@ services:
     ordnanceSurveyApiKey: dummy
   idam:
     url: 'http://localhost:5000'
-    authorizationURL: 'http://localhost:3501/login'
+    authorizationURL: 'http://localhost:9002/login'
     tokenURL: 'http://localhost:5000/o/token'
     clientID: 'civil_citizen_ui'
     clientSecret: 'citizen-ui-secret'
     callbackURL: 'http://localhost:3001/oauth2/callback'
     citizenRole: 'citizen'
     scope: '&scope=profile%20openid%20roles%20manage-user%20create-user%20search-user'
+    terminateSessionURL: 'http://localhost:9002/o/endSession'
+    signOutCallBackURL: 'http://localhost:3001/dashboard'
   draftStore:
     redis:
       host: 'localhost'
       port: 6379
       key:
       tls: false
+    legacy:
+      url: 'http://localhost:8800'
+      s2s:
+        microserviceName: 'cmc'
+        primarySecret: 'not-a-real-primary-secret'
+        secondarySecret: 'not-a-real-secondary-secret'
   dmStore:
     microserviceName: 'xui_webapp'
     baseUrl: 'http://localhost:4506'
   serviceAuthProvider:
     baseUrl: 'http://localhost:4502'
     serviceAuthTokenGeneratorUrl : '/testing-support/lease'
+    cmcS2sSecret: 'AAAAAAAAAAAAAAAA'
+  cmc:
+    url: 'https://localhost:3000'
 health:
   timeout: 5000
   deadline: 15000

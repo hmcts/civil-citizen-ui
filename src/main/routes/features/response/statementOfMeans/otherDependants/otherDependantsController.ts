@@ -5,59 +5,53 @@ import {
   CITIZEN_CARER_URL,
 } from '../../../../urls';
 import {OtherDependants} from '../../../../../common/form/models/statementOfMeans/otherDependants';
-import {ValidationError, Validator} from 'class-validator';
 import {OtherDependantsService} from '../../../../../services/features/response/statementOfMeans/otherDependants/otherDependantsService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {Claim} from '../../../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../../../modules/draft-store/draftStoreService';
+import {GenericForm} from '../../../../../common/form/models/genericForm';
 
 const citizenOtherDependantsViewPath = 'features/response/statementOfMeans/otherDependants/other-dependants';
 const otherDependantsController = express.Router();
-
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('otherDependantsController');
-
 const otherDependantsService = new OtherDependantsService();
 
-function renderView(form: OtherDependants, res: express.Response): void {
+function renderView(otherDependants: GenericForm<OtherDependants>, res: express.Response): void {
+  const form = Object.assign(otherDependants);
+  form.option = otherDependants.model.option;
   res.render(citizenOtherDependantsViewPath, {form});
 }
 
-otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res) => {
+otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, async (req, res, next: express.NextFunction) => {
   try {
     const response = await otherDependantsService.getOtherDependants(req.params.id);
-    const otherDependants = response ? new OtherDependants(response.option, response.numberOfPeople, response.details) : new OtherDependants();
+    const otherDependants = response
+      ? new GenericForm(new OtherDependants(response.option, response.numberOfPeople, response.details))
+      : new GenericForm(new OtherDependants());
     renderView(otherDependants, res);
   } catch (error) {
-    logger.error(`${error.stack || error}`);
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
 otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
-  async (req, res) => {
+  async (req, res, next: express.NextFunction) => {
     try{
-      const otherDependants: OtherDependants = new OtherDependants(
-        req.body.option, req.body.numberOfPeople, req.body.details);
-      const validator = new Validator();
-      const errors: ValidationError[] = validator.validateSync(otherDependants);
-      if (errors && errors.length > 0) {
-        otherDependants.errors = errors;
-        renderView(otherDependants, res);
+      const form: GenericForm<OtherDependants> = new GenericForm(new OtherDependants(
+        req.body.option, req.body.numberOfPeople, req.body.details));
+      form.validateSync();
+      if (form.hasErrors()) {
+        renderView(form, res);
       } else {
-        await otherDependantsService.saveOtherDependants(req.params.id, otherDependants);
+        await otherDependantsService.saveOtherDependants(req.params.id, form);
         const claim: Claim = await getCaseDataFromStore(req.params.id);
         if (claim.isDefendantSeverelyDisabledOrDependentsDisabled()) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EMPLOYMENT_URL));
-         
         } else {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_CARER_URL));
-          
         }
       }
     } catch (error) {
-      logger.error(`${error.stack || error}`);
-      res.status(500).send({error: error.message});
+      next(error);
     }
   });
 

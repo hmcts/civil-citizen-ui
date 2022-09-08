@@ -2,14 +2,12 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-
 import {CITIZEN_CONTACT_THEM_URL} from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-
 
 describe('Claimant details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -21,7 +19,7 @@ describe('Claimant details', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   describe('on GET', () => {
-    test('should return contact claimant details from claim', async () => {
+    it('should return contact claimant details from claim', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .get(CITIZEN_CONTACT_THEM_URL)
@@ -44,13 +42,13 @@ describe('Claimant details', () => {
         });
     });
 
-    test('should return http 500 when has error in the get method', async () => {
+    it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CITIZEN_CONTACT_THEM_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

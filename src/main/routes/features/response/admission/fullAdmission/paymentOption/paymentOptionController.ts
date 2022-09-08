@@ -26,16 +26,16 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: express.R
   }
 }
 
-paymentOptionController.get(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
+paymentOptionController.get(CITIZEN_PAYMENT_OPTION_URL, async (req, res, next: express.NextFunction) => {
   try {
     const paymentOption = await getPaymentOptionForm(req.params.id, ResponseType.FULL_ADMISSION);
     renderView(new GenericForm(paymentOption), res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-paymentOptionController.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
+paymentOptionController.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res, next: express.NextFunction) => {
   const paymentOption = new PaymentOption(req.body.paymentType);
   const form = new GenericForm(paymentOption);
   try {
@@ -47,9 +47,8 @@ paymentOptionController.post(CITIZEN_PAYMENT_OPTION_URL, async (req, res) => {
       redirectToNextPage(req.params.id, paymentOption, res);
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
-
 });
 
 export default paymentOptionController;

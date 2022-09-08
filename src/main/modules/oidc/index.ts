@@ -2,7 +2,6 @@ import {Application, NextFunction,Response} from 'express';
 import config from 'config';
 import {AppRequest} from '../../common/models/AppRequest';
 import {getUserDetails} from '../../app/auth/user/oidc';
-
 import {SIGN_IN_URL, SIGN_OUT_URL, CALLBACK_URL, DASHBOARD_URL, UNAUTHORISED_URL} from '../../routes/urls';
 
 /**
@@ -17,6 +16,8 @@ export class OidcMiddleware {
     const citizenRole: string = config.get('services.idam.citizenRole');
     const scope: string = config.get('services.idam.scope');
     const idamUrlLogin: string = loginUrl + '?client_id=' + clientId + '&response_type=code&redirect_uri=' + encodeURI(redirectUri)+scope;
+    const idamSignOutUrl: string = config.get('services.idam.terminateSessionURL');
+    const applicationUrl: string = config.get('services.idam.signOutCallBackURL');
 
     app.get(SIGN_IN_URL, (_req: AppRequest, res: Response) => {
       res.redirect(idamUrlLogin);
@@ -24,7 +25,7 @@ export class OidcMiddleware {
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
-        req.session.user = await getUserDetails(redirectUri, req.query.code);
+        req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
         if (req.session.user?.roles?.includes(citizenRole)) {
           return res.redirect(DASHBOARD_URL);
         }
@@ -34,9 +35,14 @@ export class OidcMiddleware {
       }
     });
 
-    app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
-      req.session.user = undefined;
-      res.redirect(SIGN_IN_URL);
+    app.get(SIGN_OUT_URL, (req: AppRequest, res:Response) => {
+      const params = new URLSearchParams({
+        'id_token_hint': req.session.user?.accessToken,
+        'post_logout_redirect_uri': applicationUrl,
+      });
+
+      req.session = app.locals.user = undefined;
+      res.redirect(idamSignOutUrl + '?' + params.toString());
     });
 
     app.get('/', (_req: AppRequest, res: Response) => {

@@ -57,7 +57,7 @@ const mockLogger = {
 
 describe('Children Disability service', () => {
   describe('Validation', () => {
-    test('should not raise any error if YES is selected', async () => {
+    it('should not raise any error if YES is selected', async () => {
       //Given
       const childrenDisability = new ChildrenDisability(YesNo.YES);
       //When
@@ -66,7 +66,7 @@ describe('Children Disability service', () => {
       //Then
       expect(form.getErrors().length).toBe(0);
     });
-    test('should not raise any error if NO is selected', async () => {
+    it('should not raise any error if NO is selected', async () => {
       //Given
       const childrenDisability = new ChildrenDisability(YesNo.NO);
       //When
@@ -75,7 +75,7 @@ describe('Children Disability service', () => {
       //Then
       expect(form.getErrors().length).toBe(0);
     });
-    test('should raise an error if nothing is selected', async () => {
+    it('should raise an error if nothing is selected', async () => {
       //Given
       const childrenDisability = new ChildrenDisability(undefined);
       //When
@@ -92,7 +92,7 @@ describe('Children Disability service', () => {
     afterEach(() => {
       jest.clearAllMocks();
     });
-    test('should return empty ChildrenDisability when nothing retrieved', async () => {
+    it('should return empty ChildrenDisability when nothing retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -105,7 +105,7 @@ describe('Children Disability service', () => {
       expect(childrenDisability).not.toBeNull();
       expect(childrenDisability).toEqual(new ChildrenDisability());
     });
-    test('should return empty ChildrenDisability when case_data, but no statementOfMeans, retrieved', async () => {
+    it('should return empty ChildrenDisability when case_data, but no statementOfMeans, retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -118,7 +118,7 @@ describe('Children Disability service', () => {
       expect(childrenDisability).not.toBeNull();
       expect(childrenDisability).toEqual(new ChildrenDisability());
     });
-    test('should return empty ChildrenDisability when case_data and statementOfMeans, but no disability, retrieved', async () => {
+    it('should return empty ChildrenDisability when case_data and statementOfMeans, but no disability, retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -131,7 +131,7 @@ describe('Children Disability service', () => {
       expect(childrenDisability).not.toBeNull();
       expect(childrenDisability).toEqual(new ChildrenDisability());
     });
-    test('should return empty ChildrenDisability when no data retrieved', async () => {
+    it('should return empty ChildrenDisability when no data retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -145,7 +145,7 @@ describe('Children Disability service', () => {
       expect(childrenDisability).toEqual(new ChildrenDisability());
     });
 
-    test('should return ChildrenDisability when data retrieved', async () => {
+    it('should return ChildrenDisability when data retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -159,7 +159,7 @@ describe('Children Disability service', () => {
       expect(childrenDisability).toEqual(mockClaim?.statementOfMeans?.childrenDisability);
     });
 
-    test('should save childrenDisability when nothing in Redis draft store', async () => {
+    it('should save childrenDisability when nothing in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return undefined;
@@ -173,7 +173,7 @@ describe('Children Disability service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
 
-    test('should save childrenDisability when case_data, but no statementOfMeans, in Redis draft store', async () => {
+    it('should save childrenDisability when case_data, but no statementOfMeans, in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {case_data: {}};
@@ -187,7 +187,7 @@ describe('Children Disability service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
 
-    test('should save childrenDisability when case_data and statementOfMeans, but no childrenDisability, in Redis draft store', async () => {
+    it('should save childrenDisability when case_data and statementOfMeans, but no childrenDisability, in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {case_data: {statementOfMeans: {}}};
@@ -201,7 +201,7 @@ describe('Children Disability service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
 
-    test('should save childrenDisability when case_data and statementOfMeans and childrenDisability, but no option, in Redis draft store', async () => {
+    it('should save childrenDisability when case_data and statementOfMeans and childrenDisability, but no option, in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {case_data: {statementOfMeans: {childrenDisability: {}}}};
@@ -215,7 +215,7 @@ describe('Children Disability service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
 
-    test('should save childrenDisability when case_data and statementOfMeans and childrenDisability, option blank, in Redis draft store', async () => {
+    it('should save childrenDisability when case_data and statementOfMeans and childrenDisability, option blank, in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {case_data: {statementOfMeans: {childrenDisability: {option: {}}}}};
@@ -229,7 +229,7 @@ describe('Children Disability service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
 
-    test('should save childrenDisability when claim in Redis draft store', async () => {
+    it('should save childrenDisability when claim in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return mockClaim;
@@ -249,7 +249,7 @@ describe('Children Disability service', () => {
       jest.clearAllMocks();
     });
 
-    test('should throw error when retrieving data from draft store fails', async () => {
+    it('should throw error when retrieving data from draft store fails', async () => {
       //When
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(DRAFT_STORE_GET_ERROR);
@@ -260,7 +260,7 @@ describe('Children Disability service', () => {
       expect(mockLogger.error).toHaveBeenCalled();
     });
 
-    test('should throw error when saving data to draft store fails', async () => {
+    it('should throw error when saving data to draft store fails', async () => {
       //When
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return mockClaim;
@@ -276,7 +276,7 @@ describe('Children Disability service', () => {
   });
 
   describe('isCheckChildrenDisabled', () => {
-    test('should return false if no statement of means', async () => {
+    it('should return false if no statement of means', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noStatementOfMeans));
       //Given
@@ -284,7 +284,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans).toBe(undefined);
       expect(isDefendantNotDisabled(claim.case_data.statementOfMeans)).toBe(false);
     });
-    test('should return false if no statement of means', async () => {
+    it('should return false if no statement of means', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noStatementOfMeans));
       //Given
@@ -292,7 +292,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans).toBe(undefined);
       expect(isDefendantDisabledButNotSeverely(claim.case_data.statementOfMeans)).toBe(false);
     });
-    test('should return false if no statement of means', async () => {
+    it('should return false if no statement of means', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noStatementOfMeans));
       //Given
@@ -300,7 +300,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans).toBe(undefined);
       expect(isDefendantPartnerDisabled(claim.case_data.statementOfMeans)).toBe(false);
     });
-    test('should return false if no statement of means', async () => {
+    it('should return false if no statement of means', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noStatementOfMeans));
       //Given
@@ -308,7 +308,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
-    test('should return false if no disability', async () => {
+    it('should return false if no disability', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noDefendantDisabilityOrSevereDisability));
       //Given
@@ -318,7 +318,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.severeDisability).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
-    test('should return false if disability and severeDisability but no options', async () => {
+    it('should return false if disability and severeDisability but no options', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noDefendantDisabilityOrSevereDisabilityOptions));
       //Given
@@ -330,7 +330,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.severeDisability.option).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
-    test('should return true if defendant disability NO, severe disability undefined', async () => {
+    it('should return true if defendant disability NO, severe disability undefined', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartnerOrDisability));
       const numberOfChildren = new NumberOfChildren(2, undefined, 2);
@@ -345,7 +345,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return false if defendant disability YES, severe disability undefined', async () => {
+    it('should return false if defendant disability YES, severe disability undefined', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartnerOrDisability));
       const numberOfChildren = new NumberOfChildren(2, undefined, 2);
@@ -361,7 +361,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
-    test('should return true if defendant not disabled, no partner', async () => {
+    it('should return true if defendant not disabled, no partner', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartner));
       const numberOfChildren = new NumberOfChildren(2, undefined, 2);
@@ -376,7 +376,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return true if defendant disabled, not severely, but partner options not existing', async () => {
+    it('should return true if defendant disabled, not severely, but partner options not existing', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartner));
       const numberOfChildren = new NumberOfChildren(2, undefined, 2);
@@ -390,7 +390,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return true if defendant disabled, not severely, partner but no partnerDisability', async () => {
+    it('should return true if defendant disabled, not severely, partner but no partnerDisability', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartner));
       const numberOfChildren = new NumberOfChildren(2, undefined, 2);
@@ -404,7 +404,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return true if defendant disabled, not severely, partner but no partnerDisability', async () => {
+    it('should return true if defendant disabled, not severely, partner but no partnerDisability', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartnerDisability));
       const numberOfChildren = new NumberOfChildren(2, undefined, 2);
@@ -420,7 +420,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return true if defendant disabled, not severely, partner NO, no partnerDisability', async () => {
+    it('should return true if defendant disabled, not severely, partner NO, no partnerDisability', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartnerDisability));
       const numberOfChildren = new NumberOfChildren(2, undefined, 2);
@@ -437,7 +437,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return true if defendant disabled, not severely, partner but no partnerDisability', async () => {
+    it('should return true if defendant disabled, not severely, partner but no partnerDisability', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noPartnerDisabilityCohabitingNoOption));
       const numberOfChildren = new NumberOfChildren(2, undefined, 2);
@@ -452,7 +452,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.partnerDisability).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return true if defendant disabled, not severely, partnerDisability NO, no cohabiting', async () => {
+    it('should return true if defendant disabled, not severely, partnerDisability NO, no cohabiting', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noCohabiting));
       const numberOfChildren = new NumberOfChildren(2, undefined, 2);
@@ -469,7 +469,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.cohabiting).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return true if defendant disabled, not severely, partnerDisability but no cohabiting', async () => {
+    it('should return true if defendant disabled, not severely, partnerDisability but no cohabiting', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noCohabiting));
       const numberOfChildren = new NumberOfChildren(2, undefined, 2);
@@ -485,7 +485,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.cohabiting).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return true if defendant disabled, not severely, no cohabiting, partnerDisability but no option', async () => {
+    it('should return true if defendant disabled, not severely, no cohabiting, partnerDisability but no option', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(noCohabitingPartnerDisabilityNoOption));
       const numberOfChildren = new NumberOfChildren(2, undefined, 2);
@@ -500,7 +500,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.cohabiting).toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return true if defendant not disabled', async () => {
+    it('should return true if defendant not disabled', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       const numberOfChildren = new NumberOfChildren(2, undefined, 2);
@@ -513,7 +513,7 @@ describe('Children Disability service', () => {
       expect(numberOfChildren.totalNumberOfChildren()).toBe(4);
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return false if no children, even if defendant not disabled', async () => {
+    it('should return false if no children, even if defendant not disabled', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       const numberOfChildren = new NumberOfChildren(undefined, undefined, undefined);
@@ -528,7 +528,7 @@ describe('Children Disability service', () => {
       expect(numberOfChildren.totalNumberOfChildren()).toBe(0);
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
-    test('should return false if no children, even if defendant not severely disabled and no partner', async () => {
+    it('should return false if no children, even if defendant not severely disabled and no partner', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       const numberOfChildren = new NumberOfChildren(undefined, undefined, undefined);
@@ -550,7 +550,7 @@ describe('Children Disability service', () => {
       expect(claim.case_data.statementOfMeans.partnerDisability.option).not.toBe(undefined);
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
-    test('should return false if no children, even if defendant not severely disabled and partner not disabled', async () => {
+    it('should return false if no children, even if defendant not severely disabled and partner not disabled', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       const numberOfChildren = new NumberOfChildren(undefined, undefined, undefined);
@@ -568,7 +568,7 @@ describe('Children Disability service', () => {
       expect(numberOfChildren.totalNumberOfChildren()).toBe(0);
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
-    test('should return true if defendant disabled, not severely, and partner not disabled', async () => {
+    it('should return true if defendant disabled, not severely, and partner not disabled', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       //Given
@@ -580,7 +580,7 @@ describe('Children Disability service', () => {
       //Then
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return true if defendant disabled, not severely, and no partner', async () => {
+    it('should return true if defendant disabled, not severely, and no partner', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       //Given
@@ -592,7 +592,7 @@ describe('Children Disability service', () => {
       //Then
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return true if defendant disabled, not severely, and no partner, even if disabled', async () => {
+    it('should return true if defendant disabled, not severely, and no partner, even if disabled', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       //Given
@@ -604,7 +604,7 @@ describe('Children Disability service', () => {
       //Then
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return true if defendant disabled, not severely, and no partner, even if both disabled flags set', async () => {
+    it('should return true if defendant disabled, not severely, and no partner, even if both disabled flags set', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       //Given
@@ -616,7 +616,7 @@ describe('Children Disability service', () => {
       //Then
       expect(hasDisabledChildren(claim.case_data)).toBe(true);
     });
-    test('should return false if defendant disabled, not severely, and partner disabled', async () => {
+    it('should return false if defendant disabled, not severely, and partner disabled', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       //Given
@@ -628,7 +628,7 @@ describe('Children Disability service', () => {
       //Then
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
-    test('should return false if defendant disabled, not severely, and partner severely disabled', async () => {
+    it('should return false if defendant disabled, not severely, and partner severely disabled', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       //Given
@@ -640,7 +640,7 @@ describe('Children Disability service', () => {
       //Then
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
-    test('should return false if defendant severely disabled, even if no partner', async () => {
+    it('should return false if defendant severely disabled, even if no partner', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       //Given
@@ -652,7 +652,7 @@ describe('Children Disability service', () => {
       //Then
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
-    test('should return false if defendant severely disabled, even if partner not', async () => {
+    it('should return false if defendant severely disabled, even if partner not', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       //Given
@@ -664,7 +664,7 @@ describe('Children Disability service', () => {
       //Then
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
-    test('should return false if defendant severely disabled, and partner disabled', async () => {
+    it('should return false if defendant severely disabled, and partner disabled', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       //Given
@@ -676,7 +676,7 @@ describe('Children Disability service', () => {
       //Then
       expect(hasDisabledChildren(claim.case_data)).toBe(false);
     });
-    test('should return false if defendant severely disabled, and partner severely disabled', async () => {
+    it('should return false if defendant severely disabled, and partner severely disabled', async () => {
       //When
       const claim = Object.assign(new CivilClaimResponse(), JSON.parse(civilClaimResponse));
       //Given

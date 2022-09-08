@@ -2,21 +2,9 @@ import howMuchHaveYouPaidService
   from '../../../../../../../main/services/features/response/admission/howMuchHaveYouPaidService';
 import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
 import {HowMuchHaveYouPaid} from '../../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
-import {
-  ENTER_PAYMENT_EXPLANATION,
-  VALID_AMOUNT,
-  VALID_DATE,
-  VALID_DATE_IN_PAST,
-  VALID_DAY,
-  VALID_FOUR_DIGIT_YEAR,
-  VALID_MONTH,
-  VALID_TWO_DECIMAL_NUMBER,
-  VALID_YEAR,
-} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
 import {mockClaim} from '../../../../../../utils/mockClaim';
 import {ResponseType} from '../../../../../../../main/common/form/models/responseType';
-
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -31,7 +19,7 @@ const DRAFT_STORE_SAVE_ERROR = 'draft store save error';
 
 describe('HowMuchHaveYouPaid service', () => {
   describe('Serialisation', () => {
-    test('should keep the form input values unchanged after validation', async () => {
+    it('should keep the form input values unchanged after validation', async () => {
       //Given
       const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(20, 40, '2040', '1', '1', 'I paid half');
       //Then
@@ -42,7 +30,7 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(howMuchHaveYouPaid.year).toBe(2040);
       expect(howMuchHaveYouPaid.text).toBe('I paid half');
     });
-    test('should keep the form input values unchanged after validation', async () => {
+    it('should keep the form input values unchanged after validation', async () => {
       //Given
       const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(0, 0, '&', '%', '$', undefined);
       //Then
@@ -59,7 +47,7 @@ describe('HowMuchHaveYouPaid service', () => {
     afterEach(() => {
       jest.clearAllMocks();
     });
-    test('should return empty HowMuchHaveYouPaid when nothing retrieved', async () => {
+    it('should return empty HowMuchHaveYouPaid when nothing retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -74,10 +62,10 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(howMuchHaveYouPaid.year).toBeUndefined();
       expect(howMuchHaveYouPaid.month).toBeUndefined();
       expect(howMuchHaveYouPaid.day).toBeUndefined();
-      expect(howMuchHaveYouPaid.date).toBeNull();
+      expect(howMuchHaveYouPaid.date).toBeUndefined();
       expect(howMuchHaveYouPaid.text).toBeUndefined();
     });
-    test('should return undefined when case_data, but no howMuchHaveYouPaid, retrieved', async () => {
+    it('should return undefined when case_data, but no howMuchHaveYouPaid, retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -92,10 +80,10 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(howMuchHaveYouPaid.year).toBeUndefined();
       expect(howMuchHaveYouPaid.month).toBeUndefined();
       expect(howMuchHaveYouPaid.day).toBeUndefined();
-      expect(howMuchHaveYouPaid.date).toBeNull();
+      expect(howMuchHaveYouPaid.date).toBeUndefined();
       expect(howMuchHaveYouPaid.text).toBeUndefined();
     });
-    test('should return HowMuchHaveYouPaid when HowMuchHaveYouPaid Partial Admission retrieved', async () => {
+    it('should return HowMuchHaveYouPaid when HowMuchHaveYouPaid Partial Admission retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -108,7 +96,7 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(howMuchHaveYouPaid).not.toBeNull();
       expect(howMuchHaveYouPaid).toEqual(mockClaim?.partialAdmission?.howMuchHaveYouPaid);
     });
-    test('should return HowMuchHaveYouPaid when HowMuchHaveYouPaid full Rejection retrieved', async () => {
+    it('should return HowMuchHaveYouPaid when HowMuchHaveYouPaid full Rejection retrieved', async () => {
       //Given
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -122,7 +110,7 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(howMuchHaveYouPaid).toEqual(mockClaim?.rejectAllOfClaim?.howMuchHaveYouPaid);
     });
 
-    test('should save howMuchHaveYouPaid when nothing in Redis draft store', async () => {
+    it('should save howMuchHaveYouPaid when nothing in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return undefined;
@@ -136,7 +124,7 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
 
-    test('should save howMuchHaveYouPaid when case_data, but no howMuchHaveYouPaid, in Redis draft store', async () => {
+    it('should save howMuchHaveYouPaid when case_data, but no howMuchHaveYouPaid, in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {case_data: {}};
@@ -150,7 +138,7 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(spySaveDraftClaim).toBeCalled();
     });
 
-    test('should save howMuchHaveYouPaid when claim in Redis draft store', async () => {
+    it('should save howMuchHaveYouPaid when claim in Redis draft store', async () => {
       //Given
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return mockClaim;
@@ -165,7 +153,7 @@ describe('HowMuchHaveYouPaid service', () => {
     });
   });
   describe('Validation', () => {
-    test('should raise an error if nothing specified for date', async () => {
+    it('should raise an error if nothing specified for date', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid();
       //When
@@ -175,21 +163,21 @@ describe('HowMuchHaveYouPaid service', () => {
       expect(form.getErrors().length).toBe(5);
       expect(form.getErrors()[0].property).toBe('amount');
       expect(form.getErrors()[0].constraints).toEqual({
-        isDefined: VALID_AMOUNT,
-        isNumber: VALID_TWO_DECIMAL_NUMBER,
-        min: VALID_AMOUNT,
+        isDefined: 'ERRORS.VALID_AMOUNT',
+        isNumber: 'ERRORS.VALID_TWO_DECIMAL_NUMBER',
+        min: 'ERRORS.VALID_AMOUNT',
       });
       expect(form.getErrors()[1].property).toBe('day');
-      expect(form.getErrors()[1].constraints).toEqual({min: VALID_DAY, max: VALID_DAY});
+      expect(form.getErrors()[1].constraints).toEqual({min: 'ERRORS.VALID_DAY', max: 'ERRORS.VALID_DAY'});
       expect(form.getErrors()[2].property).toBe('month');
-      expect(form.getErrors()[2].constraints).toEqual({min: VALID_MONTH, max: VALID_MONTH});
+      expect(form.getErrors()[2].constraints).toEqual({min: 'ERRORS.VALID_MONTH', max: 'ERRORS.VALID_MONTH'});
       expect(form.getErrors()[3].property).toBe('year');
-      expect(form.getErrors()[3].constraints).toEqual({max: VALID_YEAR});
+      expect(form.getErrors()[3].constraints).toEqual({max: 'ERRORS.VALID_YEAR'});
       expect(form.getErrors()[4].property).toBe('text');
-      expect(form.getErrors()[4].constraints).toEqual({isNotEmpty: ENTER_PAYMENT_EXPLANATION});
+      expect(form.getErrors()[4].constraints).toEqual({isNotEmpty: 'ERRORS.ENTER_PAYMENT_EXPLANATION'});
 
     });
-    test('should raise an error if no text', async () => {
+    it('should raise an error if no text', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -205,9 +193,9 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('text');
-      expect(form.getErrors()[0].constraints).toEqual({isNotEmpty: ENTER_PAYMENT_EXPLANATION});
+      expect(form.getErrors()[0].constraints).toEqual({isNotEmpty: 'ERRORS.ENTER_PAYMENT_EXPLANATION'});
     });
-    test('should raise an error if no year', async () => {
+    it('should raise an error if no year', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -223,9 +211,9 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('year');
-      expect(form.getErrors()[0].constraints).toEqual({max: VALID_YEAR});
+      expect(form.getErrors()[0].constraints).toEqual({max: 'ERRORS.VALID_YEAR'});
     });
-    test('should raise an error if no month', async () => {
+    it('should raise an error if no month', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -241,9 +229,9 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('month');
-      expect(form.getErrors()[0].constraints).toEqual({min: VALID_MONTH, max: VALID_MONTH});
+      expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_MONTH', max: 'ERRORS.VALID_MONTH'});
     });
-    test('should raise an error if no day', async () => {
+    it('should raise an error if no day', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -259,9 +247,9 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('day');
-      expect(form.getErrors()[0].constraints).toEqual({min: VALID_DAY, max: VALID_DAY});
+      expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_DAY', max: 'ERRORS.VALID_DAY'});
     });
-    test('should raise an error asking for 4 digits, if year is only 1 digit', async () => {
+    it('should raise an error asking for 4 digits, if year is only 1 digit', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -277,10 +265,10 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('year');
-      expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: VALID_FOUR_DIGIT_YEAR});
+      expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR'});
     });
     test;
-    test('should raise an error asking for 4 digits, if year is only 2 digits', async () => {
+    it('should raise an error asking for 4 digits, if year is only 2 digits', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -296,9 +284,9 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('year');
-      expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: VALID_FOUR_DIGIT_YEAR});
+      expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR'});
     });
-    test('should raise an error asking for 4 digits, if year is only 3 digits', async () => {
+    it('should raise an error asking for 4 digits, if year is only 3 digits', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -314,13 +302,10 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('year');
-      expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: VALID_FOUR_DIGIT_YEAR});
+      expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR'});
     });
-    test('should raise an error if date in the future', async () => {
+    it('should raise an error if date in the future', async () => {
       //Given
-      const todayFormatted = new Date().toLocaleDateString('en-GB', {
-        day: 'numeric', month: 'long', year: 'numeric',
-      });
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
         totalClaimAmount: 100,
@@ -335,9 +320,9 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('date');
-      expect(form.getErrors()[0].constraints).toEqual({customDate: VALID_DATE_IN_PAST + todayFormatted});
+      expect(form.getErrors()[0].constraints).toEqual({customDate: 'ERRORS.VALID_DATE_IN_PAST'});
     });
-    test('should raise an error if month greater than 12', async () => {
+    it('should raise an error if month greater than 12', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -353,9 +338,9 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('month');
-      expect(form.getErrors()[0].constraints).toEqual({max: VALID_MONTH});
+      expect(form.getErrors()[0].constraints).toEqual({max: 'ERRORS.VALID_MONTH'});
     });
-    test('should raise an error if month less than 1', async () => {
+    it('should raise an error if month less than 1', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -371,9 +356,9 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('month');
-      expect(form.getErrors()[0].constraints).toEqual({min: VALID_MONTH});
+      expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_MONTH'});
     });
-    test('should raise an error if day greater than 31', async () => {
+    it('should raise an error if day greater than 31', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -389,9 +374,9 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('day');
-      expect(form.getErrors()[0].constraints).toEqual({max: VALID_DAY});
+      expect(form.getErrors()[0].constraints).toEqual({max: 'ERRORS.VALID_DAY'});
     });
-    test('should raise an error if day less than 1', async () => {
+    it('should raise an error if day less than 1', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -407,9 +392,11 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('day');
-      expect(form.getErrors()[0].constraints).toEqual({min: VALID_DAY});
+      expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_DAY' +
+          '' +
+          ''});
     });
-    test('should raise an error if date is invalid', async () => {
+    it('should raise an error if date is invalid', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -425,9 +412,9 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('date');
-      expect(form.getErrors()[0].constraints).toEqual({isDate: VALID_DATE});
+      expect(form.getErrors()[0].constraints).toEqual({isDate:  'ERRORS.VALID_DATE'});
     });
-    test('should not raise an error if date in past', async () => {
+    it('should not raise an error if date in past', async () => {
       //Given
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
@@ -443,12 +430,9 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(0);
     });
-    test('should raise an error if today specified for date', async () => {
+    it('should raise an error if today specified for date', async () => {
       //Given
       const today: Date = new Date(Date.now());
-      const todayFormatted = today.toLocaleDateString('en-GB', {
-        day: 'numeric', month: 'long', year: 'numeric',
-      });
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
         amount: 50,
         totalClaimAmount: 100,
@@ -463,9 +447,9 @@ describe('HowMuchHaveYouPaid service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('date');
-      expect(form.getErrors()[0].constraints).toEqual({customDate: VALID_DATE_IN_PAST + todayFormatted});
+      expect(form.getErrors()[0].constraints).toEqual({customDate: 'ERRORS.VALID_DATE_IN_PAST'});
     });
-    test('should not raise an error if yesterday specified for date', async () => {
+    it('should not raise an error if yesterday specified for date', async () => {
       //Given
       const yesterday: Date = new Date(Date.now() - 1000 * 60 * 60 * 24);
       howMuchHaveYouPaid = new HowMuchHaveYouPaid({
@@ -488,7 +472,7 @@ describe('HowMuchHaveYouPaid service', () => {
       jest.clearAllMocks();
     });
 
-    test('should throw error when retrieving data from draft store fails', async () => {
+    it('should throw error when retrieving data from draft store fails', async () => {
       //When
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(DRAFT_STORE_GET_ERROR);
@@ -498,7 +482,7 @@ describe('HowMuchHaveYouPaid service', () => {
         howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId', ResponseType.PART_ADMISSION)).rejects.toThrow(DRAFT_STORE_GET_ERROR);
     });
 
-    test('should throw error when saving data to draft store fails', async () => {
+    it('should throw error when saving data to draft store fails', async () => {
       //When
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return {case_data: {paymentDate: {}}};

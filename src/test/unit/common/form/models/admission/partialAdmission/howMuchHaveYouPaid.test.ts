@@ -1,7 +1,5 @@
 import {HowMuchHaveYouPaid} from '../../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {Validator} from 'class-validator';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-
 
 const validator = new Validator();
 describe('Partial Admit - How much have you paid? model', () => {
@@ -21,7 +19,7 @@ describe('Partial Admit - How much have you paid? model', () => {
       const errors = validator.validateSync(form);
       //Then
       expect(errors?.length).toBe(1);
-      expect(errors[0].constraints?.isDefined).toBe(TestMessages.ENTER_VALID_AMOUNT);
+      expect(errors[0].constraints?.isDefined).toBe('ERRORS.VALID_AMOUNT');
     });
     it('should return errors when input 0 is provided', () => {
       //Given
@@ -37,7 +35,7 @@ describe('Partial Admit - How much have you paid? model', () => {
       const errors = validator.validateSync(form);
       //Then
       expect(errors?.length).toBe(1);
-      expect(errors[0].constraints?.min).toBe(TestMessages.ENTER_VALID_AMOUNT);
+      expect(errors[0].constraints?.min).toBe('ERRORS.VALID_AMOUNT');
     });
     it('should return errors when more than 2 decimals provided', () => {
       //Given
@@ -53,7 +51,7 @@ describe('Partial Admit - How much have you paid? model', () => {
       const errors = validator.validateSync(form);
       //Then
       expect(errors?.length).toBe(1);
-      expect(errors[0].constraints?.isNumber).toBe(TestMessages.VALID_TWO_DECIMAL_NUMBER);
+      expect(errors[0].constraints?.isNumber).toBe('ERRORS.VALID_TWO_DECIMAL_NUMBER');
     });
     it('should return errors when negative amount is provided', () => {
       //Given
@@ -69,7 +67,7 @@ describe('Partial Admit - How much have you paid? model', () => {
       const errors = validator.validateSync(form);
       //Then
       expect(errors?.length).toBe(1);
-      expect(errors[0].constraints?.min).toBe(TestMessages.ENTER_VALID_AMOUNT);
+      expect(errors[0].constraints?.min).toBe('ERRORS.VALID_AMOUNT');
     });
     it('should return errors when provided amount is bigger than Claim amount', () => {
       //Given
@@ -85,7 +83,7 @@ describe('Partial Admit - How much have you paid? model', () => {
       const errors = validator.validateSync(form);
       //Then
       expect(errors?.length).toBe(1);
-      expect(errors[0].constraints?.equalOrLessToPropertyValue).toBe(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
+      expect(errors[0].constraints?.equalOrLessToPropertyValue).toBe('ERRORS.AMOUNT_LESS_THAN_CLAIMED');
     });
     it('should return no errors when provided amount is less than Claim amount', () => {
       //Given

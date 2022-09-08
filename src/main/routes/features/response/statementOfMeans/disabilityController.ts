@@ -1,49 +1,44 @@
 import * as express from 'express';
 import {CITIZEN_DISABILITY_URL, CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
 import {Disability} from '../../../../common/form/models/statementOfMeans/disability';
-import {ValidationError, Validator} from 'class-validator';
 import {DisabilityService} from '../../../../services/features/response/statementOfMeans/disabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
+import {GenericForm} from '../../../../common/form/models/genericForm';
 
 const citizenDisabilityViewPath = 'features/response/statementOfMeans/disability';
 const disabilityController = express.Router();
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('disabilityController');
 const disabilityService = new DisabilityService();
-const validator = new Validator();
 
-function renderView(form: Disability, res: express.Response): void {
+function renderView(disabilityForm: GenericForm<Disability>, res: express.Response): void {
+  const form = Object.assign(disabilityForm);
+  form.option = form.model.option;
   res.render(citizenDisabilityViewPath, { form });
 }
 
-disabilityController.get(CITIZEN_DISABILITY_URL, async (req, res) => {
+disabilityController.get(CITIZEN_DISABILITY_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const disability = await disabilityService.getDisability(req.params.id);
-    renderView(disability, res);
+    renderView(await disabilityService.getDisability(req.params.id), res);
   } catch (error) {
-    logger.error(error);
-    res.status(500).send({ error: error.message });
+    next(error);
   }
 });
 
 disabilityController.post(CITIZEN_DISABILITY_URL,
-  async (req, res) => {
-    const disability: Disability = new Disability(req.body.option);
-    const errors: ValidationError[] = validator.validateSync(disability);
-    if (errors?.length > 0) {
-      disability.errors = errors;
-      renderView(disability, res);
+  async (req, res, next: express.NextFunction) => {
+    const form = new GenericForm(new Disability(req.body.option));
+    form.validateSync();
+    if (form.hasErrors()) {
+      renderView(form, res);
     } else {
       try {
-        await disabilityService.saveDisability(req.params.id, disability);
-        if (disability.option == 'yes') {
+        await disabilityService.saveDisability(req.params.id, form);
+        if (form.model.option == 'yes') {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_SEVERELY_DISABLED_URL));
         } else {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_RESIDENCE_URL));
         }
       } catch (error) {
-        logger.error(error);
-        res.status(500).send({ error: error.message });
+        next(error);
       }
     }
   });

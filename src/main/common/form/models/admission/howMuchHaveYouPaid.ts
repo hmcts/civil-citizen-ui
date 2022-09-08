@@ -1,27 +1,11 @@
 import {IsDate, IsDefined, IsNotEmpty, IsNumber, Max, Min, Validate, ValidateIf} from 'class-validator';
-import {
-  AMOUNT_LESS_THAN_CLAIMED,
-  ENTER_PAYMENT_EXPLANATION,
-  VALID_AMOUNT,
-  VALID_DATE,
-  VALID_DATE_IN_PAST,
-  VALID_DAY,
-  VALID_FOUR_DIGIT_YEAR,
-  VALID_MONTH,
-  VALID_TWO_DECIMAL_NUMBER,
-  VALID_YEAR,
-} from '../../validationErrors/errorMessageConstants';
+
 import {MIN_AMOUNT_VALUE} from '../../validators/validationConstraints';
 import {EqualToOrLessThanPropertyValueValidator} from '../../validators/equalToOrLessThanPropertyValueValidator';
 import {OptionalDateFourDigitValidator} from '../../validators/optionalDateFourDigitValidator';
 import {OptionalDateInPastValidator} from '../../validators/optionalDateInPastValidator';
 import {DateConverter} from '../../../utils/dateConverter';
 import {toNumberOrUndefined} from '../../../utils/numberConverter';
-
-const today = new Date(Date.now()).toLocaleDateString('en-GB', {
-  day: 'numeric', month: 'long', year: 'numeric',
-});
-
 
 export interface HowMuchHaveYouPaidParams {
   amount?: number;
@@ -34,33 +18,32 @@ export interface HowMuchHaveYouPaidParams {
 
 export class HowMuchHaveYouPaid {
 
-  @IsDefined({message: VALID_AMOUNT})
-  @Min(MIN_AMOUNT_VALUE, {message: VALID_AMOUNT})
-  @IsNumber({allowNaN: false, maxDecimalPlaces: 2}, {message: VALID_TWO_DECIMAL_NUMBER})
-  @Validate(EqualToOrLessThanPropertyValueValidator, ['totalClaimAmount'], {message: AMOUNT_LESS_THAN_CLAIMED})
+  @IsDefined({message: 'ERRORS.VALID_AMOUNT'})
+  @Min(MIN_AMOUNT_VALUE, {message: 'ERRORS.VALID_AMOUNT'})
+  @IsNumber({allowNaN: false, maxDecimalPlaces: 2}, {message: 'ERRORS.VALID_TWO_DECIMAL_NUMBER'})
+  @Validate(EqualToOrLessThanPropertyValueValidator, ['totalClaimAmount'], {message: 'ERRORS.AMOUNT_LESS_THAN_CLAIMED'})
     amount?: number;
 
   totalClaimAmount?: number;
 
   @ValidateIf(o => (o.day > 0 && o.day < 32 && o.month > 0 && o.month < 13 && o.year > 999))
-  @IsDate({message: VALID_DATE})
-  @Validate(OptionalDateInPastValidator, {message: VALID_DATE_IN_PAST + today})
+  @IsDate({message: 'ERRORS.VALID_DATE'})
+  @Validate(OptionalDateInPastValidator, {message: 'ERRORS.VALID_DATE_IN_PAST'})
     date?: Date;
 
-  @Min(1, {message: VALID_DAY})
-  @Max(31, {message: VALID_DAY})
+  @Min(1, {message: 'ERRORS.VALID_DAY'})
+  @Max(31, {message: 'ERRORS.VALID_DAY'})
     day: number;
 
-
-  @Min(1, {message: VALID_MONTH})
-  @Max(12, {message: VALID_MONTH})
+  @Min(1, {message: 'ERRORS.VALID_MONTH'})
+  @Max(12, {message: 'ERRORS.VALID_MONTH'})
     month: number;
 
-  @Validate(OptionalDateFourDigitValidator, {message: VALID_FOUR_DIGIT_YEAR})
-  @Max(9999, {message: VALID_YEAR})
+  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
+  @Max(9999, {message: 'ERRORS.VALID_YEAR'})
     year: number;
 
-  @IsNotEmpty({message: ENTER_PAYMENT_EXPLANATION})
+  @IsNotEmpty({message: 'ERRORS.ENTER_PAYMENT_EXPLANATION'})
     text?: string;
 
   constructor(howMuchHaveYouPaidParams?: HowMuchHaveYouPaidParams) {

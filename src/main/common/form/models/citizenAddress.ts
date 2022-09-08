@@ -1,22 +1,15 @@
-import {IsNotEmpty, Validate, ValidationError} from 'class-validator';
-import {
-  DEFENDANT_POSTCODE_NOT_VALID,
-  VALID_ADDRESS_LINE_1,
-  VALID_CITY,
-  VALID_POSTCODE,
-} from '../validationErrors/errorMessageConstants';
-import { Form } from './form';
+import {IsNotEmpty, Validate} from 'class-validator';
 import {PostcodeValidator} from '../validators/postcodeValidator';
 
-export class CitizenAddress extends Form {
-  @IsNotEmpty({message: VALID_ADDRESS_LINE_1})
+export class CitizenAddress {
+  @IsNotEmpty({message: 'ERRORS.VALID_ADDRESS_LINE_1'})
     primaryAddressLine1?: string;
   primaryAddressLine2?: string;
   primaryAddressLine3?: string;
-  @IsNotEmpty({message: VALID_POSTCODE})
-  @Validate(PostcodeValidator, {message: DEFENDANT_POSTCODE_NOT_VALID})
+  @IsNotEmpty({message: 'ERRORS.VALID_POSTCODE'})
+  @Validate(PostcodeValidator, {message: 'ERRORS.DEFENDANT_POSTCODE_NOT_VALID'})
     primaryPostCode?: string;
-  @IsNotEmpty({message: VALID_CITY})
+  @IsNotEmpty({message: 'ERRORS.VALID_CITY'})
     primaryCity?: string;
 
   constructor(
@@ -24,9 +17,7 @@ export class CitizenAddress extends Form {
     primaryAddressLine2?: string,
     primaryAddressLine3?: string,
     primaryCity?: string,
-    primaryPostCode?: string,
-    errors?: ValidationError[]) {
-    super(errors);
+    primaryPostCode?: string) {
     this.primaryAddressLine1 = primaryAddressLine1;
     this.primaryAddressLine2 = primaryAddressLine2;
     this.primaryAddressLine3 = primaryAddressLine3;

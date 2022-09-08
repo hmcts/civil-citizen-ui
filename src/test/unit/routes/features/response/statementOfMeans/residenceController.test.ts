@@ -3,11 +3,6 @@ const request = require('supertest');
 const {app} = require('../../../../../../main/app');
 import nock from 'nock';
 import config from 'config';
-import {
-  VALID_HOUSING,
-  VALID_OPTION_SELECTION,
-  VALID_TEXT_LENGTH,
-} from '../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../../../../main/routes/urls';
 import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
@@ -35,7 +30,7 @@ describe('Citizen residence', () => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 
-    test('should return residence page', async () => {
+    it('should return residence page', async () => {
       await agent
         .get(respondentResidenceUrl)
         .expect((res: Response) => {
@@ -44,13 +39,13 @@ describe('Citizen residence', () => {
         });
     });
 
-    test('should return status 500 when error thrown', async () => {
+    it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await agent
         .get(respondentResidenceUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({errorMessage: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
@@ -59,7 +54,7 @@ describe('Citizen residence', () => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 
-    test('should redirect when OWN_HOME option selected', async () => {
+    it('should redirect when OWN_HOME option selected', async () => {
       await agent
         .post(respondentResidenceUrl)
         .send('type=OWN_HOME')
@@ -69,28 +64,28 @@ describe('Citizen residence', () => {
         });
     });
 
-    test('should return error when no option selected', async () => {
+    it('should return error when no option selected', async () => {
       await agent
         .post(respondentResidenceUrl)
         .send('type=')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_OPTION_SELECTION);
+          expect(res.text).toContain(TestMessages.VALID_OPTION_SELECTION);
         });
     });
 
-    test('should return error when type is \'Other\' and housing details not provided', async () => {
+    it('should return error when type is \'Other\' and housing details not provided', async () => {
       await agent
         .post(respondentResidenceUrl)
         .send('type=OTHER')
         .send('housingDetails=')
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_HOUSING);
+          expect(res.text).toContain(TestMessages.VALID_HOUSING);
         });
     });
 
-    test('should redirect when type is \'Other\' and housing details are provided', async () => {
+    it('should redirect when type is \'Other\' and housing details are provided', async () => {
       await agent
         .post(respondentResidenceUrl)
         .send('type=OTHER')
@@ -101,18 +96,18 @@ describe('Citizen residence', () => {
         });
     });
 
-    test('should return error when type is \'Other\' and housing details are too long', async () => {
+    it('should return error when type is \'Other\' and housing details are too long', async () => {
       await agent
         .post(respondentResidenceUrl)
         .send('type=OTHER')
         .send(`housingDetails=${tooLongHousingDetails}`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_TEXT_LENGTH);
+          expect(res.text).toContain('You&#39;ve entered too many characters');
         });
     });
 
-    test('should status 500 when error thrown', async () => {
+    it('should status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await agent
         .post(respondentResidenceUrl)
@@ -120,7 +115,7 @@ describe('Citizen residence', () => {
         .send('housingDetails=Palace')
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({errorMessage: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

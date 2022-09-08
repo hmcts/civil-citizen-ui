@@ -10,7 +10,7 @@ import {
   OnTaxPayments,
 } from '../../../../../../../../main/common/form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
-
+import {GenericForm} from '../../../../../../../../main/common/form/models/genericForm';
 
 jest.mock('../../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../../main/modules/draft-store/draftStoreService');
@@ -28,9 +28,9 @@ describe('On Tax Payments Service', () => {
       const form = await getOnTaxPaymentsForm('123');
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(form.option).toBeUndefined();
-      expect(form.reason).toBeUndefined();
-      expect(form.amountYouOwe).toBeUndefined();
+      expect(form.model.option).toBeUndefined();
+      expect(form.model.reason).toBeUndefined();
+      expect(form.model.amountYouOwe).toBeUndefined();
     });
     it('should return an empty form when taxPayments does not exist', async () => {
       //Given
@@ -42,9 +42,9 @@ describe('On Tax Payments Service', () => {
       //When
       const form = await getOnTaxPaymentsForm('123');
       //Then
-      expect(form.option).toBeUndefined();
-      expect(form.reason).toBeUndefined();
-      expect(form.amountYouOwe).toBeUndefined();
+      expect(form.model.option).toBeUndefined();
+      expect(form.model.reason).toBeUndefined();
+      expect(form.model.amountYouOwe).toBeUndefined();
     });
     it('should return an empty form when when statement of means does not exist', async () => {
       //Given
@@ -54,9 +54,9 @@ describe('On Tax Payments Service', () => {
       //When
       const form = await getOnTaxPaymentsForm('123');
       //Then
-      expect(form.option).toBeUndefined();
-      expect(form.reason).toBeUndefined();
-      expect(form.amountYouOwe).toBeUndefined();
+      expect(form.model.option).toBeUndefined();
+      expect(form.model.reason).toBeUndefined();
+      expect(form.model.amountYouOwe).toBeUndefined();
     });
     it('should return populated form when taxPayments exist', async () => {
       //Given
@@ -66,9 +66,9 @@ describe('On Tax Payments Service', () => {
       //When
       const form = await getOnTaxPaymentsForm('123');
       //Then
-      expect(form.option).toBeTruthy();
-      expect(form.reason).toBe(REASON);
-      expect(form.amountYouOwe).toBe(AMOUNT_OWED);
+      expect(form.model.option).toBeTruthy();
+      expect(form.model.reason).toBe(REASON);
+      expect(form.model.amountYouOwe).toBe(AMOUNT_OWED);
     });
     it('should rethrow error when error occurs', async () => {
       //When
@@ -87,7 +87,7 @@ describe('On Tax Payments Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveTaxPaymentsData('123', new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON));
+      await saveTaxPaymentsData('123', new GenericForm(new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON)));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -98,9 +98,24 @@ describe('On Tax Payments Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveTaxPaymentsData('123', new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON));
+      await saveTaxPaymentsData('123', new GenericForm(new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON)));
       //Then
       expect(spySave).toBeCalled();
+    });
+    it('should remove the existing reason and amountOwed values when option changed to no', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const savedMockClaim = new Claim();
+      savedMockClaim.statementOfMeans = new StatementOfMeans();
+      savedMockClaim.statementOfMeans.taxPayments = {owed: false, reason: undefined, amountOwed: undefined};
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      //When
+      await saveTaxPaymentsData('123', new GenericForm(new OnTaxPayments(YesNo.NO, AMOUNT_OWED, REASON)));
+      //Then
+      expect(spySave).toBeCalled();
+      expect(spySave).toBeCalledWith('123', savedMockClaim);
     });
     it('should rethrow error when error occurs on get claim', async () => {
       //When
@@ -108,7 +123,8 @@ describe('On Tax Payments Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveTaxPaymentsData('123', new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveTaxPaymentsData('123', new GenericForm(new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON))))
+        .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
     it('should rethrow error when error occurs on save claim', async () => {
       //Given
@@ -117,7 +133,8 @@ describe('On Tax Payments Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveTaxPaymentsData('123', new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveTaxPaymentsData('123', new GenericForm(new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON))))
+        .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

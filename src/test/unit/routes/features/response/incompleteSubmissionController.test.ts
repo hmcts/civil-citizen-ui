@@ -39,7 +39,6 @@ describe('Response - Check answers', () => {
   describe('on GET', () => {
 
     it('should return incomplete submission page', async () => {
-
       mockOutstandingTasksFromCase.mockImplementation(() => [
         {
           description: TASK_DESCRIPTION,
@@ -53,8 +52,6 @@ describe('Response - Check answers', () => {
 
       const dom = new JSDOM(response.text);
       const htmlDocument = dom.window.document;
-
-
       const header = getElementsByXPath("//h1[@class='govuk-heading-l']", htmlDocument);
       const bulletPoints = getElementsByXPath(
         "//ul[@class='govuk-list govuk-list--bullet']/li",
@@ -74,7 +71,7 @@ describe('Response - Check answers', () => {
         .get(respondentIncompleteSubmissionUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });

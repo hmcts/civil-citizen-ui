@@ -9,8 +9,11 @@ import civilClaimResponseApplicantIndividual from './mocks/civilClaimResponseApp
 import civilClaimResponseApplicantWithMediation from './mocks/civilClaimResponseApplicanWithMediationMock.json';
 import civilClaimResponseNoAdmittedPaymentAmountMock from './mocks/civilClaimResponseNoAdmittedPaymentAmountMock.json';
 import civilClaimResponseFullAdmissionMock from './mocks/civilClaimResponseFullAdmissionMock.json';
-import civilClaimResponseWithAdmittedPaymentAmountMock from './mocks/civilClaimResponseWithAdmittedPaymentAmountMock.json';
+import civilClaimResponseWithAdmittedPaymentAmountMock
+  from './mocks/civilClaimResponseWithAdmittedPaymentAmountMock.json';
 import civilClaimResponsePDFTimeline from './mocks/civilClaimResponsePDFTimelineMock.json';
+import claimantClaimsMock from './mocks/claimantClaimsMock.json';
+import civilClaimResponseWithTimelineAndEvidenceMock from './mocks/civilClaimResponseTimelineAndEvidenceMock.json';
 
 import {Logger} from 'winston';
 
@@ -55,6 +58,11 @@ const mockRedisFullAdmission = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseFullAdmissionMock))),
 };
 
+const mockCivilClaimWithTimelineAndEvidence = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithTimelineAndEvidenceMock))),
+};
+
 const mockRedisFailure = {
   set: jest.fn(() => {
     throw new Error(TestMessages.REDIS_FAILURE);
@@ -84,6 +92,11 @@ const mockCivilClaimPDFTimeline = {
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponsePDFTimeline))),
 };
 
+const mockClaimantClaims = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(claimantClaimsMock))),
+};
+
 export {
   mockCivilClaim,
   mockCivilClaimUndefined,
@@ -100,4 +113,6 @@ export {
   mockRedisWithPaymentAmount,
   mockRedisFullAdmission,
   mockCivilClaimPDFTimeline,
+  mockClaimantClaims,
+  mockCivilClaimWithTimelineAndEvidence,
 };

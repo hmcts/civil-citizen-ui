@@ -21,16 +21,16 @@ function renderView(form: GenericForm<Unemployment>, res: express.Response): voi
   res.render(citizenEmploymentStatusViewPath, {form: form, UnemploymentCategory: UnemploymentCategory});
 }
 
-unemploymentController.get(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
+unemploymentController.get(CITIZEN_UNEMPLOYED_URL, async (req, res, next: express.NextFunction) => {
   try {
     unemployment = await unemploymentService.getUnemployment(req.params.id);
     renderView(new GenericForm(unemployment), res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-unemploymentController.post(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
+unemploymentController.post(CITIZEN_UNEMPLOYED_URL, async (req, res, next: express.NextFunction) => {
   try {
     const unemploymentToSave = new Unemployment(req.body.option, new UnemploymentDetails(req.body.years, req.body.months), new OtherDetails(req.body.details));
     const unemploymentForm: GenericForm<Unemployment> = new GenericForm(unemploymentToSave);
@@ -43,7 +43,7 @@ unemploymentController.post(CITIZEN_UNEMPLOYED_URL, async (req, res) => {
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_COURT_ORDERS_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 

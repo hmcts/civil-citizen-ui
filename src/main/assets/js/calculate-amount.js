@@ -62,10 +62,12 @@ async function getCalculation() {
       amountToCalculate.push({amount: amount[0].value, schedule: selectedSchedule.value});
     }
   });
+  const csrfToken = document.getElementsByName('_csrf')[0].value;
   const options = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'CSRF-Token': csrfToken,
     },
     body: JSON.stringify(amountToCalculate),
   };

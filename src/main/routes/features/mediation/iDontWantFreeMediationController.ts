@@ -14,17 +14,17 @@ async function renderView(form: GenericForm<NoMediationReason>, res: express.Res
   res.render(iDontWantFreeMediationViewPath, {form, NoMediationReasonOptions: NoMediationReasonOptions});
 }
 
-iDontWantFreeMediationController.get(DONT_WANT_FREE_MEDIATION_URL, async (req, res) => {
+iDontWantFreeMediationController.get(DONT_WANT_FREE_MEDIATION_URL, async (req, res, next: express.NextFunction) => {
   try {
     const mediation: Mediation = await getMediation(req.params.id);
     renderView(new GenericForm(mediation.noMediationReason), res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
 iDontWantFreeMediationController.post(DONT_WANT_FREE_MEDIATION_URL,
-  async (req: express.Request, res: express.Response) => {
+  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
       const noMediationReasonForm = new GenericForm(new NoMediationReason(req.body.disagreeMediationOption, req.body.otherReason));
       await noMediationReasonForm.validate();
@@ -38,9 +38,8 @@ iDontWantFreeMediationController.post(DONT_WANT_FREE_MEDIATION_URL,
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
       }
     } catch (error) {
-      res.status(500).send({error: error.message});
+      next(error);
     }
   });
-
 
 export default iDontWantFreeMediationController;

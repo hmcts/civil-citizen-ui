@@ -78,15 +78,13 @@ describe('contact them service', () => {
   });
 });
 
-
 function buildClaimWithAddress(address: CorrespondenceAddress, correspondenceAddress?: CorrespondenceAddress, solicitorAddress?: CorrespondenceAddress): Claim {
   const claim = new Claim();
-  const applicant = {
+  claim.applicant1 = {
     partyName: 'Some Very Important Company Ltd',
     primaryAddress: address,
     type: CounterpartyType.COMPANY,
   };
-  claim.applicant1 = applicant;
   if (correspondenceAddress) {
     claim.specApplicantCorrespondenceAddressdetails = correspondenceAddress;
   }

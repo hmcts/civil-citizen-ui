@@ -1,5 +1,6 @@
 import config from 'config';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
+import {authenticator} from 'otplib';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('serviceAuthProviderClient');
@@ -26,7 +27,7 @@ export class ServiceAuthProviderClient {
 
   async getServiceAuthorisationToken(): Promise<string> {
     const options = this.getConfig();
-    // TODO : should be replaced with civil_citizen_ui when civil citizen ui 
+    // TODO : should be replaced with civil_citizen_ui when civil citizen ui
     // is given permission to access prf documents on dm - store created via Xui
     const reqBody = {
       microservice: xuiMicroserviceName,
@@ -40,3 +41,32 @@ export class ServiceAuthProviderClient {
   }
 }
 
+const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
+const client: AxiosInstance = Axios.create({baseURL: serviceAuthProviderUrl});
+
+const generateServiceToken = async (microservice: string, s2sSecret: string): Promise<string> => {
+
+  try {
+
+    // TODO: re-use existing service access token if still valid instead of generating a new one each time
+    const oneTimePassword = authenticator.generate(s2sSecret);
+
+    logger.info(`About to generate Service Authorisation Token for: ${microservice}`);
+    const response: AxiosResponse<string> = await client.post(
+      '/lease',
+      {
+        microservice: microservice,
+        oneTimePassword: oneTimePassword,
+      });
+    logger.info(`Service Authorisation Token generated for: ${microservice}`);
+
+    return response.data;
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export {
+  generateServiceToken,
+};

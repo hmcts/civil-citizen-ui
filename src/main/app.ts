@@ -13,6 +13,7 @@ import { I18Next } from './modules/i18n';
 import { HealthCheck } from './modules/health';
 import { OidcMiddleware } from './modules/oidc';
 import {DraftStoreClient} from './modules/draft-store';
+import {CSRFToken} from './modules/csrf';
 import routes from './routes/routes';
 import {TaskList} from './common/models/taskList/taskList';
 
@@ -63,7 +64,9 @@ app.use((_req, res, next) => {
   );
   next();
 });
-
+if (env !== 'test') {
+  new CSRFToken().enableFor(app);
+}
 app.use(routes);
 
 setupDev(app,developmentMode);
@@ -74,12 +77,12 @@ app.use((_req, res) => {
 });
 
 // error handler
-app.use((err: HTTPError, _req: express.Request, res: express.Response) => {
+app.use((err: HTTPError, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   logger.error(`${err.stack || err}`);
 
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = env === 'development' ? err : {};
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {error: res.locals.error});
 });
