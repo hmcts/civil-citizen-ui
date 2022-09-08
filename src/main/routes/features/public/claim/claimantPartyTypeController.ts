@@ -27,7 +27,7 @@ const redirect = (counterpartyType: CounterpartyType, res: express.Response) => 
 claimantPartyTypeController.get(CLAIMANT_PARTY_TYPE_SELECTION_URL, (req: express.Request, res: express.Response) => {
   const claimantPartyType = req.cookies.claim_issue ? req.cookies.claim_issue.claimantPartyType : null;
   const form = new GenericForm(new ClaimantPartyTypeSelection(claimantPartyType));
-  res.render(claimantPartyTypeViewPath, { form });
+  res.render(claimantPartyTypeViewPath, {form});
 });
 
 claimantPartyTypeController.post(CLAIMANT_PARTY_TYPE_SELECTION_URL, async (req: express.Request, res: express.Response) => {
