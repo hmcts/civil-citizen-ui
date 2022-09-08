@@ -33,6 +33,7 @@
     "BUTTONS": {
       "BACK": "Back",
       "CONTINUE": "Parhau",
+      "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
@@ -62,6 +63,11 @@
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_NO_ADVISORS": "Nid oes cynghorwyr ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen.",
       "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
+    },
+    "EVIDENCE_SUMMARY": {
+      "TITLE": "Tystiolaeth",
+      "ROW_TYPE": "Type",
+      "ROW_DESCRIPTION": "Disgrifiad"
     },
     "HEADER": {
       "MONEY_CLAIMS": "Money Claims",
@@ -713,6 +719,46 @@
       "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
       "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
+    "FIRST_CONTACT_SIGNPOSTING": {
+      "SUBTITLE": "If you don't respond",
+      "TITLE": "Respond to a money claim",
+      "PAGE_TITLE": "Respond to a money claim",
+      "PARAGRAPH_1": "You have 19 days to respond to the claim from the date the court issued it.",
+      "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
+      "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
+      "PARAGRAPH_4_CCJ_URL": "County Court Judgment (CCJ) ",
+      "PARAGRAPH_4_PART_1": "The claimant can apply for a",
+      "PARAGRAPH_4_PART_2": "against you if you don't respond before the deadline.",
+      "PARAGRAPH_5": "They can use a CCJ to get the money from you, for example by applying to the court to send bailiffs to your home or business.",
+      "PARAGRAPH_6": "A CCJ may make it harder to get credit, such as a mobile phone contract, credit card or mortgage.",
+      "START_NOW": "Start now",
+      "SUPPORT": "Support",
+      "SUPPORT_CLAIM_FEES_URL": "Money claim fees ",
+      "SUPPORT_CONTACT_US_URL": "Contact us "
+    },
+    "FIRST_CONTACT_ACCESS_DENIED": {
+      "CLICK_HERE": "Click here to try again",
+      "THERE_WAS_AN_ERROR": "There was an error during your last operation. Please try again later.",
+      "TITLE": "You are not authorised to view the claim!"
+    },
+    "FIRST_CONTACT_CLAIM_REFERENCE": {
+      "CLAIM_NUMBER": "Rhif hawlio",
+      "ENTER_CLAIM": "Enter the claim number from the email or letter we sent you.",
+      "PAGE_TITLE": "Enter your claim number",
+      "TITLE": "Enter your claim number"
+    },
+    "FIRST_CONTACT_CLAIM_SUMMARY": {
+      "CLAIM_AMOUNT": "Swm yr hawliad",
+      "CLAIM_NUMBER": "Rhif hawlio",
+      "FIND_OUT": "Find out about how we use and store your ",
+      "HEADER": "Manylion yr hawliad",
+      "PAGE_TITLE": "Manylion yr hawliad",
+      "PERSONAL_INFORMATION": "personal information",
+      "PERSONAL_INFORMATION_USAGE": "How we use and store your personal information",
+      "REASON_FOR_CLAIM": "Reason for claim:",
+      "THIS_CLAIM_INFORMATION": "This claim contains personal information about you that {{claimant}} has provided, for example your name and address.",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
+    },
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED" : "Rydym wedi eich cofrestru’n awtomatig i gael gwasanaeth cyfryngu dros y ffôn am ddim gan Gwasanaeth Llysoedd a Thribiwnlysoedd EM.",
       "CLAIMANT_MUST_AGREE" : "Rhaid i’r hawlydd gytuno i’r cyfryngu. Byddwn yn cysylltu â chi o fewn 28 diwrnod ar ôl cael cadarnhad gan yr hawlydd i drefnu apwyntiad am ddim.",
@@ -925,6 +971,14 @@
       "REGULAR_PAYMENTS": "yn gwneud taliadau rheolaidd i glirio'r taliadau a fethwyd",
       "TOTAL_MONTHLY_REPAYMENTS": "Cyfanswm yr ad-daliadau misol"
     },
+    "PIN":{
+      "CONTACT_US": "contact us",
+      "CHECK_SECURITY_CODE": "Check the security code is the one we sent you. You can",
+      "FIND_PIN": "You can find it on the email or letter we sent you.",
+      "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
+      "SECURITY_CODE": "Security code",
+      "TITLE": "Enter security code"
+    },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your regular expenses"
     },
@@ -1112,6 +1166,7 @@
     "AMOUNT_REQUIRED": "Nodwch swm o £1 neu fwy",
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
     "CLAIM_DETAILS": "Claim details",
+    "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
@@ -1125,6 +1180,8 @@
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
+    "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
+    "ENTER_SECURITY_CODE": "Enter your security code",
     "EQUAL_INSTALMENTS_REQUIRED": "Rhowch swm dilys i'w dalu fesul rhan",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
@@ -1140,6 +1197,7 @@
     "QUESTION_1_REQUIRED": "1. Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
     "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
+    "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
@@ -1226,6 +1284,7 @@
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
+    "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Rhowch linell gyntaf y cyfeiriad ar gyfer gohebiaeth",
     "VALID_CORRESPONDENCE_CITY": "Rhowch enw tref/dinas ar gyfer gohebiaeth",
     "VALID_CORRESPONDENCE_POSTCODE": "Rhowch god post y cyfeiriad ar gyfer gohebiaeth",
