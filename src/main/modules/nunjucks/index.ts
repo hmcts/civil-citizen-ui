@@ -18,6 +18,9 @@ import {SignatureType} from '../../common/models/signatureType';
 import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
 import {FormValidationError} from '../../common/form/validationErrors/formValidationError';
 import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibleReason';
+import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOptions';
+import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
+import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -103,6 +106,9 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('SignatureType', SignatureType);
     nunjucksEnv.addGlobal('ClaimSummaryType', ClaimSummaryType);
     nunjucksEnv.addGlobal('NotEligibleReason', NotEligibleReason);
+    nunjucksEnv.addGlobal('AgeEligibilityOptions', AgeEligibilityOptions);
+    nunjucksEnv.addGlobal('TotalAmountOptions', TotalAmountOptions);
+    nunjucksEnv.addGlobal('ClaimTypeOptions', ClaimTypeOptions);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

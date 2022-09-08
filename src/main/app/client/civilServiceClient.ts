@@ -15,10 +15,10 @@ import {plainToInstance} from 'class-transformer';
 import {CaseDocument} from 'common/models/document/caseDocument';
 import {CLAIM_DETAILS_NOT_AVAILBALE, DOCUMENT_NOT_AVAILABLE} from './errorMessageContants';
 import {
-  DashboardDefendantItem,
   DashboardClaimantItem,
+  DashboardDefendantItem,
 } from '../../common/models/dashboard/dashboardItem';
-import {EventDto} from '../../common/models/events/eventDto';
+import {ClaimUpdate, EventDto} from '../../common/models/events/eventDto';
 import {CaseEvent} from '../../common/models/events/caseEvent';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -132,22 +132,22 @@ export class CivilServiceClient {
     }
   }
 
-  async submitDefendantResponseEvent(claimId: string, req: AppRequest): Promise<Claim> {
-    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, req);
+  async submitDefendantResponseEvent(claimId: string, updatedClaim:ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, updatedClaim, req);
   }
 
-  async submitEvent(event: CaseEvent, claimId: string, req: AppRequest): Promise<Claim> {
+  async submitEvent(event: CaseEvent, claimId: string, updatedClaim?:ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
     const data : EventDto = {
       event:event,
-      caseDataUpdate: new Map<string, string>(),
+      caseDataUpdate: updatedClaim,
     };
     try{
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
-      console.log('submitted event ' + response.data);
+      logger.info('submitted event ' + data.event + ' with update '+ data.caseDataUpdate);
       return  Object.assign(new Claim(), response.data);
     }catch (err: unknown) {
       logger.error(err);

@@ -13,6 +13,7 @@ import civilClaimResponseWithAdmittedPaymentAmountMock
   from './mocks/civilClaimResponseWithAdmittedPaymentAmountMock.json';
 import civilClaimResponsePDFTimeline from './mocks/civilClaimResponsePDFTimelineMock.json';
 import claimantClaimsMock from './mocks/claimantClaimsMock.json';
+import civilClaimResponseWithTimelineAndEvidenceMock from './mocks/civilClaimResponseTimelineAndEvidenceMock.json';
 
 import {Logger} from 'winston';
 
@@ -55,6 +56,11 @@ const mockRedisWithPaymentAmount = {
 const mockRedisFullAdmission = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseFullAdmissionMock))),
+};
+
+const mockCivilClaimWithTimelineAndEvidence = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithTimelineAndEvidenceMock))),
 };
 
 const mockRedisFailure = {
@@ -108,4 +114,5 @@ export {
   mockRedisFullAdmission,
   mockCivilClaimPDFTimeline,
   mockClaimantClaims,
+  mockCivilClaimWithTimelineAndEvidence,
 };
