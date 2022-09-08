@@ -23,7 +23,7 @@ export class BankAccount {
   }
 
   public isEmpty (): boolean {
-    return Object.values(this).every(value => value === undefined || value === '' || value === []);
+    return Object.values(this).every(value => value === undefined || value === '' || value?.length === 0);
   }
 
   isAtLeastOneFieldPopulated (): boolean {

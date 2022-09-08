@@ -1,5 +1,5 @@
 import {IsDefined} from 'class-validator';
-import {CounterpartyType} from 'common/models/counterpartyType';
+import {CounterpartyType} from '../../../../common/models/counterpartyType';
 
 export class ClaimantPartyTypeSelection {
   @IsDefined({ message: 'ERRORS.VALID_CHOOSE' })
