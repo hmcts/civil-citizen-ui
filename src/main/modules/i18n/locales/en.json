@@ -15,6 +15,7 @@
     "DASHBOARD": "Dashboard",
     "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "GO_TO_HOMEPAGE": "Go to homepage",
     "MONTH": "Month",
     "MONTHS": "Months",
     "NO": "No",
@@ -35,6 +36,7 @@
       "CONTINUE": "Continue",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE_AND_CONTINUE": "Save and continue",
+      "SAVE": "Save",
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
     },
@@ -486,6 +488,99 @@
       "PAGE_TITLE": "Contact claimant",
       "PHONE": "Phone"
     },
+    "COOKIES": {
+      "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",
+      "ANALYTICS_COOKIE_OPTIONS": {
+        "HEADING": "Allow cookies that measure website use?",
+        "ON_OPTION": "Use cookies that measure my website use",
+        "OFF_OPTION": "Do not use cookies that measure my website use"
+      },
+      "BULLET_LIST1": {
+        "FIRST": "store your cookie preferences",
+        "SECOND": "measure how you use the service so it can be improved"
+      },
+      "BULLET_LIST007": [
+        "store your cookie preferences",
+        "measure how you use the service so it can be improved"
+      ],
+      "BULLET_LIST2": {
+        "FIRST": "Site performance",
+        "SECOND": "Website usage",
+        "THIRD": "User behaviour"
+      },
+      "COOKIE_DETAILS1": {
+        "GA": {
+          "NAME": "_ga",
+          "PURPOSE": "This helps us count how many people visit the service by tracking if you’ve visited before",
+          "EXPIRES": "2 years"
+        },
+        "GID": {
+          "NAME": "_gid",
+          "PURPOSE": "Identifies you to the service",
+          "EXPIRES": "24 hours"
+        },
+        "GAT": {
+          "NAME": "_gat",
+          "PURPOSE": "Manages the rate at which page view requests are made",
+          "EXPIRES": "10 minutes"
+        }
+      },
+      "COOKIE_DETAILS2": {
+        "DTCOOKIE": {
+          "NAME": "dtCookie",
+          "PURPOSE": "Tracks a visit across multiple request",
+          "EXPIRES": "Session end"
+        },
+        "DTLATC": {
+          "NAME": "dtLatC",
+          "PURPOSE": "Measures server latency for performance monitoring",
+          "EXPIRES": "Session end"
+        },
+        "DTPC": {
+          "NAME": "dtPC",
+          "PURPOSE": "Required to identify proper endpoints for beacon transmission; includes session ID for correlation",
+          "EXPIRES": "Session end"
+        },
+        "DTSA": {
+          "NAME": "dtSa",
+          "PURPOSE": "Intermediate store for page-spanning actions",
+          "EXPIRES": "Session end"
+        },
+        "RXVISITOR": {
+          "NAME": "rxVisitor",
+          "PURPOSE": "Visitor ID to correlate sessions",
+          "EXPIRES": "1 year"
+        },
+        "RXVT": {
+          "NAME": "rxvt",
+          "PURPOSE": "Session timeout",
+          "EXPIRES": "Session end"
+        }
+      },
+      "COOKIES_EXPLANATION1": "Cookies are files saved on your phone, tablet or computer when you visit a website. Most websites need cookies to work properly",
+      "COOKIES_EXPLANATION2": "This service uses cookies to:",
+      "COOKIES_EXPLANATION3": "We use Google Analytics software to collect information about how you use this service. We do this to help make sure the service is meeting the needs of its users and to help us make improvements. We do not allow Google to use or share the data about how you use this site.",
+      "COOKIES_EXPLANATION4": "We use Dynatrace Software Intelligence Platform to provide an Application Performance Monitoring Service to collect information about how you use HMCTS services. We do this to monitor HMCTS services in order to resolve issues within our services as well as collect data on how our services can be improved. HMCTS store information about:",
+      "COOKIES_EXPLANATION5": "Information is presented within the Application Performance Monitoring service for the purposes detailed above. We do not use or share the information for any other purpose. We do not allow Dynatrace to use or share the information for any other purposes.",
+      "COOKIES_EXPLANATION6": "These essential cookies do things like making the service more secure. They always need to be on.",
+      "COOKIE_SETTINGS_SAVED": "Your cookie settings were saved",
+      "EXPIRES": "Expires",
+      "FIND_MORE_ABOUT_COOKIES": "Find out more about essential cookies",
+      "HEADING1": "How cookies are used in this service",
+      "XXX": ["BIR", "IKI", "UC"],
+      "NAME": "Name",
+      "PERFORMANCE_COOKIE_OPTIONS": {
+        "HEADING": "Allow cookies that measure website application performance monitoring?",
+        "ON_OPTION": "Use cookies that measure website application performance monitoring",
+        "OFF_OPTION": "DDo not cookies that measure website application performance monitoring"
+      },
+      "PURPOSE": "Purpose",
+      "SUBHEADING1": "To measure website usage",
+      "SUBHEADING2": "Cookie details",
+      "SUBHEADING3": "To measure application performance",
+      "SUBHEADING4": "Essential cookies",
+      "TITLE": "Cookies"
+    },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Add another court order",
       "CLAIM_NUMBER": "Claim number",
@@ -718,6 +813,23 @@
       "REJECT_COURT_MAKE_NEW_PLAN" : "If they reject your proposal, the court will make a new plan using your financial details.",
       "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
       "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
+    },
+    "FIRST_CONTACT_SIGNPOSTING": {
+      "SUBTITLE": "If you don't respond",
+      "TITLE": "Respond to a money claim",
+      "PAGE_TITLE": "Respond to a money claim",
+      "PARAGRAPH_1": "You have 19 days to respond to the claim from the date the court issued it.",
+      "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
+      "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
+      "PARAGRAPH_4_CCJ_URL": "County Court Judgment (CCJ) ",
+      "PARAGRAPH_4_PART_1": "The claimant can apply for a",
+      "PARAGRAPH_4_PART_2": "against you if you don't respond before the deadline.",
+      "PARAGRAPH_5": "They can use a CCJ to get the money from you, for example by applying to the court to send bailiffs to your home or business.",
+      "PARAGRAPH_6": "A CCJ may make it harder to get credit, such as a mobile phone contract, credit card or mortgage.",
+      "START_NOW": "Start now",
+      "SUPPORT": "Support",
+      "SUPPORT_CLAIM_FEES_URL": "Money claim fees ",
+      "SUPPORT_CONTACT_US_URL": "Contact us "
     },
     "FIRST_CONTACT_ACCESS_DENIED": {
       "CLICK_HERE": "Click here to try again",
@@ -954,6 +1066,14 @@
       "REGULAR_PAYMENTS": "making regular repayments to clear the missed payments",
       "TOTAL_MONTHLY_REPAYMENTS": "Total monthly repayments"
     },
+    "PIN":{
+      "CONTACT_US": "contact us",
+      "CHECK_SECURITY_CODE": "Check the security code is the one we sent you. You can",
+      "FIND_PIN": "You can find it on the email or letter we sent you.",
+      "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
+      "SECURITY_CODE": "Security code",
+      "TITLE": "Enter security code"
+    },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your regular expenses"
     },
@@ -1155,6 +1275,8 @@
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
+    "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
+    "ENTER_SECURITY_CODE": "Enter your security code",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
@@ -1170,6 +1292,7 @@
     "QUESTION_1_REQUIRED": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
     "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
+    "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
     "SELECT_AN_OPTION": "Select an option",
     "SELECT_AMOUNT": {

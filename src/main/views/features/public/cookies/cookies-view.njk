@@ -1,4 +1,3 @@
-
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -22,188 +21,148 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+          {% set html %}
+          <p class="govuk-notification-banner__heading">{{ t('PAGES.COOKIES.COOKIE_SETTINGS_SAVED') }}</p>
+          <p class="govuk-body">{{ t('PAGES.COOKIES.ADDITIONAL_COOKIES') }}</p>
+          <p class="govuk-body">
+            <a class="govuk-notification-banner__link" href={{ redirectUrl }}>
+              {{ t('COMMON.GO_TO_HOMEPAGE') }}</a>.
+            </p>
+          {% endset %}
 
-{% set html %}
-<p class="govuk-notification-banner__heading">
-    {{ t('PAGES.COOKIES.COOKIE_SETTINGS_SAVED') }}</p>
-<p class="govuk-body">{{ t('PAGES.COOKIES.ADDITIONAL_COOKIES') }}</p>
-  <p class="govuk-body">
-    <a class="govuk-notification-banner__link" href={{ redirectUrl }}> {{ t('COMMON.GO_TO_HOMEPAGE') }}</a>.
-  </p>
-{% endset %}
-
-{% if isSavedPreferencesBannerDisplayed %}
-  {{ govukNotificationBanner({
-  type: "success",
-  html: html
-}) }}
-
-{% endif%}
-
-
-           <h1 class="govuk-heading-l">{{ t('PAGES.COOKIES.TITLE') }}</h1>
+          {% if isSavedPreferencesBannerDisplayed %}
+            {{ govukNotificationBanner({
+              type: "success",
+              html: html
+            }) }}
+            {% endif%}
+            <h1 class="govuk-heading-l">{{ t('PAGES.COOKIES.TITLE') }}</h1>
             <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION1') }}</p>
             <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION2') }}</p>
-             <ul class="govuk-list govuk-list--bullet">
+            <ul class="govuk-list govuk-list--bullet">
               <li>{{ t('PAGES.COOKIES.BULLET_LIST1.FIRST') }}</li>
               <li>{{ t('PAGES.COOKIES.BULLET_LIST1.SECOND') }}</li>
             </ul>
             <h2 class="govuk-heading-m">{{ t('PAGES.COOKIES.HEADING1') }}</h2>
             <h3 class="govuk-heading-s">{{ t('PAGES.COOKIES.SUBHEADING1') }}</h3>
-
             <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION3') }}</p>
-
-
-    {% set tableRows = [] %}
-    {% for row in content.cookieDetailsTableData1 %}
-      {% set _ = tableRows.push([
-        {
-          text: t(row.name)
-        },
-        {
-          text: t(row.purpose)
-        },
-        {
-          text: t(row.expires)
-        }
-      ]) %}
-    {% endfor %}
-
+            {% set tableRows = [] %}
+            {% for row in content.cookieDetailsTableData1 %}
+              {% set _ = tableRows.push([
+                {
+                  text: t(row[0])
+                }, {
+                  text: t(row[1])
+                }, {
+                  text: t(row[2])
+                }
+              ]) %}
+            {% endfor %}
             {{ govukTable({
-  caption: t('PAGES.COOKIES.SUBHEADING2'),
-  captionClasses: "govuk-table__caption--s",
-  firstCellIsHeader: false,
-  head: [
-    {
-      text: t(content.tableHeaders[0])
-    },
-    {
-      text: t(content.tableHeaders[1])
-    },
-    {
-      text: t(content.tableHeaders[2])
-    }
+              caption: t('PAGES.COOKIES.SUBHEADING2'),
+              captionClasses: "govuk-table__caption--s",
+              firstCellIsHeader: false,
+                head: [{
+                  text: t(content.tableHeaders[0])
+                }, {
+                  text: t(content.tableHeaders[1])
+                }, {
+                  text: t(content.tableHeaders[2])
+                }],
+                rows: tableRows
+            }) }}
 
-  ],
-  rows: tableRows
-}) }}
-
- <form method="post" novalidate>
-            {{ csrfProtection(csrf) }}
-
-             {{ govukRadios({
-    classes: 'govuk-radios',
-    idPrefix: 'analytics',
-    name: 'analytics',
-    fieldset: {
-      legend: {
-        text: t('PAGES.COOKIES.ANALYTICS_COOKIE_OPTIONS.HEADING'),
-        classes: "govuk-fieldset__legend--s"
-      }
-    },
-    items: [
-      {
-        value: 'on',
-        text: t('PAGES.COOKIES.ANALYTICS_COOKIE_OPTIONS.ON_OPTION'),
-        checked: true if cookiePreferences.analytics == 'on' else false
-      },
-      {
-        value: 'off',
-        text: t('PAGES.COOKIES.ANALYTICS_COOKIE_OPTIONS.OFF_OPTION'),
-        checked: true if cookiePreferences.analytics == 'off' else false
-      }
-    ]
-  }) }}
-
-         
-
-<h3 class="govuk-heading-s">{{ t('PAGES.COOKIES.SUBHEADING3') }}</h3>
-<p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION4') }}</p>
-<ul class="govuk-list govuk-list--bullet">
-              <li>{{ t('PAGES.COOKIES.BULLET_LIST2.FIRST') }}</li>
-              <li>{{ t('PAGES.COOKIES.BULLET_LIST2.SECOND') }}</li>
-              <li>{{ t('PAGES.COOKIES.BULLET_LIST2.THIRD') }}</li>
-</ul>
-
-<p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION5') }}</p>
-
-
- {% set tableRows = [] %}
-    {% for row in content.cookieDetailsTableData2 %}
-      {% set _ = tableRows.push([
-        {
-          text: t(row.name)
-        },
-        {
-          text: t(row.purpose)
-        },
-        {
-          text: t(row.expires)
-        }
-      ]) %}
-    {% endfor %}
-
-            {{ govukTable({
-  caption: t('PAGES.COOKIES.SUBHEADING2'),
-  captionClasses: "govuk-table__caption--s",
-  firstCellIsHeader: false,
-  head: [
-    {
-      text: t(content.tableHeaders[0])
-    },
-    {
-      text: t(content.tableHeaders[1])
-    },
-    {
-      text: t(content.tableHeaders[2])
-    }
-
-  ],
-  rows: tableRows
-}) }}
-   
-
-  {{ govukRadios({
-    classes: 'govuk-radios',
-    idPrefix: 'apm',
-    name: 'apm',
-    fieldset: {
-      legend: {
-        text: t('PAGES.COOKIES.PERFORMANCE_COOKIE_OPTIONS.HEADING'),
-        classes: "govuk-fieldset__legend--s"
-      }
-    },
-    items: [
-      {
-        value: 'on',
-        text: t('PAGES.COOKIES.PERFORMANCE_COOKIE_OPTIONS.ON_OPTION'),
-        checked: true if cookiePreferences.apm == 'on' else false
-      },
-      {
-        value: 'off',
-        text: t('PAGES.COOKIES.PERFORMANCE_COOKIE_OPTIONS.ON_OPTION'),
-        checked: true if cookiePreferences.apm == 'off' else false
-      }
-    ]
-  }) }}
-
-  <h3 class="govuk-heading-s">{{ t('PAGES.COOKIES.SUBHEADING4') }}</h3>
-         <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION6') }}</p>
-
-
-    <p class="govuk-body">{{ externalLink(t, 'PAGES.COOKIES.FIND_MORE_ABOUT_COOKIES', externalURLs.essentialCookiesURl, true) }}</p>
-
-
-            <div class="govuk-form-group">
-              {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE')
+            <form method="post" novalidate>
+              {{ csrfProtection(csrf) }}
+              {{ govukRadios({
+                classes: 'govuk-radios',
+                idPrefix: 'analytics',
+                name: 'analytics',
+                fieldset: {
+                  legend: {
+                    text: t('PAGES.COOKIES.ANALYTICS_COOKIE_OPTIONS.HEADING'),
+                    classes: "govuk-fieldset__legend--s"
+                  }
+                },
+                items: [{
+                  value: 'on',
+                  text: t('PAGES.COOKIES.ANALYTICS_COOKIE_OPTIONS.ON_OPTION'),
+                  checked: true if cookiePreferences.analytics == 'on' else false
+                  }, {
+                  value: 'off',
+                  text: t('PAGES.COOKIES.ANALYTICS_COOKIE_OPTIONS.OFF_OPTION'),
+                  checked: true if cookiePreferences.analytics == 'off' else false
+                }]
               }) }}
-              {{ contactUsForHelp(t) }}
-         
-            </div>
-          </form>
+              <h3 class="govuk-heading-s">{{ t('PAGES.COOKIES.SUBHEADING3') }}</h3>
+              <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION4') }}</p>
+              <ul class="govuk-list govuk-list--bullet">
+                <li>{{ t('PAGES.COOKIES.BULLET_LIST2.FIRST') }}</li>
+                <li>{{ t('PAGES.COOKIES.BULLET_LIST2.SECOND') }}</li>
+                <li>{{ t('PAGES.COOKIES.BULLET_LIST2.THIRD') }}</li>
+              </ul>
+              <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION5') }}</p>
+
+              {% set tableRows = [] %}
+              {% for row in content.cookieDetailsTableData2 %}
+                {% set _ = tableRows.push([
+                  {
+                    text: t(row[0])
+                  }, {
+                    text: t(row[1])
+                  }, {
+                    text: t(row[2])
+                  }
+                ]) %}
+              {% endfor %}
+
+              {{ govukTable({
+                caption: t('PAGES.COOKIES.SUBHEADING2'),
+                captionClasses: "govuk-table__caption--s",
+                firstCellIsHeader: false,
+                head: [{
+                  text: t(content.tableHeaders[0])
+                    }, {
+                  text: t(content.tableHeaders[1])
+                    }, {
+                  text: t(content.tableHeaders[2])
+                    }],
+                rows: tableRows
+              }) }}
+              {{ govukRadios({
+                classes: 'govuk-radios',
+                idPrefix: 'apm',
+                name: 'apm',
+                fieldset: {
+                  legend: {
+                    text: t('PAGES.COOKIES.PERFORMANCE_COOKIE_OPTIONS.HEADING'),
+                    classes: "govuk-fieldset__legend--s"
+                  }
+                },
+                items: [{
+                    value: 'on',
+                    text: t('PAGES.COOKIES.PERFORMANCE_COOKIE_OPTIONS.ON_OPTION'),
+                    checked: true if cookiePreferences.apm == 'on' else false
+                  }, {
+                    value: 'off',
+                    text: t('PAGES.COOKIES.PERFORMANCE_COOKIE_OPTIONS.ON_OPTION'),
+                    checked: true if cookiePreferences.apm == 'off' else false
+                  }]
+              }) }}
+              <h3 class="govuk-heading-s">{{ t('PAGES.COOKIES.SUBHEADING4') }}</h3>
+              <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION6') }}</p>
+
+              <p class="govuk-body">{{ externalLink(t, 'PAGES.COOKIES.FIND_MORE_ABOUT_COOKIES', externalURLs.essentialCookiesURl, true) }}</p>
+              <div class="govuk-form-group">
+                {{ govukButton({
+                  text: t('COMMON.BUTTONS.SAVE')
+                }) }}
+                {{ contactUsForHelp(t) }}
+
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
-    </main>
-  </div>
-{% endblock %}
+      </main>
+    </div>
+  {% endblock %}

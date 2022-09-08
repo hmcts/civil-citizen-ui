@@ -15,6 +15,7 @@
     "DASHBOARD": "Dashboard",
     "DAY": "Diwrnod",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "GO_TO_HOMEPAGE": "Go to homepage",
     "MONTH": "Mis",
     "MONTHS": "Mis",
     "NO": "Nac oes",
@@ -34,6 +35,7 @@
       "BACK": "Back",
       "CONTINUE": "Parhau",
       "RESPOND_TO_CLAIM": "Respond to claim",
+      "SAVE": "Save",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
@@ -120,9 +122,9 @@
       "MONTH": "Mis",
       "TWO_WEEKS": "Pythefnos",
       "WEEK": "Wythnos",
-      "TWO_WEEKS_LETTERS" : "Pythefnos",
-      "FOUR_WEEKS_LETTERS" : "4 wythnos",
-      "MONTH_UPPER_CASE" : "Mis",
+      "TWO_WEEKS_LETTERS": "Pythefnos",
+      "FOUR_WEEKS_LETTERS": "4 wythnos",
+      "MONTH_UPPER_CASE": "Mis",
       "WEEK_LOWER_CASE": "wythnos",
       "WEEKS_LOWER_CASE": "wythnos",
       "MONTH_LOWER_CASE": "mis",
@@ -486,6 +488,99 @@
       "PAGE_TITLE": "Contact claimant",
       "PHONE": "Rhif ffôn"
     },
+    "COOKIES": {
+      "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",
+      "ANALYTICS_COOKIE_OPTIONS": {
+        "HEADING": "Allow cookies that measure website use?",
+        "ON_OPTION": "Use cookies that measure my website use",
+        "OFF_OPTION": "Do not use cookies that measure my website use"
+      },
+      "BULLET_LIST1": {
+        "FIRST": "store your cookie preferences",
+        "SECOND": "measure how you use the service so it can be improved"
+      },
+      "BULLET_LIST007": [
+        "store your cookie preferences",
+        "measure how you use the service so it can be improved"
+      ],
+      "BULLET_LIST2": {
+        "FIRST": "Site performance",
+        "SECOND": "Website usage",
+        "THIRD": "User behaviour"
+      },
+      "COOKIE_DETAILS1": {
+        "GA": {
+          "NAME": "_ga",
+          "PURPOSE": "This helps us count how many people visit the service by tracking if you’ve visited before",
+          "EXPIRES": "2 years"
+        },
+        "GID": {
+          "NAME": "_gid",
+          "PURPOSE": "Identifies you to the service",
+          "EXPIRES": "24 hours"
+        },
+        "GAT": {
+          "NAME": "_gat",
+          "PURPOSE": "Manages the rate at which page view requests are made",
+          "EXPIRES": "10 minutes"
+        }
+      },
+      "COOKIE_DETAILS2": {
+        "DTCOOKIE": {
+          "NAME": "dtCookie",
+          "PURPOSE": "Tracks a visit across multiple request",
+          "EXPIRES": "Session end"
+        },
+        "DTLATC": {
+          "NAME": "dtLatC",
+          "PURPOSE": "Measures server latency for performance monitoring",
+          "EXPIRES": "Session end"
+        },
+        "DTPC": {
+          "NAME": "dtPC",
+          "PURPOSE": "Required to identify proper endpoints for beacon transmission; includes session ID for correlation",
+          "EXPIRES": "Session end"
+        },
+        "DTSA": {
+          "NAME": "dtSa",
+          "PURPOSE": "Intermediate store for page-spanning actions",
+          "EXPIRES": "Session end"
+        },
+        "RXVISITOR": {
+          "NAME": "rxVisitor",
+          "PURPOSE": "Visitor ID to correlate sessions",
+          "EXPIRES": "1 year"
+        },
+        "RXVT": {
+          "NAME": "rxvt",
+          "PURPOSE": "Session timeout",
+          "EXPIRES": "Session end"
+        }
+      },
+      "COOKIES_EXPLANATION1": "Cookies are files saved on your phone, tablet or computer when you visit a website. Most websites need cookies to work properly",
+      "COOKIES_EXPLANATION2": "This service uses cookies to:",
+      "COOKIES_EXPLANATION3": "We use Google Analytics software to collect information about how you use this service. We do this to help make sure the service is meeting the needs of its users and to help us make improvements. We do not allow Google to use or share the data about how you use this site.",
+      "COOKIES_EXPLANATION4": "We use Dynatrace Software Intelligence Platform to provide an Application Performance Monitoring Service to collect information about how you use HMCTS services. We do this to monitor HMCTS services in order to resolve issues within our services as well as collect data on how our services can be improved. HMCTS store information about:",
+      "COOKIES_EXPLANATION5": "Information is presented within the Application Performance Monitoring service for the purposes detailed above. We do not use or share the information for any other purpose. We do not allow Dynatrace to use or share the information for any other purposes.",
+      "COOKIES_EXPLANATION6": "These essential cookies do things like making the service more secure. They always need to be on.",
+      "COOKIE_SETTINGS_SAVED": "Your cookie settings were saved",
+      "EXPIRES": "Expires",
+      "FIND_MORE_ABOUT_COOKIES": "Find out more about essential cookies",
+      "HEADING1": "How cookies are used in this service",
+      "XXX": ["BIR", "IKI", "UC"],
+      "NAME": "Name",
+      "PERFORMANCE_COOKIE_OPTIONS": {
+        "HEADING": "Allow cookies that measure website application performance monitoring?",
+        "ON_OPTION": "Use cookies that measure website application performance monitoring",
+        "OFF_OPTION": "DDo not cookies that measure website application performance monitoring"
+      },
+      "PURPOSE": "Purpose",
+      "SUBHEADING1": "To measure website usage",
+      "SUBHEADING2": "Cookie details",
+      "SUBHEADING3": "To measure application performance",
+      "SUBHEADING4": "Essential cookies",
+      "TITLE": "Cookies"
+    },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
       "CLAIM_NUMBER": "Rhif yr hawliad",
@@ -566,7 +661,7 @@
       "PAGE_TITLE": "A oes gennych anabledd?",
       "TITLE": "A oes gennych anabledd?"
     },
-    "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES" : {
+    "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect ooooof ",
       "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a number related to a different claim. If you don’t have a Help with Fees number for this claim, please follow the instructions below.",
       "PARAGRAPH2": "If you need to use the paper Help with Fees application rather than the online version, you will not be able to use Online Civil Money Claims to issue your claim.",
@@ -576,7 +671,7 @@
       "THIS_CLAIM": "THIS CLAIM",
       "TITLE": "Apply For Help With Fees"
     },
-    "ELIGIBILITY_CLAIMANT_ADDRESS" : {
+    "ELIGIBILITY_CLAIMANT_ADDRESS": {
       "PAGE_TITLE": "Do you have a postal address in the UK?",
       "TITLE": "Do you have a postal address in the UK?",
       "UK_MADE_UP": "The UK is made up of England and Wales."
@@ -603,7 +698,7 @@
       "TITLE": "Do you believe the person you’re claiming against is 18 or over?",
       "YES": "Yes"
     },
-    "ELIGIBILITY_HELP_WITH_FEES" : {
+    "ELIGIBILITY_HELP_WITH_FEES": {
       "PAGE_TITLE": "Do you need help paying your court fee?",
       "TITLE": "Do you need help paying your court fee?",
       "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits."
@@ -708,16 +803,33 @@
       "TITLE": "Briefly explain why you can't pay immediately"
     },
     "FINANCIAL_DETAILS": {
-      "ASK_DETAILS_AND_SEND" : "Byddwn yn eich gofyn am y manylion ac yna byddwn yn eu hanfon at {{ applicant1Details }} i’w hadolygu.",
-      "GET_APPLICANT_CONTACT_DETAILS" : "Get {{ applicant1Details }} 's contact details.",
+      "ASK_DETAILS_AND_SEND": "Byddwn yn eich gofyn am y manylion ac yna byddwn yn eu hanfon at {{ applicant1Details }} i’w hadolygu.",
+      "GET_APPLICANT_CONTACT_DETAILS": "Get {{ applicant1Details }} 's contact details.",
       "NEED_GIVE_DETAILS": "Mae arnoch angen rhoi eich manylion ariannol i {{ applicant1Details }}.",
       "PAGE_TITLE": "Your financial details",
-      "SEND_STATEMENT_ACCOUNTS" : "'You need to send ' {{ applicant1Details }} your company or organisation's most recent statement of accounts.",
+      "SEND_STATEMENT_ACCOUNTS": "'You need to send ' {{ applicant1Details }} your company or organisation's most recent statement of accounts.",
       "SEND_FINANCIAL_DETAILS": "Anfonwch eich manylion ariannol at {{ applicant1Details }}.",
-      "REJECT_PAY_SOONER" : "Gallant wrthod eich cynnig os ydynt yn credu y gallwch dalu’n gynt.",
-      "REJECT_COURT_MAKE_NEW_PLAN" : "Os byddant yn gwrthod eich cynnig, bydd y llys yn llunio cynllun newydd gan ddefnyddio eich manylion ariannol.",
-      "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
-      "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
+      "REJECT_PAY_SOONER": "Gallant wrthod eich cynnig os ydynt yn credu y gallwch dalu’n gynt.",
+      "REJECT_COURT_MAKE_NEW_PLAN": "Os byddant yn gwrthod eich cynnig, bydd y llys yn llunio cynllun newydd gan ddefnyddio eich manylion ariannol.",
+      "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN": "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
+      "REJECT_COURT_MAKE_NEW_PLAN_BASED": "If they reject your plan, the court will make a new plan based on your financial details."
+    },
+    "FIRST_CONTACT_SIGNPOSTING": {
+      "SUBTITLE": "If you don't respond",
+      "TITLE": "Respond to a money claim",
+      "PAGE_TITLE": "Respond to a money claim",
+      "PARAGRAPH_1": "You have 19 days to respond to the claim from the date the court issued it.",
+      "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
+      "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
+      "PARAGRAPH_4_CCJ_URL": "County Court Judgment (CCJ) ",
+      "PARAGRAPH_4_PART_1": "The claimant can apply for a",
+      "PARAGRAPH_4_PART_2": "against you if you don't respond before the deadline.",
+      "PARAGRAPH_5": "They can use a CCJ to get the money from you, for example by applying to the court to send bailiffs to your home or business.",
+      "PARAGRAPH_6": "A CCJ may make it harder to get credit, such as a mobile phone contract, credit card or mortgage.",
+      "START_NOW": "Start now",
+      "SUPPORT": "Support",
+      "SUPPORT_CLAIM_FEES_URL": "Money claim fees ",
+      "SUPPORT_CONTACT_US_URL": "Contact us "
     },
     "FIRST_CONTACT_ACCESS_DENIED": {
       "CLICK_HERE": "Click here to try again",
@@ -743,24 +855,24 @@
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
     },
     "FREE_TELEPHONE_MEDIATION": {
-      "AUTOMATICALLY_REGISTERED" : "Rydym wedi eich cofrestru’n awtomatig i gael gwasanaeth cyfryngu dros y ffôn am ddim gan Gwasanaeth Llysoedd a Thribiwnlysoedd EM.",
-      "CLAIMANT_MUST_AGREE" : "Rhaid i’r hawlydd gytuno i’r cyfryngu. Byddwn yn cysylltu â chi o fewn 28 diwrnod ar ôl cael cadarnhad gan yr hawlydd i drefnu apwyntiad am ddim.",
+      "AUTOMATICALLY_REGISTERED": "Rydym wedi eich cofrestru’n awtomatig i gael gwasanaeth cyfryngu dros y ffôn am ddim gan Gwasanaeth Llysoedd a Thribiwnlysoedd EM.",
+      "CLAIMANT_MUST_AGREE": "Rhaid i’r hawlydd gytuno i’r cyfryngu. Byddwn yn cysylltu â chi o fewn 28 diwrnod ar ôl cael cadarnhad gan yr hawlydd i drefnu apwyntiad am ddim.",
       "DO_NOT_AGREE_TO_FREE_MEDIATION": "Nid wyf yn cytuno i gyfryngu am ddim",
-      "EITHER_PARTY_BREAKS_TERMS" : "Os bydd y naill barti neu’r llall yn torri telerau’r cytundeb, gall y parti arall fynd i’r llys i ofyn am ddyfarniad neu wrandawiad.",
-      "FIND_OUT_MORE" : "Rhagor o wybodaeth am y ",
-      "HOW_WORKS" : "Sut mae cyfryngu am ddim yn gweithio",
-      "LAST_LESS_AN_HOUR" : "Ni fydd eich apwyntiad cyfryngu yn para am fwy nag awr.",
-      "MEDIATION_SUCCESSFUL" : "Os yw’r cyfryngu yn llwyddiannus, byddwch yn gwneud cytundeb llafar dros y ffôn. Mae’r cytundeb hwn yn rwymol gyfreithiol, sy’n golygu bod rhaid i chi gydymffurfio ag ef. Byddwch yn cael gwybod telerau’r cytundeb mewn dogfen - gelwir hyn yn gytundeb setlo.",
+      "EITHER_PARTY_BREAKS_TERMS": "Os bydd y naill barti neu’r llall yn torri telerau’r cytundeb, gall y parti arall fynd i’r llys i ofyn am ddyfarniad neu wrandawiad.",
+      "FIND_OUT_MORE": "Rhagor o wybodaeth am y ",
+      "HOW_WORKS": "Sut mae cyfryngu am ddim yn gweithio",
+      "LAST_LESS_AN_HOUR": "Ni fydd eich apwyntiad cyfryngu yn para am fwy nag awr.",
+      "MEDIATION_SUCCESSFUL": "Os yw’r cyfryngu yn llwyddiannus, byddwch yn gwneud cytundeb llafar dros y ffôn. Mae’r cytundeb hwn yn rwymol gyfreithiol, sy’n golygu bod rhaid i chi gydymffurfio ag ef. Byddwch yn cael gwybod telerau’r cytundeb mewn dogfen - gelwir hyn yn gytundeb setlo.",
       "MEDIATION_IS_CONFIDENTIAL": "Mae cyfryngu yn gwbl gyfrinachol ac ni fydd unrhyw beth a ddywedir yn ystod y cyfryngu yn cael ei ddefnyddio mewn achos llys os na fydd modd setlo’r anghydfod. Bydd y cyfryngwr yn siarad â’r ddau barti ar wahân; nid galwad ffôn cynhadledd ydyw.",
-      "MEDIATION_FAILS" : "Os bydd y cyfryngu yn methu a bod angen cynnal gwrandawiad llys, ni ellir cyfeirio at yr hyn a ddigwyddodd yn y cyfryngu yn y llys.",
-      "MEDIATION_QUICKER" : "Gall cyfryngu fod yn gyflymach, yn rhatach ac achosi llai o straen na mynd i’r llys.",
-      "NO_AGREE" : "Nid wyf yn cytuno i gyfryngu am ddim",
-      "NEUTRAL_MEDIATOR_LISTEN" : "Bydd cyfryngwyr hyfforddedig, niwtral o Wasanaeth Llysoedd a Thribiwnlysoedd EM yn gwrando ar eich safbwyntiau ac yn eich helpu i setlo eich anghydfod.",
-      "NO_WAIT_COURT_HEARING" : "Ni fydd rhaid i chi aros yn hirach am wrandawiad llys os byddwch yn dewis cyfryngu.",
-      "OPENS_IN_NEW_TAB" : "gwasanaeth cyfryngu dros y ffôn am ddim (yn agor mewn ffenestr newydd).",
+      "MEDIATION_FAILS": "Os bydd y cyfryngu yn methu a bod angen cynnal gwrandawiad llys, ni ellir cyfeirio at yr hyn a ddigwyddodd yn y cyfryngu yn y llys.",
+      "MEDIATION_QUICKER": "Gall cyfryngu fod yn gyflymach, yn rhatach ac achosi llai o straen na mynd i’r llys.",
+      "NO_AGREE": "Nid wyf yn cytuno i gyfryngu am ddim",
+      "NEUTRAL_MEDIATOR_LISTEN": "Bydd cyfryngwyr hyfforddedig, niwtral o Wasanaeth Llysoedd a Thribiwnlysoedd EM yn gwrando ar eich safbwyntiau ac yn eich helpu i setlo eich anghydfod.",
+      "NO_WAIT_COURT_HEARING": "Ni fydd rhaid i chi aros yn hirach am wrandawiad llys os byddwch yn dewis cyfryngu.",
+      "OPENS_IN_NEW_TAB": "gwasanaeth cyfryngu dros y ffôn am ddim (yn agor mewn ffenestr newydd).",
       "PAGE_TITLE": "Free telephone mediation",
-      "REACHING_SETTLEMENT" : "Setlo’r anghydfod",
-      "TITLE" : "Gwasanaeth cyfryngu dros y ffôn am ddim"
+      "REACHING_SETTLEMENT": "Setlo’r anghydfod",
+      "TITLE": "Gwasanaeth cyfryngu dros y ffôn am ddim"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
@@ -833,27 +945,27 @@
       },
       "CLAIM_BY_PAPER": "You can also claim by paper. ",
       "CLAIM_ON_BEHALF": {
-        "CURRENTLY_SERVICE" : "This service is currently for claimants representing themselves.",
+        "CURRENTLY_SERVICE": "This service is currently for claimants representing themselves.",
         "COMPLETE_RETURN": ", complete and return it to make your claim.",
         "DOWNLOAD_PAPER_LINK": "download a paper form",
-        "LEGAL_REPRESENTATIVE" : "If you’re a legal representative ",
+        "LEGAL_REPRESENTATIVE": "If you’re a legal representative ",
         "MCOL_LINK": "use the Money Claim Online (MCOL) service",
         "OR": " or "
       },
       "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "DEFENDANT_ADDRESS": {
         "AND": "and",
-        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES":"You can only use this service to claim against a person or organisation with an address in England or Wales.",
+        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES": "You can only use this service to claim against a person or organisation with an address in England or Wales.",
         "COMPLETE_FORMS_AND_RETURN": ". Complete the forms and return them to make your claim.",
         "DOWNLOAD_PAPER_FORM_N1": "Download the paper form N1",
         "FORM_N510": "form N510",
         "USING_PAPER_FORM": "Depending on where you’ll be sending the claim, you might be able to claim using a paper form."
       },
-      "DEFENDANT_UNDER_18" : {
-        "ABOUT_MAKING_CLAIM" : " about making a claim.",
-        "CAN_ONLY_USE" : "You can only use this service to claim against a defendant who’s 18 or over.",
-        "CITIZENS_ADVICE" : "Citizens Advice",
-        "MIGHT_ABLE" : "You might be able to get advice from organisations like "
+      "DEFENDANT_UNDER_18": {
+        "ABOUT_MAKING_CLAIM": " about making a claim.",
+        "CAN_ONLY_USE": "You can only use this service to claim against a defendant who’s 18 or over.",
+        "CITIZENS_ADVICE": "Citizens Advice",
+        "MIGHT_ABLE": "You might be able to get advice from organisations like "
       },
       "CLAIMANT_ADDRESS": {
         "NEED_UK_ADDRESS": "You need to have an address in the UK to make a money claim."
@@ -908,7 +1020,7 @@
       "HOW_MUCH": "Faint ydych chi wedi talu?",
       "PAGE_TITLE": "How much have you paid?",
       "TITLE": "Faint ydych chi wedi ei dalu i’r hawlydd?",
-      "TOTAL_CLAIMED" : "Y cyfanswm a hawlir yw £{{totalClaimAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
+      "TOTAL_CLAIMED": "Y cyfanswm a hawlir yw £{{totalClaimAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
       "WHEN_DID": "Pryd y gwnaethoch dalu’r swm hwn?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
@@ -954,31 +1066,39 @@
       "REGULAR_PAYMENTS": "yn gwneud taliadau rheolaidd i glirio'r taliadau a fethwyd",
       "TOTAL_MONTHLY_REPAYMENTS": "Cyfanswm yr ad-daliadau misol"
     },
+    "PIN": {
+      "CONTACT_US": "contact us",
+      "CHECK_SECURITY_CODE": "Check the security code is the one we sent you. You can",
+      "FIND_PIN": "You can find it on the email or letter we sent you.",
+      "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
+      "SECURITY_CODE": "Security code",
+      "TITLE": "Enter security code"
+    },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your regular expenses"
     },
     "REGULAR_INCOME": {
-      "AMOUNT_RECEIVED" : "Swm a geir",
-      "BUTTON_ADD_SOURCE" : "Ychwanegu ffynhonnell arall o incwm",
-      "CHILD_TAX" : "Credyd Treth Plant",
-      "CHILD_BENEFIT" : "Budd-dal Plant",
+      "AMOUNT_RECEIVED": "Swm a geir",
+      "BUTTON_ADD_SOURCE": "Ychwanegu ffynhonnell arall o incwm",
+      "CHILD_TAX": "Credyd Treth Plant",
+      "CHILD_BENEFIT": "Budd-dal Plant",
       "COUNCIL_TAX": "Cefnogaeth Treth Cyngor",
-      "INCOME_JOB" : "Incwm o’ch swydd",
-      "INCOME_SUPPORT" : "Cymhorthdal Incwm",
-      "INCLUDE_WAGES_OVERTIME_COMISSION" : "Dylech gynnwys cyflog, goramser, comisiynau, bonwsau",
-      "JOBSEEKER_ALLOWANCE_INCOME" : "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
-      "JOBSEEKER_ALLOWANCE_CONTRIBUTION" : "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
-      "OTHER" : "Arall",
+      "INCOME_JOB": "Incwm o’ch swydd",
+      "INCOME_SUPPORT": "Cymhorthdal Incwm",
+      "INCLUDE_WAGES_OVERTIME_COMISSION": "Dylech gynnwys cyflog, goramser, comisiynau, bonwsau",
+      "JOBSEEKER_ALLOWANCE_INCOME": "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
+      "JOBSEEKER_ALLOWANCE_CONTRIBUTION": "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
+      "OTHER": "Arall",
       "PAGE_TITLE": "Your regular income",
-      "PENSION" : "Pensiwn",
-      "RECEIVED_EVERY" : "Bob",
-      "REMOVE_INCOME" : "Tynnu'r ffynhonnell incwm hon",
-      "SELECT_ALL_THAT_APPLY" : "Dewiswch bob un sy’n berthnasol. Rhaid i’r wybodaeth rydych yn ei rhoi fod yn wir ac yn gywir.",
-      "SOURCE_INCOME" : "Ffynhonnell o incwm",
-      "TOTAL_MONTHLY" : "Cyfanswm incwm misol:",
-      "UNIVERSAL_CREDIT" : "Credyd Cynhwysol",
-      "WHAT_REGULAR_INCOME" : "Pa incwm rheolaidd ydych chi’n ei gael?",
-      "WORKING_TAX" : "Credyd Treth Gwaith"
+      "PENSION": "Pensiwn",
+      "RECEIVED_EVERY": "Bob",
+      "REMOVE_INCOME": "Tynnu'r ffynhonnell incwm hon",
+      "SELECT_ALL_THAT_APPLY": "Dewiswch bob un sy’n berthnasol. Rhaid i’r wybodaeth rydych yn ei rhoi fod yn wir ac yn gywir.",
+      "SOURCE_INCOME": "Ffynhonnell o incwm",
+      "TOTAL_MONTHLY": "Cyfanswm incwm misol:",
+      "UNIVERSAL_CREDIT": "Credyd Cynhwysol",
+      "WHAT_REGULAR_INCOME": "Pa incwm rheolaidd ydych chi’n ei gael?",
+      "WORKING_TAX": "Credyd Treth Gwaith"
     },
     "REJECT_ALL": {
       "FEE": "Fee",
@@ -990,10 +1110,10 @@
     },
     "REPAYMENT_PLAN": {
       "ADMIT_YOU_OWE": "Rydych yn cyfaddef bod arnoch chi £{{amount}}.",
-      "FIRST_PAYMENT" : "Pryd fyddwch chi’n gwneud y taliad cyntaf?",
-      "FOR_EXAMPLE" : "Er enghraifft, ",
-      "HOW_OFTEN_PAYMENTS" : "Pa mor aml y byddwch chi’n gwneud y taliadau hyn",
-      "LENGTH" : "Hyd y cynllun ad-dalu",
+      "FIRST_PAYMENT": "Pryd fyddwch chi’n gwneud y taliad cyntaf?",
+      "FOR_EXAMPLE": "Er enghraifft, ",
+      "HOW_OFTEN_PAYMENTS": "Pa mor aml y byddwch chi’n gwneud y taliadau hyn",
+      "LENGTH": "Hyd y cynllun ad-dalu",
       "PAGE_TITLE": "Your repayment plan",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
@@ -1040,8 +1160,8 @@
       "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "SELF_EMPLOYED": {
-      "ANNUAL" : "Trosiant blynyddol",
-      "JOB_TITLE" : "Teitl swydd",
+      "ANNUAL": "Trosiant blynyddol",
+      "JOB_TITLE": "Teitl swydd",
       "PAGE_TITLE": "Self employment details",
       "TITLE": "Mewn pa fodd ydych chi’n hunangyflogedig?"
     },
@@ -1111,13 +1231,13 @@
       "TITLE": "Vulnerability Questions"
     },
     "WHO_EMPLOYS_YOU": {
-      "ADD_ANOTHER_JOB" : "Ychwanegu swydd arall",
+      "ADD_ANOTHER_JOB": "Ychwanegu swydd arall",
       "PAGE_TITLE": "Your employer",
-      "WHO_EMPLOYS" : "Pwy sy’n eich cyflogi"
+      "WHO_EMPLOYS": "Pwy sy’n eich cyflogi"
     },
-    "EMPLOYER" : {
-      "EMPLOYER_NAME" : "Enw’r cyflogwr",
-      "JOB_TITLE" : "Teitl swydd"
+    "EMPLOYER": {
+      "EMPLOYER_NAME": "Enw’r cyflogwr",
+      "JOB_TITLE": "Teitl swydd"
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
@@ -1155,6 +1275,8 @@
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
+    "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
+    "ENTER_SECURITY_CODE": "Enter your security code",
     "EQUAL_INSTALMENTS_REQUIRED": "Rhowch swm dilys i'w dalu fesul rhan",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
@@ -1170,6 +1292,7 @@
     "QUESTION_1_REQUIRED": "1. Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
     "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
+    "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
