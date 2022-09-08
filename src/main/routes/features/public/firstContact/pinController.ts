@@ -38,7 +38,6 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: express.Request, res: expr
     const pinForm = new GenericForm(new PinType(pin));
     await pinForm.validate();
     if (pinForm.hasErrors()) {
-      // const isPinEmpty = req.body.pin ? true : false;
       renderView(pinForm, !!req.body.pin, res);
     } else {
       if (response.status === 401) {
