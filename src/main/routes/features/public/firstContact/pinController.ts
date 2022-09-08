@@ -18,15 +18,16 @@ const pinViewPath = 'features/public/firstContact/pin';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-function renderView(pinForm: GenericForm<PinType>, res: express.Response): void {
+function renderView(pinForm: GenericForm<PinType>, isPinEmpty: boolean, res: express.Response): void {
   const form = Object.assign(pinForm);
   form.option = pinForm.model.pin;
+  form.isPinEmpty = isPinEmpty;
   res.render(pinViewPath, { form });
 }
 
 pinController.get(FIRST_CONTACT_PIN_URL, (req: express.Request, res: express.Response) => {
   const pinForm = new GenericForm(new PinType(req.body.pin));
-  renderView(pinForm, res);
+  renderView(pinForm, false, res);
 });
 
 pinController.post(FIRST_CONTACT_PIN_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -37,7 +38,8 @@ pinController.post(FIRST_CONTACT_PIN_URL, async (req: express.Request, res: expr
     const pinForm = new GenericForm(new PinType(pin));
     await pinForm.validate();
     if (pinForm.hasErrors()) {
-      renderView(pinForm, res);
+      // const isPinEmpty = req.body.pin ? true : false;
+      renderView(pinForm, !!req.body.pin, res);
     } else {
       if (response.status === 401) {
         return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
