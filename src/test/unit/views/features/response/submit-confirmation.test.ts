@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/cy';
 import {app} from '../../../../../main/app';
 import {mockRedisFullAdmission} from '../../../../utils/mockDraftStore';
-import {RESPONSE_SUBMIT_URL} from '../../../../../main/routes/urls';
+import {CONFIRMATION_URL} from '../../../../../main/routes/urls';
 import {formatDateToFullDate} from '../../../../../main/common/utils/dateUtils';
 import * as externalURLs from '../../../../utils/externalURLs';
 
@@ -28,7 +28,7 @@ describe('Submit Confirmation View', () => {
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockRedisFullAdmission;
-      const response = await request(app).get(RESPONSE_SUBMIT_URL);
+      const response = await request(app).get(CONFIRMATION_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });

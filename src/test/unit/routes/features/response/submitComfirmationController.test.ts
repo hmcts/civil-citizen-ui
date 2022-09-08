@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {RESPONSE_SUBMIT_URL} from '../../../../../main/routes/urls';
+import {CONFIRMATION_URL} from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -20,7 +20,7 @@ describe('Submit confirmation controller', () => {
     it('should return submit confirmation from claim', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .get(RESPONSE_SUBMIT_URL)
+        .get(CONFIRMATION_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('You&#39;ve submitted your response');
@@ -30,7 +30,7 @@ describe('Submit confirmation controller', () => {
     it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(RESPONSE_SUBMIT_URL)
+        .get(CONFIRMATION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
         });

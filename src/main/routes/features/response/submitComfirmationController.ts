@@ -1,13 +1,13 @@
 import * as express from 'express';
 import {getSubmitConfirmationContent} from '../../../services/features/response/submitConfirmation/submitConfirmationService';
-import {RESPONSE_SUBMIT_URL} from '../../urls';
+import {CONFIRMATION_URL} from '../../urls';
 import {getClaimById} from '../../../modules/utilityService';
 import {getLng} from '../../../common/utils/languageToggleUtils';
 
 const submitComfirmationViewPath = 'features/response/submit-confirmation';
 const submitComfirmationController = express.Router();
 
-submitComfirmationController.get(RESPONSE_SUBMIT_URL, async (req, res, next: express.NextFunction) => {
+submitComfirmationController.get(CONFIRMATION_URL, async (req, res, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;

@@ -1083,7 +1083,7 @@
       "GET_FINANCIAL_DETAILS": "Get {{ claimantName }}’s financial details.",
       "GO_TO_ACCOUNT": "Go to your account",
       "IF_CLAIMANT_ACCEPTS_OFFER": "If {{ claimantName }} accepts your offer",
-      "IF_CLAIMANT_REJECTS_OFFER": "If {{ claimantName }} accepts your offer",
+      "IF_CLAIMANT_REJECTS_OFFER": "If {{ claimantName }} rejects your offer",
       "PAGE_TITLE": "Submit Confirmation",
       "REQUEST_CCJ_AGAINST_YOU": "request a County Court Judgment against you",
       "SIGN_SETTLEMENT_AGREEMENT": "ask you to sign a settlement agreement to formalise the repayment plan",
