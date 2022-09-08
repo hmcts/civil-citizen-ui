@@ -20,10 +20,10 @@ describe('Send your response by email View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
+  let mainWrapper: any;
   let paragraphs: HTMLCollection;
 
   const mockId = '5129';
-
   CivilClaimResponseMock.case_data.respondent1ResponseDeadline = '2022-01-01';
 
   beforeEach(() => {
@@ -33,7 +33,6 @@ describe('Send your response by email View', () => {
   });
 
   describe('on GET', () => {
-
     beforeEach(async () => {
       nock('http://localhost:4000')
         .get(`/cases/${mockId}`)
@@ -41,11 +40,12 @@ describe('Send your response by email View', () => {
       const response = await request(app).get(DEFENDANT_SUMMARY_URL.replace(':id', mockId));
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
-      paragraphs = htmlDocument.getElementsByClassName(govukBodyClass);
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
+      paragraphs = mainWrapper.getElementsByClassName(govukBodyClass);
     });
 
     it('should display title and description', () => {
-      const headers = htmlDocument.getElementsByClassName('govuk-heading-m');
+      const headers = mainWrapper.getElementsByClassName('govuk-heading-m');
       expect(headers[0].innerHTML).toContain('Mr. Jan Clark v Version 1');
       expect(paragraphs[0].innerHTML).toContain('Claim number:');
       expect(paragraphs[0].innerHTML).toContain('000MC009');
@@ -84,21 +84,21 @@ describe('Send your response by email View', () => {
     describe('Latest Update tab', () => {
       describe('Response to claim section', () => {
         it('should have a title', () => {
-          const titles = htmlDocument.getElementsByClassName('govuk-heading-m');
+          const titles = mainWrapper.getElementsByClassName('govuk-heading-m');
           expect(titles[1].innerHTML).toContain("You haven't responded to this claim");
         });
       });
 
       it('should have section content paragraph for past the deadline', () => {
-        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        const paragraphs = mainWrapper.getElementsByClassName('govuk-body');
         expect(paragraphs[0].innerHTML).toContain("You haven't responded to the claim. Mr. Jan Clark can now ask for a County Court Judgement against you.");
         expect(paragraphs[1].innerHTML).toContain('A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.');
         expect(paragraphs[2].innerHTML).toContain('You can still respond to the claim before they ask for a judgment.');
       });
 
       it('should have a link to respond to claim', () => {
-        const links = htmlDocument.getElementsByClassName('govuk-link');
-        const sectionLink = links[2] as HTMLAnchorElement;
+        const links = mainWrapper.getElementsByClassName('govuk-link');
+        const sectionLink = links[0] as HTMLAnchorElement;
         expect(sectionLink.innerHTML).toContain('Respond to claim');
         expect(sectionLink.href).toEqual(CLAIM_TASK_LIST_URL.replace(':id', mockId));
       });

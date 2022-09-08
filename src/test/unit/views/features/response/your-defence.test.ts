@@ -29,7 +29,7 @@ describe('your defence View', () => {
       const response = await request(app).get(RESPONSE_YOUR_DEFENCE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
-      paragraphs = htmlDocument.getElementsByClassName(govukBodyClass);
+      paragraphs = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0].getElementsByClassName(govukBodyClass);
     });
 
     it('should have correct page title', () => {
