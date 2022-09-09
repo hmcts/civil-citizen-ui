@@ -20,6 +20,7 @@ describe('Signposting View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: any;
     beforeEach(async () => {
       nock(idamUrl)
         .post('/o/token')
@@ -27,6 +28,7 @@ describe('Signposting View', () => {
       const response = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have correct page title', () => {
@@ -39,7 +41,7 @@ describe('Signposting View', () => {
     });
 
     it('should display paragraph', () => {
-      const body = htmlDocument.getElementsByClassName('govuk-body');
+      const body = mainWrapper.getElementsByClassName('govuk-body');
       expect(body[0].innerHTML).toContain(t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.CLAIMING_AS_HEADER'));
     });
 
@@ -57,7 +59,7 @@ describe('Signposting View', () => {
     });
 
     it('should display save and continue button', () => {
-      const button = htmlDocument.getElementsByClassName('govuk-button')[0];
+      const button = mainWrapper.getElementsByClassName('govuk-button')[0];
       expect(button.innerHTML).toContain('Save and continue');
     });
 

@@ -21,6 +21,9 @@ const redirect = (counterpartyType: CounterpartyType, res: express.Response) => 
     case CounterpartyType.ORGANISATION:
       res.redirect(CLAIMANT_ORGANISATION_DETAILS_URL);
       break;
+    default:
+      res.render('not-found');
+      break;
   }
 };
 
