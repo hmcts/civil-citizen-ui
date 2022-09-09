@@ -6,3 +6,4 @@ export const citizenAdviceContactUsUrl = 'https://www.citizensadvice.org.uk/abou
 export const governmentDepartmentsUrl = 'https://www.gov.uk/government/publications/serve-the-treasury-solicitor-with-legal-proceedings';
 export const tenancyServiceUrl = 'https://www.gov.uk/tenancy-deposit-protection/disputes-and-problems';
 export const feesHelpUri = 'https://www.gov.uk/get-help-with-court-fees';
+export const smartSurveyUrl = 'https://www.smartsurvey.co.uk';
