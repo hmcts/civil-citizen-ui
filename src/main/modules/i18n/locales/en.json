@@ -33,7 +33,7 @@
     "BUTTONS": {
       "BACK": "Back",
       "CONTINUE": "Continue",
-      "READ_CONFIRMATION": "I confirm I've read this",
+      "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE_AND_CONTINUE": "Save and continue",
       "START_AGAIN": "Start again",
@@ -495,6 +495,13 @@
       "TRY_AGAIN": "Try again or enter the address manually.",
       "UK_POSTCODE": "Enter a UK postcode",
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
+    },
+    "COMPLETING_CLAIM": {
+      "ADD_INFORMATION": "add information that significantly change your claim",
+      "CHANGE_THE_BASIS": "change the basis of your claim - for example, saying goods were undelivered instead of faulty",
+      "CHANGE_THE_NAME": "change the name of anyone involved with the claim",
+      "PAGE_TITLE": "Get the details right",
+      "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
     },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
@@ -1137,7 +1144,7 @@
       "WE_CONTACT_YOU": "We’ll contact you when they respond.",
       "WHAT_HAPPENS_NEXT": "What happens next",
       "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
-      "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either", 
+      "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either",
       "YOUR_OPINION_OF_SERVICE": "What did you think of this service?"
     },
     "TASK_LIST": {

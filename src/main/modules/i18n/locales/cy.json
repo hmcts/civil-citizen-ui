@@ -33,7 +33,7 @@
     "BUTTONS": {
       "BACK": "Back",
       "CONTINUE": "Parhau",
-      "READ_CONFIRMATION": "I confirm I've read this",
+      "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "START_AGAIN": "Start again",
@@ -495,6 +495,13 @@
       "TRY_AGAIN": "Try again or enter the address manually.",
       "UK_POSTCODE": "Rhowch god post yn y DU",
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
+    },
+    "COMPLETING_CLAIM": {
+      "ADD_INFORMATION": "add information that significantly change your claim",
+      "CHANGE_THE_BASIS": "change the basis of your claim - for example, saying goods were undelivered instead of faulty",
+      "CHANGE_THE_NAME": "change the name of anyone involved with the claim",
+      "PAGE_TITLE": "Get the details right",
+      "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
     },
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
