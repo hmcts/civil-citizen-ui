@@ -9,7 +9,6 @@ const DIRECTIONS_QUESTIONNAIRE_URL = `${BASE_CASE_URL}/directions-questionnaire`
 const FULL_REJECTION_URL = `${BASE_CASE_RESPONSE_URL}/full-rejection`;
 const PARTIAL_ADMISSION_URL = `${BASE_CASE_RESPONSE_URL}/partial-admission`;
 const FULL_ADMISSION_URL = `${BASE_CASE_RESPONSE_URL}/full-admission`;
-const BASE_CLAIM_URL = '/claim';
 export const CALLBACK_URL = '/oauth2/callback';
 export const SIGN_IN_URL = '/login';
 export const SIGN_OUT_URL = '/logout';
