@@ -14,8 +14,8 @@ import {
 
 jest.mock('../../../../../../main/modules/oidc');
 
-describe('Signposting Controller', () => {
-  // TODO: remove this once paths become publicly available as mocking the response token will not be needed
+describe('Claim Party Type Controller', () => {
+  // TODO: Upadate test after refactoring controller to get and save to DraftStore
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 

@@ -28,6 +28,7 @@ const redirect = (counterpartyType: CounterpartyType, res: express.Response) => 
 };
 
 claimantPartyTypeController.get(CLAIMANT_PARTY_TYPE_SELECTION_URL, (req: express.Request, res: express.Response) => {
+  // TODO: get from DraftStore
   const claimantPartyType = req.cookies.claim_issue_journey ? req.cookies.claim_issue_journey.claimantPartyType : null;
   const form = new GenericForm(new ClaimantPartyTypeSelection(claimantPartyType));
   res.render(claimantPartyTypeViewPath, {form});
@@ -40,8 +41,10 @@ claimantPartyTypeController.post(CLAIMANT_PARTY_TYPE_SELECTION_URL, async (req: 
   if (form.hasErrors()) {
     res.render(claimantPartyTypeViewPath, {form});
   } else {
+    // TODO: save to DraftStore
     const cookie = req.cookies['claim_issue_journey'] ? req.cookies['claim_issue_journey'] : {};
     cookie.claimantPartyType = req.body.option;
+
     res.cookie('claim_issue_journey', cookie);
     redirect(form.model.option, res);
   }
