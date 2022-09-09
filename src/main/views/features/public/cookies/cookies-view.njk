@@ -3,7 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
-
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/external-link.njk" import externalLink %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
@@ -19,8 +19,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+        <div class="govuk-grid-column-two-thirds"> 
           {% set html %}
           <p class="govuk-notification-banner__heading">{{ t('PAGES.COOKIES.COOKIE_SETTINGS_SAVED') }}</p>
           <p class="govuk-body">{{ t('PAGES.COOKIES.ADDITIONAL_COOKIES') }}</p>
@@ -29,7 +28,6 @@
               {{ t('COMMON.GO_TO_HOMEPAGE') }}</a>.
             </p>
           {% endset %}
-
           {% if isSavedPreferencesBannerDisplayed %}
             {{ govukNotificationBanner({
               type: "success",
@@ -43,7 +41,7 @@
               <li>{{ t('PAGES.COOKIES.BULLET_LIST1.FIRST') }}</li>
               <li>{{ t('PAGES.COOKIES.BULLET_LIST1.SECOND') }}</li>
             </ul>
-            <h2 class="govuk-heading-m">{{ t('PAGES.COOKIES.HEADING1') }}</h2>
+            <h2 class="govuk-heading-m">{{ t('PAGES.COOKIES.HEADING') }}</h2>
             <h3 class="govuk-heading-s">{{ t('PAGES.COOKIES.SUBHEADING1') }}</h3>
             <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION3') }}</p>
             {% set tableRows = [] %}
@@ -71,7 +69,6 @@
                 }],
                 rows: tableRows
             }) }}
-
             <form method="post" novalidate>
               {{ csrfProtection(csrf) }}
               {{ govukRadios({
@@ -102,7 +99,6 @@
                 <li>{{ t('PAGES.COOKIES.BULLET_LIST2.THIRD') }}</li>
               </ul>
               <p class="govuk-body">{{ t('PAGES.COOKIES.COOKIES_EXPLANATION5') }}</p>
-
               {% set tableRows = [] %}
               {% for row in content.cookieDetailsTableData2 %}
                 {% set _ = tableRows.push([
@@ -115,7 +111,6 @@
                   }
                 ]) %}
               {% endfor %}
-
               {{ govukTable({
                 caption: t('PAGES.COOKIES.SUBHEADING2'),
                 captionClasses: "govuk-table__caption--s",
@@ -145,7 +140,7 @@
                     checked: true if cookiePreferences.apm == 'on' else false
                   }, {
                     value: 'off',
-                    text: t('PAGES.COOKIES.PERFORMANCE_COOKIE_OPTIONS.ON_OPTION'),
+                    text: t('PAGES.COOKIES.PERFORMANCE_COOKIE_OPTIONS.OFF_OPTION'),
                     checked: true if cookiePreferences.apm == 'off' else false
                   }]
               }) }}
@@ -158,7 +153,6 @@
                   text: t('COMMON.BUTTONS.SAVE')
                 }) }}
                 {{ contactUsForHelp(t) }}
-
               </div>
             </form>
           </div>
@@ -166,3 +160,4 @@
       </main>
     </div>
   {% endblock %}
+  

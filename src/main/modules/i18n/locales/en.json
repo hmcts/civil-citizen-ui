@@ -499,10 +499,6 @@
         "FIRST": "store your cookie preferences",
         "SECOND": "measure how you use the service so it can be improved"
       },
-      "BULLET_LIST007": [
-        "store your cookie preferences",
-        "measure how you use the service so it can be improved"
-      ],
       "BULLET_LIST2": {
         "FIRST": "Site performance",
         "SECOND": "Website usage",
@@ -566,13 +562,12 @@
       "COOKIE_SETTINGS_SAVED": "Your cookie settings were saved",
       "EXPIRES": "Expires",
       "FIND_MORE_ABOUT_COOKIES": "Find out more about essential cookies",
-      "HEADING1": "How cookies are used in this service",
-      "XXX": ["BIR", "IKI", "UC"],
+      "HEADING": "How cookies are used in this service",
       "NAME": "Name",
       "PERFORMANCE_COOKIE_OPTIONS": {
         "HEADING": "Allow cookies that measure website application performance monitoring?",
         "ON_OPTION": "Use cookies that measure website application performance monitoring",
-        "OFF_OPTION": "DDo not cookies that measure website application performance monitoring"
+        "OFF_OPTION": "Do not cookies that measure website application performance monitoring"
       },
       "PURPOSE": "Purpose",
       "SUBHEADING1": "To measure website usage",
