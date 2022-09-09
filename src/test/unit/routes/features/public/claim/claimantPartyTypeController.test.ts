@@ -33,28 +33,28 @@ describe('Signposting Controller', () => {
     });
 
     it('should render claimant party type selection page with set cookie value as INDIVIDUAL', async () => {
-      app.request['cookies'] = {'claim_issue': { claimantPartyType: CounterpartyType.INDIVIDUAL}};
+      app.request['cookies'] = {'claim_issue_journey': { claimantPartyType: CounterpartyType.INDIVIDUAL}};
       const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.TITLE'));
     });
 
     it('should render claimant party type selection page with set cookie value as SOLE_TRADER', async () => {
-      app.request['cookies'] = {'claim_issue': { claimantPartyType: CounterpartyType.SOLE_TRADER}};
+      app.request['cookies'] = {'claim_issue_journey': { claimantPartyType: CounterpartyType.SOLE_TRADER}};
       const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.TITLE'));
     });
 
     it('should render claimant party type selection page with set cookie value as COMPANY', async () => {
-      app.request['cookies'] = {'claim_issue': { claimantPartyType: CounterpartyType.COMPANY}};
+      app.request['cookies'] = {'claim_issue_journey': { claimantPartyType: CounterpartyType.COMPANY}};
       const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.TITLE'));
     });
 
     it('should render claimant party type selection page with set cookie value as ORGANISATION', async () => {
-      app.request['cookies'] = {'claim_issue': { claimantPartyType: CounterpartyType.ORGANISATION}};
+      app.request['cookies'] = {'claim_issue_journey': { claimantPartyType: CounterpartyType.ORGANISATION}};
       const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.TITLE'));
@@ -73,7 +73,7 @@ describe('Signposting Controller', () => {
       await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL).send({'option': CounterpartyType.INDIVIDUAL }).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
-        expect(app.request.cookies.claim_issue.claimantPartyType).toBe(CounterpartyType.INDIVIDUAL);
+        expect(app.request.cookies.claim_issue_journey.claimantPartyType).toBe(CounterpartyType.INDIVIDUAL);
       });
     });
 
@@ -81,7 +81,7 @@ describe('Signposting Controller', () => {
       await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL).send({'option': CounterpartyType.SOLE_TRADER }).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(CLAIMANT_SOLE_TRADER_DETAILS_URL);
-        expect(app.request.cookies.claim_issue.claimantPartyType).toBe(CounterpartyType.SOLE_TRADER);
+        expect(app.request.cookies.claim_issue_journey.claimantPartyType).toBe(CounterpartyType.SOLE_TRADER);
       });
     });
 
@@ -89,7 +89,7 @@ describe('Signposting Controller', () => {
       await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL).send({'option': CounterpartyType.COMPANY }).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(CLAIMANT_COMPANY_DETAILS_URL);
-        expect(app.request.cookies.claim_issue.claimantPartyType).toBe(CounterpartyType.COMPANY);
+        expect(app.request.cookies.claim_issue_journey.claimantPartyType).toBe(CounterpartyType.COMPANY);
       });
     });
 
@@ -97,7 +97,7 @@ describe('Signposting Controller', () => {
       await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL).send({'option': CounterpartyType.ORGANISATION }).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(CLAIMANT_ORGANISATION_DETAILS_URL);
-        expect(app.request.cookies.claim_issue.claimantPartyType).toBe(CounterpartyType.ORGANISATION);
+        expect(app.request.cookies.claim_issue_journey.claimantPartyType).toBe(CounterpartyType.ORGANISATION);
       });
     });
   });
