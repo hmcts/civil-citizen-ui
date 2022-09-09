@@ -2,7 +2,7 @@
 
 {% macro cookieBanner(t) %}
   {% set changeLink %}
-    <a class="govuk-link" href="/cookie-policy">{{ t('COMMON.COOKIE_BANNER.CHANGE_LINK') }}</a>
+    <a class="govuk-link" href="/cookies">{{ t('COMMON.COOKIE_BANNER.CHANGE_LINK') }}</a>
   {% endset %}
 
   {% set html %}
@@ -49,7 +49,7 @@
         },
         {
           text: t('COMMON.COOKIE_BANNER.VIEW_COOKIES'),
-          href: '/cookie-policy'
+          href: '/cookies'
         }
       ]
       },
