@@ -135,7 +135,7 @@ describe('Cookies View', () => {
       const links = htmlDocument.getElementsByClassName('govuk-link');
       const essentialCookiesLink = links[2] as HTMLAnchorElement;
       expect(essentialCookiesLink.innerHTML).toContain(t('PAGES.COOKIES.FIND_MORE_ABOUT_COOKIES'));
-      expect(essentialCookiesLink.href).toEqual(externalURLs.essentialCookiesURl);
+      expect(essentialCookiesLink.href).toEqual(externalURLs.essentialCookiesUrl);
     });
 
     it('should have save button', () => {

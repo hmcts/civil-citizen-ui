@@ -950,7 +950,7 @@
       "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "DEFENDANT_ADDRESS": {
         "AND": "and",
-        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES" : "You can only use this service to claim against a person or organisation with an address in England or Wales.",
+        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES":"You can only use this service to claim against a person or organisation with an address in England or Wales.",
         "COMPLETE_FORMS_AND_RETURN": ". Complete the forms and return them to make your claim.",
         "DOWNLOAD_PAPER_FORM_N1": "Download the paper form N1",
         "FORM_N510": "form N510",
