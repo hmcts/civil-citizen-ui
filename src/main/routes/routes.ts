@@ -108,6 +108,7 @@ import accessDeniedController from './features/public/firstContact/accessDeniedC
 import claimReferenceController from './features/public/firstContact/claimReferenceController';
 import pinController from './features/public/firstContact/pinController';
 import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
+import submitComfirmationController from './features/response/submitComfirmationController';
 
 export default [
   homeController,
@@ -206,4 +207,5 @@ export default [
   claimReferenceController,
   pinController,
   firstContactClaimSummaryController,
+  submitComfirmationController,
 ];
