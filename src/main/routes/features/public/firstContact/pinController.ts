@@ -25,7 +25,7 @@ function renderView(pinForm: GenericForm<PinType>, isPinEmpty: boolean, res: exp
   res.render(pinViewPath, { form });
 }
 
-pinController.get(FIRST_CONTACT_PIN_URL, (req: express.Request, res: express.Response) => {
+pinController.get(FIRST_CONTACT_PIN_URL, (req: AppRequest<{pin:string}>, res: express.Response) => {
   const pinForm = new GenericForm(new PinType(req.body.pin));
   renderView(pinForm, false, res);
 });
