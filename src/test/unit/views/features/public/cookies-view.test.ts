@@ -20,6 +20,7 @@ describe('Cookies View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: any;
     beforeEach(async () => {
       nock(idamUrl)
         .post('/o/token')
@@ -27,6 +28,7 @@ describe('Cookies View', () => {
       const response = await request(app).get(COOKIES_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have correct page title', () => {
@@ -39,7 +41,7 @@ describe('Cookies View', () => {
     });
 
     it('should display explantion paragraphs', () => {
-      const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+      const paragraphs = mainWrapper.getElementsByClassName('govuk-body');
       expect(paragraphs[0].innerHTML).toContain(t('PAGES.COOKIES.COOKIES_EXPLANATION1'));
       expect(paragraphs[1].innerHTML).toContain(t('PAGES.COOKIES.COOKIES_EXPLANATION2'));
       expect(paragraphs[2].innerHTML).toContain(t('PAGES.COOKIES.COOKIES_EXPLANATION3'));
@@ -49,7 +51,7 @@ describe('Cookies View', () => {
     });
 
     it('should display subheadings', () => {
-      const headings = htmlDocument.getElementsByClassName('govuk-heading-m');
+      const headings = mainWrapper.getElementsByClassName('govuk-heading-m');
       const subHeadings = htmlDocument.getElementsByClassName('govuk-heading-s');
       expect(headings[0].innerHTML).toContain(t('PAGES.COOKIES.HEADING'));
       expect(subHeadings[0].innerHTML).toContain(t('PAGES.COOKIES.SUBHEADING1'));
@@ -132,8 +134,8 @@ describe('Cookies View', () => {
     });
 
     it('should have hyper link for find out more about essential cookies', () => {
-      const links = htmlDocument.getElementsByClassName('govuk-link');
-      const essentialCookiesLink = links[2] as HTMLAnchorElement;
+      const links = mainWrapper.getElementsByClassName('govuk-link');
+      const essentialCookiesLink = links[0] as HTMLAnchorElement;
       expect(essentialCookiesLink.innerHTML).toContain(t('PAGES.COOKIES.FIND_MORE_ABOUT_COOKIES'));
       expect(essentialCookiesLink.href).toEqual(externalURLs.essentialCookiesUrl);
     });
