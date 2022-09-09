@@ -976,6 +976,14 @@
       "REGULAR_PAYMENTS": "making regular repayments to clear the missed payments",
       "TOTAL_MONTHLY_REPAYMENTS": "Total monthly repayments"
     },
+    "PIN":{
+      "CONTACT_US": "contact us",
+      "CHECK_SECURITY_CODE": "Check the security code is the one we sent you. You can",
+      "FIND_PIN": "You can find it on the email or letter we sent you.",
+      "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
+      "SECURITY_CODE": "Security code",
+      "TITLE": "Enter security code"
+    },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your regular expenses"
     },
@@ -1077,6 +1085,47 @@
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
     },
+    "SUBMIT_CONFIRMATION": {
+      "FA_PAY_BY_DATE": {
+        "BANK_TRANSFERS_CLEAR_IN_THEIR_ACC": "make sure any cheques or bank transfers are clear in their account by the deadline",
+        "CONTACT_THEM": "contact them",
+        "PAY_CLAIMANT_BY_DATE": "pay {{ claimantName }} by {{ paymentDate }}",
+        "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for your payment",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{ claimantName }} your offer to pay by {{ paymentDate }} and your explanation of why you can’t pay before then.",
+        "YOU_SHOULD": "You should"
+      },
+      "FA_PAY_IMMEDIATELY": {
+        "BANK_TRANSFERS_CLEAR_IN_THEIR_ACC": "any cheques or bank transfers are clear in their account by the deadline",
+        "CONTACT_CLAIMANT": "Contact {{ claimantName }}",
+        "IF_NEED_THEIR_DETAILS": " if you need their payment details.",
+        "MAKE_SURE_THAT": "You need to make sure that",
+        "RECEIPT_FOR_PAYMENTS": "you get a receipt for any payments",
+        "THEY_CAN_REQUEST_CCJ": "they get the money by {{ paymentDate }} - they can request a County Court Judgment against you if not",
+        "THEY_CALL_COURT_FOR_YOU_PAID": "they tell the court that you’ve paid",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ll pay immediately."
+      },
+      "FA_PAY_BY_INSTALLMENTS": {
+        "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for each payment",
+        "SETUP_REPAYMENT_PLAN": "set up your repayment plan to begin when you said it would",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ve suggested paying by instalments."
+      },
+      "CLAIM_NUMBER": "Claim number",
+      "COURT_DECIDE_HOW_TO_PAY": "The court will decide how you must pay.",
+      "GET_FINANCIAL_DETAILS": "Get {{ claimantName }}’s financial details.",
+      "GO_TO_ACCOUNT": "Go to your account",
+      "IF_CLAIMANT_ACCEPTS_OFFER": "If {{ claimantName }} accepts your offer",
+      "IF_CLAIMANT_REJECTS_OFFER": "If {{ claimantName }} rejects your offer",
+      "PAGE_TITLE": "Submit Confirmation",
+      "REQUEST_CCJ_AGAINST_YOU": "request a County Court Judgment against you",
+      "SIGN_SETTLEMENT_AGREEMENT": "ask you to sign a settlement agreement to formalise the repayment plan",
+      "SEND_FINANCIAL_DETAILS": "Send your financial details",
+      "SEND_STATEMENT_OF_ACC": "Send {{ claimantName }} your company or organisation’s most recent statement of accounts, if you haven’t already.",
+      "WE_CONTACT_YOU": "We’ll contact you when they respond.",
+      "WHAT_HAPPENS_NEXT": "What happens next",
+      "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
+      "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either", 
+      "YOUR_OPINION_OF_SERVICE": "What did you think of this service?"
+    },
     "TASK_LIST": {
       "PAGE_TITLE": "Your task list",
       "HEADER": "Respond to a money claim",
@@ -1177,6 +1226,8 @@
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
+    "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
+    "ENTER_SECURITY_CODE": "Enter your security code",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
@@ -1192,6 +1243,7 @@
     "QUESTION_1_REQUIRED": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
     "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
+    "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
     "SELECT_AN_OPTION": "Select an option",
     "SELECT_AMOUNT": {
