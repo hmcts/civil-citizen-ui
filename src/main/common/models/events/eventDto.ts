@@ -2,5 +2,9 @@ import {CaseEvent} from './caseEvent';
 
 export interface EventDto {
   event: CaseEvent,
-  caseDataUpdate: Map<string, string>
+  caseDataUpdate?: ClaimUpdate
+}
+
+export interface ClaimUpdate {
+  respondentSolicitor1AgreedDeadlineExtension?:Date;
 }

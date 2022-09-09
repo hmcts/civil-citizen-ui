@@ -4,7 +4,7 @@ import nock from 'nock';
 import config from 'config';
 import {
   FIRST_CONTACT_CLAIM_REFERENCE_URL,
-  FIRST_CONTACT_CLAIM_PIN_URL,
+  FIRST_CONTACT_PIN_URL,
 } from '../../../../../../main/routes/urls';
 import { t } from 'i18next';
 
@@ -60,7 +60,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
       app.request.cookies = {firstContact: {foo: 'blah'}};
       await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(FIRST_CONTACT_CLAIM_PIN_URL);
+        expect(res.header.location).toBe(FIRST_CONTACT_PIN_URL);
         expect(app.request.cookies.firstContact.claimReference).toBe(validClaimNumberV1);
       });
     });

@@ -34,6 +34,7 @@ import {DocumentType} from './document/documentType';
 import {Vulnerability} from '../models/directionsQuestionnaire/vulnerability';
 import {ResponseDeadline} from './responseDeadline';
 import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
+import {ClaimResponseStatus} from './claimResponseStatus';
 
 export class Claim {
   legacyCaseReference: string;
@@ -111,6 +112,10 @@ export class Claim {
 
   isPaymentOptionPayImmediately(): boolean {
     return this.paymentOption === PaymentOptionType.IMMEDIATELY;
+  }
+
+  isPaymentOptionInstalllments(): boolean {
+    return this.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
   isInterestClaimUntilSubmitDate(): boolean {
@@ -214,6 +219,30 @@ export class Claim {
   isDefendantNotResponded(): boolean {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
+
+  isBusiness(): boolean {
+    return this.respondent1?.type === CounterpartyType.COMPANY || this.respondent1?.type === CounterpartyType.ORGANISATION;
+  }
+
+  get responseStatus(): ClaimResponseStatus {
+    if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
+      return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
+    }
+
+    if (this.isFullAdmission() && this.isPaymentOptionInstalllments()) {
+      return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
+    }
+
+    if (this.isFullAdmission() && this.isPaymentOptionBySetDate()) {
+      return ClaimResponseStatus.FA_PAY_BY_DATE;
+    }
+
+    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
+      return ClaimResponseStatus.PA_ALREADY_PAID;
+    }
+    
+  }
+  
 }
 
 export interface Party {
