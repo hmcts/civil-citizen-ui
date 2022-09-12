@@ -458,8 +458,6 @@
       "VIEW_CLAIM": "Gweld yr hawliad"
     },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
-      "TITLE": "About you and this claim",
-      "PAGE_TITLE": "About you and this claim",
       "CLAIMING_AS_HEADER": "I'm claiming as:",
       "CLAIMING_AS_AN_INDIVIDUAL": "An individual",
       "CLAIMING_AS_SOLE_TRADER_OR_SELF_EMPLOYED": "A sole trader or self-employed person",
@@ -468,7 +466,9 @@
       "CLAIMING_FOR_YOURSELF": "You're claiming for yourself",
       "CLAIMING_FOR_EXAMPLE_TRADEPERSON": "For example a tradesperson",
       "CLAIMING_FOR_EXAMPLE_COMPANY": "For example a company that sells goods or services",
-      "CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION": "For example a partnership, trust, charity, club or association"
+      "CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION": "For example a partnership, trust, charity, club or association",
+      "PAGE_TITLE": "About you and this claim",
+      "TITLE": "About you and this claim"
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
