@@ -8,7 +8,6 @@ import {
 import {StatementOfMeans} from '../../../../main/common/models/statementOfMeans';
 import {Disability} from '../../../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../../../main/common/form/models/yesNo';
-import {PartnerDisability} from '../../../../main/common/form/models/statementOfMeans/partner/partnerDisability';
 import {ChildrenDisability} from '../../../../main/common/form/models/statementOfMeans/dependants/childrenDisability';
 import {Dependants} from '../../../../main/common/form/models/statementOfMeans/dependants/dependants';
 import civilClaimResponseApplicantCompany from '../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
@@ -256,7 +255,7 @@ describe('Claim isPartnerDisabled', () => {
   });
   it('should return false with empty partrner disability', () => {
     //Given
-    claim.statementOfMeans.partnerDisability = new PartnerDisability();
+    claim.statementOfMeans.partnerDisability = new GenericYesNo();
     //When
     const result = claim.isPartnerDisabled();
     //Then
