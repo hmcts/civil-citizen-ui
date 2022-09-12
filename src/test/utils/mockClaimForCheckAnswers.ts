@@ -45,7 +45,6 @@ import {HowMuchDoYouOwe} from '../../main/common/form/models/admission/partialAd
 import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {WhyDoYouDisagree} from '../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {PartialAdmission} from '../../main/common/models/partialAdmission';
-import {AlreadyPaid} from '../../main/common/form/models/admission/partialAdmission/alreadyPaid';
 import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/defendantTimeline';
 import {PaymentIntention} from '../../main/common/form/models/admission/partialAdmission/paymentIntention';
 import {FreeMediation} from '../../main/common/form/models/mediation/freeMediation';
@@ -59,6 +58,7 @@ import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem'
 import {DefendantEvidence} from '../../main/common/models/evidence/evidence';
 import {Evidence} from '../../main/common/form/models/evidence/evidence';
 import RejectAllOfClaimType from '../../main/common/form/models/rejectAllOfClaimType';
+import {GenericYesNo} from '../../main/common/form/models/genericYesNo';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -716,7 +716,7 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
   const partialAdmission: PartialAdmission = {
     whyDoYouDisagree: whyDoYouDisagree,
     howMuchDoYouOwe: howMuchDoYouOwe,
-    alreadyPaid: new AlreadyPaid(alreadyPaid || ''),
+    alreadyPaid: new GenericYesNo(alreadyPaid || ''),
     howMuchHaveYouPaid: howMuchHaveYouPaid,
     timeline: defendantTimeline,
     paymentIntention: new PaymentIntention(),
@@ -777,7 +777,7 @@ export const createClaimWithFullRejection = (option: RejectAllOfClaimType, paidA
       text: 'Reasons for disagree',
     },
   };
-  claim.totalClaimAmount = 1000,
+  claim.totalClaimAmount = 1000;
   claim.paymentOption = undefined;
   return claim;
 };
@@ -811,7 +811,7 @@ export const createClaimWithPaymentOption = (responseType: ResponseType, payment
     claim.partialAdmission.paymentIntention.paymentDate = new Date(getDate());
   }
 
-  claim.partialAdmission.alreadyPaid = new AlreadyPaid(YesNo.NO);
+  claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.NO);
 
   claim.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '123456'},
     new FreeMediation(YesNo.YES),
