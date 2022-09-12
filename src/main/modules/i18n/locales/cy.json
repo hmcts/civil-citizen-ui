@@ -575,7 +575,7 @@
       "PERFORMANCE_COOKIE_OPTIONS": {
         "HEADING": "Allow cookies that measure website application performance monitoring?",
         "ON_OPTION": "Use cookies that measure website application performance monitoring",
-        "OFF_OPTION": "Do not cookies that measure website application performance monitoring"
+        "OFF_OPTION": "Do not use cookies that measure website application performance monitoring"
       },
       "PURPOSE": "Purpose",
       "SUBHEADING1": "To measure website usage",
