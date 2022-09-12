@@ -1,5 +1,4 @@
 import {ClaimSummarySection, ClaimSummaryType} from '../../../common/form/models/claimSummarySection';
-import {feesHelpUri} from '../../../../test/utils/externalURLs';
 import {t} from 'i18next';
 import {ELIGIBILITY_HWF_ELIGIBLE_URL, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL, ELIGIBLE_FOR_THIS_SERVICE_URL} from '../../../routes/urls';
 
@@ -25,7 +24,7 @@ export function getYouCanUseHWFEligible(lang: string): ClaimSummarySection[] {
     {
       type: ClaimSummaryType.LINK,
       data: {
-        href: feesHelpUri,
+        href: 'https://www.gov.uk/get-help-with-court-fees',
         textBefore: t('PAGES.YOU_CAN_USE.HWF_ELIGIBLE.PAY_COURT', {lng: lang}),
         text: t('PAGES.YOU_CAN_USE.HWF_ELIGIBLE.HELP_WITH_FEES', {lng: lang}),
         textAfter : '.',

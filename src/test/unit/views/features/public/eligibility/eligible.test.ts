@@ -64,7 +64,7 @@ describe('You can use this service View', () => {
         const links = htmlDocument.getElementsByClassName('govuk-link');
         const helpWithFeesLink = links[2] as HTMLAnchorElement;
         expect(helpWithFeesLink.innerHTML).toContain('Find out more about Help with Fees (opens in a new window)');
-        expect(helpWithFeesLink.href).toEqual(externalURLs.feesHelpUri);
+        expect(helpWithFeesLink.href).toEqual(externalURLs.feesHelpUrl);
       });
 
     });
