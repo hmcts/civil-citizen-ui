@@ -66,7 +66,7 @@ describe('Resolving Dispute View', () => {
 
     it('should display I confirm I\'ve read this button', () => {
       const button = htmlDocument.getElementsByClassName('govuk-button')[0];
-      expect(button.innerHTML).toContain(t('COMMON.BUTTONS.READ_CONFIRMATION'));
+      expect(button.innerHTML).toContain(t('COMMON.BUTTONS.I_CONFIRM_IVE_READ_THIS'));
     });
 
     it('should display contact us for help detail', () => {
