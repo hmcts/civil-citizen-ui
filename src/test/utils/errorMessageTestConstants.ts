@@ -69,5 +69,6 @@ export const enum TestMessages {
   VALID_PHONE_NUMBER = 'Enter a phone number in the correct format',
   VALID_POSITIVE_NUMBER = 'Don’t enter a negative number',
   VALID_REASON_REQUIRED = 'Enter a reason',
-  VALID_STRICTLY_POSITIVE_NUMBER = 'Enter a number higher than 0'
+  VALID_STRICTLY_POSITIVE_NUMBER = 'Enter a number higher than 0',
+  REQUEST_FAILED = 'Request failed with status code 500',
 }

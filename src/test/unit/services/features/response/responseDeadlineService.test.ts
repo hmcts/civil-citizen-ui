@@ -150,7 +150,7 @@ describe('Response Deadline Service', () => {
     it('should return undefined when empty claim retrieved', async () => {
       // Given
       const claim = new Claim();
-      // When 
+      // When
       const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
       // Then
       expect(agreedResponseDeadline).toBeUndefined();

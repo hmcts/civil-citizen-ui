@@ -103,9 +103,14 @@ import defendantAgeEligibilityController from './features/public/eligibility/def
 import someUsefulInfoFeesController from './features/public/eligibility/someUsefulInfoFeesController';
 import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
 import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
+import signpostingController from './features/public/firstContact/signpostingController';
 import accessDeniedController from './features/public/firstContact/accessDeniedController';
 import claimReferenceController from './features/public/firstContact/claimReferenceController';
+import pinController from './features/public/firstContact/pinController';
 import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
+import completingClaimController from './features/claim/completingClaimController';
+import submitComfirmationController from './features/response/submitComfirmationController';
+import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 
 export default [
   homeController,
@@ -199,7 +204,12 @@ export default [
   someUsefulInfoFeesController,
   applyForHelpWithFeesController,
   helpWithFeesReferenceController,
+  signpostingController,
   accessDeniedController,
   claimReferenceController,
+  pinController,
   firstContactClaimSummaryController,
+  completingClaimController,
+  submitComfirmationController,
+  resolvingThisDisputeController,
 ];
