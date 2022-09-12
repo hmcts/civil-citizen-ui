@@ -23,11 +23,13 @@ describe('Resolving Dispute View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: any;
 
     beforeEach(async () => {
       const response = await request(app).get(CLAIM_RESOLVING_DISPUTE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have correct page title', () => {
@@ -40,7 +42,7 @@ describe('Resolving Dispute View', () => {
     });
 
     it('should display Before you claim paragraph', () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body')[0];
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
       expect(paragraph.innerHTML).toContain(t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.P1.BEFORE_YOU_CLAIM'));
     });
 
@@ -52,7 +54,7 @@ describe('Resolving Dispute View', () => {
     });
 
     it('should display Try to resolve paragraph', () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body')[1];
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[1];
       expect(paragraph.innerHTML).toContain(t('PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.P2.TRY_TO_RESOLVE'));
     });
 
@@ -65,7 +67,7 @@ describe('Resolving Dispute View', () => {
     });
 
     it('should display I confirm I\'ve read this button', () => {
-      const button = htmlDocument.getElementsByClassName('govuk-button')[0];
+      const button = mainWrapper.getElementsByClassName('govuk-button')[0];
       expect(button.innerHTML).toContain(t('COMMON.BUTTONS.I_CONFIRM_IVE_READ_THIS'));
     });
 
