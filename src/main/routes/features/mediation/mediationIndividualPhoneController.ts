@@ -8,7 +8,7 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
 import {CAN_WE_USE_URL, CLAIM_TASK_LIST_URL} from '../../urls';
-import {FreeMediation} from '../../../common/form/models/mediation/freeMediation';
+import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 const mediationIndividualPhoneViewPath = 'features/mediation/can-we-use';
 const mediationIndividualPhoneController = express.Router();
@@ -56,7 +56,7 @@ mediationIndividualPhoneController.post(CAN_WE_USE_URL,
           mediationIndividualPhoneForm.model.mediationPhoneNumber = undefined;
         }
         if (claim.mediation?.mediationDisagreement) {
-          await saveMediation(req.params.id, new FreeMediation(), 'mediationDisagreement');
+          await saveMediation(req.params.id, new GenericYesNo(), 'mediationDisagreement');
         }
         await saveMediation(req.params.id, mediationIndividualPhoneForm.model, 'canWeUse');
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));

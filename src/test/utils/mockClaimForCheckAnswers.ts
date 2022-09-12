@@ -47,11 +47,9 @@ import {WhyDoYouDisagree} from '../../main/common/form/models/admission/partialA
 import {PartialAdmission} from '../../main/common/models/partialAdmission';
 import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/defendantTimeline';
 import {PaymentIntention} from '../../main/common/form/models/admission/partialAdmission/paymentIntention';
-import {FreeMediation} from '../../main/common/form/models/mediation/freeMediation';
 import {NoMediationReason} from '../../main/common/form/models/mediation/noMediationReason';
 import {CompanyTelephoneNumber} from '../../main/common/form/models/mediation/companyTelephoneNumber';
 import {Mediation} from '../../main/common/models/mediation/mediation';
-
 import TimelineRow from '../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
@@ -751,7 +749,7 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
 
   claim.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '123456'},
-    new FreeMediation(YesNo.YES),
+    new GenericYesNo(YesNo.YES),
     new NoMediationReason('notWant', 'no'),
     new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
 
@@ -814,7 +812,7 @@ export const createClaimWithPaymentOption = (responseType: ResponseType, payment
   claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.NO);
 
   claim.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '123456'},
-    new FreeMediation(YesNo.YES),
+    new GenericYesNo(YesNo.YES),
     new NoMediationReason('notWant', 'no'),
     new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
 
