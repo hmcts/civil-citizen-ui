@@ -34,7 +34,6 @@ import {ResidenceType} from '../../main/common/form/models/statementOfMeans/resi
 import {Dependants} from '../../main/common/form/models/statementOfMeans/dependants/dependants';
 import {NumberOfChildren} from '../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {OtherDependants} from '../../main/common/form/models/statementOfMeans/otherDependants';
-import {Carer} from '../../main/common/form/models/statementOfMeans/carer';
 import {HowMuchDoYouOwe} from '../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {WhyDoYouDisagree} from '../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
@@ -656,7 +655,7 @@ export const createClaimWithDependants = (declared: boolean, under11?: number, b
 export const createClaimWithCarer = (option: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const carer: Carer = new Carer(option);
+  const carer: GenericYesNo = new GenericYesNo(option);
   claim.statementOfMeans = {
     carer: carer,
   };

@@ -13,7 +13,6 @@ import {ChildrenDisability} from '../form/models/statementOfMeans/dependants/chi
 import {RegularExpenses} from '../form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {Debts} from '../form/models/statementOfMeans/debts/debts';
 import {CourtOrders} from '../form/models/statementOfMeans/courtOrders/courtOrders';
-import {Carer} from '../form/models/statementOfMeans/carer';
 import {Explanation} from '../form/models/statementOfMeans/explanation';
 import RegularIncome from '../form/models/statementOfMeans/expensesAndIncome/regularIncome';
 import {GenericYesNo} from '../form/models/genericYesNo';
@@ -41,7 +40,7 @@ export class StatementOfMeans {
   regularExpenses?: RegularExpenses;
   debts?: Debts;
   courtOrders?: CourtOrders;
-  carer?: Carer;
+  carer?: GenericYesNo;
   explanation?: Explanation;
   regularIncome?: RegularIncome;
 }
