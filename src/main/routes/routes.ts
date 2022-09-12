@@ -109,6 +109,7 @@ import claimReferenceController from './features/public/firstContact/claimRefere
 import pinController from './features/public/firstContact/pinController';
 import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
 import eligibleController from './features/public/eligibility/eligibleController';
+import claimantPartyTypeController from './features/public/claim/claimantPartyTypeController';
 import completingClaimController from './features/claim/completingClaimController';
 import submitComfirmationController from './features/response/submitComfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
@@ -211,6 +212,7 @@ export default [
   pinController,
   firstContactClaimSummaryController,
   eligibleController,
+  claimantPartyTypeController,
   completingClaimController,
   submitComfirmationController,
   resolvingThisDisputeController,
