@@ -13,7 +13,6 @@ const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 
 describe('You can use this service View', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
@@ -22,7 +21,6 @@ describe('You can use this service View', () => {
   let htmlDocument: Document;
 
   describe('on GET', () => {
-
     beforeEach(async () => {
       nock(idamUrl)
         .post('/o/token')
@@ -34,12 +32,17 @@ describe('You can use this service View', () => {
     });
 
     describe('HWF Eligible', () => {
+      let mainWrapper: any;
+
       beforeEach(async () => {
         await request(app).get(ELIGIBILITY_HWF_ELIGIBLE_URL).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
+          mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
+          mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
         });
       });
+
       it('should have title set', () => {
         expect(htmlDocument.title).toContain('Your money claims account - You can use this service');
       });
@@ -55,27 +58,30 @@ describe('You can use this service View', () => {
       });
 
       it('should display paragraphs', async () => {
-        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        const paragraphs = mainWrapper.getElementsByClassName('govuk-body');
         expect(paragraphs[0].innerHTML).toContain('Based on your answers you can make a money claim using this service.');
         expect(paragraphs[1].innerHTML).toContain('You will have to pay court fees unless you are eligible for Help with Fees.');
       });
 
       it('should have external links', () => {
-        const links = htmlDocument.getElementsByClassName('govuk-link');
-        const helpWithFeesLink = links[2] as HTMLAnchorElement;
+        const links = mainWrapper.getElementsByClassName('govuk-link');
+        const helpWithFeesLink = links[0] as HTMLAnchorElement;
         expect(helpWithFeesLink.innerHTML).toContain('Find out more about Help with Fees (opens in a new window)');
         expect(helpWithFeesLink.href).toEqual(externalURLs.feesHelpUrl);
       });
-
     });
 
     describe('HWF Eligible Reference', () => {
+      let mainWrapper: any;
+
       beforeEach(async () => {
         await request(app).get(ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
+          mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
         });
       });
+
       it('should have title set', () => {
         expect(htmlDocument.title).toContain('Your money claims account - You can use this service');
       });
@@ -91,20 +97,23 @@ describe('You can use this service View', () => {
       });
 
       it('should display paragraphs', async () => {
-        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        const paragraphs = mainWrapper.getElementsByClassName('govuk-body');
         expect(paragraphs[0].innerHTML).toContain('Based on your answers you can make a money claim using this service.');
         expect(paragraphs[1].innerHTML).toContain('Remember that you will not know about the fee until we have processed your Help with Fees application. Your claim will only be issued after Help with Fees is confirmed, or the fee is paid.');
       });
-
     });
 
     describe('Eligible for this Service', () => {
+      let mainWrapper: any;
+
       beforeEach(async () => {
         await request(app).get(ELIGIBLE_FOR_THIS_SERVICE_URL).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
+          mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
         });
       });
+
       it('should have title set', () => {
         expect(htmlDocument.title).toContain('Your money claims account - You can use this service');
       });
@@ -120,11 +129,9 @@ describe('You can use this service View', () => {
       });
 
       it('should display paragraphs', async () => {
-        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        const paragraphs = mainWrapper.getElementsByClassName('govuk-body');
         expect(paragraphs[0].innerHTML).toContain('Based on your answers you can make a money claim using this service.');
       });
-
     });
-
   });
 });

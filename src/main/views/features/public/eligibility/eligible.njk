@@ -9,18 +9,22 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">{{ t('PAGES.YOU_CAN_USE.TITLE') }}</h1>
-      <p class="govuk-body">{{ t('PAGES.YOU_CAN_USE.BASED_ON') }}</p>
-      {% for item in youCanUseContent %}
-        {{ itemContent(item,t) }}
-      {% endfor %}
-      {{ govukButton({
-        text: t('COMMON.BUTTONS.CONTINUE'),
-        href: '/login'
-      }) }}
-      {{ contactUsForHelp(t) }}
-    </div>
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-xl">{{ t('PAGES.YOU_CAN_USE.TITLE') }}</h1>
+          <p class="govuk-body">{{ t('PAGES.YOU_CAN_USE.BASED_ON') }}</p>
+          {% for item in youCanUseContent %}
+            {{ itemContent(item,t) }}
+          {% endfor %}
+          {{ govukButton({
+            text: t('COMMON.BUTTONS.CONTINUE'),
+            href: '/login'
+          }) }}
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
   </div>
 {% endblock %}
