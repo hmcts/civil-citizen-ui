@@ -31,7 +31,6 @@ import {Disability} from '../../main/common/form/models/statementOfMeans/disabil
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {Residence} from '../../main/common/form/models/statementOfMeans/residence';
 import {ResidenceType} from '../../main/common/form/models/statementOfMeans/residenceType';
-import {PartnerAge} from '../../main/common/form/models/statementOfMeans/partner/partnerAge';
 import {PartnerDisability} from '../../main/common/form/models/statementOfMeans/partner/partnerDisability';
 import {PartnerPension} from '../../main/common/form/models/statementOfMeans/partner/partnerPension';
 import {Dependants} from '../../main/common/form/models/statementOfMeans/dependants/dependants';
@@ -629,7 +628,7 @@ export const createClaimWithCohabiting = (
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: Disability = new Disability(disabilityOption);
   const cohabiting: GenericYesNo = new GenericYesNo(cohabitingOption);
-  const partnerAge: PartnerAge = new PartnerAge(partnerAgeOption);
+  const partnerAge: GenericYesNo = new GenericYesNo(partnerAgeOption);
   const partnerPension: PartnerPension = new PartnerPension(partnerPensionOption);
   const partnerDisability: PartnerDisability = new PartnerDisability(partnerDisabilityOption);
   const partnerSevereDisability: GenericYesNo = new GenericYesNo(partnerSevereDisabilityOption);
