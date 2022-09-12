@@ -1,4 +1,5 @@
 const BASE_CASE_URL = '/case/:id';
+const BASE_CLAIM_URL = '/claim';
 export const BASE_ELIGIBILITY_URL = '/eligibility';
 export const BASE_FIRST_CONTACT_URL = '/first-contact';
 const BASE_CASE_RESPONSE_URL = `${BASE_CASE_URL}/response`;
@@ -113,5 +114,6 @@ export const ELIGIBLE_FOR_THIS_SERVICE_URL = `${BASE_ELIGIBILITY_URL}/eligible`;
 export const FIRST_CONTACT_SIGNPOSTING_URL = `${BASE_FIRST_CONTACT_URL}/start`;
 export const FIRST_CONTACT_CLAIM_REFERENCE_URL = `${BASE_FIRST_CONTACT_URL}/claim-reference`;
 export const FIRST_CONTACT_CLAIM_SUMMARY_URL = `${BASE_FIRST_CONTACT_URL}/claim-summary`;
+export const CLAIM_COMPLETING_CLAIM_URL = `${BASE_CLAIM_URL}/completing-claim`;
 export const FIRST_CONTACT_ACCESS_DENIED_URL = `${BASE_FIRST_CONTACT_URL}/access-denied`;
 export const FIRST_CONTACT_PIN_URL = `${BASE_FIRST_CONTACT_URL}/pin`;
