@@ -32,7 +32,7 @@ newResponseDeadlineController.get(NEW_RESPONSE_DEADLINE_URL, async function (req
 
     res.render(newResponseDeadlineViewPath, {
       claimantName: claim.getClaimantName(),
-      responseDeadline: formatDateToFullDate(calculatedExtendedDeadline, true, language),
+      responseDeadline: formatDateToFullDate(calculatedExtendedDeadline, language),
       backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_TO_MORE_TIME_URL),
     });
   } catch (error) {
