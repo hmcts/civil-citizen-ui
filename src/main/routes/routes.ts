@@ -111,6 +111,7 @@ import firstContactClaimSummaryController from './features/public/firstContact/c
 import eligibleController from './features/public/eligibility/eligibleController';
 import completingClaimController from './features/claim/completingClaimController';
 import submitComfirmationController from './features/response/submitComfirmationController';
+import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 
 export default [
   homeController,
@@ -212,4 +213,5 @@ export default [
   eligibleController,
   completingClaimController,
   submitComfirmationController,
+  resolvingThisDisputeController,
 ];

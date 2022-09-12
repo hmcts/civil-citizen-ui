@@ -454,6 +454,24 @@
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
       "WHAT_HAPPENED": "What happened"
     },
+    "CLAIM_JOURNEY": {
+      "RESOLVE_THE_DISPUTE": {
+        "P1": {
+          "BEFORE_YOU_CLAIM": "Before you claim you should:",
+          "CONSIDER_MEDIATION": "consider mediation",
+          "TALK_TO_THE_PERSON": "talk to the person or organisation you want to claim against"
+        },
+        "P2": {
+          "HEADING": "Talk to the person or organisation",
+          "MAKE_A_CLAIM": "explaining you'll make a claim against them if they don't follow your timetable",
+          "SUGGESTING_TIMETABLE": "suggesting timetable with actions you want them to take",
+          "TELLING_THEM_WHY": "telling them why you intend to make a claim against them",
+          "TRY_TO_RESOLVE": "Try to resolve the dispute by:"
+        },
+        "PAGE_TITLE": "Try to resolve the dispute",
+        "TITLE": "Try to resolve the dispute"
+      }
+    },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "About claim",
       "CLAIM_AMOUNT": "Claim amount:",
@@ -1139,7 +1157,7 @@
       "WE_CONTACT_YOU": "We’ll contact you when they respond.",
       "WHAT_HAPPENS_NEXT": "What happens next",
       "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
-      "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either", 
+      "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either",
       "YOUR_OPINION_OF_SERVICE": "What did you think of this service?"
     },
     "TASK_LIST": {
