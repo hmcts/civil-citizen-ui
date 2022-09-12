@@ -1,8 +1,5 @@
 import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
 import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
-import {
-  ChildrenDisability,
-} from '../../../../../../../main/common/form/models/statementOfMeans/dependants/childrenDisability';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {
   getChildrenDisability,
@@ -20,6 +17,7 @@ import {
 } from '../../../../../../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
 import {mockClaim} from '../../../../../../utils/mockClaim';
+import {GenericYesNo} from '../../../../../../../main/common/form/models/genericYesNo';
 
 const civilClaimResponseMock = require('../civilClaimResponseMock.json');
 const civilClaimResponse: string = JSON.stringify(civilClaimResponseMock);
@@ -59,27 +57,27 @@ describe('Children Disability service', () => {
   describe('Validation', () => {
     it('should not raise any error if YES is selected', async () => {
       //Given
-      const childrenDisability = new ChildrenDisability(YesNo.YES);
+      const childrenDisability = new GenericYesNo(YesNo.YES);
       //When
-      const form: GenericForm<ChildrenDisability> = new GenericForm(childrenDisability);
+      const form: GenericForm<GenericYesNo> = new GenericForm(childrenDisability);
       await form.validate();
       //Then
       expect(form.getErrors().length).toBe(0);
     });
     it('should not raise any error if NO is selected', async () => {
       //Given
-      const childrenDisability = new ChildrenDisability(YesNo.NO);
+      const childrenDisability = new GenericYesNo(YesNo.NO);
       //When
-      const form: GenericForm<ChildrenDisability> = new GenericForm(childrenDisability);
+      const form: GenericForm<GenericYesNo> = new GenericForm(childrenDisability);
       await form.validate();
       //Then
       expect(form.getErrors().length).toBe(0);
     });
     it('should raise an error if nothing is selected', async () => {
       //Given
-      const childrenDisability = new ChildrenDisability(undefined);
+      const childrenDisability = new GenericYesNo(undefined);
       //When
-      const form: GenericForm<ChildrenDisability> = new GenericForm(childrenDisability);
+      const form: GenericForm<GenericYesNo> = new GenericForm(childrenDisability);
       await form.validate();
       //Then
       expect(form.getErrors().length).toBe(1);
@@ -103,7 +101,7 @@ describe('Children Disability service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(childrenDisability).not.toBeNull();
-      expect(childrenDisability).toEqual(new ChildrenDisability());
+      expect(childrenDisability).toEqual(new GenericYesNo());
     });
     it('should return empty ChildrenDisability when case_data, but no statementOfMeans, retrieved', async () => {
       //Given
@@ -116,7 +114,7 @@ describe('Children Disability service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(childrenDisability).not.toBeNull();
-      expect(childrenDisability).toEqual(new ChildrenDisability());
+      expect(childrenDisability).toEqual(new GenericYesNo());
     });
     it('should return empty ChildrenDisability when case_data and statementOfMeans, but no disability, retrieved', async () => {
       //Given
@@ -129,7 +127,7 @@ describe('Children Disability service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(childrenDisability).not.toBeNull();
-      expect(childrenDisability).toEqual(new ChildrenDisability());
+      expect(childrenDisability).toEqual(new GenericYesNo());
     });
     it('should return empty ChildrenDisability when no data retrieved', async () => {
       //Given
@@ -142,7 +140,7 @@ describe('Children Disability service', () => {
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(childrenDisability).not.toBeNull();
-      expect(childrenDisability).toEqual(new ChildrenDisability());
+      expect(childrenDisability).toEqual(new GenericYesNo());
     });
 
     it('should return ChildrenDisability when data retrieved', async () => {
@@ -167,7 +165,7 @@ describe('Children Disability service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveChildrenDisability('claimId', new ChildrenDisability());
+      await saveChildrenDisability('claimId', new GenericYesNo());
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -181,7 +179,7 @@ describe('Children Disability service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveChildrenDisability('claimId', new ChildrenDisability());
+      await saveChildrenDisability('claimId', new GenericYesNo());
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -195,7 +193,7 @@ describe('Children Disability service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveChildrenDisability('claimId', new ChildrenDisability());
+      await saveChildrenDisability('claimId', new GenericYesNo());
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -209,7 +207,7 @@ describe('Children Disability service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveChildrenDisability('claimId', new ChildrenDisability());
+      await saveChildrenDisability('claimId', new GenericYesNo());
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -223,7 +221,7 @@ describe('Children Disability service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveChildrenDisability('claimId', new ChildrenDisability());
+      await saveChildrenDisability('claimId', new GenericYesNo());
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -237,7 +235,7 @@ describe('Children Disability service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveChildrenDisability('claimId', new ChildrenDisability());
+      await saveChildrenDisability('claimId', new GenericYesNo());
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
@@ -270,7 +268,7 @@ describe('Children Disability service', () => {
       });
       setChildrenDisabilityServiceLogger(mockLogger);
       //Then
-      await expect(saveChildrenDisability('claimId', new ChildrenDisability())).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
+      await expect(saveChildrenDisability('claimId', new GenericYesNo())).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
       expect(mockLogger.error).toHaveBeenCalled();
     });
   });

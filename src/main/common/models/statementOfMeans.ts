@@ -9,7 +9,6 @@ import {PriorityDebts} from '../form/models/statementOfMeans/priorityDebts';
 import {SelfEmployedAs} from './selfEmployedAs';
 import {TaxPayments} from './taxPayments';
 import {Unemployment} from '../form/models/statementOfMeans/unemployment/unemployment';
-import {ChildrenDisability} from '../form/models/statementOfMeans/dependants/childrenDisability';
 import {RegularExpenses} from '../form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {Debts} from '../form/models/statementOfMeans/debts/debts';
 import {CourtOrders} from '../form/models/statementOfMeans/courtOrders/courtOrders';
@@ -35,7 +34,7 @@ export class StatementOfMeans {
   numberOfChildrenLivingWithYou?: number;
   selfEmployedAs?: SelfEmployedAs;
   unemployment?: Unemployment;
-  childrenDisability?: ChildrenDisability;
+  childrenDisability?: GenericYesNo;
   priorityDebts?: PriorityDebts;
   regularExpenses?: RegularExpenses;
   debts?: Debts;
