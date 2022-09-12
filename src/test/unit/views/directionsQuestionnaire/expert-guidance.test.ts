@@ -19,6 +19,7 @@ describe('Send your response by email View', () => {
   describe('on GET', () => {
     let htmlDocument: Document;
     let paragraphs: HTMLCollection;
+    let mainWrapper: any;
 
     beforeEach(async () => {
       nock(idamUrl)
@@ -27,7 +28,8 @@ describe('Send your response by email View', () => {
       const response = await request(app).get(EXPERT_GUIDANCE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
-      paragraphs = htmlDocument.getElementsByClassName(govukBodyClass);
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
+      paragraphs = mainWrapper.getElementsByClassName(govukBodyClass);
     });
 
     it('should have page title', () => {
@@ -47,7 +49,7 @@ describe('Send your response by email View', () => {
     });
 
     it('should display When an expert is allowed paragraph', () => {
-      const header = htmlDocument.getElementsByClassName('govuk-heading-m');
+      const header = mainWrapper.getElementsByClassName('govuk-heading-m');
       expect(header[0].innerHTML).toContain('When an expert is allowed');
       expect(paragraphs[4].innerHTML).toContain('A judge will only allow you to use an expert if they believe they need the expert\'s specialist knowledge.');
       expect(paragraphs[5].innerHTML).toContain('For example, they might allow a structural engineer to be used in a claim about building works or a mechanic in a claim about car repairs.');
@@ -56,7 +58,7 @@ describe('Send your response by email View', () => {
     });
 
     it('should display Paying for the expert paragraph', () => {
-      const header = htmlDocument.getElementsByClassName('govuk-heading-m');
+      const header = mainWrapper.getElementsByClassName('govuk-heading-m');
       expect(header[1].innerHTML).toContain('Paying for the expert');
       expect(paragraphs[8].innerHTML).toContain('The cost of hiring an expert depends on which expert you and the claimant choose.');
       expect(paragraphs[9].innerHTML).toContain('Usually you both share this cost.');
@@ -64,7 +66,7 @@ describe('Send your response by email View', () => {
     });
 
     it('should display If you get permission to use an expert paragraph', () => {
-      const header = htmlDocument.getElementsByClassName('govuk-heading-m');
+      const header = mainWrapper.getElementsByClassName('govuk-heading-m');
       expect(header[2].innerHTML).toContain('If you get permission to use an expert');
       expect(paragraphs[11].innerHTML).toContain('The judge may ask one of you to make a list of 3 independent experts who can provide a written report in return for a fee.');
       expect(paragraphs[12].innerHTML).toContain('You must avoid discussing the case in detail with the 3 experts.');
@@ -77,7 +79,7 @@ describe('Send your response by email View', () => {
     });
 
     it('should display Continue button', () => {
-      const button = htmlDocument.getElementsByClassName('govuk-button');
+      const button = mainWrapper.getElementsByClassName('govuk-button');
       expect(button[0].innerHTML).toContain('Continue');
     });
 

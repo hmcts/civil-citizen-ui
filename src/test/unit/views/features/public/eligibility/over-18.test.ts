@@ -46,8 +46,8 @@ describe('Over 18 View', () => {
     });
 
     it('should display Save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
-      expect(buttons[0].innerHTML).toContain('Save and continue');
+      const button = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0].getElementsByClassName('govuk-button')[0];
+      expect(button.innerHTML).toContain('Save and continue');
     });
 
     it('should contain Contact us detail component', () => {
