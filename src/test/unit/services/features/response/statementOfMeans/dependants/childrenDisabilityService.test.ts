@@ -1,5 +1,4 @@
 import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
-import {VALID_YES_NO_OPTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {YesNo} from '../../../../../../../main/common/form/models/yesNo';
 import {
   getChildrenDisability,
@@ -82,7 +81,7 @@ describe('Children Disability service', () => {
       //Then
       expect(form.getErrors().length).toBe(1);
       expect(form.getErrors()[0].property).toBe('option');
-      expect(form.getErrors()[0].constraints).toEqual({isDefined: VALID_YES_NO_OPTION});
+      expect(form.getErrors()[0].constraints).toEqual({isDefined: 'ERRORS.VALID_YES_NO_OPTION'});
     });
   });
 
