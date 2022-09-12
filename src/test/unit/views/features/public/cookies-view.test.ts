@@ -141,7 +141,7 @@ describe('Cookies View', () => {
     });
 
     it('should have save button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
+      const buttons = mainWrapper.getElementsByClassName('govuk-button');
       expect(buttons[0].innerHTML).toContain(t('COMMON.BUTTONS.SAVE'));
     });
 
