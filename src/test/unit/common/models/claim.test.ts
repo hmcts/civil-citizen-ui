@@ -8,7 +8,6 @@ import {
 import {StatementOfMeans} from '../../../../main/common/models/statementOfMeans';
 import {Disability} from '../../../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../../../main/common/form/models/yesNo';
-import {SevereDisability} from '../../../../main/common/form/models/statementOfMeans/severeDisability';
 import {PartnerDisability} from '../../../../main/common/form/models/statementOfMeans/partner/partnerDisability';
 import {Cohabiting} from '../../../../main/common/form/models/statementOfMeans/partner/cohabiting';
 import {ChildrenDisability} from '../../../../main/common/form/models/statementOfMeans/dependants/childrenDisability';
@@ -25,6 +24,7 @@ import PaymentOptionType from '../../../../main/common/form/models/admission/pay
 import {mockClaim} from '../../../utils/mockClaim';
 import {DocumentType} from '../../../../main/common/models/document/documentType';
 import {CaseState} from '../../../../main/common/form/models/claimDetails';
+import {GenericYesNo} from '../../../../main/common/form/models/genericYesNo';
 
 describe('Claim isInterestClaimUntilSubmitDate', () => {
   const claim = new Claim();
@@ -215,7 +215,7 @@ describe('Claim isDefendantSeverlyDisabled', () => {
   });
   it('should return false with empty severe disability', () => {
     //Given
-    claim.statementOfMeans.severeDisability = new SevereDisability();
+    claim.statementOfMeans.severeDisability = new GenericYesNo();
     //When
     const result = claim.isDefendantSeverelyDisabled();
     //Then

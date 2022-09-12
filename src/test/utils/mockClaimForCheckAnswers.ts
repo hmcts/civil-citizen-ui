@@ -29,13 +29,11 @@ import {SelfEmployedAs} from '../../main/common/models/selfEmployedAs';
 import {TaxPayments} from '../../main/common/models/taxPayments';
 import {Disability} from '../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../main/common/form/models/yesNo';
-import {SevereDisability} from '../../main/common/form/models/statementOfMeans/severeDisability';
 import {Residence} from '../../main/common/form/models/statementOfMeans/residence';
 import {ResidenceType} from '../../main/common/form/models/statementOfMeans/residenceType';
 import {Cohabiting} from '../../main/common/form/models/statementOfMeans/partner/cohabiting';
 import {PartnerAge} from '../../main/common/form/models/statementOfMeans/partner/partnerAge';
 import {PartnerDisability} from '../../main/common/form/models/statementOfMeans/partner/partnerDisability';
-import {PartnerSevereDisability} from '../../main/common/form/models/statementOfMeans/partner/partnerSevereDisability';
 import {PartnerPension} from '../../main/common/form/models/statementOfMeans/partner/partnerPension';
 import {Dependants} from '../../main/common/form/models/statementOfMeans/dependants/dependants';
 import {NumberOfChildren} from '../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
@@ -580,7 +578,7 @@ export const createClaimWithDisability = (option: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: Disability = new Disability(option);
-  const severeDisability: SevereDisability = new SevereDisability(option);
+  const severeDisability: GenericYesNo = new GenericYesNo(option);
   claim.statementOfMeans = {
     disability: disability,
     severeDisability: severeDisability,
@@ -592,7 +590,7 @@ export const createClaimWithDisabilityAndSevereDisability = (optionDisability: Y
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: Disability = new Disability(optionDisability);
-  const severeDisability: SevereDisability = new SevereDisability(optionSevereDisability);
+  const severeDisability: GenericYesNo = new GenericYesNo(optionSevereDisability);
   claim.statementOfMeans = {
     disability: disability,
     severeDisability: severeDisability,
@@ -635,7 +633,7 @@ export const createClaimWithCohabiting = (
   const partnerAge: PartnerAge = new PartnerAge(partnerAgeOption);
   const partnerPension: PartnerPension = new PartnerPension(partnerPensionOption);
   const partnerDisability: PartnerDisability = new PartnerDisability(partnerDisabilityOption);
-  const partnerSevereDisability: PartnerSevereDisability = new PartnerSevereDisability(partnerSevereDisabilityOption);
+  const partnerSevereDisability: GenericYesNo = new GenericYesNo(partnerSevereDisabilityOption);
   claim.statementOfMeans = {
     disability: disability,
     cohabiting: cohabiting,
@@ -735,7 +733,6 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
   claim.partialAdmission = partialAdmission;
   claim.evidence = defendantEvidence;
   claim.partialAdmission.paymentIntention?.paymentOption ? paymentOptionType : undefined;
-
   return claim;
 };
 

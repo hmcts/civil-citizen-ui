@@ -1,15 +1,13 @@
 import {Disability} from '../form/models/statementOfMeans/disability';
-import {SevereDisability} from '../form/models/statementOfMeans/severeDisability';
 import {OtherDependants} from '../form/models/statementOfMeans/otherDependants';
 import {PartnerAge} from '../form/models/statementOfMeans/partner/partnerAge';
 import {CitizenBankAccount} from './citizenBankAccount';
 import {Cohabiting} from '../form/models/statementOfMeans/partner/cohabiting';
-import {PartnerSevereDisability} from '../form/models/statementOfMeans/partner/partnerSevereDisability';
 import {PartnerDisability} from '../form/models/statementOfMeans/partner/partnerDisability';
 import {PartnerPension} from '../form/models/statementOfMeans/partner/partnerPension';
 import {Residence} from '../form/models/statementOfMeans/residence';
 import {Employment} from './employment';
-import {Employers} from 'common/form/models/statementOfMeans/employment/employers';
+import {Employers} from '../form/models/statementOfMeans/employment/employers';
 import {Dependants} from '../form/models/statementOfMeans/dependants/dependants';
 import {PriorityDebts} from '../form/models/statementOfMeans/priorityDebts';
 import {SelfEmployedAs} from './selfEmployedAs';
@@ -19,13 +17,14 @@ import {ChildrenDisability} from '../form/models/statementOfMeans/dependants/chi
 import {RegularExpenses} from '../form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {Debts} from '../form/models/statementOfMeans/debts/debts';
 import {CourtOrders} from '../form/models/statementOfMeans/courtOrders/courtOrders';
-import {Carer} from 'common/form/models/statementOfMeans/carer';
-import {Explanation} from 'common/form/models/statementOfMeans/explanation';
-import RegularIncome from 'common/form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {Carer} from '../form/models/statementOfMeans/carer';
+import {Explanation} from '../form/models/statementOfMeans/explanation';
+import RegularIncome from '../form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {GenericYesNo} from '../form/models/genericYesNo';
 
 export class StatementOfMeans {
   disability?: Disability;
-  severeDisability?: SevereDisability;
+  severeDisability?: GenericYesNo;
   partnerAge?: PartnerAge;
   bankAccounts?: CitizenBankAccount[];
   otherDependants?: OtherDependants;
@@ -34,7 +33,7 @@ export class StatementOfMeans {
   employers?: Employers;
   taxPayments?: TaxPayments;
   partnerDisability?: PartnerDisability;
-  partnerSevereDisability?: PartnerSevereDisability;
+  partnerSevereDisability?: GenericYesNo;
   residence?: Residence;
   partnerPension?: PartnerPension;
   dependants?: Dependants;
