@@ -10,7 +10,7 @@ const {JSDOM} = jsdom;
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
-describe('Single Defendant View', () => {
+describe('Defendant Address Eligibility View', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -43,8 +43,8 @@ describe('Single Defendant View', () => {
     });
 
     it('should display Save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
-      expect(buttons[0].innerHTML).toContain('Save and continue');
+      const button = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0].getElementsByClassName('govuk-button')[0];
+      expect(button.innerHTML).toContain('Save and continue');
     });
 
     it('should contain Contact us detail component', () => {

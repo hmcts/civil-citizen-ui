@@ -1,0 +1,62 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.PIN.PAGE_TITLE') }}
+{% endblock %}
+
+{% set customErrorMessage %}
+  {% if form.isPinEmpty %}
+  <p class="govuk-body">
+    {{ t('PAGES.PIN.CHECK_SECURITY_CODE') }}
+    <a href='/contact-us'>{{ t('PAGES.PIN.CONTACT_US') }}</a>
+    {{ t('PAGES.PIN.FOR_A_NEW_SECURITY_CODE') }}
+  </p>
+  {% endif %}
+{% endset %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% set errors = form.getAllErrors() %}
+      {% if form.hasErrors() %}
+        {{ errorSummary(errors, t, null, customErrorMessage, 'ERRORS.SECURITY_CODE_WRONG_OR_EXPIRED') }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.PIN.TITLE') }}</h1>
+          <p class="govuk-body">{{ t('PAGES.PIN.FIND_PIN') }}</p>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <div class="govuk-form-group {% if errors.length %} govuk-form-group--error {% endif %}">
+              {{ govukInput({
+                id: "pin",
+                name: "pin",
+                value: form.model.pin,
+                classes: "govuk-!-width-one-half",
+                label: {
+                  classes: "govuk-!-width-two-thirds govuk-!-font-weight-bold",
+                  text: t('PAGES.PIN.SECURITY_CODE')
+                },
+                errorMessage: {
+                  text: t('ERRORS.ENTER_SECURITY_CODE')
+                } if form.hasFieldError('pin')
+              }) }}
+              <div class="govuk-form-group">
+                {{ govukButton({
+                text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE")
+              }) }}
+                {{ contactUsForHelp(t) }}
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
