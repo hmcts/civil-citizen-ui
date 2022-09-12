@@ -65,6 +65,19 @@
       "WEB_CHAT_NO_ADVISORS": "Nid oes cynghorwyr ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen.",
       "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
     },
+    "COOKIE_BANNER": {
+      "ACCEPT_BUTTON": "Accept additional cookies",
+      "ADDITIONAL_COOKIES_MESSAGE": "We'd like to set additional cookies so we can remember your settings, understand how people use the service and to improve government services.",
+      "CHANGE": "You can CHANGE_HTML at any time.",
+      "CHANGE_LINK": "change your cookie settings",
+      "COOKIES_ACCEPTED": "You've accepted additional cookies.",
+      "COOKIES_REJECTED": "You have rejected additional cookies.",
+      "ESSENTIAL_COOKIES_MESSAGE": "We use some essential cookies to make this service work.",
+      "HIDE_THIS_MESSAGE": "Hide this message",
+      "REJECT_BUTTON": "Reject additional cookies",
+      "TITLE": "Cookies on Money Claims",
+      "VIEW_COOKIES": "View cookies"
+    },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Tystiolaeth",
       "ROW_TYPE": "Type",

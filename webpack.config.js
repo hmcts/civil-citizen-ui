@@ -12,7 +12,10 @@ const filename = `[name]${fileNameSuffix}.js`;
 module.exports = {
   devtool: 'source-map',
   plugins: [...govukFrontend.plugins, ...scss.plugins, ...HtmlWebpack.plugins],
-  entry: path.resolve(sourcePath, 'index.js'),
+  entry: {
+    main: path.resolve(sourcePath, 'index.js'),
+    cookies: path.resolve(sourcePath, 'modules', 'cookie', 'cookieConfig.ts'),
+  },
   mode: devMode ? 'development' : 'production',
   module: {
     rules: [

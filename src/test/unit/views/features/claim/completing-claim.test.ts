@@ -21,11 +21,13 @@ describe('Completing Claim View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: any;
 
     beforeEach(async () => {
       const response = await request(app).get(CLAIM_COMPLETING_CLAIM_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have correct page title', () => {
@@ -38,7 +40,7 @@ describe('Completing Claim View', () => {
     });
 
     it('should display You\'ll have to pay an paragraph', () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body')[0];
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
       expect(paragraph.innerHTML).toContain('You\'ll have to pay an additional fee if you want you:');
     });
 
@@ -51,7 +53,7 @@ describe('Completing Claim View', () => {
     });
 
     it('should display I confirm I\'ve read this button', () => {
-      const button = htmlDocument.getElementsByClassName('govuk-button')[0];
+      const button = mainWrapper.getElementsByClassName('govuk-button')[0];
       expect(button.innerHTML).toContain("I confirm I've read this");
     });
 
