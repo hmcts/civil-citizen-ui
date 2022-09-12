@@ -9,7 +9,6 @@ import {StatementOfMeans} from '../../../../main/common/models/statementOfMeans'
 import {Disability} from '../../../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../../../main/common/form/models/yesNo';
 import {PartnerDisability} from '../../../../main/common/form/models/statementOfMeans/partner/partnerDisability';
-import {Cohabiting} from '../../../../main/common/form/models/statementOfMeans/partner/cohabiting';
 import {ChildrenDisability} from '../../../../main/common/form/models/statementOfMeans/dependants/childrenDisability';
 import {Dependants} from '../../../../main/common/form/models/statementOfMeans/dependants/dependants';
 import civilClaimResponseApplicantCompany from '../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
@@ -273,7 +272,7 @@ describe('Claim isPartnerDisabled', () => {
   });
   it('should return false with empty cohabiting ', () => {
     //Given
-    claim.statementOfMeans.cohabiting = new Cohabiting();
+    claim.statementOfMeans.cohabiting = new GenericYesNo();
     //When
     const result = claim.isPartnerDisabled();
     //Then

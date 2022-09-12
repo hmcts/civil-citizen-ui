@@ -2,7 +2,6 @@ import {Disability} from '../form/models/statementOfMeans/disability';
 import {OtherDependants} from '../form/models/statementOfMeans/otherDependants';
 import {PartnerAge} from '../form/models/statementOfMeans/partner/partnerAge';
 import {CitizenBankAccount} from './citizenBankAccount';
-import {Cohabiting} from '../form/models/statementOfMeans/partner/cohabiting';
 import {PartnerDisability} from '../form/models/statementOfMeans/partner/partnerDisability';
 import {PartnerPension} from '../form/models/statementOfMeans/partner/partnerPension';
 import {Residence} from '../form/models/statementOfMeans/residence';
@@ -28,7 +27,7 @@ export class StatementOfMeans {
   partnerAge?: PartnerAge;
   bankAccounts?: CitizenBankAccount[];
   otherDependants?: OtherDependants;
-  cohabiting?: Cohabiting;
+  cohabiting?: GenericYesNo;
   employment?: Employment;
   employers?: Employers;
   taxPayments?: TaxPayments;
