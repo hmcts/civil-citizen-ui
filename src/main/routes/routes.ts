@@ -110,6 +110,7 @@ import pinController from './features/public/firstContact/pinController';
 import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
 import completingClaimController from './features/claim/completingClaimController';
 import submitComfirmationController from './features/response/submitComfirmationController';
+import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 
 export default [
   homeController,
@@ -210,4 +211,5 @@ export default [
   firstContactClaimSummaryController,
   completingClaimController,
   submitComfirmationController,
+  resolvingThisDisputeController,
 ];
