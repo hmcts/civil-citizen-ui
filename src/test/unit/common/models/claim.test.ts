@@ -729,5 +729,51 @@ describe('Documents', () => {
       expect(result).toBe(true);
     });
   });
+
+  describe('isBusiness', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with individual type', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with sole trader', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with company type', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.COMPANY;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true with organisation trader', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
 });
 
