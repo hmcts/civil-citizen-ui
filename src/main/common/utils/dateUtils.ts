@@ -17,10 +17,10 @@ export const isPastDeadline = (deadline: Date | string) => {
   return currentDateTime() >= setTimeFourPM(deadline);
 };
 
-export const formatDateToFullDate = (date: Date): string => {
+export const formatDateToFullDate = (date: Date, lang?: string | unknown): string => {
   const dateTime = convertDateToLuxonDate(date);
-  return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: 'en-gb'});
-
+  const localeValue = lang === 'cy' ? 'cy' : 'en-gb'; 
+  return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: localeValue});
 };
 
 export const getNumberOfDaysBetweenTwoDays = (startDay: Date | string, endDay: Date | string) => {

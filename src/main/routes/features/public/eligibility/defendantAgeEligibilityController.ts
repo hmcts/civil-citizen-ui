@@ -37,7 +37,7 @@ defendantAgeEligibilityController.post(ELIGIBILITY_DEFENDANT_AGE_URL, async (req
     cookie.eligibilityDefendantAge = form.model.option;
     res.cookie('eligibility', cookie);
     form.model.option === AgeEligibilityOptions.NO
-      ?res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_DEFENDANT))
+      ? res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_DEFENDANT))
       : res.redirect(ELIGIBILITY_CLAIMANT_AGE_URL);
   }
 });

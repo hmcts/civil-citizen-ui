@@ -1,10 +1,10 @@
-import { setHeadlessWhen } from '@codeceptjs/configure';
+const { setHeadlessWhen } = require('@codeceptjs/configure');
 
 import { config as testConfig } from '../config';
 
 setHeadlessWhen(testConfig.TestHeadlessBrowser);
 
-export const config: CodeceptJS.Config = {
+export const config = {
   name: 'civil-citizen-ui-functional',
   gherkin: testConfig.Gherkin,
   output: '../../../functional-output/functional/reports',

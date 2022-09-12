@@ -14,8 +14,9 @@ jest.mock('../../../../../main/modules/draft-store');
 describe('Understanding Your Options View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-
   let htmlDocument: Document;
+  let mainWrapper: any;
+
   beforeEach(async () => {
     nock(idamUrl)
       .post('/o/token')
@@ -24,6 +25,7 @@ describe('Understanding Your Options View', () => {
     const response = await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL);
     const dom = new JSDOM(response.text);
     htmlDocument = dom.window.document;
+    mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
   });
 
   it('should have correct page title', () => {
@@ -36,35 +38,35 @@ describe('Understanding Your Options View', () => {
   });
 
   it('should display correct sub header', () => {
-    const header = htmlDocument.getElementsByClassName('govuk-heading-m')[0];
+    const header = mainWrapper.getElementsByClassName('govuk-heading-m')[0];
     expect(header.innerHTML).toContain('Current response deadline: 4pm on 15 May 2025');
   });
 
   it('should display unable to respond to claim before deadline paragraph', () => {
     const expectedText = 'If you think that you will be unable to respond to a claim before this deadline, you can request more time.';
-    const paragraph = htmlDocument.getElementsByClassName('govuk-body')[0];
+    const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
     expect(paragraph.innerHTML).toContain(expectedText);
   });
 
   it('should display second sub header', () => {
-    const header = htmlDocument.getElementsByClassName('govuk-heading-m')[1];
+    const header = mainWrapper.getElementsByClassName('govuk-heading-m')[1];
     expect(header.innerHTML).toContain('How much extra time can you request?');
   });
 
   it('should display extension of up 28 days paragraph', () => {
     const expectedText = 'If you want to request an extension of up to 28 days, you\'ll need to ask the other party\'s legal representative directly.';
-    const paragraph = htmlDocument.getElementsByClassName('govuk-body')[1];
+    const paragraph = mainWrapper.getElementsByClassName('govuk-body')[1];
     expect(paragraph.innerHTML).toContain(expectedText);
   });
 
   it('should display extension of more than 28 days paragraph', () => {
     const expectedText = 'If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party\'s legal representative, you\'ll need to apply to the court.';
-    const paragraph = htmlDocument.getElementsByClassName('govuk-body')[2];
+    const paragraph = mainWrapper.getElementsByClassName('govuk-body')[2];
     expect(paragraph.innerHTML).toContain(expectedText);
   });
 
   it('should display continue button',() => {
-    const button = htmlDocument.getElementsByClassName('govuk-button')[0];
+    const button = mainWrapper.getElementsByClassName('govuk-button')[0];
     expect(button.innerHTML).toContain('Continue');
     expect(button.getAttribute('href')).toEqual('./response-deadline-options');
   });
