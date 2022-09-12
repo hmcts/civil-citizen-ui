@@ -15,6 +15,7 @@
     "DASHBOARD": "Dashboard",
     "DAY": "Diwrnod",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "GO_TO_HOMEPAGE": "Go to homepage",
     "MONTH": "Mis",
     "MONTHS": "Mis",
     "NO": "Nac oes",
@@ -35,6 +36,7 @@
       "CONTINUE": "Parhau",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
+      "SAVE": "Save",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
@@ -537,6 +539,94 @@
       "EMAIL": "E-bost",
       "PAGE_TITLE": "Contact claimant",
       "PHONE": "Rhif ffôn"
+    },
+    "COOKIES": {
+      "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",
+      "ANALYTICS_COOKIE_OPTIONS": {
+        "HEADING": "Allow cookies that measure website use?",
+        "ON_OPTION": "Use cookies that measure my website use",
+        "OFF_OPTION": "Do not use cookies that measure my website use"
+      },
+      "BULLET_LIST1": {
+        "FIRST": "store your cookie preferences",
+        "SECOND": "measure how you use the service so it can be improved"
+      },
+      "BULLET_LIST2": {
+        "FIRST": "Site performance",
+        "SECOND": "Website usage",
+        "THIRD": "User behaviour"
+      },
+      "COOKIE_DETAILS1": {
+        "GA": {
+          "NAME": "_ga",
+          "PURPOSE": "This helps us count how many people visit the service by tracking if you’ve visited before",
+          "EXPIRES": "2 years"
+        },
+        "GID": {
+          "NAME": "_gid",
+          "PURPOSE": "Identifies you to the service",
+          "EXPIRES": "24 hours"
+        },
+        "GAT": {
+          "NAME": "_gat",
+          "PURPOSE": "Manages the rate at which page view requests are made",
+          "EXPIRES": "10 minutes"
+        }
+      },
+      "COOKIE_DETAILS2": {
+        "DTCOOKIE": {
+          "NAME": "dtCookie",
+          "PURPOSE": "Tracks a visit across multiple request",
+          "EXPIRES": "Session end"
+        },
+        "DTLATC": {
+          "NAME": "dtLatC",
+          "PURPOSE": "Measures server latency for performance monitoring",
+          "EXPIRES": "Session end"
+        },
+        "DTPC": {
+          "NAME": "dtPC",
+          "PURPOSE": "Required to identify proper endpoints for beacon transmission; includes session ID for correlation",
+          "EXPIRES": "Session end"
+        },
+        "DTSA": {
+          "NAME": "dtSa",
+          "PURPOSE": "Intermediate store for page-spanning actions",
+          "EXPIRES": "Session end"
+        },
+        "RXVISITOR": {
+          "NAME": "rxVisitor",
+          "PURPOSE": "Visitor ID to correlate sessions",
+          "EXPIRES": "1 year"
+        },
+        "RXVT": {
+          "NAME": "rxvt",
+          "PURPOSE": "Session timeout",
+          "EXPIRES": "Session end"
+        }
+      },
+      "COOKIES_EXPLANATION1": "Cookies are files saved on your phone, tablet or computer when you visit a website. Most websites need cookies to work properly",
+      "COOKIES_EXPLANATION2": "This service uses cookies to:",
+      "COOKIES_EXPLANATION3": "We use Google Analytics software to collect information about how you use this service. We do this to help make sure the service is meeting the needs of its users and to help us make improvements. We do not allow Google to use or share the data about how you use this site.",
+      "COOKIES_EXPLANATION4": "We use Dynatrace Software Intelligence Platform to provide an Application Performance Monitoring Service to collect information about how you use HMCTS services. We do this to monitor HMCTS services in order to resolve issues within our services as well as collect data on how our services can be improved. HMCTS store information about:",
+      "COOKIES_EXPLANATION5": "Information is presented within the Application Performance Monitoring service for the purposes detailed above. We do not use or share the information for any other purpose. We do not allow Dynatrace to use or share the information for any other purposes.",
+      "COOKIES_EXPLANATION6": "These essential cookies do things like making the service more secure. They always need to be on.",
+      "COOKIE_SETTINGS_SAVED": "Your cookie settings were saved",
+      "EXPIRES": "Expires",
+      "FIND_MORE_ABOUT_COOKIES": "Find out more about essential cookies",
+      "HEADING": "How cookies are used in this service",
+      "NAME": "Name",
+      "PERFORMANCE_COOKIE_OPTIONS": {
+        "HEADING": "Allow cookies that measure website application performance monitoring?",
+        "ON_OPTION": "Use cookies that measure website application performance monitoring",
+        "OFF_OPTION": "Do not use cookies that measure website application performance monitoring"
+      },
+      "PURPOSE": "Purpose",
+      "SUBHEADING1": "To measure website usage",
+      "SUBHEADING2": "Cookie details",
+      "SUBHEADING3": "To measure application performance",
+      "SUBHEADING4": "Essential cookies",
+      "TITLE": "Cookies"
     },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",

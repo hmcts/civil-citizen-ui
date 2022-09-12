@@ -113,6 +113,7 @@ import claimantPartyTypeController from './features/public/claim/claimantPartyTy
 import completingClaimController from './features/claim/completingClaimController';
 import submitComfirmationController from './features/response/submitComfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
+import cookiesController from './features/public/cookiesController';
 
 export default [
   homeController,
@@ -216,4 +217,5 @@ export default [
   completingClaimController,
   submitComfirmationController,
   resolvingThisDisputeController,
+  cookiesController,
 ];
