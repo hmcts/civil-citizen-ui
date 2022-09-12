@@ -19,6 +19,7 @@ describe('Try the new online service View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: any;
     let paragraphs: HTMLCollection;
 
     beforeEach(async () => {
@@ -28,7 +29,8 @@ describe('Try the new online service View', () => {
       const response = await request(app).get(BASE_ELIGIBILITY_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
-      paragraphs = htmlDocument.getElementsByClassName(govukBodyClass);
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
+      paragraphs = mainWrapper.getElementsByClassName(govukBodyClass);
     });
 
     it('should have page title', () => {
@@ -49,7 +51,7 @@ describe('Try the new online service View', () => {
     });
 
     it('should display Continue button', () => {
-      const button = htmlDocument.getElementsByClassName('govuk-button');
+      const button = mainWrapper.getElementsByClassName('govuk-button');
       expect(button[0].innerHTML).toContain(t('COMMON.BUTTONS.CONTINUE'));
     });
 

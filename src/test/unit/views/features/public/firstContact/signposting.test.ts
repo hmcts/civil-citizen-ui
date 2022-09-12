@@ -37,7 +37,7 @@ describe('Signposting View', () => {
     });
 
     it('should display paragraphs', () => {
-      const body = htmlDocument.getElementsByClassName('govuk-body');
+      const body = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0].getElementsByClassName('govuk-body');
       expect(body[0].innerHTML).toContain(t('PAGES.FIRST_CONTACT_SIGNPOSTING.PARAGRAPH_1'));
       expect(body[1].innerHTML).toContain(t('PAGES.FIRST_CONTACT_SIGNPOSTING.PARAGRAPH_2'));
       expect(body[2].innerHTML).toContain(t('PAGES.FIRST_CONTACT_SIGNPOSTING.PARAGRAPH_3'));

@@ -24,11 +24,13 @@ describe('I Dont Want Free Mediation View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: any;
 
     beforeEach(async () => {
       const response = await request(app).get(DONT_WANT_FREE_MEDIATION_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have correct page title', () => {
@@ -36,7 +38,7 @@ describe('I Dont Want Free Mediation View', () => {
     });
 
     it('should display correct header', () => {
-      const header = htmlDocument.getElementsByClassName('govuk-heading-m')[0];
+      const header = mainWrapper.getElementsByClassName('govuk-heading-m')[0];
       expect(header.innerHTML).toContain('I do not agree to free mediation');
     });
 
@@ -64,7 +66,7 @@ describe('I Dont Want Free Mediation View', () => {
     });
 
     it('should display save and continue button', () => {
-      const button = htmlDocument.getElementsByClassName('govuk-button');
+      const button = mainWrapper.getElementsByClassName('govuk-button');
       expect(button[0].innerHTML).toContain('Save and continue');
     });
 
