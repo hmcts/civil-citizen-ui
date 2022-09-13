@@ -4,7 +4,7 @@ import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('DQ - Tried to settle');
 
-const getTriedToSettle = async  (claimId: string): Promise<TriedToSettle> => {
+const getTriedToSettle = async (claimId: string): Promise<TriedToSettle> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
     return caseData.directionQuestionnaire?.triedToSettle ? caseData.directionQuestionnaire.triedToSettle : new TriedToSettle();
