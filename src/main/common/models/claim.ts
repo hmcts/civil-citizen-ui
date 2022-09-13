@@ -114,7 +114,7 @@ export class Claim {
     return this.paymentOption === PaymentOptionType.IMMEDIATELY;
   }
 
-  isPaymentOptionInstalllments(): boolean {
+  isPaymentOptionInstallments(): boolean {
     return this.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
@@ -229,7 +229,7 @@ export class Claim {
       return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
     }
 
-    if (this.isFullAdmission() && this.isPaymentOptionInstalllments()) {
+    if (this.isFullAdmission() && this.isPaymentOptionInstallments()) {
       return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
     }
 
@@ -239,6 +239,18 @@ export class Claim {
 
     if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
       return ClaimResponseStatus.PA_ALREADY_PAID;
+    }
+
+    if (this.isPartialAdmission() && this.isPaymentOptionPayImmediately()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY;
+    }
+
+    if (this.isPartialAdmission() && this.isPaymentOptionBySetDate()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
+    }
+
+    if (this.isPartialAdmission() && this.isPaymentOptionInstallments()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
     }
     
   }
