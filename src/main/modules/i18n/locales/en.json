@@ -1271,6 +1271,15 @@
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
     },
+    "TRIED_TO_SETTLE": {
+      "BOTH_PARTIES": "Both parties must take certain steps before going to court.",
+      "PAGE_TITLE": "Have you tried to settle this claim before going to court?",
+      "STEPS": "These steps are:",
+      "STEP_ONE": "discuss the claim and negotiate with each other",
+      "STEP_TWO": "try to reach an agreement about the claim",
+      "STEP_THREE": "consider another form of dispute resolution, such as mediation",
+      "TITLE": "Tried to settle this claim?"
+    },
     "TRY_NEW_SERVICE": {
       "PAGE_TITLE": "Try the new online service",
       "TITLE": "Try the new online service",
@@ -1517,6 +1526,7 @@
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
     "VALID_TEXT_LENGTH": "You've entered too many characters",
+    "VALID_TRIED_TO_SETTLE": "Select yes if you have tried to settle this claim before going to court",
     "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
