@@ -192,8 +192,8 @@ export class Claim {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
     if (documentUrl?.length) {
-      const splittedData = documentUrl.split('/');
-      documentId = splittedData[splittedData?.length - 1];
+      const splitData = documentUrl.split('/');
+      documentId = splitData[splitData?.length - 1];
     }
     return documentId;
   }
@@ -240,9 +240,9 @@ export class Claim {
     if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
-    
+
   }
-  
+
 }
 
 export interface Party {
