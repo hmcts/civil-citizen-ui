@@ -109,6 +109,8 @@ civil-service:
       FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       POLLING_EVENT_EMITTER_ENABLED: false
+      DOCUMENT_MANAGEMENT_SECURED: true
+      STITCHING_API_ENABLED: false
 
 idam-pr:
   releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
@@ -191,7 +193,7 @@ ccd:
         IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: ${IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET}
         IDAM_DATA_STORE_SYSTEM_USER_USERNAME: ${IDAM_DATA_STORE_SYSTEM_USER_USERNAME}
         IDAM_DATA_STORE_SYSTEM_USER_PASSWORD: ${IDAM_DATA_STORE_SYSTEM_USER_PASSWORD}
-        ROLE_ASSIGNMENT_URL: http://role-am-${SERVICE_FQDN}
+        ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
         ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
@@ -199,7 +201,6 @@ ccd:
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
   am-role-assignment-service:
     java:
-      ingressHost: role-am-${SERVICE_FQDN}
       keyVaults:
         am:
           secrets:
