@@ -1,0 +1,82 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+{% block pageTitle %}
+  {{ setPageTitle('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.PAGE_TITLE') }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.TITLE') }}</h1>
+          <p class="govuk-body">{{ t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.CLAIMING_AS_HEADER') }}</p>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% set typeError = form.errorFor('option') %}
+            <div class="govuk-form-group">
+              {{ govukRadios({
+                idPrefix: "claimantPartyType",
+                name: "option",
+                items: [
+                  {
+                    value: CounterpartyType.INDIVIDUAL,
+                    html: '<strong>' + t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.CLAIMING_AS_AN_INDIVIDUAL') + '</strong>',
+                    checked: form.model.option === CounterpartyType.INDIVIDUAL,
+                    hint: {
+                      text: t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.CLAIMING_FOR_YOURSELF')
+                    }
+                  },
+                  {
+                    value: CounterpartyType.SOLE_TRADER,
+                    html: '<strong>' + t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.CLAIMING_AS_SOLE_TRADER_OR_SELF_EMPLOYED') + '</strong>',
+                    checked: form.model.option === CounterpartyType.SOLE_TRADER,
+                    hint: {
+                      text: t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.CLAIMING_FOR_EXAMPLE_TRADEPERSON')
+                    }
+                  },
+                  {
+                    value: CounterpartyType.COMPANY,
+                    html: '<strong>' + t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.CLAIMING_AS_LIMITED_COMPANY') + '</strong>',
+                    checked: form.model.option === CounterpartyType.COMPANY,
+                    hint: {
+                      text: t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.CLAIMING_FOR_EXAMPLE_COMPANY')
+                    }
+                  },
+                  {
+                    value: CounterpartyType.ORGANISATION,
+                    html: '<strong>' + t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.CLAIMING_AS_ORGANISATION') + '</strong>',
+                    checked: form.model.option === CounterpartyType.ORGANISATION,
+                    hint: {
+                      text: t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION')
+                    }
+                  }
+                ],
+                errorMessage: {
+                  text: t(typeError)
+                } if typeError
+              }) }}
+            </div>
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-thirds">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
