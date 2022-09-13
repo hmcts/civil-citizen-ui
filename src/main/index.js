@@ -10,5 +10,6 @@ import './assets/js/mojAll';
 import './assets/js/select-toggle';
 import './assets/js/language-toggle';
 import { initAll } from 'govuk-frontend';
+import './modules/cookie/cookieConfig';
 
 initAll();

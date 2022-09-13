@@ -23,6 +23,8 @@ describe('Submit Confirmation View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: any;
+
     beforeEach(async () => {
       nock(idamUrl)
         .post('/o/token')
@@ -31,6 +33,7 @@ describe('Submit Confirmation View', () => {
       const response = await request(app).get(CONFIRMATION_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have title set', () => {
@@ -38,7 +41,7 @@ describe('Submit Confirmation View', () => {
     });
 
     describe('Should display submit panel', () => {
-      
+
       it('should panel title', () => {
         const panelTitle = htmlDocument.getElementsByClassName('govuk-panel__title');
         expect(panelTitle[0].innerHTML).toContain("You've submitted your response");
@@ -53,43 +56,42 @@ describe('Submit Confirmation View', () => {
     });
 
     it('should display submit status', () => {
-      const paragraphs = htmlDocument.getElementsByClassName(paragraph);
+      const paragraphs = mainWrapper.getElementsByClassName(paragraph);
       expect(paragraphs[0].innerHTML).toContain('We’ve emailed Mr. Jan Clark to tell them you’ll pay immediately.');
     });
 
     describe('Should display next steps section', function () {
       it('should display the title', () => {
-        const nextstepsTitle = htmlDocument.getElementsByClassName('govuk-heading-m');
+        const nextstepsTitle = mainWrapper.getElementsByClassName('govuk-heading-m');
         expect(nextstepsTitle[0].innerHTML).toContain('What happens next');
       });
 
       it('should display next steps', () => {
-        const paragraphs = htmlDocument.getElementsByClassName(paragraph);
+        const paragraphs = mainWrapper.getElementsByClassName(paragraph);
         const nextStepsList = htmlDocument.getElementsByClassName('govuk-list');
-        const links = htmlDocument.getElementsByClassName('govuk-link');
+        const links = mainWrapper.getElementsByClassName('govuk-link');
         const immediatePaymentDeadLline = dayjs().add(5, 'day').locale('en').format('DD MMMM YYYY');
         expect(paragraphs[1].innerHTML).toContain('You need to make sure that:');
         expect(nextStepsList[0].getElementsByTagName('li')[0].innerHTML).toContain(`they get the money by ${immediatePaymentDeadLline} - they can request a County Court Judgment against you if not`);
         expect(nextStepsList[0].getElementsByTagName('li')[1].innerHTML).toContain('any cheques or bank transfers are clear in their account by the deadline');
         expect(nextStepsList[0].getElementsByTagName('li')[2].innerHTML).toContain('you get a receipt for any payments');
         expect(nextStepsList[0].getElementsByTagName('li')[3].innerHTML).toContain('they tell the court that you’ve paid');
-        expect(links[2].innerHTML).toContain('Contact Mr. Jan Clark');
+        expect(links[0].innerHTML).toContain('Contact Mr. Jan Clark');
         expect(paragraphs[2].innerHTML).toContain('if you need their payment details.');
       });
     });
 
     it('should display survey link', () => {
-      const links = htmlDocument.getElementsByClassName('govuk-link');
-      const surveyLink = links[3] as HTMLAnchorElement;
+      const links = mainWrapper.getElementsByClassName('govuk-link');
+      const surveyLink = links[1] as HTMLAnchorElement;
       expect(surveyLink.innerHTML).toContain('What did you think of this service?');
       expect(surveyLink.href).toContain(externalURLs.smartSurveyUrl);
     });
 
     it('should display go to your account link', () => {
-      const links = htmlDocument.getElementsByClassName('govuk-button');
-      const accountLink = links[0] as HTMLAnchorElement;
-      expect(accountLink.innerHTML).toContain('Go to your account');
-      expect(accountLink.href).toContain('/dashboard');
+      const links = mainWrapper.getElementsByClassName('govuk-button')[0];
+      expect(links.innerHTML).toContain('Go to your account');
+      expect(links.href).toContain('/dashboard');
     });
 
     it('Should display help and support section', function () {

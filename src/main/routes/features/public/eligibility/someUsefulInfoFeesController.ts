@@ -2,7 +2,7 @@ import * as express from 'express';
 import {
   ELIGIBILITY_INFORMATION_FEES_URL,
   ELIGIBILITY_APPLY_HELP_FEES_URL,
-  ELIGIBILITY_HELP_WITH_FEES,
+  ELIGIBILITY_APPLY_HELP_WITH_FEES_URL,
 } from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
@@ -35,7 +35,7 @@ someUsefulInfoFeesController.post(ELIGIBILITY_INFORMATION_FEES_URL, (req, res) =
     res.cookie('eligibility', cookie);
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(ELIGIBILITY_APPLY_HELP_FEES_URL)
-      : res.redirect(ELIGIBILITY_HELP_WITH_FEES);
+      : res.redirect(ELIGIBILITY_APPLY_HELP_WITH_FEES_URL);
   }
 });
 

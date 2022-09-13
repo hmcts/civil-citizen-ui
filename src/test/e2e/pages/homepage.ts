@@ -1,4 +1,3 @@
-
 import {  config as testConfig } from '../../config';
 let Given;
 let Then;

@@ -16,6 +16,7 @@ describe('Repayment Plan View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
+  let mainWrapper: any;
 
   describe('on GET', () => {
     beforeEach(async () => {
@@ -26,6 +27,7 @@ describe('Repayment Plan View', () => {
       await request(app).get(CITIZEN_REPAYMENT_PLAN_FULL_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
+        mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
       });
     });
 
@@ -35,12 +37,12 @@ describe('Repayment Plan View', () => {
     });
 
     it('should display total amount claimed text', async () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body-m');
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body-m');
       expect(paragraph[0].innerHTML).toContain(t('PAGES.REPAYMENT_PLAN.SUBTITLE',{totalAmount: '110'}));
     });
 
     it('should display save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
+      const buttons = mainWrapper.getElementsByClassName('govuk-button');
       expect(buttons[0].innerHTML).toContain(t('COMMON.BUTTONS.SAVE_AND_CONTINUE'));
     });
 
@@ -87,7 +89,7 @@ describe('Repayment Plan View', () => {
 
     describe('Length of repayment plan Section', () => {
       it('should display "Length of repayment plan" text', async () => {
-        const paragraph = htmlDocument.getElementsByClassName('govuk-body');
+        const paragraph = mainWrapper.getElementsByClassName('govuk-body');
         const strongTag = htmlDocument.getElementsByTagName('strong');
         expect(strongTag).not.toBeNull();
         expect(paragraph[0].innerHTML).toContain(t('PAGES.REPAYMENT_PLAN.LENGTH'));
