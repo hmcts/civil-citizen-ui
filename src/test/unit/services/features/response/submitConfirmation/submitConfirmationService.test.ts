@@ -8,6 +8,8 @@ import {ResponseType} from '../../../../../../main/common/form/models/responseTy
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {HowMuchHaveYouPaid} from '../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
+import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -28,17 +30,18 @@ describe('Submit Confirmation service', () => {
       partyName: 'Some Very Important Company Ltd',
       type: CounterpartyType.COMPANY,
     };
-    claim.respondent1.partyName = 'Version 1';    
+    claim.respondent1.partyName = 'Version 1';
     claim.respondent1.type = CounterpartyType.ORGANISATION;
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
     it('should display submit status', () => {
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
+      console.log(submitStatusSection)
       expect(submitStatusSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.WE_EMAILED_CLAIMANT_YOUR_INTENTION');
     });
 
     it('should display what happens next title', () => {
       const nextStepsTitle = getNextStepsTitle(lang);
-      expect(nextStepsTitle[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');      
+      expect(nextStepsTitle[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
     });
 
     it('should display next steps section', () => {
@@ -51,7 +54,7 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[1].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.CONTACT_CLAIMANT');
       expect(nextStepsSection[1].data?.textAfter).toEqual('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.IF_NEED_THEIR_DETAILS');
       expect(nextStepsSection[1].data?.href).toEqual('/dashboard/5129/contact-them');
-    });    
+    });
   });
 
   describe('Full admission pay by date scenario', () => {
@@ -128,6 +131,43 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[2].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU');
       expect(nextStepsSection[3].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OFFER');
       expect(nextStepsSection[4].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY');
+    });
+  });
+
+  describe('Part admission paid scenario', () => {
+    const claim = new Claim();
+    //claim.paymentOption = PaymentOptionType.INSTALMENTS;
+    claim.respondent1 = new Respondent();
+    claim.applicant1 = {
+      partyName: 'Some Very Important Company Ltd',
+      type: CounterpartyType.COMPANY,
+    };
+    claim.respondent1.partyName = 'Version 1';
+    claim.respondent1.type = CounterpartyType.ORGANISATION;
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.partialAdmission = new PartialAdmission();
+    const howMuchHaveYouPaid = new HowMuchHaveYouPaid(
+      {
+        amount: 150,
+        totalClaimAmount: 1000,
+        year: '2022',
+        month: '2',
+        day: '10',
+        text: 'Some text'
+      }
+    );
+    claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
+
+    it('should display submit status', () => {
+      const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
+      console.log("Build Submit Status Title",submitStatusSection)
+      expect(submitStatusSection[0]?.data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_ALREADY_PAID.WE_EMAILED_CLAIMANT_YOUR_INTENTION');
+    });
+
+    it('should display what happens next title', () => {
+      const nextStepsTitle = getNextStepsTitle(lang);
+      console.log("Build Next Step Title",nextStepsTitle)
+      expect(nextStepsTitle[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
     });
   });
 });

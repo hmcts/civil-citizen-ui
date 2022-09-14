@@ -188,6 +188,10 @@ export class Claim {
     return this.partialAdmission?.howMuchDoYouOwe?.amount;
   }
 
+  partialAdmissionPaidAmount(): number {
+    return this.partialAdmission?.howMuchHaveYouPaid?.amount;
+  }
+
   extractDocumentId(): string {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
@@ -240,9 +244,9 @@ export class Claim {
     if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
-    
+
   }
-  
+
 }
 
 export interface Party {
