@@ -1,5 +1,6 @@
 import {TriedToSettle} from '../../../common/models/directionsQuestionnaire/triedToSettle';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
+import {DirectionQuestionnaire} from '../../../common/models/directionsQuestionnaire/directionQuestionnaire';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('DQ - Tried to settle');
@@ -21,9 +22,14 @@ const getTriedToSettleForm = (triedToSettle: string): TriedToSettle => {
 const saveTriedToSettle = async (claimId: string, triedToSettle: TriedToSettle) => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    const directionQuestionnaire = caseData.directionQuestionnaire;
-    directionQuestionnaire ?
-      directionQuestionnaire.triedToSettle = triedToSettle : caseData.directionQuestionnaire = {triedToSettle};
+    let directionQuestionnaire = caseData?.directionQuestionnaire;
+    if (directionQuestionnaire) {
+      directionQuestionnaire = {...directionQuestionnaire};
+      directionQuestionnaire.triedToSettle = triedToSettle;
+    } else {
+      caseData.directionQuestionnaire = new DirectionQuestionnaire();
+      caseData.directionQuestionnaire.triedToSettle = triedToSettle;
+    }
     await saveDraftClaim(claimId, caseData);
   } catch (error) {
     logger.error(error);
