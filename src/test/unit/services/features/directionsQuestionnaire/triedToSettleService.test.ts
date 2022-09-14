@@ -69,13 +69,15 @@ describe('Tried to Settle the Claim Service', () => {
       const updatedTriedToSettle: TriedToSettle = {
         option: YesNo.NO,
       };
+      const updatedClaim = new Claim();
+      updatedClaim.directionQuestionnaire = {triedToSettle: updatedTriedToSettle};
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       await saveTriedToSettle('validClaimId', updatedTriedToSettle);
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire: {triedToSettle: updatedTriedToSettle}});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', updatedClaim);
     });
 
     it('should return an error on redis failure', async () => {
