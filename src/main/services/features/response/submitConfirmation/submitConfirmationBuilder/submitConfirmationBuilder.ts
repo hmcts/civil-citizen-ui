@@ -13,8 +13,8 @@ import {
 } from './admissionSubmitConfirmationContent';
 
 import {
-  getPAPaidStatus,
-  getPAPaidNextSteps,
+  getPA_AlreadyPaidStatus,
+  getPA_AlreadyPaidNextSteps,
 } from './partAdmissionConfirmationContent';
 
 import {ClaimResponseStatus} from '../../../../../common/models/claimResponseStatus';
@@ -25,7 +25,7 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
   const FAPayByInstallmentsStatus = getFAPayByInstallmentsStatus(claim, lang);
   const contactYouStatement = getContactYouStatement(lang);
   const financialDetails = getfinancialDetails(claimId, claim, lang);
-  const PAPaidStatus = getPAPaidStatus(claim, lang);
+  const PA_AlreadyPaidStatus = getPA_AlreadyPaidStatus(claim, lang);
 
   switch (claim.responseStatus) {
     case ClaimResponseStatus.FA_PAY_IMMEDIATELY:
@@ -35,7 +35,7 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
     case ClaimResponseStatus.FA_PAY_INSTALLMENTS:
       return [...FAPayByInstallmentsStatus, ...contactYouStatement, ...financialDetails];
     case ClaimResponseStatus.PA_ALREADY_PAID:
-      return PAPaidStatus;
+      return PA_AlreadyPaidStatus;
   }
 }
 
@@ -43,7 +43,7 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang:string
   const FAPayImmediatelyNextSteps = getFAPayImmediatelyNextSteps(claimId, claim, lang);
   const FAPayByDateNextSteps = getFAPayByDateNextSteps(claimId, claim, lang);
   const FAPayByInstallmentsNextSteps = getFAPayByInstallmentsNextSteps(claimId, claim, lang);
-  const PAPaidNextSteps = getPAPaidNextSteps(claim,lang);
+  const PA_AlreadyPaidNextSteps = getPA_AlreadyPaidNextSteps(claim,lang);
 
   switch (claim.responseStatus) {
     case ClaimResponseStatus.FA_PAY_IMMEDIATELY:
@@ -53,6 +53,6 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang:string
     case ClaimResponseStatus.FA_PAY_INSTALLMENTS:
       return FAPayByInstallmentsNextSteps;
     case ClaimResponseStatus.PA_ALREADY_PAID:
-      return PAPaidNextSteps;
+      return PA_AlreadyPaidNextSteps;
   }
 }

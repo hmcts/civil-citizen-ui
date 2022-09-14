@@ -3,7 +3,7 @@ import {t} from 'i18next';
 import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
 
-export function getPAPaidStatus(claim: Claim, lang: string): ClaimSummarySection[] {
+export function getPA_AlreadyPaidStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantName();
   const amount = claim.partialAdmissionPaidAmount();
   return [
@@ -17,7 +17,7 @@ export function getPAPaidStatus(claim: Claim, lang: string): ClaimSummarySection
   ];
 }
 
-export function getPAPaidNextSteps(claim: Claim,lang: string): ClaimSummarySection[]{
+export function getPA_AlreadyPaidNextSteps(claim: Claim,lang: string): ClaimSummarySection[]{
   const claimantName = claim.getClaimantName();
   return [
     {
@@ -28,7 +28,7 @@ export function getPAPaidNextSteps(claim: Claim,lang: string): ClaimSummarySecti
         <h3 class="govuk-heading-s govuk-!-margin-bottom-1">${t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_RESPONSE', { claimantName, lng: lang })}</h3>
         <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.PA_ALREADY_PAID.WE_ASK_CLAIMANT_FOR_MEDIATION', { lng: lang })}</p>
         <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.PA_ALREADY_PAID.CLAIMANT_REFUSE_MEDIATION', { lng: lang })}</p>
-        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT', { lng: lang })}</p>`
+        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT', { lng: lang })}</p>`,
       },
     },
   ];

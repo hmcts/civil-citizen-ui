@@ -10,6 +10,7 @@ import {Respondent} from '../../../../../../main/common/models/respondent';
 import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {HowMuchHaveYouPaid} from '../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
+import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -35,7 +36,6 @@ describe('Submit Confirmation service', () => {
     claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
     it('should display submit status', () => {
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
-      console.log(submitStatusSection)
       expect(submitStatusSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.WE_EMAILED_CLAIMANT_YOUR_INTENTION');
     });
 
@@ -134,7 +134,7 @@ describe('Submit Confirmation service', () => {
     });
   });
 
-  describe('Part admission paid scenario', () => {
+  describe('Part Admission Already Paid Scenario', () => {
     const claim = new Claim();
     //claim.paymentOption = PaymentOptionType.INSTALMENTS;
     claim.respondent1 = new Respondent();
@@ -153,21 +153,30 @@ describe('Submit Confirmation service', () => {
         year: '2022',
         month: '2',
         day: '10',
-        text: 'Some text'
-      }
+        text: 'Some text',
+      },
     );
     claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
+    claim.partialAdmission.alreadyPaid = {option: YesNo.YES};
 
     it('should display submit status', () => {
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
-      console.log("Build Submit Status Title",submitStatusSection)
       expect(submitStatusSection[0]?.data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_ALREADY_PAID.WE_EMAILED_CLAIMANT_YOUR_INTENTION');
     });
 
     it('should display what happens next title', () => {
       const nextStepsTitle = getNextStepsTitle(lang);
-      console.log("Build Next Step Title",nextStepsTitle)
-      expect(nextStepsTitle[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+      expect(nextStepsTitle[0]?.data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
+    });
+
+    it('should display next steps section', () => {
+      const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
+      expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_RESPONSE');
+      expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.THE_CLAIM_WILL_BE_SETTLED');
+      expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_RESPONSE');
+      expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_ALREADY_PAID.WE_ASK_CLAIMANT_FOR_MEDIATION');
+      expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.PA_ALREADY_PAID.CLAIMANT_REFUSE_MEDIATION');
+      expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT');
     });
   });
 });

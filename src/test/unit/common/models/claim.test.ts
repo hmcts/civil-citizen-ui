@@ -606,8 +606,6 @@ describe('Claim partialAdmissionPaymentAmount', () => {
     expect(result).toEqual(55);
   });
 
-
-
   it('should return false with part admit empty HowMuchHaveYouPaid', () => {
     //Given
     claim.partialAdmission.howMuchHaveYouPaid = new HowMuchHaveYouPaid({});
@@ -625,8 +623,8 @@ describe('Claim partialAdmissionPaymentAmount', () => {
         year: '2022',
         month: '2',
         day: '10',
-        text: 'Some text'
-      }
+        text: 'Some text',
+      },
     );
     claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
     //When
