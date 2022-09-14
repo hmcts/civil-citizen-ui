@@ -1,10 +1,10 @@
-import {ChildrenDisability} from '../../../../../common/form/models/statementOfMeans/dependants/childrenDisability';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {Claim} from '../../../../../common/models/claim';
 import {YesNo} from '../../../../../common/form/models/yesNo';
 import * as winston from 'winston';
 import {NumberOfChildren} from '../../../../../common/form/models/statementOfMeans/dependants/numberOfChildren';
+import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 let logger = Logger.getLogger('childrenDisabilityService');
@@ -34,22 +34,22 @@ export const isDefendantPartnerDisabled = (statementOfMeans: StatementOfMeans): 
   return statementOfMeans?.cohabiting?.option === YesNo.YES && statementOfMeans.partnerDisability?.option === YesNo.YES;
 };
 
-export const getChildrenDisability = async (claimId: string): Promise<ChildrenDisability> => {
+export const getChildrenDisability = async (claimId: string): Promise<GenericYesNo> => {
   try {
     const case_data = await getCaseDataFromStore(claimId);
     if (case_data?.statementOfMeans?.childrenDisability) {
-      const childrenDisability = new ChildrenDisability();
+      const childrenDisability = new GenericYesNo();
       childrenDisability.option = case_data.statementOfMeans.childrenDisability.option;
       return childrenDisability;
     }
-    return new ChildrenDisability();
+    return new GenericYesNo();
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const saveChildrenDisability = async (claimId: string, childrenDisability: ChildrenDisability) => {
+export const saveChildrenDisability = async (claimId: string, childrenDisability: GenericYesNo) => {
   try {
     const case_data = await getCaseDataFromStore(claimId) || new Claim();
     if (case_data.statementOfMeans) {

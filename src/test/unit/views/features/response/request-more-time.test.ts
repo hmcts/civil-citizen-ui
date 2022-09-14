@@ -24,10 +24,13 @@ describe('Request More Time View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: any;
+
     beforeEach(async () => {
       const response = await request(app).get(REQUEST_MORE_TIME_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have title set', () => {
@@ -40,7 +43,7 @@ describe('Request More Time View', () => {
     });
 
     it('should display current response deadline sub header', () => {
-      const subHeader = htmlDocument.getElementsByClassName('govuk-body');
+      const subHeader = mainWrapper.getElementsByClassName('govuk-body');
       expect(subHeader[0].innerHTML).toContain('Current response deadline: 4pm on 15 May 2025');
     });
 
@@ -81,7 +84,7 @@ describe('Request More Time View', () => {
     });
 
     it('should display Save and continue button', () => {
-      const button = htmlDocument.getElementsByClassName('govuk-button')[0];
+      const button = mainWrapper.getElementsByClassName('govuk-button')[0];
       expect(button.innerHTML).toContain('Save and continue');
     });
 

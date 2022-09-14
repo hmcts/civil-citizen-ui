@@ -24,11 +24,13 @@ describe('Citizen Bank Accounts View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: any;
 
     beforeEach(async () => {
       const response = await request(app).get(CITIZEN_BANK_ACCOUNT_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have correct page title', () => {
@@ -42,7 +44,7 @@ describe('Citizen Bank Accounts View', () => {
 
     it('should have overdrawn example', () => {
       const expectedText = 'Put a minus (-) in front of the amount if you’re overdrawn. For example £-804.45.';
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body')[0];
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
       expect(paragraph.innerHTML).toContain(expectedText);
     });
 
@@ -60,7 +62,7 @@ describe('Citizen Bank Accounts View', () => {
     });
 
     it('should display save continue button',() => {
-      const button = htmlDocument.getElementsByClassName('govuk-button')[1];
+      const button = mainWrapper.getElementsByClassName('govuk-button')[1];
       expect(button.innerHTML).toContain('Save and continue');
     });
 

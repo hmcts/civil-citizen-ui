@@ -18,6 +18,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
+  let mainWrapper: any;
 
   describe('on GET', () => {
     beforeEach(async () => {
@@ -28,6 +29,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
       const res = await request(app).get(CAN_WE_USE_COMPANY_URL);
       const dom = new JSDOM(res.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have correct page title', () => {
@@ -47,7 +49,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
     });
 
     it('should display save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
+      const buttons = mainWrapper.getElementsByClassName('govuk-button');
       expect(buttons[0].innerHTML).toContain('Save and continue');
     });
 
@@ -78,7 +80,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number', () =>
         expect(paragraph[3].innerHTML).toContain('Who should the mediation service call?');
       });
       it('should display input element for "Who should the mediation service call?"', async () => {
-        const input = htmlDocument.getElementById('ediationContactPerson');
+        const input = htmlDocument.getElementById('mediationContactPerson');
         expect(input).toBeDefined();
       });
       it('should display "Enter this person’s phone number" text', async () => {
