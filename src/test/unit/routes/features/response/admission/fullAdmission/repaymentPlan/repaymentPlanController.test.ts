@@ -6,6 +6,8 @@ import {CITIZEN_REPAYMENT_PLAN_FULL_URL, CLAIM_TASK_LIST_URL} from '../../../../
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
+import {getNextYearValue} from '../../../../../../../utils/dateUtils';
+
 jest.mock('../../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../../main/modules/draft-store');
 
@@ -40,6 +42,7 @@ describe('on Get', () => {
 });
 
 describe('on Post', () => {
+  const mockFutureYear = getNextYearValue();
   it('should return error when no input text is filled', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
@@ -129,7 +132,7 @@ describe('on Post', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-      .send({paymentAmount: '', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
+      .send({paymentAmount: '', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('ERRORS.AMOUNT_REQUIRED'));
@@ -140,7 +143,7 @@ describe('on Post', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-      .send({paymentAmount: '-1', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
+      .send({paymentAmount: '-1', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('ERRORS.AMOUNT_REQUIRED'));
@@ -151,7 +154,7 @@ describe('on Post', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-      .send({paymentAmount: '10000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
+      .send({paymentAmount: '10000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('ERRORS.EQUAL_INSTALMENTS_REQUIRED'));
@@ -162,7 +165,7 @@ describe('on Post', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-      .send({paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'})
+      .send({paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('ERRORS.VALID_TWO_DECIMAL_NUMBER'));
@@ -173,7 +176,7 @@ describe('on Post', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-      .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '1', month: '08', year: '2023'})
+      .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '1', month: '08', year: mockFutureYear})
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -183,7 +186,7 @@ describe('on Post', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-      .send({paymentAmount: '100', repaymentFrequency: 'TWO_WEEKS', day: '1', month: '08', year: '2023'})
+      .send({paymentAmount: '100', repaymentFrequency: 'TWO_WEEKS', day: '1', month: '08', year: mockFutureYear})
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -193,7 +196,7 @@ describe('on Post', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     await request(app)
       .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-      .send({paymentAmount: '100', repaymentFrequency: 'MONTH', day: '1', month: '08', year: '2023'})
+      .send({paymentAmount: '100', repaymentFrequency: 'MONTH', day: '1', month: '08', year: mockFutureYear})
       .expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);

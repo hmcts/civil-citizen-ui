@@ -50,7 +50,7 @@ describe('Total Amount View', () => {
     });
 
     it('should display save and continue button', () => {
-      const button = htmlDocument.getElementsByClassName('govuk-button')[0];
+      const button = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0].getElementsByClassName('govuk-button')[0];
       expect(button.innerHTML).toContain('Save and continue');
     });
 

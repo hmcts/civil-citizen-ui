@@ -1,5 +1,4 @@
 import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
-
 import {CurrencyValidator} from '../../../../../common/form/validators/currencyValidator';
 
 export class DebtItems{
@@ -24,12 +23,11 @@ export class DebtItems{
     this.monthlyPayments = monthlyPayments;
   }
 
-  public isEmpty (): boolean {
+  public isEmpty(): boolean {
     return Object.values(this).every(value => value === undefined || value === '' || value?.length === 0);
   }
 
-  isAtLeastOneFieldPopulated (): boolean {
+  isAtLeastOneFieldPopulated(): boolean {
     return !this.isEmpty();
   }
-
 }

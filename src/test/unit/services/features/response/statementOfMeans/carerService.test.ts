@@ -3,7 +3,7 @@ import * as draftStoreService from '../../../../../../main/modules/draft-store/d
 import {Claim} from '../../../../../../main/common/models/claim';
 import {StatementOfMeans} from '../../../../../../main/common/models/statementOfMeans';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
-import {Carer} from '../../../../../../main/common/form/models/statementOfMeans/carer';
+import {GenericYesNo} from '../../../../../../main/common/form/models/genericYesNo';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
@@ -22,7 +22,7 @@ describe('Carer service', () => {
       const result = await getCarer(claimId);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(result).toEqual(new Carer());
+      expect(result).toEqual(new GenericYesNo());
     });
     it('should return populated form model when data exists', async () => {
       //Given
@@ -46,7 +46,7 @@ describe('Carer service', () => {
       //Given
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveCarer(claimId, new Carer(YesNo.YES));
+      await saveCarer(claimId, new GenericYesNo(YesNo.YES));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -58,7 +58,7 @@ describe('Carer service', () => {
         return new Claim();
       });
       //When
-      await saveCarer(claimId, new Carer(YesNo.YES));
+      await saveCarer(claimId, new GenericYesNo(YesNo.YES));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -68,7 +68,7 @@ describe('Carer service', () => {
 function createClaim() {
   const claim = new Claim();
   const statementOfMeans = new StatementOfMeans();
-  statementOfMeans.carer = new Carer(YesNo.YES);
+  statementOfMeans.carer = new GenericYesNo(YesNo.YES);
   claim.statementOfMeans = statementOfMeans;
   return claim;
 }
