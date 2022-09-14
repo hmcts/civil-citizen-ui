@@ -36,7 +36,6 @@ export const enum TestMessages {
   AMOUNT_LESS_THAN_CLAIMED = 'Enter a value less than the amount claimed',
   PHONE_NUMBER_REQUIRED = 'Please enter a phone number',
   NAME_REQUIRED = 'Please enter a name',
-  TEXT_TOO_MANY = 'You’ve entered too many characters',
   VALID_YES_NO_SELECTION = 'Please select yes or no',
   VALID_DEFENDENT_AGE_ELIGIBILITY = 'Select yes, no, or company/organisation',
   MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
@@ -71,6 +70,5 @@ export const enum TestMessages {
   VALID_STRICTLY_POSITIVE_NUMBER = 'Enter a number higher than 0',
   VALID_TEXT_LENGTH = 'You’ve entered too many characters',
   VALID_YES_NO_OPTION = 'Choose option: Yes or No',
-  PAGE_NOT_FOUND = 'Page Not Found'
   REQUEST_FAILED = 'Request failed with status code 500',
 }
