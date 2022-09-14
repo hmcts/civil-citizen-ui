@@ -160,10 +160,10 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
           </li>
           <li>${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.MAKE_SURE_GET_RECEIPT', { lng: lang })}</li>
         </ul>
-        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.BECAUSE_YOU_WONT_PAY_IMMEDIATELY', { lng: lang })}</p>
+        <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.BECAUSE_YOU_WONT_PAY_IMMEDIATELY', { claimantName, lng: lang })}</p>
         <ul class="govuk-list govuk-list--bullet">
           <li>${t('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT', { lng: lang })}</li>
-          <li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU', { partialAmount, lng: lang })}</li>
+          <li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU', { claimAmount, lng: lang })}</li>
         </ul>`,
       },
     },
