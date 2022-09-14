@@ -1,4 +1,3 @@
-import {AlreadyPaid} from '../../../../../main/common/form/models/admission/partialAdmission/alreadyPaid';
 import {HowMuchDoYouOwe} from '../../../../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {PaymentIntention} from '../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
 import {WhyDoYouDisagree} from '../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
@@ -33,6 +32,7 @@ import {
 import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
 import RejectAllOfClaimType from '../../../../../main/common/form/models/rejectAllOfClaimType';
 import {HowMuchHaveYouPaid} from '../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
+import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 
 describe('Task List Builder', () => {
   const claimId = '5129';
@@ -111,7 +111,7 @@ describe('Task List Builder', () => {
         claim.respondent1 = new Respondent();
         claim.respondent1.responseType = ResponseType.PART_ADMISSION;
         claim.partialAdmission = new PartialAdmission();
-        claim.partialAdmission.alreadyPaid = new AlreadyPaid(YesNo.YES);
+        claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.YES);
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
         expect(respondToClaimSection.tasks).toHaveLength(3);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
@@ -123,7 +123,7 @@ describe('Task List Builder', () => {
         claim.respondent1 = new Respondent();
         claim.respondent1.responseType = ResponseType.PART_ADMISSION;
         claim.partialAdmission = new PartialAdmission();
-        claim.partialAdmission.alreadyPaid = new AlreadyPaid(YesNo.NO);
+        claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.NO);
         claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
         claim.partialAdmission.howMuchDoYouOwe.amount = 1;
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);

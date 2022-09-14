@@ -5,6 +5,7 @@ import nock from 'nock';
 import {CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, CLAIM_TASK_LIST_URL} from '../../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
+import {getNextYearValue} from '../../../../../../../utils/dateUtils';
 
 jest.mock('../../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../../main/modules/draft-store');
@@ -12,6 +13,7 @@ jest.mock('../../../../../../../../main/modules/draft-store');
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  const mockFutureYear = getNextYearValue();
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -176,7 +178,7 @@ describe('Repayment Plan', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL)
-        .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '1', month: '08', year: '2023'})
+        .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '1', month: '08', year: mockFutureYear})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -187,7 +189,7 @@ describe('Repayment Plan', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL)
-        .send({paymentAmount: '100', repaymentFrequency: 'TWO_WEEKS', day: '1', month: '08', year: '2023'})
+        .send({paymentAmount: '100', repaymentFrequency: 'TWO_WEEKS', day: '1', month: '08', year: mockFutureYear})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
@@ -198,7 +200,7 @@ describe('Repayment Plan', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL)
-        .send({paymentAmount: '100', repaymentFrequency: 'MONTH', day: '1', month: '08', year: '2023'})
+        .send({paymentAmount: '100', repaymentFrequency: 'MONTH', day: '1', month: '08', year: mockFutureYear})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIM_TASK_LIST_URL);
