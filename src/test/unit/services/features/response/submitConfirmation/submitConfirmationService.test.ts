@@ -48,8 +48,8 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[0].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.BANK_TRANSFERS_CLEAR_IN_THEIR_ACC');
       expect(nextStepsSection[0].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS');
       expect(nextStepsSection[0].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.THEY_CALL_COURT_FOR_YOU_PAID');
-      expect(nextStepsSection[1].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.CONTACT_CLAIMANT');
-      expect(nextStepsSection[1].data?.textAfter).toEqual('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.IF_NEED_THEIR_DETAILS');
+      expect(nextStepsSection[1].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.CONTACT_CLAIMANT');
+      expect(nextStepsSection[1].data?.textAfter).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
       expect(nextStepsSection[1].data?.href).toEqual('/dashboard/5129/contact-them');
     });    
   });
@@ -79,12 +79,12 @@ describe('Submit Confirmation service', () => {
     it('should display next steps section', () => {
       const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
       expect(nextStepsSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.YOU_SHOULD');
+      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD');
       expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.PAY_CLAIMANT_BY_DATE');
       expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.BANK_TRANSFERS_CLEAR_IN_THEIR_ACC');
       expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.CONTACT_THEM');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.IF_NEED_THEIR_DETAILS');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.RECEIPT_FOR_PAYMENTS');
+      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
+      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS');
       expect(nextStepsSection[2].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY');
       expect(nextStepsSection[2].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT');
       expect(nextStepsSection[2].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU');
@@ -118,11 +118,11 @@ describe('Submit Confirmation service', () => {
     it('should display next steps section', () => {
       const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
       expect(nextStepsSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.YOU_SHOULD');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_INSTALLMENTS.SETUP_REPAYMENT_PLAN');
+      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_SHOULD');
+      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.SETUP_REPAYMENT_PLAN');
       expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_DATE.CONTACT_THEM');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.IF_NEED_THEIR_DETAILS');
-      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_BY_INSTALLMENTS.RECEIPT_FOR_PAYMENTS');
+      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
+      expect(nextStepsSection[1].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS');
       expect(nextStepsSection[2].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.YOU_WONT_PAY_IMMEDIATELY');
       expect(nextStepsSection[2].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT');
       expect(nextStepsSection[2].data.html).toContain('PAGES.SUBMIT_CONFIRMATION.REQUEST_CCJ_AGAINST_YOU');

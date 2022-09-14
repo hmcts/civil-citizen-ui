@@ -17,6 +17,8 @@ import {
   getPAPayByDateStatus, 
   getPAPayImmediatelyNextSteps, 
   getPAPayImmediatelyStatus,
+  getPAPayInstallmentsNextSteps,
+  getPAPayInstallmentsStatus,
 } from './partAdmissionConfirmationContent';
 
 export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): ClaimSummarySection[] {
@@ -27,7 +29,8 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
   const financialDetails = getfinancialDetails(claimId, claim, lang);
   const PAPayImmediatelyStatus = getPAPayImmediatelyStatus(claim, lang);
   const PAPayByDateStatus = getPAPayByDateStatus(claim, lang);
-  
+  const PAPayInstallmentsStatus = getPAPayInstallmentsStatus(claim, lang);
+
   switch (claim.responseStatus) {
     case ClaimResponseStatus.FA_PAY_IMMEDIATELY:
       return FAPAyImmediatelyStatus;
@@ -38,7 +41,9 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
     case ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY:
       return [...PAPayImmediatelyStatus, ...contactYouStatement];
     case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
-      return [...PAPayByDateStatus, ...contactYouStatement];  
+      return [...PAPayByDateStatus, ...contactYouStatement, ...financialDetails];
+    case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
+      return [...PAPayInstallmentsStatus, ...contactYouStatement, ...financialDetails];
   }
 }
 
@@ -49,6 +54,7 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang:string
   // TODO: refactor put this consts inside his case to avoid call all if not needed
   const PAPayImmediatelyNextSteps = getPAPayImmediatelyNextSteps(claimId, claim, lang);
   const PAPayByDateNextSteps = getPAPayByDateNextSteps(claimId, claim, lang);
+  const PAPayInstallmentsNextSteps = getPAPayInstallmentsNextSteps(claimId, claim, lang);
 
   switch (claim.responseStatus) {
     case ClaimResponseStatus.FA_PAY_IMMEDIATELY:
@@ -61,5 +67,7 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang:string
       return PAPayImmediatelyNextSteps;
     case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
       return PAPayByDateNextSteps;
+    case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
+      return PAPayInstallmentsNextSteps;
   }
 }
