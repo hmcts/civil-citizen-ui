@@ -1,6 +1,6 @@
-import {Carer} from '../../../../common/form/models/statementOfMeans/carer';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../common/models/statementOfMeans';
+import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('carerService');
@@ -9,18 +9,18 @@ export const getCarer = async (claimId: string) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (claim.statementOfMeans?.carer) {
-      const carer = new Carer();
+      const carer = new GenericYesNo();
       carer.option = claim.statementOfMeans.carer.option;
       return carer;
     }
-    return new Carer();
+    return new GenericYesNo();
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const saveCarer = async (claimId: string, carer: Carer) => {
+export const saveCarer = async (claimId: string, carer: GenericYesNo) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (claim.statementOfMeans) {
