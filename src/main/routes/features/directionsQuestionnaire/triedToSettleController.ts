@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {DQ_EXTRA_TIME_TO_SETTLE_URL, DQ_TRIED_TO_SETTLE_CLAIM_URL} from '../../urls';
+import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_TRIED_TO_SETTLE_CLAIM_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {TriedToSettle} from '../../../common/models/directionsQuestionnaire/triedToSettle';
 import {
@@ -36,7 +36,7 @@ triedToSettleController.post(DQ_TRIED_TO_SETTLE_CLAIM_URL, async (req, res, next
       renderView(form, res);
     } else {
       await saveTriedToSettle(claimId, triedToSettle);
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXTRA_TIME_TO_SETTLE_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_REQUEST_EXTRA_4WEEKS_URL));
     }
   } catch (error) {
     next(error);
