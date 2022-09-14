@@ -11,11 +11,11 @@ export const getPAPayImmediatelyStatus = (claim: Claim, lang: string): ClaimSumm
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.YOU_HAVE_SAID_YOU_OWW', { claimantName, partialAmount, lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.YOU_HAVE_SAID_YOU_OWW', { claimantName, partialAmount, lng: lang }),
       },
-    }
+    },
   ];
-}
+};
 
 export const getPAPayByDateStatus = (claim: Claim, lang: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantName();
@@ -29,17 +29,17 @@ export const getPAPayByDateStatus = (claim: Claim, lang: string): ClaimSummarySe
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.YOU_BELIEVE_YOU_OWE', { claimantName, partialAmount, paymentDate, lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.YOU_BELIEVE_YOU_OWE', { claimantName, partialAmount, paymentDate, lng: lang }),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.SENT_EXPLANATION', { lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.SENT_EXPLANATION', { lng: lang }),
       },
     },
   ];
-}
+};
 
 export const getPAPayInstallmentsStatus = (claim: Claim, lang: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantName();
@@ -49,17 +49,17 @@ export const getPAPayInstallmentsStatus = (claim: Claim, lang: string): ClaimSum
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.YOU_BELIEVE_YOU_OWE', { claimantName, partialAmount, lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.YOU_BELIEVE_YOU_OWE', { claimantName, partialAmount, lng: lang }),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.WE_SENT_EXPLANATION', { lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.WE_SENT_EXPLANATION', { lng: lang }),
       },
     },
   ];
-}
+};
 
 export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantName();
@@ -74,7 +74,7 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER', { claimantName, lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER', { claimantName, lng: lang }),
       },
     },
     {
@@ -100,35 +100,35 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE', { claimantName, partialAmount, lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE', { claimantName, partialAmount, lng: lang }),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION', { lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION', { lng: lang }),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION', { claimAmount, partialAmount, lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION', { claimAmount, partialAmount, lng: lang }),
       },
     },
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.REJECT_OFFER_TO_PAY_BY', { claimantName, paymentDate, lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.REJECT_OFFER_TO_PAY_BY', { claimantName, paymentDate, lng: lang }),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY', { lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY', { lng: lang }),
       },
     },
   ];
-}
+};
 
 export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantName();
@@ -143,7 +143,7 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER', { claimantName, lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER', { claimantName, lng: lang }),
       },
     },
     {
@@ -170,35 +170,35 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE', { claimantName, partialAmount, lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE', { claimantName, partialAmount, lng: lang }),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION', { lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION', { lng: lang }),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION', { claimAmount, partialAmount, lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION', { claimAmount, partialAmount, lng: lang }),
       },
     },
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.REJECT_OFFER_TO_PAY_BY', { claimantName, paymentDate, lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.REJECT_OFFER_TO_PAY_BY', { claimantName, paymentDate, lng: lang }),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY', { lng: lang })
+        text: t('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY', { lng: lang }),
       },
     },
   ];
-}
+};
 
 export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
 
@@ -267,4 +267,4 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
       },
     },
   ];
-}
+};
