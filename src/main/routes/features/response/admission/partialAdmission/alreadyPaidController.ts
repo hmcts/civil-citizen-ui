@@ -1,15 +1,15 @@
 import * as express from 'express';
 import {CLAIM_TASK_LIST_URL, CITIZEN_ALREADY_PAID_URL} from '../../../../urls';
-import {AlreadyPaid} from '../../../../../common/form/models/admission/partialAdmission/alreadyPaid';
 import {PartialAdmissionService} from '../../../../../services/features/response/admission/partialAdmission/partialAdmissionService';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
+import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
 
 const alreadyPaidController = express.Router();
 const citizenAlreadyPaidViewPath = 'features/response/admission/partialAdmission/already-paid';
 const partialAdmissionService = new PartialAdmissionService();
 
-function renderView(form: GenericForm<AlreadyPaid>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   const alreadyPaid = Object.assign(form);
   alreadyPaid.option = form.model.option;
   res.render(citizenAlreadyPaidViewPath, {form});
@@ -17,7 +17,7 @@ function renderView(form: GenericForm<AlreadyPaid>, res: express.Response): void
 
 alreadyPaidController.get(CITIZEN_ALREADY_PAID_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const alreadyPaidForm = new GenericForm(new AlreadyPaid(await partialAdmissionService.getClaimAlreadyPaid(req.params.id)));
+    const alreadyPaidForm = new GenericForm(new GenericYesNo(await partialAdmissionService.getClaimAlreadyPaid(req.params.id)));
     renderView(alreadyPaidForm , res);
   } catch (error) {
     next(error);
@@ -26,7 +26,7 @@ alreadyPaidController.get(CITIZEN_ALREADY_PAID_URL, async (req, res, next: expre
 
 alreadyPaidController.post(CITIZEN_ALREADY_PAID_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const alreadyPaidForm = new GenericForm(new AlreadyPaid(req.body.option));
+    const alreadyPaidForm = new GenericForm(new GenericYesNo(req.body.option));
     await alreadyPaidForm.validate();
 
     if (alreadyPaidForm.hasErrors()) {
