@@ -63,15 +63,16 @@ describe('Tried to Settle the Claim Service', () => {
     });
 
     it('should update tried to settle successfully', async () => {
-      const claim = new Claim();
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.triedToSettle = triedToSettle;
       const updatedTriedToSettle: TriedToSettle = {
         option: YesNo.NO,
       };
       const updatedClaim = new Claim();
-      updatedClaim.directionQuestionnaire = {triedToSettle: updatedTriedToSettle};
+      updatedClaim.directionQuestionnaire = new DirectionQuestionnaire();
+      updatedClaim.directionQuestionnaire.triedToSettle = updatedTriedToSettle;
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.triedToSettle = triedToSettle;
         return claim;
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
