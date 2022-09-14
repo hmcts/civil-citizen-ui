@@ -21,11 +21,8 @@ import PaymentOptionType from '../../../../main/common/form/models/admission/pay
 import {mockClaim} from '../../../utils/mockClaim';
 import {DocumentType} from '../../../../main/common/models/document/documentType';
 import {CaseState} from '../../../../main/common/form/models/claimDetails';
-<<<<<<< HEAD
 import {HowMuchHaveYouPaid} from '../../../../main/common/form/models/admission/howMuchHaveYouPaid';
-=======
 import {GenericYesNo} from '../../../../main/common/form/models/genericYesNo';
->>>>>>> master
 
 describe('Claim isInterestClaimUntilSubmitDate', () => {
   const claim = new Claim();
