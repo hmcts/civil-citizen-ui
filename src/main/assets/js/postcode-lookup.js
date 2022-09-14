@@ -9,9 +9,11 @@
   const postcodeId = 'correspondencePostCode';
 
   const addressManuallyLink = document.querySelector('#enterAddressManually');
+  const addressManuallyLink1 = document.querySelector('#enterAddressManually1');
   const findAddressButton = document.querySelector('#findAddressButton');
   const selectAddress = document.querySelector('#selectAddress');
-  const addressContainer = document.querySelector('#correspondenceAddress');
+  const addressContainer = document.querySelector('#primaryAddress');
+  const addressContainer1 = document.querySelector('#correspondenceAddress');
   const postcodeContainer = document.querySelector('#postcode');
   const postcodeErrorContainer = document.querySelector('#postcode-error');
   const govukVisuallyHidden = 'govuk-visually-hidden';
@@ -75,7 +77,12 @@
 
   const isAddressManuallyEntered = () => {
     addressManuallyLink.classList.add(govukVisuallyHidden);
-    addressContainer.classList.remove(govukVisuallyHidden);
+    addressContainer.classList.remove(govukVisuallyHidden);   
+  };
+
+  const isAddressManuallyEntered1 = () => {
+    addressManuallyLink1.classList.add(govukVisuallyHidden);   
+    addressContainer1.classList.remove(govukVisuallyHidden);
   };
 
   const hasAddressProperty = (property) => property ? property : '';
@@ -109,6 +116,19 @@
         event.preventDefault();
         isAddressManuallyEntered();
       });
+  }
+
+  if (addressManuallyLink1) {
+    // -- Keep Correspondence Address form visible if values availabel
+    if (isNotEmptyAddressCorrespondence()) {
+      isAddressManuallyEntered1();
+    }
+
+    // -- Click on enter address manually link to display form
+    addressManuallyLink1.addEventListener('click', function (event) {
+      event.preventDefault();
+      isAddressManuallyEntered1();
+    });
   }
 
   // -- FIND ADDRESS BUTTON
