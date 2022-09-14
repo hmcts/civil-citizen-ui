@@ -27,7 +27,8 @@ function renderPage(res: express.Response, req: express.Request, respondent: Res
 
 claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req:express.Request, res:express.Response, next: express.NextFunction) => {
   try {
-    const respondent: Respondent = await getRespondentInformation(req.params.id);
+    // TODO : change the hard coded case id to the userID
+    const respondent: Respondent = await getRespondentInformation('1645882162449409');
 
     const claimantIndividualAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
       respondent?.primaryAddress ? respondent.primaryAddress.AddressLine1 : undefined,
