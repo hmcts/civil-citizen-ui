@@ -34,8 +34,9 @@ import {DocumentType} from './document/documentType';
 import {Vulnerability} from '../models/directionsQuestionnaire/vulnerability';
 import {ResponseDeadline} from './responseDeadline';
 import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
-import {ResponseOptions} from '../form/models/responseDeadline';
-import {AdditionalTimeOptions} from '../form/models/additionalTime';
+import {ClaimResponseStatus} from './claimResponseStatus';
+import {ResponseOptions} from '../../common/form/models/responseDeadline';
+import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
 
 export class Claim {
   legacyCaseReference: string;
@@ -114,6 +115,10 @@ export class Claim {
 
   isPaymentOptionPayImmediately(): boolean {
     return this.paymentOption === PaymentOptionType.IMMEDIATELY;
+  }
+
+  isPaymentOptionInstalllments(): boolean {
+    return this.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
   isInterestClaimUntilSubmitDate(): boolean {
@@ -218,10 +223,32 @@ export class Claim {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 
-  isDeadlineExtended(): boolean {
-    return this.respondentSolicitor1AgreedDeadlineExtension && this.responseDeadline?.option === ResponseOptions.ALREADY_AGREED;
+  isBusiness(): boolean {
+    return this.respondent1?.type === CounterpartyType.COMPANY || this.respondent1?.type === CounterpartyType.ORGANISATION;
   }
 
+  isDeadlineExtended(): boolean {
+    return this.responseDeadline?.option === ResponseOptions.ALREADY_AGREED && this.respondentSolicitor1AgreedDeadlineExtension !== undefined;
+  }
+
+  get responseStatus(): ClaimResponseStatus {
+    if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
+      return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
+    }
+
+    if (this.isFullAdmission() && this.isPaymentOptionInstalllments()) {
+      return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
+    }
+
+    if (this.isFullAdmission() && this.isPaymentOptionBySetDate()) {
+      return ClaimResponseStatus.FA_PAY_BY_DATE;
+    }
+
+    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
+      return ClaimResponseStatus.PA_ALREADY_PAID;
+    }
+
+  }
   hasRespondentAskedForMoreThan28Days(): boolean {
     return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
   }

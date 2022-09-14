@@ -9,6 +9,7 @@ import {
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES,
   CIVIL_SERVICE_SUBMIT_EVENT,
+  // CIVIL_SERVICE_VALIDATE_PIN_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from '../../common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -118,6 +119,35 @@ export class CivilServiceClient {
     }
   }
 
+  async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<AxiosResponse> {
+    try {
+      // const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL
+      // .replace(':caseReference', caseReference), pin, config);
+      // return response;
+
+      // TODO: return real service once complete, this is a mock response
+      const mockFullClaim = { 'id': 1662129391355637, 'case_data': {}};
+      const mockResponse: AxiosResponse = {
+        status: 401,
+        data: mockFullClaim,
+        statusText: null,
+        headers: null,
+        config: null,
+      };
+      if(caseReference === '000MC000' && pin === '0000'){
+        mockResponse.status = 200;
+      } else if(caseReference === '111MC111' && pin === '1111'){
+        mockResponse.status = 400;
+      } else if(caseReference === 'error' && pin === 'error'){
+        mockResponse.status = 500;
+      }
+      return mockResponse;
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
   async retrieveDocument(documentDetails : CaseDocument, req: AppRequest): Promise<Buffer> {
     const config = this.getConfig(req);
     try {
@@ -132,8 +162,8 @@ export class CivilServiceClient {
     }
   }
 
-  async submitDefendantResponseEvent(claimId: string, req: AppRequest): Promise<Claim> {
-    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, undefined, req);
+  async submitDefendantResponseEvent(claimId: string, updatedClaim:ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return await this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, updatedClaim, req);
   }
 
   async submitAgreedResponseExtensionDateEvent(claimId: string, updatedClaim:ClaimUpdate, req: AppRequest): Promise<Claim> {

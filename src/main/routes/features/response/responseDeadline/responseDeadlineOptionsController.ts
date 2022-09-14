@@ -10,7 +10,7 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {ResponseDeadline, ResponseOptions} from '../../../../common/form/models/responseDeadline';
 import {Claim} from '../../../../common/models/claim';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadline/responseDeadlineService';
+import {ResponseDeadlineService} from '../../../../services/features/response/responseDeadlineService';
 import {deadLineGuard} from '../../../../routes/guards/deadLineGuard';
 
 const responseDeadlineOptionsController = express.Router();

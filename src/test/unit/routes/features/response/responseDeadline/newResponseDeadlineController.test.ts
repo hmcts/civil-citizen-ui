@@ -2,9 +2,7 @@ import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {
-  CIVIL_SERVICE_CALCULATE_DEADLINE,
-} from '../../../../../../main/app/client/civilServiceUrls';
+import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../../../../../main/app/client/civilServiceUrls';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {
@@ -37,12 +35,12 @@ describe('Response - New response deadline', () => {
   beforeEach(() => {
     nock(idamServiceUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    nock(citizenBaseUrl)
+      .reply(200, { id_token: citizenRoleToken });
+    nock('http://localhost:4000')
       .post(CIVIL_SERVICE_CALCULATE_DEADLINE)
       .reply(200, new Date(2022, 9, 31));
   });
-  describe('On Get', ()=>{
+  describe('on GET', () => {
     it('should return new deadline date successfully', async () => {
       const expectedDate = '31 October 2022';
 
