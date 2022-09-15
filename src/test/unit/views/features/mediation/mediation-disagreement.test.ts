@@ -24,11 +24,13 @@ describe('Mediation Disagreement View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: any;
 
     beforeEach(async () => {
       const response = await request(app).get(MEDIATION_DISAGREEMENT_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have correct page title', () => {
@@ -41,17 +43,22 @@ describe('Mediation Disagreement View', () => {
     });
 
     it('should display claim will continue paragraph', () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body')[0];
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
+      expect(paragraph.innerHTML).toContain('We\'ll ask the claimant if they\'ll try free mediation. If they say no, the claim will go to a hearing.');
+    });
+
+    it('should display claim will continue paragraph', () => {
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[1];
       expect(paragraph.innerHTML).toContain('The claim will continue and you may have to go to a hearing.');
     });
 
     it('should display sub header', () => {
-      const subHeader = htmlDocument.getElementsByClassName('govuk-heading-m')[0];
+      const subHeader = mainWrapper.getElementsByClassName('govuk-heading-m')[0];
       expect(subHeader.innerHTML).toContain('Advantages of free mediation');
     });
 
     it('should display advantages paragraph', () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body')[1];
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[2];
       expect(paragraph.innerHTML).toContain('There are many advantages to free mediation, including:');
     });
 
@@ -74,25 +81,23 @@ describe('Mediation Disagreement View', () => {
     });
 
     it('should display second sub header', () => {
-      const subHeader = htmlDocument.getElementsByClassName('govuk-heading-m')[1];
+      const subHeader = mainWrapper.getElementsByClassName('govuk-heading-m')[1];
       expect(subHeader.innerHTML).toContain('Will you change your decision and try free mediation?');
     });
 
     it('should display no to mediation paragraph', () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body')[2];
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[3];
       expect(paragraph.innerHTML).toContain('If you choose not to try mediation this cannot be changed once your response is submitted.');
     });
 
     it('should display yes/no radio buttons', () => {
       const radios = htmlDocument.getElementsByClassName('govuk-radios__item');
-      const conditional = htmlDocument.getElementsByClassName('govuk-radios__conditional')[0];
       expect(radios[0].innerHTML).toContain('Yes');
       expect(radios[1].innerHTML).toContain('No');
-      expect(conditional.innerHTML).toContain('We\'ll ask the claimant if they\'ll try free mediation. If they say no, the claim will go to a hearing.');
     });
 
     it('should display save and continue button', () => {
-      const button = htmlDocument.getElementsByClassName('govuk-button')[0];
+      const button = mainWrapper.getElementsByClassName('govuk-button')[0];
       expect(button.innerHTML).toContain('Save and continue');
     });
 
@@ -121,7 +126,7 @@ describe('Mediation Disagreement View', () => {
 
     it('should display error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      expect(errorMessage.innerHTML).toContain('Yes or No');
+      expect(errorMessage.innerHTML).toContain('Choose option: Yes or No');
     });
   });
 });

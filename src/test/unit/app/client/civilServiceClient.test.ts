@@ -133,7 +133,7 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.retrieveDocument(mockDocumentDetails, mockedAppRequest)).rejects.toThrow(TestMessages.DOCUMENT_NOT_AVAILABLE);
     });
   });
-  describe('submitDefendantResponseEventToken', () => {
+  describe('submitDefendantResponseEvent', () => {
     it('should sumit defendant response successfully', async () => {
       //Given
       const mockResponse: CivilClaimResponse = {
@@ -145,7 +145,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      const claim = await civilServiceClient.submitDefendantResponseEvent('123', mockedAppRequest);
+      const claim = await civilServiceClient.submitDefendantResponseEvent('123',{}, mockedAppRequest);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -163,7 +163,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.submitDefendantResponseEvent('123', mockedAppRequest)).rejects.toThrow('error');
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {},mockedAppRequest)).rejects.toThrow('error');
     });
   });
   describe('getClaimsForDefendant', () => {

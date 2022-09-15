@@ -10,7 +10,7 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 const determinationWithoutHearingController = express.Router();
 const determinationWithoutHearingViewPath = 'features/directionsQuestionnaire/determination-without-hearing';
 
-function renderView (form: GenericForm<DeterminationWithoutHearing>, res: express.Response): void {
+function renderView(form: GenericForm<DeterminationWithoutHearing>, res: express.Response): void {
   const determinationWithoutHearing = Object.assign(form);
   determinationWithoutHearing.option = form.model.isDeterminationWithoutHearing;
 
