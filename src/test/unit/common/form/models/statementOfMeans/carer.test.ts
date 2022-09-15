@@ -1,12 +1,12 @@
-import {Carer} from '../../../../../../main/common/form/models/statementOfMeans/carer';
 import {Validator} from 'class-validator';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {GenericYesNo} from '../../../../../../main/common/form/models/genericYesNo';
 
 const validator = new Validator();
 describe('Carer validation', () => {
   it('should have errors when option is undefined', () => {
     //Given
-    const carer = new Carer();
+    const carer = new GenericYesNo();
     //When
     const errors = validator.validateSync(carer);
     //Then
@@ -15,7 +15,7 @@ describe('Carer validation', () => {
   });
   it('should not have errors when option is selected', () => {
     //Given
-    const paymentOption = new Carer(YesNo.YES);
+    const paymentOption = new GenericYesNo(YesNo.YES);
     //When
     const errors = validator.validateSync(paymentOption);
     //Then
