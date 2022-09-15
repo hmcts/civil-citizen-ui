@@ -55,7 +55,7 @@
       {% endset -%}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <form method="post" novalidate>
+          <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
             {{ yesNoRadioButton(t, id, name, title, form, description, {yesHtml:yesHtml, yes: 'COMMON.VARIATION.YES', no: 'COMMON.VARIATION.NO'}) }}
             <div class="govuk-form-group">

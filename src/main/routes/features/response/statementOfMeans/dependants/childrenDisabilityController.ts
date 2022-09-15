@@ -1,12 +1,12 @@
 import * as express from 'express';
 import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from '../../../../urls';
-import {ChildrenDisability} from '../../../../../common/form/models/statementOfMeans/dependants/childrenDisability';
 import {
   getChildrenDisability,
   saveChildrenDisability,
 } from '../../../../../services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
 
 const childrenDisabilityViewPath = 'features/response/statementOfMeans/dependants/children-disability';
 const childrenDisabilityController = express.Router();
@@ -15,7 +15,7 @@ childrenDisabilityController
   .get(CHILDREN_DISABILITY_URL,
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       try {
-        const childrenDisability : ChildrenDisability = await getChildrenDisability(req.params.id);
+        const childrenDisability : GenericYesNo = await getChildrenDisability(req.params.id);
         const form = new GenericForm(childrenDisability);
         // This is a workaround as the YesNo macro used in the view assumes Form but controller assumes GenericForm
         // TODO: Discard the workaround once the decision Form Vs. GenericForm is made and YesNo macro is adjusted accordingly
@@ -31,8 +31,8 @@ childrenDisabilityController
   .post(
     CHILDREN_DISABILITY_URL,
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-      const childrenDisability: ChildrenDisability = new ChildrenDisability(req.body.option);
-      const form: GenericForm<ChildrenDisability> = new GenericForm(childrenDisability);
+      const childrenDisability: GenericYesNo = new GenericYesNo(req.body.option);
+      const form: GenericForm<GenericYesNo> = new GenericForm(childrenDisability);
       await form.validate();
 
       if (form.hasErrors()) {

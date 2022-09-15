@@ -5,9 +5,9 @@ import {Claim} from '../../../../common/models/claim';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
 
-const getRepaymentPlanForm = (claim: Claim) => {
+const getRepaymentPlanForm = (claim: Claim, isPartialAdmission?: boolean) => {
   try {
-    const totalClaimAmount = claim.totalClaimAmount;
+    const totalClaimAmount = isPartialAdmission ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
     if (claim.repaymentPlan) {
       const repaymentPlan = claim.repaymentPlan;
       const firstRepaymentDate = new Date(repaymentPlan.firstRepaymentDate);

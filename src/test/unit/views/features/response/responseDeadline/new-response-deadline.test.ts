@@ -20,6 +20,7 @@ describe('New response deadline view', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   let htmlDocument: Document;
+  let mainWrapper: any;
 
   beforeEach(async () => {
     nock(idamServiceUrl)
@@ -41,23 +42,29 @@ describe('New response deadline view', () => {
     const response = await request(app).get(NEW_RESPONSE_DEADLINE_URL);
     const dom = new JSDOM(response.text);
     htmlDocument = dom.window.document;
+    mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
   });
+
   it('should have correct title',  () => {
     const header = htmlDocument.getElementsByClassName('govuk-heading-l');
     expect(header[0].innerHTML).toContain('New response deadline');
   });
+
   it('should have correct subtitle', () => {
-    const subHeader =  htmlDocument.getElementsByClassName('govuk-heading-m');
+    const subHeader =  mainWrapper.getElementsByClassName('govuk-heading-m');
     expect(subHeader[0].innerHTML).toContain('4 pm on 31 October 2022');
   });
+
   it('should have Continue button', () => {
-    const continueButton = htmlDocument.getElementsByClassName('govuk-button');
+    const continueButton = mainWrapper.getElementsByClassName('govuk-button');
     expect(continueButton[0].innerHTML).toContain('Continue');
   });
+
   it('should have Contact for help', ()=> {
     const details = htmlDocument.getElementsByClassName('govuk-details__summary-text');
     expect(details[0].innerHTML).toContain('Contact us for help');
   });
+
   it('should have Back button', ()=> {
     const backButton = htmlDocument.getElementsByClassName('govuk-back-link');
     expect(backButton[0].innerHTML).toContain('Back');

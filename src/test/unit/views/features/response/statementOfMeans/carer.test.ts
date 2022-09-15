@@ -44,8 +44,8 @@ describe('Carer View', () => {
     });
 
     it('should display save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
-      expect(buttons[0].innerHTML).toContain('Save and continue');
+      const button = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0].getElementsByClassName('govuk-button');
+      expect(button[0].innerHTML).toContain('Save and continue');
     });
 
     it('should contain contact us detail component', () => {
@@ -82,5 +82,4 @@ describe('Carer View', () => {
       expect(errorMessage.innerHTML).toContain('Choose option: Yes or No');
     });
   });
-
 });

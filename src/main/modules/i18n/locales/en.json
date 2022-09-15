@@ -15,6 +15,7 @@
     "DASHBOARD": "Dashboard",
     "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "GO_TO_HOMEPAGE": "Go to homepage",
     "MONTH": "Month",
     "MONTHS": "Months",
     "NO": "No",
@@ -33,7 +34,10 @@
     "BUTTONS": {
       "BACK": "Back",
       "CONTINUE": "Continue",
+      "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
+      "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE_AND_CONTINUE": "Save and continue",
+      "SAVE": "Save",
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
     },
@@ -62,6 +66,24 @@
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_NO_ADVISORS": "No Advisors are currently available, Come back later.",
       "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
+    },
+    "COOKIE_BANNER": {
+      "ACCEPT_BUTTON": "Accept additional cookies",
+      "ADDITIONAL_COOKIES_MESSAGE": "We'd like to set additional cookies so we can remember your settings, understand how people use the service and to improve government services.",
+      "CHANGE": "You can CHANGE_HTML at any time.",
+      "CHANGE_LINK": "change your cookie settings",
+      "COOKIES_ACCEPTED": "You've accepted additional cookies.",
+      "COOKIES_REJECTED": "You have rejected additional cookies.",
+      "ESSENTIAL_COOKIES_MESSAGE": "We use some essential cookies to make this service work.",
+      "HIDE_THIS_MESSAGE": "Hide this message",
+      "REJECT_BUTTON": "Reject additional cookies",
+      "TITLE": "Cookies on Money Claims",
+      "VIEW_COOKIES": "View cookies"
+    },
+    "EVIDENCE_SUMMARY": {
+      "TITLE": "Evidence",
+      "ROW_TYPE": "Type",
+      "ROW_DESCRIPTION": "Description"
     },
     "HEADER": {
       "MONEY_CLAIMS": "Money Claims",
@@ -116,7 +138,12 @@
       "WEEK": "Week",
       "TWO_WEEKS_LETTERS" : "Two weeks",
       "FOUR_WEEKS_LETTERS" : "Four weeks",
-      "MONTH_UPPER_CASE" : "Month"
+      "MONTH_UPPER_CASE" : "Month",
+      "WEEK_LOWER_CASE": "week",
+      "WEEKS_LOWER_CASE": "weeks",
+      "MONTH_LOWER_CASE": "month",
+      "MONTHS_LOWER_CASE": "months",
+      "TWO_MONTHS_LOWER_CASE": "2 months"
     },
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
@@ -429,6 +456,24 @@
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
       "WHAT_HAPPENED": "What happened"
     },
+    "CLAIM_JOURNEY": {
+      "RESOLVE_THE_DISPUTE": {
+        "P1": {
+          "BEFORE_YOU_CLAIM": "Before you claim you should:",
+          "CONSIDER_MEDIATION": "consider mediation",
+          "TALK_TO_THE_PERSON": "talk to the person or organisation you want to claim against"
+        },
+        "P2": {
+          "HEADING": "Talk to the person or organisation",
+          "MAKE_A_CLAIM": "explaining you'll make a claim against them if they don't follow your timetable",
+          "SUGGESTING_TIMETABLE": "suggesting timetable with actions you want them to take",
+          "TELLING_THEM_WHY": "telling them why you intend to make a claim against them",
+          "TRY_TO_RESOLVE": "Try to resolve the dispute by:"
+        },
+        "PAGE_TITLE": "Try to resolve the dispute",
+        "TITLE": "Try to resolve the dispute"
+      }
+    },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "About claim",
       "CLAIM_AMOUNT": "Claim amount:",
@@ -444,6 +489,19 @@
       "DOWNLOAD_RESPONSE": "Download response",
       "LATEST_UPDATE": "Latest update",
       "VIEW_CLAIM": "View claim"
+    },
+    "CLAIMANT_PARTY_TYPE_SELECTION": {
+      "CLAIMING_AS_HEADER": "I'm claiming as:",
+      "CLAIMING_AS_AN_INDIVIDUAL": "An individual",
+      "CLAIMING_AS_SOLE_TRADER_OR_SELF_EMPLOYED": "A sole trader or self-employed person",
+      "CLAIMING_AS_LIMITED_COMPANY": "A limited company",
+      "CLAIMING_AS_ORGANISATION": "Another type of organisation",
+      "CLAIMING_FOR_YOURSELF": "You're claiming for yourself",
+      "CLAIMING_FOR_EXAMPLE_TRADEPERSON": "For example a tradesperson",
+      "CLAIMING_FOR_EXAMPLE_COMPANY": "For example a company that sells goods or services",
+      "CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION": "For example a partnership, trust, charity, club or association",
+      "PAGE_TITLE": "About you and this claim",
+      "TITLE": "About you and this claim"
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
@@ -466,6 +524,13 @@
       "UK_POSTCODE": "Enter a UK postcode",
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
     },
+    "COMPLETING_CLAIM": {
+      "ADD_INFORMATION": "add information that significantly change your claim",
+      "CHANGE_THE_BASIS": "change the basis of your claim - for example, saying goods were undelivered instead of faulty",
+      "CHANGE_THE_NAME": "change the name of anyone involved with the claim",
+      "PAGE_TITLE": "Get the details right",
+      "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
+    },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
       "ADDRESS": "Address",
@@ -474,6 +539,94 @@
       "EMAIL": "Email",
       "PAGE_TITLE": "Contact claimant",
       "PHONE": "Phone"
+    },
+    "COOKIES": {
+      "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",
+      "ANALYTICS_COOKIE_OPTIONS": {
+        "HEADING": "Allow cookies that measure website use?",
+        "ON_OPTION": "Use cookies that measure my website use",
+        "OFF_OPTION": "Do not use cookies that measure my website use"
+      },
+      "BULLET_LIST1": {
+        "FIRST": "store your cookie preferences",
+        "SECOND": "measure how you use the service so it can be improved"
+      },
+      "BULLET_LIST2": {
+        "FIRST": "Site performance",
+        "SECOND": "Website usage",
+        "THIRD": "User behaviour"
+      },
+      "COOKIE_DETAILS1": {
+        "GA": {
+          "NAME": "_ga",
+          "PURPOSE": "This helps us count how many people visit the service by tracking if you’ve visited before",
+          "EXPIRES": "2 years"
+        },
+        "GID": {
+          "NAME": "_gid",
+          "PURPOSE": "Identifies you to the service",
+          "EXPIRES": "24 hours"
+        },
+        "GAT": {
+          "NAME": "_gat",
+          "PURPOSE": "Manages the rate at which page view requests are made",
+          "EXPIRES": "10 minutes"
+        }
+      },
+      "COOKIE_DETAILS2": {
+        "DTCOOKIE": {
+          "NAME": "dtCookie",
+          "PURPOSE": "Tracks a visit across multiple request",
+          "EXPIRES": "Session end"
+        },
+        "DTLATC": {
+          "NAME": "dtLatC",
+          "PURPOSE": "Measures server latency for performance monitoring",
+          "EXPIRES": "Session end"
+        },
+        "DTPC": {
+          "NAME": "dtPC",
+          "PURPOSE": "Required to identify proper endpoints for beacon transmission; includes session ID for correlation",
+          "EXPIRES": "Session end"
+        },
+        "DTSA": {
+          "NAME": "dtSa",
+          "PURPOSE": "Intermediate store for page-spanning actions",
+          "EXPIRES": "Session end"
+        },
+        "RXVISITOR": {
+          "NAME": "rxVisitor",
+          "PURPOSE": "Visitor ID to correlate sessions",
+          "EXPIRES": "1 year"
+        },
+        "RXVT": {
+          "NAME": "rxvt",
+          "PURPOSE": "Session timeout",
+          "EXPIRES": "Session end"
+        }
+      },
+      "COOKIES_EXPLANATION1": "Cookies are files saved on your phone, tablet or computer when you visit a website. Most websites need cookies to work properly",
+      "COOKIES_EXPLANATION2": "This service uses cookies to:",
+      "COOKIES_EXPLANATION3": "We use Google Analytics software to collect information about how you use this service. We do this to help make sure the service is meeting the needs of its users and to help us make improvements. We do not allow Google to use or share the data about how you use this site.",
+      "COOKIES_EXPLANATION4": "We use Dynatrace Software Intelligence Platform to provide an Application Performance Monitoring Service to collect information about how you use HMCTS services. We do this to monitor HMCTS services in order to resolve issues within our services as well as collect data on how our services can be improved. HMCTS store information about:",
+      "COOKIES_EXPLANATION5": "Information is presented within the Application Performance Monitoring service for the purposes detailed above. We do not use or share the information for any other purpose. We do not allow Dynatrace to use or share the information for any other purposes.",
+      "COOKIES_EXPLANATION6": "These essential cookies do things like making the service more secure. They always need to be on.",
+      "COOKIE_SETTINGS_SAVED": "Your cookie settings were saved",
+      "EXPIRES": "Expires",
+      "FIND_MORE_ABOUT_COOKIES": "Find out more about essential cookies",
+      "HEADING": "How cookies are used in this service",
+      "NAME": "Name",
+      "PERFORMANCE_COOKIE_OPTIONS": {
+        "HEADING": "Allow cookies that measure website application performance monitoring?",
+        "ON_OPTION": "Use cookies that measure website application performance monitoring",
+        "OFF_OPTION": "Do not use cookies that measure website application performance monitoring"
+      },
+      "PURPOSE": "Purpose",
+      "SUBHEADING1": "To measure website usage",
+      "SUBHEADING2": "Cookie details",
+      "SUBHEADING3": "To measure application performance",
+      "SUBHEADING4": "Essential cookies",
+      "TITLE": "Cookies"
     },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Add another court order",
@@ -555,6 +708,81 @@
       "PAGE_TITLE": "Are you disabled?",
       "TITLE": "Are you disabled?"
     },
+    "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES" : {
+      "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect of",
+      "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a number related to a different claim. If you don’t have a Help with Fees number for this claim, please follow the instructions below.",
+      "PARAGRAPH2": "If you need to use the paper Help with Fees application rather than the online version, you will not be able to use Online Civil Money Claims to issue your claim.",
+      "PARAGRAPH3": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.",
+      "PARAGRAPH4": "When you have completed your Help with Fees application, you will be given a reference number. Please note the number and keep it safe. You will need it later in the claim process. Then return to this page and click the Save and continue box below so that you can start the claim.",
+      "PLEASE_NOTE": "Please Note:",
+      "THIS_CLAIM": "THIS CLAIM",
+      "TITLE": "Apply For Help With Fees"
+    },
+    "ELIGIBILITY_CLAIMANT_ADDRESS" : {
+      "PAGE_TITLE": "Do you have a postal address in the UK?",
+      "TITLE": "Do you have a postal address in the UK?",
+      "UK_MADE_UP": "The UK is made up of England and Wales."
+    },
+    "ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT": {
+      "LIST_OF_GOVERNMENT": "See list of government departments (opens in a new window).",
+      "PAGE_TITLE": "Government department",
+      "TITLE": "Are you claiming against a government department?"
+    },
+    "ELIGIBILITY_CLAIM_TYPE": {
+      "A_CLIENT": "A client - I'm their solicitor",
+      "JUST_MYSELF": "Just my self or my organisation",
+      "MORE_THAN_ONE_PERSON_OR_ORGANISATION": "More than one person or organisation",
+      "TITLE": "Who are you making the claim for?"
+    },
+    "ELIGIBILITY_DEFENDANT_ADDRESS": {
+      "PAGE_TITLE": "Defendant Address in England or Wales",
+      "TITLE": "Does the person or organisation you’re claiming against have a postal address in England or Wales?"
+    },
+    "ELIGIBILITY_DEFENDANT_AGE": {
+      "COMPANY_ORGANISATION": "I'm claiming against a company or organisation",
+      "NO": "No",
+      "PAGE_TITLE": "Defendant Age Eligibility",
+      "TITLE": "Do you believe the person you’re claiming against is 18 or over?",
+      "YES": "Yes"
+    },
+    "ELIGIBILITY_HELP_WITH_FEES" : {
+      "PAGE_TITLE": "Do you need help paying your court fee?",
+      "TITLE": "Do you need help paying your court fee?",
+      "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits."
+    },
+    "ELIGIBILITY_HWF_REFERENCE": {
+      "ALREADY_APPLIED": "You’ll only have one if you’ve already applied for Help with Fees in respect of this claim.",
+      "APPLY_FOR_HELP_LINK": "Apply for Help with Fees",
+      "DECIDE": "Decide whether to apply for Help with Fees",
+      "MAKE_A_NOTE": "Make a note of the Help with Fees number when you make an application.",
+      "MAKE_CLAIM_USING": " and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.",
+      "PAGE_TITLE": "Do you have a Help With Fees reference number?",
+      "TITLE": "Do you have a Help With Fees reference number?",
+      "WHEN_YOU_APPLY": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.",
+      "WILL_NEED": "You will need this number to make your claim when you are returned to this service."
+    },
+    "ELIGIBILITY_SINGLE_DEFENDANT": {
+      "PAGE_TITLE": "Individual or Multiparty Claim",
+      "TITLE": "Is this claim against more than one person or organisation?"
+    },
+    "ELIGIBILITY_TOTAL_AMOUNT": {
+      "DONT_KNOW": "I don't know the amount",
+      "INCLUDE_AMOUNT": "If you're claiming interest, include that in the amount",
+      "OVER_25000": "Over £25,000",
+      "TITLE": "Total amount you're claiming",
+      "25000_OR_LESS": "£25,000 or less"
+    },
+    "ELIGIBILITY_OVER_18_CLAIMANT": {
+      "PAGE_TITLE": "Are you 18 or over?",
+      "TITLE": "Are you 18 or over?"
+    },
+    "ELIGIBILITY_USEFUL_INFO_FEES": {
+      "CONTINUE_HELP_WITH_FEES": "Do you wish to continue to make a Help with Fees Application?",
+      "HELP_WITH_FEES": "If you want to apply for Help with Fees, you will complete an online form in a new window. This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process. (NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number). You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court. This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued. The claim will stop here unless you change your mind within 95 days.",
+      "HELP_WITH_FEES_ADVICE": "You may be asked by the court to email evidence in support of your application before your claim is issued.",
+      "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.",
+      "TITLE": "Some useful information about Help with Fees"
+    },
     "EMPLOYMENT_STATUS": {
       "BOTH": "You can select both.",
       "EMPLOYED": "Employed",
@@ -633,6 +861,46 @@
       "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
       "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
     },
+    "FIRST_CONTACT_SIGNPOSTING": {
+      "SUBTITLE": "If you don't respond",
+      "TITLE": "Respond to a money claim",
+      "PAGE_TITLE": "Respond to a money claim",
+      "PARAGRAPH_1": "You have 28 days to respond to the claim from the date the court issued it.",
+      "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
+      "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
+      "PARAGRAPH_4_CCJ_URL": "County Court Judgment (CCJ) ",
+      "PARAGRAPH_4_PART_1": "The claimant can apply for a",
+      "PARAGRAPH_4_PART_2": "against you if you don't respond before the deadline.",
+      "PARAGRAPH_5": "They can use a CCJ to get the money from you, for example by applying to the court to send bailiffs to your home or business.",
+      "PARAGRAPH_6": "A CCJ may make it harder to get credit, such as a mobile phone contract, credit card or mortgage.",
+      "START_NOW": "Start now",
+      "SUPPORT": "Support",
+      "SUPPORT_CLAIM_FEES_URL": "Money claim fees ",
+      "SUPPORT_CONTACT_US_URL": "Contact us "
+    },
+    "FIRST_CONTACT_ACCESS_DENIED": {
+      "CLICK_HERE": "Click here to try again",
+      "THERE_WAS_AN_ERROR": "There was an error during your last operation. Please try again later.",
+      "TITLE": "You are not authorised to view the claim!"
+    },
+    "FIRST_CONTACT_CLAIM_REFERENCE": {
+      "CLAIM_NUMBER": "Claim number",
+      "ENTER_CLAIM": "Enter the claim number from the email or letter we sent you.",
+      "PAGE_TITLE": "Enter your claim number",
+      "TITLE": "Enter your claim number"
+    },
+    "FIRST_CONTACT_CLAIM_SUMMARY": {
+      "CLAIM_AMOUNT": "Claim amount",
+      "CLAIM_NUMBER": "Claim number",
+      "FIND_OUT": "Find out about how we use and store your ",
+      "HEADER": "Claim details",
+      "PAGE_TITLE": "Claim details",
+      "PERSONAL_INFORMATION": "personal information",
+      "PERSONAL_INFORMATION_USAGE": "How we use and store your personal information",
+      "REASON_FOR_CLAIM": "Reason for claim:",
+      "THIS_CLAIM_INFORMATION": "This claim contains personal information about you that {{ claimant }} has provided, for example your name and address.",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
+    },
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED" : "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
       "CLAIMANT_MUST_AGREE" : "The claimant must agree to mediation. We'll contact you within 28 days after the claimant's confirmation, to arrange a free appointment.",
@@ -678,7 +946,12 @@
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment."
     },
     "MEDIATION_CAN_WE_USE": {
-      "PAGE_TITLE": "Mediation - Provide a phone number"
+      "CAN_MEDIATION_USE": "Can the mediation service use {{ respondentTelNumber }} to call you?",
+      "CONFIRM_YOUR_NUMBER": "Confirm your telephone number",
+      "ENTER_PHONE_NUMBER": "Enter a phone number",
+      "ENTER_PHONE_FOR_DIRECT_LINE": "Enter the number for a direct line the mediation service can use.",
+      "PAGE_TITLE": "Mediation - Provide a phone number",
+      "WONT_GIVE_NUMBER": "We won't give the number to anyone else."
     },
     "MEDIATION_COMPANY_PHONE": {
       "CONFIRM_TELEPHONE_NUMBER" : "Confirm telephone number",
@@ -709,6 +982,74 @@
       "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4 pm on {{ responseDeadline }}"
+    },
+    "NOT_ELIGIBLE_FOR_SERVICE":{
+      "ABLE_TO_GET_AN_ADVICE": {
+        "1": "You might be able to get advice from organisations like ",
+        "2": " about making a claim."
+      },
+      "CANT_CALCULATE_THE_AMOUNT" : "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
+      "CLAIM_AGAINST_GOVERNMENT": {
+        "CANT_USE_SERVICE": "You can't use this service to claim against",
+        "COMMA_COMPLETE_RETURN": ", complete it and return it to make your claim",
+        "GOVERNMENT_DEPARTMENTS": "government departments"
+      },
+      "CLAIM_BY_PAPER": "You can also claim by paper. ",
+      "CLAIM_ON_BEHALF": {
+        "CURRENTLY_SERVICE" : "This service is currently for claimants representing themselves.",
+        "COMPLETE_RETURN": ", complete and return it to make your claim.",
+        "DOWNLOAD_PAPER_LINK": "download a paper form",
+        "LEGAL_REPRESENTATIVE" : "If you’re a legal representative ",
+        "MCOL_LINK": "use the Money Claim Online (MCOL) service",
+        "OR": " or "
+      },
+      "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
+      "DEFENDANT_ADDRESS": {
+        "AND": "and",
+        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES":"You can only use this service to claim against a person or organisation with an address in England or Wales.",
+        "COMPLETE_FORMS_AND_RETURN": ". Complete the forms and return them to make your claim.",
+        "DOWNLOAD_PAPER_FORM_N1": "Download the paper form N1",
+        "FORM_N510": "form N510",
+        "USING_PAPER_FORM": "Depending on where you’ll be sending the claim, you might be able to claim using a paper form."
+      },
+      "DEFENDANT_UNDER_18" : {
+        "ABOUT_MAKING_CLAIM" : " about making a claim.",
+        "CAN_ONLY_USE" : "You can only use this service to claim against a defendant who’s 18 or over.",
+        "CITIZENS_ADVICE" : "Citizens Advice",
+        "MIGHT_ABLE" : "You might be able to get advice from organisations like "
+      },
+      "CITIZENS_ADVICE": "Citizens Advice",
+      "CLAIMANT_ADDRESS": {
+        "NEED_UK_ADDRESS": "You need to have an address in the UK to make a money claim."
+      },
+      "CLAIMANT_UNDER_18": {
+        "CANT_USE_IF_UNDER_18": "You need to be 18 or over to use this service."
+      },
+      "DOWNLOAD_PAPER_FORM": "Download a paper form",
+      "FOR_CLAIMS_LESS_THAN_25000": "This service is for claims of £25,000 or less.",
+      "FOR_CLAIMS_BETWEEN_25001_AND_100000": "For claims between £25,001 and £100,000 you might be able to ",
+      "MULTIPLE_CLAIMANTS": {
+        "CANT_USE_IF_MULTIPLE_CLAIMANTS": "You can’t use this service if more than one person or organisation is making the claim."
+      },
+      "MULTIPLE_DEFENDANTS": {
+        "AGAINST_THREE_OR_MORE_PEOPLE_ORG": "for claims against 3 or more people or organisations. Complete and return the form to make your claim.",
+        "AGAINST_TWO_PEOPLE_ORG": "for claims against 2 people or organisations.",
+        "MCOL_ONLINE": "Money Claim Online (MCOL)",
+        "MORE_THAN_ONE_PERSON_ORG": "You can’t use this service if this claim is against more than one person or organisation.",
+        "USE": "Use "
+      },
+      "N1_PAPER_FORM" : "N1 paper form",
+      "OPENS_IN_A_NEW_WINDOW": "(opens in a new window)",
+      "PAGE_TITLE": "You can’t use this service",
+      "TENANCY_DEPOSIT": {
+        "GET": "Get",
+        "HELP_TO_RESOLVE_YOUR_DISPUTE": "help to resolve your dispute",
+        "NOT_USED_FOR_TENANCY_DEPOSIT": "You can’t make a claim for a tenancy deposit using this service.",
+        "WITH_A_LANLORD_OR_TENANT": "with a landlord or tenant."
+      },
+      "USE_MCOL": "use Money Claim Online (MCOL)",
+      "WHERE_TO_SEND_PAPER_FORMS": "Where to send paper forms",
+      "YOU_NEED_TO_KNOW_AMOUNT": "You need to know the claim amount to use this service."
     },
     "OTHER_DEPENDANTS": {
       "DESCRIPTION": "This can include adults and people you don't live with.",
@@ -777,6 +1118,14 @@
       "REGULAR_PAYMENTS": "making regular repayments to clear the missed payments",
       "TOTAL_MONTHLY_REPAYMENTS": "Total monthly repayments"
     },
+    "PIN":{
+      "CONTACT_US": "contact us",
+      "CHECK_SECURITY_CODE": "Check the security code is the one we sent you. You can",
+      "FIND_PIN": "You can find it on the email or letter we sent you.",
+      "FOR_A_NEW_SECURITY_CODE": "for a new security code.",
+      "SECURITY_CODE": "Security code",
+      "TITLE": "Enter security code"
+    },
     "REGULAR_EXPENSES": {
       "PAGE_TITLE": "Your regular expenses"
     },
@@ -834,7 +1183,7 @@
       "PAGE_TITLE": "Request more time",
       "POST": "Or, you can post the completed form to:",
       "SELECT_SAVE_AND_CONTACT": "Select 'Save and continue' and contact {{ claimantName }}'s legal representative to request this.",
-      "SELECT_SAVE_AND_CONTINUE": "and select 'Save and continue'.",
+      "SELECT_SAVE_AND_CONTINUE": " and select 'Save and continue'.",
       "TELL_OTHER_PARTY": "You'll also need to tell the other party that you have applied to the court.",
       "TITLE": "Request more time to respond",
       "UP_TO_28_DAYS": "Up to 28 days"
@@ -878,10 +1227,60 @@
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
     },
+    "SUBMIT_CONFIRMATION": {
+      "FA_PAY_BY_DATE": {
+        "BANK_TRANSFERS_CLEAR_IN_THEIR_ACC": "make sure any cheques or bank transfers are clear in their account by the deadline",
+        "CONTACT_THEM": "contact them",
+        "PAY_CLAIMANT_BY_DATE": "pay {{ claimantName }} by {{ paymentDate }}",
+        "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for your payment",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{ claimantName }} your offer to pay by {{ paymentDate }} and your explanation of why you can’t pay before then.",
+        "YOU_SHOULD": "You should"
+      },
+      "FA_PAY_IMMEDIATELY": {
+        "BANK_TRANSFERS_CLEAR_IN_THEIR_ACC": "any cheques or bank transfers are clear in their account by the deadline",
+        "CONTACT_CLAIMANT": "Contact {{ claimantName }}",
+        "IF_NEED_THEIR_DETAILS": " if you need their payment details.",
+        "MAKE_SURE_THAT": "You need to make sure that",
+        "RECEIPT_FOR_PAYMENTS": "you get a receipt for any payments",
+        "THEY_CAN_REQUEST_CCJ": "they get the money by {{ paymentDate }} - they can request a County Court Judgment against you if not",
+        "THEY_CALL_COURT_FOR_YOU_PAID": "they tell the court that you’ve paid",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ll pay immediately."
+      },
+      "FA_PAY_BY_INSTALLMENTS": {
+        "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for each payment",
+        "SETUP_REPAYMENT_PLAN": "set up your repayment plan to begin when you said it would",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ve suggested paying by instalments."
+      },
+      "CLAIM_NUMBER": "Claim number",
+      "COURT_DECIDE_HOW_TO_PAY": "The court will decide how you must pay.",
+      "GET_FINANCIAL_DETAILS": "Get {{ claimantName }}’s financial details.",
+      "GO_TO_ACCOUNT": "Go to your account",
+      "IF_CLAIMANT_ACCEPTS_OFFER": "If {{ claimantName }} accepts your offer",
+      "IF_CLAIMANT_REJECTS_OFFER": "If {{ claimantName }} rejects your offer",
+      "PAGE_TITLE": "Submit Confirmation",
+      "REQUEST_CCJ_AGAINST_YOU": "request a County Court Judgment against you",
+      "SIGN_SETTLEMENT_AGREEMENT": "ask you to sign a settlement agreement to formalise the repayment plan",
+      "SEND_FINANCIAL_DETAILS": "Send your financial details",
+      "SEND_STATEMENT_OF_ACC": "Send {{ claimantName }} your company or organisation’s most recent statement of accounts, if you haven’t already.",
+      "WE_CONTACT_YOU": "We’ll contact you when they respond.",
+      "WHAT_HAPPENS_NEXT": "What happens next",
+      "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
+      "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either",
+      "YOUR_OPINION_OF_SERVICE": "What did you think of this service?"
+    },
     "TASK_LIST": {
       "PAGE_TITLE": "Your task list",
       "HEADER": "Respond to a money claim",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting."
+    },
+    "TENANCY_DEPOSIT": {
+      "TITLE": "Is your claim for a tenancy deposit?"
+    },
+    "TRY_NEW_SERVICE": {
+      "PAGE_TITLE": "Try the new online service",
+      "TITLE": "Try the new online service",
+      "WE_ARE_BUILDING": "We are building a new service. Different designs are being tested and changed based on feedback from users.",
+      "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service."
     },
     "SUPPORT_REQUIRED": {
       "ARRANGE_AND_PAY": "You may have to arrange and pay for interpreters except for Welsh. The court will tell you.",
@@ -933,6 +1332,18 @@
       "EMPLOYER_NAME" : "Employer name",
       "JOB_TITLE" : "Job title"
     },
+    "YOU_CAN_USE": {
+      "BASED_ON" : "Based on your answers you can make a money claim using this service.",
+      "HWF_ELIGIBLE" : {
+        "PAY_COURT" : "You will have to pay court fees unless you are eligible for Help with Fees. ",
+        "HELP_WITH_FEES" : "Find out more about Help with Fees (opens in a new window)"
+      },
+      "HWF_ELIGIBLE_REFERENCE" : {
+        "REMEMBER" : "Remember that you will not know about the fee until we have processed your Help with Fees application. Your claim will only be issued after Help with Fees is confirmed, or the fee is paid."
+      },
+      "PAGE_TITLE" : "You can use this service",
+      "TITLE" : "You can use this service"
+    },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
       "HEADER": "You've paid less than the total claim amount",
@@ -955,10 +1366,12 @@
     "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
     "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
     "CLAIM_DETAILS": "Claim details",
+    "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
     "DATE_REQUIRED": "Enter a date",
     "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the original response date",
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
+    "DEFENDANT_AGE_REQUIRED": "Select yes, no, or company/organisation",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
     "DETAILS_REQUIRED": "Enter details",
@@ -967,6 +1380,8 @@
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
+    "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
+    "ENTER_SECURITY_CODE": "Enter your security code",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
@@ -982,6 +1397,7 @@
     "QUESTION_1_REQUIRED": "Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
     "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
+    "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
     "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
     "SELECT_AN_OPTION": "Select an option",
     "SELECT_AMOUNT": {
@@ -1068,6 +1484,7 @@
     "VALID_CHOOSE": "Choose your response",
     "VALID_CITY": "Enter a valid town/city",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
+    "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
     "VALID_CORRESPONDENCE_ADDRESS_LINE_1": "Enter first correspondence address line",
     "VALID_CORRESPONDENCE_CITY": "Enter correspondence town/city",
     "VALID_CORRESPONDENCE_POSTCODE": "Enter correspondence address postcode",
@@ -1104,7 +1521,7 @@
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
-    "VALID_TEXT_LENGTH": "You've entered too many characters",
+    "VALID_TEXT_LENGTH": "You’ve entered too many characters",
     "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
