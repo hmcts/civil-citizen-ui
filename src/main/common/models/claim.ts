@@ -35,6 +35,7 @@ import {Vulnerability} from '../models/directionsQuestionnaire/vulnerability';
 import {ResponseDeadline} from './responseDeadline';
 import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
 import {ClaimResponseStatus} from './claimResponseStatus';
+import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 
 export class Claim {
   legacyCaseReference: string;
@@ -76,6 +77,7 @@ export class Claim {
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
   determinationWithoutHearing: DeterminationWithoutHearing;
+  directionQuestionnaire?: DirectionQuestionnaire;
 
   getClaimantName(): string {
     return this.applicant1.partyName;
