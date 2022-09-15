@@ -15,6 +15,7 @@
     "DASHBOARD": "Dashboard",
     "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "GO_TO_HOMEPAGE": "Go to homepage",
     "MONTH": "Month",
     "MONTHS": "Months",
     "NO": "No",
@@ -33,8 +34,10 @@
     "BUTTONS": {
       "BACK": "Back",
       "CONTINUE": "Continue",
+      "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE_AND_CONTINUE": "Save and continue",
+      "SAVE": "Save",
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
     },
@@ -63,6 +66,19 @@
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_NO_ADVISORS": "No Advisors are currently available, Come back later.",
       "WEB_CHAT_UNAVAILABLE": "The web chat service is temporarily unavailable, please try again later."
+    },
+    "COOKIE_BANNER": {
+      "ACCEPT_BUTTON": "Accept additional cookies",
+      "ADDITIONAL_COOKIES_MESSAGE": "We'd like to set additional cookies so we can remember your settings, understand how people use the service and to improve government services.",
+      "CHANGE": "You can CHANGE_HTML at any time.",
+      "CHANGE_LINK": "change your cookie settings",
+      "COOKIES_ACCEPTED": "You've accepted additional cookies.",
+      "COOKIES_REJECTED": "You have rejected additional cookies.",
+      "ESSENTIAL_COOKIES_MESSAGE": "We use some essential cookies to make this service work.",
+      "HIDE_THIS_MESSAGE": "Hide this message",
+      "REJECT_BUTTON": "Reject additional cookies",
+      "TITLE": "Cookies on Money Claims",
+      "VIEW_COOKIES": "View cookies"
     },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Evidence",
@@ -440,6 +456,24 @@
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
       "WHAT_HAPPENED": "What happened"
     },
+    "CLAIM_JOURNEY": {
+      "RESOLVE_THE_DISPUTE": {
+        "P1": {
+          "BEFORE_YOU_CLAIM": "Before you claim you should:",
+          "CONSIDER_MEDIATION": "consider mediation",
+          "TALK_TO_THE_PERSON": "talk to the person or organisation you want to claim against"
+        },
+        "P2": {
+          "HEADING": "Talk to the person or organisation",
+          "MAKE_A_CLAIM": "explaining you'll make a claim against them if they don't follow your timetable",
+          "SUGGESTING_TIMETABLE": "suggesting timetable with actions you want them to take",
+          "TELLING_THEM_WHY": "telling them why you intend to make a claim against them",
+          "TRY_TO_RESOLVE": "Try to resolve the dispute by:"
+        },
+        "PAGE_TITLE": "Try to resolve the dispute",
+        "TITLE": "Try to resolve the dispute"
+      }
+    },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "About claim",
       "CLAIM_AMOUNT": "Claim amount:",
@@ -455,6 +489,19 @@
       "DOWNLOAD_RESPONSE": "Download response",
       "LATEST_UPDATE": "Latest update",
       "VIEW_CLAIM": "View claim"
+    },
+    "CLAIMANT_PARTY_TYPE_SELECTION": {
+      "CLAIMING_AS_HEADER": "I'm claiming as:",
+      "CLAIMING_AS_AN_INDIVIDUAL": "An individual",
+      "CLAIMING_AS_SOLE_TRADER_OR_SELF_EMPLOYED": "A sole trader or self-employed person",
+      "CLAIMING_AS_LIMITED_COMPANY": "A limited company",
+      "CLAIMING_AS_ORGANISATION": "Another type of organisation",
+      "CLAIMING_FOR_YOURSELF": "You're claiming for yourself",
+      "CLAIMING_FOR_EXAMPLE_TRADEPERSON": "For example a tradesperson",
+      "CLAIMING_FOR_EXAMPLE_COMPANY": "For example a company that sells goods or services",
+      "CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION": "For example a partnership, trust, charity, club or association",
+      "PAGE_TITLE": "About you and this claim",
+      "TITLE": "About you and this claim"
     },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "This is known as an \"address for service\".",
@@ -477,6 +524,13 @@
       "UK_POSTCODE": "Enter a UK postcode",
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
     },
+    "COMPLETING_CLAIM": {
+      "ADD_INFORMATION": "add information that significantly change your claim",
+      "CHANGE_THE_BASIS": "change the basis of your claim - for example, saying goods were undelivered instead of faulty",
+      "CHANGE_THE_NAME": "change the name of anyone involved with the claim",
+      "PAGE_TITLE": "Get the details right",
+      "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
+    },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
       "ADDRESS": "Address",
@@ -485,6 +539,94 @@
       "EMAIL": "Email",
       "PAGE_TITLE": "Contact claimant",
       "PHONE": "Phone"
+    },
+    "COOKIES": {
+      "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",
+      "ANALYTICS_COOKIE_OPTIONS": {
+        "HEADING": "Allow cookies that measure website use?",
+        "ON_OPTION": "Use cookies that measure my website use",
+        "OFF_OPTION": "Do not use cookies that measure my website use"
+      },
+      "BULLET_LIST1": {
+        "FIRST": "store your cookie preferences",
+        "SECOND": "measure how you use the service so it can be improved"
+      },
+      "BULLET_LIST2": {
+        "FIRST": "Site performance",
+        "SECOND": "Website usage",
+        "THIRD": "User behaviour"
+      },
+      "COOKIE_DETAILS1": {
+        "GA": {
+          "NAME": "_ga",
+          "PURPOSE": "This helps us count how many people visit the service by tracking if you’ve visited before",
+          "EXPIRES": "2 years"
+        },
+        "GID": {
+          "NAME": "_gid",
+          "PURPOSE": "Identifies you to the service",
+          "EXPIRES": "24 hours"
+        },
+        "GAT": {
+          "NAME": "_gat",
+          "PURPOSE": "Manages the rate at which page view requests are made",
+          "EXPIRES": "10 minutes"
+        }
+      },
+      "COOKIE_DETAILS2": {
+        "DTCOOKIE": {
+          "NAME": "dtCookie",
+          "PURPOSE": "Tracks a visit across multiple request",
+          "EXPIRES": "Session end"
+        },
+        "DTLATC": {
+          "NAME": "dtLatC",
+          "PURPOSE": "Measures server latency for performance monitoring",
+          "EXPIRES": "Session end"
+        },
+        "DTPC": {
+          "NAME": "dtPC",
+          "PURPOSE": "Required to identify proper endpoints for beacon transmission; includes session ID for correlation",
+          "EXPIRES": "Session end"
+        },
+        "DTSA": {
+          "NAME": "dtSa",
+          "PURPOSE": "Intermediate store for page-spanning actions",
+          "EXPIRES": "Session end"
+        },
+        "RXVISITOR": {
+          "NAME": "rxVisitor",
+          "PURPOSE": "Visitor ID to correlate sessions",
+          "EXPIRES": "1 year"
+        },
+        "RXVT": {
+          "NAME": "rxvt",
+          "PURPOSE": "Session timeout",
+          "EXPIRES": "Session end"
+        }
+      },
+      "COOKIES_EXPLANATION1": "Cookies are files saved on your phone, tablet or computer when you visit a website. Most websites need cookies to work properly",
+      "COOKIES_EXPLANATION2": "This service uses cookies to:",
+      "COOKIES_EXPLANATION3": "We use Google Analytics software to collect information about how you use this service. We do this to help make sure the service is meeting the needs of its users and to help us make improvements. We do not allow Google to use or share the data about how you use this site.",
+      "COOKIES_EXPLANATION4": "We use Dynatrace Software Intelligence Platform to provide an Application Performance Monitoring Service to collect information about how you use HMCTS services. We do this to monitor HMCTS services in order to resolve issues within our services as well as collect data on how our services can be improved. HMCTS store information about:",
+      "COOKIES_EXPLANATION5": "Information is presented within the Application Performance Monitoring service for the purposes detailed above. We do not use or share the information for any other purpose. We do not allow Dynatrace to use or share the information for any other purposes.",
+      "COOKIES_EXPLANATION6": "These essential cookies do things like making the service more secure. They always need to be on.",
+      "COOKIE_SETTINGS_SAVED": "Your cookie settings were saved",
+      "EXPIRES": "Expires",
+      "FIND_MORE_ABOUT_COOKIES": "Find out more about essential cookies",
+      "HEADING": "How cookies are used in this service",
+      "NAME": "Name",
+      "PERFORMANCE_COOKIE_OPTIONS": {
+        "HEADING": "Allow cookies that measure website application performance monitoring?",
+        "ON_OPTION": "Use cookies that measure website application performance monitoring",
+        "OFF_OPTION": "Do not use cookies that measure website application performance monitoring"
+      },
+      "PURPOSE": "Purpose",
+      "SUBHEADING1": "To measure website usage",
+      "SUBHEADING2": "Cookie details",
+      "SUBHEADING3": "To measure application performance",
+      "SUBHEADING4": "Essential cookies",
+      "TITLE": "Cookies"
     },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Add another court order",
@@ -723,7 +865,7 @@
       "SUBTITLE": "If you don't respond",
       "TITLE": "Respond to a money claim",
       "PAGE_TITLE": "Respond to a money claim",
-      "PARAGRAPH_1": "You have 19 days to respond to the claim from the date the court issued it.",
+      "PARAGRAPH_1": "You have 28 days to respond to the claim from the date the court issued it.",
       "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
       "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
       "PARAGRAPH_4_CCJ_URL": "County Court Judgment (CCJ) ",
@@ -804,7 +946,12 @@
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment."
     },
     "MEDIATION_CAN_WE_USE": {
-      "PAGE_TITLE": "Mediation - Provide a phone number"
+      "CAN_MEDIATION_USE": "Can the mediation service use {{ respondentTelNumber }} to call you?",
+      "CONFIRM_YOUR_NUMBER": "Confirm your telephone number",
+      "ENTER_PHONE_NUMBER": "Enter a phone number",
+      "ENTER_PHONE_FOR_DIRECT_LINE": "Enter the number for a direct line the mediation service can use.",
+      "PAGE_TITLE": "Mediation - Provide a phone number",
+      "WONT_GIVE_NUMBER": "We won't give the number to anyone else."
     },
     "MEDIATION_COMPANY_PHONE": {
       "CONFIRM_TELEPHONE_NUMBER" : "Confirm telephone number",
@@ -1036,7 +1183,7 @@
       "PAGE_TITLE": "Request more time",
       "POST": "Or, you can post the completed form to:",
       "SELECT_SAVE_AND_CONTACT": "Select 'Save and continue' and contact {{ claimantName }}'s legal representative to request this.",
-      "SELECT_SAVE_AND_CONTINUE": "and select 'Save and continue'.",
+      "SELECT_SAVE_AND_CONTINUE": " and select 'Save and continue'.",
       "TELL_OTHER_PARTY": "You'll also need to tell the other party that you have applied to the court.",
       "TITLE": "Request more time to respond",
       "UP_TO_28_DAYS": "Up to 28 days"
@@ -1118,7 +1265,7 @@
       "WE_CONTACT_YOU": "We’ll contact you when they respond.",
       "WHAT_HAPPENS_NEXT": "What happens next",
       "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
-      "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either", 
+      "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either",
       "YOUR_OPINION_OF_SERVICE": "What did you think of this service?"
     },
     "TASK_LIST": {
@@ -1184,6 +1331,18 @@
     "EMPLOYER" : {
       "EMPLOYER_NAME" : "Employer name",
       "JOB_TITLE" : "Job title"
+    },
+    "YOU_CAN_USE": {
+      "BASED_ON" : "Based on your answers you can make a money claim using this service.",
+      "HWF_ELIGIBLE" : {
+        "PAY_COURT" : "You will have to pay court fees unless you are eligible for Help with Fees. ",
+        "HELP_WITH_FEES" : "Find out more about Help with Fees (opens in a new window)"
+      },
+      "HWF_ELIGIBLE_REFERENCE" : {
+        "REMEMBER" : "Remember that you will not know about the fee until we have processed your Help with Fees application. Your claim will only be issued after Help with Fees is confirmed, or the fee is paid."
+      },
+      "PAGE_TITLE" : "You can use this service",
+      "TITLE" : "You can use this service"
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
@@ -1362,7 +1521,7 @@
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
-    "VALID_TEXT_LENGTH": "You've entered too many characters",
+    "VALID_TEXT_LENGTH": "You’ve entered too many characters",
     "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",

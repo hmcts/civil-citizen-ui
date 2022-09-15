@@ -1,8 +1,8 @@
-import {PartnerDisability} from '../../../../../common/form/models/statementOfMeans/partner/partnerDisability';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {Claim} from '../../../../../common/models/claim';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partnerDisabilityService');
@@ -13,18 +13,18 @@ export class PartnerDisabilityService {
     try {
       const case_data = await getCaseDataFromStore(claimId);
       if (case_data?.statementOfMeans?.partnerDisability) {
-        const partnerDisability = new GenericForm(new PartnerDisability);
+        const partnerDisability = new GenericForm(new GenericYesNo());
         partnerDisability.model.option = case_data.statementOfMeans.partnerDisability.option;
         return partnerDisability;
       }
-      return new GenericForm(new PartnerDisability);
+      return new GenericForm(new GenericYesNo);
     } catch (error) {
       logger.error(error);
       throw error;
     }
   }
 
-  public async savePartnerDisability(claimId: string, partnerDisability: GenericForm<PartnerDisability>) {
+  public async savePartnerDisability(claimId: string, partnerDisability: GenericForm<GenericYesNo>) {
     try {
       const case_data = await getCaseDataFromStore(claimId) || new Claim();
       if (case_data?.statementOfMeans) {

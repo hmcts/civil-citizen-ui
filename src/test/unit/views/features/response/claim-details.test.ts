@@ -21,6 +21,7 @@ describe('Task List View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
+  let mainWrapper: any;
   const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
 
   beforeEach(() => {
@@ -38,6 +39,7 @@ describe('Task List View', () => {
       const response = await request(app).get('/case/1111/response/claim-details');
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have title set', () => {
@@ -50,13 +52,13 @@ describe('Task List View', () => {
     });
 
     it('should display claim number text and value', () => {
-      const claimDetails = htmlDocument.getElementsByClassName('govuk-body');
+      const claimDetails = mainWrapper.getElementsByClassName('govuk-body');
       expect(claimDetails[0].innerHTML).toContain('Claim number');
       expect(claimDetails[0].innerHTML).toContain(claim.case_data.legacyCaseReference);
     });
 
     it('should display claim amount text and value', () => {
-      const claimDetails = htmlDocument.getElementsByClassName('govuk-body');
+      const claimDetails = mainWrapper.getElementsByClassName('govuk-body');
       expect(claimDetails[1].innerHTML).toContain('Claim amount');
       expect(claimDetails[1].innerHTML).toContain(getTotalAmountWithInterestAndFees(claim.case_data));
     });
@@ -90,8 +92,8 @@ describe('Task List View', () => {
     });
 
     it('should display reason for claim text and reason', () => {
-      const subHeadings = htmlDocument.getElementsByClassName('govuk-heading-s');
-      const claimReason = htmlDocument.getElementsByClassName('govuk-body')[2];
+      const subHeadings = mainWrapper.getElementsByClassName('govuk-heading-s');
+      const claimReason = mainWrapper.getElementsByClassName('govuk-body')[2];
       expect(subHeadings[0].innerHTML).toContain('Reason for claim');
       expect(claimReason.innerHTML).toContain(claim.case_data.detailsOfClaim);
     });
@@ -119,7 +121,7 @@ describe('Task List View', () => {
     });
 
     it('should display download the claim text and link', () => {
-      const subHeadings = htmlDocument.getElementsByClassName('govuk-body');
+      const subHeadings = mainWrapper.getElementsByClassName('govuk-body');
       const downloadLink = htmlDocument.getElementById('sealed-claim-link') as HTMLAnchorElement;
       expect(subHeadings[4].innerHTML).toContain('Download the claim');
       expect(downloadLink.innerHTML).toContain('Download claim (PDF)');
