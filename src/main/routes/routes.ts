@@ -115,7 +115,7 @@ import submitComfirmationController from './features/response/submitComfirmation
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
 import considerClaimantDocumentsController
-  from 'routes/features/directionsQuestionnaire/considerClaimantDocumentsController';
+  from './features/directionsQuestionnaire/considerClaimantDocumentsController';
 
 export default [
   homeController,

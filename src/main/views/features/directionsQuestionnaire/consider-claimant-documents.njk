@@ -5,6 +5,7 @@
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.CONSIDER_CLAIMANT_DOCUMENTS.PAGE_TITLE') }}
@@ -33,7 +34,7 @@
                   classes: 'govuk-!-font-weight-bold'
                 },
                 errorMessage: {
-                  html: form.errorFor("details")
+                  html: t(form.errorFor("details"))
                 } if form.hasFieldError("details")
               }) }}
             {% endset %}
