@@ -36,6 +36,7 @@ import {ResponseDeadline} from './responseDeadline';
 import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
 import {getLng} from '../../common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
+import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 
 export class Claim {
   legacyCaseReference: string;
@@ -77,6 +78,7 @@ export class Claim {
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
   determinationWithoutHearing: DeterminationWithoutHearing;
+  directionQuestionnaire?: DirectionQuestionnaire;
 
   getClaimantName(): string {
     return this.applicant1.partyName;
@@ -111,7 +113,7 @@ export class Claim {
     return this.paymentOption === PaymentOptionType.IMMEDIATELY;
   }
 
-  isPaymentOptionInstalllments(): boolean {
+  isPaymentOptionInstallments(): boolean {
     return this.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
@@ -189,8 +191,8 @@ export class Claim {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
     if (documentUrl?.length) {
-      const splittedData = documentUrl.split('/');
-      documentId = splittedData[splittedData?.length - 1];
+      const splitData = documentUrl.split('/');
+      documentId = splitData[splitData?.length - 1];
     }
     return documentId;
   }
@@ -226,7 +228,7 @@ export class Claim {
       return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
     }
 
-    if (this.isFullAdmission() && this.isPaymentOptionInstalllments()) {
+    if (this.isFullAdmission() && this.isPaymentOptionInstallments()) {
       return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
     }
 
@@ -237,9 +239,7 @@ export class Claim {
     if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
-    
   }
-  
 }
 
 export interface Party {

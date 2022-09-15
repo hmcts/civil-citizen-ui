@@ -114,6 +114,7 @@ import completingClaimController from './features/claim/completingClaimControlle
 import submitComfirmationController from './features/response/submitComfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
+import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
 import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
 
 export default [
@@ -220,4 +221,5 @@ export default [
   resolvingThisDisputeController,
   cookiesController,
   sharedExpertController,
+  triedToSettleController,
 ];
