@@ -1,15 +1,15 @@
-import {FreeMediation} from '../../../common/form/models/mediation/freeMediation';
 import {CanWeUse} from '../../../common/models/mediation/canWeUse';
-import {NoMediationReason} from '../../../common/form/models/mediation/noMediationReason';
 import {CompanyTelephoneNumber} from '../../form/models/mediation/companyTelephoneNumber';
+import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {NoMediationReason} from '../../../common/form/models/mediation/noMediationReason';
 
 export class Mediation {
   canWeUse?: CanWeUse;
-  mediationDisagreement?: FreeMediation;
+  mediationDisagreement?: GenericYesNo;
   noMediationReason?: NoMediationReason;
   companyTelephoneNumber: CompanyTelephoneNumber;
 
-  constructor(canWeUse?: CanWeUse, mediationDisagreement?: FreeMediation, noMediationReason?: NoMediationReason, companyTelephoneNumber?: CompanyTelephoneNumber) {
+  constructor(canWeUse?: CanWeUse, mediationDisagreement?: GenericYesNo, noMediationReason?: NoMediationReason, companyTelephoneNumber?: CompanyTelephoneNumber) {
     this.canWeUse = canWeUse;
     this.mediationDisagreement = mediationDisagreement;
     this.noMediationReason = noMediationReason;

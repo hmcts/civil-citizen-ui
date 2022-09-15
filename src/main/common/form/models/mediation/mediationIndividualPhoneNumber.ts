@@ -1,21 +1,16 @@
 import {OptionalIntegerValidator} from '../../validators/optionalIntegerValidator';
 import {Validate, IsDefined, ValidateIf, IsNotEmpty, MaxLength} from 'class-validator';
-import {
-  PHONE_NUMBER_REQUIRED,
-  VALID_YES_NO_OPTION,
-  VALID_TEXT_LENGTH,
-} from '../../validationErrors/errorMessageConstants';
 import {YesNo} from '../yesNo';
 
 export class MediationIndividualPhoneNumber {
 
-  @IsDefined({message: VALID_YES_NO_OPTION})
+  @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
     option?: YesNo;
 
   @ValidateIf(o => (o.option === YesNo.NO))
-  @IsNotEmpty({ message: PHONE_NUMBER_REQUIRED })
-  @MaxLength(30, { message: VALID_TEXT_LENGTH })
-  @Validate(OptionalIntegerValidator, {message: PHONE_NUMBER_REQUIRED})
+  @IsNotEmpty({ message: 'ERRORS.PHONE_NUMBER_REQUIRED' })
+  @MaxLength(30, { message: 'ERRORS.VALID_TEXT_LENGTH' })
+  @Validate(OptionalIntegerValidator, {message: 'ERRORS.PHONE_NUMBER_REQUIRED'})
     mediationPhoneNumber?: string;
 
   constructor(option?: YesNo, mediationPhoneNumber?: string) {

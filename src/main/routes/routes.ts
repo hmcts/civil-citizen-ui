@@ -116,6 +116,7 @@ import resolvingThisDisputeController from './features/claim/resolvingThisDisput
 import cookiesController from './features/public/cookiesController';
 import considerClaimantDocumentsController
   from './features/directionsQuestionnaire/considerClaimantDocumentsController';
+import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
 
 export default [
   homeController,
@@ -221,4 +222,5 @@ export default [
   resolvingThisDisputeController,
   cookiesController,
   considerClaimantDocumentsController,
+  triedToSettleController,
 ];
