@@ -114,6 +114,8 @@ import completingClaimController from './features/claim/completingClaimControlle
 import submitComfirmationController from './features/response/submitComfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
+import considerClaimantDocumentsController
+  from 'routes/features/directionsQuestionnaire/considerClaimantDocumentsController';
 
 export default [
   homeController,
@@ -218,4 +220,5 @@ export default [
   submitComfirmationController,
   resolvingThisDisputeController,
   cookiesController,
+  considerClaimantDocumentsController,
 ];
