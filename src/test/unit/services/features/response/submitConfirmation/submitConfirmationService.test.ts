@@ -168,7 +168,7 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[2].data.text).toContain('PAGES.SUBMIT_CONFIRMATION.CONTACT_CLAIMANT');
       expect(nextStepsSection[2].data?.textAfter).toContain('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
       expect(nextStepsSection[2].data?.href).toContain(`/dashboard/${mockClaimId}/contact-them`);
-      expect(nextStepsSection[3].data.text).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER');
+      expect(nextStepsSection[3].data.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.IF_CLAIMANT_ACCEPTS_OFFER_OF');
       expect(nextStepsSection[4].data.text).toContain('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.CLAIM_SETTLED');
       expect(nextStepsSection[5].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OFFER');
       expect(nextStepsSection[6].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION');
@@ -282,4 +282,3 @@ describe('Submit Confirmation service', () => {
   });
 
 });
-

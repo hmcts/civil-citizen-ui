@@ -93,7 +93,7 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
         <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.BECAUSE_YOU_WONT_PAY_IMMEDIATELY', { claimantName, lng: lang })}</p>
         <ul class="govuk-list govuk-list--bullet">
           <li>${t('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT', { lng: lang })}</li>
-          <li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU', { claimAmount, lng: lang })}</li>
+          <li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU', { partialAmount, lng: lang })}</li>
         </ul>`,
       },
     },
@@ -163,7 +163,7 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
         <p class="govuk-body">${t('PAGES.SUBMIT_CONFIRMATION.BECAUSE_YOU_WONT_PAY_IMMEDIATELY', { claimantName, lng: lang })}</p>
         <ul class="govuk-list govuk-list--bullet">
           <li>${t('PAGES.SUBMIT_CONFIRMATION.ASK_SIGN_SETTLEMENT', { lng: lang })}</li>
-          <li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU', { claimAmount, lng: lang })}</li>
+          <li>${t('PAGES.SUBMIT_CONFIRMATION.REQUEST_COURT_AGAINST_YOU', { partialAmount, lng: lang })}</li>
         </ul>`,
       },
     },
@@ -239,7 +239,7 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
     {
       type: ClaimSummaryType.SUBTITLE,
       data: {
-        text: `${t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER', { claimantName, lng: lang })}`,
+        text: `${t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.IF_CLAIMANT_ACCEPTS_OFFER_OF', { claimantName, partialAmount, lng: lang })}`,
       },
     },
     {

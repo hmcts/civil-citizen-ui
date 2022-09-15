@@ -1243,6 +1243,7 @@
         "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ve suggested paying by instalments."
       },
       "PA_PAY_IMMEDIATELY": {
+        "IF_CLAIMANT_ACCEPTS_OFFER_OF": "If {{ claimantName }} accepts your offer of £{{ partialAmount }}",
         "CHEQUES_OR_BANK_TRANSFERS": "any cheques or bank transfers are clear in their account by the deadline",
         "CLAIM_SETTLED": "The claim will be settled.",
         "MAKE_SURE_THAT": "Make sure that:",
@@ -1282,7 +1283,7 @@
       "PAGE_TITLE": "Submit Confirmation",
       "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for each payment",
       "REQUEST_CCJ_AGAINST_YOU": "request a County Court Judgment against you",
-      "REQUEST_COURT_AGAINST_YOU": "request a County Court Judgment against you for £{{ claimAmount }}",
+      "REQUEST_COURT_AGAINST_YOU": "request a County Court Judgment against you for £{{ partialAmount }}",
       "SIGN_SETTLEMENT_AGREEMENT": "ask you to sign a settlement agreement to formalise the repayment plan",
       "SEND_FINANCIAL_DETAILS": "Send your financial details",
       "SEND_STATEMENT_OF_ACC": "Send {{ claimantName }} your company or organisation’s most recent statement of accounts, if you haven’t already.",
