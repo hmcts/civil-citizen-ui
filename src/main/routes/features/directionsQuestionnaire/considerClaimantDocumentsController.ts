@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {
   DQ_CONSIDER_CLAIMANT_DOCUMENTS,
-  DQ_USE_EXPERT_EVIDENCE,
+  DQ_DEFENDANT_EXPERT_EVIDENCE,
 } from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {ConsiderClaimantDocuments} from '../../../common/models/directionsQuestionnaire/considerClaimantDocuments';
@@ -38,7 +38,7 @@ considerClaimantDocumentsController.post(DQ_CONSIDER_CLAIMANT_DOCUMENTS, async (
       renderView(form, res);
     } else {
       await saveConsiderClaimantDocuments(claimId, considerClaimantDocumentsForm);
-      res.redirect(DQ_USE_EXPERT_EVIDENCE);
+      res.redirect(DQ_DEFENDANT_EXPERT_EVIDENCE);
     }
   } catch (error) {
     next(error);

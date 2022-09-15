@@ -1,6 +1,7 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {YesNo} from '../../../common/form/models/yesNo';
-import {ConsiderClaimantDocuments} from 'models/directionsQuestionnaire/considerClaimantDocuments';
+import {ConsiderClaimantDocuments} from '../../../common/models/directionsQuestionnaire/considerClaimantDocuments';
+import {DirectionQuestionnaire} from '../../../common/models/directionsQuestionnaire/directionQuestionnaire';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -8,7 +9,7 @@ const logger = Logger.getLogger('supportRequiredService');
 export const getConsiderClaimantDocuments = async (claimId: string): Promise<ConsiderClaimantDocuments> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    return (caseData.considerClaimantDocuments) ? caseData.considerClaimantDocuments :  new ConsiderClaimantDocuments();
+    return caseData?.directionQuestionnaire?.considerClaimantDocuments ? caseData.directionQuestionnaire.considerClaimantDocuments :  new ConsiderClaimantDocuments();
   } catch (error) {
     logger.error(error);
     throw error;
@@ -25,7 +26,9 @@ export const getConsiderClaimantDocumentsForm = (option: string, details: string
 export const saveConsiderClaimantDocuments = async (claimId: string, considerClaimantDocuments: ConsiderClaimantDocuments) => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    caseData.considerClaimantDocuments = considerClaimantDocuments;
+    (caseData?.directionQuestionnaire) ?
+      caseData.directionQuestionnaire = {...caseData.directionQuestionnaire, considerClaimantDocuments} :
+      caseData.directionQuestionnaire = {...new DirectionQuestionnaire(), considerClaimantDocuments};
     await saveDraftClaim(claimId, caseData);
   } catch (error) {
     logger.error(error);
