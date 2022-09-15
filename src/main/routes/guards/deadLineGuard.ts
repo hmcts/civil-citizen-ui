@@ -26,13 +26,13 @@ export const isUnauthorized = async (req: express.Request) => {
   const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, req.params.id, 'en');
 
   const isTaskComplete = viewOptionsBeforeDeadlineTask.status === TaskStatus.COMPLETE;
-  const isTaskForExtendingDeadLineCompletedWithExtentedDeadline = isTaskComplete && caseData.isDeadlineExtended();
+  const deadlineIsExtended = isTaskComplete && caseData.isDeadlineExtended();
   const isResponseDeadlineExtensionNotQualified = caseData.isRequestToExtendDeadlineRefused() || caseData.isResponseToExtendDeadlineNo() || caseData.hasRespondentAskedForMoreThan28Days();
-  const responseIsPastDeadlineAndDeadlineNotExtendedAfterCompletingDeadlineTask = isDeadlinePassed && isTaskComplete && isResponseDeadlineExtensionNotQualified;
-  const responseIsPastdeadlineAndDeadlineExtensionTaskNotCompleted = isDeadlinePassed && !isTaskComplete;
-  if (responseIsPastDeadlineAndDeadlineNotExtendedAfterCompletingDeadlineTask
-    || isTaskForExtendingDeadLineCompletedWithExtentedDeadline
-  || responseIsPastdeadlineAndDeadlineExtensionTaskNotCompleted) {
+  const responseDeadlineCantBeExtended = isDeadlinePassed && isTaskComplete && isResponseDeadlineExtensionNotQualified;
+  const isTooLateToExtendDeadline = isDeadlinePassed && !isTaskComplete;
+  if (responseDeadlineCantBeExtended
+    || deadlineIsExtended
+  || isTooLateToExtendDeadline) {
     return true;
   }
   return false;
