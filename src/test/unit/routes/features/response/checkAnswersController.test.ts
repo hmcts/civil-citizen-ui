@@ -68,9 +68,6 @@ describe('Response - Check answers', () => {
     nock(civilServiceUrl)
       .get('/cases/claimant/123')
       .reply(200, {data: data});
-    nock(civilServiceUrl)
-      .get('/cases/defendant/undefined/response/submit/undefined/token/')
-      .reply(200, {});
   });
 
   describe('on GET', () => {

@@ -1,6 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
 import {PartialAdmission} from '../../../../../common/models/partialAdmission';
-import {AlreadyPaid} from '../../../../../common/form/models/admission/partialAdmission/alreadyPaid';
+import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -23,7 +23,7 @@ export class PartialAdmissionService {
         claim.partialAdmission.alreadyPaid.option = alreadyPaid;
       } else {
         claim.partialAdmission = new PartialAdmission();
-        claim.partialAdmission.alreadyPaid = new AlreadyPaid(alreadyPaid);
+        claim.partialAdmission.alreadyPaid = new GenericYesNo(alreadyPaid);
       }
       await saveDraftClaim(claimId, claim);
     } catch (error) {
