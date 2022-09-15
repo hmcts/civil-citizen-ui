@@ -14,11 +14,11 @@
 
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% set addressTitle = t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.YOUR_POSTAL_ADDRESS') %}
-{% set citizenAddressErrors = citizenAddress.getAllErrors() %}
+{% set claimantIndividualAddressErrors = claimantIndividualAddress.getAllErrors() %}
 
-{% if citizenCorrespondenceAddress %}
-  {% set citizenCorrespondenceAddressErrors = citizenCorrespondenceAddress.getAllErrors() %}
-  {% set citizenAddressErrors = citizenAddressErrors.concat(citizenCorrespondenceAddress.getAllErrors()) %}
+{% if claimantIndividualCorrespondenceAddress %}
+  {% set claimantIndividualCorrespondenceAddressErrors = claimantIndividualCorrespondenceAddress.getAllErrors() %}
+  {% set claimantIndividualAddressErrors = claimantIndividualAddressErrors.concat(claimantIndividualCorrespondenceAddress.getAllErrors()) %}
 {% endif %}
 
 {% block pageTitle %}
@@ -58,7 +58,7 @@
   <div id="correspondenceAddress" class="{{ correspondenceAddressClass }}">
     {{ addressForm(
       t,
-      citizenCorrespondenceAddress = citizenCorrespondenceAddress,
+      citizenCorrespondenceAddress = claimantIndividualCorrespondenceAddress,
       addressType = 'correspondence',
       addressTitle = addressTitle
     ) }}
@@ -69,8 +69,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if citizenCorrespondenceAddress.hasErrors() or citizenAddress.hasErrors() %}
-          {{ errorSummary(citizenAddressErrors, t) }}
+        {% if claimantIndividualCorrespondenceAddress.hasErrors() or claimantIndividualAddress.hasErrors() %}
+          {{ errorSummary(claimantIndividualAddressErrors, t) }}
         {% endif %}
       </div>
       <div class="govuk-grid-row">
@@ -81,34 +81,33 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-
           <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
             {{ csrfProtection(csrf) }}
 
-             {{ govukInput({
-            label: {
-              text: "Title"
-            },
-            classes: "govuk-!-width-one-half",
-            id: "claimantIndividualDetailsTitle",
-            name: "claimantIndividualDetailsTitle"
-          }) }}
-        {{ govukInput({
-          label: {
-            text: "First name"
-          },
-          classes: "govuk-!-width-one-half",
-          id: "claimantIndividualDetailsFirstName",
-          name: "claimantIndividualDetailsFirstName"
-        }) }}
-        {{ govukInput({
-          label: {
-            text: "Last name"
-          },
-          classes: "govuk-!-width-one-half",
-          id: "claimantIndividualDetailsLastName",
-          name: "claimantIndividualDetailsLastName"
-        }) }}
+            {{ govukInput({
+              label: {
+                text: "Title"
+              },
+              classes: "govuk-!-width-one-half",
+              id: "claimantIndividualDetailsTitle",
+              name: "claimantIndividualDetailsTitle"
+            }) }}
+            {{ govukInput({
+              label: {
+                text: "First name"
+              },
+              classes: "govuk-!-width-one-half",
+              id: "claimantIndividualDetailsFirstName",
+              name: "claimantIndividualDetailsFirstName"
+            }) }}
+            {{ govukInput({
+              label: {
+                text: "Last name"
+              },
+              classes: "govuk-!-width-one-half",
+              id: "claimantIndividualDetailsLastName",
+              name: "claimantIndividualDetailsLastName"
+            }) }}
 
             <div class="govuk-form-group" id="postcode">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
@@ -140,11 +139,11 @@
               </a>
             </div>
             <div id="primaryAddress" class="{{ correspondenceAddressClass }}">
-              {{  citizenAddress }}
+              {{  claimantIndividualAddress }}
               <hr/>
               {{ addressForm(
                 t,
-                citizenAddress = citizenAddress,
+                citizenAddress = claimantIndividualAddress,
                 addressType = 'primary',
                 addressTitle = addressTitle
               ) }}
@@ -180,8 +179,8 @@
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
             }) }}
             {{ contactUsForHelp(t) }}
+          </form>
         </div>
-        </form>
       </div>
     </main>
   </div>
