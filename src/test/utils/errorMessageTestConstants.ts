@@ -64,6 +64,7 @@ export const enum TestMessages {
   VALID_POSITIVE_NUMBER = 'Don’t enter a negative number',
   VALID_REASON_REQUIRED = 'Enter a reason',
   VALID_STRICTLY_POSITIVE_NUMBER = 'Enter a number higher than 0',
+  VALID_TEXT_LENGTH = 'You’ve entered too many characters',
   VALID_TRIED_TO_SETTLE = 'Select yes if you have tried to settle this claim before going to court',
   VALID_TWO_DECIMAL_NUMBER = 'Enter a valid amount, maximum two decimal places',
   VALID_YEAR = 'Enter a valid year',
