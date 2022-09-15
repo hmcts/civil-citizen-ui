@@ -915,7 +915,7 @@
       "NO_AGREE" : "I do not agree to free mediation",
       "NEUTRAL_MEDIATOR_LISTEN" : "A trained, neutral mediator from HM Courts and Tribunals Service will listen to your views and help you to negotiate a settlement of your dispute.",
       "NO_WAIT_COURT_HEARING" : "You will not have to wait longer for a court hearing if you choose mediation.",
-      "OPENS_IN_NEW_TAB ": "free telephone mediation (opens in new tab).",
+      "OPENS_IN_NEW_TAB" : "free telephone mediation (opens in new tab).",
       "PAGE_TITLE": "Free telephone mediation",
       "REACHING_SETTLEMENT" : "Reaching a settlement",
       "TITLE" : "Free telephone mediation"
@@ -978,7 +978,7 @@
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
-    "NOT_ELIGIBLE_FOR_SERVICE" : {
+    "NOT_ELIGIBLE_FOR_SERVICE":{
       "ABLE_TO_GET_AN_ADVICE": {
         "1": "You might be able to get advice from organisations like ",
         "2": " about making a claim."
@@ -1001,7 +1001,7 @@
       "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "DEFENDANT_ADDRESS": {
         "AND": "and",
-        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES" : "You can only use this service to claim against a person or organisation with an address in England or Wales.",
+        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES":"You can only use this service to claim against a person or organisation with an address in England or Wales.",
         "COMPLETE_FORMS_AND_RETURN": ". Complete the forms and return them to make your claim.",
         "DOWNLOAD_PAPER_FORM_N1": "Download the paper form N1",
         "FORM_N510": "form N510",
@@ -1127,9 +1127,9 @@
     "REGULAR_INCOME": {
       "AMOUNT_RECEIVED" : "Amount received",
       "BUTTON_ADD_SOURCE" : "Add another source of income",
-      "CHILD_TAX": "Child Tax Credit",
+      "CHILD_TAX" : "Child Tax Credit",
       "CHILD_BENEFIT" : "Child Benefit",
-      "COUNCIL_TAX" : "Council Tax Support",
+      "COUNCIL_TAX": "Council Tax Support",
       "INCOME_JOB" : "Income from your job",
       "INCOME_SUPPORT" : "Income Support",
       "INCLUDE_WAGES_OVERTIME_COMISSION" : "Include wages, overtime, commission, bonuses",
@@ -1213,14 +1213,14 @@
       "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "SELF_EMPLOYED": {
-      "ANNUAL": "Annual Turnover",
-      "JOB_TITLE": "Job title",
+      "ANNUAL" : "Annual Turnover",
+      "JOB_TITLE" : "Job title",
       "PAGE_TITLE": "Self employment details",
       "TITLE": "What are you self-employed as?"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
-      "AMOUNT" : "Amount you owe",
-      "PAGE_TITLE" : "Behind on tax payments?",
+      "AMOUNT": "Amount you owe",
+      "PAGE_TITLE": "Behind on tax payments?",
       "REASON": "Reason",
       "TITLE": "Are you behind on tax payments?",
       "EXAMPLE": "For example National Insurance contributions, Income Tax or VAT."
@@ -1334,9 +1334,9 @@
       "JOB_TITLE" : "Job title"
     },
     "YOU_CAN_USE": {
-      "BASED_ON ": "Based on your answers you can make a money claim using this service.",
+      "BASED_ON" : "Based on your answers you can make a money claim using this service.",
       "HWF_ELIGIBLE" : {
-        "PAY_COURT ": "You will have to pay court fees unless you are eligible for Help with Fees. ",
+        "PAY_COURT" : "You will have to pay court fees unless you are eligible for Help with Fees. ",
         "HELP_WITH_FEES" : "Find out more about Help with Fees (opens in a new window)"
       },
       "HWF_ELIGIBLE_REFERENCE" : {
