@@ -2,10 +2,16 @@ import * as express from 'express';
 import {DQ_EXPERT_DETAILS_URL, DQ_SHARE_AN_EXPERT_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {
+  getSharedExpertForm,
+  getSharedExpertSelection,
+  saveSharedExpertSelection,
+} from '../../../services/features/directionsQuestionnaire/sharedExpertService';
 
 const sharedExpertController = express.Router();
 
-function renderView(sharedExpertForm: GenericForm<any>, res: express.Response): void {
+function renderView(sharedExpertForm: GenericForm<GenericYesNo>, res: express.Response): void {
   const form = Object.assign(sharedExpertForm);
   form.option = sharedExpertForm.model.option;
   res.render('features/directionsQuestionnaire/shared-expert', {form});

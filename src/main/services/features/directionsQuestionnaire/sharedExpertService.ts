@@ -1,0 +1,42 @@
+import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
+import {DirectionQuestionnaire} from '../../../common/models/directionsQuestionnaire/directionQuestionnaire';
+import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('DQ - Tried to settle');
+const sharedExpertErrorMessage = 'ERRORS.VALID_SHARE_EXPERT';
+
+const getSharedExpertSelection = async (claimId: string): Promise<GenericYesNo> => {
+  try {
+    const caseData = await getCaseDataFromStore(claimId);
+    return caseData?.directionQuestionnaire?.sharedExpert ?
+      caseData.directionQuestionnaire.sharedExpert :
+      new GenericYesNo(undefined, sharedExpertErrorMessage);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+const getSharedExpertForm = (sharedExpert: string): GenericYesNo => {
+  return new GenericYesNo(sharedExpert, sharedExpertErrorMessage);
+};
+
+const saveSharedExpertSelection = async (claimId: string, sharedExpert: GenericYesNo) => {
+  try {
+    const caseData = await getCaseDataFromStore(claimId);
+    (caseData?.directionQuestionnaire) ?
+      caseData.directionQuestionnaire = {...caseData.directionQuestionnaire, sharedExpert} :
+      caseData.directionQuestionnaire = {...new DirectionQuestionnaire(), sharedExpert};
+    await saveDraftClaim(claimId, caseData);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export {
+  getSharedExpertSelection,
+  getSharedExpertForm,
+  saveSharedExpertSelection,
+};
