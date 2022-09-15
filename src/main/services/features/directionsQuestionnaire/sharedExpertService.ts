@@ -4,7 +4,7 @@ import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('DQ - Tried to settle');
-const sharedExpertErrorMessage = 'ERRORS.VALID_SHARE_EXPERT';
+const sharedExpertErrorMessage = 'ERRORS.VALID_SHARED_EXPERT';
 
 const getSharedExpertSelection = async (claimId: string): Promise<GenericYesNo> => {
   try {
