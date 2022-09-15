@@ -9,7 +9,7 @@ const logger = Logger.getLogger('supportRequiredService');
 export const getConsiderClaimantDocuments = async (claimId: string): Promise<ConsiderClaimantDocuments> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    return caseData?.directionQuestionnaire?.considerClaimantDocuments ? caseData.directionQuestionnaire.considerClaimantDocuments :  new ConsiderClaimantDocuments();
+    return caseData.directionQuestionnaire?.considerClaimantDocuments ? caseData.directionQuestionnaire.considerClaimantDocuments :  new ConsiderClaimantDocuments();
   } catch (error) {
     logger.error(error);
     throw error;
@@ -26,7 +26,7 @@ export const getConsiderClaimantDocumentsForm = (option: string, details: string
 export const saveConsiderClaimantDocuments = async (claimId: string, considerClaimantDocuments: ConsiderClaimantDocuments) => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    (caseData?.directionQuestionnaire) ?
+    (caseData.directionQuestionnaire) ?
       caseData.directionQuestionnaire = {...caseData.directionQuestionnaire, considerClaimantDocuments} :
       caseData.directionQuestionnaire = {...new DirectionQuestionnaire(), considerClaimantDocuments};
     await saveDraftClaim(claimId, caseData);
