@@ -68,7 +68,7 @@ describe('Debts View', () => {
     });
 
     it('should display save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
+      const buttons = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0].getElementsByClassName('govuk-button');
       expect(buttons[1].innerHTML).toContain('Save and continue');
     });
 

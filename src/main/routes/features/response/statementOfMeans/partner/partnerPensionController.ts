@@ -1,17 +1,17 @@
 import * as express from 'express';
 import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_DISABILITY_URL, CITIZEN_PARTNER_PENSION_URL} from '../../../../urls';
-import {PartnerPension} from '../../../../../common/form/models/statementOfMeans/partner/partnerPension';
 import {PartnerPensionService} from '../../../../../services/features/response/statementOfMeans/partner/partnerPensionService';
 import {DisabilityService} from '../../../../../services/features/response/statementOfMeans/disabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
 
 const citizenPartnerPensionViewPath = 'features/response/statementOfMeans/partner/partner-pension';
 const partnerPensionController = express.Router();
 const partnerPensionService = new PartnerPensionService();
 const disabilityService = new DisabilityService();
 
-function renderView(partnerPension: GenericForm<PartnerPension>, res: express.Response): void {
+function renderView(partnerPension: GenericForm<GenericYesNo>, res: express.Response): void {
   const form = Object.assign(partnerPension);
   form.option = partnerPension.model.option;
   res.render(citizenPartnerPensionViewPath, {form});
@@ -28,7 +28,7 @@ partnerPensionController.get(CITIZEN_PARTNER_PENSION_URL, async (req, res, next:
 
 partnerPensionController.post(CITIZEN_PARTNER_PENSION_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const form: GenericForm<PartnerPension> = new GenericForm(new PartnerPension(req.body.option));
+    const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);

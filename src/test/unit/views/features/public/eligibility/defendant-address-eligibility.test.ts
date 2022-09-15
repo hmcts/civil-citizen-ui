@@ -10,7 +10,7 @@ const {JSDOM} = jsdom;
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
-describe('Single Defendant View', () => {
+describe('Defendant Address Eligibility View', () => {
   // TODO: remove this once paths become publicly available as mocking the response token will not be needed
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -43,8 +43,8 @@ describe('Single Defendant View', () => {
     });
 
     it('should display Save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
-      expect(buttons[0].innerHTML).toContain('Save and continue');
+      const button = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0].getElementsByClassName('govuk-button')[0];
+      expect(button.innerHTML).toContain('Save and continue');
     });
 
     it('should contain Contact us detail component', () => {
@@ -77,14 +77,14 @@ describe('Single Defendant View', () => {
     it('should display correct error summary message with correct link', () => {
       const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
         .getElementsByTagName('li')[0];
-      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_SELECTION);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_OPTION);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#option');
     });
 
     it('should display correct error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      expect(errorMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_SELECTION);
+      expect(errorMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_OPTION);
     });
   });
 });
