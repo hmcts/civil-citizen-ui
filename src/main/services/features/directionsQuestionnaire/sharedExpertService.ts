@@ -3,7 +3,7 @@ import {DirectionQuestionnaire} from '../../../common/models/directionsQuestionn
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('DQ - Tried to settle');
+const logger = Logger.getLogger('DQ - Shared expert');
 const sharedExpertErrorMessage = 'ERRORS.VALID_SHARED_EXPERT';
 
 const getSharedExpertSelection = async (claimId: string): Promise<GenericYesNo> => {
