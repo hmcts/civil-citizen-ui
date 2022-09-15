@@ -47,7 +47,7 @@ describe('Shared Expert Controller', () => {
     it('should return shared expert page on empty post', async () => {
       await request(app).post(DQ_SHARE_AN_EXPERT_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_TRIED_TO_SETTLE);
+        expect(res.text).toContain(TestMessages.VALID_SHARED_EXPERT);
       });
     });
 
