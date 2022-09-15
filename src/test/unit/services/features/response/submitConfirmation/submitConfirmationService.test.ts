@@ -8,8 +8,8 @@ import {ResponseType} from '../../../../../../main/common/form/models/responseTy
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import { PartialAdmission } from '../../../../../../main/common/models/partialAdmission';
-import { PaymentIntention } from '../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
+import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
+import {PaymentIntention} from '../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
