@@ -1166,6 +1166,12 @@
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
       "TITLE": "Eich cynllun ad-dalu"
     },
+    "REQUEST_EXTRA_4WEEKS": {
+      "HINT": "You can use this time to try to settle the claim withoout going to a hearing. Settling without going to a hearing may avoid costs including fees.",
+      "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
+      "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
+      "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
+    },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
@@ -1515,6 +1521,7 @@
     "VALID_POSITIVE_NUMBER": "Peidiwch â rhoi rhif negyddol",
     "VALID_POSTCODE": "Rhowch y cod post",
     "VALID_REASON_REQUIRED": "Rhowch reswm",
+    "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",
     "VALID_TEXT_LENGTH": "Rydych wedi defnyddio gormod o nodau",
     "VALID_TWO_DECIMAL_NUMBER": "Rhowch swm, dim mwy na dau le degol",
