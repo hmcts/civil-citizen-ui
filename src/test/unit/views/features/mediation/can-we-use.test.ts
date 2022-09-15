@@ -5,12 +5,8 @@ import request from 'supertest';
 import {
   CAN_WE_USE_URL,
 } from '../../../../../main/routes/urls';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim } from '../../../../utils/mockDraftStore';
-import {
-  PHONE_NUMBER_REQUIRED,
-  VALID_YES_NO_OPTION,
-  VALID_TEXT_LENGTH,
-} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
@@ -145,7 +141,7 @@ describe('Repayment Plan View', () => {
 
     it('should display correct error summary message with correct link for yes and no option', () => {
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_YES_NO_OPTION);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_OPTION);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#option');
     });
@@ -159,7 +155,7 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(PHONE_NUMBER_REQUIRED);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.PHONE_NUMBER_REQUIRED);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#mediationPhoneNumber');
     });
@@ -173,7 +169,7 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_TEXT_LENGTH);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_TEXT_LENGTH);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#mediationPhoneNumber');
     });

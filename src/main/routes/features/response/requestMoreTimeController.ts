@@ -12,13 +12,13 @@ const requestMoreTimeController = express.Router();
 const requestMoreTimeViewPath = 'features/response/request-more-time';
 const responseDeadlineService = new ResponseDeadlineService();
 
-function renderView(res: express.Response, form: GenericForm<AdditionalTime>, claim: Claim): void {
+function renderView(res: express.Response, form: GenericForm<AdditionalTime>, claim: Claim, language: string): void {
   const additionalTime = Object.assign(form);
   additionalTime.option = form.model?.option;
   res.render(requestMoreTimeViewPath, {
     additionalTimeOptions: AdditionalTimeOptions,
     form: additionalTime,
-    responseDate: claim.formattedResponseDeadline(),
+    responseDate: claim.formattedResponseDeadline(language),
     claimantName: claim.getClaimantName(),
   });
 }
@@ -26,8 +26,9 @@ function renderView(res: express.Response, form: GenericForm<AdditionalTime>, cl
 requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
+      const language = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(req.params.id);
-      renderView(res, new GenericForm(new AdditionalTime(claim.responseDeadline?.additionalTime)), claim);
+      renderView(res, new GenericForm(new AdditionalTime(claim.responseDeadline?.additionalTime)), claim, language);
     } catch (error) {
       next(error);
     }
@@ -36,13 +37,14 @@ requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
 requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
+      const language = req.query.lang ? req.query.lang : req.cookies.lang;
       const selectedOption = responseDeadlineService.getAdditionalTime(req.body.option);
       const claimId = req.params.id;
       const claim = await getCaseDataFromStore(claimId);
       const form = new GenericForm(new AdditionalTime(selectedOption));
       await form.validate();
       if (form.hasErrors()) {
-        renderView(res, form, claim);
+        renderView(res, form, claim, language);
       } else {
         await responseDeadlineService.saveAdditionalTime(claimId, selectedOption);
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));

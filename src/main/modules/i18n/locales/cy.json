@@ -865,7 +865,7 @@
       "SUBTITLE": "If you don't respond",
       "TITLE": "Respond to a money claim",
       "PAGE_TITLE": "Respond to a money claim",
-      "PARAGRAPH_1": "You have 19 days to respond to the claim from the date the court issued it.",
+      "PARAGRAPH_1": "You have 28 days to respond to the claim from the date the court issued it.",
       "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
       "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
       "PARAGRAPH_4_CCJ_URL": "County Court Judgment (CCJ) ",
@@ -947,7 +947,12 @@
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment."
     },
     "MEDIATION_CAN_WE_USE": {
-      "PAGE_TITLE": "Mediation - Provide a phone number"
+      "CAN_MEDIATION_USE": "A all y gwasanaeth cyfryngu ddefnyddio’r rhif {{ respondentTelNumber }} i’ch ffonio?",
+      "CONFIRM_YOUR_NUMBER": "Cadarnhewch eich rhif ffôn",
+      "ENTER_PHONE_NUMBER": "Rhowch rif ffôn",
+      "ENTER_PHONE_FOR_DIRECT_LINE": "Nodwch rif ffôn uniongyrchol gall y gwasanaeth cyfryngu ei ddefnyddio i gysylltu â chi.",
+      "PAGE_TITLE": "Mediation - Provide a phone number",
+      "WONT_GIVE_NUMBER": "Ni fyddwn yn rhoi'r rhif i rywun arall."
     },
     "MEDIATION_COMPANY_PHONE": {
       "CONFIRM_TELEPHONE_NUMBER": "Cadarnhau'r rhif ffôn",
@@ -1167,21 +1172,21 @@
       "TITLE": "Eich cynllun ad-dalu"
     },
     "REQUEST_MORE_TIME": {
-      "APPLY_TO_COURT": "You need to apply to the court to request more time.",
-      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "DOWNLOAD_FORM": "Download form N244 (opens in new tab)",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
-      "HOW_MUCH_ADDITIONAL_TIME": "How much additional time are you asking for?",
-      "IF_AGREED": "If agreed, extra time will start from {{ responseDeadline }}",
-      "MORE_THAN_28_DAYS": "More than 28 days",
-      "NO_AGREEMENT": "They do not have to agree to a request for more time.",
+      "APPLY_TO_COURT": "Mae angen i chi wneud cais i’r llys am ragor o amser.",
+      "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
+      "DOWNLOAD_FORM": "Dylech lawrlwytho ffurflen N244 (agor mewn tab newydd)",
+      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi ar e-bost i contact@justice.gov.uk",
+      "HOW_MUCH_ADDITIONAL_TIME": "Faint o amser ychwanegol yr ydych yn gwneud cais amdano?",
+      "IF_AGREED": "Os bydd y cais yn cael ei ganiatáu, bydd yr amser ychwanegol yn dechrau o {{ responseDeadline }}",
+      "MORE_THAN_28_DAYS": "Mwy na 28 diwrnod",
+      "NO_AGREEMENT": "Nid oes rhaid iddynt gytuno i gais am ragor o amser.",
       "PAGE_TITLE": "Request more time",
-      "POST": "Or, you can post the completed form to:",
-      "SELECT_SAVE_AND_CONTACT": "Select 'Save and continue' and contact {{ claimantName }}'s legal representative to request this.",
-      "SELECT_SAVE_AND_CONTINUE": "and select 'Save and continue'.",
-      "TELL_OTHER_PARTY": "You'll also need to tell the other party that you have applied to the court.",
-      "TITLE": "Request more time to respond",
-      "UP_TO_28_DAYS": "Up to 28 days"
+      "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
+      "SELECT_SAVE_AND_CONTACT": "Dewiswch ‘Cadw a pharhau’ a chysylltu â chynrychiolydd cyfreithiol {{ claimantName }} i ofyn am hyn.",
+      "SELECT_SAVE_AND_CONTINUE": " a dewis ‘Cadw a pharhau’.",
+      "TELL_OTHER_PARTY": "Bydd angen i chi hefyd ddweud wrth y parti arall eich bod wedi gwneud cais i’r llys.",
+      "TITLE": "Gwneud cais am ragor o amser i ymateb",
+      "UP_TO_28_DAYS": "Hyd at 28 diwrnod"
     },
     "RESIDENCE": {
       "ASSOCIATION_HOME": "Cartref cymdeithas dai neu'r cyngor",
@@ -1302,6 +1307,15 @@
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
+    },
+    "TRIED_TO_SETTLE": {
+      "BOTH_PARTIES": "Both parties must take certain steps before going to court.",
+      "PAGE_TITLE": "Have you tried to settle this claim before going to court?",
+      "STEPS": "These steps are:",
+      "STEP_ONE": "discuss the claim and negotiate with each other",
+      "STEP_TWO": "try to reach an agreement about the claim",
+      "STEP_THREE": "consider another form of dispute resolution, such as mediation",
+      "TITLE": "Tried to settle this claim?"
     },
     "TRY_NEW_SERVICE": {
       "PAGE_TITLE": "Try the new online service",
@@ -1424,8 +1438,8 @@
     "QUESTION_1_REQUIRED": "1. Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
     "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
+    "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
-    "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
       "COUNCIL_TAX": "Nodwch faint o Dreth y Cyngor neu Dâl Cymunedol ydych chi'n ei dalu",
@@ -1549,6 +1563,7 @@
     "VALID_REASON_REQUIRED": "Rhowch reswm",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",
     "VALID_TEXT_LENGTH": "Rydych wedi defnyddio gormod o nodau",
+    "VALID_TRIED_TO_SETTLE": "Select yes if you have tried to settle this claim before going to court",
     "VALID_TWO_DECIMAL_NUMBER": "Rhowch swm, dim mwy na dau le degol",
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
