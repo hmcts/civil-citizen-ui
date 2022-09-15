@@ -845,6 +845,13 @@
       "USUALLY_SHARE_COST": "Usually you both share this cost.",
       "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
     },
+    "EXPERT_REPORT": {
+      "OPTION_NO": "No",
+      "OPTION_NOT_RECEIVED": "No, I have not yet received them",
+      "OPTION_YES": "Yes",
+      "PAGE_TITLE": "Have you tried sent expert reports to the claimant?",
+      "TITLE": "Have you already sent expert reports"
+    },
     "EXPLANATION": {
       "PAGE_TITLE": "Explanation",
       "TITLE": "Briefly explain why you can't pay immediately"
@@ -1516,6 +1523,7 @@
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Rhowch rif ar gyfer o leiaf un maes",
+    "VALID_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
     "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
