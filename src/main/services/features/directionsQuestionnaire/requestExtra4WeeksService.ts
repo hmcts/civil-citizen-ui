@@ -23,11 +23,9 @@ const saveRequestExtra4weeks = async (claimId: string, requestExtra4weeks: Reque
   try {
     const caseData = await getCaseDataFromStore(claimId);
     if (caseData?.directionQuestionnaire) {
-      caseData.directionQuestionnaire = {...caseData.directionQuestionnaire};
-      caseData.directionQuestionnaire.requestExtra4weeks = requestExtra4weeks;
+      caseData.directionQuestionnaire = {...caseData.directionQuestionnaire, requestExtra4weeks};
     } else {
-      caseData.directionQuestionnaire = new DirectionQuestionnaire();
-      caseData.directionQuestionnaire.requestExtra4weeks = requestExtra4weeks;
+      caseData.directionQuestionnaire = {...new DirectionQuestionnaire(), requestExtra4weeks};
     }
     await saveDraftClaim(claimId, caseData);
   } catch (error) {
