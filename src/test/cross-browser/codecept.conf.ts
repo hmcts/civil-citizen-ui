@@ -1,5 +1,4 @@
-   
-import { setHeadlessWhen } from '@codeceptjs/configure';
+const { setHeadlessWhen } = require('@codeceptjs/configure');
 
 import { config as testConfig } from '../config';
 
@@ -40,7 +39,7 @@ if (process.env.SAUCE === 'true') {
   helpers = testConfig.helpers;
 }
 
-export const config: CodeceptJS.Config = {
+export const config = {
   name: 'civil-citizen-ui-cross-browser',
   gherkin: testConfig.Gherkin,
   output: '../../../functional-output/crossbrowser/reports',

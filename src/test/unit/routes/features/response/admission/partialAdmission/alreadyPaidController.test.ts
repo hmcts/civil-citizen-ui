@@ -2,7 +2,6 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../../main/app';
-import {VALID_YES_NO_SELECTION} from '../../../../../../../main/common/form/validationErrors/errorMessageConstants';
 import {
   CITIZEN_ALREADY_PAID_URL,
   CLAIM_TASK_LIST_URL,
@@ -56,7 +55,7 @@ describe('Already Paid Controller', () => {
         .send('')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(VALID_YES_NO_SELECTION);
+          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
         });
     });
 

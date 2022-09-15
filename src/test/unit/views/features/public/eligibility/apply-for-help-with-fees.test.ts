@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {ELIGIBILITY_HELP_WITH_FEES} from '../../../../../../main/routes/urls';
+import {ELIGIBILITY_APPLY_HELP_WITH_FEES_URL} from '../../../../../../main/routes/urls';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -19,7 +19,7 @@ describe('Apply For Help With Fees View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).get(ELIGIBILITY_HELP_WITH_FEES);
+      const response = await request(app).get(ELIGIBILITY_APPLY_HELP_WITH_FEES_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });
@@ -45,7 +45,7 @@ describe('Apply For Help With Fees View', () => {
     });
 
     it('should display Save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
+      const buttons = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0].getElementsByClassName('govuk-button');
       expect(buttons[0].innerHTML).toContain('Save and continue');
     });
 
