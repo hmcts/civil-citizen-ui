@@ -9,7 +9,6 @@ import {
 } from '../../../services/features/directionsQuestionnaire/requestExtra4WeeksService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 
-
 const requestExtra4WeeksController = express.Router();
 
 function renderView(form: GenericForm<RequestExtra4weeks>, res: express.Response): void {

@@ -7,3 +7,5 @@ export class TriedToSettle {
   constructor(triedToSettle?: string) {
     this.option = triedToSettle;
   }
+}
+

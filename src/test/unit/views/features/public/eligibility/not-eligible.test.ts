@@ -18,7 +18,7 @@ describe("You can't use this service View", () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
-  let mainWrapper: any;
+  let mainWrapper: Element;
 
   describe('on GET', () => {
     beforeEach(async () => {
