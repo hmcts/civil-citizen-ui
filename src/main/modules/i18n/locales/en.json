@@ -946,7 +946,12 @@
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment."
     },
     "MEDIATION_CAN_WE_USE": {
-      "PAGE_TITLE": "Mediation - Provide a phone number"
+      "CAN_MEDIATION_USE": "Can the mediation service use {{ respondentTelNumber }} to call you?",
+      "CONFIRM_YOUR_NUMBER": "Confirm your telephone number",
+      "ENTER_PHONE_NUMBER": "Enter a phone number",
+      "ENTER_PHONE_FOR_DIRECT_LINE": "Enter the number for a direct line the mediation service can use.",
+      "PAGE_TITLE": "Mediation - Provide a phone number",
+      "WONT_GIVE_NUMBER": "We won't give the number to anyone else."
     },
     "MEDIATION_COMPANY_PHONE": {
       "CONFIRM_TELEPHONE_NUMBER" : "Confirm telephone number",
@@ -1178,7 +1183,7 @@
       "PAGE_TITLE": "Request more time",
       "POST": "Or, you can post the completed form to:",
       "SELECT_SAVE_AND_CONTACT": "Select 'Save and continue' and contact {{ claimantName }}'s legal representative to request this.",
-      "SELECT_SAVE_AND_CONTINUE": "and select 'Save and continue'.",
+      "SELECT_SAVE_AND_CONTINUE": " and select 'Save and continue'.",
       "TELL_OTHER_PARTY": "You'll also need to tell the other party that you have applied to the court.",
       "TITLE": "Request more time to respond",
       "UP_TO_28_DAYS": "Up to 28 days"
@@ -1516,7 +1521,7 @@
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
-    "VALID_TEXT_LENGTH": "You've entered too many characters",
+    "VALID_TEXT_LENGTH": "You’ve entered too many characters",
     "VALID_TWO_DECIMAL_NUMBER": "Enter a valid amount, maximum two decimal places",
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
