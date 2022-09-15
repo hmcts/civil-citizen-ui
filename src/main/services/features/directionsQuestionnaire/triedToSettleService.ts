@@ -22,13 +22,9 @@ const getTriedToSettleForm = (triedToSettle: string): TriedToSettle => {
 const saveTriedToSettle = async (claimId: string, triedToSettle: TriedToSettle) => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    if (caseData?.directionQuestionnaire) {
-      caseData.directionQuestionnaire = {...caseData.directionQuestionnaire};
-      caseData.directionQuestionnaire.triedToSettle = triedToSettle;
-    } else {
-      caseData.directionQuestionnaire = new DirectionQuestionnaire();
-      caseData.directionQuestionnaire.triedToSettle = triedToSettle;
-    }
+    (caseData?.directionQuestionnaire) ?
+      caseData.directionQuestionnaire = {...caseData.directionQuestionnaire, triedToSettle} :
+      caseData.directionQuestionnaire = {...new DirectionQuestionnaire(), triedToSettle};
     await saveDraftClaim(claimId, caseData);
   } catch (error) {
     logger.error(error);
