@@ -1,7 +1,6 @@
-import {TriedToSettle} from './triedToSettle';
-import {RequestExtra4weeks} from './requestExtra4Weeks';
+import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 export class DirectionQuestionnaire {
-  triedToSettle?: TriedToSettle;
-  requestExtra4weeks?: RequestExtra4weeks;
+  triedToSettle?: GenericYesNo;
+  requestExtra4weeks?: GenericYesNo;
 }

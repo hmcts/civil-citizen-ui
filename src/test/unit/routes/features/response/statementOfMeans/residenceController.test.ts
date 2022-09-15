@@ -103,7 +103,7 @@ describe('Citizen residence', () => {
         .send(`housingDetails=${tooLongHousingDetails}`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('You&#39;ve entered too many characters');
+          expect(res.text).toContain(TestMessages.VALID_TEXT_LENGTH);
         });
     });
 

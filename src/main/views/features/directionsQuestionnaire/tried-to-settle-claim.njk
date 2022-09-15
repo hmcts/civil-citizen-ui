@@ -9,7 +9,7 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.REQUEST_EXTRA_4WEEKS.PAGE_TITLE') }}
+  {{ setPageTitle('PAGES.TRIED_TO_SETTLE.TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -22,17 +22,16 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.REQUEST_EXTRA_4WEEKS.PAGE_TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.TRIED_TO_SETTLE.PAGE_TITLE') }}</h1>
           <p class="govuk-body">
-            {{ t('PAGES.REQUEST_EXTRA_4WEEKS.HINT') }}
+            {{ t('PAGES.TRIED_TO_SETTLE.BOTH_PARTIES') }}
+            {{ t('PAGES.TRIED_TO_SETTLE.STEPS') }}
           </p>
-          <div class="warning-text-container">
-            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-            <strong class="govuk-warning-text__text">
-              <span class="govuk-warning-text__assistive">Warning</span>
-              {{ t('PAGES.REQUEST_EXTRA_4WEEKS.WARNING') }}
-            </strong>
-          </div>
+          <ul class="govuk-list govuk-list--bullet govuk-!-padding-left-6">
+              <li>{{ t('PAGES.TRIED_TO_SETTLE.STEP_ONE') }}</li>
+              <li>{{ t('PAGES.TRIED_TO_SETTLE.STEP_TWO') }}</li>
+              <li>{{ t('PAGES.TRIED_TO_SETTLE.STEP_THREE') }}</li>
+          </ul>
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '') }}
