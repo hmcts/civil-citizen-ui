@@ -1,25 +1,28 @@
-import {TriedToSettle} from '../../../common/models/directionsQuestionnaire/triedToSettle';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {DirectionQuestionnaire} from '../../../common/models/directionsQuestionnaire/directionQuestionnaire';
+import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('DQ - Tried to settle');
+const triedToSettleErrorMessage = 'ERRORS.VALID_TRIED_TO_SETTLE';
 
-const getTriedToSettle = async (claimId: string): Promise<TriedToSettle> => {
+const getTriedToSettle = async (claimId: string): Promise<GenericYesNo> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    return caseData?.directionQuestionnaire?.triedToSettle ? caseData.directionQuestionnaire.triedToSettle : new TriedToSettle();
+    return caseData?.directionQuestionnaire?.triedToSettle ?
+      caseData.directionQuestionnaire.triedToSettle :
+      new GenericYesNo(undefined, triedToSettleErrorMessage);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-const getTriedToSettleForm = (triedToSettle: string): TriedToSettle => {
-  return new TriedToSettle(triedToSettle);
+const getTriedToSettleForm = (triedToSettle: string): GenericYesNo => {
+  return new GenericYesNo(triedToSettle, triedToSettleErrorMessage);
 };
 
-const saveTriedToSettle = async (claimId: string, triedToSettle: TriedToSettle) => {
+const saveTriedToSettle = async (claimId: string, triedToSettle: GenericYesNo) => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
     (caseData?.directionQuestionnaire) ?

@@ -1,5 +1,5 @@
-import {TriedToSettle} from './triedToSettle';
+import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 export class DirectionQuestionnaire {
-  triedToSettle?: TriedToSettle;
+  triedToSettle?: GenericYesNo;
 }

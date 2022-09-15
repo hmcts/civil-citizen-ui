@@ -1,17 +1,17 @@
 import * as express from 'express';
 import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_TRIED_TO_SETTLE_CLAIM_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {TriedToSettle} from '../../../common/models/directionsQuestionnaire/triedToSettle';
 import {
   getTriedToSettle,
   getTriedToSettleForm,
   saveTriedToSettle,
 } from '../../../services/features/directionsQuestionnaire/triedToSettleService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 const triedToSettleController = express.Router();
 
-function renderView(form: GenericForm<TriedToSettle>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   const triedToSettleClaimForm = Object.assign(form);
   triedToSettleClaimForm.option = form.model.option;
   res.render('features/directionsQuestionnaire/tried-to-settle-claim', {form: triedToSettleClaimForm});

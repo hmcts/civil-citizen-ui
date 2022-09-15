@@ -7,7 +7,7 @@ import {
   saveTriedToSettle,
 } from '../../../../../main/services/features/directionsQuestionnaire/triedToSettleService';
 import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
-import {TriedToSettle} from '../../../../../main/common/models/directionsQuestionnaire/triedToSettle';
+import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -48,7 +48,7 @@ describe('Tried to Settle the Claim Service', () => {
   });
 
   describe('saveTriedToSettle', () => {
-    const triedToSettle: TriedToSettle = {
+    const triedToSettle: GenericYesNo = {
       option: YesNo.YES,
     };
 
@@ -63,7 +63,7 @@ describe('Tried to Settle the Claim Service', () => {
     });
 
     it('should update tried to settle successfully', async () => {
-      const updatedTriedToSettle: TriedToSettle = {
+      const updatedTriedToSettle: GenericYesNo = {
         option: YesNo.NO,
       };
       const updatedClaim = new Claim();
