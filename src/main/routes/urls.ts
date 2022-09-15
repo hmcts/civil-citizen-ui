@@ -124,3 +124,5 @@ export const CLAIM_COMPLETING_CLAIM_URL = `${BASE_CLAIM_URL}/completing-claim`;
 export const FIRST_CONTACT_ACCESS_DENIED_URL = `${BASE_FIRST_CONTACT_URL}/access-denied`;
 export const FIRST_CONTACT_PIN_URL = `${BASE_FIRST_CONTACT_URL}/pin`;
 export const CLAIM_RESOLVING_DISPUTE_URL = `${BASE_CLAIM_URL}/resolving-this-dispute`;
+export const DQ_SHARE_AN_EXPERT_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/share-expert`;
+export const DQ_EXPERT_DETAILS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-details`;
