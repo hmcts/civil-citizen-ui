@@ -11,7 +11,7 @@ const getSubtitleIfClaimantRejectOwe = (claimantName: string, partialAmount: num
       text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE', { claimantName, partialAmount, lng: lang }),
     },
   };
-}
+};
 
 const getParagraphAskMediation = (lang: string) => {
   return {
@@ -29,7 +29,7 @@ const getParagraphDontWantMediation = (claimAmount: number, partialAmount: numbe
       text: t('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION', { claimAmount, partialAmount, lng: lang }),
     },
   };
-}
+};
 
 const getSubtitleRejectOffer = (claimantName: string, paymentDate: string, lang: string) => {
   return {
@@ -38,7 +38,7 @@ const getSubtitleRejectOffer = (claimantName: string, paymentDate: string, lang:
       text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.REJECT_OFFER_TO_PAY_BY', { claimantName, paymentDate, lng: lang }),
     },
   };
-}
+};
 
 const getParagraphCourtDecideHowToPay = (lang: string) => {
   return {
@@ -47,14 +47,14 @@ const getParagraphCourtDecideHowToPay = (lang: string) => {
       text: t('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY', { lng: lang }),
     },
   };
-}
+};
 
 const getSubtitleIfClaimantAccepstOffer = (claimantName: string, lang: string) => {
   return {
     type: ClaimSummaryType.SUBTITLE,
     data: {
       text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER', { claimantName, lng: lang }),
-    }
+    },
   };
 };
 
@@ -150,7 +150,7 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
     { ...getParagraphAskMediation(lang) },
     { ...getParagraphDontWantMediation(claimAmount, partialAmount, lang) },
     { ...getSubtitleRejectOffer(claimantName, paymentDate, lang) },
-    { ...getParagraphCourtDecideHowToPay(lang) }
+    { ...getParagraphCourtDecideHowToPay(lang) },
   ];
 };
 
@@ -190,7 +190,7 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
     { ...getParagraphAskMediation(lang) },
     { ...getParagraphDontWantMediation(claimAmount, partialAmount, lang) },
     { ...getSubtitleRejectOffer(claimantName, paymentDate, lang) },
-    { ...getParagraphCourtDecideHowToPay(lang) }
+    { ...getParagraphCourtDecideHowToPay(lang) },
   ];
 };
 
