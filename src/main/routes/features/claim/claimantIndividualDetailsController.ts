@@ -19,6 +19,8 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 const claimantIndividualDetailsController = express.Router();
 const claimantIndividualDetailsPath = 'features/claim/claimant-individual-details';
 
+const temporaryId = '123456';
+
 function renderPage(res: express.Response, req: express.Request, respondent: Respondent,  citizenAddress: GenericForm<CitizenAddress>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
   const partyName = respondent?.partyName;
   const type = respondent?.type;
@@ -38,7 +40,7 @@ function renderPage(res: express.Response, req: express.Request, respondent: Res
 claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req:express.Request, res:express.Response, next: express.NextFunction) => {
   try {
     // TODO : change the hard coded case id to the userID
-    const respondent: Respondent = await getRespondentInformation('123456');
+    const respondent: Respondent = await getRespondentInformation(temporaryId);
     console.log('get-saved-->', respondent);
 
     const claimantIndividualAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
@@ -54,9 +56,9 @@ claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, a
       respondent?.correspondenceAddress ? respondent.correspondenceAddress.AddressLine3 : undefined,
       respondent?.correspondenceAddress ? respondent.correspondenceAddress.PostTown : undefined,
       respondent?.correspondenceAddress ? respondent.correspondenceAddress.PostCode : undefined));
-    
-    console.log('primary', claimantIndividualAddress);
-    console.log('correspondance', claimantIndividualCorrespondenceAddress);
+
+    console.log('primary-->', claimantIndividualAddress);
+    console.log('correspondance-->', claimantIndividualCorrespondenceAddress);
 
 
     renderPage(res, req, respondent, claimantIndividualAddress, claimantIndividualCorrespondenceAddress);
@@ -67,7 +69,7 @@ claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, a
 
 claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.log('req.body--->', req.body);
-  const responseDataRedis: Respondent = await getRespondentInformation('123456');
+  const responseDataRedis: Respondent = await getRespondentInformation(temporaryId);
   try {
     const citizenAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
       req.body.primaryAddressLine1,
@@ -99,8 +101,8 @@ claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, 
       if (req.body.postToThisAddress === YesNo.NO) {
         citizenCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress());
       }
-      await saveRespondent(req.params.id, citizenAddress, citizenCorrespondenceAddress, req.body.postToThisAddress, req.body.contactPerson);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_CLAIMANT_DOB));
+      await saveRespondent(temporaryId, citizenAddress, citizenCorrespondenceAddress, req.body.postToThisAddress, req.body.contactPerson);
+      res.redirect(constructResponseUrlWithIdParams(temporaryId, CLAIM_CLAIMANT_DOB));
     }
   } catch (error) {
     next(error);

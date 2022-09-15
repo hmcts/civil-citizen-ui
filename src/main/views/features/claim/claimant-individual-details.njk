@@ -63,7 +63,7 @@
       addressTitle = addressTitle
     ) }}
   </div>
-{% endset -%}            
+{% endset -%}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -81,7 +81,7 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-         
+
           <form method="post" class="govuk-!-padding-top-4" name="address" novalidate>
             {{ csrfProtection(csrf) }}
 
@@ -140,9 +140,11 @@
               </a>
             </div>
             <div id="primaryAddress" class="{{ correspondenceAddressClass }}">
+              {{  citizenAddress }}
+              <hr/>
               {{ addressForm(
                 t,
-                citizenCorrespondenceAddress = citizenCorrespondenceAddress,
+                citizenAddress = citizenAddress,
                 addressType = 'primary',
                 addressTitle = addressTitle
               ) }}
