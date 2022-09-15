@@ -1,8 +1,62 @@
-import {t} from 'i18next';
-import {Claim} from '../../../../../common/models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from '../../../../../common/form/models/claimSummarySection';
-import {CITIZEN_CONTACT_THEM_URL} from '../../../../../routes/urls';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
+import { t } from 'i18next';
+import { Claim } from '../../../../../common/models/claim';
+import { ClaimSummarySection, ClaimSummaryType } from '../../../../../common/form/models/claimSummarySection';
+import { CITIZEN_CONTACT_THEM_URL } from '../../../../../routes/urls';
+import { formatDateToFullDate } from '../../../../../common/utils/dateUtils';
+
+const getSubtitleIfClaimantRejectOwe = (claimantName: string, partialAmount: number, lang: string) => {
+  return {
+    type: ClaimSummaryType.SUBTITLE,
+    data: {
+      text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE', { claimantName, partialAmount, lng: lang }),
+    },
+  };
+}
+
+const getParagraphAskMediation = (lang: string) => {
+  return {
+    type: ClaimSummaryType.PARAGRAPH,
+    data: {
+      text: t('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION', { lng: lang }),
+    },
+  };
+};
+
+const getParagraphDontWantMediation = (claimAmount: number, partialAmount: number, lang: string) => {
+  return {
+    type: ClaimSummaryType.PARAGRAPH,
+    data: {
+      text: t('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION', { claimAmount, partialAmount, lng: lang }),
+    },
+  };
+}
+
+const getSubtitleRejectOffer = (claimantName: string, paymentDate: string, lang: string) => {
+  return {
+    type: ClaimSummaryType.SUBTITLE,
+    data: {
+      text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.REJECT_OFFER_TO_PAY_BY', { claimantName, paymentDate, lng: lang }),
+    },
+  };
+}
+
+const getParagraphCourtDecideHowToPay = (lang: string) => {
+  return {
+    type: ClaimSummaryType.PARAGRAPH,
+    data: {
+      text: t('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY', { lng: lang }),
+    },
+  };
+}
+
+const getSubtitleIfClaimantAccepstOffer = (claimantName: string, lang: string) => {
+  return {
+    type: ClaimSummaryType.SUBTITLE,
+    data: {
+      text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER', { claimantName, lng: lang }),
+    }
+  };
+};
 
 export const getPAPayImmediatelyStatus = (claim: Claim, lang: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantName();
@@ -71,12 +125,7 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
   const claimAmount = claim.totalClaimAmount;
 
   return [
-    {
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER', { claimantName, lng: lang }),
-      },
-    },
+    { ...getSubtitleIfClaimantAccepstOffer(claimantName, lang) },
     {
       type: ClaimSummaryType.HTML,
       data: {
@@ -97,36 +146,11 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
         </ul>`,
       },
     },
-    {
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE', { claimantName, partialAmount, lng: lang }),
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION', { lng: lang }),
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION', { claimAmount, partialAmount, lng: lang }),
-      },
-    },
-    {
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.REJECT_OFFER_TO_PAY_BY', { claimantName, paymentDate, lng: lang }),
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY', { lng: lang }),
-      },
-    },
+    { ...getSubtitleIfClaimantRejectOwe(claimantName, partialAmount, lang) },
+    { ...getParagraphAskMediation(lang) },
+    { ...getParagraphDontWantMediation(claimAmount, partialAmount, lang) },
+    { ...getSubtitleRejectOffer(claimantName, paymentDate, lang) },
+    { ...getParagraphCourtDecideHowToPay(lang) }
   ];
 };
 
@@ -140,12 +164,7 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
   const claimAmount = claim.totalClaimAmount;
 
   return [
-    {
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_OFFER', { claimantName, lng: lang }),
-      },
-    },
+    { ...getSubtitleIfClaimantAccepstOffer(claimantName, lang) },
     {
       type: ClaimSummaryType.HTML,
       data: {
@@ -167,36 +186,11 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
         </ul>`,
       },
     },
-    {
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OWE', { claimantName, partialAmount, lng: lang }),
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION', { lng: lang }),
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.IF_DONT_WANT_MEDIATION', { claimAmount, partialAmount, lng: lang }),
-      },
-    },
-    {
-      type: ClaimSummaryType.SUBTITLE,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.REJECT_OFFER_TO_PAY_BY', { claimantName, paymentDate, lng: lang }),
-      },
-    },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.COURT_DECIDE_HOW_TO_PAY', { lng: lang }),
-      },
-    },
+    { ...getSubtitleIfClaimantRejectOwe(claimantName, partialAmount, lang) },
+    { ...getParagraphAskMediation(lang) },
+    { ...getParagraphDontWantMediation(claimAmount, partialAmount, lang) },
+    { ...getSubtitleRejectOffer(claimantName, paymentDate, lang) },
+    { ...getParagraphCourtDecideHowToPay(lang) }
   ];
 };
 
@@ -254,12 +248,7 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
         text: `${t('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_OFFER', { claimantName, lng: lang })}`,
       },
     },
-    {
-      type: ClaimSummaryType.PARAGRAPH,
-      data: {
-        text: t('PAGES.SUBMIT_CONFIRMATION.WE_WILL_ASK_MEDIATION', { lng: lang }),
-      },
-    },
+    { ...getParagraphAskMediation(lang) },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
