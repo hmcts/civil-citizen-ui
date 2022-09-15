@@ -25,7 +25,7 @@ describe('Confirm Mediation Individual Telephone Number', () => {
 
   describe('Repayment Plan View', () => {
     let htmlDocument: Document;
-    let mainWrapper: any;
+    let mainWrapper: Element;
 
     describe('on GET', () => {
       beforeEach(async () => {
