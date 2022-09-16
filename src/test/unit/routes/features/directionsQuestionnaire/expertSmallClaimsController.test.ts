@@ -7,7 +7,7 @@ import {
 } from '../../../../../main/routes/urls';
 import {t} from 'i18next';
 
-jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../main/modules/oidc');
 
 describe('Using an expert', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -10,8 +10,8 @@ const {JSDOM} = jsdom;
 const govukBodyClass = 'govuk-body';
 const pageTitle = 'PAGES.EXPERT_SMALL_CLAIMS.PAGE_TITLE';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../main/modules/oidc');
+jest.mock('../../../../main/modules/draft-store');
 
 describe('Using an expert View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -56,9 +56,9 @@ describe('Using an expert View', () => {
     });
 
     it('should have links', () => {
-      const links = mainWrapper.getElementsByClassName('govuk-link');
+      const links = paragraphs[2].querySelectorAll('a');
       const dqExpertReportsLink = links[0] as HTMLAnchorElement;
-      expect(dqExpertReportsLink.innerHTML).toContain(t('PAGES.EXPERT_SMALL_CLAIMS.CONTINUE'));
+      expect(dqExpertReportsLink.innerHTML).toContain(t('PAGES.EXPERT_SMALL_CLAIMS.NEEDS_AN_EXPERT'));
       expect(dqExpertReportsLink.href).toEqual(DQ_EXPERT_REPORTS_URL);
     });
 
