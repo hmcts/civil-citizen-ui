@@ -23,7 +23,7 @@ describe('Submit Confirmation View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    let mainWrapper: any;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       nock(idamUrl)
@@ -89,7 +89,7 @@ describe('Submit Confirmation View', () => {
     });
 
     it('should display go to your account link', () => {
-      const links = mainWrapper.getElementsByClassName('govuk-button')[0];
+      const links = mainWrapper.getElementsByClassName('govuk-button')[0] as HTMLAnchorElement;
       expect(links.innerHTML).toContain('Go to your account');
       expect(links.href).toContain('/dashboard');
     });
