@@ -25,10 +25,9 @@ const getSharedExpertForm = (sharedExpert: string): GenericYesNo => {
 const saveSharedExpertSelection = async (claimId: string, sharedExpert: GenericYesNo) => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    (caseData?.directionQuestionnaire) ?
-      caseData.directionQuestionnaire = {...caseData.directionQuestionnaire} :
-      caseData.directionQuestionnaire = {...new DirectionQuestionnaire()};
-    caseData.directionQuestionnaire.sharedExpert = sharedExpert;
+    const directionQuestionnaire = caseData?.directionQuestionnaire ? caseData?.directionQuestionnaire : new DirectionQuestionnaire();
+    directionQuestionnaire.sharedExpert = sharedExpert;
+    caseData.directionQuestionnaire = directionQuestionnaire;
     await saveDraftClaim(claimId, caseData);
   } catch (error) {
     logger.error(error);
