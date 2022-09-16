@@ -819,6 +819,17 @@
       "TELL_US": "Tell us about any evidence you wish to provide. You do not need to send us any evidence now. If your case goes to a court hearing, and is not settled, you will need to provide evidence.",
       "TITLE": "List your evidence"
     },
+    "EXPERT_DETAILS": {
+      "PAGE_TITLE": "Enter the expert’s details",
+      "FIRST_NAME_OPTIONAL": "First name (optional)",
+      "LAST_NAME_OPTIONAL": "Last name (optional)",
+      "EMAIL_ADDRESS_OPTIONAL": "Email address (optional)",
+      "PHONE_OPTIONAL": "Phone number (optional)",
+      "FIELD_OF_EXPERTISE": "Field of expertise",
+      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert",
+      "COST_OPTIONAL": "Estimated cost (optional)",
+      "ADD_ANOTHER_EXPERT": "Add another expert"
+    },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",

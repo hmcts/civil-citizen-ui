@@ -115,6 +115,7 @@ import submitComfirmationController from './features/response/submitComfirmation
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
+import expertDetailsController from './features/directionsQuestionnaire/expertDetailsController';
 
 export default [
   homeController,
@@ -220,4 +221,5 @@ export default [
   resolvingThisDisputeController,
   cookiesController,
   triedToSettleController,
+  expertDetailsController,
 ];
