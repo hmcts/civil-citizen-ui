@@ -11,9 +11,7 @@ import {
 
 const sharedExpertController = express.Router();
 
-function renderView(sharedExpertForm: GenericForm<GenericYesNo>, res: express.Response): void {
-  const form = Object.assign(sharedExpertForm);
-  form.option = sharedExpertForm.model.option;
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render('features/directionsQuestionnaire/shared-expert', {form});
 }
 
