@@ -91,7 +91,7 @@ export const UNDERSTANDING_RESPONSE_OPTIONS_URL = `${BASE_CASE_RESPONSE_URL}/und
 export const RESPONSE_DEADLINE_OPTIONS_URL = `${BASE_CASE_RESPONSE_URL}/response-deadline-options`;
 export const AGREED_TO_MORE_TIME_URL = `${BASE_CASE_RESPONSE_URL}/agreed-to-more-time`;
 export const REQUEST_MORE_TIME_URL = `${BASE_CASE_RESPONSE_URL}/request-more-time`;
-export const NEW_RESPONSE_DEADLINE_URL =  `${BASE_CASE_RESPONSE_URL}/new-response-deadline`;
+export const NEW_RESPONSE_DEADLINE_URL = `${BASE_CASE_RESPONSE_URL}/new-response-deadline`;
 export const DETERMINATION_WITHOUT_HEARING_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/determination-without-hearing`;
 export const ELIGIBILITY_CLAIM_VALUE_URL = `${BASE_ELIGIBILITY_URL}/claim-value`;
 export const ELIGIBILITY_SINGLE_DEFENDANT_URL = `${BASE_ELIGIBILITY_URL}/single-defendant`;
@@ -124,3 +124,7 @@ export const CLAIM_COMPLETING_CLAIM_URL = `${BASE_CLAIM_URL}/completing-claim`;
 export const FIRST_CONTACT_ACCESS_DENIED_URL = `${BASE_FIRST_CONTACT_URL}/access-denied`;
 export const FIRST_CONTACT_PIN_URL = `${BASE_FIRST_CONTACT_URL}/pin`;
 export const CLAIM_RESOLVING_DISPUTE_URL = `${BASE_CLAIM_URL}/resolving-this-dispute`;
+export const DQ_DEFENDANT_EXPERT_EVIDENCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/defendant-expert-evidence`;
+export const DQ_DEFENDANT_EXPERT_REPORTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/defendant-expert-reports`;
+export const DQ_DEFENDANT_YOURSELF_EVIDENCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/defendant-yourself-evidence`;
+

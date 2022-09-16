@@ -35,6 +35,7 @@ import {Vulnerability} from '../models/directionsQuestionnaire/vulnerability';
 import {ResponseDeadline} from './responseDeadline';
 import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
 import {ClaimResponseStatus} from './claimResponseStatus';
+import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 
 export class Claim {
   legacyCaseReference: string;
@@ -76,6 +77,26 @@ export class Claim {
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
   determinationWithoutHearing: DeterminationWithoutHearing;
+  directionQuestionnaire?: DirectionQuestionnaire;
+
+  get responseStatus(): ClaimResponseStatus {
+    if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
+      return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
+    }
+
+    if (this.isFullAdmission() && this.isPaymentOptionInstalllments()) {
+      return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
+    }
+
+    if (this.isFullAdmission() && this.isPaymentOptionBySetDate()) {
+      return ClaimResponseStatus.FA_PAY_BY_DATE;
+    }
+
+    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
+      return ClaimResponseStatus.PA_ALREADY_PAID;
+    }
+
+  }
 
   getClaimantName(): string {
     return this.applicant1.partyName;
@@ -224,25 +245,6 @@ export class Claim {
     return this.respondent1?.type === CounterpartyType.COMPANY || this.respondent1?.type === CounterpartyType.ORGANISATION;
   }
 
-  get responseStatus(): ClaimResponseStatus {
-    if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
-      return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
-    }
-
-    if (this.isFullAdmission() && this.isPaymentOptionInstalllments()) {
-      return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
-    }
-
-    if (this.isFullAdmission() && this.isPaymentOptionBySetDate()) {
-      return ClaimResponseStatus.FA_PAY_BY_DATE;
-    }
-
-    if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
-      return ClaimResponseStatus.PA_ALREADY_PAID;
-    }
-    
-  }
-  
 }
 
 export interface Party {
