@@ -116,6 +116,7 @@ import resolvingThisDisputeController from './features/claim/resolvingThisDisput
 import cookiesController from './features/public/cookiesController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
+import permissionForExpertController from './features/directionsQuestionnaire/permissionForExpertController';
 
 export default [
   homeController,
@@ -222,4 +223,5 @@ export default [
   cookiesController,
   triedToSettleController,
   requestExtra4WeeksController,
+  permissionForExpertController,
 ];

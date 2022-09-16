@@ -1,6 +1,7 @@
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 export class DirectionQuestionnaire {
-  triedToSettle?: GenericYesNo;
+  permissionForExpert?: GenericYesNo;
   requestExtra4weeks?: GenericYesNo;
+  triedToSettle?: GenericYesNo;
 }
