@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {DQ_EXPERT_COURT_PERMISSION_URL, DQ_EXPERT_EXAMINATION_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL} from '../../urls';
+import {DQ_EXPERT_EXAMINATION_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL, PERMISSION_FOR_EXPERT_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
@@ -18,7 +18,7 @@ function renderView(permissionForExpert: GenericForm<GenericYesNo>, res: express
   res.render('features/directionsQuestionnaire/permission-for-expert', {form});
 }
 
-permissionForExpertController.get(DQ_EXPERT_COURT_PERMISSION_URL, async (req, res, next) => {
+permissionForExpertController.get(PERMISSION_FOR_EXPERT_URL, async (req, res, next) => {
   try {
     renderView(new GenericForm(await getPermissionForExpert(req.params.id)), res);
   } catch (error) {
@@ -26,7 +26,7 @@ permissionForExpertController.get(DQ_EXPERT_COURT_PERMISSION_URL, async (req, re
   }
 });
 
-permissionForExpertController.post(DQ_EXPERT_COURT_PERMISSION_URL, async (req, res, next) => {
+permissionForExpertController.post(PERMISSION_FOR_EXPERT_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const permissionForExpert = getPermissionForExpertForm(req.body.option);
