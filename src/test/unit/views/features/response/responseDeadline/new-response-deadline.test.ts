@@ -20,7 +20,7 @@ describe('New response deadline view', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   let htmlDocument: Document;
-  let mainWrapper: any;
+  let mainWrapper: Element;
 
   beforeEach(async () => {
     nock(idamServiceUrl)

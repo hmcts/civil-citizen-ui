@@ -24,7 +24,7 @@ describe('Citizen Bank Accounts View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    let mainWrapper: any;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       const response = await request(app).get(CITIZEN_BANK_ACCOUNT_URL);

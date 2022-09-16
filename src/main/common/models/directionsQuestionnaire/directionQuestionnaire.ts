@@ -4,10 +4,11 @@ import {DefendantExpertEvidence} from '../../models/directionsQuestionnaire/defe
 export class DirectionQuestionnaire {
   triedToSettle?: GenericYesNo;
   defendantExpertEvidence?: DefendantExpertEvidence;
+  requestExtra4weeks?: GenericYesNo;
 
-  constructor(triedToSettle?: GenericYesNo, defendantExpertEvidence?: DefendantExpertEvidence) {
+  constructor(triedToSettle?: GenericYesNo, defendantExpertEvidence?: DefendantExpertEvidence, requestExtra4weeks?: GenericYesNo) {
     this.triedToSettle = triedToSettle;
     this.defendantExpertEvidence = defendantExpertEvidence;
-
+    this.requestExtra4weeks = requestExtra4weeks;
   }
 }
