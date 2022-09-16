@@ -6,8 +6,8 @@ import {
   saveExpertReports,
 } from '../../../../../main/services/features/directionsQuestionnaire/expertReportsService';
 import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
-import {ExpertReports} from "../../../../../main/common/models/directionsQuestionnaire/expertReports";
-import {ExpertReportsOptions} from "../../../../../main/common/models/directionsQuestionnaire/expertReportsOptions";
+import {ExpertReports} from '../../../../../main/common/models/directionsQuestionnaire/expertReports';
+import {ExpertReportsOptions} from '../../../../../main/common/models/directionsQuestionnaire/expertReportsOptions';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');

@@ -1,5 +1,5 @@
 import {IsDefined} from 'class-validator';
-import {ExpertReportsOptions} from "../../models/directionsQuestionnaire/expertReportsOptions";
+import {ExpertReportsOptions} from '../../models/directionsQuestionnaire/expertReportsOptions';
 
 export class ExpertReports {
 

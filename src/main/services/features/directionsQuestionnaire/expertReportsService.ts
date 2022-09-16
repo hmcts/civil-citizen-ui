@@ -1,6 +1,6 @@
 import {ExpertReports} from '../../../common/models/directionsQuestionnaire/expertReports';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
-import {ExpertReportsOptions} from "../../../common/models/directionsQuestionnaire/expertReportsOptions";
+import {ExpertReportsOptions} from '../../../common/models/directionsQuestionnaire/expertReportsOptions';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('DQ - Sent Expert Reports');
