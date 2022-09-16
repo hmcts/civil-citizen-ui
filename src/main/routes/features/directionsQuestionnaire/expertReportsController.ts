@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_SENT_EXPERT_REPORTS_URL} from '../../urls';
+import {DQ_SENT_EXPERT_REPORTS_URL, DQ_SHARE_AN_EXPERT_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {ExpertReports} from '../../../common/models/directionsQuestionnaire/expertReports';
 import {
@@ -38,7 +38,7 @@ expertReportsController.post(DQ_SENT_EXPERT_REPORTS_URL, async (req, res, next) 
       renderView(form, res);
     } else {
       await saveExpertReports(claimId, expertReports);
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_REQUEST_EXTRA_4WEEKS_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_SHARE_AN_EXPERT_URL));
     }
   } catch (error) {
     next(error);
