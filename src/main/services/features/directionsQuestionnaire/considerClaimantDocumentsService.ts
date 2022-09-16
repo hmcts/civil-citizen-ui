@@ -26,9 +26,9 @@ export const getConsiderClaimantDocumentsForm = (option: string, details: string
 export const saveConsiderClaimantDocuments = async (claimId: string, considerClaimantDocuments: ConsiderClaimantDocuments) => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    (caseData.directionQuestionnaire) ?
-      caseData.directionQuestionnaire = {...caseData.directionQuestionnaire, considerClaimantDocuments} :
-      caseData.directionQuestionnaire = {...new DirectionQuestionnaire(), considerClaimantDocuments};
+    caseData.directionQuestionnaire = (caseData.directionQuestionnaire) ?
+      {...caseData.directionQuestionnaire, considerClaimantDocuments} :
+      {...new DirectionQuestionnaire(), considerClaimantDocuments};
     await saveDraftClaim(claimId, caseData);
   } catch (error) {
     logger.error(error);
