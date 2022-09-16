@@ -124,7 +124,6 @@ export const CLAIM_COMPLETING_CLAIM_URL = `${BASE_CLAIM_URL}/completing-claim`;
 export const FIRST_CONTACT_ACCESS_DENIED_URL = `${BASE_FIRST_CONTACT_URL}/access-denied`;
 export const FIRST_CONTACT_PIN_URL = `${BASE_FIRST_CONTACT_URL}/pin`;
 export const CLAIM_RESOLVING_DISPUTE_URL = `${BASE_CLAIM_URL}/resolving-this-dispute`;
-export const DQ_CONSIDER_CLAIMANT_DOCUMENTS = `${DIRECTIONS_QUESTIONNAIRE_URL}/consider-claimant-documents`;
 export const DQ_DEFENDANT_EXPERT_EVIDENCE = `${DIRECTIONS_QUESTIONNAIRE_URL}/defendant-expert-evidence`;
 export const DQ_TRIED_TO_SETTLE_CLAIM_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/tried-to-settle`;
 export const DQ_REQUEST_EXTRA_4WEEKS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/request-extra-4-weeks`;
