@@ -112,6 +112,7 @@ import resolvingThisDisputeController from './features/claim/resolvingThisDisput
 import cookiesController from './features/public/cookiesController';
 import defendantExpertEvidenceController from './features/directionsQuestionnaire/defendantExpertEvidenceController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
+import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
 
 export default [
@@ -217,6 +218,7 @@ export default [
   submitComfirmationController,
   resolvingThisDisputeController,
   cookiesController,
+  sharedExpertController,
   triedToSettleController,
   requestExtra4WeeksController,
   defendantExpertEvidenceController,
