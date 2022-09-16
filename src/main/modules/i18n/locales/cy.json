@@ -845,12 +845,12 @@
       "USUALLY_SHARE_COST": "Usually you both share this cost.",
       "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
     },
-    "EXPERT_REPORT": {
+    "EXPERT_REPORTS": {
       "OPTION_NO": "No",
       "OPTION_NOT_RECEIVED": "No, I have not yet received them",
       "OPTION_YES": "Yes",
       "PAGE_TITLE": "Have you tried sent expert reports to the claimant?",
-      "TITLE": "Have you already sent expert reports"
+      "TITLE": "Have you already sent expert reports?"
     },
     "EXPLANATION": {
       "PAGE_TITLE": "Explanation",

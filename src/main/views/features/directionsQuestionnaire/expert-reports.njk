@@ -9,7 +9,7 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.EXPERT_REPORT.TITLE') }}
+  {{ setPageTitle('PAGES.EXPERT_REPORTS.TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -22,7 +22,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.EXPERT_REPORT.PAGE_TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.EXPERT_REPORTS.PAGE_TITLE') }}</h1>
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
@@ -33,17 +33,17 @@
               items: [
                 {
                   value: ExpertReportsOptions.OPTION_YES,
-                  text: t('PAGES.EXPERT_REPORT.OPTION_YES'),
+                  text: t('PAGES.EXPERT_REPORTS.OPTION_YES'),
                   checked: form.model.option === ExpertReportsOptions.OPTION_YES
                 },
                 {
                   value: ExpertReportsOptions.OPTION_NO,
-                  text: t('PAGES.EXPERT_REPORT.OPTION_NO'),
+                  text: t('PAGES.EXPERT_REPORTS.OPTION_NO'),
                   checked: form.model.option === ExpertReportsOptions.OPTION_NO
                 },
                 {
                   value: ExpertReportsOptions.OPTION_NOT_RECEIVED,
-                  text: t('PAGES.EXPERT_REPORT.OPTION_NOT_RECEIVED'),
+                  text: t('PAGES.EXPERT_REPORTS.OPTION_NOT_RECEIVED'),
                   checked: form.model.option === ExpertReportsOptions.OPTION_NOT_RECEIVED
                 }
               ],
