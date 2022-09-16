@@ -13,10 +13,7 @@ const considerClaimantDocumentsController = express.Router();
 const considerClaimantDocumentsViewPath = 'features/directionsQuestionnaire/consider-claimant-documents';
 
 function renderView(form: GenericForm<ConsiderClaimantDocuments>, res: express.Response): void {
-  const considerClaimantDocuments = Object.assign(form);
-  considerClaimantDocuments.option = form.model.option;
-
-  res.render(considerClaimantDocumentsViewPath, {form : considerClaimantDocuments});
+  res.render(considerClaimantDocumentsViewPath, {form});
 }
 
 considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS, async (req:express.Request, res:express.Response, next: express.NextFunction) => {
