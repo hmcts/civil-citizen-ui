@@ -4,5 +4,6 @@ import {ConsiderClaimantDocuments} from 'models/directionsQuestionnaire/consider
 export class DirectionQuestionnaire {
   triedToSettle?: GenericYesNo;
   considerClaimantDocuments?: ConsiderClaimantDocuments;
+  sharedExpert?: GenericYesNo;
   requestExtra4weeks?: GenericYesNo;
 }
