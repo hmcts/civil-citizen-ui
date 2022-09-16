@@ -26,8 +26,9 @@ const saveSharedExpertSelection = async (claimId: string, sharedExpert: GenericY
   try {
     const caseData = await getCaseDataFromStore(claimId);
     (caseData?.directionQuestionnaire) ?
-      caseData.directionQuestionnaire = {...caseData.directionQuestionnaire, sharedExpert} :
-      caseData.directionQuestionnaire = {...new DirectionQuestionnaire(), sharedExpert};
+      caseData.directionQuestionnaire = {...caseData.directionQuestionnaire} :
+      caseData.directionQuestionnaire = {...new DirectionQuestionnaire()};
+    caseData.directionQuestionnaire.sharedExpert = sharedExpert;
     await saveDraftClaim(claimId, caseData);
   } catch (error) {
     logger.error(error);
