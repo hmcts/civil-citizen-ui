@@ -21,7 +21,7 @@ import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibl
 import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOptions';
 import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
 import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
-import {ExpertReportsOptions} from "models/directionsQuestionnaire/expertReportsOptions";
+import {ExpertReportsOptions} from "../../common/models/directionsQuestionnaire/expertReportsOptions";
 import * as urls from '../../routes/urls';
 
 const packageDotJson = require('../../../../package.json');
