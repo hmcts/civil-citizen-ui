@@ -21,6 +21,7 @@ import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibl
 import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOptions';
 import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
 import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
+import * as urls from '../../routes/urls';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -109,6 +110,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('AgeEligibilityOptions', AgeEligibilityOptions);
     nunjucksEnv.addGlobal('TotalAmountOptions', TotalAmountOptions);
     nunjucksEnv.addGlobal('ClaimTypeOptions', ClaimTypeOptions);
+    nunjucksEnv.addGlobal('urls', urls);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

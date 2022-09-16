@@ -23,7 +23,7 @@ describe('Help with fees reference view', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    let mainWrapper: any;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       nock(idamUrl)
@@ -113,14 +113,14 @@ describe('Help with fees reference view', () => {
     it('should display correct error summary message with correct link', () => {
       const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
         .getElementsByTagName('li')[0];
-      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_SELECTION);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_OPTION);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#option');
     });
 
     it('should display correct error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      expect(errorMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_SELECTION);
+      expect(errorMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_OPTION);
     });
   });
 });

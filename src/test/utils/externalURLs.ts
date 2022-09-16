@@ -7,3 +7,4 @@ export const governmentDepartmentsUrl = 'https://www.gov.uk/government/publicati
 export const tenancyServiceUrl = 'https://www.gov.uk/tenancy-deposit-protection/disputes-and-problems';
 export const feesHelpUrl = 'https://www.gov.uk/get-help-with-court-fees';
 export const smartSurveyUrl = 'https://www.smartsurvey.co.uk';
+export const essentialCookiesUrl = 'https://hmcts-access.service.gov.uk/cookies';
