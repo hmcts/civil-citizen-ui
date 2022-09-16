@@ -5,26 +5,28 @@ import {
   DQ_DEFENDANT_YOURSELF_EVIDENCE_URL,
 } from '../../urls';
 import {
-  getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {DefendantExpertEvidence} from '../../../common/models/directionsQuestionnaire/defendantExpertEvidence';
-import {DirectionQuestionnaire} from '../../../common/models/directionsQuestionnaire/directionQuestionnaire';
 import {YesNo} from '../../../common/form/models/yesNo';
+import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {
+  getExpertEvidence,
+  getExpertEvidenceForm,
+} from '../../../services/features/directionsQuestionnaire/defendantExpertEvidenceService';
 
 const defendantExpertEvidenceController = express.Router();
 const defendantExpertEvidenceViewPath = 'features/directionsQuestionnaire/defendant-expert-evidence';
 
-function renderView(form: GenericForm<DefendantExpertEvidence>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(defendantExpertEvidenceViewPath, {form});
 }
 
 defendantExpertEvidenceController.get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const directionQuestionnaire: DirectionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    renderView(new GenericForm(directionQuestionnaire.defendantExpertEvidence), res);
+    const defendantExpertEvidence = await getExpertEvidence(req.params.id);
+    renderView(new GenericForm(defendantExpertEvidence), res);
   } catch (error) {
     next(error);
   }
@@ -33,7 +35,7 @@ defendantExpertEvidenceController.get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (r
 defendantExpertEvidenceController.post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
-    const defendantExpertEvidence = new GenericForm(new DefendantExpertEvidence(req.body.option));
+    const defendantExpertEvidence = new GenericForm(getExpertEvidenceForm(req.body.option));
     defendantExpertEvidence.validateSync();
 
     if (defendantExpertEvidence.hasErrors()) {
