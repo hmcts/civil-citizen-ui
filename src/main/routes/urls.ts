@@ -127,6 +127,6 @@ export const CLAIM_RESOLVING_DISPUTE_URL = `${BASE_CLAIM_URL}/resolving-this-dis
 export const DQ_TRIED_TO_SETTLE_CLAIM_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/tried-to-settle`;
 export const DQ_REQUEST_EXTRA_4WEEKS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/request-extra-4-weeks`;
 export const DQ_EXPERT_SMALL_CLAIMS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert`;
-export const DQ_EXPERT_EXPORTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-reports`;
+export const DQ_EXPERT_REPORTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-reports`;
 export const DQ_GIVE_EVIDENCE_YOURSELF_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/evidence-yourself`;
 
