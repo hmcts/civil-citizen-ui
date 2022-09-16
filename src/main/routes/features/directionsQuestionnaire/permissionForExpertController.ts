@@ -12,9 +12,7 @@ import {YesNo} from '../../../common/form/models/yesNo';
 
 const permissionForExpertController = express.Router();
 
-function renderView(permissionForExpert: GenericForm<GenericYesNo>, res: express.Response): void {
-  const form = Object.assign(permissionForExpert);
-  form.option = permissionForExpert.model.option;
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render('features/directionsQuestionnaire/permission-for-expert', {form});
 }
 
