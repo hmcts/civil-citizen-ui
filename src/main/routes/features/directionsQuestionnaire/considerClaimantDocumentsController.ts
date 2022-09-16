@@ -16,7 +16,7 @@ function renderView(form: GenericForm<ConsiderClaimantDocuments>, res: express.R
   const considerClaimantDocuments = Object.assign(form);
   considerClaimantDocuments.option = form.model.option;
 
-  res.render(considerClaimantDocumentsViewPath, {form});
+  res.render(considerClaimantDocumentsViewPath, {form : considerClaimantDocuments});
 }
 
 considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS, async (req:express.Request, res:express.Response, next: express.NextFunction) => {
