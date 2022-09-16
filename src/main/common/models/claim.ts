@@ -36,6 +36,7 @@ import {ResponseDeadline} from './responseDeadline';
 import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
 import {getLng} from '../../common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
+import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType';
 
 export class Claim {
   legacyCaseReference: string;
@@ -185,6 +186,10 @@ export class Claim {
     return this.partialAdmission?.howMuchDoYouOwe?.amount;
   }
 
+  isRejectAllOfClaimAlreadyPaid(): number {
+    return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
+  }
+
   extractDocumentId(): string {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
@@ -237,9 +242,16 @@ export class Claim {
     if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
-    
+
+    if (this.isRejectAllOfClaimAlreadyPaid() && this.rejectAllOfClaim?.option === RejectAllOfClaimType.ALREADY_PAID) {
+      if (this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount) {
+        return ClaimResponseStatus.RC_PAID_FULL;
+      }
+      return ClaimResponseStatus.RC_PAID_LESS;
+    }
+
   }
-  
+
 }
 
 export interface Party {
