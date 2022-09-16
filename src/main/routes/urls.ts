@@ -124,9 +124,11 @@ export const CLAIM_COMPLETING_CLAIM_URL = `${BASE_CLAIM_URL}/completing-claim`;
 export const FIRST_CONTACT_ACCESS_DENIED_URL = `${BASE_FIRST_CONTACT_URL}/access-denied`;
 export const FIRST_CONTACT_PIN_URL = `${BASE_FIRST_CONTACT_URL}/pin`;
 export const CLAIM_RESOLVING_DISPUTE_URL = `${BASE_CLAIM_URL}/resolving-this-dispute`;
-export const DQ_TRIED_TO_SETTLE_CLAIM_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/tried-to-settle`;
+export const DQ_CONSIDER_CLAIMANT_DOCUMENTS = `${DIRECTIONS_QUESTIONNAIRE_URL}/consider-claimant-documents`;
+export const DQ_EXPERT_DETAILS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-details`;
 export const DQ_REQUEST_EXTRA_4WEEKS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/request-extra-4-weeks`;
 export const DQ_EXPERT_SMALL_CLAIMS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert`;
 export const DQ_EXPERT_REPORTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-reports`;
 export const DQ_GIVE_EVIDENCE_YOURSELF_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/evidence-yourself`;
-
+export const DQ_SHARE_AN_EXPERT_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/shared-expert`;
+export const DQ_TRIED_TO_SETTLE_CLAIM_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/tried-to-settle`;

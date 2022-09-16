@@ -19,7 +19,7 @@ describe('Try the new online service View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    let mainWrapper: any;
+    let mainWrapper: Element;
     let paragraphs: HTMLCollection;
 
     beforeEach(async () => {
