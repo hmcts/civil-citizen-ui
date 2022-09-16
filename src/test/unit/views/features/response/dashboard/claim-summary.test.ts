@@ -20,7 +20,7 @@ describe('Send your response by email View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
-  let mainWrapper: any;
+  let mainWrapper: Element;
   let paragraphs: HTMLCollection;
 
   const mockId = '5129';

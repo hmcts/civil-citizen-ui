@@ -24,7 +24,7 @@ describe('Request More Time View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    let mainWrapper: any;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       const response = await request(app).get(REQUEST_MORE_TIME_URL);
