@@ -37,7 +37,7 @@
     <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
       {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
     </div>
-    <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
+    <input class="govuk-input govuk-input--width-10" id="postcode2" name="postcode2" type="text" autocomplete="postal-code"/>
     <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
       {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
     </button>
@@ -72,7 +72,7 @@
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
         {% if claimantIndividualCorrespondenceAddress.hasErrors() or claimantIndividualAddress.hasErrors() %}
-          {{ errorSummary(claimantIndividualAddressErrors, t) }}
+          {{ errorSummary(claimantDetailsErrors.concat(claimantIndividualAddressErrors), t) }}
         {% endif %}
       </div>
 
@@ -95,7 +95,7 @@
               id: "title",
               name: "claimantIndividualDetailsTitle",
               value: claimant.individualTitle,
-                errorMessage: { text: t(claimantDetails.errorFor('title')) }
+                errorMessage: { text: t(claimantDetails.errorFor('title')) } if claimantDetails.errorFor('title')
             }) }}
             {{ govukInput({
               label: {
@@ -105,7 +105,7 @@
               id: "firstName",
               name: "claimantIndividualDetailsFirstName",
               value: claimant.individualFirstName,
-              errorMessage: { text: t(claimantDetails.errorFor('firstName')) }
+              errorMessage: { text: t(claimantDetails.errorFor('firstName')) } if claimantDetails.errorFor('firstName')
             }) }}
             {{ govukInput({
               label: {
@@ -115,7 +115,7 @@
               id: "lastName",
               name: "claimantIndividualDetailsLastName",
               value: claimant.individualLastName,
-               errorMessage: { text: t(claimantDetails.errorFor('lastName')) }
+               errorMessage: { text: t(claimantDetails.errorFor('lastName')) } if claimantDetails.errorFor('lastName')
             }) }}
 
             <div class="govuk-form-group" id="postcode">
@@ -127,11 +127,11 @@
               <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
                 {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
               </div>
-              <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
+              <input class="govuk-input govuk-input--width-10" id="postcode1" name="postcode1" type="text" autocomplete="postal-code"/>
               <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
                 {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
               </button>
-              <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
+              <div id="selectAddress1" class="govuk-visually-hidden govuk-!-margin-bottom-2">
                 {{ govukSelect({
                   id: "primaryAddressList",
                   name: "primaryAddressList",
@@ -152,7 +152,7 @@
                 t,
                 citizenAddress = claimantIndividualAddress,
                 addressType = 'primary',
-                addressTitle = addressTitle
+                addressTitle = ''
               ) }}
             </div>
             <br>

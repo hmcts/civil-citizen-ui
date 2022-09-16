@@ -11,7 +11,7 @@
     isPageHeading: true
   }
   }) %}
-  {% if addressType == 'primary' %}
+  {% if addressType == 'primary' and addressTitle.length %}
     <p class="govuk-body govuk-!-padding-top-4">{{ fieldSetText }}</p>
   {% endif %}
   <div class="{{ govukFormGroupError }}">

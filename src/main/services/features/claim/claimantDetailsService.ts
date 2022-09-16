@@ -7,7 +7,7 @@ import {CitizenAddress} from '../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../common/form/models/citizenCorrespondenceAddress';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {YesNo} from '../../../common/form/models/yesNo';
-import {PartyDetails} from '../../../common/form/models/partDetails';
+import {PartyDetails} from '../../../common/form/models/partyDetails';
 
 export const getClaimantInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
@@ -22,7 +22,6 @@ export const saveClaimant = async (claimId: string, citizenAddress: GenericForm<
   if (!responseData.applicant1) {
     responseData.applicant1 = new Respondent();
   }
-  // responseData.applicant1.contactPerson = contactPerson;
   responseData.applicant1.postToPrimaryAddress = postToThisAddress;
   responseData.applicant1.primaryAddress = buildPrimaryAddress(citizenAddress);
   responseData.applicant1.correspondenceAddress = citizenCorrespondenceAddress.model.isEmpty() ? undefined : buildCorrespondenceAddress(citizenCorrespondenceAddress);

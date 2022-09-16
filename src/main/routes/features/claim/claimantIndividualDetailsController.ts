@@ -12,7 +12,7 @@ import {
   saveClaimant,
 } from '../../../services/features/claim/claimantDetailsService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {PartyDetails} from '../../../common/form/models/partDetails';
+import {PartyDetails} from '../../../common/form/models/partyDetails';
 import {Party} from '../../../common/models/claim';
 
 const claimantIndividualDetailsController = express.Router();
@@ -23,10 +23,6 @@ const temporaryId = '123456';
 function renderPage(res: express.Response, req: express.Request, claimant: Party,  claimantIndividualAddress: GenericForm<CitizenAddress>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, claimantDetails: GenericForm<PartyDetails>): void {
   const partyName = claimant?.partyName;
   const type = claimant?.type;
-  // TODO : investigate if it is required
-  const contactPerson = 'John Doe';
-
-  console.log('render-->', claimantDetails.getAllErrors());
 
   res.render(claimantIndividualDetailsPath, {
     claimant,
@@ -34,7 +30,6 @@ function renderPage(res: express.Response, req: express.Request, claimant: Party
     claimantIndividualCorrespondenceAddress,
     claimantDetails,
     partyName: partyName,
-    contactPerson: contactPerson,
     type: type,
     urlNextView: CLAIM_CLAIMANT_DOB,
   });
