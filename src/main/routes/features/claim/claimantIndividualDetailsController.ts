@@ -3,33 +3,36 @@ import {
   CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL,
   CLAIM_CLAIMANT_DOB,
 } from '../../urls';
-import {Respondent} from 'models/respondent';
-// import {getRespondentInformation} from '../../../services/features/response/citizenDetails/citizenDetailsService';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {CitizenAddress} from '../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../common/form/models/citizenCorrespondenceAddress';
 import {YesNo} from '../../../common/form/models/yesNo';
 import {
-  getRespondentInformation,
-  saveRespondent,
-} from '../../../services/features/response/citizenDetails/citizenDetailsService';
+  getClaimantInformation,
+  saveClaimant,
+} from '../../../services/features/claim/claimantDetailsService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-// import {CounterpartyType} from '../../../common/models/counterpartyType';
+import {PartyDetails} from '../../../common/form/models/partDetails';
+import {Party} from '../../../common/models/claim';
 
 const claimantIndividualDetailsController = express.Router();
 const claimantIndividualDetailsPath = 'features/claim/claimant-individual-details';
 
 const temporaryId = '123456';
 
-function renderPage(res: express.Response, req: express.Request, respondent: Respondent,  claimantIndividualAddress: GenericForm<CitizenAddress>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
-  const partyName = respondent?.partyName;
-  const type = respondent?.type;
-  const contactPerson = respondent?.contactPerson;
+function renderPage(res: express.Response, req: express.Request, claimant: Party,  claimantIndividualAddress: GenericForm<CitizenAddress>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, claimantDetails: GenericForm<PartyDetails>): void {
+  const partyName = claimant?.partyName;
+  const type = claimant?.type;
+  // TODO : investigate if it is required
+  const contactPerson = 'John Doe';
+
+  console.log('render-->', claimantDetails.getAllErrors());
 
   res.render(claimantIndividualDetailsPath, {
-    respondent,
+    claimant,
     claimantIndividualAddress,
     claimantIndividualCorrespondenceAddress,
+    claimantDetails,
     partyName: partyName,
     contactPerson: contactPerson,
     type: type,
@@ -40,35 +43,38 @@ function renderPage(res: express.Response, req: express.Request, respondent: Res
 claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req:express.Request, res:express.Response, next: express.NextFunction) => {
   try {
     // TODO : change the hard coded case id to the userID
-    const respondent: Respondent = await getRespondentInformation(temporaryId);
-    console.log('get-saved-->', respondent);
+    const claimant: Party = await getClaimantInformation(temporaryId);
+    console.log('get-saved-->', claimant);
 
     const claimantIndividualAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
-      respondent?.primaryAddress ? respondent.primaryAddress.AddressLine1 : undefined,
-      respondent?.primaryAddress ? respondent.primaryAddress.AddressLine2 : undefined,
-      respondent?.primaryAddress ? respondent.primaryAddress.AddressLine3 : undefined,
-      respondent?.primaryAddress ? respondent.primaryAddress.PostTown : undefined,
-      respondent?.primaryAddress ? respondent.primaryAddress.PostCode : undefined));
+      claimant?.primaryAddress?.AddressLine1,
+      claimant?.primaryAddress?.AddressLine2,
+      claimant?.primaryAddress?.AddressLine3,
+      claimant?.primaryAddress?.PostTown,
+      claimant?.primaryAddress?.PostCode));
 
     const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress(
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.AddressLine1 : undefined,
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.AddressLine2 : undefined,
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.AddressLine3 : undefined,
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.PostTown : undefined,
-      respondent?.correspondenceAddress ? respondent.correspondenceAddress.PostCode : undefined));
+      claimant?.correspondenceAddress?.AddressLine1,
+      claimant?.correspondenceAddress?.AddressLine2,
+      claimant?.correspondenceAddress?.AddressLine3,
+      claimant?.correspondenceAddress?.PostTown,
+      claimant?.correspondenceAddress?.PostCode));
 
-    console.log('primary-->', claimantIndividualAddress);
-    console.log('correspondance-->', claimantIndividualCorrespondenceAddress);
+    const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(
+      claimant.individualTitle,
+      claimant.individualFirstName,
+      claimant.individualLastName,
+    ));
 
-    renderPage(res, req, respondent, claimantIndividualAddress, claimantIndividualCorrespondenceAddress);
+    renderPage(res, req, claimant, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails);
   } catch (error) {
     next(error);
   }
 });
 
 claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.log('req.body--->', req.body);
-  const responseDataRedis: Respondent = await getRespondentInformation(temporaryId);
+  console.log('post-req.body--->', req.body);
+  const responseDataRedis: Party = await getClaimantInformation(temporaryId);
   try {
     const claimantIndividualAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
       req.body.primaryAddressLine1,
@@ -86,21 +92,27 @@ claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, 
       req.body.correspondencePostCode,
     ));
 
-    // TODO : create a model to validate claimant name. lastname and title
+    const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(
+      req.body.claimantIndividualDetailsTitle,
+      req.body.claimantIndividualDetailsFirstName,
+      req.body.claimantIndividualDetailsLastName,
+    ));
 
-    await claimantIndividualAddress.validate();
-    if (req.body.postToThisAddress === YesNo.YES) {
-      await claimantIndividualCorrespondenceAddress.validate();
-      responseDataRedis.postToThisAddress = YesNo.YES;
+    claimantDetails.validateSync()
+    claimantIndividualAddress.validateSync();
+
+    if (req.body.postToPrimaryAddress === YesNo.YES) {
+      claimantIndividualCorrespondenceAddress.validateSync();
+      responseDataRedis.postToPrimaryAddress = YesNo.YES;
     }
 
-    if (claimantIndividualAddress.hasErrors() || claimantIndividualCorrespondenceAddress.hasErrors()) {
-      renderPage(res, req, responseDataRedis, claimantIndividualAddress, claimantIndividualCorrespondenceAddress);
+    if (claimantDetails.hasErrors() || claimantIndividualAddress.hasErrors() || claimantIndividualCorrespondenceAddress.hasErrors()) {
+      renderPage(res, req, responseDataRedis, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails);
     } else {
       if (req.body.postToThisAddress === YesNo.NO) {
         claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress());
       }
-      await saveRespondent(temporaryId, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, req.body.postToThisAddress, req.body.contactPerson);
+      await saveClaimant(temporaryId, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, req.body.postToThisAddress, claimantDetails);
       res.redirect(constructResponseUrlWithIdParams(temporaryId, CLAIM_CLAIMANT_DOB));
     }
   } catch (error) {

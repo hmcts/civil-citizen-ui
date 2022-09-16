@@ -52,5 +52,6 @@ export const NO_SIGN_LANGUAGE_ENTERED = 'Enter the sign language you need';
 export const NO_OTHER_SUPPORT = 'Enter the other support you need at your hearing';
 export const QUESTION_1_REQUIRED = 'Question 1: Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required';
 export const QUESTION_2_REQUIRED = 'Question 2: If you have answered "yes" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?';
+export const VALID_TITLE = 'Enter valid title';
 export const VALID_FIRST_NAME = 'Enter first name';
 export const VALID_LAST_NAME = 'Enter last name';

@@ -15,8 +15,10 @@
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% set addressTitle = t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.YOUR_POSTAL_ADDRESS') %}
 {% set claimantIndividualAddressErrors = claimantIndividualAddress.getAllErrors() %}
+{% set claimantDetailsErrors = claimantDetails.getAllErrors() %}
 
 {% if claimantIndividualCorrespondenceAddress %}
+  {% set claimantDetailsErrors = claimantDetails.getAllErrors() %}
   {% set claimantIndividualCorrespondenceAddressErrors = claimantIndividualCorrespondenceAddress.getAllErrors() %}
   {% set claimantIndividualAddressErrors = claimantIndividualAddressErrors.concat(claimantIndividualCorrespondenceAddress.getAllErrors()) %}
 {% endif %}
@@ -73,6 +75,7 @@
           {{ errorSummary(claimantIndividualAddressErrors, t) }}
         {% endif %}
       </div>
+
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.TITLE') }}</h1>
@@ -89,24 +92,30 @@
                 text: "Title"
               },
               classes: "govuk-!-width-one-half",
-              id: "claimantIndividualDetailsTitle",
-              name: "claimantIndividualDetailsTitle"
+              id: "title",
+              name: "claimantIndividualDetailsTitle",
+              value: claimant.individualTitle,
+                errorMessage: { text: t(claimantDetails.errorFor('title')) }
             }) }}
             {{ govukInput({
               label: {
                 text: "First name"
               },
               classes: "govuk-!-width-one-half",
-              id: "claimantIndividualDetailsFirstName",
-              name: "claimantIndividualDetailsFirstName"
+              id: "firstName",
+              name: "claimantIndividualDetailsFirstName",
+              value: claimant.individualFirstName,
+              errorMessage: { text: t(claimantDetails.errorFor('firstName')) }
             }) }}
             {{ govukInput({
               label: {
                 text: "Last name"
               },
               classes: "govuk-!-width-one-half",
-              id: "claimantIndividualDetailsLastName",
-              name: "claimantIndividualDetailsLastName"
+              id: "lastName",
+              name: "claimantIndividualDetailsLastName",
+              value: claimant.individualLastName,
+               errorMessage: { text: t(claimantDetails.errorFor('lastName')) }
             }) }}
 
             <div class="govuk-form-group" id="postcode">
@@ -139,8 +148,6 @@
               </a>
             </div>
             <div id="primaryAddress" class="{{ correspondenceAddressClass }}">
-              {{  claimantIndividualAddress }}
-              <hr/>
               {{ addressForm(
                 t,
                 citizenAddress = claimantIndividualAddress,
@@ -151,8 +158,8 @@
             <br>
             <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.CORRESPONDENCE_ADDRESS') }}</h2>
             {{ govukRadios({
-              idPrefix: "postToThisAddress",
-              name: "postToThisAddress",
+              idPrefix: "postToPrimaryAddress",
+              name: "postToPrimaryAddress",
               fieldset: {
                 legend: {
                   text: t('PAGES.CITIZEN_DETAILS.DIFFERENT_ADDRESS_CORRESPONDENCE'),
@@ -163,11 +170,11 @@
                 {
                   value: YesNo.NO,
                   text: t('COMMON.NO'),
-                  checked: false if respondent.postToThisAddress == YesNo.YES else true
+                  checked: false if claimant.postToPrimaryAddress == YesNo.YES else true
                 },
                 {
                   value: YesNo.YES,
-                  checked: true if respondent.postToThisAddress == YesNo.YES else false,
+                  checked: true if claimant.postToPrimaryAddress == YesNo.YES else false,
                   text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
                   html: correspondenceAddressHtml

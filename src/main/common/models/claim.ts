@@ -224,9 +224,11 @@ export interface Party {
   soleTraderFirstName?: string;
   soleTraderLastName?: string;
   partyName?: string;
-  type: CounterpartyType;
+  type?: CounterpartyType;
   primaryAddress?: CorrespondenceAddress;
   phoneNumber?: string;
+  postToPrimaryAddress?: string;
+  correspondenceAddress?: CorrespondenceAddress;
 }
 
 export interface StatementOfTruth {
