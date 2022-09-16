@@ -126,3 +126,7 @@ export const FIRST_CONTACT_PIN_URL = `${BASE_FIRST_CONTACT_URL}/pin`;
 export const CLAIM_RESOLVING_DISPUTE_URL = `${BASE_CLAIM_URL}/resolving-this-dispute`;
 export const DQ_TRIED_TO_SETTLE_CLAIM_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/tried-to-settle`;
 export const DQ_REQUEST_EXTRA_4WEEKS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/request-extra-4-weeks`;
+export const DQ_EXPERT_SMALL_CLAIMS = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert`;
+export const DQ_HAVE_EXPERT_REPORT_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-report`;
+export const DQ_GIVE_EVIDENCE_YOURSELF = `${DIRECTIONS_QUESTIONNAIRE_URL}/evidence-yourself`;
+
