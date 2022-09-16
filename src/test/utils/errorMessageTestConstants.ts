@@ -62,6 +62,7 @@ export const enum TestMessages {
   VALID_PAYMENT_OPTION = 'Choose a payment option',
   VALID_PHONE_NUMBER = 'Enter a phone number in the correct format',
   VALID_POSITIVE_NUMBER = 'Don’t enter a negative number',
+  VALID_REQUEST_EXTRA_4_WEEKS = 'Select yes if you want an extra 4 weeks to try to settle the claim',
   VALID_REASON_REQUIRED = 'Enter a reason',
   VALID_SHARED_EXPERT = 'Select yes if you want to share an expert with the claimant',
   VALID_STRICTLY_POSITIVE_NUMBER = 'Enter a number higher than 0',
