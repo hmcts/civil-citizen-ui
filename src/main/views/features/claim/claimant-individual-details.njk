@@ -37,7 +37,7 @@
     <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
       {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
     </div>
-    <input class="govuk-input govuk-input--width-10" id="postcode2" name="postcode2" type="text" autocomplete="postal-code"/>
+    <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
     <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
       {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
     </button>
@@ -53,7 +53,7 @@
     </div>
   </div>
   <div>
-    <a id="enterAddressManually1" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
+    <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
       {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
     </a>
   </div>
@@ -118,20 +118,20 @@
                errorMessage: { text: t(claimantDetails.errorFor('lastName')) } if claimantDetails.errorFor('lastName')
             }) }}
 
-            <div class="govuk-form-group" id="postcode">
+            <div class="govuk-form-group" id="p_postcode">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
               <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
-              <label class="govuk-label" for="postcode">
+              <label class="govuk-label" for="p_postcode">
                 {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
               </label>
-              <div id="postcode-error" class="govuk-visually-hidden govuk-error-message">
+              <div id="p_postcode-error" class="govuk-visually-hidden govuk-error-message">
                 {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
               </div>
-              <input class="govuk-input govuk-input--width-10" id="postcode1" name="postcode1" type="text" autocomplete="postal-code"/>
-              <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
+              <input class="govuk-input govuk-input--width-10" id="p_postcode" name="p_postcode" type="text" autocomplete="postal-code"/>
+              <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="p_findAddressButton">
                 {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
               </button>
-              <div id="selectAddress1" class="govuk-visually-hidden govuk-!-margin-bottom-2">
+              <div id="p_selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
                 {{ govukSelect({
                   id: "primaryAddressList",
                   name: "primaryAddressList",
@@ -143,7 +143,7 @@
               </div>
             </div>
             <div>
-              <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link enterAddressManually">
+              <a id="p_enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link enterAddressManually">
                 {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
               </a>
             </div>

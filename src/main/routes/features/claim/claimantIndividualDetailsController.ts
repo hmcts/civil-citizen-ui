@@ -107,7 +107,7 @@ claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, 
       if (req.body.postToThisAddress === YesNo.NO) {
         claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress());
       }
-      await saveClaimant(temporaryId, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, req.body.postToThisAddress, claimantDetails);
+      await saveClaimant(temporaryId, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, req.body.postToPrimaryAddress, claimantDetails);
       res.redirect(constructResponseUrlWithIdParams(temporaryId, CLAIM_CLAIMANT_DOB));
     }
   } catch (error) {
