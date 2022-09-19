@@ -1,37 +1,28 @@
-// import {IsDefined, IsNotEmpty, MaxLength, ValidateIf} from 'class-validator';
-// import {
-//   NO_LANGUAGE_ENTERED,
-//   NO_OTHER_SUPPORT,
-//   NO_SIGN_LANGUAGE_ENTERED,
-//   TEXT_TOO_LONG,
-// } from '../../form/validationErrors/errorMessageConstants';
-// import {FREE_TEXT_MAX_LENGTH} from '../../form/validators/validationConstraints';
+import {
+  IsDefined,
+  IsEmail,
+  IsNumber,
+  Validate
+} from "class-validator";
+import {OptionalIntegerValidator} from "../../../common/form/validators/optionalIntegerValidator";
 
 export class ExpertDetails {
   firstName?: string;
   lastName?: string;
+
+  @IsEmail({ message: 'ERRORS.ENTER_VALID_EMAIL' })
   emailAddress?: string;
+
+  @Validate(OptionalIntegerValidator, { message: 'ERRORS.VALID_PHONE_NUMBER' })
   phoneNumber?: number;
-  fieldOfExpertise?: string;
+
+  @IsDefined({ message: 'ERRORS.ENTER_WHY_NEED_EXPERT' })
   whyNeedExpert?: string;
+
+  @IsDefined({ message: 'ERRORS.ENTER_EXPERT_FIELD' })
+  fieldOfExpertise?: string;
+
+  @IsNumber({ maxDecimalPlaces: 2 }, { message: 'ERRORS.AMOUNT_INVALID_DECIMALS' })
   estimatedCost?: number;
-
-  // @ValidateIf(o => o.signLanguageSelected)
-  // @IsDefined({message: NO_SIGN_LANGUAGE_ENTERED})
-  // @IsNotEmpty({message: NO_SIGN_LANGUAGE_ENTERED})
-  // @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
-  //   signLanguageInterpreted?: string;
-
-  // @ValidateIf(o => o.languageSelected)
-  // @IsDefined({message: NO_LANGUAGE_ENTERED})
-  // @IsNotEmpty({message: NO_LANGUAGE_ENTERED})
-  // @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
-  //   languageInterpreted?: string;
-
-  // @ValidateIf(o => o.otherSupportSelected)
-  // @IsDefined({message: NO_OTHER_SUPPORT})
-  // @IsNotEmpty({message: NO_OTHER_SUPPORT})
-  // @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
-  //   otherSupport?: string;
 
 }
