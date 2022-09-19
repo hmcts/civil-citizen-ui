@@ -16,7 +16,7 @@ export const getConsiderClaimantDocuments = async (claimId: string): Promise<Con
   }
 };
 
-export const getConsiderClaimantDocumentsForm = (option: string, details: string): ConsiderClaimantDocuments => {
+export const getConsiderClaimantDocumentsForm = (option: YesNo, details: string): ConsiderClaimantDocuments => {
   const considerClaimantDocumentsDetails = (option === YesNo.NO) ? '' : details;
   return (option) ?
     new ConsiderClaimantDocuments(option, considerClaimantDocumentsDetails) :
