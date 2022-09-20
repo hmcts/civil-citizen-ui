@@ -9,13 +9,7 @@ const getDirectionQuestionnaire = async (claimId: string): Promise<DirectionQues
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (!claim.directionQuestionnaire) return new DirectionQuestionnaire();
-    return new DirectionQuestionnaire(
-      claim.directionQuestionnaire?.triedToSettle,
-      claim.directionQuestionnaire?.defendantExpertEvidence,
-      claim.directionQuestionnaire?.requestExtra4weeks,
-      claim.directionQuestionnaire?.sharedExpert,
-      claim.directionQuestionnaire?.expertCanStillExamine,
-    );
+    return claim.directionQuestionnaire;
   } catch (error) {
     logger.error(error);
     throw error;
