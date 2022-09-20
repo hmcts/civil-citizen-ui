@@ -38,13 +38,14 @@
       {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
     </div>
     <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text" autocomplete="postal-code"/>
-    <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="findAddressButton">
+    <button href="#" class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="findAddressButton">
       {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
     </button>
     <div id="selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
       {{ govukSelect({
         id: "correspondenceAddressList",
         name: "correspondenceAddressList",
+        classes: 'addressList',
         label: {
           text: t('PAGES.CITIZEN_DETAILS.PICK_ADDRESS')
         },
@@ -53,7 +54,7 @@
     </div>
   </div>
   <div>
-    <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
+    <a id="enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link enterAddressManually">
       {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
     </a>
   </div>
@@ -94,7 +95,7 @@
               classes: "govuk-!-width-one-half",
               id: "title",
               name: "claimantIndividualDetailsTitle",
-              value: claimant.individualTitle,
+              value: claimantDetails.model.title,
                 errorMessage: { text: t(claimantDetails.errorFor('title')) } if claimantDetails.errorFor('title')
             }) }}
             {{ govukInput({
@@ -104,7 +105,7 @@
               classes: "govuk-!-width-one-half",
               id: "firstName",
               name: "claimantIndividualDetailsFirstName",
-              value: claimant.individualFirstName,
+              value: claimantDetails.model.firstName,
               errorMessage: { text: t(claimantDetails.errorFor('firstName')) } if claimantDetails.errorFor('firstName')
             }) }}
             {{ govukInput({
@@ -114,27 +115,28 @@
               classes: "govuk-!-width-one-half",
               id: "lastName",
               name: "claimantIndividualDetailsLastName",
-              value: claimant.individualLastName,
+              value: claimantDetails.model.lastName,
                errorMessage: { text: t(claimantDetails.errorFor('lastName')) } if claimantDetails.errorFor('lastName')
             }) }}
 
-            <div class="govuk-form-group" id="p_postcode">
+            <div class="govuk-form-group" id="primaryPostcode">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
               <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
-              <label class="govuk-label" for="p_postcode">
+              <label class="govuk-label" for="primaryPostcode">
                 {{ t('PAGES.CITIZEN_DETAILS.UK_POSTCODE') }}
               </label>
-              <div id="p_postcode-error" class="govuk-visually-hidden govuk-error-message">
+              <div id="primaryPostcode-error" class="govuk-visually-hidden govuk-error-message">
                 {{ t('PAGES.CITIZEN_DETAILS.ADDRESS_NOT_FOUND') + t('PAGES.CITIZEN_DETAILS.TRY_AGAIN') }}
               </div>
-              <input class="govuk-input govuk-input--width-10" id="p_postcode" name="p_postcode" type="text" autocomplete="postal-code"/>
-              <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="p_findAddressButton">
+              <input class="govuk-input govuk-input--width-10" id="primaryPostcode" name="primaryPostcode" type="text" autocomplete="postal-code"/>
+              <button href="#" class="govuk-button govuk-button--secondary findAddressButton" data-module="govuk-button" id="primaryfindAddressButton">
                 {{ t('PAGES.CITIZEN_DETAILS.FIND_ADDRESS') }}
               </button>
-              <div id="p_selectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
+              <div id="primarySelectAddress" class="govuk-visually-hidden govuk-!-margin-bottom-2">
                 {{ govukSelect({
                   id: "primaryAddressList",
                   name: "primaryAddressList",
+                  classes: 'addressList',
                   label: {
                     text: t('PAGES.CITIZEN_DETAILS.PICK_ADDRESS')
                   },
@@ -143,7 +145,7 @@
               </div>
             </div>
             <div>
-              <a id="p_enterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link enterAddressManually">
+              <a id="primaryEnterAddressManually" aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link enterAddressManually">
                 {{ t('PAGES.CITIZEN_DETAILS.MANUAL_ADDRESS') }}
               </a>
             </div>

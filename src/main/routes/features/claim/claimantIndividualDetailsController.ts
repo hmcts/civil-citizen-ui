@@ -14,6 +14,7 @@ import {
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {PartyDetails} from '../../../common/form/models/partyDetails';
 import {Party} from '../../../common/models/claim';
+import {AppRequest} from 'common/models/AppRequest';
 
 const claimantIndividualDetailsController = express.Router();
 const claimantIndividualDetailsPath = 'features/claim/claimant-individual-details';
@@ -35,11 +36,10 @@ function renderPage(res: express.Response, req: express.Request, claimant: Party
   });
 }
 
-claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req:express.Request, res:express.Response, next: express.NextFunction) => {
+claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req:AppRequest, res:express.Response, next: express.NextFunction) => {
   try {
-    // TODO : change the hard coded case id to the userID
-    const claimant: Party = await getClaimantInformation(temporaryId);
-    console.log('get-saved-->', claimant);
+    const caseId = req.session?.user?.id;
+    const claimant: Party = await getClaimantInformation(caseId);
 
     const claimantIndividualAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
       claimant?.primaryAddress?.AddressLine1,
@@ -60,16 +60,15 @@ claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, a
       claimant.individualFirstName,
       claimant.individualLastName,
     ));
-
     renderPage(res, req, claimant, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails);
   } catch (error) {
     next(error);
   }
 });
 
-claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.log('post-req.body--->', req.body);
-  const responseDataRedis: Party = await getClaimantInformation(temporaryId);
+claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, async (req: any, res: express.Response, next: express.NextFunction) => {
+  const caseId = req.session?.user?.id;
+  const responseDataRedis: Party = await getClaimantInformation(caseId);
   try {
     const claimantIndividualAddress = new GenericForm<CitizenAddress>(new CitizenAddress(
       req.body.primaryAddressLine1,
@@ -93,7 +92,7 @@ claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, 
       req.body.claimantIndividualDetailsLastName,
     ));
 
-    claimantDetails.validateSync()
+    claimantDetails.validateSync();
     claimantIndividualAddress.validateSync();
 
     if (req.body.postToPrimaryAddress === YesNo.YES) {
@@ -107,7 +106,7 @@ claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, 
       if (req.body.postToThisAddress === YesNo.NO) {
         claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress());
       }
-      await saveClaimant(temporaryId, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, req.body.postToPrimaryAddress, claimantDetails);
+      await saveClaimant(caseId, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, req.body.postToPrimaryAddress, claimantDetails);
       res.redirect(constructResponseUrlWithIdParams(temporaryId, CLAIM_CLAIMANT_DOB));
     }
   } catch (error) {
