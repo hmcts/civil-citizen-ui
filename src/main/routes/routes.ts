@@ -114,6 +114,8 @@ import completingClaimController from './features/claim/completingClaimControlle
 import submitComfirmationController from './features/response/submitComfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
+import considerClaimantDocumentsController
+  from './features/directionsQuestionnaire/considerClaimantDocumentsController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
 import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
@@ -222,6 +224,7 @@ export default [
   submitComfirmationController,
   resolvingThisDisputeController,
   cookiesController,
+  considerClaimantDocumentsController,
   sharedExpertController,
   triedToSettleController,
   requestExtra4WeeksController,
