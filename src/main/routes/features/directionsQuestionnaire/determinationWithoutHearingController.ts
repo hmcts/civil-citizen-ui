@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {DETERMINATION_WITHOUT_HEARING_URL, SUPPORT_REQUIRED_URL} from '../../urls';
+import {DETERMINATION_WITHOUT_HEARING_URL, EXPERT_GUIDANCE_URL} from '../../urls';
 import {DeterminationWithoutHearing} from '../../../common/models/directionsQuestionnaire/determinationWithoutHearing';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {
@@ -38,7 +38,7 @@ determinationWithoutHearingController
         renderView(form, res);
       } else {
         await saveDeterminationWithoutHearing(claimId, determinationWithoutHearingForm);
-        res.redirect(constructResponseUrlWithIdParams(claimId, SUPPORT_REQUIRED_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, EXPERT_GUIDANCE_URL));
       }
     } catch (error) {
       next(error);
