@@ -531,6 +531,11 @@
       "PAGE_TITLE": "Get the details right",
       "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
     },
+    "CONSIDER_CLAIMANT_DOCUMENTS" : {
+      "GIVE_DETAILS" : "Give details of the documents",
+      "PAGE_TITLE" : "Are there any documents the claimant has that you want the court to consider?",
+      "TITLE" : "Are there any documents the claimant has that you want the court to consider?"
+    },
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
       "ADDRESS": "Cyfeiriad",
@@ -1172,7 +1177,7 @@
       "TITLE": "Eich cynllun ad-dalu"
     },
     "REQUEST_EXTRA_4WEEKS": {
-      "HINT": "You can use this time to try to settle the claim withoout going to a hearing. Settling without going to a hearing may avoid costs including fees.",
+      "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",
       "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
       "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
       "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
@@ -1232,6 +1237,13 @@
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
+    },
+    "SHARED_EXPERT": {
+      "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
+      "PAGE_TITLE": "Do you want to share an expert with the claimant?",
+      "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
+      "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
+      "TITLE": "Want shared expert?"
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
@@ -1400,6 +1412,7 @@
     "EQUAL_INSTALMENTS_REQUIRED": "Rhowch swm dilys i'w dalu fesul rhan",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
+    "GIVE_DETAILS_DOCUMENTS" : "Give details of the documents",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
     "NUMBER_OF_PEOPLE_REQUIRED": "Rhowch rif, er enghraifft 3",
@@ -1434,6 +1447,7 @@
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
     "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
+    "SELECT_YES_IF_DOCUMENTS" : "Select yes if there are documents the claimant has that you want the court to consider",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
@@ -1536,6 +1550,7 @@
     "VALID_POSTCODE": "Rhowch y cod post",
     "VALID_REASON_REQUIRED": "Rhowch reswm",
     "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
+    "VALID_SHARE_EXPERT": "Select yes if you want to share an expert with the claimant",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",
     "VALID_TEXT_LENGTH": "Rydych wedi defnyddio gormod o nodau",
     "VALID_TRIED_TO_SETTLE": "Select yes if you have tried to settle this claim before going to court",
