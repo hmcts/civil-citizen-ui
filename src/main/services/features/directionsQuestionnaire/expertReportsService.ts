@@ -22,8 +22,7 @@ const getExpertReportsForm = (expertReports: ExpertReportsOptions): ExpertReport
 const saveExpertReports = async (claimId: string, expertReports: ExpertReports) => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    caseData.directionQuestionnaire = {...caseData.directionQuestionnaire};
-    caseData.directionQuestionnaire.expertReports = expertReports;
+    caseData.directionQuestionnaire = {...caseData.directionQuestionnaire, expertReports};
 
     await saveDraftClaim(claimId, caseData);
   } catch (error) {
