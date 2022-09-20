@@ -13,10 +13,7 @@ const expertReportsController = express.Router();
 const expertReportsViewPath = 'features/directionsQuestionnaire/expert-reports';
 
 function renderView(form: GenericForm<ExpertReports>, res: express.Response): void {
-
-  const expertReportsForm = Object.assign(form);
-  expertReportsForm.option = form.model.option;
-  res.render(expertReportsViewPath, {form: expertReportsForm});
+  res.render(expertReportsViewPath, {form});
 }
 
 expertReportsController.get(DQ_SENT_EXPERT_REPORTS_URL, async (req, res, next) => {
