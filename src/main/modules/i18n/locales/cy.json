@@ -531,6 +531,11 @@
       "PAGE_TITLE": "Get the details right",
       "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
     },
+    "CONSIDER_CLAIMANT_DOCUMENTS" : {
+      "GIVE_DETAILS" : "Give details of the documents",
+      "PAGE_TITLE" : "Are there any documents the claimant has that you want the court to consider?",
+      "TITLE" : "Are there any documents the claimant has that you want the court to consider?"
+    },
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
       "ADDRESS": "Cyfeiriad",
@@ -1180,7 +1185,7 @@
       "TITLE": "Eich cynllun ad-dalu"
     },
     "REQUEST_EXTRA_4WEEKS": {
-      "HINT": "You can use this time to try to settle the claim withoout going to a hearing. Settling without going to a hearing may avoid costs including fees.",
+      "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",
       "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
       "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
       "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
@@ -1415,6 +1420,7 @@
     "EQUAL_INSTALMENTS_REQUIRED": "Rhowch swm dilys i'w dalu fesul rhan",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Rhowch ddyddiad talu cyntaf yn y dyfodol",
+    "GIVE_DETAILS_DOCUMENTS" : "Give details of the documents",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
     "NUMBER_OF_PEOPLE_REQUIRED": "Rhowch rif, er enghraifft 3",
@@ -1449,6 +1455,7 @@
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
     "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
+    "SELECT_YES_IF_DOCUMENTS" : "Select yes if there are documents the claimant has that you want the court to consider",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
