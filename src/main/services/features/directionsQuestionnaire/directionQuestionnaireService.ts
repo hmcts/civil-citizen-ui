@@ -12,6 +12,9 @@ const getDirectionQuestionnaire = async (claimId: string): Promise<DirectionQues
     return new DirectionQuestionnaire(
       claim.directionQuestionnaire?.triedToSettle,
       claim.directionQuestionnaire?.defendantExpertEvidence,
+      claim.directionQuestionnaire?.requestExtra4weeks,
+      claim.directionQuestionnaire?.sharedExpert,
+      claim.directionQuestionnaire?.expertCanStillExamine,
     );
   } catch (error) {
     logger.error(error);

@@ -685,6 +685,13 @@
       "PAGE_TITLE": "Defendant expert evidence",
       "TITLE": "Do you want to use expert evidence?"
     },
+    "DEFENDANT_EXPERT_CAN_STILL_EXAMINE": {
+      "CAN_NOT_USE": "You can't use an expert in this case.",
+      "EXAMINE": "What is there to examine?",
+      "PAGE_TITLE": "Defendant expert can still examine",
+      "PHOTO_OR_VIDEO": "This could include photographs or videos.",
+      "TITLE": "Does the claim involve something an expert can still examine?"
+    },
     "DEPENDANTS": {
       "GROUP11": "11 i 15",
       "GROUP16": "16 i 19",
