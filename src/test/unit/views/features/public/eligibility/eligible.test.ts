@@ -32,7 +32,7 @@ describe('You can use this service View', () => {
     });
 
     describe('HWF Eligible', () => {
-      let mainWrapper: any;
+      let mainWrapper: Element;
 
       beforeEach(async () => {
         await request(app).get(ELIGIBILITY_HWF_ELIGIBLE_URL).then(res => {
@@ -72,7 +72,7 @@ describe('You can use this service View', () => {
     });
 
     describe('HWF Eligible Reference', () => {
-      let mainWrapper: any;
+      let mainWrapper: Element;
 
       beforeEach(async () => {
         await request(app).get(ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL).then(res => {
@@ -104,7 +104,7 @@ describe('You can use this service View', () => {
     });
 
     describe('Eligible for this Service', () => {
-      let mainWrapper: any;
+      let mainWrapper: Element;
 
       beforeEach(async () => {
         await request(app).get(ELIGIBLE_FOR_THIS_SERVICE_URL).then(res => {

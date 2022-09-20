@@ -1171,6 +1171,12 @@
       "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
       "TITLE": "Your repayment plan"
     },
+    "REQUEST_EXTRA_4WEEKS": {
+      "HINT": "You can use this time to try to settle the claim withoout going to a hearing. Settling without going to a hearing may avoid costs including fees.",
+      "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
+      "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
+      "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
+    },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
@@ -1226,6 +1232,13 @@
     },
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
+    },
+    "SHARED_EXPERT": {
+      "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
+      "PAGE_TITLE": "Do you want to share an expert with the claimant?",
+      "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
+      "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
+      "TITLE": "Want shared expert?"
     },
     "SUBMIT_CONFIRMATION": {
       "FA_PAY_BY_DATE": {
@@ -1562,6 +1575,8 @@
     "VALID_POSITIVE_NUMBER": "Don’t enter a negative number",
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
+    "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
+    "VALID_SHARED_EXPERT": "Select yes if you want to share an expert with the claimant",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
     "VALID_TEXT_LENGTH": "You’ve entered too many characters",
     "VALID_TRIED_TO_SETTLE": "Select yes if you have tried to settle this claim before going to court",
