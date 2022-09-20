@@ -690,6 +690,10 @@
       "PAGE_TITLE": "Defendant expert evidence",
       "TITLE": "Do you want to use expert evidence?"
     },
+    "DEFENDANT_YOURSELF_EVIDENCE": {
+      "PAGE_TITLE": "Defendant yourself evidence",
+      "TITLE": "Do you want to give evidence yourself?"
+    },
     "DEPENDANTS": {
       "GROUP11": "11 i 15",
       "GROUP16": "16 i 19",
@@ -1408,6 +1412,8 @@
     "DEFENCE_REQUIRED": "Mae angen ichi egluro pam nad oes arian yn ddyledus gennych",
     "DEFENDANT_AGE_REQUIRED": "Select yes, no, or company/organisation",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
+    "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Select yes if you want to use expert evidence",
+    "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Select yes if you want to give evidence yourself",
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
