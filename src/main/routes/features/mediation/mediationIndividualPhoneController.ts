@@ -37,7 +37,7 @@ const isTelephoneNumberSaved = (telephoneNumber: string, req: express.Request) =
 mediationIndividualPhoneController.get(CAN_WE_USE_URL, async (req, res, next: express.NextFunction) => {
   try {
     const mediation: Mediation = await getMediation(req.params.id);
-    renderView(getGenericForm(mediation.canWeUse), res, req.params.id);
+    await renderView(getGenericForm(mediation.canWeUse), res, req.params.id);
   } catch (error) {
     next(error);
   }
@@ -50,7 +50,7 @@ mediationIndividualPhoneController.post(CAN_WE_USE_URL,
       const mediationIndividualPhoneForm: GenericForm<MediationIndividualPhoneNumber> = isTelephoneNumberSaved(claim.respondent1.telephoneNumber, req);
       await mediationIndividualPhoneForm.validate();
       if (mediationIndividualPhoneForm.hasErrors()) {
-        renderView(mediationIndividualPhoneForm, res, req.params.id);
+        await renderView(mediationIndividualPhoneForm, res, req.params.id);
       } else {
         if (req.body.option === YesNo.YES) {
           mediationIndividualPhoneForm.model.mediationPhoneNumber = undefined;

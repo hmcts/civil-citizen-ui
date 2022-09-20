@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import currencyFormat from '../utils/currencyFormat';
+import 'dayjs/locale/cy';
 import {Respondent} from './respondent';
 import {StatementOfMeans} from './statementOfMeans';
 import {CounterpartyType} from './counterpartyType';
@@ -34,7 +34,9 @@ import {DocumentType} from './document/documentType';
 import {Vulnerability} from '../models/directionsQuestionnaire/vulnerability';
 import {ResponseDeadline} from './responseDeadline';
 import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
+import {getLng} from '../../common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
+import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 import {ResponseOptions} from '../../common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
 
@@ -79,6 +81,7 @@ export class Claim {
   responseDeadline: ResponseDeadline;
   determinationWithoutHearing: DeterminationWithoutHearing;
   respondentSolicitor1AgreedDeadlineExtension?:Date;
+  directionQuestionnaire?: DirectionQuestionnaire;
 
   getClaimantName(): string {
     return this.applicant1.partyName;
@@ -88,12 +91,8 @@ export class Claim {
     return this.respondent1.partyName;
   }
 
-  formattedResponseDeadline(): string {
-    return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).format('DD MMMM YYYY') : '';
-  }
-
-  formattedTotalClaimAmount(): string {
-    return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
+  formattedResponseDeadline(lng?: string): string {
+    return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).locale(getLng(lng)).format('DD MMMM YYYY') : '';
   }
 
   getRemainingDays(): number {
@@ -117,7 +116,7 @@ export class Claim {
     return this.paymentOption === PaymentOptionType.IMMEDIATELY;
   }
 
-  isPaymentOptionInstalllments(): boolean {
+  isPaymentOptionInstallments(): boolean {
     return this.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
@@ -195,8 +194,8 @@ export class Claim {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
     if (documentUrl?.length) {
-      const splittedData = documentUrl.split('/');
-      documentId = splittedData[splittedData?.length - 1];
+      const splitData = documentUrl.split('/');
+      documentId = splitData[splitData?.length - 1];
     }
     return documentId;
   }
@@ -236,7 +235,7 @@ export class Claim {
       return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
     }
 
-    if (this.isFullAdmission() && this.isPaymentOptionInstalllments()) {
+    if (this.isFullAdmission() && this.isPaymentOptionInstallments()) {
       return ClaimResponseStatus.FA_PAY_INSTALLMENTS;
     }
 

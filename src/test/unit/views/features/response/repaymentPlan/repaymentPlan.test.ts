@@ -16,7 +16,7 @@ describe('Repayment Plan View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
-  let mainWrapper: any;
+  let mainWrapper: Element;
 
   describe('on GET', () => {
     beforeEach(async () => {
