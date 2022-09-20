@@ -3,7 +3,15 @@ import {ConsiderClaimantDocuments} from 'models/directionsQuestionnaire/consider
 
 export class DirectionQuestionnaire {
   triedToSettle?: GenericYesNo;
+  defendantExpertEvidence?: GenericYesNo;
   considerClaimantDocuments?: ConsiderClaimantDocuments;
   sharedExpert?: GenericYesNo;
   requestExtra4weeks?: GenericYesNo;
+
+  constructor(triedToSettle?: GenericYesNo, defendantExpertEvidence?: GenericYesNo, requestExtra4weeks?: GenericYesNo, sharedExpert?: GenericYesNo) {
+    this.triedToSettle = triedToSettle;
+    this.defendantExpertEvidence = defendantExpertEvidence;
+    this.requestExtra4weeks = requestExtra4weeks;
+    this.sharedExpert = sharedExpert;
+  }
 }
