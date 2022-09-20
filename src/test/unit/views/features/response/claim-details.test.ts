@@ -21,7 +21,7 @@ describe('Task List View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
-  let mainWrapper: any;
+  let mainWrapper: Element;
   const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
 
   beforeEach(() => {

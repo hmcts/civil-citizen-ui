@@ -15,7 +15,7 @@ describe('Understanding Your Options View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
-  let mainWrapper: any;
+  let mainWrapper: Element;
 
   beforeEach(async () => {
     nock(idamUrl)
