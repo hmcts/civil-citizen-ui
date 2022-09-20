@@ -1,7 +1,8 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {YesNo} from '../../../common/form/models/yesNo';
-import {ExpertReportDetails} from '../../../common/models/directionsQuestionnaire/expertReportDetails';
+import {ExpertReportDetails} from '../../../common/models/directionsQuestionnaire/expertReportDetails/expertReportDetails';
 import {DirectionQuestionnaire} from '../../../common/models/directionsQuestionnaire/directionQuestionnaire';
+import {ReportDetails} from 'common/models/directionsQuestionnaire/expertReportDetails/reportDetails';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('expertReportDetailsService');
@@ -16,10 +17,11 @@ export const getExpertReportDetails = async (claimId: string): Promise<ExpertRep
   }
 };
 
-export const getExpertReportDetailsForm = (hasExpertReports: YesNo, details: string): ExpertReportDetails => {
-  const considerClaimantDocumentsDetails = (hasExpertReports === YesNo.NO) ? '' : details;
+export const getExpertReportDetailsForm = (hasExpertReports: YesNo, reportDetails: ReportDetails[]): ExpertReportDetails => {
+  // TODO : fix this part
+  const expertReportDetails = (hasExpertReports === YesNo.NO) ? [new ReportDetails()] : reportDetails;
   return (hasExpertReports) ?
-    new ExpertReportDetails(hasExpertReports, considerClaimantDocumentsDetails) :
+    new ExpertReportDetails(hasExpertReports, expertReportDetails) :
     new ExpertReportDetails();
 };
 

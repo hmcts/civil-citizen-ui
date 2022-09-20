@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {DQ_EXPERT_REPORT_DETAILS_URL, DQ_CONSIDER_CLAIMANT_DOCUMENTS} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {ExpertReportDetails} from '../../../common/models/directionsQuestionnaire/expertReportDetails';
+import {ExpertReportDetails} from '../../../common/models/directionsQuestionnaire/expertReportDetails/expertReportDetails';
 import {
   getExpertReportDetails,
   getExpertReportDetailsForm,
@@ -14,7 +14,7 @@ const expertReportDetailsController = express.Router();
 function renderView(form: GenericForm<ExpertReportDetails>, res: express.Response): void {
   const expertReportDetailsForm = Object.assign(form);
   expertReportDetailsForm.option = form.model.hasExpertReports;
-  console.log('get--', expertReportDetailsForm)
+  console.log('get--', expertReportDetailsForm);
   res.render('features/directionsQuestionnaire/expert-report-details', {form: expertReportDetailsForm});
 }
 
@@ -29,7 +29,7 @@ expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res,
 expertReportDetailsController.post(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const expertReportDetails = getExpertReportDetailsForm(req.body.hasExportReports, req.body.details);
+    const expertReportDetails = getExpertReportDetailsForm(req.body.hasExportReports, req.body.reportDetails);
     const form = new GenericForm(expertReportDetails);
     form.validateSync();
 

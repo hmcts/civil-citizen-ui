@@ -845,6 +845,15 @@
       "USUALLY_SHARE_COST": "Usually you both share this cost.",
       "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
     },
+    "EXPERT_REPORT_DETAILS": {
+      "ADD_ANOTHER_REPORT": "Add another report",
+      "EXPERT_NAME": "Expert's name",
+      "PAGE_TITLE": "Have you already got a report written by an expert?",
+      "REMOVE_REPORT": "Remove report",
+      "REPORT_DATE": "When is the report dated?",
+      "REPORT_NUMBER": "Report {{ reportNumber }}",
+      "TITLE": "Have you already got a report written by an expert?"
+    },
     "EXPLANATION": {
       "PAGE_TITLE": "Explanation",
       "TITLE": "Briefly explain why you can't pay immediately"
