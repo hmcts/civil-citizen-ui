@@ -115,6 +115,7 @@ import submitComfirmationController from './features/response/submitComfirmation
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
+import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
 import permissionForExpertController from './features/directionsQuestionnaire/permissionForExpertController';
 
@@ -221,6 +222,7 @@ export default [
   submitComfirmationController,
   resolvingThisDisputeController,
   cookiesController,
+  sharedExpertController,
   triedToSettleController,
   requestExtra4WeeksController,
   permissionForExpertController,
