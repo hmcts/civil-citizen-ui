@@ -116,6 +116,8 @@ import considerClaimantDocumentsController
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
 import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
+import defendantYourselfEvidenceController
+  from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
 
 export default [
@@ -227,4 +229,5 @@ export default [
   requestExtra4WeeksController,
   defendantExpertEvidenceController,
   expertCanStillExamineController,
+  defendantYourselfEvidenceController,
 ];
