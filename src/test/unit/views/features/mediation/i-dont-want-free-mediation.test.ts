@@ -24,7 +24,7 @@ describe('I Dont Want Free Mediation View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    let mainWrapper: any;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       const response = await request(app).get(DONT_WANT_FREE_MEDIATION_URL);
