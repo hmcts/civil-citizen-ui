@@ -2,7 +2,10 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_TRIED_TO_SETTLE_CLAIM_URL} from '../../../../../main/routes/urls';
+import {
+  DQ_TRIED_TO_SETTLE_CLAIM_URL,
+  DQ_REQUEST_EXTRA_4WEEKS_URL,
+} from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
