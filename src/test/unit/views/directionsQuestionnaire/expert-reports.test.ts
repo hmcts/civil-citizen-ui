@@ -36,7 +36,7 @@ describe('Sent expert reports view', () => {
 
     it('should display the header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
-      expect(header[0].innerHTML).toContain('Have you tried sent expert reports to the claimant?');
+      expect(header[0].innerHTML).toContain('Have you already sent expert reports to the claimant?');
     });
 
     it('should display radio buttons', () => {

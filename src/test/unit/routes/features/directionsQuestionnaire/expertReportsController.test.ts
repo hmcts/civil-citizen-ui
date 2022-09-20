@@ -27,7 +27,7 @@ describe('Sent Expert Reports Controller', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DQ_SENT_EXPERT_REPORTS_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Have you tried sent expert reports to the claimant?');
+        expect(res.text).toContain('Have you already sent expert reports to the claimant?');
       });
     });
 
