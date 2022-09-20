@@ -38,6 +38,8 @@ import {getLng} from '../../common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
 import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType';
 import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
+import {ResponseOptions} from '../../common/form/models/responseDeadline';
+import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
 
 export class Claim {
   legacyCaseReference: string;
@@ -79,6 +81,7 @@ export class Claim {
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
   determinationWithoutHearing: DeterminationWithoutHearing;
+  respondentSolicitor1AgreedDeadlineExtension?:Date;
   directionQuestionnaire?: DirectionQuestionnaire;
 
   getClaimantName(): string {
@@ -236,6 +239,10 @@ export class Claim {
     return this.respondent1?.type === CounterpartyType.COMPANY || this.respondent1?.type === CounterpartyType.ORGANISATION;
   }
 
+  isDeadlineExtended(): boolean {
+    return this.responseDeadline?.option === ResponseOptions.ALREADY_AGREED && this.respondentSolicitor1AgreedDeadlineExtension !== undefined;
+  }
+
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
       return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
@@ -257,6 +264,18 @@ export class Claim {
       return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
     }
 
+  }
+
+  hasRespondentAskedForMoreThan28Days(): boolean {
+    return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
+  }
+
+  isRequestToExtendDeadlineRefused(): boolean {
+    return this.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED;
+  }
+
+  isResponseToExtendDeadlineNo(): boolean {
+    return this.responseDeadline?.option === ResponseOptions.NO;
   }
 
 }
