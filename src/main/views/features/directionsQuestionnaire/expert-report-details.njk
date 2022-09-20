@@ -7,7 +7,7 @@
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
-{% from "../../macro/transaction-details.njk" import transactionDetails, otherTransactionDetails %}
+{% from "../../macro/report-detail.njk" import reportDetail %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE') }}
@@ -27,23 +27,31 @@
               }) }}
             {% endset %}
 
-  {% set checkedOtherHtml %}
-    <div class="govuk-form-group">
-      {% for transactionSource in form.model.other.transactionSources %}
-        {% if form.model.other.transactionSources.length < rowNumberToShowRemoveButton %}
-          {{ otherTransactionDetails( t,'model[other][transactionSources]', loop.index0, transactionSource, {name: incomeSourceLabel, amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form, {text: t('PAGES.REGULAR_INCOME.REMOVE_INCOME'), hidden:true}) }}
-        {% else %}
-          {{ otherTransactionDetails( t,'model[other][transactionSources]', loop.index0, transactionSource, {name: incomeSourceLabel, amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form, {text:t('PAGES.REGULAR_INCOME.REMOVE_INCOME')}) }}
-        {% endif %}
-      {% endfor %}
-    </div>
-    <div class="govuk-form-group">
-      {{ govukButton({
-        text: t("PAGES.REGULAR_INCOME.BUTTON_ADD_SOURCE"),
-        classes: "govuk-button--secondary append-row"
-      }) }}
-    </div>
-  {% endset -%}
+ {% set reportDetailsHtml %}
+                <div
+                  class="govuk-form-group {% if atLeastOneCourtOrderError %} govuk-form-group--error {% endif %}">
+                  {% if atLeastOneCourtOrderError %}
+                    <p class="govuk-error-message">
+                      <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(atLeastOneCourtOrderError) }}
+                    </p>
+                  {% endif %}
+
+                  {% for row in form.model.reportDetails %}
+                    {{ reportDetail(loop.index0, row, form.errorFor, t) }}
+                  {% endfor %}
+
+                  <div class="moj-button-action">
+                    {{ govukButton({
+                      text: t('PAGES.COURT_ORDERS.ADD_ANOTHER'),
+                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                      type: 'button',
+                      attributes: {
+                        'id': 'add-another-court-order'
+                      }
+                    }) }}
+                  </div>
+                </div>
+              {% endset -%}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -58,7 +66,7 @@
           <h1 class="govuk-heading-l">{{ t('PAGES.EXPERT_REPORT_DETAILS.TITLE') }}</h1>
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t, 'hasExportReports', 'hasExportReports', '', form, '', {yesHtml: checkedOtherHtml}) }}
+            {{ yesNoRadioButton(t, 'hasExportReports', 'hasExportReports', '', form, '', {yesHtml: reportDetailsHtml}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
