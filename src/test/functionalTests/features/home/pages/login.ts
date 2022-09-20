@@ -9,12 +9,17 @@ const fields = {
 const buttons = {
   submit: 'input.button',
   hmctsSignIn: 'input[type="submit"]',
+  acceptCookies: 'button[id="cookie-accept-submit"]',
 };
 
 export class LoginPage {
 
   open (): void {
     I.amOnPage('/');
+  }
+
+  acceptCookies (): void {
+    I.click(buttons.acceptCookies);
   }
 
   login (email: string | undefined, password: string | undefined): void {

@@ -6,8 +6,13 @@ const loginPage: LoginPage = new LoginPage();
 
 export class LoginSteps {
 
-  EnterUserCredentials (username: string | undefined, password: string | undefined): void {
+  AcceptCookies(): void {
+    loginPage.acceptCookies();
+  }
+
+  EnterUserCredentials (username: string | undefined, password: string | undefined): void {    
     loginPage.open();
+    this.AcceptCookies();
     loginPage.login(username, password);
   }
 }

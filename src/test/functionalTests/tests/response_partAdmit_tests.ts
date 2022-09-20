@@ -18,7 +18,7 @@ Before(() => {
   loginSteps.EnterUserCredentials(config.Username, config.Password);
 });
 
-Scenario('Response with PartAdmit and Immediate payment @citizenUI @partAdmit', () => {
+Scenario('Response with PartAdmit and Immediate payment @test @citizenUI @partAdmit', () => {
   commonSteps.EnterPersonalDetails(claimRef);
   responseSteps.EnterResponseToClaim(claimRef, partAdmit);
   responseSteps.SelectPartAdmitAlreadyPaid('yes');
