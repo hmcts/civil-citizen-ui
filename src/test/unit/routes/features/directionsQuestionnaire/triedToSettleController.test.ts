@@ -4,7 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
-  EXPERT_GUIDANCE_URL,
+  DQ_REQUEST_EXTRA_4WEEKS_URL,
 } from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -58,7 +58,7 @@ describe('Tried to Settle Claim Controller', () => {
       await request(app).post(DQ_TRIED_TO_SETTLE_CLAIM_URL).send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(EXPERT_GUIDANCE_URL);
+          expect(res.get('location')).toBe(DQ_REQUEST_EXTRA_4WEEKS_URL);
         });
     });
 
@@ -66,7 +66,7 @@ describe('Tried to Settle Claim Controller', () => {
       await request(app).post(DQ_TRIED_TO_SETTLE_CLAIM_URL).send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(EXPERT_GUIDANCE_URL);
+          expect(res.get('location')).toBe(DQ_REQUEST_EXTRA_4WEEKS_URL);
         });
     });
 
