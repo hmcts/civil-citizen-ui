@@ -11,11 +11,12 @@ export class DirectionQuestionnaire {
   defendantYourselfEvidence?: GenericYesNo;
   expertReports?: ExpertReports;
 
-  constructor(triedToSettle?: GenericYesNo, defendantExpertEvidence?: GenericYesNo, requestExtra4weeks?: GenericYesNo, sharedExpert?: GenericYesNo, defendantYourselfEvidence?: GenericYesNo) {
+  constructor(triedToSettle?: GenericYesNo, defendantExpertEvidence?: GenericYesNo, requestExtra4weeks?: GenericYesNo, sharedExpert?: GenericYesNo, defendantYourselfEvidence?: GenericYesNo, expertReports?: ExpertReports) {
     this.triedToSettle = triedToSettle;
     this.defendantExpertEvidence = defendantExpertEvidence;
     this.requestExtra4weeks = requestExtra4weeks;
     this.sharedExpert = sharedExpert;
     this.defendantYourselfEvidence = defendantYourselfEvidence;
+    this.expertReports = expertReports;
   }
 }
