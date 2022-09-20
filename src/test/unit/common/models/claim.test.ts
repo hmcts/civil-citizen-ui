@@ -8,10 +8,6 @@ import {
 import {StatementOfMeans} from '../../../../main/common/models/statementOfMeans';
 import {Disability} from '../../../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../../../main/common/form/models/yesNo';
-import {SevereDisability} from '../../../../main/common/form/models/statementOfMeans/severeDisability';
-import {PartnerDisability} from '../../../../main/common/form/models/statementOfMeans/partner/partnerDisability';
-import {Cohabiting} from '../../../../main/common/form/models/statementOfMeans/partner/cohabiting';
-import {ChildrenDisability} from '../../../../main/common/form/models/statementOfMeans/dependants/childrenDisability';
 import {Dependants} from '../../../../main/common/form/models/statementOfMeans/dependants/dependants';
 import civilClaimResponseApplicantCompany from '../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
 import civilClaimResponseApplicantIndividual from '../../../utils/mocks/civilClaimResponseApplicanIndividualMock.json';
@@ -25,6 +21,7 @@ import PaymentOptionType from '../../../../main/common/form/models/admission/pay
 import {mockClaim} from '../../../utils/mockClaim';
 import {DocumentType} from '../../../../main/common/models/document/documentType';
 import {CaseState} from '../../../../main/common/form/models/claimDetails';
+import {GenericYesNo} from '../../../../main/common/form/models/genericYesNo';
 
 describe('Claim isInterestClaimUntilSubmitDate', () => {
   const claim = new Claim();
@@ -215,7 +212,7 @@ describe('Claim isDefendantSeverlyDisabled', () => {
   });
   it('should return false with empty severe disability', () => {
     //Given
-    claim.statementOfMeans.severeDisability = new SevereDisability();
+    claim.statementOfMeans.severeDisability = new GenericYesNo();
     //When
     const result = claim.isDefendantSeverelyDisabled();
     //Then
@@ -257,7 +254,7 @@ describe('Claim isPartnerDisabled', () => {
   });
   it('should return false with empty partrner disability', () => {
     //Given
-    claim.statementOfMeans.partnerDisability = new PartnerDisability();
+    claim.statementOfMeans.partnerDisability = new GenericYesNo();
     //When
     const result = claim.isPartnerDisabled();
     //Then
@@ -273,7 +270,7 @@ describe('Claim isPartnerDisabled', () => {
   });
   it('should return false with empty cohabiting ', () => {
     //Given
-    claim.statementOfMeans.cohabiting = new Cohabiting();
+    claim.statementOfMeans.cohabiting = new GenericYesNo();
     //When
     const result = claim.isPartnerDisabled();
     //Then
@@ -325,7 +322,7 @@ describe('Claim isChildrenDisabled', () => {
   });
   it('should return false with empty partrner disability', () => {
     //Given
-    claim.statementOfMeans.childrenDisability = new ChildrenDisability();
+    claim.statementOfMeans.childrenDisability = new GenericYesNo();
     //When
     const result = claim.isChildrenDisabled();
     //Then
@@ -725,6 +722,144 @@ describe('Documents', () => {
       claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
       //When
       const result = claim.isDefendantNotResponded();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isBusiness', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with individual type', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with sole trader', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with company type', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.COMPANY;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true with organisation trader', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isBusiness', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with individual type', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with sole trader', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with company type', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.COMPANY;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true with organisation trader', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isBusiness', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with individual type', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with sole trader', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with company type', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.COMPANY;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true with organisation trader', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      //When
+      const result = claim.isBusiness();
       //Then
       expect(result).toBe(true);
     });

@@ -23,6 +23,7 @@ describe('Free Telephone Mediation View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: Element;
     let paragraphs: HTMLCollection;
 
     beforeEach(async () => {
@@ -33,7 +34,8 @@ describe('Free Telephone Mediation View', () => {
       const response = await request(app).get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
-      paragraphs = htmlDocument.getElementsByClassName(govukBodyClass);
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
+      paragraphs = mainWrapper.getElementsByClassName(govukBodyClass);
     });
 
     it('should have correct page title', () => {
@@ -46,7 +48,7 @@ describe('Free Telephone Mediation View', () => {
     });
 
     it('should display two h2 headers', () => {
-      const headers = htmlDocument.querySelectorAll('h2.govuk-heading-m');
+      const headers = mainWrapper.querySelectorAll('h2.govuk-heading-m');
       expect(headers.length).toEqual(2);
       expect(headers[0].innerHTML).toContain('How free mediation works');
       expect(headers[1].innerHTML).toContain('Reaching a settlement');
@@ -120,7 +122,7 @@ describe('Free Telephone Mediation View', () => {
     });
 
     it('should display continue button with correct path for the business', () => {
-      const continueButton = htmlDocument.getElementsByClassName('govuk-button')[0];
+      const continueButton = mainWrapper.getElementsByClassName('govuk-button')[0];
       expect(continueButton.innerHTML).toContain('Continue');
       expect(continueButton.getAttribute('href')).toContain('/can-we-use-company');
     });
@@ -130,7 +132,8 @@ describe('Free Telephone Mediation View', () => {
       const response = await request(app).get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
-      const continueButton = htmlDocument.getElementsByClassName('govuk-button')[0];
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
+      const continueButton = mainWrapper.getElementsByClassName('govuk-button')[0];
       expect(continueButton.innerHTML).toContain('Continue');
       expect(continueButton.getAttribute('href')).toContain('/can-we-use');
     });

@@ -17,6 +17,8 @@ describe('Response Deadline Options View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: Element;
+
     beforeEach(async () => {
       nock(idamUrl)
         .post('/o/token')
@@ -25,6 +27,7 @@ describe('Response Deadline Options View', () => {
       const response = await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have title set', () => {
@@ -37,7 +40,7 @@ describe('Response Deadline Options View', () => {
     });
 
     it('should display current response deadline sub header', () => {
-      const subHeader = htmlDocument.getElementsByClassName('govuk-heading-m');
+      const subHeader = mainWrapper.getElementsByClassName('govuk-heading-m');
       expect(subHeader[0].innerHTML).toContain('Current response deadline: 4pm on 15 May 2025');
     });
 
@@ -73,7 +76,7 @@ describe('Response Deadline Options View', () => {
     });
 
     it('should display save and continue button', () => {
-      const button = htmlDocument.getElementsByClassName('govuk-button')[0];
+      const button = mainWrapper.getElementsByClassName('govuk-button')[0];
       expect(button.innerHTML).toContain('Save and continue');
     });
 

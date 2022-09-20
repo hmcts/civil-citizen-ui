@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {
-  ELIGIBILITY_HELP_WITH_FEES_REFERENCE,
+  ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL,
 } from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
@@ -23,13 +23,16 @@ describe('Help with fees reference view', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: Element;
+
     beforeEach(async () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).get(ELIGIBILITY_HELP_WITH_FEES_REFERENCE);
+      const response = await request(app).get(ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have correct page title', () => {
@@ -54,7 +57,7 @@ describe('Help with fees reference view', () => {
     });
 
     it('should display Save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
+      const buttons = mainWrapper.getElementsByClassName('govuk-button');
       expect(buttons[0].innerHTML).toContain(t('COMMON.BUTTONS.SAVE_AND_CONTINUE'));
     });
 
@@ -73,20 +76,21 @@ describe('Help with fees reference view', () => {
         const title = htmlDocument.getElementsByClassName('govuk-heading-s');
         expect(title[0].innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.DECIDE'));
       });
+
       it('should display paragraphs', async () => {
-        const paragraphs = htmlDocument.getElementsByClassName('govuk-body');
+        const paragraphs = mainWrapper.getElementsByClassName('govuk-body');
         expect(paragraphs[0].innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.MAKE_CLAIM_USING'));
         expect(paragraphs[1].innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.WHEN_YOU_APPLY'));
         expect(paragraphs[2].innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.MAKE_A_NOTE'));
         expect(paragraphs[3].innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.WILL_NEED'));
       });
-      it('should have external links', () => {
-        const links = htmlDocument.getElementsByClassName('govuk-link');
-        const feelsHelpUrl = links[2] as HTMLAnchorElement;
-        expect(feelsHelpUrl.innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.APPLY_FOR_HELP_LINK'));
-        expect(feelsHelpUrl.href).toEqual(externalURLs.feesHelpUri);
-      });
 
+      it('should have external links', () => {
+        const links = mainWrapper.getElementsByClassName('govuk-link');
+        const feelsHelpUrl = links[0] as HTMLAnchorElement;
+        expect(feelsHelpUrl.innerHTML).toContain(t('PAGES.ELIGIBILITY_HWF_REFERENCE.APPLY_FOR_HELP_LINK'));
+        expect(feelsHelpUrl.href).toEqual(externalURLs.feesHelpUrl);
+      });
     });
   });
 
@@ -96,7 +100,7 @@ describe('Help with fees reference view', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      const response = await request(app).post(ELIGIBILITY_HELP_WITH_FEES_REFERENCE);
+      const response = await request(app).post(ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });
@@ -109,14 +113,14 @@ describe('Help with fees reference view', () => {
     it('should display correct error summary message with correct link', () => {
       const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
         .getElementsByTagName('li')[0];
-      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_SELECTION);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_OPTION);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#option');
     });
 
     it('should display correct error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      expect(errorMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_SELECTION);
+      expect(errorMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_OPTION);
     });
   });
 });

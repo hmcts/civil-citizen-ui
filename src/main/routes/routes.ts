@@ -108,6 +108,15 @@ import accessDeniedController from './features/public/firstContact/accessDeniedC
 import claimReferenceController from './features/public/firstContact/claimReferenceController';
 import pinController from './features/public/firstContact/pinController';
 import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
+import eligibleController from './features/public/eligibility/eligibleController';
+import claimantPartyTypeController from './features/public/claim/claimantPartyTypeController';
+import completingClaimController from './features/claim/completingClaimController';
+import submitComfirmationController from './features/response/submitComfirmationController';
+import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
+import cookiesController from './features/public/cookiesController';
+import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
+import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
+import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
 
 export default [
@@ -207,5 +216,14 @@ export default [
   claimReferenceController,
   pinController,
   firstContactClaimSummaryController,
+  eligibleController,
+  claimantPartyTypeController,
+  completingClaimController,
+  submitComfirmationController,
+  resolvingThisDisputeController,
+  cookiesController,
+  sharedExpertController,
+  triedToSettleController,
+  requestExtra4WeeksController,
   claimantIndividualDetailsController,
 ];

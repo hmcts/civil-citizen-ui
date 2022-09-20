@@ -15,7 +15,7 @@ import PaymentOptionType from '../../../../../main/common/form/models/admission/
 import {StatementOfMeans} from '../../../../../main/common/models/statementOfMeans';
 import {Disability} from '../../../../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {SevereDisability} from '../../../../../main/common/form/models/statementOfMeans/severeDisability';
+import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -184,7 +184,7 @@ describe('Response Task List service', () => {
       caseData.taskSharedFinancialDetails = true;
       caseData.statementOfMeans = new StatementOfMeans();
       caseData.statementOfMeans.disability = new Disability();
-      caseData.statementOfMeans.severeDisability = new SevereDisability();
+      caseData.statementOfMeans.severeDisability = new GenericYesNo();
       caseData.statementOfMeans.disability.option = YesNo.YES;
       caseData.statementOfMeans.severeDisability.option = YesNo.NO;
 

@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {
-  ELIGIBILITY_HWF_ELIGIBLE, ELIGIBILITY_HELP_WITH_FEES_REFERENCE, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE,
+  ELIGIBILITY_HWF_ELIGIBLE_URL, ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL, ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,
 } from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
@@ -15,14 +15,14 @@ function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Re
   res.render(helpWithFeesViewPath, {form});
 }
 
-helpWithFeesReferenceController.get(ELIGIBILITY_HELP_WITH_FEES_REFERENCE, (req, res) => {
+helpWithFeesReferenceController.get(ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL, (req, res) => {
   const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
   const hwfReference = cookie.hwfReference;
   const genericYesNoForm = new GenericForm(new GenericYesNo(hwfReference));
   renderView(genericYesNoForm, res);
 });
 
-helpWithFeesReferenceController.post(ELIGIBILITY_HELP_WITH_FEES_REFERENCE, (req, res) => {
+helpWithFeesReferenceController.post(ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL, (req, res) => {
   const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
   genericYesNoForm.validateSync();
 
@@ -33,8 +33,8 @@ helpWithFeesReferenceController.post(ELIGIBILITY_HELP_WITH_FEES_REFERENCE, (req,
     cookie.hwfReference = genericYesNoForm.model.option;
     res.cookie('eligibility', cookie);
     genericYesNoForm.model.option === YesNo.YES
-      ? res.redirect(ELIGIBILITY_HWF_ELIGIBLE_REFERENCE)
-      : res.redirect(ELIGIBILITY_HWF_ELIGIBLE);
+      ? res.redirect(ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL)
+      : res.redirect(ELIGIBILITY_HWF_ELIGIBLE_URL);
   }
 });
 

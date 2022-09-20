@@ -17,6 +17,7 @@ describe('Determination Without Hearing View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       nock(idamUrl)
@@ -26,6 +27,7 @@ describe('Determination Without Hearing View', () => {
       const response = await request(app).get(DETERMINATION_WITHOUT_HEARING_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have page title', () => {
@@ -39,12 +41,12 @@ describe('Determination Without Hearing View', () => {
 
     it('should display paragraph', () => {
       const expectedText = 'i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?';
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body')[0];
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
       expect(paragraph.innerHTML).toContain(expectedText);
     });
 
     it('should display bold text in paragraph', () => {
-      const boldText = htmlDocument.getElementsByClassName('govuk-body')[0]
+      const boldText = mainWrapper.getElementsByClassName('govuk-body')[0]
         .getElementsByClassName('govuk-!-font-weight-bold')[0];
       expect(boldText.innerHTML).toContain('Do you consider that this claim is suitable for determination without a hearing');
     });
@@ -63,7 +65,7 @@ describe('Determination Without Hearing View', () => {
     });
 
     it('should display save and continue button', () => {
-      const saveButton = htmlDocument.getElementsByClassName('govuk-button')[0];
+      const saveButton = mainWrapper.getElementsByClassName('govuk-button')[0];
       expect(saveButton.innerHTML).toContain('Save and continue');
     });
 

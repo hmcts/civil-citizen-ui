@@ -17,6 +17,7 @@ describe('Respond to Claim - Pin', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
+  let mainWrapper: Element;
 
   describe('on GET', () => {
     beforeEach(async () => {
@@ -26,6 +27,7 @@ describe('Respond to Claim - Pin', () => {
       const res = await request(app).get(FIRST_CONTACT_PIN_URL);
       const dom = new JSDOM(res.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have correct page title', () => {
@@ -38,7 +40,7 @@ describe('Respond to Claim - Pin', () => {
     });
 
     it('should display include help text', () => {
-      const subHeader = htmlDocument.getElementsByClassName('govuk-body');
+      const subHeader = mainWrapper.getElementsByClassName('govuk-body');
       expect(subHeader[0].innerHTML).toContain(t('PAGES.PIN.FIND_PIN'));
     });
 
@@ -48,8 +50,8 @@ describe('Respond to Claim - Pin', () => {
     });
 
     it('should display save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
-      expect(buttons[0].innerHTML).toContain('Save and continue');
+      const button = mainWrapper.getElementsByClassName('govuk-button');
+      expect(button[0].innerHTML).toContain('Save and continue');
     });
 
     it('should contain contact us detail component', () => {

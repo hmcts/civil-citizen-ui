@@ -15,6 +15,7 @@
     "DASHBOARD": "Dashboard",
     "DAY": "Diwrnod",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
+    "GO_TO_HOMEPAGE": "Go to homepage",
     "MONTH": "Mis",
     "MONTHS": "Mis",
     "NO": "Nac oes",
@@ -33,7 +34,9 @@
     "BUTTONS": {
       "BACK": "Back",
       "CONTINUE": "Parhau",
+      "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
+      "SAVE": "Save",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "START_AGAIN": "Start again",
       "SUBMIT_RESPONSE": "Submit Response"
@@ -63,6 +66,19 @@
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_NO_ADVISORS": "Nid oes cynghorwyr ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen.",
       "WEB_CHAT_UNAVAILABLE": "Nid yw'r gwasanaeth sgwrsio ar y we ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen."
+    },
+    "COOKIE_BANNER": {
+      "ACCEPT_BUTTON": "Accept additional cookies",
+      "ADDITIONAL_COOKIES_MESSAGE": "We'd like to set additional cookies so we can remember your settings, understand how people use the service and to improve government services.",
+      "CHANGE": "You can CHANGE_HTML at any time.",
+      "CHANGE_LINK": "change your cookie settings",
+      "COOKIES_ACCEPTED": "You've accepted additional cookies.",
+      "COOKIES_REJECTED": "You have rejected additional cookies.",
+      "ESSENTIAL_COOKIES_MESSAGE": "We use some essential cookies to make this service work.",
+      "HIDE_THIS_MESSAGE": "Hide this message",
+      "REJECT_BUTTON": "Reject additional cookies",
+      "TITLE": "Cookies on Money Claims",
+      "VIEW_COOKIES": "View cookies"
     },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Tystiolaeth",
@@ -448,6 +464,24 @@
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
       "WHAT_HAPPENED": "Beth ddigwyddodd"
     },
+    "CLAIM_JOURNEY": {
+      "RESOLVE_THE_DISPUTE": {
+        "P1": {
+          "BEFORE_YOU_CLAIM": "Before you claim you should:",
+          "CONSIDER_MEDIATION": "consider mediation",
+          "TALK_TO_THE_PERSON": "talk to the person or organisation you want to claim against"
+        },
+        "P2": {
+          "HEADING": "Talk to the person or organisation",
+          "MAKE_A_CLAIM": "explaining you'll make a claim against them if they don't follow your timetable",
+          "SUGGESTING_TIMETABLE": "suggesting timetable with actions you want them to take",
+          "TELLING_THEM_WHY": "telling them why you intend to make a claim against them",
+          "TRY_TO_RESOLVE": "Try to resolve the dispute by:"
+        },
+        "PAGE_TITLE": "Try to resolve the dispute",
+        "TITLE": "Try to resolve the dispute"
+      }
+    },
     "CLAIM_SUMMARY": {
       "ABOUT_CLAIM": "Am hawliad",
       "CLAIM_AMOUNT": "Swm yr hawliad:",
@@ -464,6 +498,19 @@
       "LATEST_UPDATE": "Diweddariad diweddaraf",
       "VIEW_CLAIM": "Gweld yr hawliad"
     },
+    "CLAIMANT_PARTY_TYPE_SELECTION": {
+      "CLAIMING_AS_HEADER": "I'm claiming as:",
+      "CLAIMING_AS_AN_INDIVIDUAL": "An individual",
+      "CLAIMING_AS_SOLE_TRADER_OR_SELF_EMPLOYED": "A sole trader or self-employed person",
+      "CLAIMING_AS_LIMITED_COMPANY": "A limited company",
+      "CLAIMING_AS_ORGANISATION": "Another type of organisation",
+      "CLAIMING_FOR_YOURSELF": "You're claiming for yourself",
+      "CLAIMING_FOR_EXAMPLE_TRADEPERSON": "For example a tradesperson",
+      "CLAIMING_FOR_EXAMPLE_COMPANY": "For example a company that sells goods or services",
+      "CLAIMING_FOR_EXAMPLE_PARTNERSHIP_TRUST_CHARITY_CLUB_OR_ASSOCIATION": "For example a partnership, trust, charity, club or association",
+      "PAGE_TITLE": "About you and this claim",
+      "TITLE": "About you and this claim"
+    },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
       "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
@@ -471,19 +518,26 @@
       "CLAIMANT_DETAILS_PROVIDED": "Darparwyd eich enw a'ch cyfeiriad gan yr unigolyn, y busnes neu'r sefydliad sy'n cyflwyno'r hawliad (yr hawlydd).",
       "COMPANY_ADDRESS": "Company address",
       "COMPANY_NAME": "Company name",
-      "CONTACT_NAME_OPTIONAL": "Contact name (optional)",
+      "CONTACT_NAME_OPTIONAL": "Enw cyswllt (dewisol)",
       "CORRESPONDENCE_ADDRESS": "Gohebiaeth cyfeiriad",
       "DIFFERENT_ADDRESS_CORRESPONDENCE": "Ydych chi am inni anfon gohebiaeth i gyfeiriad arall?",
       "FIND_ADDRESS": "Dod o hyd i gyfeiriad",
       "HEADING": "Cadarnhau eich manylion",
       "MANUAL_ADDRESS": "Teipio'r cyfeiriad'",
-      "ORGANISATION_ADDRESS": "Organisation address",
-      "ORGANISATION_NAME": "Organisation name",
+      "ORGANISATION_ADDRESS": "Cyfeiriad y sefydliad",
+      "ORGANISATION_NAME": "Enw'r sefydliad",
       "PAGE_TITLE": "Company details",
       "PICK_ADDRESS": "Pick an address",
       "TRY_AGAIN": "Try again or enter the address manually.",
       "UK_POSTCODE": "Rhowch god post yn y DU",
       "YES_CORRESPONDENCE": "Ydw. Ychwanegu cyfeiriad ar gyfer gohebiaeth"
+    },
+    "COMPLETING_CLAIM": {
+      "ADD_INFORMATION": "add information that significantly change your claim",
+      "CHANGE_THE_BASIS": "change the basis of your claim - for example, saying goods were undelivered instead of faulty",
+      "CHANGE_THE_NAME": "change the name of anyone involved with the claim",
+      "PAGE_TITLE": "Get the details right",
+      "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
     },
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
@@ -493,6 +547,94 @@
       "EMAIL": "E-bost",
       "PAGE_TITLE": "Contact claimant",
       "PHONE": "Rhif ffôn"
+    },
+    "COOKIES": {
+      "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",
+      "ANALYTICS_COOKIE_OPTIONS": {
+        "HEADING": "Allow cookies that measure website use?",
+        "ON_OPTION": "Use cookies that measure my website use",
+        "OFF_OPTION": "Do not use cookies that measure my website use"
+      },
+      "BULLET_LIST1": {
+        "FIRST": "store your cookie preferences",
+        "SECOND": "measure how you use the service so it can be improved"
+      },
+      "BULLET_LIST2": {
+        "FIRST": "Site performance",
+        "SECOND": "Website usage",
+        "THIRD": "User behaviour"
+      },
+      "COOKIE_DETAILS1": {
+        "GA": {
+          "NAME": "_ga",
+          "PURPOSE": "This helps us count how many people visit the service by tracking if you’ve visited before",
+          "EXPIRES": "2 years"
+        },
+        "GID": {
+          "NAME": "_gid",
+          "PURPOSE": "Identifies you to the service",
+          "EXPIRES": "24 hours"
+        },
+        "GAT": {
+          "NAME": "_gat",
+          "PURPOSE": "Manages the rate at which page view requests are made",
+          "EXPIRES": "10 minutes"
+        }
+      },
+      "COOKIE_DETAILS2": {
+        "DTCOOKIE": {
+          "NAME": "dtCookie",
+          "PURPOSE": "Tracks a visit across multiple request",
+          "EXPIRES": "Session end"
+        },
+        "DTLATC": {
+          "NAME": "dtLatC",
+          "PURPOSE": "Measures server latency for performance monitoring",
+          "EXPIRES": "Session end"
+        },
+        "DTPC": {
+          "NAME": "dtPC",
+          "PURPOSE": "Required to identify proper endpoints for beacon transmission; includes session ID for correlation",
+          "EXPIRES": "Session end"
+        },
+        "DTSA": {
+          "NAME": "dtSa",
+          "PURPOSE": "Intermediate store for page-spanning actions",
+          "EXPIRES": "Session end"
+        },
+        "RXVISITOR": {
+          "NAME": "rxVisitor",
+          "PURPOSE": "Visitor ID to correlate sessions",
+          "EXPIRES": "1 year"
+        },
+        "RXVT": {
+          "NAME": "rxvt",
+          "PURPOSE": "Session timeout",
+          "EXPIRES": "Session end"
+        }
+      },
+      "COOKIES_EXPLANATION1": "Cookies are files saved on your phone, tablet or computer when you visit a website. Most websites need cookies to work properly",
+      "COOKIES_EXPLANATION2": "This service uses cookies to:",
+      "COOKIES_EXPLANATION3": "We use Google Analytics software to collect information about how you use this service. We do this to help make sure the service is meeting the needs of its users and to help us make improvements. We do not allow Google to use or share the data about how you use this site.",
+      "COOKIES_EXPLANATION4": "We use Dynatrace Software Intelligence Platform to provide an Application Performance Monitoring Service to collect information about how you use HMCTS services. We do this to monitor HMCTS services in order to resolve issues within our services as well as collect data on how our services can be improved. HMCTS store information about:",
+      "COOKIES_EXPLANATION5": "Information is presented within the Application Performance Monitoring service for the purposes detailed above. We do not use or share the information for any other purpose. We do not allow Dynatrace to use or share the information for any other purposes.",
+      "COOKIES_EXPLANATION6": "These essential cookies do things like making the service more secure. They always need to be on.",
+      "COOKIE_SETTINGS_SAVED": "Your cookie settings were saved",
+      "EXPIRES": "Expires",
+      "FIND_MORE_ABOUT_COOKIES": "Find out more about essential cookies",
+      "HEADING": "How cookies are used in this service",
+      "NAME": "Name",
+      "PERFORMANCE_COOKIE_OPTIONS": {
+        "HEADING": "Allow cookies that measure website application performance monitoring?",
+        "ON_OPTION": "Use cookies that measure website application performance monitoring",
+        "OFF_OPTION": "Do not use cookies that measure website application performance monitoring"
+      },
+      "PURPOSE": "Purpose",
+      "SUBHEADING1": "To measure website usage",
+      "SUBHEADING2": "Cookie details",
+      "SUBHEADING3": "To measure application performance",
+      "SUBHEADING4": "Essential cookies",
+      "TITLE": "Cookies"
     },
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
@@ -731,7 +873,7 @@
       "SUBTITLE": "If you don't respond",
       "TITLE": "Respond to a money claim",
       "PAGE_TITLE": "Respond to a money claim",
-      "PARAGRAPH_1": "You have 19 days to respond to the claim from the date the court issued it.",
+      "PARAGRAPH_1": "You have 28 days to respond to the claim from the date the court issued it.",
       "PARAGRAPH_2": "Find the exact deadline date in the letter or email you received explaining the claim.",
       "PARAGRAPH_3": "We'll send your response to the claimant (the person or organisation who says you owe them money).",
       "PARAGRAPH_4_CCJ_URL": "County Court Judgment (CCJ) ",
@@ -813,7 +955,12 @@
       "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment."
     },
     "MEDIATION_CAN_WE_USE": {
-      "PAGE_TITLE": "Mediation - Provide a phone number"
+      "CAN_MEDIATION_USE": "A all y gwasanaeth cyfryngu ddefnyddio’r rhif {{ respondentTelNumber }} i’ch ffonio?",
+      "CONFIRM_YOUR_NUMBER": "Cadarnhewch eich rhif ffôn",
+      "ENTER_PHONE_NUMBER": "Rhowch rif ffôn",
+      "ENTER_PHONE_FOR_DIRECT_LINE": "Nodwch rif ffôn uniongyrchol gall y gwasanaeth cyfryngu ei ddefnyddio i gysylltu â chi.",
+      "PAGE_TITLE": "Mediation - Provide a phone number",
+      "WONT_GIVE_NUMBER": "Ni fyddwn yn rhoi'r rhif i rywun arall."
     },
     "MEDIATION_COMPANY_PHONE": {
       "CONFIRM_TELEPHONE_NUMBER": "Cadarnhau'r rhif ffôn",
@@ -1032,22 +1179,28 @@
       "SUBTITLE": "Y cyfanswm a hawlir yw £{{totalAmount}}. Mae hyn yn cynnwys ffi’r hawliad ac unrhyw log.",
       "TITLE": "Eich cynllun ad-dalu"
     },
+    "REQUEST_EXTRA_4WEEKS": {
+      "HINT": "You can use this time to try to settle the claim withoout going to a hearing. Settling without going to a hearing may avoid costs including fees.",
+      "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
+      "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
+      "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
+    },
     "REQUEST_MORE_TIME": {
-      "APPLY_TO_COURT": "You need to apply to the court to request more time.",
-      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "DOWNLOAD_FORM": "Download form N244 (opens in new tab)",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
-      "HOW_MUCH_ADDITIONAL_TIME": "How much additional time are you asking for?",
-      "IF_AGREED": "If agreed, extra time will start from {{ responseDeadline }}",
-      "MORE_THAN_28_DAYS": "More than 28 days",
-      "NO_AGREEMENT": "They do not have to agree to a request for more time.",
+      "APPLY_TO_COURT": "Mae angen i chi wneud cais i’r llys am ragor o amser.",
+      "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
+      "DOWNLOAD_FORM": "Dylech lawrlwytho ffurflen N244 (agor mewn tab newydd)",
+      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi ar e-bost i contact@justice.gov.uk",
+      "HOW_MUCH_ADDITIONAL_TIME": "Faint o amser ychwanegol yr ydych yn gwneud cais amdano?",
+      "IF_AGREED": "Os bydd y cais yn cael ei ganiatáu, bydd yr amser ychwanegol yn dechrau o {{ responseDeadline }}",
+      "MORE_THAN_28_DAYS": "Mwy na 28 diwrnod",
+      "NO_AGREEMENT": "Nid oes rhaid iddynt gytuno i gais am ragor o amser.",
       "PAGE_TITLE": "Request more time",
-      "POST": "Or, you can post the completed form to:",
-      "SELECT_SAVE_AND_CONTACT": "Select 'Save and continue' and contact {{ claimantName }}'s legal representative to request this.",
-      "SELECT_SAVE_AND_CONTINUE": "and select 'Save and continue'.",
-      "TELL_OTHER_PARTY": "You'll also need to tell the other party that you have applied to the court.",
-      "TITLE": "Request more time to respond",
-      "UP_TO_28_DAYS": "Up to 28 days"
+      "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
+      "SELECT_SAVE_AND_CONTACT": "Dewiswch ‘Cadw a pharhau’ a chysylltu â chynrychiolydd cyfreithiol {{ claimantName }} i ofyn am hyn.",
+      "SELECT_SAVE_AND_CONTINUE": " a dewis ‘Cadw a pharhau’.",
+      "TELL_OTHER_PARTY": "Bydd angen i chi hefyd ddweud wrth y parti arall eich bod wedi gwneud cais i’r llys.",
+      "TITLE": "Gwneud cais am ragor o amser i ymateb",
+      "UP_TO_28_DAYS": "Hyd at 28 diwrnod"
     },
     "RESIDENCE": {
       "ASSOCIATION_HOME": "Cartref cymdeithas dai neu'r cyngor",
@@ -1088,6 +1241,54 @@
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
     },
+    "SHARED_EXPERT": {
+      "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
+      "PAGE_TITLE": "Do you want to share an expert with the claimant?",
+      "PREPARE_REPORT": "They will prepare a report for the court on behalf of two or more of the parties, including the claimant.",
+      "SINGLE_JOINT_EXPERT": "This is known as a ’single joint expert’.",
+      "TITLE": "Want shared expert?"
+    },
+    "SUBMIT_CONFIRMATION": {
+      "FA_PAY_BY_DATE": {
+        "BANK_TRANSFERS_CLEAR_IN_THEIR_ACC": "make sure any cheques or bank transfers are clear in their account by the deadline",
+        "CONTACT_THEM": "contact them",
+        "PAY_CLAIMANT_BY_DATE": "pay {{ claimantName }} by {{ paymentDate }}",
+        "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for your payment",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{ claimantName }} your offer to pay by {{ paymentDate }} and your explanation of why you can’t pay before then.",
+        "YOU_SHOULD": "You should"
+      },
+      "FA_PAY_IMMEDIATELY": {
+        "BANK_TRANSFERS_CLEAR_IN_THEIR_ACC": "any cheques or bank transfers are clear in their account by the deadline",
+        "CONTACT_CLAIMANT": "Contact {{ claimantName }}",
+        "IF_NEED_THEIR_DETAILS": " if you need their payment details.",
+        "MAKE_SURE_THAT": "You need to make sure that",
+        "RECEIPT_FOR_PAYMENTS": "you get a receipt for any payments",
+        "THEY_CAN_REQUEST_CCJ": "they get the money by {{ paymentDate }} - they can request a County Court Judgment against you if not",
+        "THEY_CALL_COURT_FOR_YOU_PAID": "they tell the court that you’ve paid",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ll pay immediately."
+      },
+      "FA_PAY_BY_INSTALLMENTS": {
+        "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for each payment",
+        "SETUP_REPAYMENT_PLAN": "set up your repayment plan to begin when you said it would",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ve suggested paying by instalments."
+      },
+      "CLAIM_NUMBER": "Claim number",
+      "COURT_DECIDE_HOW_TO_PAY": "The court will decide how you must pay.",
+      "GET_FINANCIAL_DETAILS": "Get {{ claimantName }}’s financial details.",
+      "GO_TO_ACCOUNT": "Go to your account",
+      "IF_CLAIMANT_ACCEPTS_OFFER": "If {{ claimantName }} accepts your offer",
+      "IF_CLAIMANT_REJECTS_OFFER": "If {{ claimantName }} rejects your offer",
+      "PAGE_TITLE": "Submit Confirmation",
+      "REQUEST_CCJ_AGAINST_YOU": "request a County Court Judgment against you",
+      "SIGN_SETTLEMENT_AGREEMENT": "ask you to sign a settlement agreement to formalise the repayment plan",
+      "SEND_FINANCIAL_DETAILS": "Send your financial details",
+      "SEND_STATEMENT_OF_ACC": "Send {{ claimantName }} your company or organisation’s most recent statement of accounts, if you haven’t already.",
+      "WE_CONTACT_YOU": "We’ll contact you when they respond.",
+      "WHAT_HAPPENS_NEXT": "What happens next",
+      "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
+      "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either",
+      "YOUR_OPINION_OF_SERVICE": "What did you think of this service?"
+    },
     "TASK_LIST": {
       "PAGE_TITLE": "Your task list",
       "HEADER": "Respond to a money claim",
@@ -1095,6 +1296,15 @@
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
+    },
+    "TRIED_TO_SETTLE": {
+      "BOTH_PARTIES": "Both parties must take certain steps before going to court.",
+      "PAGE_TITLE": "Have you tried to settle this claim before going to court?",
+      "STEPS": "These steps are:",
+      "STEP_ONE": "discuss the claim and negotiate with each other",
+      "STEP_TWO": "try to reach an agreement about the claim",
+      "STEP_THREE": "consider another form of dispute resolution, such as mediation",
+      "TITLE": "Tried to settle this claim?"
     },
     "TRY_NEW_SERVICE": {
       "PAGE_TITLE": "Try the new online service",
@@ -1152,6 +1362,18 @@
       "EMPLOYER_NAME" : "Enw’r cyflogwr",
       "JOB_TITLE" : "Teitl swydd"
     },
+    "YOU_CAN_USE": {
+      "BASED_ON" : "Based on your answers you can make a money claim using this service.",
+      "HWF_ELIGIBLE" : {
+        "PAY_COURT" : "You will have to pay court fees unless you are eligible for Help with Fees. ",
+        "HELP_WITH_FEES" : "Find out more about Help with Fees (opens in a new window)"
+      },
+      "HWF_ELIGIBLE_REFERENCE" : {
+        "REMEMBER" : "Remember that you will not know about the fee until we have processed your Help with Fees application. Your claim will only be issued after Help with Fees is confirmed, or the fee is paid."
+      },
+      "PAGE_TITLE" : "You can use this service",
+      "TITLE" : "You can use this service"
+    },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
       "HEADER": "You've paid less than the total claim amount",
@@ -1208,8 +1430,8 @@
     "QUESTION_1_REQUIRED": "1. Do you believe you, or a witness who will give evidence on your behalf, are vulnerable in anyway which the Court needs to consider? is required",
     "QUESTION_2_REQUIRED": "Question 2: If you have answered \"yes\" to question 1, in what way/s are you/ the witness vulnerable and what steps, support or adjustments do you wish the Court to consider?",
     "REDIS_FAILURE": "Redis DraftStore failure.",
+    "SELECT_ADDITIONAL_TIME": "Dewiswch faint o amser ychwanegol yr ydych yn gwneud cais amdano",
     "SECURITY_CODE_WRONG_OR_EXPIRED": "The security code was not right or has expired",
-    "SELECT_ADDITIONAL_TIME": "Select how much additional time you are asking for",
     "SELECT_AN_OPTION": "Dewiswch opsiwn",
     "SELECT_AMOUNT": {
       "COUNCIL_TAX": "Nodwch faint o Dreth y Cyngor neu Dâl Cymunedol ydych chi'n ei dalu",
@@ -1331,8 +1553,11 @@
     "VALID_POSITIVE_NUMBER": "Peidiwch â rhoi rhif negyddol",
     "VALID_POSTCODE": "Rhowch y cod post",
     "VALID_REASON_REQUIRED": "Rhowch reswm",
+    "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
+    "VALID_SHARE_EXPERT": "Select yes if you want to share an expert with the claimant",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",
     "VALID_TEXT_LENGTH": "Rydych wedi defnyddio gormod o nodau",
+    "VALID_TRIED_TO_SETTLE": "Select yes if you have tried to settle this claim before going to court",
     "VALID_TWO_DECIMAL_NUMBER": "Rhowch swm, dim mwy na dau le degol",
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
