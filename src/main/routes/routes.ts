@@ -117,6 +117,7 @@ import cookiesController from './features/public/cookiesController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
 import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
+import expertReportsController from './features/directionsQuestionnaire/expertReportsController';
 
 export default [
   homeController,
@@ -224,4 +225,5 @@ export default [
   sharedExpertController,
   triedToSettleController,
   requestExtra4WeeksController,
+  expertReportsController,
 ];
