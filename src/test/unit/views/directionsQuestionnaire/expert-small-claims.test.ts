@@ -3,7 +3,7 @@ import nock from 'nock';
 import {app} from '../../../../main/app';
 import request from 'supertest';
 import {t} from 'i18next';
-import {DQ_EXPERT_REPORTS_URL, DQ_EXPERT_SMALL_CLAIMS_URL} from '../../../../main/routes/urls';
+import {DQ_EXPERT_REPORT_DETAILS_URL, DQ_EXPERT_SMALL_CLAIMS_URL} from '../../../../main/routes/urls';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -59,7 +59,7 @@ describe('Using an expert View', () => {
       const links = paragraphs[2].querySelectorAll('a');
       const dqExpertReportsLink = links[0] as HTMLAnchorElement;
       expect(dqExpertReportsLink.innerHTML).toContain(t('PAGES.EXPERT_SMALL_CLAIMS.NEEDS_AN_EXPERT'));
-      expect(dqExpertReportsLink.href).toEqual(DQ_EXPERT_REPORTS_URL);
+      expect(dqExpertReportsLink.href).toEqual(DQ_EXPERT_REPORT_DETAILS_URL);
     });
 
     it('should display contact us for Help', () => {
