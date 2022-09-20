@@ -192,6 +192,14 @@ export class Claim {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
   }
 
+  hasConfirmedAlreadyPaid(): boolean {
+    return this.rejectAllOfClaim.option === RejectAllOfClaimType.ALREADY_PAID
+  }
+
+  hasPaidInFull(): boolean {
+    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount
+  }
+
   extractDocumentId(): string {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
@@ -245,11 +253,8 @@ export class Claim {
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
 
-    if (this.isRejectAllOfClaimAlreadyPaid() && this.rejectAllOfClaim.option === RejectAllOfClaimType.ALREADY_PAID) {
-      if (this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount) {
-        return ClaimResponseStatus.RC_PAID_FULL;
-      }
-      return ClaimResponseStatus.RC_PAID_LESS;
+    if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
+      return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
     }
 
   }
