@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../main/app';
 import {mockCivilClaim} from '../../../utils/mockDraftStore';
-import {DQ_REQUEST_EXTRA_4WEEKS_URL} from '../../../../main/routes/urls';
+import {DQ_DEFENDANT_YOURSELF_EVIDENCE_URL} from '../../../../main/routes/urls';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -11,7 +11,7 @@ const {JSDOM} = jsdom;
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
 
-describe('Request extra 4 weeks to settle the claim view', () => {
+describe('Tried to settle the defendant yourself evidence view', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -24,29 +24,19 @@ describe('Request extra 4 weeks to settle the claim view', () => {
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockCivilClaim;
-      const response = await request(app).get(DQ_REQUEST_EXTRA_4WEEKS_URL);
+      const response = await request(app).get(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
       mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have page title', () => {
-      expect(htmlDocument.title).toEqual('Your money claims account - Do you want an extra 4 weeks to try to settle the claim?');
+      expect(htmlDocument.title).toEqual('Your money claims account - Defendant yourself evidence');
     });
 
     it('should display the header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
-      expect(header[0].innerHTML).toContain('Do you want an extra 4 weeks to try to settle the claim?');
-    });
-
-    it('should display hint for the title', () => {
-      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
-      expect(paragraph.innerHTML).toContain('You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.');
-    });
-
-    it('should display warning', () => {
-      const warning = htmlDocument.getElementsByClassName('govuk-warning-text__text')[0];
-      expect(warning.innerHTML).toContain('This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline.');
+      expect(header[0].innerHTML).toContain('Do you want to give evidence yourself?');
     });
 
     it('should display yes no radio buttons', () => {
@@ -74,7 +64,7 @@ describe('Request extra 4 weeks to settle the claim view', () => {
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockCivilClaim;
-      const response = await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL);
+      const response = await request(app).post(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });
@@ -82,12 +72,12 @@ describe('Request extra 4 weeks to settle the claim view', () => {
     it('should display error in the error summary', () => {
       const error = htmlDocument.getElementsByClassName('govuk-error-summary__list')[0]
         .getElementsByTagName('li')[0];
-      expect(error.innerHTML).toContain('Select yes if you want an extra 4 weeks to try to settle the claim');
+      expect(error.innerHTML).toContain('Select yes if you want to give evidence yourself');
     });
 
     it('should display error over radios', () => {
       const error = htmlDocument.getElementById('option-error');
-      expect(error?.innerHTML).toContain('Select yes if you want an extra 4 weeks to try to settle the claim');
+      expect(error?.innerHTML).toContain('Select yes if you want to give evidence yourself');
     });
   });
 });

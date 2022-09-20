@@ -1,59 +1,40 @@
 import * as express from 'express';
-import config from 'config';
-import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import {
   AGREED_TO_MORE_TIME_URL,
   CLAIM_TASK_LIST_URL,
   NEW_RESPONSE_DEADLINE_URL,
 } from '../../../urls';
 import {AppRequest} from '../../../../common/models/AppRequest';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {ResponseDeadlineService, setDate} from '../../../../services/features/response/responseDeadlineService';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {AgreedResponseDeadline} from '../../../../common/form/models/agreedResponseDeadline';
+import {
+  getClaimWithExtendedResponseDeadline,
+  submitExtendedResponseDeadline,
+} from '../../../../services/features/response/responseDeadline/extendResponseDeadlineService';
 
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const newResponseDeadlineController = express.Router();
 const newResponseDeadlineViewPath = 'features/response/responseDeadline/new-response-deadline';
-const responseDeadlineService = new ResponseDeadlineService();
 
-newResponseDeadlineController.get(NEW_RESPONSE_DEADLINE_URL, async function (req: AppRequest, res, next: express.NextFunction) {
-  try {
-    const claim = await getCaseDataFromStore(req.params.id);
-    const language = req.query.lang ? req.query.lang : req.cookies.lang;
-    const agreedResponseDeadline = claim.responseDeadline?.agreedResponseDeadline ? claim.responseDeadline?.agreedResponseDeadline : req.cookies?.newDeadlineDate?.date;
-    if (!agreedResponseDeadline) {
-      throw new Error('No extended response deadline found');
+newResponseDeadlineController
+  .get(NEW_RESPONSE_DEADLINE_URL, async  (req: AppRequest, res, next: express.NextFunction) => {
+    try {
+      const claim = await getClaimWithExtendedResponseDeadline(req);
+      res.render(newResponseDeadlineViewPath, {
+        claimantName: claim.getClaimantName(),
+        responseDeadline: formatDateToFullDate(claim.responseDeadline.calculatedResponseDeadline),
+        backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_TO_MORE_TIME_URL),
+      });
+    } catch (error) {
+      next(error);
     }
-    const calculatedExtendedDeadline = await civilServiceClient.calculateExtendedResponseDeadline(agreedResponseDeadline, req);
-
-    res.render(newResponseDeadlineViewPath, {
-      claimantName: claim.getClaimantName(),
-      responseDeadline: formatDateToFullDate(calculatedExtendedDeadline, language),
-      backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_TO_MORE_TIME_URL),
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-newResponseDeadlineController.post(NEW_RESPONSE_DEADLINE_URL, async function (req: express.Request, res: express.Response, next: express.NextFunction) {
-  try {
-    const claim = await getCaseDataFromStore(req.params.id);
-    const agreedResponseDeadlineDate = claim.responseDeadline?.agreedResponseDeadline ? claim.responseDeadline?.agreedResponseDeadline : req.cookies?.newDeadlineDate?.date;
-    const agreedResponseDeadline: AgreedResponseDeadline = setDate(agreedResponseDeadlineDate);
-    const form: GenericForm<AgreedResponseDeadline> = new GenericForm<AgreedResponseDeadline>(agreedResponseDeadline);
-    await form.validate();
-    if (!form.hasErrors()) {
-      await responseDeadlineService.saveAgreedResponseDeadline(req.params.id, agreedResponseDeadlineDate);
+  })
+  .post(NEW_RESPONSE_DEADLINE_URL, async (req: AppRequest, res, next: express.NextFunction) => {
+    try {
+      await submitExtendedResponseDeadline(req);
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
+    } catch (error) {
+      next(error);
     }
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
-  } catch (error) {
-    next(error);
-  }
-});
+  });
 
 export default newResponseDeadlineController;
