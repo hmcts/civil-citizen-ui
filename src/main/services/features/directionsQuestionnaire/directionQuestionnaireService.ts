@@ -8,8 +8,7 @@ const logger = Logger.getLogger('directionQuestionnaireService');
 const getDirectionQuestionnaire = async (claimId: string): Promise<DirectionQuestionnaire> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    if (!claim.directionQuestionnaire) return new DirectionQuestionnaire();
-    return claim.directionQuestionnaire;
+    return (claim?.directionQuestionnaire) ? claim.directionQuestionnaire : new DirectionQuestionnaire();
   } catch (error) {
     logger.error(error);
     throw error;
