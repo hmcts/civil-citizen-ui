@@ -11,6 +11,7 @@ import {
 
 const defendantYourselfEvidenceController = express.Router();
 const defendantYourselfEvidenceViewPath = 'features/directionsQuestionnaire/defendant-yourself-evidence';
+const dqPropertyName = 'defendantYourselfEvidence';
 const errorMessage = 'ERRORS.DEFENDANT_YOURSELF_EVIDENCE_REQUIRED';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
@@ -19,7 +20,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 defendantYourselfEvidenceController.get(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const defendantYourselfEvidence = await getGenericOption(req.params.id, 'defendantYourselfEvidence', errorMessage);
+    const defendantYourselfEvidence = await getGenericOption(req.params.id, dqPropertyName, errorMessage);
     renderView(new GenericForm(defendantYourselfEvidence), res);
   } catch (error) {
     next(error);
@@ -35,8 +36,7 @@ defendantYourselfEvidenceController.post(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL, asy
     if (defendantYourselfEvidence.hasErrors()) {
       renderView(defendantYourselfEvidence, res);
     } else {
-      defendantYourselfEvidence.model.option = req.body.option;
-      await saveDirectionQuestionnaire(claimId, defendantYourselfEvidence.model, 'defendantYourselfEvidence');
+      await saveDirectionQuestionnaire(claimId, defendantYourselfEvidence.model, dqPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL));
     }
   } catch (error) {
