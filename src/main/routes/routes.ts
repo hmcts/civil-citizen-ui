@@ -117,6 +117,8 @@ import triedToSettleController from './features/directionsQuestionnaire/triedToS
 import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
 import permissionForExpertController from './features/directionsQuestionnaire/permissionForExpertController';
+import defendantYourselfEvidenceController
+  from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 
 export default [
   homeController,
@@ -227,4 +229,5 @@ export default [
   requestExtra4WeeksController,
   permissionForExpertController,
   defendantExpertEvidenceController,
+  defendantYourselfEvidenceController,
 ];
