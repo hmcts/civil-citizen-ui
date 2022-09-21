@@ -873,8 +873,8 @@
       "OPTION_NO": "No",
       "OPTION_NOT_RECEIVED": "No, I have not yet received them",
       "OPTION_YES": "Yes",
-      "PAGE_TITLE": "Have you already sent expert reports to the claimant?",
-      "TITLE": "Have you already sent expert reports?"
+      "PAGE_TITLE": "Have you already sent expert reports to other parties?",
+      "TITLE": "Have you already sent expert reports to other parties?"
     },
     "EXPLANATION": {
       "PAGE_TITLE": "Explanation",
