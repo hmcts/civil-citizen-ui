@@ -130,7 +130,7 @@ describe('Direction questionnaire Service', () => {
       },
     };
 
-    it('should save direction questionaire successfully', async () => {
+    it('should save direction questionnaire successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
