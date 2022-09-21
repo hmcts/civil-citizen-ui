@@ -12,9 +12,7 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 const requestExtra4WeeksController = express.Router();
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
-  const requestExtra4WeeksClaimForm = Object.assign(form);
-  requestExtra4WeeksClaimForm.option = form.model.option;
-  res.render('features/directionsQuestionnaire/request-extra-4weeks', {form: requestExtra4WeeksClaimForm});
+  res.render('features/directionsQuestionnaire/request-extra-4weeks', {form});
 }
 
 requestExtra4WeeksController.get(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, next) => {
