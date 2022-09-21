@@ -86,15 +86,11 @@ import determinationWithoutHearingController
   from './features/directionsQuestionnaire/determinationWithoutHearingController';
 import totalAmountController from './features/public/eligibility/totalAmountController';
 import claimTypeController from './features/public/eligibility/claimTypeController';
-import notEligibleController
-  from './features/public/eligibility/notEligibleController';
-import claimantAddressEligibilityController
-  from './features/public/eligibility/claimantAddressEligibilityController';
+import notEligibleController from './features/public/eligibility/notEligibleController';
+import claimantAddressEligibilityController from './features/public/eligibility/claimantAddressEligibilityController';
 import singleDefendantController from './features/public/eligibility/singleDefendantController';
-import defendantAddressEligibilityController
-  from './features/public/eligibility/defendantAddressEligibilityController';
-import helpWithFeesEligibilityController
-  from './features/public/eligibility/helpWithFeesEligibilityController';
+import defendantAddressEligibilityController from './features/public/eligibility/defendantAddressEligibilityController';
+import helpWithFeesEligibilityController from './features/public/eligibility/helpWithFeesEligibilityController';
 import tryNewServiceController from './features/public/eligibility/tryNewServiceController';
 import tenancyDepositController from './features/public/eligibility/tenancyDepositController';
 import claimAgainstGovernmentController from './features/public/eligibility/claimAgainstGovernmentController';
@@ -114,10 +110,16 @@ import completingClaimController from './features/claim/completingClaimControlle
 import submitComfirmationController from './features/response/submitComfirmationController';
 import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
 import cookiesController from './features/public/cookiesController';
+import defendantExpertEvidenceController from './features/directionsQuestionnaire/defendantExpertEvidenceController';
+import considerClaimantDocumentsController
+  from './features/directionsQuestionnaire/considerClaimantDocumentsController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
 import expertSmallClaimsController from './features/directionsQuestionnaire/expertSmallClaimsController';
 import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
+import defendantYourselfEvidenceController
+  from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
+import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
 
 export default [
   homeController,
@@ -222,8 +224,12 @@ export default [
   submitComfirmationController,
   resolvingThisDisputeController,
   cookiesController,
+  considerClaimantDocumentsController,
   sharedExpertController,
   triedToSettleController,
   expertSmallClaimsController,
   requestExtra4WeeksController,
+  defendantExpertEvidenceController,
+  expertCanStillExamineController,
+  defendantYourselfEvidenceController,
 ];
