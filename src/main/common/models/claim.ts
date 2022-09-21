@@ -13,7 +13,6 @@ import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
 import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
-import {SupportRequired} from '../models/directionsQuestionnaire/supportRequired';
 import {
   CaseState,
   ClaimAmountBreakup,
@@ -67,7 +66,6 @@ export class Claim {
   interestFromSpecificDate?: Date;
   interestClaimOptions: InterestClaimOptions;
   sameRateInterestSelection?: SameRateInterestSelection;
-  supportRequired?: SupportRequired;
   breakDownInterestTotal?: number;
   submittedDate?: Date;
   issueDate?: Date;
