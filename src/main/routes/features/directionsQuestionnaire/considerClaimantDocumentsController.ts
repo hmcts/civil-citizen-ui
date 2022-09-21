@@ -8,6 +8,7 @@ import {ConsiderClaimantDocuments} from '../../../common/models/directionsQuesti
 import {
   getConsiderClaimantDocuments, getConsiderClaimantDocumentsForm, saveConsiderClaimantDocuments,
 } from '../../../services/features/directionsQuestionnaire/considerClaimantDocumentsService';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 
 const considerClaimantDocumentsController = express.Router();
 const considerClaimantDocumentsViewPath = 'features/directionsQuestionnaire/consider-claimant-documents';
@@ -35,7 +36,7 @@ considerClaimantDocumentsController.post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, asy
       renderView(form, res);
     } else {
       await saveConsiderClaimantDocuments(claimId, considerClaimantDocumentsForm);
-      res.redirect(DQ_DEFENDANT_EXPERT_EVIDENCE_URL);
+      res.redirect(constructResponseUrlWithIdParams(claimId,DQ_DEFENDANT_EXPERT_EVIDENCE_URL));
     }
   } catch (error) {
     next(error);
