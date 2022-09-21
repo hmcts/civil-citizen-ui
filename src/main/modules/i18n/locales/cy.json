@@ -1141,6 +1141,10 @@
       "TITLE_FOR_PART_ADMIT": "Pryd ydych chi eisiau talu yr £{{ amount }}?",
       "YOU_MUST_CONTACT": "Rhaid i chi gysylltu â'r hawlydd a thalu'r swm llawn o fewn 5 diwrnod. Rhaid i unrhyw sieciau neu drosglwyddiadau banc fod wedi clirio yn eu cyfrif."
     },
+    "PERMISSION_FOR_EXPERT": {
+      "PAGE_TITLE": "Do you want to ask for the court’s permission to use an expert?",
+      "TITLE": "Permission for expert"
+    },
     "PRIORITY_DEBTS": {
       "ARREARS": "'mewn ôl-ddyled' (rydych wedi methu taliadau rheolaidd)",
       "DEBTS": "Dyledion rydych ar ei hôl hi yn eu talu",

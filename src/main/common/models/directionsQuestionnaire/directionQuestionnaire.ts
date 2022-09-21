@@ -4,6 +4,7 @@ import {ExpertCanStillExamine} from '../../models/directionsQuestionnaire/expert
 import {ExpertReports} from './expertReports';
 
 export class DirectionQuestionnaire {
+  permissionForExpert?: GenericYesNo;
   triedToSettle?: GenericYesNo;
   defendantExpertEvidence?: GenericYesNo;
   considerClaimantDocuments?: ConsiderClaimantDocuments;
