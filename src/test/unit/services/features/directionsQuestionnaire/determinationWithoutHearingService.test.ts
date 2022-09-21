@@ -9,6 +9,7 @@ import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {
   DeterminationWithoutHearing,
 } from '../../../../../main/common/models/directionsQuestionnaire/determinationWithoutHearing';
+import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -30,7 +31,8 @@ describe('Determination Without Hearing Service', () => {
 
     it('should return determinationWithoutHearing object with isDeterminationWithoutHearing no', async () => {
       const claim = new Claim();
-      claim.determinationWithoutHearing = {
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.directionQuestionnaire.determinationWithoutHearing = {
         isDeterminationWithoutHearing: YesNo.NO,
       };
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -44,7 +46,8 @@ describe('Determination Without Hearing Service', () => {
 
     it('should return determinationWithoutHearing object with isDeterminationWithoutHearing yes and reasonForHearing', async () => {
       const claim = new Claim();
-      claim.determinationWithoutHearing = {
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.directionQuestionnaire.determinationWithoutHearing = {
         isDeterminationWithoutHearing: YesNo.NO,
         reasonForHearing: '99 reasons',
       };
@@ -83,7 +86,8 @@ describe('Determination Without Hearing Service', () => {
 
     it('should update claim determination successfully', async () => {
       const claim = new Claim();
-      claim.determinationWithoutHearing = determinationWithoutHearing;
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.directionQuestionnaire.determinationWithoutHearing = determinationWithoutHearing;
       const updatedDetermination: DeterminationWithoutHearing = {
         isDeterminationWithoutHearing: YesNo.NO,
         reasonForHearing: 'my reason',

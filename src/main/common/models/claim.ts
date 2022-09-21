@@ -32,7 +32,6 @@ import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocume
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
 import {ResponseDeadline} from './responseDeadline';
-import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
 import {getLng} from '../../common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
 import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
@@ -77,7 +76,6 @@ export class Claim {
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
-  determinationWithoutHearing: DeterminationWithoutHearing;
   respondentSolicitor1AgreedDeadlineExtension?:Date;
   directionQuestionnaire?: DirectionQuestionnaire;
 
