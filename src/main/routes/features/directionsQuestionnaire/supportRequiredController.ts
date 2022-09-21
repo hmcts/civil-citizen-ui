@@ -5,17 +5,17 @@ import {GenericForm} from '../../../common/form/models/genericForm';
 import {SupportRequired} from '../../../common/models/directionsQuestionnaire/supportRequired';
 import {
   getSupportRequired,
-  saveSupportRequired,
 } from '../../../services/features/directionsQuestionnaire/supportRequiredService';
+import {
+  saveDirectionQuestionnaire,
+} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const supportRequiredController = express.Router();
 const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required';
 
 supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const supportRequired = await getSupportRequired(req.params.id);
-    const form = new GenericForm(supportRequired);
-    res.render(supportRequiredViewPath, {form});
+    res.render(supportRequiredViewPath, {form: new GenericForm(await getSupportRequired(req.params.id))});
   } catch (error) {
     next(error);
   }
@@ -38,7 +38,7 @@ supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next: expr
     if (form.hasErrors()) {
       res.render(supportRequiredViewPath, {form});
     } else {
-      await saveSupportRequired(claimId, supportRequired);
+      await saveDirectionQuestionnaire(claimId, supportRequired, 'supportRequired');
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {
