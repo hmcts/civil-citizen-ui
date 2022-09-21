@@ -31,7 +31,6 @@ import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifi
 import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
-import {Vulnerability} from '../models/directionsQuestionnaire/vulnerability';
 import {ResponseDeadline} from './responseDeadline';
 import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
 import {getLng} from '../../common/utils/languageToggleUtils';
@@ -76,7 +75,6 @@ export class Claim {
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
-  vulnerability: Vulnerability;
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
   determinationWithoutHearing: DeterminationWithoutHearing;

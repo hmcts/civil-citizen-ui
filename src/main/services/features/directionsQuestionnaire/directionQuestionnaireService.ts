@@ -15,6 +15,7 @@ const getDirectionQuestionnaire = async (claimId: string): Promise<DirectionQues
     throw error;
   }
 };
+
 const getGenericOption = async (claimId: string, directionQuestionnairePropertyName: string, errorMessage: string): Promise<GenericYesNo> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
@@ -30,6 +31,7 @@ const getGenericOption = async (claimId: string, directionQuestionnairePropertyN
     throw error;
   }
 };
+
 const getGenericOptionForm = (option: string, errorMessage: string): GenericYesNo => {
   return new GenericYesNo(option, errorMessage);
 };
