@@ -95,9 +95,9 @@ claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, 
     claimantDetails.validateSync();
     claimantIndividualAddress.validateSync();
 
-    if (req.body.postToPrimaryAddress === YesNo.YES) {
+    if (req.body.provideCorrespondenceAddress === YesNo.YES) {
       claimantIndividualCorrespondenceAddress.validateSync();
-      responseDataRedis.postToPrimaryAddress = YesNo.YES;
+      responseDataRedis.provideCorrespondenceAddress = YesNo.YES;
     }
 
     if (claimantDetails.hasErrors() || claimantIndividualAddress.hasErrors() || claimantIndividualCorrespondenceAddress.hasErrors()) {
@@ -106,7 +106,7 @@ claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, 
       if (req.body.postToThisAddress === YesNo.NO) {
         claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress());
       }
-      await saveClaimant(caseId, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, req.body.postToPrimaryAddress, claimantDetails);
+      await saveClaimant(caseId, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, req.body.provideCorrespondenceAddress, claimantDetails);
       res.redirect(constructResponseUrlWithIdParams(temporaryId, CLAIM_CLAIMANT_DOB));
     }
   } catch (error) {

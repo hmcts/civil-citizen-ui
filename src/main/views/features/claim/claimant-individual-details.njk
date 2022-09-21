@@ -160,8 +160,8 @@
             <br>
             <h2 class="govuk-heading-m">{{ t('PAGES.CITIZEN_DETAILS.CORRESPONDENCE_ADDRESS') }}</h2>
             {{ govukRadios({
-              idPrefix: "postToPrimaryAddress",
-              name: "postToPrimaryAddress",
+              idPrefix: "provideCorrespondenceAddress",
+              name: "provideCorrespondenceAddress",
               fieldset: {
                 legend: {
                   text: t('PAGES.CITIZEN_DETAILS.DIFFERENT_ADDRESS_CORRESPONDENCE'),
@@ -172,15 +172,15 @@
                 {
                   value: YesNo.NO,
                   text: t('COMMON.NO'),
-                  checked: false if claimant.postToPrimaryAddress == YesNo.YES else true
+                  checked: false if claimant.provideCorrespondenceAddress == YesNo.YES else true
                 },
                 {
                   value: YesNo.YES,
-                  checked: true if claimant.postToPrimaryAddress == YesNo.YES else false,
+                  checked: true if claimant.provideCorrespondenceAddress == YesNo.YES else false,
                   text: t('PAGES.CITIZEN_DETAILS.YES_CORRESPONDENCE'),
                   conditional: {
-                  html: correspondenceAddressHtml
-                }
+                    html: correspondenceAddressHtml
+                  }
                 }
               ]
             }) }}

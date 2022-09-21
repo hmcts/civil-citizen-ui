@@ -273,7 +273,7 @@ export interface Party {
   type?: CounterpartyType;
   primaryAddress?: CorrespondenceAddress;
   phoneNumber?: string;
-  postToPrimaryAddress?: string;
+  provideCorrespondenceAddress?: string;
   correspondenceAddress?: CorrespondenceAddress;
 }
 

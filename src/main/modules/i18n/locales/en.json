@@ -210,14 +210,6 @@
     }
   },
   "PAGES": {
-    "CLAIM_JOURNEY": {
-      "CLAIMANT_INDIVIDUAL_DETAILS": {
-        "PAGE_TITLE": "Enter your details",
-        "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
-        "TITLE": "Enter your details",
-        "YOUR_POSTAL_ADDRESS": "Your postal address"
-      }
-    },
     "ADMISSION_PAYMENT_DATE": {
       "FOR_EXAMPLE": "For example, {{nextDate}} {{nextMonth}} {{nextYear}}",
       "PAGE_TITLE": "Payment date",
@@ -465,6 +457,12 @@
       "WHAT_HAPPENED": "What happened"
     },
     "CLAIM_JOURNEY": {
+      "CLAIMANT_INDIVIDUAL_DETAILS": {
+        "PAGE_TITLE": "Enter your details",
+        "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
+        "TITLE": "Enter your details",
+        "YOUR_POSTAL_ADDRESS": "Your postal address"
+      },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
           "BEFORE_YOU_CLAIM": "Before you claim you should:",

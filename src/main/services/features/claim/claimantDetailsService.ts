@@ -22,7 +22,7 @@ export const saveClaimant = async (claimId: string, citizenAddress: GenericForm<
   if (!responseData.applicant1) {
     responseData.applicant1 = new Respondent();
   }
-  responseData.applicant1.postToPrimaryAddress = postToThisAddress;
+  responseData.applicant1.provideCorrespondenceAddress = postToThisAddress;
   responseData.applicant1.primaryAddress = buildPrimaryAddress(citizenAddress);
   responseData.applicant1.correspondenceAddress = citizenCorrespondenceAddress.model.isEmpty() ? undefined : buildCorrespondenceAddress(citizenCorrespondenceAddress);
   responseData.applicant1.individualTitle = claimantDetails.model.title;
