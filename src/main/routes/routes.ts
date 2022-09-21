@@ -117,6 +117,7 @@ import triedToSettleController from './features/directionsQuestionnaire/triedToS
 import expertSmallClaimsController from './features/directionsQuestionnaire/expertSmallClaimsController';
 import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
+import permissionForExpertController from './features/directionsQuestionnaire/permissionForExpertController';
 import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
@@ -229,6 +230,7 @@ export default [
   triedToSettleController,
   expertSmallClaimsController,
   requestExtra4WeeksController,
+  permissionForExpertController,
   defendantExpertEvidenceController,
   expertCanStillExamineController,
   defendantYourselfEvidenceController,

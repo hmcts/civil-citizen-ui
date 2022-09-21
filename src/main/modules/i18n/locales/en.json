@@ -1142,6 +1142,10 @@
       "TITLE_FOR_PART_ADMIT": "When do you want to pay the £{{ amount }}?",
       "YOU_MUST_CONTACT": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
     },
+    "PERMISSION_FOR_EXPERT": {
+      "PAGE_TITLE": "Do you want to ask for the court’s permission to use an expert?",
+      "TITLE": "Permission for expert"
+    },
     "PRIORITY_DEBTS": {
       "ARREARS": "'in arrears' (you've missed regular payments)",
       "DEBTS": "Debts you're behind on",
