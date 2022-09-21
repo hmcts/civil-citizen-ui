@@ -16,4 +16,8 @@ export class ExpertReportDetails {
     this.hasExpertReports = hasExpertReports;
     this.reportDetails = reportDetails;
   }
+
+  public static buildEmptyForm(): ExpertReportDetails {
+    return new ExpertReportDetails(undefined, [new ReportDetails(undefined, '', '', '')]);
+  }
 }

@@ -11,21 +11,19 @@ export const getExpertReportDetails = async (claimId: string): Promise<ExpertRep
   try {
     const caseData = await getCaseDataFromStore(claimId);
     if (caseData.directionQuestionnaire?.expertReportDetails) {
-      const toForm = caseData.directionQuestionnaire.expertReportDetails.reportDetails.map(details => {
-        // TODO : convert to setDate
-        const date = new Date(details.reportDate);
+      const reportDetails = caseData.directionQuestionnaire.expertReportDetails.reportDetails.map(reportDetail => {
+        const reportDate = new Date(reportDetail.reportDate);
         return new ReportDetails(
-          details.expertName,
-          date.getFullYear().toString(),
-          (date.getMonth() + 1).toString(),
-          date.getDate().toString(),
+          reportDetail.expertName,
+          reportDate.getFullYear().toString(),
+          (reportDate.getMonth() + 1).toString(),
+          reportDate.getDate().toString(),
         );
       });
-      caseData.directionQuestionnaire.expertReportDetails.reportDetails = toForm;
+      caseData.directionQuestionnaire.expertReportDetails.reportDetails = reportDetails;
       return caseData.directionQuestionnaire?.expertReportDetails;
-
     }
-    return new ExpertReportDetails();
+    return ExpertReportDetails.buildEmptyForm();
   } catch (error) {
     logger.error(error);
     throw error;
@@ -33,11 +31,17 @@ export const getExpertReportDetails = async (claimId: string): Promise<ExpertRep
 };
 
 export const getExpertReportDetailsForm = (hasExpertReports: YesNo, reportDetails: ReportDetails[]): ExpertReportDetails => {
-  // TODO : fix the naming
-  // const details = (hasExpertReports === YesNo.NO) ? [new ReportDetails()] : reportDetails;
-  const detailsForm = reportDetails?.map(detail => new ReportDetails(detail.expertName, detail.year.toString(), detail.month.toString(), detail.day.toString()));
+  const details = (hasExpertReports === YesNo.NO) ? [new ReportDetails()] : reportDetails;
+  const reportDetailsForm = details?.map(detail =>
+    new ReportDetails(
+      detail.expertName,
+      detail.year.toString(),
+      detail.month.toString(),
+      detail.day.toString(),
+    ),
+  );
   if (hasExpertReports) {
-    return new ExpertReportDetails(hasExpertReports, detailsForm);
+    return new ExpertReportDetails(hasExpertReports, reportDetailsForm);
   }
   return new ExpertReportDetails();
 };

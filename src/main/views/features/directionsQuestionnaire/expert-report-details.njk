@@ -2,6 +2,9 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput -%}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
+{% from "govuk/components/input/macro.njk" import govukInput -%}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
@@ -12,6 +15,9 @@
 {% block pageTitle %}
   {{ setPageTitle('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE') }}
 {% endblock %}
+
+{% set errors = form.getAllErrors() %}
+{% set atLeastOneCourtOrderError = form.errorFor('reportDetails') %}
 
             {% set yesHtml %}
               {{ govukTextarea({
@@ -42,16 +48,17 @@
 
                   <div class="moj-button-action">
                     {{ govukButton({
-                      text: t('PAGES.COURT_ORDERS.ADD_ANOTHER'),
+                      text: t('PAGES.EXPERT_REPORT_DETAILS.ADD_ANOTHER'),
                       classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
                       type: 'button',
                       attributes: {
-                        'id': 'add-another-court-order'
+                        'id': 'add-another-expert-report'
                       }
                     }) }}
                   </div>
                 </div>
-              {% endset -%}
+
+{% endset -%}
 
 {% block content %}
   <div class="govuk-width-container">

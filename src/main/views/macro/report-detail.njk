@@ -1,8 +1,17 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
 {% macro reportDetail(reportDetailIndex, reportDetailValue, errorFor, t) %}
 
+  {% call govukFieldset({
+    classes: 'moj-add-another__item govuk-!-margin-bottom-6',
+    legend: {
+      text: 'Person',
+      classes: 'moj-add-another__title govuk-fieldset__legend--m',
+      isPageHeading: false
+    }
+  }) %}
 
 
     {{ govukInput({
@@ -11,7 +20,7 @@
       value: reportDetailValue.expertName,
       type: 'text',
       label: {
-        text: t('PAGES.COURT_ORDERS.CLAIM_NUMBER')
+        text: t('PAGES.EXPERT_REPORT_DETAILS.EXPERT_NAME')
       },
       attributes: {
         'data-name': 'reportDetails[%index%][claimNumber]',
@@ -34,11 +43,17 @@
                   }
                 },
                 hint: {
-                  text: hint
-                },
-                errorMessage: {
-                  html: errorMessages
-                },
+        text: "For example, 31 3 1980"
+      },
+       errorMessage: {
+            html: '<p class="govuk-error-message">' + t(errorFor('reportDetails['+reportDetailIndex+'][reportDate]')) + '</p>' +
+            '<p class="govuk-error-message">' + t(errorFor('reportDetails['+reportDetailIndex+'][day]')) + '</p>' +
+            '<p class="govuk-error-message">' + t(errorFor('reportDetails['+reportDetailIndex+'][month]')) + '</p>' +
+            '<p class="govuk-error-message">' + t(errorFor('reportDetails['+reportDetailIndex+'][year]')) + '</p>'
+          } if errorFor('reportDetails['+reportDetailIndex+'][reportDate]') or
+          errorFor('reportDetails['+reportDetailIndex+'][day]') or
+          errorFor('reportDetails['+reportDetailIndex+'][month]') or
+          errorFor('reportDetails['+reportDetailIndex+'][year]'),
                 items: [
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if errorFor('reportDetails['+reportDetailIndex+'][day]') else "govuk-input--width-2",
@@ -66,5 +81,5 @@
                   }
                 ]
               }) }}
-
+  {% endcall %}
 {% endmacro %}

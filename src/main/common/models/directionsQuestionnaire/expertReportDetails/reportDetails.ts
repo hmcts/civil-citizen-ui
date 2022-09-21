@@ -4,9 +4,8 @@ import {DateConverter} from '../../../../common/utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from '../../../../common/form/validators/optionalDateNotInFutureValidator';
 import {OptionalDateFourDigitValidator} from  '../../../../common/form/validators/optionalDateFourDigitValidator';
 export class ReportDetails {
-  // TODO : correct the eror message
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsNotEmpty({message: 'ERRORS.VALID_ADDRESS_LINE_1'})
+  @IsNotEmpty({message: 'ERRORS.EXPERT_NAME_REQUIRED'})
   @MaxLength(STANDARD_TEXT_INPUT_MAX_LENGTH, {message: 'ERRORS.VALID_TEXT_LENGTH'})
     expertName: string;
 
@@ -39,6 +38,7 @@ export class ReportDetails {
     this.month = Number(month);
     this.day = Number(day);
   }
+
   public isEmpty(): boolean {
     return Object.values(this).every(value => value === undefined || value === 0 || value === '' || value?.length === 0);
   }

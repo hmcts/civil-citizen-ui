@@ -846,7 +846,7 @@
       "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
     },
     "EXPERT_REPORT_DETAILS": {
-      "ADD_ANOTHER_REPORT": "Add another report",
+      "ADD_ANOTHER": "Add another report",
       "EXPERT_NAME": "Expert's name",
       "PAGE_TITLE": "Have you already got a report written by an expert?",
       "REMOVE_REPORT": "Remove report",
@@ -1416,6 +1416,7 @@
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
+    "EXPERT_NAME_REQUIRED": "Enter the expert’s name",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "JOB_TITLE_REQUIRED": "Enter a job title",
