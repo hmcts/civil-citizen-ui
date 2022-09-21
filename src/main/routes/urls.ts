@@ -127,7 +127,6 @@ export const CLAIM_RESOLVING_DISPUTE_URL = `${BASE_CLAIM_URL}/resolving-this-dis
 export const DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/consider-claimant-documents`;
 export const DQ_DEFENDANT_EXPERT_EVIDENCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/defendant-expert-evidence`;
 export const DQ_DEFENDANT_EXPERT_REPORTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/defendant-expert-reports`;
-export const DQ_DEFENDANT_YOURSELF_EVIDENCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/defendant-yourself-evidence`;
 export const DQ_DEFENDANT_WITNESSES_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/defendant-witnesses`;
 export const DQ_EXPERT_DETAILS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-details`;
 export const DQ_EXPERT_EXAMINATION_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-examination`;
