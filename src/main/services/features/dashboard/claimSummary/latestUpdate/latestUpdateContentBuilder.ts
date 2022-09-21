@@ -19,7 +19,7 @@ import {
 
 export const buildResponseToClaimSection = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   const sectionContent = [];
-  const responseNotSubmittedTitle = getResponseNotSubmittedTitle();
+  const responseNotSubmittedTitle = getResponseNotSubmittedTitle(claim.isDeadlineExtended());
   const responseDeadlineNotPassedContent = getNotPastResponseDeadlineContent(claim);
   const responseDeadlinePassedContent = getPastResponseDeadlineContent(claim);
   const respondToClaimLink = getRespondToClaimLink(claimId);
