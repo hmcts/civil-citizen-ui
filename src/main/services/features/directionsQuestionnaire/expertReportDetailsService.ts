@@ -11,18 +11,17 @@ export const getExpertReportDetails = async (claimId: string): Promise<ExpertRep
   try {
     const caseData = await getCaseDataFromStore(claimId);
     if (caseData.directionQuestionnaire?.expertReportDetails) {
-      const xxx = caseData.directionQuestionnaire.expertReportDetails.reportDetails.map(details => {
+      const toForm = caseData.directionQuestionnaire.expertReportDetails.reportDetails.map(details => {
         // TODO : convert to setDate
         const date = new Date(details.reportDate);
-
-        return ({
-          ...details,
-          day: date.getDate(),
-          month: date.getMonth() + 1,
-          year: date.getFullYear(),
-        });
+        return new ReportDetails(
+          details.expertName,
+          date.getFullYear().toString(),
+          (date.getMonth() + 1).toString(),
+          date.getDate().toString(),
+        );
       });
-      caseData.directionQuestionnaire.expertReportDetails.reportDetails = xxx;
+      caseData.directionQuestionnaire.expertReportDetails.reportDetails = toForm;
       return caseData.directionQuestionnaire?.expertReportDetails;
 
     }
@@ -34,10 +33,11 @@ export const getExpertReportDetails = async (claimId: string): Promise<ExpertRep
 };
 
 export const getExpertReportDetailsForm = (hasExpertReports: YesNo, reportDetails: ReportDetails[]): ExpertReportDetails => {
-  // TODO : fix this part
-  const expertReportDetails = (hasExpertReports === YesNo.NO) ? [new ReportDetails()] : reportDetails;
+  // TODO : fix the naming
+  // const details = (hasExpertReports === YesNo.NO) ? [new ReportDetails()] : reportDetails;
+  const detailsForm = reportDetails?.map(detail => new ReportDetails(detail.expertName, detail.year.toString(), detail.month.toString(), detail.day.toString()));
   if (hasExpertReports) {
-    return new ExpertReportDetails(hasExpertReports, expertReportDetails);
+    return new ExpertReportDetails(hasExpertReports, detailsForm);
   }
   return new ExpertReportDetails();
 };
@@ -49,7 +49,6 @@ export const saveExpertReportDetails = async (claimId: string, expertReportDetai
       caseData.directionQuestionnaire = new DirectionQuestionnaire();
     }
     caseData.directionQuestionnaire.expertReportDetails = expertReportDetails;
-    console.log('save---', caseData.directionQuestionnaire.expertReportDetails);
     await saveDraftClaim(claimId, caseData);
   } catch (error) {
     logger.error(error);

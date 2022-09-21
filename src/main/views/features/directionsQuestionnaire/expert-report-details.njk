@@ -58,7 +58,7 @@
     <main class="govuk-main-wrapper" role="main">
       {% if form.hasErrors() %}
         <div class="govuk-grid-row">
-          {{ errorSummary(form.getErrors(), t) }}
+          {{ errorSummary(form.getAllErrors(), t) }}
         </div>
       {% endif %}
       <div class="govuk-grid-row">
