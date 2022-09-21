@@ -1,7 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 
 {% block pageTitle %}
@@ -47,8 +47,8 @@
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                  text: t("COMMON.BUTTONS.CONTINUE")
-                }) }}
+                text: t("COMMON.BUTTONS.CONTINUE")
+              }) }}
             </div>
           </form>
 
