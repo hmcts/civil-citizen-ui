@@ -35,7 +35,7 @@ describe('Support Required service', () => {
       expect(form.getErrors()[0].constraints).toEqual({
         isDefined: NO_LANGUAGE_ENTERED,
         maxLength: TEXT_TOO_LONG,
-        isNotEmpty: NO_LANGUAGE_ENTERED
+        isNotEmpty: NO_LANGUAGE_ENTERED,
       });
     });
     it('should raise an error if languageSelected is true and languageInterpreted empty', async () => {
