@@ -6,6 +6,7 @@ import {DeterminationWithoutHearing} from '../../models/directionsQuestionnaire/
 import {SupportRequired} from '../../models/directionsQuestionnaire/supportRequired';
 
 export class DirectionQuestionnaire {
+  permissionForExpert?: GenericYesNo;
   triedToSettle?: GenericYesNo;
   defendantExpertEvidence?: GenericYesNo;
   determinationWithoutHearing?: DeterminationWithoutHearing;
