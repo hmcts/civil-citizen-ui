@@ -4,7 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {
-  SUPPORT_REQUIRED_URL,
+  EXPERT_GUIDANCE_URL,
   DETERMINATION_WITHOUT_HEARING_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -73,7 +73,7 @@ describe('Determination Without Hearing Controller', () => {
       await request(app).post(DETERMINATION_WITHOUT_HEARING_URL).send({isDeterminationWithoutHearing: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(SUPPORT_REQUIRED_URL);
+          expect(res.get('location')).toBe(EXPERT_GUIDANCE_URL);
         });
     });
 
@@ -82,7 +82,7 @@ describe('Determination Without Hearing Controller', () => {
         .send({isDeterminationWithoutHearing: 'no', reasonForHearing: 'valid reason'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(SUPPORT_REQUIRED_URL);
+          expect(res.get('location')).toBe(EXPERT_GUIDANCE_URL);
         });
     });
 
