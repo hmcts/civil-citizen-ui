@@ -5,7 +5,7 @@ import {app} from '../../../../../main/app';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {
   DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
-  DQ_DEFENDANT_EXPERT_REPORTS_URL,
+  DQ_SENT_EXPERT_REPORTS_URL,
   DQ_DEFENDANT_YOURSELF_EVIDENCE_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -59,7 +59,7 @@ describe('Defendant expert evidence Controller', () => {
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_DEFENDANT_EXPERT_REPORTS_URL);
+          expect(res.get('location')).toBe(DQ_SENT_EXPERT_REPORTS_URL);
         });
     });
 
