@@ -31,15 +31,6 @@ const getParagraphDontWantMediation = (claimAmount: number, partialAmount: numbe
   };
 };
 
-const getSubtitleRejectOffer = (claimantName: string, paymentDate: string, lang: string) => {
-  return {
-    type: ClaimSummaryType.SUBTITLE,
-    data: {
-      text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.REJECT_OFFER_TO_PAY_BY', { claimantName, paymentDate, lng: lang }),
-    },
-  };
-};
-
 const getParagraphCourtDecideHowToPay = (lang: string) => {
   return {
     type: ClaimSummaryType.PARAGRAPH,
@@ -115,10 +106,6 @@ export const getPAPayInstallmentsStatus = (claim: Claim, lang: string): ClaimSum
 export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lang: string): ClaimSummarySection[] => {
   const claimantName = claim.getClaimantName();
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount;
-  // TODO : submission day + 5 days
-  const today = new Date();
-  today.setDate(today.getDate() + 5);
-  const paymentDate = formatDateToFullDate(today, lang);
   const claimAmount = claim.totalClaimAmount;
 
   return [
@@ -146,7 +133,12 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
     { ...getSubtitleIfClaimantRejectOwe(claimantName, partialAmount, lang) },
     { ...getParagraphAskMediation(lang) },
     { ...getParagraphDontWantMediation(claimAmount, partialAmount, lang) },
-    { ...getSubtitleRejectOffer(claimantName, paymentDate, lang) },
+    {
+      type: ClaimSummaryType.SUBTITLE,
+      data: {
+        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.REJECT_OFFER_TO_PAY_BY', { claimantName, lng: lang }),
+      },
+    },
     { ...getParagraphCourtDecideHowToPay(lang) },
   ];
 };
@@ -183,7 +175,12 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
     { ...getSubtitleIfClaimantRejectOwe(claimantName, partialAmount, lang) },
     { ...getParagraphAskMediation(lang) },
     { ...getParagraphDontWantMediation(claimAmount, partialAmount, lang) },
-    { ...getSubtitleRejectOffer(claimantName, paymentDate, lang) },
+    {
+      type: ClaimSummaryType.SUBTITLE,
+      data: {
+        text: t('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.REJECT_OFFER_TO_PAY_BY', { claimantName, paymentDate, lng: lang }),
+      },
+    },
     { ...getParagraphCourtDecideHowToPay(lang) },
   ];
 };
