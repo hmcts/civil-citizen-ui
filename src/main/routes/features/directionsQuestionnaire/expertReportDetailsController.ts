@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {DQ_EXPERT_REPORT_DETAILS_URL, DQ_CONSIDER_CLAIMANT_DOCUMENTS} from '../../urls';
+import {DQ_EXPERT_REPORT_DETAILS_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL, DQ_EXPERT_GUIDANCE_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {ExpertReportDetails} from '../../../common/models/directionsQuestionnaire/expertReportDetails/expertReportDetails';
 import {
@@ -8,6 +8,7 @@ import {
   saveExpertReportDetails,
 } from '../../../services/features/directionsQuestionnaire/expertReportDetailsService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {YesNo} from '../../../common/form/models/yesNo';
 
 const expertReportDetailsController = express.Router();
 
@@ -28,15 +29,18 @@ expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res,
 expertReportDetailsController.post(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const expertReportDetails = getExpertReportDetailsForm(req.body.hasExportReports, req.body.reportDetails);
+    const expertReportDetails = getExpertReportDetailsForm(req.body.hasExpertReports, req.body.reportDetails);
     const form = new GenericForm(expertReportDetails);
     form.validateSync();
-
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
       await saveExpertReportDetails(claimId, expertReportDetails);
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS));
+      if (req.body.hasExpertReports === YesNo.YES) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
+      } else {
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_GUIDANCE_URL));
+      }
     }
   } catch (error) {
     next(error);

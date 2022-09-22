@@ -138,5 +138,4 @@ export const DQ_SHARE_AN_EXPERT_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/shared-ex
 export const DQ_TRIED_TO_SETTLE_CLAIM_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/tried-to-settle`;
 export const DQ_DEFENDANT_CAN_STILL_EXAMINE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/defendant-expert-can-still-examine`;
 export const DQ_EXPERT_REPORT_DETAILS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-report-details`;
-// TODO : confrim it with sergio
-export const DQ_USING_EXPERT_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/using-an-expert`;
+export const DQ_EXPERT_GUIDANCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-guidance`;
