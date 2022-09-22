@@ -137,9 +137,9 @@
       "MONTH": "month",
       "TWO_WEEKS": "2 weeks",
       "WEEK": "Week",
-      "TWO_WEEKS_LETTERS" : "Two weeks",
-      "FOUR_WEEKS_LETTERS" : "Four weeks",
-      "MONTH_UPPER_CASE" : "Month",
+      "TWO_WEEKS_LETTERS": "Two weeks",
+      "FOUR_WEEKS_LETTERS": "Four weeks",
+      "MONTH_UPPER_CASE": "Month",
       "WEEK_LOWER_CASE": "week",
       "WEEKS_LOWER_CASE": "weeks",
       "MONTH_LOWER_CASE": "month",
@@ -532,6 +532,11 @@
       "PAGE_TITLE": "Get the details right",
       "YOULL_HAVE_TO_PAY": "You'll have to pay an additional fee if you want you"
     },
+    "CONSIDER_CLAIMANT_DOCUMENTS" : {
+      "GIVE_DETAILS" : "Give details of the documents",
+      "PAGE_TITLE" : "Are there any documents the claimant has that you want the court to consider?",
+      "TITLE" : "Are there any documents the claimant has that you want the court to consider?"
+    },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
       "ADDRESS": "Address",
@@ -654,7 +659,7 @@
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT_STEPS": "Next steps",
       "PAGE_TITLE": "Claims made by or against you",
-      "TITLE" : "Your money claims account",
+      "TITLE": "Your money claims account",
       "VIEW": "View"
     },
     "DEBTS": {
@@ -677,6 +682,25 @@
       "YOU_MIGHT_HAVE_SIGNED_A_CONTRACT": "For example, you might have signed a contract",
       "ADD_ANOTHER_EVENT": "Add another event",
       "ADD_ANY_COMMENTS": "Add any comments about their timeline (optional)"
+    },
+    "DEFENDANT_EXPERT_EVIDENCE": {
+      "EVIDENCE": "Expert evidence is an opinion based on the expertise of a specialist, for example - a building surveyor who can comment on the quality of building work.",
+      "EXPERT": "Experts usually only give written evidence. They may appear at a hearing if the experts disagree, and the court can only decide between their evidence by hearing it in person.",
+      "DECISION": "It will only be allowed if the court cannot make a decision without the expert.",
+      "LEGAL": "An expert is not a legal representative.",
+      "PAGE_TITLE": "Defendant expert evidence",
+      "TITLE": "Do you want to use expert evidence?"
+    },
+    "DEFENDANT_EXPERT_CAN_STILL_EXAMINE": {
+      "CAN_NOT_USE": "You can't use an expert in this case.",
+      "EXAMINE": "What is there to examine?",
+      "PAGE_TITLE": "Defendant expert can still examine",
+      "PHOTO_OR_VIDEO": "This could include photographs or videos.",
+      "TITLE": "Does the claim involve something an expert can still examine?"
+    },
+    "DEFENDANT_YOURSELF_EVIDENCE": {
+      "PAGE_TITLE": "Defendant yourself evidence",
+      "TITLE": "Do you want to give evidence yourself?"
     },
     "DEPENDANTS": {
       "GROUP11": "11 to 15",
@@ -709,7 +733,7 @@
       "PAGE_TITLE": "Are you disabled?",
       "TITLE": "Are you disabled?"
     },
-    "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES" : {
+    "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect of",
       "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a number related to a different claim. If you don’t have a Help with Fees number for this claim, please follow the instructions below.",
       "PARAGRAPH2": "If you need to use the paper Help with Fees application rather than the online version, you will not be able to use Online Civil Money Claims to issue your claim.",
@@ -719,7 +743,7 @@
       "THIS_CLAIM": "THIS CLAIM",
       "TITLE": "Apply For Help With Fees"
     },
-    "ELIGIBILITY_CLAIMANT_ADDRESS" : {
+    "ELIGIBILITY_CLAIMANT_ADDRESS": {
       "PAGE_TITLE": "Do you have a postal address in the UK?",
       "TITLE": "Do you have a postal address in the UK?",
       "UK_MADE_UP": "The UK is made up of England and Wales."
@@ -746,7 +770,7 @@
       "TITLE": "Do you believe the person you’re claiming against is 18 or over?",
       "YES": "Yes"
     },
-    "ELIGIBILITY_HELP_WITH_FEES" : {
+    "ELIGIBILITY_HELP_WITH_FEES": {
       "PAGE_TITLE": "Do you need help paying your court fee?",
       "TITLE": "Do you need help paying your court fee?",
       "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits."
@@ -859,16 +883,16 @@
       "TITLE": "Briefly explain why you can't pay immediately"
     },
     "FINANCIAL_DETAILS": {
-      "ASK_DETAILS_AND_SEND" : "We'll ask you for the details then we'll send them to {{ applicant1Details }} to review.",
-      "GET_APPLICANT_CONTACT_DETAILS" : "Get {{ applicant1Details }} 's contact details.",
+      "ASK_DETAILS_AND_SEND": "We'll ask you for the details then we'll send them to {{ applicant1Details }} to review.",
+      "GET_APPLICANT_CONTACT_DETAILS": "Get {{ applicant1Details }} 's contact details.",
       "NEED_GIVE_DETAILS": "You need to give {{ applicant1Details }} details of your finances.",
       "PAGE_TITLE": "Your financial details",
-      "SEND_STATEMENT_ACCOUNTS" : "'You need to send ' {{ applicant1Details }} your company or organisation's most recent statement of accounts.",
+      "SEND_STATEMENT_ACCOUNTS": "'You need to send ' {{ applicant1Details }} your company or organisation's most recent statement of accounts.",
       "SEND_FINANCIAL_DETAILS": "Send {{ applicant1Details }} your financial details",
-      "REJECT_PAY_SOONER" : "They can reject your proposal if they believe you can pay sooner.",
-      "REJECT_COURT_MAKE_NEW_PLAN" : "If they reject your proposal, the court will make a new plan using your financial details.",
-      "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN" : "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
-      "REJECT_COURT_MAKE_NEW_PLAN_BASED" : "If they reject your plan, the court will make a new plan based on your financial details."
+      "REJECT_PAY_SOONER": "They can reject your proposal if they believe you can pay sooner.",
+      "REJECT_COURT_MAKE_NEW_PLAN": "If they reject your proposal, the court will make a new plan using your financial details.",
+      "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN": "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
+      "REJECT_COURT_MAKE_NEW_PLAN_BASED": "If they reject your plan, the court will make a new plan based on your financial details."
     },
     "FIRST_CONTACT_SIGNPOSTING": {
       "SUBTITLE": "If you don't respond",
@@ -911,23 +935,23 @@
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
     },
     "FREE_TELEPHONE_MEDIATION": {
-      "AUTOMATICALLY_REGISTERED" : "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
-      "CLAIMANT_MUST_AGREE" : "The claimant must agree to mediation. We'll contact you within 28 days after the claimant's confirmation, to arrange a free appointment.",
-      "EITHER_PARTY_BREAKS_TERMS" : "If either party breaks the terms the other party can go to court to ask for a judgment or hearing.",
-      "FIND_OUT_MORE" : "Find out more about ",
-      "HOW_WORKS" : "How free mediation works",
-      "LAST_LESS_AN_HOUR" : "Your mediation appointment will last for no more than an hour.",
-      "MEDIATION_SUCCESSFUL" : "If mediation is successful, you'll make a verbal agreement over the phone. This is legally binding which means that you must comply with it. You will be given the terms of the agreement in a document – this is called a settlement agreement.",
+      "AUTOMATICALLY_REGISTERED": "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
+      "CLAIMANT_MUST_AGREE": "The claimant must agree to mediation. We'll contact you within 28 days after the claimant's confirmation, to arrange a free appointment.",
+      "EITHER_PARTY_BREAKS_TERMS": "If either party breaks the terms the other party can go to court to ask for a judgment or hearing.",
+      "FIND_OUT_MORE": "Find out more about ",
+      "HOW_WORKS": "How free mediation works",
+      "LAST_LESS_AN_HOUR": "Your mediation appointment will last for no more than an hour.",
+      "MEDIATION_SUCCESSFUL": "If mediation is successful, you'll make a verbal agreement over the phone. This is legally binding which means that you must comply with it. You will be given the terms of the agreement in a document – this is called a settlement agreement.",
       "MEDIATION_IS_CONFIDENTIAL": "Mediation is confidential, and nothing said in the mediation can be used in court proceedings if the dispute cannot be settled. The mediator speaks to each party separately, this is not a conference call.",
-      "MEDIATION_FAILS" : "If mediation fails and a court hearing is needed, what happened during the mediation appointment cannot be mentioned in court.",
-      "MEDIATION_QUICKER" : "Mediation can be quicker, cheaper and less stressful than going to court.",
-      "NO_AGREE" : "I do not agree to free mediation",
-      "NEUTRAL_MEDIATOR_LISTEN" : "A trained, neutral mediator from HM Courts and Tribunals Service will listen to your views and help you to negotiate a settlement of your dispute.",
-      "NO_WAIT_COURT_HEARING" : "You will not have to wait longer for a court hearing if you choose mediation.",
-      "OPENS_IN_NEW_TAB" : "free telephone mediation (opens in new tab).",
+      "MEDIATION_FAILS": "If mediation fails and a court hearing is needed, what happened during the mediation appointment cannot be mentioned in court.",
+      "MEDIATION_QUICKER": "Mediation can be quicker, cheaper and less stressful than going to court.",
+      "NO_AGREE": "I do not agree to free mediation",
+      "NEUTRAL_MEDIATOR_LISTEN": "A trained, neutral mediator from HM Courts and Tribunals Service will listen to your views and help you to negotiate a settlement of your dispute.",
+      "NO_WAIT_COURT_HEARING": "You will not have to wait longer for a court hearing if you choose mediation.",
+      "OPENS_IN_NEW_TAB": "free telephone mediation (opens in new tab).",
       "PAGE_TITLE": "Free telephone mediation",
-      "REACHING_SETTLEMENT" : "Reaching a settlement",
-      "TITLE" : "Free telephone mediation"
+      "REACHING_SETTLEMENT": "Reaching a settlement",
+      "TITLE": "Free telephone mediation"
     },
     "INCOMPLETE_SUBMISSION": {
       "TITLE": "You need to complete all sections before you submit your response"
@@ -947,12 +971,13 @@
       "YOU_HAVE_CHOSEN_TELL_US_WHY": "You have chosen not to try free mediation. Please tell us why:"
     },
     "LATEST_UPDATE_CONTENT": {
-      "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
-      "RESPOND_TO_CLAIM": "Respond to claim",
-      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
-      "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment."
+      "MORE_TIME_REQUESTED": "More time requested",
+      "RESPOND_TO_CLAIM": "Respond to claim",
+      "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
+      "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."
     },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "Can the mediation service use {{ respondentTelNumber }} to call you?",
@@ -963,9 +988,9 @@
       "WONT_GIVE_NUMBER": "We won't give the number to anyone else."
     },
     "MEDIATION_COMPANY_PHONE": {
-      "CONFIRM_TELEPHONE_NUMBER" : "Confirm telephone number",
-      "ENTER_PHONE_NUMBER" : "Enter this person’s phone number, including extension if required",
-      "FOR_EXAMPLE" : "For example, 02012346788 ext. 153",
+      "CONFIRM_TELEPHONE_NUMBER": "Confirm telephone number",
+      "ENTER_PHONE_NUMBER": "Enter this person’s phone number, including extension if required",
+      "FOR_EXAMPLE": "For example, 02012346788 ext. 153",
       "PAGE_TITLE": "Mediation - Provide company contact number",
       "TITLE": "Who should the mediation service call?",
       "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
@@ -992,12 +1017,12 @@
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
-    "NOT_ELIGIBLE_FOR_SERVICE":{
+    "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {
         "1": "You might be able to get advice from organisations like ",
         "2": " about making a claim."
       },
-      "CANT_CALCULATE_THE_AMOUNT" : "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
+      "CANT_CALCULATE_THE_AMOUNT": "If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the ",
       "CLAIM_AGAINST_GOVERNMENT": {
         "CANT_USE_SERVICE": "You can't use this service to claim against",
         "COMMA_COMPLETE_RETURN": ", complete it and return it to make your claim",
@@ -1005,27 +1030,27 @@
       },
       "CLAIM_BY_PAPER": "You can also claim by paper. ",
       "CLAIM_ON_BEHALF": {
-        "CURRENTLY_SERVICE" : "This service is currently for claimants representing themselves.",
+        "CURRENTLY_SERVICE": "This service is currently for claimants representing themselves.",
         "COMPLETE_RETURN": ", complete and return it to make your claim.",
         "DOWNLOAD_PAPER_LINK": "download a paper form",
-        "LEGAL_REPRESENTATIVE" : "If you’re a legal representative ",
+        "LEGAL_REPRESENTATIVE": "If you’re a legal representative ",
         "MCOL_LINK": "use the Money Claim Online (MCOL) service",
         "OR": " or "
       },
       "COMPLETE_AND_RETURN_PAPER_FORM": "complete it and return it to make your claim.",
       "DEFENDANT_ADDRESS": {
         "AND": "and",
-        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES":"You can only use this service to claim against a person or organisation with an address in England or Wales.",
+        "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES": "You can only use this service to claim against a person or organisation with an address in England or Wales.",
         "COMPLETE_FORMS_AND_RETURN": ". Complete the forms and return them to make your claim.",
         "DOWNLOAD_PAPER_FORM_N1": "Download the paper form N1",
         "FORM_N510": "form N510",
         "USING_PAPER_FORM": "Depending on where you’ll be sending the claim, you might be able to claim using a paper form."
       },
-      "DEFENDANT_UNDER_18" : {
-        "ABOUT_MAKING_CLAIM" : " about making a claim.",
-        "CAN_ONLY_USE" : "You can only use this service to claim against a defendant who’s 18 or over.",
-        "CITIZENS_ADVICE" : "Citizens Advice",
-        "MIGHT_ABLE" : "You might be able to get advice from organisations like "
+      "DEFENDANT_UNDER_18": {
+        "ABOUT_MAKING_CLAIM": " about making a claim.",
+        "CAN_ONLY_USE": "You can only use this service to claim against a defendant who’s 18 or over.",
+        "CITIZENS_ADVICE": "Citizens Advice",
+        "MIGHT_ABLE": "You might be able to get advice from organisations like "
       },
       "CITIZENS_ADVICE": "Citizens Advice",
       "CLAIMANT_ADDRESS": {
@@ -1047,7 +1072,7 @@
         "MORE_THAN_ONE_PERSON_ORG": "You can’t use this service if this claim is against more than one person or organisation.",
         "USE": "Use "
       },
-      "N1_PAPER_FORM" : "N1 paper form",
+      "N1_PAPER_FORM": "N1 paper form",
       "OPENS_IN_A_NEW_WINDOW": "(opens in a new window)",
       "PAGE_TITLE": "You can’t use this service",
       "TENANCY_DEPOSIT": {
@@ -1081,7 +1106,7 @@
       "HOW_MUCH": "How much have you paid?",
       "PAGE_TITLE": "How much have you paid?",
       "TITLE": "How much have you paid the claimant?",
-      "TOTAL_CLAIMED" : "The total amount claimed is £{{totalClaimAmount}}. This includes the claim fee and any interest.",
+      "TOTAL_CLAIMED": "The total amount claimed is £{{totalClaimAmount}}. This includes the claim fee and any interest.",
       "WHEN_DID": "When did you pay this amount?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
@@ -1119,6 +1144,10 @@
       "TITLE_FOR_PART_ADMIT": "When do you want to pay the £{{ amount }}?",
       "YOU_MUST_CONTACT": "You must contact the claimant and pay the full amount within 5 days. Any cheques or transfers must be clear in their account."
     },
+    "PERMISSION_FOR_EXPERT": {
+      "PAGE_TITLE": "Do you want to ask for the court’s permission to use an expert?",
+      "TITLE": "Permission for expert"
+    },
     "PRIORITY_DEBTS": {
       "ARREARS": "'in arrears' (you've missed regular payments)",
       "DEBTS": "Debts you're behind on",
@@ -1127,7 +1156,7 @@
       "REGULAR_PAYMENTS": "making regular repayments to clear the missed payments",
       "TOTAL_MONTHLY_REPAYMENTS": "Total monthly repayments"
     },
-    "PIN":{
+    "PIN": {
       "CONTACT_US": "contact us",
       "CHECK_SECURITY_CODE": "Check the security code is the one we sent you. You can",
       "FIND_PIN": "You can find it on the email or letter we sent you.",
@@ -1139,27 +1168,27 @@
       "PAGE_TITLE": "Your regular expenses"
     },
     "REGULAR_INCOME": {
-      "AMOUNT_RECEIVED" : "Amount received",
-      "BUTTON_ADD_SOURCE" : "Add another source of income",
-      "CHILD_TAX" : "Child Tax Credit",
-      "CHILD_BENEFIT" : "Child Benefit",
+      "AMOUNT_RECEIVED": "Amount received",
+      "BUTTON_ADD_SOURCE": "Add another source of income",
+      "CHILD_TAX": "Child Tax Credit",
+      "CHILD_BENEFIT": "Child Benefit",
       "COUNCIL_TAX": "Council Tax Support",
-      "INCOME_JOB" : "Income from your job",
-      "INCOME_SUPPORT" : "Income Support",
-      "INCLUDE_WAGES_OVERTIME_COMISSION" : "Include wages, overtime, commission, bonuses",
-      "JOBSEEKER_ALLOWANCE_INCOME" : "Jobseeker’s Allowance (income based)",
-      "JOBSEEKER_ALLOWANCE_CONTRIBUTION" : "Jobseeker’s Allowance (contribution based)",
-      "OTHER" : "Other",
+      "INCOME_JOB": "Income from your job",
+      "INCOME_SUPPORT": "Income Support",
+      "INCLUDE_WAGES_OVERTIME_COMISSION": "Include wages, overtime, commission, bonuses",
+      "JOBSEEKER_ALLOWANCE_INCOME": "Jobseeker’s Allowance (income based)",
+      "JOBSEEKER_ALLOWANCE_CONTRIBUTION": "Jobseeker’s Allowance (contribution based)",
+      "OTHER": "Other",
       "PAGE_TITLE": "Your regular income",
-      "PENSION" : "Pension",
-      "RECEIVED_EVERY" : "Received every",
-      "REMOVE_INCOME" : "Remove this income source",
-      "SELECT_ALL_THAT_APPLY" : "Select all that apply. The information you enter must be truthful and accurate.",
-      "SOURCE_INCOME" : "Source of income",
-      "TOTAL_MONTHLY" : "Total monthly income:",
-      "UNIVERSAL_CREDIT" : "Universal Credit",
-      "WHAT_REGULAR_INCOME" : "What regular income do you receive?",
-      "WORKING_TAX" : "Working Tax Credit"
+      "PENSION": "Pension",
+      "RECEIVED_EVERY": "Received every",
+      "REMOVE_INCOME": "Remove this income source",
+      "SELECT_ALL_THAT_APPLY": "Select all that apply. The information you enter must be truthful and accurate.",
+      "SOURCE_INCOME": "Source of income",
+      "TOTAL_MONTHLY": "Total monthly income:",
+      "UNIVERSAL_CREDIT": "Universal Credit",
+      "WHAT_REGULAR_INCOME": "What regular income do you receive?",
+      "WORKING_TAX": "Working Tax Credit"
     },
     "REJECT_ALL": {
       "FEE": "Fee",
@@ -1171,17 +1200,17 @@
     },
     "REPAYMENT_PLAN": {
       "ADMIT_YOU_OWE": "You admit you owe £{{amount}}.",
-      "FIRST_PAYMENT" : "When will you make the first payment?",
-      "FOR_EXAMPLE" : "For example, ",
-      "HOW_OFTEN_PAYMENTS" : "How often you'll make these payments",
-      "LENGTH" : "Length of repayment plan",
+      "FIRST_PAYMENT": "When will you make the first payment?",
+      "FOR_EXAMPLE": "For example, ",
+      "HOW_OFTEN_PAYMENTS": "How often you'll make these payments",
+      "LENGTH": "Length of repayment plan",
       "PAGE_TITLE": "Your repayment plan",
       "REGULAR_PAYMENTS": "Regular payments of",
       "SUBTITLE": "The total amount claimed is £{{totalAmount}}. This includes the claim fee and any interest.",
       "TITLE": "Your repayment plan"
     },
     "REQUEST_EXTRA_4WEEKS": {
-      "HINT": "You can use this time to try to settle the claim withoout going to a hearing. Settling without going to a hearing may avoid costs including fees.",
+      "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",
       "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
       "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
       "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
@@ -1227,8 +1256,8 @@
       "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "SELF_EMPLOYED": {
-      "ANNUAL" : "Annual Turnover",
-      "JOB_TITLE" : "Job title",
+      "ANNUAL": "Annual Turnover",
+      "JOB_TITLE": "Job title",
       "PAGE_TITLE": "Self employment details",
       "TITLE": "What are you self-employed as?"
     },
@@ -1273,18 +1302,35 @@
         "SETUP_REPAYMENT_PLAN": "set up your repayment plan to begin when you said it would",
         "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ve suggested paying by instalments."
       },
+      "RC_PAY_LESS": {
+        "CLAIMANT_REFUSE_MEDIATION": "If they don't want to try mediation the court will review the case. You might have to go to a hearing.",
+        "IF_CLAIMANT_ACCEPTS_CLAIM_TO_SETTLED": "If {{claimantName}} accepts your response the claim will be settled. We'll contact you when they respond.",
+        "WE_ASK_CLAIMANT_FOR_MEDIATION": "We'll ask if they want to try mediation. If they agree, we'll contact you to try to arrange an appointment.",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "You told us you've paid the £{{amount}} you believe you owe. We've sent {{claimantName}} this response."
+      },
+      "RC_PAY_FULL": {
+        "CLAIMANT_REFUSE_MEDIATION": "If they reject mediation the court will review the case. You might have to go to a hearing.",
+        "IF_CLAIMANT_ACCEPTS_CLAIM_WILL_END": "If {{claimantName}} accepts your response the claim will be ended. We'll contact you when they respond.",
+        "IF_CLAIMANT_REJECTS_TRY_MEDIATION": "If {{claimantName}} rejects your response we'll ask them to try mediation. If they agree, we'll contact you to arrange a call with the mediator.",
+        "IF_CLAIMANT_REJECTS_COURT_WILL_REVIEW_CASE": "If they reject mediation the court will review the case. You might have to go to a hearing.",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "You told us you've paid £{{amount}}. We've sent {{claimantName}} this response."
+      },
       "CLAIM_NUMBER": "Claim number",
       "COURT_DECIDE_HOW_TO_PAY": "The court will decide how you must pay.",
       "GET_FINANCIAL_DETAILS": "Get {{ claimantName }}’s financial details.",
       "GO_TO_ACCOUNT": "Go to your account",
       "IF_CLAIMANT_ACCEPTS_OFFER": "If {{ claimantName }} accepts your offer",
+      "IF_CLAIMANT_ACCEPTS_RESPONSE": "If {{ claimantName }} accepts your response",
       "IF_CLAIMANT_REJECTS_OFFER": "If {{ claimantName }} rejects your offer",
+      "IF_CLAIMANT_REJECTS_RESPONSE": "If {{ claimantName }} rejects your response",
       "PAGE_TITLE": "Submit Confirmation",
       "REQUEST_CCJ_AGAINST_YOU": "request a County Court Judgment against you",
       "SIGN_SETTLEMENT_AGREEMENT": "ask you to sign a settlement agreement to formalise the repayment plan",
       "SEND_FINANCIAL_DETAILS": "Send your financial details",
       "SEND_STATEMENT_OF_ACC": "Send {{ claimantName }} your company or organisation’s most recent statement of accounts, if you haven’t already.",
+      "THE_CLAIM_WILL_BE_SETTLED": "The claim will be settled",
       "WE_CONTACT_YOU": "We’ll contact you when they respond.",
+      "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "We'll contact you to tell you what to do next",
       "WHAT_HAPPENS_NEXT": "What happens next",
       "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
       "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either",
@@ -1355,25 +1401,25 @@
       "TITLE": "Vulnerability Questions"
     },
     "WHO_EMPLOYS_YOU": {
-      "ADD_ANOTHER_JOB" : "Add another job",
+      "ADD_ANOTHER_JOB": "Add another job",
       "PAGE_TITLE": "Your employer",
-      "WHO_EMPLOYS" : "Who employs you?"
+      "WHO_EMPLOYS": "Who employs you?"
     },
-    "EMPLOYER" : {
-      "EMPLOYER_NAME" : "Employer name",
-      "JOB_TITLE" : "Job title"
+    "EMPLOYER": {
+      "EMPLOYER_NAME": "Employer name",
+      "JOB_TITLE": "Job title"
     },
     "YOU_CAN_USE": {
-      "BASED_ON" : "Based on your answers you can make a money claim using this service.",
-      "HWF_ELIGIBLE" : {
-        "PAY_COURT" : "You will have to pay court fees unless you are eligible for Help with Fees. ",
-        "HELP_WITH_FEES" : "Find out more about Help with Fees (opens in a new window)"
+      "BASED_ON": "Based on your answers you can make a money claim using this service.",
+      "HWF_ELIGIBLE": {
+        "PAY_COURT": "You will have to pay court fees unless you are eligible for Help with Fees. ",
+        "HELP_WITH_FEES": "Find out more about Help with Fees (opens in a new window)"
       },
-      "HWF_ELIGIBLE_REFERENCE" : {
-        "REMEMBER" : "Remember that you will not know about the fee until we have processed your Help with Fees application. Your claim will only be issued after Help with Fees is confirmed, or the fee is paid."
+      "HWF_ELIGIBLE_REFERENCE": {
+        "REMEMBER": "Remember that you will not know about the fee until we have processed your Help with Fees application. Your claim will only be issued after Help with Fees is confirmed, or the fee is paid."
       },
-      "PAGE_TITLE" : "You can use this service",
-      "TITLE" : "You can use this service"
+      "PAGE_TITLE": "You can use this service",
+      "TITLE": "You can use this service"
     },
     "YOU_HAVE_PAID_LESS": {
       "PAGE_TITLE": "You've paid less",
@@ -1405,6 +1451,9 @@
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
     "DEFENDANT_AGE_REQUIRED": "Select yes, no, or company/organisation",
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
+    "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Select yes if you want to use expert evidence",
+    "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Select yes if you want to give evidence yourself",
+    "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Explain what there is to examine",
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
     "DETAILS_REQUIRED": "Enter details",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
@@ -1419,6 +1468,7 @@
     "EXPERT_NAME_REQUIRED": "Enter the expert’s name",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
+    "GIVE_DETAILS_DOCUMENTS" : "Give details of the documents",
     "JOB_TITLE_REQUIRED": "Enter a job title",
     "NAME_REQUIRED": "Please enter a name",
     "NUMBER_OF_PEOPLE_REQUIRED": "Enter a numeric, for example 3",
@@ -1453,6 +1503,7 @@
       "WATER": "Select how often you pay for Water"
     },
     "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
+    "SELECT_YES_IF_DOCUMENTS" : "Select yes if there are documents the claimant has that you want the court to consider",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",

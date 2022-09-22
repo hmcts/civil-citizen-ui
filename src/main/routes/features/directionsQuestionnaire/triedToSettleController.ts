@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_TRIED_TO_SETTLE_CLAIM_URL} from '../../urls';
+import {DQ_TRIED_TO_SETTLE_CLAIM_URL, DQ_REQUEST_EXTRA_4WEEKS_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {
   getTriedToSettle,

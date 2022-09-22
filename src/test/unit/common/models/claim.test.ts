@@ -22,6 +22,12 @@ import {mockClaim} from '../../../utils/mockClaim';
 import {DocumentType} from '../../../../main/common/models/document/documentType';
 import {CaseState} from '../../../../main/common/form/models/claimDetails';
 import {GenericYesNo} from '../../../../main/common/form/models/genericYesNo';
+import {RejectAllOfClaim} from '../../../../main/common/form/models/rejectAllOfClaim';
+import RejectAllOfClaimType from '../../../../main/common/form/models/rejectAllOfClaimType';
+import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../../../main/common/form/models/admission/howMuchHaveYouPaid';
+import {WhyDoYouDisagree} from '../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {Defence} from '../../../../main/common/form/models/defence';
+import { ClaimResponseStatus } from '../../../../main/common/models/claimResponseStatus';
 
 describe('Claim isInterestClaimUntilSubmitDate', () => {
   const claim = new Claim();
@@ -603,6 +609,68 @@ describe('Claim partialAdmissionPaymentAmount', () => {
   });
 });
 
+describe('Claim Reject All', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isRejectAllOfClaimAlreadyPaid();
+    //Then
+    expect(result).toBeUndefined();
+  });
+  it('should return false with part admit empty RejectAllOfClaim', () => {
+    //Given
+    claim.rejectAllOfClaim = new RejectAllOfClaim();
+    //When
+    const result = claim.isRejectAllOfClaimAlreadyPaid();
+    //Then
+    expect(result).toBeUndefined();
+  });
+  it('should return existing amount when paying less', () => {
+    //Given
+    const howMuchHaveYouPaidParams: HowMuchHaveYouPaidParams = {
+      amount: 120,
+      totalClaimAmount: 1000,
+      year: '2022',
+      month: '2',
+      day: '14',
+      text: 'Some text here...',
+    };
+    claim.rejectAllOfClaim = new RejectAllOfClaim(
+      RejectAllOfClaimType.ALREADY_PAID,
+      new HowMuchHaveYouPaid(howMuchHaveYouPaidParams),
+      new WhyDoYouDisagree(''),
+      new Defence(),
+    );
+    //When
+    const result = claim.isRejectAllOfClaimAlreadyPaid();
+    //Then
+    expect(result).toEqual(120);
+    expect(ClaimResponseStatus.RC_PAID_LESS).toBe('REJECT_CLAIM_PAID_LESS_CLAIM');
+  });
+  it('should return existing amount when paying equal', () => {
+    //Given
+    const howMuchHaveYouPaidParams: HowMuchHaveYouPaidParams = {
+      amount: 1000,
+      totalClaimAmount: 1000,
+      year: '2022',
+      month: '2',
+      day: '14',
+      text: 'Some text here...',
+    };
+    claim.rejectAllOfClaim = new RejectAllOfClaim(
+      RejectAllOfClaimType.ALREADY_PAID,
+      new HowMuchHaveYouPaid(howMuchHaveYouPaidParams),
+      new WhyDoYouDisagree(''),
+      new Defence(),
+    );
+    //When
+    const result = claim.isRejectAllOfClaimAlreadyPaid();
+    //Then
+    expect(result).toEqual(1000);
+    expect(ClaimResponseStatus.RC_PAID_FULL).toBe('REJECT_CLAIM_PAID_FULL_CLAIM');
+  });
+});
+
 describe('Documents', () => {
   const emptyDocumentDetails = {
     document_url: '',
@@ -722,6 +790,98 @@ describe('Documents', () => {
       claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
       //When
       const result = claim.isDefendantNotResponded();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isBusiness', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with individual type', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with sole trader', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with company type', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.COMPANY;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true with organisation trader', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isBusiness', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with individual type', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with sole trader', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with company type', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.COMPANY;
+      //When
+      const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true with organisation trader', () => {
+      //Given
+      claim.respondent1 = new Respondent();
+      claim.respondent1.type = CounterpartyType.ORGANISATION;
+      //When
+      const result = claim.isBusiness();
       //Then
       expect(result).toBe(true);
     });

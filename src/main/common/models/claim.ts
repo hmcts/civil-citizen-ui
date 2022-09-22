@@ -36,7 +36,10 @@ import {ResponseDeadline} from './responseDeadline';
 import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
 import {getLng} from '../../common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
+import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType';
 import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
+import {ResponseOptions} from '../../common/form/models/responseDeadline';
+import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
 
 export class Claim {
   legacyCaseReference: string;
@@ -78,6 +81,7 @@ export class Claim {
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
   determinationWithoutHearing: DeterminationWithoutHearing;
+  respondentSolicitor1AgreedDeadlineExtension?:Date;
   directionQuestionnaire?: DirectionQuestionnaire;
 
   getClaimantName(): string {
@@ -187,6 +191,18 @@ export class Claim {
     return this.partialAdmission?.howMuchDoYouOwe?.amount;
   }
 
+  isRejectAllOfClaimAlreadyPaid(): number {
+    return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
+  }
+
+  hasConfirmedAlreadyPaid(): boolean {
+    return this.rejectAllOfClaim.option === RejectAllOfClaimType.ALREADY_PAID;
+  }
+
+  hasPaidInFull(): boolean {
+    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount;
+  }
+
   extractDocumentId(): string {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
@@ -223,6 +239,10 @@ export class Claim {
     return this.respondent1?.type === CounterpartyType.COMPANY || this.respondent1?.type === CounterpartyType.ORGANISATION;
   }
 
+  isDeadlineExtended(): boolean {
+    return this.respondentSolicitor1AgreedDeadlineExtension !== undefined;
+  }
+
   get responseStatus(): ClaimResponseStatus {
     if (this.isFullAdmission() && this.isPaymentOptionPayImmediately()) {
       return ClaimResponseStatus.FA_PAY_IMMEDIATELY;
@@ -239,7 +259,25 @@ export class Claim {
     if (this.isPartialAdmission() && this.partialAdmission?.alreadyPaid?.option === YesNo.YES) {
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
+
+    if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
+      return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
+    }
+
   }
+
+  hasRespondentAskedForMoreThan28Days(): boolean {
+    return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
+  }
+
+  isRequestToExtendDeadlineRefused(): boolean {
+    return this.responseDeadline?.option === ResponseOptions.REQUEST_REFUSED;
+  }
+
+  isResponseToExtendDeadlineNo(): boolean {
+    return this.responseDeadline?.option === ResponseOptions.NO;
+  }
+
 }
 
 export interface Party {
