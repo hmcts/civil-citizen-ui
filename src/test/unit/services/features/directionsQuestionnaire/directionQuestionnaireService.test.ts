@@ -100,7 +100,7 @@ describe('Direction questionnaire Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
-      const expertEvidence = await getGenericOption('validClaimId', 'Test', 'errorTest');
+      const expertEvidence = await getGenericOption('validClaimId', 'Test');
       expect(expertEvidence.option).toBeUndefined();
     });
 
@@ -111,7 +111,7 @@ describe('Direction questionnaire Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
-      const expertEvidence = await getGenericOption('validClaimId', 'defendantExpertEvidence', 'errorTest');
+      const expertEvidence = await getGenericOption('validClaimId', 'defendantExpertEvidence');
       expect(expertEvidence.option).toBe(YesNo.YES);
     });
 
@@ -119,7 +119,7 @@ describe('Direction questionnaire Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      await expect(getGenericOption('claimId', 'Test', 'errorTest')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getGenericOption('claimId', 'Test')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
