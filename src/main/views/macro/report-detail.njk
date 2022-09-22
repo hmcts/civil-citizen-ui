@@ -3,22 +3,22 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
 {% macro reportDetail(reportDetailIndex, reportDetailValue, errorFor, t, removeButton) %}
-<div class="multiple-row">
-
-  {{ govukFieldset({
-    classes: 'moj-add-another__item govuk-!-margin-bottom-6',
-    legend: {
-      text:  t('PAGES.EXPERT_REPORT_DETAILS.REPORT_TEXT'),
-      classes: 'moj-add-another__title govuk-fieldset__legend--m',
-      isPageHeading: false
-    }
-  }) }}
+  <div class="multiple-row">
+    {{ govukFieldset({
+      classes: 'moj-add-another__item govuk-!-margin-bottom-6',
+      legend: {
+        text:  t('PAGES.EXPERT_REPORT_DETAILS.REPORT_TEXT'),
+        classes: 'moj-add-another__title govuk-fieldset__legend--m',
+        isPageHeading: false
+      }
+    }) }}
 
     {{ govukInput({
       id: 'reportDetails[' + reportDetailIndex + '][expertName]',
       name: 'reportDetails[' + reportDetailIndex + '][expertName]',
       value: reportDetailValue.expertName,
       type: 'text',
+      classes: "govuk-input--width-20",
       label: {
         text: t('PAGES.EXPERT_REPORT_DETAILS.EXPERT_NAME')
       },
@@ -29,9 +29,9 @@
       errorMessage: {
         text: t(errorFor('reportDetails['+reportDetailIndex+'][expertName]'))
       } if errorFor('reportDetails['+reportDetailIndex+'][expertName]')
-    }) }}
+      }) }}
 
-     {{ govukDateInput({
+    {{ govukDateInput({
       id: 'reportDetails['+reportDetailIndex+'][reportDate]',
       type: "number",
       inputmode: "numeric",
@@ -96,13 +96,10 @@
       ]
     }) }}
     <br>
-    {% if removeButton %}
-      {% if removeButton.hidden %}
+    {% if removeButton.hidden %}
         <button class="govuk-button govuk-button--secondary remove-row govuk-visually-hidden">{{ t('COMMON.REMOVE') }}</button>
-      {% else %}
+    {% else %}
         <button class="govuk-button govuk-button--secondary remove-row">{{ t('COMMON.REMOVE') }}</button>
-      {% endif %}
     {% endif %}
-
-</div>
+  </div>
 {% endmacro %}

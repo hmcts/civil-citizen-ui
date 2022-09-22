@@ -19,6 +19,7 @@
 {% set rowNumberToShowRemoveButton = 2 %}
 {% set errors = form.getAllErrors() %}
 {% set atLeastOneCourtOrderError = form.errorFor('reportDetails') %}
+{% set isRemoveButtonHidden = form.model.reportDetails.length < rowNumberToShowRemoveButton %}
 {% set reportDetailsHtml %}
   <div
     class="govuk-form-group {% if atLeastOneCourtOrderError %} govuk-form-group--error {% endif %}">
@@ -29,21 +30,15 @@
     {% endif %}
 
     {% for row in form.model.reportDetails %}
-    {% if form.model.reportDetails.length < rowNumberToShowRemoveButton %}
-      {{ reportDetail(loop.index0, row, form.errorFor, t, { hidden: true }) }}
-      {% else %}
-      {{ reportDetail(loop.index0, row, form.errorFor, t) }}
-    {% endif %}
+      {{ reportDetail(loop.index0, row, form.errorFor, t, { hidden: isRemoveButtonHidden }) }}
     {% endfor %}
-
   </div>
   <div>
-     {{ govukButton({
-              text: t('PAGES.EXPERT_REPORT_DETAILS.ADD_ANOTHER'),
-              classes: "govuk-button--secondary append-row"
-            }) }}
+    {{ govukButton({
+      text: t('PAGES.EXPERT_REPORT_DETAILS.ADD_ANOTHER'),
+      classes: "govuk-button--secondary append-row"
+    }) }}
   </div>
-
 {% endset -%}
 
 {% block content %}
@@ -62,7 +57,6 @@
             {{ csrfProtection(csrf) }}
             {{ yesNoRadioButton(t, 'hasExpertReports', 'hasExpertReports', '', form, '', {yesHtml: reportDetailsHtml}) }}
             <div class="govuk-form-group">
-
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
