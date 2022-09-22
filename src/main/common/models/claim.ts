@@ -240,7 +240,7 @@ export class Claim {
   }
 
   isDeadlineExtended(): boolean {
-    return this.responseDeadline?.option === ResponseOptions.ALREADY_AGREED && this.respondentSolicitor1AgreedDeadlineExtension !== undefined;
+    return this.respondentSolicitor1AgreedDeadlineExtension !== undefined;
   }
 
   get responseStatus(): ClaimResponseStatus {
