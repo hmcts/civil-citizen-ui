@@ -10,7 +10,6 @@ import {
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const requestExtra4WeeksController = express.Router();
-const requestExtra4weeksErrorMessage = 'ERRORS.VALID_REQUEST_EXTRA_4_WEEKS';
 const dqPropertyName = 'requestExtra4weeks';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
@@ -19,7 +18,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 requestExtra4WeeksController.get(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName, requestExtra4weeksErrorMessage)), res);
+    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName)), res);
   } catch (error) {
     next(error);
   }
@@ -28,7 +27,7 @@ requestExtra4WeeksController.get(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, n
 requestExtra4WeeksController.post(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const form = new GenericForm(getGenericOptionForm(req.body.option, requestExtra4weeksErrorMessage));
+    const form = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
     form.validateSync();
 
     if (form.hasErrors()) {

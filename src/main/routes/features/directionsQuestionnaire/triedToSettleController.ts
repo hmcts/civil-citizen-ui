@@ -10,7 +10,6 @@ import {
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const triedToSettleController = express.Router();
-const errorMessage = 'ERRORS.VALID_TRIED_TO_SETTLE';
 const dqPropertyName = 'triedToSettle';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
@@ -19,7 +18,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 triedToSettleController.get(DQ_TRIED_TO_SETTLE_CLAIM_URL, async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName, errorMessage)), res);
+    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName)), res);
   } catch (error) {
     next(error);
   }
@@ -28,7 +27,7 @@ triedToSettleController.get(DQ_TRIED_TO_SETTLE_CLAIM_URL, async (req, res, next)
 triedToSettleController.post(DQ_TRIED_TO_SETTLE_CLAIM_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const triedToSettle = getGenericOptionForm(req.body.option, errorMessage);
+    const triedToSettle = getGenericOptionForm(req.body.option, dqPropertyName);
     const form = new GenericForm(triedToSettle);
     form.validateSync();
 

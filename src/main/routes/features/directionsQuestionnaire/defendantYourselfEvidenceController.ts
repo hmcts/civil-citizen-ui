@@ -12,7 +12,6 @@ import {
 const defendantYourselfEvidenceController = express.Router();
 const defendantYourselfEvidenceViewPath = 'features/directionsQuestionnaire/defendant-yourself-evidence';
 const dqPropertyName = 'defendantYourselfEvidence';
-const errorMessage = 'ERRORS.DEFENDANT_YOURSELF_EVIDENCE_REQUIRED';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(defendantYourselfEvidenceViewPath, {form});
@@ -20,7 +19,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 defendantYourselfEvidenceController.get(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const defendantYourselfEvidence = await getGenericOption(req.params.id, dqPropertyName, errorMessage);
+    const defendantYourselfEvidence = await getGenericOption(req.params.id, dqPropertyName);
     renderView(new GenericForm(defendantYourselfEvidence), res);
   } catch (error) {
     next(error);
@@ -30,7 +29,7 @@ defendantYourselfEvidenceController.get(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL, asyn
 defendantYourselfEvidenceController.post(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
-    const defendantYourselfEvidence = new GenericForm(getGenericOptionForm(req.body.option, errorMessage));
+    const defendantYourselfEvidence = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
     defendantYourselfEvidence.validateSync();
 
     if (defendantYourselfEvidence.hasErrors()) {

@@ -10,7 +10,6 @@ import {
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const sharedExpertController = express.Router();
-const errorMessage = 'ERRORS.VALID_SHARED_EXPERT';
 const dqPropertyName = 'sharedExpert';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
@@ -19,7 +18,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 sharedExpertController.get(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName, errorMessage)), res);
+    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName)), res);
   } catch (error) {
     next(error);
   }
@@ -28,7 +27,7 @@ sharedExpertController.get(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
 sharedExpertController.post(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const form = new GenericForm(getGenericOptionForm(req.body.option, errorMessage));
+    const form = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
     form.validateSync();
 
     if (form.hasErrors()) {

@@ -16,7 +16,6 @@ import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 const defendantExpertEvidenceController = express.Router();
 const defendantExpertEvidenceViewPath = 'features/directionsQuestionnaire/defendant-expert-evidence';
-const errorMessage = 'ERRORS.DEFENDANT_EXPERT_EVIDENCE_REQUIRED';
 const dqPropertyName = 'defendantExpertEvidence';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
@@ -25,7 +24,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 defendantExpertEvidenceController.get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const defendantExpertEvidence = await getGenericOption(req.params.id, dqPropertyName, errorMessage);
+    const defendantExpertEvidence = await getGenericOption(req.params.id, dqPropertyName);
     renderView(new GenericForm(defendantExpertEvidence), res);
   } catch (error) {
     next(error);
@@ -35,7 +34,7 @@ defendantExpertEvidenceController.get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (r
 defendantExpertEvidenceController.post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
-    const defendantExpertEvidence = new GenericForm(getGenericOptionForm(req.body.option, errorMessage));
+    const defendantExpertEvidence = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
     defendantExpertEvidence.validateSync();
 
     if (defendantExpertEvidence.hasErrors()) {
