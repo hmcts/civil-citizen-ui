@@ -2,12 +2,12 @@ import * as draftStoreService from '../../../../../main/modules/draft-store/draf
 import {Claim} from '../../../../../main/common/models/claim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {
-  getExpertReports,
-  saveExpertReports,
-} from '../../../../../main/services/features/directionsQuestionnaire/expertReportsService';
+  getSentExpertReports,
+  saveSentExpertReports,
+} from '../../../../../main/services/features/directionsQuestionnaire/sentExpertReportsService';
 import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
-import {ExpertReports} from '../../../../../main/common/models/directionsQuestionnaire/expertReports';
-import {ExpertReportsOptions} from '../../../../../main/common/models/directionsQuestionnaire/expertReportsOptions';
+import {SentExpertReports} from '../../../../../main/common/models/directionsQuestionnaire/sentExpertReports';
+import {YesNoNotReceived} from '../../../../../main/common/form/models/yesNo';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -21,7 +21,7 @@ describe('Sent Expert Reports Service', () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
-      const expertReports = await getExpertReports('validClaimId');
+      const expertReports = await getSentExpertReports('validClaimId');
 
       expect(expertReports.option).toBeUndefined();
     });
@@ -29,13 +29,13 @@ describe('Sent Expert Reports Service', () => {
     it('should return sent expert reports option with Yes option', async () => {
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.expertReports = {option: ExpertReportsOptions.OPTION_YES};
+      claim.directionQuestionnaire.sentExpertReports = {option: YesNoNotReceived.YES};
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
-      const expertReports = await getExpertReports('validClaimId');
+      const expertReports = await getSentExpertReports('validClaimId');
 
-      expect(expertReports.option).toBe(ExpertReportsOptions.OPTION_YES);
+      expect(expertReports.option).toBe(YesNoNotReceived.YES);
     });
 
     it('should return error on redis failure', async () => {
@@ -43,13 +43,13 @@ describe('Sent Expert Reports Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
 
-      await expect(getExpertReports('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getSentExpertReports('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
   describe('saveExpertReports', () => {
-    const expertReports: ExpertReports = {
-      option: ExpertReportsOptions.OPTION_YES,
+    const sentExpertReports: SentExpertReports = {
+      option: YesNoNotReceived.YES,
     };
 
     it('should save sent expert reports successfully', async () => {
@@ -58,26 +58,26 @@ describe('Sent Expert Reports Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
-      await saveExpertReports('validClaimId', expertReports);
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire: {expertReports}});
+      await saveSentExpertReports('validClaimId', sentExpertReports);
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire: {sentExpertReports}});
     });
 
     it('should update sent expert reports successfully', async () => {
-      const updatedExpertReports: ExpertReports = {
-        option: ExpertReportsOptions.OPTION_NO,
+      const updatedExpertReports: SentExpertReports = {
+        option: YesNoNotReceived.NO,
       };
       const updatedClaim = new Claim();
       updatedClaim.directionQuestionnaire = new DirectionQuestionnaire();
-      updatedClaim.directionQuestionnaire.expertReports = updatedExpertReports;
+      updatedClaim.directionQuestionnaire.sentExpertReports = updatedExpertReports;
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
-        claim.directionQuestionnaire.expertReports = updatedExpertReports;
+        claim.directionQuestionnaire.sentExpertReports = updatedExpertReports;
         return claim;
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
-      await saveExpertReports('validClaimId', updatedExpertReports);
+      await saveSentExpertReports('validClaimId', updatedExpertReports);
       expect(spySave).toHaveBeenCalledWith('validClaimId', updatedClaim);
     });
 
@@ -89,7 +89,7 @@ describe('Sent Expert Reports Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
 
-      await expect(saveExpertReports('claimId', {option: ExpertReportsOptions.OPTION_NO}))
+      await expect(saveSentExpertReports('claimId', {option: YesNoNotReceived.NO}))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });

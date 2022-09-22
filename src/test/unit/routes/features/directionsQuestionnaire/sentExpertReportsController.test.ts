@@ -50,12 +50,12 @@ describe('Sent Expert Reports Controller', () => {
     it('should return sent expert reports page on empty post', async () => {
       await request(app).post(DQ_SENT_EXPERT_REPORTS_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_EXPERT_REPORTS);
+        expect(res.text).toContain(TestMessages.VALID_SENT_EXPERT_REPORTS);
       });
     });
 
     it('should redirect to the share the expert to claimant page if option yes is selected', async () => {
-      await request(app).post(DQ_SENT_EXPERT_REPORTS_URL).send({expertReportsOptions: 'yes'})
+      await request(app).post(DQ_SENT_EXPERT_REPORTS_URL).send({sentExpertReportsOptions: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DQ_SHARE_AN_EXPERT_URL);
@@ -63,7 +63,7 @@ describe('Sent Expert Reports Controller', () => {
     });
 
     it('should redirect to the share the expert to claimant page if option no is selected', async () => {
-      await request(app).post(DQ_SENT_EXPERT_REPORTS_URL).send({expertReportsOptions: 'no'})
+      await request(app).post(DQ_SENT_EXPERT_REPORTS_URL).send({sentExpertReportsOptions: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DQ_SHARE_AN_EXPERT_URL);
@@ -71,7 +71,7 @@ describe('Sent Expert Reports Controller', () => {
     });
 
     it('should redirect to the share the expert to claimant page if option no, not received is selected', async () => {
-      await request(app).post(DQ_SENT_EXPERT_REPORTS_URL).send({expertReportsOptions: 'not-received'})
+      await request(app).post(DQ_SENT_EXPERT_REPORTS_URL).send({sentExpertReportsOptions: 'not-received'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DQ_SHARE_AN_EXPERT_URL);
@@ -82,7 +82,7 @@ describe('Sent Expert Reports Controller', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(DQ_SENT_EXPERT_REPORTS_URL)
-        .send({expertReportsOptions: 'yes'})
+        .send({sentExpertReportsOptions: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
