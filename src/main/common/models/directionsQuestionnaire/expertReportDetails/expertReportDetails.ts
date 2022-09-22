@@ -1,5 +1,5 @@
 import {IsDefined, ValidateNested, ValidateIf} from 'class-validator';
-import {ReportDetails} from './reportDetails';
+import {ReportDetail} from './reportDetail';
 import {YesNo} from '../../../form/models/yesNo';
 import {AtLeastOneRowIsPopulated} from '../../../../common/form/validators/atLeastOneRowIsPopulated';
 
@@ -10,14 +10,14 @@ export class ExpertReportDetails {
   @ValidateIf(o => o.hasExpertReports === YesNo.YES)
   @ValidateNested()
   @AtLeastOneRowIsPopulated({message: 'ERRORS.ENTER_AT_LEAST_ONE_REPORT'})
-    reportDetails?: ReportDetails[];
+    reportDetails?: ReportDetail[];
 
-  constructor(hasExpertReports?: YesNo, reportDetails?: ReportDetails[]) {
+  constructor(hasExpertReports?: YesNo, reportDetails?: ReportDetail[]) {
     this.hasExpertReports = hasExpertReports;
     this.reportDetails = reportDetails;
   }
 
   public static buildEmptyForm(): ExpertReportDetails {
-    return new ExpertReportDetails(undefined, [new ReportDetails(undefined, '', '', '')]);
+    return new ExpertReportDetails(undefined, [new ReportDetail('', '', '', '')]);
   }
 }

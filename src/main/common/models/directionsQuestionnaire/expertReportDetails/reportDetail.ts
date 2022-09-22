@@ -1,9 +1,9 @@
 import {Min, Max, Validate, IsNotEmpty, IsDefined, IsDate, MaxLength, ValidateIf} from 'class-validator';
-import {STANDARD_TEXT_INPUT_MAX_LENGTH} from '../../../../common/form/validators/validationConstraints';
-import {DateConverter} from '../../../../common/utils/dateConverter';
-import {OptionalDateNotInFutureValidator} from '../../../../common/form/validators/optionalDateNotInFutureValidator';
-import {OptionalDateFourDigitValidator} from  '../../../../common/form/validators/optionalDateFourDigitValidator';
-export class ReportDetails {
+import {STANDARD_TEXT_INPUT_MAX_LENGTH} from '../../../form/validators/validationConstraints';
+import {DateConverter} from '../../../utils/dateConverter';
+import {OptionalDateNotInFutureValidator} from '../../../form/validators/optionalDateNotInFutureValidator';
+import {OptionalDateFourDigitValidator} from  '../../../form/validators/optionalDateFourDigitValidator';
+export class ReportDetail {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: 'ERRORS.EXPERT_NAME_REQUIRED'})
   @MaxLength(STANDARD_TEXT_INPUT_MAX_LENGTH, {message: 'ERRORS.VALID_TEXT_LENGTH'})
@@ -39,8 +39,29 @@ export class ReportDetails {
     this.day = Number(day);
   }
 
+  static fromObject(value?: Record<string, string>): ReportDetail {
+    const expertName = value.expertName;
+    const year = value.year;
+    const month = value.month;
+    const day = value.day;
+    return new ReportDetail(expertName, year, month, day);
+  }
+
+  static fromJson(value?: Record<string, string>): ReportDetail {
+    const reportDate = new Date(value.reportDate);
+    const expertName = value.expertName;
+    const year = reportDate.getFullYear().toString();
+    const month = (reportDate.getMonth() + 1).toString();
+    const day = reportDate.getDate().toString();
+    return new ReportDetail(expertName, year, month, day);
+  }
+
   public isEmpty(): boolean {
     return Object.values(this).every(value => value === undefined || value === 0 || value === '' || value?.length === 0);
+  }
+
+  public static buildEmptyForm(): ReportDetail {
+    return new ReportDetail('', '', '', '');
   }
 
   isAtLeastOneFieldPopulated(): boolean {

@@ -16,47 +16,33 @@
   {{ setPageTitle('PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE') }}
 {% endblock %}
 
+{% set rowNumberToShowRemoveButton = 2 %}
 {% set errors = form.getAllErrors() %}
 {% set atLeastOneCourtOrderError = form.errorFor('reportDetails') %}
+{% set reportDetailsHtml %}
+  <div
+    class="govuk-form-group {% if atLeastOneCourtOrderError %} govuk-form-group--error {% endif %}">
+    {% if atLeastOneCourtOrderError %}
+      <p class="govuk-error-message">
+        <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(atLeastOneCourtOrderError) }}
+      </p>
+    {% endif %}
 
-            {% set yesHtml %}
-              {{ govukTextarea({
-                name: "vulnerabilityDetails",
-                id: "vulnerabilityDetails",
-                value: form.model.vulnerabilityDetails,
-                label: {
-                  text: t('PAGES.VULNERABILITY.QUESTION_2')
-                },
-                errorMessage: {
-                  html: form.errorFor("vulnerabilityDetails")
-                } if form.hasFieldError("vulnerabilityDetails")
-              }) }}
-            {% endset %}
+    {% for row in form.model.reportDetails %}
+    {% if form.model.reportDetails.length < rowNumberToShowRemoveButton %}
+      {{ reportDetail(loop.index0, row, form.errorFor, t, { hidden: true }) }}
+      {% else %}
+      {{ reportDetail(loop.index0, row, form.errorFor, t) }}
+    {% endif %}
+    {% endfor %}
 
- {% set reportDetailsHtml %}
-                <div
-                  class="govuk-form-group {% if atLeastOneCourtOrderError %} govuk-form-group--error {% endif %}">
-                  {% if atLeastOneCourtOrderError %}
-                    <p class="govuk-error-message">
-                      <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(atLeastOneCourtOrderError) }}
-                    </p>
-                  {% endif %}
-
-                  {% for row in form.model.reportDetails %}
-                    {{ reportDetail(loop.index0, row, form.errorFor, t) }}
-                  {% endfor %}
-
-                  <div class="moj-button-action">
-                    {{ govukButton({
-                      text: t('PAGES.EXPERT_REPORT_DETAILS.ADD_ANOTHER'),
-                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
-                      type: 'button',
-                      attributes: {
-                        'id': 'add-another-expert-report'
-                      }
-                    }) }}
-                  </div>
-                </div>
+  </div>
+  <div>
+     {{ govukButton({
+              text: t('PAGES.EXPERT_REPORT_DETAILS.ADD_ANOTHER'),
+              classes: "govuk-button--secondary append-row"
+            }) }}
+  </div>
 
 {% endset -%}
 
@@ -71,16 +57,19 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.EXPERT_REPORT_DETAILS.TITLE') }}</h1>
+          <div>
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
             {{ yesNoRadioButton(t, 'hasExportReports', 'hasExportReports', '', form, '', {yesHtml: reportDetailsHtml}) }}
             <div class="govuk-form-group">
+
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
             </div>
           </form>
+          </div>
         </div>
       </div>
     </main>

@@ -2,17 +2,17 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
-{% macro reportDetail(reportDetailIndex, reportDetailValue, errorFor, t) %}
+{% macro reportDetail(reportDetailIndex, reportDetailValue, errorFor, t, removeButton) %}
+<div class="multiple-row">
 
-  {% call govukFieldset({
+  {{ govukFieldset({
     classes: 'moj-add-another__item govuk-!-margin-bottom-6',
     legend: {
-      text: 'Person',
+      text:  t('PAGES.EXPERT_REPORT_DETAILS.REPORT_TEXT'),
       classes: 'moj-add-another__title govuk-fieldset__legend--m',
       isPageHeading: false
     }
-  }) %}
-
+  }) }}
 
     {{ govukInput({
       id: 'reportDetails[' + reportDetailIndex + '][expertName]',
@@ -23,8 +23,8 @@
         text: t('PAGES.EXPERT_REPORT_DETAILS.EXPERT_NAME')
       },
       attributes: {
-        'data-name': 'reportDetails[%index%][claimNumber]',
-        'data-id': 'reportDetails[%index%][claimNumber]'
+        'data-name': 'reportDetails[%index%][expertName]',
+        'data-id': 'reportDetails[%index%][expertName]'
       },
       errorMessage: {
         text: t(errorFor('reportDetails['+reportDetailIndex+'][expertName]'))
@@ -32,20 +32,20 @@
     }) }}
 
      {{ govukDateInput({
-                id: 'reportDetails[' + reportDetailIndex + '][reportDate]',
-                type: "number",
-                inputmode: "numeric",
-                name: 'reportDetails[' + reportDetailIndex + '][reportDate]',
-                fieldset: {
-                  legend: {
-                    isPageHeading: false,
-                    classes: 'govuk-fieldset__legend--m'
-                  }
-                },
-                hint: {
+      id: 'reportDetails['+reportDetailIndex+'][reportDate]',
+      type: "number",
+      inputmode: "numeric",
+      name: 'reportDetails['+reportDetailIndex+'][reportDate]',
+      fieldset: {
+        legend: {
+          isPageHeading: false,
+          classes: "govuk-fieldset__legend--s"
+        }
+      },
+      hint: {
         text: "For example, 31 3 1980"
       },
-       errorMessage: {
+      errorMessage: {
             html: '<p class="govuk-error-message">' + t(errorFor('reportDetails['+reportDetailIndex+'][reportDate]')) + '</p>' +
             '<p class="govuk-error-message">' + t(errorFor('reportDetails['+reportDetailIndex+'][day]')) + '</p>' +
             '<p class="govuk-error-message">' + t(errorFor('reportDetails['+reportDetailIndex+'][month]')) + '</p>' +
@@ -54,32 +54,55 @@
           errorFor('reportDetails['+reportDetailIndex+'][day]') or
           errorFor('reportDetails['+reportDetailIndex+'][month]') or
           errorFor('reportDetails['+reportDetailIndex+'][year]'),
-                items: [
-                  {
-                    classes: "govuk-input--width-2 govuk-input--error" if errorFor('reportDetails['+reportDetailIndex+'][day]') else "govuk-input--width-2",
-                    id: 'reportDetails[' + reportDetailIndex + '][day]',
-                    label: t('COMMON.DAY'),
-                    name: 'reportDetails[' + reportDetailIndex + '][day]',
-                    value: reportDetailValue.day,
-                    max: 31
-                  },
-                  {
-                    classes:"govuk-input--width-2 govuk-input--error" if errorFor('reportDetails['+reportDetailIndex+'][month]') else "govuk-input--width-2",
-                    id: 'reportDetails[' + reportDetailIndex + '][month]',
-                    label: t('COMMON.MONTH'),
-                    name: 'reportDetails[' + reportDetailIndex + '][month]',
-                    value: reportDetailValue.month,
-                    max: 12
-                  },
-                  {
-                    classes: "govuk-input--width-4 govuk-input--error" if errorFor('reportDetails['+reportDetailIndex+'][year]') else "govuk-input--width-4",
-                    id: 'reportDetails[' + reportDetailIndex + '][year]',
-                    label: t('COMMON.YEAR'),
-                    name: 'reportDetails[' + reportDetailIndex + '][year]',
-                    value: reportDetailValue.year,
-                    max: 9999
-                  }
-                ]
-              }) }}
-  {% endcall %}
+      items: [
+        {
+          id: 'reportDetails[' + reportDetailIndex + '][day]',
+          name: 'reportDetails[' + reportDetailIndex + '][day]',
+          label: t('COMMON.DAY'),
+          value: reportDetailValue.day,
+          max: 31,
+          classes: "govuk-input--width-2 govuk-input--error" if errorFor('reportDetails['+reportDetailIndex+'][day]') else "govuk-input--width-2",
+          attributes: {
+            'data-name': 'reportDetails[%index%][day]',
+            'data-id': 'reportDetails[%index%][day]'
+          }
+        },
+        {
+          id: 'reportDetails[' + reportDetailIndex + '][month]',
+          name: 'reportDetails[' + reportDetailIndex + '][month]',
+          label: t('COMMON.MONTH'),
+          value: reportDetailValue.month,
+          max: 12,
+          classes: "govuk-input--width-2 govuk-input--error" if errorFor('reportDetails['+reportDetailIndex+'][month]') else "govuk-input--width-2",
+          type: "number",
+          inputmode: "numeric",
+          attributes: {
+            'data-name': 'reportDetails[%index%][month]',
+            'data-id': 'reportDetails[%index%][month]'
+          }
+        },
+        {
+          id: 'reportDetails[' + reportDetailIndex + '][year]',
+          name: 'reportDetails[' + reportDetailIndex + '][year]',
+          label: t('COMMON.YEAR'),
+          value: reportDetailValue.year,
+          max: 9999,
+          classes: "govuk-input--width-4 govuk-input--error" if errorFor('reportDetails['+reportDetailIndex+'][year]') else "govuk-input--width-4",
+          attributes: {
+            'data-name': 'reportDetails[%index%][year]',
+            'data-id': 'reportDetails[%index%][year]'
+          }
+        }
+      ]
+    }) }}
+    <br>
+    {% if removeButton %}
+      {% if removeButton.hidden %}
+        <button class="govuk-button govuk-button--secondary remove-row govuk-visually-hidden">{{ t('COMMON.REMOVE') }}</button>
+      {% else %}
+        <button class="govuk-button govuk-button--secondary remove-row">{{ t('COMMON.REMOVE') }}</button>
+      {% endif %}
+    {% endif %}
+
+</div>
 {% endmacro %}

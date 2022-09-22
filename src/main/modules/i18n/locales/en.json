@@ -19,6 +19,7 @@
     "MONTH": "Month",
     "MONTHS": "Months",
     "NO": "No",
+    "REMOVE": "Remove",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
     "YEAR": "Year",
@@ -849,9 +850,8 @@
       "ADD_ANOTHER": "Add another report",
       "EXPERT_NAME": "Expert's name",
       "PAGE_TITLE": "Have you already got a report written by an expert?",
-      "REMOVE_REPORT": "Remove report",
       "REPORT_DATE": "When is the report dated?",
-      "REPORT_NUMBER": "Report {{ reportNumber }}",
+      "REPORT_TEXT": "Report",
       "TITLE": "Have you already got a report written by an expert?"
     },
     "EXPLANATION": {
