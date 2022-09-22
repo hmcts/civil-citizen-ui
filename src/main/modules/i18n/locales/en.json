@@ -869,7 +869,7 @@
       "USUALLY_SHARE_COST": "Usually you both share this cost.",
       "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
     },
-    "EXPERT_REPORTS": {
+    "SENT_EXPERT_REPORTS": {
       "OPTION_NO": "No",
       "OPTION_NOT_RECEIVED": "No, I have not yet received them",
       "OPTION_YES": "Yes",
@@ -1587,7 +1587,7 @@
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Enter at least one court order",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Enter at least one employer",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
-    "VALID_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
+    "VALID_SENT_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
     "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
     "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
     "VALID_HOUSING": "Describe your housing",
