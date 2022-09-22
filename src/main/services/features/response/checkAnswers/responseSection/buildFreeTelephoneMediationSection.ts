@@ -13,17 +13,34 @@ import {YesNoUpperCase} from '../../../../../common/form/models/yesNo';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
 
+const getContactNumber = (claim:Claim) => {
+  if (claim.mediation?.companyTelephoneNumber) {
+    return claim.mediation.companyTelephoneNumber.mediationPhoneNumber;
+  } else if (claim.mediation?.canWeUse?.mediationPhoneNumber) {
+    return claim.mediation.canWeUse.mediationPhoneNumber;
+  }
+
+  return claim.respondent1.telephoneNumber;
+}
+
+const getCanWeUse = (claim:Claim) => {
+  if (claim.mediation?.canWeUse?.option) {
+    return YesNoUpperCase.YES
+  } else {
+    if (claim.mediation?.mediationDisagreement?.option) {
+      return YesNoUpperCase.NO
+    } else if (claim.mediation?.companyTelephoneNumber) {
+      return YesNoUpperCase.YES
+    }
+  }
+}
+
 export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const freeMediationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
   const contactNumberHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_URL);
-  const contactNumber = claim.mediation?.companyTelephoneNumber ? claim.mediation.companyTelephoneNumber.mediationPhoneNumber
-    : claim.mediation?.canWeUse?.mediationPhoneNumber ? claim.mediation?.canWeUse?.mediationPhoneNumber
-      : claim.respondent1.telephoneNumber;
+  const contactNumber = getContactNumber(claim);
   const contactName = claim.mediation?.companyTelephoneNumber ? claim.mediation.companyTelephoneNumber.mediationContactPerson : claim.respondent1.contactPerson;
-  const canWeUse = claim.mediation?.canWeUse?.option ? YesNoUpperCase.YES
-    : claim.mediation?.mediationDisagreement?.option ? YesNoUpperCase.NO
-      : claim.mediation?.companyTelephoneNumber ? YesNoUpperCase.YES
-        : YesNoUpperCase.NO;
+  const canWeUse = getCanWeUse(claim);
 
   let freeTelephoneMediationSection: SummarySection = null;
 
