@@ -873,6 +873,7 @@
     "EXPERT_REPORT_DETAILS": {
       "ADD_ANOTHER": "Add another report",
       "EXPERT_NAME": "Expert's name",
+      "FOR_EXAMPLE": "For Example, {{ date }}",
       "PAGE_TITLE": "Have you already got a report written by an expert?",
       "REPORT_DATE": "When is the report dated?",
       "REPORT_TEXT": "Report",

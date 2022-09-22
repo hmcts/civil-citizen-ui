@@ -1,8 +1,8 @@
 import {Min, Max, Validate, IsNotEmpty, IsDefined, IsDate, MaxLength, ValidateIf} from 'class-validator';
-import {STANDARD_TEXT_INPUT_MAX_LENGTH} from '../../../form/validators/validationConstraints';
-import {DateConverter} from '../../../utils/dateConverter';
-import {OptionalDateNotInFutureValidator} from '../../../form/validators/optionalDateNotInFutureValidator';
-import {OptionalDateFourDigitValidator} from  '../../../form/validators/optionalDateFourDigitValidator';
+import {STANDARD_TEXT_INPUT_MAX_LENGTH} from '../../../../form/validators/validationConstraints';
+import {DateConverter} from '../../../../utils/dateConverter';
+import {OptionalDateNotInFutureValidator} from '../../../../form/validators/optionalDateNotInFutureValidator';
+import {OptionalDateFourDigitValidator} from  '../../../../form/validators/optionalDateFourDigitValidator';
 export class ReportDetail {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: 'ERRORS.EXPERT_NAME_REQUIRED'})
@@ -47,7 +47,7 @@ export class ReportDetail {
     return new ReportDetail(expertName, year, month, day);
   }
 
-  static fromJson(value?: Record<string, string>): ReportDetail {
+  static fromJson(value?: ReportDetail): ReportDetail {
     const reportDate = new Date(value.reportDate);
     const expertName = value.expertName;
     const year = reportDate.getFullYear().toString();

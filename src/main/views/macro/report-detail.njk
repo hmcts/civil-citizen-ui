@@ -2,7 +2,11 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
-{% macro reportDetail(reportDetailIndex, reportDetailValue, errorFor, t, removeButton) %}
+{% macro reportDetail(reportDetailIndex, reportDetailValue, errorFor, t, removeButton, today) %}
+{% set hint = t('PAGES.EXPERT_REPORT_DETAILS.FOR_EXAMPLE', {
+  date: today.getDate()+' '+(today.getMonth()-2)+' '+today.getFullYear()
+}) %}
+
   <div class="multiple-row">
     {{ govukFieldset({
       classes: 'moj-add-another__item govuk-!-margin-bottom-6',
@@ -43,7 +47,7 @@
         }
       },
       hint: {
-        text: "For example, 31 3 1980"
+        text: hint
       },
       errorMessage: {
             html: '<p class="govuk-error-message">' + t(errorFor('reportDetails['+reportDetailIndex+'][reportDate]')) + '</p>' +

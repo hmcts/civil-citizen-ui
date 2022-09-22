@@ -30,7 +30,7 @@
     {% endif %}
 
     {% for row in form.model.reportDetails %}
-      {{ reportDetail(loop.index0, row, form.errorFor, t, { hidden: isRemoveButtonHidden }) }}
+      {{ reportDetail(loop.index0, row, form.errorFor, t, { hidden: isRemoveButtonHidden }, today) }}
     {% endfor %}
   </div>
   <div>

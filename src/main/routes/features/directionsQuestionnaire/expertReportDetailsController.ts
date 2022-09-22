@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {DQ_EXPERT_REPORT_DETAILS_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL, DQ_EXPERT_GUIDANCE_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {ExpertReportDetails} from '../../../common/models/directionsQuestionnaire/expertReportDetails/expertReportDetails';
+import {ExpertReportDetails} from '../../../common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
 import {
   getExpertReportDetails,
   getExpertReportDetailsForm,
@@ -15,7 +15,7 @@ const expertReportDetailsController = express.Router();
 function renderView(form: GenericForm<ExpertReportDetails>, res: express.Response): void {
   const expertReportDetailsForm = Object.assign(form);
   expertReportDetailsForm.option = form.model.hasExpertReports;
-  res.render('features/directionsQuestionnaire/expert-report-details', {form: expertReportDetailsForm});
+  res.render('features/directionsQuestionnaire/expert-report-details', {form: expertReportDetailsForm, today: new Date()});
 }
 
 expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res, next) => {

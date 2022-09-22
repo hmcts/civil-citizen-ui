@@ -1,7 +1,7 @@
 import {IsDefined, ValidateNested, ValidateIf} from 'class-validator';
 import {ReportDetail} from './reportDetail';
-import {YesNo} from '../../../form/models/yesNo';
-import {AtLeastOneRowIsPopulated} from '../../../../common/form/validators/atLeastOneRowIsPopulated';
+import {YesNo} from '../../../../form/models/yesNo';
+import {AtLeastOneRowIsPopulated} from '../../../../form/validators/atLeastOneRowIsPopulated';
 
 export class ExpertReportDetails {
   @IsDefined({message: 'ERRORS.VALID_YES_NO_SELECTION'})
