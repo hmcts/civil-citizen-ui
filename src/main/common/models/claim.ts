@@ -247,6 +247,10 @@ export class Claim {
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
 
+    if (this.isFullDefence()) {
+      return ClaimResponseStatus.RC_DISPUTE;
+    }
+
   }
   hasRespondentAskedForMoreThan28Days(): boolean {
     return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;

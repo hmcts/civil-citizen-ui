@@ -1288,6 +1288,13 @@
         "SETUP_REPAYMENT_PLAN": "set up your repayment plan to begin when you said it would",
         "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ve suggested paying by instalments."
       },
+      "RC_DISPUTE": {
+        "IF_CLAIMANT_ACCEPTS": "If {{claimantName}} accepts your response the claim will be ended.",
+        "IF_CLAIMANT_REJECTS": "If {{claimantName}} rejects your response and agree to try mediation we’ll contact you to arrange a call with the mediator. ",
+        "IF_THEY_REJECT": "If they reject mediation the court will review the case. You might have to go to a hearing.",
+        "WE_HAVE_MAILED": "We’ve emailed {{claimantName}} your response, explaining why you reject the claim.",
+        "WE_WILL_CONTACT": "We’ll contact you when {{claimantName}} responds, to tell you what to do next."
+      },
       "CLAIM_NUMBER": "Claim number",
       "COURT_DECIDE_HOW_TO_PAY": "The court will decide how you must pay.",
       "GET_FINANCIAL_DETAILS": "Get {{ claimantName }}’s financial details.",
