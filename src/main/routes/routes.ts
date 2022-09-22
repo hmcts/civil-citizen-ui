@@ -229,6 +229,9 @@ export default [
   sharedExpertController,
   triedToSettleController,
   requestExtra4WeeksController,
-  expertReportDetailsController,
+  permissionForExpertController,
+  defendantExpertEvidenceController,
+  expertCanStillExamineController,
+  defendantYourselfEvidenceController,
   expertReportDetailsController,
 ];
