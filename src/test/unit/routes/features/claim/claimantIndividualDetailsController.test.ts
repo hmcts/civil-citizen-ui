@@ -426,18 +426,16 @@ describe('Claimant Individual Details page', () => {
       });
   });
 
-  describe('Redirect to DOB screen', () => {
-    it('should redirect to claimant DOB screen if respondent type is INDIVIDUAL', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(CounterpartyType.INDIVIDUAL);
-      });
-      await request(app)
-        .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIM_CLAIMANT_DOB);
-        });
+  it('should redirect to claimant DOB screen', async () => {
+    mockGetCaseData.mockImplementation(async () => {
+      return buildClaimOfApplicantType(CounterpartyType.INDIVIDUAL);
     });
+    await request(app)
+      .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .send(validDataForPost)
+      .expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(CLAIM_CLAIMANT_DOB);
+      });
   });
 });
