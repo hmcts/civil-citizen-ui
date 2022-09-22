@@ -10,6 +10,14 @@ import {
   getFAPayByDateNextSteps,
   getFAPayByInstallmentsNextSteps,
 } from './admissionSubmitConfirmationContent';
+
+import {
+  getRC_PaidLessStatus,
+  getRC_PaidFullStatus,
+  getRC_PaidLessNextSteps,
+  getRC_PaidFullNextSteps,
+} from './rejectClaimConfirmationContent';
+
 import {ClaimResponseStatus} from '../../../../../common/models/claimResponseStatus';
 import {
   getPAPayByDateNextSteps,
@@ -29,6 +37,8 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
   const PAPayImmediatelyStatus = getPAPayImmediatelyStatus(claim, lang);
   const PAPayByDateStatus = getPAPayByDateStatus(claim, lang);
   const PAPayInstallmentsStatus = getPAPayInstallmentsStatus(claim, lang);
+  const RC_PaidLessStatus = getRC_PaidLessStatus(claim, lang);
+  const RC_PaidFullStatus = getRC_PaidFullStatus(claim, lang);
 
   switch (claim.responseStatus) {
     case ClaimResponseStatus.FA_PAY_IMMEDIATELY:
@@ -43,6 +53,10 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
       return [...PAPayByDateStatus, ...contactYouStatement, ...financialDetails];
     case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
       return [...PAPayInstallmentsStatus, ...contactYouStatement, ...financialDetails];
+    case ClaimResponseStatus.RC_PAID_LESS:
+      return RC_PaidLessStatus;
+    case ClaimResponseStatus.RC_PAID_FULL:
+      return RC_PaidFullStatus;
   }
 }
 
@@ -53,6 +67,8 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang: strin
   const PAPayImmediatelyNextSteps = getPAPayImmediatelyNextSteps(claimId, claim, lang);
   const PAPayByDateNextSteps = getPAPayByDateNextSteps(claimId, claim, lang);
   const PAPayInstallmentsNextSteps = getPAPayInstallmentsNextSteps(claimId, claim, lang);
+  const RC_PaidLessNextSteps = getRC_PaidLessNextSteps(claim, lang);
+  const RC_PaidFullNextSteps = getRC_PaidFullNextSteps(claim,lang);
 
   switch (claim.responseStatus) {
     case ClaimResponseStatus.FA_PAY_IMMEDIATELY:
@@ -67,5 +83,9 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang: strin
       return PAPayByDateNextSteps;
     case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
       return PAPayInstallmentsNextSteps;
+    case ClaimResponseStatus.RC_PAID_LESS:
+      return RC_PaidLessNextSteps;
+    case ClaimResponseStatus.RC_PAID_FULL:
+      return RC_PaidFullNextSteps;
   }
 }
