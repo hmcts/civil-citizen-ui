@@ -3,6 +3,7 @@ import {ConsiderClaimantDocuments} from 'models/directionsQuestionnaire/consider
 import {ExpertCanStillExamine} from '../../models/directionsQuestionnaire/expertCanStillExamine';
 
 export class DirectionQuestionnaire {
+  permissionForExpert?: GenericYesNo;
   triedToSettle?: GenericYesNo;
   defendantExpertEvidence?: GenericYesNo;
   considerClaimantDocuments?: ConsiderClaimantDocuments;

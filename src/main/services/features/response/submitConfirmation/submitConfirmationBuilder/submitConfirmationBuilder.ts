@@ -11,6 +11,14 @@ import {
   getFAPAyImmediatelyStatus,
   getfinancialDetails,
 } from './admissionSubmitConfirmationContent';
+
+import {
+  getRC_PaidLessStatus,
+  getRC_PaidFullStatus,
+  getRC_PaidLessNextSteps,
+  getRC_PaidFullNextSteps,
+} from './rejectClaimConfirmationContent';
+
 import {ClaimResponseStatus} from '../../../../../common/models/claimResponseStatus';
 import {getRCDisputeNextSteps, getRCDisputeStatus} from './fullDefenceConfirmationContent';
 
@@ -21,6 +29,8 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
   const RCDisputeStatus = getRCDisputeStatus(claim,lang);
   const contactYouStatement = getContactYouStatement(lang);
   const financialDetails = getfinancialDetails(claimId, claim, lang);
+  const RC_PaidLessStatus = getRC_PaidLessStatus(claim, lang);
+  const RC_PaidFullStatus = getRC_PaidFullStatus(claim, lang);
 
   switch (claim.responseStatus) {
     case ClaimResponseStatus.FA_PAY_IMMEDIATELY:
@@ -31,6 +41,11 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
       return [...FAPayByInstallmentsStatus, ...contactYouStatement, ...financialDetails];
     case ClaimResponseStatus.RC_DISPUTE:
       return RCDisputeStatus;
+      return [...FAPayByInstallmentsStatus, ...contactYouStatement, ...financialDetails];
+    case ClaimResponseStatus.RC_PAID_LESS:
+      return RC_PaidLessStatus;
+    case ClaimResponseStatus.RC_PAID_FULL:
+      return RC_PaidFullStatus;
   }
 }
 
@@ -38,6 +53,8 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang:string
   const FAPayImmediatelyNextSteps = getFAPayImmediatelyNextSteps(claimId, claim, lang);
   const FAPayByDateNextSteps = getFAPayByDateNextSteps(claimId, claim, lang);
   const FAPayByInstallmentsNextSteps = getFAPayByInstallmentsNextSteps(claimId, claim, lang);
+  const RC_PaidLessNextSteps = getRC_PaidLessNextSteps(claim, lang);
+  const RC_PaidFullNextSteps = getRC_PaidFullNextSteps(claim,lang);
   const RCDisputeNextSteps = getRCDisputeNextSteps(claimId, claim, lang);
 
   switch (claim.responseStatus) {
@@ -49,5 +66,9 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang:string
       return FAPayByInstallmentsNextSteps;
     case ClaimResponseStatus.RC_DISPUTE:
       return RCDisputeNextSteps;
+    case ClaimResponseStatus.RC_PAID_LESS:
+      return RC_PaidLessNextSteps;
+    case ClaimResponseStatus.RC_PAID_FULL:
+      return RC_PaidFullNextSteps;
   }
 }
