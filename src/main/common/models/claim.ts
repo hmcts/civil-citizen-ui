@@ -33,6 +33,7 @@ import {DocumentType} from './document/documentType';
 import {ResponseDeadline} from './responseDeadline';
 import {getLng} from '../../common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
+import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType';
 import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 import {ResponseOptions} from '../../common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
@@ -184,6 +185,18 @@ export class Claim {
     return this.partialAdmission?.howMuchDoYouOwe?.amount;
   }
 
+  isRejectAllOfClaimAlreadyPaid(): number {
+    return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
+  }
+
+  hasConfirmedAlreadyPaid(): boolean {
+    return this.rejectAllOfClaim.option === RejectAllOfClaimType.ALREADY_PAID;
+  }
+
+  hasPaidInFull(): boolean {
+    return this.rejectAllOfClaim.howMuchHaveYouPaid.amount === this.rejectAllOfClaim.howMuchHaveYouPaid.totalClaimAmount;
+  }
+
   extractDocumentId(): string {
     const documentUrl = this.specClaimTemplateDocumentFiles?.document_url;
     let documentId: string;
@@ -221,7 +234,7 @@ export class Claim {
   }
 
   isDeadlineExtended(): boolean {
-    return this.responseDeadline?.option === ResponseOptions.ALREADY_AGREED && this.respondentSolicitor1AgreedDeadlineExtension !== undefined;
+    return this.respondentSolicitor1AgreedDeadlineExtension !== undefined;
   }
 
   get responseStatus(): ClaimResponseStatus {
@@ -241,7 +254,12 @@ export class Claim {
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
 
+    if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
+      return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
+    }
+
   }
+
   hasRespondentAskedForMoreThan28Days(): boolean {
     return this.responseDeadline?.option === ResponseOptions.YES && this.responseDeadline?.additionalTime === AdditionalTimeOptions.MORE_THAN_28_DAYS;
   }
