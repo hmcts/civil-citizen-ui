@@ -13,7 +13,7 @@ import {YesNoUpperCase} from '../../../../../common/form/models/yesNo';
 
 const changeLabel = (lang: string | unknown): string => t('PAGES.CHECK_YOUR_ANSWER.CHANGE', {lng: getLng(lang)});
 
-const getContactNumber = (claim:Claim) => {
+const getContactNumber = (claim: Claim) => {
   if (claim.mediation?.companyTelephoneNumber) {
     return claim.mediation.companyTelephoneNumber.mediationPhoneNumber;
   } else if (claim.mediation?.canWeUse?.mediationPhoneNumber) {
@@ -21,19 +21,19 @@ const getContactNumber = (claim:Claim) => {
   }
 
   return claim.respondent1.telephoneNumber;
-}
+};
 
-const getCanWeUse = (claim:Claim) => {
+const getCanWeUse = (claim: Claim) => {
   if (claim.mediation?.canWeUse?.option) {
-    return YesNoUpperCase.YES
+    return YesNoUpperCase.YES;
   } else {
     if (claim.mediation?.mediationDisagreement?.option) {
-      return YesNoUpperCase.NO
+      return YesNoUpperCase.NO;
     } else if (claim.mediation?.companyTelephoneNumber) {
-      return YesNoUpperCase.YES
+      return YesNoUpperCase.YES;
     }
   }
-}
+};
 
 export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
   const freeMediationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
