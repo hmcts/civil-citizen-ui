@@ -286,7 +286,6 @@ describe('Submit Confirmation service', () => {
     });
   });
 
-
   describe('Reject & Paid Amount Scenario', () => {
 
     const getClaim = () => {
