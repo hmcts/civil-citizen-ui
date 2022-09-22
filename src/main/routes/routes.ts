@@ -120,7 +120,7 @@ import permissionForExpertController from './features/directionsQuestionnaire/pe
 import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
-import expertReportsController from './features/directionsQuestionnaire/expertReportsController';
+import sentExpertReportsController from './features/directionsQuestionnaire/sentExpertReportsController';
 
 export default [
   homeController,
@@ -233,5 +233,5 @@ export default [
   defendantExpertEvidenceController,
   expertCanStillExamineController,
   defendantYourselfEvidenceController,
-  expertReportsController,
+  sentExpertReportsController,
 ];

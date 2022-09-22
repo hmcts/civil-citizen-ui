@@ -7,7 +7,7 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.EXPERT_REPORTS.TITLE') }}
+  {{ setPageTitle('PAGES.SENT_EXPERT_REPORTS.TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -20,29 +20,29 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.EXPERT_REPORTS.PAGE_TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.SENT_EXPERT_REPORTS.PAGE_TITLE') }}</h1>
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
 
             {{ govukRadios({
-              idPrefix: "expertReportsOptions",
-              name: "expertReportsOptions",
+              idPrefix: "sentExpertReportsOptions",
+              name: "sentExpertReportsOptions",
               items: [
                 {
-                  value: ExpertReportsOptions.OPTION_YES,
-                  text: t('PAGES.EXPERT_REPORTS.OPTION_YES'),
-                  checked: form.model.option === ExpertReportsOptions.OPTION_YES
+                  value: YesNoNotReceived.YES,
+                  text: t('PAGES.SENT_EXPERT_REPORTS.OPTION_YES'),
+                  checked: form.model.option === YesNoNotReceived.YES
                 },
                 {
-                  value: ExpertReportsOptions.OPTION_NO,
-                  text: t('PAGES.EXPERT_REPORTS.OPTION_NO'),
-                  checked: form.model.option === ExpertReportsOptions.OPTION_NO
+                  value: YesNoNotReceived.NO,
+                  text: t('PAGES.SENT_EXPERT_REPORTS.OPTION_NO'),
+                  checked: form.model.option === YesNoNotReceived.NO
                 },
                 {
-                  value: ExpertReportsOptions.OPTION_NOT_RECEIVED,
-                  text: t('PAGES.EXPERT_REPORTS.OPTION_NOT_RECEIVED'),
-                  checked: form.model.option === ExpertReportsOptions.OPTION_NOT_RECEIVED
+                  value: YesNoNotReceived.NOT_RECEIVED,
+                  text: t('PAGES.SENT_EXPERT_REPORTS.OPTION_NOT_RECEIVED'),
+                  checked: form.model.option === YesNoNotReceived.NOT_RECEIVED
                 }
               ],
               errorMessage: {
