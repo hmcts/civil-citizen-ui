@@ -1,10 +1,5 @@
-import {YesNo} from "common/form/models/yesNo";
-import {GenericYesNo} from "common/form/models/genericYesNo";
+import {Mediation} from 'models/mediation/mediation';
 
-export const toAgreedMediation = (option: GenericYesNo): string => {
-  if (!option || option.option === YesNo.YES) {
-    return 'Yes';
-  } else {
-    return 'No';
-  }
+export const toAgreedMediation = (mediation: Mediation): string => {
+  return mediation?.canWeUse?.option ? 'Yes' : mediation?.mediationDisagreement?.option ? 'No' : mediation?.companyTelephoneNumber ? 'Yes' : 'No';
 };
