@@ -7,6 +7,7 @@ import {Claim} from '../../../../../main/common/models/claim';
 import {GenericForm} from '../../../../../main/common/form/models/genericForm';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import CivilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -282,7 +283,7 @@ describe('Expert Report Details service', () => {
   });
 
   describe('Remove Empty Expert Report details ', () => {
-    it('should remove empty court orders form submitted form', async () => {
+    it('should remove empty expert report details from submitted form', async () => {
       //Given
       const reportDetail: ReportDetail = new ReportDetail('John Doe', '2022', '1', '1');
       const emptyReportDetail: ReportDetail = new ReportDetail(undefined, '', '', '');
@@ -297,7 +298,7 @@ describe('Expert Report Details service', () => {
       //Then
       expect(filteredExpertReportDetails.reportDetails.length).toBe(1);
       expect(filteredExpertReportDetails.reportDetails[0].expertName).toBe('John Doe');
-      expect(filteredExpertReportDetails.reportDetails[0].reportDate?.toDateString()).toBe('Sat Jan 01 2022');
+      expect(filteredExpertReportDetails.reportDetails[0].reportDate.toDateString()).toBe('Sat Jan 01 2022');
     });
   });
 
@@ -305,19 +306,24 @@ describe('Expert Report Details service', () => {
     it('should return expert report details from draft store if present', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
-        return createClaimWithExpertReportDetails(YesNo.YES);
+        return CivilClaimResponseMock.case_data;
       });
       //When
       const expertReportDetails = await getExpertReportDetails('1234');
       //Then
       expect(expertReportDetails).toBeTruthy();
+      expect(expertReportDetails.reportDetails.length).toBe(2);
       expect(expertReportDetails.hasExpertReports).toBe('yes');
-      expect(expertReportDetails.reportDetails).toEqual([]);
+      expect(expertReportDetails.reportDetails[0].expertName).toEqual('John Doe');
+      expect(expertReportDetails.reportDetails[0].reportDate?.toDateString()).toEqual('Tue Mar 01 2022');
+      expect(expertReportDetails.reportDetails[0].year).toBe(2022);
+      expect(expertReportDetails.reportDetails[0].month).toBe(3);
+      expect(expertReportDetails.reportDetails[0].day).toBe(1);
     });
     it('should return new form when hasExpertReports is empty', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
-        return createClaimWithExpertReportDetails(undefined);
+        return createClaimWithExpertReportDetails();
       });
       //When
       const expertReportDetails = await getExpertReportDetails('1234');
@@ -374,9 +380,9 @@ describe('Expert Report Details service', () => {
   });
 });
 
-function createClaimWithExpertReportDetails(hasExpertReports:YesNo|undefined): Claim {
+function createClaimWithExpertReportDetails(): Claim {
   const claim = new Claim();
-  const mockDetails = new ExpertReportDetails(hasExpertReports, []);
+  const mockDetails = new ExpertReportDetails(undefined, []);
   claim.directionQuestionnaire = {
     experts: {
       expertReportDetails: mockDetails,
