@@ -13,9 +13,7 @@ import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotE
 const claimAgainstGovernmentController = express.Router();
 const defendantEligibilityViewPath = 'features/public/eligibility/claim-against-government';
 
-function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Response): void {
-  const form = Object.assign(genericYesNoForm);
-  form.option = genericYesNoForm.model.option;
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(defendantEligibilityViewPath, {form});
 }
 
