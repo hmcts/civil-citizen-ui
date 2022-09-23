@@ -11,24 +11,24 @@ export class ReportDetail {
     expertName: string;
 
   @ValidateIf(o => ((o.day > 0 && o.day < 32 && o.month > 0 && o.month < 13 && o.year > 999) ||
-    (!o.day && !o.month && !o.year)) && o.isAtLeastOneFieldPopulated())
+    o.isDayAndMonthAndYearNotAvailable()) && o.isAtLeastOneFieldPopulated())
   @IsDefined({message: 'ERRORS.DATE_REQUIRED'})
   @IsNotEmpty({message: 'ERRORS.DATE_REQUIRED'})
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.CORRECT_DATE_NOT_IN_FUTURE'})
     reportDate?: Date;
 
-  @ValidateIf(o => o.isAtLeastOneFieldPopulated() && !(!o.day && !o.month && !o.year))
+  @ValidateIf(o => o.isAtLeastOneFieldPopulated() && !o.isDayAndMonthAndYearNotAvailable())
   @Min(1872, {message: 'ERRORS.VALID_YEAR'})
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
     year: number;
 
-  @ValidateIf(o => o.isAtLeastOneFieldPopulated()&& !(!o.day && !o.month && !o.year))
+  @ValidateIf(o => o.isAtLeastOneFieldPopulated() && !o.isDayAndMonthAndYearNotAvailable())
   @Min(1, {message: 'ERRORS.VALID_MONTH'})
   @Max(12, {message: 'ERRORS.VALID_MONTH'})
     month: number;
 
-  @ValidateIf(o => o.isAtLeastOneFieldPopulated() && !(!o.day && !o.month && !o.year))
+  @ValidateIf(o => o.isAtLeastOneFieldPopulated() && !o.isDayAndMonthAndYearNotAvailable())
   @Min(1, {message: 'ERRORS.VALID_DAY'})
   @Max(31, {message: 'ERRORS.VALID_DAY'})
     day: number;
@@ -69,7 +69,7 @@ export class ReportDetail {
   isAtLeastOneFieldPopulated(): boolean {
     return !this.isEmpty();
   }
-  isDateAvailable() {
-    return this.day && this.month && this.year;
+  isDayAndMonthAndYearNotAvailable() {
+    return !this.day && !this.month && !this.year;
   }
 }

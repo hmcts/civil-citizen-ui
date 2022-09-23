@@ -21,6 +21,6 @@ export class DirectionQuestionnaire {
     this.sharedExpert = sharedExpert;
     this.expertCanStillExamine = expertCanStillExamine;
     this.defendantYourselfEvidence = defendantYourselfEvidence;
-    this.experts = exports;
+    this.experts = experts;
   }
 }
