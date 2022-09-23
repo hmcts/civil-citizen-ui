@@ -21,7 +21,7 @@ describe('Completing Claim View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
-    let mainWrapper: any;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       const response = await request(app).get(CLAIM_COMPLETING_CLAIM_URL);

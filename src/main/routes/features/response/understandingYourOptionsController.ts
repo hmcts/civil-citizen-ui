@@ -8,9 +8,10 @@ const understandingYourOptionsController = express.Router();
 understandingYourOptionsController.get(UNDERSTANDING_RESPONSE_OPTIONS_URL, deadLineGuard,
   async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
+      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(req.params.id);
       res.render('features/response/understanding-your-options', {
-        responseDate: claim.formattedResponseDeadline(),
+        responseDate: claim.formattedResponseDeadline(lang),
       });
     } catch (error) {
       next(error);

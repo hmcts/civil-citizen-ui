@@ -62,7 +62,7 @@ describe('Check answers View', () => {
   describe('on GET', () => {
     describe('respondent type organisation', () => {
       let htmlDocument: Document;
-      let mainWrapper: any;
+      let mainWrapper: Element;
 
       beforeEach(async () => {
         mockGetStatementOfTruth.mockImplementation(() => {return  new QualifiedStatementOfTruth(true);});
@@ -154,7 +154,7 @@ describe('Check answers View', () => {
 
     describe('respondent type individual', () => {
       let htmlDocument: Document;
-      let mainWrapper: any;
+      let mainWrapper: Element;
 
       beforeEach(async () => {
         mockGetStatementOfTruth.mockImplementation(() => {return  new StatementOfTruthForm(false);});
