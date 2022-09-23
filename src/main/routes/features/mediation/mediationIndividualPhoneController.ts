@@ -19,11 +19,6 @@ async function renderView(form: GenericForm<MediationIndividualPhoneNumber>, res
 }
 
 const getGenericForm = (mediationIndividualPhoneNumber: MediationIndividualPhoneNumber) => {
-  if (mediationIndividualPhoneNumber) {
-    const form = Object.assign(new GenericForm<MediationIndividualPhoneNumber>(mediationIndividualPhoneNumber));
-    form.option = form.model.option;
-    return form;
-  }
   return new GenericForm<MediationIndividualPhoneNumber>(mediationIndividualPhoneNumber);
 };
 
