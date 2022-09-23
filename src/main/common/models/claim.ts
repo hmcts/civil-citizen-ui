@@ -121,6 +121,10 @@ export class Claim {
     return this.paymentOption === PaymentOptionType.INSTALMENTS;
   }
 
+  isRejectClaimDispute(): boolean {
+    return this.isFullDefence() && this.isRejectAllOfClaimDispute();
+  }
+
   isInterestClaimUntilSubmitDate(): boolean {
     return this.interestClaimUntil === InterestClaimUntilType.UNTIL_CLAIM_SUBMIT_DATE;
   }
@@ -195,6 +199,10 @@ export class Claim {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
   }
 
+  isRejectAllOfClaimDispute(): boolean {
+    return this.rejectAllOfClaim.option === RejectAllOfClaimType.DISPUTE;
+  }
+
   hasConfirmedAlreadyPaid(): boolean {
     return this.rejectAllOfClaim.option === RejectAllOfClaimType.ALREADY_PAID;
   }
@@ -264,7 +272,7 @@ export class Claim {
       return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
     }
 
-    if (this.isFullDefence()) {
+    if (this.isRejectClaimDispute()) {
       return ClaimResponseStatus.RC_DISPUTE;
     }
 
