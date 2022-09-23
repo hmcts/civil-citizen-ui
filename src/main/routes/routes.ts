@@ -120,7 +120,7 @@ import permissionForExpertController from './features/directionsQuestionnaire/pe
 import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
-import expertDetailsController from './features/directionsQuestionnaire/expertDetailsController';
+import expertDetailsController from './features/directionsQuestionnaire/experts/expertDetailsController';
 
 export default [
   homeController,

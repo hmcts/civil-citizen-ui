@@ -1,0 +1,122 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% macro expertDetailsRow(expertDetail, index, errorFor, t, removeButton) %}
+  <div class="row-container">
+    <div class="multiple-row">
+      {{ govukInput({
+        id: 'expertDetailsList[' + index + '][firstName]',
+        name: 'expertDetailsList[' + index + '][firstName]',
+        value: expertDetail.firstName,
+        classes: "govuk-!-width-one-half",
+        label: {
+          text: t('PAGES.EXPERT_DETAILS.FIRST_NAME_OPTIONAL')
+        },
+        errorMessage: {
+          text: t(errorFor('expertDetailsList['+index+'][firstName]'))
+        } if errorFor('expertDetailsList['+index+'][firstName]')
+      }) }}
+
+      {{ govukInput({
+        id: 'expertDetailsList[' + index + '][lastName]',
+        name: 'expertDetailsList[' + index + '][lastName]',
+        value: expertDetail.lastName,
+        classes: "govuk-!-width-one-half",
+        label: {
+          text: t('PAGES.EXPERT_DETAILS.LAST_NAME_OPTIONAL')
+        },
+        errorMessage: {
+          text: t(errorFor('expertDetailsList['+index+'][lastName]'))
+        } if errorFor('expertDetailsList['+index+'][lastName]')
+      }) }}
+
+      {{ govukInput({
+        id: 'expertDetailsList[' + index + '][emailAddress]',
+        name: 'expertDetailsList[' + index + '][emailAddress]',
+        value: expertDetail.emailAddress,
+        classes: "govuk-!-width-one-half",
+        label: {
+          text: t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL')
+        },
+        errorMessage: {
+          text: t(errorFor('expertDetailsList['+index+'][emailAddress]'))
+        } if errorFor('expertDetailsList['+index+'][emailAddress]')
+      }) }}
+
+      {{ govukInput({
+        id: 'expertDetailsList[' + index + '][phoneNumber]',
+        name: 'expertDetailsList[' + index + '][phoneNumber]',
+        value: expertDetail.phoneNumber,
+        classes: "govuk-!-width-one-half",
+        label: {
+          text: t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL')
+        },
+        errorMessage: {
+          text: t(errorFor('expertDetailsList['+index+'][phoneNumber]'))
+        } if errorFor('expertDetailsList['+index+'][phoneNumber]')
+      }) }}
+
+      {{ govukInput({
+        id: 'expertDetailsList[' + index + '][fieldOfExpertise]',
+        name: 'expertDetailsList[' + index + '][fieldOfExpertise]',
+        value: expertDetail.fieldOfExpertise,
+        classes: "govuk-!-width-one-half",
+        label: {
+          text: t('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE')
+        },
+        errorMessage: {
+          text: t(errorFor('expertDetailsList['+index+'][fieldOfExpertise]'))
+        } if errorFor('expertDetailsList['+index+'][fieldOfExpertise]')
+      }) }}
+
+      {{ govukTextarea({
+        id: 'expertDetailsList[' + index + '][whyNeedExpert]',
+        name: 'expertDetailsList[' + index + '][whyNeedExpert]',
+        value: expertDetail.whyNeedExpert,
+        classes: "govuk-!-width-three-quarters",
+        label: {
+          text: t('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT')
+        },
+        errorMessage: {
+          text: t(errorFor('expertDetailsList['+index+'][whyNeedExpert]'))
+        } if errorFor('expertDetailsList['+index+'][whyNeedExpert]')
+      }) }}
+
+      {{ govukInput({
+        id: 'expertDetailsList[' + index + '][estimatedCost]',
+        name: 'expertDetailsList[' + index + '][estimatedCost]',
+        value: expertDetail.estimatedCost,
+        type: "number",
+        autocomplete: "number",
+        spellcheck: false,
+        prefix: {
+          text: "£"
+        },
+        classes: "govuk-!-width-two-thirds",
+        label: {
+          text: t('PAGES.EXPERT_DETAILS.COST_OPTIONAL')
+        },
+        errorMessage: {
+          text: t(errorFor('expertDetailsList['+index+'][estimatedCost]'))
+        } if errorFor('expertDetailsList['+index+'][estimatedCost]')
+      }) }}
+
+      {% if removeButton %}
+        {% if removeButton.hidden %}
+          {{ govukButton({
+            text: t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT'),
+            classes: "govuk-button--secondary remove-row govuk-visually-hidden"
+          }) }}
+        {% else %}
+          {{ govukButton({
+            text: t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT'),
+            classes: "govuk-button--secondary remove-row"
+          }) }}
+        {% endif %}
+      {% endif %} 
+
+    </div>
+  </div>
+
+{% endmacro %}
