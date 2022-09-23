@@ -74,8 +74,6 @@ civil-service:
           - robotics-notification-multipartyrecipient
           - robotics-notification-recipient-spec
           - ordnance-survey-api-key
-          - robotics-notification-recipient-spec
-          - robotics-notification-multipartyrecipient
     environment:
       IDAM_CLIENT_ID: civil-service
       IDAM_CLIENT_REDIRECT_URI: https://civil-ccd-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/oauth2/callback
