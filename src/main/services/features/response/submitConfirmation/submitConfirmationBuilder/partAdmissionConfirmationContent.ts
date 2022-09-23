@@ -4,7 +4,6 @@ import { ClaimSummarySection, ClaimSummaryType } from '../../../../../common/for
 import { CITIZEN_CONTACT_THEM_URL } from '../../../../../routes/urls';
 import { formatDateToFullDate } from '../../../../../common/utils/dateUtils';
 
-
 export function getPA_AlreadyPaidStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantName();
   const amount = claim.partialAdmissionPaidAmount();
