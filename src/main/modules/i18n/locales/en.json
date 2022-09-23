@@ -1270,6 +1270,13 @@
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
     },
+    "SENT_EXPERT_REPORTS": {
+      "OPTION_NO": "No",
+      "OPTION_NOT_RECEIVED": "No, I have not yet received them",
+      "OPTION_YES": "Yes",
+      "PAGE_TITLE": "Have you already sent expert reports to other parties?",
+      "TITLE": "Have you already sent expert reports to other parties?"
+    },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
       "PAGE_TITLE": "Do you want to share an expert with the claimant?",
@@ -1635,6 +1642,7 @@
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
+    "VALID_SENT_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
     "VALID_SHARED_EXPERT": "Select yes if you want to share an expert with the claimant",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
     "VALID_TEXT_LENGTH": "You’ve entered too many characters",

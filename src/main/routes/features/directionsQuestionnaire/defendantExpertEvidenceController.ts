@@ -1,8 +1,8 @@
 import * as express from 'express';
 import {
   DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
-  DQ_DEFENDANT_EXPERT_REPORTS_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
+  DQ_SENT_EXPERT_REPORTS_URL,
 } from '../../urls';
 import {
   getGenericOption,
@@ -44,7 +44,7 @@ defendantExpertEvidenceController.post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (
       defendantExpertEvidence.model.option = req.body.option;
       await saveDirectionQuestionnaire(claimId, defendantExpertEvidence.model, dqPropertyName);
       if (req.body.option === YesNo.YES) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_REPORTS_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL));
       } else {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
       }
