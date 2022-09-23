@@ -32,7 +32,7 @@
       "TOWN_OR_CITY": "Tref neu ddinas"
     },
     "BUTTONS": {
-      "BACK": "Back",
+      "BACK": "Yn ol",
       "CONTINUE": "Parhau",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
@@ -1013,9 +1013,9 @@
       "WILL_YOU_CHANGE_YOUR_DECISION": "A wnewch chi newid eich penderfyniad a rhoi cyfle i gyfryngu am ddim?"
     },
     "NEW_RESPONSE_DEADLINE": {
-      "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
-      "PAGE_TITLE": "New response deadline",
-      "TITLE": "4 pm on {{ responseDeadline }}"
+      "CONTENT": "Byddwn yn anfon neges e-bost atoch chi a chynrychiolydd cyfreithiol {{ claimantName }} i gadarnhau eich bod wedi cytuno â’r dyddiad ymateb newydd hwn.",
+      "PAGE_TITLE": "Terfyn amser newydd ar gyfer ymateb",
+      "TITLE": "4pm ar {{ responseDeadline }}"
     },
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {
@@ -1242,17 +1242,17 @@
       "TITLE": "Ble ydych chi'n byw?"
     },
     "RESPONSE_DEADLINE_OPTIONS": {
-      "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
-      "FORM": "Form N244 (opens in new tab)",
-      "MORE_TIME": "Do you want to request more time to respond?",
-      "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",
-      "OPTION_NO": "No, I do not want to request more time",
-      "OPTION_REFUSED": "My request for more time has been refused",
-      "OPTION_YES": "Yes, I want to request more time",
-      "PAGE_TITLE": "Response deadline",
-      "POST": "Or, you can post the completed form to:",
-      "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
+      "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
+      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi ar e-bost i contact@justice.gov.uk",
+      "FORM": "Ffurflen N244 (agor mewn tab newydd)",
+      "MORE_TIME": "Ydych chi eisiau gwneud cais am ragor o amser i ymateb?",
+      "OPTION_AGREED": "Rwyf eisoes wedi cytuno ar ragor o amser gyda chynrychiolydd cyfreithiol {{ claimantName }}",
+      "OPTION_NO": "Na, nid wyf eisiau gwneud cais am ragor o amser i ymateb",
+      "OPTION_REFUSED": "Mae fy nghais am ragor o amser wedi’i wrthod",
+      "OPTION_YES": "Ydw, rwyf eisiau gwneud cais am ragor o amser i ymateb",
+      "PAGE_TITLE": "Terfyn amser ar gyfer ymateb",
+      "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
+      "REQUEST_REFUSED": "Os yw eich cais i gynrychiolydd cyfreithiol {{ claimantName }} am ragor o amser i ymateb wedi’i wrthod, bydd angen i chi wneud cais i’r llys i ystyried eich cais drwy lawrlwytho"
     },
     "SELF_EMPLOYED": {
       "ANNUAL": "Trosiant blynyddol",
@@ -1529,7 +1529,7 @@
       "RENT": "Dewiswch pa mor aml ydych chi'n talu rhent",
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
-    "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
+    "SELECT_REQUEST": "Dewiswch os ydych eisiau gwneud cais am ragor o amser i ymateb, os ydych eisoes wedi cytuno ar ragor o amser i ymateb, os yw eich cais am ragor o amser wedi’i wrthod, neu nid ydych angen rhagor o amser i ymateb",
     "SELECT_YES_IF_DOCUMENTS" : "Select yes if there are documents the claimant has that you want the court to consider",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",
