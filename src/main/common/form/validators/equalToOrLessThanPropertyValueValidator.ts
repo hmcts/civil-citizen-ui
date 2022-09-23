@@ -1,5 +1,4 @@
 import {ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {Form} from '../../form/models/form';
 
 /**
  * Validates a number against a value of an object property. Returns true if the number is equal to or less than the property value number.
@@ -21,7 +20,7 @@ export class EqualToOrLessThanPropertyValueValidator implements ValidatorConstra
     if (validationArguments.constraints && validationArguments.constraints.length > 0) {
       const property = validationArguments.constraints[0];
       const strictComparison = validationArguments.constraints[1];
-      const propertyValue = (validationArguments.object as any | Form)[property];
+      const propertyValue = (validationArguments.object as any)[property];
       if (propertyValue === undefined || isNaN(propertyValue) || !value || isNaN(value)) {
         return true;
       }
