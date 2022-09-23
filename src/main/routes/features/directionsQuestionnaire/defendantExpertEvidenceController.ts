@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {
   DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
-  DQ_DEFENDANT_YOURSELF_EVIDENCE_URL,
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
   DQ_SENT_EXPERT_REPORTS_URL,
 } from '../../urls';
 import {
@@ -46,7 +46,7 @@ defendantExpertEvidenceController.post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (
       if (req.body.option === YesNo.YES) {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_YOURSELF_EVIDENCE_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
       }
     }
   } catch (error) {

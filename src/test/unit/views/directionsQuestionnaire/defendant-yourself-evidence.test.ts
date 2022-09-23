@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../main/app';
 import {mockCivilClaim} from '../../../utils/mockDraftStore';
-import {DQ_DEFENDANT_YOURSELF_EVIDENCE_URL} from '../../../../main/routes/urls';
+import {DQ_GIVE_EVIDENCE_YOURSELF_URL} from '../../../../main/routes/urls';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -24,7 +24,7 @@ describe('Tried to settle the defendant yourself evidence view', () => {
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockCivilClaim;
-      const response = await request(app).get(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL);
+      const response = await request(app).get(DQ_GIVE_EVIDENCE_YOURSELF_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
       mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
@@ -64,7 +64,7 @@ describe('Tried to settle the defendant yourself evidence view', () => {
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockCivilClaim;
-      const response = await request(app).post(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL);
+      const response = await request(app).post(DQ_GIVE_EVIDENCE_YOURSELF_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
     });
