@@ -6,7 +6,7 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {
   DQ_DEFENDANT_CAN_STILL_EXAMINE_URL,
   DQ_DEFENDANT_EXPERT_REPORTS_URL,
-  DQ_DEFENDANT_YOURSELF_EVIDENCE_URL,
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
@@ -68,7 +68,7 @@ describe('Defendant expert can still examine Controller', () => {
         .send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL);
+          expect(res.get('location')).toBe(DQ_GIVE_EVIDENCE_YOURSELF_URL);
         });
     });
 
