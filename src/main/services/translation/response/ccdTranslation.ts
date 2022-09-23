@@ -12,6 +12,6 @@ export const translateDraftResponseToCCD = (claim: Claim): CCDResponse => {
     respondent1RepaymentPlan: toCCDRepaymentPlan(claim.repaymentPlan),
     respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.paymentDate),
     specAoSApplicantCorrespondenceAddressRequired: 'No', // TODO This part needs to be change in separate story CIV-4571
-    responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation?.canWeUse?.option),
+    responseClaimMediationSpecRequired: toAgreedMediation(claim.mediation?.mediationDisagreement),
   };
 };
