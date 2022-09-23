@@ -41,7 +41,6 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
       return [...FAPayByInstallmentsStatus, ...contactYouStatement, ...financialDetails];
     case ClaimResponseStatus.RC_DISPUTE:
       return RCDisputeStatus;
-      return [...FAPayByInstallmentsStatus, ...contactYouStatement, ...financialDetails];
     case ClaimResponseStatus.RC_PAID_LESS:
       return RC_PaidLessStatus;
     case ClaimResponseStatus.RC_PAID_FULL:

@@ -260,7 +260,7 @@ describe('Submit Confirmation service', () => {
 
       it('should display submit status', () => {
         const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
-        expect(submitStatusSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.WE_EMAILED_CLAIMANT_YOUR_INTENTION');
+        expect(submitStatusSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.WE_HAVE_MAILED');
       });
 
       it('should display what happens next title', () => {
@@ -270,50 +270,12 @@ describe('Submit Confirmation service', () => {
 
       it('should display next steps section', () => {
         const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_ACCEPTS_RESPONSE');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.THE_CLAIM_WILL_BE_SETTLED');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.IF_CLAIMANT_REJECTS_RESPONSE');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_LESS.WE_ASK_CLAIMANT_FOR_MEDIATION');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_LESS.CLAIMANT_REFUSE_MEDIATION');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT');
+        expect(nextStepsSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.WE_WILL_CONTACT');
+        expect(nextStepsSection[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_ACCEPTS');
+        expect(nextStepsSection[2].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_CLAIMANT_REJECTS');
+        expect(nextStepsSection[3].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.RC_DISPUTE.IF_THEY_REJECT');
       });
     });
-
-    describe('Paid Equal Scenario', () => {
-      const claim = getClaim();
-      claim.rejectAllOfClaim = new RejectAllOfClaim(
-        RejectAllOfClaimType.ALREADY_PAID,
-        new HowMuchHaveYouPaid({
-          amount: 1000,
-          totalClaimAmount: 1000,
-          year: '2022',
-          month: '2',
-          day: '14',
-          text: 'Some text here...',
-        }),
-        new WhyDoYouDisagree(''),
-        new Defence(),
-      );
-
-      it('should display submit status', () => {
-        const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
-        expect(submitStatusSection[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.WE_EMAILED_CLAIMANT_YOUR_INTENTION');
-      });
-
-      it('should display what happens next title', () => {
-        const nextStepsTitle = getNextStepsTitle(lang);
-        expect(nextStepsTitle[0].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT');
-      });
-
-      it('should display next steps section', () => {
-        const nextStepsSection = buildNextStepsSection(mockClaimId, claim, lang);
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_ACCEPTS_CLAIM_WILL_END');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_REJECTS_TRY_MEDIATION');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.RC_PAY_FULL.IF_CLAIMANT_REJECTS_COURT_WILL_REVIEW_CASE');
-        expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT');
-      });
-    });
-
   });
 });
 

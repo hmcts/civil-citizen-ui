@@ -609,26 +609,25 @@ describe('Claim partialAdmissionPaymentAmount', () => {
   });
 });
 
-describe('Claim Dispute', () => {
+describe('Claim Reject - Dispute', () => {
   const claim = new Claim();
-  it('should return false with empty claim', () => {
+  it('should be undefined with empty claim', () => {
     //When
-    const result = claim.isRejectClaimDispute();
+    const result = claim.isRejectAllOfClaimDispute();
     //Then
-    expect(result).toBe(false);
+    expect(result).toBeUndefined;
   });
   it('should return false with empty RejectAllOfClaim', () => {
     //Given
     claim.rejectAllOfClaim = new RejectAllOfClaim();
     //When
-    const result = claim.isRejectClaimDispute();
+    const result = claim.isRejectAllOfClaimDispute();
     //Then
     expect(result).toBe(false);
   });
 
   it('should return true when RejectAllOfClaim is Dispute', () => {
     //Given
-    claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE, primaryAddress: {}, type: CounterpartyType.INDIVIDUAL};
     claim.rejectAllOfClaim = new RejectAllOfClaim(
       RejectAllOfClaimType.DISPUTE,
       new HowMuchHaveYouPaid(),
@@ -636,7 +635,7 @@ describe('Claim Dispute', () => {
       new Defence(),
     );
     //When
-    const result = claim.isRejectClaimDispute();
+    const result = claim.isRejectAllOfClaimDispute();
     //Then
     expect(result).toBe(true);
   });
