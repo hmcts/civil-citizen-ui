@@ -117,6 +117,18 @@ export class Claim {
     return this.paymentOption === PaymentOptionType.IMMEDIATELY;
   }
 
+  isPAPaymentOptionPayImmediately(): boolean {
+    return this.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
+  }
+
+  isPAPaymentOptionInstallments(): boolean {
+    return this.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
+  }
+
+  isPAPaymentOptionByDate(): boolean {
+    return this.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
+  }
+
   isPaymentOptionInstallments(): boolean {
     return this.paymentOption === PaymentOptionType.INSTALMENTS;
   }
@@ -260,6 +272,18 @@ export class Claim {
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
 
+    if (this.isPartialAdmission() && this.isPAPaymentOptionPayImmediately()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY;
+    }
+
+    if (this.isPartialAdmission() && this.isPAPaymentOptionByDate()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
+    }
+
+    if (this.isPartialAdmission() && this.isPAPaymentOptionInstallments()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
+    }
+    
     if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
       return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
     }

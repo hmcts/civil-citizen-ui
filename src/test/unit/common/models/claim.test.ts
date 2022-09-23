@@ -533,6 +533,132 @@ describe('Claim isFullAdmissionPaymentOptionExists', () => {
   });
 });
 
+describe('Claim isPAPaymentOptionPayImmediately', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isPAPaymentOptionPayImmediately();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with empty partial admission', () => {
+    //Given
+    claim.partialAdmission = new PartialAdmission();
+    //When
+    const result = claim.isPAPaymentOptionPayImmediately();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with empty payment intention', () => {
+    //Given
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    //When
+    const result = claim.isPAPaymentOptionPayImmediately();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with part admit empty payment option', () => {
+    //Given
+    claim.partialAdmission.paymentIntention.paymentOption = undefined;
+    //When
+    const result = claim.isPAPaymentOptionPayImmediately();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return true with payment option', () => {
+    //Given
+    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+    //When
+    const result = claim.isPAPaymentOptionPayImmediately();
+    //Then
+    expect(result).toBe(true);
+  });
+});
+
+describe('Claim isPAPaymentOptionInstallments', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isPAPaymentOptionInstallments();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with empty partial admission', () => {
+    //Given
+    claim.partialAdmission = new PartialAdmission();
+    //When
+    const result = claim.isPAPaymentOptionInstallments();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with empty payment intention', () => {
+    //Given
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    //When
+    const result = claim.isPAPaymentOptionInstallments();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with part admit empty payment option', () => {
+    //Given
+    claim.partialAdmission.paymentIntention.paymentOption = undefined;
+    //When
+    const result = claim.isPAPaymentOptionInstallments();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return true with payment option', () => {
+    //Given
+    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+    //When
+    const result = claim.isPAPaymentOptionInstallments();
+    //Then
+    expect(result).toBe(true);
+  });
+});
+
+describe('Claim isPAPaymentOptionByDate', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isPAPaymentOptionByDate();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with empty partial admission', () => {
+    //Given
+    claim.partialAdmission = new PartialAdmission();
+    //When
+    const result = claim.isPAPaymentOptionByDate();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with empty payment intention', () => {
+    //Given
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    //When
+    const result = claim.isPAPaymentOptionByDate();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with part admit empty payment option', () => {
+    //Given
+    claim.partialAdmission.paymentIntention.paymentOption = undefined;
+    //When
+    const result = claim.isPAPaymentOptionByDate();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return true with payment option', () => {
+    //Given
+    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    //When
+    const result = claim.isPAPaymentOptionByDate();
+    //Then
+    expect(result).toBe(true);
+  });
+});
+
 describe('Claim isPartialAdmissionPaymentOptionExists', () => {
   const claim = new Claim();
   it('should return false with empty claim', () => {
