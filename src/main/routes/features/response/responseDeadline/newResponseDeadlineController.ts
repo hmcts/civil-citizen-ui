@@ -16,7 +16,7 @@ const newResponseDeadlineController = express.Router();
 const newResponseDeadlineViewPath = 'features/response/responseDeadline/new-response-deadline';
 
 newResponseDeadlineController
-  .get(NEW_RESPONSE_DEADLINE_URL, async  (req: AppRequest, res, next: express.NextFunction) => {
+  .get(NEW_RESPONSE_DEADLINE_URL, async (req: AppRequest, res, next: express.NextFunction) => {
     try {
       const claim = await getClaimWithExtendedResponseDeadline(req);
       res.render(newResponseDeadlineViewPath, {

@@ -17,7 +17,7 @@ const citizenDetailsController = express.Router();
 const CITIZEN_DETAILS_COMPANY_VIEW_PATH = 'features/response/citizenDetails/citizen-details-company';
 const CITIZEN_DETAILS_VIEW_PATH = 'features/response/citizenDetails/citizen-details';
 
-const getViewpathWithType = (type: CounterpartyType) => {
+const getViewPathWithType = (type: CounterpartyType) => {
   if (type === CounterpartyType.ORGANISATION || type === CounterpartyType.COMPANY) {
     return CITIZEN_DETAILS_COMPANY_VIEW_PATH;
   }
@@ -25,22 +25,19 @@ const getViewpathWithType = (type: CounterpartyType) => {
 };
 
 function renderPage(res: express.Response, req: express.Request, respondent: Respondent, citizenAddress: GenericForm<CitizenAddress>, citizenCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>): void {
-  const partyName = respondent?.partyName;
   const type = respondent?.type;
-  const contactPerson = respondent?.contactPerson;
 
-  const viewPath = getViewpathWithType(type);
-  res.render(viewPath, {
+  res.render(getViewPathWithType(type), {
     respondent,
     citizenAddress,
     citizenCorrespondenceAddress,
-    partyName: partyName,
-    contactPerson: contactPerson,
-    type: type,
+    partyName: respondent?.partyName ,
+    contactPerson: respondent?.contactPerson,
+    type,
   });
 }
 
-const redirect = async (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
+const redirect = (responseDataRedis: Respondent, req: express.Request, res: express.Response) => {
   if (responseDataRedis?.type === CounterpartyType.SOLE_TRADER || responseDataRedis?.type === CounterpartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
   } else {
