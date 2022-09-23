@@ -66,7 +66,6 @@ civil-service:
           - prd-admin-user-password
          # - AppInsightsInstrumentationKey
           - docmosis-api-key
-          - cmc-db-password-v11
           - gov-notify-api-key
           - sendgrid-api-key
           - robotics-notification-sender
