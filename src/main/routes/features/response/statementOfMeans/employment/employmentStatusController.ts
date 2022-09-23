@@ -17,9 +17,7 @@ import {GenericForm} from '../../../../../common/form/models/genericForm';
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
 const employmentStatusController = express.Router();
 
-function renderView(employmentForm: GenericForm<EmploymentForm>, res: express.Response): void {
-  const form = Object.assign(employmentForm);
-  form.option = employmentForm.model.option;
+function renderView(form: GenericForm<EmploymentForm>, res: express.Response): void {
   res.render(citizenEmploymentStatusViewPath, {form, EmploymentCategory: EmploymentCategory});
 }
 
