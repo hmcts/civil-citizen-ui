@@ -114,6 +114,7 @@ import defendantExpertEvidenceController from './features/directionsQuestionnair
 import considerClaimantDocumentsController
   from './features/directionsQuestionnaire/considerClaimantDocumentsController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
+import expertSmallClaimsController from './features/directionsQuestionnaire/expertSmallClaimsController';
 import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
 import permissionForExpertController from './features/directionsQuestionnaire/permissionForExpertController';
@@ -227,6 +228,7 @@ export default [
   considerClaimantDocumentsController,
   sharedExpertController,
   triedToSettleController,
+  expertSmallClaimsController,
   requestExtra4WeeksController,
   permissionForExpertController,
   defendantExpertEvidenceController,

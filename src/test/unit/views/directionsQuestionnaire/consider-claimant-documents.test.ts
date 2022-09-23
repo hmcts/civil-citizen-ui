@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../main/app';
 import {mockCivilClaim} from '../../../utils/mockDraftStore';
-import {DQ_CONSIDER_CLAIMANT_DOCUMENTS} from '../../../../main/routes/urls';
+import {DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL} from '../../../../main/routes/urls';
 import {t} from 'i18next';
 
 const jsdom = require('jsdom');
@@ -25,7 +25,7 @@ describe('Consider Claimant Documents  view', () => {
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockCivilClaim;
-      const response = await request(app).get(DQ_CONSIDER_CLAIMANT_DOCUMENTS);
+      const response = await request(app).get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
       mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
@@ -73,7 +73,7 @@ describe('Consider Claimant Documents  view', () => {
           .post('/o/token')
           .reply(200, {id_token: citizenRoleToken});
         app.locals.draftStoreClient = mockCivilClaim;
-        const response = await request(app).post(DQ_CONSIDER_CLAIMANT_DOCUMENTS);
+        const response = await request(app).post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL);
         const dom = new JSDOM(response.text);
         htmlDocument = dom.window.document;
       });
@@ -103,7 +103,7 @@ describe('Consider Claimant Documents  view', () => {
           .post('/o/token')
           .reply(200, {id_token: citizenRoleToken});
         app.locals.draftStoreClient = mockCivilClaim;
-        const response = await request(app).post(DQ_CONSIDER_CLAIMANT_DOCUMENTS)
+        const response = await request(app).post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL)
           .send({option: 'yes'});
         const dom = new JSDOM(response.text);
         htmlDocument = dom.window.document;
