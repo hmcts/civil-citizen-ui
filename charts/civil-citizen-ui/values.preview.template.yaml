@@ -64,13 +64,15 @@ civil-service:
           - cross-access-user-password
           - prd-admin-user-username
           - prd-admin-user-password
-          #- AppInsightsInstrumentationKey needs to be replaced with GA specific key
+         # - AppInsightsInstrumentationKey
           - docmosis-api-key
           - gov-notify-api-key
           - sendgrid-api-key
           - robotics-notification-sender
           - robotics-notification-recipient
           - launch-darkly-sdk-key
+          - robotics-notification-multipartyrecipient
+          - robotics-notification-recipient-spec
           - ordnance-survey-api-key
           - robotics-notification-recipient-spec
           - robotics-notification-multipartyrecipient
