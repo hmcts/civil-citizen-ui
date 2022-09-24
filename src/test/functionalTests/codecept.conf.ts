@@ -6,7 +6,7 @@ setHeadlessWhen(testConfig.TestHeadlessBrowser);
 export const config: CodeceptJS.Config = {
 
   tests: [
-    '../functionalTests/tests/*_tests.ts',
+    '../functionalTests/tests/api_1v1_spec_test.js',
   ],
 
   name: 'civil-citizen-ui-functional',
@@ -32,6 +32,10 @@ export const config: CodeceptJS.Config = {
       enabled: true,
       fullPageScreenshots: true,
     },
+  },
+  include: {
+    I: './e2e/steps_file.js',
+    api_spec: './e2e/api/steps_LRspec.js', 
   },
   mocha: {
     bail: true,

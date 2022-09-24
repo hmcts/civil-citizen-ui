@@ -12,6 +12,7 @@
     "build": "yarn webpack --config webpack.config.js",
     "build:prod": "NODE_ENV=production yarn webpack --mode production --config webpack.config.js",
     "test": "jest -c jest.config.js",
+    "test:api-spec-1v1": "MOCHAWESOME_REPORTFILENAME=api-spec npx codeceptjs --config src/test/functionalTests/codecept.conf.js run --grep @api-spec-1v1 --reporter mocha-multi --verbose",
     "test:coverage": "jest --coverage",
     "test:routes": "jest -c jest.routes.config.js",
     "test:a11y": "jest -c jest.a11y.config.js --maxWorkers 15 --forceExit",
@@ -104,6 +105,7 @@
     "jest-junit": "^14.0.1",
     "mini-css-extract-plugin": "^2.6.1",
     "nock": "^13.2.9",
+    "node-cache": "^5.1.2",
     "nodemon": "^2.0.19",
     "pa11y": "^6.2.3",
     "playwright": "^1.25.1",
@@ -124,7 +126,10 @@
     "webpack-dev-middleware": "^5.3.3",
     "webpack-node-externals": "^3.0.0",
     "mocha-multi": "^1.1.6",
-    "mochawesome": "^7.0.1"
+    "mochawesome": "^7.0.1",
+    "totp-generator": "^0.0.7",
+    "deep-equal-in-any-order": "^1.0.28",
+    "chai": "^4.3.4"
   },
   "resolutions": {
     "**/jest/**/node-notifier": "^8.0.1",
