@@ -312,7 +312,7 @@ describe('Expert Report Details service', () => {
       const expertReportDetails = await getExpertReportDetails('1234');
       //Then
       expect(expertReportDetails).toBeTruthy();
-      expect(expertReportDetails.reportDetails.length).toBe(2);
+      expect(expertReportDetails.reportDetails.length).toBe(1);
       expect(expertReportDetails.hasExpertReports).toBe('yes');
       expect(expertReportDetails.reportDetails[0].expertName).toEqual('John Doe');
       expect(expertReportDetails.reportDetails[0].reportDate?.toDateString()).toEqual('Tue Mar 01 2022');
