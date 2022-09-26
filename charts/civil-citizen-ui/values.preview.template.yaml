@@ -49,7 +49,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: 'hmctspublic.azurecr.io/civil/service:pr-1411'
+    image: 'hmctspublic.azurecr.io/civil/service:pr-1468'
     imagePullPolicy: Always
     ingressHost: civil-service-${SERVICE_FQDN}
     keyVaults:
