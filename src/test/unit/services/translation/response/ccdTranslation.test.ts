@@ -61,8 +61,8 @@ describe('translate response to ccd version', ()=> {
       mediationDisagreement: undefined,
       companyTelephoneNumber: {
         mediationContactPerson : 'test',
-        mediationPhoneNumber : '123'
-      }
+        mediationPhoneNumber : '123',
+      },
     };
     //When
     const ccdResponse = translateDraftResponseToCCD(claim);
