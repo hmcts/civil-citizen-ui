@@ -28,6 +28,8 @@ coverage/
 smoke-output/
 functional-output/
 
+.vscode/
 .yarn/
 .yarnrc
+test-results/
 package-lock.json
