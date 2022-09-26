@@ -16,9 +16,7 @@ const partnerAgeController = express.Router();
 const partnerAgeService = new PartnerAgeService();
 const disabilityService = new DisabilityService();
 
-function renderView(partnerAge: GenericForm<GenericYesNo>, res: express.Response): void {
-  const form = Object.assign(partnerAge);
-  form.option = partnerAge.model.option;
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(citizenPartnerAgeViewPath, {form});
 }
 

@@ -733,6 +733,33 @@ describe('Claim partialAdmissionPaymentAmount', () => {
     //Then
     expect(result).toEqual(55);
   });
+
+  it('should return false with part admit empty HowMuchHaveYouPaid', () => {
+    //Given
+    claim.partialAdmission.howMuchHaveYouPaid = new HowMuchHaveYouPaid({});
+    //When
+    const result = claim.partialAdmissionPaidAmount();
+    //Then
+    expect(result).toBeUndefined();
+  });
+  it('should return existing amount paid', () => {
+    //Given
+    const howMuchHaveYouPaid = new HowMuchHaveYouPaid(
+      {
+        amount: 150,
+        totalClaimAmount: 1000,
+        year: '2022',
+        month: '2',
+        day: '10',
+        text: 'Some text',
+      },
+    );
+    claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
+    //When
+    const result = claim.partialAdmissionPaidAmount();
+    //Then
+    expect(result).toEqual(150);
+  });
 });
 
 describe('Claim Reject - Dispute', () => {

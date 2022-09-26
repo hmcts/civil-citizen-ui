@@ -6,11 +6,12 @@ import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
+
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
 const citizenPhoneController = express.Router();
 
 function renderView(form: GenericForm<CitizenTelephoneNumber>, res: express.Response): void {
-  res.render(citizenPhoneViewPath, {form: form});
+  res.render(citizenPhoneViewPath, {form});
 }
 
 citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, async (req, res, next: express.NextFunction) => {
@@ -27,10 +28,10 @@ citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
   async (req, res, next: express.NextFunction) => {
     try {
       const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber);
-      const citizenTelephoneNumerForm = new GenericForm(model);
-      citizenTelephoneNumerForm.validateSync();
-      if (citizenTelephoneNumerForm.hasErrors()) {
-        renderView(citizenTelephoneNumerForm, res);
+      const citizenTelephoneNumberForm = new GenericForm(model);
+      citizenTelephoneNumberForm.validateSync();
+      if (citizenTelephoneNumberForm.hasErrors()) {
+        renderView(citizenTelephoneNumberForm, res);
       } else {
         const claim = await getCaseDataFromStore(req.params.id) || new Claim();
         if (claim.respondent1) {

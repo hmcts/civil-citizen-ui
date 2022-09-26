@@ -9,8 +9,6 @@
 {% endblock %}
 
 {% block content %}
-  {% set insetText1 = t('PAGES.FREE_TELEPHONE_MEDIATION.MEDIATION_QUICKER') %}
-  {% set insetText2 = t('PAGES.FREE_TELEPHONE_MEDIATION.NO_WAIT_COURT_HEARING') %}
   {% set redirectPath = './can-we-use-company' if isBusiness else './can-we-use' %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
@@ -25,7 +23,7 @@
             {{ t('PAGES.FREE_TELEPHONE_MEDIATION.NEUTRAL_MEDIATOR_LISTEN') }}
           </p>
           {{ govukInsetText({
-            text: insetText1
+            text: t('PAGES.FREE_TELEPHONE_MEDIATION.MEDIATION_QUICKER')
           }) }}
           <p class="govuk-body">
             {{ t('PAGES.FREE_TELEPHONE_MEDIATION.MEDIATION_IS_CONFIDENTIAL') }}
@@ -51,7 +49,7 @@
             {{ t('PAGES.FREE_TELEPHONE_MEDIATION.MEDIATION_FAILS') }}
           </p>
           {{ govukInsetText({
-            text: insetText2
+            text: t('PAGES.FREE_TELEPHONE_MEDIATION.NO_WAIT_COURT_HEARING')
           }) }}
           <div class="form-group">
             {{ govukButton({

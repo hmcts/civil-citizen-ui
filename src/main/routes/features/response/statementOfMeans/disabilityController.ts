@@ -9,10 +9,8 @@ const citizenDisabilityViewPath = 'features/response/statementOfMeans/disability
 const disabilityController = express.Router();
 const disabilityService = new DisabilityService();
 
-function renderView(disabilityForm: GenericForm<Disability>, res: express.Response): void {
-  const form = Object.assign(disabilityForm);
-  form.option = form.model.option;
-  res.render(citizenDisabilityViewPath, { form });
+function renderView(form: GenericForm<Disability>, res: express.Response): void {
+  res.render(citizenDisabilityViewPath, {form});
 }
 
 disabilityController.get(CITIZEN_DISABILITY_URL, async (req, res, next: express.NextFunction) => {

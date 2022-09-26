@@ -10,7 +10,7 @@ import NoMediationReasonOptions from '../../../common/form/models/mediation/noMe
 const iDontWantFreeMediationViewPath = 'features/mediation/i-dont-want-free-mediation';
 const iDontWantFreeMediationController = express.Router();
 
-async function renderView(form: GenericForm<NoMediationReason>, res: express.Response): Promise<void> {
+function renderView(form: GenericForm<NoMediationReason>, res: express.Response): void {
   res.render(iDontWantFreeMediationViewPath, {form, NoMediationReasonOptions: NoMediationReasonOptions});
 }
 

@@ -11,9 +11,7 @@ import {YesNo} from '../../../../common/form/models/yesNo';
 const helpWithFeesEligibilityController = express.Router();
 const helpWithFeesEligibilityViewPath = 'features/public/eligibility/help-with-fees';
 
-function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Response): void {
-  const form = Object.assign(genericYesNoForm);
-  form.option = genericYesNoForm.model.option;
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(helpWithFeesEligibilityViewPath, {form});
 }
 

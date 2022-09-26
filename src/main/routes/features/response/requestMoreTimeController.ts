@@ -13,11 +13,9 @@ const requestMoreTimeViewPath = 'features/response/request-more-time';
 const responseDeadlineService = new ResponseDeadlineService();
 
 function renderView(res: express.Response, form: GenericForm<AdditionalTime>, claim: Claim, language: string): void {
-  const additionalTime = Object.assign(form);
-  additionalTime.option = form.model?.option;
   res.render(requestMoreTimeViewPath, {
     additionalTimeOptions: AdditionalTimeOptions,
-    form: additionalTime,
+    form,
     responseDate: claim.formattedResponseDeadline(language),
     claimantName: claim.getClaimantName(),
   });
