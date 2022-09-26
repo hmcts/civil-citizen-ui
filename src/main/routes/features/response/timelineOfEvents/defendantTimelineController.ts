@@ -19,7 +19,7 @@ const defendantTimelineView = 'features/response/timelineOfEvents/defendant-time
 
 function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLineOfEvents[], pdfUrl: string, res: express.Response) {
   res.render(defendantTimelineView, {
-    form: form, theirTimeline: theirTimeline, pdfUrl,
+    form, theirTimeline, pdfUrl,
   });
 }
 

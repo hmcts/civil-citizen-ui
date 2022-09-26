@@ -9,10 +9,8 @@ const citizenSevereDisabilityViewPath = 'features/response/statementOfMeans/are-
 const severeDisabilityController = express.Router();
 const severeDisabilityService = new SevereDisabilityService();
 
-function renderView(severeDisability: GenericForm<GenericYesNo>, res: express.Response): void {
-  const form = Object.assign(severeDisability);
-  form.option = severeDisability.model.option;
-  res.render(citizenSevereDisabilityViewPath, { form });
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+  res.render(citizenSevereDisabilityViewPath, {form});
 }
 
 severeDisabilityController.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res, next: express.NextFunction) => {

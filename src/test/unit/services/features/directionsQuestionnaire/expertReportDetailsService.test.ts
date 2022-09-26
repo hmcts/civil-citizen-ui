@@ -14,7 +14,6 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-
 describe('Expert Report Details service', () => {
   describe('Serialisation', () => {
     const mockReportDetails = [{
