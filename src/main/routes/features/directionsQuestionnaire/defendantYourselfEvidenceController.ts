@@ -11,7 +11,7 @@ import {
 
 const defendantYourselfEvidenceController = express.Router();
 const defendantYourselfEvidenceViewPath = 'features/directionsQuestionnaire/defendant-yourself-evidence';
-const errorMessage = 'ERRORS.DEFENDANT_YOURSELF_EVIDENCE_REQUIRED';
+const dqPropertyName = 'defendantYourselfEvidence';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(defendantYourselfEvidenceViewPath, {form});
@@ -19,7 +19,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 defendantYourselfEvidenceController.get(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const defendantYourselfEvidence = await getGenericOption(req.params.id, 'defendantYourselfEvidence', errorMessage);
+    const defendantYourselfEvidence = await getGenericOption(req.params.id, dqPropertyName);
     renderView(new GenericForm(defendantYourselfEvidence), res);
   } catch (error) {
     next(error);
@@ -29,14 +29,13 @@ defendantYourselfEvidenceController.get(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (re
 defendantYourselfEvidenceController.post(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
-    const defendantYourselfEvidence = new GenericForm(getGenericOptionForm(req.body.option, errorMessage));
+    const defendantYourselfEvidence = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
     defendantYourselfEvidence.validateSync();
 
     if (defendantYourselfEvidence.hasErrors()) {
       renderView(defendantYourselfEvidence, res);
     } else {
-      defendantYourselfEvidence.model.option = req.body.option;
-      await saveDirectionQuestionnaire(claimId, defendantYourselfEvidence.model, 'defendantYourselfEvidence');
+      await saveDirectionQuestionnaire(claimId, defendantYourselfEvidence.model, dqPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL));
     }
   } catch (error) {

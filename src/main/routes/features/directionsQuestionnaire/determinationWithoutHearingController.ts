@@ -3,9 +3,12 @@ import {DETERMINATION_WITHOUT_HEARING_URL, EXPERT_GUIDANCE_URL} from '../../urls
 import {DeterminationWithoutHearing} from '../../../common/models/directionsQuestionnaire/determinationWithoutHearing';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {
-  getDeterminationWithoutHearing, getDeterminationWithoutHearingForm, saveDeterminationWithoutHearing,
+  getDeterminationWithoutHearing, getDeterminationWithoutHearingForm,
 } from '../../../services/features/directionsQuestionnaire/determinationWithoutHearingService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {
+  saveDirectionQuestionnaire,
+} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const determinationWithoutHearingController = express.Router();
 const determinationWithoutHearingViewPath = 'features/directionsQuestionnaire/determination-without-hearing';
@@ -13,7 +16,6 @@ const determinationWithoutHearingViewPath = 'features/directionsQuestionnaire/de
 function renderView(form: GenericForm<DeterminationWithoutHearing>, res: express.Response): void {
   const determinationWithoutHearing = Object.assign(form);
   determinationWithoutHearing.option = form.model.isDeterminationWithoutHearing;
-
   res.render(determinationWithoutHearingViewPath, {form: determinationWithoutHearing});
 }
 
@@ -37,7 +39,7 @@ determinationWithoutHearingController
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await saveDeterminationWithoutHearing(claimId, determinationWithoutHearingForm);
+        await saveDirectionQuestionnaire(claimId, determinationWithoutHearingForm, 'determinationWithoutHearing');
         res.redirect(constructResponseUrlWithIdParams(claimId, EXPERT_GUIDANCE_URL));
       }
     } catch (error) {

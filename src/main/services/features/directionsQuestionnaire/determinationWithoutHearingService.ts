@@ -1,5 +1,5 @@
 import {DeterminationWithoutHearing} from '../../../common/models/directionsQuestionnaire/determinationWithoutHearing';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {YesNo} from '../../../common/form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -8,7 +8,9 @@ const logger = Logger.getLogger('determinationWithoutHearing');
 export const getDeterminationWithoutHearing = async (claimId: string): Promise<DeterminationWithoutHearing> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
-    return caseData.determinationWithoutHearing ? caseData.determinationWithoutHearing : new DeterminationWithoutHearing();
+    return caseData?.directionQuestionnaire?.determinationWithoutHearing ?
+      caseData.directionQuestionnaire.determinationWithoutHearing :
+      new DeterminationWithoutHearing();
   } catch (error) {
     logger.error(error);
     throw error;
@@ -19,15 +21,4 @@ export const getDeterminationWithoutHearingForm = (isDeterminationWithoutHearing
   return new DeterminationWithoutHearing(
     isDeterminationWithoutHearing,
     isDeterminationWithoutHearing === YesNo.YES ? '' : reasonForHearing);
-};
-
-export const saveDeterminationWithoutHearing = async (claimId: string, determinationWithoutHearing: DeterminationWithoutHearing) => {
-  try {
-    const caseData = await getCaseDataFromStore(claimId);
-    caseData.determinationWithoutHearing = determinationWithoutHearing;
-    await saveDraftClaim(claimId, caseData);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
 };

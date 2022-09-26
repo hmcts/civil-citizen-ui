@@ -15,10 +15,8 @@ const rejectAllOfClaimController = express.Router();
 rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
-    const rejectAllOfClaim: RejectAllOfClaim = await getRejectAllOfClaim(claimId);
     const claim = await getCaseDataFromStore(claimId);
-
-    const form = new GenericForm(rejectAllOfClaim);
+    const form = new GenericForm(await getRejectAllOfClaim(claimId));
     res.render(rejectAllOfClaimViewPath, {
       form,
       rejectAllOfClaimType: RejectAllOfClaimType,

@@ -13,9 +13,7 @@ import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFor
 const tenancyDepositController = express.Router();
 const tenancyDepositViewPath = 'features/public/eligibility/tenancy-deposit';
 
-function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Response): void {
-  const form = Object.assign(genericYesNoForm);
-  form.option = genericYesNoForm.model.option;
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(tenancyDepositViewPath, {form});
 }
 
