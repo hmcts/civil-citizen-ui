@@ -13,7 +13,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
-      {% set title = t("Do you claim Carer’s Allowance or Carer’s Credit?") %}
+      {% set title = t('PAGES.CHECK_YOUR_ANSWER.CARER_CREDIT_DO_YOU_CLAIM') %}
       {% set id = "option" %}
       {% set name = "option" %}
       {% set errors = form.getAllErrors() %}
@@ -27,7 +27,7 @@
             {{ yesNoRadioButton(t,id,name,title,form) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t("Save and continue")
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

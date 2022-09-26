@@ -3,11 +3,13 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
-{% from "../../../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../../../macro/page-title.njk" import setPageTitle %}
+
 {% block pageTitle %}
   {{ setPageTitle('PAGES.PARTNER_PENSION.PAGE_TITLE') }}
 {% endblock %}
+
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
