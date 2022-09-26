@@ -3,7 +3,8 @@ import {
   IsEmail,
   IsNumber,
   Validate,
-  IsEmpty,
+  ValidateIf,
+  Min,
 } from "class-validator";
 import {OptionalIntegerValidator} from "../../../form/validators/optionalIntegerValidator";
 
@@ -12,22 +13,24 @@ export class ExpertDetails {
   firstName?: string;
   lastName?: string;
 
+  @ValidateIf(o => o.emailAddress)
   @IsEmail({ message: 'ERRORS.ENTER_VALID_EMAIL' })
-  emailAddress?: string;
+    emailAddress?: string;
 
+  @ValidateIf(o => o.phoneNumber)
   @Validate(OptionalIntegerValidator, { message: 'ERRORS.VALID_PHONE_NUMBER' })
-  phoneNumber?: number;
+    phoneNumber?: number;
   
   @IsNotEmpty({ message: 'ERRORS.ENTER_WHY_NEED_EXPERT' })
-  @IsEmpty({ message: 'ERRORRRRRRR IS EMPTY' })
-  whyNeedExpert: string;
+    whyNeedExpert: string;
 
   @IsNotEmpty({ message: 'ERRORS.ENTER_EXPERT_FIELD' })
-  @IsEmpty({ message: 'ERRORRRRRRR IS EMPTY' })
-  fieldOfExpertise: string;
+    fieldOfExpertise: string;
 
-  @IsNumber({ maxDecimalPlaces: 2 }, { message: 'ERRORS.AMOUNT_INVALID_DECIMALS' })
-  estimatedCost?: number;
+  @ValidateIf(o => o.estimatedCost)
+  @IsNumber({maxDecimalPlaces: 2}, {message: 'ERRORS.AMOUNT_INVALID_DECIMALS'})
+  @Min(0, {message: 'ERRORS.VALID_AMOUNT'})
+    estimatedCost?: number;
 
   constructor(firstName?: string, lastName?: string, emailAddress?: string, phoneNumber?: number, whyNeedExpert?: string, fieldOfExpertise?: string, estimatedCost?: number) {
     this.firstName = firstName;

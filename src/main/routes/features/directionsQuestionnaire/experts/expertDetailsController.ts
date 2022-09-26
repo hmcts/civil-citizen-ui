@@ -20,10 +20,8 @@ expertDetailsController.get(EXPERT_DETAILS_URL, async (req, res, next: express.N
 
 expertDetailsController.post(EXPERT_DETAILS_URL, async (req, res, next: express.NextFunction) => {
   try {
-
     const claimId = req.params.id;
-    
-    const expertDetailsList: ExpertDetailsList = new ExpertDetailsList(req.body.expertDetailsList.map((expertDetail: ExpertDetails) => new ExpertDetails(
+    const expertDetailsList: ExpertDetailsList = new ExpertDetailsList(req.body.items.map((expertDetail: ExpertDetails) => new ExpertDetails(
         expertDetail.firstName,
         expertDetail.lastName,
         expertDetail.emailAddress,
@@ -32,11 +30,11 @@ expertDetailsController.post(EXPERT_DETAILS_URL, async (req, res, next: express.
         expertDetail.whyNeedExpert,
         expertDetail.estimatedCost,
     )));
-    const form = new GenericForm(expertDetailsList);
 
+    const form = new GenericForm(expertDetailsList);
     form.validateSync();
 
-    if (form.hasErrors()) {
+    if (form.hasNestedErrors()) {
       res.render(expertDetailsViewPath, { form });
     } else {
       await saveExpertDetails(claimId, expertDetailsList.items);

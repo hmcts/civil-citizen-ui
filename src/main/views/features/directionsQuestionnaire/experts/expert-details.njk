@@ -10,9 +10,6 @@
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 
-
-{% set rowNumberToShowRemoveButton = 2 %}
-
 {% block pageTitle %}
   {{ setPageTitle('PAGES.EXPERT_DETAILS.PAGE_TITLE') }}
 {% endblock %}
@@ -20,7 +17,7 @@
 {% block content %}
 
   {% if form.hasErrors() %}
-    {{ errorSummary(form.getErrors(), t) }}
+    {{ errorSummary(form.getNestedErrors(), t) }}
   {% endif %}
 
   <div class="govuk-width-container">
@@ -28,29 +25,28 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
-
           <h1 class="govuk-heading-l">{{ t('PAGES.EXPERT_DETAILS.PAGE_TITLE') }}</h1>
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
 
-            {% for expertDetail in form.model %}
-              {% if expertDetails.length < rowNumberToShowRemoveButton %}
-                {{ expertDetailsRow(expertDetail, loop.index0, form.errorFor, t, {hidden:true}) }}
-              {% else %}
+            {% for expertDetail in form.model.items %}
+              {% if expertDetails.length > 1 %}
                 {{ expertDetailsRow(expertDetail, loop.index0, form.errorFor, t, {}) }}
+              {% else %}
+                {{ expertDetailsRow(expertDetail, loop.index0, form.errorFor, t, {hidden:true}) }}
               {% endif %}
             {% endfor %}
 
-            <div class="govuk-form-group">
+            <div class="govuk-!-margin-top-6">
               {{ govukButton({
-                text: 'Add another person',
+                text: t('PAGES.EXPERT_DETAILS.ADD_ANOTHER_EXPERT'),
                 classes: "govuk-button--secondary append-row"
               }) }}
             </div>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: 'Submit'
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
             </div>
           </form>

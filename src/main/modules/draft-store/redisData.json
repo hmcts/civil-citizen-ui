@@ -7,16 +7,6 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
-      "directionQuestionnaire":{
-        "experts":{
-          "expertDetailsList":{
-            "items":[
-              {"firstName":"Felipe"},
-              {"firstName":"Ginny"}
-            ]
-          }
-        }
-      },
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
         "code": "FEE0204",
