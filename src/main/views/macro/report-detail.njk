@@ -3,7 +3,7 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
 {% macro reportDetail(reportDetailIndex, reportDetailValue, errorFor, t, removeButton, today) %}
-{% set hint = t('PAGES.EXPERT_REPORT_DETAILS.FOR_EXAMPLE', {
+{% set dateHint = t('PAGES.EXPERT_REPORT_DETAILS.FOR_EXAMPLE', {
   date: today.getDate()+' '+(today.getMonth()-2)+' '+today.getFullYear()
 }) %}
 
@@ -42,12 +42,13 @@
       name: 'reportDetails['+reportDetailIndex+'][reportDate]',
       fieldset: {
         legend: {
-          isPageHeading: false,
-          classes: "govuk-fieldset__legend--s"
+          text: t('PAGES.EXPERT_REPORT_DETAILS.REPORT_DATE'),
+          isPageHeading: true,
+          classes: "govuk-fieldset__legend--s govuk-visually-hidden"
         }
       },
-      hint: {
-        text: hint
+        hint: {
+        text: dateHint
       },
       errorMessage: {
             html: '<p class="govuk-error-message">' + t(errorFor('reportDetails['+reportDetailIndex+'][reportDate]')) + '</p>' +
