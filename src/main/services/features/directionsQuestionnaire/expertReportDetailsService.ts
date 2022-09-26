@@ -29,7 +29,7 @@ export const getExpertReportDetailsForm = (hasExpertReports: YesNo, reportDetail
   if (hasExpertReports) {
     return new ExpertReportDetails(hasExpertReports, form);
   }
-  return ExpertReportDetails.buildEmptyForm();
+  return new ExpertReportDetails(undefined, [new ReportDetail('', '', '', '')]);
 };
 
 export const saveExpertReportDetails = async (claimId: string, expertReportDetails: ExpertReportDetails) => {

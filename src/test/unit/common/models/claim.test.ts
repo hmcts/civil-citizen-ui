@@ -4,6 +4,7 @@ import {
   InterestClaimOptions,
   InterestClaimUntilType,
   SameRateInterestType,
+  CaseState,
 } from '../../../../main/common/form/models/claimDetails';
 import {StatementOfMeans} from '../../../../main/common/models/statementOfMeans';
 import {Disability} from '../../../../main/common/form/models/statementOfMeans/disability';
@@ -20,7 +21,6 @@ import {PaymentIntention} from '../../../../main/common/form/models/admission/pa
 import PaymentOptionType from '../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
 import {mockClaim} from '../../../utils/mockClaim';
 import {DocumentType} from '../../../../main/common/models/document/documentType';
-import {CaseState} from '../../../../main/common/form/models/claimDetails';
 import {GenericYesNo} from '../../../../main/common/form/models/genericYesNo';
 import {RejectAllOfClaim} from '../../../../main/common/form/models/rejectAllOfClaim';
 import RejectAllOfClaimType from '../../../../main/common/form/models/rejectAllOfClaimType';
@@ -533,6 +533,132 @@ describe('Claim isFullAdmissionPaymentOptionExists', () => {
   });
 });
 
+describe('Claim isPAPaymentOptionPayImmediately', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isPAPaymentOptionPayImmediately();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with empty partial admission', () => {
+    //Given
+    claim.partialAdmission = new PartialAdmission();
+    //When
+    const result = claim.isPAPaymentOptionPayImmediately();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with empty payment intention', () => {
+    //Given
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    //When
+    const result = claim.isPAPaymentOptionPayImmediately();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with part admit empty payment option', () => {
+    //Given
+    claim.partialAdmission.paymentIntention.paymentOption = undefined;
+    //When
+    const result = claim.isPAPaymentOptionPayImmediately();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return true with payment option', () => {
+    //Given
+    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+    //When
+    const result = claim.isPAPaymentOptionPayImmediately();
+    //Then
+    expect(result).toBe(true);
+  });
+});
+
+describe('Claim isPAPaymentOptionInstallments', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isPAPaymentOptionInstallments();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with empty partial admission', () => {
+    //Given
+    claim.partialAdmission = new PartialAdmission();
+    //When
+    const result = claim.isPAPaymentOptionInstallments();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with empty payment intention', () => {
+    //Given
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    //When
+    const result = claim.isPAPaymentOptionInstallments();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with part admit empty payment option', () => {
+    //Given
+    claim.partialAdmission.paymentIntention.paymentOption = undefined;
+    //When
+    const result = claim.isPAPaymentOptionInstallments();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return true with payment option', () => {
+    //Given
+    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+    //When
+    const result = claim.isPAPaymentOptionInstallments();
+    //Then
+    expect(result).toBe(true);
+  });
+});
+
+describe('Claim isPAPaymentOptionByDate', () => {
+  const claim = new Claim();
+  it('should return false with empty claim', () => {
+    //When
+    const result = claim.isPAPaymentOptionByDate();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with empty partial admission', () => {
+    //Given
+    claim.partialAdmission = new PartialAdmission();
+    //When
+    const result = claim.isPAPaymentOptionByDate();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with empty payment intention', () => {
+    //Given
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    //When
+    const result = claim.isPAPaymentOptionByDate();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false with part admit empty payment option', () => {
+    //Given
+    claim.partialAdmission.paymentIntention.paymentOption = undefined;
+    //When
+    const result = claim.isPAPaymentOptionByDate();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return true with payment option', () => {
+    //Given
+    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    //When
+    const result = claim.isPAPaymentOptionByDate();
+    //Then
+    expect(result).toBe(true);
+  });
+});
+
 describe('Claim isPartialAdmissionPaymentOptionExists', () => {
   const claim = new Claim();
   it('should return false with empty claim', () => {
@@ -841,96 +967,21 @@ describe('Documents', () => {
     });
   });
 
-  describe('isBusiness', () => {
+  describe('Claim formattedTotalClaimAmount', () => {
     const claim = new Claim();
-    it('should return false with empty claim', () => {
+    it('should return empty string', () => {
       //When
-      const result = claim.isBusiness();
+      const result = claim.formattedTotalClaimAmount();
       //Then
-      expect(result).toBe(false);
+      expect(result).toBe('');
     });
-    it('should return false with individual type', () => {
+    it('should return formatted amount', () => {
       //Given
-      claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+      claim.totalClaimAmount = 1000;
       //When
-      const result = claim.isBusiness();
+      const result = claim.formattedTotalClaimAmount();
       //Then
-      expect(result).toBe(false);
-    });
-    it('should return true with sole trader', () => {
-      //Given
-      claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
-      //When
-      const result = claim.isBusiness();
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return true with company type', () => {
-      //Given
-      claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.COMPANY;
-      //When
-      const result = claim.isBusiness();
-      //Then
-      expect(result).toBe(true);
-    });
-    it('should return true with organisation trader', () => {
-      //Given
-      claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.ORGANISATION;
-      //When
-      const result = claim.isBusiness();
-      //Then
-      expect(result).toBe(true);
-    });
-  });
-
-  describe('isBusiness', () => {
-    const claim = new Claim();
-    it('should return false with empty claim', () => {
-      //When
-      const result = claim.isBusiness();
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return false with individual type', () => {
-      //Given
-      claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.INDIVIDUAL;
-      //When
-      const result = claim.isBusiness();
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return true with sole trader', () => {
-      //Given
-      claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.SOLE_TRADER;
-      //When
-      const result = claim.isBusiness();
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return true with company type', () => {
-      //Given
-      claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.COMPANY;
-      //When
-      const result = claim.isBusiness();
-      //Then
-      expect(result).toBe(true);
-    });
-    it('should return true with organisation trader', () => {
-      //Given
-      claim.respondent1 = new Respondent();
-      claim.respondent1.type = CounterpartyType.ORGANISATION;
-      //When
-      const result = claim.isBusiness();
-      //Then
-      expect(result).toBe(true);
+      expect(result).toBe('£1,000.00');
     });
   });
 });
-

@@ -17,10 +17,6 @@ export class ExpertReportDetails {
     this.reportDetails = reportDetails;
   }
 
-  public static buildEmptyForm(): ExpertReportDetails {
-    return new ExpertReportDetails(undefined, [new ReportDetail('', '', '', '')]);
-  }
-
   public static removeEmptyReportDetails(expertReportDetails: ExpertReportDetails): ExpertReportDetails {
     const filteredReportDetails = expertReportDetails.reportDetails?.filter(reportDetail => !reportDetail.isEmpty());
     return {...expertReportDetails, reportDetails: filteredReportDetails};

@@ -14,8 +14,8 @@ const expertReportDetailsController = express.Router();
 
 function renderView(form: GenericForm<ExpertReportDetails>, res: express.Response): void {
   const expertReportDetailsForm = Object.assign(form);
-  expertReportDetailsForm.option = form.model.hasExpertReports;
-  res.render('features/directionsQuestionnaire/expert-report-details', {form: expertReportDetailsForm, today: new Date()});
+  expertReportDetailsForm.model.option = form.model.hasExpertReports;
+  res.render('features/directionsQuestionnaire/expert-report-details', {form, today: new Date()});
 }
 
 expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res, next) => {

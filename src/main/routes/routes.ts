@@ -114,12 +114,14 @@ import defendantExpertEvidenceController from './features/directionsQuestionnair
 import considerClaimantDocumentsController
   from './features/directionsQuestionnaire/considerClaimantDocumentsController';
 import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
+import expertSmallClaimsController from './features/directionsQuestionnaire/expertSmallClaimsController';
 import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
 import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
 import permissionForExpertController from './features/directionsQuestionnaire/permissionForExpertController';
 import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
+import sentExpertReportsController from './features/directionsQuestionnaire/sentExpertReportsController';
 import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
 
 export default [
@@ -228,10 +230,12 @@ export default [
   considerClaimantDocumentsController,
   sharedExpertController,
   triedToSettleController,
+  expertSmallClaimsController,
   requestExtra4WeeksController,
   permissionForExpertController,
   defendantExpertEvidenceController,
   expertCanStillExamineController,
   defendantYourselfEvidenceController,
+  sentExpertReportsController,
   expertReportDetailsController,
 ];

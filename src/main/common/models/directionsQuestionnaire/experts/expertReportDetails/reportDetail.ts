@@ -1,4 +1,4 @@
-import {Min, Max, Validate, IsNotEmpty, IsDefined, IsDate, MaxLength, ValidateIf} from 'class-validator';
+import {Min, Max, Validate, IsNotEmpty, IsDefined, IsDate, ValidateIf} from 'class-validator';
 import {DateConverter} from '../../../../utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from '../../../../form/validators/optionalDateNotInFutureValidator';
 import {OptionalDateFourDigitValidator} from  '../../../../form/validators/optionalDateFourDigitValidator';
@@ -17,9 +17,9 @@ export class ReportDetail {
     reportDate?: Date;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated() && !o.isDayAndMonthAndYearNotAvailable())
-  @Min(1872, {message: 'ERRORS.VALID_YEAR'})
-  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
-    year: number;
+  @Min(1, {message: 'ERRORS.VALID_DAY'})
+  @Max(31, {message: 'ERRORS.VALID_DAY'})
+    day: number;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated() && !o.isDayAndMonthAndYearNotAvailable())
   @Min(1, {message: 'ERRORS.VALID_MONTH'})
@@ -27,9 +27,9 @@ export class ReportDetail {
     month: number;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated() && !o.isDayAndMonthAndYearNotAvailable())
-  @Min(1, {message: 'ERRORS.VALID_DAY'})
-  @Max(31, {message: 'ERRORS.VALID_DAY'})
-    day: number;
+  @Min(1872, {message: 'ERRORS.VALID_YEAR'})
+  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
+    year: number;
 
   constructor(expertName?: string, year?: string, month?: string, day?: string) {
     this.expertName = expertName;
@@ -60,14 +60,11 @@ export class ReportDetail {
     return Object.values(this).every(value => value === undefined || value === 0 || value === '' || value?.length === 0);
   }
 
-  public static buildEmptyForm(): ReportDetail {
-    return new ReportDetail('', '', '', '');
-  }
-
   isAtLeastOneFieldPopulated(): boolean {
     return !this.isEmpty();
   }
-  isDayAndMonthAndYearNotAvailable() {
+
+  isDayAndMonthAndYearNotAvailable(): boolean {
     return !this.day && !this.month && !this.year;
   }
 }
