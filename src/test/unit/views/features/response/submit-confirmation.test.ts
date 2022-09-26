@@ -1,8 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import dayjs from 'dayjs';
-import 'dayjs/locale/cy';
+
 import {app} from '../../../../../main/app';
 import {mockRedisFullAdmission} from '../../../../utils/mockDraftStore';
 import {CONFIRMATION_URL} from '../../../../../main/routes/urls';
@@ -70,9 +69,11 @@ describe('Submit Confirmation View', () => {
         const paragraphs = mainWrapper.getElementsByClassName(paragraph);
         const nextStepsList = htmlDocument.getElementsByClassName('govuk-list');
         const links = mainWrapper.getElementsByClassName('govuk-link');
-        const immediatePaymentDeadLline = dayjs().add(5, 'day').locale('en').format('D MMMM YYYY');
+        const today = new Date();
+        today.setDate(today.getDate() + 5);
+        const immediatePaymentDeadline = formatDateToFullDate(today, 'en');
         expect(paragraphs[1].innerHTML).toContain('You need to make sure that:');
-        expect(nextStepsList[0].getElementsByTagName('li')[0].innerHTML).toContain(`they get the money by ${immediatePaymentDeadLline} - they can request a County Court Judgment against you if not`);
+        expect(nextStepsList[0].getElementsByTagName('li')[0].innerHTML).toContain(`they get the money by ${immediatePaymentDeadline} - they can request a County Court Judgment against you if not`);
         expect(nextStepsList[0].getElementsByTagName('li')[1].innerHTML).toContain('any cheques or bank transfers are clear in their account by the deadline');
         expect(nextStepsList[0].getElementsByTagName('li')[2].innerHTML).toContain('you get a receipt for any payments');
         expect(nextStepsList[0].getElementsByTagName('li')[3].innerHTML).toContain('they tell the court that you’ve paid');

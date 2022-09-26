@@ -3,6 +3,7 @@ import {
 } from '../../../../../../../main/services/features/response/checkAnswers/checkAnswersService';
 import {
   createClaimWithFreeTelephoneMediationSection,
+  createClaimWithFreeTelephoneMediationSectionForIndividual,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 import {CounterpartyType} from '../../../../../../../main/common/models/counterpartyType';
@@ -119,6 +120,17 @@ describe('Free Telephone Mediation Section', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(1);
+
+  });
+
+  it('should return response free telephone mediation with telephone number', async () => {
+    //Given
+    const claim = createClaimWithFreeTelephoneMediationSectionForIndividual();
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].summaryList.rows.length).toBe(2);
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_FREE_TELEPHONE_MEDIATION_SECTION].title).toBe(constVal.PAGES_FREE_TELEPHONE_MEDIATION_PAGE_TITLE);
 
   });
 });
