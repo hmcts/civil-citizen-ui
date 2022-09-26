@@ -19,6 +19,7 @@
     "MONTH": "Mis",
     "MONTHS": "Mis",
     "NO": "Nac oes",
+    "REMOVE": "Remove",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
     "YEAR": "Blwyddyn",
@@ -868,6 +869,15 @@
       "TITLE": "Using an expert in small claims",
       "USUALLY_SHARE_COST": "Usually you both share this cost.",
       "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
+    },
+    "EXPERT_REPORT_DETAILS": {
+      "ADD_ANOTHER": "Add another report",
+      "EXPERT_NAME": "Expert's name",
+      "FOR_EXAMPLE": "For Example, {{ date }}",
+      "PAGE_TITLE": "Have you already got a report written by an expert?",
+      "REPORT_DATE": "When is the report dated?",
+      "REPORT_TEXT": "Report",
+      "TITLE": "Have you already got a report written by an expert?"
     },
     "EXPLANATION": {
       "PAGE_TITLE": "Explanation",

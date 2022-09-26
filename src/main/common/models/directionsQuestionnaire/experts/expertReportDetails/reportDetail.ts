@@ -1,5 +1,4 @@
 import {Min, Max, Validate, IsNotEmpty, IsDefined, IsDate, MaxLength, ValidateIf} from 'class-validator';
-import {STANDARD_TEXT_INPUT_MAX_LENGTH} from '../../../../form/validators/validationConstraints';
 import {DateConverter} from '../../../../utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from '../../../../form/validators/optionalDateNotInFutureValidator';
 import {OptionalDateFourDigitValidator} from  '../../../../form/validators/optionalDateFourDigitValidator';
@@ -7,7 +6,6 @@ export class ReportDetail {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: 'ERRORS.EXPERT_NAME_REQUIRED'})
   @IsDefined({message: 'ERRORS.EXPERT_NAME_REQUIRED'})
-  @MaxLength(STANDARD_TEXT_INPUT_MAX_LENGTH, {message: 'ERRORS.VALID_TEXT_LENGTH'})
     expertName: string;
 
   @ValidateIf(o => ((o.day > 0 && o.day < 32 && o.month > 0 && o.month < 13 && o.year > 999) ||
