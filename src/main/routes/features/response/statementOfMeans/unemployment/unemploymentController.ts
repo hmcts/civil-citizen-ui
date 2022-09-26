@@ -18,7 +18,7 @@ const unemploymentService = new UnemploymentService();
 let unemployment = new Unemployment();
 
 function renderView(form: GenericForm<Unemployment>, res: express.Response): void {
-  res.render(citizenEmploymentStatusViewPath, {form: form, UnemploymentCategory: UnemploymentCategory});
+  res.render(citizenEmploymentStatusViewPath, {form, UnemploymentCategory});
 }
 
 unemploymentController.get(CITIZEN_UNEMPLOYED_URL, async (req, res, next: express.NextFunction) => {

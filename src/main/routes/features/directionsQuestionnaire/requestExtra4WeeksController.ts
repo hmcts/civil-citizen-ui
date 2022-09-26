@@ -1,25 +1,24 @@
 import * as express from 'express';
-import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_CONSIDER_CLAIMANT_DOCUMENTS} from '../../urls';
+import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {
-  getRequestExtra4weeks,
-  getRequestExtra4weeksForm,
-  saveRequestExtra4weeks,
-} from '../../../services/features/directionsQuestionnaire/requestExtra4WeeksService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {
+  getGenericOption,
+  getGenericOptionForm,
+  saveDirectionQuestionnaire,
+} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const requestExtra4WeeksController = express.Router();
+const dqPropertyName = 'requestExtra4weeks';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
-  const requestExtra4WeeksClaimForm = Object.assign(form);
-  requestExtra4WeeksClaimForm.option = form.model.option;
-  res.render('features/directionsQuestionnaire/request-extra-4weeks', {form: requestExtra4WeeksClaimForm});
+  res.render('features/directionsQuestionnaire/request-extra-4weeks', {form});
 }
 
 requestExtra4WeeksController.get(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getRequestExtra4weeks(req.params.id)), res);
+    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName)), res);
   } catch (error) {
     next(error);
   }
@@ -28,15 +27,14 @@ requestExtra4WeeksController.get(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, n
 requestExtra4WeeksController.post(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const requestExtra4Weeks = getRequestExtra4weeksForm(req.body.option);
-    const form = new GenericForm(requestExtra4Weeks);
+    const form = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
     form.validateSync();
 
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveRequestExtra4weeks(claimId, requestExtra4Weeks);
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS));
+      await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName);
+      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL));
     }
   } catch (error) {
     next(error);

@@ -58,7 +58,7 @@ describe('rejectAllOfClaim defence service', () => {
       });
       // Then
       await expect(saveYourDefence(new Claim(), '123', new Defence('Test'))
-        .catch(reason => TestMessages.REDIS_FAILURE));
+        .catch(() => TestMessages.REDIS_FAILURE));
     });
   });
 });

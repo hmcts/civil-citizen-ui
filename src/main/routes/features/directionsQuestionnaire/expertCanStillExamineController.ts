@@ -2,7 +2,7 @@ import * as express from 'express';
 import {
   DQ_DEFENDANT_CAN_STILL_EXAMINE_URL,
   DQ_DEFENDANT_EXPERT_REPORTS_URL,
-  DQ_DEFENDANT_YOURSELF_EVIDENCE_URL,
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
 } from '../../urls';
 import {
   getDirectionQuestionnaire,
@@ -40,14 +40,11 @@ expertCanStillExamineController.post(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (
     if (expertCanStillExamine.hasErrors()) {
       renderView(expertCanStillExamine, res);
     } else {
-      expertCanStillExamine.model.option = req.body.option;
-      expertCanStillExamine.model.details = req.body.details;
-
       await saveDirectionQuestionnaire(claimId, expertCanStillExamine.model, 'expertCanStillExamine');
       if (req.body.option === YesNo.YES) {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_REPORTS_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_YOURSELF_EVIDENCE_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
       }
     }
   } catch (error) {

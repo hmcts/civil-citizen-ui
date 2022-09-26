@@ -5,10 +5,9 @@ import {
 } from '../../../../routes/urls';
 
 const accessDeniedController = express.Router();
-const accessDeniedControllerViewPath = 'features/public/firstContact/access-denied';
 
 accessDeniedController.get(FIRST_CONTACT_ACCESS_DENIED_URL, (req, res) => {
-  res.render(accessDeniedControllerViewPath, {claimReferenceUrl: FIRST_CONTACT_CLAIM_REFERENCE_URL});
+  res.render('features/public/firstContact/access-denied', {claimReferenceUrl: FIRST_CONTACT_CLAIM_REFERENCE_URL});
 });
 
 export default accessDeniedController;
