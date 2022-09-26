@@ -1,30 +1,23 @@
-import {
-  IsNotEmpty,
-  IsEmail,
-  IsNumber,
-  Validate,
-  ValidateIf,
-  Min,
-} from "class-validator";
-import {OptionalIntegerValidator} from "../../../form/validators/optionalIntegerValidator";
+import {IsEmail, IsNotEmpty, IsNumber, Min, Validate, ValidateIf} from 'class-validator';
+import {OptionalIntegerValidator} from '../../../form/validators/optionalIntegerValidator';
 
 export class ExpertDetails {
-  
+
   firstName?: string;
   lastName?: string;
 
   @ValidateIf(o => o.emailAddress)
-  @IsEmail({ message: 'ERRORS.ENTER_VALID_EMAIL' })
+  @IsEmail({IsEmailOption: 'allow_display_name'}, {message: 'ERRORS.ENTER_VALID_EMAIL'})
     emailAddress?: string;
 
   @ValidateIf(o => o.phoneNumber)
-  @Validate(OptionalIntegerValidator, { message: 'ERRORS.VALID_PHONE_NUMBER' })
+  @Validate(OptionalIntegerValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
     phoneNumber?: number;
-  
-  @IsNotEmpty({ message: 'ERRORS.ENTER_WHY_NEED_EXPERT' })
+
+  @IsNotEmpty({message: 'ERRORS.ENTER_WHY_NEED_EXPERT'})
     whyNeedExpert: string;
 
-  @IsNotEmpty({ message: 'ERRORS.ENTER_EXPERT_FIELD' })
+  @IsNotEmpty({message: 'ERRORS.ENTER_EXPERT_FIELD'})
     fieldOfExpertise: string;
 
   @ValidateIf(o => o.estimatedCost)
@@ -40,5 +33,9 @@ export class ExpertDetails {
     this.whyNeedExpert = whyNeedExpert;
     this.fieldOfExpertise = fieldOfExpertise;
     this.estimatedCost = estimatedCost;
+  }
+
+  public isEmpty(): boolean {
+    return Object.values(this).every(value => value === undefined || value === 0 || value === '' || value?.length === 0);
   }
 }

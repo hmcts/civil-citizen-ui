@@ -14,10 +14,15 @@
   {{ setPageTitle('PAGES.EXPERT_DETAILS.PAGE_TITLE') }}
 {% endblock %}
 
+{% set rowNumberToShowRemoveButton = 2 %}
+{% set length = form.model.items.length %}
+{% set isRemoveButtonHidden = form.model.items.length < rowNumberToShowRemoveButton %}
+{% set atLeastOneCourtOrderError = form.errorFor('items') %}
+
 {% block content %}
 
   {% if form.hasErrors() %}
-    {{ errorSummary(form.getNestedErrors(), t) }}
+    {{ errorSummary(form.getAllErrors(), t) }}
   {% endif %}
 
   <div class="govuk-width-container">
@@ -25,17 +30,20 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
-          <h1 class="govuk-heading-l">{{ t('PAGES.EXPERT_DETAILS.PAGE_TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.EXPERT_DETAILS.PAGE_TITLE') }} </h1>
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
+            {% if atLeastOneCourtOrderError %}
+              <p class="govuk-error-message">
+                <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(atLeastOneCourtOrderError) }}
+              </p>
+            {% endif %}
 
             {% for expertDetail in form.model.items %}
-              {% if expertDetails.length > 1 %}
-                {{ expertDetailsRow(expertDetail, loop.index0, form.errorFor, t, {}) }}
-              {% else %}
+              {{ expertDetailsRow(expertDetail, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}) }}
+            {% else %}
                 {{ expertDetailsRow(expertDetail, loop.index0, form.errorFor, t, {hidden:true}) }}
-              {% endif %}
             {% endfor %}
 
             <div class="govuk-!-margin-top-6">
