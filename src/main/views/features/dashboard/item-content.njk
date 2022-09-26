@@ -1,10 +1,8 @@
-{% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 {% macro itemContent(content) %}
-
   {% if content.type === ClaimSummaryType.HTML %}
     {{ content.data.html | safe }}
   {% endif %}
@@ -55,5 +53,4 @@
       {{ t(content.data.textAfter) }}</p>
     <p class="govuk-body-s mid-grey">{{ t(content.data.subtitle) }}</p>
   {% endif %}
-
 {% endmacro %}

@@ -20,8 +20,8 @@ import {GenericForm} from '../../../../../common/form/models/genericForm';
 const partialAdmissionPaymentOptionController = express.Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';
 
-function renderView(form: GenericForm<PaymentOption>, res: express.Response, amount :number) {
-  res.render(citizenPaymentOptionViewPath, {form: form, PaymentOptionType: PaymentOptionType, amount});
+function renderView(form: GenericForm<PaymentOption>, res: express.Response, amount: number) {
+  res.render(citizenPaymentOptionViewPath, {form, PaymentOptionType, amount});
 }
 
 function redirectToNextPage(claimId: string, form: PaymentOption, res: express.Response) {
@@ -31,7 +31,8 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: express.R
     res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
   }
 }
-let admittedPaymentAmount : number;
+
+let admittedPaymentAmount: number;
 
 partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, async (req, res, next: express.NextFunction) => {
   const claimId = req.params.id;

@@ -1270,6 +1270,13 @@
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
     },
+    "SENT_EXPERT_REPORTS": {
+      "OPTION_NO": "No",
+      "OPTION_NOT_RECEIVED": "No, I have not yet received them",
+      "OPTION_YES": "Yes",
+      "PAGE_TITLE": "Have you already sent expert reports to other parties?",
+      "TITLE": "Have you already sent expert reports to other parties?"
+    },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
       "PAGE_TITLE": "Do you want to share an expert with the claimant?",
@@ -1296,6 +1303,12 @@
       "FA_PAY_BY_INSTALLMENTS": {
         "SETUP_REPAYMENT_PLAN": "set up your repayment plan to begin when you said it would",
         "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ve suggested paying by instalments."
+      },
+      "PA_ALREADY_PAID": {
+        "CLAIMANT_REFUSE_MEDIATION": "If they don't want to try mediation the court will review the case. You might have to go to a hearing.",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "You told us you've paid the {{ amount }} you believe you owe. We've sent {{claimantName}} this response.",
+        "WE_EMAILED_CLAIMANT_YOUR_EXPLANATIONS": "We've also sent them your explanation of why you don't believe you owe the amount claimed.",
+        "WE_ASK_CLAIMANT_FOR_MEDIATION": "We'll ask if they want to try mediation. If they agree, we'll contact you to try to arrange an appointment."
       },
       "PA_PAY_IMMEDIATELY": {
         "CHEQUES_OR_BANK_TRANSFERS": "any cheques or bank transfers are clear in their account by the deadline",
@@ -1356,9 +1369,9 @@
       "SIGN_SETTLEMENT_AGREEMENT": "ask you to sign a settlement agreement to formalise the repayment plan",
       "SEND_FINANCIAL_DETAILS": "Send your financial details",
       "SEND_STATEMENT_OF_ACC": "Send {{ claimantName }} your company or organisation’s most recent statement of accounts, if you haven’t already.",
+      "WE_CONTACT_YOU": "We’ll contact you when they respond.",
       "SETUP_REPAYMENT_PLAN": "set up your repayment plan to begin when you said it would",
       "THE_CLAIM_WILL_BE_SETTLED": "The claim will be settled",
-      "WE_CONTACT_YOU": "We’ll contact you when they respond.",
       "WE_WILL_ASK_MEDIATION": "We’ll ask if they want to try mediation. If they agree, we’ll contact you to try to arrange an appointment.",
       "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "We'll contact you to tell you what to do next",
       "WHAT_HAPPENS_NEXT": "What happens next",
@@ -1633,6 +1646,7 @@
     "VALID_POSTCODE": "Rhowch y cod post",
     "VALID_REASON_REQUIRED": "Rhowch reswm",
     "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
+    "VALID_SENT_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
     "VALID_SHARE_EXPERT": "Select yes if you want to share an expert with the claimant",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Rhowch rif sy'n uwch na 0",
     "VALID_TEXT_LENGTH": "Rydych wedi defnyddio gormod o nodau",

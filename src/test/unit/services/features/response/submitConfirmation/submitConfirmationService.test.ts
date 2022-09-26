@@ -8,9 +8,9 @@ import {ResponseType} from '../../../../../../main/common/form/models/responseTy
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 import {Respondent} from '../../../../../../main/common/models/respondent';
 import PaymentOptionType from '../../../../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {HowMuchHaveYouPaid} from '../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
 import {PaymentIntention} from '../../../../../../main/common/form/models/admission/partialAdmission/paymentIntention';
-import {HowMuchHaveYouPaid} from '../../../../../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {RejectAllOfClaim} from '../../../../../../main/common/form/models/rejectAllOfClaim';
 import {WhyDoYouDisagree} from '../../../../../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {Defence} from '../../../../../../main/common/form/models/defence';
@@ -151,7 +151,7 @@ describe('Submit Confirmation service', () => {
     claim.respondent1.partyName = 'Version 1';
     claim.respondent1.type = CounterpartyType.INDIVIDUAL;
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-   
+
     it('should display submit status', () => {
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
       expect(submitStatusSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_IMMEDIATELY.YOU_HAVE_SAID_YOU_OWW');
@@ -194,7 +194,7 @@ describe('Submit Confirmation service', () => {
     claim.respondent1.partyName = 'Version 1';
     claim.respondent1.type = CounterpartyType.INDIVIDUAL;
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-   
+
     it('should display submit status', () => {
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
       expect(submitStatusSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_INSTALLMENTS.YOU_BELIEVE_YOU_OWE');
@@ -248,7 +248,7 @@ describe('Submit Confirmation service', () => {
     claim.respondent1.partyName = 'Version 1';
     claim.respondent1.type = CounterpartyType.INDIVIDUAL;
     claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-   
+
     it('should display submit status', () => {
       const submitStatusSection = buildSubmitStatus(mockClaimId, claim, lang);
       expect(submitStatusSection[0].data.text).toEqual('PAGES.SUBMIT_CONFIRMATION.PA_PAY_BY_DATE.YOU_BELIEVE_YOU_OWE');

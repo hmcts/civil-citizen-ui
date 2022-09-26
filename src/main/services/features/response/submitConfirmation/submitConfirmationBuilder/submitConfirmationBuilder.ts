@@ -20,6 +20,8 @@ import {
 
 import {ClaimResponseStatus} from '../../../../../common/models/claimResponseStatus';
 import {
+  getPA_AlreadyPaidStatus,
+  getPA_AlreadyPaidNextSteps,
   getPAPayByDateNextSteps,
   getPAPayByDateStatus,
   getPAPayImmediatelyNextSteps,
@@ -29,11 +31,12 @@ import {
 } from './partAdmissionConfirmationContent';
 
 export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): ClaimSummarySection[] {
-  const contactYouStatement = getContactYouStatement(lang);
-  const financialDetails = getfinancialDetails(claimId, claim, lang);
   const FAPAyImmediatelyStatus = getFAPAyImmediatelyStatus(claim, lang);
   const FAPayByDateStatus = getFAPayByDateStatus(claim, lang);
   const FAPayByInstallmentsStatus = getFAPayByInstallmentsStatus(claim, lang);
+  const contactYouStatement = getContactYouStatement(lang);
+  const financialDetails = getfinancialDetails(claimId, claim, lang);
+  const PA_AlreadyPaidStatus = getPA_AlreadyPaidStatus(claim, lang);
   const PAPayImmediatelyStatus = getPAPayImmediatelyStatus(claim, lang);
   const PAPayByDateStatus = getPAPayByDateStatus(claim, lang);
   const PAPayInstallmentsStatus = getPAPayInstallmentsStatus(claim, lang);
@@ -47,6 +50,8 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
       return [...FAPayByDateStatus, ...contactYouStatement, ...financialDetails];
     case ClaimResponseStatus.FA_PAY_INSTALLMENTS:
       return [...FAPayByInstallmentsStatus, ...contactYouStatement, ...financialDetails];
+    case ClaimResponseStatus.PA_ALREADY_PAID:
+      return PA_AlreadyPaidStatus;
     case ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY:
       return [...PAPayImmediatelyStatus, ...contactYouStatement];
     case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
@@ -64,6 +69,7 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang: strin
   const FAPayImmediatelyNextSteps = getFAPayImmediatelyNextSteps(claimId, claim, lang);
   const FAPayByDateNextSteps = getFAPayByDateNextSteps(claimId, claim, lang);
   const FAPayByInstallmentsNextSteps = getFAPayByInstallmentsNextSteps(claimId, claim, lang);
+  const PA_AlreadyPaidNextSteps = getPA_AlreadyPaidNextSteps(claim,lang);
   const PAPayImmediatelyNextSteps = getPAPayImmediatelyNextSteps(claimId, claim, lang);
   const PAPayByDateNextSteps = getPAPayByDateNextSteps(claimId, claim, lang);
   const PAPayInstallmentsNextSteps = getPAPayInstallmentsNextSteps(claimId, claim, lang);
@@ -77,6 +83,8 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang: strin
       return FAPayByDateNextSteps;
     case ClaimResponseStatus.FA_PAY_INSTALLMENTS:
       return FAPayByInstallmentsNextSteps;
+    case ClaimResponseStatus.PA_ALREADY_PAID:
+      return PA_AlreadyPaidNextSteps;
     case ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY:
       return PAPayImmediatelyNextSteps;
     case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:

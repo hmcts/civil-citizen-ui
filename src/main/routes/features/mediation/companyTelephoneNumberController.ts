@@ -12,12 +12,9 @@ import {getMediation, saveMediation} from '../../../services/features/response/m
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 const companyTelephoneNumberController = express.Router();
-const companyTelephoneNumberView = 'features/mediation/company-telephone-number';
 
 function renderForm(form: GenericForm<CompanyTelephoneNumber>, res: express.Response, contactPerson?: string) {
-  const companyTelephoneNumber = Object.assign(form);
-  companyTelephoneNumber.option = form.model.option;
-  res.render(companyTelephoneNumberView, {form: form, contactPerson: contactPerson});
+  res.render('features/mediation/company-telephone-number', {form, contactPerson});
 }
 
 companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, async (req, res, next: express.NextFunction) => {
@@ -38,12 +35,9 @@ companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res, n
     mediationPhoneNumberConfirmation,
     contactPerson,
   } = req.body;
-  let companyTelephoneNumber: CompanyTelephoneNumber = null;
-  if (!contactPerson) {
-    companyTelephoneNumber = new CompanyTelephoneNumber(YesNo.NO, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
-  } else {
-    companyTelephoneNumber = new CompanyTelephoneNumber(option, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
-  }
+  const companyTelephoneNumber: CompanyTelephoneNumber = contactPerson ?
+    new CompanyTelephoneNumber(option, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation) :
+    new CompanyTelephoneNumber(YesNo.NO, mediationPhoneNumber, mediationContactPerson, mediationPhoneNumberConfirmation);
   const form = new GenericForm(companyTelephoneNumber);
   try {
     const mediation = await getMediation(req.params.id);
@@ -61,4 +55,5 @@ companyTelephoneNumberController.post(CAN_WE_USE_COMPANY_URL, async (req, res, n
     next(error);
   }
 });
+
 export default companyTelephoneNumberController;
