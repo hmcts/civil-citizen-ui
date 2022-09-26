@@ -56,7 +56,7 @@ describe('Submit Confirmation service', () => {
       expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.RECEIPT_FOR_PAYMENTS');
       expect(nextStepsSection[0].data?.html).toContain('PAGES.SUBMIT_CONFIRMATION.FA_PAY_IMMEDIATELY.THEY_CALL_COURT_FOR_YOU_PAID');
       expect(nextStepsSection[1].data?.text).toEqual('PAGES.SUBMIT_CONFIRMATION.CONTACT_CLAIMANT');
-      expect(nextStepsSection[1].data?.textAfter).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_NEED_THEIR_DETAILS');
+      expect(nextStepsSection[1].data?.textAfter).toEqual('PAGES.SUBMIT_CONFIRMATION.IF_NEED_PAYMENT_DETAILS');
       expect(nextStepsSection[1].data?.href).toEqual('/dashboard/5129/contact-them');
     });
   });
