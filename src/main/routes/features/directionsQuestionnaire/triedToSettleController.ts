@@ -1,25 +1,24 @@
 import * as express from 'express';
 import {DQ_TRIED_TO_SETTLE_CLAIM_URL, DQ_REQUEST_EXTRA_4WEEKS_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {
-  getTriedToSettle,
-  getTriedToSettleForm,
-  saveTriedToSettle,
-} from '../../../services/features/directionsQuestionnaire/triedToSettleService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {
+  getGenericOption,
+  getGenericOptionForm,
+  saveDirectionQuestionnaire,
+} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const triedToSettleController = express.Router();
+const dqPropertyName = 'triedToSettle';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
-  const triedToSettleClaimForm = Object.assign(form);
-  triedToSettleClaimForm.option = form.model.option;
-  res.render('features/directionsQuestionnaire/tried-to-settle-claim', {form: triedToSettleClaimForm});
+  res.render('features/directionsQuestionnaire/tried-to-settle-claim', {form});
 }
 
 triedToSettleController.get(DQ_TRIED_TO_SETTLE_CLAIM_URL, async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getTriedToSettle(req.params.id)), res);
+    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName)), res);
   } catch (error) {
     next(error);
   }
@@ -28,14 +27,14 @@ triedToSettleController.get(DQ_TRIED_TO_SETTLE_CLAIM_URL, async (req, res, next)
 triedToSettleController.post(DQ_TRIED_TO_SETTLE_CLAIM_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const triedToSettle = getTriedToSettleForm(req.body.option);
+    const triedToSettle = getGenericOptionForm(req.body.option, dqPropertyName);
     const form = new GenericForm(triedToSettle);
     form.validateSync();
 
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveTriedToSettle(claimId, triedToSettle);
+      await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_REQUEST_EXTRA_4WEEKS_URL));
     }
   } catch (error) {
