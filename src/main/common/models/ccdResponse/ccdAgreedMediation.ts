@@ -1,5 +1,9 @@
-import {Mediation} from 'models/mediation/mediation';
+import {Mediation} from '../../models/mediation/mediation';
+import {YesNoToCcdTranslation} from '../../../common/form/models/yesNo';
 
 export const toAgreedMediation = (mediation: Mediation): string => {
-  return mediation?.canWeUse?.option ? 'Yes' : mediation?.mediationDisagreement?.option ? 'No' : mediation?.companyTelephoneNumber ? 'Yes' : 'No';
+  return mediation?.canWeUse?.option ? YesNoToCcdTranslation.YES
+    : mediation?.mediationDisagreement?.option ? YesNoToCcdTranslation.NO
+      : mediation?.companyTelephoneNumber ? YesNoToCcdTranslation.YES
+        : YesNoToCcdTranslation.NO;
 };
