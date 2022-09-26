@@ -202,6 +202,9 @@ export class Claim {
     return this.partialAdmission?.howMuchDoYouOwe?.amount;
   }
 
+  partialAdmissionPaidAmount(): number {
+    return this.partialAdmission?.howMuchHaveYouPaid?.amount;
+  }
   isRejectAllOfClaimAlreadyPaid(): number {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
   }
@@ -282,7 +285,7 @@ export class Claim {
     if (this.isPartialAdmission() && this.isPAPaymentOptionInstallments()) {
       return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
     }
-    
+
     if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
       return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
     }
