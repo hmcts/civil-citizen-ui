@@ -1349,6 +1349,13 @@
         "IF_CLAIMANT_REJECTS_COURT_WILL_REVIEW_CASE": "If they reject mediation the court will review the case. You might have to go to a hearing.",
         "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "You told us you've paid £{{amount}}. We've sent {{claimantName}} this response."
       },
+      "RC_DISPUTE": {
+        "IF_CLAIMANT_ACCEPTS": "If {{claimantName}} accepts your response the claim will be ended.",
+        "IF_CLAIMANT_REJECTS": "If {{claimantName}} rejects your response and agree to try mediation we’ll contact you to arrange a call with the mediator. ",
+        "IF_THEY_REJECT": "If they reject mediation the court will review the case. You might have to go to a hearing.",
+        "WE_HAVE_MAILED": "We’ve emailed {{claimantName}} your response, explaining why you reject the claim.",
+        "WE_WILL_CONTACT": "We’ll contact you when {{claimantName}} responds, to tell you what to do next."
+      },
       "ASK_SIGN_SETTLEMENT": "ask you to sign a settlement agreement to formalise the repayment plan",
       "BECAUSE_YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either:",
       "CLAIM_NUMBER": "Claim number",

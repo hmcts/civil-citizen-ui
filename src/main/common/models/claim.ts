@@ -209,6 +209,10 @@ export class Claim {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
   }
 
+  isRejectAllOfClaimDispute(): boolean {
+    return this.rejectAllOfClaim?.option === RejectAllOfClaimType.DISPUTE;
+  }
+
   hasConfirmedAlreadyPaid(): boolean {
     return this.rejectAllOfClaim.option === RejectAllOfClaimType.ALREADY_PAID;
   }
@@ -288,6 +292,10 @@ export class Claim {
 
     if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
       return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
+    }
+
+    if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
+      return ClaimResponseStatus.RC_DISPUTE;
     }
 
   }

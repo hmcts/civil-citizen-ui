@@ -1,7 +1,6 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-
 import {app} from '../../../../../main/app';
 import {mockRedisFullAdmission} from '../../../../utils/mockDraftStore';
 import {CONFIRMATION_URL} from '../../../../../main/routes/urls';
