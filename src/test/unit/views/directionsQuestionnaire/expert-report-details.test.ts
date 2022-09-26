@@ -58,12 +58,14 @@ describe('Expert Report Details View', () => {
     });
 
     describe('Date section', () => {
+      const today = new Date();
+      const threeMonthsAgo = today.getDate() + ' ' + (today.getMonth() - 2) + ' ' + today.getFullYear();
       it('should display date fields', async () => {
         const hint = htmlDocument.getElementsByClassName('govuk-hint');
         const dateInput = htmlDocument.getElementsByClassName('govuk-date-input__input');
         const dateLabel = htmlDocument.getElementsByClassName('govuk-date-input__label');
         expect(hint).toBeDefined();
-        expect(hint[1].innerHTML).toContain('For Example, 26 6 2022');
+        expect(hint[1].innerHTML).toContain(`For Example, ${threeMonthsAgo}`);
         expect(dateInput.length).toEqual(3);
         expect(dateLabel.length).toEqual(3);
         expect(dateLabel[0].innerHTML).toContain('Day');
