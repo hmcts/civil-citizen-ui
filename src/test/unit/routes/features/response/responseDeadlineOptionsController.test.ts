@@ -44,6 +44,46 @@ describe('Response Deadline Options Controller', () => {
       });
     });
 
+    it('should pass welsh translation via query', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL)
+        .query({lang: 'cy'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Terfyn amser ar gyfer ymateb');
+        });
+    });
+    it('should pass english translation via query', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL)
+        .query({lang: 'en'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Response deadline');
+        });
+    });
+
+    it('should pass welsh translation via cookie', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL)
+        .set('Cookie', ['lang=cy'])
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Terfyn amser ar gyfer ymateb');
+        });
+    });
+
+    it('should pass english translation via cookie', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL)
+        .set('Cookie', ['lang=en'])
+        .query({lang: 'en'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Response deadline');
+        });
+    });
+
     it('should render the page if response deadline option is set', async () => {
       mockClaim.responseDeadline = {
         option: ResponseOptions.REQUEST_REFUSED,
@@ -79,6 +119,50 @@ describe('Response Deadline Options Controller', () => {
           expect(res.text).toContain('Response deadline');
           expect(res.text).toContain('There was a problem');
         });
+      });
+
+      it('should pass welsh translation via query', async () => {
+        mockGetCaseData.mockImplementation(async () => mockClaim);
+        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL)
+          .query({lang: 'cy'})
+          .expect((res) => {
+            expect(res.status).toBe(200);
+            expect(res.text).toContain('Terfyn amser ar gyfer ymateb');
+            expect(res.text).toContain('Roedd problem');
+          });
+      });
+
+      it('should pass english translation via query', async () => {
+        mockGetCaseData.mockImplementation(async () => mockClaim);
+        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL)
+          .query({lang: 'en'})
+          .expect((res) => {
+            expect(res.status).toBe(200);
+            expect(res.text).toContain('Response deadline');
+            expect(res.text).toContain('There was a problem');
+          });
+      });
+
+      it('should pass welsh translation via cookie', async () => {
+        mockGetCaseData.mockImplementation(async () => mockClaim);
+        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL)
+          .set('Cookie', ['lang=cy'])
+          .expect((res) => {
+            expect(res.status).toBe(200);
+            expect(res.text).toContain('Terfyn amser ar gyfer ymateb');
+            expect(res.text).toContain('Roedd problem');
+          });
+      });
+
+      it('should pass english translation via cookie', async () => {
+        mockGetCaseData.mockImplementation(async () => mockClaim);
+        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL)
+          .set('Cookie', ['lang=en'])
+          .expect((res) => {
+            expect(res.status).toBe(200);
+            expect(res.text).toContain('Response deadline');
+            expect(res.text).toContain('There was a problem');
+          });
       });
 
       it('should render task list page when radio \'No, I do not want to request more time\' is selected', async () => {

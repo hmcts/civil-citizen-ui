@@ -19,9 +19,10 @@ newResponseDeadlineController
   .get(NEW_RESPONSE_DEADLINE_URL, async (req: AppRequest, res, next: express.NextFunction) => {
     try {
       const claim = await getClaimWithExtendedResponseDeadline(req);
+      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       res.render(newResponseDeadlineViewPath, {
         claimantName: claim.getClaimantName(),
-        responseDeadline: formatDateToFullDate(claim.responseDeadline.calculatedResponseDeadline),
+        responseDeadline: formatDateToFullDate(claim.responseDeadline.calculatedResponseDeadline, lang),
         backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_TO_MORE_TIME_URL),
       });
     } catch (error) {

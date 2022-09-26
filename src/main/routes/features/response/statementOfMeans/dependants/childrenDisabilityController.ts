@@ -17,13 +17,7 @@ childrenDisabilityController
       try {
         const childrenDisability : GenericYesNo = await getChildrenDisability(req.params.id);
         const form = new GenericForm(childrenDisability);
-        // This is a workaround as the YesNo macro used in the view assumes Form but controller assumes GenericForm
-        // TODO: Discard the workaround once the decision Form Vs. GenericForm is made and YesNo macro is adjusted accordingly
-        const _form = Object.assign(form);
-        _form.option = childrenDisability.option;
-        res.render(childrenDisabilityViewPath,{
-          form: _form,
-        });
+        res.render(childrenDisabilityViewPath,{form});
       } catch (error) {
         next(error);
       }
@@ -36,9 +30,7 @@ childrenDisabilityController
       await form.validate();
 
       if (form.hasErrors()) {
-        res.render(childrenDisabilityViewPath, {
-          form: form,
-        });
+        res.render(childrenDisabilityViewPath, {form});
       } else {
         try {
           await saveChildrenDisability(req.params.id, childrenDisability);

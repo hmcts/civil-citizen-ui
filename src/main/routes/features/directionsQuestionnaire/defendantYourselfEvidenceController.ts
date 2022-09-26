@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {DQ_DEFENDANT_WITNESSES_URL, DQ_DEFENDANT_YOURSELF_EVIDENCE_URL} from '../../urls';
+import {DQ_DEFENDANT_WITNESSES_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
@@ -17,7 +17,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
   res.render(defendantYourselfEvidenceViewPath, {form});
 }
 
-defendantYourselfEvidenceController.get(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL, async (req, res, next: express.NextFunction) => {
+defendantYourselfEvidenceController.get(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (req, res, next: express.NextFunction) => {
   try {
     const defendantYourselfEvidence = await getGenericOption(req.params.id, 'defendantYourselfEvidence', errorMessage);
     renderView(new GenericForm(defendantYourselfEvidence), res);
@@ -26,7 +26,7 @@ defendantYourselfEvidenceController.get(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL, asyn
   }
 });
 
-defendantYourselfEvidenceController.post(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+defendantYourselfEvidenceController.post(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
     const defendantYourselfEvidence = new GenericForm(getGenericOptionForm(req.body.option, errorMessage));
