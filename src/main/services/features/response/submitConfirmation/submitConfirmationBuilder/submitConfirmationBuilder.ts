@@ -1,6 +1,5 @@
 import {Claim} from '../../../../../common/models/claim';
 import {ClaimSummarySection} from '../../../../../common/form/models/claimSummarySection';
-
 import {
   getContactYouStatement,
   getFAPayByDateNextSteps,
@@ -21,14 +20,25 @@ import {
 
 import {ClaimResponseStatus} from '../../../../../common/models/claimResponseStatus';
 import {getRCDisputeNextSteps, getRCDisputeStatus} from './fullDefenceConfirmationContent';
+import {
+  getPAPayByDateNextSteps,
+  getPAPayByDateStatus,
+  getPAPayImmediatelyNextSteps,
+  getPAPayImmediatelyStatus,
+  getPAPayInstallmentsNextSteps,
+  getPAPayInstallmentsStatus,
+} from './partAdmissionConfirmationContent';
 
 export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): ClaimSummarySection[] {
+  const contactYouStatement = getContactYouStatement(lang);
+  const financialDetails = getfinancialDetails(claimId, claim, lang);
   const FAPAyImmediatelyStatus = getFAPAyImmediatelyStatus(claim, lang);
   const FAPayByDateStatus = getFAPayByDateStatus(claim, lang);
   const FAPayByInstallmentsStatus = getFAPayByInstallmentsStatus(claim, lang);
   const RCDisputeStatus = getRCDisputeStatus(claim,lang);
-  const contactYouStatement = getContactYouStatement(lang);
-  const financialDetails = getfinancialDetails(claimId, claim, lang);
+  const PAPayImmediatelyStatus = getPAPayImmediatelyStatus(claim, lang);
+  const PAPayByDateStatus = getPAPayByDateStatus(claim, lang);
+  const PAPayInstallmentsStatus = getPAPayInstallmentsStatus(claim, lang);
   const RC_PaidLessStatus = getRC_PaidLessStatus(claim, lang);
   const RC_PaidFullStatus = getRC_PaidFullStatus(claim, lang);
 
@@ -41,6 +51,12 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
       return [...FAPayByInstallmentsStatus, ...contactYouStatement, ...financialDetails];
     case ClaimResponseStatus.RC_DISPUTE:
       return RCDisputeStatus;
+    case ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY:
+      return [...PAPayImmediatelyStatus, ...contactYouStatement];
+    case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
+      return [...PAPayByDateStatus, ...contactYouStatement, ...financialDetails];
+    case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
+      return [...PAPayInstallmentsStatus, ...contactYouStatement, ...financialDetails];
     case ClaimResponseStatus.RC_PAID_LESS:
       return RC_PaidLessStatus;
     case ClaimResponseStatus.RC_PAID_FULL:
@@ -48,10 +64,13 @@ export function buildSubmitStatus(claimId: string, claim: Claim, lang: string): 
   }
 }
 
-export function buildNextStepsSection(claimId: string, claim: Claim, lang:string): ClaimSummarySection[] {
+export function buildNextStepsSection(claimId: string, claim: Claim, lang: string): ClaimSummarySection[] {
   const FAPayImmediatelyNextSteps = getFAPayImmediatelyNextSteps(claimId, claim, lang);
   const FAPayByDateNextSteps = getFAPayByDateNextSteps(claimId, claim, lang);
   const FAPayByInstallmentsNextSteps = getFAPayByInstallmentsNextSteps(claimId, claim, lang);
+  const PAPayImmediatelyNextSteps = getPAPayImmediatelyNextSteps(claimId, claim, lang);
+  const PAPayByDateNextSteps = getPAPayByDateNextSteps(claimId, claim, lang);
+  const PAPayInstallmentsNextSteps = getPAPayInstallmentsNextSteps(claimId, claim, lang);
   const RC_PaidLessNextSteps = getRC_PaidLessNextSteps(claim, lang);
   const RC_PaidFullNextSteps = getRC_PaidFullNextSteps(claim,lang);
   const RCDisputeNextSteps = getRCDisputeNextSteps(claimId, claim, lang);
@@ -65,6 +84,12 @@ export function buildNextStepsSection(claimId: string, claim: Claim, lang:string
       return FAPayByInstallmentsNextSteps;
     case ClaimResponseStatus.RC_DISPUTE:
       return RCDisputeNextSteps;
+    case ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY:
+      return PAPayImmediatelyNextSteps;
+    case ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE:
+      return PAPayByDateNextSteps;
+    case ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS:
+      return PAPayInstallmentsNextSteps;
     case ClaimResponseStatus.RC_PAID_LESS:
       return RC_PaidLessNextSteps;
     case ClaimResponseStatus.RC_PAID_FULL:
