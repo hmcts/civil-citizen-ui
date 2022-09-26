@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_CONSIDER_CLAIMANT_DOCUMENTS} from '../../urls';
+import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
@@ -34,7 +34,7 @@ requestExtra4WeeksController.post(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, 
       renderView(form, res);
     } else {
       await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName);
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS));
+      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL));
     }
   } catch (error) {
     next(error);

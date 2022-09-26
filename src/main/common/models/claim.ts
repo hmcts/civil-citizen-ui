@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/cy';
+import currencyFormat from '../utils/currencyFormat';
 import {Respondent} from './respondent';
 import {StatementOfMeans} from './statementOfMeans';
 import {CounterpartyType} from './counterpartyType';
@@ -90,6 +91,10 @@ export class Claim {
     return this.respondent1ResponseDeadline ? dayjs(this.respondent1ResponseDeadline).locale(getLng(lng)).format('DD MMMM YYYY') : '';
   }
 
+  formattedTotalClaimAmount(): string {
+    return this.totalClaimAmount ? currencyFormat(this.totalClaimAmount) : '';
+  }
+
   getRemainingDays(): number {
     const remainingDuration = convertDateToLuxonDate(this.respondent1ResponseDeadline).diff(currentDateTime(), 'days');
     return Math.trunc(remainingDuration.days);
@@ -109,6 +114,18 @@ export class Claim {
 
   isPaymentOptionPayImmediately(): boolean {
     return this.paymentOption === PaymentOptionType.IMMEDIATELY;
+  }
+
+  isPAPaymentOptionPayImmediately(): boolean {
+    return this.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
+  }
+
+  isPAPaymentOptionInstallments(): boolean {
+    return this.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.INSTALMENTS;
+  }
+
+  isPAPaymentOptionByDate(): boolean {
+    return this.partialAdmission?.paymentIntention?.paymentOption === PaymentOptionType.BY_SET_DATE;
   }
 
   isPaymentOptionInstallments(): boolean {
@@ -254,6 +271,18 @@ export class Claim {
       return ClaimResponseStatus.PA_ALREADY_PAID;
     }
 
+    if (this.isPartialAdmission() && this.isPAPaymentOptionPayImmediately()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_IMMEDIATELY;
+    }
+
+    if (this.isPartialAdmission() && this.isPAPaymentOptionByDate()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
+    }
+
+    if (this.isPartialAdmission() && this.isPAPaymentOptionInstallments()) {
+      return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
+    }
+    
     if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
       return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
     }

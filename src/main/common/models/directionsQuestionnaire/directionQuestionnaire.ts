@@ -1,6 +1,7 @@
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 import {ConsiderClaimantDocuments} from 'models/directionsQuestionnaire/considerClaimantDocuments';
 import {ExpertCanStillExamine} from '../../models/directionsQuestionnaire/expertCanStillExamine';
+import {SentExpertReports} from './sentExpertReports';
 import {Vulnerability} from '../../models/directionsQuestionnaire/vulnerability';
 import {DeterminationWithoutHearing} from '../../models/directionsQuestionnaire/determinationWithoutHearing';
 import {SupportRequired} from '../../models/directionsQuestionnaire/supportRequired';
@@ -17,6 +18,7 @@ export class DirectionQuestionnaire {
   defendantYourselfEvidence?: GenericYesNo;
   vulnerability?: Vulnerability;
   supportRequired?: SupportRequired;
+  sentExpertReports?: SentExpertReports;
 
   constructor(
     triedToSettle?: GenericYesNo,
@@ -28,6 +30,7 @@ export class DirectionQuestionnaire {
     vulnerability?: Vulnerability,
     determinationWithoutHearing?: DeterminationWithoutHearing,
     supportRequired?: SupportRequired,
+    sentExpertReports?: SentExpertReports,
   ) {
     this.triedToSettle = triedToSettle;
     this.defendantExpertEvidence = defendantExpertEvidence;
@@ -35,6 +38,7 @@ export class DirectionQuestionnaire {
     this.sharedExpert = sharedExpert;
     this.expertCanStillExamine = expertCanStillExamine;
     this.defendantYourselfEvidence = defendantYourselfEvidence;
+    this.sentExpertReports = sentExpertReports;
     this.vulnerability = vulnerability;
     this.determinationWithoutHearing = determinationWithoutHearing;
     this.supportRequired = supportRequired;
