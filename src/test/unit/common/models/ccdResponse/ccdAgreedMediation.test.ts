@@ -6,8 +6,8 @@ describe('translate mediation option to ccd version', ()=> {
     //Given
     const mediation = {
       canWeUse: {option: YesNo.YES},
-      companyTelephoneNumber: {}
-    }
+      companyTelephoneNumber: {},
+    };
     //When
     const result = toAgreedMediation(mediation);
     //Then
@@ -18,8 +18,8 @@ describe('translate mediation option to ccd version', ()=> {
     const mediation = {
       canWeUse: {},
       mediationDisagreement: {option: YesNo.YES},
-      companyTelephoneNumber: {}
-    }
+      companyTelephoneNumber: {},
+    };
     //When
     const result = toAgreedMediation(mediation);
     //Then
@@ -32,9 +32,9 @@ describe('translate mediation option to ccd version', ()=> {
       mediationDisagreement: {},
       companyTelephoneNumber: {
         mediationContactPerson : 'test',
-        mediationPhoneNumber : '123'
-      }
-    }
+        mediationPhoneNumber : '123',
+      },
+    };
     //When
     const result = toAgreedMediation(mediation);
     //Then
@@ -45,8 +45,8 @@ describe('translate mediation option to ccd version', ()=> {
     const mediation = {
       canWeUse: {},
       mediationDisagreement: {},
-      companyTelephoneNumber: {}
-    }
+      companyTelephoneNumber: {},
+    };
     //When
     const result = toAgreedMediation(mediation);
     //Then
