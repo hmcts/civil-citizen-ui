@@ -5,7 +5,7 @@ import {CCDPaymentOption} from '../../../../../main/common/models/ccdResponse/cc
 import {CCDRepaymentPlanFrequency} from '../../../../../main/common/models/ccdResponse/ccdRepaymentPlan';
 import {Respondent} from '../../../../../main/common/models/respondent';
 import {ResponseType} from '../../../../../main/common/form/models/responseType';
-import {YesNoToCcdTranslation} from '../../../../../main/common/form/models/yesNo';
+import {YesNoUpperCamelCase} from '../../../../../main/common/form/models/yesNo';
 
 describe('translate response to ccd version', ()=> {
   it('should translate payment option to ccd', ()=> {
@@ -67,7 +67,7 @@ describe('translate response to ccd version', ()=> {
     //When
     const ccdResponse = translateDraftResponseToCCD(claim);
     //Then
-    expect(ccdResponse.responseClaimMediationSpecRequired).toBe(YesNoToCcdTranslation.YES);
+    expect(ccdResponse.responseClaimMediationSpecRequired).toBe(YesNoUpperCamelCase.YES);
   });
 
 });

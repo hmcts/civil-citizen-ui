@@ -11,7 +11,7 @@ export enum YesNoNotReceived {
   NO = 'no',
   NOT_RECEIVED = 'not-received'
 }
-export enum YesNoToCcdTranslation {
+export enum YesNoUpperCamelCase {
   YES = 'Yes',
   NO = 'No',
 }
