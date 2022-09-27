@@ -31,9 +31,5 @@ export class PartyDetails {
     this.firstName = firstName;
     this.lastName = lastName;
   }
-
-  isEmpty() {
-    return Object.values(this).every(value => value === undefined || value === '' );
-  }
 }
 

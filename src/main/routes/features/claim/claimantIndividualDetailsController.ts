@@ -19,8 +19,6 @@ import {AppRequest} from 'common/models/AppRequest';
 const claimantIndividualDetailsController = express.Router();
 const claimantIndividualDetailsPath = 'features/claim/claimant-individual-details';
 
-const temporaryId = '123456';
-
 function renderPage(res: express.Response, req: express.Request, claimant: Party,  claimantIndividualAddress: GenericForm<CitizenAddress>, claimantIndividualCorrespondenceAddress: GenericForm<CitizenCorrespondenceAddress>, claimantDetails: GenericForm<PartyDetails>): void {
   const partyName = claimant?.partyName;
   const type = claimant?.type;
@@ -30,9 +28,8 @@ function renderPage(res: express.Response, req: express.Request, claimant: Party
     claimantIndividualAddress,
     claimantIndividualCorrespondenceAddress,
     claimantDetails,
-    partyName: partyName,
-    type: type,
-    urlNextView: CLAIM_CLAIMANT_DOB,
+    partyName,
+    type,
   });
 }
 
@@ -107,7 +104,7 @@ claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, 
         claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress());
       }
       await saveClaimant(caseId, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, req.body.provideCorrespondenceAddress, claimantDetails);
-      res.redirect(constructResponseUrlWithIdParams(temporaryId, CLAIM_CLAIMANT_DOB));
+      res.redirect(constructResponseUrlWithIdParams(caseId, CLAIM_CLAIMANT_DOB));
     }
   } catch (error) {
     next(error);
