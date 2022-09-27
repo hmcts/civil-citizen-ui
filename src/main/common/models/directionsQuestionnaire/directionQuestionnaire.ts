@@ -5,12 +5,9 @@ import {SentExpertReports} from './sentExpertReports';
 import {Vulnerability} from '../../models/directionsQuestionnaire/vulnerability';
 import {DeterminationWithoutHearing} from '../../models/directionsQuestionnaire/determinationWithoutHearing';
 import {SupportRequired} from '../../models/directionsQuestionnaire/supportRequired';
-<<<<<<< HEAD
 import {OtherWitnesses} from '../../models/directionsQuestionnaire/otherWitnesses/otherWitnesses';
-=======
 import {Experts} from './experts/experts';
 
->>>>>>> master
 export class DirectionQuestionnaire {
   permissionForExpert?: GenericYesNo;
   triedToSettle?: GenericYesNo;
@@ -24,11 +21,8 @@ export class DirectionQuestionnaire {
   vulnerability?: Vulnerability;
   supportRequired?: SupportRequired;
   sentExpertReports?: SentExpertReports;
-<<<<<<< HEAD
   otherWitnesses?: OtherWitnesses;
-=======
   experts?: Experts;
->>>>>>> master
 
   constructor(
     triedToSettle?: GenericYesNo,
@@ -41,11 +35,8 @@ export class DirectionQuestionnaire {
     determinationWithoutHearing?: DeterminationWithoutHearing,
     supportRequired?: SupportRequired,
     sentExpertReports?: SentExpertReports,
-<<<<<<< HEAD
     otherWitnesses?: OtherWitnesses,
-=======
     experts?: Experts,
->>>>>>> master
   ) {
     this.triedToSettle = triedToSettle;
     this.defendantExpertEvidence = defendantExpertEvidence;
@@ -57,10 +48,7 @@ export class DirectionQuestionnaire {
     this.vulnerability = vulnerability;
     this.determinationWithoutHearing = determinationWithoutHearing;
     this.supportRequired = supportRequired;
-<<<<<<< HEAD
     this.otherWitnesses = otherWitnesses;
-=======
     this.experts = experts;
->>>>>>> master
   }
 }
