@@ -5,6 +5,7 @@ import {SentExpertReports} from './sentExpertReports';
 import {Vulnerability} from '../../models/directionsQuestionnaire/vulnerability';
 import {DeterminationWithoutHearing} from '../../models/directionsQuestionnaire/determinationWithoutHearing';
 import {SupportRequired} from '../../models/directionsQuestionnaire/supportRequired';
+import {Experts} from './experts/experts';
 import {PhoneOrVideoHearing} from '../../models/directionsQuestionnaire/phoneOrVideoHearing';
 
 export class DirectionQuestionnaire {
@@ -20,6 +21,7 @@ export class DirectionQuestionnaire {
   vulnerability?: Vulnerability;
   supportRequired?: SupportRequired;
   sentExpertReports?: SentExpertReports;
+  experts?: Experts;
   phoneOrVideoHearing?: PhoneOrVideoHearing;
 
   constructor(
@@ -33,6 +35,7 @@ export class DirectionQuestionnaire {
     determinationWithoutHearing?: DeterminationWithoutHearing,
     supportRequired?: SupportRequired,
     sentExpertReports?: SentExpertReports,
+    experts?: Experts,
     phoneOrVideoHearing?: PhoneOrVideoHearing,
   ) {
     this.triedToSettle = triedToSettle;
@@ -45,6 +48,7 @@ export class DirectionQuestionnaire {
     this.vulnerability = vulnerability;
     this.determinationWithoutHearing = determinationWithoutHearing;
     this.supportRequired = supportRequired;
+    this.experts = experts;
     this.phoneOrVideoHearing = phoneOrVideoHearing
   }
 }

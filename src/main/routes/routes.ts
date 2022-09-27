@@ -122,6 +122,7 @@ import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
 import sentExpertReportsController from './features/directionsQuestionnaire/sentExpertReportsController';
+import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
 import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
 
 export default [
@@ -237,5 +238,6 @@ export default [
   expertCanStillExamineController,
   defendantYourselfEvidenceController,
   sentExpertReportsController,
+  expertReportDetailsController,
   phoneOrVideoHearingController,
 ];
