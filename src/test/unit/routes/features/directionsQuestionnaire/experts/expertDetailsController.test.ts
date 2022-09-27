@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {EXPERT_DETAILS_URL, EXPERT_EVIDENCE_URL} from '../../../../../../main/routes/urls';
+import {DQ_EXPERT_DETAILS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL} from '../../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
@@ -23,7 +23,7 @@ describe('Expert Report Details Controller', () => {
   describe('on GET', () => {
     it('should return Expert Details page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(EXPERT_DETAILS_URL).expect((res) => {
+      await request(app).get(DQ_EXPERT_DETAILS_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.EXPERT_DETAILS.PAGE_TITLE'));
       });
@@ -32,7 +32,7 @@ describe('Expert Report Details Controller', () => {
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(EXPERT_DETAILS_URL)
+        .get(DQ_EXPERT_DETAILS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -46,7 +46,7 @@ describe('Expert Report Details Controller', () => {
     });
 
     it('should return page with error message on empty post', async () => {
-      await request(app).post(EXPERT_DETAILS_URL).send({
+      await request(app).post(DQ_EXPERT_DETAILS_URL).send({
         items: [{
           firstName: '',
         }],
@@ -57,7 +57,7 @@ describe('Expert Report Details Controller', () => {
     });
 
     it('should redirect to expert evidence', async () => {
-      await request(app).post(EXPERT_DETAILS_URL)
+      await request(app).post(DQ_EXPERT_DETAILS_URL)
         .send({
           items: [{
             firstName: 'Joe',
@@ -71,14 +71,14 @@ describe('Expert Report Details Controller', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(EXPERT_EVIDENCE_URL);
+          expect(res.get('location')).toBe(DQ_DEFENDANT_EXPERT_EVIDENCE_URL);
         });
     });
 
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(EXPERT_DETAILS_URL)
+        .post(DQ_EXPERT_DETAILS_URL)
         .send({ hasExpertReports: 'yes', reportDetails: [{ expertName: 'Ahmet', day: '1', month: '3', year: '2022' }] })
         .expect((res) => {
           expect(res.status).toBe(500);

@@ -6,14 +6,14 @@ import {
   saveExpertDetails,
 } from '../../../../services/features/directionsQuestionnaire/expertDetailsService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {EXPERT_DETAILS_URL, EXPERT_EVIDENCE_URL} from '../../../urls';
+import {DQ_EXPERT_DETAILS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL} from '../../../urls';
 import {ExpertDetailsList} from '../../../../common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {toNumber} from 'lodash';
 
 const expertDetailsController = express.Router();
 const expertDetailsViewPath = 'features/directionsQuestionnaire/experts/expert-details';
 
-expertDetailsController.get(EXPERT_DETAILS_URL, async (req, res, next: express.NextFunction) => {
+expertDetailsController.get(DQ_EXPERT_DETAILS_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form = new GenericForm(await getExpertDetails(req.params.id));
     res.render(expertDetailsViewPath, {form});
@@ -22,7 +22,7 @@ expertDetailsController.get(EXPERT_DETAILS_URL, async (req, res, next: express.N
   }
 });
 
-expertDetailsController.post(EXPERT_DETAILS_URL, async (req, res, next: express.NextFunction) => {
+expertDetailsController.post(DQ_EXPERT_DETAILS_URL, async (req, res, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
     const expertDetailsList: ExpertDetailsList = new ExpertDetailsList(req.body.items.map((expertDetail: ExpertDetails) => new ExpertDetails(
@@ -42,7 +42,7 @@ expertDetailsController.post(EXPERT_DETAILS_URL, async (req, res, next: express.
       res.render(expertDetailsViewPath, {form});
     } else {
       await saveExpertDetails(claimId, expertDetailsList, 'expertDetailsList');
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, EXPERT_EVIDENCE_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, DQ_DEFENDANT_EXPERT_EVIDENCE_URL));
     }
   } catch (error) {
     next(error);
