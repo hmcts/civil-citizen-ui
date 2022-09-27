@@ -60,8 +60,10 @@ describe('Experts Details view', () => {
 
     it('should display save and continue button', () => {
       const buttons = mainWrapper.getElementsByClassName('govuk-button');
-      expect(buttons[0].innerHTML).toContain(t('PAGES.EXPERT_DETAILS.ADD_ANOTHER_EXPERT'));
-      expect(buttons[1].innerHTML).toContain(t('COMMON.BUTTONS.SAVE_AND_CONTINUE'));
+      expect(buttons[0].className).toContain('govuk-visually-hidden');
+      expect(buttons[0].innerHTML).toContain(t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT'));
+      expect(buttons[1].innerHTML).toContain(t('PAGES.EXPERT_DETAILS.ADD_ANOTHER_EXPERT'));
+      expect(buttons[2].innerHTML).toContain(t('COMMON.BUTTONS.SAVE_AND_CONTINUE'));
     });
 
     it('should display contact us for help', () => {
@@ -84,9 +86,9 @@ describe('Experts Details view', () => {
     });
 
     // it('should display error in the error summary', () => {
-    //   const error = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
+    //   const error = htmlDocument.getElementsByClassName('govuk-error-summary__list')[0]
     //     .getElementsByTagName('li')[0];
-    //   expect(error.innerHTML).toContain('TestMessages.VALID_YES_NO_OPTION');
+    //   expect(error.innerHTML).toContain('Select yes if you have tried to settle this claim before going to court');
     // });
 
     // it('should display error over radios', () => {
