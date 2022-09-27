@@ -882,7 +882,7 @@
     "EXPERT_SMALL_CLAIMS": {
       "CONTINUE": "Continue without an expert",
       "EXPERT_NOT_REPRESENTATIVE": "An expert is not a legal representative.",
-      "NEEDS_AN_EXPERT": "I believe the case needs and expert",
+      "NEEDS_AN_EXPERT": "I believe the case needs an expert",
       "PAGE_TITLE": "Using an expert",
       "RARE_FOR_A_JUDGE": "It's rare for a judge to allow you to use an expert in a small claim. Most small claims don't need an expert.",
       "TITLE": "Using an expert"
