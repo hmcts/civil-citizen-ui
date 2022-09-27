@@ -3,16 +3,12 @@ import {YesNoUpperCamelCase} from '../../../common/form/models/yesNo';
 
 export const toAgreedMediation = (mediation: Mediation): string => {
   if (mediation?.canWeUse?.option) {
-    return YesNoUpperCamelCase.YES
+    return YesNoUpperCamelCase.YES;
   } else if (mediation?.mediationDisagreement?.option) {
-    return YesNoUpperCamelCase.NO
+    return YesNoUpperCamelCase.NO;
   } else if (mediation?.companyTelephoneNumber) {
-    return YesNoUpperCamelCase.YES
+    return YesNoUpperCamelCase.YES;
   } else {
-    return YesNoUpperCamelCase.NO
+    return YesNoUpperCamelCase.NO;
   }
-  // return mediation?.canWeUse?.option ? YesNoToCcdTranslation.YES
-  //   : mediation?.mediationDisagreement?.option ? YesNoToCcdTranslation.NO
-  //     : mediation?.companyTelephoneNumber ? YesNoToCcdTranslation.YES
-  //       : YesNoToCcdTranslation.NO;
 };
