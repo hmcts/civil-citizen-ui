@@ -636,6 +636,7 @@
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Add another court order",
       "CLAIM_NUMBER": "Claim number",
+      "COURT_ORDER": "Court order",
       "MONTHLY_INSTALMENT_AMOUNT": "Monthly instalment amount",
       "OWED_AMOUNT": "Amount you owe",
       "PAGE_TITLE": "Any court orders?",

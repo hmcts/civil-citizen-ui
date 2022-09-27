@@ -636,6 +636,7 @@
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Ychwanegu gorchymyn llys arall",
       "CLAIM_NUMBER": "Rhif yr hawliad",
+      "COURT_ORDER": "Gorchymyn llys",
       "MONTHLY_INSTALMENT_AMOUNT": "Swm y rhandaliad bob mis",
       "OWED_AMOUNT": "Swm sy'n ddyledus gennych",
       "PAGE_TITLE": "Any court orders?",
