@@ -762,6 +762,38 @@ describe('Claim partialAdmissionPaymentAmount', () => {
   });
 });
 
+describe('Claim Reject - Dispute', () => {
+  const claim = new Claim();
+  it('should be undefined with empty claim', () => {
+    //When
+    const result = claim.isRejectAllOfClaimDispute();
+    //Then
+    expect(result).toBeUndefined;
+  });
+  it('should return false with empty RejectAllOfClaim', () => {
+    //Given
+    claim.rejectAllOfClaim = new RejectAllOfClaim();
+    //When
+    const result = claim.isRejectAllOfClaimDispute();
+    //Then
+    expect(result).toBe(false);
+  });
+
+  it('should return true when RejectAllOfClaim is Dispute', () => {
+    //Given
+    claim.rejectAllOfClaim = new RejectAllOfClaim(
+      RejectAllOfClaimType.DISPUTE,
+      new HowMuchHaveYouPaid(),
+      new WhyDoYouDisagree(''),
+      new Defence(),
+    );
+    //When
+    const result = claim.isRejectAllOfClaimDispute();
+    //Then
+    expect(result).toBe(true);
+  });
+});
+
 describe('Claim Reject All', () => {
   const claim = new Claim();
   it('should return false with empty claim', () => {
