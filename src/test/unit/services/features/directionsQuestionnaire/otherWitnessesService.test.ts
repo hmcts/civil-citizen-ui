@@ -92,7 +92,7 @@ describe('Other Witnesses Service', () => {
     });
   });
 
-  describe('saveEvidence', () => {
+  describe('saveOtherWitnesses', () => {
     it('should save other witnesses data successfully when claim exists', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {

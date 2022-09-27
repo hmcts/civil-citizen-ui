@@ -10,7 +10,6 @@
   {{ setPageTitle('PAGES.OTHER_WITNESSES.TITLE') }}
 {% endblock %}
 {% set rowNumberToShowRemoveButton = 2 %}
-{# {% set errors = form.getAllErrors() %} #}
 {% set atLeastOneCourtOrderError = form.errorFor('witnessItems') %}
 {% set isRemoveButtonHidden = form.model.witnessItems.length < rowNumberToShowRemoveButton %}
 {% set yesHtml %}
