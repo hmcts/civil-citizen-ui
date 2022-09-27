@@ -17,7 +17,7 @@ describe('Expert Report Details Controller', () => {
   beforeEach(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, { id_token: citizenRoleToken });
   });
 
   describe('on GET', () => {
@@ -46,9 +46,11 @@ describe('Expert Report Details Controller', () => {
     });
 
     it('should return page with error message on empty post', async () => {
-      await request(app).post(EXPERT_DETAILS_URL).send({items: [{
-        firstName: ''
-      }]}).expect((res) => {
+      await request(app).post(EXPERT_DETAILS_URL).send({
+        items: [{
+          firstName: '',
+        }],
+      }).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('ERRORS.THERE_WAS_A_PROBLEM'));
       });
@@ -56,15 +58,17 @@ describe('Expert Report Details Controller', () => {
 
     it('should redirect to expert evidence', async () => {
       await request(app).post(EXPERT_DETAILS_URL)
-        .send({items: [{
-        firstName: 'Joe',
-        lastName: 'Doe',
-        emailAddress: 'test@test.com',
-        phoneNumber: '600000000',
-        whyNeedExpert: 'Test',
-        fieldOfExpertise: 'Test',
-        estimatedCost: 100
-      }]})
+        .send({
+          items: [{
+            firstName: 'Joe',
+            lastName: 'Doe',
+            emailAddress: 'test@test.com',
+            phoneNumber: '600000000',
+            whyNeedExpert: 'Test',
+            fieldOfExpertise: 'Test',
+            estimatedCost: 100,
+          }],
+        })
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(EXPERT_EVIDENCE_URL);
@@ -75,7 +79,7 @@ describe('Expert Report Details Controller', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(EXPERT_DETAILS_URL)
-        .send({hasExpertReports: 'yes', reportDetails: [{expertName: 'Ahmet', day: '1', month: '3', year: '2022'}]})
+        .send({ hasExpertReports: 'yes', reportDetails: [{ expertName: 'Ahmet', day: '1', month: '3', year: '2022' }] })
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
