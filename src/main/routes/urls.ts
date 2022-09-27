@@ -13,6 +13,7 @@ export const CALLBACK_URL = '/oauth2/callback';
 export const COOKIES_URL = '/cookies';
 export const SIGN_IN_URL = '/login';
 export const SIGN_OUT_URL = '/logout';
+export const CASES_URL = '/cases';
 export const DASHBOARD_URL = '/dashboard';
 export const CITIZEN_PHONE_NUMBER_URL = `${BASE_CASE_RESPONSE_URL}/your-phone`;
 export const ROOT_URL = '/';

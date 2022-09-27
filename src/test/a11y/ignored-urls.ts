@@ -4,7 +4,7 @@ export const IGNORED_URLS = [
   urls.SIGN_IN_URL,
   urls.SIGN_OUT_URL,
   urls.CALLBACK_URL,
-  urls.CITIZEN_PHONE_NUMBER_URL,
+  urls.CASES_URL,
   urls.POSTCODE_LOOKUP_URL,
   urls.CITIZEN_DETAILS_URL,
   urls.DASHBOARD_URL,
