@@ -53,3 +53,13 @@ const buildCorrespondenceAddress = (citizenCorrespondenceAddress: GenericForm<Ci
   };
 };
 
+export const getCorrespondenceAddressForm = (value?: Record<string,string>): CitizenCorrespondenceAddress => {
+  let claimantIndividualCorrespondenceAddress = CitizenCorrespondenceAddress.fromObject(value);
+  if (value.provideCorrespondenceAddress === YesNo.NO){
+    claimantIndividualCorrespondenceAddress = undefined;
+  }
+  if (claimantIndividualCorrespondenceAddress){
+    return claimantIndividualCorrespondenceAddress;
+  }
+  return new CitizenCorrespondenceAddress();
+}

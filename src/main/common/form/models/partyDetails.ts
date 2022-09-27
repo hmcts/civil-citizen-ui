@@ -31,5 +31,20 @@ export class PartyDetails {
     this.firstName = firstName;
     this.lastName = lastName;
   }
+
+  static fromObject(value?: any, redisData?: boolean): PartyDetails {
+    if (redisData){
+      return new PartyDetails(
+        value?.individualTitle,
+        value?.individualFirstName,
+        value?.individualLastName,
+      );
+    }
+    return new PartyDetails(
+      value?.claimantIndividualDetailsTitle,
+      value?.claimantIndividualDetailsFirstName,
+      value?.claimantIndividualDetailsLastName,
+    );
+  }
 }
 

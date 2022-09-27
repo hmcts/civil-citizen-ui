@@ -24,4 +24,23 @@ export class CitizenAddress {
     this.primaryCity = primaryCity;
     this.primaryPostCode = primaryPostCode;
   }
+
+  static fromObject(value?: any, redisData?: boolean): CitizenAddress {
+  if (redisData){
+    return new CitizenAddress(
+      value?.AddressLine1,
+      value?.AddressLine2,
+      value?.AddressLine3,
+      value?.PostTown,
+      value?.PostCode
+    );
+  }
+  return new CitizenAddress(
+      value?.primaryAddressLine1,
+      value?.primaryAddressLine2,
+      value?.primaryAddressLine3,
+      value?.primaryCity,
+      value?.primaryPostCode
+    );
+  }
 }

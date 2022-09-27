@@ -34,4 +34,23 @@ export class CitizenCorrespondenceAddress {
   isEmpty() {
     return Object.values(this).every(value => value === undefined || value === '' );
   }
+
+  static fromObject(value?: any, redisData?: boolean): CitizenCorrespondenceAddress {
+    if (redisData){
+      return new CitizenCorrespondenceAddress(
+        value?.AddressLine1,
+        value?.AddressLine2,
+        value?.AddressLine3,
+        value?.PostTown,
+        value?.PostCode
+      );
+    }
+    return new CitizenCorrespondenceAddress(
+      value?.correspondenceAddressLine1,
+      value?.correspondenceAddressLine2,
+      value?.correspondenceAddressLine3,
+      value?.correspondenceCity,
+      value?.correspondencePostCode
+    );
+  }
 }
