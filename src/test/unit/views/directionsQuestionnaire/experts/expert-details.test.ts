@@ -72,29 +72,4 @@ describe('Experts Details view', () => {
     });
   });
 
-  describe('on POST', () => {
-    let htmlDocument: Document;
-
-    beforeEach(async () => {
-      nock(idamUrl)
-        .post('/o/token')
-        .reply(200, {id_token: citizenRoleToken});
-      app.locals.draftStoreClient = mockCivilClaim;
-      const response = await request(app).post(EXPERT_DETAILS_URL);
-      const dom = new JSDOM(response.text);
-      htmlDocument = dom.window.document;
-    });
-
-    // it('should display error in the error summary', () => {
-    //   const error = htmlDocument.getElementsByClassName('govuk-error-summary__list')[0]
-    //     .getElementsByTagName('li')[0];
-    //   expect(error.innerHTML).toContain('Select yes if you have tried to settle this claim before going to court');
-    // });
-
-    // it('should display error over radios', () => {
-    //   const error = htmlDocument.getElementById('option-error');
-    //   expect(error?.innerHTML).toContain('TestMessages.VALID_YES_NO_OPTION');
-    // });
-
-  });
 });

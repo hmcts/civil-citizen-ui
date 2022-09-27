@@ -21,7 +21,7 @@ describe('Expert Report Details Controller', () => {
   });
 
   describe('on GET', () => {
-    it('should return Have you already got a report written by an expert', async () => {
+    it('should return Expert Details page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(EXPERT_DETAILS_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -46,13 +46,15 @@ describe('Expert Report Details Controller', () => {
     });
 
     it('should return page with error message on empty post', async () => {
-      await request(app).post(EXPERT_DETAILS_URL).expect((res) => {
+      await request(app).post(EXPERT_DETAILS_URL).send({items: [{
+        firstName: ''
+      }]}).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_YES_NO_SELECTION);
+        expect(res.text).toContain(t('ERRORS.THERE_WAS_A_PROBLEM'));
       });
     });
 
-    it('should redirect to give evidence yourself if option yes is selected', async () => {
+    it('should redirect to expert evidence', async () => {
       await request(app).post(EXPERT_DETAILS_URL)
         .send({items: [{
         firstName: 'Joe',
@@ -66,14 +68,6 @@ describe('Expert Report Details Controller', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(EXPERT_EVIDENCE_URL);
-        });
-    });
-
-    it('should redirect to expert guidance page if option no is selected', async () => {
-      await request(app).post(EXPERT_DETAILS_URL).send({hasExpertReports: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(EXPERT_DETAILS_URL);
         });
     });
 
