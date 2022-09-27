@@ -17,7 +17,7 @@
 {% set rowNumberToShowRemoveButton = 2 %}
 {% set length = form.model.items.length %}
 {% set isRemoveButtonHidden = form.model.items.length < rowNumberToShowRemoveButton %}
-{% set atLeastOneCourtOrderError = form.errorFor('items') %}
+{% set itemsErrors = form.errorFor('items') %}
 
 {% block content %}
 
@@ -34,9 +34,9 @@
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {% if atLeastOneCourtOrderError %}
+            {% if itemsErrors %}
               <p class="govuk-error-message">
-                <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(atLeastOneCourtOrderError) }}
+                <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(itemsErrors) }}
               </p>
             {% endif %}
 

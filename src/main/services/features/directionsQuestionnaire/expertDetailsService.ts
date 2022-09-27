@@ -3,6 +3,7 @@ import {ExpertDetails} from '../../../common/models/directionsQuestionnaire/expe
 import {DirectionQuestionnaire} from '../../../common/models/directionsQuestionnaire/directionQuestionnaire';
 import {Experts} from '../../../common/models/directionsQuestionnaire/experts/experts';
 import {ExpertDetailsList} from '../../../common/models/directionsQuestionnaire/experts/expertDetailsList';
+import {toNumber} from 'lodash';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -18,6 +19,20 @@ export const getExpertDetails = async (claimId: string): Promise<ExpertDetailsLi
     logger.error(error);
     throw error;
   }
+};
+
+export const getExpertDetailsForm = (items: ExpertDetails[]): ExpertDetailsList => {
+  const expertDetailsList: ExpertDetailsList = new ExpertDetailsList(items.map((expertDetail: ExpertDetails) => new ExpertDetails(
+    expertDetail.firstName,
+    expertDetail.lastName,
+    expertDetail.emailAddress,
+    expertDetail.phoneNumber,
+    expertDetail.whyNeedExpert,
+    expertDetail.fieldOfExpertise,
+    toNumber(expertDetail.estimatedCost),
+  )));
+
+  return expertDetailsList;
 };
 
 export const saveExpertDetails = async (claimId: string, value: any, expertsPropertyName: string): Promise<void> => {
