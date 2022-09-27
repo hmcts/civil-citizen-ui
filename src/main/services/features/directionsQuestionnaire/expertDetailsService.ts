@@ -20,15 +20,15 @@ export const getExpertDetails = async (claimId: string): Promise<ExpertDetailsLi
   }
 };
 
-export const saveExpertDetails = async (claimId: string, value: any, directionQuestionnairePropertyName: string): Promise<void> => {
+export const saveExpertDetails = async (claimId: string, value: any, expertsPropertyName: string): Promise<void> => {
   try {
     const claim: any = await getCaseDataFromStore(claimId);
     if (claim.directionQuestionnaire?.experts) {
-      claim.directionQuestionnaire.experts[directionQuestionnairePropertyName] = value;
+      claim.directionQuestionnaire.experts[expertsPropertyName] = value;
     } else {
       const directionQuestionnaire: any = new DirectionQuestionnaire();
       directionQuestionnaire.experts = new Experts();
-      directionQuestionnaire.experts[directionQuestionnairePropertyName] = value;
+      directionQuestionnaire.experts[expertsPropertyName] = value;
       claim.directionQuestionnaire = directionQuestionnaire;
     }
     await saveDraftClaim(claimId, claim);
