@@ -1147,6 +1147,12 @@
       "PAGE_TITLE": "Do you want to ask for the court’s permission to use an expert?",
       "TITLE": "Permission for expert"
     },
+    "PHONE_OR_VIDEO_HEARING": {
+      "PAGE_TITLE": "Do you want to ask for a telephone or video hearing?",
+      "JUDGE_DECISION": "The judge will decide if the hearing can be held by telephone or video.",
+      "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
+      "TITLE": "Do you want to ask for a telephone or video hearing?"
+    },
     "PRIORITY_DEBTS": {
       "ARREARS": "'in arrears' (you've missed regular payments)",
       "DEBTS": "Debts you're behind on",

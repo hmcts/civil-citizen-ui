@@ -138,3 +138,4 @@ export const DQ_SHARE_AN_EXPERT_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/shared-ex
 export const DQ_TRIED_TO_SETTLE_CLAIM_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/tried-to-settle`;
 export const DQ_DEFENDANT_CAN_STILL_EXAMINE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/defendant-expert-can-still-examine`;
 export const DQ_SENT_EXPERT_REPORTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/sent-expert-reports`;
+export const DQ_PHONE_OR_VIDEO_HEARING_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/phone-or-video-hearing`;
