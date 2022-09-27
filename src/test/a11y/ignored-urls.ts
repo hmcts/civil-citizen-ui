@@ -3,12 +3,11 @@ import * as urls from '../../main/routes/urls';
 export const IGNORED_URLS = [
   urls.SIGN_IN_URL,
   urls.SIGN_OUT_URL,
-  urls.CASES_URL,
   urls.CALLBACK_URL,
   urls.CITIZEN_PHONE_NUMBER_URL,
   urls.POSTCODE_LOOKUP_URL,
   urls.CITIZEN_DETAILS_URL,
-  urls.DOB_URL,
+  // urls.DOB_URL,
   urls.DASHBOARD_URL,
   urls.CITIZEN_WHO_EMPLOYS_YOU_URL,
   urls.CITIZEN_PAYMENT_DATE_URL,
@@ -16,7 +15,6 @@ export const IGNORED_URLS = [
   urls.CITIZEN_DEBTS_URL,
   urls.CITIZEN_TIMELINE_URL,
   urls.CITIZEN_OWED_AMOUNT_URL,
-  urls.CITIZEN_PA_PAYMENT_DATE_URL,
   urls.CASE_TIMELINE_DOCUMENTS_URL,
   urls.CASE_DOCUMENT_DOWNLOAD_URL,
 ];
