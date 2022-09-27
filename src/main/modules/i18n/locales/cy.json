@@ -1091,6 +1091,18 @@
       "PAGE_TITLE": "Other dependants?",
       "TITLE": "A ydych yn cefnogi rhywun arall yn ariannol?"
     },
+    "OTHER_WITNESSES": {
+      "ADD_ANOTHER_WITNESS": "Add another witness",
+      "EMAIL_LABEL": "Email address (optional)",
+      "FIRST_NAME_LABEL": "First name",
+      "LAST_NAME_LABEL": "Last name",
+      "PAGE_TITLE": "Do you have other witnesses?",
+      "PHONE_LABEL": "Phone number (optional)",
+      "REMOVE_WITNESS": "Remove witness",
+      "THIS_IS_SOMEONE_WHO_CAN_CONFIRM": "This is someone who can confirm your version of events.",
+      "TITLE": "Do you have other witnesses?",
+      "WHAT_THEY_WITNESSED_LABEL": "Tell us what they witnessed"
+    },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
       "PAGE_TITLE": "Already paid"
     },
@@ -1496,6 +1508,10 @@
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Select yes if you want to use expert evidence",
     "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Select yes if you want to give evidence yourself",
+    "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Enter the witness’s first name",
+    "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Enter the witness’s last name",
+    "DEFENDANT_WITNESS_SELECT_OTHER": "Select yes if you have other witnesses",
+    "DEFENDANT_WITNESS_WHAT_THEY_WITNESSED": "Tell us what they witnessed",
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
@@ -1503,6 +1519,7 @@
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
+    "ENTER_VALID_EMAIL":"Enter a valid email address",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "EQUAL_INSTALMENTS_REQUIRED": "Rhowch swm dilys i'w dalu fesul rhan",

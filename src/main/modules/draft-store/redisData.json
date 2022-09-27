@@ -13,6 +13,12 @@
         "version": "4",
         "calculatedAmountInPence": "7000"
       },
+      "directionQuestionnaire": {
+        "otherWitnesses": {
+          "option": "",
+          "witnessItems": []
+        }
+      },
       "supportRequired": {
         "languageSelected": true,
         "languageInterpreted": "Swahili",
