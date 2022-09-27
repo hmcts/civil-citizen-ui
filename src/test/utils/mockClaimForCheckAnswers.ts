@@ -748,6 +748,40 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   return claim as Claim;
 };
 
+export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails('contactTest');
+  if (claim.respondent1) {
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+  }
+  const defendantTimeline: DefendantTimeline = new DefendantTimeline(
+    [new TimelineRow('6 November 2022', 'Event 1'), new TimelineRow('7 November 2022', 'Event 2')],
+    'Comments about timeline',
+  );
+  const param: HowMuchHaveYouPaidParams = {};
+  param.amount = 100;
+  param.totalClaimAmount = 200;
+  param.day = '14';
+  param.month = '2';
+  param.year = '2022';
+  param.text = 'Test details';
+  const howMuchDoYouOwe: HowMuchDoYouOwe = new HowMuchDoYouOwe(100, 200);
+  const whyDoYouDisagree: WhyDoYouDisagree = new WhyDoYouDisagree('Reasons for disagree');
+  const howMuchHaveYouPaid: HowMuchHaveYouPaid = new HowMuchHaveYouPaid(param);
+  const partialAdmission: PartialAdmission = {
+    whyDoYouDisagree: whyDoYouDisagree,
+    howMuchDoYouOwe: howMuchDoYouOwe,
+    alreadyPaid: new GenericYesNo(YesNo.YES),
+    howMuchHaveYouPaid: howMuchHaveYouPaid,
+    timeline: defendantTimeline,
+    paymentIntention: new PaymentIntention(),
+  };
+  claim.partialAdmission = partialAdmission;
+  claim.mediation = new Mediation({option: YesNo.NO, mediationPhoneNumber: '01632960001'});
+
+  return claim as Claim;
+};
+
 export const createClaimWithFullRejection = (option: RejectAllOfClaimType, paidAmount?: number): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   if (claim.respondent1) {
