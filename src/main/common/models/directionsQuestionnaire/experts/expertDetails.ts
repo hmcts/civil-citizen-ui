@@ -35,7 +35,4 @@ export class ExpertDetails {
     this.estimatedCost = estimatedCost;
   }
 
-  public isEmpty(): boolean {
-    return Object.values(this).every(value => value === undefined || value === 0 || value === '' || value?.length === 0);
-  }
 }
