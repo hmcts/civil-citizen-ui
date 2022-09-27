@@ -3,11 +3,10 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {EXPERT_GUIDANCE_URL, PERMISSION_FOR_EXPERT_URL} from '../../urls';
 
 const expertGuidanceController = express.Router();
-const expertGuidanceViewPath = 'features/directionsQuestionnaire/expert-guidance';
 
 expertGuidanceController.get(EXPERT_GUIDANCE_URL, async (_req, res, next: express.NextFunction) => {
   try {
-    res.render(expertGuidanceViewPath);
+    res.render('features/directionsQuestionnaire/expert-guidance');
   } catch (error) {
     next(error);
   }

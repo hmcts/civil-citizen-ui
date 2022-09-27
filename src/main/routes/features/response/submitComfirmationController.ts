@@ -4,7 +4,6 @@ import {CONFIRMATION_URL} from '../../urls';
 import {getClaimById} from '../../../modules/utilityService';
 import {getLng} from '../../../common/utils/languageToggleUtils';
 
-const submitComfirmationViewPath = 'features/response/submit-confirmation';
 const submitComfirmationController = express.Router();
 
 submitComfirmationController.get(CONFIRMATION_URL, async (req, res, next: express.NextFunction) => {
@@ -15,11 +14,7 @@ submitComfirmationController.get(CONFIRMATION_URL, async (req, res, next: expres
     if (!claim.isEmpty()) {
       const confirmationContent = getSubmitConfirmationContent(claimId, claim, getLng(lang));
       const claimNumber = claim.legacyCaseReference;
-      res.render(
-        submitComfirmationViewPath, {
-          claimNumber,
-          confirmationContent,
-        });
+      res.render('features/response/submit-confirmation', {claimNumber, confirmationContent});
     }
   } catch (error) {
     next(error);

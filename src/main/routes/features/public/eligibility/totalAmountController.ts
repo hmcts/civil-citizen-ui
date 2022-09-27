@@ -15,8 +15,7 @@ const totalAmountViewPath = 'features/public/eligibility/total-amount';
 
 totalAmountController.get(ELIGIBILITY_CLAIM_VALUE_URL, (req: express.Request, res: express.Response) => {
   const totalAmount = req.cookies?.eligibility?.totalAmount;
-  const form = new GenericForm(new TotalAmount(totalAmount));
-  res.render(totalAmountViewPath, { form });
+  res.render(totalAmountViewPath, { form: new GenericForm(new TotalAmount(totalAmount))});
 });
 
 totalAmountController.post(ELIGIBILITY_CLAIM_VALUE_URL, async (req: express.Request, res: express.Response) => {

@@ -233,7 +233,7 @@
       "BANK_TYPE_OF_ACCOUNT": "Type of account",
       "BANK_BALANCE": "Balance",
       "BANK_JOINT_ACCOUNT": "Joint account",
-      "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer's Allowance or Carer's Credit?",
+      "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
       "CHANGE": "Change",
       "CHILDREN": "Children",
       "CHILDREN_DO_YOU_HAVE_ANY_LIVE_WITH_YOU": "Do any children live with you?",
@@ -882,6 +882,14 @@
       "USUALLY_SHARE_COST": "Usually you both share this cost.",
       "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
     },
+    "EXPERT_SMALL_CLAIMS": {
+      "CONTINUE": "Continue without an expert",
+      "EXPERT_NOT_REPRESENTATIVE": "An expert is not a legal representative.",
+      "NEEDS_AN_EXPERT": "I believe the case needs and expert",
+      "PAGE_TITLE": "Using an expert",
+      "RARE_FOR_A_JUDGE": "It's rare for a judge to allow you to use an expert in a small claim. Most small claims don't need an expert.",
+      "TITLE": "Using an expert"
+    },
     "EXPLANATION": {
       "PAGE_TITLE": "Explanation",
       "TITLE": "Briefly explain why you can't pay immediately"
@@ -975,12 +983,13 @@
       "YOU_HAVE_CHOSEN_TELL_US_WHY": "You have chosen not to try free mediation. Please tell us why:"
     },
     "LATEST_UPDATE_CONTENT": {
-      "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
-      "RESPOND_TO_CLAIM": "Respond to claim",
-      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining).",
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgement against you.",
       "CCJ_COULD_SEND_BAILIFFS_TO_YOUR_HOME": "A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contract. Bailiffs could also be sent to your home.",
-      "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment."
+      "MORE_TIME_REQUESTED": "More time requested",
+      "RESPOND_TO_CLAIM": "Respond to claim",
+      "YOU_CAN_STILL_RESPOND_TO_CLAIM": "You can still respond to the claim before they ask for a judgment.",
+      "YOU_HAVENT_RESPONDED_TO_CLAIM": "You haven't responded to this claim",
+      "YOU_NEED_TO_RESPOND_BEFORE_DEADLINE": "You need to respond before 4pm on {{ responseDeadline }} ({{ remainingDays }} Days remaining)."
     },
     "MEDIATION_CAN_WE_USE": {
       "CAN_MEDIATION_USE": "Can the mediation service use {{ respondentTelNumber }} to call you?",
@@ -1274,6 +1283,13 @@
     "SEND_YOUR_RESPONSE_BY_EMAIL": {
       "PAGE_TITLE": "Send your response by email"
     },
+    "SENT_EXPERT_REPORTS": {
+      "OPTION_NO": "No",
+      "OPTION_NOT_RECEIVED": "No, I have not yet received them",
+      "OPTION_YES": "Yes",
+      "PAGE_TITLE": "Have you already sent expert reports to other parties?",
+      "TITLE": "Have you already sent expert reports to other parties?"
+    },
     "SHARED_EXPERT": {
       "IF_YOU_SHARE": "If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.",
       "PAGE_TITLE": "Do you want to share an expert with the claimant?",
@@ -1287,13 +1303,10 @@
         "CONTACT_THEM": "contact them",
         "PAY_CLAIMANT_BY_DATE": "pay {{ claimantName }} by {{ paymentDate }}",
         "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for your payment",
-        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{ claimantName }} your offer to pay by {{ paymentDate }} and your explanation of why you can’t pay before then.",
-        "YOU_SHOULD": "You should"
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{ claimantName }} your offer to pay by {{ paymentDate }} and your explanation of why you can’t pay before then."
       },
       "FA_PAY_IMMEDIATELY": {
         "BANK_TRANSFERS_CLEAR_IN_THEIR_ACC": "any cheques or bank transfers are clear in their account by the deadline",
-        "CONTACT_CLAIMANT": "Contact {{ claimantName }}",
-        "IF_NEED_THEIR_DETAILS": " if you need their payment details.",
         "MAKE_SURE_THAT": "You need to make sure that",
         "RECEIPT_FOR_PAYMENTS": "you get a receipt for any payments",
         "THEY_CAN_REQUEST_CCJ": "they get the money by {{ paymentDate }} - they can request a County Court Judgment against you if not",
@@ -1301,23 +1314,89 @@
         "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ll pay immediately."
       },
       "FA_PAY_BY_INSTALLMENTS": {
-        "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for each payment",
         "SETUP_REPAYMENT_PLAN": "set up your repayment plan to begin when you said it would",
         "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "We’ve emailed {{claimantName}} to tell them you’ve suggested paying by instalments."
       },
+      "PA_ALREADY_PAID": {
+        "CLAIMANT_REFUSE_MEDIATION": "If they don't want to try mediation the court will review the case. You might have to go to a hearing.",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "You told us you've paid the £{{amount}} you believe you owe. We've sent {{claimantName}} this response.",
+        "WE_EMAILED_CLAIMANT_YOUR_EXPLANATIONS": "We've also sent them your explanation of why you don't believe you owe the amount claimed.",
+        "WE_ASK_CLAIMANT_FOR_MEDIATION": "We'll ask if they want to try mediation. If they agree, we'll contact you to try to arrange an appointment."
+      },
+      "PA_PAY_IMMEDIATELY": {
+        "IF_CLAIMANT_ACCEPTS_OFFER_OF": "If {{ claimantName }} accepts your offer of £{{ partialAmount }}",
+        "CHEQUES_OR_BANK_TRANSFERS": "any cheques or bank transfers are clear in their account by the deadline",
+        "CLAIM_SETTLED": "The claim will be settled.",
+        "MAKE_SURE_THAT": "Make sure that:",
+        "RECEIPT_FOR_PAYMENTS": "you get a receipt for any payments",
+        "THEY_GET_MONEY_BY": "they get the money by {{ paymentDate }} - they can request a County Court Judgment against you if not",
+        "YOU_HAVE_SAID_YOU_OWW": "You've said you owe £{{ partialAmount }} and offered to pay {{ claimantName }} immediately.",
+        "YOU_NEED_PAY_IMMEDIATELY": "You need to pay {{ claimantName }} £{{ partialAmount }} immediately."
+      },
+      "PA_PAY_BY_DATE": {
+        "CHEQUES_OR_BANK_TRANSFERS": "make sure any cheques or bank transfers are clear in their account by the deadline",
+        "CONTACT_THEM": "Contact them",
+        "MAKE_SURE_GET_RECEIPT": "make sure you get a receipt for your payment",
+        "PAY_BY": "pay {{ claimantName }} by {{ paymentDate }}",
+        "REJECT_OFFER_TO_PAY_BY": "If {{ claimantName }} rejects your offer to pay by {{ paymentDate }}",
+        "SENT_EXPLANATION": "We’ve also sent them your explanation of why you don’t believe you owe the amount claimed.",
+        "WE_WILL_CONTACT_YOU": "We’ll contact you when they respond.",
+        "YOU_BELIEVE_YOU_OWE": "You believe you owe £{{ partialAmount }}. We’ve emailed {{ claimantName }} your offer to pay this amount by {{ paymentDate }}."
+      },
+      "PA_PAY_INSTALLMENTS": {
+        "REJECT_OFFER_TO_PAY_BY": "If {{ claimantName }} rejects your offer to pay in instalments",
+        "WE_SENT_EXPLANATION": "We've also sent them your explanation of why you don't believe you owe the amount claimed.",
+        "WE_WILL_CONTACT_YOU": "We'll contact you when they respond.",
+        "YOU_BELIEVE_YOU_OWE": "You believe you owe £{{ partialAmount }}. We've emailed {{ claimantName }} your offer to pay this amount by instalments."
+      },
+      "RC_PAY_LESS": {
+        "CLAIMANT_REFUSE_MEDIATION": "If they don't want to try mediation the court will review the case. You might have to go to a hearing.",
+        "IF_CLAIMANT_ACCEPTS_CLAIM_TO_SETTLED": "If {{claimantName}} accepts your response the claim will be settled. We'll contact you when they respond.",
+        "WE_ASK_CLAIMANT_FOR_MEDIATION": "We'll ask if they want to try mediation. If they agree, we'll contact you to try to arrange an appointment.",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "You told us you've paid the £{{amount}} you believe you owe. We've sent {{claimantName}} this response."
+      },
+      "RC_PAY_FULL": {
+        "CLAIMANT_REFUSE_MEDIATION": "If they reject mediation the court will review the case. You might have to go to a hearing.",
+        "IF_CLAIMANT_ACCEPTS_CLAIM_WILL_END": "If {{claimantName}} accepts your response the claim will be ended. We'll contact you when they respond.",
+        "IF_CLAIMANT_REJECTS_TRY_MEDIATION": "If {{claimantName}} rejects your response we'll ask them to try mediation. If they agree, we'll contact you to arrange a call with the mediator.",
+        "IF_CLAIMANT_REJECTS_COURT_WILL_REVIEW_CASE": "If they reject mediation the court will review the case. You might have to go to a hearing.",
+        "WE_EMAILED_CLAIMANT_YOUR_INTENTION": "You told us you've paid £{{amount}}. We've sent {{claimantName}} this response."
+      },
+      "RC_DISPUTE": {
+        "IF_CLAIMANT_ACCEPTS": "If {{claimantName}} accepts your response the claim will be ended.",
+        "IF_CLAIMANT_REJECTS": "If {{claimantName}} rejects your response and agree to try mediation we’ll contact you to arrange a call with the mediator. ",
+        "IF_THEY_REJECT": "If they reject mediation the court will review the case. You might have to go to a hearing.",
+        "WE_HAVE_MAILED": "We’ve emailed {{claimantName}} your response, explaining why you reject the claim.",
+        "WE_WILL_CONTACT": "We’ll contact you when {{claimantName}} responds, to tell you what to do next."
+      },
+      "ASK_SIGN_SETTLEMENT": "ask you to sign a settlement agreement to formalise the repayment plan",
+      "BECAUSE_YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either:",
       "CLAIM_NUMBER": "Claim number",
+      "CONTACT_CLAIMANT": "Contact {{ claimantName }}",
       "COURT_DECIDE_HOW_TO_PAY": "The court will decide how you must pay.",
       "GET_FINANCIAL_DETAILS": "Get {{ claimantName }}’s financial details.",
       "GO_TO_ACCOUNT": "Go to your account",
       "IF_CLAIMANT_ACCEPTS_OFFER": "If {{ claimantName }} accepts your offer",
+      "IF_CLAIMANT_ACCEPTS_RESPONSE": "If {{ claimantName }} accepts your response",
       "IF_CLAIMANT_REJECTS_OFFER": "If {{ claimantName }} rejects your offer",
+      "IF_CLAIMANT_REJECTS_OWE": "If {{ claimantName }} rejects that you only owe £{{ partialAmount }}",
+      "IF_DONT_WANT_MEDIATION": "If they don’t want to try mediation the court will review the case for the full amount of £{{ claimAmount }}.",
+      "IF_NEED_PAYMENT_DETAILS": "if you need their payment details.",
+      "IF_CLAIMANT_REJECTS_RESPONSE": "If {{ claimantName }} rejects your response",
       "PAGE_TITLE": "Submit Confirmation",
+      "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for each payment",
       "REQUEST_CCJ_AGAINST_YOU": "request a County Court Judgment against you",
+      "REQUEST_COURT_AGAINST_YOU": "request a County Court Judgment against you for £{{ partialAmount }}",
       "SIGN_SETTLEMENT_AGREEMENT": "ask you to sign a settlement agreement to formalise the repayment plan",
       "SEND_FINANCIAL_DETAILS": "Send your financial details",
       "SEND_STATEMENT_OF_ACC": "Send {{ claimantName }} your company or organisation’s most recent statement of accounts, if you haven’t already.",
+      "THE_CLAIM_WILL_BE_SETTLED": "The claim will be settled",
       "WE_CONTACT_YOU": "We’ll contact you when they respond.",
+      "SETUP_REPAYMENT_PLAN": "set up your repayment plan to begin when you said it would",
+      "WE_WILL_ASK_MEDIATION": "We’ll ask if they want to try mediation. If they agree, we’ll contact you to try to arrange an appointment.",
+      "WE_CONTACT_YOU_FOR_WHAT_TO_DO_NEXT": "We'll contact you to tell you what to do next",
       "WHAT_HAPPENS_NEXT": "What happens next",
+      "YOU_SHOULD": "You should:",
       "YOU_SUBMITTED_YOUR_RESPONSE": "You've submitted your response",
       "YOU_WONT_PAY_IMMEDIATELY": "Because you’ve said you won’t pay immediately, {{ claimantName }} can either",
       "YOUR_OPINION_OF_SERVICE": "What did you think of this service?"
@@ -1593,6 +1672,7 @@
     "VALID_POSTCODE": "Enter address postcode",
     "VALID_REASON_REQUIRED": "Enter a reason",
     "VALID_REQUEST_EXTRA_4_WEEKS": "Select yes if you want an extra 4 weeks to try to settle the claim",
+    "VALID_SENT_EXPERT_REPORTS": "Select yes if you have sent expert reports to the other parties",
     "VALID_SHARED_EXPERT": "Select yes if you want to share an expert with the claimant",
     "VALID_STRICTLY_POSITIVE_NUMBER": "Enter a number higher than 0",
     "VALID_TEXT_LENGTH": "You’ve entered too many characters",

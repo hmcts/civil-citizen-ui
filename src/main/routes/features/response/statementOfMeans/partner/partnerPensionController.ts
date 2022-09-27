@@ -11,9 +11,7 @@ const partnerPensionController = express.Router();
 const partnerPensionService = new PartnerPensionService();
 const disabilityService = new DisabilityService();
 
-function renderView(partnerPension: GenericForm<GenericYesNo>, res: express.Response): void {
-  const form = Object.assign(partnerPension);
-  form.option = partnerPension.model.option;
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(citizenPartnerPensionViewPath, {form});
 }
 

@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {DQ_DEFENDANT_WITNESSES_URL, DQ_DEFENDANT_YOURSELF_EVIDENCE_URL} from '../../../../../main/routes/urls';
+import {DQ_DEFENDANT_WITNESSES_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -21,7 +21,7 @@ describe('Defendant yourself evidence Controller', () => {
   describe('on GET', () => {
     it('should return yourself evidence page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL).expect((res) => {
+      await request(app).get(DQ_GIVE_EVIDENCE_YOURSELF_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Do you want to give evidence yourself?');
       });
@@ -30,7 +30,7 @@ describe('Defendant yourself evidence Controller', () => {
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL)
+        .get(DQ_GIVE_EVIDENCE_YOURSELF_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -44,14 +44,14 @@ describe('Defendant yourself evidence Controller', () => {
     });
 
     it('should return yourself evidence page', async () => {
-      await request(app).post(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL).expect((res) => {
+      await request(app).post(DQ_GIVE_EVIDENCE_YOURSELF_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Do you want to give evidence yourself?');
       });
     });
 
     it('should redirect to the defendant witnesses page if option yes is selected', async () => {
-      await request(app).post(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL)
+      await request(app).post(DQ_GIVE_EVIDENCE_YOURSELF_URL)
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -60,7 +60,7 @@ describe('Defendant yourself evidence Controller', () => {
     });
 
     it('should redirect to witnesses page if option no is selected', async () => {
-      await request(app).post(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL)
+      await request(app).post(DQ_GIVE_EVIDENCE_YOURSELF_URL)
         .send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -71,7 +71,7 @@ describe('Defendant yourself evidence Controller', () => {
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(DQ_DEFENDANT_YOURSELF_EVIDENCE_URL)
+        .post(DQ_GIVE_EVIDENCE_YOURSELF_URL)
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(500);

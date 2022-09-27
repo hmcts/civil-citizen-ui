@@ -13,7 +13,7 @@ const regularExpensesController = express.Router();
 const regularExpensesView = 'features/response/statementOfMeans/expenses/regular-expenses';
 
 function renderForm(form: GenericForm<RegularExpenses>, res: express.Response) {
-  res.render(regularExpensesView, {form: form});
+  res.render(regularExpensesView, {form});
 }
 
 regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, async (req, res, next: express.NextFunction) => {
