@@ -58,7 +58,7 @@ module.exports = {
         data: caseData,
         event: {id: eventName},
         event_data: caseData,
-        event_token: tokens.ccdEvent
+        event_token: tokens.ccdEvent,
       }, 'POST', expectedStatus);
   },
 

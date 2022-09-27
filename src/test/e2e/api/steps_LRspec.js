@@ -57,7 +57,7 @@ const eventData = {
       FULL_DEFENCE2: data.DEFENDANT_RESPONSE2('FULL_DEFENCE'),
       FULL_ADMISSION2: data.DEFENDANT_RESPONSE2('FULL_ADMISSION'),
       PART_ADMISSION2: data.DEFENDANT_RESPONSE2('PART_ADMISSION'),
-      COUNTER_CLAIM2: data.DEFENDANT_RESPONSE2('COUNTER_CLAIM')
+      COUNTER_CLAIM2: data.DEFENDANT_RESPONSE2('COUNTER_CLAIM'),
     },
     TWO_V_ONE: {
       FULL_DEFENCE: data.DEFENDANT_RESPONSE_2v1('FULL_DEFENCE'),
@@ -73,7 +73,7 @@ const eventData = {
       FULL_DEFENCE: data.CLAIMANT_RESPONSE('FULL_DEFENCE'),
       FULL_ADMISSION: data.CLAIMANT_RESPONSE('FULL_ADMISSION'),
       PART_ADMISSION: data.CLAIMANT_RESPONSE('PART_ADMISSION'),
-      COUNTER_CLAIM: data.CLAIMANT_RESPONSE('COUNTER_CLAIM')
+      COUNTER_CLAIM: data.CLAIMANT_RESPONSE('COUNTER_CLAIM'),
     },
     ONE_V_TWO: {
       FULL_DEFENCE: data.CLAIMANT_RESPONSE_1v2('FULL_DEFENCE'),
@@ -85,7 +85,7 @@ const eventData = {
       FULL_DEFENCE: data.CLAIMANT_RESPONSE_2v1('FULL_DEFENCE'),
       FULL_ADMISSION: data.CLAIMANT_RESPONSE_2v1('FULL_ADMISSION'),
       PART_ADMISSION: data.CLAIMANT_RESPONSE_2v1('PART_ADMISSION'),
-      NOT_PROCEED: data.CLAIMANT_RESPONSE_2v1('NOT_PROCEED')
+      NOT_PROCEED: data.CLAIMANT_RESPONSE_2v1('NOT_PROCEED'),
     },
   },
 };
@@ -132,7 +132,6 @@ module.exports = {
     await apiRequest.setupTokens(user);
     caseData = await apiRequest.startEvent(eventName, caseId);
 
-
     let informAgreedExtensionData = data.INFORM_AGREED_EXTENSION_DATE();
 
     for (let pageId of Object.keys(informAgreedExtensionData.userInput)) {
@@ -150,7 +149,7 @@ module.exports = {
   },
 
   defendantResponse: async (user, response = 'FULL_DEFENCE', scenario = 'ONE_V_ONE',
-                            expectedEvent = 'AWAITING_APPLICANT_INTENTION') => {
+    expectedEvent = 'AWAITING_APPLICANT_INTENTION') => {
     await apiRequest.setupTokens(user);
     eventName = 'DEFENDANT_RESPONSE_SPEC';
 
@@ -195,7 +194,7 @@ module.exports = {
   },
 
   claimantResponse: async (user, response = 'FULL_DEFENCE', scenario = 'ONE_V_ONE',
-                           expectedEndState) => {
+    expectedEndState) => {
     // workaround
     deleteCaseFields('applicantSolicitor1ClaimStatementOfTruth');
     deleteCaseFields('respondentResponseIsSame');
@@ -245,10 +244,8 @@ module.exports = {
     }
     await assertSubmittedEvent('AWAITING_RESPONDENT_ACKNOWLEDGEMENT', {
       header: '',
-      body: ''
+      body: '',
     }, true);
-
-
 
     await waitForFinishedBusinessProcess(caseId);
   },
@@ -269,7 +266,7 @@ const assertValidData = async (data, pageId) => {
     eventName,
     pageId,
     caseData,
-    caseId
+    caseId,
   );
   let responseBody = await response.json();
   responseBody = clearDataForSearchCriteria(responseBody); //Until WA release
@@ -413,7 +410,7 @@ const assertValidDataDefaultJudgments = async (data, pageId, scenario) => {
     eventName,
     pageId,
     caseData,
-    caseId
+    caseId,
   );
   let responseBody = await response.json();
   responseBody = clearDataForSearchCriteria(responseBody); //Until WA release

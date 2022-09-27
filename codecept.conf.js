@@ -1,6 +1,6 @@
 exports.config = {
   tests: [    
-    '/Users/nishanth/Code/MOJ/civil-citizen-ui/src/test/e2e/tests/api_tests/lrspec/api_1v1_spec_test.js',
+    './src/test/e2e/tests/api_tests/lrspec/api_1v1_spec_test.js',
   ],
   output: 'test-results/functional',
   helpers: {
@@ -15,19 +15,19 @@ exports.config = {
       },
     },
     BrowserHelpers: {
-      require: '/Users/nishanth/Code/MOJ/civil-citizen-ui/src/test/e2e/helpers/browser_helper.js',
+      require: './src/test/e2e/helpers/browser_helper.js',
     },
     GenerateReportHelper: {
-      require: '/Users/nishanth/Code/MOJ/civil-citizen-ui/src/test/e2e/helpers/generate_report_helper.js',
+      require: './src/test/e2e/helpers/generate_report_helper.js',
     },
   },
   include: {
-    I: './e2e/steps_file.js',
-    LRspec: './e2e/steps_file_LRspec.js',
-    api: './e2e/api/steps.js',
-    api_spec: './e2e/api/steps_LRspec.js',
-    api_spec_fast: './e2e/api/steps_LRspecFast.js',
-    api_spec_small: './e2e/api/steps_LRspecSmall.js',
+    I: './src/test/e2e/steps_file.js',
+    LRspec: './src/test/e2e/steps_file_LRspec.js',
+    api: './src/test/e2e/api/steps.js',
+    api_spec: './src/test/e2e/api/steps_LRspec.js',
+    api_spec_fast: './src/test/e2e/api/steps_LRspecFast.js',
+    api_spec_small: './src/test/e2e/api/steps_LRspecSmall.js',
   },
   plugins: {
     autoDelay: {

@@ -37,5 +37,5 @@ async function userId(authToken) {
 
 module.exports = {
   accessToken,
-  userId
+  userId,
 };
