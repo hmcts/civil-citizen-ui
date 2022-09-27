@@ -23,6 +23,9 @@ export function dateFilter(value: string): string {
  * @param value
  */
 export function formatDate(value:string): string {
+  if(value === undefined || value === ''){
+    return '';
+  }
   const date = DateTime.fromFormat(value, 'dd-MM-yyyy');
   return date.toLocaleString(DateTime.DATE_FULL, {locale: 'en-gb'});
 }

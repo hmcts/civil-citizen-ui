@@ -2,8 +2,13 @@ import {ClaimSummarySection, ClaimSummaryType} from '../../../../../../common/fo
 import {Claim} from '../../../../../../common/models/claim';
 import {CLAIM_TASK_LIST_URL} from '../../../../../../routes/urls';
 
-export const getResponseNotSubmittedTitle = (): ClaimSummarySection => {
-  return ({
+export const getResponseNotSubmittedTitle = (isResponseDeadlineExtended: boolean): ClaimSummarySection => {
+  return isResponseDeadlineExtended ? ({
+    type: ClaimSummaryType.TITLE,
+    data: {
+      text: 'PAGES.LATEST_UPDATE_CONTENT.MORE_TIME_REQUESTED',
+    },
+  }) : ({
     type: ClaimSummaryType.TITLE,
     data: {
       text: 'PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM',

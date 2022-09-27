@@ -9,10 +9,8 @@ const partnerViewPath = 'features/response/statementOfMeans/partner/partner-seve
 const partnerSevereDisabilityController = express.Router();
 const partnerSevereDisabilityService = new PartnerSevereDisabilityService();
 
-function renderView(partnerSevereDisability: GenericForm<GenericYesNo>, res: express.Response): void {
-  const form = Object.assign(partnerSevereDisability);
-  form.option = partnerSevereDisability.model.option;
-  res.render(partnerViewPath, { form });
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+  res.render(partnerViewPath, {form});
 }
 
 partnerSevereDisabilityController.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, async (req, res, next: express.NextFunction) => {

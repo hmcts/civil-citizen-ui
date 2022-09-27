@@ -23,12 +23,12 @@ function redirectToNextPage(req: express.Request, res: express.Response, dob: Da
 }
 
 citizenDobController.get(DOB_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  const { year, month, day } = req.body;
+  const {year, month, day} = req.body;
   try {
     const citizenDob = new GenericForm(new CitizenDob(year, month, day));
     const responseDataRedis: Claim = await getCaseDataFromStore(req.params.id);
     if (responseDataRedis?.respondent1?.dateOfBirth) {
-      const dateOfBirth =  new Date(responseDataRedis.respondent1.dateOfBirth);
+      const dateOfBirth = new Date(responseDataRedis.respondent1.dateOfBirth);
       citizenDob.model.day = dateOfBirth.getDate();
       citizenDob.model.month = (dateOfBirth.getMonth() + 1);
       citizenDob.model.year = dateOfBirth.getFullYear();
@@ -40,7 +40,7 @@ citizenDobController.get(DOB_URL, async (req: express.Request, res: express.Resp
 });
 
 citizenDobController.post(DOB_URL, async (req, res, next: express.NextFunction) => {
-  const { year, month, day } = req.body;
+  const {year, month, day} = req.body;
   try {
     const citizenDob = new GenericForm(new CitizenDob(year, month, day));
     await citizenDob.validate();
@@ -48,7 +48,7 @@ citizenDobController.post(DOB_URL, async (req, res, next: express.NextFunction) 
       renderView(citizenDob, res);
     } else {
       const claim = await getCaseDataFromStore(req.params.id);
-      if (claim.respondent1){
+      if (claim.respondent1) {
         claim.respondent1.dateOfBirth = citizenDob.model.dateOfBirth;
       } else {
         const respondent = new Respondent();

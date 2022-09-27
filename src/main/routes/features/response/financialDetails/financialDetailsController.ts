@@ -21,7 +21,7 @@ export function setFinancialDetailsControllerLogger(winstonLogger: winston.Logge
 }
 
 function renderView(res: express.Response, claim: Claim, claimantDetailsUrl: string): void {
-  res.render(financialDetailsViewPath, {claim: claim, claimantDetailsUrl: claimantDetailsUrl});
+  res.render(financialDetailsViewPath, {claim, claimantDetailsUrl});
 }
 
 financialDetailsController

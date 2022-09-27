@@ -18,8 +18,6 @@ const mediationDisagreementViewPath = 'features/mediation/mediation-disagreement
 const mediationDisagreementController = express.Router();
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
-  const alreadyPaid = Object.assign(form);
-  alreadyPaid.option = form.model.option;
   res.render(mediationDisagreementViewPath, {form});
 }
 

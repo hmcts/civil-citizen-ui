@@ -9,7 +9,7 @@
 {% endblock %}
 {% block content %}
   {{ govukBackLink({
-    text: "Back",
+    text: t('COMMON.BACK'),
     href: backUrl
   }) }}
   <div class="govuk-width-container govuk-!-padding-top-0">
@@ -17,7 +17,7 @@
       {% set otherParty = t('PAGES.CONTACT_THEM.CLAIMANT') %}
       {% set otherPartyLabel = 'contact-them' %}
       {% set header = t('PAGES.CONTACT_THEM.ABOUT') %}
-      {% set otherPartyName = claimantName %}
+      {% set otherPartyName = claim.getClaimantName() %}
       {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
       {% set phone = claim.applicant1.telephoneNumber %}
       {% set email = claim.applicantSolicitor1UserDetails.email %}

@@ -1,8 +1,6 @@
-{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "./item-content.njk" import itemContent %}
 
 {% macro claimSummaryContent(content,t) %}
-
   <div class="govuk-grid-row govuk-!-margin-top-0">
     <div class="govuk-!-margin-3">
       {% if content.contentSections %}
@@ -15,5 +13,4 @@
       {% endif %}
     </div>
   </div>
-
 {% endmacro %}

@@ -41,7 +41,7 @@ describe('Request extra 4 weeks to settle the claim view', () => {
 
     it('should display hint for the title', () => {
       const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
-      expect(paragraph.innerHTML).toContain('You can use this time to try to settle the claim withoout going to a hearing. Settling without going to a hearing may avoid costs including fees.');
+      expect(paragraph.innerHTML).toContain('You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.');
     });
 
     it('should display warning', () => {

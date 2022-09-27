@@ -4,12 +4,13 @@ import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 import {
-  getSharedExpertForm,
-  getSharedExpertSelection,
-  saveSharedExpertSelection,
-} from '../../../services/features/directionsQuestionnaire/sharedExpertService';
+  getGenericOption,
+  getGenericOptionForm,
+  saveDirectionQuestionnaire,
+} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const sharedExpertController = express.Router();
+const dqPropertyName = 'sharedExpert';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render('features/directionsQuestionnaire/shared-expert', {form});
@@ -17,7 +18,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 sharedExpertController.get(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getSharedExpertSelection(req.params.id)), res);
+    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName)), res);
   } catch (error) {
     next(error);
   }
@@ -26,14 +27,13 @@ sharedExpertController.get(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
 sharedExpertController.post(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const sharedExpert = getSharedExpertForm(req.body.option);
-    const form = new GenericForm(sharedExpert);
+    const form = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
     form.validateSync();
 
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveSharedExpertSelection(claimId, sharedExpert);
+      await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL));
     }
   } catch (error) {
