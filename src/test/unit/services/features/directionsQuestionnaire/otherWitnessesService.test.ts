@@ -9,8 +9,6 @@ import { YesNo } from '../../../../../main/common/form/models/yesNo';
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
-//const OTHER_WITNESS_ITEMS_EMPTY = new OtherWitnessItems(undefined);
-
 const otherWitnessItems = new OtherWitnessItems(
   {
     'details': 'Details here...',
