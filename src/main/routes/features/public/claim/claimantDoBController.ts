@@ -1,7 +1,7 @@
 import express from 'express';
 import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {ClaimantDoB} from 'common/form/models/claim/claimantDoB';
+import {ClaimantDoB} from '../../../../common/form/models/claim/claimantDoB';
 
 const claimantDoBController = express.Router();
 const claimantDoBViewPath = 'features/public/claim/claimant-dob';
