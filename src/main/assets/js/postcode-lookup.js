@@ -18,7 +18,7 @@
   const addressManuallyLink = document.querySelector('#enterAddressManually');
   const correspondenSelectAddress = document.querySelector('#selectAddress');
   const addressContainer = document.querySelector('#correspondenceAddress');
-  const postcodeContainer = document.querySelector('#postcode');
+  const postcodeContainer = document.querySelector('#postcodeContainer');
   const postcodeErrorContainer = document.querySelector('#postcode-error');
   const govukVisuallyHidden = 'govuk-visually-hidden';
   const govukFormGroupError = 'govuk-form-group--error';
@@ -26,7 +26,7 @@
   const primaryAddressManuallyLink = document.querySelector('#primaryEnterAddressManually');
   const primarySelectAddress = document.querySelector('#primarySelectAddress');
   const primaryAddressContainer = document.querySelector('#primaryAddress');
-  const primaryPostcodeContainer = document.querySelector('#primaryPostcode');
+  const primaryPostcodeContainer = document.querySelector('#primaryPostcodeContainer');
   const primaryPostcodeErrorContainer = document.querySelector('#primaryPostcode-error');
   const addressManuallyLinks = document.querySelectorAll('.enterAddressManually');
   const findAddressButtons = document.querySelectorAll('.findAddressButton');

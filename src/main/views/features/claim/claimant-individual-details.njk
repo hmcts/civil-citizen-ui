@@ -28,7 +28,7 @@
 {% endblock %}
 
 {% set correspondenceAddressHtml %}
-  <div class="govuk-form-group" id="postcode">
+  <div class="govuk-form-group" id="postcodeContainer">
     <p class="govuk-label govuk-!-margin-bottom-5">
     <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
     <label class="govuk-label" for="postcode">
@@ -72,7 +72,7 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        {% if claimantIndividualCorrespondenceAddress.hasErrors() or claimantIndividualAddress.hasErrors() %}
+        {% if claimantDetails.hasErrors() or claimantIndividualCorrespondenceAddress.hasErrors() or claimantIndividualAddress.hasErrors() %}
           {{ errorSummary(claimantDetailsErrors.concat(claimantIndividualAddressErrors), t) }}
         {% endif %}
       </div>
@@ -119,7 +119,7 @@
                errorMessage: { text: t(claimantDetails.errorFor('lastName')) } if claimantDetails.errorFor('lastName')
             }) }}
 
-            <div class="govuk-form-group" id="primaryPostcode">
+            <div class="govuk-form-group" id="primaryPostcodeContainer">
               <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
               <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }} {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
               <label class="govuk-label" for="primaryPostcode">

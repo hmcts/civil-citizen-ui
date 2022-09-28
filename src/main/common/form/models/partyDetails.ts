@@ -4,6 +4,7 @@ import {
   IsDefined,
   IsNotEmpty,
 } from 'class-validator';
+import {Party} from "models/claim";
 export class PartyDetails {
 
   @ValidateIf(o => o.title !== undefined)
@@ -32,18 +33,19 @@ export class PartyDetails {
     this.lastName = lastName;
   }
 
-  static fromObject(value?: any, redisData?: boolean): PartyDetails {
-    if (redisData){
-      return new PartyDetails(
-        value?.individualTitle,
-        value?.individualFirstName,
-        value?.individualLastName,
-      );
-    }
+  static fromObject(value?: Record<string, string>): PartyDetails {
     return new PartyDetails(
       value?.claimantIndividualDetailsTitle,
       value?.claimantIndividualDetailsFirstName,
       value?.claimantIndividualDetailsLastName,
+    );
+  }
+
+  static fromJson(value?: Party): PartyDetails {
+    return new PartyDetails(
+      value?.individualTitle,
+      value?.individualFirstName,
+      value?.individualLastName,
     );
   }
 }

@@ -36,9 +36,9 @@ claimantIndividualDetailsController.get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, a
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantInformation(caseId);
 
-    const claimantIndividualAddress = new GenericForm<CitizenAddress>(CitizenAddress.fromObject(claimant.primaryAddress, true));
-    const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromObject(claimant.correspondenceAddress, true));
-    const claimantDetails = new GenericForm<PartyDetails>(PartyDetails.fromObject(claimant, true));
+    const claimantIndividualAddress = new GenericForm<CitizenAddress>(CitizenAddress.fromJson(claimant.primaryAddress));
+    const claimantIndividualCorrespondenceAddress = new GenericForm<CitizenCorrespondenceAddress>(CitizenCorrespondenceAddress.fromJson(claimant.correspondenceAddress));
+    const claimantDetails = new GenericForm<PartyDetails>(PartyDetails.fromJson(claimant));
 
     renderPage(res, req, claimant, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails);
   } catch (error) {
