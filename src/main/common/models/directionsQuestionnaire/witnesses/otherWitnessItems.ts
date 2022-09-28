@@ -1,13 +1,10 @@
 import {OptionalIntegerValidator} from '../../../form/validators/optionalIntegerValidator';
-import {IsDefined, IsNotEmpty, IsEmail, Validate, ValidateIf} from 'class-validator';
-import {Witness} from './witness';
+import {IsNotEmpty, IsEmail, Validate, ValidateIf} from 'class-validator';
 
 export class OtherWitnessItems {
-  @IsDefined({message: 'ERRORS.DEFENDANT_WITNESS_ENTER_FIRST_NAME'})
   @IsNotEmpty({message: 'ERRORS.DEFENDANT_WITNESS_ENTER_FIRST_NAME'})
     firstName?: string;
 
-  @IsDefined({message: 'ERRORS.DEFENDANT_WITNESS_ENTER_LAST_NAME'})
   @IsNotEmpty({message: 'ERRORS.DEFENDANT_WITNESS_ENTER_LAST_NAME'})
     lastName?: string;
 
@@ -19,11 +16,10 @@ export class OtherWitnessItems {
   @Validate(OptionalIntegerValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
     telephone?: string;
 
-  @IsDefined({message: 'ERRORS.DEFENDANT_WITNESS_WHAT_THEY_WITNESSED'})
   @IsNotEmpty({message: 'ERRORS.DEFENDANT_WITNESS_WHAT_THEY_WITNESSED'})
     details?: string;
 
-  constructor(witnessParams?: Witness) {
+  constructor(witnessParams?: OtherWitnessItems) {
     this.firstName = witnessParams.firstName;
     this.lastName = witnessParams.lastName;
     this.email = witnessParams.email;

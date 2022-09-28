@@ -24,9 +24,11 @@ const otherWitnessMock = {
   'security_classification': 'PUBLIC',
   'case_data': {
     'directionQuestionnaire': {
-      'otherWitnesses': {
-        'option': '',
-        'witnessItems': [{}],
+      'witnesses': {
+        'otherWitnesses': {
+          'option': '',
+          'witnessItems': [{}],
+        },
       },
     },
   },
