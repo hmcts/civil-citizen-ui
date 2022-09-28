@@ -6,12 +6,10 @@ import {SentExpertReports} from './sentExpertReports';
 import {Vulnerability} from '../../models/directionsQuestionnaire/vulnerability';
 import {DeterminationWithoutHearing} from '../../models/directionsQuestionnaire/determinationWithoutHearing';
 import {SupportRequired} from '../../models/directionsQuestionnaire/supportRequired';
-import {Experts} from './experts/experts';
 
 export class DirectionQuestionnaire {
   permissionForExpert?: GenericYesNo;
   triedToSettle?: GenericYesNo;
-  experts?: Experts;
   defendantExpertEvidence?: GenericYesNo;
   determinationWithoutHearing?: DeterminationWithoutHearing;
   considerClaimantDocuments?: ConsiderClaimantDocuments;
