@@ -65,7 +65,7 @@ claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, 
     if (claimantDetails.hasErrors() || claimantIndividualAddress.hasErrors() || claimantIndividualCorrespondenceAddress.hasErrors()) {
       renderPage(res, req, claimant, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails);
     } else {
-      await saveClaimant(caseId, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, req.body.provideCorrespondenceAddress, claimantDetails);
+      await saveClaimant(caseId, claimantIndividualAddress.model, claimantIndividualCorrespondenceAddress.model, req.body.provideCorrespondenceAddress, claimantDetails.model);
       res.redirect(constructResponseUrlWithIdParams(caseId, CLAIM_CLAIMANT_DOB));
     }
   } catch (error) {

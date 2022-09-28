@@ -6,7 +6,7 @@ import {
   VALID_CORRESPONDENCE_POSTCODE,
 } from '../validationErrors/errorMessageConstants';
 import {PostcodeValidator} from '../../../common/form/validators/postcodeValidator';
-import {CorrespondenceAddress} from 'models/correspondenceAddress';
+import {CorrespondenceAddress} from '../../models/correspondenceAddress';
 
 export class CitizenCorrespondenceAddress {
   @IsNotEmpty({message: VALID_CORRESPONDENCE_ADDRESS_LINE_1})

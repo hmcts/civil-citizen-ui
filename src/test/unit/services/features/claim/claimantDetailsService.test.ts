@@ -5,7 +5,6 @@ import {buildPrimaryAddress, mockClaim} from '../../../../utils/mockClaim';
 import {Respondent} from '../../../../../main/common/models/respondent';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {buildCitizenAddress, buildCitizenCorrespondenceAddress} from '../../../../utils/mockForm';
-import {GenericForm} from '../../../../../main/common/form/models/genericForm';
 import {PartyDetails} from '../../../../../main/common/form/models/partyDetails';
 import {CitizenCorrespondenceAddress} from '../../../../../main/common/form/models/citizenCorrespondenceAddress';
 
@@ -15,11 +14,11 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CLAIM_ID = '123';
 const claimData = new Claim();
-const claimantDetails = new GenericForm<PartyDetails>(new PartyDetails(
+const claimantDetails = new PartyDetails(
   'individualTitle',
   'individualFirstName',
   'individualLastName',
-));
+);
 
 describe('Citizen details service', () => {
   describe('get Claimant Information', () => {
@@ -30,7 +29,7 @@ describe('Citizen details service', () => {
       mockGetCaseData.mockImplementation(async () => {
         return {};
       });
-      //when
+      //When
       const result: Party = await getClaimantInformation(CLAIM_ID);
 
       //Then
@@ -44,7 +43,7 @@ describe('Citizen details service', () => {
       mockGetCaseData.mockImplementation(async () => {
         return mockClaim;
       });
-      //when
+      //When
       const result: Party = await getClaimantInformation(CLAIM_ID);
 
       //Then
@@ -68,8 +67,8 @@ describe('Citizen details service', () => {
         return new Claim();
       });
 
-      //when
-      await saveClaimant(CLAIM_ID, buildCitizenAddress(), new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress()), YesNo.NO, claimantDetails);
+      //When
+      await saveClaimant(CLAIM_ID, buildCitizenAddress().model, new CitizenCorrespondenceAddress(), YesNo.NO, claimantDetails);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
@@ -82,8 +81,8 @@ describe('Citizen details service', () => {
       mockGetCaseData.mockImplementation(async () => {
         return undefined;
       });
-      //when
-      await saveClaimant(CLAIM_ID, buildCitizenAddress(), buildCitizenCorrespondenceAddress(), YesNo.NO, claimantDetails);
+      //When
+      await saveClaimant(CLAIM_ID, buildCitizenAddress().model, buildCitizenCorrespondenceAddress().model, YesNo.NO, claimantDetails);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -106,8 +105,8 @@ describe('Citizen details service', () => {
         claim.respondent1 = claimant;
         return mockClaim;
       });
-      //when
-      await saveClaimant(CLAIM_ID, buildCitizenAddress(), new GenericForm<CitizenCorrespondenceAddress>(new CitizenCorrespondenceAddress()), YesNo.NO, claimantDetails);
+      //When
+      await saveClaimant(CLAIM_ID, buildCitizenAddress().model, new CitizenCorrespondenceAddress(), YesNo.NO, claimantDetails);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
