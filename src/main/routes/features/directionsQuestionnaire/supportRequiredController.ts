@@ -3,15 +3,14 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {CLAIM_TASK_LIST_URL, SUPPORT_REQUIRED_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {SupportRequired} from '../../../common/models/directionsQuestionnaire/supportRequired';
-import {
-  getSupportRequired,
-} from '../../../services/features/directionsQuestionnaire/supportRequiredService';
+import {getSupportRequired} from '../../../services/features/directionsQuestionnaire/supportRequiredService';
 import {
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const supportRequiredController = express.Router();
 const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required';
+const dqPropertyName = 'supportRequired';
 
 supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
   try {
@@ -38,7 +37,7 @@ supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next: expr
     if (form.hasErrors()) {
       res.render(supportRequiredViewPath, {form});
     } else {
-      await saveDirectionQuestionnaire(claimId, supportRequired, 'supportRequired');
+      await saveDirectionQuestionnaire(claimId, supportRequired, dqPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {

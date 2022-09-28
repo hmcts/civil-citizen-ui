@@ -39,6 +39,8 @@
       "partyTypeDisplayValue": "Organisation"
     },
     "directionQuestionnaire": {
+      "hearing": {},
+      "vulnerabilityQuestions": {},
       "experts": {
         "expertReportDetails": {
           "hasExpertReports": "yes",
@@ -49,7 +51,8 @@
             }
           ]
         }
-      }
+      },
+      "witnesses": {}
     },
     "applicantSolicitor1UserDetails": {
       "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"

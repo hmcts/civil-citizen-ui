@@ -1,9 +1,12 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {getDeterminationWithoutHearing} from '../../../../../main/services/features/directionsQuestionnaire/determinationWithoutHearingService';
+import {
+  getDeterminationWithoutHearing,
+} from '../../../../../main/services/features/directionsQuestionnaire/determinationWithoutHearingService';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
+import {Hearing} from '../../../../../main/common/models/directionsQuestionnaire/hearing/hearing';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -25,7 +28,8 @@ describe('Determination Without Hearing Service', () => {
     it('should return determinationWithoutHearing object with isDeterminationWithoutHearing no', async () => {
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.determinationWithoutHearing = {
+      claim.directionQuestionnaire.hearing = new Hearing();
+      claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
         isDeterminationWithoutHearing: YesNo.NO,
       };
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
@@ -40,7 +44,8 @@ describe('Determination Without Hearing Service', () => {
     it('should return determinationWithoutHearing object with isDeterminationWithoutHearing yes and reasonForHearing', async () => {
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.determinationWithoutHearing = {
+      claim.directionQuestionnaire.hearing = new Hearing();
+      claim.directionQuestionnaire.hearing.determinationWithoutHearing = {
         isDeterminationWithoutHearing: YesNo.NO,
         reasonForHearing: '99 reasons',
       };

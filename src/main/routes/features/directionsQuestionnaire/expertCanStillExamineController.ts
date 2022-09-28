@@ -11,10 +11,12 @@ import {
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {YesNo} from '../../../common/form/models/yesNo';
-import {ExpertCanStillExamine} from '../../../common/models/directionsQuestionnaire/expertCanStillExamine';
+import {ExpertCanStillExamine} from '../../../common/models/directionsQuestionnaire/experts/expertCanStillExamine';
 
 const expertCanStillExamineController = express.Router();
 const expertCanStillExamineViewPath = 'features/directionsQuestionnaire/defendant-expert-can-still-examine';
+const dqPropertyName = 'expertCanStillExamine';
+const dqParentName = 'experts';
 
 function renderView(form: GenericForm<ExpertCanStillExamine>, res: express.Response): void {
   res.render(expertCanStillExamineViewPath, {form});
@@ -23,7 +25,9 @@ function renderView(form: GenericForm<ExpertCanStillExamine>, res: express.Respo
 expertCanStillExamineController.get(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (req, res, next: express.NextFunction) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const expertCanStillExamine = directionQuestionnaire.expertCanStillExamine ? new ExpertCanStillExamine(directionQuestionnaire.expertCanStillExamine.option, directionQuestionnaire.expertCanStillExamine.details) : new ExpertCanStillExamine();
+    const expertCanStillExamine = directionQuestionnaire.experts.expertCanStillExamine ?
+      new ExpertCanStillExamine(directionQuestionnaire.experts.expertCanStillExamine.option,
+        directionQuestionnaire.experts.expertCanStillExamine.details) : new ExpertCanStillExamine();
 
     renderView(new GenericForm(expertCanStillExamine), res);
   } catch (error) {
@@ -40,7 +44,7 @@ expertCanStillExamineController.post(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (
     if (expertCanStillExamine.hasErrors()) {
       renderView(expertCanStillExamine, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, expertCanStillExamine.model, 'expertCanStillExamine');
+      await saveDirectionQuestionnaire(claimId, expertCanStillExamine.model, dqPropertyName, dqParentName);
       if (req.body.option === YesNo.YES) {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_REPORTS_URL));
       } else {

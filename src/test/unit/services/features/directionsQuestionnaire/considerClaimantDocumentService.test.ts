@@ -4,11 +4,13 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
 import {
-  getConsiderClaimantDocuments, saveConsiderClaimantDocuments,
+  getConsiderClaimantDocuments,
+  saveConsiderClaimantDocuments,
 } from '../../../../../main/services/features/directionsQuestionnaire/considerClaimantDocumentsService';
 import {
   ConsiderClaimantDocuments,
-} from '../../../../../main/common/models/directionsQuestionnaire/considerClaimantDocuments';
+} from '../../../../../main/common/models/directionsQuestionnaire/hearing/considerClaimantDocuments';
+import {Hearing} from '../../../../../main/common/models/directionsQuestionnaire/hearing/hearing';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -31,7 +33,8 @@ describe('Consider Claimant Documents Service', () => {
     it('should return consider claimant documents option with Yes option and details', async () => {
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.considerClaimantDocuments = {option: YesNo.YES, details: 'details'};
+      claim.directionQuestionnaire.hearing = new Hearing();
+      claim.directionQuestionnaire.hearing.considerClaimantDocuments = {option: YesNo.YES, details: 'details'};
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
@@ -63,7 +66,7 @@ describe('Consider Claimant Documents Service', () => {
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       await saveConsiderClaimantDocuments('validClaimId', considerClaimantDocuments);
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire: {considerClaimantDocuments}});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire: {hearing: {considerClaimantDocuments}}});
     });
 
     it('should update consider claimant documents successfully', async () => {
@@ -73,11 +76,13 @@ describe('Consider Claimant Documents Service', () => {
       };
       const updatedClaim = new Claim();
       updatedClaim.directionQuestionnaire = new DirectionQuestionnaire();
-      updatedClaim.directionQuestionnaire.considerClaimantDocuments = considerClaimantDocuments;
+      updatedClaim.directionQuestionnaire.hearing = new Hearing();
+      updatedClaim.directionQuestionnaire.hearing.considerClaimantDocuments = considerClaimantDocuments;
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
-        claim.directionQuestionnaire.considerClaimantDocuments = considerClaimantDocuments;
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.considerClaimantDocuments = considerClaimantDocuments;
         return claim;
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');

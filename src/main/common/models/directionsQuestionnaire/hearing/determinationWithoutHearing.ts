@@ -1,5 +1,5 @@
 import {IsDefined, IsNotEmpty, ValidateIf} from 'class-validator';
-import {YesNo} from '../../form/models/yesNo';
+import {YesNo} from '../../../form/models/yesNo';
 
 export class DeterminationWithoutHearing {
   @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})

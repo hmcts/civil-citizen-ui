@@ -5,8 +5,10 @@ import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
 import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 import {
-  getPermissionForExpert, savePermissionForExpert,
+  getPermissionForExpert,
+  savePermissionForExpert,
 } from '../../../../../main/services/features/directionsQuestionnaire/permissionForExpertService';
+import {Experts} from '../../../../../main/common/models/directionsQuestionnaire/experts/experts';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -27,7 +29,8 @@ describe('Tried to Settle the Claim Service', () => {
     it('should return permission for expert option with Yes option', async () => {
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.permissionForExpert = {option: YesNo.YES};
+      claim.directionQuestionnaire.experts = new Experts();
+      claim.directionQuestionnaire.experts.permissionForExpert = {option: YesNo.YES};
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
@@ -56,7 +59,7 @@ describe('Tried to Settle the Claim Service', () => {
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       await savePermissionForExpert('validClaimId', permissionForExpert);
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire: {permissionForExpert}});
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire: {experts: {permissionForExpert}}});
     });
 
     it('should update permission for expert successfully', async () => {
@@ -65,11 +68,13 @@ describe('Tried to Settle the Claim Service', () => {
       };
       const updatedClaim = new Claim();
       updatedClaim.directionQuestionnaire = new DirectionQuestionnaire();
-      updatedClaim.directionQuestionnaire.permissionForExpert = updatedPermissionForExpert;
+      updatedClaim.directionQuestionnaire.experts = new Experts();
+      updatedClaim.directionQuestionnaire.experts.permissionForExpert = updatedPermissionForExpert;
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
-        claim.directionQuestionnaire.permissionForExpert = permissionForExpert;
+        claim.directionQuestionnaire.experts = new Experts();
+        claim.directionQuestionnaire.experts.permissionForExpert = permissionForExpert;
         return claim;
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
