@@ -22,7 +22,7 @@ function renderView(form: GenericForm<PhoneOrVideoHearing>, res: express.Respons
 phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req, res, next: express.NextFunction) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const phoneOrVideoHearing = directionQuestionnaire.phoneOrVideoHearing ? new PhoneOrVideoHearing(directionQuestionnaire.phoneOrVideoHearing.option, directionQuestionnaire.phoneOrVideoHearing.details) : new PhoneOrVideoHearing();
+    const phoneOrVideoHearing = directionQuestionnaire.phoneOrVideoHearing ? directionQuestionnaire.phoneOrVideoHearing : new PhoneOrVideoHearing();
 
     renderView(new GenericForm(phoneOrVideoHearing), res);
   } catch (error) {
