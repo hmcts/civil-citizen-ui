@@ -1158,8 +1158,8 @@
       "TITLE": "Permission for expert"
     },
     "PHONE_OR_VIDEO_HEARING": {
-      "PAGE_TITLE": "Do you want to ask for a telephone or video hearing?",
       "JUDGE_DECISION": "The judge will decide if the hearing can be held by telephone or video.",
+      "PAGE_TITLE": "Do you want to ask for a telephone or video hearing?",
       "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
       "TITLE": "Do you want to ask for a telephone or video hearing?"
     },
@@ -1671,8 +1671,8 @@
     "VALID_PAYMENT_OPTION": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Enter a phone number in the correct format",
     "VALID_PHONE_OR_VIDEO_HEARING": {
-      "YES_NO": "Select yes if you want to ask for a telephone or video hearing",
-      "TELL_US_WHY": "Tell us why you want a telephone or video hearing"
+      "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
+      "YES_NO": "Select yes if you want to ask for a telephone or video hearing"
     },
     "VALID_POSITIVE_NUMBER": "Don’t enter a negative number",
     "VALID_POSTCODE": "Enter address postcode",
