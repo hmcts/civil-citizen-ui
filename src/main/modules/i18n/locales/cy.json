@@ -40,7 +40,7 @@
       "SAVE": "Save",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
       "START_AGAIN": "Start again",
-      "SUBMIT_RESPONSE": "Submit Response"
+      "SUBMIT_RESPONSE": "Cyflwyno'r ymateb"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX": "Treth Cyngor",
@@ -149,11 +149,11 @@
     "STATEMENT_OF_TRUTH": {
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
       "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
-      "INFORMATION_ON_PAGE": "The information on this page forms your {{ type }}. You can see it on the {{ type }} form after you submit.",
+      "INFORMATION_ON_PAGE": "Mae'r wybodaeth ar y dudalen hon yn ffurfio eich {{ type }}. Gallwch ei gweld ar y ffurflen {{ type }} ar ôl i chi ei chyflwyno.",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
-      "STATEMENT_OF_WORK": "statement of truth",
-      "TITLE": "Statement of truth",
-      "WHEN_SATISFIED": "When you're satisfied that your answers are accurate, you should tick to /“sign/” this statement of truth on the form."
+      "STATEMENT_OF_WORK": "satganiad gwirionedd",
+      "TITLE": "Datganiad Gwirionedd",
+      "WHEN_SATISFIED": "Pan rydych yn fodlon bod eich atebion yn gywir, dylech roi tic i \"lofnodi'r\" datganiad gwirionedd ar y ffurflen."
     },
     "TYPES_OF_SENIOR_POSITION": {
       "CORPORATION_NOT_REGISTERED": "If your corporation isn't registered, a senior position could be:",
@@ -197,7 +197,7 @@
       "TELL_US_WHY_DISAGREE_WITH_CLAIM": "Tell us why you disagree with the claim",
       "TITLE": "Respond to claim",
       "VIEW_OPTIONS": "View your options before response deadline",
-      "WHEN_WILL_YOU_PAY": "When will you pay the £{{ amount }}?",
+      "WHEN_WILL_YOU_PAY": "Pryd fyddwch chi’n talu’r £{{ amount }}?",
       "WHY_DO_YOU_DISAGREE": "Why do you disagree with the amount claimed?",
       "YOUR_REPAYMENT_PLAN": "Your repayment plan"
     },
@@ -281,8 +281,8 @@
       "EXPENSE_HIRE_PURCHASE": "Hurbrynu",
       "EXPENSE_MOBILE_PHONE": "Ffôn Symudol",
       "EXPENSE_MAINTENANCE": "Taliadau cynhaliaeth",
-      "FREE_TELEPHONE_CONTACT_NAME": "Contact name",
-      "FREE_TELEPHONE_CONTACT_NUMBER": "Contact number",
+      "FREE_TELEPHONE_CONTACT_NAME": "Enw cyswllt",
+      "FREE_TELEPHONE_CONTACT_NUMBER": "Rhif cyswllt",
       "FREE_TELEPHONE_MEDIATION": "Will you try free mediation",
       "FIRST_PAYMENT": "Gwnewch y taliad cyntaf ymlaen",
       "FULL_NAME": "Enw llawn",
@@ -297,7 +297,7 @@
       "INCOME_JOB_SEEKER_ALLOWANCE": "Lwfans Ceisio Gwaith (yn seiliedig ar incwm)",
       "INCOME_JOB_SEEKER_ALLOWANCE_CONTRIBUTION": "Lwfans Ceisio Gwaith (yn seiliedig ar gyfraniadau)",
       "INCOME_WORKING_TAX_CREDIT": "Credyd Treth Gwaith",
-      "JOB_TITLE": "Job title",
+      "JOB_TITLE": "Teitl y swydd",
       "OWE_MONEY": "A oes arnoch chi'r arian a hawlir?",
       "PARTNER_DO_YOU_LIVE_WITH_A": "Ydych chi'n byw gyda phartner?",
       "PARTNER_IS_AGED_18_OR_OVER": "Ydy'ch partner yn 18 oed neu'n hŷn?",
@@ -317,8 +317,8 @@
       "PRIORITY_DEBT_MAINTENANCE": "Cynnal a chadw",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "RESPONSE_TITLE": "Eich ymateb i'r hawliad",
-      "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
-      "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
+      "RESPONSE_CHECKBOX": "Credaf fod y ffeithiau a nodir yn yr ymateb hwn yn wir.",
+      "RESPONSE_CHECKBOX_PROCEEDINGS": "Deallaf y gellir dwyn achos dirmyg llys yn erbyn unrhyw un sy’n gwneud datganiad anwir, neu sy’n achosi i ddatganiad anwir gael ei wneud mewn dogfen a ddilysir gan ddatganiad gwirionedd heb gredu’n onest ei fod yn wir.",
       "RESPONSE_HAVE_YOU_PAID_THE_CLAIMANT": "A ydych wedi talu’r hawlydd y swm rydych chi’n cyfaddef sy’n ddyledus gennych?",
       "RESPONSE_DETAILS_TITLE": "Manylion ymateb",
       "RESPONSE_DETAILS_MONEY_PAID": "How much money have you paid?",
@@ -889,13 +889,13 @@
     },
     "EXPLANATION": {
       "PAGE_TITLE": "Explanation",
-      "TITLE": "Briefly explain why you can't pay immediately"
+      "TITLE": "Esboniwch yn fras pam na allwch dalu ar unwaith"
     },
     "FINANCIAL_DETAILS": {
       "ASK_DETAILS_AND_SEND": "Byddwn yn eich gofyn am y manylion ac yna byddwn yn eu hanfon at {{ applicant1Details }} i’w hadolygu.",
       "GET_APPLICANT_CONTACT_DETAILS": "Get {{ applicant1Details }} 's contact details.",
       "NEED_GIVE_DETAILS": "Mae arnoch angen rhoi eich manylion ariannol i {{ applicant1Details }}.",
-      "PAGE_TITLE": "Your financial details",
+      "PAGE_TITLE": "Eich manylion ariannol",
       "SEND_STATEMENT_ACCOUNTS": "'You need to send ' {{ applicant1Details }} your company or organisation's most recent statement of accounts.",
       "SEND_FINANCIAL_DETAILS": "Anfonwch eich manylion ariannol at {{ applicant1Details }}.",
       "REJECT_PAY_SOONER": "Gallant wrthod eich cynnig os ydynt yn credu y gallwch dalu’n gynt.",
@@ -1267,7 +1267,7 @@
     "SELF_EMPLOYED": {
       "ANNUAL": "Trosiant blynyddol",
       "JOB_TITLE": "Teitl swydd",
-      "PAGE_TITLE": "Self employment details",
+      "PAGE_TITLE": "Manylion yr hunangyflogaeth",
       "TITLE": "Mewn pa fodd ydych chi’n hunangyflogedig?"
     },
     "SELF_EMPLOYED_BEHIND_ON_TAX_PAYMENTS": {
@@ -1569,7 +1569,7 @@
     "SIGNER_ROLE_REQUIRED": "Enter the role of the person signing the statement",
     "SIGNER_ROLE_TOO_LONG": "You've entered too many characters",
     "SOMETHING_WENT_WRONG": "Something went wrong",
-    "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
+    "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod y ffeithiau a nodir yn yr ymateb hwn yn wir",
     "TELL_US_WHY": "Please tell us why",
     "TRANSACTION_SOURCE": {
       "ENTER_OTHER_INCOME": "Tynnu'r ffynhonnell incwm hon",
