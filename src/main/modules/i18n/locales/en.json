@@ -19,6 +19,7 @@
     "MONTH": "Month",
     "MONTHS": "Months",
     "NO": "No",
+    "REMOVE": "Remove",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
     "YEAR": "Year",
@@ -882,10 +883,19 @@
       "USUALLY_SHARE_COST": "Usually you both share this cost.",
       "WHEN_EXPERT_ALLOWED": "When an expert is allowed"
     },
+    "EXPERT_REPORT_DETAILS": {
+      "ADD_ANOTHER": "Add another report",
+      "EXPERT_NAME": "Expert's name",
+      "FOR_EXAMPLE": "For Example, {{ date }}",
+      "PAGE_TITLE": "Have you already got a report written by an expert?",
+      "REPORT_DATE": "When is the report dated?",
+      "REPORT_TEXT": "Report",
+      "TITLE": "Have you already got a report written by an expert?"
+    },
     "EXPERT_SMALL_CLAIMS": {
       "CONTINUE": "Continue without an expert",
       "EXPERT_NOT_REPRESENTATIVE": "An expert is not a legal representative.",
-      "NEEDS_AN_EXPERT": "I believe the case needs and expert",
+      "NEEDS_AN_EXPERT": "I believe the case needs an expert",
       "PAGE_TITLE": "Using an expert",
       "RARE_FOR_A_JUDGE": "It's rare for a judge to allow you to use an expert in a small claim. Most small claims don't need an expert.",
       "TITLE": "Using an expert"
@@ -1510,6 +1520,7 @@
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
     "CLAIM_VALID_AMOUNT": "Enter a valid amount",
+    "CORRECT_DATE_NOT_IN_FUTURE": "Correct the date. You can’t use a future date.",
     "DATE_REQUIRED": "Enter a date",
     "DATE_NOT_MORE_THAN_28_DAYS": "Agreed response date cannot be more than 28 days after the original response date",
     "DEFENCE_REQUIRED": "You need to explain why you don't owe the money",
@@ -1524,6 +1535,7 @@
     "ENTER_A_DEBT": "Enter a debt",
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
+    "ENTER_AT_LEAST_ONE_REPORT": "Enter at least one report",
     "ENTER_EXPERT_DETAILS": "Enter the expert's details",
     "ENTER_WHY_NEED_EXPERT": "Tell us why you need this expert",
     "ENTER_EXPERT_FIELD": "Enter the expert’s field of expertise",
@@ -1532,6 +1544,7 @@
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
+    "EXPERT_NAME_REQUIRED": "Enter the expert’s name",
     "ERROR": "Error",
     "FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED": "Enter a first payment date in the future",
     "GIVE_DETAILS_DOCUMENTS" : "Give details of the documents",

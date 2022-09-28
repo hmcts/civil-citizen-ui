@@ -13,6 +13,23 @@
         "version": "4",
         "calculatedAmountInPence": "7000"
       },
+      "directionQuestionnaire": {
+        "experts": {
+          "expertReportDetails": {
+            "hasExpertReports": "yes",
+            "reportDetails": [
+              {
+                "expertName": "Ahmet",
+                "reportDate": "2022-03-01T11:57:10.592492"
+              },
+              {
+                "expertName": "Mahmut",
+                "reportDate": "2022-06-01T11:57:10.592492"
+              }
+            ]
+          }
+        }
+      },
       "supportRequired": {
         "languageSelected": true,
         "languageInterpreted": "Swahili",
