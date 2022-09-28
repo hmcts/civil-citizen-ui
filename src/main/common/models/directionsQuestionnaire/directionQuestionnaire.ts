@@ -49,6 +49,6 @@ export class DirectionQuestionnaire {
     this.determinationWithoutHearing = determinationWithoutHearing;
     this.supportRequired = supportRequired;
     this.experts = experts;
-    this.phoneOrVideoHearing = phoneOrVideoHearing
+    this.phoneOrVideoHearing = phoneOrVideoHearing;
   }
 }
