@@ -97,7 +97,7 @@ describe('on Post', () => {
       .send({option: undefined, witnessItems: [{}]})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
+        expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_SELECT_OTHER'));
       });
   });
 
