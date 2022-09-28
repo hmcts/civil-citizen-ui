@@ -4,7 +4,7 @@ import {
   IsDefined,
   IsNotEmpty,
 } from 'class-validator';
-import {Party} from "models/claim";
+import {Party} from 'models/claim';
 export class PartyDetails {
 
   @ValidateIf(o => o.title !== undefined)

@@ -1,6 +1,6 @@
 import {IsNotEmpty, Validate} from 'class-validator';
 import {PostcodeValidator} from '../validators/postcodeValidator';
-import {CorrespondenceAddress} from "models/correspondenceAddress";
+import {CorrespondenceAddress} from 'models/correspondenceAddress';
 
 export class CitizenAddress {
   @IsNotEmpty({message: 'ERRORS.VALID_ADDRESS_LINE_1'})
@@ -27,12 +27,12 @@ export class CitizenAddress {
   }
 
   static fromObject(value?: Record<string, string>): CitizenAddress {
-  return new CitizenAddress(
+    return new CitizenAddress(
       value?.primaryAddressLine1,
       value?.primaryAddressLine2,
       value?.primaryAddressLine3,
       value?.primaryCity,
-      value?.primaryPostCode
+      value?.primaryPostCode,
     );
   }
 
@@ -42,7 +42,7 @@ export class CitizenAddress {
       value?.AddressLine2,
       value?.AddressLine3,
       value?.PostTown,
-      value?.PostCode
+      value?.PostCode,
     );
   }
 }

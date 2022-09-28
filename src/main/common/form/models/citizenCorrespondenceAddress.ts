@@ -6,7 +6,7 @@ import {
   VALID_CORRESPONDENCE_POSTCODE,
 } from '../validationErrors/errorMessageConstants';
 import {PostcodeValidator} from '../../../common/form/validators/postcodeValidator';
-import {CorrespondenceAddress} from "models/correspondenceAddress";
+import {CorrespondenceAddress} from 'models/correspondenceAddress';
 
 export class CitizenCorrespondenceAddress {
   @IsNotEmpty({message: VALID_CORRESPONDENCE_ADDRESS_LINE_1})
@@ -42,7 +42,7 @@ export class CitizenCorrespondenceAddress {
       value?.correspondenceAddressLine2,
       value?.correspondenceAddressLine3,
       value?.correspondenceCity,
-      value?.correspondencePostCode
+      value?.correspondencePostCode,
     );
   }
 
@@ -52,7 +52,7 @@ export class CitizenCorrespondenceAddress {
       value?.AddressLine2,
       value?.AddressLine3,
       value?.PostTown,
-      value?.PostCode
+      value?.PostCode,
     );
   }
 }
