@@ -19,7 +19,7 @@ Before(() => {
   loginSteps.EnterUserCredentials(config.Username, config.Password);
 });
 
-Scenario('Response with RejectAll and Immediate payment @test @citizenUI @rejectAll', () => {
+Scenario('Response with RejectAll and Immediate payment @citizenUI @rejectAll', () => {
   commonSteps.EnterPersonalDetails(claimRef);
   responseSteps.EnterResponseToClaim(claimRef, rejectAll);
   responseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
