@@ -6,8 +6,6 @@ import {getClaimById} from '../../../modules/utilityService';
 import {getLng} from '../../../common/utils/languageToggleUtils';
 import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import {AppRequest} from '../../../common/models/AppRequest';
-// import mockClaim from '../../../../test/utils/mocks/civilClaimResponseafterSubmission.json';
-// import {Claim} from '../../../common/models/claim';
 import {formatDateToFullDate} from '../../../common/utils/dateUtils';
 
 const submitComfirmationController = express.Router();
@@ -20,11 +18,8 @@ submitComfirmationController.get(CONFIRMATION_URL, async (req, res, next: expres
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimById(claimId, req);
     const submittedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    // const submittedClaim = Object.assign(new Claim(), mockClaim);
     if (!claim.isEmpty()) {
       claim.respondent1ResponseDate = !submittedClaim.isEmpty() ? submittedClaim.respondent1ResponseDate : undefined;
-      console.log('updatedClaim-->', claim);
-      console.log('response submit-date-->', claim?.respondent1ResponseDate);
       const confirmationContent = getSubmitConfirmationContent(claimId, claim, getLng(lang));
       const claimNumber = claim.legacyCaseReference;
       const responseSubmitDate = formatDateToFullDate(claim?.respondent1ResponseDate, getLng(lang));
