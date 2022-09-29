@@ -8,6 +8,8 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
+jest.mock('../../../../../../main/modules/oidc');
+
 describe('Claimant Date of Birth View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
