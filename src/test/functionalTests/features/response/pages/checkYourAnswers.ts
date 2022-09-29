@@ -16,7 +16,7 @@ export class CheckYourAnswersPage {
     I.see('Check your answers', 'h1');
     I.waitForElement(fields.cyaSigned);
     I.checkOption(fields.cyaSigned);
-    I.click(buttons.submit);
+    // I.click(buttons.submit);
     // I.waitForText('You’ve submitted your response');
   }
 }

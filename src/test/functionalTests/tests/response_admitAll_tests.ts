@@ -6,7 +6,7 @@ import { LoginSteps} from '../features/home/steps/login';
 const responseSteps: ResponseSteps = new ResponseSteps();
 const commonSteps: CommonSteps = new CommonSteps();
 const loginSteps: LoginSteps = new LoginSteps();
-const claimRef = '1645882162449409';
+const claimRef = '1664447267229555';
 const admitAll = 'admitAll';
 const immediatePayment = 'immediate';
 const bySetDate = 'bySetDate';
@@ -18,7 +18,7 @@ Before(() => {
   loginSteps.EnterUserCredentials(config.Username, config.Password);
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @test', () => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll', () => {
   commonSteps.EnterPersonalDetails(claimRef);
   responseSteps.EnterResponseToClaim(claimRef, admitAll);
   responseSteps.EnterPaymentOption(claimRef, immediatePayment);

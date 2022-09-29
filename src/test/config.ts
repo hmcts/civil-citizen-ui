@@ -11,7 +11,7 @@ const password = process.env.CITIZEN_PASSWORD;
 export const config = {
   TestUrl: process.env.TEST_URL || 'https://civil-citizen-ui.demo.platform.hmcts.net',
   env: process.env.ENVIRONMENT_NAME || 'local',
-  TestHeadlessBrowser: process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true,
+  TestHeadlessBrowser: process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : false,
   TestSlowMo: 250,
   WaitForTimeout: 20000,
   helpers: {},

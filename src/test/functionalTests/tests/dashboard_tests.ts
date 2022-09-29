@@ -11,7 +11,7 @@ Before(() => {
   loginSteps.EnterUserCredentials(config.Username, config.Password);
 });
 
-Scenario('Verify the content in the Dashboard page @citizenUI', () => {
+Scenario('Verify the content in the Dashboard page @citizenUI @test', () => {
   dashboardSteps.DashboardPage();
 });
 
