@@ -3,11 +3,12 @@ import {Claim} from '../../../../../main/common/models/claim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
-import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 import {
-  getSharedExpertSelection,
-  saveSharedExpertSelection,
-} from '../../../../../main/services/features/directionsQuestionnaire/sharedExpertService';
+  getConsiderClaimantDocuments, saveConsiderClaimantDocuments,
+} from '../../../../../main/services/features/directionsQuestionnaire/considerClaimantDocumentsService';
+import {
+  ConsiderClaimantDocuments,
+} from '../../../../../main/common/models/directionsQuestionnaire/considerClaimantDocuments';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -15,27 +16,29 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-describe('Shared Expert Service', () => {
-  describe('getSharedExpertSelection', () => {
-    it('should return shared expert object with undefined option', async () => {
+describe('Consider Claimant Documents Service', () => {
+  describe('getConsiderClaimantDocuments', () => {
+    it('should return consider claimant documents object with undefined options', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
-      const triedToSettle = await getSharedExpertSelection('validClaimId');
+      const considerClaimantDocuments = await getConsiderClaimantDocuments('validClaimId');
 
-      expect(triedToSettle.option).toBeUndefined();
+      expect(considerClaimantDocuments.option).toBeUndefined();
+      expect(considerClaimantDocuments.details).toBeUndefined();
     });
 
-    it('should return shared expert option with Yes option', async () => {
+    it('should return consider claimant documents option with Yes option and details', async () => {
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.sharedExpert = {option: YesNo.YES};
+      claim.directionQuestionnaire.considerClaimantDocuments = {option: YesNo.YES, details: 'details'};
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
-      const triedToSettle = await getSharedExpertSelection('validClaimId');
+      const considerClaimantDocuments = await getConsiderClaimantDocuments('validClaimId');
 
-      expect(triedToSettle.option).toBe(YesNo.YES);
+      expect(considerClaimantDocuments.option).toBe(YesNo.YES);
+      expect(considerClaimantDocuments.details).toContain('details');
     });
 
     it('should return error on redis failure', async () => {
@@ -43,41 +46,43 @@ describe('Shared Expert Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
 
-      await expect(getSharedExpertSelection('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getConsiderClaimantDocuments('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
-  describe('saveSharedExpertSelection', () => {
-    const sharedExpert: GenericYesNo = {
+  describe('saveConsiderClaimantDocuments', () => {
+    const considerClaimantDocuments: ConsiderClaimantDocuments = {
       option: YesNo.YES,
+      details: 'details',
     };
 
-    it('should save shared expert successfully', async () => {
+    it('should save consider claimant documents successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
-      await saveSharedExpertSelection('validClaimId', sharedExpert);
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire: {sharedExpert}});
+      await saveConsiderClaimantDocuments('validClaimId', considerClaimantDocuments);
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire: {considerClaimantDocuments}});
     });
 
-    it('should update shared expert successfully', async () => {
-      const updatedSharedExpert: GenericYesNo = {
+    it('should update consider claimant documents successfully', async () => {
+      const updatedConsiderClaimantDocuments: ConsiderClaimantDocuments = {
         option: YesNo.NO,
+        details: 'updated',
       };
       const updatedClaim = new Claim();
       updatedClaim.directionQuestionnaire = new DirectionQuestionnaire();
-      updatedClaim.directionQuestionnaire.sharedExpert = updatedSharedExpert;
+      updatedClaim.directionQuestionnaire.considerClaimantDocuments = considerClaimantDocuments;
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
-        claim.directionQuestionnaire.sharedExpert = sharedExpert;
+        claim.directionQuestionnaire.considerClaimantDocuments = considerClaimantDocuments;
         return claim;
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
-      await saveSharedExpertSelection('validClaimId', updatedSharedExpert);
+      await saveConsiderClaimantDocuments('validClaimId', updatedConsiderClaimantDocuments);
       expect(spySave).toHaveBeenCalledWith('validClaimId', updatedClaim);
     });
 
@@ -89,7 +94,7 @@ describe('Shared Expert Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
 
-      await expect(saveSharedExpertSelection('claimId', {option: YesNo.NO}))
+      await expect(saveConsiderClaimantDocuments('claimId', {option: YesNo.NO}))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });

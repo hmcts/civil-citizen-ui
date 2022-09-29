@@ -10,8 +10,7 @@ const explanationController = express.Router();
 
 explanationController.get(CITIZEN_EXPLANATION_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const explanation: Explanation = await getExplanation(req.params.id);
-    res.render(explanationViewPath, { form: new GenericForm(explanation) });
+    res.render(explanationViewPath, { form: new GenericForm(await getExplanation(req.params.id)) });
   } catch (error) {
     next(error);
   }

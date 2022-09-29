@@ -9,13 +9,12 @@ const carerViewPath = 'features/response/statementOfMeans/carer';
 const carerController = express.Router();
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
-  res.render(carerViewPath, { form });
+  res.render(carerViewPath, {form});
 }
 
 carerController.get(CITIZEN_CARER_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const carerForm: GenericYesNo = await getCarer(req.params.id);
-    renderView(new GenericForm(carerForm), res);
+    renderView(new GenericForm(await getCarer(req.params.id)), res);
   } catch (error) {
     next(error);
   }

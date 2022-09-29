@@ -10,8 +10,6 @@ const citizenAlreadyPaidViewPath = 'features/response/admission/partialAdmission
 const partialAdmissionService = new PartialAdmissionService();
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
-  const alreadyPaid = Object.assign(form);
-  alreadyPaid.option = form.model.option;
   res.render(citizenAlreadyPaidViewPath, {form});
 }
 

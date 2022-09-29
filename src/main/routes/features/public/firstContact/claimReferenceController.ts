@@ -11,8 +11,7 @@ const claimReferenceViewPath = 'features/public/firstContact/claim-reference';
 
 claimReferenceController.get(FIRST_CONTACT_CLAIM_REFERENCE_URL, (req: express.Request, res: express.Response) => {
   const firstContactClaimReference = req.cookies?.firstContact?.claimReference;
-  const form = new GenericForm(new ClaimReference(firstContactClaimReference));
-  res.render(claimReferenceViewPath,{form});
+  res.render(claimReferenceViewPath,{form: new GenericForm(new ClaimReference(firstContactClaimReference))});
 });
 
 claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, async (req: express.Request, res: express.Response) => {
@@ -27,7 +26,6 @@ claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, async (req: exp
     res.cookie('firstContact', cookie);
     res.redirect(FIRST_CONTACT_PIN_URL);
   }
-},
-);
+});
 
 export default claimReferenceController;

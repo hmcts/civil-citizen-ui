@@ -2,12 +2,11 @@ import * as draftStoreService from '../../../../../main/modules/draft-store/draf
 import {Claim} from '../../../../../main/common/models/claim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {
-  getRequestExtra4weeks,
-  saveRequestExtra4weeks,
-} from '../../../../../main/services/features/directionsQuestionnaire/requestExtra4WeeksService';
 import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
 import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
+import {
+  getPermissionForExpert, savePermissionForExpert,
+} from '../../../../../main/services/features/directionsQuestionnaire/permissionForExpertService';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -15,27 +14,25 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-describe('Request extra 4 weeks to settle the Claim Service', () => {
-  describe('getRequestExtra4weeks', () => {
-    it('should return request extra 4 weeks object with undefined option', async () => {
+describe('Tried to Settle the Claim Service', () => {
+  describe('getPermissionForExpert', () => {
+    it('should return permission for expert object with undefined option', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
-      const requestExtra4Weeks = await getRequestExtra4weeks('validClaimId');
-
-      expect(requestExtra4Weeks.option).toBeUndefined();
+      const triedToSettle = await getPermissionForExpert('validClaimId');
+      expect(triedToSettle.option).toBeUndefined();
     });
 
-    it('should return request extra 4 weeks option with Yes option', async () => {
+    it('should return permission for expert option with Yes option', async () => {
       const claim = new Claim();
       claim.directionQuestionnaire = new DirectionQuestionnaire();
-      claim.directionQuestionnaire.requestExtra4weeks = {option: YesNo.YES};
+      claim.directionQuestionnaire.permissionForExpert = {option: YesNo.YES};
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
       });
-      const requestExtra4Weeks = await getRequestExtra4weeks('validClaimId');
-
-      expect(requestExtra4Weeks.option).toBe(YesNo.YES);
+      const triedToSettle = await getPermissionForExpert('validClaimId');
+      expect(triedToSettle.option).toBe(YesNo.YES);
     });
 
     it('should return error on redis failure', async () => {
@@ -43,41 +40,41 @@ describe('Request extra 4 weeks to settle the Claim Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
 
-      await expect(getRequestExtra4weeks('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getPermissionForExpert('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
-  describe('saveRequestExtra4weeks', () => {
-    const requestExtra4weeks: GenericYesNo = {
+  describe('savePermissionForExpert', () => {
+    const permissionForExpert: GenericYesNo = {
       option: YesNo.YES,
     };
 
-    it('should save request extra 4 weeks successfully', async () => {
+    it('should save permission for expert successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
-      await saveRequestExtra4weeks('validClaimId', requestExtra4weeks);
-      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire: {requestExtra4weeks}});
+      await savePermissionForExpert('validClaimId', permissionForExpert);
+      expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire: {permissionForExpert}});
     });
 
-    it('should update request extra 4 weeks successfully', async () => {
-      const updatedRequestExtra4Weeks: GenericYesNo = {
+    it('should update permission for expert successfully', async () => {
+      const updatedPermissionForExpert: GenericYesNo = {
         option: YesNo.NO,
       };
       const updatedClaim = new Claim();
       updatedClaim.directionQuestionnaire = new DirectionQuestionnaire();
-      updatedClaim.directionQuestionnaire.requestExtra4weeks = updatedRequestExtra4Weeks;
+      updatedClaim.directionQuestionnaire.permissionForExpert = updatedPermissionForExpert;
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
-        claim.directionQuestionnaire.requestExtra4weeks = requestExtra4weeks;
+        claim.directionQuestionnaire.permissionForExpert = permissionForExpert;
         return claim;
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
-      await saveRequestExtra4weeks('validClaimId', updatedRequestExtra4Weeks);
+      await savePermissionForExpert('validClaimId', updatedPermissionForExpert);
       expect(spySave).toHaveBeenCalledWith('validClaimId', updatedClaim);
     });
 
@@ -89,7 +86,7 @@ describe('Request extra 4 weeks to settle the Claim Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
 
-      await expect(saveRequestExtra4weeks('claimId', {option: YesNo.NO}))
+      await expect(savePermissionForExpert('claimId', {option: YesNo.NO}))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });

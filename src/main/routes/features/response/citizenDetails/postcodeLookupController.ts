@@ -1,6 +1,6 @@
 import * as express from 'express';
-import { AddressInfoResponse, OSPlacesClient } from '@hmcts/os-places-client';
-import { POSTCODE_LOOKUP_URL } from '../../../urls';
+import {AddressInfoResponse, OSPlacesClient} from '@hmcts/os-places-client';
+import {POSTCODE_LOOKUP_URL} from '../../../urls';
 import config from 'config';
 
 const postcodeLookupApiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
@@ -18,7 +18,7 @@ export default express.Router()
     }
     osPlacesClient.lookupByPostcodeAndDataSet(req.query.postcode as string, 'DPA,LPI')
       .then((addressInfoResponse: AddressInfoResponse) => {
-        if(!addressInfoResponse.isValid){
+        if (!addressInfoResponse.isValid) {
           throw new Error('Invalid post code');
         }
 
@@ -29,7 +29,7 @@ export default express.Router()
             ));
         res.json(addressInfoResponse);
       })
-      .catch((err:Error) => {
+      .catch((err: Error) => {
         next(err);
       });
   });

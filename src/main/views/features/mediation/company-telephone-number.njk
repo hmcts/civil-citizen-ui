@@ -1,11 +1,9 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
-{% from "../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../macro/canWeUseCompanyInputs.njk" import canWeUseCompanyInputs %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
@@ -68,11 +66,10 @@
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
               }) }}
               {{ contactUsForHelp(t) }}
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
-
     </main>
   </div>
 {% endblock %}

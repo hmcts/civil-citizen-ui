@@ -56,8 +56,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Requ
       renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(req.params.id, form.model);
-      const claim: Claim = await submitResponse(<AppRequest>req);
-      console.log('response retrieved from service and logged in controller ' + claim);
+      await submitResponse(<AppRequest>req);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CONFIRMATION_URL));
     }
   } catch (error) {
