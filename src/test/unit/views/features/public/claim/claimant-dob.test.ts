@@ -96,7 +96,7 @@ describe('Claimant Date of Birth View', () => {
         .toContain('#day');
     });
 
-    it('should display correct error message for radios', () => {
+    it('should display correct error message for date inputs', () => {
       const errorMessages = htmlDocument.getElementsByClassName('govuk-error-message');
       expect(errorMessages[0].innerHTML).toContain(TestMessages.VALID_YEAR);
       expect(errorMessages[1].innerHTML).toContain(TestMessages.VALID_MONTH);
