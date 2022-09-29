@@ -29,11 +29,13 @@
             {{employerRow(employer, loop.index0, form.errorFor,t)}}
           {% endfor %}
         </div>
-        <div class="govuk-form-group">
-          {{ govukButton({
-            text: t('PAGES.WHO_EMPLOYS_YOU.ADD_ANOTHER_JOB'),
-            classes: "govuk-button--secondary append-row"
-          }) }}
+        <div class="govuk-grid-row">
+          <div class="govuk-form-group govuk-grid-column-two-thirds">
+            {{ govukButton({
+              text: t('PAGES.WHO_EMPLOYS_YOU.ADD_ANOTHER_JOB'),
+              classes: "govuk-button--secondary append-row"
+            }) }}
+          </div>
         </div>
         <div class="govuk-form-group">
           {{ govukButton({
