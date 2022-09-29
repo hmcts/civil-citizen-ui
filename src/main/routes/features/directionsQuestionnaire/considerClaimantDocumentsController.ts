@@ -1,16 +1,19 @@
 import * as express from 'express';
 import {DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {ConsiderClaimantDocuments} from 'models/directionsQuestionnaire/hearing/considerClaimantDocuments';
 import {
-  getConsiderClaimantDocuments,
-  getConsiderClaimantDocumentsForm,
-  saveConsiderClaimantDocuments,
-} from '../../../services/features/directionsQuestionnaire/considerClaimantDocumentsService';
+  ConsiderClaimantDocuments,
+} from '../../../common/models/directionsQuestionnaire/hearing/considerClaimantDocuments';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {
+  getDirectionQuestionnaire,
+  saveDirectionQuestionnaire,
+} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const considerClaimantDocumentsController = express.Router();
 const considerClaimantDocumentsViewPath = 'features/directionsQuestionnaire/consider-claimant-documents';
+const dqPropertyName = 'considerClaimantDocuments';
+const dqParentName = 'hearing';
 
 function renderView(form: GenericForm<ConsiderClaimantDocuments>, res: express.Response): void {
   res.render(considerClaimantDocumentsViewPath, {form});
@@ -18,7 +21,12 @@ function renderView(form: GenericForm<ConsiderClaimantDocuments>, res: express.R
 
 considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
-    renderView(new GenericForm(await getConsiderClaimantDocuments(req.params.id)), res);
+
+    const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
+    const considerClaimantDocuments = directionQuestionnaire.hearing.considerClaimantDocuments ?
+      directionQuestionnaire.hearing.considerClaimantDocuments : new ConsiderClaimantDocuments();
+
+    renderView(new GenericForm(considerClaimantDocuments), res);
   } catch (error) {
     next(error);
   }
@@ -27,14 +35,13 @@ considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, asyn
 considerClaimantDocumentsController.post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
-    const considerClaimantDocumentsForm = getConsiderClaimantDocumentsForm(req.body.option, req.body.details);
-    const form = new GenericForm(considerClaimantDocumentsForm);
-    form.validateSync();
+    const considerClaimantDocuments = new GenericForm(new ConsiderClaimantDocuments(req.body.option, req.body.details));
+    considerClaimantDocuments.validateSync();
 
-    if (form.hasErrors()) {
-      renderView(form, res);
+    if (considerClaimantDocuments.hasErrors()) {
+      renderView(considerClaimantDocuments, res);
     } else {
-      await saveConsiderClaimantDocuments(claimId, considerClaimantDocumentsForm);
+      await saveDirectionQuestionnaire(claimId, considerClaimantDocuments.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL));
     }
   } catch (error) {

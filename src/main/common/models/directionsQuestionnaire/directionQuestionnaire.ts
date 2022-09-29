@@ -9,7 +9,6 @@ export class DirectionQuestionnaire {
 
   defendantYourselfEvidence?: GenericYesNo;
   supportRequired?: SupportRequired;
-
   hearing?: Hearing;
   vulnerabilityQuestions?: VulnerabilityQuestions;
   experts?: Experts;

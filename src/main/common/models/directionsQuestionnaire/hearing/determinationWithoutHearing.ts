@@ -3,15 +3,15 @@ import {YesNo} from '../../../form/models/yesNo';
 
 export class DeterminationWithoutHearing {
   @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
-    isDeterminationWithoutHearing?: string;
+    option?: string;
 
-  @ValidateIf(o => o.isDeterminationWithoutHearing === YesNo.NO)
+  @ValidateIf(o => o.option === YesNo.NO)
   @IsDefined({message: 'ERRORS.TELL_US_WHY'})
   @IsNotEmpty({message: 'ERRORS.TELL_US_WHY'})
     reasonForHearing?: string;
 
-  constructor(isDeterminationWithoutHearing?: string, reasonForHearing?: string) {
-    this.isDeterminationWithoutHearing = isDeterminationWithoutHearing;
+  constructor(option?: string, reasonForHearing?: string) {
+    this.option = option;
     this.reasonForHearing = reasonForHearing;
   }
 }

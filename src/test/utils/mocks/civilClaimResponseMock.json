@@ -43,7 +43,7 @@
       "vulnerabilityQuestions": {},
       "experts": {
         "expertReportDetails": {
-          "hasExpertReports": "yes",
+          "option": "yes",
           "reportDetails": [
             {
               "expertName": "John Doe",

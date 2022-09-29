@@ -26,8 +26,7 @@ expertCanStillExamineController.get(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (r
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
     const expertCanStillExamine = directionQuestionnaire.experts.expertCanStillExamine ?
-      new ExpertCanStillExamine(directionQuestionnaire.experts.expertCanStillExamine.option,
-        directionQuestionnaire.experts.expertCanStillExamine.details) : new ExpertCanStillExamine();
+      directionQuestionnaire.experts.expertCanStillExamine : new ExpertCanStillExamine();
 
     renderView(new GenericForm(expertCanStillExamine), res);
   } catch (error) {

@@ -37,13 +37,10 @@ defendantExpertEvidenceController.post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (
     if (defendantExpertEvidence.hasErrors()) {
       renderView(defendantExpertEvidence, res);
     } else {
-      defendantExpertEvidence.model.option = req.body.option;
       await saveDirectionQuestionnaire(claimId, defendantExpertEvidence.model, dqPropertyName, dqParentName);
-      if (req.body.option === YesNo.YES) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL));
-      } else {
+      (defendantExpertEvidence.model.option === YesNo.YES) ?
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL)) :
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
-      }
     }
   } catch (error) {
     next(error);

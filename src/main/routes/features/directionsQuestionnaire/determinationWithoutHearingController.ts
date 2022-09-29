@@ -1,29 +1,33 @@
 import * as express from 'express';
 import {DETERMINATION_WITHOUT_HEARING_URL, EXPERT_GUIDANCE_URL} from '../../urls';
-import {DeterminationWithoutHearing} from 'models/directionsQuestionnaire/hearing/determinationWithoutHearing';
-import {GenericForm} from '../../../common/form/models/genericForm';
 import {
-  getDeterminationWithoutHearing,
-  getDeterminationWithoutHearingForm,
-} from '../../../services/features/directionsQuestionnaire/determinationWithoutHearingService';
+  DeterminationWithoutHearing,
+} from '../../../common/models/directionsQuestionnaire/hearing/determinationWithoutHearing';
+import {GenericForm} from '../../../common/form/models/genericForm';
+
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {
+  getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const determinationWithoutHearingController = express.Router();
 const determinationWithoutHearingViewPath = 'features/directionsQuestionnaire/determination-without-hearing';
+const dqPropertyName = 'determinationWithoutHearing';
+const dqParentName = 'hearing';
 
 function renderView(form: GenericForm<DeterminationWithoutHearing>, res: express.Response): void {
-  const determinationWithoutHearing = Object.assign(form);
-  determinationWithoutHearing.option = form.model.isDeterminationWithoutHearing;
-  res.render(determinationWithoutHearingViewPath, {form: determinationWithoutHearing});
+  res.render(determinationWithoutHearingViewPath, {form});
 }
 
 determinationWithoutHearingController
   .get(DETERMINATION_WITHOUT_HEARING_URL, async (req, res, next) => {
     try {
-      renderView(new GenericForm(await getDeterminationWithoutHearing(req.params.id)), res);
+      const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
+      const determinationWithoutHearing = directionQuestionnaire?.hearing?.determinationWithoutHearing ?
+        directionQuestionnaire.hearing.determinationWithoutHearing : new DeterminationWithoutHearing();
+
+      renderView(new GenericForm(determinationWithoutHearing), res);
     } catch (error) {
       next(error);
     }
@@ -33,14 +37,13 @@ determinationWithoutHearingController
   .post(DETERMINATION_WITHOUT_HEARING_URL, async (req, res, next) => {
     try {
       const claimId = req.params.id;
-      const determinationWithoutHearingForm = getDeterminationWithoutHearingForm(req.body.isDeterminationWithoutHearing, req.body.reasonForHearing);
-      const form = new GenericForm(determinationWithoutHearingForm);
-      form.validateSync();
+      const determinationWithoutHearing = new GenericForm(new DeterminationWithoutHearing(req.body.option, req.body.reasonForHearing));
+      determinationWithoutHearing.validateSync();
 
-      if (form.hasErrors()) {
-        renderView(form, res);
+      if (determinationWithoutHearing.hasErrors()) {
+        renderView(determinationWithoutHearing, res);
       } else {
-        await saveDirectionQuestionnaire(claimId, determinationWithoutHearingForm, 'determinationWithoutHearing');
+        await saveDirectionQuestionnaire(claimId, determinationWithoutHearing.model, dqPropertyName, dqParentName);
         res.redirect(constructResponseUrlWithIdParams(claimId, EXPERT_GUIDANCE_URL));
       }
     } catch (error) {
