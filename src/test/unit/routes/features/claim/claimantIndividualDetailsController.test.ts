@@ -127,7 +127,7 @@ describe('Claimant Individual Details page', () => {
   it('should return your details page with information without correspondent address', async () => {
     const buildClaimOfApplicantWithoutCorrespondent = (): Party => {
       claim.applicant1 = new Respondent();
-      claim.applicant1.type = CounterpartyType.INDIVIDUAL
+      claim.applicant1.type = CounterpartyType.INDIVIDUAL;
       claim.applicant1.individualTitle = 'individualTitle';
       claim.applicant1.individualFirstName = 'individualFirstName';
       claim.applicant1.individualLastName = 'individualLastName';
@@ -443,7 +443,6 @@ describe('Claimant Individual Details page', () => {
         expect(res.text).toContain(VALID_CORRESPONDENCE_POSTCODE);
       });
   });
-
 
   it('should redirect to claimant DOB screen', async () => {
     mockGetCaseData.mockImplementation(async () => {
