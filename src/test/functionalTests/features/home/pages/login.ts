@@ -10,7 +10,7 @@ const buttons = {
   submit: 'input.button',
   hmctsSignIn: 'input[type="submit"]',
   acceptCookies: 'button[id="cookie-accept-submit"]',
-  hideMessage: 'button[name="hide-accepted"]'
+  hideMessage: 'button[name="hide-accepted"]',
 };
 
 export class LoginPage {

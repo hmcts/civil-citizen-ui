@@ -36,7 +36,4 @@ export class DashboardPage {
     I.see('Status');
     I.see('Contact us for help');
   }
-  verifyContactUs(): void{
-
-  }
 }
