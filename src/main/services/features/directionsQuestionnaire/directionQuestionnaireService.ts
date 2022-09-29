@@ -58,7 +58,7 @@ const saveDirectionQuestionnaire = async (claimId: string, value: any, direction
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
-    throw error; phoneOrVideoHearingService
+    throw error;
   }
 };
 

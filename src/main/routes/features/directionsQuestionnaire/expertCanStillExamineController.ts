@@ -11,7 +11,7 @@ import {
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {YesNo} from '../../../common/form/models/yesNo';
-import {ExpertCanStillExamine} from '../../../common/models/directionsQuestionnaire/expertCanStillExamine';
+import {ExpertCanStillExamine} from '../../../common/models/directionsQuestionnaire/experts/expertCanStillExamine';
 
 const expertCanStillExamineController = express.Router();
 const expertCanStillExamineViewPath = 'features/directionsQuestionnaire/defendant-expert-can-still-examine';

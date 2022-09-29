@@ -5,7 +5,7 @@ import {DirectionQuestionnaire} from '../../../common/models/directionsQuestionn
 import {Hearing} from '../../../common/models/directionsQuestionnaire/hearing/hearing';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('supportRequiredService');
+const logger = Logger.getLogger('PhoneOrVideoHearing');
 
 export const getphoneOrVideoHearing = async (claimId: string): Promise<PhoneOrVideoHearing> => {
   try {
