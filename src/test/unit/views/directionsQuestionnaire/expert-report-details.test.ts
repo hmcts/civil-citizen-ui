@@ -86,7 +86,7 @@ describe('Expert Report Details View', () => {
       expect(button.innerHTML).toContain('Add another report');
     });
 
-    it('should display save continue button',() => {
+    it('should display save continue button', () => {
       const button = mainWrapper.getElementsByClassName('govuk-button')[2];
       expect(button.innerHTML).toContain('Save and continue');
     });
@@ -117,7 +117,7 @@ describe('Expert Report Details View', () => {
     beforeEach(async () => {
       const response = await request(app).post(DQ_EXPERT_REPORT_DETAILS_URL)
         .send({
-          hasExpertReports: 'yes',
+          option: 'yes',
           reportDetails: mockReportDetails,
         });
       const dom = new JSDOM(response.text);

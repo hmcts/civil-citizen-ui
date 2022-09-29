@@ -1,9 +1,9 @@
 import {IsDefined} from 'class-validator';
-import {YesNoNotReceived} from '../../../../common/form/models/yesNo';
+import {YesNoNotReceived} from '../../../form/models/yesNo';
 
 export class SentExpertReports {
 
-  @IsDefined({ message: 'ERRORS.VALID_SENT_EXPERT_REPORTS' })
+  @IsDefined({message: 'ERRORS.VALID_SENT_EXPERT_REPORTS'})
     option?: YesNoNotReceived;
 
   constructor(option?: YesNoNotReceived) {

@@ -3,22 +3,26 @@ import {DQ_EXPERT_EXAMINATION_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL, PERMISSION_FOR
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {
-  getPermissionForExpert,
-  getPermissionForExpertForm,
-  savePermissionForExpert,
-} from '../../../services/features/directionsQuestionnaire/permissionForExpertService';
 import {YesNo} from '../../../common/form/models/yesNo';
+import {
+  getGenericOption,
+  getGenericOptionForm,
+  saveDirectionQuestionnaire,
+} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const permissionForExpertController = express.Router();
+const permissionForExpertViewPath = 'features/directionsQuestionnaire/permission-for-expert';
+const dqPropertyName = 'permissionForExpert';
+const dqParentName = 'experts';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
-  res.render('features/directionsQuestionnaire/permission-for-expert', {form});
+  res.render(permissionForExpertViewPath, {form});
 }
 
 permissionForExpertController.get(PERMISSION_FOR_EXPERT_URL, async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getPermissionForExpert(req.params.id)), res);
+    const permissionForExpert = await getGenericOption(req.params.id, dqPropertyName, dqParentName);
+    renderView(new GenericForm(permissionForExpert), res);
   } catch (error) {
     next(error);
   }
@@ -27,15 +31,14 @@ permissionForExpertController.get(PERMISSION_FOR_EXPERT_URL, async (req, res, ne
 permissionForExpertController.post(PERMISSION_FOR_EXPERT_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const permissionForExpert = getPermissionForExpertForm(req.body.option);
-    const form = new GenericForm(permissionForExpert);
-    form.validateSync();
+    const permissionForExpert = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
+    permissionForExpert.validateSync();
 
-    if (form.hasErrors()) {
-      renderView(form, res);
+    if (permissionForExpert.hasErrors()) {
+      renderView(permissionForExpert, res);
     } else {
-      await savePermissionForExpert(claimId, permissionForExpert);
-      (form.model.option === YesNo.YES) ?
+      await saveDirectionQuestionnaire(claimId, permissionForExpert.model, dqPropertyName, dqParentName);
+      (permissionForExpert.model.option === YesNo.YES) ?
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_EXAMINATION_URL)) :
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
     }

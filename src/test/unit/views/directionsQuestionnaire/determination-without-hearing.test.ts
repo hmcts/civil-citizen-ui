@@ -102,7 +102,7 @@ describe('Determination Without Hearing View', () => {
       });
 
       it('should display choose option error above radio buttons', () => {
-        const error = htmlDocument.getElementById('isDeterminationWithoutHearing-error');
+        const error = htmlDocument.getElementById('option-error');
         expect(error?.innerHTML).toContain(chooseOption);
       });
     });
@@ -117,7 +117,7 @@ describe('Determination Without Hearing View', () => {
           .reply(200, {id_token: citizenRoleToken});
         app.locals.draftStoreClient = mockCivilClaim;
         const response = await request(app).post(DETERMINATION_WITHOUT_HEARING_URL)
-          .send({isDeterminationWithoutHearing: 'no'});
+          .send({option: 'no'});
         const dom = new JSDOM(response.text);
         htmlDocument = dom.window.document;
       });
