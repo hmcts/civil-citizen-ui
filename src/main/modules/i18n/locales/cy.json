@@ -150,6 +150,7 @@
       "CORRECT_INFORMATION_CONFIRMATION": "Rwy'n cadarnhau fy mod i'n credu bod y manylion rwyf wedi'u darparu yn gywir.",
       "DETAILS_TRUTHY": "Mae manylion gofynion y gwrandawiad ar y dudalen hon yn wir hyd eithaf fy ngwybodaeth.",
       "INFORMATION_ON_PAGE": "Mae'r wybodaeth ar y dudalen hon yn ffurfio eich {{ type }}. Gallwch ei gweld ar y ffurflen {{ type }} ar ôl i chi ei chyflwyno.",
+      "JOB_TITLE": "Job title",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the {{ typeOfStatement }}.",
       "STATEMENT_OF_WORK": "satganiad gwirionedd",
       "TITLE": "Datganiad Gwirionedd",
