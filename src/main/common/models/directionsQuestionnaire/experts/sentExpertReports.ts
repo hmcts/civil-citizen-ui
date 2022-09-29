@@ -1,5 +1,5 @@
 import {IsDefined} from 'class-validator';
-import {YesNoNotReceived} from '../../../common/form/models/yesNo';
+import {YesNoNotReceived} from '../../../../common/form/models/yesNo';
 
 export class SentExpertReports {
 

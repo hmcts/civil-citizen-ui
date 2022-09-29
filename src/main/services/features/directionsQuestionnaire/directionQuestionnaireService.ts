@@ -16,12 +16,13 @@ const getDirectionQuestionnaire = async (claimId: string): Promise<DirectionQues
   }
 };
 
-const getGenericOption = async (claimId: string, directionQuestionnairePropertyName: string): Promise<GenericYesNo> => {
+const getGenericOption = async (claimId: string, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<GenericYesNo> => {
   try {
     const caseData = await getCaseDataFromStore(claimId);
     const directionQuestionnaire: any = caseData?.directionQuestionnaire ? caseData.directionQuestionnaire : new DirectionQuestionnaire();
-
-    if (directionQuestionnaire[directionQuestionnairePropertyName]) {
+    if (parentPropertyName && directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName]) {
+      return directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName];
+    } else if (!parentPropertyName && directionQuestionnaire[directionQuestionnairePropertyName]) {
       return directionQuestionnaire[directionQuestionnairePropertyName];
     } else {
       return new GenericYesNo(undefined, getDirectionQuestionnaireErrorMessage(directionQuestionnairePropertyName));
@@ -36,20 +37,28 @@ const getGenericOptionForm = (option: string, propertyName: string): GenericYesN
   return new GenericYesNo(option, getDirectionQuestionnaireErrorMessage(propertyName));
 };
 
-const saveDirectionQuestionnaire = async (claimId: string, value: any, directionQuestionnairePropertyName: string): Promise<void> => {
+const saveDirectionQuestionnaire = async (claimId: string, value: any, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<void> => {
   try {
     const claim: any = await getCaseDataFromStore(claimId);
     if (claim.directionQuestionnaire) {
-      claim.directionQuestionnaire[directionQuestionnairePropertyName] = value;
+      if (parentPropertyName) {
+        claim.directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName] = value;
+      } else {
+        claim.directionQuestionnaire[directionQuestionnairePropertyName] = value;
+      }
     } else {
       const directionQuestionnaire: any = new DirectionQuestionnaire();
-      directionQuestionnaire[directionQuestionnairePropertyName] = value;
+      if (parentPropertyName) {
+        directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName] = value;
+      } else {
+        directionQuestionnaire[directionQuestionnairePropertyName] = value;
+      }
       claim.directionQuestionnaire = directionQuestionnaire;
     }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
-    throw error;
+    throw error; phoneOrVideoHearingService
   }
 };
 
@@ -59,4 +68,9 @@ const getDirectionQuestionnaireErrorMessage = (propertyName: string): string => 
     undefined;
 };
 
-export {getDirectionQuestionnaire, saveDirectionQuestionnaire, getGenericOption, getGenericOptionForm};
+export {
+  getDirectionQuestionnaire,
+  saveDirectionQuestionnaire,
+  getGenericOption,
+  getGenericOptionForm,
+};

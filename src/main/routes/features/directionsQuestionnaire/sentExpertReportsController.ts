@@ -1,7 +1,7 @@
 import * as express from 'express';
 import {DQ_SENT_EXPERT_REPORTS_URL, DQ_SHARE_AN_EXPERT_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {SentExpertReports} from '../../../common/models/directionsQuestionnaire/sentExpertReports';
+import {SentExpertReports} from '../../../common/models/directionsQuestionnaire/experts/sentExpertReports';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
@@ -19,7 +19,7 @@ function renderView(form: GenericForm<SentExpertReports>, res: express.Response)
 sentExpertReportsController.get(DQ_SENT_EXPERT_REPORTS_URL, async (req, res, next) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const sentExpertReports = directionQuestionnaire.sentExpertReports ? new SentExpertReports(directionQuestionnaire.sentExpertReports.option) : new SentExpertReports();
+    const sentExpertReports = directionQuestionnaire.experts.sentExpertReports ? new SentExpertReports(directionQuestionnaire.experts.sentExpertReports.option) : new SentExpertReports();
     renderView(new GenericForm(sentExpertReports), res);
   } catch (error) {
     next(error);

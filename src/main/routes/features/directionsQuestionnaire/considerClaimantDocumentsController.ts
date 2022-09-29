@@ -4,7 +4,7 @@ import {
   DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
 } from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {ConsiderClaimantDocuments} from '../../../common/models/directionsQuestionnaire/considerClaimantDocuments';
+import {ConsiderClaimantDocuments} from '../../../common/models/directionsQuestionnaire/hearing/considerClaimantDocuments';
 import {
   getConsiderClaimantDocuments, getConsiderClaimantDocumentsForm, saveConsiderClaimantDocuments,
 } from '../../../services/features/directionsQuestionnaire/considerClaimantDocumentsService';

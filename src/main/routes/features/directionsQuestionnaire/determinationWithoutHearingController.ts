@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {DETERMINATION_WITHOUT_HEARING_URL, EXPERT_GUIDANCE_URL} from '../../urls';
-import {DeterminationWithoutHearing} from '../../../common/models/directionsQuestionnaire/determinationWithoutHearing';
+import {DeterminationWithoutHearing} from '../../../common/models/directionsQuestionnaire//hearing/determinationWithoutHearing';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {
   getDeterminationWithoutHearing, getDeterminationWithoutHearingForm,

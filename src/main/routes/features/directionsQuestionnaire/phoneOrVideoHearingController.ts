@@ -4,12 +4,13 @@ import {
   VULNERABILITY_URL,
 } from '../../urls';
 import {
-  getDirectionQuestionnaire,
-  saveDirectionQuestionnaire,
-} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+  getphoneOrVideoHearing,
+  getphoneOrVideoHearingForm,
+  savephoneOrVideoHearing,
+} from '../../../services/features/directionsQuestionnaire/phoneOrVideoHearingService';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {PhoneOrVideoHearing} from '../../../common/models/directionsQuestionnaire/phoneOrVideoHearing';
+import {PhoneOrVideoHearing} from '../../../common/models/directionsQuestionnaire/hearing/phoneOrVideoHearing';
 
 const phoneOrVideoHearingController = express.Router();
 
@@ -21,9 +22,7 @@ function renderView(form: GenericForm<PhoneOrVideoHearing>, res: express.Respons
 
 phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const phoneOrVideoHearing = directionQuestionnaire.phoneOrVideoHearing ? directionQuestionnaire.phoneOrVideoHearing : new PhoneOrVideoHearing();
-
+    const phoneOrVideoHearing = await getphoneOrVideoHearing(req.params.id);
     renderView(new GenericForm(phoneOrVideoHearing), res);
   } catch (error) {
     next(error);
@@ -33,13 +32,14 @@ phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req, res
 phoneOrVideoHearingController.post(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
-    const phoneOrVideoHearing = new GenericForm(new PhoneOrVideoHearing(req.body.option, req.body.details));
-    phoneOrVideoHearing.validateSync();
+    const phoneOrVideoHearingForm = getphoneOrVideoHearingForm(req.body.option, req.body.details);
+    const form = new GenericForm(phoneOrVideoHearingForm);
+    form.validateSync();
 
-    if (phoneOrVideoHearing.hasErrors()) {
-      renderView(phoneOrVideoHearing, res);
+    if (form.hasErrors()) {
+      renderView(form, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, phoneOrVideoHearing.model, 'phoneOrVideoHearing');
+      await savephoneOrVideoHearing(claimId, phoneOrVideoHearingForm);
       res.redirect(constructResponseUrlWithIdParams(claimId, VULNERABILITY_URL));
     }
   } catch (error) {
