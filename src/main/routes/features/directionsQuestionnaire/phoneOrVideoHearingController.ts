@@ -4,17 +4,18 @@ import {
   VULNERABILITY_URL,
 } from '../../urls';
 import {
-  getphoneOrVideoHearing,
-  getphoneOrVideoHearingForm,
-  savephoneOrVideoHearing,
-} from '../../../services/features/directionsQuestionnaire/phoneOrVideoHearingService';
+  getDirectionQuestionnaire,
+  saveDirectionQuestionnaire,
+} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {PhoneOrVideoHearing} from '../../../common/models/directionsQuestionnaire/hearing/phoneOrVideoHearing';
+import {YesNo} from '../../../common/form/models/yesNo';
 
 const phoneOrVideoHearingController = express.Router();
-
 const phoneOrVideoHearingViewPath = 'features/directionsQuestionnaire/phone-or-video-hearing';
+const dqPropertyName = 'phoneOrVideoHearing';
+const dqParentName = 'hearing';
 
 function renderView(form: GenericForm<PhoneOrVideoHearing>, res: express.Response): void {
   res.render(phoneOrVideoHearingViewPath, {form});
@@ -22,7 +23,9 @@ function renderView(form: GenericForm<PhoneOrVideoHearing>, res: express.Respons
 
 phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const phoneOrVideoHearing = await getphoneOrVideoHearing(req.params.id);
+    const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
+    const phoneOrVideoHearing = directionQuestionnaire.hearing?.phoneOrVideoHearing ?
+      directionQuestionnaire.hearing.phoneOrVideoHearing : new PhoneOrVideoHearing();
     renderView(new GenericForm(phoneOrVideoHearing), res);
   } catch (error) {
     next(error);
@@ -32,14 +35,14 @@ phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req, res
 phoneOrVideoHearingController.post(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
-    const phoneOrVideoHearingForm = getphoneOrVideoHearingForm(req.body.option, req.body.details);
-    const form = new GenericForm(phoneOrVideoHearingForm);
-    form.validateSync();
+    const details = req.body.option === YesNo.YES ? req.body.details : undefined;
+    const phoneOrVideoHearing = new GenericForm(new PhoneOrVideoHearing(req.body.option, details));
+    phoneOrVideoHearing.validateSync();
 
-    if (form.hasErrors()) {
-      renderView(form, res);
+    if (phoneOrVideoHearing.hasErrors()) {
+      renderView(phoneOrVideoHearing, res);
     } else {
-      await savephoneOrVideoHearing(claimId, phoneOrVideoHearingForm);
+      await saveDirectionQuestionnaire(claimId, phoneOrVideoHearing.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, VULNERABILITY_URL));
     }
   } catch (error) {
