@@ -127,6 +127,7 @@ describe('Claimant Individual Details page', () => {
   it('should return your details page with information without correspondent address', async () => {
     const buildClaimOfApplicantWithoutCorrespondent = (): Party => {
       claim.applicant1 = new Respondent();
+      claim.applicant1.type = CounterpartyType.INDIVIDUAL
       claim.applicant1.individualTitle = 'individualTitle';
       claim.applicant1.individualFirstName = 'individualFirstName';
       claim.applicant1.individualLastName = 'individualLastName';
@@ -138,6 +139,35 @@ describe('Claimant Individual Details page', () => {
     });
     await request(app)
       .get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Enter your details');
+      });
+  });
+
+  it('should return your details page with no primary, correspondence address or claimant details', async () => {
+    const buildClaimOfApplicantWithoutInformation = (): Party => {
+      claim.applicant1 = new Respondent();
+      claim.applicant1.primaryAddress = undefined;
+      return claim.applicant1;
+    };
+    mockGetCaseData.mockImplementation(async () => {
+      return buildClaimOfApplicantWithoutInformation();
+    });
+    await request(app)
+      .get(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Enter your details');
+      });
+  });
+
+  it('get/Claimant individual details - should return test variable when there is no data on redis and civil-service', async () => {
+    mockGetCaseData.mockImplementation(async () => {
+      return new Respondent();
+    });
+    await request(app)
+      .get('/claim/claimant-individual-details')
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter your details');
@@ -414,17 +444,6 @@ describe('Claimant Individual Details page', () => {
       });
   });
 
-  it('get/Claimant individual details - should return test variable when there is no data on redis and civil-service', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return new Respondent();
-    });
-    await request(app)
-      .get('/claim/claimant-individual-details')
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter your details');
-      });
-  });
 
   it('should redirect to claimant DOB screen', async () => {
     mockGetCaseData.mockImplementation(async () => {
