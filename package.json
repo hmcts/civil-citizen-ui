@@ -16,7 +16,7 @@
     "test:routes": "jest -c jest.routes.config.js",
     "test:a11y": "jest -c jest.a11y.config.js --maxWorkers 15 --forceExit",
     "sonar-scan": "sonar-scanner",
-    "test:smoke": "jest -c jest.smoketest.config.js",
+    "test:smoke": "yarn test:functional:codeceptjs run --grep @smoketest --reporter mocha-multi --verbose",
     "test:functional": "yarn test:functional:codeceptjs run --grep @test --reporter mocha-multi --verbose",
     "test:crossbrowser": "SAUCE='true' yarn test:crossbrowser:codeceptjs run",
     "test:crossbrowser:playwright": "yarn test:crossbrowser:codeceptjs run-multiple crossBrowser",
