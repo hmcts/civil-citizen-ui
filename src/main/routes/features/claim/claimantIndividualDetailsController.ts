@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {CLAIM_CLAIMANT_DOB, CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../urls';
+import {CLAIMANT_DOB_URL, CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {CitizenAddress} from '../../../common/form/models/citizenAddress';
 import {CitizenCorrespondenceAddress} from '../../../common/form/models/citizenCorrespondenceAddress';
@@ -66,7 +66,7 @@ claimantIndividualDetailsController.post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, 
       renderPage(res, req, claimant, claimantIndividualAddress, claimantIndividualCorrespondenceAddress, claimantDetails);
     } else {
       await saveClaimant(caseId, claimantIndividualAddress.model, claimantIndividualCorrespondenceAddress.model, req.body.provideCorrespondenceAddress, claimantDetails.model);
-      res.redirect(constructResponseUrlWithIdParams(caseId, CLAIM_CLAIMANT_DOB));
+      res.redirect(constructResponseUrlWithIdParams(caseId, CLAIMANT_DOB_URL));
     }
   } catch (error) {
     next(error);

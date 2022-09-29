@@ -1,7 +1,7 @@
 import {app} from '../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
-import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, CLAIM_CLAIMANT_DOB} from '../../../../../main/routes/urls';
+import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, CLAIMANT_DOB_URL} from '../../../../../main/routes/urls';
 
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../utils/mockClaim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -435,7 +435,7 @@ describe('Claimant Individual Details page', () => {
       .send(validDataForPost)
       .expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CLAIM_CLAIMANT_DOB);
+        expect(res.header.location).toEqual(CLAIMANT_DOB_URL);
       });
   });
 });

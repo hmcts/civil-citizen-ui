@@ -140,4 +140,4 @@ export const DQ_DEFENDANT_CAN_STILL_EXAMINE_URL = `${DIRECTIONS_QUESTIONNAIRE_UR
 export const DQ_SENT_EXPERT_REPORTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/sent-expert-reports`;
 export const DQ_EXPERT_GUIDANCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-guidance`;
 export const CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-individual-details`;
-export const CLAIM_CLAIMANT_DOB = `${BASE_CLAIM_URL}/claimant-dob`;
+export const CLAIMANT_DOB_URL = `${BASE_CLAIM_URL}/claimant-dob`;
