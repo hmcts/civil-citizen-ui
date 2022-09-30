@@ -41,15 +41,17 @@ const saveDirectionQuestionnaire = async (claimId: string, value: any, direction
   try {
     const claim: any = await getCaseDataFromStore(claimId);
     if (claim.directionQuestionnaire) {
-      if (parentPropertyName) {
+      if (parentPropertyName && claim.directionQuestionnaire[parentPropertyName]) {
         claim.directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName] = value;
+      } else if (parentPropertyName && !claim.directionQuestionnaire[parentPropertyName]) {
+        claim.directionQuestionnaire[parentPropertyName] = {[directionQuestionnairePropertyName]: value};
       } else {
         claim.directionQuestionnaire[directionQuestionnairePropertyName] = value;
       }
     } else {
       const directionQuestionnaire: any = new DirectionQuestionnaire();
       if (parentPropertyName) {
-        directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName] = value;
+        directionQuestionnaire[parentPropertyName] = {[directionQuestionnairePropertyName]: value};
       } else {
         directionQuestionnaire[directionQuestionnairePropertyName] = value;
       }

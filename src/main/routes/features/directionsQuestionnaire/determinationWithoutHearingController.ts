@@ -10,6 +10,7 @@ import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {YesNo} from '../../../common/form/models/yesNo';
 
 const determinationWithoutHearingController = express.Router();
 const determinationWithoutHearingViewPath = 'features/directionsQuestionnaire/determination-without-hearing';
@@ -37,7 +38,8 @@ determinationWithoutHearingController
   .post(DETERMINATION_WITHOUT_HEARING_URL, async (req, res, next) => {
     try {
       const claimId = req.params.id;
-      const determinationWithoutHearing = new GenericForm(new DeterminationWithoutHearing(req.body.option, req.body.reasonForHearing));
+      const reasonForHearing = req.body.option === YesNo.NO ? req.body.reasonForHearing : undefined;
+      const determinationWithoutHearing = new GenericForm(new DeterminationWithoutHearing(req.body.option, reasonForHearing));
       determinationWithoutHearing.validateSync();
 
       if (determinationWithoutHearing.hasErrors()) {
