@@ -322,9 +322,11 @@ export interface Party {
   soleTraderFirstName?: string;
   soleTraderLastName?: string;
   partyName?: string;
-  type: PartyType;
+  type?: PartyType;
   primaryAddress?: CorrespondenceAddress;
   phoneNumber?: string;
+  provideCorrespondenceAddress?: string;
+  correspondenceAddress?: CorrespondenceAddress;
 }
 
 export interface StatementOfTruth {
