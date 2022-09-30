@@ -8,4 +8,5 @@ export interface CCDResponse extends ClaimUpdate{
   defenceAdmitPartPaymentTimeRouteRequired?: CCDPaymentOption;
   respondent1RepaymentPlan?: CCDRepaymentPlan;
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
+  specAoSApplicantCorrespondenceAddressRequired?: string;
 }

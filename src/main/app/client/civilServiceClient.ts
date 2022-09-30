@@ -163,7 +163,7 @@ export class CivilServiceClient {
   }
 
   async submitDefendantResponseEvent(claimId: string, updatedClaim:ClaimUpdate, req: AppRequest): Promise<Claim> {
-    return this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_SPEC, claimId, updatedClaim, req);
+    return this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_CUI, claimId, updatedClaim, req);
   }
 
   async submitAgreedResponseExtensionDateEvent(claimId: string, updatedClaim:ClaimUpdate, req: AppRequest): Promise<Claim> {
