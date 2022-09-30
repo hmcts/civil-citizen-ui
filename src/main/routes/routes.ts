@@ -124,6 +124,7 @@ import expertCanStillExamineController from './features/directionsQuestionnaire/
 import sentExpertReportsController from './features/directionsQuestionnaire/sentExpertReportsController';
 import otherWitnessesController from './features/directionsQuestionnaire/otherWitnessesController';
 import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
+import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
 
 export default [
   homeController,
@@ -240,4 +241,5 @@ export default [
   sentExpertReportsController,
   otherWitnessesController,
   expertReportDetailsController,
+  claimantIndividualDetailsController,
 ];
