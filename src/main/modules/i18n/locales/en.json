@@ -458,6 +458,12 @@
       "WHAT_HAPPENED": "What happened"
     },
     "CLAIM_JOURNEY": {
+      "CLAIMANT_INDIVIDUAL_DETAILS": {
+        "PAGE_TITLE": "Enter your details",
+        "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
+        "TITLE": "Enter your details",
+        "YOUR_POSTAL_ADDRESS": "Your postal address"
+      },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
           "BEFORE_YOU_CLAIM": "Before you claim you should:",
@@ -637,6 +643,7 @@
     "COURT_ORDERS": {
       "ADD_ANOTHER": "Add another court order",
       "CLAIM_NUMBER": "Claim number",
+      "COURT_ORDER": "Court order",
       "MONTHLY_INSTALMENT_AMOUNT": "Monthly instalment amount",
       "OWED_AMOUNT": "Amount you owe",
       "PAGE_TITLE": "Any court orders?",
@@ -1539,10 +1546,13 @@
     "ENTER_EXPERT_DETAILS": "Enter the expert's details",
     "ENTER_WHY_NEED_EXPERT": "Tell us why you need this expert",
     "ENTER_EXPERT_FIELD": "Enter the expert’s field of expertise",
+    "ENTER_FIRST_NAME": "Enter first name",
+    "ENTER_LAST_NAME": "Enter last name",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
     "ENTER_VALID_EMAIL":"Enter a valid email address",
-    "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_SECURITY_CODE": "Enter your security code",
+    "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
+    "ENTER_VALID_TITLE": "Enter valid title",
     "EQUAL_INSTALMENTS_REQUIRED": "Enter a valid amount for equal instalments",
     "EXPERT_NAME_REQUIRED": "Enter the expert’s name",
     "ERROR": "Error",
