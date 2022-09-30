@@ -1,5 +1,4 @@
 {% extends "claim-details-tpl.njk" %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
@@ -7,18 +6,16 @@
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle('PAGES.SUPPORT_REQUIRED.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
-  {% set errors = form.getErrors() %}
+  {% set errors = form.getAllErrors('model') %}
   {% if form.hasErrors() %}
-    {{ govukErrorSummary({
-      "titleText": t("ERRORS.THERE_WAS_A_PROBLEM"),
-      "errorList": errors
-    }) }}
+    {{ errorSummary(errors, t) }}
   {% endif %}
 
   <div class="govuk-width-container">
@@ -28,12 +25,12 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
 
-            {% set checkedSingHtml %}
-              {% set signLanguageInterpretedError = form.errorFor('signLanguageInterpreted') %}
+            {% set checkedSignHtml %}
+              {% set signLanguageInterpretedError = form.errorFor('model[signLanguageInterpreter][content]', 'model') %}
               {{ govukInput({
-                id: "signLanguageInterpreted",
-                name: "signLanguageInterpreted",
-                value: form.model.signLanguageInterpreted,
+                id: "model[signLanguageInterpreter][content]",
+                name: "model[signLanguageInterpreter][content]",
+                value: form.model.signLanguageInterpreter.content,
                 classes: "govuk-!-width-one-half",
                 label: {
                   classes: "govuk-!-width-two-thirds",
@@ -45,11 +42,11 @@
               }) }}
             {% endset -%}
             {% set checkedLanguageHtml %}
-              {% set languageInterpretedError = form.errorFor('languageInterpreted') %}
+              {% set languageInterpretedError = form.errorFor('model[languageInterpreter][content]', 'model') %}
               {{ govukInput({
-                id: "languageInterpreted",
-                name: "languageInterpreted",
-                value: form.model.languageInterpreted,
+                id: "model[languageInterpreter][content]",
+                name: "model[languageInterpreter][content]",
+                value: form.model.languageInterpreter.content,
                 classes: "govuk-!-width-one-half",
                 label: {
                   text: t('PAGES.SUPPORT_REQUIRED.WHAT_LANGUAGE')
@@ -64,11 +61,11 @@
               }) }}
             {% endset -%}
             {% set checkedOtherHtml %}
-              {% set otherSupportError = form.errorFor('otherSupport') %}
+              {% set otherSupportError = form.errorFor('model[otherSupport][content]', 'model') %}
               {{ govukTextarea({
-                id: "otherSupport",
-                name: "otherSupport",
-                value: form.model.otherSupport,
+                id: "model[otherSupport][content]",
+                name: "model[otherSupport][content]",
+                value: form.model.otherSupport.content,
                 classes: "govuk-!-width-three-quarters",
                 label: {
                   text: t('PAGES.SUPPORT_REQUIRED.EXTRA_SUPPORT')
@@ -91,38 +88,38 @@
               },
               items: [
                 {
-                  value: "disabledAccessSelected",
+                  value: "disabledAccess",
                   text: t('PAGES.SUPPORT_REQUIRED.DISABLE'),
-                  checked: true if form.model.disabledAccessSelected
+                  checked: true if form.model.disabledAccess.selected
                 },
                 {
-                  value: "hearingLoopSelected",
+                  value: "hearingLoop",
                   text: t('PAGES.SUPPORT_REQUIRED.HEARING'),
-                  checked: true if form.model.hearingLoopSelected
+                  checked: true if form.model.hearingLoop.selected
                 },
                 {
-                  value: "signLanguageSelected",
+                  value: "signLanguageInterpreter",
                   text: t('PAGES.SUPPORT_REQUIRED.SIGN_LANGUAGE'),
                   conditional: {
-                  html: checkedSingHtml
+                  html: checkedSignHtml
                 },
-                  checked: true if form.model.signLanguageSelected
+                  checked: true if form.model.signLanguageInterpreter.selected
                 },
                 {
-                  value: "languageSelected",
+                  value: "languageInterpreter",
                   text: t('PAGES.SUPPORT_REQUIRED.LANGUAGE'),
                   conditional: {
                   html: checkedLanguageHtml
                 },
-                  checked: true if form.model.languageSelected
+                  checked: true if form.model.languageInterpreter.selected
                 },
                 {
-                  value: "otherSupportSelected",
+                  value: "otherSupport",
                   text: t('PAGES.SUPPORT_REQUIRED.OTHER'),
                   conditional: {
                   html: checkedOtherHtml
                 },
-                  checked: true if form.model.otherSupportSelected
+                  checked: true if form.model.otherSupport.selected
                 }
               ]
             }) }}

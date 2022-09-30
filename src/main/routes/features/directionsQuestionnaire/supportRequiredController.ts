@@ -2,7 +2,7 @@ import * as express from 'express';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {CLAIM_TASK_LIST_URL, SUPPORT_REQUIRED_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {SupportRequired} from '../../../common/models/directionsQuestionnaire/supportRequired';
+import {Support, SupportRequired} from '../../../common/models/directionsQuestionnaire/supportRequired';
 import {
   getSupportRequired,
 } from '../../../services/features/directionsQuestionnaire/supportRequiredService';
@@ -15,7 +15,8 @@ const supportRequiredViewPath = 'features/directionsQuestionnaire/support-requir
 
 supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
   try {
-    res.render(supportRequiredViewPath, {form: new GenericForm(await getSupportRequired(req.params.id))});
+    const form = new GenericForm(await getSupportRequired(req.params.id));
+    res.render(supportRequiredViewPath, {form});
   } catch (error) {
     next(error);
   }
@@ -24,21 +25,21 @@ supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: expre
 supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
-    let supportRequired = new SupportRequired();
     if (req.body.declared) {
-      const languageSelected = !!(req.body.declared.includes('languageSelected'));
-      const signLanguageSelected = !!(req.body.declared.includes('signLanguageSelected'));
-      const disabledAccessSelected = !!(req.body.declared.includes('disabledAccessSelected'));
-      const hearingLoopSelected = !!(req.body.declared.includes('hearingLoopSelected'));
-      const otherSupportSelected = !!(req.body.declared.includes('otherSupportSelected'));
-      supportRequired = new SupportRequired(languageSelected, req.body.languageInterpreted, signLanguageSelected, req.body.signLanguageInterpreted, hearingLoopSelected, disabledAccessSelected, otherSupportSelected, req.body.otherSupport);
+      req.body.declared.forEach((supportName: keyof SupportRequired) => {
+        if (req.body.model[supportName]) {
+          req.body.model[supportName] = new Support(true, req.body.model[supportName].content);
+        } else {
+          req.body.model[supportName] = new Support(true);
+        }
+      });
     }
-    const form = new GenericForm(supportRequired);
+    const form = new GenericForm(new SupportRequired(req.body.model));
     form.validateSync();
     if (form.hasErrors()) {
       res.render(supportRequiredViewPath, {form});
     } else {
-      await saveDirectionQuestionnaire(claimId, supportRequired, 'supportRequired');
+      await saveDirectionQuestionnaire(claimId, form.model, 'supportRequired');
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {
