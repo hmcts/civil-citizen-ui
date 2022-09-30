@@ -6,6 +6,7 @@ import {
   VALID_CORRESPONDENCE_POSTCODE,
 } from '../validationErrors/errorMessageConstants';
 import {PostcodeValidator} from '../../../common/form/validators/postcodeValidator';
+import {CorrespondenceAddress} from '../../models/correspondenceAddress';
 
 export class CitizenCorrespondenceAddress {
   @IsNotEmpty({message: VALID_CORRESPONDENCE_ADDRESS_LINE_1})
@@ -33,5 +34,25 @@ export class CitizenCorrespondenceAddress {
 
   isEmpty() {
     return Object.values(this).every(value => value === undefined || value === '' );
+  }
+
+  static fromObject(value?: Record<string, string>): CitizenCorrespondenceAddress {
+    return new CitizenCorrespondenceAddress(
+      value?.correspondenceAddressLine1,
+      value?.correspondenceAddressLine2,
+      value?.correspondenceAddressLine3,
+      value?.correspondenceCity,
+      value?.correspondencePostCode,
+    );
+  }
+
+  static fromJson(value?: CorrespondenceAddress): CitizenCorrespondenceAddress {
+    return new CitizenCorrespondenceAddress(
+      value?.AddressLine1,
+      value?.AddressLine2,
+      value?.AddressLine3,
+      value?.PostTown,
+      value?.PostCode,
+    );
   }
 }
