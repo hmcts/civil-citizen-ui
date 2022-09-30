@@ -510,6 +510,12 @@
       "PAGE_TITLE": "About you and this claim",
       "TITLE": "About you and this claim"
     },
+    "CLAIMANT_PHONE": {
+      "INFORMATION": "We might need to speak to you about this claim. We’ll only call on weekdays between 9am and 5pm.",
+      "NUMBER_INFORMATION": "We'll also give your number to the person, business, or organisation you are claiming from.",
+      "PAGE_TITLE": "Your phone number",
+      "TITLE": "Enter a phone number (optional)"
+    },
     "COMPANY_DETAILS": {
       "ADDRESS_FOR_SERVICE": "Gelwir hwn yn 'gyfeiriad cyflwyno'.",
       "ADDRESS_NOT_FOUND": "Ni allwn dod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
