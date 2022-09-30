@@ -2,10 +2,9 @@ import {app} from '../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
 import {CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL, CLAIMANT_DOB_URL} from '../../../../../main/routes/urls';
-
 import {buildCorrespondenceAddress, buildPrimaryAddress} from '../../../../utils/mockClaim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {CounterpartyType} from '../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../main/common/models/partyType';
 import {Claim, Party} from '../../../../../main/common/models/claim';
 import {Respondent} from '../../../../../main/common/models/respondent';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
@@ -38,7 +37,7 @@ const buildClaimOfApplicant = (): Party => {
   return claim.applicant1;
 };
 
-const buildClaimOfApplicantType = (type: CounterpartyType): Party => {
+const buildClaimOfApplicantType = (type: PartyType): Party => {
   claim.applicant1 = new Respondent();
   claim.applicant1.type = type;
   claim.applicant1.primaryAddress = buildPrimaryAddress();
@@ -127,7 +126,7 @@ describe('Claimant Individual Details page', () => {
   it('should return your details page with information without correspondent address', async () => {
     const buildClaimOfApplicantWithoutCorrespondent = (): Party => {
       claim.applicant1 = new Respondent();
-      claim.applicant1.type = CounterpartyType.INDIVIDUAL;
+      claim.applicant1.type = PartyType.INDIVIDUAL;
       claim.applicant1.individualTitle = 'individualTitle';
       claim.applicant1.individualFirstName = 'individualFirstName';
       claim.applicant1.individualLastName = 'individualLastName';
@@ -197,7 +196,7 @@ describe('Claimant Individual Details page', () => {
 
   it('POST/Claimant Individual details - should redirect on correct correspondence address', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.INDIVIDUAL);
+      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
@@ -221,7 +220,7 @@ describe('Claimant Individual Details page', () => {
 
   it('POST/Claimant Individual details - should return error on empty primary address line', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.INDIVIDUAL);
+      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
@@ -290,7 +289,7 @@ describe('Claimant Individual Details page', () => {
 
   it('POST/Claimant Individual details - should return error on empty correspondence address line', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.INDIVIDUAL);
+      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
@@ -315,7 +314,7 @@ describe('Claimant Individual Details page', () => {
 
   it('POST/Claimant Individual details - should return error on empty correspondence city', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.INDIVIDUAL);
+      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
@@ -340,7 +339,7 @@ describe('Claimant Individual Details page', () => {
 
   it('POST/Claimant Individual details - should return error on empty correspondence postcode', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.INDIVIDUAL);
+      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
@@ -365,7 +364,7 @@ describe('Claimant Individual Details page', () => {
 
   it('POST/Claimant Individual details - should return error on no input', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.INDIVIDUAL);
+      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
@@ -419,7 +418,7 @@ describe('Claimant Individual Details page', () => {
 
   it('POST/Claimant Individual details - should return error on input for correspondence address when provideCorrespondenceAddress is set to YES', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.INDIVIDUAL);
+      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
@@ -446,7 +445,7 @@ describe('Claimant Individual Details page', () => {
 
   it('should redirect to claimant DOB screen', async () => {
     mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(CounterpartyType.INDIVIDUAL);
+      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
     });
     await request(app)
       .post(CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL)
