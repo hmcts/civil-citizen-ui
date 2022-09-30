@@ -122,6 +122,7 @@ import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
 import sentExpertReportsController from './features/directionsQuestionnaire/sentExpertReportsController';
+import otherWitnessesController from './features/directionsQuestionnaire/otherWitnessesController';
 import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
 
@@ -238,6 +239,7 @@ export default [
   expertCanStillExamineController,
   defendantYourselfEvidenceController,
   sentExpertReportsController,
+  otherWitnessesController,
   expertReportDetailsController,
   claimantIndividualDetailsController,
 ];
