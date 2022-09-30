@@ -22,7 +22,6 @@ export class DateToPayOn {
     I.fillField(fields.day, day.toString());
     I.fillField(fields.month, month.toString());
     I.fillField(fields.year, year.toString());
-
     I.click(buttons.saveAndContinue);
   }
 }
