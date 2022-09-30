@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {DQ_OTHER_WITNESSES_URL,DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL} from '../../urls';
+import {DQ_DEFENDANT_WITNESSES_URL,DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL} from '../../urls';
 import {OtherWitnesses} from '../../../common/models/directionsQuestionnaire/witnesses/otherWitnesses';
 import {OtherWitnessItems} from '../../../common/models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
@@ -13,7 +13,7 @@ function renderView(form: GenericForm<OtherWitnesses>, res: express.Response): v
   res.render(otherWitnessesViewPath, {form});
 }
 
-otherWitnessesController.get(DQ_OTHER_WITNESSES_URL, async (req, res, next: express.NextFunction) => {
+otherWitnessesController.get(DQ_DEFENDANT_WITNESSES_URL, async (req, res, next: express.NextFunction) => {
   try {
     const form = new GenericForm(await getOtherWitnesses(req));
     res.render(otherWitnessesViewPath, {form});
@@ -22,7 +22,7 @@ otherWitnessesController.get(DQ_OTHER_WITNESSES_URL, async (req, res, next: expr
   }
 });
 
-otherWitnessesController.post(DQ_OTHER_WITNESSES_URL,
+otherWitnessesController.post(DQ_DEFENDANT_WITNESSES_URL,
   async (req, res, next: express.NextFunction) => {
     try {
       const form: GenericForm<OtherWitnesses> = new GenericForm(new OtherWitnesses(req.body.option, getOtherWitnessDetailsForm(req)));

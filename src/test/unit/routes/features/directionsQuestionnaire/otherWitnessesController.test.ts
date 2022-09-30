@@ -3,7 +3,7 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {
-  DQ_OTHER_WITNESSES_URL,
+  DQ_DEFENDANT_WITNESSES_URL,
   DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -53,7 +53,7 @@ describe('Other Witnesses', () => {
 describe('on Get', () => {
   test('should return on your other witnesses page successfully', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
-    await request(app).get(DQ_OTHER_WITNESSES_URL)
+    await request(app).get(DQ_DEFENDANT_WITNESSES_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.OTHER_WITNESSES.PAGE_TITLE'));
@@ -63,7 +63,7 @@ describe('on Get', () => {
   test('should return on your other witnesses page successfully', async () => {
     app.locals.draftStoreClient = mockOtherWitnesses;
     await request(app)
-      .get(DQ_OTHER_WITNESSES_URL)
+      .get(DQ_DEFENDANT_WITNESSES_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.OTHER_WITNESSES.PAGE_TITLE'));
@@ -73,7 +73,7 @@ describe('on Get', () => {
   it('should return status 500 when error thrown', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
-      .get(DQ_OTHER_WITNESSES_URL)
+      .get(DQ_DEFENDANT_WITNESSES_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -85,7 +85,7 @@ describe('on Post', () => {
   test('should redirect with correct input and redirect to availability dates screen', async () => {
     app.locals.draftStoreClient = mockOtherWitnesses;
     await request(app)
-      .post(DQ_OTHER_WITNESSES_URL)
+      .post(DQ_DEFENDANT_WITNESSES_URL)
       .send({option: YesNo.NO, witnessItems: []})
       .expect((res) => {
         expect(res.status).toBe(302);
@@ -95,7 +95,7 @@ describe('on Post', () => {
 
   test('should return errors when option selected equal no', async () => {
     await request(app)
-      .post(DQ_OTHER_WITNESSES_URL)
+      .post(DQ_DEFENDANT_WITNESSES_URL)
       .send({option: undefined, witnessItems: [{}]})
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -105,7 +105,7 @@ describe('on Post', () => {
 
   test('should return errors when option selected equal yes and no witness details provided', async () => {
     await request(app)
-      .post(DQ_OTHER_WITNESSES_URL)
+      .post(DQ_DEFENDANT_WITNESSES_URL)
       .send({
         option: 'yes',
         witnessItems: [
@@ -127,7 +127,7 @@ describe('on Post', () => {
 
   test('should redirect when option selected equal yes and other witness details are provided', async () => {
     await request(app)
-      .post(DQ_OTHER_WITNESSES_URL)
+      .post(DQ_DEFENDANT_WITNESSES_URL)
       .send({
         option: 'yes',
         witnessItems: [
@@ -148,7 +148,7 @@ describe('on Post', () => {
   it('should return status 500 when error thrown', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
-      .post(DQ_OTHER_WITNESSES_URL)
+      .post(DQ_DEFENDANT_WITNESSES_URL)
       .send({
         option: 'yes',
         witnessItems: [

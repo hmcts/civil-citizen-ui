@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../main/app';
 import {mockCivilClaim} from '../../../utils/mockDraftStore';
-import {DQ_OTHER_WITNESSES_URL} from '../../../../main/routes/urls';
+import {DQ_DEFENDANT_WITNESSES_URL} from '../../../../main/routes/urls';
 import {t} from 'i18next';
 
 const jsdom = require('jsdom');
@@ -25,7 +25,7 @@ describe('Other Witnesses view', () => {
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockCivilClaim;
-      const response = await request(app).get(DQ_OTHER_WITNESSES_URL);
+      const response = await request(app).get(DQ_DEFENDANT_WITNESSES_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
       mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
