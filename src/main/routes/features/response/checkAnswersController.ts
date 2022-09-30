@@ -15,6 +15,7 @@ import {isFullAmountReject} from '../../../modules/claimDetailsService';
 import {AppRequest} from 'models/AppRequest';
 import {AllResponseTasksCompletedGuard} from '../../../routes/guards/allResponseTasksCompletedGuard';
 import {submitResponse} from '../../../services/features/response/submission/submitResponse';
+import {compareAddress} from '../../../../main/services/features/response/compareAddress';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const checkAnswersController = express.Router();
@@ -46,6 +47,20 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
 
 checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
+
+    // TODO: compare original address with redis address
+    // TODO: up and run civil-service
+    // TODO: ask about correspondence address
+    const addressHasChange = await compareAddress(<AppRequest>req);
+    console.log(addressHasChange);
+    
+
+    // When: I update /change the fields in the address
+    // Then: the changes are saved and specAoSApplicantCorrespondenceAddressRequired field is set to No in redis
+
+    // When: I do not change any of the address fields
+    // Then: the changes are saved and specAoSApplicantCorrespondenceAddressRequired field is set to Yes in redis
+
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)

@@ -1,6 +1,7 @@
 import {PrimaryAddress} from './primaryAddress';
 import {CorrespondenceAddress} from '././correspondenceAddress';
 import {CounterpartyType} from './counterpartyType';
+import {YesNo} from '../../common/form/models/yesNo';
 
 export class Respondent {
   primaryAddress: PrimaryAddress;
@@ -15,5 +16,6 @@ export class Respondent {
   type: CounterpartyType;
   partyName?: string;
   contactPerson?: string;
+  specAoSApplicantCorrespondenceAddressRequired: YesNo
 }
 
