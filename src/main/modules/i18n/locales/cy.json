@@ -458,6 +458,12 @@
       "WHAT_HAPPENED": "Beth ddigwyddodd"
     },
     "CLAIM_JOURNEY": {
+      "CLAIMANT_INDIVIDUAL_DETAILS": {
+        "PAGE_TITLE": "Enter your details",
+        "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
+        "TITLE": "Enter your details",
+        "YOUR_POSTAL_ADDRESS": "Your postal address"
+      },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
           "BEFORE_YOU_CLAIM": "Before you claim you should:",
@@ -1522,9 +1528,12 @@
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
     "ENTER_AT_LEAST_ONE_REPORT": "Enter at least one report",
+    "ENTER_FIRST_NAME": "Enter first name",
+    "ENTER_LAST_NAME": "Enter last name",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
-    "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_SECURITY_CODE": "Enter your security code",
+    "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
+    "ENTER_VALID_TITLE": "Enter valid title",
     "EQUAL_INSTALMENTS_REQUIRED": "Rhowch swm dilys i'w dalu fesul rhan",
     "EXPERT_NAME_REQUIRED": "Enter the expert’s name",
     "ERROR": "Error",
