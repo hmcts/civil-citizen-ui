@@ -7,7 +7,7 @@ import {
 } from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {CounterpartyType} from '../../../../common/models/counterpartyType';
+import {PartyType} from 'models/partyType';
 import * as winston from 'winston';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 
@@ -39,17 +39,17 @@ financialDetailsController
     try {
       const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
       const claim: Claim = await getCaseDataFromStore(req.params.id);
-      const counterpartyType: CounterpartyType = claim.respondent1?.type;
-      if (counterpartyType) {
-        if (counterpartyType == CounterpartyType.INDIVIDUAL || counterpartyType == CounterpartyType.SOLE_TRADER) {
+      const partyType: PartyType = claim.respondent1?.type;
+      if (partyType) {
+        if (partyType == PartyType.INDIVIDUAL || partyType == PartyType.SOLE_TRADER) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));
-        } else if (counterpartyType == CounterpartyType.COMPANY || counterpartyType == CounterpartyType.ORGANISATION) {
+        } else if (partyType == PartyType.COMPANY || partyType == PartyType.ORGANISATION) {
           claim.taskSharedFinancialDetails = true;
           await saveDraftClaim(req.params.id, claim);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));
         }
       } else {
-        logger.error('No counterpartyType found.');
+        logger.error('No partyType found.');
         renderView(res, claim, claimantDetailsUrl);
       }
     } catch (error) {

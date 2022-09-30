@@ -9,7 +9,7 @@ import {
   CLAIM_TASK_LIST_URL,
   NEW_RESPONSE_DEADLINE_URL,
 } from '../../../../../../main/routes/urls';
-import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -26,7 +26,7 @@ describe('Response - New response deadline', () => {
   const claim = new Claim();
   claim.applicant1 = {
     partyName: 'Mr. James Bond',
-    type: CounterpartyType.INDIVIDUAL,
+    type: PartyType.INDIVIDUAL,
   };
   claim.responseDeadline = {
     agreedResponseDeadline : extendedDate,

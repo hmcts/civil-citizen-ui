@@ -4,7 +4,7 @@ import {
 import * as requestModels from '../../../../../../main/common/models/AppRequest';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
-import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
+import {PartyType} from '../../../../../../main/common/models/partyType';
 import nock from 'nock';
 import config from 'config';
 import {ResponseOptions} from '../../../../../../main/common/form/models/responseDeadline';
@@ -20,7 +20,7 @@ const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.
 const claim = new Claim();
 claim.applicant1 = {
   partyName: 'Mr. James Bond',
-  type: CounterpartyType.INDIVIDUAL,
+  type: PartyType.INDIVIDUAL,
 };
 claim.responseDeadline = {
   agreedResponseDeadline : new Date(),

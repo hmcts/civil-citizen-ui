@@ -3,7 +3,7 @@ import {SEND_RESPONSE_BY_EMAIL_URL} from '../../../urls';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../../common/models/claim';
 import {ResponseType} from '../../../../common/form/models/responseType';
-import {CounterpartyType} from '../../../../common/models/counterpartyType';
+import {PartyType} from 'models/partyType';
 import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClaimType';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import config from 'config';
@@ -22,7 +22,7 @@ function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): vo
     fees,
     ResponseType,
     RejectAllOfClaimType,
-    CounterpartyType,
+    partyType: PartyType,
   });
 }
 

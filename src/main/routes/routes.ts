@@ -123,6 +123,7 @@ import defendantYourselfEvidenceController
 import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
 import sentExpertReportsController from './features/directionsQuestionnaire/sentExpertReportsController';
 import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
+import defendantPartyTypeController from './features/public/claim/defendantPartyTypeController';
 
 export default [
   homeController,
@@ -238,4 +239,5 @@ export default [
   defendantYourselfEvidenceController,
   sentExpertReportsController,
   expertReportDetailsController,
+  defendantPartyTypeController,
 ];
