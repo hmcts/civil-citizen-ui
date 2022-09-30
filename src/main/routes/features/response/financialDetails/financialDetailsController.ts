@@ -7,7 +7,7 @@ import {
 } from '../../../urls';
 import {Claim} from '../../../../common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {PartyType} from 'models/partyType';
+import {PartyType} from '../../../../common/models/partyType';
 import * as winston from 'winston';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 

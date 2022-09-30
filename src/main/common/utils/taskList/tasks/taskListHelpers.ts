@@ -1,6 +1,6 @@
 import {Claim} from '../../../models/claim';
 import {Respondent} from '../../../../common/models/respondent';
-import {PartyType} from 'models/partyType';
+import {PartyType} from '../../../models/partyType';
 import PaymentOptionType from '../../../../common/form/models/admission/paymentOption/paymentOptionType';
 import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClaimType';
 import {YesNo} from '../../../../common/form/models/yesNo';

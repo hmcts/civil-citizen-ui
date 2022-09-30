@@ -14,13 +14,18 @@ describe('Defendant Party View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
+  beforeEach(() => {
+    nock(idamUrl)
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
+    app.locals.draftStoreClient = mockCivilClaim;
+  });
+
   describe('on GET', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
+
     beforeEach(async () => {
-      nock(idamUrl)
-        .post('/o/token')
-        .reply(200, {id_token: citizenRoleToken});
       const response = await request(app).get(CLAIM_DEFENDANT_PARTY_TYPE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
@@ -62,11 +67,8 @@ describe('Defendant Party View', () => {
 
   describe('on POST', () => {
     let htmlDocument: Document;
+
     beforeEach(async () => {
-      nock(idamUrl)
-        .post('/o/token')
-        .reply(200, {id_token: citizenRoleToken});
-      app.locals.draftStoreClient = mockCivilClaim;
       const response = await request(app).post(CLAIM_DEFENDANT_PARTY_TYPE_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;

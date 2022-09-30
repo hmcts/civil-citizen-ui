@@ -8,7 +8,7 @@ import {i18n, TOptions} from 'i18next';
 import {ResponseType} from '../../common/form/models/responseType';
 import {YesNo, YesNoNotReceived} from '../../common/form/models/yesNo';
 import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
-import {PartyType} from 'models/partyType';
+import {PartyType} from '../../common/models/partyType';
 import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
 import {TransactionSchedule} from '../../common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {EvidenceType} from '../../common/models/evidence/evidenceType';

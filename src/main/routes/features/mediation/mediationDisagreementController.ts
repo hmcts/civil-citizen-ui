@@ -12,7 +12,7 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {YesNo} from '../../../common/form/models/yesNo';
 import {Claim} from '../../../common/models/claim';
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {PartyType} from 'models/partyType';
+import {PartyType} from '../../../common/models/partyType';
 
 const mediationDisagreementViewPath = 'features/mediation/mediation-disagreement';
 const mediationDisagreementController = express.Router();

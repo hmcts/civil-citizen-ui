@@ -3,7 +3,7 @@ import {CorrespondenceAddress} from '././correspondenceAddress';
 import {PartyType} from './partyType';
 
 export class Respondent {
-  primaryAddress: PrimaryAddress;
+  primaryAddress?: PrimaryAddress;
   postToThisAddress?: string;
   correspondenceAddress?: CorrespondenceAddress;
   individualTitle?: string;
@@ -11,7 +11,7 @@ export class Respondent {
   individualFirstName?: string;
   telephoneNumber?: string;
   dateOfBirth?: Date;
-  responseType: string;
+  responseType?: string;
   type: PartyType;
   partyName?: string;
   contactPerson?: string;

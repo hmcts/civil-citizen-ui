@@ -3,13 +3,13 @@ import {SEND_RESPONSE_BY_EMAIL_URL} from '../../../urls';
 import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
 import {Claim} from '../../../../common/models/claim';
 import {ResponseType} from '../../../../common/form/models/responseType';
-import {PartyType} from 'models/partyType';
+import {PartyType} from '../../../../common/models/partyType';
 import RejectAllOfClaimType from '../../../../common/form/models/rejectAllOfClaimType';
 import {CivilServiceClient} from '../../../../app/client/civilServiceClient';
 import config from 'config';
 import {FeeRange, FeeRanges} from '../../../../common/models/feeRange';
 import {TableItem} from '../../../../common/models/tableItem';
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest} from '../../../../common/models/AppRequest';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);

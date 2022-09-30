@@ -9,7 +9,7 @@ import {
   getRespondentInformation,
   saveRespondent,
 } from '../../../../services/features/response/citizenDetails/citizenDetailsService';
-import {PartyType} from 'models/partyType';
+import {PartyType} from '../../../../common/models/partyType';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 
 const citizenDetailsController = express.Router();
