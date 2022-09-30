@@ -1385,7 +1385,7 @@
       "IF_CLAIMANT_REJECTS_OFFER": "If {{ claimantName }} rejects your offer",
       "IF_CLAIMANT_REJECTS_OWE": "If {{ claimantName }} rejects that you only owe £{{ partialAmount }}",
       "IF_DONT_WANT_MEDIATION": "If they don’t want to try mediation the court will review the case for the full amount of £{{ claimAmount }}.",
-      "IF_NEED_PAYMENT_DETAILS": "if you need their payment details.",
+      "IF_NEED_PAYMENT_DETAILS": " if you need their payment details.",
       "IF_CLAIMANT_REJECTS_RESPONSE": "If {{ claimantName }} rejects your response",
       "PAGE_TITLE": "Submit Confirmation",
       "RECEIPT_FOR_PAYMENTS": "make sure you get a receipt for each payment",
