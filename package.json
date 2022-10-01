@@ -85,7 +85,7 @@
   "devDependencies": {
     "@babel/core": "^7.18.13",
     "@babel/eslint-parser": "^7.18.9",
-    "@babel/preset-env": "^7.19.0",
+    "@babel/preset-env": "^7.19.3",
     "@types/copy-webpack-plugin": "^10.1.0",
     "@types/jest": "^27.4.1",
     "@types/supertest": "^2.0.12",
