@@ -8,11 +8,17 @@ import {
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import { getUserId } from '../../../../../main/services/features/claim/claimantPhoneService';
+//import {getUserId} from '../../../../../main/routes/features/public/claim/claimantPhoneController';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-
+jest.mock('../../../../../main/services/features/claim/claimantPhoneService', () => ({
+  ...jest.requireActual('../../../../../main/services/features/claim/claimantPhoneService'),
+  getUserId: jest.fn(),
+}));
 const PHONE_NUMBER = '01632960001';
+const mockGetUserId = getUserId as jest.Mock;
 
 describe('Completing Claim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -26,6 +32,9 @@ describe('Completing Claim', () => {
   describe('on GET', () => {
     it('should return on your claimant phone number page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
+      mockGetUserId.mockImplementation(async () => {
+        return '123';
+      });
       await request(app)
         .get(CLAIMANT_PHONE_NUMBER_URL)
         .expect((res) => {

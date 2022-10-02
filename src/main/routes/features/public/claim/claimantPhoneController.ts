@@ -3,8 +3,7 @@ import {ClaimantPhoneNumber} from '../../../../common/form/models/claim/claimant
 import {CLAIMANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {getClaimantPhone,saveClaimantPhone} from '../../../../../main/services/features/claim/claimantPhoneService';
-import {AppRequest} from '../../../../common/models/AppRequest';
+import {getClaimantPhone,getUserId,saveClaimantPhone} from '../../../../../main/services/features/claim/claimantPhoneService';
 
 const claimantPhoneViewPath = 'features/public/claim/claimant-phone';
 const claimantPhoneController = express.Router();
@@ -39,10 +38,5 @@ claimantPhoneController.post(CLAIMANT_PHONE_NUMBER_URL, async (req: express.Requ
     next(error);
   }
 });
-
-const getUserId = (): string => {
-  let req: AppRequest;
-  return req.session.user.id;
-};
 
 export default claimantPhoneController;

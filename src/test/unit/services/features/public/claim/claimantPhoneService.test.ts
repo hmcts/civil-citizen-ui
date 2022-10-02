@@ -1,5 +1,5 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {getClaimantPhone,saveClaimantPhone} from '../../../../../../main/services/features/claim/claimantPhoneService';
+import {getClaimantPhone,getUserId,saveClaimantPhone} from '../../../../../../main/services/features/claim/claimantPhoneService';
 import {Claim, Party} from '../../../../../../main/common/models/claim';
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 import {CorrespondenceAddress} from '../../../../../../main/common/models/correspondenceAddress';
@@ -8,6 +8,10 @@ import {ClaimantPhoneNumber} from '../../../../../../main/common/form/models/cla
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/services/features/claim/claimantPhoneService', () => ({
+  ...jest.requireActual('../../../../../../main/services/features/claim/claimantPhoneService'),
+  getUserId: jest.fn(),
+}));
 
 const correspondenceAddress: CorrespondenceAddress = {
   County: '',
@@ -35,7 +39,20 @@ const PHONE_NUMBER = '01632960001';
 
 describe('Claimant Phone Service', () => {
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGetUserId = getUserId as jest.Mock;
 
+  describe('getUserId', () => {
+    it('should get user id when exist', async () => {
+      //Given
+      mockGetUserId.mockImplementation(async () => {
+        return '123';
+      });
+      //When
+      const userId = await getUserId();
+      //Then
+      expect(userId).toEqual('123');
+    });
+  });
   describe('getClaimantPhone', () => {
     it('should get empty form when no data exist', async () => {
       //Given
