@@ -1,0 +1,149 @@
+
+{% from 'govuk/components/checkboxes/macro.njk' import govukCheckboxes %}
+{% from 'govuk/components/input/macro.njk' import govukInput %}
+{% from 'govuk/components/textarea/macro.njk' import govukTextarea %}
+{% from 'govuk/components/fieldset/macro.njk' import govukFieldset %}
+{% from 'govuk/components/button/macro.njk' import govukButton %}
+
+{% macro supportRequired(index, value, errorFor, t, removeButton) %}
+
+<div class='multiple-row'>
+
+   {% set checkedOtherHtmlName = 'checkedOtherHtmlName'+index %}
+
+
+            {% set checkedSignHtml %}
+              {% set signLanguageInterpretedError = errorFor('model['+index+'][signLanguageInterpreter][content]', 'model') %}
+              {{ govukInput({
+                id: 'model['+index+'][signLanguageInterpreter][content]',
+                name: 'model['+index+'][signLanguageInterpreter][content]',
+                value: value.signLanguageInterpreter.content,
+                classes: 'govuk-!-width-one-half',
+                label: {
+                  classes: 'govuk-!-width-two-thirds',
+                  text: t('PAGES.SUPPORT_REQUIRED.ENTER_SIGN_LANGUAGE')
+                },
+                controls:"zorrt",
+                errorMessage: {
+                  text: t(signLanguageInterpretedError)
+                } if signLanguageInterpretedError
+              }) }}
+            {% endset -%}
+            {% set checkedLanguageHtml %}
+               {% set languageInterpretedError = errorFor('model['+index+'][languageInterpreter][content]', 'model') %}
+               {{ govukInput({
+                id: 'model['+index+'][languageInterpreter][content]',
+                name: 'model['+index+'][languageInterpreter][content]',
+                value: value.languageInterpreter.content,
+                classes: 'govuk-!-width-one-half',
+                label: {
+                  text: t('PAGES.SUPPORT_REQUIRED.WHAT_LANGUAGE')
+                },
+                controls:"zorrt",
+                hint: {
+                  classes: 'govuk-!-width-Three-quarters',
+                  text: t('PAGES.SUPPORT_REQUIRED.ARRANGE_AND_PAY')
+                },
+                errorMessage: {
+                  text: t(languageInterpretedError)
+                } if languageInterpretedError
+              }) }}
+            {% endset -%}
+            {% set checkedOtherHtml %}
+              {% set otherSupportError = errorFor('model['+index+'][otherSupport][content]', 'model') %}
+              {{ govukTextarea({
+                id: 'model['+index+'][otherSupport][content]',
+                name: 'model['+index+'][otherSupport][content]',
+                value: value.otherSupport.content,
+                classes: 'govuk-!-width-three-quarters',
+                controls:"zorrt",
+                label: {
+                  text: t('PAGES.SUPPORT_REQUIRED.EXTRA_SUPPORT')
+                },
+                errorMessage: {
+                  text: t(otherSupportError)
+                } if otherSupportError
+              }) }}
+            {% endset -%}
+
+             {{ govukFieldset({
+      classes: 'moj-add-another__item govuk-!-margin-bottom-6',
+      legend: {
+        text:  t('PAGES.EXPERT_REPORT_DETAILS.REPORT_TEXT'),
+        classes: 'moj-add-another__title govuk-fieldset__legend--m',
+        isPageHeading: false
+      }
+    }) }}
+
+            {{ govukCheckboxes({
+              idPrefix: 'declared',
+              name: 'declared['+index+']',
+              fieldset: {
+                legend: {
+                  text: t('PAGES.SUPPORT_REQUIRED.TITLE'),
+                  isPageHeading: true,
+                  classes: 'govuk-fieldset__legend--l'
+                }
+              },
+              items: [
+                {
+                  id: 'declared-'+index+'-disabledAccess',
+                  value: 'disabledAccess',
+                  text: t('PAGES.SUPPORT_REQUIRED.DISABLE'),
+                  checked: true if value.disabledAccess.selected
+                },
+                {
+                  id: 'declared-'+index+'-hearingLoop',
+                  value: 'hearingLoop',
+                  text: t('PAGES.SUPPORT_REQUIRED.HEARING'),
+                  checked: true if value.hearingLoop.selected
+                },
+                {
+                  id: 'declared-'+index+'-signLanguageInterpreter',
+                  value: 'signLanguageInterpreter',
+                  text: t('PAGES.SUPPORT_REQUIRED.SIGN_LANGUAGE'),
+                  conditional: {
+                  html: checkedSignHtml
+                },
+                  checked: true if value.signLanguageInterpreter.selected
+                },
+                {
+                  id: 'declared-'+index+'-languageInterpreter',
+                  value: 'languageInterpreter',
+                  text: t('PAGES.SUPPORT_REQUIRED.LANGUAGE'),
+                  conditional: {
+                  html: checkedLanguageHtml
+                },
+                  checked: true if value.languageInterpreter.selected
+                },
+                {
+                  id: 'declared-'+index+'-otherSupport',
+                  value: 'otherSupport',
+                  text: t('PAGES.SUPPORT_REQUIRED.OTHER'),
+                  conditional: {
+                  html: checkedOtherHtml
+                },
+                  checked: true if value.otherSupport.selected
+                }
+              ]
+            }) }}
+
+
+    <br>
+    {% if removeButton.hidden %}
+       {{ govukButton({
+            text: t('COMMON.REMOVE'),
+            classes: 'govuk-button--secondary remove-row govuk-visually-hidden'
+          }) }}
+    {% else %}
+      {{ govukButton({
+            text: t('COMMON.REMOVE'),
+            classes: 'govuk-button--secondary remove-row'
+          }) }}
+    {% endif %}
+
+
+
+</div>
+
+{% endmacro %}

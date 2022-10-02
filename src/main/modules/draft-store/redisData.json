@@ -28,6 +28,32 @@
               }
             ]
           }
+        },
+        "hearing": {
+          "supportRequiredList": {
+            "items": [
+              {
+                "name": "Ahmet",
+                "disabledAccess": {
+                  "selected": true
+                },
+                "otherSupport": {
+                  "selected": true,
+                  "content": "bla bla"
+                }
+              },
+              {
+                "name": "MAhmut",
+                "hearingLoop": {
+                  "selected": true
+                },
+                "languageInterpreter": {
+                  "selected": true,
+                  "content": "zla zla"
+                }
+              }
+            ]
+          }
         }
       },
       "supportRequired": {

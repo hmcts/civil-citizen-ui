@@ -2,7 +2,7 @@ import * as express from 'express';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {CLAIM_TASK_LIST_URL, SUPPORT_REQUIRED_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
-import {Support, SupportRequired} from '../../../common/models/directionsQuestionnaire/supportRequired';
+import {Support, SupportRequired, SupportRequiredList} from '../../../common/models/directionsQuestionnaire/supportRequired';
 import {
   getSupportRequired,
 } from '../../../services/features/directionsQuestionnaire/supportRequiredService';
@@ -11,7 +11,7 @@ import {
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const supportRequiredController = express.Router();
-const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required';
+const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required-list';
 
 supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
   try {
@@ -24,22 +24,30 @@ supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: expre
 
 supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
   try {
+    debugger;
     const claimId = req.params.id;
-    if (req.body.declared) {
-      req.body.declared.forEach((supportName: keyof SupportRequired) => {
-        if (req.body.model[supportName]) {
-          req.body.model[supportName] = new Support(true, req.body.model[supportName].content);
-        } else {
-          req.body.model[supportName] = new Support(true);
+    if (req.body.declared?.length) {
+     // TODO : fxi any type
+      req.body.declared?.forEach((declared:any, index:number) => {
+        if (declared) {
+          // tODO : cover scenario with single decalred not array
+          declared.forEach((supportName: keyof SupportRequired) => {
+            if (req.body.model[index][supportName]) {
+              req.body.model[index][supportName] = new Support(true, req.body.model[index][supportName].content);
+            } else {
+              req.body.model[index][supportName] = new Support(true);
+            }
+          });
         }
-      });
+      })
     }
-    const form = new GenericForm(new SupportRequired(req.body.model));
+
+    const form = new GenericForm(new SupportRequiredList(req.body.model.map((item:any)=> new SupportRequired(item))));
     form.validateSync();
     if (form.hasErrors()) {
       res.render(supportRequiredViewPath, {form});
     } else {
-      await saveDirectionQuestionnaire(claimId, form.model, 'supportRequired');
+      await saveDirectionQuestionnaire(claimId, form.model, 'supportRequiredList', 'hearing');
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {

@@ -71,3 +71,14 @@ export class SupportRequired {
     // this.otherSupport = otherSupport;
   }
 }
+
+export class SupportRequiredList{
+  @ValidateNested()
+    items?: SupportRequired[];
+
+  [key: string]: SupportRequired[];
+
+  constructor(items?: SupportRequired[]) {
+    this.items = items;
+  }
+}
