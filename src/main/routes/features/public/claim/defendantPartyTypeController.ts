@@ -11,12 +11,16 @@ import {AppRequest} from '../../../../common/models/AppRequest';
 const defendantPartyTypeViewPath = 'features/public/claim/defendant-party-type';
 const defendantPartyTypeController = express.Router();
 
-defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, async(req: AppRequest, res: express.Response) => {
-  const caseId = req.session?.user?.id;
-  const defendant: Party = await getDefendantInformation(caseId);
-  const defendantPartyType = defendant?.type;
-  const form = new GenericForm(new PartyTypeSelection(defendantPartyType));
-  res.render(defendantPartyTypeViewPath, {form});
+defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: AppRequest, res: express.Response, next: express.NextFunction) => {
+  try {
+    const caseId = req.session?.user?.id;
+    const defendant: Party = await getDefendantInformation(caseId);
+    const defendantPartyType = defendant?.type;
+    const form = new GenericForm(new PartyTypeSelection(defendantPartyType));
+    res.render(defendantPartyTypeViewPath, {form});
+  } catch (error) {
+    next(error);
+  }
 });
 
 defendantPartyTypeController.post(CLAIM_DEFENDANT_PARTY_TYPE_URL, async (req: AppRequest, res: express.Response, next: express.NextFunction) => {

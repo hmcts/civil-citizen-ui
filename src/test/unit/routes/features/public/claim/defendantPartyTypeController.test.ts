@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {PartyType} from '../../../../../../main/common/models/partyType';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {
   CLAIM_DEFENDANT_COMPANY_DETAILS,
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS,
@@ -11,6 +11,7 @@ import {
   CLAIM_DEFENDANT_PARTY_TYPE_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS,
 } from '../../../../../../main/routes/urls';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -31,6 +32,16 @@ describe('Defendant party type controller', () => {
       const response = await request(app).get(CLAIM_DEFENDANT_PARTY_TYPE_URL);
       expect(response.status).toBe(200);
       expect(response.text).toContain('Who are you making the claim against?');
+    });
+
+    it('should return status 500 when error is thrown', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      await request(app)
+        .get(CLAIM_DEFENDANT_PARTY_TYPE_URL)
+        .expect((res: Response) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
     });
   });
 
@@ -67,6 +78,16 @@ describe('Defendant party type controller', () => {
         expect(response.status).toBe(302);
         expect(response.header.location).toBe(CLAIM_DEFENDANT_ORGANISATION_DETAILS);
       });
+    });
+
+    it('should render not found page if non-existent party type is provided', async () => {
+      await request(app)
+        .post(CLAIM_DEFENDANT_PARTY_TYPE_URL)
+        .send({foo: 'blah'})
+        .expect((response: Response) => {
+          expect(response.status).toBe(200);
+          expect(response.text).toContain(TestMessages.CHOOSE_YOUR_RESPONSE);
+        });
     });
   });
 });
