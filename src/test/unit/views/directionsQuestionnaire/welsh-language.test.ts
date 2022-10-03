@@ -75,7 +75,7 @@ describe('Welsh Language view', () => {
     });
 
     it('should display error in the error summary', () => {
-      const error = htmlDocument.getElementsByClassName('govuk-error-summary__list')[0]
+      const error = htmlDocument.getElementsByClassName('govuk-error-summary__list')[0];
       const errorSpeak = error.getElementsByTagName('li')[0];
       const errorDocuments = error.getElementsByTagName('li')[1];
       expect(errorSpeak.innerHTML).toContain(t('ERRORS.SELECT_LANGUAGE_SPEAK'));

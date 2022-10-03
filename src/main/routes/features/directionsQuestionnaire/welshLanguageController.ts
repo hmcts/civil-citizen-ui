@@ -1,12 +1,12 @@
 import * as express from 'express';
-import { CLAIM_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL } from '../../urls';
-import { GenericForm } from '../../../common/form/models/genericForm';
+import {CLAIM_TASK_LIST_URL, DQ_WELSH_LANGUAGE_URL} from '../../urls';
+import {GenericForm} from '../../../common/form/models/genericForm';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
-import { constructResponseUrlWithIdParams } from '../../../common/utils/urlFormatter';
-import { WelshLanguageRequirements } from '../../../common/models/directionsQuestionnaire/welshLanguageRequirements';
+import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
+import {WelshLanguageRequirements} from '../../../common/models/directionsQuestionnaire/welshLanguageRequirements';
 
 const welshLanguageController = express.Router();
 const welshLanguageViewPath = 'features/directionsQuestionnaire/welsh-language';
