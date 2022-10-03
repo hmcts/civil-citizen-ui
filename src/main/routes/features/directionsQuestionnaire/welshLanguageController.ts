@@ -31,8 +31,6 @@ welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
 welshLanguageController.post(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    console.log(req.body);
-    
     const form = new GenericForm(new WelshLanguageRequirements(req.body.speakLanguage, req.body.documentsLanguage));
     form.validateSync();
     if (form.hasErrors()) {
