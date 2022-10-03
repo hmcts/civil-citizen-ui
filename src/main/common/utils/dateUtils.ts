@@ -19,7 +19,7 @@ export const isPastDeadline = (deadline: Date | string) => {
 
 export const formatDateToFullDate = (date: Date, lang?: string | unknown): string => {
   const dateTime = convertDateToLuxonDate(date);
-  const localeValue = lang === 'cy' ? 'cy' : 'en-gb'; 
+  const localeValue = lang === 'cy' ? 'cy' : 'en-gb';
   return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: localeValue});
 };
 
