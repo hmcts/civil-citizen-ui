@@ -41,7 +41,7 @@
                 </tr>
               {% endfor %}
               {% elseif pdfUrl %}
-                <a id="timeline-link" href={{ pdfUrl }} target="_blank" rel="noreferrer noopener"
+                <a id="timeline-link" href="{{ pdfUrl }}" target="_blank" rel="noreferrer noopener"
                    class="govuk-link">{{ t('PAGES.DEFENDANT_TIMELINE.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
               {% endif %}
               </tbody>

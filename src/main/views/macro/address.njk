@@ -4,14 +4,10 @@
   {% set fieldSetText = t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') + t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') %}
   {% set textInputLabel = t('COMMON.ADDRESS_FORM.BUILDING_AND_STREET') %}
   {% set govukFormGroupError = 'govuk-form-group govuk-form-group--error' if addressLine1Error else '' %}
-  {% call govukFieldset({
-  legend: {
-    text: addressTitle,
-    classes: "govuk-fieldset__legend--m" if addressType == 'primary' else "govuk-fieldset__legend--m govuk-visually-hidden" ,
-    isPageHeading: true
-  }
-  }) %}
-  {% if addressType == 'primary' %}
+  <p class={{ "govuk-fieldset__legend--m" if addressType == 'primary' else "govuk-visually-hidden" }}>
+    {{ addressTitle }}
+  </p>
+  {% if addressType == 'primary' and addressTitle.length %}
     <p class="govuk-body govuk-!-padding-top-4">{{ fieldSetText }}</p>
   {% endif %}
   <div class="{{ govukFormGroupError }}">
@@ -56,7 +52,7 @@
     id: addressType + "City",
     name: addressType + "City",
     autocomplete: addressType + "address-level2",
-    value: citizenAddress.model.primaryCity if addressType == 'primary' else citizenCorrespondenceAddress.model.correspondenceCity,
+     value: citizenAddress.model.primaryCity if addressType == 'primary' else citizenCorrespondenceAddress.model.correspondenceCity,
     errorMessage: { text: t(citizenAddress.errorFor('primaryCity')) } if (addressType == 'primary' and citizenAddress.errorFor('primaryCity'))
     else ({ text: t(citizenCorrespondenceAddress.errorFor('correspondenceCity')) } if (addressType == 'correspondence' and citizenCorrespondenceAddress.errorFor('correspondenceCity')))
   }) }}
@@ -72,5 +68,4 @@
     errorMessage: { text: t(citizenAddress.errorFor('primaryPostCode')) } if (addressType == 'primary' and citizenAddress.errorFor('primaryPostCode'))
     else ({ text: t(citizenCorrespondenceAddress.errorFor('correspondencePostCode')) } if (addressType == 'correspondence' and citizenCorrespondenceAddress.errorFor('correspondencePostCode')))
   }) }}
-  {% endcall %}
 {% endmacro %}

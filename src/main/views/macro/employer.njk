@@ -1,7 +1,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
 {% macro employerRow(employer, index, errorFor,t) %}
-  <div id="row-container govuk-grid-column-two-thirds">
+  <div class="row-container govuk-grid-column-two-thirds">
     <div class="multiple-row">
       <div class="govuk-form-group {%- if errors.length>0 %} govuk-form-group--error{% endif %}">
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
@@ -10,6 +10,10 @@
               name: 'rows[' + index + '][employerName]',
               value: employer.employerName,
               hint: { text: t('PAGES.EMPLOYER.EMPLOYER_NAME') },
+              label: {
+                text: t('PAGES.EMPLOYER.EMPLOYER_NAME'),
+                classes: 'govuk-visually-hidden'
+              },
               errorMessage: { text: t(errorFor('rows[' + index + '][employerName]')) } if errorFor('rows[' + index + '][employerName]') else ''
             }) }}
           {{ govukInput({
@@ -17,6 +21,10 @@
               name: 'rows[' + index + '][jobTitle]',
               value: employer.jobTitle,
               hint: { text: t('PAGES.EMPLOYER.JOB_TITLE') },
+              label: {
+                text: t('PAGES.EMPLOYER.JOB_TITLE'),
+                classes: 'govuk-visually-hidden'
+              },
               errorMessage: { text: t(errorFor('rows[' + index + '][jobTitle]')) } if errorFor('rows[' + index + '][jobTitle]') else ''
             }) }}
         </div>
