@@ -24,7 +24,7 @@
           </p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <div class="govuk-form-group {%- if errors[0].text %} govuk-form-group--error{% endif %}">
+            <div class="govuk-form-group {%- if form.errorFor('phoneNumber') %} govuk-form-group--error{% endif %}">
               {{ govukInput({
                 id: "phoneNumber",
                 name: "phoneNumber",
@@ -34,7 +34,7 @@
                   classes: 'govuk-visually-hidden'
                 },
                 errorMessage: {
-                  html: t(errors[0].text)
+                  html: t(form.errorFor('phoneNumber'))
                 } if form.hasErrors()
               }) }}
             </div>
