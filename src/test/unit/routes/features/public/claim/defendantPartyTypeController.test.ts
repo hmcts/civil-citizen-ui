@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {PartyType} from '../../../../../../main/common/models/partyType';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {
   CLAIM_DEFENDANT_COMPANY_DETAILS,
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS,
@@ -12,11 +12,15 @@ import {
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS,
 } from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {Claim} from '../../../../../../main/common/models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Defendant party type controller', () => {
+  const mockGetClaim = draftStoreService.getCaseDataFromStore as jest.Mock;
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -24,7 +28,9 @@ describe('Defendant party type controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetClaim.mockImplementation(async () => {
+      new Claim();
+    });
   });
 
   describe('on GET', () => {
@@ -35,6 +41,9 @@ describe('Defendant party type controller', () => {
     });
 
     it('should return status 500 when error is thrown', async () => {
+      mockGetClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .get(CLAIM_DEFENDANT_PARTY_TYPE_URL)
@@ -80,13 +89,28 @@ describe('Defendant party type controller', () => {
       });
     });
 
-    it('should render not found page if non-existent party type is provided', async () => {
+    it('should render page if non-existent party type is provided', async () => {
       await request(app)
         .post(CLAIM_DEFENDANT_PARTY_TYPE_URL)
         .send({foo: 'blah'})
         .expect((response: Response) => {
           expect(response.status).toBe(200);
           expect(response.text).toContain(TestMessages.CHOOSE_YOUR_RESPONSE);
+        });
+    });
+
+    it('should return something went wrong page if redis failure occurs', async () => {
+      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveDraftClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+
+      await request(app)
+        .post(CLAIM_DEFENDANT_PARTY_TYPE_URL)
+        .send({option: PartyType.ORGANISATION})
+        .expect((response: Response) => {
+          expect(response.status).toBe(500);
+          expect(response.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
