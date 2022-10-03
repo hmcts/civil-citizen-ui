@@ -142,3 +142,4 @@ export const DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL = `${DIRECTIO
 export const DQ_EXPERT_GUIDANCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-guidance`;
 export const CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-individual-details`;
 export const CLAIMANT_DOB_URL = `${BASE_CLAIM_URL}/claimant-dob`;
+export const CLAIMANT_DEFENDANT_EMAIL_URL = `${BASE_CLAIM_URL}/defendant-email`;
