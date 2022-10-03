@@ -19,21 +19,20 @@
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.WHY_UNAVAILABLE_FOR_HEARING.TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.WHY_UNAVAILABLE_FOR_HEARING.TITLE', {days:days}) }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
 
               {{ govukTextarea({
-                name: "details",
-                id: "details",
+                name: "reason",
+                id: "reason",
                 value: form.model.details,
                 label: {
-                  text: t('PAGES.WHY_UNAVAILABLE_FOR_HEARING.MUST_TELL_US_WHY'),
-                  classes: 'govuk-!-font-weight-bold'
+                  text: t('PAGES.WHY_UNAVAILABLE_FOR_HEARING.MUST_TELL_US_WHY')
                 },
                 errorMessage: {
-                  html: t(form.errorFor("details"))
-                } if form.hasFieldError("details")
+                  html: t(form.errorFor("reason"))
+                } if form.hasFieldError("reason")
               }) }}
 
 

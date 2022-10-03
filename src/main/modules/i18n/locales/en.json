@@ -1501,7 +1501,7 @@
     },
     "WHY_UNAVAILABLE_FOR_HEARING": {
       "MUST_TELL_US_WHY": "You must tell us why you, your experts or witnesses cannot go to a hearing. The court will consider the reasons when deciding when to hold the hearing.",
-      "PAGE_TITLE": "Why are you, your experts or witnesses unavailable for a hearing for {{days}} days?",
+      "PAGE_TITLE": "Why are they not available for hearing?",
       "TITLE": "Why are you, your experts or witnesses unavailable for a hearing for {{days}} days?"
     },
     "EMPLOYER": {
@@ -1621,6 +1621,7 @@
     "SOMETHING_WENT_WRONG": "Something went wrong",
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "TELL_US_WHY": "Please tell us why",
+    "TELL_US_WHY_UNAVAILABLE": "Tell us why you, your experts or witnesses are unavailable for a hearing",
     "TRANSACTION_SOURCE": {
       "ENTER_OTHER_INCOME": "Enter other income source",
       "HOW_MUCH_INCOME": {
