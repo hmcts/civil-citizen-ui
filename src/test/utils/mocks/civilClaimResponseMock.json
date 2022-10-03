@@ -52,7 +52,12 @@
           ]
         }
       },
-      "witnesses": {}
+      "witnesses": {
+        "otherWitnesses": {
+          "option": "",
+          "witnessItems": [{}]
+        }
+      }
     },
     "applicantSolicitor1UserDetails": {
       "email": "hmcts.civil+organisation.1.solicitor.1@gmail.com"

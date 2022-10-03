@@ -8,6 +8,8 @@ import {saveDirectionQuestionnaire,getDirectionQuestionnaire} from '../../../../
 
 const otherWitnessesController = express.Router();
 const otherWitnessesViewPath = 'features/directionsQuestionnaire/otherWitnesses/other-witnesses';
+const dqPropertyName = 'otherwitnesses';
+const dqParentName = 'witnesses';
 
 function renderView(form: GenericForm<OtherWitnesses>, res: express.Response): void {
   res.render(otherWitnessesViewPath, {form});
@@ -31,7 +33,7 @@ otherWitnessesController.post(DQ_DEFENDANT_WITNESSES_URL,
         renderView(form, res);
       } else {
         const witnesses = { otherWitnesses: form.model };
-        await saveDirectionQuestionnaire(req.params.id,witnesses,'witnesses');
+        await saveDirectionQuestionnaire(req.params.id,witnesses,dqPropertyName,dqParentName);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL));
       }
     } catch (error) {
@@ -41,10 +43,10 @@ otherWitnessesController.post(DQ_DEFENDANT_WITNESSES_URL,
 
 const getOtherWitnesses = async (req: express.Request) => {
   const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-  if (directionQuestionnaire.witnesses) {
+  if (directionQuestionnaire?.witnesses) {
     const witnesses = directionQuestionnaire.witnesses;
-    witnesses.otherWitnesses.witnessItems = witnesses.otherWitnesses.witnessItems.map(item => new OtherWitnessItems(item));
-    return new OtherWitnesses(witnesses.otherWitnesses.option, witnesses.otherWitnesses.witnessItems);
+    witnesses.otherWitnesses.witnessItems = witnesses?.otherWitnesses?.witnessItems.map(item => new OtherWitnessItems(item));
+    return new OtherWitnesses(witnesses?.otherWitnesses?.option, witnesses?.otherWitnesses?.witnessItems);
   }
   return new OtherWitnesses();
 };
