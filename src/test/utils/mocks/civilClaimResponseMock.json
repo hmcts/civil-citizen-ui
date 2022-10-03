@@ -39,6 +39,10 @@
       "partyTypeDisplayValue": "Organisation"
     },
     "directionQuestionnaire": {
+      "welshLanguageRequirements":{
+        "speakLanguage":"en",
+        "documentsLanguage":"en"
+      },
       "experts": {
         "expertReportDetails": {
           "hasExpertReports": "yes",
