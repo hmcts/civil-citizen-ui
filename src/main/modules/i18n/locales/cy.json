@@ -1468,6 +1468,15 @@
       "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties.",
       "TITLE": "Vulnerability Questions"
     },
+    "WELSH_LANGUAGE": {
+      "ENGLISH": "English",
+      "OFFICIAL_LANGUAGE": "Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.",
+      "PAGE_TITLE": "Welsh language",
+      "WELSH": "Welsh",
+      "WELSH_AND_ENGLISH": "Welsh and English",
+      "WHAT_LANGUAGE_DOCUMENTS": "What languages will the documents be provided in?",
+      "WHAT_LANGUAGE_SPEAK": "What languages will you and your witnesses speak in court?"
+    },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Ychwanegu swydd arall",
       "PAGE_TITLE": "Your employer",
@@ -1572,6 +1581,8 @@
       "RENT": "Dewiswch pa mor aml ydych chi'n talu rhent",
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
+    "SELECT_LANGUAGE_DOCUMENTS": "Select the language your documents will be provided in",
+    "SELECT_LANGUAGE_SPEAK": "Select the language you, your experts, and your witnesses will speak at the hearing",
     "SELECT_REQUEST": "Dewiswch os ydych eisiau gwneud cais am ragor o amser i ymateb, os ydych eisoes wedi cytuno ar ragor o amser i ymateb, os yw eich cais am ragor o amser wedi’i wrthod, neu nid ydych angen rhagor o amser i ymateb",
     "SELECT_YES_IF_DOCUMENTS": "Select yes if there are documents the claimant has that you want the court to consider",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
