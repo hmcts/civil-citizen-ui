@@ -141,4 +141,6 @@ export const DQ_SENT_EXPERT_REPORTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/sent-
 export const DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/availability-dates`;
 export const DQ_EXPERT_GUIDANCE_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/expert-guidance`;
 export const CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-individual-details`;
+export const CLAIM_CLAIMANT_SOLE_TRADER_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-sole-trader-details`;
 export const CLAIMANT_DOB_URL = `${BASE_CLAIM_URL}/claimant-dob`;
+export const CLAIMANT_PHONE_URL = `${BASE_CLAIM_URL}/claimant-phone`;
