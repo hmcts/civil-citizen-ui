@@ -27,6 +27,7 @@ dist/
 coverage/
 smoke-output/
 functional-output/
+test-results/
 
 .yarn/
 .yarnrc

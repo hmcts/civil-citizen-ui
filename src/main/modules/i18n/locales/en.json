@@ -851,6 +851,19 @@
       "TELL_US": "Tell us about any evidence you wish to provide. You do not need to send us any evidence now. If your case goes to a court hearing, and is not settled, you will need to provide evidence.",
       "TITLE": "List your evidence"
     },
+    "EXPERT_DETAILS": {
+      "ADD_ANOTHER_EXPERT": "Add another expert",
+      "ADD_EXPERT": "Add another expert",
+      "COST_OPTIONAL": "Estimated cost (optional)",
+      "EMAIL_ADDRESS_OPTIONAL": "Email address (optional)",
+      "FIELD_OF_EXPERTISE": "Field of expertise",
+      "FIRST_NAME_OPTIONAL": "First name (optional)",
+      "LAST_NAME_OPTIONAL": "Last name (optional)",
+      "PAGE_TITLE": "Enter the expert’s details",
+      "PHONE_OPTIONAL": "Phone number (optional)",
+      "REMOVE_EXPERT": "Remove expert",
+      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert"
+    },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",
@@ -1551,6 +1564,9 @@
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
     "ENTER_AT_LEAST_ONE_REPORT": "Enter at least one report",
+    "ENTER_EXPERT_DETAILS": "Enter the expert's details",
+    "ENTER_WHY_NEED_EXPERT": "Tell us why you need this expert",
+    "ENTER_EXPERT_FIELD": "Enter the expert’s field of expertise",
     "ENTER_FIRST_NAME": "Enter first name",
     "ENTER_LAST_NAME": "Enter last name",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",

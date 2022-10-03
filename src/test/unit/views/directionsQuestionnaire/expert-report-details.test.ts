@@ -4,6 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../main/app';
 import {mockCivilClaim} from '../../../utils/mockDraftStore';
 import {DQ_EXPERT_REPORT_DETAILS_URL} from '../../../../main/routes/urls';
+import {YesNo} from '../../../../main/common/form/models/yesNo';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
@@ -43,8 +44,8 @@ describe('Expert Report Details View', () => {
 
     it('should display yes/no radio buttons', () => {
       const radios = htmlDocument.getElementsByClassName('govuk-radios__input');
-      expect(radios[0].getAttribute('value')).toBe('yes');
-      expect(radios[1].getAttribute('value')).toBe('no');
+      expect(radios[0].getAttribute('value')).toBe(YesNo.YES);
+      expect(radios[1].getAttribute('value')).toBe(YesNo.NO);
     });
 
     it('should display fieldset name as Report', () => {
@@ -86,7 +87,7 @@ describe('Expert Report Details View', () => {
       expect(button.innerHTML).toContain('Add another report');
     });
 
-    it('should display save continue button',() => {
+    it('should display save continue button', () => {
       const button = mainWrapper.getElementsByClassName('govuk-button')[2];
       expect(button.innerHTML).toContain('Save and continue');
     });
@@ -117,7 +118,7 @@ describe('Expert Report Details View', () => {
     beforeEach(async () => {
       const response = await request(app).post(DQ_EXPERT_REPORT_DETAILS_URL)
         .send({
-          hasExpertReports: 'yes',
+          option: YesNo.YES,
           reportDetails: mockReportDetails,
         });
       const dom = new JSDOM(response.text);
