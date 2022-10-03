@@ -1,12 +1,13 @@
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {Experts} from './experts/experts';
 import {ConsiderClaimantDocuments} from 'models/directionsQuestionnaire/considerClaimantDocuments';
 import {ExpertCanStillExamine} from '../../models/directionsQuestionnaire/expertCanStillExamine';
 import {SentExpertReports} from './sentExpertReports';
 import {Vulnerability} from '../../models/directionsQuestionnaire/vulnerability';
 import {DeterminationWithoutHearing} from '../../models/directionsQuestionnaire/determinationWithoutHearing';
 import {SupportRequired} from '../../models/directionsQuestionnaire/supportRequired';
-import {Experts} from './experts/experts';
 import {WelshLanguageRequirements} from './welshLanguageRequirements';
+import {Witnesses} from './witnesses/witnesses';
 
 export class DirectionQuestionnaire {
   permissionForExpert?: GenericYesNo;
@@ -23,6 +24,7 @@ export class DirectionQuestionnaire {
   sentExpertReports?: SentExpertReports;
   experts?: Experts;
   welshLanguageRequirements?: WelshLanguageRequirements;
+  witnesses?: Witnesses;
 
   constructor(
     triedToSettle?: GenericYesNo,
@@ -37,6 +39,7 @@ export class DirectionQuestionnaire {
     sentExpertReports?: SentExpertReports,
     experts?: Experts,
     welshLanguageRequirements?: WelshLanguageRequirements,
+    witnesses?: Witnesses,
   ) {
     this.triedToSettle = triedToSettle;
     this.defendantExpertEvidence = defendantExpertEvidence;
@@ -50,5 +53,6 @@ export class DirectionQuestionnaire {
     this.supportRequired = supportRequired;
     this.experts = experts;
     this.welshLanguageRequirements = welshLanguageRequirements;
+    this.witnesses = witnesses;
   }
 }
