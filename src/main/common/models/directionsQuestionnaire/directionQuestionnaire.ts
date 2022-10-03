@@ -6,6 +6,7 @@ import {SentExpertReports} from './sentExpertReports';
 import {Vulnerability} from '../../models/directionsQuestionnaire/vulnerability';
 import {DeterminationWithoutHearing} from '../../models/directionsQuestionnaire/determinationWithoutHearing';
 import {SupportRequired} from '../../models/directionsQuestionnaire/supportRequired';
+import {Witnesses} from './witnesses/witnesses';
 
 export class DirectionQuestionnaire {
   permissionForExpert?: GenericYesNo;
@@ -21,6 +22,7 @@ export class DirectionQuestionnaire {
   supportRequired?: SupportRequired;
   sentExpertReports?: SentExpertReports;
   experts?: Experts;
+  witnesses?: Witnesses;
 
   constructor(
     triedToSettle?: GenericYesNo,
@@ -34,6 +36,7 @@ export class DirectionQuestionnaire {
     supportRequired?: SupportRequired,
     sentExpertReports?: SentExpertReports,
     experts?: Experts,
+    witnesses?: Witnesses,
   ) {
     this.triedToSettle = triedToSettle;
     this.defendantExpertEvidence = defendantExpertEvidence;
@@ -46,5 +49,6 @@ export class DirectionQuestionnaire {
     this.determinationWithoutHearing = determinationWithoutHearing;
     this.supportRequired = supportRequired;
     this.experts = experts;
+    this.witnesses = witnesses;
   }
 }

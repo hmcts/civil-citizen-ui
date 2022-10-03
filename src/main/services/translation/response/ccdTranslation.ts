@@ -10,5 +10,6 @@ export const translateDraftResponseToCCD = (claim: Claim): CCDResponse => {
     defenceAdmitPartPaymentTimeRouteRequired: toCCDPaymentOption(claim.paymentOption),
     respondent1RepaymentPlan: toCCDRepaymentPlan(claim.repaymentPlan),
     respondToClaimAdmitPartLRspec: toCCDPayBySetDate(claim.paymentDate),
+    specAoSApplicantCorrespondenceAddressRequired: 'No', // TODO This part needs to be change in separate story CIV-4571
   };
 };
