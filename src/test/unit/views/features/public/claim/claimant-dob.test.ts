@@ -4,24 +4,30 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {CLAIMANT_DOB_URL} from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Claimant Date of Birth View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+
+  beforeEach(async () => {
+    nock(idamUrl)
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
+    app.locals.draftStoreClient = mockCivilClaim;
+  });
 
   describe('on GET', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
 
     beforeEach(async () => {
-      nock(idamUrl)
-        .post('/o/token')
-        .reply(200, {id_token: citizenRoleToken});
       const response = await request(app).get(CLAIMANT_DOB_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
@@ -70,9 +76,6 @@ describe('Claimant Date of Birth View', () => {
     let htmlDocument: Document;
 
     beforeEach(async () => {
-      nock(idamUrl)
-        .post('/o/token')
-        .reply(200, {id_token: citizenRoleToken});
       const response = await request(app).post(CLAIMANT_DOB_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
