@@ -72,7 +72,7 @@ describe('Claimant Date of Birth Controller', () => {
     it('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CLAIMANT_DOB_URL)
+        .post(CLAIMANT_DOB_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
