@@ -54,25 +54,28 @@ describe('Claimant Date of Birth Controller', () => {
 
     it('should redirect to the claimant phone number page', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
-      const dob = {day: 3, month: 4, year: 1980};
-      await request(app).post(CLAIMANT_DOB_URL).send(dob).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIMANT_PHONE_NUMBER_URL);
-      });
+      await request(app).post(CLAIMANT_DOB_URL)
+        .send({day: 3, month: 4, year: 1980})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(CLAIMANT_PHONE_NUMBER_URL);
+        });
     });
 
     it('should redirect to the claimant phone number page', async () => {
-      const dob = {day: 2, month: 3, year: 1980};
-      await request(app).post(CLAIMANT_DOB_URL).send(dob).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIMANT_PHONE_NUMBER_URL);
-      });
+      await request(app).post(CLAIMANT_DOB_URL)
+        .send({day: 2, month: 3, year: 1980})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(CLAIMANT_PHONE_NUMBER_URL);
+        });
     });
 
     it('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(CLAIMANT_DOB_URL)
+        .send({day: 4, month: 5, year: 1952})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
