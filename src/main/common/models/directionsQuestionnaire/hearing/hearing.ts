@@ -7,4 +7,5 @@ export class Hearing {
   determinationWithoutHearing?: DeterminationWithoutHearing;
   requestExtra4weeks?: GenericYesNo;
   considerClaimantDocuments?: ConsiderClaimantDocuments;
+  next12MonthsCanNotHearing?: GenericYesNo;
 }
