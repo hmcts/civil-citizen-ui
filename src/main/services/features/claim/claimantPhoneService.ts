@@ -1,5 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
-import {ClaimantPhoneNumber} from '../../../common/form/models/claim/claimantPhoneNumber';
+import { CitizenTelephoneNumber } from '../../../common/form/models/citizenTelephoneNumber';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantPhoneAsService');
@@ -8,19 +8,19 @@ const getClaimantPhone = async (claimId:string) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
     if (claim.applicant1) {
-      return new ClaimantPhoneNumber(claim.applicant1.phoneNumber);
+      return new CitizenTelephoneNumber(claim.applicant1.phoneNumber);
     }
-    return new ClaimantPhoneNumber();
+    return new CitizenTelephoneNumber();
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-const saveClaimantPhone = async (claimId:string,form: ClaimantPhoneNumber) => {
+const saveClaimantPhone = async (claimId:string,form: CitizenTelephoneNumber) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    claim.applicant1.phoneNumber = form.phoneNumber;
+    claim.applicant1.phoneNumber = form.telephoneNumber;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

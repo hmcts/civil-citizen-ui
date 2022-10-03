@@ -4,7 +4,7 @@ import {Claim, Party} from '../../../../../../main/common/models/claim';
 import {CounterpartyType} from '../../../../../../main/common/models/counterpartyType';
 import {CorrespondenceAddress} from '../../../../../../main/common/models/correspondenceAddress';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {ClaimantPhoneNumber} from '../../../../../../main/common/form/models/claim/claimantPhoneNumber';
+import {CitizenTelephoneNumber} from '../../../../../../main/common/form/models/citizenTelephoneNumber';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -44,8 +44,8 @@ describe('Claimant Phone Service', () => {
       //When
       const form = await getClaimantPhone('123');
       //Then
-      expect(form.phoneNumber).toBeUndefined();
-      expect(form.phoneNumber).toEqual(undefined);
+      expect(form.telephoneNumber).toBeUndefined();
+      expect(form.telephoneNumber).toEqual(undefined);
     });
 
     it('should get empty form when claimant pnone does not exist', async () => {
@@ -58,7 +58,7 @@ describe('Claimant Phone Service', () => {
       //When
       const form = await getClaimantPhone('123');
       //Then
-      expect(form.phoneNumber).toEqual('');
+      expect(form.telephoneNumber).toEqual('');
     });
 
     it('should return populated form when claimant phone exists', async () => {
@@ -73,7 +73,7 @@ describe('Claimant Phone Service', () => {
       const form = await getClaimantPhone('123');
 
       //Then
-      expect(form.phoneNumber).toEqual(PHONE_NUMBER);
+      expect(form.telephoneNumber).toEqual(PHONE_NUMBER);
     });
 
     it('should rethrow error when error occurs', async () => {
@@ -97,7 +97,7 @@ describe('Claimant Phone Service', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveClaimantPhone('123', new ClaimantPhoneNumber(PHONE_NUMBER));
+      await saveClaimantPhone('123', new CitizenTelephoneNumber(PHONE_NUMBER));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -108,7 +108,7 @@ describe('Claimant Phone Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveClaimantPhone('123', new ClaimantPhoneNumber(PHONE_NUMBER))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveClaimantPhone('123', new CitizenTelephoneNumber(PHONE_NUMBER))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
 
     it('should rethrow error when error occurs on save claim', async () => {
@@ -118,7 +118,7 @@ describe('Claimant Phone Service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveClaimantPhone('123', new ClaimantPhoneNumber(PHONE_NUMBER))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveClaimantPhone('123', new CitizenTelephoneNumber(PHONE_NUMBER))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
