@@ -1,4 +1,3 @@
-
 import {IsDefined, IsNotEmpty, MaxLength, ValidateIf} from 'class-validator';
 import {FREE_TEXT_MAX_LENGTH} from '../../../form/validators/validationConstraints';
 import {YesNo} from '../../../form/models/yesNo';

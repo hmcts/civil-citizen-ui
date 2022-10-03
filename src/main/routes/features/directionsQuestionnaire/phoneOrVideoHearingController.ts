@@ -3,29 +3,28 @@ import {
   DQ_PHONE_OR_VIDEO_HEARING_URL,
   VULNERABILITY_URL,
 } from '../../urls';
-import {
-  getDirectionQuestionnaire,
-  saveDirectionQuestionnaire,
-} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {PhoneOrVideoHearing} from '../../../common/models/directionsQuestionnaire/hearing/phoneOrVideoHearing';
+import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 import {YesNo} from '../../../common/form/models/yesNo';
+import {
+  getGenericOption,
+  saveDirectionQuestionnaire,
+} from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 const phoneOrVideoHearingController = express.Router();
 const phoneOrVideoHearingViewPath = 'features/directionsQuestionnaire/phone-or-video-hearing';
 const dqPropertyName = 'phoneOrVideoHearing';
 const dqParentName = 'hearing';
 
-function renderView(form: GenericForm<PhoneOrVideoHearing>, res: express.Response): void {
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(phoneOrVideoHearingViewPath, {form});
 }
 
 phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const phoneOrVideoHearing = directionQuestionnaire.hearing?.phoneOrVideoHearing ?
-      directionQuestionnaire.hearing.phoneOrVideoHearing : new PhoneOrVideoHearing();
+    const phoneOrVideoHearing = await getGenericOption(req.params.id, dqPropertyName, dqParentName);
     renderView(new GenericForm(phoneOrVideoHearing), res);
   } catch (error) {
     next(error);
