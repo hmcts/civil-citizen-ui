@@ -1,6 +1,5 @@
 import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
 import {ClaimantPhoneNumber} from '../../../common/form/models/claim/claimantPhoneNumber';
-import {AppRequest} from '../../../common/models/AppRequest';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantPhoneAsService');
@@ -29,13 +28,7 @@ const saveClaimantPhone = async (claimId:string,form: ClaimantPhoneNumber) => {
   }
 };
 
-const getUserId = (): string => {
-  let req: AppRequest;
-  return req.session.user.id;
-};
-
 export {
   getClaimantPhone,
   saveClaimantPhone,
-  getUserId,
 };

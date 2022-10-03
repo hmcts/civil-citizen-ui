@@ -8,17 +8,19 @@ import {
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import { getUserId } from '../../../../../main/services/features/claim/claimantPhoneService';
-//import {getUserId} from '../../../../../main/routes/features/public/claim/claimantPhoneController';
+//import {getUserId} from '../../../../../main/services/features/claim/claimantPhoneService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/services/features/claim/claimantPhoneService', () => ({
-  ...jest.requireActual('../../../../../main/services/features/claim/claimantPhoneService'),
-  getUserId: jest.fn(),
-}));
+//jest.mock('../../../../../main/services/features/claim/claimantPhoneService');
+// jest.mock('../../../../../main/services/features/claim/claimantPhoneService', () => ({
+//   ...jest.requireActual('../../../../../main/services/features/claim/claimantPhoneService'),
+//   getUserId: jest.fn(),
+// }));
+
+
 const PHONE_NUMBER = '01632960001';
-const mockGetUserId = getUserId as jest.Mock;
+//const mockGetUserId = getUserId as jest.Mock;
 
 describe('Completing Claim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -32,9 +34,9 @@ describe('Completing Claim', () => {
   describe('on GET', () => {
     it('should return on your claimant phone number page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      mockGetUserId.mockImplementation(async () => {
-        return '123';
-      });
+      // mockGetUserId.mockImplementation(async () => {
+      //   return '123';
+      // });
       await request(app)
         .get(CLAIMANT_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -42,6 +44,7 @@ describe('Completing Claim', () => {
           expect(res.text).toContain(t('PAGES.CLAIMANT_PHONE.TITLE'));
         });
     });
+
     it('should return 500 status code when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
