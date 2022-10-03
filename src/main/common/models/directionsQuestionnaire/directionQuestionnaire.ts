@@ -1,11 +1,11 @@
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
+import {Experts} from './experts/experts';
 import {ConsiderClaimantDocuments} from 'models/directionsQuestionnaire/considerClaimantDocuments';
 import {ExpertCanStillExamine} from '../../models/directionsQuestionnaire/expertCanStillExamine';
 import {SentExpertReports} from './sentExpertReports';
 import {Vulnerability} from '../../models/directionsQuestionnaire/vulnerability';
 import {DeterminationWithoutHearing} from '../../models/directionsQuestionnaire/determinationWithoutHearing';
 import {SupportRequired} from '../../models/directionsQuestionnaire/supportRequired';
-import {Experts} from './experts/experts';
 import {Witnesses} from './witnesses/witnesses';
 
 export class DirectionQuestionnaire {
