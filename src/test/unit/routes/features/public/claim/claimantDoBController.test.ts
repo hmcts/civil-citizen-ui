@@ -27,7 +27,7 @@ describe('Claimant Date of Birth Controller', () => {
       expect(res.text).toContain('What is your date of birth?');
     });
 
-    it('should render date of birth page with cookie value', async () => {
+    it('should render date of birth page with values', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
       const res = await request(app).get(CLAIMANT_DOB_URL);
       expect(res.status).toBe(200);
@@ -50,6 +50,15 @@ describe('Claimant Date of Birth Controller', () => {
       const res = await request(app).post(CLAIMANT_DOB_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('What is your date of birth?');
+    });
+
+    it('should redirect to the claimant phone number page', async () => {
+      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      const dob = {day: 3, month: 4, year: 1980};
+      await request(app).post(CLAIMANT_DOB_URL).send(dob).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(CLAIMANT_PHONE_NUMBER_URL);
+      });
     });
 
     it('should redirect to the claimant phone number page', async () => {
