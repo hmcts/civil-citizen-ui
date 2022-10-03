@@ -464,6 +464,12 @@
         "TITLE": "Enter your details",
         "YOUR_POSTAL_ADDRESS": "Your postal address"
       },
+      "CLAIMANT_DEFENDANT_EMAIL": {
+        "PAGE_TITLE": "Their email address (optional)",
+        "PERSONAL_EMAIL": "This must be their personal email address",
+        "TITLE": "Their email address (optional)",
+        "USE_THIS_EMAIL": "We'll use this to tell them you've made a claim, as well as notifying them by post."
+      },
       "RESOLVE_THE_DISPUTE": {
         "P1": {
           "BEFORE_YOU_CLAIM": "Before you claim you should:",
