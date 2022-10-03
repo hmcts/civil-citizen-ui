@@ -1469,6 +1469,15 @@
       "REMINDER": "You are reminded that a copy of this directions questionnaire will be shared with all other parties.",
       "TITLE": "Vulnerability Questions"
     },
+    "WELSH_LANGUAGE": {
+      "ENGLISH": "English",
+      "OFFICIAL_LANGUAGE": "Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.",
+      "PAGE_TITLE": "Welsh language",
+      "WELSH": "Welsh",
+      "WELSH_AND_ENGLISH": "Welsh and English",
+      "WHAT_LANGUAGE_DOCUMENTS": "What languages will the documents be provided in?",
+      "WHAT_LANGUAGE_SPEAK": "What languages will you and your witnesses speak in court?"
+    },
     "WHO_EMPLOYS_YOU": {
       "ADD_ANOTHER_JOB": "Add another job",
       "PAGE_TITLE": "Your employer",
@@ -1574,6 +1583,8 @@
       "RENT": "Select how often you pay for Rent",
       "WATER": "Select how often you pay for Water"
     },
+    "SELECT_LANGUAGE_DOCUMENTS": "Select the language your documents will be provided in",
+    "SELECT_LANGUAGE_SPEAK": "Select the language you, your experts, and your witnesses will speak at the hearing",
     "SELECT_REQUEST": "Select if you want to request more time, have already agreed more time, have had your request for more time refused, or you do not want more time",
     "SELECT_YES_IF_DOCUMENTS" : "Select yes if there are documents the claimant has that you want the court to consider",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
