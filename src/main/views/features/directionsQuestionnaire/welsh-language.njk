@@ -7,7 +7,7 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.WELSH_LANGUAGE.TITLE') }}
+  {{ setPageTitle('PAGES.WELSH_LANGUAGE.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -33,17 +33,17 @@
               name: "speakLanguage",
               items: [
                 {
-                  value: speakLanguage,
+                  value: LanguageOptions.ENGLISH,
                   text: t('PAGES.WELSH_LANGUAGE.ENGLISH'),
                   checked: form.model.speakLanguage === LanguageOptions.ENGLISH
                 },
                 {
-                  value: speakLanguage,
+                  value: LanguageOptions.WELSH,
                   text: t('PAGES.WELSH_LANGUAGE.WELSH'),
                   checked: form.model.speakLanguage === LanguageOptions.WELSH
                 },
                 {
-                  value: speakLanguage,
+                  value: LanguageOptions.WELSH_AND_ENGLISH,
                   text: t('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH'),
                   checked: form.model.speakLanguage === LanguageOptions.WELSH_AND_ENGLISH
                 }
@@ -59,17 +59,17 @@
               name: "documentsLanguage",
               items: [
                 {
-                  value: documentsLanguage,
+                  value: LanguageOptions.ENGLISH,
                   text: t('PAGES.WELSH_LANGUAGE.ENGLISH'),
                   checked: form.model.documentsLanguage === LanguageOptions.ENGLISH
                 },
                 {
-                  value: documentsLanguage,
+                  value: LanguageOptions.WELSH,
                   text: t('PAGES.WELSH_LANGUAGE.WELSH'),
                   checked: form.model.documentsLanguage === LanguageOptions.WELSH
                 },
                 {
-                  value: documentsLanguage,
+                  value: LanguageOptions.WELSH_AND_ENGLISH,
                   text: t('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH'),
                   checked: form.model.documentsLanguage === LanguageOptions.WELSH_AND_ENGLISH
                 }

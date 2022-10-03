@@ -10,6 +10,7 @@ import { WelshLanguageRequirements } from '../../../common/models/directionsQues
 
 const welshLanguageController = express.Router();
 const welshLanguageViewPath = 'features/directionsQuestionnaire/welsh-language';
+const welshLanguageRequirementsProperty = 'welshLanguageRequirements';
 
 function renderView(form: GenericForm<WelshLanguageRequirements>, res: express.Response): void {
   res.render(welshLanguageViewPath, { form });
@@ -37,7 +38,7 @@ welshLanguageController.post(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, form.model, 'welshLanguageRequirements');
+      await saveDirectionQuestionnaire(claimId, form.model, welshLanguageRequirementsProperty);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {
