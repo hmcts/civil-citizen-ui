@@ -2,7 +2,7 @@ import * as express from 'express';
 import {ClaimantPhoneNumber} from '../../../../common/form/models/claim/claimantPhoneNumber';
 import {CLAIMANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL} from '../../../urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {getClaimantPhone,saveClaimantPhone} from '../../../../../main/services/features/claim/claimantPhoneService'; //getUserId,
+import {getClaimantPhone,saveClaimantPhone} from '../../../../../main/services/features/claim/claimantPhoneService';
 import {AppRequest} from 'common/models/AppRequest';
 
 const claimantPhoneViewPath = 'features/public/claim/claimant-phone';
