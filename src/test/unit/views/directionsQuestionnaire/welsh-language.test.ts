@@ -40,11 +40,15 @@ describe('Welsh Language view', () => {
       expect(header[0].innerHTML).toContain(t('PAGES.WELSH_LANGUAGE.PAGE_TITLE'));
     });
 
-    it('should display radio buttons', () => {
+    it('should display radio buttons for speak language', () => {
       const radios = htmlDocument.getElementsByClassName('govuk-radios__input');
       expect(radios[0].getAttribute('value')).toBe('en');
       expect(radios[1].getAttribute('value')).toBe('cy');
       expect(radios[2].getAttribute('value')).toBe('cy-en');
+    });
+
+    it('should display radio buttons for documents language', () => {
+      const radios = htmlDocument.getElementsByClassName('govuk-radios__input');
       expect(radios[3].getAttribute('value')).toBe('en');
       expect(radios[4].getAttribute('value')).toBe('cy');
       expect(radios[5].getAttribute('value')).toBe('cy-en');
@@ -52,7 +56,7 @@ describe('Welsh Language view', () => {
 
     it('should display save and continue button', () => {
       const saveButton = mainWrapper.getElementsByClassName('govuk-button')[0];
-      expect(saveButton.innerHTML).toContain('Save and continue');
+      expect(saveButton.innerHTML).toContain(t('COMMON.BUTTONS.SAVE_AND_CONTINUE'));
     });
 
     it('should display contact us for help', () => {

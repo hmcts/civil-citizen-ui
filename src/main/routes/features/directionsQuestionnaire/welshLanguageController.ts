@@ -13,7 +13,7 @@ const welshLanguageViewPath = 'features/directionsQuestionnaire/welsh-language';
 const welshLanguageRequirementsProperty = 'welshLanguageRequirements';
 
 function renderView(form: GenericForm<WelshLanguageRequirements>, res: express.Response): void {
-  res.render(welshLanguageViewPath, { form });
+  res.render(welshLanguageViewPath, {form});
 }
 
 welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
