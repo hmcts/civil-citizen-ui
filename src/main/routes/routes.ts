@@ -121,7 +121,9 @@ import permissionForExpertController from './features/directionsQuestionnaire/pe
 import defendantYourselfEvidenceController
   from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
 import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
+import expertDetailsController from './features/directionsQuestionnaire/experts/expertDetailsController';
 import sentExpertReportsController from './features/directionsQuestionnaire/sentExpertReportsController';
+import otherWitnessesController from './features/directionsQuestionnaire/otherWitnessesController';
 import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
 import defendantPartyTypeController from './features/public/claim/defendantPartyTypeController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
@@ -238,7 +240,9 @@ export default [
   defendantExpertEvidenceController,
   expertCanStillExamineController,
   defendantYourselfEvidenceController,
+  expertDetailsController,
   sentExpertReportsController,
+  otherWitnessesController,
   expertReportDetailsController,
   defendantPartyTypeController,
   claimantIndividualDetailsController,
