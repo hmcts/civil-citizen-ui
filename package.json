@@ -16,11 +16,12 @@
     "test:routes": "jest -c jest.routes.config.js",
     "test:a11y": "jest -c jest.a11y.config.js --maxWorkers 15 --forceExit",
     "sonar-scan": "sonar-scanner",
-    "test:smoke": "jest -c jest.smoketest.config.js",
-    "test:functional": "NODE_TLS_REJECT_UNAUTHORIZED=0 codeceptjs --config ./src/test/functional/codecept.conf.js run-workers 2 parallel",
+    "test:smoke": "yarn test:functional:codeceptjs run --grep @smoketestDisabled --reporter mocha-multi --verbose",
+    "test:functional": "yarn test:functional:codeceptjs run --grep @testDisabled --reporter mocha-multi --verbose",
     "test:crossbrowser": "SAUCE='true' yarn test:crossbrowser:codeceptjs run",
     "test:crossbrowser:playwright": "yarn test:crossbrowser:codeceptjs run-multiple crossBrowser",
     "test:crossbrowser:codeceptjs": "codeceptjs --config ./src/test/cross-browser/codecept.conf.js",
+    "test:functional:codeceptjs": "codeceptjs --config src/test/functionalTests/codecept.conf.js",
     "cichecks": "yarn && yarn build && yarn lint  && yarn test && yarn test:routes &&  yarn test:a11y"
   },
   "dependencies": {
@@ -121,7 +122,9 @@
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-middleware": "^5.3.3",
-    "webpack-node-externals": "^3.0.0"
+    "webpack-node-externals": "^3.0.0",
+    "mocha-multi": "^1.1.6",
+    "mochawesome": "^7.0.1"
   },
   "resolutions": {
     "**/jest/**/node-notifier": "^8.0.1",

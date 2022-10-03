@@ -20,7 +20,7 @@ const getGenericOption = async (claimId: string, directionQuestionnairePropertyN
   try {
     const caseData = await getCaseDataFromStore(claimId);
     const directionQuestionnaire: any = caseData?.directionQuestionnaire ? caseData.directionQuestionnaire : new DirectionQuestionnaire();
-    if (parentPropertyName && directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName]) {
+    if (parentPropertyName && directionQuestionnaire[parentPropertyName] && directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName]) {
       return directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName];
     } else if (!parentPropertyName && directionQuestionnaire[directionQuestionnairePropertyName]) {
       return directionQuestionnaire[directionQuestionnairePropertyName];

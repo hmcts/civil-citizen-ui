@@ -25,7 +25,7 @@ function renderView(form: GenericForm<ExpertCanStillExamine>, res: express.Respo
 expertCanStillExamineController.get(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (req, res, next: express.NextFunction) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const expertCanStillExamine = directionQuestionnaire.experts.expertCanStillExamine ?
+    const expertCanStillExamine = directionQuestionnaire.experts?.expertCanStillExamine ?
       directionQuestionnaire.experts.expertCanStillExamine : new ExpertCanStillExamine();
 
     renderView(new GenericForm(expertCanStillExamine), res);
@@ -37,7 +37,8 @@ expertCanStillExamineController.get(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (r
 expertCanStillExamineController.post(DQ_DEFENDANT_CAN_STILL_EXAMINE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
-    const expertCanStillExamine = new GenericForm(new ExpertCanStillExamine(req.body.option, req.body.details));
+    const details = req.body.option === YesNo.YES ? req.body.details : undefined;
+    const expertCanStillExamine = new GenericForm(new ExpertCanStillExamine(req.body.option, details));
     expertCanStillExamine.validateSync();
 
     if (expertCanStillExamine.hasErrors()) {

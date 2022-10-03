@@ -9,6 +9,7 @@ import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {YesNo} from '../../../common/form/models/yesNo';
 
 const considerClaimantDocumentsController = express.Router();
 const considerClaimantDocumentsViewPath = 'features/directionsQuestionnaire/consider-claimant-documents';
@@ -23,7 +24,7 @@ considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, asyn
   try {
 
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const considerClaimantDocuments = directionQuestionnaire.hearing.considerClaimantDocuments ?
+    const considerClaimantDocuments = directionQuestionnaire.hearing?.considerClaimantDocuments ?
       directionQuestionnaire.hearing.considerClaimantDocuments : new ConsiderClaimantDocuments();
 
     renderView(new GenericForm(considerClaimantDocuments), res);
@@ -35,7 +36,8 @@ considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, asyn
 considerClaimantDocumentsController.post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
-    const considerClaimantDocuments = new GenericForm(new ConsiderClaimantDocuments(req.body.option, req.body.details));
+    const details = req.body.option === YesNo.YES ? req.body.details : undefined;
+    const considerClaimantDocuments = new GenericForm(new ConsiderClaimantDocuments(req.body.option, details));
     considerClaimantDocuments.validateSync();
 
     if (considerClaimantDocuments.hasErrors()) {

@@ -1,3 +1,5 @@
-export class Witnesses {
+import {OtherWitnesses} from './otherWitnesses';
 
+export class Witnesses {
+  otherWitnesses?: OtherWitnesses;
 }

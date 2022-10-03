@@ -33,7 +33,8 @@ expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res,
 expertReportDetailsController.post(DQ_EXPERT_REPORT_DETAILS_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    let expertReportDetails = getExpertReportDetailsForm(req.body.option, req.body.reportDetails);
+    const reportDetails = req.body.option === YesNo.YES ? req.body.reportDetails : undefined;
+    let expertReportDetails = getExpertReportDetailsForm(req.body.option, reportDetails);
     const form = new GenericForm(expertReportDetails);
     form.validateSync();
     if (form.hasErrors()) {
