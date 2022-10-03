@@ -8,7 +8,7 @@ import {AppRequest} from '../../../../common/models/AppRequest';
 import {Respondent} from '../../../../common/models/respondent';
 
 const claimantDoBController = express.Router();
-const claimantDoBViewPath = 'features/public/claim/claimant-dob';
+const claimantDoBViewPath = 'features/response/citizenDob/citizen-dob';
 
 claimantDoBController.get(CLAIMANT_DOB_URL, async (req: AppRequest, res: express.Response, next: express.NextFunction) => {
   try {
@@ -19,7 +19,7 @@ claimantDoBController.get(CLAIMANT_DOB_URL, async (req: AppRequest, res: express
       const dateOfBirth = new Date(claim.respondent1.dateOfBirth);
       form = new GenericForm(new ClaimantDoB(dateOfBirth.getDate().toString(), (dateOfBirth.getMonth() + 1).toString(), dateOfBirth.getFullYear().toString()));
     }
-    res.render(claimantDoBViewPath, {form, today: new Date()});
+    res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true});
   } catch (error) {
     next(error);
   }
@@ -32,7 +32,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, async (req: express.Request, res: e
     form.validateSync();
 
     if (form.hasErrors()) {
-      res.render(claimantDoBViewPath, {form, today: new Date()});
+      res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true});
     } else {
       const claim = await getCaseDataFromStore(req.params.id);
       if (claim.respondent1) {
