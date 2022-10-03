@@ -1485,6 +1485,11 @@
       "PAGE_TITLE": "Your employer",
       "WHO_EMPLOYS": "Pwy sy’n eich cyflogi"
     },
+    "WHY_UNAVAILABLE_FOR_HEARING": {
+      "MUST_TELL_US_WHY": "You must tell us why you, your experts or witnesses cannot go to a hearing. The court will consider the reasons when deciding when to hold the hearing.",
+      "PAGE_TITLE": "Why are you, your experts or witnesses unavailable for a hearing for {{days}} days?",
+      "TITLE": "Why are you, your experts or witnesses unavailable for a hearing for {{days}} days?"
+    },
     "EMPLOYER": {
       "EMPLOYER_NAME": "Enw’r cyflogwr",
       "JOB_TITLE": "Teitl swydd"
