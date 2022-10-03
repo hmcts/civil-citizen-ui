@@ -1,26 +1,43 @@
-import {IsDefined, IsNotEmpty, MaxLength, ValidateIf, ValidateNested} from 'class-validator';
-import {
-  // NO_LANGUAGE_ENTERED,
-  // NO_OTHER_SUPPORT,
-  NO_SIGN_LANGUAGE_ENTERED,
-  TEXT_TOO_LONG,
-} from '../../form/validationErrors/errorMessageConstants';
-import {FREE_TEXT_MAX_LENGTH} from '../../form/validators/validationConstraints';
+import {IsDefined, IsNotEmpty, ValidateIf, ValidateNested} from 'class-validator';
+
+export enum supportType {
+  SIGN_LANGUAGE_INTERPRETER = 'signLanguageInterpreter',
+  LANGUAGE_INTERPRETER = 'languageInterpreter',
+  OTHER_SUPPORT = 'otherSupport',
+}
+
+const generateErrorMessage = (sourceName: string): string => {
+  switch (sourceName) {
+    case supportType.SIGN_LANGUAGE_INTERPRETER:
+      return 'ERRORS.NO_SIGN_LANGUAGE_ENTERED';
+    case supportType.LANGUAGE_INTERPRETER:
+      return 'ERRORS.NO_LANGUAGE_ENTERED';
+    default:
+      return 'ERRORS.NO_OTHER_SUPPORT';
+  }
+};
+
+const withMessage = (buildErrorFn: (name: string) => string) => {
+  return (args: any): string => {
+    return buildErrorFn(args.object.name);
+  };
+};
 
 export class Support {
+  name?: string;
   selected?: boolean;
-  // TODO: change error message with dynamic values
   @ValidateIf(o => o.selected)
-  @IsDefined({message: NO_SIGN_LANGUAGE_ENTERED})
-  @IsNotEmpty({message: NO_SIGN_LANGUAGE_ENTERED})
-  @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
+  @IsDefined({message: withMessage(generateErrorMessage)})
+  @IsNotEmpty({message: withMessage(generateErrorMessage)})
+  // @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
     content?: string;
 
   [key: string]: boolean | string;
 
-  constructor(selected?: boolean, content?: string) {
+  constructor(name?: string, selected?: boolean, content?: string) {
     this.selected = selected;
     this.content = content;
+    this.name = name;
   }
 }
 export class SupportRequired {
@@ -34,24 +51,6 @@ export class SupportRequired {
   @ValidateNested()
     otherSupport?: Support;
 
-  // @ValidateIf(o => o.signLanguageSelected)
-  // @IsDefined({message: NO_SIGN_LANGUAGE_ENTERED})
-  // @IsNotEmpty({message: NO_SIGN_LANGUAGE_ENTERED})
-  // @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
-  //   signLanguageInterpreted?: string;
-
-  // @ValidateIf(o => o.languageSelected)
-  // @IsDefined({message: NO_LANGUAGE_ENTERED})
-  // @IsNotEmpty({message: NO_LANGUAGE_ENTERED})
-  // @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
-  //   languageInterpreted?: string;
-
-  // @ValidateIf(o => o.otherSupportSelected)
-  // @IsDefined({message: NO_OTHER_SUPPORT})
-  // @IsNotEmpty({message: NO_OTHER_SUPPORT})
-  // @MaxLength(FREE_TEXT_MAX_LENGTH, {message: TEXT_TOO_LONG})
-  // otherSupport?: string;
-
   [key: string]: string | Support;
 
   // TODO : change any to relevant interface
@@ -62,15 +61,12 @@ export class SupportRequired {
     this.signLanguageInterpreter = value?.signLanguageInterpreter;
     this.languageInterpreter = value?.languageInterpreter;
     this.otherSupport = value?.otherSupport;
-    // this.languageInterpreted = languageInterpreted;
-    // this.signLanguageSelected = signLanguageSelected;
-    // this.signLanguageInterpreted = signLanguageInterpreted;
-    // this.hearingLoopSelected = hearingLoopSelected;
-    // this.disabledAccessSelected = disabledAccessSelected;
-    // this.otherSupportSelected = otherSupportSelected;
-    // this.otherSupport = otherSupport;
   }
 }
+
+// TODO missing validatins
+// at least one sopprt : 'ERRORS.SELECT_SUPPORT'
+// name of person : 'ERRORS.ENTER_PERSON_NAME'
 
 export class SupportRequiredList{
   @ValidateNested()

@@ -1428,16 +1428,18 @@
       "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service."
     },
     "SUPPORT_REQUIRED": {
-      "ARRANGE_AND_PAY": "You may have to arrange and pay for interpreters except for Welsh. The court will tell you.",
+      "ADD_ANOTHER": "Add another person",
       "DISABLE": "Disabled access",
-      "ENTER_SIGN_LANGUAGE": "Enter the sign language you need",
-      "EXTRA_SUPPORT": "The court can't guarantee extra support, but it will consider other needs relating to physical or mental health impairments",
+      "ENTER_SIGN_LANGUAGE": "What sign language needs to be interpreted?",
+      "EXTRA_SUPPORT": "Tell us what other support they need",
       "HEARING": "Hearing loop",
       "LANGUAGE": "Language interpreter",
+      "NAME_OF_PERSON": "Name of the person who needs support",
       "OTHER": "Other support",
       "PAGE_TITLE": "Support required",
+      "PERSON_TEXT": "Person",
       "SIGN_LANGUAGE": "Sign language interpreter",
-      "TITLE": "Select any support you'd require for a court hearing (optional)",
+      "TITLE": "Do you, your experts or witnesses need support to attend a hearing",
       "WHAT_LANGUAGE": "What language needs to be interpreted?"
     },
     "UNDER_18": {
@@ -1530,6 +1532,7 @@
     "ENTER_AT_LEAST_ONE_REPORT": "Enter at least one report",
     "ENTER_FIRST_NAME": "Enter first name",
     "ENTER_LAST_NAME": "Enter last name",
+    "ENTER_PERSON_NAME": "Enter the name of the person who needs support",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
@@ -1541,6 +1544,9 @@
     "GIVE_DETAILS_DOCUMENTS": "Give details of the documents",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
+    "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
+    "NO_OTHER_SUPPORT": "Tell us what other support they need",
+    "NO_SIGN_LANGUAGE_ENTERED": "Enter the sign language that needs to be interpreted",
     "NUMBER_OF_PEOPLE_REQUIRED": "Rhowch rif, er enghraifft 3",
     "NUMBER_REQUIRED": "Rhowch rif dilys",
     "OPTION_REQUIRED": "Dewiswch un rheswm",
@@ -1573,6 +1579,7 @@
       "WATER": "Dewiswch pa mor aml ydych chi'n talu am ddŵr"
     },
     "SELECT_REQUEST": "Dewiswch os ydych eisiau gwneud cais am ragor o amser i ymateb, os ydych eisoes wedi cytuno ar ragor o amser i ymateb, os yw eich cais am ragor o amser wedi’i wrthod, neu nid ydych angen rhagor o amser i ymateb",
+    "SELECT_SUPPORT": "Select the support the person needs to attend a hearing",
     "SELECT_YES_IF_DOCUMENTS": "Select yes if there are documents the claimant has that you want the court to consider",
     "SIGNER_NAME_REQUIRED": "Enter the name of the person signing the statement",
     "SIGNER_NAME_TOO_LONG": "You've entered too many characters",

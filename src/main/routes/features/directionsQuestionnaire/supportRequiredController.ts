@@ -27,22 +27,22 @@ supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next: expr
     debugger;
     const claimId = req.params.id;
     if (req.body.declared?.length) {
-     // TODO : fxi any type
-      req.body.declared?.forEach((declared:any, index:number) => {
+      // TODO : fxi any type
+      req.body.declared?.forEach((declared: any, index: number) => {
         if (declared) {
           // tODO : cover scenario with single decalred not array
           declared.forEach((supportName: keyof SupportRequired) => {
-            if (req.body.model[index][supportName]) {
-              req.body.model[index][supportName] = new Support(true, req.body.model[index][supportName].content);
+            if (req.body.model.items[index][supportName]) {
+              req.body.model.items[index][supportName] = new Support(supportName.toString(), true, req.body.model.items[index][supportName].content);
             } else {
-              req.body.model[index][supportName] = new Support(true);
+              req.body.model.items[index][supportName] = new Support(undefined, true);
             }
           });
         }
-      })
+      });
     }
 
-    const form = new GenericForm(new SupportRequiredList(req.body.model.map((item:any)=> new SupportRequired(item))));
+    const form = new GenericForm(new SupportRequiredList(req.body.model.items.map((item:any)=> new SupportRequired(item))));
     form.validateSync();
     if (form.hasErrors()) {
       res.render(supportRequiredViewPath, {form});

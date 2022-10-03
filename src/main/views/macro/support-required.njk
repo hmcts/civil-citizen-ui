@@ -13,10 +13,10 @@
 
 
             {% set checkedSignHtml %}
-              {% set signLanguageInterpretedError = errorFor('model['+index+'][signLanguageInterpreter][content]', 'model') %}
+              {% set signLanguageInterpretedError = errorFor('model[items]['+index+'][signLanguageInterpreter][content]', 'model') %}
               {{ govukInput({
-                id: 'model['+index+'][signLanguageInterpreter][content]',
-                name: 'model['+index+'][signLanguageInterpreter][content]',
+                id: 'model[items]['+index+'][signLanguageInterpreter][content]',
+                name: 'model[items]['+index+'][signLanguageInterpreter][content]',
                 value: value.signLanguageInterpreter.content,
                 classes: 'govuk-!-width-one-half',
                 label: {
@@ -30,19 +30,14 @@
               }) }}
             {% endset -%}
             {% set checkedLanguageHtml %}
-               {% set languageInterpretedError = errorFor('model['+index+'][languageInterpreter][content]', 'model') %}
+               {% set languageInterpretedError = errorFor('model[items]['+index+'][languageInterpreter][content]', 'model') %}
                {{ govukInput({
-                id: 'model['+index+'][languageInterpreter][content]',
-                name: 'model['+index+'][languageInterpreter][content]',
+                id: 'model[items]['+index+'][languageInterpreter][content]',
+                name: 'model[items]['+index+'][languageInterpreter][content]',
                 value: value.languageInterpreter.content,
                 classes: 'govuk-!-width-one-half',
                 label: {
                   text: t('PAGES.SUPPORT_REQUIRED.WHAT_LANGUAGE')
-                },
-                controls:"zorrt",
-                hint: {
-                  classes: 'govuk-!-width-Three-quarters',
-                  text: t('PAGES.SUPPORT_REQUIRED.ARRANGE_AND_PAY')
                 },
                 errorMessage: {
                   text: t(languageInterpretedError)
@@ -50,13 +45,12 @@
               }) }}
             {% endset -%}
             {% set checkedOtherHtml %}
-              {% set otherSupportError = errorFor('model['+index+'][otherSupport][content]', 'model') %}
+              {% set otherSupportError = errorFor('model[items]['+index+'][otherSupport][content]', 'model') %}
               {{ govukTextarea({
-                id: 'model['+index+'][otherSupport][content]',
-                name: 'model['+index+'][otherSupport][content]',
+                id: 'model[items]['+index+'][otherSupport][content]',
+                name: 'model[items]['+index+'][otherSupport][content]',
                 value: value.otherSupport.content,
                 classes: 'govuk-!-width-three-quarters',
-                controls:"zorrt",
                 label: {
                   text: t('PAGES.SUPPORT_REQUIRED.EXTRA_SUPPORT')
                 },
@@ -69,7 +63,7 @@
              {{ govukFieldset({
       classes: 'moj-add-another__item govuk-!-margin-bottom-6',
       legend: {
-        text:  t('PAGES.EXPERT_REPORT_DETAILS.REPORT_TEXT'),
+        text:  t('PAGES.SUPPORT_REQUIRED.PERSON_TEXT'),
         classes: 'moj-add-another__title govuk-fieldset__legend--m',
         isPageHeading: false
       }
@@ -78,13 +72,6 @@
             {{ govukCheckboxes({
               idPrefix: 'declared',
               name: 'declared['+index+']',
-              fieldset: {
-                legend: {
-                  text: t('PAGES.SUPPORT_REQUIRED.TITLE'),
-                  isPageHeading: true,
-                  classes: 'govuk-fieldset__legend--l'
-                }
-              },
               items: [
                 {
                   id: 'declared-'+index+'-disabledAccess',
@@ -120,6 +107,7 @@
                   id: 'declared-'+index+'-otherSupport',
                   value: 'otherSupport',
                   text: t('PAGES.SUPPORT_REQUIRED.OTHER'),
+
                   conditional: {
                   html: checkedOtherHtml
                 },
