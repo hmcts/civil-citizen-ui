@@ -6,28 +6,19 @@ import {app} from '../../../../../../main/app';
 import {
   CLAIMANT_PHONE_NUMBER_URL,
 } from '../../../../../../main/routes/urls';
-import { getUserId } from '../../../../../../main/services/features/claim/claimantPhoneService';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/services/features/claim/claimantPhoneService', () => ({
-  ...jest.requireActual('../../../../../../main/services/features/claim/claimantPhoneService'),
-  getUserId: jest.fn(),
-}));
 
 describe('Claimant Phone View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  const mockGetUserId = getUserId as jest.Mock;
 
   describe('on GET', () => {
     let htmlDocument: Document;
     let mainWrapper: Element;
     beforeEach(async () => {
-      mockGetUserId.mockImplementation(async () => {
-        return '123';
-      });
       nock(idamUrl)
         .post('/o/token')
         .reply(200, { id_token: citizenRoleToken });
