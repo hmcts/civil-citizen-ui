@@ -39,15 +39,23 @@
       "partyTypeDisplayValue": "Organisation"
     },
     "directionQuestionnaire": {
+      "hearing": {},
+      "vulnerabilityQuestions": {},
       "experts": {
         "expertReportDetails": {
-          "hasExpertReports": "yes",
+          "option": "yes",
           "reportDetails": [
             {
               "expertName": "John Doe",
               "reportDate": "2022-03-01T11:57:10.592492"
             }
           ]
+        }
+      },
+      "witnesses": {
+        "otherWitnesses": {
+          "option": "",
+          "witnessItems": [{}]
         }
       }
     },
