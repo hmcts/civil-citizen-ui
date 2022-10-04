@@ -126,6 +126,7 @@ import sentExpertReportsController from './features/directionsQuestionnaire/sent
 import otherWitnessesController from './features/directionsQuestionnaire/otherWitnessesController';
 import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
+import claimantDefendantEmailController from './features/public/claim/claimantDefendantEmailController';
 
 export default [
   homeController,
@@ -244,4 +245,5 @@ export default [
   otherWitnessesController,
   expertReportDetailsController,
   claimantIndividualDetailsController,
+  claimantDefendantEmailController,
 ];
