@@ -19,8 +19,10 @@ describe('Send your response by email View', () => {
   const idamUrl: string = config.get('idamUrl');
   const feesUrl: string = config.get('feesUrl');
   const data = require('../../../../../utils/mocks/feeRangesMock.json');
+
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: Element;
     let paragraphs: HTMLCollection;
 
     beforeEach(async () => {
@@ -32,7 +34,8 @@ describe('Send your response by email View', () => {
       const response = await request(app).get(SEND_RESPONSE_BY_EMAIL_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
-      paragraphs = htmlDocument.getElementsByClassName(govukBodyClass);
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
+      paragraphs = mainWrapper.getElementsByClassName(govukBodyClass);
     });
 
     it('should have correct page title', () => {
@@ -45,7 +48,7 @@ describe('Send your response by email View', () => {
     });
 
     it('should display two h2 headers', () => {
-      const headers = htmlDocument.querySelectorAll('h2.govuk-heading-m');
+      const headers = mainWrapper.querySelectorAll('h2.govuk-heading-m');
       expect(headers.length).toEqual(2);
       expect(headers[0].innerHTML).toContain('How to counterclaim');
       expect(headers[1].innerHTML).toContain('Help and support');

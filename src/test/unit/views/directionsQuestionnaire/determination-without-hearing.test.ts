@@ -4,6 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../main/app';
 import {DETERMINATION_WITHOUT_HEARING_URL} from '../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../utils/mockDraftStore';
+import {YesNo} from '../../../../main/common/form/models/yesNo';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -17,6 +18,7 @@ describe('Determination Without Hearing View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       nock(idamUrl)
@@ -26,6 +28,7 @@ describe('Determination Without Hearing View', () => {
       const response = await request(app).get(DETERMINATION_WITHOUT_HEARING_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have page title', () => {
@@ -39,20 +42,20 @@ describe('Determination Without Hearing View', () => {
 
     it('should display paragraph', () => {
       const expectedText = 'i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?';
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body')[0];
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
       expect(paragraph.innerHTML).toContain(expectedText);
     });
 
     it('should display bold text in paragraph', () => {
-      const boldText = htmlDocument.getElementsByClassName('govuk-body')[0]
+      const boldText = mainWrapper.getElementsByClassName('govuk-body')[0]
         .getElementsByClassName('govuk-!-font-weight-bold')[0];
       expect(boldText.innerHTML).toContain('Do you consider that this claim is suitable for determination without a hearing');
     });
 
     it('should display yes and no radios', () => {
       const radios = htmlDocument.getElementsByClassName('govuk-radios__input');
-      expect(radios[0].getAttribute('value')).toBe('yes');
-      expect(radios[1].getAttribute('value')).toBe('no');
+      expect(radios[0].getAttribute('value')).toBe(YesNo.YES);
+      expect(radios[1].getAttribute('value')).toBe(YesNo.NO);
     });
 
     it('should display text area if no radio is selected', () => {
@@ -63,7 +66,7 @@ describe('Determination Without Hearing View', () => {
     });
 
     it('should display save and continue button', () => {
-      const saveButton = htmlDocument.getElementsByClassName('govuk-button')[0];
+      const saveButton = mainWrapper.getElementsByClassName('govuk-button')[0];
       expect(saveButton.innerHTML).toContain('Save and continue');
     });
 
@@ -100,7 +103,7 @@ describe('Determination Without Hearing View', () => {
       });
 
       it('should display choose option error above radio buttons', () => {
-        const error = htmlDocument.getElementById('isDeterminationWithoutHearing-error');
+        const error = htmlDocument.getElementById('option-error');
         expect(error?.innerHTML).toContain(chooseOption);
       });
     });
@@ -115,7 +118,7 @@ describe('Determination Without Hearing View', () => {
           .reply(200, {id_token: citizenRoleToken});
         app.locals.draftStoreClient = mockCivilClaim;
         const response = await request(app).post(DETERMINATION_WITHOUT_HEARING_URL)
-          .send({isDeterminationWithoutHearing: 'no'});
+          .send({option: YesNo.NO});
         const dom = new JSDOM(response.text);
         htmlDocument = dom.window.document;
       });

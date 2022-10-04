@@ -13,8 +13,7 @@ residenceController
     CITIZEN_RESIDENCE_URL,
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
       try {
-        const residence: Residence = await residenceService.getResidence(req.params.id);
-        res.render(residenceViewPath, {form: new GenericForm(residence)});
+        res.render(residenceViewPath, {form: new GenericForm(await residenceService.getResidence(req.params.id))});
       } catch (error) {
         next(error);
       }

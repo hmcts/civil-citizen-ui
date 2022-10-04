@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {
-  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, ELIGIBILITY_CLAIMANT_AGE_URL, ELIGIBILITY_HELP_WITH_FEES,
+  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, ELIGIBILITY_CLAIMANT_AGE_URL, ELIGIBILITY_APPLY_HELP_WITH_FEES_URL,
 } from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
@@ -11,9 +11,7 @@ import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotE
 const claimantOver18EligibilityController = express.Router();
 const over18EligibilityViewPath = 'features/public/eligibility/over-18';
 
-function renderView(genericYesNoForm: GenericForm<GenericYesNo>, res: express.Response): void {
-  const form = Object.assign(genericYesNoForm);
-  form.option = genericYesNoForm.model.option;
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(over18EligibilityViewPath, {form});
 }
 
@@ -35,7 +33,7 @@ claimantOver18EligibilityController.post(ELIGIBILITY_CLAIMANT_AGE_URL, (req, res
     cookie.claimantOver18 = genericYesNoForm.model.option;
     res.cookie('eligibility', cookie);
     genericYesNoForm.model.option === YesNo.YES
-      ? res.redirect(ELIGIBILITY_HELP_WITH_FEES)
+      ? res.redirect(ELIGIBILITY_APPLY_HELP_WITH_FEES_URL)
       : res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_CLAIMANT));
   }
 });

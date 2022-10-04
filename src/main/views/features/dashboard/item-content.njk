@@ -1,10 +1,8 @@
-{% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 {% macro itemContent(content) %}
-
   {% if content.type === ClaimSummaryType.HTML %}
     {{ content.data.html | safe }}
   {% endif %}
@@ -20,8 +18,10 @@
     {% set object = '' %}
     {% if content.data.variables %}
         {% set object = content.data.variables %}
+        <p class="govuk-body">{{ t(content.data.text,object)}}</p>
+    {% else %}
+        <p class="govuk-body">{{ t(content.data.text)}}</p>
     {% endif %}
-    <p class="govuk-body">{{ t(content.data.text,object)}}</p>
   {% endif %}
 
   {% if content.type === ClaimSummaryType.INSET_TEXT %}
@@ -53,5 +53,4 @@
       {{ t(content.data.textAfter) }}</p>
     <p class="govuk-body-s mid-grey">{{ t(content.data.subtitle) }}</p>
   {% endif %}
-
 {% endmacro %}

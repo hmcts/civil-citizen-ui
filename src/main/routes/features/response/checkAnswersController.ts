@@ -13,15 +13,11 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {QualifiedStatementOfTruth} from '../../../common/form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {isFullAmountReject} from '../../../modules/claimDetailsService';
 import {AppRequest} from 'models/AppRequest';
-import config from 'config';
-import {CivilServiceClient} from '../../../app/client/civilServiceClient';
 import {AllResponseTasksCompletedGuard} from '../../../routes/guards/allResponseTasksCompletedGuard';
+import {submitResponse} from '../../../services/features/response/submission/submitResponse';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const checkAnswersController = express.Router();
-
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderView(req: express.Request, res: express.Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -60,8 +56,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: express.Requ
       renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(req.params.id, form.model);
-      const claim: Claim = await civilServiceClient.submitDefendantResponseEvent(req.params.id, <AppRequest>req);
-      console.log('response retrieved from service and logged in controller ' + claim);
+      await submitResponse(<AppRequest>req);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CONFIRMATION_URL));
     }
   } catch (error) {

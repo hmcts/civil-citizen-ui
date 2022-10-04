@@ -18,11 +18,11 @@ const sendYourResponseByEmailController = express.Router();
 
 function renderView(res: express.Response, form: Claim, fees: [TableItem[]]): void {
   res.render(sendYourResponseByEmailViewPath, {
-    form: form,
-    fees: fees,
-    ResponseType: ResponseType,
-    RejectAllOfClaimType: RejectAllOfClaimType,
-    CounterpartyType: CounterpartyType,
+    form,
+    fees,
+    ResponseType,
+    RejectAllOfClaimType,
+    CounterpartyType,
   });
 }
 

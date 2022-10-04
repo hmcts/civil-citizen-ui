@@ -13,9 +13,7 @@ import {GenericForm} from '../../../../../../common/form/models/genericForm';
 const citizenOnTaxPaymentsViewPath = 'features/response/statementOfMeans/employment/selfEmployed/on-tax-payments';
 const onTaxPaymentsController = express.Router();
 
-function renderView(taxPaymentsForm: GenericForm<OnTaxPayments>, res: express.Response) {
-  const form = Object.assign(taxPaymentsForm);
-  form.option = taxPaymentsForm.model.option;
+function renderView(form: GenericForm<OnTaxPayments>, res: express.Response) {
   res.render(citizenOnTaxPaymentsViewPath, {form});
 }
 

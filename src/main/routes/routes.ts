@@ -25,7 +25,6 @@ import partnerPensionController from './features/response/statementOfMeans/partn
 import paymentOptionController from './features/response/admission/fullAdmission/paymentOption/paymentOptionController';
 import paymentDateController from './features/response/admission/fullAdmission/paymentOption/paymentDateController';
 import paymentDatePAController from './features/response/admission/partialAdmission/paymentDateController';
-
 import betweenSixteenAndNineteenController
   from './features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
 import dependantsController from './features/response/statementOfMeans/dependants/dependantsController';
@@ -87,15 +86,11 @@ import determinationWithoutHearingController
   from './features/directionsQuestionnaire/determinationWithoutHearingController';
 import totalAmountController from './features/public/eligibility/totalAmountController';
 import claimTypeController from './features/public/eligibility/claimTypeController';
-import notEligibleController
-  from './features/public/eligibility/notEligibleController';
-import claimantAddressEligibilityController
-  from './features/public/eligibility/claimantAddressEligibilityController';
+import notEligibleController from './features/public/eligibility/notEligibleController';
+import claimantAddressEligibilityController from './features/public/eligibility/claimantAddressEligibilityController';
 import singleDefendantController from './features/public/eligibility/singleDefendantController';
-import defendantAddressEligibilityController
-  from './features/public/eligibility/defendantAddressEligibilityController';
-import helpWithFeesEligibilityController
-  from './features/public/eligibility/helpWithFeesEligibilityController';
+import defendantAddressEligibilityController from './features/public/eligibility/defendantAddressEligibilityController';
+import helpWithFeesEligibilityController from './features/public/eligibility/helpWithFeesEligibilityController';
 import tryNewServiceController from './features/public/eligibility/tryNewServiceController';
 import tenancyDepositController from './features/public/eligibility/tenancyDepositController';
 import claimAgainstGovernmentController from './features/public/eligibility/claimAgainstGovernmentController';
@@ -104,6 +99,35 @@ import defendantAgeEligibilityController from './features/public/eligibility/def
 import someUsefulInfoFeesController from './features/public/eligibility/someUsefulInfoFeesController';
 import helpWithFeesReferenceController from './features/public/eligibility/helpWithFeesReferenceController';
 import applyForHelpWithFeesController from './features/public/eligibility/applyForHelpWithFeesController';
+import signpostingController from './features/public/firstContact/signpostingController';
+import accessDeniedController from './features/public/firstContact/accessDeniedController';
+import claimReferenceController from './features/public/firstContact/claimReferenceController';
+import pinController from './features/public/firstContact/pinController';
+import firstContactClaimSummaryController from './features/public/firstContact/claimSummaryController';
+import eligibleController from './features/public/eligibility/eligibleController';
+import claimantPartyTypeController from './features/public/claim/claimantPartyTypeController';
+import completingClaimController from './features/claim/completingClaimController';
+import submitComfirmationController from './features/response/submitComfirmationController';
+import resolvingThisDisputeController from './features/claim/resolvingThisDisputeController';
+import cookiesController from './features/public/cookiesController';
+import defendantExpertEvidenceController from './features/directionsQuestionnaire/defendantExpertEvidenceController';
+import considerClaimantDocumentsController
+  from './features/directionsQuestionnaire/considerClaimantDocumentsController';
+import triedToSettleController from './features/directionsQuestionnaire/triedToSettleController';
+import expertSmallClaimsController from './features/directionsQuestionnaire/expertSmallClaimsController';
+import sharedExpertController from './features/directionsQuestionnaire/sharedExpertController';
+import requestExtra4WeeksController from './features/directionsQuestionnaire/requestExtra4WeeksController';
+import permissionForExpertController from './features/directionsQuestionnaire/permissionForExpertController';
+import defendantYourselfEvidenceController
+  from './features/directionsQuestionnaire/defendantYourselfEvidenceController';
+import expertCanStillExamineController from './features/directionsQuestionnaire/expertCanStillExamineController';
+import expertDetailsController from './features/directionsQuestionnaire/experts/expertDetailsController';
+import sentExpertReportsController from './features/directionsQuestionnaire/sentExpertReportsController';
+import otherWitnessesController from './features/directionsQuestionnaire/otherWitnessesController';
+import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
+import claimantDoBController from './features/public/claim/claimantDoBController';
+import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
+import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
 import youCanUseServiceController from './features/public/eligibility/youCanUseServiceController';
 
 export default [
@@ -198,5 +222,32 @@ export default [
   someUsefulInfoFeesController,
   applyForHelpWithFeesController,
   helpWithFeesReferenceController,
+  signpostingController,
+  accessDeniedController,
+  claimReferenceController,
+  pinController,
+  firstContactClaimSummaryController,
+  eligibleController,
+  claimantPartyTypeController,
+  completingClaimController,
+  submitComfirmationController,
+  resolvingThisDisputeController,
+  cookiesController,
+  considerClaimantDocumentsController,
+  sharedExpertController,
+  triedToSettleController,
+  expertSmallClaimsController,
+  requestExtra4WeeksController,
+  permissionForExpertController,
+  defendantExpertEvidenceController,
+  expertCanStillExamineController,
+  defendantYourselfEvidenceController,
+  expertDetailsController,
+  sentExpertReportsController,
+  otherWitnessesController,
+  expertReportDetailsController,
+  claimantIndividualDetailsController,
+  claimantDoBController,
+  phoneOrVideoHearingController,
   youCanUseServiceController,
 ];

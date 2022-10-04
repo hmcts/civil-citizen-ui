@@ -11,10 +11,12 @@ const {JSDOM} = jsdom;
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+
 describe('Citizen Phone View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
+  let mainWrapper: Element;
 
   describe('on GET', () => {
     beforeEach(async () => {
@@ -25,6 +27,7 @@ describe('Citizen Phone View', () => {
       await request(app).get(CITIZEN_PHONE_NUMBER_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
+        mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
       });
     });
 
@@ -33,12 +36,12 @@ describe('Citizen Phone View', () => {
     });
 
     it('should display we will call you if we need more information text', async () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body');
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body');
       expect(paragraph[0].innerHTML).toContain(t('PAGES.CITIZEN_PHONE.MORE_INFORMATION'));
     });
 
     it('should display We will give your phone number to the person text', async () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body');
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body');
       expect(paragraph[1].innerHTML).toContain(t('PAGES.CITIZEN_PHONE.INFORMATION'));
     });
 
@@ -55,7 +58,7 @@ describe('Citizen Phone View', () => {
     });
 
     it('should display save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
+      const buttons = mainWrapper.getElementsByClassName('govuk-button');
       expect(buttons[0].innerHTML).toContain('Save and continue');
     });
 

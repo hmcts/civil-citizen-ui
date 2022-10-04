@@ -44,7 +44,7 @@ describe('Defendant Age Eligibility View', () => {
     });
 
     it('should display Save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
+      const buttons = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0].getElementsByClassName('govuk-button');
       expect(buttons[0].innerHTML).toContain('Save and continue');
     });
 
@@ -78,14 +78,14 @@ describe('Defendant Age Eligibility View', () => {
     it('should display correct error summary message with correct link', () => {
       const errorSummaryMessage = htmlDocument.getElementsByClassName('govuk-list govuk-error-summary__list')[0]
         .getElementsByTagName('li')[0];
-      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_DEFENDENT_AGE_ELIGIBILITY);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_DEFENDANT_AGE_ELIGIBILITY);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#option');
     });
 
     it('should display correct error message for radios', () => {
       const errorMessage = htmlDocument.getElementsByClassName('govuk-error-message')[0];
-      expect(errorMessage.innerHTML).toContain(TestMessages.VALID_DEFENDENT_AGE_ELIGIBILITY);
+      expect(errorMessage.innerHTML).toContain(TestMessages.VALID_DEFENDANT_AGE_ELIGIBILITY);
     });
   });
 });

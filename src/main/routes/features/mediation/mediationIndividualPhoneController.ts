@@ -8,7 +8,7 @@ import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatt
 import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
 import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
 import {CAN_WE_USE_URL, CLAIM_TASK_LIST_URL} from '../../urls';
-import {FreeMediation} from '../../../common/form/models/mediation/freeMediation';
+import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 const mediationIndividualPhoneViewPath = 'features/mediation/can-we-use';
 const mediationIndividualPhoneController = express.Router();
@@ -19,11 +19,6 @@ async function renderView(form: GenericForm<MediationIndividualPhoneNumber>, res
 }
 
 const getGenericForm = (mediationIndividualPhoneNumber: MediationIndividualPhoneNumber) => {
-  if (mediationIndividualPhoneNumber) {
-    const form = Object.assign(new GenericForm<MediationIndividualPhoneNumber>(mediationIndividualPhoneNumber));
-    form.option = form.model.option;
-    return form;
-  }
   return new GenericForm<MediationIndividualPhoneNumber>(mediationIndividualPhoneNumber);
 };
 
@@ -37,7 +32,7 @@ const isTelephoneNumberSaved = (telephoneNumber: string, req: express.Request) =
 mediationIndividualPhoneController.get(CAN_WE_USE_URL, async (req, res, next: express.NextFunction) => {
   try {
     const mediation: Mediation = await getMediation(req.params.id);
-    renderView(getGenericForm(mediation.canWeUse), res, req.params.id);
+    await renderView(getGenericForm(mediation.canWeUse), res, req.params.id);
   } catch (error) {
     next(error);
   }
@@ -50,13 +45,13 @@ mediationIndividualPhoneController.post(CAN_WE_USE_URL,
       const mediationIndividualPhoneForm: GenericForm<MediationIndividualPhoneNumber> = isTelephoneNumberSaved(claim.respondent1.telephoneNumber, req);
       await mediationIndividualPhoneForm.validate();
       if (mediationIndividualPhoneForm.hasErrors()) {
-        renderView(mediationIndividualPhoneForm, res, req.params.id);
+        await renderView(mediationIndividualPhoneForm, res, req.params.id);
       } else {
         if (req.body.option === YesNo.YES) {
           mediationIndividualPhoneForm.model.mediationPhoneNumber = undefined;
         }
         if (claim.mediation?.mediationDisagreement) {
-          await saveMediation(req.params.id, new FreeMediation(), 'mediationDisagreement');
+          await saveMediation(req.params.id, new GenericYesNo(), 'mediationDisagreement');
         }
         await saveMediation(req.params.id, mediationIndividualPhoneForm.model, 'canWeUse');
         res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_TASK_LIST_URL));

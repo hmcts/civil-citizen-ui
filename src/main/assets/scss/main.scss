@@ -110,3 +110,20 @@
   float: right;
 }
 
+@mixin top-bordered($color, $width, $margin, $padding) {
+  border-top: $width solid govuk-colour($color);
+  margin: $margin;
+  padding: $padding;
+}
+
+.border-top {
+  @include top-bordered('blue', 10px, 0, 5px 0 0 0);
+}
+
+.warning-text-container {
+  align-items: center;
+  display: flex;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  position: relative;
+}

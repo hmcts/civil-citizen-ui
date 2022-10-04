@@ -18,6 +18,8 @@ describe('You Have Paid Less View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: Element;
+
     beforeEach(async () => {
       nock(idamUrl)
         .post('/o/token')
@@ -26,6 +28,7 @@ describe('You Have Paid Less View', () => {
       const response = await request(app).get(CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have correct page title', () => {
@@ -38,17 +41,17 @@ describe('You Have Paid Less View', () => {
     });
 
     it('should display continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
+      const buttons = mainWrapper.getElementsByClassName('govuk-button');
       expect(buttons[0].innerHTML).toContain('Continue');
     });
 
     it('should display explanation paragraph', () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body')[0];
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
       expect(paragraph.innerHTML).toContain('You need to explain why you believe you don\'t owe the remaining amount.');
     });
 
     it('should display rejection paragraph', () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body')[1];
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body')[1];
       expect(paragraph.innerHTML).toContain('If Mr. Jan Clark rejects your explanation you might have to go to a hearing.');
     });
 

@@ -17,7 +17,7 @@
     {{ phoneNumber }}
   {% endif %}
   {% if spanContent %}
-    <p><span class="block">{{ spanContent }}</span></p>
+    <p class="govuk-!-margin-top-0"><span class="block">{{ spanContent }}</span></p>
   {% endif %}
   {% if href %}
     <a target={{ hrefTarget }} href={{ href }} rel="noopener noreferrer">{% if hrefContact!=='' %}{{ hrefContact }}</a>
@@ -25,7 +25,7 @@
   {% endif %}
 {% endmacro %}
 
-{% macro contactUsForHelp(t,widget) %}
+{% macro contactUsForHelp(t,widget, open) %}
   {% set ContactUs = t('COMMON.CONTACT_US_FOR_HELP.TITLE') %}
   {% set Email = t('COMMON.CONTACT_US_FOR_HELP.EMAIL') %}
   {% set Telephone = t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') %}
@@ -38,16 +38,24 @@
   {% set openingHours = t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') %}
 
   {% set content = '' %}
+  {% set emailWidget = _widget('',Email,'mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk','','') %}
+  {% set callChargesWidget = _widget(openingHours,Telephone,'https://www.gov.uk/call-charges','',callCharges,'0300 123 7050', '_blank') %}
+  {% set webChatUnavailableWidget = _widget(webChatUnavailable,webChat,'','','','') %}
+  {% set webChatClosedWidget =  _widget(webChatClosed,webChat,'','','','') %}
+
   {% if widget ==='Web_chat' %}
-    {% set content = _widget(webChatUnavailable,webChat,'','','','')
-      + _widget(webChatClosed,webChat,'','','','') %}
+    {% set content = webChatUnavailableWidget + webChatClosedWidget %}
   {% endif %}
-  {% set content = content + _widget('',Email,'mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk','','')
-    + _widget(openingHours,Telephone,'https://www.gov.uk/call-charges','',callCharges,'0300 123 7050', '_blank') %}
-
-  {{ govukDetails({
-    summaryText: ContactUs,
-    html: content
-  }) }}
+  {% set content = content + emailWidget + callChargesWidget %}
+  {% if open %}
+    <div class="govuk-details">
+      {{ emailWidget}}
+      {{ callChargesWidget }}
+    </div>    
+  {% else %}
+    {{ govukDetails({
+      summaryText: ContactUs,
+      html: content
+    }) }}
+  {% endif %} 
 {% endmacro %}
-

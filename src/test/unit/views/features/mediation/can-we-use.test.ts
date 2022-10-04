@@ -5,12 +5,8 @@ import request from 'supertest';
 import {
   CAN_WE_USE_URL,
 } from '../../../../../main/routes/urls';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import { mockCivilClaim } from '../../../../utils/mockDraftStore';
-import {
-  PHONE_NUMBER_REQUIRED,
-  VALID_YES_NO_OPTION,
-  VALID_TEXT_LENGTH,
-} from '../../../../../main/common/form/validationErrors/errorMessageConstants';
 
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
@@ -40,6 +36,7 @@ describe('Repayment Plan View', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   let htmlDocument: Document;
+  let mainWrapper: Element;
 
   describe('on GET', () => {
     beforeEach(async () => {
@@ -50,6 +47,7 @@ describe('Repayment Plan View', () => {
       await request(app).get(CAN_WE_USE_URL).then(res => {
         const dom = new JSDOM(res.text);
         htmlDocument = dom.window.document;
+        mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
       });
     });
 
@@ -63,12 +61,12 @@ describe('Repayment Plan View', () => {
     });
 
     it('should display respondent telephone number and text', async () => {
-      const paragraph = htmlDocument.getElementsByClassName('govuk-body-m');
+      const paragraph = mainWrapper.getElementsByClassName('govuk-body-m');
       expect(paragraph[0].innerHTML).toContain('Can the mediation service use 111 to call you?');
     });
 
     it('should display save and continue button', () => {
-      const buttons = htmlDocument.getElementsByClassName('govuk-button');
+      const buttons = mainWrapper.getElementsByClassName('govuk-button');
       expect(buttons[0].innerHTML).toContain('Save and continue');
     });
 
@@ -109,11 +107,12 @@ describe('Repayment Plan View', () => {
         await request(app).get(CAN_WE_USE_URL).then(res => {
           const dom = new JSDOM(res.text);
           htmlDocument = dom.window.document;
+          mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
           const header = htmlDocument.getElementsByClassName('govuk-heading-l');
-          const paragraph = htmlDocument.getElementsByClassName('govuk-body-m');
+          const paragraph = mainWrapper.getElementsByClassName('govuk-body-m');
           const input = htmlDocument.getElementsByClassName('govuk-input');
           const labels = htmlDocument.getElementsByClassName('govuk-label');
-          const buttons = htmlDocument.getElementsByClassName('govuk-button');
+          const buttons = mainWrapper.getElementsByClassName('govuk-button');
           expect(header[0].innerHTML).toContain('Enter a phone number');
           expect(paragraph[0].innerHTML).toContain('Enter the number for a direct line the mediation service can use. We won\'t give the number to anyone else.');
           expect(input).toBeDefined();
@@ -142,7 +141,7 @@ describe('Repayment Plan View', () => {
 
     it('should display correct error summary message with correct link for yes and no option', () => {
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_YES_NO_OPTION);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_YES_NO_OPTION);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#option');
     });
@@ -156,7 +155,7 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(PHONE_NUMBER_REQUIRED);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.PHONE_NUMBER_REQUIRED);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#mediationPhoneNumber');
     });
@@ -170,7 +169,7 @@ describe('Repayment Plan View', () => {
           htmlDocument = dom.window.document;
         });
       const errorSummaryMessage = getErrorSummaryListElement(0);
-      expect(errorSummaryMessage.innerHTML).toContain(VALID_TEXT_LENGTH);
+      expect(errorSummaryMessage.innerHTML).toContain(TestMessages.VALID_TEXT_LENGTH);
       expect(errorSummaryMessage.getElementsByTagName('a')[0].getAttribute('href'))
         .toContain('#mediationPhoneNumber');
     });

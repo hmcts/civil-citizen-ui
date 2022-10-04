@@ -1,18 +1,16 @@
 import * as express from 'express';
 import {CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
-import {SevereDisability} from '../../../../common/form/models/statementOfMeans/severeDisability';
 import {SevereDisabilityService} from '../../../../services/features/response/statementOfMeans/severeDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 
 const citizenSevereDisabilityViewPath = 'features/response/statementOfMeans/are-you-severely-disabled';
 const severeDisabilityController = express.Router();
 const severeDisabilityService = new SevereDisabilityService();
 
-function renderView(severeDisability: GenericForm<SevereDisability>, res: express.Response): void {
-  const form = Object.assign(severeDisability);
-  form.option = severeDisability.model.option;
-  res.render(citizenSevereDisabilityViewPath, { form });
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+  res.render(citizenSevereDisabilityViewPath, {form});
 }
 
 severeDisabilityController.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res, next: express.NextFunction) => {
@@ -26,7 +24,7 @@ severeDisabilityController.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res, n
 
 severeDisabilityController.post(CITIZEN_SEVERELY_DISABLED_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const form: GenericForm<SevereDisability> = new GenericForm(new SevereDisability(req.body.option));
+    const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);

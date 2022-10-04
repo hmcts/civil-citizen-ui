@@ -6,7 +6,7 @@ import * as numeral from '../../common/utils/currencyFormat';
 import {convertToPoundsFilter} from '../../common/utils/currencyFormat';
 import {i18n, TOptions} from 'i18next';
 import {ResponseType} from '../../common/form/models/responseType';
-import {YesNo} from '../../common/form/models/yesNo';
+import {YesNo, YesNoNotReceived} from '../../common/form/models/yesNo';
 import {ResidenceType} from '../../common/form/models/statementOfMeans/residenceType';
 import {CounterpartyType} from '../../common/models/counterpartyType';
 import {UnemploymentCategory} from '../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
@@ -21,6 +21,7 @@ import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibl
 import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOptions';
 import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
 import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
+import * as urls from '../../routes/urls';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -109,6 +110,8 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('AgeEligibilityOptions', AgeEligibilityOptions);
     nunjucksEnv.addGlobal('TotalAmountOptions', TotalAmountOptions);
     nunjucksEnv.addGlobal('ClaimTypeOptions', ClaimTypeOptions);
+    nunjucksEnv.addGlobal('YesNoNotReceived', YesNoNotReceived);
+    nunjucksEnv.addGlobal('urls', urls);
 
     app.use((req, res, next) => {
       res.locals.pagePath = req.path;

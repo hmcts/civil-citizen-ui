@@ -18,21 +18,21 @@ paymentDateController
       try {
         const paymentDate = await paymentDateService.getPaymentDate(req.params.id, ResponseType.FULL_ADMISSION);
         res.render(paymentDatePath, {
-          form: new GenericForm(paymentDate), nextMonth: nextMonth,
+          form: new GenericForm(paymentDate), nextMonth,
         });
       } catch (error) {
         next(error);
       }
     })
   .post(
-    CITIZEN_PAYMENT_DATE_URL, async (req, res,next: express.NextFunction) => {
+    CITIZEN_PAYMENT_DATE_URL, async (req, res, next: express.NextFunction) => {
       const paymentDate = new PaymentDate(req.body.year, req.body.month, req.body.day);
       const form: GenericForm<PaymentDate> = new GenericForm<PaymentDate>(paymentDate);
       await form.validate();
 
       if (form.hasErrors()) {
         res.render(paymentDatePath, {
-          form: form, nextMonth: nextMonth,
+          form, nextMonth,
         });
       } else {
         try {

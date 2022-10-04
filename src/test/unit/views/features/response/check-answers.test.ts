@@ -62,6 +62,7 @@ describe('Check answers View', () => {
   describe('on GET', () => {
     describe('respondent type organisation', () => {
       let htmlDocument: Document;
+      let mainWrapper: Element;
 
       beforeEach(async () => {
         mockGetStatementOfTruth.mockImplementation(() => {return  new QualifiedStatementOfTruth(true);});
@@ -69,6 +70,7 @@ describe('Check answers View', () => {
         const response = await testSession.get(respondentCheckAnswersUrl);
         const dom = new JSDOM(response.text);
         htmlDocument = dom.window.document;
+        mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
       });
 
       it('should have title set',() => {
@@ -88,19 +90,19 @@ describe('Check answers View', () => {
 
       it('should display information paragraph', () => {
         const expectedParagraph = 'The information on this page forms your response. You can see it on the response form after you submit.';
-        const paragraph = htmlDocument.getElementsByClassName('govuk-body')[0];
+        const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
         expect(paragraph.innerHTML).toContain(expectedParagraph);
       });
 
       it('should display sign the statement paragraph', () => {
         const expectedParagraph = 'When you\'re satisfied that your answers are accurate, you should tick to "sign" this statement of truth on the form.';
-        const paragraph = htmlDocument.getElementsByClassName('govuk-body')[1];
+        const paragraph = mainWrapper.getElementsByClassName('govuk-body')[1];
         expect(paragraph.innerHTML).toContain(expectedParagraph);
       });
 
       it('should display senior position paragraph', () => {
         const expectedParagraph = 'You must hold a senior position in your organisation to sign the statement of truth.';
-        const paragraph = htmlDocument.getElementsByClassName('govuk-body')[2];
+        const paragraph = mainWrapper.getElementsByClassName('govuk-body')[2];
         expect(paragraph.innerHTML).toContain(expectedParagraph);
       });
 
@@ -145,13 +147,14 @@ describe('Check answers View', () => {
       });
 
       it('should display submit button', () => {
-        const button = htmlDocument.getElementsByClassName('govuk-button')[0];
+        const button = mainWrapper.getElementsByClassName('govuk-button')[0];
         expect(button.innerHTML).toContain('Submit Response');
       });
     });
 
     describe('respondent type individual', () => {
       let htmlDocument: Document;
+      let mainWrapper: Element;
 
       beforeEach(async () => {
         mockGetStatementOfTruth.mockImplementation(() => {return  new StatementOfTruthForm(false);});
@@ -159,10 +162,11 @@ describe('Check answers View', () => {
         const response = await testSession.get(respondentCheckAnswersUrl);
         const dom = new JSDOM(response.text);
         htmlDocument = dom.window.document;
+        mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
       });
 
       it('should not display senior position paragraph', () => {
-        const paragraph = htmlDocument.getElementsByClassName('govuk-body')[2];
+        const paragraph = mainWrapper.getElementsByClassName('govuk-body')[2];
         expect(paragraph).toBe(undefined);
       });
 

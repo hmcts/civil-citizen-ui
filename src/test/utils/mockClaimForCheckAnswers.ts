@@ -29,36 +29,27 @@ import {SelfEmployedAs} from '../../main/common/models/selfEmployedAs';
 import {TaxPayments} from '../../main/common/models/taxPayments';
 import {Disability} from '../../main/common/form/models/statementOfMeans/disability';
 import {YesNo} from '../../main/common/form/models/yesNo';
-import {SevereDisability} from '../../main/common/form/models/statementOfMeans/severeDisability';
 import {Residence} from '../../main/common/form/models/statementOfMeans/residence';
 import {ResidenceType} from '../../main/common/form/models/statementOfMeans/residenceType';
-import {Cohabiting} from '../../main/common/form/models/statementOfMeans/partner/cohabiting';
-import {PartnerAge} from '../../main/common/form/models/statementOfMeans/partner/partnerAge';
-import {PartnerDisability} from '../../main/common/form/models/statementOfMeans/partner/partnerDisability';
-import {PartnerSevereDisability} from '../../main/common/form/models/statementOfMeans/partner/partnerSevereDisability';
-import {PartnerPension} from '../../main/common/form/models/statementOfMeans/partner/partnerPension';
 import {Dependants} from '../../main/common/form/models/statementOfMeans/dependants/dependants';
 import {NumberOfChildren} from '../../main/common/form/models/statementOfMeans/dependants/numberOfChildren';
 import {OtherDependants} from '../../main/common/form/models/statementOfMeans/otherDependants';
-import {Carer} from '../../main/common/form/models/statementOfMeans/carer';
 import {HowMuchDoYouOwe} from '../../main/common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {HowMuchHaveYouPaid, HowMuchHaveYouPaidParams} from '../../main/common/form/models/admission/howMuchHaveYouPaid';
 import {WhyDoYouDisagree} from '../../main/common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {PartialAdmission} from '../../main/common/models/partialAdmission';
-import {AlreadyPaid} from '../../main/common/form/models/admission/partialAdmission/alreadyPaid';
 import {DefendantTimeline} from '../../main/common/form/models/timeLineOfEvents/defendantTimeline';
 import {PaymentIntention} from '../../main/common/form/models/admission/partialAdmission/paymentIntention';
-import {FreeMediation} from '../../main/common/form/models/mediation/freeMediation';
 import {NoMediationReason} from '../../main/common/form/models/mediation/noMediationReason';
 import {CompanyTelephoneNumber} from '../../main/common/form/models/mediation/companyTelephoneNumber';
 import {Mediation} from '../../main/common/models/mediation/mediation';
-
 import TimelineRow from '../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {EvidenceType} from '../../main/common/models/evidence/evidenceType';
 import {EvidenceItem} from '../../main/common/form/models/evidence/evidenceItem';
 import {DefendantEvidence} from '../../main/common/models/evidence/evidence';
 import {Evidence} from '../../main/common/form/models/evidence/evidence';
 import RejectAllOfClaimType from '../../main/common/form/models/rejectAllOfClaimType';
+import {GenericYesNo} from '../../main/common/form/models/genericYesNo';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -582,7 +573,7 @@ export const createClaimWithDisability = (option: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: Disability = new Disability(option);
-  const severeDisability: SevereDisability = new SevereDisability(option);
+  const severeDisability: GenericYesNo = new GenericYesNo(option);
   claim.statementOfMeans = {
     disability: disability,
     severeDisability: severeDisability,
@@ -594,7 +585,7 @@ export const createClaimWithDisabilityAndSevereDisability = (optionDisability: Y
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: Disability = new Disability(optionDisability);
-  const severeDisability: SevereDisability = new SevereDisability(optionSevereDisability);
+  const severeDisability: GenericYesNo = new GenericYesNo(optionSevereDisability);
   claim.statementOfMeans = {
     disability: disability,
     severeDisability: severeDisability,
@@ -633,11 +624,11 @@ export const createClaimWithCohabiting = (
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
   const disability: Disability = new Disability(disabilityOption);
-  const cohabiting: Cohabiting = new Cohabiting(cohabitingOption);
-  const partnerAge: PartnerAge = new PartnerAge(partnerAgeOption);
-  const partnerPension: PartnerPension = new PartnerPension(partnerPensionOption);
-  const partnerDisability: PartnerDisability = new PartnerDisability(partnerDisabilityOption);
-  const partnerSevereDisability: PartnerSevereDisability = new PartnerSevereDisability(partnerSevereDisabilityOption);
+  const cohabiting: GenericYesNo = new GenericYesNo(cohabitingOption);
+  const partnerAge: GenericYesNo = new GenericYesNo(partnerAgeOption);
+  const partnerPension: GenericYesNo = new GenericYesNo(partnerPensionOption);
+  const partnerDisability: GenericYesNo = new GenericYesNo(partnerDisabilityOption);
+  const partnerSevereDisability: GenericYesNo = new GenericYesNo(partnerSevereDisabilityOption);
   claim.statementOfMeans = {
     disability: disability,
     cohabiting: cohabiting,
@@ -664,7 +655,7 @@ export const createClaimWithDependants = (declared: boolean, under11?: number, b
 export const createClaimWithCarer = (option: YesNo): Claim => {
   const claim = createClaimWithBasicRespondentDetails();
   claim.paymentOption = PaymentOptionType.BY_SET_DATE;
-  const carer: Carer = new Carer(option);
+  const carer: GenericYesNo = new GenericYesNo(option);
   claim.statementOfMeans = {
     carer: carer,
   };
@@ -716,7 +707,7 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
   const partialAdmission: PartialAdmission = {
     whyDoYouDisagree: whyDoYouDisagree,
     howMuchDoYouOwe: howMuchDoYouOwe,
-    alreadyPaid: new AlreadyPaid(alreadyPaid || ''),
+    alreadyPaid: new GenericYesNo(alreadyPaid || ''),
     howMuchHaveYouPaid: howMuchHaveYouPaid,
     timeline: defendantTimeline,
     paymentIntention: new PaymentIntention(),
@@ -737,7 +728,6 @@ export const ceateClaimWithPartialAdmission = (alreadyPaid?: YesNo, paymentOptio
   claim.partialAdmission = partialAdmission;
   claim.evidence = defendantEvidence;
   claim.partialAdmission.paymentIntention?.paymentOption ? paymentOptionType : undefined;
-
   return claim;
 };
 
@@ -751,9 +741,43 @@ export const createClaimWithFreeTelephoneMediationSection = (): Claim => {
   claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
 
   claim.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '123456'},
-    new FreeMediation(YesNo.YES),
+    new GenericYesNo(YesNo.YES),
     new NoMediationReason('notWant', 'no'),
     new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
+
+  return claim as Claim;
+};
+
+export const createClaimWithFreeTelephoneMediationSectionForIndividual = (): Claim => {
+  const claim = createClaimWithBasicRespondentDetails('contactTest');
+  if (claim.respondent1) {
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.respondent1.type = CounterpartyType.INDIVIDUAL;
+  }
+  const defendantTimeline: DefendantTimeline = new DefendantTimeline(
+    [new TimelineRow('6 November 2022', 'Event 1'), new TimelineRow('7 November 2022', 'Event 2')],
+    'Comments about timeline',
+  );
+  const param: HowMuchHaveYouPaidParams = {};
+  param.amount = 100;
+  param.totalClaimAmount = 200;
+  param.day = '14';
+  param.month = '2';
+  param.year = '2022';
+  param.text = 'Test details';
+  const howMuchDoYouOwe: HowMuchDoYouOwe = new HowMuchDoYouOwe(100, 200);
+  const whyDoYouDisagree: WhyDoYouDisagree = new WhyDoYouDisagree('Reasons for disagree');
+  const howMuchHaveYouPaid: HowMuchHaveYouPaid = new HowMuchHaveYouPaid(param);
+  const partialAdmission: PartialAdmission = {
+    whyDoYouDisagree: whyDoYouDisagree,
+    howMuchDoYouOwe: howMuchDoYouOwe,
+    alreadyPaid: new GenericYesNo(YesNo.YES),
+    howMuchHaveYouPaid: howMuchHaveYouPaid,
+    timeline: defendantTimeline,
+    paymentIntention: new PaymentIntention(),
+  };
+  claim.partialAdmission = partialAdmission;
+  claim.mediation = new Mediation({option: YesNo.NO, mediationPhoneNumber: '01632960001'});
 
   return claim as Claim;
 };
@@ -777,7 +801,7 @@ export const createClaimWithFullRejection = (option: RejectAllOfClaimType, paidA
       text: 'Reasons for disagree',
     },
   };
-  claim.totalClaimAmount = 1000,
+  claim.totalClaimAmount = 1000;
   claim.paymentOption = undefined;
   return claim;
 };
@@ -811,10 +835,10 @@ export const createClaimWithPaymentOption = (responseType: ResponseType, payment
     claim.partialAdmission.paymentIntention.paymentDate = new Date(getDate());
   }
 
-  claim.partialAdmission.alreadyPaid = new AlreadyPaid(YesNo.NO);
+  claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.NO);
 
   claim.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '123456'},
-    new FreeMediation(YesNo.YES),
+    new GenericYesNo(YesNo.YES),
     new NoMediationReason('notWant', 'no'),
     new CompanyTelephoneNumber(YesNo.YES, '123456', 'userTest', '123456'));
 

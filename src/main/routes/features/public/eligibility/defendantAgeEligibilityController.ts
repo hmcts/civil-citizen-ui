@@ -14,8 +14,7 @@ import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotE
 const defendantAgeEligibilityController = express.Router();
 const defendantEligibilityViewPath = 'features/public/eligibility/defendant-age';
 
-function renderView(ageEligibilityForm: GenericForm<DefendantAgeEligibility>, res: express.Response): void {
-  const form = Object.assign(ageEligibilityForm);
+function renderView(form: GenericForm<DefendantAgeEligibility>, res: express.Response): void {
   res.render(defendantEligibilityViewPath, {form});
 }
 
@@ -37,7 +36,7 @@ defendantAgeEligibilityController.post(ELIGIBILITY_DEFENDANT_AGE_URL, async (req
     cookie.eligibilityDefendantAge = form.model.option;
     res.cookie('eligibility', cookie);
     form.model.option === AgeEligibilityOptions.NO
-      ?res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_DEFENDANT))
+      ? res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_DEFENDANT))
       : res.redirect(ELIGIBILITY_CLAIMANT_AGE_URL);
   }
 });

@@ -19,7 +19,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{t("PAGES.CITIZEN_PHONE.TITLE")}}</h1>
+          <h1 class="govuk-heading-l">{{ t("PAGES.CITIZEN_PHONE.TITLE") }}</h1>
           <p class="govuk-body">{{ t("PAGES.CITIZEN_PHONE.MORE_INFORMATION") }}</p>
           <p class="govuk-body">
             {{ t("PAGES.CITIZEN_PHONE.INFORMATION") }}
@@ -31,6 +31,10 @@
                 id: "telephoneNumber",
                 name: "telephoneNumber",
                 value: form.telephoneNumber,
+                label: {
+                  text: t('PAGES.CITIZEN_PHONE.TITLE'),
+                  classes: 'govuk-visually-hidden'
+                },
                 hint: {
                   text: t("PAGES.CITIZEN_PHONE.EXAMPLE")
                 },

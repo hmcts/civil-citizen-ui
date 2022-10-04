@@ -1,18 +1,16 @@
 import * as express from 'express';
 import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_SEVERE_DISABILITY_URL} from '../../../../urls';
-import {PartnerSevereDisability} from '../../../../../common/form/models/statementOfMeans/partner/partnerSevereDisability';
 import {PartnerSevereDisabilityService} from '../../../../../services/features/response/statementOfMeans/partner/partnerSevereDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner-severe-disability';
 const partnerSevereDisabilityController = express.Router();
 const partnerSevereDisabilityService = new PartnerSevereDisabilityService();
 
-function renderView(partnerSevereDisability: GenericForm<PartnerSevereDisability>, res: express.Response): void {
-  const form = Object.assign(partnerSevereDisability);
-  form.option = partnerSevereDisability.model.option;
-  res.render(partnerViewPath, { form });
+function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
+  res.render(partnerViewPath, {form});
 }
 
 partnerSevereDisabilityController.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, async (req, res, next: express.NextFunction) => {
@@ -27,7 +25,7 @@ partnerSevereDisabilityController.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, asy
 partnerSevereDisabilityController.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
   async (req, res, next: express.NextFunction) => {
     try {
-      const form: GenericForm<PartnerSevereDisability> = new GenericForm(new PartnerSevereDisability(req.body.option));
+      const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
       form.validateSync();
       if (form.hasErrors()) {
         renderView(form, res);

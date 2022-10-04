@@ -2,7 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
-{% from "../../../macro/yesNoForm.njk" import yesNoRadioButton %}
+{% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/external-link.njk" import externalLink %}
@@ -19,7 +19,7 @@
 
         <h3 class="govuk-heading-s">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.DECIDE') }}</h3>
         <p class="govuk-body">
-          {{ externalLink(t, 'PAGES.ELIGIBILITY_HWF_REFERENCE.APPLY_FOR_HELP_LINK', externalURLs.feesHelpUri, true) }}
+          {{ externalLink(t, 'PAGES.ELIGIBILITY_HWF_REFERENCE.APPLY_FOR_HELP_LINK', externalURLs.feesHelpUrl, true) }}
           {{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.MAKE_CLAIM_USING') }}
         </p>
         <p class="govuk-body">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.WHEN_YOU_APPLY') }}</p>

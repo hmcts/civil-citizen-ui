@@ -20,6 +20,7 @@ describe('Support required View', () => {
 
   describe('on GET', () => {
     let htmlDocument: Document;
+    let mainWrapper: Element;
 
     beforeEach(async () => {
       nock(idamUrl)
@@ -29,6 +30,7 @@ describe('Support required View', () => {
       const response = await request(app).get(supportRequiredUrl);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
+      mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have page title', () => {
@@ -51,7 +53,7 @@ describe('Support required View', () => {
     });
 
     it('should display Continue button', () => {
-      const button = htmlDocument.getElementsByClassName('govuk-button');
+      const button = mainWrapper.getElementsByClassName('govuk-button');
       expect(button[0].innerHTML).toContain('Save and continue');
     });
 
