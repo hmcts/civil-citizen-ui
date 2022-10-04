@@ -966,6 +966,7 @@
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED": "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
       "CLAIMANT_MUST_AGREE": "The claimant must agree to mediation. We'll contact you within 28 days after the claimant's confirmation, to arrange a free appointment.",
+      "DO_NOT_AGREE_TO_FREE_MEDIATION": "I do not agree to free mediation",
       "EITHER_PARTY_BREAKS_TERMS": "If either party breaks the terms the other party can go to court to ask for a judgment or hearing.",
       "FIND_OUT_MORE": "Find out more about ",
       "HOW_WORKS": "How free mediation works",
