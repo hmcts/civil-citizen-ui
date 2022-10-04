@@ -12,6 +12,7 @@ import {
 const defendantYourselfEvidenceController = express.Router();
 const defendantYourselfEvidenceViewPath = 'features/directionsQuestionnaire/defendant-yourself-evidence';
 const dqPropertyName = 'defendantYourselfEvidence';
+const dqParentName = 'experts';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(defendantYourselfEvidenceViewPath, {form});
@@ -19,7 +20,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 defendantYourselfEvidenceController.get(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const defendantYourselfEvidence = await getGenericOption(req.params.id, dqPropertyName);
+    const defendantYourselfEvidence = await getGenericOption(req.params.id, dqPropertyName, dqParentName);
     renderView(new GenericForm(defendantYourselfEvidence), res);
   } catch (error) {
     next(error);
@@ -35,7 +36,7 @@ defendantYourselfEvidenceController.post(DQ_GIVE_EVIDENCE_YOURSELF_URL, async (r
     if (defendantYourselfEvidence.hasErrors()) {
       renderView(defendantYourselfEvidence, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, defendantYourselfEvidence.model, dqPropertyName);
+      await saveDirectionQuestionnaire(claimId, defendantYourselfEvidence.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL));
     }
   } catch (error) {

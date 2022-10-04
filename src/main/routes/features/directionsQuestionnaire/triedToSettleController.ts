@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {DQ_TRIED_TO_SETTLE_CLAIM_URL, DQ_REQUEST_EXTRA_4WEEKS_URL} from '../../urls';
+import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_TRIED_TO_SETTLE_CLAIM_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
@@ -11,6 +11,7 @@ import {
 
 const triedToSettleController = express.Router();
 const dqPropertyName = 'triedToSettle';
+const dqParentName = 'hearing';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render('features/directionsQuestionnaire/tried-to-settle-claim', {form});
@@ -18,7 +19,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 triedToSettleController.get(DQ_TRIED_TO_SETTLE_CLAIM_URL, async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName)), res);
+    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName, dqParentName)), res);
   } catch (error) {
     next(error);
   }
@@ -34,7 +35,7 @@ triedToSettleController.post(DQ_TRIED_TO_SETTLE_CLAIM_URL, async (req, res, next
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName);
+      await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_REQUEST_EXTRA_4WEEKS_URL));
     }
   } catch (error) {

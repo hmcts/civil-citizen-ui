@@ -3,7 +3,7 @@ import { Claim } from '../../../../../common/models/claim';
 import { ClaimSummarySection, ClaimSummaryType } from '../../../../../common/form/models/claimSummarySection';
 import { CITIZEN_CONTACT_THEM_URL } from '../../../../../routes/urls';
 import { formatDateToFullDate } from '../../../../../common/utils/dateUtils';
-
+import { addDaysToDate } from '../../../../../common/utils/dateUtils';
 export function getPA_AlreadyPaidStatus(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantName = claim.getClaimantName();
   const amount = claim.partialAdmissionPaidAmount();
@@ -220,10 +220,8 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
 
   const claimantName = claim.getClaimantName();
   const claimAmount = claim.totalClaimAmount;
-  // TODO : submission day + 5 days
-  const today = new Date();
-  today.setDate(today.getDate() + 5);
-  const paymentDate = formatDateToFullDate(today, lang);
+  const paymentDeadLine = addDaysToDate(claim?.respondent1ResponseDate, 5);
+  const paymentDate = formatDateToFullDate(paymentDeadLine, lang);
   const partialAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount;
 
   return [

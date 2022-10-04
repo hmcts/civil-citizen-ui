@@ -78,6 +78,7 @@ export class Claim {
   responseDeadline: ResponseDeadline;
   respondentSolicitor1AgreedDeadlineExtension?:Date;
   directionQuestionnaire?: DirectionQuestionnaire;
+  respondent1ResponseDate?: Date;
 
   getClaimantName(): string {
     return this.applicant1.partyName;
