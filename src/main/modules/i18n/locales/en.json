@@ -966,6 +966,7 @@
     "FREE_TELEPHONE_MEDIATION": {
       "AUTOMATICALLY_REGISTERED": "We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.",
       "CLAIMANT_MUST_AGREE": "The claimant must agree to mediation. We'll contact you within 28 days after the claimant's confirmation, to arrange a free appointment.",
+      "DO_NOT_AGREE_TO_FREE_MEDIATION": "I do not agree to free mediation",
       "EITHER_PARTY_BREAKS_TERMS": "If either party breaks the terms the other party can go to court to ask for a judgment or hearing.",
       "FIND_OUT_MORE": "Find out more about ",
       "HOW_WORKS": "How free mediation works",
@@ -1046,7 +1047,7 @@
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4 pm on {{ responseDeadline }}"
     },
-    "NEXT_12MONTHS_CANNOT_HEARING": {
+    "CANT_ATTEND_HEARING_IN_NEXT_12MONTHS": {
       "CONTENT": "These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked",
       "PAGE_TITLE": "next 12 months can not hearing",
       "TITLE": "Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?"
@@ -1707,7 +1708,7 @@
     "VALID_HOUSING": "Describe your housing",
     "VALID_INTEGER": "Enter a numeric, for example 3",
     "VALID_MONTH": "Enter a valid month",
-    "VALID_NEXT_12MONTHS_CANNOT_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
+    "VALID_CANT_ATTEND_HEARING": "Select yes if there are any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing",
     "VALID_NUMBER_FOR_PREVIOUS_PAGE": "Number can’t be higher than on previous page",
     "VALID_OPTION_SELECTION": "Select an option",
     "VALID_OWED_AMOUNT_REQUIRED": "Enter a valid amount owed",

@@ -126,8 +126,8 @@ import sentExpertReportsController from './features/directionsQuestionnaire/sent
 import otherWitnessesController from './features/directionsQuestionnaire/otherWitnessesController';
 import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
-import next12MonthsCanNotHearingController
-  from './features/directionsQuestionnaire/next12MonthsCanNotHearingController';
+import cantAttendHearingInNext12MonthsController
+  from './features/directionsQuestionnaire/cantAttendHearingInNext12MonthsController';
 
 export default [
   homeController,
@@ -246,5 +246,5 @@ export default [
   otherWitnessesController,
   expertReportDetailsController,
   claimantIndividualDetailsController,
-  next12MonthsCanNotHearingController,
+  cantAttendHearingInNext12MonthsController,
 ];

@@ -9,15 +9,15 @@ import {
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 
-const next12MonthsCanNotHearingController = express.Router();
-const dqPropertyName = 'next12MonthsCanNotHearing';
+const cantAttendHearingInNext12MonthsController = express.Router();
+const dqPropertyName = 'cantAttendHearingInNext12Months';
 const dqParentName = 'hearing';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
-  res.render('features/directionsQuestionnaire/next-12Months-can-not-hearing', {form});
+  res.render('features/directionsQuestionnaire/cant-Attend-Hearing-In-Next-12Months', {form});
 }
 
-next12MonthsCanNotHearingController.get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, async (req, res, next) => {
+cantAttendHearingInNext12MonthsController.get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, async (req, res, next) => {
   try {
     renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName, dqParentName)), res);
   } catch (error) {
@@ -25,7 +25,7 @@ next12MonthsCanNotHearingController.get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, as
   }
 });
 
-next12MonthsCanNotHearingController.post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, async (req, res, next) => {
+cantAttendHearingInNext12MonthsController.post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const form = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
@@ -42,4 +42,4 @@ next12MonthsCanNotHearingController.post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, a
   }
 });
 
-export default next12MonthsCanNotHearingController;
+export default cantAttendHearingInNext12MonthsController;
