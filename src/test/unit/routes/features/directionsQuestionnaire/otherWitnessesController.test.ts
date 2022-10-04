@@ -7,7 +7,7 @@ import {
   DQ_OTHER_WITNESSES_AVAILABILITY_DATES_FOR_HEARING_URL,
 } from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 
@@ -52,7 +52,7 @@ describe('Other Witnesses', () => {
 
 describe('on Get', () => {
   test('should return on your other witnesses page successfully', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    app.locals.draftStoreClient = mockOtherWitnesses;
     await request(app).get(DQ_DEFENDANT_WITNESSES_URL)
       .expect((res) => {
         expect(res.status).toBe(200);

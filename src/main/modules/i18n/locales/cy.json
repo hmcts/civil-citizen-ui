@@ -1194,6 +1194,12 @@
       "PAGE_TITLE": "Do you want to ask for the court’s permission to use an expert?",
       "TITLE": "Permission for expert"
     },
+    "PHONE_OR_VIDEO_HEARING": {
+      "JUDGE_DECISION": "The judge will decide if the hearing can be held by telephone or video.",
+      "PAGE_TITLE": "Do you want to ask for a telephone or video hearing?",
+      "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
+      "TITLE": "Do you want to ask for a telephone or video hearing?"
+    },
     "PRIORITY_DEBTS": {
       "ARREARS": "'mewn ôl-ddyled' (rydych wedi methu taliadau rheolaidd)",
       "DEBTS": "Dyledion rydych ar ei hôl hi yn eu talu",
@@ -1710,6 +1716,10 @@
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
     "VALID_PHONE_NUMBER": "Rhowch rif ffôn gan ddefnyddio'r fformat cywir",
+    "VALID_PHONE_OR_VIDEO_HEARING": {
+      "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
+      "YES_NO": "Select yes if you want to ask for a telephone or video hearing"
+    },
     "VALID_POSITIVE_NUMBER": "Peidiwch â rhoi rhif negyddol",
     "VALID_POSTCODE": "Rhowch y cod post",
     "VALID_REASON_REQUIRED": "Rhowch reswm",

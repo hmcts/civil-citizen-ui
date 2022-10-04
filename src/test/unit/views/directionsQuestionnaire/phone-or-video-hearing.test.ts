@@ -2,9 +2,9 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../main/app';
-import {DETERMINATION_WITHOUT_HEARING_URL} from '../../../../main/routes/urls';
 import {mockCivilClaim} from '../../../utils/mockDraftStore';
-import {YesNo} from '../../../../main/common/form/models/yesNo';
+import {DQ_PHONE_OR_VIDEO_HEARING_URL} from '../../../../main/routes/urls';
+import {t} from 'i18next';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -12,7 +12,7 @@ const {JSDOM} = jsdom;
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
 
-describe('Determination Without Hearing View', () => {
+describe('Phone Or Video Hearing view', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -25,44 +25,37 @@ describe('Determination Without Hearing View', () => {
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
       app.locals.draftStoreClient = mockCivilClaim;
-      const response = await request(app).get(DETERMINATION_WITHOUT_HEARING_URL);
+      const response = await request(app).get(DQ_PHONE_OR_VIDEO_HEARING_URL);
       const dom = new JSDOM(response.text);
       htmlDocument = dom.window.document;
       mainWrapper = htmlDocument.getElementsByClassName('govuk-main-wrapper')[0];
     });
 
     it('should have page title', () => {
-      expect(htmlDocument.title).toEqual('Your money claims account - Determination without hearing');
+      expect(htmlDocument.title).toEqual('Your money claims account - Do you want to ask for a telephone or video hearing?');
     });
 
-    it('should display header', () => {
+    it('should display the header', () => {
       const header = htmlDocument.getElementsByClassName('govuk-heading-l');
-      expect(header[0].innerHTML).toContain('Determination without Hearing Questions');
+      expect(header[0].innerHTML).toContain('Do you want to ask for a telephone or video hearing?');
     });
 
-    it('should display paragraph', () => {
-      const expectedText = 'i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?';
+    it('should display the judge decision message', () => {
       const paragraph = mainWrapper.getElementsByClassName('govuk-body')[0];
-      expect(paragraph.innerHTML).toContain(expectedText);
+      expect(paragraph.innerHTML).toContain('The judge will decide if the hearing can be held by telephone or video.');
     });
 
-    it('should display bold text in paragraph', () => {
-      const boldText = mainWrapper.getElementsByClassName('govuk-body')[0]
-        .getElementsByClassName('govuk-!-font-weight-bold')[0];
-      expect(boldText.innerHTML).toContain('Do you consider that this claim is suitable for determination without a hearing');
-    });
-
-    it('should display yes and no radios', () => {
+    it('should display yes no radio buttons', () => {
       const radios = htmlDocument.getElementsByClassName('govuk-radios__input');
-      expect(radios[0].getAttribute('value')).toBe(YesNo.YES);
-      expect(radios[1].getAttribute('value')).toBe(YesNo.NO);
+      expect(radios[0].getAttribute('value')).toBe('yes');
+      expect(radios[1].getAttribute('value')).toBe('no');
     });
 
-    it('should display text area if no radio is selected', () => {
-      const noRadio = htmlDocument.getElementsByClassName('govuk-radios__input')[1];
-      const textAreaLabel = htmlDocument.querySelector('label[for=reasonForHearing]');
-      noRadio.setAttribute('aria-expanded', 'true');
-      expect(textAreaLabel?.innerHTML).toContain('Tell us why');
+    it('should display text area if yes radio is selected', () => {
+      const yesRadio = htmlDocument.getElementsByClassName('govuk-radios__input')[0];
+      const textAreaLabel = htmlDocument.querySelector('label[for=details]');
+      yesRadio.setAttribute('aria-expanded', 'true');
+      expect(textAreaLabel?.innerHTML).toContain('Tell us why you want a telephone or video hearing');
     });
 
     it('should display save and continue button', () => {
@@ -71,22 +64,21 @@ describe('Determination Without Hearing View', () => {
     });
 
     it('should display contact us for help', () => {
-      const contactUsForHelp = htmlDocument.getElementsByClassName('govuk-details');
-      expect(contactUsForHelp[0].innerHTML).toContain('Contact us for help');
+      const contactUs = htmlDocument.getElementsByClassName('govuk-details');
+      expect(contactUs[0].innerHTML).toContain('Contact us for help');
     });
   });
 
   describe('on POST', () => {
     describe('no radio selected', () => {
       let htmlDocument: Document;
-      const chooseOption = 'Choose option: Yes or No';
 
       beforeEach(async () => {
         nock(idamUrl)
           .post('/o/token')
           .reply(200, {id_token: citizenRoleToken});
         app.locals.draftStoreClient = mockCivilClaim;
-        const response = await request(app).post(DETERMINATION_WITHOUT_HEARING_URL);
+        const response = await request(app).post(DQ_PHONE_OR_VIDEO_HEARING_URL);
         const dom = new JSDOM(response.text);
         htmlDocument = dom.window.document;
       });
@@ -99,26 +91,25 @@ describe('Determination Without Hearing View', () => {
       it('should display choose option error in the error summary', () => {
         const error = htmlDocument.getElementsByClassName('govuk-error-summary__list')[0]
           .getElementsByTagName('li')[0];
-        expect(error.innerHTML).toContain(chooseOption);
+        expect(error.innerHTML).toContain(t('ERRORS.VALID_PHONE_OR_VIDEO_HEARING.YES_NO'));
       });
 
       it('should display choose option error above radio buttons', () => {
         const error = htmlDocument.getElementById('option-error');
-        expect(error?.innerHTML).toContain(chooseOption);
+        expect(error?.innerHTML).toContain(t('ERRORS.VALID_PHONE_OR_VIDEO_HEARING.YES_NO'));
       });
     });
 
-    describe('no option selected', () => {
+    describe('yes option selected', () => {
       let htmlDocument: Document;
-      const tellUsWhy = 'Please tell us why';
 
       beforeEach(async () => {
         nock(idamUrl)
           .post('/o/token')
           .reply(200, {id_token: citizenRoleToken});
         app.locals.draftStoreClient = mockCivilClaim;
-        const response = await request(app).post(DETERMINATION_WITHOUT_HEARING_URL)
-          .send({option: YesNo.NO});
+        const response = await request(app).post(DQ_PHONE_OR_VIDEO_HEARING_URL)
+          .send({option: 'yes'});
         const dom = new JSDOM(response.text);
         htmlDocument = dom.window.document;
       });
@@ -126,12 +117,12 @@ describe('Determination Without Hearing View', () => {
       it('should display tell us why error in the error summary', () => {
         const error = htmlDocument.getElementsByClassName('govuk-error-summary__list')[0]
           .getElementsByTagName('li')[0];
-        expect(error.innerHTML).toContain(tellUsWhy);
+        expect(error.innerHTML).toContain(t('ERRORS.VALID_PHONE_OR_VIDEO_HEARING.TELL_US_WHY'));
       });
 
       it('should display tell us why error over text area', () => {
-        const error = htmlDocument.getElementById('reasonForHearing-error');
-        expect(error?.innerHTML).toContain(tellUsWhy);
+        const error = htmlDocument.getElementById('details-error');
+        expect(error?.innerHTML).toContain(t('ERRORS.VALID_PHONE_OR_VIDEO_HEARING.TELL_US_WHY'));
       });
     });
   });

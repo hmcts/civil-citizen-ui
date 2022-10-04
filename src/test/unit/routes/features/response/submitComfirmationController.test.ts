@@ -4,6 +4,7 @@ import nock from 'nock';
 import config from 'config';
 import {CONFIRMATION_URL} from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -15,6 +16,9 @@ describe('Submit confirmation controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    nock('http://localhost:4000')
+      .get('/cases/:id')
+      .reply(200, civilClaimResponseMock);
   });
   describe('on GET', () => {
     it('should return submit confirmation from claim', async () => {

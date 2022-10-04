@@ -127,6 +127,7 @@ import otherWitnessesController from './features/directionsQuestionnaire/otherWi
 import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
 import claimantDoBController from './features/public/claim/claimantDoBController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
+import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
 
 export default [
   homeController,
@@ -246,4 +247,5 @@ export default [
   expertReportDetailsController,
   claimantIndividualDetailsController,
   claimantDoBController,
+  phoneOrVideoHearingController,
 ];

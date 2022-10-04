@@ -11,6 +11,7 @@ import {
 
 const sharedExpertController = express.Router();
 const dqPropertyName = 'sharedExpert';
+const dqParentName = 'experts';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render('features/directionsQuestionnaire/shared-expert', {form});
@@ -18,7 +19,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 sharedExpertController.get(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName)), res);
+    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName, dqParentName)), res);
   } catch (error) {
     next(error);
   }
@@ -33,7 +34,7 @@ sharedExpertController.post(DQ_SHARE_AN_EXPERT_URL, async (req, res, next) => {
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName);
+      await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL));
     }
   } catch (error) {
