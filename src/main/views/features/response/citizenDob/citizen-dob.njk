@@ -7,7 +7,11 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.CITIZEN_DOB.PAGE_TITLE') }}
+  {% if claimantView %}
+    {{ setPageTitle('PAGES.CLAIMANT_DOB.PAGE_TITLE') }}
+  {% else %}
+    {{ setPageTitle('PAGES.CITIZEN_DOB.PAGE_TITLE') }}
+  {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -19,7 +23,13 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.CITIZEN_DOB.TITLE') }}</h1>
+          <h1 class="govuk-heading-l">
+            {% if claimantView %}
+              {{ t('PAGES.CLAIMANT_DOB.TITLE') }}
+            {% else %}
+              {{ t('PAGES.CITIZEN_DOB.TITLE') }}
+            {% endif %}
+          </h1>
         </div>
       </div>
       <div class="govuk-grid-row">
@@ -38,7 +48,9 @@
                 inputmode: "numeric",
                 name: "dateOfBirth",
                 hint: {
-                  text: t('PAGES.CITIZEN_DOB.EXAMPLE')
+                  text: t('COMMON.DATE_EXAMPLE', {
+                    date: today.getDate() + ' ' + today.getMonth() + ' ' + (today.getFullYear() - 18)
+                  })
                 },
                 items: [
                   {
