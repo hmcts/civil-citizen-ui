@@ -81,12 +81,17 @@
   } if nameError
 }) }}
 
+{% set checkboxGrpError = errorFor('model[items]['+index+'][checkboxGrp]', 'model') %}
+<div id={{'model[items]['+index+'][checkboxGrp]'}}>
             {{ govukCheckboxes({
               idPrefix: 'declared',
               name: 'declared['+index+']',
               hint: {
                 text: t('PAGES.SUPPORT_REQUIRED.SELECT_ALL_THAT_APPLY')
               },
+              errorMessage: {
+                text: t(checkboxGrpError)
+              } if checkboxGrpError,
               items: [
                 {
                   id: 'declared-'+index+'-disabledAccess',
@@ -130,6 +135,8 @@
                 }
               ]
             }) }}
+
+</div>
 
 
     <br>

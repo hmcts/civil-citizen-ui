@@ -1,5 +1,5 @@
-import {IsDefined, IsNotEmpty, ValidateIf, ValidateNested} from 'class-validator';
-
+import {IsDefined, IsNotEmpty, Validate, ValidateIf, ValidateNested} from 'class-validator';
+import {AtLeastOneCheckboxSelectedValidator} from '../../form/validators/atLeastOneCheckboxSelectedValidator';
 export enum supportType {
   SIGN_LANGUAGE_INTERPRETER = 'signLanguageInterpreter',
   LANGUAGE_INTERPRETER = 'languageInterpreter',
@@ -52,8 +52,11 @@ export class SupportRequired {
     languageInterpreter?: Support;
   @ValidateNested()
     otherSupport?: Support;
+  @Validate(AtLeastOneCheckboxSelectedValidator, {message: 'ERRORS.SELECT_SUPPORT' })
+    checkboxGrp: boolean [];
 
-  [key: string]: string | Support;
+  [key: string]: string | Support | any[] | (() => boolean);
+  // [key: string]: string | Support ;
 
   // TODO : change any to relevant interface
   constructor(value?: any) {
@@ -63,14 +66,25 @@ export class SupportRequired {
     this.signLanguageInterpreter = value?.signLanguageInterpreter;
     this.languageInterpreter = value?.languageInterpreter;
     this.otherSupport = value?.otherSupport;
+    this.checkboxGrp = [
+      value?.disabledAccess?.selected,
+      value?.hearingLoop?.selected,
+      value?.signLanguageInterpreter?.selected,
+      value?.languageInterpreter?.selected,
+    ];
+  }
+// TODO : it might me unnecessary
+  public isAtLeastOneCheckBoxSelected(): boolean {
+    return this.disabledAccess?.selected ||
+      this.hearingLoop?.selected ||
+      this.signLanguageInterpreter?.selected ||
+      this.languageInterpreter?.selected ||
+      this.otherSupport?.selected;
   }
 }
 
-// TODO missing validatins
-// at least one sopprt : 'ERRORS.SELECT_SUPPORT'
-// name of person : 'ERRORS.ENTER_PERSON_NAME'
-
 export class SupportRequiredList{
+
   @ValidateNested()
     items?: SupportRequired[];
 
