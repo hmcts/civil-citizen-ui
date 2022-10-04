@@ -14,7 +14,7 @@ function renderView(form: GenericForm<CitizenTelephoneNumber>, res: express.Resp
 
 claimantPhoneController.get(CLAIMANT_PHONE_NUMBER_URL, async (req: AppRequest,res: express.Response, next: express.NextFunction) => {
   try {
-    const claimId = req.session?.user?.id;
+    const claimId = req.session.user?.id;
     const form: CitizenTelephoneNumber = await getClaimantPhone(claimId);
     renderView(new GenericForm<CitizenTelephoneNumber>(form),res);
   } catch (error) {
@@ -22,15 +22,16 @@ claimantPhoneController.get(CLAIMANT_PHONE_NUMBER_URL, async (req: AppRequest,re
   }
 });
 
-claimantPhoneController.post(CLAIMANT_PHONE_NUMBER_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+claimantPhoneController.post(CLAIMANT_PHONE_NUMBER_URL, async (req: AppRequest | express.Request, res: express.Response, next: express.NextFunction) => {
   try {
+    const claimId = (<AppRequest>req).session.user?.id;
     const form: GenericForm<CitizenTelephoneNumber> = new GenericForm(new CitizenTelephoneNumber(req.body.phoneNumber));
     form.validateSync();
 
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveClaimantPhone(req.params.id,form.model);
+      await saveClaimantPhone(claimId,form.model);
       res.redirect(CLAIMANT_TASK_LIST_URL);
     }
   } catch (error) {
