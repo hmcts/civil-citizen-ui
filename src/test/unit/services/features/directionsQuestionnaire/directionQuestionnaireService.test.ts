@@ -11,6 +11,7 @@ import {DirectionQuestionnaire} from '../../../../../main/common/models/directio
 import {GenericYesNo} from '../../../../../main/common/form/models/genericYesNo';
 import {Experts} from '../../../../../main/common/models/directionsQuestionnaire/experts/experts';
 import {Hearing} from '../../../../../main/common/models/directionsQuestionnaire/hearing/hearing';
+import {PhoneOrVideoHearing} from '../../../../../main/common/models/directionsQuestionnaire/hearing/phoneOrVideoHearing';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -92,6 +93,30 @@ describe('Direction questionnaire Service', () => {
       expect(directionQuestionnaire?.hearing?.triedToSettle?.option).toBe(YesNo.NO);
     });
 
+    it('should return phone or video hearing object with undefined options', async () => {
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return new Claim();
+      });
+      const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
+
+      expect(directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option).toBeUndefined();
+      expect(directionQuestionnaire?.hearing?.phoneOrVideoHearing?.details).toBeUndefined();
+    });
+
+    it('should return consider phone or video option with Yes option and details', async () => {
+      const claim = new Claim();
+      claim.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.directionQuestionnaire.hearing = new Hearing();
+      claim.directionQuestionnaire.hearing.phoneOrVideoHearing = {option: YesNo.YES, details: 'details'};
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        return claim;
+      });
+      const directionQuestionnaire = await getDirectionQuestionnaire('validClaimId');
+
+      expect(directionQuestionnaire?.hearing?.phoneOrVideoHearing?.option).toBe(YesNo.YES);
+      expect(directionQuestionnaire?.hearing?.phoneOrVideoHearing?.details).toContain('details');
+    });
+
     it('should return an error on redis failure', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -168,6 +193,33 @@ describe('Direction questionnaire Service', () => {
 
       await saveDirectionQuestionnaire('validClaimId', directionQuestionnaire?.hearing?.triedToSettle, 'triedToSettle', 'hearing');
       expect(spySave).toHaveBeenCalledWith('validClaimId', {directionQuestionnaire});
+    });
+
+    it('should update phone or video hearing successfully', async () => {
+      const phoneOrVideoHearing: PhoneOrVideoHearing = {
+        option: YesNo.YES,
+        details: 'details',
+      };
+
+      const updatedPhoneOrVideoHearing: PhoneOrVideoHearing = {
+        option: YesNo.NO,
+        details: 'updated',
+      };
+      const updatedClaim = new Claim();
+      updatedClaim.directionQuestionnaire = new DirectionQuestionnaire();
+      updatedClaim.directionQuestionnaire.hearing = new Hearing();
+      updatedClaim.directionQuestionnaire.hearing.phoneOrVideoHearing = updatedPhoneOrVideoHearing;
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.phoneOrVideoHearing = phoneOrVideoHearing;
+        return claim;
+      });
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+
+      await saveDirectionQuestionnaire('validClaimId',updatedPhoneOrVideoHearing, 'phoneOrVideoHearing', 'hearing');
+      expect(spySave).toHaveBeenCalledWith('validClaimId', updatedClaim);
     });
 
     it('should return an error on redis failure', async () => {
