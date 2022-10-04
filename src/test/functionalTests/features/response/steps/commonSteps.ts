@@ -17,7 +17,8 @@ export class CommonSteps {
   EnterFinancialDetails(claimRef: string): void{
     responseSteps.ShareYourFinancialDetailsIntro(claimRef);
     responseSteps.EnterBankAccountDetails();
-    responseSteps.SelectDisabilityDetails('yes', 'yes');
+    responseSteps.SelectDisabilityDetails('yes');
+    responseSteps.SelectSevereDisabilityDetails('yes');
     responseSteps.SelectResidenceDetails('ownHome');
     responseSteps.SelectPartnerDetails('yes');
     responseSteps.SelectPartnerAge('yes');

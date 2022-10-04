@@ -22,7 +22,7 @@ Before(() => {
   loginSteps.EnterUserCredentials(config.Username, config.Password);
 });
 
-Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll1', () => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll', () => {
   commonSteps.EnterPersonalDetails(claimRef);
   commonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   responseSteps.EnterResponseToClaim(claimRef, admitAll);
@@ -32,6 +32,7 @@ Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll1', (
 
 Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll', () => {
   commonSteps.EnterPersonalDetails(claimRef);
+  commonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   responseSteps.EnterResponseToClaim(claimRef, admitAll);
   responseSteps.EnterPaymentOption(claimRef, bySetDate);
   responseSteps.EnterDateToPayOn();
@@ -41,6 +42,7 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll', () => 
 
 Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll', () => {
   commonSteps.EnterPersonalDetails(claimRef);
+  commonSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
   responseSteps.EnterResponseToClaim(claimRef, admitAll);
   responseSteps.EnterPaymentOption(claimRef, repaymentPlan);
   commonSteps.EnterFinancialDetails(claimRef);

@@ -3,8 +3,8 @@ import I = CodeceptJS.I
 const I: I = actor();
 
 const fields ={
-  yesButton: 'input[id="severeDisability"]',
-  noButton: 'input[id="severeDisability-2"]',
+  yesButton: 'input[id="option"]',
+  noButton: 'input[id="option-2"]',
 };
 const buttons = {
   continue: 'button.govuk-button',

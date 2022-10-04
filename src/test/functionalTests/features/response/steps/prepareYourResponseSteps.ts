@@ -1,42 +1,42 @@
 import I = CodeceptJS.I
-import { TaskListPage } from '../pages/taskList';
-import { NameAndAddressDetailsPage } from '../pages/enterNameAndAddressDetails';
-import { DateOfBirthDetailsPage } from '../pages/enterDateOfBirthDetails';
-import { ContactNumberDetailsPage } from '../pages/enterContactNumberDetails';
-import { RespondTypePage } from '../pages/respondType';
-import { PaymentOptionPage } from '../pages/paymentOption';
-import { CheckYourAnswersPage } from '../pages/checkYourAnswers';
-import { DateToPayOn } from '../pages/dateToPayOn';
-import { ShareYouFinancialDetailsIntro } from '../pages/shareYouFinancialDetailsIntro';
-import { BankAccountsDetails } from '../pages/bankAccountsDetails';
-import { DisabilityDetails } from '../pages/disabilityDetails';
-import { SevereDisabilityDetails } from '../pages/severeDisabilityDetails';
-import { ResidenceDetails } from '../pages/residenceDetails';
-import { PartnerDetails } from '../pages/partnerDetails';
-import { PartnerAgeDetails } from '../pages/partnerAgeDetails';
-import { PartnerPensionDetails } from '../pages/partnerPensionDetails';
-import { PartnerDisabilityDetails } from '../pages/partnerDisabilityDetails';
-import { DependantDetails } from '../pages/dependantDetails';
-import { OtherDependantDetails } from '../pages/otherDependantDetails';
-import { EmploymentDetails } from '../pages/employment';
-import { EmployerDetails } from '../pages/employerDetails';
-import { SelfEmploymentDetails } from '../pages/selfEmploymentDetails';
-import { SelfEmploymentTaxDetails } from '../pages/selfEmploymentTaxDetails';
-import { CourtOrders } from '../pages/courtOrders';
-import { PriorityDebtsDetails } from '../pages/priorityDebtsDetails';
-import { Debts } from '../pages/debts';
-import { MonthlyExpenses } from '../pages/monthlyExpenses';
-import { MonthlyIncome } from '../pages/monthlyIncome';
-import { Explanation } from '../pages/explanation';
-import { RepaymentPlan } from '../pages/repaymentPlan';
-import { PartAdmitAlreadyPaid } from '../pages/partAdmitAlreadyPaid';
-import { RejectAllOfClaim } from '../pages/rejectAllOfClaim';
-import { CarerDetails } from '../pages/carerDetails';
-import { ViewYourOptionsBeforeDeadline } from '../pages/viewYourOptionsBeforeDeadline';
+import {TaskListPage} from '../pages/taskList';
+import {NameAndAddressDetailsPage} from '../pages/enterNameAndAddressDetails';
+import {DateOfBirthDetailsPage} from '../pages/enterDateOfBirthDetails';
+import {ContactNumberDetailsPage} from '../pages/enterContactNumberDetails';
+import {RespondTypePage} from '../pages/respondType';
+import {PaymentOptionPage} from '../pages/paymentOption';
+import {CheckYourAnswersPage} from '../pages/checkYourAnswers';
+import {DateToPayOn} from '../pages/dateToPayOn';
+import {ShareYouFinancialDetailsIntro} from '../pages/shareYouFinancialDetailsIntro';
+import {BankAccountsDetails} from '../pages/bankAccountsDetails';
+import {DisabilityDetails} from '../pages/disabilityDetails';
+import {SevereDisabilityDetails} from '../pages/severeDisabilityDetails';
+import {ResidenceDetails} from '../pages/residenceDetails';
+import {PartnerDetails} from '../pages/partnerDetails';
+import {PartnerAgeDetails} from '../pages/partnerAgeDetails';
+import {PartnerPensionDetails} from '../pages/partnerPensionDetails';
+import {PartnerDisabilityDetails} from '../pages/partnerDisabilityDetails';
+import {DependantDetails} from '../pages/dependantDetails';
+import {OtherDependantDetails} from '../pages/otherDependantDetails';
+import {EmploymentDetails} from '../pages/employment';
+import {EmployerDetails} from '../pages/employerDetails';
+import {SelfEmploymentDetails} from '../pages/selfEmploymentDetails';
+import {SelfEmploymentTaxDetails} from '../pages/selfEmploymentTaxDetails';
+import {CourtOrders} from '../pages/courtOrders';
+import {PriorityDebtsDetails} from '../pages/priorityDebtsDetails';
+import {Debts} from '../pages/debts';
+import {MonthlyExpenses} from '../pages/monthlyExpenses';
+import {MonthlyIncome} from '../pages/monthlyIncome';
+import {Explanation} from '../pages/explanation';
+import {RepaymentPlan} from '../pages/repaymentPlan';
+import {PartAdmitAlreadyPaid} from '../pages/partAdmitAlreadyPaid';
+import {RejectAllOfClaim} from '../pages/rejectAllOfClaim';
+import {CarerDetails} from '../pages/carerDetails';
+import {ViewYourOptionsBeforeDeadline} from '../pages/viewYourOptionsBeforeDeadline';
 
 const I: I = actor();
 const taskListPage: TaskListPage = new TaskListPage();
-const nameAndAddressDetailsPage: NameAndAddressDetailsPage  = new NameAndAddressDetailsPage();
+const nameAndAddressDetailsPage: NameAndAddressDetailsPage = new NameAndAddressDetailsPage();
 const dateOfBirthDetailsPage: DateOfBirthDetailsPage = new DateOfBirthDetailsPage();
 const contactNumberDetailsPage: ContactNumberDetailsPage = new ContactNumberDetailsPage();
 const respondTypePage: RespondTypePage = new RespondTypePage();
@@ -64,133 +64,161 @@ const debts: Debts = new Debts();
 const monthlyExpenses: MonthlyExpenses = new MonthlyExpenses();
 const monthlyIncome: MonthlyIncome = new MonthlyIncome();
 const explanation: Explanation = new Explanation();
-const repaymentPlan: RepaymentPlan= new RepaymentPlan();
+const repaymentPlan: RepaymentPlan = new RepaymentPlan();
 const partAdmitAlreadyPaid: PartAdmitAlreadyPaid = new PartAdmitAlreadyPaid();
 const rejectAllOfClaim: RejectAllOfClaim = new RejectAllOfClaim();
 const selectCarerDetails: CarerDetails = new CarerDetails();
-const viewYourOptionsBeforeDeadline: ViewYourOptionsBeforeDeadline =new ViewYourOptionsBeforeDeadline();
+const viewYourOptionsBeforeDeadline: ViewYourOptionsBeforeDeadline = new ViewYourOptionsBeforeDeadline();
 
 export class ResponseSteps {
 
-  VerifyResponsePageContent (claimRef: string): void {
+  VerifyResponsePageContent(claimRef: string): void {
     taskListPage.open(claimRef);
     taskListPage.verifyResponsePageContent();
   }
-  EnterNameAndAddressDetails (claimRef: string): void {
+
+  EnterNameAndAddressDetails(claimRef: string): void {
     nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
   }
-  EnterDateOfBirth (claimRef: string): void {
+
+  EnterDateOfBirth(claimRef: string): void {
     dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
   }
-  EnterContactNumber (claimRef: string): void {
+
+  EnterContactNumber(claimRef: string): void {
     contactNumberDetailsPage.enterContactNumber(claimRef);
   }
-  EnterYourOptions (claimRef:  string, deadlineOption: string): void{
+
+  EnterYourOptions(claimRef: string, deadlineOption: string): void {
     viewYourOptionsBeforeDeadline.selectYouOptions(claimRef, deadlineOption);
   }
+
   EnterResponseToClaim(claimRef: string, responseType: string): void {
     respondTypePage.enterResponseToClaim(claimRef, responseType);
   }
+
   EnterPaymentOption(claimRef: string, paymentOption: string): void {
     paymentOptionPage.enterPaymentOption(claimRef, paymentOption);
   }
+
   CheckAndSubmit(claimRef: string): void {
     checkYourAnswersPage.checkAndSubmit(claimRef);
   }
+
   EnterDateToPayOn(): void {
     dateToPayOn.enterDateToPayOn();
   }
+
   ShareYourFinancialDetailsIntro(claimRef: string): void {
     shareYourFinancialDetailsIntro.open(claimRef);
     shareYourFinancialDetailsIntro.clickContinue();
   }
+
   EnterBankAccountDetails(): void {
     bankAccountDetails.enterBankAccountDetails();
     bankAccountDetails.clickContinue();
   }
-  SelectDisabilityDetails(disability: string, severeDisability: string): void {
-    if(disability == 'yes'){
+
+  SelectDisabilityDetails(disability: string): void {
+    if (disability == 'yes') {
       disabilityDetails.clickYesButton();
-      if(severeDisability == 'yes'){
-        severeDisabilityDetails.clickYesButton();
-      }else{
-        severeDisabilityDetails.clickNoButton();
-      }
-    }else{
+    } else {
       disabilityDetails.clickNoButton();
     }
   }
+
+  SelectSevereDisabilityDetails(severeDisability: string): void {
+    if (severeDisability == 'yes') {
+      severeDisabilityDetails.clickYesButton();
+    } else {
+      severeDisabilityDetails.clickNoButton();
+    }
+  }
+
   SelectResidenceDetails(residenceType: string): void {
     selectResidenceDetails.selectResidenceType(residenceType);
   }
+
   SelectPartnerDetails(partner: string): void {
-    if(partner == 'yes'){
+    if (partner == 'yes') {
       selectPartnerDetails.clickYesButton();
-    }else{
+    } else {
       selectPartnerDetails.clickNoButton();
     }
   }
+
   SelectPartnerAge(partnerAge: string): void {
-    if(partnerAge == 'yes'){
+    if (partnerAge == 'yes') {
       selectPartnerAge.clickYesButton();
-    }else{
+    } else {
       selectPartnerAge.clickNoButton();
     }
   }
+
   SelectPartnerPension(partnerPension: string): void {
-    if(partnerPension == 'yes'){
+    if (partnerPension == 'yes') {
       selectPartnerPension.clickYesButton();
-    }else{
+    } else {
       selectPartnerPension.clickNoButton();
     }
   }
+
   SelectPartnerDisability(partnerDisability: string): void {
-    if(partnerDisability == 'yes'){
+    if (partnerDisability == 'yes') {
       selectPartnerDisability.clickYesButton();
-    }else{
+    } else {
       selectPartnerDisability.clickNoButton();
     }
   }
+
   SelectDependantDetails(dependant: string): void {
-    if(dependant == 'yes'){
+    if (dependant == 'yes') {
       selectDependantDetails.clickYesButton();
-    }else{
+    } else {
       selectDependantDetails.clickNoButton();
     }
   }
+
   SelectOtherDependantDetails(dependant: string): void {
-    if(dependant == 'yes'){
+    if (dependant == 'yes') {
       selectOtherDependantsDetails.clickYesButton();
-    }else{
+    } else {
       selectOtherDependantsDetails.clickNoButton();
     }
   }
+
   SelectCarerDetails(carer: string): void {
-    if(carer == 'yes'){
+    if (carer == 'yes') {
       selectCarerDetails.clickYesButton();
-    }else{
+    } else {
       selectCarerDetails.clickNoButton();
     }
   }
+
   SelectEmploymentDetails(employment: string): void {
-    if(employment == 'yes'){
+    if (employment == 'yes') {
       selectEmploymentDetails.clickYesButton();
-    }else{
+    } else {
       selectEmploymentDetails.clickNoButton();
     }
   }
+
   EnterEmployerDetails(): void {
     enterEmployerDetails.enterEmployerDetails();
   }
+
   EnterSelfEmploymentDetails(): void {
     enterSelfEmploymentDetails.enterSelfEmployerDetails();
   }
+
   EnterSelfEmploymentTaxDetails(): void {
     enterSelfEmploymentTaxDetails.clickYesButton();
   }
+
   EnterCourtOrderDetails(claimRef: string): void {
     courtOrders.clickYesButton(claimRef);
   }
+
   PriorityDebtsDetails(mortage: string, councilTax: string, gas: string, electricity: string): void {
     priorityDebtsDetails.selectMortgage(mortage);
     priorityDebtsDetails.selectCouncilTax(councilTax);
@@ -198,9 +226,11 @@ export class ResponseSteps {
     priorityDebtsDetails.selectElectricity(electricity);
     priorityDebtsDetails.clickContinue();
   }
+
   EnterDebtDetails(): void {
     debts.clickYesButton();
   }
+
   MonthlyExpensesDetails(mortgage: string, councilTax: string, gas: string, electricity: string, foodAndHouseKeeping: string, otherExpenses: string): void {
     monthlyExpenses.selectMortgage(mortgage);
     monthlyExpenses.selectCouncilTax(councilTax);
@@ -210,21 +240,26 @@ export class ResponseSteps {
     monthlyExpenses.selectOtherExpenses(otherExpenses);
     monthlyExpenses.clickContinue();
   }
+
   MonthlyIncomeDetails(incomeFromJob: string, childBenefit: string, otherIncome: string): void {
     monthlyIncome.selectIncomeFromJob(incomeFromJob);
     monthlyIncome.selectChildBenefit(childBenefit);
     monthlyIncome.selectOtherIncome(otherIncome);
     monthlyIncome.clickContinue();
   }
+
   EnterExplanation(): void {
     explanation.enterExplanation();
   }
+
   EnterRepaymentPlan(claimRef: string): void {
     repaymentPlan.enterRepaymentPlan(claimRef);
   }
+
   SelectPartAdmitAlreadyPaid(option: string): void {
     partAdmitAlreadyPaid.selectAlreadyPaid(option);
   }
+
   SelectOptionInRejectAllClaim(reason: string): void {
     rejectAllOfClaim.selectRejectAllReason(reason);
   }
