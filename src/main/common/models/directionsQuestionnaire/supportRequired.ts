@@ -17,14 +17,14 @@ const generateErrorMessage = (sourceName: string): string => {
   }
 };
 
-const withMessage = (buildErrorFn: (name: string) => string) => {
+const withMessage = (buildErrorFn: (sourceName: string) => string) => {
   return (args: any): string => {
-    return buildErrorFn(args.object.name);
+    return buildErrorFn(args.object.sourceName);
   };
 };
 
 export class Support {
-  name?: string;
+  sourceName?: string;
   selected?: boolean;
   @ValidateIf(o => o.selected)
   @IsDefined({message: withMessage(generateErrorMessage)})
@@ -34,14 +34,16 @@ export class Support {
 
   [key: string]: boolean | string;
 
-  constructor(name?: string, selected?: boolean, content?: string) {
+  constructor(sourceName?: string, selected?: boolean, content?: string) {
     this.selected = selected;
     this.content = content;
-    this.name = name;
+    this.sourceName = sourceName;
   }
 }
 export class SupportRequired {
-  name?: string;
+  @IsDefined({message: 'ERRORS.ENTER_PERSON_NAME'})
+  @IsNotEmpty({message: 'ERRORS.ENTER_PERSON_NAME'})
+    name?: string;
   disabledAccess?: Support;
   hearingLoop?: Support;
   @ValidateNested()

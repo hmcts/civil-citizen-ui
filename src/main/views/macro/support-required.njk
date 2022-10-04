@@ -1,11 +1,11 @@
-
+{% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from 'govuk/components/checkboxes/macro.njk' import govukCheckboxes %}
 {% from 'govuk/components/input/macro.njk' import govukInput %}
 {% from 'govuk/components/textarea/macro.njk' import govukTextarea %}
 {% from 'govuk/components/fieldset/macro.njk' import govukFieldset %}
 {% from 'govuk/components/button/macro.njk' import govukButton %}
 
-{% macro supportRequired(index, value, errorFor, t, removeButton) %}
+{% macro supportRequired(index, value, errorFor, t, removeButton, nameList) %}
 
 <div class='multiple-row'>
 
@@ -23,7 +23,6 @@
                   classes: 'govuk-!-width-two-thirds',
                   text: t('PAGES.SUPPORT_REQUIRED.ENTER_SIGN_LANGUAGE')
                 },
-                controls:"zorrt",
                 errorMessage: {
                   text: t(signLanguageInterpretedError)
                 } if signLanguageInterpretedError
@@ -69,9 +68,25 @@
       }
     }) }}
 
+{% set nameError = errorFor('model[items]['+index+'][name]', 'model') %}
+    {{ govukSelect({
+  id: 'model[items]['+index+'][name]',
+  name: 'model[items]['+index+'][name]',
+  label: {
+    text: t('PAGES.SUPPORT_REQUIRED.NAME_OF_PERSON')
+  },
+  items: nameList,
+  errorMessage: {
+    text: t(nameError)
+  } if nameError
+}) }}
+
             {{ govukCheckboxes({
               idPrefix: 'declared',
               name: 'declared['+index+']',
+              hint: {
+                text: t('PAGES.SUPPORT_REQUIRED.SELECT_ALL_THAT_APPLY')
+              },
               items: [
                 {
                   id: 'declared-'+index+'-disabledAccess',

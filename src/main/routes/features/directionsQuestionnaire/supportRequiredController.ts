@@ -15,9 +15,12 @@ const dqPropertyName = 'supportRequiredList';
 const dqParentName = 'hearing';
 
 supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next: express.NextFunction) => {
+  debugger;
   try {
-    const form = new GenericForm(await getSupportRequired(req.params.id));
-    res.render(supportRequiredViewPath, {form});
+    //TODO change naming
+    const data = await getSupportRequired(req.params.id)
+    const form = new GenericForm(data[0]);
+    res.render(supportRequiredViewPath, {form, nameList : data[1]});
   } catch (error) {
     next(error);
   }
