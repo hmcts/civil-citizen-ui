@@ -13,6 +13,7 @@
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
+    "DATE_EXAMPLE": "Er enghraifft, {{ date }}",
     "DAY": "Diwrnod",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "GO_TO_HOMEPAGE": "Go to homepage",
@@ -496,6 +497,10 @@
       "DOWNLOAD_RESPONSE": "Llwytho'r ymateb i lawr",
       "LATEST_UPDATE": "Diweddariad diweddaraf",
       "VIEW_CLAIM": "Gweld yr hawliad"
+    },
+    "CLAIMANT_DOB": {
+      "PAGE_TITLE": "Your date of birth",
+      "TITLE": "What is your date of birth?"
     },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
       "CLAIMING_AS_HEADER": "I'm claiming as:",
