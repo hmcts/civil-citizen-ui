@@ -38,6 +38,7 @@ import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType'
 import {DirectionQuestionnaire} from '../models/directionsQuestionnaire/directionQuestionnaire';
 import {ResponseOptions} from '../../common/form/models/responseDeadline';
 import {AdditionalTimeOptions} from '../../common/form/models/additionalTime';
+import {GenericYesNo} from '../../common/form/models/genericYesNo';
 
 export class Claim {
   legacyCaseReference: string;
@@ -62,7 +63,7 @@ export class Claim {
   defendantStatementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   claimAmountBreakup?: ClaimAmountBreakup[];
   totalInterest?: number;
-  claimInterest?: YesNo;
+  claimInterest?: GenericYesNo;
   interestClaimFrom?: InterestClaimFromType;
   interestClaimUntil?: InterestClaimUntilType;
   interestFromSpecificDate?: Date;

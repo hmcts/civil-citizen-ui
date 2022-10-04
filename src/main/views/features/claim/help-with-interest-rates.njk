@@ -1,0 +1,11 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% set content %}
+  <p class="govuk-body">{{ t('COMMON.HELP_WITH_INTEREST_RATES.YOU_CAN_CLAIM') }}</p>
+  <p class="govuk-body">{{ t('COMMON.HELP_WITH_INTEREST_RATES.THE_COURT_WILL_DECIDE') }}</p>
+{% endset -%}
+
+{{ govukDetails({
+  summaryText: t('COMMON.HELP_WITH_INTEREST_RATES.TITLE'),
+  html: content
+}) }}
