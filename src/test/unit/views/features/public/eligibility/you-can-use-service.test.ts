@@ -35,7 +35,7 @@ describe('You can use this service View', () => {
     });
 
     it('should display header', () => {
-      const header = htmlDocument.getElementsByClassName('govuk-heading-l');
+      const header = mainWrapper.getElementsByClassName('govuk-heading-xl');
       expect(header[0].innerHTML).toContain(t('PAGES.YOU_CAN_USE_SERVICE.TITLE'));
     });
 
