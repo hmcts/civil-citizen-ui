@@ -1552,6 +1552,7 @@
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Select yes if you want to use expert evidence",
     "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Select yes if you want to give evidence yourself",
+    "DEFENDANT_EXPERT_EXPLAIN_EXAMINE": "Explain what there is to examine",
     "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Enter the witness’s first name",
     "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Enter the witness’s last name",
     "DEFENDANT_WITNESS_SELECT_OTHER": "Select yes if you have other witnesses",
