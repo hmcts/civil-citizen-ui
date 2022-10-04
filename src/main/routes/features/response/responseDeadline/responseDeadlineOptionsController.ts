@@ -18,10 +18,8 @@ const responseDeadlineOptionsViewPath = 'features/response/response-deadline-opt
 const responseDeadlineService = new ResponseDeadlineService();
 
 function renderView(res: express.Response, form: GenericForm<ResponseDeadline>, claim: Claim, language: string): void {
-  const responseDeadline = Object.assign(form);
-  responseDeadline.option = form.model?.option;
   res.render(responseDeadlineOptionsViewPath, {
-    form: responseDeadline,
+    form,
     responseDate: claim.formattedResponseDeadline(language),
     claimantName: claim.getClaimantName(),
   });

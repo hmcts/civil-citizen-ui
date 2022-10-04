@@ -1,9 +1,5 @@
 import * as express from 'express';
-import {
-  DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
-  DQ_GIVE_EVIDENCE_YOURSELF_URL,
-  DQ_SENT_EXPERT_REPORTS_URL,
-} from '../../urls';
+import {DQ_DEFENDANT_EXPERT_EVIDENCE_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL, DQ_SENT_EXPERT_REPORTS_URL} from '../../urls';
 import {
   getGenericOption,
   getGenericOptionForm,
@@ -16,8 +12,8 @@ import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 
 const defendantExpertEvidenceController = express.Router();
 const defendantExpertEvidenceViewPath = 'features/directionsQuestionnaire/defendant-expert-evidence';
-const errorMessage = 'ERRORS.DEFENDANT_EXPERT_EVIDENCE_REQUIRED';
 const dqPropertyName = 'defendantExpertEvidence';
+const dqParentName = 'experts';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render(defendantExpertEvidenceViewPath, {form});
@@ -25,7 +21,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 defendantExpertEvidenceController.get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (req, res, next: express.NextFunction) => {
   try {
-    const defendantExpertEvidence = await getGenericOption(req.params.id, dqPropertyName, errorMessage);
+    const defendantExpertEvidence = await getGenericOption(req.params.id, dqPropertyName, dqParentName);
     renderView(new GenericForm(defendantExpertEvidence), res);
   } catch (error) {
     next(error);
@@ -35,19 +31,16 @@ defendantExpertEvidenceController.get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (r
 defendantExpertEvidenceController.post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const claimId = req.params.id;
-    const defendantExpertEvidence = new GenericForm(getGenericOptionForm(req.body.option, errorMessage));
+    const defendantExpertEvidence = new GenericForm(getGenericOptionForm(req.body.option, dqPropertyName));
     defendantExpertEvidence.validateSync();
 
     if (defendantExpertEvidence.hasErrors()) {
       renderView(defendantExpertEvidence, res);
     } else {
-      defendantExpertEvidence.model.option = req.body.option;
-      await saveDirectionQuestionnaire(claimId, defendantExpertEvidence.model, dqPropertyName);
-      if (req.body.option === YesNo.YES) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL));
-      } else {
+      await saveDirectionQuestionnaire(claimId, defendantExpertEvidence.model, dqPropertyName, dqParentName);
+      (defendantExpertEvidence.model.option === YesNo.YES) ?
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL)) :
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
-      }
     }
   } catch (error) {
     next(error);

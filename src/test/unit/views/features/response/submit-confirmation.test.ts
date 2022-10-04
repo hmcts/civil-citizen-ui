@@ -1,13 +1,11 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import dayjs from 'dayjs';
-import 'dayjs/locale/cy';
 import {app} from '../../../../../main/app';
 import {mockRedisFullAdmission} from '../../../../utils/mockDraftStore';
 import {CONFIRMATION_URL} from '../../../../../main/routes/urls';
-import {formatDateToFullDate} from '../../../../../main/common/utils/dateUtils';
 import * as externalURLs from '../../../../utils/externalURLs';
+import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
@@ -29,6 +27,9 @@ describe('Submit Confirmation View', () => {
       nock(idamUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
+      nock('http://localhost:4000')
+        .get('/cases/:id')
+        .reply(200, civilClaimResponseMock);
       app.locals.draftStoreClient = mockRedisFullAdmission;
       const response = await request(app).get(CONFIRMATION_URL);
       const dom = new JSDOM(response.text);
@@ -51,7 +52,7 @@ describe('Submit Confirmation View', () => {
         const panelContent = htmlDocument.getElementsByClassName('govuk-panel__body');
         expect(panelContent[0].innerHTML).toContain('Claim number:');
         expect(panelContent[0].innerHTML).toContain('000MC009');
-        expect(panelContent[0].innerHTML).toContain(formatDateToFullDate(new Date()));
+        expect(panelContent[0].innerHTML).toContain('25 September 2022');
       });
     });
 
@@ -70,9 +71,8 @@ describe('Submit Confirmation View', () => {
         const paragraphs = mainWrapper.getElementsByClassName(paragraph);
         const nextStepsList = htmlDocument.getElementsByClassName('govuk-list');
         const links = mainWrapper.getElementsByClassName('govuk-link');
-        const immediatePaymentDeadLline = dayjs().add(5, 'day').locale('en').format('DD MMMM YYYY');
         expect(paragraphs[1].innerHTML).toContain('You need to make sure that:');
-        expect(nextStepsList[0].getElementsByTagName('li')[0].innerHTML).toContain(`they get the money by ${immediatePaymentDeadLline} - they can request a County Court Judgment against you if not`);
+        expect(nextStepsList[0].getElementsByTagName('li')[0].innerHTML).toContain('they get the money by 30 September 2022 - they can request a County Court Judgment against you if not');
         expect(nextStepsList[0].getElementsByTagName('li')[1].innerHTML).toContain('any cheques or bank transfers are clear in their account by the deadline');
         expect(nextStepsList[0].getElementsByTagName('li')[2].innerHTML).toContain('you get a receipt for any payments');
         expect(nextStepsList[0].getElementsByTagName('li')[3].innerHTML).toContain('they tell the court that you’ve paid');

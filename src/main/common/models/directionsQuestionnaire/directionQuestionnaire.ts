@@ -1,26 +1,32 @@
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {ConsiderClaimantDocuments} from 'models/directionsQuestionnaire/considerClaimantDocuments';
-import {ExpertCanStillExamine} from '../../models/directionsQuestionnaire/expertCanStillExamine';
-import {SentExpertReports} from './sentExpertReports';
+import {SupportRequired} from '../../models/directionsQuestionnaire/supportRequired';
+import {Experts} from './experts/experts';
+import {VulnerabilityQuestions} from './vulnerabilityQuestions/vulnerabilityQuestions';
+import {Witnesses} from './witnesses/witnesses';
+import {Hearing} from './hearing/hearing';
 
 export class DirectionQuestionnaire {
-  permissionForExpert?: GenericYesNo;
-  triedToSettle?: GenericYesNo;
-  defendantExpertEvidence?: GenericYesNo;
-  considerClaimantDocuments?: ConsiderClaimantDocuments;
-  sharedExpert?: GenericYesNo;
-  requestExtra4weeks?: GenericYesNo;
-  expertCanStillExamine?: ExpertCanStillExamine;
-  defendantYourselfEvidence?: GenericYesNo;
-  sentExpertReports?: SentExpertReports;
 
-  constructor(triedToSettle?: GenericYesNo, defendantExpertEvidence?: GenericYesNo, requestExtra4weeks?: GenericYesNo, sharedExpert?: GenericYesNo, expertCanStillExamine?: ExpertCanStillExamine, defendantYourselfEvidence?: GenericYesNo, sentExpertReports?: SentExpertReports) {
-    this.triedToSettle = triedToSettle;
-    this.defendantExpertEvidence = defendantExpertEvidence;
-    this.requestExtra4weeks = requestExtra4weeks;
-    this.sharedExpert = sharedExpert;
-    this.expertCanStillExamine = expertCanStillExamine;
+  defendantYourselfEvidence?: GenericYesNo;
+  supportRequired?: SupportRequired;
+  hearing?: Hearing;
+  vulnerabilityQuestions?: VulnerabilityQuestions;
+  experts?: Experts;
+  witnesses?: Witnesses;
+
+  constructor(
+    defendantYourselfEvidence?: GenericYesNo,
+    supportRequired?: SupportRequired,
+    hearing?: Hearing,
+    vulnerabilityQuestions?: VulnerabilityQuestions,
+    experts?: Experts,
+    witnesses?: Witnesses,
+  ) {
     this.defendantYourselfEvidence = defendantYourselfEvidence;
-    this.sentExpertReports = sentExpertReports;
+    this.supportRequired = supportRequired;
+    this.hearing = hearing;
+    this.vulnerabilityQuestions = vulnerabilityQuestions;
+    this.experts = experts;
+    this.witnesses = witnesses;
   }
 }

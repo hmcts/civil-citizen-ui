@@ -1,9 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/details/macro.njk" import govukDetails %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
@@ -11,7 +7,11 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.CITIZEN_DOB.PAGE_TITLE') }}
+  {% if claimantView %}
+    {{ setPageTitle('PAGES.CLAIMANT_DOB.PAGE_TITLE') }}
+  {% else %}
+    {{ setPageTitle('PAGES.CITIZEN_DOB.PAGE_TITLE') }}
+  {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -23,7 +23,13 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.CITIZEN_DOB.TITLE') }}</h1>
+          <h1 class="govuk-heading-l">
+            {% if claimantView %}
+              {{ t('PAGES.CLAIMANT_DOB.TITLE') }}
+            {% else %}
+              {{ t('PAGES.CITIZEN_DOB.TITLE') }}
+            {% endif %}
+          </h1>
         </div>
       </div>
       <div class="govuk-grid-row">
@@ -41,14 +47,10 @@
                 type: "number",
                 inputmode: "numeric",
                 name: "dateOfBirth",
-                fieldset: {
-                  legend: {
-                    isPageHeading: false,
-                    classes: 'govuk-fieldset__legend--m'
-                  }
-                },
                 hint: {
-                  text: t('PAGES.CITIZEN_DOB.EXAMPLE')
+                  text: t('COMMON.DATE_EXAMPLE', {
+                    date: today.getDate() + ' ' + today.getMonth() + ' ' + (today.getFullYear() - 18)
+                  })
                 },
                 items: [
                   {

@@ -14,7 +14,6 @@ import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
 import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from '../form/models/statementOfTruth/statementOfTruthForm';
 import PaymentOptionType from '../form/models/admission/paymentOption/paymentOptionType';
-import {SupportRequired} from '../models/directionsQuestionnaire/supportRequired';
 import {
   CaseState,
   ClaimAmountBreakup,
@@ -32,9 +31,7 @@ import {QualifiedStatementOfTruth} from '../form/models/statementOfTruth/qualifi
 import {SystemGeneratedCaseDocuments} from './document/systemGeneratedCaseDocuments';
 import {CaseDocument} from './document/caseDocument';
 import {DocumentType} from './document/documentType';
-import {Vulnerability} from '../models/directionsQuestionnaire/vulnerability';
 import {ResponseDeadline} from './responseDeadline';
-import {DeterminationWithoutHearing} from '../models/directionsQuestionnaire/determinationWithoutHearing';
 import {getLng} from '../../common/utils/languageToggleUtils';
 import {ClaimResponseStatus} from './claimResponseStatus';
 import RejectAllOfClaimType from '../../common/form/models/rejectAllOfClaimType';
@@ -71,19 +68,17 @@ export class Claim {
   interestFromSpecificDate?: Date;
   interestClaimOptions: InterestClaimOptions;
   sameRateInterestSelection?: SameRateInterestSelection;
-  supportRequired?: SupportRequired;
   breakDownInterestTotal?: number;
   submittedDate?: Date;
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
-  vulnerability: Vulnerability;
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
-  determinationWithoutHearing: DeterminationWithoutHearing;
   respondentSolicitor1AgreedDeadlineExtension?:Date;
   directionQuestionnaire?: DirectionQuestionnaire;
+  respondent1ResponseDate?: Date;
 
   getClaimantName(): string {
     return this.applicant1.partyName;
@@ -208,8 +203,15 @@ export class Claim {
     return this.partialAdmission?.howMuchDoYouOwe?.amount;
   }
 
+  partialAdmissionPaidAmount(): number {
+    return this.partialAdmission?.howMuchHaveYouPaid?.amount;
+  }
   isRejectAllOfClaimAlreadyPaid(): number {
     return this.rejectAllOfClaim?.howMuchHaveYouPaid?.amount;
+  }
+
+  isRejectAllOfClaimDispute(): boolean {
+    return this.rejectAllOfClaim?.option === RejectAllOfClaimType.DISPUTE;
   }
 
   hasConfirmedAlreadyPaid(): boolean {
@@ -288,9 +290,13 @@ export class Claim {
     if (this.isPartialAdmission() && this.isPAPaymentOptionInstallments()) {
       return ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
     }
-    
+
     if (this.isRejectAllOfClaimAlreadyPaid() && this.hasConfirmedAlreadyPaid()) {
       return this.hasPaidInFull() ? ClaimResponseStatus.RC_PAID_FULL : ClaimResponseStatus.RC_PAID_LESS;
+    }
+
+    if (this.isFullDefence() && this.isRejectAllOfClaimDispute()) {
+      return ClaimResponseStatus.RC_DISPUTE;
     }
 
   }
@@ -317,9 +323,11 @@ export interface Party {
   soleTraderFirstName?: string;
   soleTraderLastName?: string;
   partyName?: string;
-  type: CounterpartyType;
+  type?: CounterpartyType;
   primaryAddress?: CorrespondenceAddress;
   phoneNumber?: string;
+  provideCorrespondenceAddress?: string;
+  correspondenceAddress?: CorrespondenceAddress;
 }
 
 export interface StatementOfTruth {
