@@ -11,7 +11,7 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 const citizenDobController = express.Router();
 
 function renderView(form: GenericForm<CitizenDob>, res: express.Response): void {
-  res.render('features/response/citizenDob/citizen-dob', {form: form});
+  res.render('features/response/citizenDob/citizen-dob', {form: form, today: new Date()});
 }
 
 function redirectToNextPage(req: express.Request, res: express.Response, dob: Date) {
