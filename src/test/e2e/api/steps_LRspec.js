@@ -19,35 +19,10 @@ let caseData = {};
 
 const data = {
   CREATE_CLAIM: (scenario) => claimData.createClaim(scenario),
-  DEFENDANT_RESPONSE2: (response) => require('../fixtures/events/defendantResponseSpec.js').respondToClaim2(response),
-  DEFENDANT_RESPONSE_1v2: (response) => require('../fixtures/events/defendantResponseSpec1v2.js').respondToClaim(response),
-  DEFENDANT_RESPONSE_2v1: (response) => require('../fixtures/events/defendantResponseSpec2v1.js').respondToClaim(response),
-  CLAIMANT_RESPONSE: (mpScenario) => require('../fixtures/events/claimantResponseSpec.js').claimantResponse(mpScenario),
-  CLAIMANT_RESPONSE_1v2: (response) => require('../fixtures/events/claimantResponseSpec1v2.js').claimantResponse(response),
-  CLAIMANT_RESPONSE_2v1: (response) => require('../fixtures/events/claimantResponseSpec2v1.js').claimantResponse(response),
-  INFORM_AGREED_EXTENSION_DATE: () => require('../fixtures/events/informAgreeExtensionDateSpec.js'),
 };
 
 const eventData = {
   claimantResponses: {
-    ONE_V_ONE: {
-      FULL_DEFENCE: data.CLAIMANT_RESPONSE('FULL_DEFENCE'),
-      FULL_ADMISSION: data.CLAIMANT_RESPONSE('FULL_ADMISSION'),
-      PART_ADMISSION: data.CLAIMANT_RESPONSE('PART_ADMISSION'),
-      COUNTER_CLAIM: data.CLAIMANT_RESPONSE('COUNTER_CLAIM'),
-    },
-    ONE_V_TWO: {
-      FULL_DEFENCE: data.CLAIMANT_RESPONSE_1v2('FULL_DEFENCE'),
-      FULL_ADMISSION: data.CLAIMANT_RESPONSE_1v2('FULL_ADMISSION'),
-      PART_ADMISSION: data.CLAIMANT_RESPONSE_1v2('PART_ADMISSION'),
-      NOT_PROCEED: data.CLAIMANT_RESPONSE_1v2('NOT_PROCEED'),
-    },
-    TWO_V_ONE: {
-      FULL_DEFENCE: data.CLAIMANT_RESPONSE_2v1('FULL_DEFENCE'),
-      FULL_ADMISSION: data.CLAIMANT_RESPONSE_2v1('FULL_ADMISSION'),
-      PART_ADMISSION: data.CLAIMANT_RESPONSE_2v1('PART_ADMISSION'),
-      NOT_PROCEED: data.CLAIMANT_RESPONSE_2v1('NOT_PROCEED'),
-    },
   },
 };
 
@@ -288,43 +263,43 @@ const assertSubmittedEvent = async (expectedState, submittedCallbackResponseCont
   }
 };
 
-const validateEventPagesDefaultJudgments = async (data, scenario) => {
-  //transform the data
-  console.log('validateEventPages');
-  for (let pageId of Object.keys(data.userInput)) {
-    await assertValidDataDefaultJudgments(data, pageId, scenario);
-  }
-};
+// const validateEventPagesDefaultJudgments = async (data, scenario) => {
+//   //transform the data
+//   console.log('validateEventPages');
+//   for (let pageId of Object.keys(data.userInput)) {
+//     await assertValidDataDefaultJudgments(data, pageId, scenario);
+//   }
+// };
 
-const assertValidDataDefaultJudgments = async (data, pageId, scenario) => {
-  console.log(`asserting page: ${pageId} has valid data`);
-  const userData = data.userInput[pageId];
-  caseData = update(caseData, userData);
-  const response = await apiRequest.validatePage(
-    eventName,
-    pageId,
-    caseData,
-    caseId,
-  );
-  let responseBody = await response.json();
-  responseBody = clearDataForSearchCriteria(responseBody); //Until WA release
+// const assertValidDataDefaultJudgments = async (data, pageId, scenario) => {
+//   console.log(`asserting page: ${pageId} has valid data`);
+//   const userData = data.userInput[pageId];
+//   caseData = update(caseData, userData);
+//   const response = await apiRequest.validatePage(
+//     eventName,
+//     pageId,
+//     caseData,
+//     caseId,
+//   );
+//   let responseBody = await response.json();
+//   responseBody = clearDataForSearchCriteria(responseBody); //Until WA release
   
-  assert.equal(response.status, 200);
-  if (pageId === 'paymentConfirmationSpec') {
-    if (scenario === 'ONE_V_ONE' || scenario === 'TWO_V_ONE') {
-      responseBody.data.currentDefendantName = 'Sir John Doe';
-    } else {
-      responseBody.data.currentDefendantName = 'both defendants';
-    }
+//   assert.equal(response.status, 200);
+//   if (pageId === 'paymentConfirmationSpec') {
+//     if (scenario === 'ONE_V_ONE' || scenario === 'TWO_V_ONE') {
+//       responseBody.data.currentDefendantName = 'Sir John Doe';
+//     } else {
+//       responseBody.data.currentDefendantName = 'both defendants';
+//     }
 
-  } else if (pageId === 'paymentSetDate') {
-    responseBody.data.repaymentDue= '1580.00';
-  }
-  if (pageId === 'paymentSetDate' || pageId === 'paymentType') {
-    responseBody.data.currentDatebox = '25 August 2022';
-  }
-  assert.deepEqual(responseBody.data, caseData);
-};
+//   } else if (pageId === 'paymentSetDate') {
+//     responseBody.data.repaymentDue= '1580.00';
+//   }
+//   if (pageId === 'paymentSetDate' || pageId === 'paymentType') {
+//     responseBody.data.currentDatebox = '25 August 2022';
+//   }
+//   assert.deepEqual(responseBody.data, caseData);
+// };
 
 // Mid event will not return case fields that were already filled in another event if they're present on currently processed event.
 // This happens until these case fields are set again as a part of current event (note that this data is not removed from the case).
@@ -333,11 +308,11 @@ const deleteCaseFields = (...caseFields) => {
   caseFields.forEach(caseField => delete caseData[caseField]);
 };
 
-const assertContainsPopulatedFields = returnedCaseData => {
-  for (let populatedCaseField of Object.keys(caseData)) {
-    assert.property(returnedCaseData,  populatedCaseField);
-  }
-};
+// const assertContainsPopulatedFields = returnedCaseData => {
+//   for (let populatedCaseField of Object.keys(caseData)) {
+//     assert.property(returnedCaseData,  populatedCaseField);
+//   }
+// };
 
 const assertCorrectEventsAreAvailableToUser = async (user, state) => {
   console.log(`Asserting user ${user.type} in env ${config.runningEnv} has correct permissions`);

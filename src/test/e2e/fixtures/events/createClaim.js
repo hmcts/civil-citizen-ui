@@ -9,14 +9,14 @@ const respondent1 = {
   individualFirstName: 'John',
   individualLastName: 'Doe',
   individualTitle: 'Sir',
-  primaryAddress: buildAddress('respondent')
+  primaryAddress: buildAddress('respondent'),
 };
 const respondent2 = {
   type: 'INDIVIDUAL',
   individualFirstName: 'Foo',
   individualLastName: 'Bar',
   individualTitle: 'Dr',
-  primaryAddress: buildAddress('second respondent')
+  primaryAddress: buildAddress('second respondent'),
 };
 const respondent1WithPartyName = {
   ...respondent1,
@@ -31,7 +31,7 @@ const respondent2WithPartyName = {
 const applicant1 = {
   type: 'COMPANY',
   companyName: 'Test Inc',
-  primaryAddress: buildAddress('applicant')
+  primaryAddress: buildAddress('applicant'),
 };
 const applicant1WithPartyName = {
   ...applicant1,
@@ -44,7 +44,7 @@ const applicant2 = {
   individualFirstName: 'Jane',
   individualLastName: 'Doe',
   individualTitle: 'Dr',
-  primaryAddress: buildAddress('second applicant')
+  primaryAddress: buildAddress('second applicant'),
 };
 
 const applicant2WithPartyName = {
@@ -56,7 +56,7 @@ const applicant2WithPartyName = {
 const applicant1LitigationFriend = {
   fullName: 'Bob the litigant friend',
   hasSameAddressAsLitigant: 'No',
-  primaryAddress: buildAddress('litigant friend')
+  primaryAddress: buildAddress('litigant friend'),
 };
 
 let selectedPba = listElement('PBA0088192');
@@ -69,37 +69,37 @@ const createClaimData = (legalRepresentation, useValidPba, mpScenario) => {
     References: {
       solicitorReferences: {
         applicantSolicitor1Reference: 'Applicant reference',
-        respondentSolicitor1Reference: 'Respondent reference'
-      }
+        respondentSolicitor1Reference: 'Respondent reference',
+      },
     },
     Court: {
       courtLocation: {
         applicantPreferredCourtLocationList: {
           list_items: [
-            listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ')
+            listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
           ],
-          value: listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ')
-        }
-      }
+          value: listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
+        },
+      },
     },
     Claimant: {
-      applicant1: applicant1WithPartyName
+      applicant1: applicant1WithPartyName,
     },
     ClaimantLitigationFriendRequired: {
       applicant1LitigationFriendRequired: 'Yes',
     },
     ClaimantLitigationFriend: {
-      applicant1LitigationFriend: applicant1LitigationFriend
+      applicant1LitigationFriend: applicant1LitigationFriend,
     },
     Notifications: {
       applicantSolicitor1CheckEmail: {
         email: 'hmcts.civil+organisation.1.solicitor.1@gmail.com',
-        correct: 'No'
+        correct: 'No',
       },
       applicantSolicitor1UserDetails: {
         email: 'civilunspecified@gmail.com',
-        id: 'c18d5f8d-06fa-477d-ac09-5b6129828a5b'
-      }
+        id: 'c18d5f8d-06fa-477d-ac09-5b6129828a5b',
+      },
     },
     ClaimantSolicitorOrganisation: {
       applicant1OrganisationPolicy: {
@@ -107,29 +107,29 @@ const createClaimData = (legalRepresentation, useValidPba, mpScenario) => {
         OrgPolicyCaseAssignedRole: '[APPLICANTSOLICITORONE]',
         Organisation: {
           OrganisationID: config.claimantSolicitorOrgId,
-        }
-      }
+        },
+      },
     },
     ClaimantSolicitorServiceAddress: {
       applicantSolicitor1ServiceAddressRequired: 'Yes',
-      applicantSolicitor1ServiceAddress:  buildAddress('service')
+      applicantSolicitor1ServiceAddress:  buildAddress('service'),
     },
     AddAnotherClaimant: {
-      addApplicant2: 'No'
+      addApplicant2: 'No',
     },
     ...(mpScenario === 'TWO_V_ONE') ? {
       SecondClaimant: {
-        applicant2: applicant2WithPartyName
+        applicant2: applicant2WithPartyName,
       },
       SecondClaimantLitigationFriendRequired: {
-        applicant2LitigationFriendRequired: 'No'
+        applicant2LitigationFriendRequired: 'No',
       },
     }: {},
     Defendant: {
-      respondent1: respondent1WithPartyName
+      respondent1: respondent1WithPartyName,
     },
     LegalRepresentation: {
-      respondent1Represented: `${legalRepresentation}`
+      respondent1Represented: `${legalRepresentation}`,
     },
     ...(legalRepresentation === 'Yes') ? {
       DefendantSolicitorOrganisation: {
@@ -138,37 +138,37 @@ const createClaimData = (legalRepresentation, useValidPba, mpScenario) => {
           OrgPolicyReference: 'Defendant policy reference',
           OrgPolicyCaseAssignedRole: '[RESPONDENTSOLICITORONE]',
           Organisation: {
-            OrganisationID: config.defendant1SolicitorOrgId
+            OrganisationID: config.defendant1SolicitorOrgId,
           },
         },
       },
       DefendantSolicitorServiceAddress: {
-        respondentSolicitor1ServiceAddress: buildAddress('service')
+        respondentSolicitor1ServiceAddress: buildAddress('service'),
       },
       DefendantSolicitorEmail: {
-        respondentSolicitor1EmailAddress: 'civilunspecified@gmail.com'
+        respondentSolicitor1EmailAddress: 'civilunspecified@gmail.com',
       },
     }: {},
     AddAnotherDefendant: {
-      addRespondent2: 'No'
+      addRespondent2: 'No',
     },
     ...hasRespondent2(mpScenario) ? {
-        SecondDefendant: {},
-        SecondDefendantLegalRepresentation: {},
-        SecondDefendantSolicitorOrganisation: {},
-        SecondDefendantSolicitorServiceAddress: {},
-        SecondDefendantSolicitorReference: {},
-        SecondDefendantSolicitorEmail: {},
-        SameLegalRepresentative: {},
-      } : {},
+      SecondDefendant: {},
+      SecondDefendantLegalRepresentation: {},
+      SecondDefendantSolicitorOrganisation: {},
+      SecondDefendantSolicitorServiceAddress: {},
+      SecondDefendantSolicitorReference: {},
+      SecondDefendantSolicitorEmail: {},
+      SameLegalRepresentative: {},
+    } : {},
     ClaimType: {
-      claimType: 'PERSONAL_INJURY'
+      claimType: 'PERSONAL_INJURY',
     },
     PersonalInjuryType: {
-      personalInjuryType: 'ROAD_ACCIDENT'
+      personalInjuryType: 'ROAD_ACCIDENT',
     },
     Details: {
-      detailsOfClaim: 'Test details of claim'
+      detailsOfClaim: 'Test details of claim',
     },
     Upload: {
       servedDocumentFiles: {
@@ -178,37 +178,37 @@ const createClaimData = (legalRepresentation, useValidPba, mpScenario) => {
             value: {
               document_url: '${TEST_DOCUMENT_URL}',
               document_binary_url: '${TEST_DOCUMENT_BINARY_URL}',
-              document_filename: '${TEST_DOCUMENT_FILENAME}'
-            }
-          }
-        ]
-      }
+              document_filename: '${TEST_DOCUMENT_FILENAME}',
+            },
+          },
+        ],
+      },
     },
     ClaimValue: {
       claimValue: {
-        statementOfValueInPennies: '3000000'
-      }
+        statementOfValueInPennies: '3000000',
+      },
     },
     PbaNumber: {
       applicantSolicitor1PbaAccounts: {
         list_items: [
           validPba,
-          invalidPba
+          invalidPba,
         ],
-        value: selectedPba
+        value: selectedPba,
 
-      }
+      },
     },
     PaymentReference: {
       claimIssuedPaymentDetails:  {
-        customerReference: 'Applicant reference'
-      }
+        customerReference: 'Applicant reference',
+      },
     },
     StatementOfTruth: {
       uiStatementOfTruth: {
         name: 'John Doe',
-        role: 'Test Solicitor'
-      }
+        role: 'Test Solicitor',
+      },
     },
   };
   switch (mpScenario){
@@ -216,19 +216,19 @@ const createClaimData = (legalRepresentation, useValidPba, mpScenario) => {
       return {
         ...claimData,
         AddAnotherClaimant: {
-          addApplicant2: 'No'
+          addApplicant2: 'No',
         },
         AddAnotherDefendant: {
-          addRespondent2: 'Yes'
+          addRespondent2: 'Yes',
         },
         SecondDefendant: {
-          respondent2: respondent2WithPartyName
+          respondent2: respondent2WithPartyName,
         },
         SecondDefendantLegalRepresentation: {
-          respondent2Represented: 'Yes'
+          respondent2Represented: 'Yes',
         },
         SameLegalRepresentative: {
-          respondent2SameLegalRepresentative: 'Yes'
+          respondent2SameLegalRepresentative: 'Yes',
         },
       };
     }
@@ -236,19 +236,19 @@ const createClaimData = (legalRepresentation, useValidPba, mpScenario) => {
       return {
         ...claimData,
         AddAnotherClaimant: {
-          addApplicant2: 'No'
+          addApplicant2: 'No',
         },
         AddAnotherDefendant: {
-          addRespondent2: 'Yes'
+          addRespondent2: 'Yes',
         },
         SecondDefendant: {
           respondent2: respondent2WithPartyName,
         },
         SecondDefendantLegalRepresentation: {
-          respondent2Represented: 'Yes'
+          respondent2Represented: 'Yes',
         },
         SameLegalRepresentative: {
-          respondent2SameLegalRepresentative: 'No'
+          respondent2SameLegalRepresentative: 'No',
         },
         SecondDefendantSolicitorOrganisation: {
           respondent2OrgRegistered: 'Yes',
@@ -262,22 +262,22 @@ const createClaimData = (legalRepresentation, useValidPba, mpScenario) => {
           },
         },
         SecondDefendantSolicitorServiceAddress: {
-          respondentSolicitor2ServiceAddress: buildAddress('service')
+          respondentSolicitor2ServiceAddress: buildAddress('service'),
         },
         SecondDefendantSolicitorReference: {
-          respondentSolicitor2Reference: 'sol2reference'
+          respondentSolicitor2Reference: 'sol2reference',
         },
         SecondDefendantSolicitorEmail: {
-          respondentSolicitor2EmailAddress: 'civilunspecified@gmail.com'
-        }
+          respondentSolicitor2EmailAddress: 'civilunspecified@gmail.com',
+        },
       };
     }
     case 'TWO_V_ONE': {
       return {
         ...claimData,
         AddAnotherClaimant: {
-          addApplicant2: 'Yes'
-        }
+          addApplicant2: 'Yes',
+        },
       };
     }
     case 'ONE_V_ONE':
@@ -300,23 +300,23 @@ module.exports = {
           applicantSolicitor1PbaAccounts: {
             list_items: [
               validPba,
-              invalidPba
-            ]
+              invalidPba,
+            ],
           },
           applicantSolicitor1PbaAccountsIsEmpty: 'No',
           claimFee: {
             calculatedAmountInPence: '150000',
             code: 'FEE0209',
-            version: '3'
+            version: '3',
           },
           claimIssuedPaymentDetails: {
-            customerReference: 'Applicant reference'
+            customerReference: 'Applicant reference',
           },
           applicant1: applicant1WithPartyName,
           respondent1: respondent1WithPartyName,
           ...hasRespondent2(mpScenario) ? {
-            respondent2: respondent2WithPartyName
-          } : {}
+            respondent2: respondent2WithPartyName,
+          } : {},
         },
         ClaimantLitigationFriend: {
           applicant1: applicant1WithPartyName,
@@ -327,8 +327,8 @@ module.exports = {
         },
         // otherwise applicantSolicitor1ClaimStatementOfTruth: [undefined]
         StatementOfTruth: {
-          applicantSolicitor1ClaimStatementOfTruth: {}
-        }
+          applicantSolicitor1ClaimStatementOfTruth: {},
+        },
       },
       valid: {
         ...createClaimData('Yes', true, mpScenario),
@@ -342,40 +342,40 @@ module.exports = {
                 value: {
                   document_url: '${TEST_DOCUMENT_URL}',
                   document_binary_url: '${TEST_DOCUMENT_BINARY_URL}',
-                  document_filename: '${TEST_DOCUMENT_FILENAME}'
-                }
+                  document_filename: '${TEST_DOCUMENT_FILENAME}',
+                },
               },
               {
                 id: docUuid,
                 value: {
                   document_url: '${TEST_DOCUMENT_URL}',
                   document_binary_url: '${TEST_DOCUMENT_BINARY_URL}',
-                  document_filename: '${TEST_DOCUMENT_FILENAME}'
-                }
-              }
-            ]
-          }
+                  document_filename: '${TEST_DOCUMENT_FILENAME}',
+                },
+              },
+            ],
+          },
         },
         Court: {
           courtLocation: {
-            applicantPreferredCourt: ['3a3', '21', '3333']
-          }
-        }
-      }
+            applicantPreferredCourt: ['3a3', '21', '3333'],
+          },
+        },
+      },
     };
   },
 
   createClaimLitigantInPerson: {
-    valid: createClaimData('No', true)
+    valid: createClaimData('No', true),
   },
   createClaimWithTerminatedPBAAccount: {
-    valid: createClaimData('Yes', false)
+    valid: createClaimData('Yes', false),
   },
   createClaimRespondentSolFirmNotInMyHmcts: {
     valid: {
       ...createClaimData('Yes', true),
       DefendantSolicitorOrganisation: {
-        respondent1OrgRegistered: 'No'
+        respondent1OrgRegistered: 'No',
       },
       UnRegisteredDefendantSolicitorOrganisation: {
         respondentSolicitor1OrganisationDetails: {
@@ -384,9 +384,9 @@ module.exports = {
           email: 'test@example.com',
           dx: 'test dx',
           fax: '123123123',
-          address: buildAddress('org')
-        }
+          address: buildAddress('org'),
+        },
       },
-    }
-  }
+    },
+  },
 };

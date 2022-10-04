@@ -38,21 +38,21 @@ module.exports = {
     return {
       document_url: `${config.url.dmStore}/documents/${documentId}`,
       document_filename: filename,
-      document_binary_url: `${config.url.dmStore}/documents/${documentId}/binary`
+      document_binary_url: `${config.url.dmStore}/documents/${documentId}/binary`,
     };
   },
 
   element: object => {
     return {
       id: uuid.v1(),
-      value: object
+      value: object,
     };
   },
 
   listElement: string => {
     return {
       code: uuid.v1(),
-      label: string
+      label: string,
     };
   },
 

@@ -87,10 +87,10 @@ module.exports =  {
         `${config.url.civilService}/testing-support/unassign-user`,
         {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`
+          'Authorization': `Bearer ${authToken}`,
         },
         {
-          caseIds
+          caseIds,
         },
         'POST')
         .then(response => {
@@ -140,7 +140,7 @@ module.exports =  {
         } else {
           throw new Error(`Error when checking toggle occurred with status : ${response.status}`);
         }
-      }
+      },
       );
   },
 
@@ -161,7 +161,7 @@ module.exports =  {
       `${config.url.civilService}/testing-support/upload/test-document`,
       {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`
+        'Authorization': `Bearer ${authToken}`,
       },
       {},
       'POST');

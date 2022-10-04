@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 const config = require('../../../config.js');
+const {Feature, Scenario} = require('codeceptjs');
 
 Feature('CCD 1v1 API test @api-spec-small');
 

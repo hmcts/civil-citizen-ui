@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // in this file you can append custom step methods to 'I' object
 
 const output = require('codeceptjs').output;

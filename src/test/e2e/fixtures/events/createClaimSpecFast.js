@@ -6,7 +6,7 @@ const respondent1 = {
   individualFirstName: 'John',
   individualLastName: 'Doe',
   individualTitle: 'Sir',
-  primaryAddress: buildAddress('respondent')
+  primaryAddress: buildAddress('respondent'),
 };
 const respondent1WithPartyName = {
   ...respondent1,
@@ -16,7 +16,7 @@ const respondent1WithPartyName = {
 const applicant1 = {
   type: 'COMPANY',
   companyName: 'Test Inc',
-  primaryAddress: buildAddress('applicant')
+  primaryAddress: buildAddress('applicant'),
 };
 const applicant1WithPartyName = {
   ...applicant1,
@@ -38,37 +38,37 @@ module.exports = {
           superClaimType: 'SPEC_CLAIM',
           solicitorReferences: {
             applicantSolicitor1Reference: 'Applicant reference',
-            respondentSolicitor1Reference: 'Respondent reference'
-          }
+            respondentSolicitor1Reference: 'Respondent reference',
+          },
         },
         Claimant: {
-          applicant1: applicant1WithPartyName
+          applicant1: applicant1WithPartyName,
         },
         AddAnotherClaimant: {
-          addApplicant2: 'No'
+          addApplicant2: 'No',
         },
         Notifications: {
           applicantSolicitor1CheckEmail: {
             correct: 'No',
           },
           applicantSolicitor1UserDetails: {
-            email: solicitor1Email
-          }
+            email: solicitor1Email,
+          },
         },
         ClaimantSolicitorOrganisation: {
           applicant1OrganisationPolicy: {
             OrgPolicyReference: 'Claimant policy reference',
             OrgPolicyCaseAssignedRole: '[APPLICANTSOLICITORONESPEC]',
             Organisation: {
-              OrganisationID: config.claimantSolicitorOrgId
-            }
-          }
+              OrganisationID: config.claimantSolicitorOrgId,
+            },
+          },
         },
         specCorrespondenceAddress: {
-          specApplicantCorrespondenceAddressRequired: 'No'
+          specApplicantCorrespondenceAddressRequired: 'No',
         },
         Defendant: {
-          respondent1: respondent1WithPartyName
+          respondent1: respondent1WithPartyName,
         },
         LegalRepresentation: {
           specRespondent1Represented: 'Yes',
@@ -80,131 +80,131 @@ module.exports = {
             OrgPolicyReference: 'Defendant policy reference',
             OrgPolicyCaseAssignedRole: '[RESPONDENTSOLICITORONESPEC]',
             Organisation: {
-              OrganisationID: config.defendant1SolicitorOrgId
+              OrganisationID: config.defendant1SolicitorOrgId,
             },
           },
         },
         DefendantSolicitorEmail: {
-          respondentSolicitor1EmailAddress: 'civilunspecified@gmail.com'
+          respondentSolicitor1EmailAddress: 'civilunspecified@gmail.com',
         },
 
         specRespondentCorrespondenceAddress: {
-          specRespondentCorrespondenceAddressRequired: 'No'
+          specRespondentCorrespondenceAddressRequired: 'No',
         },
         AddAnotherDefendant: {
-          addRespondent2: 'No'
+          addRespondent2: 'No',
         },
         Details: {
-          detailsOfClaim: 'Test details of claim'
+          detailsOfClaim: 'Test details of claim',
         },
         ClaimTimeline: {
           timelineOfEvents: [{
             value: {
               timelineDate: '2021-02-01',
-              timelineDescription: 'event 1'
-            }
-          }]
+              timelineDescription: 'event 1',
+            },
+          }],
         },
         EvidenceList: {
           speclistYourEvidenceList: [{
             value: {
               evidenceType: 'CONTRACTS_AND_AGREEMENTS',
-              contractAndAgreementsEvidence: 'evidence details'
-            }
-          }]
+              contractAndAgreementsEvidence: 'evidence details',
+            },
+          }],
         },
         ClaimAmount: {
           claimAmountBreakup: [{
             value: {
               claimReason: 'amount reason',
-              claimAmount: claimAmount
-            }
-          }]
+              claimAmount: claimAmount,
+            },
+          }],
         },
         ClaimInterest: {
-          claimInterest: 'No'
+          claimInterest: 'No',
         },
 
         InterestSummary: {
           claimIssuedPaymentDetails: {
-            customerReference: 'Applicant reference'
+            customerReference: 'Applicant reference',
           },
         },
         PbaNumber: {
           applicantSolicitor1PbaAccounts: {
             list_items: [
               validPba,
-              invalidPba
+              invalidPba,
             ],
-            value: validPba
-          }
+            value: validPba,
+          },
         },
         StatementOfTruth: {
           uiStatementOfTruth: {
             name: 'John Doe',
-            role: 'Test Solicitor'
-          }
+            role: 'Test Solicitor',
+          },
         },
       },
 
       midEventData: {
         Notifications: {
           applicantSolicitor1CheckEmail: {
-            email: solicitor1Email
-          }
+            email: solicitor1Email,
+          },
         },
         ClaimAmount: {
-          totalClaimAmount: claimAmount / 100
+          totalClaimAmount: claimAmount / 100,
         },
         ClaimAmountDetails: {
-          superClaimType: 'SPEC_CLAIM'
+          superClaimType: 'SPEC_CLAIM',
         },
         InterestSummary: {
           totalInterest: 0,
           applicantSolicitor1PbaAccountsIsEmpty: 'No',
-        }
+        },
       },
 
       midEventGeneratedData: {
         ClaimAmount: {
           speclistYourEvidenceList: {
-            id: 'string'
+            id: 'string',
           },
           claimAmountBreakupSummaryObject: 'string',
           timelineOfEvents: {
-            id: 'string'
+            id: 'string',
           },
           claimAmountBreakup: {
-            id: 'string'
-          }
+            id: 'string',
+          },
         },
         ClaimInterest: {
-          calculatedInterest: 'string'
+          calculatedInterest: 'string',
         },
         InterestSummary: {
           applicantSolicitor1PbaAccounts: {
-            list_items: 'object'
+            list_items: 'object',
           },
           claimFee: {
             calculatedAmountInPence: 'string',
             code: 'string',
-            version: 'string'
-          }
-        }
-      }
+            version: 'string',
+          },
+        },
+      },
     };
 
     switch (mpScenario) {
       case 'ONE_V_ONE':
         userData.userInput = {
-          ...userData.userInput
+          ...userData.userInput,
         };
         break;
       case 'ONE_V_TWO':
         userData.userInput = {
           ...userData.userInput,
           AddAnotherDefendant: {
-            addRespondent2: 'Yes'
+            addRespondent2: 'Yes',
           },
 
           SecondDefendant: {
@@ -214,9 +214,9 @@ module.exports = {
               primaryAddress: {
                 AddressLine1: '123 Second Close',
                 PostTown: 'Second Town',
-                PostCode: 'NR5 9LL'
-              }
-            }
+                PostCode: 'NR5 9LL',
+              },
+            },
           },
 
           LegalRepresentationRespondent2: {
@@ -228,17 +228,17 @@ module.exports = {
               primaryAddress: {
                 AddressLine1: '123 Second Close',
                 PostTown: 'Second Town',
-                PostCode: 'NR5 9LL'
-              }
-            }
+                PostCode: 'NR5 9LL',
+              },
+            },
           },
 
           SecondDefendantSolicitorEmail: {
-            respondentSolicitor2EmailAddress: 'civilmoneyclaimsdemo@gmail.com'
+            respondentSolicitor2EmailAddress: 'civilmoneyclaimsdemo@gmail.com',
           },
 
           SameLegalRepresentative: {
-            respondent2SameLegalRepresentative: 'No'
+            respondent2SameLegalRepresentative: 'No',
           },
 
           SecondDefendantSolicitorOrganisation: {
@@ -247,15 +247,15 @@ module.exports = {
               OrgPolicyCaseAssignedRole: '[RESPONDENTSOLICITORTWOSPEC]',
               Organisation: {
                 OrganisationID: config.defendant2SolicitorOrgId,
-                OrganisationName: 'Civil - Organisation 2'
-              }
-            }
+                OrganisationName: 'Civil - Organisation 2',
+              },
+            },
           },
 
           InterestSummary: {
             claimIssuedPaymentDetails: {
-              customerReference: 'Applicant reference'
-            }
+              customerReference: 'Applicant reference',
+            },
           },
         };
 
@@ -272,9 +272,9 @@ module.exports = {
               primaryAddress: {
                 AddressLine1: '123 Second Close',
                 PostTown: 'Second Town',
-                PostCode: 'NR5 9LL'
-              }
-            }
+                PostCode: 'NR5 9LL',
+              },
+            },
           },
         };
         break;
@@ -283,7 +283,7 @@ module.exports = {
         userData.userInput = {
           ...userData.userInput,
           AddAnotherDefendant: {
-            addRespondent2: 'Yes'
+            addRespondent2: 'Yes',
           },
 
           SecondDefendant: {
@@ -293,9 +293,9 @@ module.exports = {
               primaryAddress: {
                 AddressLine1: '123 Second Close',
                 PostTown: 'Second Town',
-                PostCode: 'NR5 9LL'
-              }
-            }
+                PostCode: 'NR5 9LL',
+              },
+            },
           },
 
           LegalRepresentationRespondent2: {
@@ -307,17 +307,17 @@ module.exports = {
               primaryAddress: {
                 AddressLine1: '123 Second Close',
                 PostTown: 'Second Town',
-                PostCode: 'NR5 9LL'
-              }
-            }
+                PostCode: 'NR5 9LL',
+              },
+            },
           },
 
           SecondDefendantSolicitorEmail: {
-            respondentSolicitor2EmailAddress: 'civilmoneyclaimsdemo@gmail.com'
+            respondentSolicitor2EmailAddress: 'civilmoneyclaimsdemo@gmail.com',
           },
 
           SameLegalRepresentative: {
-            respondent2SameLegalRepresentative: 'Yes'
+            respondent2SameLegalRepresentative: 'Yes',
           },
         };
 
@@ -334,9 +334,9 @@ module.exports = {
               primaryAddress: {
                 AddressLine1: '123 Second Close',
                 PostTown: 'Second Town',
-                PostCode: 'NR5 9LL'
-              }
-            }
+                PostCode: 'NR5 9LL',
+              },
+            },
           },
         };
         break;
@@ -345,7 +345,7 @@ module.exports = {
         userData.userInput = {
           ...userData.userInput,
           AddAnotherClaimant: {
-            addApplicant2: 'Yes'
+            addApplicant2: 'Yes',
           },
 
           SecondClaimant: {
@@ -357,17 +357,17 @@ module.exports = {
               primaryAddress: {
                 AddressLine1: '43 Montgomery Close',
                 PostTown: 'Norwich',
-                PostCode: 'NR5 9LL'
-              }
-            }
+                PostCode: 'NR5 9LL',
+              },
+            },
           },
           SecondDefendantSolicitorEmail: {
-            respondentSolicitor2EmailAddress: 'civilmoneyclaimsdemo@gmail.com'
-          }
+            respondentSolicitor2EmailAddress: 'civilmoneyclaimsdemo@gmail.com',
+          },
         };
         break;
     }
 
     return userData;
-  }
+  },
 };

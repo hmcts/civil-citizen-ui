@@ -17,26 +17,6 @@ let caseData = {};
 
 const data = {
   CREATE_CLAIM: (scenario) => claimData.createClaim(scenario),
-  DEFENDANT_RESPONSE: (response) => require('../fixtures/events/defendantResponseSpecSmall.js').respondToClaim(response),
-  DEFENDANT_RESPONSE_1v2: (response) => require('../fixtures/events/defendantResponseSpec1v2.js').respondToClaim(response),
-  CLAIMANT_RESPONSE: (mpScenario) => require('../fixtures/events/claimantResponseSpecSmall.js').claimantResponse(mpScenario),
-  INFORM_AGREED_EXTENSION_DATE: () => require('../fixtures/events/informAgreeExtensionDateSpec.js')
-};
-
-const eventData = {
-  defendantResponses: {
-    ONE_V_ONE: {
-      FULL_DEFENCE: data.DEFENDANT_RESPONSE('FULL_DEFENCE'),
-      FULL_ADMISSION: data.DEFENDANT_RESPONSE('FULL_ADMISSION'),
-      PART_ADMISSION: data.DEFENDANT_RESPONSE('PART_ADMISSION'),
-      COUNTER_CLAIM: data.DEFENDANT_RESPONSE('COUNTER_CLAIM')
-    },
-    ONE_V_TWO: {
-      FULL_ADMISSION: data.DEFENDANT_RESPONSE_1v2('FULL_ADMISSION'),
-      PART_ADMISSION: data.DEFENDANT_RESPONSE_1v2('PART_ADMISSION'),
-      COUNTER_CLAIM: data.DEFENDANT_RESPONSE_1v2('COUNTER_CLAIM'),
-    }
-  }
 };
 
 module.exports = {
@@ -71,75 +51,14 @@ module.exports = {
     deleteCaseFields('applicantSolicitor1CheckEmail');
   },
 
-  informAgreedExtensionDate: async (user) => {
-    eventName = 'INFORM_AGREED_EXTENSION_DATE_SPEC';
-    await apiRequest.setupTokens(user);
-    caseData = await apiRequest.startEvent(eventName, caseId);
-
-
-    let informAgreedExtensionData = data.INFORM_AGREED_EXTENSION_DATE();
-
-    for (let pageId of Object.keys(informAgreedExtensionData.userInput)) {
-      await assertValidData(informAgreedExtensionData, pageId);
-    }
-
-    await waitForFinishedBusinessProcess(caseId);
-    await assertCorrectEventsAreAvailableToUser(config.applicantSolicitorUser, 'AWAITING_RESPONDENT_ACKNOWLEDGEMENT');
-    await assertCorrectEventsAreAvailableToUser(config.defendantSolicitorUser, 'AWAITING_RESPONDENT_ACKNOWLEDGEMENT');
-    await assertCorrectEventsAreAvailableToUser(config.adminUser, 'AWAITING_RESPONDENT_ACKNOWLEDGEMENT');
-  },
-
   cleanUp: async () => {
     await unAssignAllUsers();
   },
 
-  defendantResponse: async (user, response = 'FULL_DEFENCE', scenario = 'ONE_V_ONE') => {
-    await apiRequest.setupTokens(user);
-    eventName = 'DEFENDANT_RESPONSE_SPEC';
-
-    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
-
-    let defendantResponseData = eventData['defendantResponses'][scenario][response];
-
-    caseData = returnedCaseData;
-
-    for (let pageId of Object.keys(defendantResponseData.userInput)) {
-      await assertValidData(defendantResponseData, pageId);
-    }
-
-    if(scenario === 'ONE_V_ONE')
-      await assertSubmittedEvent('AWAITING_APPLICANT_INTENTION');
-    else if(response === 'FULL_ADMISSION' && scenario === 'ONE_V_TWO')
-      await assertSubmittedEvent('AWAITING_RESPONDENT_ACKNOWLEDGEMENT');
-
-    await waitForFinishedBusinessProcess(caseId);
-
-    deleteCaseFields('respondent1Copy');
-  },
-
-  claimantResponse: async (user) => {
-    // workaround
-    deleteCaseFields('applicantSolicitor1ClaimStatementOfTruth');
-    deleteCaseFields('respondentResponseIsSame');
-
-    await apiRequest.setupTokens(user);
-
-    eventName = 'CLAIMANT_RESPONSE_SPEC';
-    caseData = await apiRequest.startEvent(eventName, caseId);
-
-    const claimantResponseData = data.CLAIMANT_RESPONSE();
-
-    for (let pageId of Object.keys(claimantResponseData.userInput)) {
-      await assertValidData(claimantResponseData, pageId);
-    }
-
-    await assertSubmittedEvent('PROCEEDS_IN_HERITAGE_SYSTEM');
-
-    await waitForFinishedBusinessProcess(caseId);
-  },
 };
 
 // Functions
+
 const assertValidData = async (data, pageId) => {
   console.log(`asserting page: ${pageId} has valid data`);
 
@@ -149,7 +68,7 @@ const assertValidData = async (data, pageId) => {
     eventName,
     pageId,
     caseData,
-    caseId
+    caseId,
   );
   let responseBody = await response.json();
   responseBody = clearDataForSearchCriteria(responseBody); //Until WA release
@@ -171,6 +90,50 @@ const clearDataForSearchCriteria = (responseBody) => {
   delete responseBody.data['SearchCriteria'];
   return responseBody;
 };
+const assertSubmittedEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
+  await apiRequest.startEvent(eventName, caseId);
+
+  const response = await apiRequest.submitEvent(eventName, caseData, caseId);
+  const responseBody = await response.json();
+  assert.equal(response.status, 201);
+  assert.equal(responseBody.state, expectedState);
+  if (hasSubmittedCallback && submittedCallbackResponseContains) {
+    assert.equal(responseBody.callback_response_status_code, 200);
+    assert.include(responseBody.after_submit_callback_response.confirmation_header, submittedCallbackResponseContains.header);
+    assert.include(responseBody.after_submit_callback_response.confirmation_body, submittedCallbackResponseContains.body);
+  }
+
+  if (eventName === 'CREATE_CLAIM_SPEC') {
+    caseId = responseBody.id;
+    await addUserCaseMapping(caseId, config.applicantSolicitorUser);
+    console.log('Case created: ' + caseId);
+  }
+};
+
+/**
+ * {...obj1, ...obj2} replaces elements. For instance, if obj1 = { check : { correct : false }}
+ * and obj2 = { check: { newValue : 'ASDF' }} the result will be { check : {newValue : 'ASDF} }.
+ *
+ * What this method does is a kind of deep spread, in a case like the one before,
+ * @param currentObject the object we want to modify
+ * @param modifications the object holding the modifications
+ * @return a caseData with the new values
+ */
+function update(currentObject, modifications) {
+  const modified = {...currentObject};
+  for (const key in modifications) {
+    if (currentObject[key] && typeof currentObject[key] === 'object') {
+      if (Array.isArray(currentObject[key])) {
+        modified[key] = modifications[key];
+      } else {
+        modified[key] = update(currentObject[key], modifications[key]);
+      }
+    } else {
+      modified[key] = modifications[key];
+    }
+  }
+  return modified;
+}
 
 function checkExpected(responseBodyData, expected, prefix = '') {
   if (!(responseBodyData) && expected) {
@@ -232,51 +195,6 @@ function checkGenerated(responseBodyData, generated, prefix = '') {
     }
   }
 }
-
-/**
- * {...obj1, ...obj2} replaces elements. For instance, if obj1 = { check : { correct : false }}
- * and obj2 = { check: { newValue : 'ASDF' }} the result will be { check : {newValue : 'ASDF} }.
- *
- * What this method does is a kind of deep spread, in a case like the one before,
- * @param currentObject the object we want to modify
- * @param modifications the object holding the modifications
- * @return a caseData with the new values
- */
-function update(currentObject, modifications) {
-  const modified = {...currentObject};
-  for (const key in modifications) {
-    if (currentObject[key] && typeof currentObject[key] === 'object') {
-      if (Array.isArray(currentObject[key])) {
-        modified[key] = modifications[key];
-      } else {
-        modified[key] = update(currentObject[key], modifications[key]);
-      }
-    } else {
-      modified[key] = modifications[key];
-    }
-  }
-  return modified;
-}
-
-const assertSubmittedEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
-  await apiRequest.startEvent(eventName, caseId);
-
-  const response = await apiRequest.submitEvent(eventName, caseData, caseId);
-  const responseBody = await response.json();
-  assert.equal(response.status, 201);
-  assert.equal(responseBody.state, expectedState);
-  if (hasSubmittedCallback && submittedCallbackResponseContains) {
-    assert.equal(responseBody.callback_response_status_code, 200);
-    assert.include(responseBody.after_submit_callback_response.confirmation_header, submittedCallbackResponseContains.header);
-    assert.include(responseBody.after_submit_callback_response.confirmation_body, submittedCallbackResponseContains.body);
-  }
-
-  if (eventName === 'CREATE_CLAIM_SPEC') {
-    caseId = responseBody.id;
-    await addUserCaseMapping(caseId, config.applicantSolicitorUser);
-    console.log('Case created: ' + caseId);
-  }
-};
 
 // Mid event will not return case fields that were already filled in another event if they're present on currently processed event.
 // This happens until these case fields are set again as a part of current event (note that this data is not removed from the case).

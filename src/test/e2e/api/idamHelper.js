@@ -30,7 +30,7 @@ async function userId(authToken) {
   return restHelper.retriedRequest(
     `${idamUrl}/o/userinfo`, {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `Bearer ${authToken}`
+      'Authorization': `Bearer ${authToken}`,
     })
     .then(response => response.json()).then(data => data.uid);
 }
