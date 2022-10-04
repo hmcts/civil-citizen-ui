@@ -2,7 +2,11 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {DQ_EXPERT_REPORT_DETAILS_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL, DQ_EXPERT_GUIDANCE_URL} from '../../../../../main/routes/urls';
+import {
+  DQ_EXPERT_GUIDANCE_URL,
+  DQ_EXPERT_REPORT_DETAILS_URL,
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
+} from '../../../../../main/routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
@@ -53,7 +57,7 @@ describe('Expert Report Details Controller', () => {
 
     it('should redirect to give evidence yourself if option yes is selected', async () => {
       await request(app).post(DQ_EXPERT_REPORT_DETAILS_URL)
-        .send({hasExpertReports: 'yes', reportDetails: [{expertName: 'Ahmet', day: '1', month: '3', year: '2022'}]})
+        .send({option: 'yes', reportDetails: [{expertName: 'Ahmet', day: '1', month: '3', year: '2022'}]})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DQ_GIVE_EVIDENCE_YOURSELF_URL);
@@ -61,7 +65,7 @@ describe('Expert Report Details Controller', () => {
     });
 
     it('should redirect to expert guidance page if option no is selected', async () => {
-      await request(app).post(DQ_EXPERT_REPORT_DETAILS_URL).send({hasExpertReports: 'no'})
+      await request(app).post(DQ_EXPERT_REPORT_DETAILS_URL).send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DQ_EXPERT_GUIDANCE_URL);
@@ -72,7 +76,7 @@ describe('Expert Report Details Controller', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(DQ_EXPERT_REPORT_DETAILS_URL)
-        .send({hasExpertReports: 'yes', reportDetails: [{expertName: 'Ahmet', day: '1', month: '3', year: '2022'}]})
+        .send({option: 'yes', reportDetails: [{expertName: 'Ahmet', day: '1', month: '3', year: '2022'}]})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

@@ -93,13 +93,13 @@ describe('Accessibility', () => {
       .reply(200, {id_token: citizenRoleToken});
     nock('http://localhost:4000')
       .post(CIVIL_SERVICE_CALCULATE_DEADLINE)
-      .reply(200,  new Date(2022, 9, 31));
+      .reply(200, new Date(2022, 9, 31));
+    nock('http://localhost:4000')
+      .get('/cases/:id')
+      .reply(200, CivilClaimResponseMock)
+      .get('/cases/1645882162449409')
+      .reply(200, CivilClaimResponseMock);
   });
-  nock('http://localhost:4000')
-    .get('/cases/:id')
-    .reply(200, CivilClaimResponseMock)
-    .get('/cases/1645882162449409')
-    .reply(200, CivilClaimResponseMock);
 
   urlsList.forEach((url) => {
     testAccessibility(url);
