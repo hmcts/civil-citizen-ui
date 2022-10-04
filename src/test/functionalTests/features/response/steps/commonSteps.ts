@@ -11,6 +11,9 @@ export class CommonSteps {
     responseSteps.EnterDateOfBirth(claimRef);
     responseSteps.EnterContactNumber(claimRef);
   }
+  EnterYourOptionsForDeadline(claimRef: string, deadlineOption: string): void{
+    responseSteps.EnterYourOptions(claimRef, deadlineOption);
+  }
   EnterFinancialDetails(claimRef: string): void{
     responseSteps.ShareYourFinancialDetailsIntro(claimRef);
     responseSteps.EnterBankAccountDetails();

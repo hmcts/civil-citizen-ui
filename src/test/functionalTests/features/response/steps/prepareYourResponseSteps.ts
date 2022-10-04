@@ -32,6 +32,7 @@ import { RepaymentPlan } from '../pages/repaymentPlan';
 import { PartAdmitAlreadyPaid } from '../pages/partAdmitAlreadyPaid';
 import { RejectAllOfClaim } from '../pages/rejectAllOfClaim';
 import { CarerDetails } from '../pages/carerDetails';
+import { ViewYourOptionsBeforeDeadline } from '../pages/viewYourOptionsBeforeDeadline';
 
 const I: I = actor();
 const taskListPage: TaskListPage = new TaskListPage();
@@ -67,6 +68,7 @@ const repaymentPlan: RepaymentPlan= new RepaymentPlan();
 const partAdmitAlreadyPaid: PartAdmitAlreadyPaid = new PartAdmitAlreadyPaid();
 const rejectAllOfClaim: RejectAllOfClaim = new RejectAllOfClaim();
 const selectCarerDetails: CarerDetails = new CarerDetails();
+const viewYourOptionsBeforeDeadline: ViewYourOptionsBeforeDeadline =new ViewYourOptionsBeforeDeadline();
 
 export class ResponseSteps {
 
@@ -82,6 +84,9 @@ export class ResponseSteps {
   }
   EnterContactNumber (claimRef: string): void {
     contactNumberDetailsPage.enterContactNumber(claimRef);
+  }
+  EnterYourOptions (claimRef:  string, deadlineOption: string): void{
+    viewYourOptionsBeforeDeadline.selectYouOptions(claimRef, deadlineOption);
   }
   EnterResponseToClaim(claimRef: string, responseType: string): void {
     respondTypePage.enterResponseToClaim(claimRef, responseType);
