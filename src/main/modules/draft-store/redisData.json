@@ -14,6 +14,12 @@
         "calculatedAmountInPence": "7000"
       },
       "directionQuestionnaire": {
+        "witnesses": {
+          "otherWitnesses": {
+            "option": "",
+            "witnessItems": []
+          }
+        },
         "experts": {
           "expertReportDetails": {
             "hasExpertReports": "yes",

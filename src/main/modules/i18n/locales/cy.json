@@ -13,6 +13,7 @@
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
+    "DATE_EXAMPLE": "Er enghraifft, {{ date }}",
     "DAY": "Diwrnod",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "GO_TO_HOMEPAGE": "Go to homepage",
@@ -497,6 +498,10 @@
       "LATEST_UPDATE": "Diweddariad diweddaraf",
       "VIEW_CLAIM": "Gweld yr hawliad"
     },
+    "CLAIMANT_DOB": {
+      "PAGE_TITLE": "Your date of birth",
+      "TITLE": "What is your date of birth?"
+    },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
       "CLAIMING_AS_HEADER": "I'm claiming as:",
       "CLAIMING_AS_AN_INDIVIDUAL": "An individual",
@@ -857,6 +862,19 @@
       "TELL_US": "Dywedwch wrthym am unrhyw dystiolaeth rydych eisiau ei darparu. Nid oes rhaid i chi anfon unrhyw dystiolaeth atom nawr. Os bydd eich achos yn mynd i wrandawiad llys, ac nid yw’n cael ei setlo, bydd arnoch angen darparu tystiolaeth.",
       "TITLE": "Rhestru eich tystiolaeth"
     },
+    "EXPERT_DETAILS": {
+      "ADD_ANOTHER_EXPERT": "Add another expert",
+      "ADD_EXPERT": "Add another expert",
+      "COST_OPTIONAL": "Estimated cost (optional)",
+      "EMAIL_ADDRESS_OPTIONAL": "Email address (optional)",
+      "FIELD_OF_EXPERTISE": "Field of expertise",
+      "FIRST_NAME_OPTIONAL": "First name (optional)",
+      "LAST_NAME_OPTIONAL": "Last name (optional)",
+      "PAGE_TITLE": "Enter the expert’s details",
+      "PHONE_OPTIONAL": "Phone number (optional)",
+      "REMOVE_EXPERT": "Remove expert",
+      "TELL_US_WHY_NEED_EXPERT": "Tell us why you need this expert"
+    },
     "EXPERT_GUIDANCE": {
       "ASK_PERMISSION": "You must ask for permission to use an expert - a judge will then decide whether the expert is necessary.",
       "CLAIMANT": "claimant",
@@ -1114,6 +1132,18 @@
       "PAGE_TITLE": "Other dependants?",
       "TITLE": "A ydych yn cefnogi rhywun arall yn ariannol?"
     },
+    "OTHER_WITNESSES": {
+      "ADD_ANOTHER_WITNESS": "Add another witness",
+      "EMAIL_LABEL": "Email address (optional)",
+      "FIRST_NAME_LABEL": "First name",
+      "LAST_NAME_LABEL": "Last name",
+      "PAGE_TITLE": "Do you have other witnesses?",
+      "PHONE_LABEL": "Phone number (optional)",
+      "REMOVE_WITNESS": "Remove witness",
+      "THIS_IS_SOMEONE_WHO_CAN_CONFIRM": "This is someone who can confirm your version of events.",
+      "TITLE": "Do you have other witnesses?",
+      "WHAT_THEY_WITNESSED_LABEL": "Tell us what they witnessed"
+    },
     "PARTIAL_ADMISSION_ALREADY_PAID": {
       "PAGE_TITLE": "Already paid"
     },
@@ -1169,6 +1199,12 @@
     "PERMISSION_FOR_EXPERT": {
       "PAGE_TITLE": "Do you want to ask for the court’s permission to use an expert?",
       "TITLE": "Permission for expert"
+    },
+    "PHONE_OR_VIDEO_HEARING": {
+      "JUDGE_DECISION": "The judge will decide if the hearing can be held by telephone or video.",
+      "PAGE_TITLE": "Do you want to ask for a telephone or video hearing?",
+      "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
+      "TITLE": "Do you want to ask for a telephone or video hearing?"
     },
     "PRIORITY_DEBTS": {
       "ARREARS": "'mewn ôl-ddyled' (rydych wedi methu taliadau rheolaidd)",
@@ -1527,6 +1563,10 @@
     "DEFENDANT_POSTCODE_NOT_VALID": "Postcode must be in England or Wales",
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Select yes if you want to use expert evidence",
     "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Select yes if you want to give evidence yourself",
+    "DEFENDANT_WITNESS_ENTER_FIRST_NAME": "Enter the witness’s first name",
+    "DEFENDANT_WITNESS_ENTER_LAST_NAME": "Enter the witness’s last name",
+    "DEFENDANT_WITNESS_SELECT_OTHER": "Select yes if you have other witnesses",
+    "DEFENDANT_WITNESS_WHAT_THEY_WITNESSED": "Tell us what they witnessed",
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
@@ -1534,9 +1574,13 @@
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can't pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
     "ENTER_AT_LEAST_ONE_REPORT": "Enter at least one report",
+    "ENTER_EXPERT_DETAILS": "Enter the expert's details",
+    "ENTER_WHY_NEED_EXPERT": "Tell us why you need this expert",
+    "ENTER_EXPERT_FIELD": "Enter the expert’s field of expertise",
     "ENTER_FIRST_NAME": "Enter first name",
     "ENTER_LAST_NAME": "Enter last name",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
+    "ENTER_VALID_EMAIL":"Enter a valid email address",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
     "ENTER_VALID_TITLE": "Enter valid title",
@@ -1678,6 +1722,10 @@
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
     "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
     "VALID_PHONE_NUMBER": "Rhowch rif ffôn gan ddefnyddio'r fformat cywir",
+    "VALID_PHONE_OR_VIDEO_HEARING": {
+      "TELL_US_WHY": "Tell us why you want a telephone or video hearing",
+      "YES_NO": "Select yes if you want to ask for a telephone or video hearing"
+    },
     "VALID_POSITIVE_NUMBER": "Peidiwch â rhoi rhif negyddol",
     "VALID_POSTCODE": "Rhowch y cod post",
     "VALID_REASON_REQUIRED": "Rhowch reswm",

@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL} from '../../urls';
+import {DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_REQUEST_EXTRA_4WEEKS_URL} from '../../urls';
 import {GenericForm} from '../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
@@ -11,6 +11,7 @@ import {
 
 const requestExtra4WeeksController = express.Router();
 const dqPropertyName = 'requestExtra4weeks';
+const dqParentName = 'experts';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
   res.render('features/directionsQuestionnaire/request-extra-4weeks', {form});
@@ -18,7 +19,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: express.Response): voi
 
 requestExtra4WeeksController.get(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName)), res);
+    renderView(new GenericForm(await getGenericOption(req.params.id, dqPropertyName, dqParentName)), res);
   } catch (error) {
     next(error);
   }
@@ -33,7 +34,7 @@ requestExtra4WeeksController.post(DQ_REQUEST_EXTRA_4WEEKS_URL, async (req, res, 
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName);
+      await saveDirectionQuestionnaire(claimId, form.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL));
     }
   } catch (error) {
