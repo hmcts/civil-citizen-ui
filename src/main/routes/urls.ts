@@ -144,4 +144,3 @@ export const DQ_UNAVAILABLE_FOR_HEARING = `${DIRECTIONS_QUESTIONNAIRE_URL}/unava
 export const DQ_PHONE_OR_VIDEO_HEARING_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/phone-or-video-hearing`;
 export const CLAIM_CLAIMANT_INDIVIDUAL_DETAILS_URL = `${BASE_CLAIM_URL}/claimant-individual-details`;
 export const CLAIMANT_DOB_URL = `${BASE_CLAIM_URL}/claimant-dob`;
-

@@ -127,6 +127,7 @@ import otherWitnessesController from './features/directionsQuestionnaire/otherWi
 import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
 import whyUnavailableForHearingController from './features/directionsQuestionnaire/whyUnavailableForHearingController';
+import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
 
 export default [
   homeController,
@@ -246,4 +247,5 @@ export default [
   expertReportDetailsController,
   claimantIndividualDetailsController,
   whyUnavailableForHearingController,
+  phoneOrVideoHearingController,
 ];
