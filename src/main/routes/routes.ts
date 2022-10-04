@@ -125,6 +125,7 @@ import expertDetailsController from './features/directionsQuestionnaire/experts/
 import sentExpertReportsController from './features/directionsQuestionnaire/sentExpertReportsController';
 import otherWitnessesController from './features/directionsQuestionnaire/otherWitnessesController';
 import expertReportDetailsController from './features/directionsQuestionnaire/expertReportDetailsController';
+import claimantDoBController from './features/public/claim/claimantDoBController';
 import claimantIndividualDetailsController from './features/claim/claimantIndividualDetailsController';
 import whyUnavailableForHearingController from './features/directionsQuestionnaire/whyUnavailableForHearingController';
 import phoneOrVideoHearingController from './features/directionsQuestionnaire/phoneOrVideoHearingController';
@@ -247,5 +248,6 @@ export default [
   expertReportDetailsController,
   claimantIndividualDetailsController,
   whyUnavailableForHearingController,
+  claimantDoBController,
   phoneOrVideoHearingController,
 ];

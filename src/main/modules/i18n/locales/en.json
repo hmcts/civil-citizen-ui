@@ -13,6 +13,7 @@
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "DASHBOARD": "Dashboard",
+    "DATE_EXAMPLE": "For Example, {{ date }}",
     "DAY": "Day",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "GO_TO_HOMEPAGE": "Go to homepage",
@@ -388,7 +389,6 @@
       "YES_CORRESPONDENCE": "Yes, add a correspondence address"
     },
     "CITIZEN_DOB": {
-      "EXAMPLE": "For example, 31 3 1980",
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "Enter your date of birth"
     },
@@ -496,6 +496,10 @@
       "DOWNLOAD_RESPONSE": "Download response",
       "LATEST_UPDATE": "Latest update",
       "VIEW_CLAIM": "View claim"
+    },
+    "CLAIMANT_DOB": {
+      "PAGE_TITLE": "Your date of birth",
+      "TITLE": "What is your date of birth?"
     },
     "CLAIMANT_PARTY_TYPE_SELECTION": {
       "CLAIMING_AS_HEADER": "I'm claiming as:",
