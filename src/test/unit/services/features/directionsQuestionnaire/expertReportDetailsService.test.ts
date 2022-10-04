@@ -1,13 +1,24 @@
-import {getExpertReportDetails, getExpertReportDetailsForm, saveExpertReportDetails}
-  from '../../../../../main/services/features/directionsQuestionnaire/expertReportDetailsService';
+import {
+  getExpertReportDetails,
+  getExpertReportDetailsForm,
+} from '../../../../../main/services/features/directionsQuestionnaire/expertReportDetailsService';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {ExpertReportDetails} from '../../../../../main/common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
-import {ReportDetail} from '../../../../../main/common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
+import {
+  ExpertReportDetails,
+} from '../../../../../main/common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
+import {
+  ReportDetail,
+} from '../../../../../main/common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
 import {Claim} from '../../../../../main/common/models/claim';
 import {GenericForm} from '../../../../../main/common/form/models/genericForm';
 import {YesNo} from '../../../../../main/common/form/models/yesNo';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import CivilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
+import {
+  saveDirectionQuestionnaire,
+} from '../../../../../main/services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {DirectionQuestionnaire} from '../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
+import {Experts} from '../../../../../main/common/models/directionsQuestionnaire/experts/experts';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -22,43 +33,45 @@ describe('Expert Report Details service', () => {
       month: '1',
       year: '2022',
     }];
-    it('should set hasExpertReports to yes when "yes" option is selected', async () => {
+    it('should set option to yes when "yes" option is selected', async () => {
       //Given
       const value = {
-        hasExpertReports:YesNo.YES,
+        option: YesNo.YES,
         reportDetails: mockReportDetails,
       };
       //When
-      const expertReportDetails = getExpertReportDetailsForm(value.hasExpertReports, value.reportDetails);
+      const expertReportDetails = getExpertReportDetailsForm(value.option, value.reportDetails);
       //Then
-      expect(expertReportDetails.hasExpertReports).toBe('yes');
-      expect(expertReportDetails?.reportDetails[0].expertName).toBe('John Doe');
-      expect(expertReportDetails?.reportDetails[0].reportDate?.toDateString()).toBe('Sat Jan 01 2022');
+      if (expertReportDetails.reportDetails) {
+        expect(expertReportDetails.option).toBe('yes');
+        expect(expertReportDetails.reportDetails[0].expertName).toBe('John Doe');
+        expect(expertReportDetails.reportDetails[0].reportDate?.toDateString()).toBe('Sat Jan 01 2022');
+      }
     });
-    it('should set hasExpertReports to no and remove existing reportDetails when "no" option is selected', async () => {
+    it('should set option to no and remove existing reportDetails when "no" option is selected', async () => {
       //Given
       const value = {
-        hasExpertReports: YesNo.NO,
+        option: YesNo.NO,
         reportDetails: mockReportDetails,
       };
       //When
-      const expertReportDetails = getExpertReportDetailsForm(value.hasExpertReports, value.reportDetails);
+      const expertReportDetails = getExpertReportDetailsForm(value.option, value.reportDetails);
       //Then
-      expect(expertReportDetails.hasExpertReports).toBe('no');
+      expect(expertReportDetails.option).toBe('no');
       expect(expertReportDetails?.reportDetails).toBeUndefined();
     });
-    it('should set hasExpertReports to undefined when no option is selected', async () => {
+    it('should set option to undefined when no option is selected', async () => {
       //Given
-      const value:any = {};
+      const value: any = {};
       //When
-      const expertReportDetails = getExpertReportDetailsForm(value.hasExpertReports, value?.reportDetails);
+      const expertReportDetails = getExpertReportDetailsForm(value.option, value?.reportDetails);
       //Then
-      expect(expertReportDetails.hasExpertReports).toBeUndefined();
+      expect(expertReportDetails.option).toBeUndefined();
     });
   });
 
   describe('Validation', () => {
-    it('should raise select yes/no option error if hasExpertReports is unspecified', async () => {
+    it('should raise select yes/no option error if option is unspecified', async () => {
       //Given
       const expertReportDetails = new ExpertReportDetails(undefined);
       const form = new GenericForm(expertReportDetails);
@@ -66,7 +79,7 @@ describe('Expert Report Details service', () => {
       form.validateSync();
       //Then
       expect(form.getErrors().length).toBe(1);
-      expect(form.errorFor('hasExpertReports')).toBe('ERRORS.VALID_YES_NO_SELECTION');
+      expect(form.errorFor('option')).toBe('ERRORS.VALID_YES_NO_SELECTION');
       expect(form.errorFor('reportDetails')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][expertName]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][reportDate]')).toBeUndefined();
@@ -74,7 +87,7 @@ describe('Expert Report Details service', () => {
       expect(form.errorFor('reportDetails[0][month]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][day]')).toBeUndefined();
     });
-    it('should not raise any error if hasExpertReports is "no" and reportDetails unspecified', async () => {
+    it('should not raise any error if option is "no" and reportDetails unspecified', async () => {
       //Given
       const expertReportDetails = new ExpertReportDetails(YesNo.NO, undefined);
       const form = new GenericForm(expertReportDetails);
@@ -83,7 +96,7 @@ describe('Expert Report Details service', () => {
       //Then
       expect(form.getErrors().length).toBe(0);
     });
-    it('should raise at least error if hasExpertReports "yes" and reportDetails are empty', async () => {
+    it('should raise at least error if option "yes" and reportDetails are empty', async () => {
       //Given
       const expertReportDetails = new ExpertReportDetails(YesNo.YES, []);
       const form = new GenericForm(expertReportDetails);
@@ -91,7 +104,7 @@ describe('Expert Report Details service', () => {
       form.validateSync();
       //Then
       expect(form.getErrors().length).toBe(1);
-      expect(form.errorFor('hasExpertReports')).toBeUndefined();
+      expect(form.errorFor('option')).toBeUndefined();
       expect(form.errorFor('reportDetails')).toBe('ERRORS.ENTER_AT_LEAST_ONE_REPORT');
       expect(form.errorFor('reportDetails[0][expertName]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][reportDate]')).toBeUndefined();
@@ -99,7 +112,7 @@ describe('Expert Report Details service', () => {
       expect(form.errorFor('reportDetails[0][month]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][day]')).toBeUndefined();
     });
-    it('should raise enter a date error if hasExpertReports "yes" and expert name is provided but no date input', async () => {
+    it('should raise enter a date error if option "yes" and expert name is provided but no date input', async () => {
       //Given
       const reportDetails = [
         new ReportDetail('John Doe'),
@@ -109,7 +122,7 @@ describe('Expert Report Details service', () => {
       //When
       form.validateSync();
       //Then
-      expect(form.errorFor('hasExpertReports')).toBeUndefined();
+      expect(form.errorFor('option')).toBeUndefined();
       expect(form.errorFor('reportDetails')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][expertName]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][reportDate]')).toBe('ERRORS.DATE_REQUIRED');
@@ -117,17 +130,17 @@ describe('Expert Report Details service', () => {
       expect(form.errorFor('reportDetails[0][month]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][day]')).toBeUndefined();
     });
-    it('should raise enter expert\'s name error if hasExpertReports "yes" and no input for name field ', async () => {
+    it('should raise enter expert\'s name error if option "yes" and no input for name field ', async () => {
       //Given
       const reportDetails = [
-        new ReportDetail(undefined, '2022', '1','1'),
+        new ReportDetail(undefined, '2022', '1', '1'),
       ];
       const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
       //Then
-      expect(form.errorFor('hasExpertReports')).toBeUndefined();
+      expect(form.errorFor('option')).toBeUndefined();
       expect(form.errorFor('reportDetails')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][expertName]')).toBe('ERRORS.EXPERT_NAME_REQUIRED');
       expect(form.errorFor('reportDetails[0][reportDate]')).toBeUndefined();
@@ -135,7 +148,7 @@ describe('Expert Report Details service', () => {
       expect(form.errorFor('reportDetails[0][month]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][day]')).toBeUndefined();
     });
-    it('should raise Enter a valid day error if hasExpertReports "yes" and no input for day field ', async () => {
+    it('should raise Enter a valid day error if option "yes" and no input for day field ', async () => {
       //Given
       const reportDetails = [
         new ReportDetail('John Doe', '2022', '1', undefined),
@@ -145,7 +158,7 @@ describe('Expert Report Details service', () => {
       //When
       form.validateSync();
       //Then
-      expect(form.errorFor('hasExpertReports')).toBeUndefined();
+      expect(form.errorFor('option')).toBeUndefined();
       expect(form.errorFor('reportDetails')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][expertName]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][reportDate]')).toBeUndefined();
@@ -153,7 +166,7 @@ describe('Expert Report Details service', () => {
       expect(form.errorFor('reportDetails[0][month]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][day]')).toBe('ERRORS.VALID_DAY');
     });
-    it('should raise Enter a valid day error if hasExpertReports "yes" and invalid input for day field ', async () => {
+    it('should raise Enter a valid day error if option "yes" and invalid input for day field ', async () => {
       //Given
       const reportDetails = [
         new ReportDetail('John Doe', '2022', '1', '32'),
@@ -163,7 +176,7 @@ describe('Expert Report Details service', () => {
       //When
       form.validateSync();
       //Then
-      expect(form.errorFor('hasExpertReports')).toBeUndefined();
+      expect(form.errorFor('option')).toBeUndefined();
       expect(form.errorFor('reportDetails')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][expertName]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][reportDate]')).toBeUndefined();
@@ -171,7 +184,7 @@ describe('Expert Report Details service', () => {
       expect(form.errorFor('reportDetails[0][month]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][day]')).toBe('ERRORS.VALID_DAY');
     });
-    it('should raise Enter a valid month error if hasExpertReports "yes" and no input for month field ', async () => {
+    it('should raise Enter a valid month error if option "yes" and no input for month field ', async () => {
       //Given
       const reportDetails = [
         new ReportDetail('John Doe', '2022', undefined, '1'),
@@ -181,15 +194,15 @@ describe('Expert Report Details service', () => {
       //When
       form.validateSync();
       //Then
-      expect(form.errorFor('hasExpertReports')).toBeUndefined();
+      expect(form.errorFor('option')).toBeUndefined();
       expect(form.errorFor('reportDetails')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][expertName]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][reportDate]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][year]')).toBeUndefined();
-      expect(form.errorFor('reportDetails[0][month]')).toBe('ERRORS.VALID_MONTH') ;
+      expect(form.errorFor('reportDetails[0][month]')).toBe('ERRORS.VALID_MONTH');
       expect(form.errorFor('reportDetails[0][day]')).toBeUndefined();
     });
-    it('should raise Enter a valid month error if hasExpertReports "yes" and invalid input for month field ', async () => {
+    it('should raise Enter a valid month error if option "yes" and invalid input for month field ', async () => {
       //Given
       const reportDetails = [
         new ReportDetail('John Doe', '2022', '13', '1'),
@@ -199,7 +212,7 @@ describe('Expert Report Details service', () => {
       //When
       form.validateSync();
       //Then
-      expect(form.errorFor('hasExpertReports')).toBeUndefined();
+      expect(form.errorFor('option')).toBeUndefined();
       expect(form.errorFor('reportDetails')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][expertName]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][reportDate]')).toBeUndefined();
@@ -207,7 +220,7 @@ describe('Expert Report Details service', () => {
       expect(form.errorFor('reportDetails[0][month]')).toBe('ERRORS.VALID_MONTH');
       expect(form.errorFor('reportDetails[0][day]')).toBeUndefined();
     });
-    it('should raise Enter a valid year error if hasExpertReports "yes" and no input for year field ', async () => {
+    it('should raise Enter a valid year error if option "yes" and no input for year field ', async () => {
       //Given
       const reportDetails = [
         new ReportDetail('John Doe', undefined, '1', '1'),
@@ -217,7 +230,7 @@ describe('Expert Report Details service', () => {
       //When
       form.validateSync();
       //Then
-      expect(form.errorFor('hasExpertReports')).toBeUndefined();
+      expect(form.errorFor('option')).toBeUndefined();
       expect(form.errorFor('reportDetails')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][expertName]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][reportDate]')).toBeUndefined();
@@ -225,7 +238,7 @@ describe('Expert Report Details service', () => {
       expect(form.errorFor('reportDetails[0][month]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][day]')).toBeUndefined();
     });
-    it('should raise Enter 4 digit year error if hasExpertReports "yes" and less than 4 digit for year field', async () => {
+    it('should raise Enter 4 digit year error if option "yes" and less than 4 digit for year field', async () => {
       //Given
       const reportDetails = [
         new ReportDetail('John Doe', '222', '1', '1'),
@@ -235,7 +248,7 @@ describe('Expert Report Details service', () => {
       //When
       form.validateSync();
       //Then
-      expect(form.errorFor('hasExpertReports')).toBeUndefined();
+      expect(form.errorFor('option')).toBeUndefined();
       expect(form.errorFor('reportDetails')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][expertName]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][reportDate]')).toBeUndefined();
@@ -243,7 +256,7 @@ describe('Expert Report Details service', () => {
       expect(form.errorFor('reportDetails[0][month]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][day]')).toBeUndefined();
     });
-    it('should raise future date error if hasExpertReports "yes" and future date for year field', async () => {
+    it('should raise future date error if option "yes" and future date for year field', async () => {
       //Given
       const reportDetails = [
         new ReportDetail('John Doe', '2023', '1', '1'),
@@ -253,7 +266,7 @@ describe('Expert Report Details service', () => {
       //When
       form.validateSync();
       //Then
-      expect(form.errorFor('hasExpertReports')).toBeUndefined();
+      expect(form.errorFor('option')).toBeUndefined();
       expect(form.errorFor('reportDetails')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][expertName]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][reportDate]')).toBe('ERRORS.CORRECT_DATE_NOT_IN_FUTURE');
@@ -261,7 +274,7 @@ describe('Expert Report Details service', () => {
       expect(form.errorFor('reportDetails[0][month]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][day]')).toBeUndefined();
     });
-    it('should not raise any error if hasExpertReports "yes" and valid expert report details provided', async () => {
+    it('should not raise any error if option "yes" and valid expert report details provided', async () => {
       //Given
       const reportDetails = [
         new ReportDetail('John Doe', '2022', '1', '1'),
@@ -271,7 +284,7 @@ describe('Expert Report Details service', () => {
       //When
       form.validateSync();
       //Then
-      expect(form.errorFor('hasExpertReports')).toBeUndefined();
+      expect(form.errorFor('option')).toBeUndefined();
       expect(form.errorFor('reportDetails')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][expertName]')).toBeUndefined();
       expect(form.errorFor('reportDetails[0][reportDate]')).toBeUndefined();
@@ -295,9 +308,11 @@ describe('Expert Report Details service', () => {
       //When
       const filteredExpertReportDetails = ExpertReportDetails.removeEmptyReportDetails(expertReportDetails);
       //Then
-      expect(filteredExpertReportDetails.reportDetails.length).toBe(1);
-      expect(filteredExpertReportDetails.reportDetails[0].expertName).toBe('John Doe');
-      expect(filteredExpertReportDetails.reportDetails[0].reportDate.toDateString()).toBe('Sat Jan 01 2022');
+      if (filteredExpertReportDetails.reportDetails) {
+        expect(filteredExpertReportDetails.reportDetails.length).toBe(1);
+        expect(filteredExpertReportDetails.reportDetails[0].expertName).toBe('John Doe');
+        expect(filteredExpertReportDetails.reportDetails[0].reportDate?.toDateString()).toBe('Sat Jan 01 2022');
+      }
     });
   });
 
@@ -310,16 +325,18 @@ describe('Expert Report Details service', () => {
       //When
       const expertReportDetails = await getExpertReportDetails('1234');
       //Then
-      expect(expertReportDetails).toBeTruthy();
-      expect(expertReportDetails.reportDetails.length).toBe(1);
-      expect(expertReportDetails.hasExpertReports).toBe('yes');
-      expect(expertReportDetails.reportDetails[0].expertName).toEqual('John Doe');
-      expect(expertReportDetails.reportDetails[0].reportDate?.toDateString()).toEqual('Tue Mar 01 2022');
-      expect(expertReportDetails.reportDetails[0].year).toBe(2022);
-      expect(expertReportDetails.reportDetails[0].month).toBe(3);
-      expect(expertReportDetails.reportDetails[0].day).toBe(1);
+      if (expertReportDetails.reportDetails) {
+        expect(expertReportDetails).toBeTruthy();
+        expect(expertReportDetails.reportDetails.length).toBe(1);
+        expect(expertReportDetails.option).toBe('yes');
+        expect(expertReportDetails.reportDetails[0]?.expertName).toEqual('John Doe');
+        expect(expertReportDetails.reportDetails[0].reportDate?.toDateString()).toEqual('Tue Mar 01 2022');
+        expect(expertReportDetails.reportDetails[0].year).toBe(2022);
+        expect(expertReportDetails.reportDetails[0].month).toBe(3);
+        expect(expertReportDetails.reportDetails[0].day).toBe(1);
+      }
     });
-    it('should return new form when hasExpertReports is empty', async () => {
+    it('should return new form when option is empty', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         return createClaimWithExpertReportDetails();
@@ -328,10 +345,10 @@ describe('Expert Report Details service', () => {
       const expertReportDetails = await getExpertReportDetails('1234');
       //Then
       expect(expertReportDetails).toBeTruthy();
-      expect(expertReportDetails.hasExpertReports).toBeUndefined();
+      expect(expertReportDetails.option).toBeUndefined();
       expect(expertReportDetails.reportDetails).toEqual([]);
     });
-    it('should return new form when hasExpertReports is undefined', async () => {
+    it('should return new form when option is undefined', async () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         return new Claim();
@@ -340,7 +357,7 @@ describe('Expert Report Details service', () => {
       const expertReportDetails = await getExpertReportDetails('1234');
       //Then
       expect(expertReportDetails).toBeTruthy();
-      expect(expertReportDetails.hasExpertReports).toBeUndefined();
+      expect(expertReportDetails.option).toBeUndefined();
       expect(expertReportDetails.reportDetails).toBeUndefined();
     });
     it('should throw an error when error is thrown from draft store', async () => {
@@ -358,11 +375,14 @@ describe('Expert Report Details service', () => {
       //Given
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       mockGetCaseDataFromStore.mockImplementation(async () => {
-        return new Claim();
+        const claim = new Claim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.experts = new Experts();
+        return claim;
       });
       const expertReportDetails = new ExpertReportDetails(YesNo.NO, []);
       //When
-      await saveExpertReportDetails('1234', expertReportDetails);
+      await saveDirectionQuestionnaire('1234', expertReportDetails, 'expertReportDetails', 'experts');
       //Then
       expect(spySave).toBeCalled();
     });
@@ -374,7 +394,8 @@ describe('Expert Report Details service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveExpertReportDetails('1234', expertReportDetails)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+
+      await expect(saveDirectionQuestionnaire('1234', expertReportDetails, 'expertReportDetails', 'experts')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
