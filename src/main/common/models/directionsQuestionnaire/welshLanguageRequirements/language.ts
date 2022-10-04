@@ -1,7 +1,7 @@
 import {IsDefined} from 'class-validator';
-import {LanguageOptions} from './languageOptions';
+import {LanguageOptions} from '../languageOptions';
 
-export class WelshLanguageRequirements {
+export class Language {
 
   @IsDefined({message: 'ERRORS.SELECT_LANGUAGE_SPEAK'})
     speakLanguage: LanguageOptions;

@@ -6,22 +6,23 @@ import {
   saveDirectionQuestionnaire,
 } from '../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {WelshLanguageRequirements} from '../../../common/models/directionsQuestionnaire/welshLanguageRequirements';
+import {Language} from '../../../common/models/directionsQuestionnaire/welshLanguageRequirements/language';
 
 const welshLanguageController = express.Router();
 const welshLanguageViewPath = 'features/directionsQuestionnaire/welsh-language';
+const languageProperty = 'language';
 const welshLanguageRequirementsProperty = 'welshLanguageRequirements';
 
-function renderView(form: GenericForm<WelshLanguageRequirements>, res: express.Response): void {
+function renderView(form: GenericForm<Language>, res: express.Response): void {
   res.render(welshLanguageViewPath, {form});
 }
 
 welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(req.params.id);
-    const welshLanguageRequirements = directionQuestionnaire.welshLanguageRequirements
-      ? new WelshLanguageRequirements(directionQuestionnaire.welshLanguageRequirements.speakLanguage, directionQuestionnaire.welshLanguageRequirements.documentsLanguage)
-      : new WelshLanguageRequirements();
+    const welshLanguageRequirements = directionQuestionnaire.welshLanguageRequirements?.language
+      ? new Language(directionQuestionnaire.welshLanguageRequirements.language.speakLanguage, directionQuestionnaire.welshLanguageRequirements.language.documentsLanguage)
+      : new Language();
     renderView(new GenericForm(welshLanguageRequirements), res);
   } catch (error) {
     next(error);
@@ -31,12 +32,12 @@ welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
 welshLanguageController.post(DQ_WELSH_LANGUAGE_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const form = new GenericForm(new WelshLanguageRequirements(req.body.speakLanguage, req.body.documentsLanguage));
+    const form = new GenericForm(new Language(req.body.speakLanguage, req.body.documentsLanguage));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDirectionQuestionnaire(claimId, form.model, welshLanguageRequirementsProperty);
+      await saveDirectionQuestionnaire(claimId, form.model, languageProperty, welshLanguageRequirementsProperty);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_TASK_LIST_URL));
     }
   } catch (error) {
