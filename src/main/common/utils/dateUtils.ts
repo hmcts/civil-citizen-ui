@@ -27,3 +27,9 @@ export const getNumberOfDaysBetweenTwoDays = (startDay: Date | string, endDay: D
   return convertDateToLuxonDate(endDay).startOf('day').diff(convertDateToLuxonDate(startDay).startOf('day'), 'days').days;
 };
 
+export const addDaysToDate = (date: Date, value: number) => {
+  const updatedDate = new Date(date);
+  updatedDate.setDate(updatedDate.getDate() + value);
+  return updatedDate;
+};
+
