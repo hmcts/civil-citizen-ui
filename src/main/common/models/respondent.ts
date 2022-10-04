@@ -15,5 +15,6 @@ export class Respondent {
   type: CounterpartyType;
   partyName?: string;
   contactPerson?: string;
+  emailAddress?: string;
 }
 
